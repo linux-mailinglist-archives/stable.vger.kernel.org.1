@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TWTkN29PJWokGwIAu9opvQ
-	(envelope-from <stable+bounces-261677-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:03 +0200
+	id cz8jKQdOJWp/GgIAu9opvQ
+	(envelope-from <stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28378650399
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22ABD650201
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Bky+XZv8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261677-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261677-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0TvPRMJJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C40683097EAC
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77C45301F48B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6640D308F38;
-	Sun,  7 Jun 2026 10:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AA52EBB9E;
+	Sun,  7 Jun 2026 10:53:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F30296BCC;
-	Sun,  7 Jun 2026 10:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC3F32ED3A;
+	Sun,  7 Jun 2026 10:53:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829441; cv=none; b=X5Fm2ucrtI77iTavUEzfzExHhgxorCTwvZGpZQjvXZpFe4JRndOTnSf4aF+f5uRwvbeg8g9YoVBmkw5swrZxVYrw9t05i5XZPy0PbDLFGxJr4rVyuz5IGXT/+18hOaBTTVevZivrUcchiQQk+siF+G3SKbPJxnr5H6jhyhO1GcQ=
+	t=1780829593; cv=none; b=JrM8wO0YkYL3uuqlr7s5C0QWWuW/wolLpiGWAvpXiI3cafMgRrTJBsnHAnPzLEWdQh2Ec7s1+F8aFbL6ehv4tffuL/iYJ3st2rDS5444cFC1K4wszmGt94vdRXml58AMe/wZKzSYXMFMNkJ/7W9dhB77Hlo9Z/WtJtSsV96u7jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829441; c=relaxed/simple;
-	bh=lT9k/pbA1JoV5Kz3tPuoZi0g5NoAKEACjnp7oZB69qs=;
+	s=arc-20240116; t=1780829593; c=relaxed/simple;
+	bh=LhAAfeHcUbCufhFLxxip50hdcANE6Rl5sR/y5oUpyxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dm+y9ih+hQ4mBdM/AK92Lui1lHJCs4ueGGuJwY/V4r2rPyc2yWn0sSRP4+MuZjUM1o82NOgGxmU4HTog58kYZw85SRX/phAKBW/m4q4NGSSfy9iS+qs7MSNix5srdU3IHAZBI7BujEtIzYacu9OsT+Rh4ofbK6eelAvrBrocqZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bky+XZv8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9201F00893;
-	Sun,  7 Jun 2026 10:50:39 +0000 (UTC)
+	 MIME-Version; b=PtAO8aHtSu1BoOn0SYLbHtmJ7Gq6g/xpQVzisoT9DW+sIqXm9KK8vp7H72jd3eqWXUdxAU3LdyfQAjvWcpZviW4qch4ICCAEZtsuX2wmrKGxA7VTc9O16Izij+2stheyXkOVhtbn2uvykF4xpDhoHKscv/C/W4hWMSrtS/aPeHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TvPRMJJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837981F00893;
+	Sun,  7 Jun 2026 10:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829440;
-	bh=EmNkpss0v8sDcUdVMkQ/RTEb7yoRmF0x7SSH7h5XIr4=;
+	s=korg; t=1780829591;
+	bh=5kzWj/0ZoZWKoir3oL9Ggv7ALOQbnikfmbZPuK1oPuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bky+XZv8LnM02pKo5WfROfciQStN183FXnpczxIZjFLEHEdbfrnHrCBulzpWcqw4t
-	 wjNNYfWgTRqV81SXvm53zMipExrGvysNrfTCycaG0h/PT4HgYWvKYf0UA2p9UJt4zH
-	 +KpupDlsrrULg1K8ENCpvPIj4aqe3wPutYvV5rH8=
+	b=0TvPRMJJwZgOk/E1KTKQ8vjgkvpZAyRql072FcM6QO0RM2gxl8nyiNXHhp4OEJJxM
+	 qvYzbzIja5X4CA1d6SIbLJzNqH9DTi6jU7SAoXh0/eXJyoP7eAaqd/EavfvPclkX/n
+	 +IXVMUHBoGtAIGe+gMWajSgImgS9+3jlLkyZUpPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH 7.0 279/332] usb: gadget: f_fs: serialize DMABUF cancel against request completion
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>
+Subject: [PATCH 6.18 261/315] serial: altera_jtaguart: handle uart_add_one_port() failures
 Date: Sun,  7 Jun 2026 12:00:48 +0200
-Message-ID: <20260607095738.297067961@linuxfoundation.org>
+Message-ID: <20260607095737.158799410@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,28 +67,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261677-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261721-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:ae878000@gmail.com,m:mhun512@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,175 +95,67 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28378650399
+X-Rspamd-Queue-Id: 22ABD650201
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-commit 2796646f6d892c1eb6818c7ca41fdfa12568e8d1 upstream.
+commit ea66be25f0e934f49d24cd0c5845d13cdba3520b upstream.
 
-ffs_epfile_dmabuf_io_complete() calls usb_ep_free_request() on the
-completed request but leaves priv->req, the back-pointer that
-ffs_dmabuf_transfer() set on submission, pointing at the freed
-memory.  A later FUNCTIONFS_DMABUF_DETACH ioctl or
-ffs_epfile_release() on the close path still sees priv->req
-non-NULL under ffs->eps_lock:
+altera_jtaguart_probe() maps the register window before registering the
+UART port, but it ignores failures from uart_add_one_port(). If port
+registration fails, probe still returns success and the mapping remains
+live until a later remove path that is not part of probe failure cleanup.
 
-    if (priv->ep && priv->req)
-            usb_ep_dequeue(priv->ep, priv->req);
+Return the uart_add_one_port() error and unmap the register window on
+that failure path.
 
-so usb_ep_dequeue() is called on a freed usb_request.
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
 
-On dummy_hcd the dequeue path only walks a live queue and
-pointer-compares, so the freed pointer reads without faulting and
-KASAN requires an explicit check at the FunctionFS call site to
-surface the use-after-free.  On SG-capable in-tree UDCs the
-dequeue path dereferences the supplied request immediately:
-
-  * chipidea's ep_dequeue() does
-    container_of(req, struct ci_hw_req, req) and reads
-    hwreq->req.status before acquiring its own lock.
-  * cdnsp's cdnsp_gadget_ep_dequeue() reads request->status first.
-
-The narrower option of clearing priv->req via cmpxchg() in the
-completion does not close the race: the completion runs without
-eps_lock, so a cancel path holding eps_lock can still observe
-priv->req non-NULL, race a concurrent completion that clears and
-frees, and pass the freed pointer to usb_ep_dequeue().  A slightly
-longer fix that moves the free into the cleanup work is needed.
-
-Same class of lifetime race as the recent usbip-vudc timer fix [1].
-
-Take eps_lock in the sole place that mutates priv->req from the
-callback direction by moving usb_ep_free_request() out of the
-completion into ffs_dmabuf_cleanup(), the existing work handler
-scheduled by ffs_dmabuf_signal_done() on
-ffs->io_completion_wq.  Clear priv->req there under eps_lock
-before freeing, and only clear if priv->req still names our
-request (a subsequent ffs_dmabuf_transfer() on the same
-attachment may have queued a new one).
-
-This keeps the existing dummy_hcd sync-dequeue invariant: the
-completion callback is still invoked by the UDC without
-eps_lock held (dummy_hcd drops its own lock before calling the
-callback), and the callback now takes no f_fs lock at all.
-Serialization against the cancel path happens in cleanup, which
-runs from the workqueue with no f_fs lock held on entry.
-
-The priv ref count protects the containing ffs_dmabuf_priv:
-ffs_dmabuf_transfer() takes a ref via ffs_dmabuf_get(), cleanup
-drops it via ffs_dmabuf_put(), so priv stays live for the
-cleanup even after the cancel path's list_del + ffs_dmabuf_put.
-
-The ffs_dmabuf_transfer() error path no longer frees usb_req
-inline: fence->req and fence->ep are set before usb_ep_queue(),
-so ffs_dmabuf_cleanup() (scheduled by the error-path
-ffs_dmabuf_signal_done()) owns the free regardless of whether
-the queue succeeded.
-
-Reproduced under KASAN on both detach and close paths against
-dummy_hcd with an observability hook
-(kasan_check_byte(priv->req) immediately before usb_ep_dequeue)
-at the two FunctionFS cancel sites to surface the stale-pointer
-access; the hook is not part of this patch.  The KASAN
-allocator / free stacks in the captured splats identify the
-same request: alloc in dummy_alloc_request, free in
-dummy_timer, fault reached from ffs_epfile_release (close) and
-from the FUNCTIONFS_DMABUF_DETACH ioctl (detach).  With the
-patch applied, both paths are silent under the same hook.
-
-The bug is reached from the FunctionFS device node, which in
-real deployments is owned by the privileged gadget daemon
-(adbd, UMS, composite gadget services, etc.); it is not
-reachable from unprivileged userspace or from a USB host on the
-cable.  FunctionFS mounts default to GLOBAL_ROOT_UID, but the
-filesystem supports uid=, gid=, and fmode= delegation to a
-non-root gadget daemon, so on real deployments the attacker may
-be a less-privileged service rather than root.
-
-Fixes: 7b07a2a7ca02 ("usb: gadget: functionfs: Add DMABUF import interface")
-Link: https://lore.kernel.org/all/20260417163552.807548-1-michael.bommarito@gmail.com/ [1]
+Fixes: 5bcd601049c6 ("serial: Add driver for the Altera JTAG UART")
 Cc: stable <stable@kernel.org>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419161227.1587668-1-michael.bommarito@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Link: https://patch.msgid.link/20260512065837.79528-1-mhun512@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_fs.c |   24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/tty/serial/altera_jtaguart.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -150,6 +150,8 @@ struct ffs_dma_fence {
- 	struct dma_fence base;
- 	struct ffs_dmabuf_priv *priv;
- 	struct work_struct work;
-+	struct usb_ep *ep;
-+	struct usb_request *req;
- };
+--- a/drivers/tty/serial/altera_jtaguart.c
++++ b/drivers/tty/serial/altera_jtaguart.c
+@@ -379,6 +379,7 @@ static int altera_jtaguart_probe(struct
+ 	struct resource *res_mem;
+ 	int i = pdev->id;
+ 	int irq;
++	int ret;
  
- struct ffs_epfile {
-@@ -1385,6 +1387,21 @@ static void ffs_dmabuf_cleanup(struct wo
- 	struct ffs_dmabuf_priv *priv = dma_fence->priv;
- 	struct dma_buf_attachment *attach = priv->attach;
- 	struct dma_fence *fence = &dma_fence->base;
-+	struct usb_request *req = dma_fence->req;
-+	struct usb_ep *ep = dma_fence->ep;
-+
-+	/*
-+	 * eps_lock pairs with the cancel paths so they cannot pass a freed
-+	 * req to usb_ep_dequeue().  Only clear if priv->req still names ours;
-+	 * a re-queue on the same attachment may have taken that slot.
-+	 */
-+	spin_lock_irq(&priv->ffs->eps_lock);
-+	if (priv->req == req)
-+		priv->req = NULL;
-+	spin_unlock_irq(&priv->ffs->eps_lock);
-+
-+	if (ep && req)
-+		usb_ep_free_request(ep, req);
+ 	/* -1 emphasizes that the platform must have one port, no .N suffix */
+ 	if (i == -1)
+@@ -418,7 +419,11 @@ static int altera_jtaguart_probe(struct
+ 	port->flags = UPF_BOOT_AUTOCONF;
+ 	port->dev = &pdev->dev;
  
- 	ffs_dmabuf_put(attach);
- 	dma_fence_put(fence);
-@@ -1414,8 +1431,8 @@ static void ffs_epfile_dmabuf_io_complet
- 					  struct usb_request *req)
- {
- 	pr_vdebug("FFS: DMABUF transfer complete, status=%d\n", req->status);
-+	/* req is freed by ffs_dmabuf_cleanup() under eps_lock. */
- 	ffs_dmabuf_signal_done(req->context, req->status);
--	usb_ep_free_request(ep, req);
+-	uart_add_one_port(&altera_jtaguart_driver, port);
++	ret = uart_add_one_port(&altera_jtaguart_driver, port);
++	if (ret) {
++		iounmap(port->membase);
++		return ret;
++	}
+ 
+ 	return 0;
  }
- 
- static const char *ffs_dmabuf_get_driver_name(struct dma_fence *fence)
-@@ -1699,6 +1716,10 @@ static int ffs_dmabuf_transfer(struct fi
- 	usb_req->context  = fence;
- 	usb_req->complete = ffs_epfile_dmabuf_io_complete;
- 
-+	/* ffs_dmabuf_cleanup() frees usb_req via these two fields. */
-+	fence->req = usb_req;
-+	fence->ep = ep->ep;
-+
- 	cookie = dma_fence_begin_signalling();
- 	ret = usb_ep_queue(ep->ep, usb_req, GFP_ATOMIC);
- 	dma_fence_end_signalling(cookie);
-@@ -1708,7 +1729,6 @@ static int ffs_dmabuf_transfer(struct fi
- 	} else {
- 		pr_warn("FFS: Failed to queue DMABUF: %d\n", ret);
- 		ffs_dmabuf_signal_done(fence, ret);
--		usb_ep_free_request(ep->ep, usb_req);
- 	}
- 
- 	spin_unlock_irq(&epfile->ffs->eps_lock);
 
 
 
