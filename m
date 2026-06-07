@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TA+pGbpOJWq1GgIAu9opvQ
-	(envelope-from <stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:02 +0200
+	id LbD9KP1RJWq4GwIAu9opvQ
+	(envelope-from <stable+bounces-261849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73CC6502AA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A287650597
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAE5zqVN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oklbvcLH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261849-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261849-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C95583010EC2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35B4430AAA46
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FADB31ED93;
-	Sun,  7 Jun 2026 10:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A42035202E;
+	Sun,  7 Jun 2026 11:01:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CA3287510;
-	Sun,  7 Jun 2026 10:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7A726ED5D;
+	Sun,  7 Jun 2026 11:01:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829737; cv=none; b=JDbB/viDV3GPqtRtohSsC0a17ZIAjAyXSlqIoCsXvcE7JXWsYXx2Nx2iGmTGjJGX+Y4kcoEot66g2budaZu9Tka4bq4N0+dEUl+g9G2DveE5CmNWe7tDREeqNi2If2Gpd+Eq0H6AJYGOp1LU6B78LdubFfkiEIfztFefQrcgjdM=
+	t=1780830088; cv=none; b=IzvWkOVrEEKI7ntWKt+UAIUFFeBQp5d0VkDOxb6+UnAfete/B2sXccSWADf7n98+/7oWZxqinv6DcUA65gJqQsjr5/XZteym5ZklGoS1nRJsiMtsqsMHU5MEh+EID+N8pcjmbbuVBo5U4t0dgXmSrOkKmQYcLjw6EhEmfKxbzKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829737; c=relaxed/simple;
-	bh=whS268h4j5HkaG4xRz+43sWAWDU73TfvtoDsNcmwUgQ=;
+	s=arc-20240116; t=1780830088; c=relaxed/simple;
+	bh=o7/BgE+76qSGZoefPh+RPxNdKKaYc0iKDc6vIH6b4hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lu3wG+v/ilFrXUNNaookrBacsV6Epj1U7GaHYmp+Sv5R3V/N+iKTx59mApgY5KS5Pdfpabzt9LuM5bY710EJdlN94CCBf+3LasO6S3PEOzyID/ZGgPdW1wFfMxYR4r//OViGe2sVn1MO8cyOMW/jDI/dWYtCTODMSm0bZ3YV9m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAE5zqVN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691981F00893;
-	Sun,  7 Jun 2026 10:55:34 +0000 (UTC)
+	 MIME-Version; b=pYtCb6dUDtQZY28qPMFRd0X1lB4nCTuJzj5FCW0sMxho5akx6lPqKrj9ntLFcf0EEiDnAUB/aYMva8Y6P/PMwwPdSl2ePUwv6U7YUROBfCQtviiBGt1AbG/jqNu16jrDYXQl8xm3NDVolU0BbJ81ZADffB85R2yN/wF1vdJ3m8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oklbvcLH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD901F00893;
+	Sun,  7 Jun 2026 11:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829736;
-	bh=cXicN5+DrYlOf10kqJgkOAl/3v/9bapY8elVjYX0IaQ=;
+	s=korg; t=1780830087;
+	bh=UbJIjrkhcDK0+G7ASX0fT+fzBppASnfPMtl7d9Cz7Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAE5zqVNj9QYW/XkHlnO1UQF62frtL773V7rXZFYPJWZXRO48d2RB19pKgYKprHhj
-	 DqXxXA/XEAtPIzWe+scFq3DEhNCwJxUby2KO9lVI+K+S+yxVgITnlf3hUbrVMJvZEt
-	 NtRoKcAIQJ5VhV/jDcEotUhLXfQvikiUpWWl/pb0=
+	b=oklbvcLHGk6j3+33ttQxVnIfFb5a0Q7XBUJ1UkUE6cQTvAO72rmjQVWcSHduQRoqi
+	 RnjEZ/KWq+RB6MFc8STvou90GQto7EH6WoJ9Zc2g7VQ4iW57jhnqbzuaSkRC68u2ES
+	 COvzMSQw0tPJpn3qC+WICbWPtvF+XB/q/kY7QQKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 7.0 309/332] serial: dz: Fix bootconsole message clobbering at chip reset
+	Will Deacon <will@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Ian Rogers <irogers@google.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 281/307] ring-buffer: Flush and stop persistent ring buffer on panic
 Date: Sun,  7 Jun 2026 12:01:18 +0200
-Message-ID: <20260607095739.435199972@linuxfoundation.org>
+Message-ID: <20260607095738.049064374@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +74,356 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261760-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261849-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mathieu.desnoyers@efficios.com,m:irogers@google.com,m:mhiramat@kernel.org,m:catalin.marinas@arm.com,m:geert@linux-m68k.org,m:rostedt@goodmis.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,arm.com:email,linux-m68k.org:email,efficios.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B73CC6502AA
+X-Rspamd-Queue-Id: 0A287650597
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
+[ Upstream commit a494d3c8d5392bcdff83c2a593df0c160ff9f322 ]
 
-In the DZ interface as implemented by the DC7085 gate array the serial
-transmitters are double buffered, meaning that at the time a transmitter
-is ready to accept the next character there is one in the transmit shift
-register still being sent to the line.  Issuing a master clear at this
-time causes this character to be lost, so wait an extra amount of time
-sufficient for the transmit shift register to drain at 9600bps, which is
-the baud rate setting used by the firmware console.
+On real hardware, panic and machine reboot may not flush hardware cache
+to memory. This means the persistent ring buffer, which relies on a
+coherent state of memory, may not have its events written to the buffer
+and they may be lost. Moreover, there may be inconsistency with the
+counters which are used for validation of the integrity of the
+persistent ring buffer which may cause all data to be discarded.
 
-Mind the specified 1.4us TRDY recovery time in the course and continue
-using iob() as the completion barrier, since the platforms involved use
-a write buffer that can delay and combine writes, and reorder them with
-respect to reads regardless of the MMIO locations accessed and we still
-lack a platform-independent handler for that.
+To avoid this issue, stop recording of the ring buffer on panic and
+flush the cache of the ring buffer's memory.
 
-When called from dz_serial_console_init() this is too early for fsleep()
-to work and even before lpj has been calculated and therefore the delay
-is actually not sufficient for the transmitter to drain and is merely a
-placeholder now.  This will be addressed in a follow-up change.
-
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Fixes: e645535a954a ("tracing: Add option to use memmapped memory for trace boot instance")
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Ian Rogers <irogers@google.com>
+Link: https://patch.msgid.link/177751969602.2136606.12031934362587643488.stgit@mhiramat.tok.corp.google.com
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ arch/alpha/include/asm/Kbuild        |    1 +
+ arch/arc/include/asm/Kbuild          |    1 +
+ arch/arm/include/asm/Kbuild          |    1 +
+ arch/arm64/include/asm/ring_buffer.h |   10 ++++++++++
+ arch/csky/include/asm/Kbuild         |    1 +
+ arch/hexagon/include/asm/Kbuild      |    1 +
+ arch/loongarch/include/asm/Kbuild    |    1 +
+ arch/m68k/include/asm/Kbuild         |    1 +
+ arch/microblaze/include/asm/Kbuild   |    1 +
+ arch/mips/include/asm/Kbuild         |    1 +
+ arch/nios2/include/asm/Kbuild        |    1 +
+ arch/openrisc/include/asm/Kbuild     |    1 +
+ arch/parisc/include/asm/Kbuild       |    1 +
+ arch/powerpc/include/asm/Kbuild      |    1 +
+ arch/riscv/include/asm/Kbuild        |    1 +
+ arch/s390/include/asm/Kbuild         |    1 +
+ arch/sh/include/asm/Kbuild           |    1 +
+ arch/sparc/include/asm/Kbuild        |    1 +
+ arch/um/include/asm/Kbuild           |    1 +
+ arch/x86/include/asm/Kbuild          |    1 +
+ arch/xtensa/include/asm/Kbuild       |    1 +
+ include/asm-generic/ring_buffer.h    |   13 +++++++++++++
+ kernel/trace/ring_buffer.c           |   22 ++++++++++++++++++++++
+ 23 files changed, 65 insertions(+)
+ create mode 100644 arch/arm64/include/asm/ring_buffer.h
+ create mode 100644 include/asm-generic/ring_buffer.h
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -542,10 +542,31 @@ static int dz_encode_baud_rate(unsigned
- static void dz_reset(struct dz_port *dport)
- {
- 	struct dz_mux *mux = dport->mux;
-+	unsigned short tcr;
-+	int loops = 10000;
+--- a/arch/alpha/include/asm/Kbuild
++++ b/arch/alpha/include/asm/Kbuild
+@@ -5,3 +5,4 @@ generic-y += agp.h
+ generic-y += asm-offsets.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+--- a/arch/arc/include/asm/Kbuild
++++ b/arch/arc/include/asm/Kbuild
+@@ -5,4 +5,5 @@ generic-y += extable.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -3,6 +3,7 @@ generic-y += early_ioremap.h
+ generic-y += extable.h
+ generic-y += flat.h
+ generic-y += parport.h
++generic-y += ring_buffer.h
  
- 	if (mux->initialised)
- 		return;
+ generated-y += mach-types.h
+ generated-y += unistd-nr.h
+--- /dev/null
++++ b/arch/arm64/include/asm/ring_buffer.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_ARM64_RING_BUFFER_H
++#define _ASM_ARM64_RING_BUFFER_H
++
++#include <asm/cacheflush.h>
++
++/* Flush D-cache on persistent ring buffer */
++#define arch_ring_buffer_flush_range(start, end)	dcache_clean_pop(start, end)
++
++#endif /* _ASM_ARM64_RING_BUFFER_H */
+--- a/arch/csky/include/asm/Kbuild
++++ b/arch/csky/include/asm/Kbuild
+@@ -9,5 +9,6 @@ generic-y += qrwlock.h
+ generic-y += qrwlock_types.h
+ generic-y += qspinlock.h
+ generic-y += parport.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
+--- a/arch/hexagon/include/asm/Kbuild
++++ b/arch/hexagon/include/asm/Kbuild
+@@ -5,3 +5,4 @@ generic-y += extable.h
+ generic-y += iomap.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+--- a/arch/loongarch/include/asm/Kbuild
++++ b/arch/loongarch/include/asm/Kbuild
+@@ -9,5 +9,6 @@ generic-y += qrwlock.h
+ generic-y += user.h
+ generic-y += ioctl.h
+ generic-y += mmzone.h
++generic-y += ring_buffer.h
+ generic-y += statfs.h
+ generic-y += param.h
+--- a/arch/m68k/include/asm/Kbuild
++++ b/arch/m68k/include/asm/Kbuild
+@@ -3,4 +3,5 @@ generated-y += syscall_table.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+ generic-y += spinlock.h
+--- a/arch/microblaze/include/asm/Kbuild
++++ b/arch/microblaze/include/asm/Kbuild
+@@ -5,6 +5,7 @@ generic-y += extable.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
++generic-y += ring_buffer.h
+ generic-y += syscalls.h
+ generic-y += tlb.h
+ generic-y += user.h
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -12,4 +12,5 @@ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+--- a/arch/nios2/include/asm/Kbuild
++++ b/arch/nios2/include/asm/Kbuild
+@@ -5,5 +5,6 @@ generic-y += cmpxchg.h
+ generic-y += extable.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+ generic-y += spinlock.h
+ generic-y += user.h
+--- a/arch/openrisc/include/asm/Kbuild
++++ b/arch/openrisc/include/asm/Kbuild
+@@ -8,4 +8,5 @@ generic-y += spinlock_types.h
+ generic-y += spinlock.h
+ generic-y += qrwlock_types.h
+ generic-y += qrwlock.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+--- a/arch/parisc/include/asm/Kbuild
++++ b/arch/parisc/include/asm/Kbuild
+@@ -4,4 +4,5 @@ generated-y += syscall_table_64.h
+ generic-y += agp.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -6,4 +6,5 @@ generic-y += agp.h
+ generic-y += kvm_types.h
+ generic-y += mcs_spinlock.h
+ generic-y += qrwlock.h
++generic-y += ring_buffer.h
+ generic-y += early_ioremap.h
+--- a/arch/riscv/include/asm/Kbuild
++++ b/arch/riscv/include/asm/Kbuild
+@@ -11,5 +11,6 @@ generic-y += spinlock.h
+ generic-y += spinlock_types.h
+ generic-y += qrwlock.h
+ generic-y += qrwlock_types.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
+--- a/arch/s390/include/asm/Kbuild
++++ b/arch/s390/include/asm/Kbuild
+@@ -8,3 +8,4 @@ generic-y += asm-offsets.h
+ generic-y += kvm_types.h
+ generic-y += mcs_spinlock.h
+ generic-y += mmzone.h
++generic-y += ring_buffer.h
+--- a/arch/sh/include/asm/Kbuild
++++ b/arch/sh/include/asm/Kbuild
+@@ -3,3 +3,4 @@ generated-y += syscall_table.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
++generic-y += ring_buffer.h
+--- a/arch/sparc/include/asm/Kbuild
++++ b/arch/sparc/include/asm/Kbuild
+@@ -4,3 +4,4 @@ generated-y += syscall_table_64.h
+ generic-y += agp.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += ring_buffer.h
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -19,6 +19,7 @@ generic-y += param.h
+ generic-y += parport.h
+ generic-y += percpu.h
+ generic-y += preempt.h
++generic-y += ring_buffer.h
+ generic-y += runtime-const.h
+ generic-y += softirq_stack.h
+ generic-y += switch_to.h
+--- a/arch/x86/include/asm/Kbuild
++++ b/arch/x86/include/asm/Kbuild
+@@ -12,3 +12,4 @@ generated-y += xen-hypercalls.h
+ generic-y += early_ioremap.h
+ generic-y += mcs_spinlock.h
+ generic-y += mmzone.h
++generic-y += ring_buffer.h
+--- a/arch/xtensa/include/asm/Kbuild
++++ b/arch/xtensa/include/asm/Kbuild
+@@ -7,4 +7,5 @@ generic-y += param.h
+ generic-y += parport.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
++generic-y += ring_buffer.h
+ generic-y += user.h
+--- /dev/null
++++ b/include/asm-generic/ring_buffer.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Generic arch dependent ring_buffer macros.
++ */
++#ifndef __ASM_GENERIC_RING_BUFFER_H__
++#define __ASM_GENERIC_RING_BUFFER_H__
++
++#include <linux/cacheflush.h>
++
++/* Flush cache on ring buffer range if needed. Do nothing by default. */
++#define arch_ring_buffer_flush_range(start, end)	do { } while (0)
++
++#endif /* __ASM_GENERIC_RING_BUFFER_H__ */
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -5,6 +5,7 @@
+  * Copyright (C) 2008 Steven Rostedt <srostedt@redhat.com>
+  */
+ #include <linux/trace_recursion.h>
++#include <linux/panic_notifier.h>
+ #include <linux/trace_events.h>
+ #include <linux/ring_buffer.h>
+ #include <linux/trace_clock.h>
+@@ -29,6 +30,7 @@
+ #include <linux/oom.h>
+ #include <linux/mm.h>
  
-+	tcr = dz_in(dport, DZ_TCR);
++#include <asm/ring_buffer.h>
+ #include <asm/local64.h>
+ #include <asm/local.h>
+ 
+@@ -549,6 +551,7 @@ struct trace_buffer {
+ 
+ 	unsigned long			range_addr_start;
+ 	unsigned long			range_addr_end;
++	struct notifier_block		flush_nb;
+ 
+ 	long				last_text_delta;
+ 	long				last_data_delta;
+@@ -2316,6 +2319,16 @@ static void rb_free_cpu_buffer(struct ri
+ 	kfree(cpu_buffer);
+ }
+ 
++/* Stop recording on a persistent buffer and flush cache if needed. */
++static int rb_flush_buffer_cb(struct notifier_block *nb, unsigned long event, void *data)
++{
++	struct trace_buffer *buffer = container_of(nb, struct trace_buffer, flush_nb);
 +
-+	/* Do not disturb any ongoing transmissions.  */
-+	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
-+		unsigned short csr, mask;
++	ring_buffer_record_off(buffer);
++	arch_ring_buffer_flush_range(buffer->range_addr_start, buffer->range_addr_end);
++	return NOTIFY_DONE;
++}
 +
-+		mask = tcr;
-+		while ((mask & DZ_LNENB) && loops--) {
-+			csr = dz_in(dport, DZ_CSR);
-+			if (!(csr & DZ_TRDY))
-+				continue;
-+			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
-+			dz_out(dport, DZ_TCR, mask);
-+			iob();
-+			udelay(2);		/* 1.4us TRDY recovery.  */
-+		}
-+		udelay(1200);			/* Transmitter drain.  */
+ static struct trace_buffer *alloc_buffer(unsigned long size, unsigned flags,
+ 					 int order, unsigned long start,
+ 					 unsigned long end,
+@@ -2421,6 +2434,12 @@ static struct trace_buffer *alloc_buffer
+ 
+ 	mutex_init(&buffer->mutex);
+ 
++	/* Persistent ring buffer needs to flush cache before reboot. */
++	if (start && end) {
++		buffer->flush_nb.notifier_call = rb_flush_buffer_cb;
++		atomic_notifier_chain_register(&panic_notifier_list, &buffer->flush_nb);
 +	}
 +
- 	dz_out(dport, DZ_CSR, DZ_CLR);
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
+ 	return buffer;
+ 
+  fail_free_buffers:
+@@ -2512,6 +2531,9 @@ ring_buffer_free(struct trace_buffer *bu
+ {
+ 	int cpu;
+ 
++	if (buffer->range_addr_start && buffer->range_addr_end)
++		atomic_notifier_chain_unregister(&panic_notifier_list, &buffer->flush_nb);
++
+ 	cpuhp_state_remove_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node);
+ 
+ 	irq_work_sync(&buffer->irq_work.work);
 
 
 
