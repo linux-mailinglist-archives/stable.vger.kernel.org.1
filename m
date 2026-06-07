@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dat+LABQJWpXGwIAu9opvQ
-	(envelope-from <stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:28 +0200
+	id fMy0DmdSJWrlGwIAu9opvQ
+	(envelope-from <stable+bounces-261888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2462A650431
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1D06505F8
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EqSUQPpF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wqsqNR1L;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261888-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261888-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E847300D9FA
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F6EE307B4E3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8D53290C3;
-	Sun,  7 Jun 2026 11:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8810C31ED80;
+	Sun,  7 Jun 2026 11:04:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288B91E98E3;
-	Sun,  7 Jun 2026 11:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487F630D405;
+	Sun,  7 Jun 2026 11:04:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830206; cv=none; b=jtTKOApZDLy5b/W9ujOYjabATKTO3N+nAmhWWEp0U6/Wek5v8LqX5v2EU3O499UnEVus86yopqnpTo6zp1ps9Qc/8QtVBtqzwvMuL9qaafPrSXcMxlGXHeucVh+WkTrsrVXe08DBGaFLoVl5Efmh9Xj/IktYVwH8ErJQO6ueru4=
+	t=1780830245; cv=none; b=FAqAnXx0KKz8eDPZbD3P5cOiQu8aVEy9EWSTDZbYpXB+/H9F9Uj5D8vvlSKg+7kHPmrxcArgNk+IKRpQSabm0UkJf7lOerSOH7ZriVMhuTsr1Bq8AFFTTvF6wtc1Cct8kX8Ed4eOeZkhP5wSNNN/Xc35F+iieP5VE+o/NeDVbOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830206; c=relaxed/simple;
-	bh=cBsuNYDB1CgDEhGR8tRfpAB05f4zgYcv95PsEY8z/Rg=;
+	s=arc-20240116; t=1780830245; c=relaxed/simple;
+	bh=I9T7DTC8DTjiOo3eSwbmpphP8d26H1RghXQQ1ATpO4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGOcCa3mTVlxjn4BBRl8yn7ShotZU2raNkOEVuzNYHp2fQ8W0vLAHeQblXLh2zUD5x0xV8HB06S5cU6lloWCDd7QLa9beuU8wk2OUVdkMmqxPpDIOBXNO5JBg5ABC1F+leZQK3L3uY85ug42+IBcghfqXLQldHz4pMX+nWYcn+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqSUQPpF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27351F00893;
-	Sun,  7 Jun 2026 11:03:23 +0000 (UTC)
+	 MIME-Version; b=LAGApOADzl4o5+jFLe71l6iHm7YY/i/X+QM48XN/jk0IeK/2lXJnP7KFwE22iQqcj0NFVuNaubACfnnWzjZcx6PNp20n3Io1IKurKOGnaea8pwfL3vs4ZglzMALTGqrTni+USHGComZ/NaKyhcw6phPtTDZ/nkqj911kz3UqBMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqsqNR1L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFBC1F00893;
+	Sun,  7 Jun 2026 11:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830205;
-	bh=B1BP8cqYbJj0Aho+9eH9CkHXLiZ8PXBiIp1Lkx2Vsr4=;
+	s=korg; t=1780830244;
+	bh=zu7NHpX+CTIHlT9AkJdsEyG+55kSUnaxoV1/78Qpcf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EqSUQPpF/0mieCuKkMZud5HEmfcrr9qRCddhY6PXRIiFE5AMAExGGXNN0F6gu4rtP
-	 uD+lJOTmrF1YmIm9WEaeOd3irOJ53SXy3ruTZbrjig3lamr3gNBIkp83ldTwGjwfUU
-	 y3+HOqu62MEbqWQmXxvi8yASuhsxNBpB0HGfU9D8=
+	b=wqsqNR1LoDiE2khkBhqmimmoe5XaMD+20bhcg//mkkdNJLMZjICe1OBLKSEbNur4C
+	 mwsKvAX1hI+P2aOAAHnhsACs/xvRR36N8qOm9s0oXBOz/uTq8eoVQtHQW8ogUwlK4H
+	 sN9baUm4igWaeTRySysyMBrpDD80yknD/wdQ0vX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Hugh Dickins <hughd@google.com>,
-	Jann Horn <jannh@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Jeff Xu <jeffxu@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 305/307] mm: perform all memfd seal checks in a single place
+Subject: [PATCH 6.18 315/315] thunderbolt: property: Cap recursion depth in __tb_property_parse_dir()
 Date: Sun,  7 Jun 2026 12:01:42 +0200
-Message-ID: <20260607095738.958359410@linuxfoundation.org>
+Message-ID: <20260607095739.198260850@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,336 +67,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261877-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo.stoakes@oracle.com,m:isaacmanjarres@google.com,m:hughd@google.com,m:jannh@google.com,m:kaleshsingh@google.com,m:Liam.Howlett@Oracle.com,m:muchun.song@linux.dev,m:vbabka@suse.cz,m:jeffxu@chromium.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261888-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2462A650431
+X-Rspamd-Queue-Id: 8B1D06505F8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit fa00b8ef1803fe133b4897c25227aa0d298dd093 ]
+[ Upstream commit 928abe19fbf0127003abcb1ea69cabc1c897d0ab ]
 
-We no longer actually need to perform these checks in the f_op->mmap()
-hook any longer.
+A DIRECTORY entry's value field is used as the dir_offset for a
+recursive call into __tb_property_parse_dir() with no depth counter.
+A crafted peer that chains DIRECTORY entries into a back-reference
+loop drives the parser until the kernel stack is exhausted and the
+guard page fires.  Any untrusted XDomain peer (cable, dock, in-line
+inspector, adjacent host) that reaches the PROPERTIES_REQUEST
+control-plane exchange can trigger this without authentication.
 
-We already moved the operation which clears VM_MAYWRITE on a read-only
-mapping of a write-sealed memfd in order to work around the restrictions
-imposed by commit 5de195060b2e ("mm: resolve faulty mmap_region() error
-path behaviour").
+Thread a depth counter through tb_property_parse() and
+__tb_property_parse_dir(), and reject blocks that exceed
+TB_PROPERTY_MAX_DEPTH = 8.  That is comfortably larger than any
+observed legitimate XDomain layout.
 
-There is no reason for us not to simply go ahead and additionally check to
-see if any pre-existing seals are in place here rather than defer this to
-the f_op->mmap() hook.
+Operators who do not need XDomain host-to-host discovery can disable
+the path entirely with thunderbolt.xdomain=0 on the kernel command
+line.
 
-By doing this we remove more logic from shmem_mmap() which doesn't belong
-there, as well as doing the same for hugetlbfs_file_mmap().  We also
-remove dubious shared logic in mm.h which simply does not belong there
-either.
-
-It makes sense to do these checks at the earliest opportunity, we know
-these are shmem (or hugetlbfs) mappings whose relevant VMA flags will not
-change from the invoking do_mmap() so there is simply no need to wait.
-
-This also means the implementation of further memfd seal flags can be done
-within mm/memfd.c and also have the opportunity to modify VMA flags as
-necessary early in the mapping logic.
-
-[lorenzo.stoakes@oracle.com: fix typos in !memfd inline stub]
-  Link: https://lkml.kernel.org/r/7dee6c5d-480b-4c24-b98e-6fa47dbd8a23@lucifer.local
-Link: https://lkml.kernel.org/r/20241206212846.210835-1-lorenzo.stoakes@oracle.com
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Tested-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jeff Xu <jeffxu@chromium.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 3b041514cb6e ("memfd: deny writeable mappings when implying SEAL_WRITE")
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c  |    5 ----
- include/linux/memfd.h |   23 ++++++++++----------
- include/linux/mm.h    |   55 --------------------------------------------------
- mm/memfd.c            |   44 +++++++++++++++++++++++++++++++++++++++-
- mm/mmap.c             |   12 ++++++++--
- mm/shmem.c            |    6 -----
- 6 files changed, 63 insertions(+), 82 deletions(-)
+ drivers/thunderbolt/property.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -96,7 +96,6 @@ static const struct fs_parameter_spec hu
- static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct inode *inode = file_inode(file);
--	struct hugetlbfs_inode_info *info = HUGETLBFS_I(inode);
- 	loff_t len, vma_len;
- 	int ret;
- 	struct hstate *h = hstate_file(file);
-@@ -113,10 +112,6 @@ static int hugetlbfs_file_mmap(struct fi
- 	vm_flags_set(vma, VM_HUGETLB | VM_DONTEXPAND);
- 	vma->vm_ops = &hugetlb_vm_ops;
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -35,10 +35,11 @@ struct tb_property_dir_entry {
+ };
  
--	ret = seal_check_write(info->seals, vma);
--	if (ret)
--		return ret;
--
- 	/*
- 	 * page based offset in vm_pgoff could be sufficiently large to
- 	 * overflow a loff_t when converted to byte offset.  This can
---- a/include/linux/memfd.h
-+++ b/include/linux/memfd.h
-@@ -7,7 +7,14 @@
- #ifdef CONFIG_MEMFD_CREATE
- extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
- struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
--unsigned int *memfd_file_seals_ptr(struct file *file);
-+/*
-+ * Check for any existing seals on mmap, return an error if access is denied due
-+ * to sealing, or 0 otherwise.
-+ *
-+ * We also update VMA flags if appropriate by manipulating the VMA flags pointed
-+ * to by vm_flags_ptr.
-+ */
-+int memfd_check_seals_mmap(struct file *file, unsigned long *vm_flags_ptr);
- #else
- static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
- {
-@@ -17,19 +24,11 @@ static inline struct folio *memfd_alloc_
- {
- 	return ERR_PTR(-EINVAL);
- }
--
--static inline unsigned int *memfd_file_seals_ptr(struct file *file)
-+static inline int memfd_check_seals_mmap(struct file *file,
-+					 unsigned long *vm_flags_ptr)
- {
--	return NULL;
-+	return 0;
- }
- #endif
+ #define TB_PROPERTY_ROOTDIR_MAGIC	0x55584401
++#define TB_PROPERTY_MAX_DEPTH		8
  
--/* Retrieve memfd seals associated with the file, if any. */
--static inline unsigned int memfd_file_seals(struct file *file)
--{
--	unsigned int *sealsp = memfd_file_seals_ptr(file);
--
--	return sealsp ? *sealsp : 0;
--}
--
- #endif /* __LINUX_MEMFD_H */
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4140,61 +4140,6 @@ void mem_dump_obj(void *object);
- static inline void mem_dump_obj(void *object) {}
- #endif
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+ 	size_t block_len, unsigned int dir_offset, size_t dir_len,
+-	bool is_root);
++	bool is_root, unsigned int depth);
  
--static inline bool is_write_sealed(int seals)
--{
--	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
--}
--
--/**
-- * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
-- *                      in which case writes should be disallowing moving
-- *                      forwards.
-- * @seals: the seals to check
-- * @vm_flags: the VMA flags to check
-- *
-- * Returns whether readonly sealed, in which case writess should be disallowed
-- * going forward.
-- */
--static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
--{
--	/*
--	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
--	 * MAP_SHARED and read-only, take care to not allow mprotect to
--	 * revert protections on such mappings. Do this only for shared
--	 * mappings. For private mappings, don't need to mask
--	 * VM_MAYWRITE as we still want them to be COW-writable.
--	 */
--	if (is_write_sealed(seals) &&
--	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
--		return true;
--
--	return false;
--}
--
--/**
-- * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
-- *                    handle them.
-- * @seals: the seals to check
-- * @vma: the vma to operate on
-- *
-- * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
-- * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
-- */
--static inline int seal_check_write(int seals, struct vm_area_struct *vma)
--{
--	if (!is_write_sealed(seals))
--		return 0;
--
--	/*
--	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
--	 * write seals are active.
--	 */
--	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
--		return -EPERM;
--
--	return 0;
--}
--
- #ifdef CONFIG_ANON_VMA_NAME
- int madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
- 			  unsigned long len_in,
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -197,7 +197,7 @@ static int memfd_wait_for_pins(struct ad
- 	return error;
+ static inline void parse_dwdata(void *dst, const void *src, size_t dwords)
+ {
+@@ -97,7 +98,8 @@ tb_property_alloc(const char *key, enum
  }
  
--unsigned int *memfd_file_seals_ptr(struct file *file)
-+static unsigned int *memfd_file_seals_ptr(struct file *file)
+ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+-					const struct tb_property_entry *entry)
++					const struct tb_property_entry *entry,
++					unsigned int depth)
  {
- 	if (shmem_file(file))
- 		return &SHMEM_I(file_inode(file))->seals;
-@@ -354,6 +354,48 @@ static int check_sysctl_memfd_noexec(uns
- 	return 0;
+ 	char key[TB_PROPERTY_KEY_SIZE + 1];
+ 	struct tb_property *property;
+@@ -118,7 +120,7 @@ static struct tb_property *tb_property_p
+ 	switch (property->type) {
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 		dir = __tb_property_parse_dir(block, block_len, entry->value,
+-					      entry->length, false);
++					      entry->length, false, depth + 1);
+ 		if (!dir) {
+ 			kfree(property);
+ 			return NULL;
+@@ -163,13 +165,17 @@ static struct tb_property *tb_property_p
  }
  
-+static inline bool is_write_sealed(unsigned int seals)
-+{
-+	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
-+}
-+
-+static int check_write_seal(unsigned long *vm_flags_ptr)
-+{
-+	unsigned long vm_flags = *vm_flags_ptr;
-+	unsigned long mask = vm_flags & (VM_SHARED | VM_WRITE);
-+
-+	/* If a private matting then writability is irrelevant. */
-+	if (!(mask & VM_SHARED))
-+		return 0;
-+
-+	/*
-+	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-+	 * write seals are active.
-+	 */
-+	if (mask & VM_WRITE)
-+		return -EPERM;
-+
-+	/*
-+	 * This is a read-only mapping, disallow mprotect() from making a
-+	 * write-sealed mapping writable in future.
-+	 */
-+	*vm_flags_ptr &= ~VM_MAYWRITE;
-+
-+	return 0;
-+}
-+
-+int memfd_check_seals_mmap(struct file *file, unsigned long *vm_flags_ptr)
-+{
-+	int err = 0;
-+	unsigned int *seals_ptr = memfd_file_seals_ptr(file);
-+	unsigned int seals = seals_ptr ? *seals_ptr : 0;
-+
-+	if (is_write_sealed(seals))
-+		err = check_write_seal(vm_flags_ptr);
-+
-+	return err;
-+}
-+
- SYSCALL_DEFINE2(memfd_create,
- 		const char __user *, uname,
- 		unsigned int, flags)
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -369,8 +369,8 @@ unsigned long do_mmap(struct file *file,
- 
- 	if (file) {
- 		struct inode *inode = file_inode(file);
--		unsigned int seals = memfd_file_seals(file);
- 		unsigned long flags_mask;
-+		int err;
- 
- 		if (!file_mmap_ok(file, inode, pgoff, len))
- 			return -EOVERFLOW;
-@@ -410,8 +410,6 @@ unsigned long do_mmap(struct file *file,
- 			vm_flags |= VM_SHARED | VM_MAYSHARE;
- 			if (!(file->f_mode & FMODE_WRITE))
- 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
--			else if (is_readonly_sealed(seals, vm_flags))
--				vm_flags &= ~VM_MAYWRITE;
- 			fallthrough;
- 		case MAP_PRIVATE:
- 			if (!(file->f_mode & FMODE_READ))
-@@ -431,6 +429,14 @@ unsigned long do_mmap(struct file *file,
- 		default:
- 			return -EINVAL;
- 		}
-+
-+		/*
-+		 * Check to see if we are violating any seals and update VMA
-+		 * flags if necessary to avoid future seal violations.
-+		 */
-+		err = memfd_check_seals_mmap(file, &vm_flags);
-+		if (err)
-+			return (unsigned long)err;
- 	} else {
- 		switch (flags & MAP_TYPE) {
- 		case MAP_SHARED:
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2820,12 +2820,6 @@ out_nomem:
- static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+-	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root)
++	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root,
++	unsigned int depth)
  {
- 	struct inode *inode = file_inode(file);
--	struct shmem_inode_info *info = SHMEM_I(inode);
--	int ret;
--
--	ret = seal_check_write(info->seals, vma);
--	if (ret)
--		return ret;
+ 	const struct tb_property_entry *entries;
+ 	size_t i, content_len, nentries;
+ 	unsigned int content_offset;
+ 	struct tb_property_dir *dir;
  
- 	file_accessed(file);
- 	/* This is anonymous shared memory if it is unlinked at the time of mmap */
++	if (depth > TB_PROPERTY_MAX_DEPTH)
++		return NULL;
++
+ 	dir = kzalloc(sizeof(*dir), GFP_KERNEL);
+ 	if (!dir)
+ 		return NULL;
+@@ -200,7 +206,7 @@ static struct tb_property_dir *__tb_prop
+ 	for (i = 0; i < nentries; i++) {
+ 		struct tb_property *property;
+ 
+-		property = tb_property_parse(block, block_len, &entries[i]);
++		property = tb_property_parse(block, block_len, &entries[i], depth);
+ 		if (!property) {
+ 			tb_property_free_dir(dir);
+ 			return NULL;
+@@ -239,7 +245,7 @@ struct tb_property_dir *tb_property_pars
+ 		return NULL;
+ 
+ 	return __tb_property_parse_dir(block, block_len, 0, rootdir->length,
+-				       true);
++				       true, 0);
+ }
+ 
+ /**
 
 
 
