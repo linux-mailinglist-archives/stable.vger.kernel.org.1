@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-261392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EC7RHdxIJWpCGAIAu9opvQ
-	(envelope-from <stable+bounces-261392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:00 +0200
+	id 9O+EJddIJWpAGAIAu9opvQ
+	(envelope-from <stable+bounces-261361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7113B64FC47
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8D364FC41
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fiDW6rxD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261392-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261392-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c6kijVPA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261361-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261361-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE8F23003715
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3EA8B3025C3D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23A31FE47B;
-	Sun,  7 Jun 2026 10:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD4732AADE;
+	Sun,  7 Jun 2026 10:30:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E14E3112A5;
-	Sun,  7 Jun 2026 10:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471191FE47B;
+	Sun,  7 Jun 2026 10:30:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828373; cv=none; b=QSdv5oNbrMeHrFsBvuFoKk+neelQ9NdD26m94d2upZSm/CheLgJnId45XpB4IjCFimNCoLUveugRq5k7RnZC0KS3I6l00wcuAPjLyJnjybemIT5f2QPSjO8jSxS3qFoxtbgRBne3uWQ13wae8Vm/F2s1D0iLiBZQgvOzORwUI+Q=
+	t=1780828254; cv=none; b=IYoT/KIaKpFDJy248RPWch6msg7nHQuw38tAuNF235r4cn0SYNqGDpbjCbTGkcxoasyEmG/0fmPfeI5zx9gmMVoUubpyPKH4XNGc/yHZlLmviUNiPifbdp7LhERFE4mXVG6hv8SladQMIseTAJIhzFy9Koo9YrZRn0jvIMPGFGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828373; c=relaxed/simple;
-	bh=bBggSPtYdOSJaAk5oUyVCTqHaMZW9coYkr2beBmm6ZA=;
+	s=arc-20240116; t=1780828254; c=relaxed/simple;
+	bh=0TmPyAKBmGcdCr6ojeM9zoHzR6R58vIKhaIq0NF3qGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eRdLdbllspCkL4e2FbLoefI+N5A07WFxncNWa3aukdVTmscgveeHHChlCfJENhgfTVjQDsxaQrG2lslkSmnt0/z5jy89cXdpzVfy7lJV4/YJ7NrDYmQl5vpBHm+/PNRcuXuvK4cMwnJcNsaXaW+NtYqqxdmRqZBDFrLKu3mA90c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiDW6rxD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C516C1F00893;
-	Sun,  7 Jun 2026 10:32:51 +0000 (UTC)
+	 MIME-Version; b=OyTCd4zVuWLdj1jwWqbZgDNIbgn6teFktC/doQv46MzDZ+F6kx4qUmihVg0LukNpf6OvrhMMEuqR6yWioMK6n/zPoTvE+S+wVry5yt9I1iIh9/OhTlfJC/qM6wCdyLfxMUfAsEwp/YT91+YeUHIham2mYb7fm/gYksPptFfRGqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6kijVPA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959B01F00893;
+	Sun,  7 Jun 2026 10:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828372;
-	bh=qwXd5RSeQoj1SCPm7BZ+Ovwynp4kQDhj9tohEAW0ers=;
+	s=korg; t=1780828253;
+	bh=nzaHFKCAk5jz5JdELL8/lhAQ/PZNQ0/R1hjS3GNEn+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fiDW6rxDJSxiHPXcPEhyjhiwEGjHwVbN5nsiGrSdEzQ+7RsdAMwj47ch272b0Rxbl
-	 TuwLtP8wI3e4RIIi64EcN699dM2/hI8y1ktjHEa1MRM2Og1pXTyy9D6RxBgDZfyPmd
-	 QmQa6h4+LTUTm/k1z7UhCisneJ9EtOfqntpRKGVA=
+	b=c6kijVPAiWUT3nPk1764oNiweMaJogCMaaBjVZijRYsqT6adOJRAFBLxkhfrNHM8p
+	 P9p9FfZPkZAVVAsSXGWOrnHNjNfShSVKFucqVi/E9E0yoa5uIX72ltH/RLdNSYpqG0
+	 TeZ6yedxMJkxWPYpMUTxnx0tMm68nJCaFjsGXFXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 133/307] usb: typec: tcpm/tcpci_maxim: validate header NDO against RX_BYTE_CNT
-Date: Sun,  7 Jun 2026 11:58:50 +0200
-Message-ID: <20260607095732.633573370@linuxfoundation.org>
+	Stan Shaw <shawstan96@gmail.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Peter Gonda <pgonda@google.com>,
+	Jacky Li <jackyli@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 144/315] KVM: SEV: Require in-GHCB scratch area if GHCB v2+ is in use
+Date: Sun,  7 Jun 2026 11:58:51 +0200
+Message-ID: <20260607095732.889172126@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +69,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261392-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,google.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-261361-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shawstan96@gmail.com,m:michael.roth@amd.com,m:thomas.lendacky@amd.com,m:pgonda@google.com,m:jackyli@google.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heikki.krogerus@linux.intel.com,m:andre.draszik@linaro.org,m:badhri@google.com,m:amitsd@google.com,m:stable@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,linaro.org:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7113B64FC47
+X-Rspamd-Queue-Id: 0E8D364FC41
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Michael Roth <michael.roth@amd.com>
 
-commit aa2f716327be1818e1cb156da8a2844804aaec2f upstream.
+commit db3f2195d29344a3cf1e9dd9ab7f21ced7308cf7 upstream.
 
-A broken/malicious port can transmit a CRC-valid frame whose header
-advertises up to seven data objects but whose body carries fewer than
-that.  Check for this, and rightfully reject the message, instead of
-reading from uninitialized stack memory.
+As per the GHCB spec, when using GHCB v2+ require the software scratch area
+to reside in the GHCB's shared buffer.  Note, things like Page State Change
+(PSC) requests _rely_ on this behavior, as the guest can't provide a length
+when making the request, i.e. the size of the guest payload is bounded by
+the size of the shared buffer.
 
-Assisted-by: gkh_clanker_t1000
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: "André Draszik" <andre.draszik@linaro.org>
-Cc: Badhri Jagan Sridharan <badhri@google.com>
-Cc: Amit Sunil Dhamne <amitsd@google.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/2026051350-sitter-canopener-9045@gregkh
+Failure to force usage of the GHCB, and a slew of other flaws, lets a
+malicious SNP guest corrupt host kernel heap memory, and leak host heap
+layout information.
+
+setup_vmgexit_scratch() allocates a buffer via kvzalloc(exit_info_2),
+where exit_info_2 is guest-controlled. With exit_info_2=24, this yields
+a 24-byte allocation in kmalloc-cg-32 (32-byte slab objects). The buffer
+holds an 8-byte psc_hdr followed by 8-byte psc_entry structs, so only
+entries[0] and entries[1] are in-bounds.
+
+snp_begin_psc() validates end_entry against VMGEXIT_PSC_MAX_COUNT (253)
+but NOT against the actual buffer size:
+
+      idx_end = hdr->end_entry;
+
+      if (idx_end >= VMGEXIT_PSC_MAX_COUNT) {   // checks 253, not buffer
+          snp_complete_psc(svm, ...);
+          return 1;
+      }
+
+      for (idx = idx_start; idx <= idx_end; idx++) {
+          entry_start = entries[idx];           // OOB when idx >= 2
+
+The guest sets end_entry=10+, causing the host to iterate entries[2+]
+which are OOB into adjacent slab objects. For each OOB entry:
+
+  - The host reads 8 bytes (OOB READ / info leak oracle)
+  - If the data passes PSC validation, __snp_complete_one_psc() writes
+    cur_page = 1 or 512 into the entry (OOB WRITE, sev.c:3806)
+  - If validation fails, the error response reveals whether adjacent
+    memory is zero vs non-zero (information disclosure to guest)
+
+The guest controls allocation size (exit_info_2), entry range
+(cur_entry/end_entry), and can fire unlimited VMGEXITs to repeatedly
+hit different slab positions.
+
+By exploiting the variety of bugs, a malicious SEV-SNP guest can:
+    - OOB read adjacent kmalloc-cg-32 objects (heap layout disclosure)
+    - OOB write cur_page bits into adjacent objects (heap corruption)
+    - Trigger use-after-free conditions across VMGEXITs
+
+E.g. with KASAN enabled, a single insmod of the PoC guest module
+produces 73 KASAN reports:
+
+    BUG: KASAN: slab-out-of-bounds in snp_begin_psc+0x126/0x890
+    Read of size 8 at addr ffff888219ffb5e0 by task qemu-system-x86/2199
+
+    BUG: KASAN: slab-out-of-bounds in snp_begin_psc+0x468/0x890
+    Write of size 8 at addr ffff888351566648 by task qemu-system-x86/2199
+
+    The buggy address belongs to the object at ffff888XXXXXXXXX
+     which belongs to the cache kmalloc-cg-32 of size 32
+    The buggy address is located N bytes to the right of
+     allocated 32-byte region [ffff888XXXXXXXXX, ffff888XXXXXXXXX)
+
+  Breakdown:
+    62 slab-out-of-bounds (reads + writes past allocation)
+     7 slab-use-after-free
+     4 use-after-free
+
+All credit to Stan for the wonderful description and reproducer!
+
+Reported-by: Stan Shaw <shawstan96@gmail.com>
+Cc: Michael Roth <michael.roth@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Peter Gonda <pgonda@google.com>
+Cc: Jacky Li <jackyli@google.com>
+Fixes: 4af663c2f64a ("KVM: SEV: Allow per-guest configuration of GHCB protocol version")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+[sean: write changelog]
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim_core.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kvm/svm/sev.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-@@ -186,6 +186,15 @@ static void process_rx(struct max_tcpci_
- 	rx_buf_ptr = rx_buf + TCPC_RECEIVE_BUFFER_RX_BYTE_BUF_OFFSET;
- 	msg.header = cpu_to_le16(*(u16 *)rx_buf_ptr);
- 	rx_buf_ptr = rx_buf_ptr + sizeof(msg.header);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3651,6 +3651,10 @@ static int setup_vmgexit_scratch(struct
+ 		scratch_va = (void *)svm->sev_es.ghcb;
+ 		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
+ 	} else {
++		/* GHCB v2 requires the scratch area to be within the GHCB. */
++		if (to_kvm_sev_info(svm->vcpu.kvm)->ghcb_version >= 2)
++			goto e_scratch;
 +
-+	if (count < TCPC_RECEIVE_BUFFER_RX_BYTE_BUF_OFFSET + sizeof(msg.header) +
-+		    pd_header_cnt_le(msg.header) * sizeof(msg.payload[0])) {
-+		max_tcpci_write16(chip, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
-+		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d for header cnt %d\n",
-+			count, pd_header_cnt_le(msg.header));
-+		return;
-+	}
-+
- 	for (payload_index = 0; payload_index < pd_header_cnt_le(msg.header); payload_index++,
- 	     rx_buf_ptr += sizeof(msg.payload[0]))
- 		msg.payload[payload_index] = cpu_to_le32(*(u32 *)rx_buf_ptr);
+ 		/*
+ 		 * The guest memory must be read into a kernel buffer, so
+ 		 * limit the size
 
 
 
