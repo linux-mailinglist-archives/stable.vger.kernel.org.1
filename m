@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vBt0OVxSJWriGwIAu9opvQ
-	(envelope-from <stable+bounces-261876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:32 +0200
+	id DRGjA9BPJWpKGwIAu9opvQ
+	(envelope-from <stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B7D6505F2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9C3650404
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RYCv6+Hy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261876-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261876-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gP4K0LHe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F5D03077DE1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9B07300E601
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E079F3290C3;
-	Sun,  7 Jun 2026 11:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4AA335081;
+	Sun,  7 Jun 2026 11:02:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A166E1E98E3;
-	Sun,  7 Jun 2026 11:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAE9291C10;
+	Sun,  7 Jun 2026 11:02:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830202; cv=none; b=R7r1ghTZfCUjRmAf4JD166Fh3uh8+Up2vqokqn5tNXTros315J9LXCVFsTxhzZYQipXUncxyePJpASD7fkQ9/q6DuA/tUp4PuSOXgHS6bDvVsziYJ9LUn0ZGhtnHGe2ce2kHSUp6JxjX0Gn00j5NM7+pZitVNmeMci4wixT7ZQY=
+	t=1780830138; cv=none; b=h7/IXoXI1RHjGIj4BrbrAEA6XlN22cfPE20D/oadkhuBre+iVIs3i+Lh6lv3JN6T1UEAXBh71HXNN9WapZdsT5x2vWa84TRajeo1KpK7kr6zYp/MUX9gPaIlh3M5NxUTctFb7amVeg3GBi9by1RszQRPQMHLuJu8lh45qpoGm0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830202; c=relaxed/simple;
-	bh=lksUyPrTm5ShDsv8682KG7RHiD5TBazsFva6/Od1bgA=;
+	s=arc-20240116; t=1780830138; c=relaxed/simple;
+	bh=jzeB4CrEB4qsqcrZpZYNV8ecwZjkv9IooQ5+yx7r12o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awb4ZZf75wiCdr4PJmEqHnWBpUQL0dfZaYKnDn34oDBIBYJkIUVvWocuLz/2uTSOjoZdJZyiAPiyw3+UCg4RSGsvrihRNhe7KBYlnRXmEARDJ4kOTCPHj7JcsmEfLe6FQi1wKUWJvojl0TjWFE792VFWze3478S7wcq1kmbgPO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYCv6+Hy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF5C1F00893;
-	Sun,  7 Jun 2026 11:03:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QlcNQI3DX+Q7lPfCoX8LoTlzhgdNQ4vcecAO0yGCruOTqKAVVdMGRXWR0jLoDA/SxOYooQVC+lOUAzjobNuzuglZe3bq8o4txGFX2QQIY7xzochacdbUSzR3kvvkzzMNmudKraiw3HPsY2PP+4hiu6l+a6KvdSZMi1AtDg/HplY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP4K0LHe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9DC1F00893;
+	Sun,  7 Jun 2026 11:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830201;
-	bh=8TgwUUbDjvcfzNla/Btr7IsqTJyyTXj+ieBW58/+urE=;
+	s=korg; t=1780830136;
+	bh=GAmDCdEyDdr4qxpe7KajtayuwtIWA/FGVhJw4YnCaAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RYCv6+Hy2tZ+QzOs5FLxKIVRe82TkTxfnCOqOZYYwlgSTwmxWfe5OGFpqrVu7YQI+
-	 EfXfq0UQqMr+xK+A7uP8EarpS5p1VZrM512kP8K5irOwF/50p8Rv2L8HNbp+YJgNQh
-	 rubanYRUTLJ3PrltyuTr0w2gvF/lss4Q/8eA0kwI=
+	b=gP4K0LHebLx7droplyrZP9avTncnwUjzAEGRlwyqHcKlBX8QmWacUQTqW1nCPKJBm
+	 gz54/+dIvL77LFBJxNVtFEnC/FUdtVhnJs0A8NJ73Y9t6oCv9xcIpVQsabIwZzU7/J
+	 oCLzKdNcS2yUh4TSmECYDurQo+R2oP4K6O/mj4n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 304/307] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with pmbus_lock
+Subject: [PATCH 6.18 314/315] drm/i915/psr: Use DC_OFF wake reference to block DC6 on vblank enable
 Date: Sun,  7 Jun 2026 12:01:41 +0200
-Message-ID: <20260607095738.921860568@linuxfoundation.org>
+Message-ID: <20260607095739.156163880@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,179 +66,179 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261876-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261861-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:bartosz.golaszewski@oss.qualcomm.com,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:michal.grzelak@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:email,vger.kernel.org:from_smtp,qualcomm.com:email,nexthop.ai:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ursulin.net:email,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 55B7D6505F2
+X-Rspamd-Queue-Id: 7E9C3650404
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit bab8c6fb5af8df7e753d196c1262cb78e92ca872 ]
+[ Upstream commit 3549a9649dc7c5fc586ab12f675279283cdcb2a7 ]
 
-adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
-adm1266_gpio_dbg_show() all issue PMBus reads against the device but
-none of them take pmbus_lock.  The pmbus_core framework holds
-pmbus_lock around its own multi-transaction sequences (notably the
-"set PAGE, then read paged register" pattern used by hwmon
-attributes), so an unlocked GPIO accessor can land between a PAGE
-write and the subsequent paged read in another thread and corrupt
-either side's view of the device state machine.
+We are observing following warnings:
 
-Take pmbus_lock at the top of each of the three accessors via the
-scope-based guard().  The lock is uncontended in the common case and
-adds only a single mutex round-trip per call.
+*ERROR* power well DC_off state mismatch (refcount 0/enabled 1)
 
-Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[ open-coded each `guard(pmbus_lock)(data->client)` as explicit `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
+gen9_dc_off_power_well_enabled is considering target state DC_STATE_DISABLE
+as DC_OFF power well being enabled. Fix this by using wakeref for the
+purpose.
+
+To achieve this we need to modify notification code as well. Currently it
+is possible that PSR gets notified vblank enable/disable twice on same
+status. This is currently not a problem as it is just triggering call to
+intel_display_power_set_target_dc_state with same target state as a
+parameter. When using wakeref this becomes a problem due to reference
+counting. Fix this storing vbank status on last notification and use that
+to ensure there are no more than one notification with same vblank status.
+
+v2: ensure there is no subsequent notifications with same status
+
+Fixes: aa451abcffb5 ("drm/i915/display: Prevent DC6 while vblank is enabled for Panel Replay")
+Cc: <stable@vger.kernel.org> # v6.13+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
+Link: https://patch.msgid.link/20260520104944.239797-2-jouni.hogander@intel.com
+(cherry picked from commit 35485ac56d878192a3829a58cb26503125ec7104)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |   40 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 34 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_core.h  |    1 
+ drivers/gpu/drm/i915/display/intel_display_irq.c   |    8 +++++--
+ drivers/gpu/drm/i915/display/intel_display_types.h |    2 +
+ drivers/gpu/drm/i915/display/intel_psr.c           |   24 +++++++--------------
+ 4 files changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -173,7 +173,12 @@ static int adm1266_gpio_get(struct gpio_
- 	else
- 		pmbus_cmd = ADM1266_PDIO_STATUS;
+--- a/drivers/gpu/drm/i915/display/intel_display_core.h
++++ b/drivers/gpu/drm/i915/display/intel_display_core.h
+@@ -472,6 +472,7 @@ struct intel_display {
+ 		u8 vblank_enabled;
  
-+	ret = pmbus_lock_interruptible(data->client);
-+	if (ret)
-+		return ret;
-+
- 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
-+	pmbus_unlock(data->client);
- 	if (ret < 0)
- 		return ret;
- 	if (ret < 2)
-@@ -195,11 +200,19 @@ static int adm1266_gpio_get_multiple(str
- 	unsigned int gpio_nr;
- 	int ret;
+ 		int vblank_enable_count;
++		bool vblank_status_last_notified;
  
-+	ret = pmbus_lock_interruptible(data->client);
-+	if (ret)
-+		return ret;
-+
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pmbus_unlock(data->client);
- 		return ret;
--	if (ret < 2)
+ 		struct work_struct vblank_notify_work;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_display_irq.c
++++ b/drivers/gpu/drm/i915/display/intel_display_irq.c
+@@ -1707,8 +1707,12 @@ static void intel_display_vblank_notify_
+ 	struct intel_display *display =
+ 		container_of(work, typeof(*display), irq.vblank_notify_work);
+ 	int vblank_enable_count = READ_ONCE(display->irq.vblank_enable_count);
++	bool vblank_status = !!vblank_enable_count;
+ 
+-	intel_psr_notify_vblank_enable_disable(display, vblank_enable_count);
++	if (display->irq.vblank_status_last_notified != vblank_status) {
++		intel_psr_notify_vblank_enable_disable(display, vblank_status);
++		display->irq.vblank_status_last_notified = vblank_status;
 +	}
-+	if (ret < 2) {
-+		pmbus_unlock(data->client);
- 		return -EIO;
-+	}
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
-@@ -210,10 +223,14 @@ static int adm1266_gpio_get_multiple(str
- 	}
- 
- 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pmbus_unlock(data->client);
- 		return ret;
--	if (ret < 2)
-+	}
-+	if (ret < 2) {
-+		pmbus_unlock(data->client);
- 		return -EIO;
-+	}
- 
- 	status = read_buf[0] + (read_buf[1] << 8);
- 
-@@ -222,6 +239,8 @@ static int adm1266_gpio_get_multiple(str
- 			set_bit(gpio_nr, bits);
- 	}
- 
-+	pmbus_unlock(data->client);
-+
- 	return 0;
  }
  
-@@ -236,11 +255,16 @@ static void adm1266_gpio_dbg_show(struct
- 	int ret;
- 	int i;
+ int bdw_enable_vblank(struct drm_crtc *_crtc)
+@@ -1721,10 +1725,10 @@ int bdw_enable_vblank(struct drm_crtc *_
+ 	if (gen11_dsi_configure_te(crtc, true))
+ 		return 0;
  
-+	if (pmbus_lock_interruptible(data->client))
-+		return;
++	spin_lock_irqsave(&display->irq.lock, irqflags);
+ 	if (crtc->vblank_psr_notify && display->irq.vblank_enable_count++ == 0)
+ 		schedule_work(&display->irq.vblank_notify_work);
+ 
+-	spin_lock_irqsave(&display->irq.lock, irqflags);
+ 	bdw_enable_pipe_irq(display, pipe, GEN8_PIPE_VBLANK);
+ 	spin_unlock_irqrestore(&display->irq.lock, irqflags);
+ 
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1690,6 +1690,8 @@ struct intel_psr {
+ 	bool pkg_c_latency_used;
+ 
+ 	u8 active_non_psr_pipes;
 +
- 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
- 		write_cmd = adm1266_gpio_mapping[i][1];
- 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
--		if (ret != 2)
-+		if (ret != 2) {
-+			pmbus_unlock(data->client);
- 			return;
++	struct ref_tracker *vblank_wakeref;
+ };
+ 
+ struct intel_dp {
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -3982,14 +3982,20 @@ void intel_psr_notify_vblank_enable_disa
+ 					    bool enable)
+ {
+ 	struct intel_encoder *encoder;
+-	bool block_dc_states = false;
+ 
+ 	for_each_intel_encoder_with_psr(display->drm, encoder) {
+ 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
+ 
+ 		mutex_lock(&intel_dp->psr.lock);
+-		if (CAN_PANEL_REPLAY(intel_dp))
+-			block_dc_states = true;
++		if (CAN_PANEL_REPLAY(intel_dp)) {
++			if (enable)
++				intel_dp->psr.vblank_wakeref =
++					intel_display_power_get(display,
++								POWER_DOMAIN_DC_OFF);
++			else
++				intel_display_power_put(display, POWER_DOMAIN_DC_OFF,
++							intel_dp->psr.vblank_wakeref);
 +		}
  
- 		gpio_config = read_buf[0];
- 		seq_puts(s, adm1266_names[i]);
-@@ -262,8 +286,10 @@ static void adm1266_gpio_dbg_show(struct
+ 		if (intel_dp->psr.enabled && !intel_dp->psr.panel_replay_enabled &&
+ 		    intel_dp->psr.pkg_c_latency_used)
+@@ -3997,18 +4003,6 @@ void intel_psr_notify_vblank_enable_disa
  
- 	write_cmd = 0xFF;
- 	ret = adm1266_pmbus_block_xfer(data, ADM1266_PDIO_CONFIG, 1, &write_cmd, read_buf);
--	if (ret != 32)
-+	if (ret != 32) {
-+		pmbus_unlock(data->client);
- 		return;
-+	}
- 
- 	for (i = 0; i < ADM1266_PDIO_NR; i++) {
- 		seq_puts(s, adm1266_names[ADM1266_GPIO_NR + i]);
-@@ -286,6 +312,8 @@ static void adm1266_gpio_dbg_show(struct
- 
- 		seq_puts(s, ")\n");
+ 		mutex_unlock(&intel_dp->psr.lock);
  	}
-+
-+	pmbus_unlock(data->client);
+-
+-	/*
+-	 * NOTE: intel_display_power_set_target_dc_state is used
+-	 * only by PSR code for DC3CO handling. DC3CO target
+-	 * state is currently disabled in * PSR code. If DC3CO
+-	 * is taken into use we need take that into account here
+-	 * as well.
+-	 */
+-	if (block_dc_states)
+-		intel_display_power_set_target_dc_state(display, enable ?
+-							DC_STATE_DISABLE :
+-							DC_STATE_EN_UPTO_DC6);
  }
  
- static int adm1266_config_gpio(struct adm1266_data *data)
+ static void
 
 
 
