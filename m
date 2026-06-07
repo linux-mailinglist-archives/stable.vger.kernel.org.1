@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-261156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261178-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DH0CO0RHJWpeFwIAu9opvQ
-	(envelope-from <stable+bounces-261156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:12 +0200
+	id jGjNC51FJWpmFgIAu9opvQ
+	(envelope-from <stable+bounces-261178-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9192F64FA7D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AA764F837
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y+ioYBFG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261156-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261156-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qMfZ2FCT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261178-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261178-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2BDD2307BAC1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4103A300334E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD33F2DB7A3;
-	Sun,  7 Jun 2026 10:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A7923392F;
+	Sun,  7 Jun 2026 10:19:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA37E23392F;
-	Sun,  7 Jun 2026 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8104071DA;
+	Sun,  7 Jun 2026 10:19:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827451; cv=none; b=Xe8qcDoW2FtgK6/acPFG2KEulh5bFccTxh6eWfielVFi5Xd2f1eOE7nSeGTyEUpwA/trpyVqdAwr0CnITaXD7U09KWNW3nXg9mGU+2htwyi4LznrMpI2MRxIvvRUChaa+BcBC/Gfc1RIlayPkUO9saJQoSjFNIyU1ROJ80cfVnI=
+	t=1780827544; cv=none; b=EYl3V6sCN7extdsi43eOmC4WSk6s2W80cGzB0anPtv/3sSE9mOBBFC85XiGst9847p+rjLqE4G4qMTfFyz0EWUWT2ZT51zZg/FsjfWzKCwMml3oJnm3fjaACSkkmaRMBQhQ8RQnUS2c7WeCthjwQAE0YioYAGwiS+CiNbZ8N0Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827451; c=relaxed/simple;
-	bh=8Oa1qA2g1C+FtZ+UnEoGTXhVNBG4KN4hK2OlmnhJGx8=;
+	s=arc-20240116; t=1780827544; c=relaxed/simple;
+	bh=LLH2YNDum+KJvUY7NppnfPACVWEvmqVQmPFhDD+zBgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBxWWN54k08Qce2uyuSZi1KjiuHKNFAlwP/8Xr+N19Zypwpi1yp7w342qQxl79BPJH1EvaHGJa55h6A2mGHiswnCYcVfBidr9PWc/x7SfRc9Ce53/Iqsa7eTK/VcFnmblK+HwW2OWWpPJnL6qpQRvInSpJ8MvkDHRWpBd6TSsZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+ioYBFG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CC81F00893;
-	Sun,  7 Jun 2026 10:17:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i2ivfSLWEAAxQDF7luj6waz0/bW+Fx/qViKOZ/2XLekI7nKVB8kQGvNWZZjBYaCa5TxBHhGORSEy0H2vN0skKhMMiCSf7qPGm4BsQrEIGwuGi5eRMAGUI28VVYyFO3gUw26COyBI4BYIrkyLxCBobkeU9eYUHBsVuj5nrIVPipE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMfZ2FCT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0A01F00893;
+	Sun,  7 Jun 2026 10:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827450;
-	bh=owqEWyj51qNfrnpI8BoL67gdKBqfsJSCzmlORibsJy4=;
+	s=korg; t=1780827543;
+	bh=wdiL1nJhOmT9OyiJrrhXJmHMgZVjf7ksN4PWLc+vpIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y+ioYBFGv37y8uvs70S+JcdQZfkFCoAfmSxjVxbREQXEJ9Cm2PLeMeEhe6hiXbIve
-	 Cu1chPoQBtcFn2aPAHKKmnTNtzba/g0wvTOqgk+JuFa/ZaWYK7MfFLR4Ag/WZYpKkp
-	 Xxif8YdmFu+YhEq4Be0laPKnobPqgqGwS4JYvl1o=
+	b=qMfZ2FCTkt20/c1uxeIOlUsnckvAaMKZhHmBwal3dPMsmXEW8KdcPXoIKy0fAaFby
+	 ohn1AV3grnxpJIIyVzlafi9xrNq6UjwK1L/hGpQNYVC3t8fK9ENiJj8N7o1rDMPkPd
+	 VF92rpNtg5PquGejH7ystdHqtJjnmsyGxpFfzyqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Steve French <smfrench@gmail.com>,
-	Sean Shen <grayhat@foxmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 057/315] ksmbd: fix FSCTL permission bypass by adding a permission check for FSCTL_SET_SPARSE
-Date: Sun,  7 Jun 2026 11:57:24 +0200
-Message-ID: <20260607095729.700717239@linuxfoundation.org>
+Subject: [PATCH 6.18 058/315] ASoC: codecs: simple-mux: Fix enum control bounds check
+Date: Sun,  7 Jun 2026 11:57:25 +0200
+Message-ID: <20260607095729.737496285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -68,109 +65,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,foxmail.com,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-261156-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261178-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linkinjeon@kernel.org,m:sergey.senozhatsky@gmail.com,m:smfrench@gmail.com,m:grayhat@foxmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:sergeysenozhatsky@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,foxmail.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9192F64FA7D
+X-Rspamd-Queue-Id: C5AA764F837
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Shen <grayhat@foxmail.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit cc57232cae23c0df91b4a59d0f519141ce9b5b02 ]
+[ Upstream commit f63ad68e18d774a5d15cd7e405ead63f6b322679 ]
 
-FSCTL_SET_SPARSE in fsctl_set_sparse() modifies the file's sparse
-attribute and saves it through xattr without any permission checks.
+simple_mux_control_put() rejects values greater than e->items, but
+enum control values are zero based. For the two-entry mux used by this
+driver, valid values are 0 and 1, so value 2 must be rejected as well.
 
-This exposes two issues:
+Accepting e->items can store an invalid mux state, pass it to the GPIO
+setter, and pass it on to the DAPM mux update path where it is used as
+an index into the enum text array.
 
-1) A client on a read-only share can change the sparse attribute
-   on files it opened, even though the share is read-only.
-   Other FSCTL write operations already check
-   test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE),
-   but FSCTL_SET_SPARSE does not.
+Use the same >= e->items check used by the ASoC enum helpers.
 
-2) Even on writable shares, clients without FILE_WRITE_DATA or
-   FILE_WRITE_ATTRIBUTES access should not modify the sparse
-   attribute. Similar handle-level checks exist in other functions
-   but are missing here.
-
-Add both share-level writable check and per-handle access check.
-Use goto out on error to avoid leaking file references.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Steve French <smfrench@gmail.com>
-Signed-off-by: Sean Shen <grayhat@foxmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 342fbb7578d1 ("ASoC: add simple-mux")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260527-asoc-simple-mux-enum-bounds-v1-1-3f805b9fc671@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/soc/codecs/simple-mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index da7b96707186e4..4689aac12c14ea 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8203,9 +8203,20 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
- 	int ret = 0;
- 	__le32 old_fattr;
+diff --git a/sound/soc/codecs/simple-mux.c b/sound/soc/codecs/simple-mux.c
+index 3906964401557d..cedd181ffdaf46 100644
+--- a/sound/soc/codecs/simple-mux.c
++++ b/sound/soc/codecs/simple-mux.c
+@@ -51,7 +51,7 @@ static int simple_mux_control_put(struct snd_kcontrol *kcontrol,
+ 	struct snd_soc_component *c = snd_soc_dapm_to_component(dapm);
+ 	struct simple_mux *priv = snd_soc_component_get_drvdata(c);
  
-+	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
-+		ksmbd_debug(SMB, "User does not have write permission\n");
-+		return -EACCES;
-+	}
-+
- 	fp = ksmbd_lookup_fd_fast(work, id);
- 	if (!fp)
- 		return -ENOENT;
-+
-+	if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_WRITE_ATTRIBUTES_LE))) {
-+		ret = -EACCES;
-+		goto out;
-+	}
-+
- 	idmap = file_mnt_idmap(fp->filp);
+-	if (ucontrol->value.enumerated.item[0] > e->items)
++	if (ucontrol->value.enumerated.item[0] >= e->items)
+ 		return -EINVAL;
  
- 	old_fattr = fp->f_ci->m_fattr;
+ 	if (priv->mux == ucontrol->value.enumerated.item[0])
 -- 
 2.53.0
 
