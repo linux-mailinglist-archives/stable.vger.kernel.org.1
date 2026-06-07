@@ -1,67 +1,62 @@
-Return-Path: <stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KLv+EItCJWroFAIAu9opvQ
-	(envelope-from <stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:06:03 +0200
+	id kx4QNxpCJWq+FAIAu9opvQ
+	(envelope-from <stable+bounces-260942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:04:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D9D64F52B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E81E64F4FD
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:04:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="oS7T18d/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XkZ+ePFa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260942-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260942-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE17D3010D94
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:05:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 180033010518
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3D02E7360;
-	Sun,  7 Jun 2026 10:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D1029BD91;
+	Sun,  7 Jun 2026 10:04:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103F72E1EFC;
-	Sun,  7 Jun 2026 10:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199244071CE;
+	Sun,  7 Jun 2026 10:04:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826758; cv=none; b=hRiXT5XdgZq5DOSTnmtcEs49EkpJJH/rInE5OltHW17UsYwvNVuG69GjOG7Vpid1waRKdBOdg739gOscBTo6dT71N0aQmd1O5CYjqIL0sK/SjXtpDYtkiBsrRgk3Xst1FjGS9uC442a4aFmdp/NSeA7r1ZPxu+2iOr+7qVpWC5g=
+	t=1780826648; cv=none; b=UkaFIx0UU8aotyItcI0Z2/YrFh67ZskY88qqmkbgDE3kLFluUJMPs0rLeiStO1+vHBJppaMqu4u8QWgTLDpohIpQvkYq6qbjiU4SAKp6/sKdMchZqlapfZbL8TjV3yXJVFeo0JsF61WJ/PNZrYLs+gndlkUg8WvSkFuLDyVRs94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826758; c=relaxed/simple;
-	bh=YukAIboKwEXQC+7pBlLMzeofF19VLAeQb0iTWeIrrME=;
+	s=arc-20240116; t=1780826648; c=relaxed/simple;
+	bh=J5wyKK0eIqbnZvcdX4bWID/ywsIy4QE7UVRiV0Mcba4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyUXJfFTek4VfMgK4Rwd0XUbELmDW2A02kn67X9BdTKsrvNRttML9xdYKtkS5jGLEsAYmcgIb78hxL70HguHlFuytWYVeObdc2GKOZwjuWLiiar9TOiCP7jl4uHH54q+ScJ6GJff2zN1A3zA3sYy6P7322NG4HgeC8/RK26THKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS7T18d/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0551F00893;
-	Sun,  7 Jun 2026 10:05:55 +0000 (UTC)
+	 MIME-Version; b=QGFO3DmtlVCwXtUt/wP8P4dQV2qJqNV+93cvIEa7rDnNNsSXSdWp97mR4GmnJn6lNA0MNZI5quPesUS1updRBNTkYrDKkPgi+nuD6MwRPTkr0077FpcF3DcAw2huZqOcpX4lL5GAzVJKeYDnvfCCqmXBLYYwJikQPMCtVLp0Klc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkZ+ePFa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171841F00893;
+	Sun,  7 Jun 2026 10:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826756;
-	bh=GxDU3CWxN+XgjC5IPhODwTcMqbyvHHA7xx2GWnMU9Xc=;
+	s=korg; t=1780826646;
+	bh=+QWwb87DZ9tMn7GXz7nMrzbZpabh4v0b9x7v+CEZru0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oS7T18d/mGinvSADG0GSFflWjsbUJXV654BX3BydJvZzlB+LCjrRinX55DR9F2rbZ
-	 7MYZrjuF9ZxNZZUhzihPGq+NO7nW2kjf2r66rJVGvvnyT46GG7oJNqk3BUsmRSRb/b
-	 hQWxaxt4UzY1mON677YFVlSDeFQjiYMQHxQdtBMI=
+	b=XkZ+ePFa7A7AYilTC3/ryDEvX4fwMhg7PwNwwheqUGVDFW282/t7Q/+9A2ef5xAE0
+	 GdtixuxkRqttBDH2VPMVBM23jSCiI8g3PpEy03FNGK28ahDaI1WL5hN1dhc/Wm6sU6
+	 M/yK/1+G1GZkJ1FmP/aZfExeh9aqi7ph5IQrlJG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxiao Xu <rakukuip@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 019/332] netfilter: ebtables: fix OOB read in compat_mtw_from_user
-Date: Sun,  7 Jun 2026 11:56:28 +0200
-Message-ID: <20260607095728.766022257@linuxfoundation.org>
+Subject: [PATCH 6.18 002/315] net/sched: cls_fw: fix NULL dereference of "old" filters before change()
+Date: Sun,  7 Jun 2026 11:56:29 +0200
+Message-ID: <20260607095727.612299787@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,143 +70,156 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-260951-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:rakukuip@gmail.com,m:n05ec@lzu.edu.cn,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,suse.de,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-260942-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:dcaratti@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 93D9D64F52B
+X-Rspamd-Queue-Id: 3E81E64F4FD
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit f438d1786d657d57790c5d138d6db3fc9fdac392 ]
+[ Upstream commit 65782b2db7321d5f97c16718c4c7f6c7205a56be ]
 
-Luxiao Xu says:
+Like pointed out by Sashiko [1], since commit ed76f5edccc9 ("net: sched:
+protect filter_chain list with filter_chain_lock mutex") TC filters are
+added to a shared block and published to datapath before their ->change()
+function is called. This is a problem for cls_fw: an invalid filter
+created with the "old" method can still classify some packets before it
+is destroyed by the validation logic added by Xiang.
+Therefore, insisting with repeated runs of the following script:
 
- The function compat_mtw_from_user() converts ebtables extensions from
- 32-bit user structures to kernel native structures. However, it lacks
- proper validation of the user-supplied match_size/target_size.
+ # ip link add dev crash0 type dummy
+ # ip link set dev crash0 up
+ # mausezahn  crash0 -c 100000 -P 10 \
+ > -A 4.3.2.1 -B 1.2.3.4 -t udp "dp=1234" -q &
+ # sleep 1
+ # tc qdisc add dev crash0 egress_block 1 clsact
+ # tc filter add block 1 protocol ip prio 1 matchall \
+ > action skbedit mark 65536 continue
+ # tc filter add block 1 protocol ip prio 2 fw
+ # ip link del dev crash0
 
- When certain extensions are processed, the kernel-side translation
- logic may perform memory accesses based on the extension's expected
- size. If the user provides a size smaller than what the extension
- requires, it results in an out-of-bounds read as reported by KASAN.
+can still make fw_classify() hit the WARN_ON() in [2]:
 
- This fix introduces a check to ensure match_size is at least as large
- as the extension's required compatsize. This covers matches, watchers,
- and targets, while maintaining compatibility with standard targets.
+ WARNING: ./include/net/pkt_cls.h:88 at fw_classify+0x244/0x250 [cls_fw], CPU#18: mausezahn/1399
+ Modules linked in: cls_fw(E) act_skbedit(E)
+ CPU: 18 UID: 0 PID: 1399 Comm: mausezahn Tainted: G            E       7.0.0-rc6-virtme #17 PREEMPT(full)
+ Tainted: [E]=UNSIGNED_MODULE
+ Hardware name: Red Hat KVM, BIOS 1.16.3-2.el9 04/01/2014
+ RIP: 0010:fw_classify+0x244/0x250 [cls_fw]
+ Code: 5c 49 c7 45 00 00 00 00 00 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 5b b8 ff ff ff ff 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 90 <0f> 0b 90 eb a0 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90
+ RSP: 0018:ffffd1b7026bf8a8 EFLAGS: 00010202
+ RAX: ffff8c5ac9c60800 RBX: ffff8c5ac99322c0 RCX: 0000000000000004
+ RDX: 0000000000000001 RSI: ffff8c5b74d7a000 RDI: ffff8c5ac8284f40
+ RBP: ffffd1b7026bf8d0 R08: 0000000000000000 R09: ffffd1b7026bf9b0
+ R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000010000
+ R13: ffffd1b7026bf930 R14: ffff8c5ac8284f40 R15: 0000000000000000
+ FS:  00007fca40c37740(0000) GS:ffff8c5b74d7a000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007fca40e822a0 CR3: 0000000005ca0001 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tcf_classify+0x17d/0x5c0
+  tc_run+0x9d/0x150
+  __dev_queue_xmit+0x2ab/0x14d0
+  ip_finish_output2+0x340/0x8f0
+  ip_output+0xa4/0x250
+  raw_sendmsg+0x147d/0x14b0
+  __sys_sendto+0x1cc/0x1f0
+  __x64_sys_sendto+0x24/0x30
+  do_syscall_64+0x126/0xf80
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7fca40e822ba
+ Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+ RSP: 002b:00007ffc248a42c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+ RAX: ffffffffffffffda RBX: 000055ef233289d0 RCX: 00007fca40e822ba
+ RDX: 000000000000001e RSI: 000055ef23328c30 RDI: 0000000000000003
+ RBP: 000055ef233289d0 R08: 00007ffc248a42d0 R09: 0000000000000010
+ R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000001e
+ R13: 00000000000186a0 R14: 0000000000000000 R15: 00007fca41043000
+  </TASK>
+ irq event stamp: 1045778
+ hardirqs last  enabled at (1045784): [<ffffffff864ec042>] __up_console_sem+0x52/0x60
+ hardirqs last disabled at (1045789): [<ffffffff864ec027>] __up_console_sem+0x37/0x60
+ softirqs last  enabled at (1045426): [<ffffffff874d48c7>] __alloc_skb+0x207/0x260
+ softirqs last disabled at (1045434): [<ffffffff874fe8f8>] __dev_queue_xmit+0x78/0x14d0
 
-AFAIU this is relevant for matches that need to go though
-match->compat_from_user() call.  Those that use plain memcpy with the
-user-provided size are ok because the caller checks that size vs the
-start of the next rule entry offset (which itself is checked vs. total
-size copied from userspace).
+Then, because of the value in the packet's mark, dereference on 'q->handle'
+with NULL 'q' occurs:
 
-The ->compat_from_user() callbacks assume they can read compatsize bytes,
-so they need this extra check.
+ BUG: kernel NULL  pointer dereference, address: 0000000000000038
+ [...]
+ RIP: 0010:fw_classify+0x1fe/0x250 [cls_fw]
+ [...]
 
-Based on an earlier patch from Luxiao Xu.
+Skip "old-style" classification on shared blocks, so that the NULL
+dereference is fixed and WARN_ON() is not hit anymore in the short
+lifetime of invalid cls_fw "old-style" filters.
 
-Fixes: 81e675c227ec ("netfilter: ebtables: add CONFIG_COMPAT support")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+[1] https://sashiko.dev/#/patchset/20260331050217.504278-1-xmei5%40asu.edu
+[2] https://elixir.bootlin.com/linux/v7.0-rc6/source/include/net/pkt_cls.h#L86
+
+Fixes: faeea8bbf6e9 ("net/sched: cls_fw: fix NULL pointer dereference on shared blocks")
+Fixes: ed76f5edccc9 ("net: sched: protect filter_chain list with filter_chain_lock mutex")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/e39cbd3103a337f1e515d186fe697b4459d24757.1775661704.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebtables.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ net/sched/cls_fw.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index b9f4daac09af36..8a6a069329d21d 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1956,6 +1956,25 @@ enum compat_mwt {
- 	EBT_COMPAT_TARGET,
- };
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index 83a7372ea15c2a..fd9c6c2815a1c2 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -74,9 +74,13 @@ TC_INDIRECT_SCOPE int fw_classify(struct sk_buff *skb,
+ 			}
+ 		}
+ 	} else {
+-		struct Qdisc *q = tcf_block_q(tp->chain->block);
++		struct Qdisc *q;
  
-+static bool match_size_ok(const struct xt_match *match, unsigned int match_size)
-+{
-+	u16 csize;
+ 		/* Old method: classify the packet using its skb mark. */
++		if (tcf_block_shared(tp->chain->block))
++			return -1;
 +
-+	if (match->matchsize == -1) /* cannot validate ebt_among */
-+		return true;
-+
-+	csize = match->compatsize ? : match->matchsize;
-+
-+	return match_size >= csize;
-+}
-+
-+static bool tgt_size_ok(const struct xt_target *tgt, unsigned int tgt_size)
-+{
-+	u16 csize = tgt->compatsize ? : tgt->targetsize;
-+
-+	return tgt_size >= csize;
-+}
-+
- static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 				enum compat_mwt compat_mwt,
- 				struct ebt_entries_buf_state *state,
-@@ -1981,6 +2000,11 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 		if (IS_ERR(match))
- 			return PTR_ERR(match);
- 
-+		if (!match_size_ok(match, match_size)) {
-+			module_put(match->me);
-+			return -EINVAL;
-+		}
-+
- 		off = ebt_compat_match_offset(match, match_size);
- 		if (dst) {
- 			if (match->compat_from_user)
-@@ -2000,6 +2024,12 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
- 					    mwt->u.revision);
- 		if (IS_ERR(wt))
- 			return PTR_ERR(wt);
-+
-+		if (!tgt_size_ok(wt, match_size)) {
-+			module_put(wt->me);
-+			return -EINVAL;
-+		}
-+
- 		off = xt_compat_target_offset(wt);
- 
- 		if (dst) {
++		q = tcf_block_q(tp->chain->block);
+ 		if (id && (TC_H_MAJ(id) == 0 ||
+ 			   !(TC_H_MAJ(id ^ q->handle)))) {
+ 			res->classid = id;
 -- 
 2.53.0
 
