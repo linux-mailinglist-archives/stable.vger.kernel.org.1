@@ -1,158 +1,130 @@
-Return-Path: <stable+bounces-260919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tJ2cLLQQJWqWDAIAu9opvQ
-	(envelope-from <stable+bounces-260919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:33:24 +0200
+	id BGnCGGYTJWrdDAIAu9opvQ
+	(envelope-from <stable+bounces-260921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:44:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022B264EF28
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:33:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A058964EF6E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 08:44:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=wanadoo.fr header.s=t20230301 header.b=kOtcEY9y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260919-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260919-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=wanadoo.fr;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NPrdMqZv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260921-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260921-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72AB430158BC
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 06:32:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C13E30363B0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 06:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B661286D7D;
-	Sun,  7 Jun 2026 06:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7382EAD1C;
+	Sun,  7 Jun 2026 06:43:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16F71E7C12;
-	Sun,  7 Jun 2026 06:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E46E2E736B;
+	Sun,  7 Jun 2026 06:43:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780813968; cv=none; b=Ix0GWzpPYrPJ24qnwBLK204BIoIgXm0DgUo2K8bXokR9Ca825minU6nU1VLaZ7dN4qRZoS5+sVrzy4oaUtz71G9t9Dnqkh0raB3RRse2GN8xDGm0bvXwt0+fekCaaFaBmc4693hvyAKJ5ptCTnhmlzAcAlqSINrOkvDQfwnGEgM=
+	t=1780814583; cv=none; b=jvoRDYXBWvgJE1K2nd94wlYzGJT6NBewruSy35o2pxfCwnL3XHqvvP54jZWnPZfo3vZWafnBwj1+9y3KexDz6+7nmXipo2B8R7JPhVRoxvYvVFVnV6yocMaRtFamrrSdmT3PJ37L2jsAqSgXg2BMApJmKHZAdMCs1iuhtnZWYaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780813968; c=relaxed/simple;
-	bh=QyQ6aU3mVa7BUSitYqw1JyeKMgsBwVZiirxjccob+go=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fCllKzOuek/z4LPHyA+99hcrPWAWNxKoy6NMDV2Aq50Irg1XsHJUqS9p2DTI10VlnJxeOd8ns1+I+a9FJiUKlTKaFVdYRAToIFHO83kOsC5/GVeV/w4y0P96IioEN41TpEFthxDj6HwGXveYxGxIv0aAmFU9pU5IjST2yC4yDPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=kOtcEY9y; arc=none smtp.client-ip=80.12.242.18
-Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
- ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
-	by smtp.orange.fr with ESMTPSA
-	id W73dwnUfCJkT6W73dwFmhI; Sun, 07 Jun 2026 08:32:36 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1780813956;
-	bh=qnbMUaAUGWbhJ7kILtaMcBgwchhzxpm+oFvWPyiGaSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=kOtcEY9yrMD2rh1xwEPTX/vzt1SW3y0/l8dFkhASECYsn0Nvar2NLusK5OuhRMv3h
-	 Z6ce9NujD5LDU77KDYjf7y9eP003GlCp8EMJLfqrvTAm8GH3/HsgjQNxNZ2TYFIRZ+
-	 14YmCrgonL2yL6TA9TNpxbqruf8tt5+MnHZ6E0Df+QgMTmx9dqNvM36XZ+gXyKANPr
-	 xPwJ86WLT87a7J8N3a+AEKh1NsuVwcn60pPxlTp1VND8Lr+fCG6zAuL3rDdqbfkpIA
-	 1P559zwHmZdEK4sJJGLjovz8XLHH0lIuq333T/4N5B7p0AQe4zIp5R6a9cnJyqzwQn
-	 70hkyT6x8KxpQ==
-X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 07 Jun 2026 08:32:36 +0200
-X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
-Message-ID: <81cb20eb-a27a-45f4-98dc-7d529b3ac0b9@wanadoo.fr>
-Date: Sun, 7 Jun 2026 08:32:27 +0200
+	s=arc-20240116; t=1780814583; c=relaxed/simple;
+	bh=K298PaPxz7qYDNLk2ct3glg8mvCnu0tcDTsoTojdB1M=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=TA4Tl10Ea0K+oXIBmb+Gsalcu8SnNSdHRkDchi5sBDVi2+4/2+t3zNEpEI6W60tXqJeG5eB930a2t4tl5AxNEI5B9jTR1xRvc10urymDihPIK7dCemAgsyevbEarsFjqgfhcKOwJMj7kABtaHCBvWSzJlrvRXeRCzgSceASdMrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPrdMqZv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669B01F00893;
+	Sun,  7 Jun 2026 06:41:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780814582;
+	bh=L0RBItlob1/lCm2QEqFsy3L9ByS4dHuuq7PrYLHZthM=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=NPrdMqZvcxVQhGRt4EBBfKFEkzzqQlXZNGWu4ls/OPkopsHtzYttxd9I1hKQas7LW
+	 qoFbrWyVcmYin+8cBlYcBkTDMDozfZ4hHilmdab3DBkXn/SrblXaQ4B9lg1m199hga
+	 PNWahamio2r4q9QKQrlFhn+8zk1iPDBzueNwRT4p5UXQCjR5KcfROCbNF462Nwiv7j
+	 3BnQwG3qb0nQpzeVIKACQ5wOTixXnaOB4iQXXtBVCs2CHDGcEGPfYemWbWUW1Y5DqJ
+	 plek6KJKcanjlnOGiGzf/m8eB+XeaaxnhD+WyQhgl9FQ7iUPxAJMrkDkUMLyDgK3jg
+	 VmWCQJVfmCB6g==
+Date: Sun, 7 Jun 2026 00:40:34 -0600 (MDT)
+From: Paul Walmsley <pjw@kernel.org>
+To: Vivian Wang <wangruikang@iscas.ac.cn>
+cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+    Alexandre Ghiti <alex@ghiti.fr>, Alexander Potapenko <glider@google.com>, 
+    Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+    Yunhui Cui <cuiyunhui@bytedance.com>, linux-riscv@lists.infradead.org, 
+    linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+    Palmer Dabbelt <palmer@rivosinc.com>, stable@vger.kernel.org, 
+    Yanko Kaneti <yaneti@declera.com>
+Subject: Re: [PATCH v2 0/5] riscv: kfence: Handle the spurious fault after
+ kfence_unprotect(), and related fixes
+In-Reply-To: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
+Message-ID: <85e01c4c-6616-3ece-520f-30c6f8e53974@kernel.org>
+References: <20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/sun4i: fix refcount leak in sun4i_backend_init_sat()
-To: Wentao Liang <vulab@iscas.ac.cn>, wens@kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, jernej.skrabec@gmail.com,
- samuel@sholland.org
-Cc: dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260607030950.83636-1-vulab@iscas.ac.cn>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20260607030950.83636-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[wanadoo.fr,quarantine];
-	R_DKIM_ALLOW(-0.20)[wanadoo.fr:s=t20230301];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260919-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-260921-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[iscas.ac.cn,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,sholland.org];
-	FORGED_SENDER(0.00)[christophe.jaillet@wanadoo.fr,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:wens@kernel.org,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:jernej.skrabec@gmail.com,m:samuel@sholland.org,m:dri-devel@lists.freedesktop.org,m:linux-arm-kernel@lists.infradead.org,m:linux-sunxi@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:jernejskrabec@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[wanadoo.fr];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[pjw@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:wangruikang@iscas.ac.cn,m:pjw@kernel.org,m:palmer@dabbelt.com,m:alex@ghiti.fr,m:glider@google.com,m:elver@google.com,m:dvyukov@google.com,m:cuiyunhui@bytedance.com,m:linux-riscv@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:kasan-dev@googlegroups.com,m:palmer@rivosinc.com,m:stable@vger.kernel.org,m:yaneti@declera.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christophe.jaillet@wanadoo.fr,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[wanadoo.fr:+];
+	FROM_NEQ_ENVFROM(0.00)[pjw@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 022B264EF28
+X-Rspamd-Queue-Id: A058964EF6E
 
-Le 07/06/2026 à 05:09, Wentao Liang a écrit :
-> When sun4i_backend_init_sat() calls reset_control_deassert() it
-> increments the deassert_count of the reset controller, and must
-> pair that with a reset_control_assert() call to decrement it.
-> In the error path where clk_prepare_enable() fails, the function
-> returns immediately without calling reset_control_assert(), leaking
-> the reference count.  Other error paths, like the devm_clk_get()
-> failure, correctly jump to the err_assert_reset label which performs
-> the missing assert.
+On Tue, 3 Mar 2026, Vivian Wang wrote:
+
+> kfence_unprotect() on RISC-V doesn't flush TLBs, because we can't send
+> IPIs in some contexts where kfence objects are allocated. This leads to
+> spurious faults and kfence false positives.
 > 
-> Fix the leak by using the existing err_assert_reset label in the
-> clk_prepare_enable error path instead of returning directly.
+> Avoid these spurious faults using the same "new_vmalloc" mechanism,
+> which I have renamed new_valid_map_cpus to avoid confusion, since the
+> kfence pool comes from the linear mapping, not vmalloc.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 440d2c7b127a ("drm/sun4i: backend: Handle the SAT")
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   drivers/gpu/drm/sun4i/sun4i_backend.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Commit b3431a8bb336 ("riscv: Fix IPIs usage in kfence_protect_page()")
+> only seemed to consider false negatives, which are indeed tolerable.
+> False positives on the other hand are not okay since they waste
+> developer time (or just my time somehow?) and spam kmsg making
+> diagnosing other problems difficult.
 > 
-> diff --git a/drivers/gpu/drm/sun4i/sun4i_backend.c b/drivers/gpu/drm/sun4i/sun4i_backend.c
-> index bc35dad53b07..c9ec5fc26f7e 100644
-> --- a/drivers/gpu/drm/sun4i/sun4i_backend.c
-> +++ b/drivers/gpu/drm/sun4i/sun4i_backend.c
-> @@ -686,7 +686,7 @@ static int sun4i_backend_init_sat(struct device *dev) {
->   	ret = clk_prepare_enable(backend->sat_clk);
->   	if (ret) {
->   		dev_err(dev, "Couldn't enable the SAT clock\n");
-> -		return ret;
-> +		goto err_assert_reset;
->   	}
->   
->   	return 0;
+> Patch 2 is the implementation to poke (what was called) new_vmalloc upon
+> kfence_unprotect(). Patch 1 is some refactoring that patch 2 depends on.
+> Patch 3 through 5 are some additional refactoring and minor fixes.
 
-Hi,
+Thanks, queued for v7.2.
 
-another way to fix it and simplify the code at the same time would be to 
-use devm_reset_control_get_exclusive_deasserted() and 
-devm_clk_get_enabled().
 
-just my 2c,
-
-CJ
+- Paul
 
