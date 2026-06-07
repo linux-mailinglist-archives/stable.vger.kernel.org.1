@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ijgyKkZDJWo9FQIAu9opvQ
-	(envelope-from <stable+bounces-261005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:10 +0200
+	id oa+BJ6BDJWpiFQIAu9opvQ
+	(envelope-from <stable+bounces-260981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E327E64F5A9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0364B64F5FB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DJsOxzlZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261005-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261005-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nWyqyns9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260981-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260981-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C5088300D6AE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0631303CA69
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05052E1EFC;
-	Sun,  7 Jun 2026 10:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E1F1DE8AE;
+	Sun,  7 Jun 2026 10:07:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C4A1E98E3;
-	Sun,  7 Jun 2026 10:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431C2E3709;
+	Sun,  7 Jun 2026 10:07:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826938; cv=none; b=q4qBebdOqiDqhn+8XtFhGZDGeULjHDYawuuS88N85Ot+JtVQCaWgT2Tz4bf0y1htvIFmdLbyoLIlC9AZLT05S+nNjrZ+avJcl1XaAW2UIEB++gB1k7IvKAfKlv+0ehKdDr565AXEFmRw5Vf/MMJseH/JL0WYUdeut0koPqRu1YQ=
+	t=1780826857; cv=none; b=kLm8BYTRGwpVTsWKZ0cJx2VymSEe2L9dw/cw+8zLntJ5jRu96bZrokMTYXJqeV9R2AtBDjM2YFM7HvcUz+z2dXjvakrV5soX2bAXry1GySN/+150wbxSeSWg5CphMzZhmJg0FEMDv5Svd9kfisgkDbJtNn50l2s1V1NGUK6PZL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826938; c=relaxed/simple;
-	bh=O4TGaDJAjK6LD9vVfHIBlB7uMqcYVJX7Z9LNkFms6Zc=;
+	s=arc-20240116; t=1780826857; c=relaxed/simple;
+	bh=HKyIaK8gNdER5fuzCg3Grb8TQxEPUeP/f3r+P7lpNNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhjUf5er/KPN7+MoHcg1sCKYizhyavJJx0LoRRfo2zUkxhtZ9eV/wSOS+Nquh2pm4E4tiiKjyT3C7iDWlAPwdbej9rlBdktu3MCaeHBn1By4lwYOkjUBCFm587IpfJU04hNZ+SGt6sFNusdoTwELoCamDb34HwLXbzqz5XuqWbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJsOxzlZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B4E1F00893;
-	Sun,  7 Jun 2026 10:08:56 +0000 (UTC)
+	 MIME-Version; b=ciqUcKEVHzgdZeSpZOUCXMzWBfcv0doqFj9qR8oUBUASPgjyIqWEPaYRfdzFZ/0vKyTLmSlq8bcfz2MbswWHCFAPUyZeC902P9ZU/tf8n4PrvwKLx/y/fNxXMI6y1/K2FiHX5vjJOphPgB8ToPYilZrXzu8ucochpA+by4NJ3us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWyqyns9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC7E1F00893;
+	Sun,  7 Jun 2026 10:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826937;
-	bh=c5ZqpOUf5tGlEozGyPdkcQSDu23Slo7apMp8XRY5xew=;
+	s=korg; t=1780826856;
+	bh=ByjbkOGYZRjT84Mel/r5/c5aiEv9ZLkOE55PZhaRerY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DJsOxzlZ1KOwG+f4CaZrBH09OSPuGtTvV4iQ/OqVu6D//oP/eRssYwA2n07GG/K6x
-	 bQ4Pj8EbvdGTube3qpDHgoCQxqHU1Jp+hhsO0fBuycBGdTUVHdGTz+dmHikpd39bu7
-	 QDHEkY6HKuCXSgCn+1AttRSwYSrUXgTQjyJgU36I=
+	b=nWyqyns9MbMO+gGyyuT2IqqyvM5vyQeGs2pFb0cwSoAb6haSyZxiGQOGxGi5LNP9m
+	 4HaNdL+fyb7jx5UK0fgt13IfmxtZX2IvrAFP3HqIT/hE7PC8u8gcOMeFvuz6/29l72
+	 Gbefk0Xg37ZXe+a4bfnycRo38FlYAZvivYkkL5ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/307] bcache: fix uninitialized closure object
+Subject: [PATCH 7.0 036/332] net: hsr: fix potential OOB access in supervision frame handling
 Date: Sun,  7 Jun 2026 11:56:45 +0200
-Message-ID: <20260607095727.944483067@linuxfoundation.org>
+Message-ID: <20260607095729.427476366@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261005-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260981-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mingzhe.zou@easystack.cn,m:colyli@fnnas.com,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luka.gejak@linux.dev,m:fmancera@suse.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,53 +99,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,kernel.dk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E327E64F5A9
+X-Rspamd-Queue-Id: 0364B64F5FB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-[ Upstream commit 20a8e451ec1c7e99060b1bbaaad03ce88c39ddb8 ]
+[ Upstream commit f229426072fc865654a60978bb7fda790a051ff3 ]
 
-In the previous patch ("bcache: fix cached_dev.sb_bio use-after-free and
-crash"), we adopted a simple modification suggestion from AI to fix the
-use-after-free.
+Ensure the entire TLV header is linearized before access by adding
+sizeof(struct hsr_sup_tlv) to the pskb_may_pull() calls. Without this,
+a truncated frame could cause an out-of-bounds access.
 
-But in actual testing, we found an extreme case where the device is
-stopped before calling bch_write_bdev_super().
-
-At this point, struct closure sb_write has not been initialized yet.
-For this patch, we ensure that sb_bio has been completed via
-sb_write_mutex.
-
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@fnnas.com>
-Link: https://patch.msgid.link/20260403042135.2221247-1-colyli@fnnas.com
-Fixes: fec114a98b87 ("bcache: fix cached_dev.sb_bio use-after-free and crash")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20260523130330.61880-1-luka.gejak@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/super.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/hsr/hsr_forward.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 6e0ac0958c10b5..f969ea43492531 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1378,7 +1378,8 @@ static CLOSURE_CALLBACK(cached_dev_free)
- 	 * The sb_bio is embedded in struct cached_dev, so we must
- 	 * ensure no I/O is in progress.
- 	 */
--	closure_sync(&dc->sb_write);
-+	down(&dc->sb_write_mutex);
-+	up(&dc->sb_write_mutex);
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index aefc9b6936ba0c..299de290ddaa5c 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -84,7 +84,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
  
- 	if (dc->sb_disk)
- 		put_page(virt_to_page(dc->sb_disk));
+ 	/* Get next tlv */
+ 	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
+-	if (!pskb_may_pull(skb, total_length))
++	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+ 		return false;
+ 	skb_pull(skb, total_length);
+ 	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
+@@ -100,7 +100,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+ 
+ 		/* make sure another tlv follows */
+ 		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
+-		if (!pskb_may_pull(skb, total_length))
++		if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+ 			return false;
+ 
+ 		/* get next tlv */
 -- 
 2.53.0
 
