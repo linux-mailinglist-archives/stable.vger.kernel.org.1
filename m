@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-261815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vFQjL/xOJWrQGgIAu9opvQ
-	(envelope-from <stable+bounces-261815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:08 +0200
+	id QehcKMJPJWpCGwIAu9opvQ
+	(envelope-from <stable+bounces-261856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BC96502F3
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371436503F7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rGv9l1Qw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261815-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261815-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DG19IHOH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261856-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261856-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE6723005143
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5E623019FD4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E600E32F764;
-	Sun,  7 Jun 2026 10:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAB036F428;
+	Sun,  7 Jun 2026 11:01:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E12E3242DF;
-	Sun,  7 Jun 2026 10:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBDE224D6;
+	Sun,  7 Jun 2026 11:01:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829943; cv=none; b=rcXQ3DtuDRcrQgu98TA3ks+kjKwHtleOvFvfoXvMPIFbEUomBQXza56xEud/SS4wBvUuhdXVnOz9kswwdBZwKHjUMjdlpF0YqQeKTbFAXEKqJZB9j5VVNJTHPKkE+h6FrpFw3yo4th1sD4WvhuArEcGUYntFmS05cIRW2jGqerQ=
+	t=1780830115; cv=none; b=h6WA4qTQr6MAIfPV0w848iIqAngpuPI9qv9a7lmWCwN7CHlZb/CAgMX4qwL0JDmUUfXmcNCjPr0Q22nTkZSWvb5yzzIARzs8FKhkLzyddN4k+zyiK9PEJTIeMma2bTeoXbjigik42Xl7cYM0wTDeODxDcphm5btqeuQiXgahnug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829943; c=relaxed/simple;
-	bh=Yi1oSLOVjJEkr5ew1NHikcp1Kf1c2B+YHgo89MfbzUo=;
+	s=arc-20240116; t=1780830115; c=relaxed/simple;
+	bh=7nGCXsUq5+csYEHQ0j1QUXyC8GLlf59A0o+M3d1G2Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaXW5ThMb7Ypt8sU+JXGGKXNQWvHqKtPvJSHb2PqRBJ803HWW4RJffPIw9brhMYGsZICgVgpX4kGnYUa/o1+KqfKx17blayjRbE3civFCkM7MGy2uVLqGLKQ4XDcNS5rgQ5dlIwakIVT4Cwldf8+eG3MH4LfdT4NDyL1AbSUKn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGv9l1Qw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09671F00893;
-	Sun,  7 Jun 2026 10:59:01 +0000 (UTC)
+	 MIME-Version; b=syDRrzxNoalUOFDVgojm2f87q3oVFziQOQhv48xEU3R/gz9L2AquCs85SwTM18ZDm12q/cCKjZ8yrWXcfxxrD7svLJgwnLS2AR9xXpa39Zr3fHKXnvLJAVDHdQLcAcq4IADhtRmJtm7JVVhlisTDg5AFZ0tSV7AqHtQD0maEuW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DG19IHOH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3971F00893;
+	Sun,  7 Jun 2026 11:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829942;
-	bh=34txfECVFuWCpuvuSp7+I/RJw99v2PRbnX7lFGcVbfg=;
+	s=korg; t=1780830114;
+	bh=QEPekEl1F71dZbmqXb2EST1Ks1yvW967JtCJDlhR9Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rGv9l1QwBrGCGiOSv1oC1OkHyKz/Fj7MOAZVzqgY96H/Lf+URDmCjRY+RmbBswe9Y
-	 IpfQjIImxsaOXLP6CnaybOfR/jJksjkB5uxmu8SrWJiQACez9k3ZzfOyVm3BtSlWWR
-	 Xc657fuVQmucd4dobx2WQTowt0kNiBVqOQyqGVGg=
+	b=DG19IHOHkRFMmune3pZsd5c36suNzJcgOaDuPMS229tNdF2rUOeJETZrff/mYv76M
+	 S0bjruxqkcYU4kqlpKr6d1xAFZOrjlg/lir7UQV5GfwmSIBhpv4h1TTWkgtag9btI1
+	 WcOIV+TVHcmEmFUh7H6Vu64yQvunqi9RE7P2lHko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zeng Heng <zengheng4@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 294/315] mptcp: borrow forward memory from subflow
+Subject: [PATCH 6.12 284/307] arm64: tlb: Flush walk cache when unsharing PMD tables
 Date: Sun,  7 Jun 2026 12:01:21 +0200
-Message-ID: <20260607095738.395345675@linuxfoundation.org>
+Message-ID: <20260607095738.160567442@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,235 +69,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261815-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261856-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zengheng4@huawei.com,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:email,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5BC96502F3
+X-Rspamd-Queue-Id: 371436503F7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-[ Upstream commit 9db5b3cec4ec1c0cd3239689f5c8653d691a1754 ]
+[ Upstream commit c2ff4764e03e7a8d758352f4aceb8fe1be6ac971 ]
 
-In the MPTCP receive path, we release the subflow allocated fwd
-memory just to allocate it again shortly after for the msk.
+When huge_pmd_unshare() is called to unshare a PMD table, the
+tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
+but the aarch64 tlb_flush() only checked tlb->freed_tables to
+determine whether to use TLBF_NONE (vae1is, invalidates walk
+cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
 
-That could increases the failures chances, especially when we will
-add backlog processing, with other actions could consume the just
-released memory before the msk socket has a chance to do the
-rcv allocation.
+This caused the stale PMD page table entry to remain in the walk cache
+after unshare, potentially leading to incorrect page table walks.
 
-Replace the skb_orphan() call with an open-coded variant that
-explicitly borrows, the fwd memory from the subflow socket instead
-of releasing it.
+Fix by including unshared_tables in the check, so that when
+unsharing tables, TLBF_NONE is used and the walk cache is properly
+invalidated.
 
-The borrowed memory does not have PAGE_SIZE granularity; rounding to
-the page size will make the fwd allocated memory higher than what is
-strictly required and could make the incoming subflow fwd mem
-consistently negative. Instead, keep track of the accumulated frag and
-borrow the full page at subflow close time.
+Here is the detailed distinction between vae1is and vale1is:
 
-This allow removing the last drop in the TCP to MPTCP transition and
-the associated, now unused, MIB.
+| Instruction Combination  | Actual Invalidation Scope                         |
+| ------------------------ | --------------------------------------------------|
+| `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
+| `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
+| `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
+| `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251121-net-next-mptcp-memcg-backlog-imp-v1-12-1f34b6c1e0b1@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/fastopen.c |    4 +++-
- net/mptcp/mib.c      |    1 -
- net/mptcp/mib.h      |    1 -
- net/mptcp/protocol.c |   23 +++++++++++++++--------
- net/mptcp/protocol.h |   28 ++++++++++++++++++++++++++++
- 5 files changed, 46 insertions(+), 11 deletions(-)
+ arch/arm64/include/asm/tlb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/fastopen.c
-+++ b/net/mptcp/fastopen.c
-@@ -33,7 +33,8 @@ void mptcp_fastopen_subflow_synack_set_p
- 	/* dequeue the skb from sk receive queue */
- 	__skb_unlink(skb, &ssk->sk_receive_queue);
- 	skb_ext_reset(skb);
--	skb_orphan(skb);
-+
-+	mptcp_subflow_lend_fwdmem(subflow, skb);
- 
- 	/* We copy the fastopen data, but that don't belong to the mptcp sequence
- 	 * space, need to offset it in the subflow sequence, see mptcp_subflow_get_map_offset()
-@@ -52,6 +53,7 @@ void mptcp_fastopen_subflow_synack_set_p
- 	mptcp_data_lock(sk);
- 	DEBUG_NET_WARN_ON_ONCE(sock_owned_by_user_nocheck(sk));
- 
-+	mptcp_borrow_fwdmem(sk, skb);
- 	skb_set_owner_r(skb, sk);
- 	__skb_queue_tail(&sk->sk_receive_queue, skb);
- 	mptcp_sk(sk)->bytes_received += skb->len;
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -71,7 +71,6 @@ static const struct snmp_mib mptcp_snmp_
- 	SNMP_MIB_ITEM("MPFastcloseRx", MPTCP_MIB_MPFASTCLOSERX),
- 	SNMP_MIB_ITEM("MPRstTx", MPTCP_MIB_MPRSTTX),
- 	SNMP_MIB_ITEM("MPRstRx", MPTCP_MIB_MPRSTRX),
--	SNMP_MIB_ITEM("RcvPruned", MPTCP_MIB_RCVPRUNED),
- 	SNMP_MIB_ITEM("SubflowStale", MPTCP_MIB_SUBFLOWSTALE),
- 	SNMP_MIB_ITEM("SubflowRecover", MPTCP_MIB_SUBFLOWRECOVER),
- 	SNMP_MIB_ITEM("SndWndShared", MPTCP_MIB_SNDWNDSHARED),
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -70,7 +70,6 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_MPFASTCLOSERX,	/* Received a MP_FASTCLOSE */
- 	MPTCP_MIB_MPRSTTX,		/* Transmit a MP_RST */
- 	MPTCP_MIB_MPRSTRX,		/* Received a MP_RST */
--	MPTCP_MIB_RCVPRUNED,		/* Incoming packet dropped due to memory limit */
- 	MPTCP_MIB_SUBFLOWSTALE,		/* Subflows entered 'stale' status */
- 	MPTCP_MIB_SUBFLOWRECOVER,	/* Subflows returned to active status after being stale */
- 	MPTCP_MIB_SNDWNDSHARED,		/* Subflow snd wnd is overridden by msk's one */
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -352,7 +352,7 @@ end:
- static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
- 			   int copy_len)
+--- a/arch/arm64/include/asm/tlb.h
++++ b/arch/arm64/include/asm/tlb.h
+@@ -58,7 +58,7 @@ static inline int tlb_get_level(struct m
+ static inline void tlb_flush(struct mmu_gather *tlb)
  {
--	const struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	bool has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
+ 	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
+-	bool last_level = !tlb->freed_tables;
++	bool last_level = !(tlb->freed_tables || tlb->unshared_tables);
+ 	unsigned long stride = tlb_get_unmap_size(tlb);
+ 	int tlb_level = tlb_get_level(tlb);
  
- 	/* the skb map_seq accounts for the skb offset:
-@@ -377,11 +377,7 @@ static bool __mptcp_move_skb(struct sock
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	struct sk_buff *tail;
- 
--	/* try to fetch required memory from subflow */
--	if (!sk_rmem_schedule(sk, skb, skb->truesize)) {
--		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
--		goto drop;
--	}
-+	mptcp_borrow_fwdmem(sk, skb);
- 
- 	if (MPTCP_SKB_CB(skb)->map_seq == msk->ack_seq) {
- 		/* in sequence */
-@@ -403,7 +399,6 @@ static bool __mptcp_move_skb(struct sock
- 	 * will retransmit as needed, if needed.
- 	 */
- 	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--drop:
- 	mptcp_drop(sk, skb);
- 	return false;
- }
-@@ -704,7 +699,7 @@ static bool __mptcp_move_skbs_from_subfl
- 			size_t len = skb->len - offset;
- 
- 			mptcp_init_skb(ssk, skb, offset, len);
--			skb_orphan(skb);
-+			mptcp_subflow_lend_fwdmem(subflow, skb);
- 			ret = __mptcp_move_skb(sk, skb) || ret;
- 			seq += len;
- 
-@@ -2454,6 +2449,7 @@ static void __mptcp_close_ssk(struct soc
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	bool dispose_it, need_push = false;
-+	int fwd_remaining;
- 
- 	/* Do not pass RX data to the msk, even if the subflow socket is not
- 	 * going to be freed (i.e. even for the first subflow on graceful
-@@ -2462,6 +2458,17 @@ static void __mptcp_close_ssk(struct soc
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
- 	subflow->closing = 1;
- 
-+	/* Borrow the fwd allocated page left-over; fwd memory for the subflow
-+	 * could be negative at this point, but will be reach zero soon - when
-+	 * the data allocated using such fragment will be freed.
-+	 */
-+	if (subflow->lent_mem_frag) {
-+		fwd_remaining = PAGE_SIZE - subflow->lent_mem_frag;
-+		sk_forward_alloc_add(sk, fwd_remaining);
-+		sk_forward_alloc_add(ssk, -fwd_remaining);
-+		subflow->lent_mem_frag = 0;
-+	}
-+
- 	/* If the first subflow moved to a close state before accept, e.g. due
- 	 * to an incoming reset or listener shutdown, the subflow socket is
- 	 * already deleted by inet_child_forget() and the mptcp socket can't
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -548,6 +548,7 @@ struct mptcp_subflow_context {
- 	bool	scheduled;
- 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
- 	bool	fully_established;  /* path validated */
-+	u32	lent_mem_frag;
- 	u32	remote_nonce;
- 	u64	thmac;
- 	u32	local_nonce;
-@@ -647,6 +648,33 @@ mptcp_send_active_reset_reason(struct so
- 	tcp_send_active_reset(sk, GFP_ATOMIC, reason);
- }
- 
-+/* Made the fwd mem carried by the given skb available to the msk,
-+ * To be paired with a previous mptcp_subflow_lend_fwdmem() before freeing
-+ * the skb or setting the skb ownership.
-+ */
-+static inline void mptcp_borrow_fwdmem(struct sock *sk, struct sk_buff *skb)
-+{
-+	struct sock *ssk = skb->sk;
-+
-+	/* The subflow just lend the skb fwd memory, and we know that the skb
-+	 * is only accounted on the incoming subflow rcvbuf.
-+	 */
-+	DEBUG_NET_WARN_ON_ONCE(skb->destructor);
-+	skb->sk = NULL;
-+	sk_forward_alloc_add(sk, skb->truesize);
-+	atomic_sub(skb->truesize, &ssk->sk_rmem_alloc);
-+}
-+
-+static inline void
-+mptcp_subflow_lend_fwdmem(struct mptcp_subflow_context *subflow,
-+			  struct sk_buff *skb)
-+{
-+	int frag = (subflow->lent_mem_frag + skb->truesize) & (PAGE_SIZE - 1);
-+
-+	skb->destructor = NULL;
-+	subflow->lent_mem_frag = frag;
-+}
-+
- static inline u64
- mptcp_subflow_get_map_offset(const struct mptcp_subflow_context *subflow)
- {
 
 
 
