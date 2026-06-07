@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GqMaHpRIJWoSGAIAu9opvQ
-	(envelope-from <stable+bounces-261374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:48 +0200
+	id Us17DctIJWo4GAIAu9opvQ
+	(envelope-from <stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B7864FBE9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF7B64FC31
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JUATxnJw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261374-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261374-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="k03/Vmof";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 888483003989
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3FC8300AED1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B053112A5;
-	Sun,  7 Jun 2026 10:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1931FE47B;
+	Sun,  7 Jun 2026 10:30:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709441FE47B;
-	Sun,  7 Jun 2026 10:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F362C1595;
+	Sun,  7 Jun 2026 10:30:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828304; cv=none; b=Pk5nfQFXxMug8UN7ETwDzJBuxdxXYw+mu+fK9mzHzUnNDLCWZSr23dFmbAvEorNmaokjJeHVFtazUJbdKw+QPqjlOsBhCpb+UpQ5AyzK7A01GqOOarvjTemItlm1ioXaGaobMX48zjPffG2T67PzQuzfG6Do81v5jELGfBisMYI=
+	t=1780828242; cv=none; b=M1qDcqfdFa+e+grkuTCqzMukIHZZ8HH7licKhK8dmvYp3f3IUc7YR8Zt8PBfWcrnI0R9umNGju9AbiSY8mAgD4yHYJgA4nYfQBiDv9jAV9297/nK/OgTv/3ECP9cMrNvvF/5Kf9K3kVz4b0kEw9hZy/HSqnr0zNSmZo0oUz0KJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828304; c=relaxed/simple;
-	bh=jOwoi0R01enQSGjADRyCGon2XDtgEpV3VZGRIpACMjA=;
+	s=arc-20240116; t=1780828242; c=relaxed/simple;
+	bh=WZHbzYDbEzJqbklql1/fT3BW1MC0EsIIiXK4T7x6dZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzXUvPyhsASXT/HdxKdXBzk5jtUvf80dVENYwg+APDHfpYNHzWrUtTeeThJq9lLMO1aZzx/2GbTIa2nrPhxc2Jt55KZCOYVGorf0+LHIVLHotAypneg9HP6CRqLy/FXVpx92FuBmKFGHkpuFtRA6btRUaUDj3mHg7oqUn42DIYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUATxnJw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9341F00893;
-	Sun,  7 Jun 2026 10:31:42 +0000 (UTC)
+	 MIME-Version; b=de1Xdiz8Rn9q8eB3v/2TG1N7Xwyx6j6CQw5bm9R1M8z2tASKU86XhvkIfG6BtCpIccerICRDrEsADdkV03+VZj+7PGbw3tjdbbTfL9rWRIXyXJVojQYAPnKTxXnUq0QGa8PVvNvNz4CSfDcOOQj/RS2o8Kgih4/yPyOvhF+SuG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k03/Vmof; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC3D1F00893;
+	Sun,  7 Jun 2026 10:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828303;
-	bh=IE4FZ0LVpUQS+ksGW+rq3c8KbjO1r9FAB/nKhlk9GaA=;
+	s=korg; t=1780828240;
+	bh=2HH33MTybkPLSWucpxEbBqANiLEQbEXA5ZQ167ZS8dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JUATxnJwt8xiKc2bzaT7XgK08MRBQIsIJIBdhlIaJgYUSrBLgI7q2A67ypQwOs6co
-	 WrttJ4h4JepfiJ4SKVHm/eyB3upIjLQfwKjU2TAH/76Eg6uTXzZwlhoCDtqeK4PU3W
-	 CpAdsZwdLLJuQUTvRAzeUhvEOKxS7fedq9TfTEhk=
+	b=k03/VmofwJcX+YqIy1LXlTtjEc1Z4G7sWRv5mCarYxJohofT8TVYH6VVujpMOTu4K
+	 4OvUXkIUZ4CMhDlY/3gI3ZaOkAxgZb/7jTA0q2CeQNdx1qwDZrlEM9jHdrztEyU0Aj
+	 ZxiFEKunGzk9dY+960IQooV5oKvxZ442ge1uJoSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Roth <michael.roth@amd.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 148/315] KVM: SEV: Compute the correct max length of the in-GHCB scratch area
+Subject: [PATCH 7.0 166/332] KVM: SEV: Compute the correct max length of the in-GHCB scratch area
 Date: Sun,  7 Jun 2026 11:58:55 +0200
-Message-ID: <20260607095733.043452488@linuxfoundation.org>
+Message-ID: <20260607095734.168127622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,14 +72,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261358-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,11 +99,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16B7864FBE9
+X-Rspamd-Queue-Id: BBF7B64FC31
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -138,7 +138,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -3610,7 +3610,7 @@ int pre_sev_run(struct vcpu_svm *svm, in
+@@ -3617,7 +3617,7 @@ int pre_sev_run(struct vcpu_svm *svm, in
  }
  
  #define GHCB_SCRATCH_AREA_LIMIT		(16ULL * PAGE_SIZE)
@@ -147,7 +147,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  {
  	struct vmcb_control_area *control = &svm->vmcb->control;
  	u64 ghcb_scratch_beg, ghcb_scratch_end;
-@@ -3626,10 +3626,10 @@ static int setup_vmgexit_scratch(struct
+@@ -3633,10 +3633,10 @@ static int setup_vmgexit_scratch(struct
  		goto e_scratch;
  	}
  
@@ -160,7 +160,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		goto e_scratch;
  	}
  
-@@ -3653,6 +3653,8 @@ static int setup_vmgexit_scratch(struct
+@@ -3660,6 +3660,8 @@ static int setup_vmgexit_scratch(struct
  
  		scratch_va = (void *)svm->sev_es.ghcb;
  		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
@@ -169,7 +169,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	} else {
  		/* GHCB v2 requires the scratch area to be within the GHCB. */
  		if (to_kvm_sev_info(svm->vcpu.kvm)->ghcb_version >= 2)
-@@ -3662,16 +3664,16 @@ static int setup_vmgexit_scratch(struct
+@@ -3669,16 +3671,16 @@ static int setup_vmgexit_scratch(struct
  		 * The guest memory must be read into a kernel buffer, so
  		 * limit the size
  		 */
@@ -190,7 +190,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			/* Unable to copy scratch area from guest */
  			pr_err("vmgexit: kvm_read_guest for scratch area failed\n");
  
-@@ -3687,11 +3689,10 @@ static int setup_vmgexit_scratch(struct
+@@ -3694,11 +3696,10 @@ static int setup_vmgexit_scratch(struct
  		 */
  		svm->sev_es.ghcb_sa_sync = sync;
  		svm->sev_es.ghcb_sa_free = true;
