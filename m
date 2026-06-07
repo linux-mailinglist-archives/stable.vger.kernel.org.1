@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jC6HMohOJWqpGgIAu9opvQ
-	(envelope-from <stable+bounces-261623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:12 +0200
+	id C6+HDHFLJWpTGQIAu9opvQ
+	(envelope-from <stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37269650287
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A063E64FF4D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vr1jW37k;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261623-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261623-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PCdRSWwI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E361E30477C4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A940B301726D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F492E7376;
-	Sun,  7 Jun 2026 10:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077D32FB97B;
+	Sun,  7 Jun 2026 10:43:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876FF1A6822;
-	Sun,  7 Jun 2026 10:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95D83195FD;
+	Sun,  7 Jun 2026 10:43:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829252; cv=none; b=OBOUCXDvgyeEghnWSXmAB5n9TGiSGHM2EgagPvJoJRAaHdv/m0NJCZNruO/8GOByMtHVHkin2wU4ossJTfAnc/C5rGUhcyn+yeO/LkEqXlYE5Z46kdJveFfS6o8ghxaa9W4d9m/d6xGa0/EAuGhlKU2C/y5QroJMQ82PKzB4kAU=
+	t=1780829038; cv=none; b=Ss1Y+JstYtHi+mrPRV/3p8z0AvmlDoXgXmXUxdNTs174s7lmN7rpEeNu2YsNFgYDR9EnhEmGuA0GWSM23/4ecD1GX5F7zuSF/ztNFKNm9wEE0ro1W/IgE9SaU1NSrycSi0YNz9cBnYy0uYRHeDgNIUzKe39KZMZyduYbKYoYsKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829252; c=relaxed/simple;
-	bh=uXj2OdY3sTsv41fUIe5RfyZ5ekw9r4A/D4iTh7wa8MM=;
+	s=arc-20240116; t=1780829038; c=relaxed/simple;
+	bh=NW3kqRGak1NHU9Hj5Z40zPC86HoHyz8pPu04Q1laexY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8E4VZdKoEE/rxdyEs+uPvxrfoPGJ1IuD8TtwOg160UuwdLWcSxf3yIzzBCLOoTkCFWV3psJuTN0tAtnOz6DdX9rPkwKmj9NayL6Pd5cuvFZkwlx4XUMTDkxJs+y+6yDQcc6C45CB3ThxM7Qe8SiYYHL45++9PkxEA+1KWoJbXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vr1jW37k; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD401F00893;
-	Sun,  7 Jun 2026 10:47:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pWWVznXGsdVwFLVHQt/LnVWA8GQ79VeiCuHH/hgoUOeLw/KndfWaSR9qgJ6qQWY+frP5j9qGYvLsYttvEEqRtEhH/9jabwT5CsuOxBlExDa/4O9RHNrD10UOwIExy0uDSmlYLFw7qbqnN5UUnHXt76Wg6rrwdfTRHvq9AXrgpD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCdRSWwI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA6A1F00893;
+	Sun,  7 Jun 2026 10:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829251;
-	bh=AznFM+bC5mXu0k5FOjZDLDs7bmfSQKOH6pFn5zxtBnI=;
+	s=korg; t=1780829037;
+	bh=NtsaQ4lShnpTqNRzktyNF7+P5JCO0rvdvskIbgObqJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vr1jW37kjjfvCMO060ayhcoT4xHx7s2hPdzA3MHLP5Zfy+kxhkCG5RnEXrRxn2quD
-	 3OJTlrKzyL1GWAhVn8QjtJv79KbpCq4BS1sjLxaEMjlYgSX0FrT8TBV0b3xMs3jWkY
-	 FTPM/g5pgOiIsejCFrBQeCqUX5yS2azu5iXc6byA=
+	b=PCdRSWwIccsSb1SXy1x5lygF1e6sMpbFJHQ/nX5joW7P8rLSHuWEB/5BQPcDFfkpx
+	 QVwCYeUNK3aSORfdNgVlyOSOlQDgg7qPYd/9pyuB/UiJKH2BEUQUWRn8lINXIjeSzz
+	 1SeaOag4DzUpFaATuqGbRihbwlEtW50Q+EM8njYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 208/307] Input: atmel_mxt_ts - fix boundary check in mxt_prepare_cfg_mem
+	syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com,
+	David Carlier <devnexen@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH 7.0 236/332] dma-buf: fix UAF in dma_buf_fd() tracepoint
 Date: Sun,  7 Jun 2026 12:00:05 +0200
-Message-ID: <20260607095735.357222185@linuxfoundation.org>
+Message-ID: <20260607095736.719419406@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +66,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261566-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,amd.com,linaro.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261623-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ribalda@chromium.org,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com,m:devnexen@gmail.com,m:christian.koenig@amd.com,m:sumit.semwal@linaro.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,chromium.org,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,amd.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37269650287
+X-Rspamd-Queue-Id: A063E64FF4D
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit baa0210fb6a9dc3882509a9411b6d284d88fe30e upstream.
+commit ead6680f354f83966c796fc7f9463a3171789616 upstream.
 
-When a configuration file provides an object size that is larger than the
-driver's known mxt_obj_size(object), the driver intends to discard the
-extra bytes.
+Once FD_ADD() returns, the fd is live in the file descriptor table
+and a thread sharing that table can close() it before DMA_BUF_TRACE()
+runs. The close drops the last reference, __fput() frees the dma_buf,
+and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
+-- slab-use-after-free.
 
-The loop iterates using for (i = 0; i < size; i++). Inside the loop, the
-condition to skip processing extra bytes is:
+Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
+emit the tracepoint between them. While the fdtable slot is reserved
+with a NULL file pointer, a racing close() returns -EBADF without
+entering __fput(), so the dma_buf stays alive across the trace. Same
+approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
+tracepoint").
 
-    if (i > mxt_obj_size(object))
-        continue;
+This undoes the FD_ADD() conversion done in commit 34dfce523c90
+("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
+hook the tracepoint safely.
 
-Since i is a 0-based index, the valid indices for the object are 0 through
-mxt_obj_size(object) - 1.
-
-When i == mxt_obj_size(object), the condition evaluates to false, and the
-code processes the byte instead of discarding it.
-
-This causes the code to calculate byte_offset = reg + i - cfg->start_ofs
-and writes the byte there, overwriting exactly one byte of the adjacent
-instance or object.
-
-Update the boundary check to skip extra bytes correctly by using >=.
-
-Fixes: 50a77c658b80 ("Input: atmel_mxt_ts - download device config using firmware loader")
-Cc: stable@vger.kernel.org
-Assisted-by: Gemini:gemini-3.1-pro
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://patch.msgid.link/20260504185448.4055973-1-dmitry.torokhov@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f4987d0afb97dd090cb
+Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
+Cc: stable@vger.kernel.org # 7.0.x
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Link: https://patch.msgid.link/20260523181446.69525-1-devnexen@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/atmel_mxt_ts.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/dma-buf.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/input/touchscreen/atmel_mxt_ts.c
-+++ b/drivers/input/touchscreen/atmel_mxt_ts.c
-@@ -1476,7 +1476,7 @@ static int mxt_prepare_cfg_mem(struct mx
- 			}
- 			cfg->raw_pos += offset;
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, i
+ 	if (!dmabuf || !dmabuf->file)
+ 		return -EINVAL;
  
--			if (i > mxt_obj_size(object))
-+			if (i >= mxt_obj_size(object))
- 				continue;
+-	fd = FD_ADD(flags, dmabuf->file);
++	fd = get_unused_fd_flags(flags);
++	if (fd < 0)
++		return fd;
++
+ 	DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
  
- 			byte_offset = reg + i - cfg->start_ofs;
++	fd_install(fd, dmabuf->file);
+ 	return fd;
+ }
+ EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
 
 
 
