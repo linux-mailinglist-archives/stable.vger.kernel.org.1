@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p3XWB4pGJWr8FgIAu9opvQ
-	(envelope-from <stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:06 +0200
+	id 9G0FMVZGJWrbFgIAu9opvQ
+	(envelope-from <stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0864F999
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD3464F94D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BPYIZgri;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BgDKTnp9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7CF5F301F795
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1C765300FB68
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20C52EC54A;
-	Sun,  7 Jun 2026 10:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2F92EC54A;
+	Sun,  7 Jun 2026 10:21:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2CB2E7368;
-	Sun,  7 Jun 2026 10:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5254CB5B;
+	Sun,  7 Jun 2026 10:21:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827721; cv=none; b=BedbM+vTOYogJ4zzCfMuiMqrNGzeIcaMYbMrlqGhCsnTwJlD1oCH7mGnJCmBazerYc5ZYs2WrX8iRdNgcmXNr0ZQsbFbkZsDLv6gHqWBHswB/DeYQy9RMbmTQxXTdP739/qkR+0QMbFWvm8qwOaU8glP44lY6EEISm0XXmCf9hE=
+	t=1780827677; cv=none; b=Uqneg/9jpZfO4vuiLWH1hHEWx+dbYTSsw4siCgWYMcdr6HNtsHqQHpCiqJg3NAuKP5JBQ20f4b4KzAo5JqGYkInciuf3JOZb8Dwxs+qkzMBdcCX1vO5Ao2jnkK4fZLLqTJrsxXXCNausdjnMcxfAy348GH482R2fX2V+CrkSGgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827721; c=relaxed/simple;
-	bh=TAfEUHQ0Xf0JaEyeR7kxQl2x2ZiTVWmulnz+gqYQVbA=;
+	s=arc-20240116; t=1780827677; c=relaxed/simple;
+	bh=djqOYN+5jCdMIVrZ0oS/no05LQ332Dr0ZuYz0yTkuFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNUsE2MdQri30JYFVOMv0pzvbNm//KOxj/g+6bWGyBRkZQaYR0rSoEsXPAxgoK3qmbMkNo7XJXZMAfSi2CJtqdkFbXOvkEaxAZUxRz5BGwcyoZjZRZ1V6l2ttTmtOxO6LlXNhVrjeGle2BcFZ5xczWqfEznfpUiIbZS6esZpvv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPYIZgri; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3E01F00893;
-	Sun,  7 Jun 2026 10:21:58 +0000 (UTC)
+	 MIME-Version; b=gNJW0v5AKQQc5EJyF/vO3nyx/HV/3BCGiV/tuMQyEdYEwhMO1ymcnYh62MdxHOQBZx1m8zHjPKjorcE9WpVTfkQsw7+BxM3ZpyvNjFf6jNCpcseL1hrMcCVA8JaOagdV/zAlqGrxhE5zTcYLHQ93VF7TnfBQQyxTqM1a2GnJSuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgDKTnp9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853EB1F00893;
+	Sun,  7 Jun 2026 10:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827720;
-	bh=h1gES4LvaVSt4TcsBysO7iAn2a4972wy2Yorz2xH4IE=;
+	s=korg; t=1780827676;
+	bh=zhQJ07F5/LyTAR+ZcIDxHUqE89GH8L9x+gQV3casGH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BPYIZgriguK4HFbTVzBI1dYuw8VkvBguy6yFU6U4Ll/G/080bIsMATfjC6xUei5Oi
-	 dYl2sOU+RFTyXxHqUw4CH5AINoBVhY+7c+VwktRJL9lzbEJNxKQUqHdb4HAJ4lsZNV
-	 w0EW/KH9VfNSQS20/V+XJH/clrUOv7BlKZ1HQOIc=
+	b=BgDKTnp9g0sp6w+1GbaUK+GzM25B3rpSLb6/AuRGj3wprqwCCCCi0hRfJXX8fw9oQ
+	 pNNdU/dIrU6xWnaunPCjVXlGnUFQ0i8CstnGyqMh3xi4RStwgUfVKT78YOZalpwkop
+	 yvzho1vtGcVfeVzta2gSK0zTznXd4sfBD4AjKCsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/307] nvme-tcp: store negative errno in queue->tls_err
-Date: Sun,  7 Jun 2026 11:57:58 +0200
-Message-ID: <20260607095730.748831594@linuxfoundation.org>
+Subject: [PATCH 6.18 092/315] ipv6: fix possible infinite loop in rt6_fill_node()
+Date: Sun,  7 Jun 2026 11:57:59 +0200
+Message-ID: <20260607095731.008528916@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261222-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261211-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:alistair.francis@wdc.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,61 +96,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wdc.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sashiko.dev:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FD0864F999
+X-Rspamd-Queue-Id: 3AD3464F94D
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 9015985b5eb1a90eb86caf5bce1dfcf1aa38f8ad ]
+[ Upstream commit 9f72412bcf60144f252b0d6205106abf14344abc ]
 
-nvme_tcp_tls_done() assigns queue->tls_err in three branches.  The
-ENOKEY lookup failure and the EOPNOTSUPP initializer both store
-negative errnos.  The third branch, reached when the handshake
-layer reports a non-zero status, stores -status.
+Sashiko reported this issue [1]. Apply the same fix as
+commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
 
-The handshake layer delivers status to the consumer callback as a
-negative errno; the other in-tree consumers --
-xs_tls_handshake_done() and the nvmet target callback -- treat
-their status argument that way.  The extra negation in
-nvme_tcp_tls_done() flips the sign, leaving tls_err as a positive
-value (for instance, +EIO), which nvme_tcp_start_tls() then
-returns to its caller.
+Writers holding tb6_lock can list_del_rcu(&rt->fib6_siblings)
+without waiting for RCU readers; rt->fib6_siblings.next then still
+points into the old ring and this softirq-side walker never reaches
+&rt->fib6_siblings, causing a CPU stall. fib6_del_route() always
+WRITE_ONCE()s rt->fib6_nsiblings to 0 before list_del_rcu(), so an
+inside-loop check is a reliable detach signal.
 
-Drop the extra negation so queue->tls_err uniformly carries a
-negative errno on failure.
+[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
 
-Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-2-66c616906ead@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260527053133.180695-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 77df3432dfb78e..31406438e3ff2d 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1719,7 +1719,7 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
- 		qid, pskid, status);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 446f4de7d6a227..cf9546047b5749 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -5892,6 +5892,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
  
- 	if (status) {
--		queue->tls_err = -status;
-+		queue->tls_err = status;
- 		goto out_complete;
- 	}
+ 				goto nla_put_failure;
+ 			}
++			if (!READ_ONCE(rt->fib6_nsiblings))
++				break;
+ 		}
  
+ 		rcu_read_unlock();
 -- 
 2.53.0
 
