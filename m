@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-261472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5d9LJx5KJWryGAIAu9opvQ
-	(envelope-from <stable+bounces-261472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:22 +0200
+	id y9YdJcpKJWoTGQIAu9opvQ
+	(envelope-from <stable+bounces-261480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118FF64FDEB
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0098D64FE75
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=flLwnYMz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261472-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261472-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VJ+Wbtak;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261480-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261480-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E918B30068EF
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D899D3014661
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055B73264F5;
-	Sun,  7 Jun 2026 10:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81D93264F5;
+	Sun,  7 Jun 2026 10:38:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC03A2D3A69;
-	Sun,  7 Jun 2026 10:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93500212564;
+	Sun,  7 Jun 2026 10:38:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828687; cv=none; b=C2fsuKM9kXd4TFQTFQ2QeNw4XK2lgGYQ49LjEO9FaG0AmLqJj8CfaEaiSQJkJiAjy9rqX7W4o5QxpbyUWNCWDlS0bhkYxO5c9T4JxAVBmLTeu1qhpwR2e2asOVjA0Qi2Qn7ccNkPX6r6d1H5/NUwDTpKEJkTaL2Q4RDgx/jkVvs=
+	t=1780828717; cv=none; b=StzI6FbrzG/Ux1rJUUt5F7F8KeUbmRpg6W32B1eT6/nneW+XcFwZ/MUgPiUj7ZOPIp3CYkLUIsiH3eBZJzjnPMAbvkBwTjhHXIjoVQZNgGsPitxG64eiPGTxg+aLXBf5nEqJxb8ISVxK1Rit6ac7Tg4mj6z3m/omHW3KxeC17ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828687; c=relaxed/simple;
-	bh=3nJruFdg9dxWHu4nWqJKs7BmukAgFE7gdlQoGm8dc68=;
+	s=arc-20240116; t=1780828717; c=relaxed/simple;
+	bh=Sqv/a7dvJ6oC8imSVOVswOkj2TSOqBeLOd/a8maADJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dT7UkvBMDQ7sPILfPcGOteplhMnvykCCaPjKo+t6DYVwDXN+EiPH8ga1G1B8Vx5HTyojqvl3wjaqdRdo6XRjIOL1VEhguflLUYHZl/mGXIH9AYXFmO74ofaGw3lg0HYwDyNXWs+a/QYQ9aN85zfsxGWWBd2ptPYfB/xhgl6tPD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flLwnYMz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75E71F00893;
-	Sun,  7 Jun 2026 10:38:05 +0000 (UTC)
+	 MIME-Version; b=MHprVm8whRLbbDp/OuP5jSJX/62JmaMvMvqZZeHf5YqAiR8CKTEMPHdGyFhizAAU3WZMMcDek/cgpUmm+lIF5OCg0lUbuoQXOCPCEunvcoMifL/80b3Cs2DOB2B9Cm0Cj/xB5rh1BN/Szo/yMsC96mUwPIOBo0R9y5WjggBadXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJ+Wbtak; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B301F00893;
+	Sun,  7 Jun 2026 10:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828686;
-	bh=yPfFr8nxWIuOjTzGneXu0E7LsenZkyx9zN+bXJMYGLI=;
+	s=korg; t=1780828716;
+	bh=iN7ZTCmU3Jbes7iS/dF2kKsgzzCZg1jmkadcpcMAXqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=flLwnYMzd9y1TL/pjqAlFHLiXbkE7te7C0Ht57OddZP0HkZqW4L3Ung2bkREjV7J9
-	 6nqFyeBCpYY/+HSKVJ+Gp60tNc0RrXQaNhKaWgpXIY7TMDeAOEbKw4LUoC9ZQJuIRX
-	 T2tGhYvKVyWwVhrHInqOkhXg+8mcb84Zx7cC1YTU=
+	b=VJ+WbtakSGB7diChhDTbMUlBWgyhagl6/WRemXpigpn3coevTzODh7otaT6xb2vyy
+	 gqHWq9T9EbYOzRxus4nV76s5b1kp2OhrrbJLvvg8gsm0m35MhXvYn/2ffNRlDMkLYc
+	 xGoUJG1IRPnV3E/JsfO+hRmue0mN73ycarpQ2ihs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	Peter Chen <peter.chen@cixtech.com>
-Subject: [PATCH 7.0 203/332] usb: cdns3: plat: fix unbalanced pm_runtime_forbid() call permanently leaks the runtime PM usage counter across bind/unbind cycles
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 185/315] bpf: sockmap: fix tail fragment offset in bpf_msg_push_data
 Date: Sun,  7 Jun 2026 11:59:32 +0200
-Message-ID: <20260607095735.514676205@linuxfoundation.org>
+Message-ID: <20260607095734.375000702@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,70 +76,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261472-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:peter.chen@cixtech.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
+	TAGGED_FROM(0.00)[bounces-261480-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cixtech.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,lzu.edu.cn:email,lenovo.com:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 118FF64FDEB
+X-Rspamd-Queue-Id: 0098D64FE75
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@cixtech.com>
+From: Yuqi Xu <xuyq21@lenovo.com>
 
-commit ae6f3b82324e4f39ad8443c9020787e6fc889637 upstream.
+commit f72eed9b84fb771019a955908132410a9ba9ea3f upstream.
 
-Call pm_runtime_allow(dev) conditionally at cdns3_plat_remove.
+When bpf_msg_push_data() inserts data in the middle of a scatterlist
+entry, it splits the original entry into a left fragment and a right
+fragment.
 
-Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
-Cc: stable <stable@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://patch.msgid.link/20260513085310.2217547-3-peter.chen@cixtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The right fragment offset is page-local, but the code advances it with
+`start`, which is the message-global insertion point. For inserts into a
+non-first SG entry, this over-advances the offset and leaves the split
+layout inconsistent.
+
+Advance the right fragment offset by the fragment-local delta,
+`start - offset`, which matches the length removed from the front of the
+original entry.
+
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-plat.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/core/filter.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -186,6 +186,9 @@ static void cdns3_plat_remove(struct pla
- 	struct device *dev = cdns->dev;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2859,7 +2859,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
  
- 	pm_runtime_get_sync(dev);
-+	if (!(cdns->pdata && (cdns->pdata->quirks & CDNS3_DEFAULT_PM_RUNTIME_ALLOW)))
-+		pm_runtime_allow(dev);
-+
- 	pm_runtime_disable(dev);
- 	pm_runtime_put_noidle(dev);
- 	cdns_remove(cdns);
+ 		psge->length = start - offset;
+ 		rsge.length -= psge->length;
+-		rsge.offset += start;
++		rsge.offset += start - offset;
+ 
+ 		sk_msg_iter_var_next(i);
+ 		sg_unmark_end(psge);
 
 
 
