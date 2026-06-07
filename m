@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xzptNe9MJWoKGgIAu9opvQ
-	(envelope-from <stable+bounces-261671-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:23 +0200
+	id ogn/OdVOJWq9GgIAu9opvQ
+	(envelope-from <stable+bounces-261644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE586500B6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8399C6502C6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wDc40h57;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261671-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261671-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pAxqNpuu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261644-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261644-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19AB53004D22
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B926D3092CBB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBF82E7390;
-	Sun,  7 Jun 2026 10:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5A330C153;
+	Sun,  7 Jun 2026 10:48:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A57F319851;
-	Sun,  7 Jun 2026 10:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C52D8378;
+	Sun,  7 Jun 2026 10:48:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829421; cv=none; b=A9ppNZ+o1ShWsXN0lovZreat/HBwZuKG3y6gV6e2CUgaMUFAUtzupkd4VisJPy3plcMBr9ZbWp8u/m3bz1yOA8EsL3gfTKMlsDrjcJNbyXIuGV04mzaS/o4565vmT1+Ujn/BVIswK4jhr28VyYsEwSHIir1JRYUP9hqYEPh2WcE=
+	t=1780829326; cv=none; b=W+faN+pZv/tyj+tDpvD94c2IjBktdk/OKEMDHI9sGom/ZwYaAdTMUpLLY4JQE4NgI4RONyzBBtn49VPQqkDClKsEqETT/QsNYsPmXLt0SYAvdWTSsEVwrZubdPQG7d3ZFLJzvcU0tY0Ncv4EJenD+vjhfVdq9vTOtb1xJH0Xdww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829421; c=relaxed/simple;
-	bh=7I0q+kLxJxDyBUkO7kuUOUKIVjZmeWDteG0/HSLvB6k=;
+	s=arc-20240116; t=1780829326; c=relaxed/simple;
+	bh=knTw+xrD8r+1NZwfH1rN97dzT7GY0UfC0IpR5lJZkVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYShm3i1uirk9hgB0Q2rjYC1oNyj90elrliPcHf5yeT6mQjOKyzGc3zR9pCcI5pJJPV8sTcL2+8amsd/etIkeA0jt28kmXYbfpLGXOHtTRpoGzPqq04ZjvL7pBTx3DAQYYiDAGPydfNeiUraTrzApoyhmOjPpm1XyHnO89Lj5h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDc40h57; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D70B1F00893;
-	Sun,  7 Jun 2026 10:50:19 +0000 (UTC)
+	 MIME-Version; b=ASmjBGfprcDYMVCgr2M2Cs+bciOAdxwMuH3qKTR1FqSZBnPJjE/T+au6L1oJkz/oNwS0s6FpnHrYonX0NHlurdgOqs1ARgeMTItQf+iMlBVh3ttR0yGLFYX56tXocUFFiCZkvPKFtwfHeum9cNlxAb9SGeT34htW12dKbLpg7aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAxqNpuu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF261F00893;
+	Sun,  7 Jun 2026 10:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829420;
-	bh=u9z3L1ilCzH2eSmRaHJgTkKaKdJkXSsT+OITud1scQg=;
+	s=korg; t=1780829324;
+	bh=jvLXZk2kkImueNRkqaHrSMelGwX/i+vydjpawjA6JdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wDc40h57oMNGri59MI6NIfGZfOIoCyQWQRPfB1HQMjMSB+mlHAcEXl1RMyWDMuoda
-	 QJBvIiOeMqlB5+S6YZaI4EPuC7dhR3VZUNqvNEhgxMUEEWSVQ+QmdH+Wox8H4XBoRU
-	 faaXHIN01joJYx95leCM4zGeRNP+fz70mHyf5qZk=
+	b=pAxqNpuuGmH/1MqGBERZLXE55s4j47tkTHhI0JhQnVCdfaU26Z/QCDsS5Qtnz/n/G
+	 0C8eoCT+inD2axrsnEN24ibqZrkpxVGXxESJGNi10B8HGaZp79wHS5ptrUOlgMyVPo
+	 0+EjeIrGXFmFmAmrq7XqB0BDE4UVVm5izxp8cSSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH 6.18 246/315] usb: gadget: f_fs: copy only received bytes on short ep0 read
+	Jan Volckaert <janvolck@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 264/332] USB: serial: option: add MeiG SRM813Q
 Date: Sun,  7 Jun 2026 12:00:33 +0200
-Message-ID: <20260607095736.597744723@linuxfoundation.org>
+Message-ID: <20260607095737.734679934@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,28 +66,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261671-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-261644-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,92 +94,107 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9DE586500B6
+X-Rspamd-Queue-Id: 8399C6502C6
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Jan Volckaert <janvolck@gmail.com>
 
-commit 4e036c10e7f4df5d951c69cc3697bc8e209c6d02 upstream.
+commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
 
-ffs_ep0_read() allocates its control-OUT data buffer with
-kmalloc() (not kzalloc) at the Length value from the Setup
-packet, then copies that full len to userspace regardless of
-how many bytes were actually received:
+Add support for the Qualcomm Technology Snapdragon X35-based MeiG
+SRM813Q module.
 
-    data = kmalloc(len, GFP_KERNEL);
-    ...
-    ret = __ffs_ep0_queue_wait(ffs, data, len);
-    if ((ret > 0) && (copy_to_user(buf, data, len)))
-            ret = -EFAULT;
+The module can be put in different modes via AT commands to
+enable/disable GPS functionality:
 
-__ffs_ep0_queue_wait() returns req->actual, which on a short
-control OUT transfer is strictly less than len.  The
-copy_to_user() call still copies len bytes, so on a short OUT
-the last (len - ret) bytes of the kmalloc() buffer --
-uninitialised slab residue -- are delivered to the FunctionFS
-daemon.
+MODEM - PPP mode(2dee:4d63): AT+SER=1,1
 
-Short ep0 OUT completions are specified USB control-transfer
-behavior and are produced by in-tree UDCs:
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: MODEM
+If#= 3: AT
 
-  * dwc2 continues on req->actual < req->length for ep0 DATA OUT
-    (short-not-ok is the only ep0-OUT stall path).
-  * aspeed_udc ends ep0 OUT on rx_len < ep->ep.maxpacket.
-  * renesas_usbf logs "ep0 short packet" and completes the
-    request.
-  * dwc3 stalls on short IN but not on short OUT.
+P:  Vendor=2dee ProdID=4d63 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-A short ep0 OUT is therefore not evidence of a broken UDC; it is
-a normal condition f_fs has to cope with.  The sibling gadgetfs
-implementation in drivers/usb/gadget/legacy/inode.c already does
-this correctly via min(len, dev->req->actual) before
-copy_to_user().  This patch brings f_fs.c to the same safe
-pattern rather than trimming at a defensive layer.
+NMEA mode(2dee:4d64): AT+SER=51,1
 
-The bug is reached from the FunctionFS device node, which in
-real deployments is owned by the privileged gadget daemon
-(adbd, UMS, composite gadget services, etc.); it is not
-reachable from unprivileged userspace.  Linux host stacks
-normally reject short-wLength control OUTs before they reach
-the gadget, so reproducing this required a build that
-bypasses that host-side check.  With the bypass in place, a
-1-byte payload on a 64-byte Setup produces 63 bytes of
-non-canary slab residue in the daemon's read buffer.
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: NMEA
+If#= 3: AT
 
-Fix by copying only ret (actually received) bytes to
-userspace.
+P:  Vendor=2dee ProdID=4d64 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-Cc: stable <stable@kernel.org>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419160359.1577270-1-michael.bommarito@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jan Volckaert <janvolck@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -622,7 +622,7 @@ static ssize_t ffs_ep0_read(struct file
- 
- 		/* unlocks spinlock */
- 		ret = __ffs_ep0_queue_wait(ffs, data, len);
--		if ((ret > 0) && (copy_to_user(buf, data, len)))
-+		if ((ret > 0) && (copy_to_user(buf, data, ret)))
- 			ret = -EFAULT;
- 		goto done_mutex;
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
++
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
