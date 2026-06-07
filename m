@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VYKXJ1ZEJWrAFQIAu9opvQ
-	(envelope-from <stable+bounces-261030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:42 +0200
+	id zkNsGtFDJWp7FQIAu9opvQ
+	(envelope-from <stable+bounces-261046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D83664F6C9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662D864F631
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yj00aYIl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261030-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261030-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y22K7ELG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261046-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73D813039C9B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8767A3003481
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6131227B94;
-	Sun,  7 Jun 2026 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40352E1EFC;
+	Sun,  7 Jun 2026 10:11:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3B54204E;
-	Sun,  7 Jun 2026 10:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC2A285CAE;
+	Sun,  7 Jun 2026 10:11:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827027; cv=none; b=cCf8+QFa8yCtE+re2q0loxpIiDzmGIe9Cjy1IxSdg/76iDsO/q17KN2sF6Sl6aiMHymB7YB31Pi1MJY4Ogy+9QoUqJbu9nZMpdpx5sLr53tea9DD7ajt1qNfl9MfEN1LNQ9VFBpX/RYyHO5uZtW/F3uzyEdPMDB+TuY1b2gaogM=
+	t=1780827083; cv=none; b=nvdBukNcfc64BZVhSMXzfEnHSzwxjhvXxv/V/oNk6T2Tr4PjR3OEDkbvcAf2HNvAONKyOjgDuyqOqKIG1dHjJxvBXLX7VOuUEZWC3/7v1zb9KzqBceb/BhO0fH6mjKCew81lJGFDvPIaOjbFVlwsICo1Doix5+0SV7BHtxGLHl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827027; c=relaxed/simple;
-	bh=uoItW4Q4Bf8VJ9KQadYV7By7R/YxlMxxTNTdiKYEC/8=;
+	s=arc-20240116; t=1780827083; c=relaxed/simple;
+	bh=rClPn5aVe/RGnEiUuENfsWnkIh9ARHuCLvwHsV+m4M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlgTKHeJdSErDRSlQy73lplbX8/JdQGb+EMaZINj6mDg7dnd2WEkgi1EPHbJoCW01GVCE55R0GMCyGj5p0uWI918vc8glpcmdVoooLtbY8cwl4bdHAedUfwcFV4CdzevL2lgZXQLG56UhqQNB+069b2MJOQInhTP/yhoBayz1tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yj00aYIl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A29B1F00893;
-	Sun,  7 Jun 2026 10:10:25 +0000 (UTC)
+	 MIME-Version; b=AeW1gqDJwPHsA+JAEaLsstJEAwgyWwgrPbAzjevd17Ry7EXHy90TGqcnxHgjquaoU3padd4QAogFfNwCRlfWIvMHmx6OZGiyZPoarAqBFcG816Jjt252xhzNHZge6pwfKbGojuQd30UbrLMhuo6fiWBABSy7SNCpBFUEdpjLJLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y22K7ELG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17601F00893;
+	Sun,  7 Jun 2026 10:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827026;
-	bh=nqtBj/ZMkBC4tRfm2+CgrevZhUWNndbtZZigbtvtOd0=;
+	s=korg; t=1780827082;
+	bh=xfMP1rfcOyASZq+m8EeXiYHbC5SEZ2CWe5hMf0b/wCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yj00aYIlwQCGiCz3qLkBZzbvBIMPsPw3n0e8uMXcUlN1zbu9qyBCSuvPhf9WRPNwU
-	 Hxl17oKtER4VfbLHK1jZlvD6F05Panniu6ziYnxlUMxgvTVtwJLuiHM0dB2Xp8qiIL
-	 zkHj22NUmzCHJsDVE2nPruJDfqmzsrGbK2d+jY54=
+	b=y22K7ELGf5OkwQBdhALsOtzHPm/rmaZUZ3UxQQy0GnpZHH48Oj9OSGaJ1/cHxGymv
+	 3ECv3eT+ipABnS59K4emzeRKux0iJ4eium/j54lBH2mbbsfLl+dnJ7+qA7Pv38bDXV
+	 me1yiU8riMbh5CUfTbFQCoTmLrQ6TuZMvx1myA1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ming <ming.li@zohomail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 056/332] cxl/test: Update mock dev array before calling platform_device_add()
+Subject: [PATCH 6.18 038/315] ethtool: rss: avoid modifying the RSS context response
 Date: Sun,  7 Jun 2026 11:57:05 +0200
-Message-ID: <20260607095730.184870392@linuxfoundation.org>
+Message-ID: <20260607095728.945097041@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,307 +68,108 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261030-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261046-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ming.li@zohomail.com,m:alison.schofield@intel.com,m:dave.jiang@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D83664F6C9
+X-Rspamd-Queue-Id: 662D864F631
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Ming <ming.li@zohomail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit d90f236f8b9e354848bd226f581db27755ab901d ]
+[ Upstream commit c75b6f6eaacd0b74b832414cc3b9289c3686e941 ]
 
-CXL test environment hits the following error sometimes.
+Gemini says that we're modifying the RSS_CREATE response skb.
+I think it's right, the comment says that unicast() should
+unshare the skb but I'm not entirely sure what I meant there.
+netlink_trim() does a copy but only if skb is not well sized
+(it's at least 2x larger than necessary for the payload).
 
- cxl_mem mem9: endpoint7 failed probe
-
-All mock memdevs are platform firmware devices added by cxl_test module,
-and cxl_test module also provides a platform device driver for them to
-create a memdev device to CXL subsystem. cxl_test module uses
-cxl_rcd/mem_single/mem arrays to store different types of mock memdevs.
-CXL drivers calls registered mock functions for a mock memdev by
-checking if a given memdev is in these arrays.
-
-When cxl_test module adds these mock memdevs, it always calls
-platform_device_add() before adding them to a suitable mock memdev
-array. However, there is a small window where CXL drivers calls mock
-function for a added memdev before it added to a mock memdev array. In
-above case, cxl endpoint driver considers a added memdev was not a mock
-memdev, then calling devm_cxl_endpoint_decoders_setup() for it rather
-than mock_endpoint_decoders_setup().
-
-An appropriate solution is that adding a new mock device to a mock
-device array before calling platform_device_add() for it. It can
-guarantee the new mock device is visible to CXL subsystem.
-
-This patch introduces a new helped called cxl_mock_platform_device_add()
-to handle the issue, and uses the function for all mock devices addition.
-
-Fixes: 3a2b97b3210b ("cxl/test: Improve init-order fidelity relative to real-world systems")
-Signed-off-by: Li Ming <ming.li@zohomail.com>
-Tested-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20260520121457.234404-1-ming.li@zohomail.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: a166ab7816c5 ("ethtool: rss: support creating contexts via Netlink")
+Link: https://patch.msgid.link/20260522230647.1705600-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/cxl/test/cxl.c | 105 ++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 62 deletions(-)
+ net/ethtool/rss.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-index 81e2aef3627a44..f4c26441fc41af 100644
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -1144,6 +1144,23 @@ static void mock_companion(struct acpi_device *adev, struct device *dev)
- #define SZ_64G (SZ_32G * 2)
- #endif
+diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
+index da5934cceb0757..926be5698ba4cc 100644
+--- a/net/ethtool/rss.c
++++ b/net/ethtool/rss.c
+@@ -974,11 +974,17 @@ ethnl_rss_create_validate(struct net_device *dev, struct genl_info *info)
+ }
  
-+static int cxl_mock_platform_device_add(struct platform_device *pdev,
-+					struct platform_device **ppdev)
-+{
-+	int rc;
-+
-+	if (ppdev)
-+		*ppdev = pdev;
-+	rc = platform_device_add(pdev);
-+	if (rc) {
-+		platform_device_put(pdev);
-+		if (ppdev)
-+			*ppdev = NULL;
-+	}
-+
-+	return rc;
-+}
-+
- static __init int cxl_rch_topo_init(void)
+ static void
+-ethnl_rss_create_send_ntf(struct sk_buff *rsp, struct net_device *dev)
++ethnl_rss_create_send_ntf(const struct sk_buff *rsp, struct net_device *dev)
  {
- 	int rc, i;
-@@ -1158,13 +1175,10 @@ static __init int cxl_rch_topo_init(void)
- 			goto err_bridge;
+-	struct nlmsghdr *nlh = (void *)rsp->data;
+ 	struct genlmsghdr *genl_hdr;
++	struct nlmsghdr *nlh;
++	struct sk_buff *ntf;
++
++	ntf = skb_copy_expand(rsp, 0, 0, GFP_KERNEL);
++	if (!ntf)
++		return;
  
- 		mock_companion(adev, &pdev->dev);
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_rch[i]);
-+		if (rc)
- 			goto err_bridge;
--		}
++	nlh = nlmsg_hdr(ntf);
+ 	/* Convert the reply into a notification */
+ 	nlh->nlmsg_pid = 0;
+ 	nlh->nlmsg_seq = ethnl_bcast_seq_next();
+@@ -986,7 +992,7 @@ ethnl_rss_create_send_ntf(struct sk_buff *rsp, struct net_device *dev)
+ 	genl_hdr = nlmsg_data(nlh);
+ 	genl_hdr->cmd =	ETHTOOL_MSG_RSS_CREATE_NTF;
  
--		cxl_rch[i] = pdev;
- 		mock_pci_bus[idx].bridge = &pdev->dev;
- 		rc = sysfs_create_link(&pdev->dev.kobj, &pdev->dev.kobj,
- 				       "firmware_node");
-@@ -1216,13 +1230,10 @@ static __init int cxl_single_topo_init(void)
- 			goto err_bridge;
+-	ethnl_multicast(rsp, dev);
++	ethnl_multicast(ntf, dev);
+ }
  
- 		mock_companion(adev, &pdev->dev);
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_hb_single[i]);
-+		if (rc)
- 			goto err_bridge;
--		}
+ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
+@@ -1094,12 +1100,8 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
  
--		cxl_hb_single[i] = pdev;
- 		mock_pci_bus[i + NR_CXL_HOST_BRIDGES].bridge = &pdev->dev;
- 		rc = sysfs_create_link(&pdev->dev.kobj, &pdev->dev.kobj,
- 				       "physical_node");
-@@ -1241,12 +1252,9 @@ static __init int cxl_single_topo_init(void)
- 			goto err_port;
- 		pdev->dev.parent = &bridge->dev;
+ 	genlmsg_end(rsp, hdr);
  
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_root_single[i]);
-+		if (rc)
- 			goto err_port;
--		}
--		cxl_root_single[i] = pdev;
- 	}
+-	/* Use the same skb for the response and the notification,
+-	 * genlmsg_reply() will copy the skb if it has elevated user count.
+-	 */
+-	skb_get(rsp);
+-	ret = genlmsg_reply(rsp, info);
+ 	ethnl_rss_create_send_ntf(rsp, dev);
++	ret = genlmsg_reply(rsp, info);
+ 	rsp = NULL;
  
- 	for (i = 0; i < ARRAY_SIZE(cxl_swu_single); i++) {
-@@ -1259,12 +1267,9 @@ static __init int cxl_single_topo_init(void)
- 			goto err_uport;
- 		pdev->dev.parent = &root_port->dev;
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_swu_single[i]);
-+		if (rc)
- 			goto err_uport;
--		}
--		cxl_swu_single[i] = pdev;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(cxl_swd_single); i++) {
-@@ -1278,12 +1283,9 @@ static __init int cxl_single_topo_init(void)
- 			goto err_dport;
- 		pdev->dev.parent = &uport->dev;
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_swd_single[i]);
-+		if (rc)
- 			goto err_dport;
--		}
--		cxl_swd_single[i] = pdev;
- 	}
- 
- 	return 0;
-@@ -1356,12 +1358,9 @@ static int cxl_mem_init(void)
- 		pdev->dev.parent = &dport->dev;
- 		set_dev_node(&pdev->dev, i % 2);
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_mem[i]);
-+		if (rc)
- 			goto err_mem;
--		}
--		cxl_mem[i] = pdev;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(cxl_mem_single); i++) {
-@@ -1374,12 +1373,9 @@ static int cxl_mem_init(void)
- 		pdev->dev.parent = &dport->dev;
- 		set_dev_node(&pdev->dev, i % 2);
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_mem_single[i]);
-+		if (rc)
- 			goto err_single;
--		}
--		cxl_mem_single[i] = pdev;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(cxl_rcd); i++) {
-@@ -1393,12 +1389,9 @@ static int cxl_mem_init(void)
- 		pdev->dev.parent = &rch->dev;
- 		set_dev_node(&pdev->dev, i % 2);
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_rcd[i]);
-+		if (rc)
- 			goto err_rcd;
--		}
--		cxl_rcd[i] = pdev;
- 	}
- 
- 	return 0;
-@@ -1463,13 +1456,10 @@ static __init int cxl_test_init(void)
- 			goto err_bridge;
- 
- 		mock_companion(adev, &pdev->dev);
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_host_bridge[i]);
-+		if (rc)
- 			goto err_bridge;
--		}
- 
--		cxl_host_bridge[i] = pdev;
- 		mock_pci_bus[i].bridge = &pdev->dev;
- 		rc = sysfs_create_link(&pdev->dev.kobj, &pdev->dev.kobj,
- 				       "physical_node");
-@@ -1487,12 +1477,9 @@ static __init int cxl_test_init(void)
- 			goto err_port;
- 		pdev->dev.parent = &bridge->dev;
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_root_port[i]);
-+		if (rc)
- 			goto err_port;
--		}
--		cxl_root_port[i] = pdev;
- 	}
- 
- 	BUILD_BUG_ON(ARRAY_SIZE(cxl_switch_uport) != ARRAY_SIZE(cxl_root_port));
-@@ -1505,12 +1492,9 @@ static __init int cxl_test_init(void)
- 			goto err_uport;
- 		pdev->dev.parent = &root_port->dev;
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_switch_uport[i]);
-+		if (rc)
- 			goto err_uport;
--		}
--		cxl_switch_uport[i] = pdev;
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(cxl_switch_dport); i++) {
-@@ -1523,12 +1507,9 @@ static __init int cxl_test_init(void)
- 			goto err_dport;
- 		pdev->dev.parent = &uport->dev;
- 
--		rc = platform_device_add(pdev);
--		if (rc) {
--			platform_device_put(pdev);
-+		rc = cxl_mock_platform_device_add(pdev, &cxl_switch_dport[i]);
-+		if (rc)
- 			goto err_dport;
--		}
--		cxl_switch_dport[i] = pdev;
- 	}
- 
- 	rc = cxl_single_topo_init();
-@@ -1546,9 +1527,9 @@ static __init int cxl_test_init(void)
- 	mock_companion(&acpi0017_mock, &cxl_acpi->dev);
- 	acpi0017_mock.dev.bus = &platform_bus_type;
- 
--	rc = platform_device_add(cxl_acpi);
-+	rc = cxl_mock_platform_device_add(cxl_acpi, NULL);
- 	if (rc)
--		goto err_root;
-+		goto err_rch;
- 
- 	rc = cxl_mem_init();
- 	if (rc)
+ exit_unlock:
 -- 
 2.53.0
 
