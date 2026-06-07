@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RlXEF5hMJWqlGQIAu9opvQ
-	(envelope-from <stable+bounces-261646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:56 +0200
+	id 9RiUHfFMJWoNGgIAu9opvQ
+	(envelope-from <stable+bounces-261575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013F8650050
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6AD6500BB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="dv/pGNGj";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261646-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261646-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fI0XGoTO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261575-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261575-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6F8FD3004622
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 138143057068
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88DA2E7390;
-	Sun,  7 Jun 2026 10:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C557231F9AC;
+	Sun,  7 Jun 2026 10:44:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3E12D8378;
-	Sun,  7 Jun 2026 10:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76C21E98EF;
+	Sun,  7 Jun 2026 10:44:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829333; cv=none; b=cr6LzV/GuPwB2p5OiHV74C+KrNQ0UdyWgspRWxmr4l0ZGEyj4ZdFKXRd+bTcoSuz0Orzs4xXYzONKyLI4bgWekjPy4Axmfo4x7/CV8rAc8VudWwdUyGXc9Mu/AO7bP/pyj5wObVDEADAz2cuUq3pGlhcHt/fUAyzRt79ZyRau30=
+	t=1780829072; cv=none; b=Z/NzcaN68CCXMS+ywsydhe3UhxQs2kSWwRz8A0tfHLBrZTdKrybs8jUEc1X/YrCkNW1jle0/ImVLEbeu6NOCae1Tv05QdOj75E662CnYLg7PQ42v+ynXrBW4AilmxOK2cDvSzH8aSL0RY+iYtLvugu/4bHG3MIBsXuJk+XSBxLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829333; c=relaxed/simple;
-	bh=9gslOVyyDKGk/rB1XJooOMilYX9SYB78vboBM2tRomM=;
+	s=arc-20240116; t=1780829072; c=relaxed/simple;
+	bh=fhzpCDNUnQ1IiczapelJpnkC9LgSgcHLhKNG2rfUc7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiqwZO99OnzCzfd0m6r8jGRwQtLaiVwxphBH/ucAkqKpV0UGSnYdDqO+rIdSrjyzHpCW944XsIh4MrHYhow0lbDBB02M02Y7cbYdDqwjYuy3yG+2cf+VpGJlaY8enRf9S0NFDhCIc/jYn1wRaKxWPO14Ncuibbxg96elcD+w4aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv/pGNGj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F2A1F00893;
-	Sun,  7 Jun 2026 10:48:51 +0000 (UTC)
+	 MIME-Version; b=a9kYx3RLUS1k/tIpoG+cOWZiPVOu43djzih8UsscD3G0g52DDA01YZ7HnnYwb4LgON3UnFSvsvJw8ew2v3zuGuevXLwDR3A8pfz0200S0AkqmECGZGScgElFltSONwN5neK+wV3oz2o58/1d7KZK60JVNHAYUzxjGzeJewwLfW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fI0XGoTO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0EA81F00893;
+	Sun,  7 Jun 2026 10:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829332;
-	bh=qn+fJjq6+WtelGBx7JBYDW8Tjo1ZCMnQi0snJIBVhJo=;
+	s=korg; t=1780829071;
+	bh=NSTOCLxVj83RpxtcypVEgmoy/AWesUKcnwDXh9wvU7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dv/pGNGjs9M8/vjTI4kqilj6c+fxj80oblkAAf8GFpk8tdW71UyQJXnpi2PIut5Ae
-	 Lw1nn+M5+9rW3hnXJejtS6zHyHd2wnFvVrc9NM17yJ6EI3JJNygcUSOLmzNEtt9hm1
-	 bXg51tadqNj/VQcKnX/iFh9hG4Qc7XDxEZe5NZzk=
+	b=fI0XGoTOsS8ln6Xz7mBukRGvVOphN1hFzKzTsDZJtqmBcRTdGM7hHb+XXFM0hd7tO
+	 1UIsAAgX/GczpE4wOwOCBI3GxZeGSOgdqwAAXU62HPsu7X8epOwdRqEcSrYBZh0hj2
+	 n7qlBVa90w/Zg+/ELTHy2+55MBMsyxrMA61lsMck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.12 215/307] usb: chipidea: core: convert ci_role_switch to local variable
+	Hongling Zeng <zenghongling@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 243/332] gpib: cb7210: Fix region leak when request_irq fails
 Date: Sun,  7 Jun 2026 12:00:12 +0200
-Message-ID: <20260607095735.619177755@linuxfoundation.org>
+Message-ID: <20260607095736.972391850@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,115 +68,92 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261646-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261575-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:Frank.Li@nxp.com,m:xu.yang_2@nxp.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zenghongling@kylinos.cn,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,nxp.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kylinos.cn:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 013F8650050
+X-Rspamd-Queue-Id: DE6AD6500BB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Hongling Zeng <zenghongling@kylinos.cn>
 
-commit 8f6aa392653e52a45858cff5c063df550028836b upstream.
+commit 2eae90a457baa0048a96ed38ad93090ee38c8b2f upstream.
 
-When a system contains multiple USB controllers, the global ci_role_switch
-variable may be overwritten by subsequent driver initialization code.
+When request_irq() fails, the region allocated by request_region()
+is not released. Fix this by adding an error handling path with
+proper goto labels to release the region.
 
-This can cause issues in the following cases:
- - The 2nd ci_hdrc_probe() sees ci_role_switch.fwnode as non-NULL even
-   though the "usb-role-switch" property is not present for the controller.
- - When the ci_hdrc device is unbound and bound again, ci_role_switch
-   fwnode will not be reassigned, and the old value will be used instead.
-
-Convert ci_role_switch to a local variable to fix these issues.
-
-Fixes: 05559f10ed79 ("usb: chipidea: add role switch class support")
+Fixes: e9dc69956d4d ("staging: gpib: Add Computer Boards GPIB driver")
+Closes: https://lore.kernel.org/oe-kbuild-all/202605160620.ReBOadPX-lkp@intel.com/
+Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
 Cc: stable <stable@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260427075755.3611217-1-xu.yang_2@nxp.com
+Link: https://patch.msgid.link/20260518022939.16881-1-zenghongling@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/core.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/gpib/cb7210/cb7210.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -669,12 +669,6 @@ static enum ci_role ci_get_role(struct c
- 	return role;
+--- a/drivers/gpib/cb7210/cb7210.c
++++ b/drivers/gpib/cb7210/cb7210.c
+@@ -1049,7 +1049,8 @@ static int cb_isa_attach(struct gpib_boa
+ 	if (!request_region(config->ibbase, cb7210_iosize, DRV_NAME)) {
+ 		dev_err(board->gpib_dev, "ioports starting at 0x%x are already in use\n",
+ 			config->ibbase);
+-		return -EBUSY;
++		retval = -EBUSY;
++		goto err_release_region;
+ 	}
+ 	nec_priv->iobase = config->ibbase;
+ 	cb_priv->fifo_iobase = nec7210_iobase(cb_priv);
+@@ -1062,11 +1063,16 @@ static int cb_isa_attach(struct gpib_boa
+ 	// install interrupt handler
+ 	if (request_irq(config->ibirq, cb7210_interrupt, isr_flags, DRV_NAME, board)) {
+ 		dev_err(board->gpib_dev, "failed to obtain IRQ %d\n", config->ibirq);
+-		return -EBUSY;
++		retval = -EBUSY;
++		goto err_release_region;
+ 	}
+ 	cb_priv->irq = config->ibirq;
+ 
+ 	return cb7210_init(cb_priv, board);
++
++err_release_region:
++	release_region(nec7210_iobase(cb_priv), cb7210_iosize);
++	return retval;
  }
  
--static struct usb_role_switch_desc ci_role_switch = {
--	.set = ci_usb_role_switch_set,
--	.get = ci_usb_role_switch_get,
--	.allow_userspace_control = true,
--};
--
- static int ci_get_platdata(struct device *dev,
- 		struct ci_hdrc_platform_data *platdata)
- {
-@@ -801,9 +795,6 @@ static int ci_get_platdata(struct device
- 			cable->connected = false;
- 	}
- 
--	if (device_property_read_bool(dev, "usb-role-switch"))
--		ci_role_switch.fwnode = dev->fwnode;
--
- 	platdata->pctl = devm_pinctrl_get(dev);
- 	if (!IS_ERR(platdata->pctl)) {
- 		struct pinctrl_state *p;
-@@ -1045,6 +1036,7 @@ ATTRIBUTE_GROUPS(ci);
- 
- static int ci_hdrc_probe(struct platform_device *pdev)
- {
-+	struct usb_role_switch_desc ci_role_switch = {};
- 	struct device	*dev = &pdev->dev;
- 	struct ci_hdrc	*ci;
- 	struct resource	*res;
-@@ -1191,7 +1183,11 @@ static int ci_hdrc_probe(struct platform
- 		}
- 	}
- 
--	if (ci_role_switch.fwnode) {
-+	if (device_property_read_bool(dev, "usb-role-switch")) {
-+		ci_role_switch.set = ci_usb_role_switch_set;
-+		ci_role_switch.get = ci_usb_role_switch_get;
-+		ci_role_switch.allow_userspace_control = true;
-+		ci_role_switch.fwnode = dev_fwnode(dev);
- 		ci_role_switch.driver_data = ci;
- 		ci->role_switch = usb_role_switch_register(dev,
- 					&ci_role_switch);
+ static void cb_isa_detach(struct gpib_board *board)
 
 
 
