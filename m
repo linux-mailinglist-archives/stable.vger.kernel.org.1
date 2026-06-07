@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JsfTIp1NJWpOGgIAu9opvQ
-	(envelope-from <stable+bounces-261690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:17 +0200
+	id BCddO9hOJWrDGgIAu9opvQ
+	(envelope-from <stable+bounces-261806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1E7650148
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E9B6502D2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2mbctaAq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261690-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261690-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UkqXPayc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261806-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261806-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 755EE3020FE1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 296A93006008
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964393264C8;
-	Sun,  7 Jun 2026 10:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1761325706;
+	Sun,  7 Jun 2026 10:58:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4C91A6822;
-	Sun,  7 Jun 2026 10:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA437330337;
+	Sun,  7 Jun 2026 10:58:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829486; cv=none; b=l2f/qVxsDrdN1QPdj/FDqYfvj2WxsbZosGcDOA94uCf/T691WLEGF2s6mRyN+7DXA2oi/du606LC8cPjODxbhoZSLPt5o8B2eJ3jzSSXWdaffhmKlKMAS+BShUF6J8YmznGFS6e/U5ASwvFueRiVJ/yiTHDz4f8uw9HjIt3SOyA=
+	t=1780829907; cv=none; b=lkR/GoRZQtPAGn3zOXQvzHNi9ly/LUoiofc84mmwHH15f+GUfZWYKX9GK86WkyITGC+lV23qbpyV20q6nl0O8a3t0wIO0pC7zypUnN+LN7OQiQCcLvr4vj3AgIsV11/pUdrBwInmgs3ThxcPYsKOf/wEGMNQDvei36XMMQgVJhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829486; c=relaxed/simple;
-	bh=RjhHY/QAY2S21ZJAvN6FgtIMmk+D5N+D06zeoduum4I=;
+	s=arc-20240116; t=1780829907; c=relaxed/simple;
+	bh=erz4dLrW3giBqEbXKs6VBWiHqy575AF6IWJJflztsAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lO+u1XKiFwScFJOl+wPuVnPL2Hj8gxyqdnf5TJcmXiwK8kteN4HS18n7PnPd2nyOG95m3WpsFO1hpq+AKax1s7AyaE/DWaCSYxXeHEKIkykY6HatpvYF+NJuZPKa8r8TILIOPKhlRJ9ZP+uADOG5XhIEuqZqJT94sD22H9Rxq+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mbctaAq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D601F00893;
-	Sun,  7 Jun 2026 10:51:24 +0000 (UTC)
+	 MIME-Version; b=txGklQ0X+zJ3Ocb97VAZsM21LpgvNGIeK70BAQWQw3WqRInkaCQvLAbnOe+GRx8zEForJt2Wmme/0r+RZWO3XjkN3SI3h+cNNy9mtLkS0sLncNNRuKZQzU6J/x9pqDG5P6ZUxeY2rK+76UCXKZZgR83MTsHFsKBOGKp4lCrtYbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkqXPayc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9801F00893;
+	Sun,  7 Jun 2026 10:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829485;
-	bh=YH9SOihWiXxd+ELrM+UBrWyvOfere+ewW4eKS2w279o=;
+	s=korg; t=1780829906;
+	bh=4HUbBZxgnW4UxZ9vR0R5nw8GgMPDEnkDyahvLW3Igmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2mbctaAqtChi3unvykC/VjqZ7Irmgvk81y/TX0gyF/gfiQSFeqd0DQf8RiGhk1FID
-	 GBZhwkGW0oB1dh6Zv4CJTFb/UsFz2ZwAVAvmOuucMgbt8AjGSVAmQuYHaY0HXalOqr
-	 Shd8FWp3Y11Qs9OuJ+JKbCMMda5xztSLbVRksHus=
+	b=UkqXPaycRjuMB3pD9SCk6m+TgQnSSuEaBULeW7YM4ieJu+Dekafz8K33WnV/5WkX0
+	 mXT3zm7DRFSWPAk4whW7qYZ8PDOrElfmuOb60lzbY08vsTFUGIjJ89sH3JfDFYQNCM
+	 yoaYtqoI4kiPipvSD9RDweUqJk/axX5yOIOzw0sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 7.0 283/332] scsi: fcoe: Reject FIP descriptors with zero fip_dlen in CVL walker
+	stable <stable@kernel.org>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.18 265/315] serial: zs: Fix swapped RI/DSR modem line transition counting
 Date: Sun,  7 Jun 2026 12:00:52 +0200
-Message-ID: <20260607095738.440420398@linuxfoundation.org>
+Message-ID: <20260607095737.307400909@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261806-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261690-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hare@kernel.org,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,orcam.me.uk:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2A1E7650148
+X-Rspamd-Queue-Id: E1E9B6502D2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 9eed1bd59937e6828b00d2f2dfef631d964f3636 upstream.
+commit d15cd40cb1858f75846eaafa9a6bca841b790a92 upstream.
 
-drivers/scsi/fcoe/fcoe_ctlr.c::fcoe_ctlr_recv_clr_vlink() advanced the
-descriptor cursor by an attacker-supplied fip_dlen without ever
-requiring dlen >= sizeof(struct fip_desc) in the default branch.  The
-named descriptor cases (FIP_DT_MAC, FIP_DT_NAME, FIP_DT_VN_ID) checked
-their per-type minimum lengths, but a FIP_DT_NON_CRITICAL descriptor
-(fip_dtype >= 128, which the standard requires receivers to silently
-ignore) skipped that check entirely.
+Fix a thinko in the status interrupt handler that has caused counters
+for the RI and DSR modem line transitions to be used for the other line
+each.
 
-An unauthenticated L2 peer on the FCoE control VLAN could hang
-fcoe_ctlr_recv_work on an fcoe, qedf, or bnx2fc initiator indefinitely
-by emitting one FIP CVL frame whose single descriptor had fip_dtype ==
-FIP_DT_NON_CRITICAL and fip_dlen == 0: the cursor advanced zero bytes
-per iteration and the loop condition rlen >= sizeof(*desc) stayed true
-forever, blocking every subsequent FIP frame on that controller.
-
-Tighten the outer dlen guard to also reject dlen < sizeof(struct
-fip_desc), so a malformed descriptor whose length cannot even cover the
-descriptor header is rejected before the switch.  This is the same
-lower-bound the named cases already apply and is the minimum scope that
-closes the loop.
-
-Fixes: 97c8389d54b9 ("[SCSI] fcoe, libfcoe: Add support for FIP. FCoE discovery and keep-alive.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Link: https://patch.msgid.link/20260518144307.2820961-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Link: https://patch.msgid.link/alpine.DEB.2.21.2604101747110.29980@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/fcoe/fcoe_ctlr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/zs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/fcoe/fcoe_ctlr.c
-+++ b/drivers/scsi/fcoe/fcoe_ctlr.c
-@@ -1385,7 +1385,7 @@ static void fcoe_ctlr_recv_clr_vlink(str
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -680,9 +680,9 @@ static void zs_status_handle(struct zs_p
+ 			uart_handle_dcd_change(uport,
+ 					       zport->mctrl & TIOCM_CAR);
+ 		if (delta & TIOCM_RNG)
+-			uport->icount.dsr++;
+-		if (delta & TIOCM_DSR)
+ 			uport->icount.rng++;
++		if (delta & TIOCM_DSR)
++			uport->icount.dsr++;
  
- 	while (rlen >= sizeof(*desc)) {
- 		dlen = desc->fip_dlen * FIP_BPW;
--		if (dlen > rlen)
-+		if (dlen < sizeof(*desc) || dlen > rlen)
- 			goto err;
- 		/* Drop CVL if there are duplicate critical descriptors */
- 		if ((desc->fip_dtype < 32) &&
+ 		if (delta)
+ 			wake_up_interruptible(&uport->state->port.delta_msr_wait);
 
 
 
