@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id idFOKwJKJWrjGAIAu9opvQ
-	(envelope-from <stable+bounces-261433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:54 +0200
+	id kigwCARJJWphGAIAu9opvQ
+	(envelope-from <stable+bounces-261403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0626E64FDC6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACECA64FC91
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hh+IewrP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261433-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261433-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="OD/bJ0Bs";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261403-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261403-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D422303A93B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:35:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28B9D3003833
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32503254A9;
-	Sun,  7 Jun 2026 10:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925062D3A69;
+	Sun,  7 Jun 2026 10:33:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925452D3A69;
-	Sun,  7 Jun 2026 10:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D4B1FE47B;
+	Sun,  7 Jun 2026 10:33:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828537; cv=none; b=GvcGM4A3A47aEcvbzEQSj6+XTK/t32ZQdbYeoC/22XM34rCLDLdWDg0SCsB/y7KhUW9B8xF8UXx/vKckJ/ebceMArj0P8YgwoStw5YQb/J76h7XHg0LxZBgWNsS3TwkhmmiedaQ7HABEHbvkfSjwjWs5Z9zyXk3pyQE2DU5UCEc=
+	t=1780828416; cv=none; b=nzZaew1/imh1iEyQRcCVWbQ2tvzr3wGbr8mi+f0SqFYwxKex1x2+qwDLmc/D4oc/POQVRdGES7fMVYQb8Gw3N4+EWkxYciHUJ7bGphVdJO+yN+Oml1uV2RxJod3bjQq3LCLpXIMG+hL2fVy2dQRINhNr7DRrXixsTd+Ap+VQTE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828537; c=relaxed/simple;
-	bh=ykX1TT8wdY6kop1e1oydICvZOZk+Q3FmMstz6mZyh6s=;
+	s=arc-20240116; t=1780828416; c=relaxed/simple;
+	bh=7625K4wIY9wfl0uztw/v+IXzX/H1OLr/1NA1L4rEQzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENNedNH9i6W6I35stW6uO+aRkzvEvYdM0Aqo5Jho0vPDZoXL0amM/Nmg063jPUMnCPbEC3YNQwa2960IIOhHrghlOaTK5DCL4zW6Wm6CkWQcJhQzVpz2VcMJJsmLYoPqlGuxkQZ/cVnyukaWSwFNrpLKBmB/jPShocOOzJaW3yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh+IewrP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF501F00893;
-	Sun,  7 Jun 2026 10:35:35 +0000 (UTC)
+	 MIME-Version; b=kvozcTgn+F5R80tpwtQT2thoorYY/6eqUQelppfwsNotgON5oaMQEvDd9k/1cw7YmlgQ5xyXp6pD/mqQvWKkCOc35sidp3PkN1dv3PUqZSMxDA70n5hVRqiRkqlEgBCiV6yNajz5qEZUZdcKHv+bq7L8Mz9ryvP/ghUgWCkgHEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD/bJ0Bs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BECE1F00893;
+	Sun,  7 Jun 2026 10:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828536;
-	bh=0R53gYc2buAC0Tbn+tYjgU6MdsU8agYftCPw1v0ZFy0=;
+	s=korg; t=1780828415;
+	bh=8q7gZXVfyj4ZqnN9gBwkuCXFoySYb6xle4kJxz0H/mY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hh+IewrPD+a8ZQxYvzeE6PT6dZF6KgClk4v9w2b0qow4F9NmEpz8zAKV4OeIIxdwY
-	 DGNh5MTmyyfVbVBBH5iVdwiKo+r30Q4/MXA0pML0WzteH+fY3s/VCf67F8k9oZkao/
-	 fIZD85Cy++ENyY8wCYjCKAQb8bIEe48XR925CVKc=
+	b=OD/bJ0BsRyxW1jrbFEnog9AWtCSYkrvnOGi8swBUqEYPZAfZ/+2P9iUGngVTo8/NM
+	 By94MMssFehrKypP5bxoW/edtQ3348jZx3VZMMNb1uHYkHqyv8zAUTJKoIjlJh3D42
+	 tl6GW7EU9uHQqPyIjWdxbj5spGFrc6TwsABwLTbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 146/307] Bluetooth: ISO: fix UAF in iso_recv_frame
-Date: Sun,  7 Jun 2026 11:59:03 +0200
-Message-ID: <20260607095733.093033022@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.18 157/315] iio: dac: ad5686: fix ref bit initialization for single-channel parts
+Date: Sun,  7 Jun 2026 11:59:04 +0200
+Message-ID: <20260607095733.364313659@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261433-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-261403-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0626E64FDC6
+X-Rspamd-Queue-Id: ACECA64FC91
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-commit 47f23a259517abbdb8032c057a1e8a6bf3734878 upstream.
+commit ecae2ae606d493cf11457946436335bd0e726663 upstream.
 
-iso_recv_frame reads conn->sk under iso_conn_lock but releases the lock
-before using sk, with no reference held. A concurrent iso_sock_kill()
-can free sk in that window, causing use-after-free on sk->sk_state and
-sock_queue_rcv_skb().
+The reference bit position was ignored when writing the register at the
+probe() function (!!val was used). When such bit is 1, internal voltage
+reference is disabled so that an external one can be used. For
+multi-channel devices, bit 0 of the Internal Reference Setup command
+behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
+since support for single-channel devices were first introduced.
 
-Fix by replacing the bare pointer read with iso_sock_hold(conn), which
-calls sock_hold() while the spinlock is held, atomically elevating the
-refcount before the lock drops. Add a drop_put label so sock_put() is
-called on all exit paths where the hold succeeded.
-
-Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/iso.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/dac/ad5686.c |    6 +++---
+ drivers/iio/dac/ad5686.h |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -553,7 +553,7 @@ static void iso_recv_frame(struct iso_co
- 	struct sock *sk;
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -509,7 +509,7 @@ int ad5686_probe(struct device *dev,
+ 		break;
+ 	case AD5686_REGMAP:
+ 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
+-		ref_bit_msk = 0;
++		ref_bit_msk = AD5686_REF_BIT_MSK;
+ 		break;
+ 	case AD5693_REGMAP:
+ 		cmd = AD5686_CMD_CONTROL_REG;
+@@ -520,9 +520,9 @@ int ad5686_probe(struct device *dev,
+ 		return -EINVAL;
+ 	}
  
- 	iso_conn_lock(conn);
--	sk = conn->sk;
-+	sk = iso_sock_hold(conn);
- 	iso_conn_unlock(conn);
+-	val = (has_external_vref | ref_bit_msk);
++	val = has_external_vref ? ref_bit_msk : 0;
  
- 	if (!sk)
-@@ -562,11 +562,15 @@ static void iso_recv_frame(struct iso_co
- 	BT_DBG("sk %p len %d", sk, skb->len);
+-	ret = st->write(st, cmd, 0, !!val);
++	ret = st->write(st, cmd, 0, val);
+ 	if (ret)
+ 		return ret;
  
- 	if (sk->sk_state != BT_CONNECTED)
--		goto drop;
-+		goto drop_put;
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -46,6 +46,7 @@
  
--	if (!sock_queue_rcv_skb(sk, skb))
-+	if (!sock_queue_rcv_skb(sk, skb)) {
-+		sock_put(sk);
- 		return;
-+	}
+ #define AD5310_REF_BIT_MSK			BIT(8)
+ #define AD5683_REF_BIT_MSK			BIT(12)
++#define AD5686_REF_BIT_MSK			BIT(0)
+ #define AD5693_REF_BIT_MSK			BIT(12)
  
-+drop_put:
-+	sock_put(sk);
- drop:
- 	kfree_skb(skb);
- }
+ /**
 
 
 
