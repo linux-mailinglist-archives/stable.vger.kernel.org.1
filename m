@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WfWVDbVNJWpVGgIAu9opvQ
-	(envelope-from <stable+bounces-261691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:41 +0200
+	id nowXAvtNJWp4GgIAu9opvQ
+	(envelope-from <stable+bounces-261716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D918E650164
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827326501E6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XyY1d9Vl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261691-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261691-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eNHph5vz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261716-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261716-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75518302AF07
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8464B303D085
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531F43264C8;
-	Sun,  7 Jun 2026 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAB12EBB9E;
+	Sun,  7 Jun 2026 10:52:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0650232F76D;
-	Sun,  7 Jun 2026 10:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C984071DD;
+	Sun,  7 Jun 2026 10:52:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829490; cv=none; b=q7opsO2zxqq/06BA+zebZfOwlUp3u/QMh5btEHAI2M5WErGrSr61IX4v0iy92ETqmxtrE09Ev9FAPS2kuln2IXNFRDAlt9J/SZ+GmHWdfC/JTsRmrJnht8S4U3hZZducNu6u++wInG6WUrKymLYvDnSvsxo9AAK9Sdwz/aQZrg4=
+	t=1780829575; cv=none; b=ryvjgmb/9LovSK4Uag4iWrOlZGbMCS28lHusXYNdjqcs8pyAe62mItPlFBf1ZU7gGXHaBzcA8JPxlDsa8H3h4BmJESHi8jAkpTbtr9+PVyeRGZYBXgAisIrk+J1SXMCvRL4Kk7Ee0sE0tCLtF/SGMXFCeRUnyI9VPC6Ps8RiWJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829490; c=relaxed/simple;
-	bh=pq39wr3y6jbou9FxM/Dd08hU4bZ4W8Z4rOH63UB1hmU=;
+	s=arc-20240116; t=1780829575; c=relaxed/simple;
+	bh=Ng/BSM1M0b2qV8HSLf5jLt5n8HT4wItl/xFjirA1jPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/WXrJ7kNQXtVnbZ/J+CJyDXd/PB2CrBIE9U90YxjF0vQOSedLCcvnBu9kFO35t0vRyHwnhXKXaPKd3Vtraghv72vdMUFK31eX8sRJ0+8ucwtuq/Y80P/DkwbP/DmIgtEhxz+IOu/9/l1cThKsTtWcqNCicdrDVZj3zKn4ijjdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyY1d9Vl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438B11F00893;
-	Sun,  7 Jun 2026 10:51:27 +0000 (UTC)
+	 MIME-Version; b=R21Wf4k7YrTRBeh7zUUS1hwBf5ONaj/yLYdlZ9kpN0hGIXJAzokMBYnYnD8uAzgIYEo0D3PxohPfJ04R6KzvLgIUVd9vFx2ahog7EipyGlJ45EolEW1Rcvz+XagSAAw+oCaO/glu8eP88LazRvjWlb47OwhoKkx3PyBs16uI9PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNHph5vz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5879D1F00893;
+	Sun,  7 Jun 2026 10:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829488;
-	bh=VjBTq8/LaVYK0oEi4Azeh1TSBW3M83Md7a7LQNsBoF0=;
+	s=korg; t=1780829574;
+	bh=uwdSMhxYFaAWTlSS9x37sJaShDbNFTuPOpLPOrjrbX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XyY1d9VlNNU3Yuipdzlk4x6oBOUdXR3q+HzYpLwN/7V92Xa0WAljA57erAajF3rS8
-	 bTIJ9x1EI9SzJ0KIbTzxxQ7ZVhtIm7Zqs5cDwKA1mUIw05OkVAMcq620PDzjvG957v
-	 4sMyKJ41y4kSv8gVYpXrWuFr5jdUTIrC18PDkNeU=
+	b=eNHph5vzl90PFfHyNDtzjgiw0gfY7+8yPeEtEJL6+lqd3rgxukflir/v3i9J5YSVz
+	 4hZDzoU8Cq8/CNstPNgIXrQE8thWGAEFL3kFooa0joN/QjrbnWyiBsN68fM/WRpVb3
+	 NLY06S7aNzCCmMUkg/u8x+VNvkmo8A1oH5XXptNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 252/315] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
+	Andrew Lunn <andrew@lunn.ch>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 270/332] USB: serial: mxuport: fix memory corruption with small endpoint
 Date: Sun,  7 Jun 2026 12:00:39 +0200
-Message-ID: <20260607095736.812239094@linuxfoundation.org>
+Message-ID: <20260607095737.957454547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,161 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261716-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261691-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D918E650164
+X-Rspamd-Queue-Id: 827326501E6
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 upstream.
+commit 4085f0dbb1ce2251c9a5938d693de6593f0ab2bd upstream.
 
-Two latent bugs in the Text-phase handler, both present since the
-original LIO integration in commit e48354ce078c ("iscsi-target: Add
-iSCSI fabric support for target v4.1"):
+Make sure that the bulk-out endpoint max packet size is at least eight
+bytes to avoid user-controlled slab corruption should a malicious device
+report a smaller size.
 
-1) DataDigest CRC buffer overread (4 bytes past text_in).
-
-   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
-   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
-   in the iovec, but the same (now-bumped) rx_size is passed as the
-   buffer length to iscsit_crc_buf():
-
-       if (conn->conn_ops->DataDigest) {
-               ...
-               rx_size += ISCSI_CRC_LEN;
-       }
-       ...
-       if (conn->conn_ops->DataDigest) {
-               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
-
-   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
-   when DataDigest is negotiated it reads 4 bytes past the end of the
-   text_in allocation.  KASAN reproduces this directly on the unpatched
-   mainline tree as slab-out-of-bounds in crc32c() called from the Text
-   PDU path.  The OOB bytes feed crc32c() and are then compared against
-   the initiator-supplied checksum, so the value does not flow back to
-   the attacker, but the kernel does read past the buffer on every Text
-   PDU with DataDigest=CRC32C.
-
-   Fix by passing the actual padded payload length
-   (ALIGN(payload_length, 4)) that was used for the kzalloc().
-
-2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
-   drop.
-
-   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
-   silently drops the PDU and lets the initiator plug the CmdSN gap:
-
-               kfree(text_in);
-               return 0;
-
-   cmd->text_in_ptr still points at the freed buffer.  The next Text
-   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
-   unconditionally does
-
-       kfree(cmd->text_in_ptr);
-       cmd->text_in_ptr = NULL;
-
-   freeing the same pointer a second time.  Session teardown via
-   iscsit_release_cmd() has the same shape and hits the same double-free
-   if the connection is dropped before a second Text Request arrives.
-
-   On an unmodified mainline tree the bug-1 CRC overread fires first on
-   the initial valid Text Request and perturbs the subsequent state, so
-   #4 was isolated by building a kernel with only the bug-1 hunk of this
-   patch applied plus temporary printk() observability around the three
-   relevant kfree() sites.  The observability prints are not part of
-   this patch.  On that build, a three-PDU Text Request sequence after
-   login produces two back-to-back splats:
-
-       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
-       BUG: KASAN: double-free in iscsit_release_cmd+0x??
-
-   showing the same pointer freed in the ERL>0 drop path and again in
-   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
-   more in iscsit_release_cmd() (session teardown).  On distro kernels
-   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
-   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
-   the slab freelist.
-
-   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
-   path.  With both hunks applied #4 is directly observable on the stock
-   tree without observability printks; fixing bug-1 alone would mask #4
-   less, not more, so the hunks are submitted together.
-
-Both fixes are one-liners.  The Text PDU state machine is unchanged and
-the wire protocol is unaffected.
-
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ee467a1f2066 ("USB: serial: add Moxa UPORT 12XX/14XX/16XX driver")
+Cc: stable@vger.kernel.org	# 3.14
+Cc: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/serial/mxuport.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -2281,7 +2281,9 @@ iscsit_handle_text_cmd(struct iscsit_con
- 			goto reject;
+--- a/drivers/usb/serial/mxuport.c
++++ b/drivers/usb/serial/mxuport.c
+@@ -962,6 +962,14 @@ static int mxuport_calc_num_ports(struct
+ 	 */
+ 	BUILD_BUG_ON(ARRAY_SIZE(epds->bulk_out) < 16);
  
- 		if (conn->conn_ops->DataDigest) {
--			data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
-+			data_crc = iscsit_crc_buf(text_in,
-+						  ALIGN(payload_length, 4),
-+						  0, NULL);
- 			if (checksum != data_crc) {
- 				pr_err("Text data CRC32C DataDigest"
- 					" 0x%08x does not match computed"
-@@ -2300,6 +2302,7 @@ iscsit_handle_text_cmd(struct iscsit_con
- 					" Command CmdSN: 0x%08x due to"
- 					" DataCRC error.\n", hdr->cmdsn);
- 					kfree(text_in);
-+					cmd->text_in_ptr = NULL;
- 					return 0;
- 				}
- 			} else {
++	/*
++	 * The bulk-out buffers must be large enough for the four-byte header
++	 * (and following data), but assume anything smaller than eight bytes
++	 * is broken.
++	 */
++	if (usb_endpoint_maxp(epds->bulk_out[0]) < 8)
++		return -EINVAL;
++
+ 	for (i = 1; i < num_ports; ++i)
+ 		epds->bulk_out[i] = epds->bulk_out[0];
+ 
 
 
 
