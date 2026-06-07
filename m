@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Us17DctIJWo4GAIAu9opvQ
-	(envelope-from <stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:43 +0200
+	id ctwBKRxJJWpwGAIAu9opvQ
+	(envelope-from <stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF7B64FC31
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEB264FCB7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="k03/Vmof";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261358-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XF11DfZW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3FC8300AED1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A636D30034B8
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1931FE47B;
-	Sun,  7 Jun 2026 10:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A18A3290AD;
+	Sun,  7 Jun 2026 10:33:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F362C1595;
-	Sun,  7 Jun 2026 10:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4192C1595;
+	Sun,  7 Jun 2026 10:33:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828242; cv=none; b=M1qDcqfdFa+e+grkuTCqzMukIHZZ8HH7licKhK8dmvYp3f3IUc7YR8Zt8PBfWcrnI0R9umNGju9AbiSY8mAgD4yHYJgA4nYfQBiDv9jAV9297/nK/OgTv/3ECP9cMrNvvF/5Kf9K3kVz4b0kEw9hZy/HSqnr0zNSmZo0oUz0KJE=
+	t=1780828439; cv=none; b=pAp6dEQ2MCEy+QB1Omo98OHZQRYAiKfRBLtM6now/VrXqigGYhojHi6Ratnr0lFi+HOIih1n7PoifTVlJVPo7fEyzN9FC9AnuS0wGQceEdNlpMRepmJXw2fEZute9wZksbvAFcthhSzLGtksQvLKD9oeVDsHUuDAsN+675owrxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828242; c=relaxed/simple;
-	bh=WZHbzYDbEzJqbklql1/fT3BW1MC0EsIIiXK4T7x6dZE=;
+	s=arc-20240116; t=1780828439; c=relaxed/simple;
+	bh=pCospr9bEp3GqCTLKgRvvSUoARgu2Laa3g0jPJWiaqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=de1Xdiz8Rn9q8eB3v/2TG1N7Xwyx6j6CQw5bm9R1M8z2tASKU86XhvkIfG6BtCpIccerICRDrEsADdkV03+VZj+7PGbw3tjdbbTfL9rWRIXyXJVojQYAPnKTxXnUq0QGa8PVvNvNz4CSfDcOOQj/RS2o8Kgih4/yPyOvhF+SuG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k03/Vmof; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC3D1F00893;
-	Sun,  7 Jun 2026 10:30:40 +0000 (UTC)
+	 MIME-Version; b=uP+96ccC9u/SYXH0RQsbqaefEw1wFAqMHYnycIUNHDHWXLMbgl4o3+y/SmSyeDF+MGMN49HCRH7PclV6QUabqLhDFJ+B1QQSdGhmE+XdNdc2DgHyB52LHtZc5k5UjeSNV9Hv3Rfb/Oi11MZ0+9PzMU/UdGKFuO6aVRAzr8JeNE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF11DfZW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B131F00893;
+	Sun,  7 Jun 2026 10:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828240;
-	bh=2HH33MTybkPLSWucpxEbBqANiLEQbEXA5ZQ167ZS8dM=;
+	s=korg; t=1780828438;
+	bh=vIebKaf1oQJQCGgbZDgEWUPAYx1LCwyRyOVv3DlRq9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=k03/VmofwJcX+YqIy1LXlTtjEc1Z4G7sWRv5mCarYxJohofT8TVYH6VVujpMOTu4K
-	 4OvUXkIUZ4CMhDlY/3gI3ZaOkAxgZb/7jTA0q2CeQNdx1qwDZrlEM9jHdrztEyU0Aj
-	 ZxiFEKunGzk9dY+960IQooV5oKvxZ442ge1uJoSw=
+	b=XF11DfZWJCkjmix/LcWP5XTDBzlUFelRkxq8swaVbMHE1iBujNwyV2uPr9t4AotV/
+	 2AZqvDh/Ka5lRA36oWf1CsCUYxTgQg2LP9/y0/41gL9ha4C1r0lfRIDCa8mJON6w4H
+	 I6sAy15Ohclfw/7eyMF/M+Wn0D8sah+cId9Wozvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 7.0 166/332] KVM: SEV: Compute the correct max length of the in-GHCB scratch area
+	hlleng <a909204013@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.12 138/307] HID: quirks: Add ALWAYS_POLL quirk for SIGMACHIP USB mouse
 Date: Sun,  7 Jun 2026 11:58:55 +0200
-Message-ID: <20260607095734.168127622@linuxfoundation.org>
+Message-ID: <20260607095732.804955626@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,139 +68,87 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261409-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:a909204013@gmail.com,m:bentiss@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261358-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BBF7B64FC31
+X-Rspamd-Queue-Id: 9BEB264FCB7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: hlleng <a909204013@gmail.com>
 
-commit 5867d7e202e09f037cefe77f7af4413c7c0fa088 upstream.
+commit 07466fc91c55532edcfb5c6a7ccd2ea52728d6bd upstream.
 
-When setting the length of the GHCB scratch area, and the area is in the
-GHCB shared buffer, set the effective length of the scratch area to the max
-possible size given the start of the guest-provided pointer, and the end of
-the shared buffer.
+The SIGMACHIP USB mouse with VID/PID 1c4f:0034 can disconnect and
+re-enumerate repeatedly after it has been enumerated if its interrupt
+endpoint is not continuously polled.
 
-The code was "fine" when first introduced, as KVM doesn't consult the
-length of the buffer when emulating MMIO, because the passed in @len always
-specifies the *max* size required.  But for PSC requests, the incoming @len
-is just the minimum length (to process the header), and KVM needs to know
-the full size of the scratch area to avoid buffer overflows (spoiler alert).
+This was observed with the device reporting itself as "SIGMACHIP Usb
+Mouse". Keeping the input event device open avoids the disconnects.
 
-Opportunistically rename @len => @min_len to better reflect its role.
+Add HID_QUIRK_ALWAYS_POLL for this device so the HID core keeps polling
+it even when there is no userspace input consumer.
 
-Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
 Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-7-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: hlleng <a909204013@gmail.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/hid/hid-ids.h    |    1 +
+ drivers/hid/hid-quirks.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3617,7 +3617,7 @@ int pre_sev_run(struct vcpu_svm *svm, in
- }
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1230,6 +1230,7 @@
  
- #define GHCB_SCRATCH_AREA_LIMIT		(16ULL * PAGE_SIZE)
--static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 len)
-+static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
- {
- 	struct vmcb_control_area *control = &svm->vmcb->control;
- 	u64 ghcb_scratch_beg, ghcb_scratch_end;
-@@ -3633,10 +3633,10 @@ static int setup_vmgexit_scratch(struct
- 		goto e_scratch;
- 	}
+ #define USB_VENDOR_ID_SIGMA_MICRO	0x1c4f
+ #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD	0x0002
++#define USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE	0x0034
+ #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD2	0x0059
  
--	scratch_gpa_end = scratch_gpa_beg + len;
-+	scratch_gpa_end = scratch_gpa_beg + min_len;
- 	if (scratch_gpa_end < scratch_gpa_beg) {
- 		pr_err("vmgexit: scratch length (%#llx) not valid for scratch address (%#llx)\n",
--		       len, scratch_gpa_beg);
-+		       min_len, scratch_gpa_beg);
- 		goto e_scratch;
- 	}
- 
-@@ -3660,6 +3660,8 @@ static int setup_vmgexit_scratch(struct
- 
- 		scratch_va = (void *)svm->sev_es.ghcb;
- 		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
-+
-+		svm->sev_es.ghcb_sa_len = ghcb_scratch_end - scratch_gpa_beg;
- 	} else {
- 		/* GHCB v2 requires the scratch area to be within the GHCB. */
- 		if (to_kvm_sev_info(svm->vcpu.kvm)->ghcb_version >= 2)
-@@ -3669,16 +3671,16 @@ static int setup_vmgexit_scratch(struct
- 		 * The guest memory must be read into a kernel buffer, so
- 		 * limit the size
- 		 */
--		if (len > GHCB_SCRATCH_AREA_LIMIT) {
-+		if (min_len > GHCB_SCRATCH_AREA_LIMIT) {
- 			pr_err("vmgexit: scratch area exceeds KVM limits (%#llx requested, %#llx limit)\n",
--			       len, GHCB_SCRATCH_AREA_LIMIT);
-+			       min_len, GHCB_SCRATCH_AREA_LIMIT);
- 			goto e_scratch;
- 		}
--		scratch_va = kvzalloc(len, GFP_KERNEL_ACCOUNT);
-+		scratch_va = kvzalloc(min_len, GFP_KERNEL_ACCOUNT);
- 		if (!scratch_va)
- 			return -ENOMEM;
- 
--		if (kvm_read_guest(svm->vcpu.kvm, scratch_gpa_beg, scratch_va, len)) {
-+		if (kvm_read_guest(svm->vcpu.kvm, scratch_gpa_beg, scratch_va, min_len)) {
- 			/* Unable to copy scratch area from guest */
- 			pr_err("vmgexit: kvm_read_guest for scratch area failed\n");
- 
-@@ -3694,11 +3696,10 @@ static int setup_vmgexit_scratch(struct
- 		 */
- 		svm->sev_es.ghcb_sa_sync = sync;
- 		svm->sev_es.ghcb_sa_free = true;
-+		svm->sev_es.ghcb_sa_len = min_len;
- 	}
- 
- 	svm->sev_es.ghcb_sa = scratch_va;
--	svm->sev_es.ghcb_sa_len = len;
--
- 	return 0;
- 
- e_scratch:
+ #define USB_VENDOR_ID_SIGMATEL		0x066F
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -186,6 +186,7 @@ static const struct hid_device_id hid_qu
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SEMICO, USB_DEVICE_ID_SEMICO_USB_KEYKOARD), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SENNHEISER, USB_DEVICE_ID_SENNHEISER_BTD500USB), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD), HID_QUIRK_NO_INIT_REPORTS },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMATEL, USB_DEVICE_ID_SIGMATEL_STMP3780), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS1030_TOUCH), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS817_TOUCH), HID_QUIRK_NOGET },
 
 
 
