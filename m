@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tJePElNMJWqLGQIAu9opvQ
-	(envelope-from <stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:47 +0200
+	id zpPiILtKJWoQGQIAu9opvQ
+	(envelope-from <stable+bounces-261517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10F5650008
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A4264FE64
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vwRfdd12;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SvybQSdI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261517-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261517-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 195413049970
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5AB1B30120D4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22BD31E850;
-	Sun,  7 Jun 2026 10:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431673254A9;
+	Sun,  7 Jun 2026 10:40:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ED970808;
-	Sun,  7 Jun 2026 10:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5072C1595;
+	Sun,  7 Jun 2026 10:40:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828937; cv=none; b=nIrve4xqWs9gKi0azVIMuBmGRMLT10uKprMPzih+zAqU5VOFKBhj1upMXi11J5zaoBAR3PISc0IHzOGN4rhd0sffJWkEHvMlf1C893S9Kia8JYC5WmJVNXk9XGbKIpzomfKjUuq6g7hIb2hWumGMjnY0AjwZ+WDVcZvsLgDVP+s=
+	t=1780828856; cv=none; b=uHTBeWB8YoBmGfl2N7nZG2sHrEQdUVilh92fNSUGVzziYY4JamM+e05rBx9RzNKOmycU8yBW2/IbrVKiSbdsMGKP3nlGSqtcKW0oS9UdXyTdfbxOuyo5V2FG95b2SDQFfQfAllK3LdJ7e4t7zSUE2ZnVJKU5mRe/nctvjF7pYDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828937; c=relaxed/simple;
-	bh=+5BbJukmPM4+M5BLyugmqs7Lj0lk5lGuLsvha9THYJc=;
+	s=arc-20240116; t=1780828856; c=relaxed/simple;
+	bh=WAK9zWcLvKwvRe9Vz/SjTjyA2F7h4EDjd1yVTR6KuNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wd3gF3lXNYhX8zEiJZ3E+MFLN0h98IdZKUPvS+tXe9XTVd5WpVxC9vgZBlWiLvy0tmUOVstYhxJHDoa2kbyVkhmMRD3xf9CaAh8AIwSgTd+H37EoX3EeCCudpHb44GiMRN1MTq7yRQKN6yBRMoNoXMKHnSKV+B0wOCSMIq4xO/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwRfdd12; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822AA1F00893;
-	Sun,  7 Jun 2026 10:42:15 +0000 (UTC)
+	 MIME-Version; b=ex99WmK8s41XnVBfS8jXc15NxKgOaK5OapsfPsduEBhzZpgWDfSJXqnyo31o6ZRzQfCThH2Xef0qcYKtb8A/HV37waxaeUEgUnNgzgZh5ca6q2DJIWOPO0/rViFDap36Avcix8kUZrNa+8BQ35b5HgzUIjFsidgvgdOt0WaU8FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvybQSdI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E4A1F00893;
+	Sun,  7 Jun 2026 10:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828936;
-	bh=1I/CDymJNN2eqWqRRAx2IITc84G7V5F/QVTbIMoIGdE=;
+	s=korg; t=1780828854;
+	bh=FdtpPhfXosVpDWN+zIPentIGCWjaBIQbLsYrsQ5ah70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vwRfdd12hob16xDeK2Wj19omMpyfc+jx/r9S34u8nEPvjM1vEsXcbPXSP2dxZRciX
-	 iUbIw1dST1lL6qTk/ogTxPgkrCLnH3/KYUclBrKwD0iGmXQ2jkbhWNNGGjcJFR0+V4
-	 1xDkSzyKqFhhdGaY8RTpay01V/KAdfyR6JxI0r7c=
+	b=SvybQSdIizOfoXCzX0F2DdLLWpmAdtOYOAdZZd09f0r0Ev4gVRpVps8C02skR8Kbd
+	 1tjBJ41ZtnzFAPgRKPHT42aSrNRg4d8RKDm6uiIUmffnW8WYL2hIUOh0PAHXn+ZKnB
+	 UBbrJZqu+MOYt5XDVOPZRjkRvhiqGeuZJYm4cut0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 203/315] ALSA: scarlett2: Fix 2i2 Gen 4 direct monitor gain on firmware 2417
+	Tianyu Xu <xtydtc@gmail.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 221/332] spi: spi-mem: avoid mutating op template in spi_mem_supports_op()
 Date: Sun,  7 Jun 2026 11:59:50 +0200
-Message-ID: <20260607095735.027166550@linuxfoundation.org>
+Message-ID: <20260607095736.178830239@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,144 +73,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261539-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:g@b4.vu,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ti.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261517-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xtydtc@gmail.com,m:s-k6@ti.com,m:miquel.raynal@bootlin.com,m:broonie@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,suse.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,ti.com:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A10F5650008
+X-Rspamd-Queue-Id: 11A4264FE64
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Santhosh Kumar K <s-k6@ti.com>
 
-commit db37cf47b67e38ade40de5cd74a4d4d772ff1416 upstream.
+commit 79378db6a86c7014cce40b65252e6c18f5b8bcc2 upstream.
 
-Firmware 2417 for the Scarlett 4th Gen 2i2 moved the direct monitor
-gain parameter by 4 bytes, from offset 0x2a0 to 0x2a4, breaking the
-"Direct Monitor X Mix Y" controls.
+spi_mem_supports_op() accepts a const struct spi_mem_op pointer but
+casts away const internally to call spi_mem_adjust_op_freq(). This
+mutates the caller's op template, which causes stale max_freq values
+when callers reuse persistent templates - subsequent calls won't
+re-apply the device frequency cap since spi_mem_adjust_op_freq()
+skips non-zero values.
 
-Special-case the offset in the get/set config helpers when the
-running firmware is 2417 or later.
+Fix by operating on a stack-local copy instead.
 
-Fixes: 4e809a299677 ("ALSA: scarlett2: Add support for Solo, 2i2, and 4i4 Gen 4")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/ahIWTueUlWA5xiV+@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: a4f8e70d75dd ("spi: spi-mem: add spi_mem_adjust_op_freq() in spi_mem_supports_op()")
+Cc: Tianyu Xu <xtydtc@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260527173736.2243004-1-s-k6@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |   33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mem.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2504,6 +2504,27 @@ static int scarlett2_has_config_item(
- 	return !!private->config_set->items[config_item_num].offset;
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -279,13 +279,20 @@ static bool spi_mem_internal_supports_op
+  */
+ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+-	/* Make sure the operation frequency is correct before going futher */
+-	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
++	struct spi_mem_op eval_op = *op;
+ 
+-	if (spi_mem_check_op(op))
++	/*
++	 * Work on a local copy; this is a pure capability check and must
++	 * not modify the caller's op. Stored templates with max_freq == 0
++	 * must remain unset so their frequency is always re-capped to the
++	 * current device maximum at execution time.
++	 */
++	spi_mem_adjust_op_freq(mem, &eval_op);
++
++	if (spi_mem_check_op(&eval_op))
+ 		return false;
+ 
+-	return spi_mem_internal_supports_op(mem, op);
++	return spi_mem_internal_supports_op(mem, &eval_op);
  }
+ EXPORT_SYMBOL_GPL(spi_mem_supports_op);
  
-+/* Return the configuration item's offset, applying any per-firmware
-+ * overrides.
-+ *
-+ * Firmware 2417 for the 2i2 Gen 4 moved DIRECT_MONITOR_GAIN by 4
-+ * bytes. Apply that shift here so that the rest of the driver can
-+ * keep using the single config set. This override can be removed
-+ * once the multi-config-set framework lands.
-+ */
-+static int scarlett2_config_item_offset(
-+	struct scarlett2_data *private, int config_item_num)
-+{
-+	int offset = private->config_set->items[config_item_num].offset;
-+
-+	if (config_item_num == SCARLETT2_CONFIG_DIRECT_MONITOR_GAIN &&
-+	    private->info == &s2i2_gen4_info &&
-+	    private->firmware_version >= 2417)
-+		offset = 0x2a4;
-+
-+	return offset;
-+}
-+
- /* Send a USB message to get configuration parameters; result placed in *buf */
- static int scarlett2_usb_get_config(
- 	struct usb_mixer_interface *mixer,
-@@ -2513,6 +2534,7 @@ static int scarlett2_usb_get_config(
- 	const struct scarlett2_config *config_item =
- 		&private->config_set->items[config_item_num];
- 	int size, err, i;
-+	int item_offset;
- 	u8 *buf_8;
- 	u8 value;
- 
-@@ -2522,13 +2544,15 @@ static int scarlett2_usb_get_config(
- 	if (!config_item->offset)
- 		return -EFAULT;
- 
-+	item_offset = scarlett2_config_item_offset(private, config_item_num);
-+
- 	/* Writes to the parameter buffer are always 1 byte */
- 	size = config_item->size ? config_item->size : 8;
- 
- 	/* For byte-sized parameters, retrieve directly into buf */
- 	if (size >= 8) {
- 		size = size / 8 * count;
--		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
-+		err = scarlett2_usb_get(mixer, item_offset, buf, size);
- 		if (err < 0)
- 			return err;
- 		if (config_item->size == 16) {
-@@ -2546,7 +2570,7 @@ static int scarlett2_usb_get_config(
- 	}
- 
- 	/* For bit-sized parameters, retrieve into value */
--	err = scarlett2_usb_get(mixer, config_item->offset, &value, 1);
-+	err = scarlett2_usb_get(mixer, item_offset, &value, 1);
- 	if (err < 0)
- 		return err;
- 
-@@ -2696,7 +2720,8 @@ static int scarlett2_usb_set_config(
- 	 */
- 	if (config_item->size >= 8) {
- 		size = config_item->size / 8;
--		offset = config_item->offset + index * size;
-+		offset = scarlett2_config_item_offset(private, config_item_num) +
-+			 index * size;
- 
- 	/* If updating a bit, retrieve the old value, set/clear the
- 	 * bit as needed, and update value
-@@ -2705,7 +2730,7 @@ static int scarlett2_usb_set_config(
- 		u8 tmp;
- 
- 		size = 1;
--		offset = config_item->offset;
-+		offset = scarlett2_config_item_offset(private, config_item_num);
- 
- 		err = scarlett2_usb_get(mixer, offset, &tmp, 1);
- 		if (err < 0)
 
 
 
