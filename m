@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ew74LWFFJWo8FgIAu9opvQ
-	(envelope-from <stable+bounces-261064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:09 +0200
+	id 5peaFqJFJWpoFgIAu9opvQ
+	(envelope-from <stable+bounces-261082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4139F64F7D1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA6864F840
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yGA+pxSa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261064-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261064-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=puWoojgM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261082-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261082-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A67D3014297
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2E233036406
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2506E30C157;
-	Sun,  7 Jun 2026 10:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C4D30C157;
+	Sun,  7 Jun 2026 10:13:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B6E2E7373;
-	Sun,  7 Jun 2026 10:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2551E98EF;
+	Sun,  7 Jun 2026 10:13:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827140; cv=none; b=b8krKlkYQZ5Phjd1CnxjlK8Y99a77Q2LSuJ3RiiXhCPieO+ot19fu7HvXFO0UwJF/lFQvwCL4sEcRSaiqfo3qJd+bAg3uiS0Cc3HysEryA/9gB9NO9kj6jt4r8hFXENcjPMkupCH9logN5wysduOzd+kH7h/LcBkcoHGxz8IIbM=
+	t=1780827201; cv=none; b=CYID41OesOvlyzXuPIuOEgxPyYRpi7e4LYmSnSh8WuEu5H/d2f1I9Lhr8uAwkmI0zW/xfL9FZO9HNIOSdTSt1BscieqY8RqfB2VWcZ9pBFBs3/SXW95dJ1sm26IITvt7qUeJjuajRhjlkQY6R7DgOcH+LerF58ngT9z4Ecqfw+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827140; c=relaxed/simple;
-	bh=oKc0moLtesGmo6AoSH//R743kgLUnD9toI8wa4PciaI=;
+	s=arc-20240116; t=1780827201; c=relaxed/simple;
+	bh=EAt+AqdO+gWyyXMOV8Wf0u8fX5dTVO1x7MBbJDDFt98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtkxN0npYe5rHmgm037eD9KBcp3uTzqP9FgogFdP6HAiknyTyCw5pFeU9llzYWwI03dwATMrvJryswZIKY/+3tT6klcs934DT+vrjls2ddB9i/GhdWyTcw2ahKYUzyKw83zv23nzjf9GJ6/tMcGHmL4UQmY3Df8WA1hFxARyh6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGA+pxSa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAFE1F00893;
-	Sun,  7 Jun 2026 10:12:18 +0000 (UTC)
+	 MIME-Version; b=CKEvf9GEhjMZY6j7jiukjc5Hke6e/sEiDlvrizTmr34wITq5Fhip4FqPYpZNapsK0o65hdF+HUvgugv84iPAQSR8uSq4jfm0N4S/NbtAUla5kKvYID58DEb58TYyehRcW5TLci5PFhkYN6euh0DJFg0L0bfl0RvH+xAaFDBGFfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puWoojgM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECE11F00893;
+	Sun,  7 Jun 2026 10:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827139;
-	bh=jG4/F0Kffg7npr+GulHUPqtZEAz5CTtRyHM6MzEHJoI=;
+	s=korg; t=1780827200;
+	bh=fzs0t7lUI8FXYnXdhTixQm7dulm4BzxY7wVHGxx9OrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yGA+pxSajP8uhv6CPIv5m4Ys0odkWJakzak3+8xXEyAI84w2HlCwcWD32ioLNj/rv
-	 4YSK3osAD/2zdtP+12VMxdNGkZcJzpi0AhoqZcSxKT/BRzFMOzRbRqu3BSPA8tbqW2
-	 aQT8hDmr+ddW/r6u5kP8czSP9XefVSvxBTleh3NE=
+	b=puWoojgMAqDe9phd9BI1KQPmJIJN5PcThiUb1frZ2p3aAjRm5tMpNaSm3OUv9Aqzu
+	 3ZBUwwSlxIKl8aD1b6okMiV+MU9j5ty1EfY4ozsJjmm/JrxcpPhKJAm6yO5d5Dzwui
+	 HeCfXyYkhSfj1PifaupDgyPEdVmMsGhWFbV8Vh1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 066/332] bridge: Fix sleep in atomic context in netlink path
-Date: Sun,  7 Jun 2026 11:57:15 +0200
-Message-ID: <20260607095730.557173786@linuxfoundation.org>
+Subject: [PATCH 6.18 049/315] ethtool: cmis: require exact CDB reply length
+Date: Sun,  7 Jun 2026 11:57:16 +0200
+Message-ID: <20260607095729.390836234@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,184 +69,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261064-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261082-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nikolay@nvidia.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4139F64F7D1
+X-Rspamd-Queue-Id: EFA6864F840
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 5eec4427b89c2fb2beac54920101e55a2f1c0c21 ]
+[ Upstream commit 6c3f999a9d1338c6c89a9ff4549eafe72bc2e7b1 ]
 
-Since the introduction of the netlink configuration path for bridge
-ports in commit 25c71c75ac87 ("bridge: bridge port parameters over
-netlink"), br_setport() was always called with the bridge lock held
-around it. Back then this decision made sense: The bridge lock protects
-the STP state of the bridge and its ports and at that time the function
-only processed three STP related netlink attributes (cost, priority and
-state).
+Malicious SFP module could respond with rpl_len longer than
+what cmis_cdb_process_reply() expected, leading to OOB writes.
+Malicious HW is a bit theoretical but some modules may just
+be buggy and/or the reads may occasionally get corrupted,
+so let's protect the kernel.
 
-Nowadays, br_setport() processes a lot more attributes and most of them
-do not need the bridge lock:
+The existing check protects from short replies. We need to
+protect from long ones, too. All callers that pass a non-zero
+rpl_exp_len cast the reply payload to a fixed-layout struct
+and read fields at fixed offsets, with no version negotiation
+or short-reply handling:
 
-* Bridge flags: Only require RTNL. Read locklessly by the data path.
-  Annotations can be added in net-next.
+  - cmis_cdb_validate_password()
+  - cmis_cdb_module_features_get()
+  - cmis_fw_update_fw_mng_features_get()
 
-* FDB port flushing: Only requires the FDB lock.
+so let's assume that responses longer than expected do not
+have to be handled gracefully here. Add a warning message
+to make the debug easier in case my understanding is wrong...
 
-* Multicast attributes: Only require the multicast lock.
+Note that page_data->length (argument of kmalloc) comes from
+last arg to ethtool_cmis_page_init() which is rpl_exp_len.
 
-* Group forward mask: Only requires RTNL. Read locklessly by the data
-  path. Annotations can be added in net-next.
+Note2 that AIs also like to point out overflows in args->req.payload
+itself (which is a fixed-size 120 B buffer, on the stack),
+but callers should be reading structs defined by the standard,
+so protecting from requests for more data than max seem like
+defensive programming.
 
-* Backup port and NHID: Only require RTNL. Read locklessly by the data
-  path.
-
-This is a problem as the bridge calls dev_set_promiscuity() when certain
-bridge port flags change and this function can sleep since the commit
-cited below, resulting in a splat such as [1].
-
-Fix this by reducing the scope of the bridge lock and only take it when
-processing the three STP related attributes that require it. This is
-consistent with the multicast attributes where each attribute acquires
-the multicast lock instead of having one critical section for all
-relevant attributes.
-
-[1]
-BUG: sleeping function called from invalid context at net/core/dev_addr_lists.c:1262
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 356, name: bridge
-preempt_count: 201, expected: 0
-RCU nest depth: 0, expected: 0
-2 locks held by bridge/356:
-#0: ffffffff919473a0 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg (net/core/rtnetlink.c:80 net/core/rtnetlink.c:7002)
-#1: ffff888115072d58 (&br->lock){+...}-{3:3}, at: br_setlink (./include/linux/spinlock.h:348 net/bridge/br_netlink.c:1117)
-Preemption disabled at:
- 0x0
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-__might_resched.cold (kernel/sched/core.c:9163)
-netif_rx_mode_run (net/core/dev_addr_lists.c:1262)
-netif_rx_mode_sync (net/core/dev_addr_lists.c:1428)
-dev_set_promiscuity (net/core/dev_api.c:289)
-br_manage_promisc (net/bridge/br_if.c:135 net/bridge/br_if.c:172)
-br_port_flags_change (net/bridge/br_if.c:242 net/bridge/br_if.c:747)
-br_setport (net/bridge/br_netlink.c:1000)
-br_setlink (net/bridge/br_netlink.c:1118)
-rtnl_bridge_setlink (net/core/rtnetlink.c:5572)
-rtnetlink_rcv_msg (net/core/rtnetlink.c:7005)
-netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-netlink_unicast (net/netlink/af_netlink.c:1318 net/netlink/af_netlink.c:1344)
-netlink_sendmsg (net/netlink/af_netlink.c:1894)
-__sock_sendmsg (net/socket.c:787 (discriminator 4) net/socket.c:802 (discriminator 4))
-____sys_sendmsg (net/socket.c:2698)
-___sys_sendmsg (net/socket.c:2752)
-__sys_sendmsg (net/socket.c:2784)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-
-Fixes: 78cd408356fe ("net: add missing instance lock to dev_set_promiscuity")
-Reviewed-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260526064818.272516-2-idosch@nvidia.com
+Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-7-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netlink.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ net/ethtool/cmis_cdb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 0264730938f4b2..2ad502bfbd55e5 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1000,19 +1000,25 @@ static int br_setport(struct net_bridge_port *p, struct nlattr *tb[],
- 	br_port_flags_change(p, changed_mask);
- 
- 	if (tb[IFLA_BRPORT_COST]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_stp_set_path_cost(p, nla_get_u32(tb[IFLA_BRPORT_COST]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
+diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
+index 3057576bc81e3d..fe156991d0becd 100644
+--- a/net/ethtool/cmis_cdb.c
++++ b/net/ethtool/cmis_cdb.c
+@@ -513,8 +513,13 @@ static int cmis_cdb_process_reply(struct net_device *dev,
  	}
  
- 	if (tb[IFLA_BRPORT_PRIORITY]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_stp_set_port_priority(p, nla_get_u16(tb[IFLA_BRPORT_PRIORITY]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
+ 	rpl = (struct ethtool_cmis_cdb_rpl *)page_data->data;
+-	if ((args->rpl_exp_len > rpl->hdr.rpl_len + rpl_hdr_len) ||
+-	    !rpl->hdr.rpl_chk_code) {
++	if (rpl->hdr.rpl_len != args->rpl_exp_len) {
++		netdev_warn(dev, "CDB reply length mismatch, expected %u got %u\n",
++			    args->rpl_exp_len, rpl->hdr.rpl_len);
++		err = -EIO;
++		goto out;
++	}
++	if (!rpl->hdr.rpl_chk_code) {
+ 		err = -EIO;
+ 		goto out;
  	}
- 
- 	if (tb[IFLA_BRPORT_STATE]) {
-+		spin_lock_bh(&p->br->lock);
- 		err = br_set_port_state(p, nla_get_u8(tb[IFLA_BRPORT_STATE]));
-+		spin_unlock_bh(&p->br->lock);
- 		if (err)
- 			return err;
- 	}
-@@ -1114,9 +1120,7 @@ int br_setlink(struct net_device *dev, struct nlmsghdr *nlh, u16 flags,
- 			if (err)
- 				return err;
- 
--			spin_lock_bh(&p->br->lock);
- 			err = br_setport(p, tb, extack);
--			spin_unlock_bh(&p->br->lock);
- 		} else {
- 			/* Binary compatibility with old RSTP */
- 			if (nla_len(protinfo) < sizeof(u8))
-@@ -1203,17 +1207,10 @@ static int br_port_slave_changelink(struct net_device *brdev,
- 				    struct nlattr *data[],
- 				    struct netlink_ext_ack *extack)
- {
--	struct net_bridge *br = netdev_priv(brdev);
--	int ret;
--
- 	if (!data)
- 		return 0;
- 
--	spin_lock_bh(&br->lock);
--	ret = br_setport(br_port_get_rtnl(dev), data, extack);
--	spin_unlock_bh(&br->lock);
--
--	return ret;
-+	return br_setport(br_port_get_rtnl(dev), data, extack);
- }
- 
- static int br_port_fill_slave_info(struct sk_buff *skb,
 -- 
 2.53.0
 
