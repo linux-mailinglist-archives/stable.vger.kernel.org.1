@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KINZKChEJWqhFQIAu9opvQ
-	(envelope-from <stable+bounces-261074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:56 +0200
+	id q3BnAb1FJWp3FgIAu9opvQ
+	(envelope-from <stable+bounces-261089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A62964F686
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815D364F86E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FbBE1L8C;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261074-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261074-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MDQ4tiqK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261089-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261089-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 12CC1300E3E1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB22E303A255
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62061308F0A;
-	Sun,  7 Jun 2026 10:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477C6308F0A;
+	Sun,  7 Jun 2026 10:13:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A671E98EF;
-	Sun,  7 Jun 2026 10:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1928D2E7373;
+	Sun,  7 Jun 2026 10:13:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827174; cv=none; b=Skh31amQU5Y51wDq0aAKecnGzfoDJQYAilmFA0CKO6flTevKnaf3g0itOIlWZ1rCH9x4UVR91O9pCGR+HikAAhmsnLFzx2ymK+C8lTy0VszcV69/QOmNYMz9ib+d1L8mVWKsIou8iVEYgk9k8Zqk8I8XsM8AhwpFmm8iUB4Z0wY=
+	t=1780827225; cv=none; b=tmVxk2+YyfglFvObFN9aJscq41/RgNBlZAjgHJolYVA4fh9XWbePNzg5guMi/Vx/d+xxzECg7E0X64CtPpeAMytFaRTzsRrvrUUEX7egMHt8/D7u2mzFWQ8MYKoklIw1Ep0fN10Lt2+hYTkSMCw+LKsx0dJFCj5uWX5HJ0C2XXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827174; c=relaxed/simple;
-	bh=jbwcLFL5S4f5prFUwnc5ds/6OR781Ntxq3E1Rn6F4Sw=;
+	s=arc-20240116; t=1780827225; c=relaxed/simple;
+	bh=EwX2S1LgFczWGXm/teEpYuHKGoF6SyVtpjOhF8Gb76c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQgwWYvQPu7dPwyqAr2gxQBvzP/Vj7gFDfqrAsXxGwII08TXpxIl13PVRrx2X/gOjtJYEnbyf/DvOCttgT69t2WcgzfVv5y2knyDT6efuqGs2GGp1NhI8mI2C0kOvzJFwVX+KPTBO40i+sbny03hqdDkIdRGaP9OYFCyUpOlFyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbBE1L8C; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D9C1F00893;
-	Sun,  7 Jun 2026 10:12:52 +0000 (UTC)
+	 MIME-Version; b=DGROp9a5GnZzDwX5rDt0D1ypR0kqPwbO5TCsmROzrw7RWJ8TmOiyMZpArgnXgqfVgjppx8ybGlvmiB8JBJrZ9C1//0U/rPOtKa04pXiKg0NEGYhW7/YKougmLNjEuTEfefo3mDMt4ounaGO8KpGt6a51cLYc4oL1EPc8yGerRXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDQ4tiqK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF871F00893;
+	Sun,  7 Jun 2026 10:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827173;
-	bh=RyAnmkUsgB4liN5SjH8KukOuZq5K5ikCziRWbzreijs=;
+	s=korg; t=1780827224;
+	bh=fNKVBwrUKbE+n+2n+DjKEyp0RykrdN5R9xV49n6JYwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FbBE1L8CyG20GFLmHmBzgnw6da76WN4MqzFzglvU1pmG/LzI0bkwOVOP1Z47NxlxV
-	 4zLv6rxj3qs1Klss3h9KCcMYxgvAE/iEZNxH+f+N6QhM27LTq1yftfh6/UloCf3Wb5
-	 TyFDkBpHr6vmGeRUqjLwbOXH6uGvL9OAtoHv4aTQ=
+	b=MDQ4tiqKt7vBEEJegY6lgoSf7ktO1elZlrMvH3epSzXyaBrnZQJe7KsAthrUxMyqW
+	 3AVtR1TjwuUpDmXTjiZqVLcfXu4rP0y1dWQ3Sll9NQpO2xELuboBqCVkBzVDwXoKiC
+	 s5a0VK/S7NzUQyKQiozHjzJysgZAy6Ff+NMJfCrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Kory Maincent <kory.maincent@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 069/332] ethtool: tsconfig: fix reply error handling
+Subject: [PATCH 6.18 051/315] ethtool: cmis: validate start_cmd_payload_size from module
 Date: Sun,  7 Jun 2026 11:57:18 +0200
-Message-ID: <20260607095730.671990613@linuxfoundation.org>
+Message-ID: <20260607095729.469454606@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261074-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261089-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vadim.fedorenko@linux.dev,m:kory.maincent@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,61 +99,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,linux.dev:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A62964F686
+X-Rspamd-Queue-Id: 815D364F86E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a888bbd43940cada72f7686337741ce86d1cf869 ]
+[ Upstream commit 12c2496a71f82f63617971ca9b730dffa05cf58b ]
 
-A couple of trivial bugs in error handling in tsconfig_send_reply().
-If we failed to allocate rskb we need to set the error.
-If we did allocate it but failed to send it - we need to remember
-to free it.
+The CMIS firmware update code reads start_cmd_payload_size from
+the module's FW Management Features CDB reply and uses it directly
+as the byte count for memcpy. The destination buffer is 112 bytes
+(ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH - 8). So a malicious
+module (or corrupted response) can cause a OOB write later on in
+cmis_fw_update_start_download().
 
-Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20260526153533.2779187-3-kuba@kernel.org
+Let's error out. If modules that expect longer LPL writes actually
+exist we should revisit.
+
+struct cmis_cdb_start_fw_download_pl's definition has to move,
+no change there.
+
+Fixes: c4f78134d45c ("ethtool: cmis_fw_update: add a layer for supporting firmware update using CDB")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-9-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/tsconfig.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ethtool/cmis_fw_update.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-index e49e612a68c2c0..966c769c72677f 100644
---- a/net/ethtool/tsconfig.c
-+++ b/net/ethtool/tsconfig.c
-@@ -224,16 +224,21 @@ static int tsconfig_send_reply(struct net_device *dev, struct genl_info *info)
- 	reply_len = ret + ethnl_reply_header_size();
- 	rskb = ethnl_reply_init(reply_len, dev, ETHTOOL_MSG_TSCONFIG_SET_REPLY,
- 				ETHTOOL_A_TSCONFIG_HEADER, info, &reply_payload);
--	if (!rskb)
-+	if (!rskb) {
-+		ret = -ENOMEM;
- 		goto err_cleanup;
+diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
+index df5f344209c47b..16190c97e1f78c 100644
+--- a/net/ethtool/cmis_fw_update.c
++++ b/net/ethtool/cmis_fw_update.c
+@@ -44,6 +44,20 @@ enum cmis_cdb_fw_write_mechanism {
+ 	CMIS_CDB_FW_WRITE_MECHANISM_BOTH	= 0x11,
+ };
+ 
++/* See section 9.7.2 "CMD 0101h: Start Firmware Download" in CMIS standard
++ * revision 5.2.
++ * struct cmis_cdb_start_fw_download_pl is a structured layout of the
++ * flat array, ethtool_cmis_cdb_request::payload.
++ */
++struct cmis_cdb_start_fw_download_pl {
++	__struct_group(cmis_cdb_start_fw_download_pl_h, head, /* no attrs */,
++			__be32	image_size;
++			__be32	resv1;
++	);
++	u8 vendor_data[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH -
++		sizeof(struct cmis_cdb_start_fw_download_pl_h)];
++};
++
+ static int
+ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 				   struct net_device *dev,
+@@ -86,6 +100,14 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	 */
+ 	cdb->read_write_len_ext = rpl->read_write_len_ext;
+ 	fw_mng->start_cmd_payload_size = rpl->start_cmd_payload_size;
++	if (fw_mng->start_cmd_payload_size >
++	    sizeof_field(struct cmis_cdb_start_fw_download_pl, vendor_data)) {
++		ethnl_module_fw_flash_ntf_err(dev, ntf_params,
++					      "Start cmd payload size exceeds max LPL payload",
++					      NULL);
++		return -EINVAL;
 +	}
++
+ 	fw_mng->write_mechanism =
+ 		rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ?
+ 		CMIS_CDB_FW_WRITE_MECHANISM_LPL :
+@@ -97,20 +119,6 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	return 0;
+ }
  
- 	ret = tsconfig_fill_reply(rskb, &req_info->base, &reply_data->base);
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_free_msg;
- 
- 	genlmsg_end(rskb, reply_payload);
- 	ret = genlmsg_reply(rskb, info);
-+	rskb = NULL;
- 
-+err_free_msg:
-+	nlmsg_free(rskb);
- err_cleanup:
- 	kfree(reply_data);
- 	kfree(req_info);
+-/* See section 9.7.2 "CMD 0101h: Start Firmware Download" in CMIS standard
+- * revision 5.2.
+- * struct cmis_cdb_start_fw_download_pl is a structured layout of the
+- * flat array, ethtool_cmis_cdb_request::payload.
+- */
+-struct cmis_cdb_start_fw_download_pl {
+-	__struct_group(cmis_cdb_start_fw_download_pl_h, head, /* no attrs */,
+-			__be32	image_size;
+-			__be32	resv1;
+-	);
+-	u8 vendor_data[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH -
+-		sizeof(struct cmis_cdb_start_fw_download_pl_h)];
+-};
+-
+ static int
+ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
+ 			      struct ethtool_cmis_fw_update_params *fw_update,
 -- 
 2.53.0
 
