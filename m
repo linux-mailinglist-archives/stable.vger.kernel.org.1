@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YJcCDZZMJWqkGQIAu9opvQ
-	(envelope-from <stable+bounces-261552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:54 +0200
+	id DOMFN8BLJWplGQIAu9opvQ
+	(envelope-from <stable+bounces-261587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:45:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B5F65004D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780F264FF86
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:45:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="WYx4a/41";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261552-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261552-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kcCymVw3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261587-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261587-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5CE3304E43D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6E6930041C6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC0E31E850;
-	Sun,  7 Jun 2026 10:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B5A2D46C0;
+	Sun,  7 Jun 2026 10:45:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C061E98EF;
-	Sun,  7 Jun 2026 10:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7064C32AADE;
+	Sun,  7 Jun 2026 10:45:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828987; cv=none; b=BrEOFG9k8nOnf6udORJU+zbqjPxj/hps1yteBa0H2ey5JZ/7rQHCh0MtQulgD1ij/XW1P2v1VavXSt/68gthqf+dYiLk+pt84CB73IjLdTIX0bJ2S+6mbCQaRNh18uUEpJhTy3RnXcxl8AUjf9KzWaAu+8xJtpVCLCxKph47/pw=
+	t=1780829118; cv=none; b=FY+Uxa2a92d0bKTAzDbMQfxT5jK3ML8u988KTFCl0cyIDx+W7PuBzFtIb8WeXjZftp2g9beLp+p8FX+JJKzEfS9x3W6WOaiAEZZ0K8xjbVa9OsAhiQgrzHMiKIbf5WOc8OTYS9GvmXBUHJ1FXZFF/TcHyNFaEkysyX9zyaWyon0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828987; c=relaxed/simple;
-	bh=nLwXQY+j/CTrqFj5jGopMPHrULOeISyuBePk9FfHQeI=;
+	s=arc-20240116; t=1780829118; c=relaxed/simple;
+	bh=dSM2jRUD4+//WBsRAlw6atVt44wg9hroS5C00xPC9UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgDFk2IIzurZWqyFyg3GzTavVjx8qllPXy1LIB0Jm258GJjZfiMav53dH3OzNxC8VsEh7xC1YU5IEZvzt9djsJeTUkbLYOFvL0u2bvu5JQ48eBh1KLFliio5Vwsr/zM/yaFnn+/7ubIWIH/zSWtEiHOjgqQyfiTU2oBACatHQP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYx4a/41; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D1E1F00893;
-	Sun,  7 Jun 2026 10:43:05 +0000 (UTC)
+	 MIME-Version; b=UZ3HmwZ4/OPiyAYrmUeEmxff/t2ktswzfAAw/Cvlbymli43iTMJI+JmmccsUCsx3FhWVnvQ065kHC2t5axAeHj1foIHJDmsaUj6GWZM1i+J3Om9K00HArcNRDXWfLYz26nzfu7gheG6Gc2srDlSgPmZEmkTTeuQVUh5zQW7ZHlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcCymVw3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1FBB1F00893;
+	Sun,  7 Jun 2026 10:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828986;
-	bh=ZeqWL/CuTARuVCY9NdHzVKb0FUAXtQ8pqa6mHyhMnk0=;
+	s=korg; t=1780829117;
+	bh=klhNjuasL9+78YRrfoxh1/xRjP4gifyrq/C5+SHimT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WYx4a/413kgHyVT+vhtWDGl19rkn93Ibos2Jt6DpjSg4OJQG43qjsaYMPW5CVtC3p
-	 EOdkLioBIrDPeP/AnCCJ5eH4E3G4szx6pYocR1f8tpZT6DuAcGiY71STVtq/AcHgxB
-	 Ggkj8rObdwPhQS7YLs9eLMto/Uarz5hNfeQ7TQhc=
+	b=kcCymVw3E75mgyp8hatIR5FMX9UTCOM/OqTid+3LLlYzHfk1izoHAL5grgzB0d09g
+	 L9/AAF5WqmCAIdkJXm0lZxqul916HMQLRw1X/lkPug/3QpCfIQU7ZfL4QKe1UXiDvo
+	 Afb9hmEaF3duup/o+q5odhMpspgt3ViIwL7rx/mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 207/315] ASoC: qcom: q6asm-dai: do not set stream state in event and trigger callbacks
+	Simon Horman <horms@kernel.org>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Subject: [PATCH 6.12 197/307] nfc: hci: fix out-of-bounds read in HCP header parsing
 Date: Sun,  7 Jun 2026 11:59:54 +0200
-Message-ID: <20260607095735.158408509@linuxfoundation.org>
+Message-ID: <20260607095734.958487081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,102 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261552-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261587-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,ixit.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85B5F65004D
+X-Rspamd-Queue-Id: 780F264FF86
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Ashutosh Desai <ashutoshdesai993@gmail.com>
 
-commit cee3e63e7106c3c81b2053371fdf14240bfba2fc upstream.
+commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
 
-The q6asm-dai stream state is used by prepare() to decide whether an
-existing stream setup needs to be closed before opening/configuring a new
-one. Updating the state from trigger or asynchronous DSP callbacks can make
-that state stale or incorrect relative to the actual setup lifetime.
+Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
+packet->header from skb->data at function entry without first checking
+that the buffer holds at least one byte. A malicious NFC peer can send
+a 0-byte HCP frame that passes through the SHDLC layer and reaches
+these functions, causing an out-of-bounds heap read of packet->header.
+The same 0-byte frame, if queued as a non-final fragment, also causes
+the reassembly loop to underflow msg_len to UINT_MAX, triggering
+skb_over_panic() when the reassembled skb is written.
 
-In particular, setting Q6ASM_STREAM_STOPPED on STOP or EOS completion can
-make prepare() believe there is no active setup to close, which can result
-in opening/configuring the same stream more than once.
+Fix this by adding a pskb_may_pull() check at the entry of each
+function before packet->header is first accessed. The existing
+pskb_may_pull() checks before the reassembled hcp_skb is cast to
+struct hcp_packet remain in place to guard the 2-byte HCP message
+header.
 
-Keep stream state updates tied to prepare(), where the stream is actually
-closed and reopened, and stop changing it from trigger and EOS callbacks.
-
-Fixes: bfbb12dfa144 ("ASoC: qcom: q6asm-dai: perform correct state check before closing")
-Cc: Stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/afS7rTHdc9TyIeLx@rdacayan/
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260518092347.3446946-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 8b8d2e08bf0d ("NFC: HCI support")
+Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
+Signed-off-by: David Heidelberg <david@ixit.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |    5 -----
- 1 file changed, 5 deletions(-)
+ net/nfc/hci/core.c |   10 ++++++++++
+ net/nfc/nci/hci.c  |   10 ++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -187,7 +187,6 @@ static void event_handler(uint32_t opcod
- 				   prtd->pcm_count, 0, 0, 0);
- 		break;
- 	case ASM_CLIENT_EVENT_CMD_EOS_DONE:
--		prtd->state = Q6ASM_STREAM_STOPPED;
- 		break;
- 	case ASM_CLIENT_EVENT_DATA_WRITE_DONE: {
- 		prtd->pcm_irq_pos += prtd->pcm_count;
-@@ -334,7 +333,6 @@ static int q6asm_dai_trigger(struct snd_
- 				       0, 0, 0);
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
--		prtd->state = Q6ASM_STREAM_STOPPED;
- 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
- 				       CMD_EOS);
- 		break;
-@@ -545,8 +543,6 @@ static void compress_event_handler(uint3
- 			snd_compr_drain_notify(prtd->cstream);
- 			prtd->notify_on_drain = false;
+--- a/net/nfc/hci/core.c
++++ b/net/nfc/hci/core.c
+@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	struct sk_buff *frag_skb;
+ 	int msg_len;
  
--		} else {
--			prtd->state = Q6ASM_STREAM_STOPPED;
- 		}
- 		spin_unlock_irqrestore(&prtd->lock, flags);
- 		break;
-@@ -1009,7 +1005,6 @@ static int q6asm_dai_compr_trigger(struc
- 				       0, 0, 0);
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
--		prtd->state = Q6ASM_STREAM_STOPPED;
- 		ret = q6asm_cmd_nowait(prtd->audio_client, prtd->stream_id,
- 				       CMD_EOS);
- 		break;
++	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)skb->data;
+ 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
+@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct hcp_packet *)hcp_skb->data;
+ 	type = HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NFC_HCI_HCP_RESPONSE) {
+--- a/net/nfc/nci/hci.c
++++ b/net/nfc/nci/hci.c
+@@ -439,6 +439,11 @@ void nci_hci_data_received_cb(void *cont
+ 		return;
+ 	}
+ 
++	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)skb->data;
+ 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
+ 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
+@@ -482,6 +487,11 @@ void nci_hci_data_received_cb(void *cont
+ 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
+ 	 * in separate context where handler can also execute command.
+ 	 */
++	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
++		kfree_skb(hcp_skb);
++		return;
++	}
++
+ 	packet = (struct nci_hcp_packet *)hcp_skb->data;
+ 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
+ 	if (type == NCI_HCI_HCP_RESPONSE) {
 
 
 
