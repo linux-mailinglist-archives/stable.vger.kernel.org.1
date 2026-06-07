@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261073-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Qcy9J3VFJWpLFgIAu9opvQ
-	(envelope-from <stable+bounces-261070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:29 +0200
+	id 7UKKBChEJWqgFQIAu9opvQ
+	(envelope-from <stable+bounces-261073-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311D264F802
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1164E64F685
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PhsXODdo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261070-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261070-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eoPWzSRX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261073-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261073-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 696993022626
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 396973002F5A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0117830CD80;
-	Sun,  7 Jun 2026 10:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB40308F0A;
+	Sun,  7 Jun 2026 10:12:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AB41E98EF;
-	Sun,  7 Jun 2026 10:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5921E98EF;
+	Sun,  7 Jun 2026 10:12:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827160; cv=none; b=l8Qmp3jObQxlrWC2dVx+TI8+XYAc19Squ/qz0HxX5sAX5nrWelp0zLNpWZWNvisliIDysOGi+hxN2qqXh9xjD4RPU1RbcbS77y3dteH//Ll2vBVG79Q6M+f8UCA/oftlkOdoWfHLRCLwhGrzeen+edmKILjA82g00zMjaBoDKSs=
+	t=1780827170; cv=none; b=MkRxKuBDKd0Ii3RI5TuQ+BLBxHNRwr9asSMsab1qSdGot3Q4QfcZpMW7mRmzY7/MIRSJqVIWUMQyWn7ZzRbmW821JwAuiw31M9SzoDzUguEM8wPAA00mkIglS/HxPsukkS7IhBBFn9RW01kX5C3Zjsyyw6lLaBeMySsLM1SjMKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827160; c=relaxed/simple;
-	bh=gpjSnFTjX9wOuwtesZXyo7cNNnfenIjc92QUDGlrPm4=;
+	s=arc-20240116; t=1780827170; c=relaxed/simple;
+	bh=oglwkuaDT2e6f+WK7y0//OVub5cNDB44SBCrGPg2v3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cA9AjNhbW4wiMGF+4wGNOOtLJcorw9o8gpqdo0wY9xqCI5oW49DrqcqEp6LyvKuOWtoZaeoVO6Wzw2Dv4QbBAMyQ8eA6HYV9gATiDXNWqpMYwMYzjaAKSb4JLaMJuaG8wFsRdpBwnTNMenOrl0kiItg8fj6m0SlEH6dKkBLlzrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhsXODdo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222691F00893;
-	Sun,  7 Jun 2026 10:12:38 +0000 (UTC)
+	 MIME-Version; b=f9/9JJ21Ov89S7WD9B2gB329nCtDvqKEQNjWXr58187i4n54IOcvULI2bDypL/5ct8TjBQ/0qSTFVyUZVSoQs8eLn3Pau0V6nJP7Wu4t+bEmfUnB2xPKfs9F+5cPwaoqIGEZVAfdAM9U7XsLCsgVjflsuJQ9Po8n7IyrNET8lnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoPWzSRX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2F11F00893;
+	Sun,  7 Jun 2026 10:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827159;
-	bh=IyF2H8yrYiGal9ZFiJ9vAh5/dtHFXhuIgkHEe6y/8Ho=;
+	s=korg; t=1780827169;
+	bh=guBv9ZiEINmlNMbZuLP1TSvAMCzHbUsuJnV04OU5MgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PhsXODdodCUBE7hOIRNqj+wksi38r/B1GbTFwffhxuSeRSM5od6tes1TqvurbNedZ
-	 +Ws1Uxsb/tkDrOK13BfjcYCZ7ZzcudjkbDHoRzoGAonBmojnPEpTYnUek8jn0W7Evr
-	 bCQIMGk1huP2T0KFx7+IUSGlzUZuyn9PUdEFhMS0=
+	b=eoPWzSRXf7/q73563s/6b7EJeXoz8ZF4pRmXyORm3JXdhif+FKDmq20nYwJcZGp11
+	 vblSZRwMK4H7J6LoMUqyuiCfY+aZTrHLMRGDzq9WlMBzkdkyeXnHilEY0BbQzQbyI2
+	 B9og+vLzvemT0xm8kmH2VmKHvivaWzN4PqrF7HkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/315] ethtool: module: avoid leaking a netdev ref on module flash errors
-Date: Sun,  7 Jun 2026 11:57:12 +0200
-Message-ID: <20260607095729.228101096@linuxfoundation.org>
+Subject: [PATCH 6.18 046/315] ethtool: module: avoid racy updates to dev->ethtool bitfield
+Date: Sun,  7 Jun 2026 11:57:13 +0200
+Message-ID: <20260607095729.266886682@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -72,14 +72,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261070-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261073-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,9 +99,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 311D264F802
+X-Rspamd-Queue-Id: 1164E64F685
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
@@ -109,46 +109,60 @@ X-Rspamd-Queue-Id: 311D264F802
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fb7f511d62692661846c47f199e0afe25c2982db ]
+[ Upstream commit 7a84b965ffc12030af63cd10a8f3a1123ff39b7a ]
 
-module_flash_fw_schedule() is missing undo for setting
-the "in_progress" flag and taking the netdev reference.
-Delay taking these, the device can't disappear while
-we are holding rtnl_lock.
+When reviewing other changes Gemini points out that we currently
+update module_fw_flash_in_progress without holding any locks.
+Since module_fw_flash_in_progress is part of a bitfield this
+is not great, updates to other fields may be lost.
+
+We could use a bool and sprinkle some READ_ONCE/WRITE_ONCE here
+but seems like the issue is rather than the work is an unusual
+writer. The other writers already hold the right locks. So just
+very briefly take these locks when the work completes.
+
+Note that nothing ever cancels the FW update work, so there's
+no concern with deadlocks vs cancel.
 
 Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
 Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-3-kuba@kernel.org
+Link: https://patch.msgid.link/20260522231312.1710836-4-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/module.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ethtool/module.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-index 05e4c1d785656f..fb61bb47083e62 100644
+index fb61bb47083e62..8929b7fb2fa79c 100644
 --- a/net/ethtool/module.c
 +++ b/net/ethtool/module.c
-@@ -319,8 +319,6 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
- 	if (err < 0)
- 		goto err_release_firmware;
+@@ -221,14 +221,22 @@ static void module_flash_fw_work_list_del(struct list_head *list)
+ static void module_flash_fw_work(struct work_struct *work)
+ {
+ 	struct ethtool_module_fw_flash *module_fw;
++	struct net_device *dev;
  
--	dev->ethtool->module_fw_flash_in_progress = true;
--	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
- 	fw_update->dev = dev;
- 	fw_update->ntf_params.portid = info->snd_portid;
- 	fw_update->ntf_params.seq = info->snd_seq;
-@@ -335,6 +333,9 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
- 	if (err < 0)
- 		goto err_release_firmware;
+ 	module_fw = container_of(work, struct ethtool_module_fw_flash, work);
++	dev = module_fw->fw_update.dev;
  
-+	dev->ethtool->module_fw_flash_in_progress = true;
-+	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
+ 	ethtool_cmis_fw_update(&module_fw->fw_update);
+ 
+ 	module_flash_fw_work_list_del(&module_fw->list);
+-	module_fw->fw_update.dev->ethtool->module_fw_flash_in_progress = false;
+-	netdev_put(module_fw->fw_update.dev, &module_fw->dev_tracker);
 +
- 	schedule_work(&module_fw->work);
- 
- 	return 0;
++	rtnl_lock();
++	netdev_lock_ops(dev);
++	dev->ethtool->module_fw_flash_in_progress = false;
++	netdev_unlock_ops(dev);
++	rtnl_unlock();
++
++	netdev_put(dev, &module_fw->dev_tracker);
+ 	release_firmware(module_fw->fw_update.fw);
+ 	kfree(module_fw);
+ }
 -- 
 2.53.0
 
