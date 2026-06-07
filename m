@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-261841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Mi6oGX9VJWpyHAIAu9opvQ
-	(envelope-from <stable+bounces-261841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:55 +0200
+	id TA+pGbpOJWq1GgIAu9opvQ
+	(envelope-from <stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8E16506C8
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73CC6502AA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1o4x2ynV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261841-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261841-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAE5zqVN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261760-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2794C305F165
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C95583010EC2
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B70138B7BD;
-	Sun,  7 Jun 2026 11:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FADB31ED93;
+	Sun,  7 Jun 2026 10:55:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC3638B7B6;
-	Sun,  7 Jun 2026 11:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CA3287510;
+	Sun,  7 Jun 2026 10:55:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830057; cv=none; b=HoBXHgwcUE5UCbVRfEPwveDl6tXMzkDGcXpZe1IqgnGrYn0/t7eiVZX+VMc8VWOopytklCI+wFngmPcXpJnV7FZ4Civa5b6YcpcTf2UCRFlboaweWYGb1GiNc5QXQUtyRY1vdM+rE69C86Ym71rx8w7TuKhtyYHoRTzIMmZgnPg=
+	t=1780829737; cv=none; b=JDbB/viDV3GPqtRtohSsC0a17ZIAjAyXSlqIoCsXvcE7JXWsYXx2Nx2iGmTGjJGX+Y4kcoEot66g2budaZu9Tka4bq4N0+dEUl+g9G2DveE5CmNWe7tDREeqNi2If2Gpd+Eq0H6AJYGOp1LU6B78LdubFfkiEIfztFefQrcgjdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830057; c=relaxed/simple;
-	bh=GamMBXQRXU8BoHKHKUlyIcO8iK9zHqMHF67+6awYNNg=;
+	s=arc-20240116; t=1780829737; c=relaxed/simple;
+	bh=whS268h4j5HkaG4xRz+43sWAWDU73TfvtoDsNcmwUgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIBkyprNfxJhqtq0lV6a50e1vQR/iu8r/qCGnsQNOhA7ddJNA3S7G3gMC5zK0dhtliixmIryaIVifiEnTX6n5afsFaQAKVv+1WRXTHeMIaJr7EES6VYR0EuudgtZRmIORNCGdEXF2KmDi5axuXrVghfXRMqC42tGy9ygXhHotkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o4x2ynV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4981F00898;
-	Sun,  7 Jun 2026 11:00:52 +0000 (UTC)
+	 MIME-Version; b=Lu3wG+v/ilFrXUNNaookrBacsV6Epj1U7GaHYmp+Sv5R3V/N+iKTx59mApgY5KS5Pdfpabzt9LuM5bY710EJdlN94CCBf+3LasO6S3PEOzyID/ZGgPdW1wFfMxYR4r//OViGe2sVn1MO8cyOMW/jDI/dWYtCTODMSm0bZ3YV9m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAE5zqVN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691981F00893;
+	Sun,  7 Jun 2026 10:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830054;
-	bh=W+jB2jJCJOTjBtNM8SqaFYQEjOt5MCKJWjYxUfpm//s=;
+	s=korg; t=1780829736;
+	bh=cXicN5+DrYlOf10kqJgkOAl/3v/9bapY8elVjYX0IaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1o4x2ynV6Jrwup86RGFNeI/0LEcvfc1JjEn680spkgoqTwtDMDNncHxvS43Yj95sX
-	 pwNaCxUJBtZSu0GUPj+oqFR8T7AvJw9tjnpX3nKwRxyGMuvVuaLFXUezpiHTwXAOqV
-	 +QhWkDaJgMAJkYW5C4LfcO52YHCHmuUeURh862o8=
+	b=IAE5zqVNj9QYW/XkHlnO1UQF62frtL773V7rXZFYPJWZXRO48d2RB19pKgYKprHhj
+	 DqXxXA/XEAtPIzWe+scFq3DEhNCwJxUby2KO9lVI+K+S+yxVgITnlf3hUbrVMJvZEt
+	 NtRoKcAIQJ5VhV/jDcEotUhLXfQvikiUpWWl/pb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 290/315] Bluetooth: hci_qca: Convert timeout from jiffies to ms
-Date: Sun,  7 Jun 2026 12:01:17 +0200
-Message-ID: <20260607095738.245642361@linuxfoundation.org>
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 7.0 309/332] serial: dz: Fix bootconsole message clobbering at chip reset
+Date: Sun,  7 Jun 2026 12:01:18 +0200
+Message-ID: <20260607095739.435199972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,189 +67,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261841-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:bartosz.golaszewski@linaro.org,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-261760-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp,linaro.org:email,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpg.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC8E16506C8
+X-Rspamd-Queue-Id: B73CC6502AA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 375ba7484132662a4a8c7547d088fb6275c00282 ]
+commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
 
-Since the timer uses jiffies as its unit rather than ms, the timeout value
-must be converted from ms to jiffies when configuring the timer. Otherwise,
-the intended 8s timeout is incorrectly set to approximately 33s.
+In the DZ interface as implemented by the DC7085 gate array the serial
+transmitters are double buffered, meaning that at the time a transmitter
+is ready to accept the next character there is one in the transmit shift
+register still being sent to the line.  Issuing a master clear at this
+time causes this character to be lost, so wait an extra amount of time
+sufficient for the transmit shift register to drain at 9600bps, which is
+the baud rate setting used by the firmware console.
 
-To improve readability, embed msecs_to_jiffies() directly in the macro
-definitions and drop the _MS suffix from macros that now yield jiffies
-values: MEMDUMP_TIMEOUT, FW_DOWNLOAD_TIMEOUT, IBS_DISABLE_SSR_TIMEOUT,
-CMD_TRANS_TIMEOUT, and IBS_BTSOC_TX_IDLE_TIMEOUT.
+Mind the specified 1.4us TRDY recovery time in the course and continue
+using iob() as the completion barrier, since the platforms involved use
+a write buffer that can delay and combine writes, and reorder them with
+respect to reads regardless of the MMIO locations accessed and we still
+lack a platform-independent handler for that.
 
-IBS_WAKE_RETRANS_TIMEOUT_MS and IBS_HOST_TX_IDLE_TIMEOUT_MS are
-intentionally left unchanged. Their values are stored in the struct fields
-wake_retrans and tx_idle_delay, which hold ms values at runtime and can be
-modified via debugfs. The msecs_to_jiffies() conversion happens at each
-call site against the field value, so it cannot be embedded in the macro.
+When called from dz_serial_console_init() this is too early for fsleep()
+to work and even before lpj has been calculated and therefore the delay
+is actually not sufficient for the transmitter to drain and is merely a
+placeholder now.  This will be addressed in a follow-up change.
 
-Wake timer depends on commit c347ca17d62a
-
-Cc: stable@vger.kernel.org
-Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |   33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -48,13 +48,12 @@
- #define HCI_MAX_IBS_SIZE	10
- 
- #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
--#define IBS_BTSOC_TX_IDLE_TIMEOUT_MS	200
-+#define IBS_BTSOC_TX_IDLE_TIMEOUT	msecs_to_jiffies(200)
- #define IBS_HOST_TX_IDLE_TIMEOUT_MS	2000
--#define CMD_TRANS_TIMEOUT_MS		100
--#define MEMDUMP_TIMEOUT_MS		8000
--#define IBS_DISABLE_SSR_TIMEOUT_MS \
--	(MEMDUMP_TIMEOUT_MS + FW_DOWNLOAD_TIMEOUT_MS)
--#define FW_DOWNLOAD_TIMEOUT_MS		3000
-+#define CMD_TRANS_TIMEOUT		msecs_to_jiffies(100)
-+#define MEMDUMP_TIMEOUT			msecs_to_jiffies(8000)
-+#define FW_DOWNLOAD_TIMEOUT		msecs_to_jiffies(3000)
-+#define IBS_DISABLE_SSR_TIMEOUT		(MEMDUMP_TIMEOUT + FW_DOWNLOAD_TIMEOUT)
- 
- /* susclk rate */
- #define SUSCLK_RATE_32KHZ	32768
-@@ -1091,7 +1090,7 @@ static void qca_controller_memdump(struc
- 
- 			queue_delayed_work(qca->workqueue,
- 					   &qca->ctrl_memdump_timeout,
--					   msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
-+					   MEMDUMP_TIMEOUT);
- 			skb_pull(skb, sizeof(qca_memdump->ram_dump_size));
- 			qca_memdump->current_seq_no = 0;
- 			qca_memdump->received_dump = 0;
-@@ -1364,7 +1363,7 @@ static int qca_set_baudrate(struct hci_d
- 
- 	if (hu->serdev)
- 		serdev_device_wait_until_sent(hu->serdev,
--		      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+		      CMD_TRANS_TIMEOUT);
- 
- 	/* Give the controller time to process the request */
- 	switch (qca_soc_type(hu)) {
-@@ -1396,8 +1395,8 @@ static inline void host_set_baudrate(str
- 
- static int qca_send_power_pulse(struct hci_uart *hu, bool on)
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -542,10 +542,31 @@ static int dz_encode_baud_rate(unsigned
+ static void dz_reset(struct dz_port *dport)
  {
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
- 	u8 cmd = on ? QCA_WCN3990_POWERON_PULSE : QCA_WCN3990_POWEROFF_PULSE;
+ 	struct dz_mux *mux = dport->mux;
++	unsigned short tcr;
++	int loops = 10000;
  
- 	/* These power pulses are single byte command which are sent
-@@ -1602,7 +1601,7 @@ static void qca_wait_for_dump_collection
- 	struct qca_data *qca = hu->priv;
+ 	if (mux->initialised)
+ 		return;
  
- 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
--			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
-+			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT);
- 
- 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
- }
-@@ -2570,7 +2569,7 @@ static void qca_serdev_remove(struct ser
- static void qca_serdev_shutdown(struct serdev_device *serdev)
- {
- 	int ret;
--	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
-+	int timeout = CMD_TRANS_TIMEOUT;
- 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
- 	struct hci_uart *hu = &qcadev->serdev_hu;
- 	struct hci_dev *hdev = hu->hdev;
-@@ -2627,7 +2626,7 @@ static int __maybe_unused qca_suspend(st
- 	bool tx_pending = false;
- 	int ret = 0;
- 	u8 cmd;
--	u32 wait_timeout = 0;
-+	unsigned long wait_timeout = 0;
- 
- 	set_bit(QCA_SUSPENDING, &qca->flags);
- 
-@@ -2648,15 +2647,15 @@ static int __maybe_unused qca_suspend(st
- 	if (test_bit(QCA_IBS_DISABLED, &qca->flags) ||
- 	    test_bit(QCA_SSR_TRIGGERED, &qca->flags)) {
- 		wait_timeout = test_bit(QCA_SSR_TRIGGERED, &qca->flags) ?
--					IBS_DISABLE_SSR_TIMEOUT_MS :
--					FW_DOWNLOAD_TIMEOUT_MS;
-+					IBS_DISABLE_SSR_TIMEOUT :
-+					FW_DOWNLOAD_TIMEOUT;
- 
- 		/* QCA_IBS_DISABLED flag is set to true, During FW download
- 		 * and during memory dump collection. It is reset to false,
- 		 * After FW download complete.
- 		 */
- 		wait_on_bit_timeout(&qca->flags, QCA_IBS_DISABLED,
--			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(wait_timeout));
-+			    TASK_UNINTERRUPTIBLE, wait_timeout);
- 
- 		if (test_bit(QCA_IBS_DISABLED, &qca->flags)) {
- 			bt_dev_err(hu->hdev, "SSR or FW download time out");
-@@ -2708,7 +2707,7 @@ static int __maybe_unused qca_suspend(st
- 
- 	if (tx_pending) {
- 		serdev_device_wait_until_sent(hu->serdev,
--					      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
-+					      CMD_TRANS_TIMEOUT);
- 		serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
- 	}
- 
-@@ -2717,7 +2716,7 @@ static int __maybe_unused qca_suspend(st
- 	 */
- 	ret = wait_event_interruptible_timeout(qca->suspend_wait_q,
- 			qca->rx_ibs_state == HCI_IBS_RX_ASLEEP,
--			msecs_to_jiffies(IBS_BTSOC_TX_IDLE_TIMEOUT_MS));
-+			IBS_BTSOC_TX_IDLE_TIMEOUT);
- 	if (ret == 0) {
- 		ret = -ETIMEDOUT;
- 		goto error;
++	tcr = dz_in(dport, DZ_TCR);
++
++	/* Do not disturb any ongoing transmissions.  */
++	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
++		unsigned short csr, mask;
++
++		mask = tcr;
++		while ((mask & DZ_LNENB) && loops--) {
++			csr = dz_in(dport, DZ_CSR);
++			if (!(csr & DZ_TRDY))
++				continue;
++			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
++			dz_out(dport, DZ_TCR, mask);
++			iob();
++			udelay(2);		/* 1.4us TRDY recovery.  */
++		}
++		udelay(1200);			/* Transmitter drain.  */
++	}
++
+ 	dz_out(dport, DZ_CSR, DZ_CLR);
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
 
 
 
