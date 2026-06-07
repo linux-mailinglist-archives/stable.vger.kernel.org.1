@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MTSKLVBJJWqVGAIAu9opvQ
-	(envelope-from <stable+bounces-261397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:56 +0200
+	id 0YK+B4ZJJWq1GAIAu9opvQ
+	(envelope-from <stable+bounces-261430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB6264FD18
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F2964FD64
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MT2QcDMo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261397-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261397-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AlfTW39+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261430-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261430-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35649302BBF6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:33:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C8B43008083
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC41329391;
-	Sun,  7 Jun 2026 10:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A4732B11A;
+	Sun,  7 Jun 2026 10:35:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4021FE47B;
-	Sun,  7 Jun 2026 10:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58953195FD;
+	Sun,  7 Jun 2026 10:35:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828391; cv=none; b=O8TPqp5gzjaW3GVYYzVJnWFLz0b1GtM9mbOLmi9BlhyoP1IEn1hndF5AsUiRO1ptoqcm5zE1dGmxio/6VutdPBAYANx8FyEwEo0cHcDjeSBuymypKzFvFfVBLhkuzaCBy76V9ZkP2qqctJ4+e29SFE9CbRxhtSfodFkKTwkfjYQ=
+	t=1780828525; cv=none; b=r/KdyshpsV/5sjJ+9EEoNMfbVJ9s+14jNOfKm4Tqg/mQUWGlgIXAw/zLKSIcaptnEF9ODZA6ATpz9O4FDy4S+JhqfLZ7UnCHfCpLeWK24ZwVhzTwuJfHoyh1CrxPBU7vHJOhCs9s++dJnUwtRA4F9df4KoknURTqZ94wpa22EO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828391; c=relaxed/simple;
-	bh=lmeLzQgkFiaQhyUiPS/Ljd6/jFNQviXabzyd/3djmCk=;
+	s=arc-20240116; t=1780828525; c=relaxed/simple;
+	bh=6dDb/wJjAXE60DF6i1DTZdlXbA7ukE/HwfbPEq318NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sK4mRHpOqoit0ecENDP1oHJgY3gyrdo3e6RjksZieJi9R2Bl6gG9Y3wGrIAOI3z8AQlS05uCRguodOhb2zjanTd5tc1yzI4e6TyCCQqiclLYi1uvNMZi/pvKysSXayhmG2OWYXokSmsmHLbfEhRnQbHJ8KIa3y1tsTCxiDYRQbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MT2QcDMo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6771F00893;
-	Sun,  7 Jun 2026 10:33:09 +0000 (UTC)
+	 MIME-Version; b=b3kMW463Cqcg5ezCa8Ibyg9qUUdegv87Nq4zdt3JsMPp2o4m+3BmUocupBr4oa5foD0U37z2gs2fqhUkVdO5xduX9EjkboMIGTFCDjLyGXNmPeQaZzO9C0I1it2sLMhanYJLPxhHM4Hwt4Qfipd/bZuZ8OZi0jq1+t4XvrIYaxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlfTW39+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEC71F00893;
+	Sun,  7 Jun 2026 10:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828390;
-	bh=tsdIKZuZ9grmxN3oKCMpQEGmQQB3yOKlSzl0AQ98y+E=;
+	s=korg; t=1780828524;
+	bh=XMR9InYowQLqujOusb4/79q7n1Apq3qFg/iKVvQ+UhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MT2QcDMoEs7oylBLZluxIT4mT0L0XbXNRxz1VrzR4m7zwlAf1tGOR5p0ErTr7j2Z9
-	 IllNNqD/RyQBeZZaiLF5gD06cAWBY3zt0cri5paDG/pZ36H0PkxYOzeEBp/EFSM06Y
-	 EXH16Vh3XShElP89fdzPs6bW+WClDWdy8t9B+mmo=
+	b=AlfTW39+WfqgpKmZVpN0AapQy+fPq9RT6Hq4IRQVUlEKQG0A0DaZb9RXnDAtf4CUj
+	 aqNesbUpntxBbHFR2UMbyQtSwY9Jj6v/q/SnSuMoV8YpjhbcJTwHwrYrLAxrT0kzDQ
+	 3OTwRMxPxdjXwG9zBeYe/cIAjm8WD+R2nPenslvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.18 155/315] iio: dac: ad3530r: Fix AD3531/AD3531R powerdown mode strings
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 145/307] Bluetooth: HIDP: fix missing length checks in hidp_input_report()
 Date: Sun,  7 Jun 2026 11:59:02 +0200
-Message-ID: <20260607095733.293258399@linuxfoundation.org>
+Message-ID: <20260607095733.057779658@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,152 +75,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261397-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261430-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kimseer.paller@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,analog.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DB6264FD18
+X-Rspamd-Queue-Id: B4F2964FD64
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kim Seer Paller <kimseer.paller@analog.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-commit ebd250c2581ec46c64c73fdfa918c9a7f757505e upstream.
+commit 2a3ac9ee11dbb9845f3947cef4a79dba658cf6f6 upstream.
 
-The AD3531/AD3531R has different output operating modes from the
-AD3530/AD3530R. According to the AD3531/AD3531R datasheet, the
-powerdown modes are:
-  01: 500 Ohm output impedance
-  10: 3.85 kOhm output impedance
-  11: 16 kOhm output impedance
+hidp_input_report() reads keyboard and mouse payload data from an skb
+without first verifying that skb->len contains enough data.
 
-The driver currently uses the AD3530R modes (1k, 7.7k, 32k) for all
-variants, which is incorrect for AD3531/AD3531R.
+hidp_recv_intr_frame() pulls the 1-byte HIDP header before dispatching
+to hidp_input_report(). If a paired device sends a truncated packet,
+the handler reads beyond the valid skb data, resulting in an
+out-of-bounds read of skb data. The OOB bytes may be interpreted as
+phantom key presses or spurious mouse movement.
 
-Add AD3531R-specific powerdown mode strings and assign them to the
-AD3531/AD3531R chip variants.
+Replace the open-coded length tracking and pointer arithmetic with
+skb_pull_data() calls. skb_pull_data() returns NULL if the requested
+bytes are not present, eliminating the need for a manual size variable
+and the separate skb->len guard.
 
-Fixes: 93583174a3df ("iio: dac: ad3530r: Add driver for AD3530R and AD3531R")
-Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3530r.c |   54 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 40 insertions(+), 14 deletions(-)
+ net/bluetooth/hidp/core.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/dac/ad3530r.c
-+++ b/drivers/iio/dac/ad3530r.c
-@@ -108,6 +108,12 @@ static const char * const ad3530r_powerd
- 	"32kohm_to_gnd",
- };
- 
-+static const char * const ad3531r_powerdown_modes[] = {
-+	"500ohm_to_gnd",
-+	"3.85kohm_to_gnd",
-+	"16kohm_to_gnd",
-+};
-+
- static int ad3530r_get_powerdown_mode(struct iio_dev *indio_dev,
- 				      const struct iio_chan_spec *chan)
+--- a/net/bluetooth/hidp/core.c
++++ b/net/bluetooth/hidp/core.c
+@@ -179,12 +179,21 @@ static void hidp_input_report(struct hid
  {
-@@ -136,6 +142,13 @@ static const struct iio_enum ad3530r_pow
- 	.set = ad3530r_set_powerdown_mode,
- };
- 
-+static const struct iio_enum ad3531r_powerdown_mode_enum = {
-+	.items = ad3531r_powerdown_modes,
-+	.num_items = ARRAY_SIZE(ad3531r_powerdown_modes),
-+	.get = ad3530r_get_powerdown_mode,
-+	.set = ad3530r_set_powerdown_mode,
-+};
+ 	struct input_dev *dev = session->input;
+ 	unsigned char *keys = session->keys;
+-	unsigned char *udata = skb->data + 1;
+-	signed char *sdata = skb->data + 1;
+-	int i, size = skb->len - 1;
++	unsigned char *udata;
++	signed char *sdata;
++	u8 *hdr;
++	int i;
 +
- static ssize_t ad3530r_get_dac_powerdown(struct iio_dev *indio_dev,
- 					 uintptr_t private,
- 					 const struct iio_chan_spec *chan,
-@@ -279,7 +292,20 @@ static const struct iio_chan_spec_ext_in
- 	{ }
- };
++	hdr = skb_pull_data(skb, 1);
++	if (!hdr)
++		return;
  
--#define AD3530R_CHAN(_chan)					\
-+static const struct iio_chan_spec_ext_info ad3531r_ext_info[] = {
-+	{
-+		.name = "powerdown",
-+		.shared = IIO_SEPARATE,
-+		.read = ad3530r_get_dac_powerdown,
-+		.write = ad3530r_set_dac_powerdown,
-+	},
-+	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad3531r_powerdown_mode_enum),
-+	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
-+			   &ad3531r_powerdown_mode_enum),
-+	{ }
-+};
+-	switch (skb->data[0]) {
++	switch (*hdr) {
+ 	case 0x01:	/* Keyboard report */
++		udata = skb_pull_data(skb, 8);
++		if (!udata)
++			break;
 +
-+#define AD3530R_CHAN(_chan, _ext_info)				\
- {								\
- 	.type = IIO_VOLTAGE,					\
- 	.indexed = 1,						\
-@@ -287,25 +313,25 @@ static const struct iio_chan_spec_ext_in
- 	.output = 1,						\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
- 			      BIT(IIO_CHAN_INFO_SCALE),		\
--	.ext_info = ad3530r_ext_info,				\
-+	.ext_info = _ext_info,					\
- }
+ 		for (i = 0; i < 8; i++)
+ 			input_report_key(dev, hidp_keycode[i + 224], (udata[0] >> i) & 1);
  
- static const struct iio_chan_spec ad3530r_channels[] = {
--	AD3530R_CHAN(0),
--	AD3530R_CHAN(1),
--	AD3530R_CHAN(2),
--	AD3530R_CHAN(3),
--	AD3530R_CHAN(4),
--	AD3530R_CHAN(5),
--	AD3530R_CHAN(6),
--	AD3530R_CHAN(7),
-+	AD3530R_CHAN(0, ad3530r_ext_info),
-+	AD3530R_CHAN(1, ad3530r_ext_info),
-+	AD3530R_CHAN(2, ad3530r_ext_info),
-+	AD3530R_CHAN(3, ad3530r_ext_info),
-+	AD3530R_CHAN(4, ad3530r_ext_info),
-+	AD3530R_CHAN(5, ad3530r_ext_info),
-+	AD3530R_CHAN(6, ad3530r_ext_info),
-+	AD3530R_CHAN(7, ad3530r_ext_info),
- };
+@@ -213,6 +222,10 @@ static void hidp_input_report(struct hid
+ 		break;
  
- static const struct iio_chan_spec ad3531r_channels[] = {
--	AD3530R_CHAN(0),
--	AD3530R_CHAN(1),
--	AD3530R_CHAN(2),
--	AD3530R_CHAN(3),
-+	AD3530R_CHAN(0, ad3531r_ext_info),
-+	AD3530R_CHAN(1, ad3531r_ext_info),
-+	AD3530R_CHAN(2, ad3531r_ext_info),
-+	AD3530R_CHAN(3, ad3531r_ext_info),
- };
+ 	case 0x02:	/* Mouse report */
++		sdata = skb_pull_data(skb, 3);
++		if (!sdata)
++			break;
++
+ 		input_report_key(dev, BTN_LEFT,   sdata[0] & 0x01);
+ 		input_report_key(dev, BTN_RIGHT,  sdata[0] & 0x02);
+ 		input_report_key(dev, BTN_MIDDLE, sdata[0] & 0x04);
+@@ -222,7 +235,7 @@ static void hidp_input_report(struct hid
+ 		input_report_rel(dev, REL_X, sdata[1]);
+ 		input_report_rel(dev, REL_Y, sdata[2]);
  
- static const struct ad3530r_chip_info ad3530_chip = {
+-		if (size > 3)
++		if (skb->len > 0)
+ 			input_report_rel(dev, REL_WHEEL, sdata[3]);
+ 		break;
+ 	}
 
 
 
