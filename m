@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bkjnCvRGJWozFwIAu9opvQ
-	(envelope-from <stable+bounces-261264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:52 +0200
+	id TRC3Cd9HJWqmFwIAu9opvQ
+	(envelope-from <stable+bounces-261285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DBB64FA16
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C4964FAE6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pGPd59XF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261264-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261264-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xESnPWMD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261285-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261285-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CD6B300361B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6918B301B908
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDF53254A9;
-	Sun,  7 Jun 2026 10:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E9324B31;
+	Sun,  7 Jun 2026 10:26:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F932D8378;
-	Sun,  7 Jun 2026 10:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D861B2F8E97;
+	Sun,  7 Jun 2026 10:26:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827887; cv=none; b=XnI2hMikJpf1iRR5vtmjcD8Jh5Erjq6v6k8EjmkOHxooyM31kt/n5XAC4KeLajb/HL3qsW7vEHqGrbGq7HvTAbd8gmYNBb47OdNkwwhrZIlloabHCWR0kaRtTtmi9dV/oWOHbl9RB1qM4ce/JA4QoqhyO+rzFtjlAGIxRQZbWFE=
+	t=1780827967; cv=none; b=AUKcwgpO2bn7ySlseFkpYe4q6v6525XkJJjLSaJVZSt4nbbpJXcnyJ1i6KVPo7JQuZv6RZ04wBcSM1TE9vYXvAPLS4D2Cbwg0EACX8lARdljDE5+Ai+tfOka70/9hfh94i56BXfQvbSXFaNHryMSBaykkVqR44q3MsWu8BrpgLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827887; c=relaxed/simple;
-	bh=QXgwPMhAowzzPiHtqO2cQxPVVrzlWlx2e20FyEa8oeI=;
+	s=arc-20240116; t=1780827967; c=relaxed/simple;
+	bh=dk9g4zhYpslkM8f49Msw+AUfrRMEoRVa8EJr7yWBwKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVYnToqpY3SfSwCAG65Y5W54H3vaHmT2I6dSX/g6Jm75N6QABAx+SnuiS5oHgI7ebg0m8EG+K3Xe3BSqwNA02YgqqBcDDdpgryYBKVUx16qzbp1PGubiim7pky1mxvNVbYut6vMyq72Iibzyq3B4pHpDLWVXp9SmYsio/uXpUP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGPd59XF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CB11F00893;
-	Sun,  7 Jun 2026 10:24:45 +0000 (UTC)
+	 MIME-Version; b=T+20dJCexybWKcrhc6lV9Rbm01hMubctjLlWqwgTxAWjuR9muvJlqMU0V4ZvZzvcj20dS6gmdkjqB/m6zbUNyGMEoWecUDnw72e+EFPZMiWZvPVF5iX2mYLfN180Hyttxnh6XpfHdYIHC6NHNi4uRFTbf5ccSVHwEz+bAlAkdck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xESnPWMD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1F61F00893;
+	Sun,  7 Jun 2026 10:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827886;
-	bh=Mo2PpxMEEQT3Tg/38JOf/rMbQx43URcwpLG1D620SmU=;
+	s=korg; t=1780827966;
+	bh=x6GwXTSWSbWh94A/AmT1y8gREembSpk2wdKaRwzDAkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pGPd59XFObxk3B6lIcJ75WiThwdW7XreUGocStVT3y8hlBwYtCZ1FIP/Bv7aZFwJE
-	 UEqhGJiIpwXzN3lnaty5ur9ZA5WPVVmBuwTdynEWJTZbJb5ckTvtdWjZn42GnFGR8v
-	 sMR0LwjuZ4Rsz5rNBS9N2lSG90tLqKcJhDOWeW3U=
+	b=xESnPWMDuyoBdJycHzQ9d3SJran02CBy24OgM/9oOg5f0ZObIEuXdIEhph3V6tS4l
+	 fnnAE2Uj4JgXeHRg64ZrTZsoxbPfyPjnaUj4M3Jzsu/g1B93z60Tl0A1vW8Lkyfjws
+	 2A0EI5qKbFBymdBfvqttSPGchMJhte1zciQaxnBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pooja Katiyar <pooja.katiyar@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.18 110/315] usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO
+	stable@kernel.org,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 100/307] batman-adv: bla: avoid NULL-ptr deref for claim via dropped interface
 Date: Sun,  7 Jun 2026 11:58:17 +0200
-Message-ID: <20260607095731.685328900@linuxfoundation.org>
+Message-ID: <20260607095731.457122382@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +69,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261264-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pooja.katiyar@intel.com,m:johan@kernel.org,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261285-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:idosch@nvidia.com,m:syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com,m:sven@narfation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,9fdcc9f05a98a540b816];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,nvidia.com:email,syzkaller.appspot.com:url,narfation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B3DBB64FA16
+X-Rspamd-Queue-Id: 94C4964FAE6
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 167dd8d12226587ee554f520aed0256b7769cd5d upstream.
+commit f80d3d98d2ff78d9e2fe5d68b1f45948c4f7bd24 upstream.
 
-ucsi_displayport_vdm() handles a DP_CMD_CONFIGURE by copying the first
-payload VDO from data[], but unlike the equivalent handler in
-altmodes/displayport.c it does not check that count covers a VDO beyond
-the header.  A header-only Configure VDM (count == 1) would read one u32
-past the caller's array.
+Without rtnl_lock held, a hardif might be retrieved as primary interface of
+a meshif, but then (while operating on this interface) getting decoupled
+from the mesh interface. In this case, the meshif still exists but the
+pointer from the primary hardif to the meshif is set to NULL.
 
-In the normal UCSI path the caller controls count, so this is hardening
-for non-standard delivery paths.  NAK and bail when no configuration VDO
-is present, matching the generic DP altmode driver's existing guard.
+The mesh_iface must be checked first to be non-NULL before continuing to
+send an ARP request using meshif.
 
-Assisted-by: gkh_clanker_t1000
-Cc: Pooja Katiyar <pooja.katiyar@intel.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051351-vividly-flattered-eb3d@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 23721387c409 ("batman-adv: add basic bridge loop avoidance code")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Reported-by: syzbot+9fdcc9f05a98a540b816@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9fdcc9f05a98a540b816
+[ switch to old "mesh_iface" name "soft_iface" ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/batman-adv/bridge_loop_avoidance.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -240,6 +240,10 @@ static int ucsi_displayport_vdm(struct t
- 				dp->header |= VDO_CMDT(CMDT_RSP_ACK);
- 			break;
- 		case DP_CMD_CONFIGURE:
-+			if (count < 2) {
-+				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
-+				break;
-+			}
- 			dp->data.conf = *data;
- 			if (ucsi_displayport_configure(dp)) {
- 				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
+diff --git a/net/batman-adv/bridge_loop_avoidance.c b/net/batman-adv/bridge_loop_avoidance.c
+index e77f3ef3d7336a..17db4191ddb39e 100644
+--- a/net/batman-adv/bridge_loop_avoidance.c
++++ b/net/batman-adv/bridge_loop_avoidance.c
+@@ -356,12 +356,14 @@ static void batadv_bla_send_claim(struct batadv_priv *bat_priv, const u8 *mac,
+ 	       sizeof(local_claim_dest));
+ 	local_claim_dest.type = claimtype;
+ 
+-	soft_iface = primary_if->soft_iface;
++	soft_iface = READ_ONCE(primary_if->soft_iface);
++	if (!soft_iface)
++		goto out;
+ 
+ 	skb = arp_create(ARPOP_REPLY, ETH_P_ARP,
+ 			 /* IP DST: 0.0.0.0 */
+ 			 zeroip,
+-			 primary_if->soft_iface,
++			 soft_iface,
+ 			 /* IP SRC: 0.0.0.0 */
+ 			 zeroip,
+ 			 /* Ethernet DST: Broadcast */
+-- 
+2.53.0
+
 
 
 
