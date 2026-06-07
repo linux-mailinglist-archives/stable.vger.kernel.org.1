@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GgwACDZGJWrHFgIAu9opvQ
-	(envelope-from <stable+bounces-261110-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:42 +0200
+	id QTpvFulGJWonFwIAu9opvQ
+	(envelope-from <stable+bounces-261138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506A764F91F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E5D64F9F8
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Pe/Ry3Ui";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261110-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261110-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CFkktho3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261138-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261138-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 844893050A52
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 638283044F23
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1336C30C175;
-	Sun,  7 Jun 2026 10:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A632DB7A3;
+	Sun,  7 Jun 2026 10:16:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC83117B418;
-	Sun,  7 Jun 2026 10:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B272AD00;
+	Sun,  7 Jun 2026 10:16:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827294; cv=none; b=D/t/M7GNTrqggNTxsNaZ1h1OOLR9hqYEDXtFx0JJQMLVpYhCKM0mFAZ32ZoTOcilU0F84pBNf1d8U62u8jx50Yq0yWy1cKCu+rwJg6qVklNe/ueU6UyiNliq2t8964oJh1DUg0g8aw1ZguwfSfHaCbtEPOsuKQJXozYKIHvk+4o=
+	t=1780827390; cv=none; b=pmWJvm+d9yuKMR8PCaUI56e+GvzBjQ6ryRSpeSaMRf7rAy6Sl3W8HcGffCLhb6Uqs5Aak0mlRdDPrD5mtPUsij4/d7136yMs4KXrjuscl2VtHevc9SVntGP/9iDTeXSFV6JAkj2hD8qj9IpWoa180doNwmT6rVM6B8Jvd+DHR6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827294; c=relaxed/simple;
-	bh=gtxzafyjOVjV7AtGzdwT1vjkkf+wmBDf7D2T68j/FtM=;
+	s=arc-20240116; t=1780827390; c=relaxed/simple;
+	bh=QLUqtQ29Z2D80a8rKb2YLU1lT7ZxWqj5OMvLDIhbttI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niPPSgSenUNE/uvoY3YEaArpDZq3MgRYvALmkVymj9s36xtbza3jj1VHHfgw6mSUPPBpavcnuFtoyE7F897qn3CBoep3pE6XTV7He+sN0loOcPt3myuR/bsqYh8WWkjFkYqCg7WbcQUTnbJKW10zo+fGOyNJCimjv5HSIXB36Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pe/Ry3Ui; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5C91F00893;
-	Sun,  7 Jun 2026 10:14:52 +0000 (UTC)
+	 MIME-Version; b=oW9uxQ4qkoQBaH02z1f1v2L22H4VwRAuFXwjYIiFA8Z7TXGNvy65XMmGt4SX5e+kyg+p7V1tMt7f3Rui2YtKMf85QnSbGaUFfprdjmIgXzTNIyYXareACfistr1ATRXnFyCZC9Hxlao6nHWvRFX+ZQuoPRBdDzmO+M1uAujECXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFkktho3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA15F1F00893;
+	Sun,  7 Jun 2026 10:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827293;
-	bh=XudECG4Jnvkg85i5R8vwircVFGyU74VhRcwsBggjHSA=;
+	s=korg; t=1780827389;
+	bh=0j1VLAUu8DIdgd6L1NVqcuOhiSA9PFeakEiIXh1cPcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pe/Ry3UiK1vfK/bsakRFoLhNhqbX72/o41PT6aIJXccC54Hd76db5pXmdBYG841wr
-	 JotW8dBpbAlv2/kRuBv8xj5+LOAz4lEDGZIGHt04b1OtxwlKvtxzBqJGpTMDpwU4MF
-	 Q7zpABD1bPhwGicbiJz77x/YqjaeJUie1mBQTC2k=
+	b=CFkktho309IK6DPYHpuvA8eiiJEhC1L4fVEZ7BeP/V23s+ReOGBQ1+/DSjAAABCbZ
+	 GEQ5QiSsWqPkkhjK7drSRWz00nMC+iWlSA/vPU9F5cZqHXoyKDJIw1FGG65u+ni59t
+	 b/nufu18itLiUzlg1RpRUfy0+Yw4uWdLJEsEfGJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Jay Vosburgh <jv@jvosburgh.net>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 061/315] bonding: refuse to enslave CAN devices
+Subject: [PATCH 6.12 051/307] ethtool: module: check fw_flash_in_progress under rtnl_lock
 Date: Sun,  7 Jun 2026 11:57:28 +0200
-Message-ID: <20260607095729.844750000@linuxfoundation.org>
+Message-ID: <20260607095729.593945568@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,112 +68,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261110-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261138-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,m:socketcan@hartkopp.net,m:jv@jvosburgh.net,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8ed98cbd0161632bce95];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,jvosburgh.net:email,hartkopp.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 506A764F91F
+X-Rspamd-Queue-Id: A2E5D64F9F8
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 8ba68464e4787b6a7ec938826e16124df20fd23d ]
+[ Upstream commit 504eaefa44c8dec50f7499edcb36d24f3aefab2a ]
 
-syzbot reported a kernel paging request crash in
-can_rx_unregister() inside net/can/af_can.c. The crash occurs
-because a virtual CAN device (vxcan) is being enslaved to a
-bonding master.
+ethnl_set_module_validate() inspects module_fw_flash_in_progress
+but validate is meant for _input_ validation, not state validation.
+rtnl_lock is not held, yet. Move the check into ethnl_set_module().
 
-During the enslavement process, the bonding driver mutates
-and modifies the network device states to fit an Ethernet-like
-aggregation model. However, CAN devices operate on a completely
-different Layer 2 architecture, relying on the CAN mid-layer
-private data structure (can_ml_priv) instead of standard
-Ethernet structures. Since bonding does not initialize or
-maintain these CAN structures, subsequent operations on the
-half-enslaved interface (such as closing associated sockets
-via isotp_release) lead to a null-pointer dereference when
-accessing the CAN receiver lists.
-
-Bonding CAN interfaces is architecturally invalid as CAN lacks
-MAC addresses, ARP capabilities, and standard Ethernet
-link-layer mechanisms. While generic loopback devices are
-blocked globally in net/core/dev.c, virtual CAN devices
-bypass this check because they do not carry the IFF_LOOPBACK
-flag, despite acting as local software-loopbacks.
-
-Fix this by explicitly blocking network devices of type
-ARPHRD_CAN from being enslaved at the very beginning of
-bond_enslave(). This prevents illegal state mutations,
-eliminates the resulting KASAN crashes, and avoids potential
-memory leaks from incomplete socket cleanups.
-
-As the CAN support has been added a long time after bonding
-the Fixes-tag points to the introduction of ARPHRD_CAN that
-would have needed a specific handling in bonding_main.c.
-
-Fixes: cd05acfe65ed ("[CAN]: Allocate protocol numbers for PF_CAN")
-Reported-by: syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20260526-bonding-candev-v1-1-ba1df400918a@hartkopp.net
+Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-5-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ethtool/module.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8b1422dda4c080..2132acff2e52c4 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1860,6 +1860,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	struct sockaddr_storage ss;
- 	int res = 0, i;
+diff --git a/net/ethtool/module.c b/net/ethtool/module.c
+index 76d13ef4ba0427..ab1e8a83acd0b1 100644
+--- a/net/ethtool/module.c
++++ b/net/ethtool/module.c
+@@ -119,12 +119,6 @@ ethnl_set_module_validate(struct ethnl_req_info *req_info,
+ 	if (!tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY])
+ 		return 0;
  
-+	if (slave_dev->type == ARPHRD_CAN) {
-+		BOND_NL_ERR(bond_dev, extack,
-+			    "CAN devices cannot be enslaved");
-+		return -EPERM;
+-	if (req_info->dev->ethtool->module_fw_flash_in_progress) {
+-		NL_SET_ERR_MSG(info->extack,
+-			       "Module firmware flashing is in progress");
+-		return -EBUSY;
+-	}
+-
+ 	if (!ops->get_module_power_mode || !ops->set_module_power_mode) {
+ 		NL_SET_ERR_MSG_ATTR(info->extack,
+ 				    tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY],
+@@ -147,6 +141,12 @@ ethnl_set_module(struct ethnl_req_info *req_info, struct genl_info *info)
+ 
+ 	ops = dev->ethtool_ops;
+ 
++	if (dev->ethtool->module_fw_flash_in_progress) {
++		NL_SET_ERR_MSG(info->extack,
++			       "Module firmware flashing is in progress");
++		return -EBUSY;
 +	}
 +
- 	if (slave_dev->flags & IFF_MASTER &&
- 	    !netif_is_bond_master(slave_dev)) {
- 		BOND_NL_ERR(bond_dev, extack,
+ 	power_new.policy = nla_get_u8(tb[ETHTOOL_A_MODULE_POWER_MODE_POLICY]);
+ 	ret = ops->get_module_power_mode(dev, &power, info->extack);
+ 	if (ret < 0)
 -- 
 2.53.0
 
