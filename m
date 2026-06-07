@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hgi+DmxGJWrpFgIAu9opvQ
-	(envelope-from <stable+bounces-261124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:36 +0200
+	id plZrJDRHJWpUFwIAu9opvQ
+	(envelope-from <stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC6C64F96D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE8064FA64
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2o3VJOuT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261124-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261124-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vVKjqrtc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDC80307462D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24741307A0DC
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611FB2AD00;
-	Sun,  7 Jun 2026 10:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C132E1F0E;
+	Sun,  7 Jun 2026 10:17:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419EF4071DA;
-	Sun,  7 Jun 2026 10:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFF34071DA;
+	Sun,  7 Jun 2026 10:17:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827341; cv=none; b=IkPivBJ6cypTAXycpwERtbOLYRudds5YBKxg4n6NnwmCpujPtu6S8oFixhqizu98FFJahyztGgOeFFyJfNdh/4memuLDqmP7lFvudbwWX8f+KaPubMEjyDmZCaNtjnT6Ki7ZxKsIop6KZhv2GguGcFqLzI5m04wbWJz6lZl4ZRA=
+	t=1780827435; cv=none; b=hHRPnai2qWZeGSZiYMj/nvJ/dX46D/AUEXVCi5PAqvbdEvZCjZxbCIeLzK9C27/wHECUyRLYp7cqHsGDl/RCzcEC2KtZH2CoN+Vcqg+i/24CtnugLsRX/BMTwXS1pKmeBFhEVFOM5RyCBVUgx7O3CNlz6zVlRACqVmRKTEzUDk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827341; c=relaxed/simple;
-	bh=vwhQg/8Ws9eKLY8EadxW/Qe8PbO323DiL4omMdcH5Zw=;
+	s=arc-20240116; t=1780827435; c=relaxed/simple;
+	bh=acnkdwPXszY2T/PgaEUqGnok8EJwsODBCfc6o3DUYoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tY90jT+vbZQksogR4gzu9V2XoBI/SdINLqTrZwe0WurENQqlhwR+eq9Dsx+ywFZCEeymFQOaG7X8Na/Hz4s2Gmr5URmbw+P5MIeSYeP35vwHLHBsFub7YmuIhK4/eySCmygmcdYGZ1eytInf7U0KXGxvJmwB0uDZT6t6tWleWJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2o3VJOuT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842BB1F00893;
-	Sun,  7 Jun 2026 10:15:39 +0000 (UTC)
+	 MIME-Version; b=PQXqvkckTB5Ve+wpYs7pLD55fbGB5R01V/x2f3TD+S4RiuXr1TU8GLZCfR85TDPt6HxVm1HFNrB0ac2ATKtoyk1G5E1tf9w7uKPMY2gyoX7RYntejiKJfUy1EsXp0pH1ZISOqjHDLCkGKiYdAjZSeUg0D3r+Hjd6WJrtfmsbAXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVKjqrtc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E801F00893;
+	Sun,  7 Jun 2026 10:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827340;
-	bh=oKD7766u/iJlY+w7GaUMbL7SqkKs/6OfrBdjuA30Tws=;
+	s=korg; t=1780827433;
+	bh=YsV0suLlUB520UMVFE8UbGZoqTPiNj9DUvZYWd+NlO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2o3VJOuTxSCxO2Jk7eVl76hpnefn/y0IvoprRsmEgJSNo4lWqosUO0vjZgIpBH9h1
-	 DhwlbIdiG2ofcdbzaNzx+iwDE9W9yQN3wIXeHWmmFIgKm+dqUquCrUE88VNyu3LtHF
-	 iWDGui4kwZXK6IVl5lDE5oQvZTKRVBUWkA2qudNk=
+	b=vVKjqrtcqLYzvZB4p3fnNrWe+pAupbPPwDcLGFAlxxFXtS4gXjkxM/K7QTouJn/IQ
+	 rb3JBeaTtviE5S6Mixth3esOvtHmZdmbGPCCsh3I4PxJJYmo7H1r5BtWRH5L8YeJOl
+	 jl/g6vww7Z1XP0YmAf+L37r3Vl0/Gmfn9FSGWHgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 065/315] ethtool: tsconfig: fix reply error handling
+Subject: [PATCH 6.12 055/307] net: ethtool: Add new parameters and a function to support EPL
 Date: Sun,  7 Jun 2026 11:57:32 +0200
-Message-ID: <20260607095729.999068356@linuxfoundation.org>
+Message-ID: <20260607095729.749604388@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +80,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261124-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261151-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vadim.fedorenko@linux.dev,m:kory.maincent@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:petrm@nvidia.com,m:horms@kernel.org,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -96,64 +97,212 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FC6C64F96D
+X-Rspamd-Queue-Id: 1AE8064FA64
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit a888bbd43940cada72f7686337741ce86d1cf869 ]
+[ Upstream commit edc344568922eb9588e77ba49de1ef0cb9a2ff1c ]
 
-A couple of trivial bugs in error handling in tsconfig_send_reply().
-If we failed to allocate rskb we need to set the error.
-If we did allocate it but failed to send it - we need to remember
-to free it.
+In the CMIS specification for pluggable modules, LPL (Local Payload) and
+EPL (Extended Payload) are two types of data payloads used for managing
+various functions and features of the module.
 
-Fixes: 6e9e2eed4f39 ("net: ethtool: Add support for tsconfig command to get/set hwtstamp config")
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20260526153533.2779187-3-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+EPL payloads are used for more complex and extensive management
+functions that require a larger amount of data, so writing firmware
+blocks using EPL is much more efficient.
+
+Currently, only LPL payload is supported for writing firmware blocks to
+the module.
+
+Add EPL related parameters to the function ethtool_cmis_cdb_compose_args()
+and add a specific function for calculating the maximum allowable length
+extension for EPL. Both will be used in the next patch to add support for
+writing firmware blocks using EPL.
+
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 12c2496a71f8 ("ethtool: cmis: validate start_cmd_payload_size from module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/tsconfig.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ethtool/cmis.h           | 12 +++++++-----
+ net/ethtool/cmis_cdb.c       | 32 +++++++++++++++++++++-----------
+ net/ethtool/cmis_fw_update.c | 17 ++++++++++-------
+ 3 files changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/net/ethtool/tsconfig.c b/net/ethtool/tsconfig.c
-index 169b413b31fc5f..041de8687472bd 100644
---- a/net/ethtool/tsconfig.c
-+++ b/net/ethtool/tsconfig.c
-@@ -224,16 +224,21 @@ static int tsconfig_send_reply(struct net_device *dev, struct genl_info *info)
- 	reply_len = ret + ethnl_reply_header_size();
- 	rskb = ethnl_reply_init(reply_len, dev, ETHTOOL_MSG_TSCONFIG_SET_REPLY,
- 				ETHTOOL_A_TSCONFIG_HEADER, info, &reply_payload);
--	if (!rskb)
-+	if (!rskb) {
-+		ret = -ENOMEM;
- 		goto err_cleanup;
-+	}
+diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
+index aa32a675b8f8d2..e11e47b3f2fc8f 100644
+--- a/net/ethtool/cmis.h
++++ b/net/ethtool/cmis.h
+@@ -96,13 +96,15 @@ struct ethtool_cmis_cdb_rpl {
+ 	u8 payload[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH];
+ };
  
- 	ret = tsconfig_fill_reply(rskb, &req_info->base, &reply_data->base);
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_free_msg;
+-u32 ethtool_cmis_get_max_payload_size(u8 num_of_byte_octs);
++u32 ethtool_cmis_get_max_lpl_size(u8 num_of_byte_octs);
++u32 ethtool_cmis_get_max_epl_size(u8 num_of_byte_octs);
  
- 	genlmsg_end(rskb, reply_payload);
- 	ret = genlmsg_reply(rskb, info);
-+	rskb = NULL;
+ void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
+-				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *pl,
+-				   u8 lpl_len, u16 max_duration,
+-				   u8 read_write_len_ext, u16 msleep_pre_rpl,
+-				   u8 rpl_exp_len, u8 flags);
++				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *lpl,
++				   u8 lpl_len, u8 *epl, u16 epl_len,
++				   u16 max_duration, u8 read_write_len_ext,
++				   u16 msleep_pre_rpl, u8 rpl_exp_len,
++				   u8 flags);
  
-+err_free_msg:
-+	nlmsg_free(rskb);
- err_cleanup:
- 	kfree(reply_data);
- 	kfree(req_info);
+ void ethtool_cmis_cdb_check_completion_flag(u8 cmis_rev, u8 *flags);
+ 
+diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
+index 690002366d965a..31142e239cf6b2 100644
+--- a/net/ethtool/cmis_cdb.c
++++ b/net/ethtool/cmis_cdb.c
+@@ -11,25 +11,34 @@
+  * min(i, 15) byte octets where i specifies the allowable additional number of
+  * byte octets in a READ or a WRITE.
+  */
+-u32 ethtool_cmis_get_max_payload_size(u8 num_of_byte_octs)
++u32 ethtool_cmis_get_max_lpl_size(u8 num_of_byte_octs)
+ {
+ 	return 8 * (1 + min_t(u8, num_of_byte_octs, 15));
+ }
+ 
++/* For accessing the EPL field on page 9Fh, the allowable length extension is
++ * min(i, 255) byte octets where i specifies the allowable additional number of
++ * byte octets in a READ or a WRITE.
++ */
++u32 ethtool_cmis_get_max_epl_size(u8 num_of_byte_octs)
++{
++	return 8 * (1 + min_t(u8, num_of_byte_octs, 255));
++}
++
+ void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
+-				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *pl,
+-				   u8 lpl_len, u16 max_duration,
+-				   u8 read_write_len_ext, u16 msleep_pre_rpl,
+-				   u8 rpl_exp_len, u8 flags)
++				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *lpl,
++				   u8 lpl_len, u8 *epl, u16 epl_len,
++				   u16 max_duration, u8 read_write_len_ext,
++				   u16 msleep_pre_rpl, u8 rpl_exp_len, u8 flags)
+ {
+ 	args->req.id = cpu_to_be16(cmd);
+ 	args->req.lpl_len = lpl_len;
+-	if (pl)
+-		memcpy(args->req.payload, pl, args->req.lpl_len);
++	if (lpl)
++		memcpy(args->req.payload, lpl, args->req.lpl_len);
+ 
+ 	args->max_duration = max_duration;
+ 	args->read_write_len_ext =
+-		ethtool_cmis_get_max_payload_size(read_write_len_ext);
++		ethtool_cmis_get_max_lpl_size(read_write_len_ext);
+ 	args->msleep_pre_rpl = msleep_pre_rpl;
+ 	args->rpl_exp_len = rpl_exp_len;
+ 	args->flags = flags;
+@@ -183,7 +192,7 @@ cmis_cdb_validate_password(struct ethtool_cmis_cdb *cdb,
+ 	}
+ 
+ 	ethtool_cmis_cdb_compose_args(&args, ETHTOOL_CMIS_CDB_CMD_QUERY_STATUS,
+-				      (u8 *)&qs_pl, sizeof(qs_pl), 0,
++				      (u8 *)&qs_pl, sizeof(qs_pl), NULL, 0, 0,
+ 				      cdb->read_write_len_ext, 1000,
+ 				      sizeof(*rpl),
+ 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+@@ -245,8 +254,9 @@ static int cmis_cdb_module_features_get(struct ethtool_cmis_cdb *cdb,
+ 	ethtool_cmis_cdb_check_completion_flag(cdb->cmis_rev, &flags);
+ 	ethtool_cmis_cdb_compose_args(&args,
+ 				      ETHTOOL_CMIS_CDB_CMD_MODULE_FEATURES,
+-				      NULL, 0, 0, cdb->read_write_len_ext,
+-				      1000, sizeof(*rpl), flags);
++				      NULL, 0, NULL, 0, 0,
++				      cdb->read_write_len_ext, 1000,
++				      sizeof(*rpl), flags);
+ 
+ 	err = ethtool_cmis_cdb_execute_cmd(dev, &args);
+ 	if (err < 0) {
+diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
+index 655ff5224ffa30..a514127985d44e 100644
+--- a/net/ethtool/cmis_fw_update.c
++++ b/net/ethtool/cmis_fw_update.c
+@@ -54,7 +54,8 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	ethtool_cmis_cdb_check_completion_flag(cdb->cmis_rev, &flags);
+ 	ethtool_cmis_cdb_compose_args(&args,
+ 				      ETHTOOL_CMIS_CDB_CMD_FW_MANAGMENT_FEATURES,
+-				      NULL, 0, cdb->max_completion_time,
++				      NULL, 0, NULL, 0,
++				      cdb->max_completion_time,
+ 				      cdb->read_write_len_ext, 1000,
+ 				      sizeof(*rpl), flags);
+ 
+@@ -122,7 +123,7 @@ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
+ 
+ 	ethtool_cmis_cdb_compose_args(&args,
+ 				      ETHTOOL_CMIS_CDB_CMD_START_FW_DOWNLOAD,
+-				      (u8 *)&pl, lpl_len,
++				      (u8 *)&pl, lpl_len, NULL, 0,
+ 				      fw_mng->max_duration_start,
+ 				      cdb->read_write_len_ext, 1000, 0,
+ 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+@@ -158,7 +159,7 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
+ 	int err;
+ 
+ 	max_lpl_len = min_t(u32,
+-			    ethtool_cmis_get_max_payload_size(cdb->read_write_len_ext),
++			    ethtool_cmis_get_max_lpl_size(cdb->read_write_len_ext),
+ 			    ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH);
+ 	max_block_size =
+ 		max_lpl_len - sizeof_field(struct cmis_cdb_write_fw_block_lpl_pl,
+@@ -183,7 +184,7 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
+ 
+ 		ethtool_cmis_cdb_compose_args(&args,
+ 					      ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_LPL,
+-					      (u8 *)&pl, lpl_len,
++					      (u8 *)&pl, lpl_len, NULL, 0,
+ 					      fw_mng->max_duration_write,
+ 					      cdb->read_write_len_ext, 1, 0,
+ 					      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+@@ -212,7 +213,8 @@ cmis_fw_update_complete_download(struct ethtool_cmis_cdb *cdb,
+ 
+ 	ethtool_cmis_cdb_compose_args(&args,
+ 				      ETHTOOL_CMIS_CDB_CMD_COMPLETE_FW_DOWNLOAD,
+-				      NULL, 0, fw_mng->max_duration_complete,
++				      NULL, 0, NULL, 0,
++				      fw_mng->max_duration_complete,
+ 				      cdb->read_write_len_ext, 1000, 0,
+ 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+ 
+@@ -294,7 +296,7 @@ cmis_fw_update_run_image(struct ethtool_cmis_cdb *cdb, struct net_device *dev,
+ 	int err;
+ 
+ 	ethtool_cmis_cdb_compose_args(&args, ETHTOOL_CMIS_CDB_CMD_RUN_FW_IMAGE,
+-				      (u8 *)&pl, sizeof(pl),
++				      (u8 *)&pl, sizeof(pl), NULL, 0,
+ 				      cdb->max_completion_time,
+ 				      cdb->read_write_len_ext, 1000, 0,
+ 				      CDB_F_MODULE_STATE_VALID);
+@@ -326,7 +328,8 @@ cmis_fw_update_commit_image(struct ethtool_cmis_cdb *cdb,
+ 
+ 	ethtool_cmis_cdb_compose_args(&args,
+ 				      ETHTOOL_CMIS_CDB_CMD_COMMIT_FW_IMAGE,
+-				      NULL, 0, cdb->max_completion_time,
++				      NULL, 0, NULL, 0,
++				      cdb->max_completion_time,
+ 				      cdb->read_write_len_ext, 1000, 0,
+ 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+ 
 -- 
 2.53.0
 
