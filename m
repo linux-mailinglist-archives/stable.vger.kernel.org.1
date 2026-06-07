@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EPhMBaVPJWo5GwIAu9opvQ
-	(envelope-from <stable+bounces-261729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:57 +0200
+	id fFATK4xVJWp9HAIAu9opvQ
+	(envelope-from <stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995406503D0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367496506EA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P+9KD9pl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261729-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261729-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zhFJSVBv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C56D3060CB4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C297B3092F38
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6030931E822;
-	Sun,  7 Jun 2026 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D22B32F764;
+	Sun,  7 Jun 2026 10:58:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0D14204E;
-	Sun,  7 Jun 2026 10:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B9C12CDA5;
+	Sun,  7 Jun 2026 10:58:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829620; cv=none; b=o3B9kp0g6yTgnvV3he5Ih3VwNGoYL/TmHpMv0qUNuDCriF0bBdQtAC88RCLRMQcYJiz4PTBlaxgQidAmApPYhatZf8pAtzDHo2f6lyRpZwfVJwhOv0c9fQzT4gfmYOyX1RzUVtyldHnxYDaQ6+27wLdur1iq/1FB7Yp3tOKOzJU=
+	t=1780829933; cv=none; b=q05y9BO2kLnmhxxOenpiaN2wc7RvAIBFAtMqZ2vNdO1Cv6mR0XlW7Jxt8uN5uwf4N0LxA9O2oxBho2TpK/rGSvBFXBIcWgYKDhD2dFTRXi2VhhJCmf7T7Nt38sFEaKIK/AuBcECFTJ8lJ8aCN61/HyfZ2Rt4tCzmVoe6E3oXQkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829620; c=relaxed/simple;
-	bh=XOjeYQle7wFuXQ4lzk1Tio2gg6fOfVhiE8pnwNimaSw=;
+	s=arc-20240116; t=1780829933; c=relaxed/simple;
+	bh=yhsMyMzMgzsRtR6pRa3hAF5k7wxAxXBTReuPiLle9zE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fDEn4JQtPgNDgDAoiz/d4EMpJlAtJRvEfOeerrCEA4Cq06PzGRW34GiRZd6W5edtTXAGqlOgR+D1K0giM4OU39EWEls0YhxBaBV+Wy9sKaLVpqMThYhgkbN+ElNaLv0JGT2/j3HbUrLrK1qFBxuwPt29ORgPUnsCkxTIF/qMrDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+9KD9pl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8FA1F00893;
-	Sun,  7 Jun 2026 10:53:38 +0000 (UTC)
+	 MIME-Version; b=h8cOjQr+rajgNuEpRirvdhilTPACrzxmSy++zztSdhHldmRBKYdMUdBI1nUDJ2tipylfU0NvALP7XzvC5LAfk2rZ4X8Srkm5RyBxf0hcblJlcxV7QRWG24AGIh6vQUOeetGiyBEQ0iq7QfqKwH+Gxgu52YENdF1TgVRfOJmP1/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhFJSVBv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC701F00893;
+	Sun,  7 Jun 2026 10:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829618;
-	bh=KzM6UC3lIt2epdle4TFGvgsbhQQ3xOE2Mv77xn3Uiio=;
+	s=korg; t=1780829931;
+	bh=fuvvDGZtqZ3+DfXN6LkrH8S+6bfc7XjPBF72vlypw2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P+9KD9pl+7kXK8dMn0kudzXvRWRyI50PhtcfMPDULxzHQlH03Z8nJfzh9qxPr5cR9
-	 uE9UrHWpK50YEJGm/7FJEeuN55Le+0NX9ffO9MYSmf3PMOcpcz/bHt/ibkLJWNK4DY
-	 5FdSxt/HPQ7wc/fZtxjNALkL6O3gob1LZAj2+zGk=
+	b=zhFJSVBvGqcsqGNSyaS1lfIjoExJ5vI+A/l/pgpnRg2pLclxNzk6U5aJT+2HljYC0
+	 bH64mx8TeJZx+Q7aC7Dsl2pkMi8CC1ThN9kutgvCG2TaZ9NGkEW6FqIWccHUerQWNa
+	 cXhObtcItuWh8/2z7HJY4pk7AegG0/fkK6DB7wqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jeremy Klarenbeek <jeremy.klarenbeek99@gmail.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>
-Subject: [PATCH 7.0 295/332] drm/amd/pm/si: Disregard vblank time when no displays are connected
+	Aleksandr Nogikh <nogikh@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 267/307] x86/kexec: Disable KCOV instrumentation after load_segments()
 Date: Sun,  7 Jun 2026 12:01:04 +0200
-Message-ID: <20260607095738.898435104@linuxfoundation.org>
+Message-ID: <20260607095737.512582084@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +66,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261729-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexander.deucher@amd.com,m:jeremy.klarenbeek99@gmail.com,m:timur.kristof@gmail.com,m:jeremyklarenbeek99@gmail.com,m:timurkristof@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261813-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nogikh@google.com,m:bp@alien8.de,m:dvyukov@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,alien8.de:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 995406503D0
+X-Rspamd-Queue-Id: 367496506EA
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-commit dd4f3ee535b3b0ac027f75dbf9dc5fc88733c765 upstream.
+[ Upstream commit 917e3ad3321e75ca0223d5ccf26ceda116aa51e1 ]
 
-When no displays are connected, there is no vblank
-happening so the power management code shouldn't
-worry about it.
+The load_segments() function changes segment registers, invalidating GS base
+(which KCOV relies on for per-cpu data). When CONFIG_KCOV is enabled, any
+subsequent instrumented C code call (e.g. native_gdt_invalidate()) begins
+crashing the kernel in an endless loop.
 
-This fixes a regression that caused the memory clock
-to be stuck at maximum when there were no displays
-connected to a SI GPU.
+To reproduce the problem, it's sufficient to do kexec on a KCOV-instrumented
+kernel:
 
-Fixes: 9003a0746864 ("drm/amd/pm: Treat zero vblank time as too short in si_dpm (v3)")
-Fixes: 9d73b107a61b ("drm/amd/pm: Use pm_display_cfg in legacy DPM (v2)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Jeremy Klarenbeek <jeremy.klarenbeek99@gmail.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6d87e0199f7b83735b56e422d59f170a201897a8)
+  $ kexec -l /boot/otherKernel
+  $ kexec -e
+
+The real-world context for this problem is enabling crash dump collection in
+syzkaller. For this, the tool loads a panic kernel before fuzzing and then
+calls makedumpfile after the panic. This workflow requires both CONFIG_KEXEC
+and CONFIG_KCOV to be enabled simultaneously.
+
+Adding safeguards directly to the KCOV fast-path (__sanitizer_cov_trace_pc())
+is also undesirable as it would introduce an extra performance overhead.
+
+Disabling instrumentation for the individual functions would be too fragile,
+so disable KCOV instrumentation for the entire machine_kexec_64.c and
+physaddr.c. If coverage-guided fuzzing ever needs these components in the
+future, other approaches should be considered.
+
+The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not supported
+there.
+
+  [ bp: Space out comment for better readability. ]
+
+Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260325154825.551191-1-nogikh@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/Makefile | 14 ++++++++++++++
+ arch/x86/mm/Makefile     |  2 ++
+ 2 files changed, 16 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3076,6 +3076,10 @@ static bool si_dpm_vblank_too_short(void
- 	/* we never hit the non-gddr5 limit so disable it */
- 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index f42c0903ef86d4..5f58b5a38cac17 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -44,6 +44,20 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
+ KCOV_INSTRUMENT_unwind_frame.o				:= n
+ KCOV_INSTRUMENT_unwind_guess.o				:= n
  
-+	/* Disregard vblank time when there are no displays connected */
-+	if (!adev->pm.pm_display_cfg.num_display)
-+		return false;
++# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
++# the GS base, which KCOV relies on for per-CPU data.
++#
++# As KCOV and KEXEC compatibility should be preserved (e.g. syzkaller is
++# using it to collect crash dumps during kernel fuzzing), disabling
++# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
++# instrumentation for individual affected functions can be fragile, while
++# adding more checks to KCOV would slow it down.
++#
++# As a compromise solution, disable KCOV instrumentation for the whole
++# source code file. If its coverage is ever needed, other approaches
++# should be considered.
++KCOV_INSTRUMENT_machine_kexec_64.o			:= n
 +
- 	/* Consider zero vblank time too short and disable MCLK switching.
- 	 * Note that the vblank time is set to maximum when no displays are attached,
- 	 * so we'll still enable MCLK switching in that case.
+ CFLAGS_head32.o := -fno-stack-protector
+ CFLAGS_head64.o := -fno-stack-protector
+ CFLAGS_irq.o := -I $(src)/../include/asm/trace
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index 690fbf48e8538b..60a53baa042793 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -5,6 +5,8 @@ KCOV_INSTRUMENT_mem_encrypt.o		:= n
+ KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
+ KCOV_INSTRUMENT_mem_encrypt_identity.o	:= n
+ KCOV_INSTRUMENT_pgprot.o		:= n
++# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
++KCOV_INSTRUMENT_physaddr.o		:= n
+ 
+ KASAN_SANITIZE_mem_encrypt.o		:= n
+ KASAN_SANITIZE_mem_encrypt_amd.o	:= n
+-- 
+2.53.0
+
 
 
 
