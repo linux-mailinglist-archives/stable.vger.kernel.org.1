@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rmzPBCpPJWr/GgIAu9opvQ
-	(envelope-from <stable+bounces-261823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:54 +0200
+	id FeCMDmlOJWqcGgIAu9opvQ
+	(envelope-from <stable+bounces-261774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EA2650339
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD69650252
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j1ZySZK7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261823-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261823-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vYvM5IYE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261774-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E75D33006221
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31F9730059A1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0074634EF03;
-	Sun,  7 Jun 2026 10:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D2933120C;
+	Sun,  7 Jun 2026 10:56:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637EF33557D;
-	Sun,  7 Jun 2026 10:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C093242DF;
+	Sun,  7 Jun 2026 10:56:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829981; cv=none; b=jYL9KRYEybzjAG2hYdCGwUm8FdvPsH4owmRMyI7QkAHTlOz62+KiBRA/FuHW8d0dgd22bfM4n3Dkb5eRpACI0LmXF0zX5cnOruhWHtjhlckwq9hvltxfO9WsHFKqIQNYSZ861PV7CFo0oFWxXTZ9UXLg+tEOMO8nguGP7Q9djGU=
+	t=1780829795; cv=none; b=OJVo9McOU6JVTYxziXr1NzVhiDv54qAK398wPk3S0xcois34lyTZxmegq7KOPCOBB5TihX33vyTv3bo2HFolNARzc2wT46SKQy5DBGbGREhDoWyKRAFY9mSBkn4WvYDi/sInnws/Hy9mPzJ85kD3TDsg4hR7yjbuHhHhX3WlRo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829981; c=relaxed/simple;
-	bh=SyYFA/Eejufz977lLqyGT6s/b7ZlPr0kpk8v4WgcWcc=;
+	s=arc-20240116; t=1780829795; c=relaxed/simple;
+	bh=ZrXTcrD6ZoY2Frgzzr8BzmQB4kPPVsWM4/zybF3ziYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=suolHpTWSW2UseOoJkUlteEhyNKBHnbK7pLoQ4WFfaXEE9UxRdiMLis+0cAEvRF9PrsBYE6gXIutTMJv6yW9t3qfXfqbhdTqIJzh3qNmC+Sp2AnBJkpiI3PiWo+mOds12Ecm/gRKp/rJ0aBJWgoaAbGsbJtVB7Afb1TkmLbD1Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1ZySZK7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731531F00893;
-	Sun,  7 Jun 2026 10:59:36 +0000 (UTC)
+	 MIME-Version; b=XcHX3yH1oezzaghqaEx1WfZBQQfe+WRQ3VzCShb2sWcSRIYxWdIcZ0rwLYqC5U+NMdAF5XZxFh4QtC/CJI3LoYXyIfwDClicO3O1i0aZnJXU05Gl73wTjva8pDGRkG5BzUb7yg3XCoDELbhyLqxeK9xij3PJdatS2OzYgRYzYkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYvM5IYE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA7F1F00893;
+	Sun,  7 Jun 2026 10:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829977;
-	bh=1zRR1DFqf05L96SJU9WRF+/phQAwvgkCITJZjnorZfM=;
+	s=korg; t=1780829793;
+	bh=pLoPHCVaz+sBquB/o6Us+FFMfJYX5QeGjY3P5QkKACk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j1ZySZK7eyTJTSKw/X4Mme2wlAi7AeEJNkCCcqvEJSYeD9gjBlaQTE0OJ6XS8cuEv
-	 wOk2F6+/yWYZaMRD0lwVAqWX/0lxl7nnFtlthZZHZ5WT0jO0b3cyX/M7vyBGBS9eH7
-	 STjzuojdE/6/cs9xWrM9gd7ucJOVtzDE1Ano5FlE=
+	b=vYvM5IYEVV+11mLv9coHsHytJXVb+ApkUCpV0SGggxzUpI5cy5u8BQEhgi/ANNaJ6
+	 UbYo+zw0aj5GMGgv99Fd2ZJ9P2UnunNjDWGazGQ27gDb8AUX2Ay4g0sXMQpMw2MuJS
+	 x5li1Ze9eaunuzeNVitdRj/K5GYeBBxvGCmP+BoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/307] serdev: Provide a bustype shutdown function
+	stable <stable@kernel.org>,
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 7.0 298/332] serial: qcom_geni: fix kfifo underflow when flush precedes DMA completion IRQ
 Date: Sun,  7 Jun 2026 12:01:07 +0200
-Message-ID: <20260607095737.627486772@linuxfoundation.org>
+Message-ID: <20260607095739.006909366@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261774-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@baylibre.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:viken.dadhaniya@oss.qualcomm.com,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261823-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,baylibre.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 33EA2650339
+X-Rspamd-Queue-Id: CDD69650252
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 
-[ Upstream commit 6d71c62b13c33ea858ab298fe20beaec5736edc7 ]
+commit 452d6fa37ae9b021f4f6d397dbae077f7296f6f4 upstream.
 
-To prepare serdev driver to migrate away from struct device_driver::shutdown
-(and then eventually remove that callback) create a serdev driver shutdown
-callback and migration code to keep the existing behaviour. Note this
-introduces a warning for each driver at register time that isn't converted
-yet to that callback.
+When uart_flush_buffer() runs before the DMA completion IRQ is delivered,
+the following race can occur (all steps serialized by uart_port_lock):
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/ab518883e3ed0976a19cb5b5b5faf42bd3a655b7.1765526117.git.u.kleine-koenig@baylibre.com
+  1. DMA starts: tx_remaining = N, kfifo contains N bytes
+  2. DMA completes in hardware; IRQ is pending but not yet delivered
+  3. uart_flush_buffer() acquires the port lock and calls kfifo_reset(),
+     making kfifo_len() = 0 while tx_remaining remains N
+  4. uart_flush_buffer() releases the port lock
+  5. DMA IRQ fires; handle_tx_dma() acquires the port lock and calls
+     uart_xmit_advance(uport, tx_remaining) on an empty kfifo
+
+uart_xmit_advance() increments kfifo->out by tx_remaining. Since
+kfifo_reset() already set both in and out to 0, out wraps past in,
+causing kfifo_len() to return UART_XMIT_SIZE - tx_remaining. The next
+start_tx_dma() call then submits a DMA transfer of stale buffer data.
+
+Fix this by snapshotting kfifo_len() at the start of handle_tx_dma()
+and skipping uart_xmit_advance() when fifo_len < tx_remaining, which
+indicates the kfifo was reset by a preceding flush.
+
+Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260506-serial-dma-stale-tx-buf-v1-1-e3ccb360d719@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 375ba7484132 ("Bluetooth: hci_qca: Convert timeout from jiffies to ms")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serdev/core.c |   21 +++++++++++++++++++++
- include/linux/serdev.h    |    1 +
- 2 files changed, 22 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serdev/core.c
-+++ b/drivers/tty/serdev/core.c
-@@ -431,11 +431,21 @@ static void serdev_drv_remove(struct dev
- 	dev_pm_domain_detach(dev, true);
- }
- 
-+static void serdev_drv_shutdown(struct device *dev)
-+{
-+	const struct serdev_device_driver *sdrv =
-+		to_serdev_device_driver(dev->driver);
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1030,8 +1030,20 @@ static void qcom_geni_serial_handle_tx_d
+ {
+ 	struct qcom_geni_serial_port *port = to_dev_port(uport);
+ 	struct tty_port *tport = &uport->state->port;
++	unsigned int fifo_len = kfifo_len(&tport->xmit_fifo);
 +
-+	if (dev->driver && sdrv->shutdown)
-+		sdrv->shutdown(to_serdev_device(dev));
-+}
-+
- static const struct bus_type serdev_bus_type = {
- 	.name		= "serial",
- 	.match		= serdev_device_match,
- 	.probe		= serdev_drv_probe,
- 	.remove		= serdev_drv_remove,
-+	.shutdown	= serdev_drv_shutdown,
- };
++	/*
++	 * Only advance the kfifo if it still contains the bytes that were
++	 * transferred. uart_flush_buffer() may have run before this IRQ
++	 * fired: it calls kfifo_reset() under the port lock, making
++	 * fifo_len = 0 while tx_remaining remains non-zero. Calling
++	 * uart_xmit_advance() in that case would underflow kfifo->out past
++	 * kfifo->in, making kfifo_len() wrap to UART_XMIT_SIZE - tx_remaining
++	 * and triggering a spurious large DMA transfer of stale data.
++	 */
++	if (fifo_len >= port->tx_remaining)
++		uart_xmit_advance(uport, port->tx_remaining);
  
- /**
-@@ -832,6 +842,14 @@ void serdev_controller_remove(struct ser
- }
- EXPORT_SYMBOL_GPL(serdev_controller_remove);
- 
-+static void serdev_legacy_shutdown(struct serdev_device *serdev)
-+{
-+	struct device *dev = &serdev->dev;
-+	struct device_driver *driver = dev->driver;
-+
-+	driver->shutdown(dev);
-+}
-+
- /**
-  * __serdev_device_driver_register() - Register client driver with serdev core
-  * @sdrv:	client driver to be associated with client-device.
-@@ -848,6 +866,9 @@ int __serdev_device_driver_register(stru
- 	/* force drivers to async probe so I/O is possible in probe */
-         sdrv->driver.probe_type = PROBE_PREFER_ASYNCHRONOUS;
- 
-+	if (!sdrv->shutdown && sdrv->driver.shutdown)
-+		sdrv->shutdown = serdev_legacy_shutdown;
-+
- 	return driver_register(&sdrv->driver);
- }
- EXPORT_SYMBOL_GPL(__serdev_device_driver_register);
---- a/include/linux/serdev.h
-+++ b/include/linux/serdev.h
-@@ -65,6 +65,7 @@ struct serdev_device_driver {
- 	struct device_driver driver;
- 	int	(*probe)(struct serdev_device *);
- 	void	(*remove)(struct serdev_device *);
-+	void	(*shutdown)(struct serdev_device *);
- };
- 
- static inline struct serdev_device_driver *to_serdev_device_driver(struct device_driver *d)
+-	uart_xmit_advance(uport, port->tx_remaining);
+ 	geni_se_tx_dma_unprep(&port->se, port->tx_dma_addr, port->tx_remaining);
+ 	port->tx_dma_addr = 0;
+ 	port->tx_remaining = 0;
 
 
 
