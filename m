@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id v8FLBmdMJWqTGQIAu9opvQ
-	(envelope-from <stable+bounces-261632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:07 +0200
+	id lxUTCVdPJWodGwIAu9opvQ
+	(envelope-from <stable+bounces-261673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A767F650023
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27B765037D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=T2xv+Rzh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261632-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261632-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rb6WyBAt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261673-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261673-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2368E300490F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9730530578EB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206382E7390;
-	Sun,  7 Jun 2026 10:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9FA2DFF04;
+	Sun,  7 Jun 2026 10:50:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C921A6822;
-	Sun,  7 Jun 2026 10:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21C51A6822;
+	Sun,  7 Jun 2026 10:50:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829284; cv=none; b=LY5SPwEy2YKN0weOULgBGXt+zQTldRHsUGrI7QWKnAYKEZaj5VlbxWSjzi/+kFt2LxGYBfVjcEeCraqzdvGGUUUS9GpZb7fjJYvmiay1bjBa9mSFZeWQ5AqYwrWd/vAFJlSqhJnh+gma9HnYSsN28ny2OYNuKpWaW7BM1EYIbFE=
+	t=1780829427; cv=none; b=N7QoC4Incgr7S5yZOpb5TUBtp2fAlgVVjR3oCr4IksHhohadquhiz3yOhb0546OeElVIZPHyFk2hqrmfENK4HcijknQtK9SqIxGLU8F6IkuWfIsWOQz7u+8Sgg3uR+Cc97d73+qQbDOtYAkKkYn7hrySSDdcxLs4DVdqmleDMr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829284; c=relaxed/simple;
-	bh=0NN4w0+RKdZoee3K52S36CAlf2xKiUMh5+n9qFOFMaE=;
+	s=arc-20240116; t=1780829427; c=relaxed/simple;
+	bh=89ZkXMtEG/UiwIK+t9e9QaUbvPAzMILVlSaHkRkZKYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVUY+nhdwUcyj4PWMQjhhcjOHYBu5IfifB43Y6g4n9lGHGXRgHEONh3ITDOhLhfifkSA3J43wBPu/obxlfmmsHYE2Th4nKuwS7royH4gWMaA9By+B9SJ2qe/C3Crn5W4xW8aQBlNFkbhkunX1LnaHOhpWVKJH1s4n4J2rb0TleM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2xv+Rzh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2551F00893;
-	Sun,  7 Jun 2026 10:48:02 +0000 (UTC)
+	 MIME-Version; b=Okf2gMIaFEz2rROkRC/MWZvr8ZUAzbA4EF2bLmDJ6//83wyyDC7fLUpFRSVzYmtOa7bYEo3GskZgByvV/8kdDypNX7vhhmYsDvrxd3qorYEvPwDlzds63EsB8KJqm3794AmOWGb9b3hqqI8NXdU1Ch8tEOaoI9CFL3QLaJf/CuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rb6WyBAt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B48F1F00893;
+	Sun,  7 Jun 2026 10:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829283;
-	bh=bsya4kkGNjvYdoOqCUbI+EQqjqBOOfglyPYWnZ6iClE=;
+	s=korg; t=1780829426;
+	bh=ymjMWqSfYG3VOWOw2TkKYIVe0AgFRzrVgoeMWbDZ+6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T2xv+Rzh1Ny6ZubVLtNoeaL35b11GEBdcJTHCoStyxPi0w5diny3RaBqo/UAeEYtS
-	 aaj4v6Q6qX5tt29Hb5csnylv1riQvRo2TRPg09ONsXIYw5qEgL4u7kckfLu4GPggOK
-	 67DYMoMRDZnZ0iLCec4olByPtC3xvhoO27zRd8/0=
+	b=Rb6WyBAt9LKvs5XmKK21X1mFyOWO2TEHIDPG9WXKFnDzs7J7rymSeNv+BL4v+so40
+	 mk+YNvsJg5vxpFFJOwQxjbluzbXFCfjBKZByKNQSmG8Y3ZTIIyB2bh62R03jrZ5ECz
+	 gKHLgvZHF0JJ3qlhRA/6aKB114ypGCuNmD8/1wRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 6.18 232/315] usb: typec: ucsi: Check if power role change actually happened before handling
-Date: Sun,  7 Jun 2026 12:00:19 +0200
-Message-ID: <20260607095736.094727720@linuxfoundation.org>
+	Jan Volckaert <janvolck@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 223/307] USB: serial: option: add MeiG SRM813Q
+Date: Sun,  7 Jun 2026 12:00:20 +0200
+Message-ID: <20260607095735.901903981@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,101 +68,133 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261673-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261632-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:senozhatsky@chromium.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,chromium.org:url,chromium.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A767F650023
+X-Rspamd-Queue-Id: B27B765037D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Jan Volckaert <janvolck@gmail.com>
 
-commit b80e7d34c7ea6a564525119d6138fbb577a23dba upstream.
+commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+Add support for the Qualcomm Technology Snapdragon X35-based MeiG
+SRM813Q module.
 
-Fix this by checking if the power role change actually happened before
-handling it.
+The module can be put in different modes via AT commands to
+enable/disable GPS functionality:
 
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+MODEM - PPP mode(2dee:4d63): AT+SER=1,1
 
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: MODEM
+If#= 3: AT
+
+P:  Vendor=2dee ProdID=4d63 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+NMEA mode(2dee:4d64): AT+SER=51,1
+
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: NMEA
+If#= 3: AT
+
+P:  Vendor=2dee ProdID=4d64 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Jan Volckaert <janvolck@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1224,7 +1224,7 @@ static void ucsi_handle_connector_change
- 						  work);
- 	struct ucsi *ucsi = con->ucsi;
- 	u8 curr_scale, volt_scale;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	u16 change;
- 	int ret;
- 	u32 val;
-@@ -1235,6 +1235,8 @@ static void ucsi_handle_connector_change
- 		dev_err_once(ucsi->dev, "%s entered without EVENT_PENDING\n",
- 			     __func__);
- 
-+	prev_role = UCSI_CONSTAT(con, PWR_DIR);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
 +
- 	ret = ucsi_get_connector_status(con, true);
- 	if (ret) {
- 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
-@@ -1251,7 +1253,7 @@ static void ucsi_handle_connector_change
- 	change = UCSI_CONSTAT(con, CHANGE);
- 	role = UCSI_CONSTAT(con, PWR_DIR);
- 
--	if (change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 		ucsi_port_psy_changed(con);
- 
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
