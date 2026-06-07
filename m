@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JDjwNjxJJWqIGAIAu9opvQ
-	(envelope-from <stable+bounces-261360-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:36 +0200
+	id aCILERhIJWrPFwIAu9opvQ
+	(envelope-from <stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D4864FCF2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B735064FB54
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NUgqgvX0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261360-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261360-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CSbw9QdB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9F1E3005D2D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C1A0A3028C17
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2BC32AAA3;
-	Sun,  7 Jun 2026 10:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBC23290C3;
+	Sun,  7 Jun 2026 10:28:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E043290AD;
-	Sun,  7 Jun 2026 10:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB8431AF3B;
+	Sun,  7 Jun 2026 10:28:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828249; cv=none; b=O+1RQ+eRElyLSf7nvrrbEwYRmgCM/KLCR0mtm6M/BPabH3igc6z1KYKr2wlv/IjNJRUDkzIzFFiVZQu0CKFutbhgicBpqA+gJwgJRQTu4nwNP4ub3EzTQ3itZcf/aHVU2ZF/RTBrDCc4wc7HsabJZup72qjb+Pg68vrSCpPmHko=
+	t=1780828111; cv=none; b=aaU/0boaVrPxYCqyxdmEf2fMVVRSUX9J1wTDYQFdCZfVa19pirY3gPhkFSuKSmClhg+awtiTV2NExM4Qk8cYy+m2nNbYkI1ONiLCu85mmzoFVBJ0zTViEDamr+MUllPH8qSWUsabCkFJg3KCMlryU+EsddrkPDcKzZiBiHnj1jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828249; c=relaxed/simple;
-	bh=06SYuUsHwRzeFoiLNBWzlJyWmV/4uKQl4IfR+n4wRl8=;
+	s=arc-20240116; t=1780828111; c=relaxed/simple;
+	bh=E5H86kwGI09TN91Eh0p/qOvwDebuYb+2Qsvr+SFlqds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSiqMvIBFhmgo/EdUAg4/DIQB6AimIRokkFVpndI3N0noesWQYSZbNOHKczBak3c0JMS+A3refXuAraefBXZ34+YTyTKhSG+vq2xGbIF3yLvYeftaOtyZP6VKV4ImkaeK6YjC4gvWhFxWL11Y81j+zZahhiOnB1NCLVqxYaOOx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUgqgvX0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05191F00893;
-	Sun,  7 Jun 2026 10:30:47 +0000 (UTC)
+	 MIME-Version; b=FVOuL2o5ArT0S+82jgKnSRBLbzcvX1eQ2cX4PHXqVkFlfqZA5jFPc2aUZ+w4geifASemhjJvNBxc9AQNfSdbwUYfevTay2b69uQSKRCeBZsoeWQYz9yuugnKYKlMy+q73f7Gs+Rx4XNvWDwOabzF/98L1XiZ8/821/E8P0+bW00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSbw9QdB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38531F00893;
+	Sun,  7 Jun 2026 10:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828248;
-	bh=WYN/BLZ/u0HQvG8PXene2kbkEC3lT6YuMw90C+gmook=;
+	s=korg; t=1780828109;
+	bh=WHvPbjw0sim4zM5ki70MwLnLaTBNjGX40eyssCXk6E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NUgqgvX0LriR2i0XeZuHSKqwag2WpWn4fMyFqkFzjjmlvF7BaxZ8hOOeryIUO7/bb
-	 GqCTja9/jpIsu8CCuvuDm+fHNO9uJMYbGcDEwJmkH195AiyXX4TIYIifLLI9Cxtw9Z
-	 K8KKYvnD1OYy1pOIFnj2o736Vvt0Le9D5xKdVTiI=
+	b=CSbw9QdBOlbBp6n7RZKSfVHWWmi7WVNF25ocoWhrRxTlidCsN5W3bhnVJ5Acysbdi
+	 LhohW95s9ng3ybtGtvQqj4Pt5Imt1UqRSLi6jP4gr8qQLp7THNvHZZjFnX352MSMzM
+	 mDr5czlKSSr/wqKIxyzIavpg9nHIyLextmak9bKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 134/315] Bluetooth: hci_qca: Use 100 ms SSR delay for rampatch and NVM loading
+Subject: [PATCH 7.0 152/332] Bluetooth: hci_qca: Use 100 ms SSR delay for rampatch and NVM loading
 Date: Sun,  7 Jun 2026 11:58:41 +0200
-Message-ID: <20260607095732.532086379@linuxfoundation.org>
+Message-ID: <20260607095733.670004676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261360-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261323-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,11 +98,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44D4864FCF2
+X-Rspamd-Queue-Id: B735064FB54
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -144,7 +144,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/bluetooth/hci_qca.c
 +++ b/drivers/bluetooth/hci_qca.c
-@@ -1676,8 +1676,8 @@ static void qca_hw_error(struct hci_dev
+@@ -1677,8 +1677,8 @@ static void qca_hw_error(struct hci_dev
  		mod_timer(&qca->tx_idle_timer, jiffies +
  				  msecs_to_jiffies(qca->tx_idle_delay));
  
