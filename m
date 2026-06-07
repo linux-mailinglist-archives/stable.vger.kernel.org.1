@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-261772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H9THClRQJWp1GwIAu9opvQ
-	(envelope-from <stable+bounces-261772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:52 +0200
+	id gkZEMoBVJWp1HAIAu9opvQ
+	(envelope-from <stable+bounces-261816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3777650498
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E876506CF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S4ysP1hP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261772-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261772-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2h+Q1+FG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261816-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261816-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA4393086359
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 435AF304E0EA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8E8330646;
-	Sun,  7 Jun 2026 10:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26E0330337;
+	Sun,  7 Jun 2026 10:59:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9263932F764;
-	Sun,  7 Jun 2026 10:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5064312CDA5;
+	Sun,  7 Jun 2026 10:59:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829787; cv=none; b=KPJlIHv/O/2riJdOsk21wcoiqevORSzPnVW0JdJIzvVfWsKD970EOt310hzeIVRC73xhQho2P/gvOcs/FleN3hALR1/ldnWiQjkb1OwsrMoH1z36WlOca7kdJV9DOOAsLtpNQomicwR6yB+zqig6SU4LVq0gMZhigzUAiRFQZKY=
+	t=1780829947; cv=none; b=L861H8EGFy2kdM41i83Nj/1fUgt2k/5/bDfBIBP4g41by4YQU5ccbkyP5lZIDZsjIM1zNe31B1HJZH7odKGDrB5oiBUpuGurrUk42Z/7SiTZzUJ5z9zGwyz61qfmVcDU7L0oAEwhjn6yZDzKsekNKtMDPl/yq+8UBeDUSmPbp5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829787; c=relaxed/simple;
-	bh=/E2bTZgd0FEBpr5x5H6VeEqgEHo3KqFmOl3191rJkAw=;
+	s=arc-20240116; t=1780829947; c=relaxed/simple;
+	bh=PzdtY0D+AcwelUJPyN0YVl8XIfvuVm2hqoM4th3/VoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9KUWjUsU5/7XwjpYisJEHSsvfSVxubhQCYje+w5o+U2EUa2IuDfzatfeOSC3BEWdJ9z0oTQKpgEuSP2mgh5vpqtE0YOj7Fhm1/qYOUMZ1/t8X42gvZWXHj+IrnsJTy3vzIUcp0Fq+wCerdn2+O+LZjhD7+eUBfhyBUwNgCMQZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4ysP1hP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FA71F00893;
-	Sun,  7 Jun 2026 10:56:23 +0000 (UTC)
+	 MIME-Version; b=HL3BTq17SWhg6+bQ3A0TaE3I0FpQFSihDT1f4hDNnSXGzkZRgvvXwogtweZnyu0zR/s0Kz4I+jI2A+3EGXrqM+AepMJHvUJbkilBn0QN/+aGV3Bv3co4pNDY8fX8UT7wc98H8UHuNKrk++wlXGHHhoifLSAAJwcwAQNkimqmkiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h+Q1+FG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7731F00893;
+	Sun,  7 Jun 2026 10:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829785;
-	bh=Wtx+IWt0grtJXeEiJvcahWGe0Npv1G/9mi+4ncLvIiE=;
+	s=korg; t=1780829946;
+	bh=VebN+vEgoqm8/Yl7t5oKSP8L0v8bxZ3N1Tydk7jkuX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S4ysP1hP+OU9KFyxINkYdDDHsRJcH/xuXU/hI+fSRkQEjdCSNVHV4/7290rvJeNuX
-	 yZ5L6jm90a7O3TFZUH6Ma44D1IJCpRmEf+73kaXeyedRpiOagHhNC5gO5ncrLqKCjl
-	 zgNoc3bmNvfY4Y4baYQzyOUXJFA7XivBEUdXojLk=
+	b=2h+Q1+FGCLzncSuNIaugeeUlFprK8KlR/NhyJUIhStnZwGrW7lUz7q41K+qHukT2q
+	 x5cykQOzZBFwjjO9roLn+oEwOP5m5uGMj/guxfZ+VGUju1bnVrQOTQoB9OEzvpglSW
+	 jTgVVkgeb1sfqFQQslqNxQCMkppzd15ouFf+B/RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 6.18 278/315] serial: zs: Convert to use a platform device
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-afs@lists.infradead.org,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 268/307] rxrpc: Fix DATA decrypt vs splice() by copying data to buffer in recvmsg
 Date: Sun,  7 Jun 2026 12:01:05 +0200
-Message-ID: <20260607095737.796135860@linuxfoundation.org>
+Message-ID: <20260607095737.549967841@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,513 +78,476 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261772-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-261816-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:imv4bel@gmail.com,m:dhowells@redhat.com,m:horms@kernel.org,m:jiayuan.chen@linux.dev,m:linux-afs@lists.infradead.org,m:jaltman@auristor.com,m:marc.dionne@auristor.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org,linux.dev,lists.infradead.org,auristor.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,orcam.me.uk:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,auristor.com:email,vger.kernel.org:from_smtp,linux.dev:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A3777650498
+X-Rspamd-Queue-Id: 42E876506CF
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: David Howells <dhowells@redhat.com>
 
-commit 7cac59d08a73cb866ec51a483a6f3fe0f531947c upstream.
+[ Upstream commit d2bc90cf6c75cb96d2ce549be6c35efa3099d25b ]
 
-Prevent a crash from happening as the first serial port is initialised:
+This improves the fix for CVE-2026-43500.
 
-  Console: switching to mono frame buffer device 160x64
-  fb0: PMAG-AA frame buffer device at tc0
-  DECstation Z85C30 serial driver version 0.10
-  CPU 0 Unable to handle kernel paging request at virtual address 0000002c, epc == 803ab00c, ra == 803aafe0
-  Oops[#1]:
-  CPU: 0 PID: 1 Comm: swapper Not tainted 6.4.0-rc3-00031-g84a9582fd203-dirty #57
-  $ 0   : 00000000 10012c00 803aaeb0 00000000
-  $ 4   : 80e12f60 80e12f50 80e12f58 81000030
-  $ 8   : 00000000 805ff37c 00000000 33433538
-  $12   : 65732030 00000006 80c2915d 6c616972
-  $16   : 80e12f00 807b7630 00000000 00000000
-  $20   : 00000004 00000348 000001a0 807623b8
-  $24   : 00000018 00000000
-  $28   : 80c24000 80c25d60 8078b148 803aafe0
-  Hi    : 00000000
-  Lo    : 00000000
-  epc   : 803ab00c serial_base_ctrl_add+0x78/0xf4
-  ra    : 803aafe0 serial_base_ctrl_add+0x4c/0xf4
-  Status: 10012c03	KERNEL EXL IE
-  Cause : 00000008 (ExcCode 02)
-  BadVA : 0000002c
-  PrId  : 00000440 (R4400SC)
-  Modules linked in:
-  Process swapper (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
-  Stack : 80760000 00000cc0 00400044 00400040 803aa02c 80d61ab8 00000000 807b7630
-          80760000 807623b8 807b7628 803aa644 80386998 00000000 80e17780 80220f68
-          80e17780 80d61ab8 80c17d80 80e17780 80e17780 8063c798 80e17780 80383fa0
-          00000010 80e17780 00000000 80386998 807a0000 00000000 00400040 8038f848
-          807623b8 80d61ab8 00000004 80e17780 00000000 803a68e4 80c25e2c 803bb884
-          ...
-  Call Trace:
-  [<803ab00c>] serial_base_ctrl_add+0x78/0xf4
-  [<803aa644>] serial_core_register_port+0x174/0x69c
-  [<8077e9ac>] zs_init+0xc8/0xfc
-  [<800404d4>] do_one_initcall+0x40/0x2ac
-  [<8076cecc>] kernel_init_freeable+0x1e4/0x270
-  [<80605bec>] kernel_init+0x20/0x108
-  [<800431e8>] ret_from_kernel_thread+0x14/0x1c
+Fix the pagecache corruption from in-place decryption of a DATA packet
+transmitted locally by splice() by getting rid of the packet sharing in the
+I/O thread and unconditionally extracting the packet content into a bounce
+buffer in which the buffer is decrypted.  recvmsg() (or the kernel
+equivalent) then copies the data from the bounce buffer to the destination
+buffer.  The sk_buff then remains unmodified.
 
-  Code: 2442aeb0  ae120024  ae0200d0 <8c67002c> 50e00001  8c670000  3c06806e  3c05806e  afb30010
+This has an additional advantage in that the packet is then arranged in the
+buffer with the correct alignment required for the crypto algorithms to
+process directly.  The performance of the crypto does seem to be a little
+faster and, surprisingly, the unencrypted performance doesn't seem to
+change much - possibly due to removing complexity from the I/O thread.
 
-  ---[ end trace 0000000000000000 ]---
+Yet another advantage is that the I/O thread doesn't have to copy packets
+which would slow down packet distribution, ACK generation, etc..
 
-(report at the offending commit) -- where a pointer is dereferenced that
-has been derived from a null pointer to the port's parent device.
+The buffer belongs to the call and is allocated initially at 2K,
+sufficiently large to hold a whole jumbo subpacket, but the buffer will be
+increased in size if needed.  However, to take this work, MSG_PEEK may
+cause a later packet to be decrypted into the buffer, in which case the
+earlier one will need re-decrypting for a subsequent recvmsg().
 
-Since no device is available with legacy probing and it's not anymore a
-preferable way to discover devices anyway, switch the driver to using a
-platform device and use it as the port's parent device.  Update resource
-handling accordingly and only request the actual span of addresses used
-within the slot, which will have had its resource already requested by
-generic platform device code.
+Note that rx_pkt_offset may legitimately see 0 as a valid offset now, so
+switch to using USHRT_MAX to indicate an invalid offset.
 
-Use platform_driver_probe() not just because SCC devices are fixed with
-solder on board and not straightforward to remove, but foremost because
-the associated TTY's major device number is the same as used by the dz
-driver and the first driver to claim it will prevent the other one from
-using it.  Either one DZ device or some SCC devices will be present in a
-given system but never both at a time, and therefore we want the major
-device number to be claimed by the first driver to actually successfully
-bind to its device and platform_driver_probe() is a way to fulfil that.
+Note also that I would generally prefer to replace the buffers of the
+current sk_buff with a new kmalloc'd buffer of the right size, ditching the
+old data and frags as this makes the handling of MSG_PEEK easier and
+removes the re-decryption issue, but this looks like quite a complicated
+thing to achieve.  skb_morph() looks half way to what I want, but I don't
+want to have to allocate a new sk_buff.
 
-An unfortunate consequence of the switch to a platform device is we now
-hand the console over from the bootconsole much later in the bootstrap.
-The firmware console handler appears good enough though to work so late
-and in particular with interrupts enabled.
-
-Since there is one way only remaining to reach zs_reset() now, remove
-the port initialisation marker as no longer needed and go through the
-channel reset unconditionally.
-
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # needs to use .remove_new for <= 6.10
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062328480.46195@angie.orcam.me.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d0d5c0cd1e71 ("rxrpc: Use skb_unshare() rather than skb_cow_data()")
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Closes: https://lore.kernel.org/r/afKV2zGR6rrelPC7@v4bel/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+cc: linux-afs@lists.infradead.org
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+Tested-by: Marc Dionne <marc.dionne@auristor.com>
+Link: https://patch.msgid.link/20260515230516.2718212-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 8bfab4b6ffc2 ("rxrpc: Fix RESPONSE packet verification to extract skb to a linear buffer")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/platform.c |   60 ++++++++++++++
- drivers/tty/serial/zs.c  |  190 +++++++++++++++++------------------------------
- drivers/tty/serial/zs.h  |    1 
- 3 files changed, 128 insertions(+), 123 deletions(-)
+ net/rxrpc/ar-internal.h |    7 ++-
+ net/rxrpc/call_event.c  |   27 +--------------
+ net/rxrpc/call_object.c |    2 +
+ net/rxrpc/insecure.c    |    3 -
+ net/rxrpc/recvmsg.c     |   68 ++++++++++++++++++++++++++++++-------
+ net/rxrpc/rxkad.c       |   86 +++++++++++++++++-------------------------------
+ 6 files changed, 96 insertions(+), 97 deletions(-)
 
---- a/arch/mips/dec/platform.c
-+++ b/arch/mips/dec/platform.c
-@@ -13,6 +13,7 @@
- #include <asm/bootinfo.h>
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -203,8 +203,6 @@ struct rxrpc_skb_priv {
+ 		struct {
+ 			u16		offset;		/* Offset of data */
+ 			u16		len;		/* Length of data */
+-			u8		flags;
+-#define RXRPC_RX_VERIFIED	0x01
+ 		};
+ 		struct {
+ 			rxrpc_seq_t	first_ack;	/* First packet in acks table */
+@@ -686,6 +684,11 @@ struct rxrpc_call {
+ 	/* Received data tracking */
+ 	struct sk_buff_head	recvmsg_queue;	/* Queue of packets ready for recvmsg() */
+ 	struct sk_buff_head	rx_oos_queue;	/* Queue of out of sequence packets */
++	void			*rx_dec_buffer;	/* Decryption buffer */
++	unsigned short		rx_dec_bsize;	/* rx_dec_buffer size */
++	unsigned short		rx_dec_offset;	/* Decrypted packet data offset */
++	unsigned short		rx_dec_len;	/* Decrypted packet data len */
++	rxrpc_seq_t		rx_dec_seq;	/* Packet in decryption buffer */
  
- #include <asm/dec/interrupts.h>
-+#include <asm/dec/ioasic_addrs.h>
- #include <asm/dec/kn01.h>
- #include <asm/dec/kn02.h>
- #include <asm/dec/system.h>
-@@ -53,10 +54,37 @@ static struct platform_device *dec_dz_de
- 	&dec_dz_device,
- };
+ 	rxrpc_seq_t		rx_highest_seq;	/* Higest sequence number received */
+ 	rxrpc_seq_t		rx_consumed;	/* Highest packet consumed */
+--- a/net/rxrpc/call_event.c
++++ b/net/rxrpc/call_event.c
+@@ -342,31 +342,8 @@ bool rxrpc_input_call_event(struct rxrpc
+ 	if (skb && skb->mark == RXRPC_SKB_MARK_ERROR)
+ 		goto out;
  
-+static struct resource dec_zs_resources[][2] = {
-+	{
-+		{ .name = "scc0", .flags = IORESOURCE_MEM, },
-+		{ .name = "scc0", .flags = IORESOURCE_IRQ, },
-+	},
-+	{
-+		{ .name = "scc1", .flags = IORESOURCE_MEM, },
-+		{ .name = "scc1", .flags = IORESOURCE_IRQ, },
-+	},
-+};
-+
-+static struct platform_device dec_zs_device[] = {
-+	{
-+		.name = "zs",
-+		.id = 0,
-+		.resource = dec_zs_resources[0],
-+		.num_resources = ARRAY_SIZE(dec_zs_resources[0]),
-+	},
-+	{
-+		.name = "zs",
-+		.id = 1,
-+		.resource = dec_zs_resources[1],
-+		.num_resources = ARRAY_SIZE(dec_zs_resources[1]),
-+	},
-+};
-+
- static int __init dec_add_devices(void)
- {
--	int ret1, ret2;
--	int num_dz;
-+	struct platform_device *dec_zs_devices[ARRAY_SIZE(dec_zs_device)];
-+	int ret1, ret2, ret3;
-+	int num_dz, num_zs;
- 	int irq, i;
- 
- 	dec_rtc_resources[0].start = RTC_PORT(0);
-@@ -84,10 +112,36 @@ static int __init dec_add_devices(void)
- 	}
- 	num_dz = i;
- 
-+	i = 0;
-+	irq = dec_interrupt[DEC_IRQ_SCC0];
-+	if (irq >= 0) {
-+		resource_size_t base = dec_kn_slot_base + IOASIC_SCC0;
-+
-+		dec_zs_device[i].resource[0].start = base;
-+		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
-+		dec_zs_device[i].resource[1].start = irq;
-+		dec_zs_device[i].resource[1].end = irq;
-+		dec_zs_devices[i] = &dec_zs_device[i];
-+		i++;
-+	}
-+	irq = dec_interrupt[DEC_IRQ_SCC1];
-+	if (irq >= 0) {
-+		resource_size_t base = dec_kn_slot_base + IOASIC_SCC1;
-+
-+		dec_zs_device[i].resource[0].start = base;
-+		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
-+		dec_zs_device[i].resource[1].start = irq;
-+		dec_zs_device[i].resource[1].end = irq;
-+		dec_zs_devices[i] = &dec_zs_device[i];
-+		i++;
-+	}
-+	num_zs = i;
-+
- 	ret1 = platform_device_register(&dec_rtc_device);
- 	ret2 = IS_ENABLED(CONFIG_32BIT) ?
- 	       platform_add_devices(dec_dz_devices, num_dz) : 0;
--	return ret1 ? ret1 : ret2;
-+	ret3 = platform_add_devices(dec_zs_devices, num_zs);
-+	return ret1 ? ret1 : ret2 ? ret2 : ret3;
- }
- 
- device_initcall(dec_add_devices);
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -56,6 +56,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/major.h>
-+#include <linux/platform_device.h>
- #include <linux/serial.h>
- #include <linux/serial_core.h>
- #include <linux/spinlock.h>
-@@ -66,10 +67,6 @@
- 
- #include <linux/atomic.h>
- 
--#include <asm/dec/interrupts.h>
--#include <asm/dec/ioasic_addrs.h>
--#include <asm/dec/system.h>
+-	if (skb) {
+-		struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
 -
- #include "zs.h"
- 
- 
-@@ -79,7 +76,7 @@ MODULE_LICENSE("GPL");
- 
- 
- static char zs_name[] __initdata = "DECstation Z85C30 serial driver version ";
--static char zs_version[] __initdata = "0.10";
-+static char zs_version[] __initdata = "0.11";
- 
- /*
-  * It would be nice to dynamically allocate everything that
-@@ -98,12 +95,8 @@ static char zs_version[] __initdata = "0
- 
- #define to_zport(uport) container_of(uport, struct zs_port, port)
- 
--struct zs_parms {
--	resource_size_t scc[ZS_NUM_SCCS];
--	int irq[ZS_NUM_SCCS];
--};
+-		if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA &&
+-		    sp->hdr.securityIndex != 0 &&
+-		    (skb_cloned(skb) ||
+-		     skb_has_frag_list(skb) ||
+-		     skb_has_shared_frag(skb))) {
+-			/* Unshare the packet so that it can be modified for
+-			 * in-place decryption.
+-			 */
+-			struct sk_buff *nskb = skb_copy(skb, GFP_ATOMIC);
 -
- static struct zs_scc zs_sccs[ZS_NUM_SCCS];
-+static struct uart_driver zs_reg;
- 
- /*
-  * Set parameters in WR5, WR12, WR13 such as not to interfere
-@@ -839,16 +832,15 @@ static void zs_reset(struct zs_port *zpo
- 
- 	spin_lock_irqsave(&scc->zlock, flags);
- 	irq = !irqs_disabled_flags(flags);
--	if (!zport->initialised) {
--		/* Reset the pointer first, just in case...  */
--		read_zsreg(zport, R0);
--		/* And let the current transmission finish.  */
--		zs_line_drain(zport, irq);
--		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
--		udelay(10);
--		write_zsreg(zport, R9, 0);
--		zport->initialised = 1;
--	}
-+
-+	/* Reset the pointer first, just in case...  */
-+	read_zsreg(zport, R0);
-+	/* And let the current transmission finish.  */
-+	zs_line_drain(zport, irq);
-+	write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
-+	udelay(10);
-+	write_zsreg(zport, R9, 0);
-+
- 	load_zsregs(zport, zport->regs, irq);
- 	spin_unlock_irqrestore(&scc->zlock, flags);
- }
-@@ -1055,63 +1047,62 @@ static const struct uart_ops zs_ops = {
- /*
-  * Initialize Z85C30 port structures.
-  */
--static int __init zs_probe_sccs(void)
-+static int __init zs_probe(struct platform_device *pdev)
- {
--	static int probed;
--	struct zs_parms zs_parms;
--	int chip, side, irq;
--	int n_chips = 0;
-+	struct resource *mem_resource, *irq_resource;
-+	int chip, side;
- 	int i;
- 
--	if (probed)
--		return 0;
-+	mem_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	irq_resource = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!mem_resource || !irq_resource)
-+		return -ENODEV;
-+
-+	chip = pdev->id;
-+	spin_lock_init(&zs_sccs[chip].zlock);
-+	for (side = 0; side < ZS_NUM_CHAN; side++) {
-+		struct zs_port *zport = &zs_sccs[chip].zport[side];
-+		struct uart_port *uport = &zport->port;
- 
--	irq = dec_interrupt[DEC_IRQ_SCC0];
--	if (irq >= 0) {
--		zs_parms.scc[n_chips] = IOASIC_SCC0;
--		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC0];
--		n_chips++;
--	}
--	irq = dec_interrupt[DEC_IRQ_SCC1];
--	if (irq >= 0) {
--		zs_parms.scc[n_chips] = IOASIC_SCC1;
--		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC1];
--		n_chips++;
--	}
--	if (!n_chips)
--		return -ENXIO;
--
--	probed = 1;
--
--	for (chip = 0; chip < n_chips; chip++) {
--		spin_lock_init(&zs_sccs[chip].zlock);
--		for (side = 0; side < ZS_NUM_CHAN; side++) {
--			struct zs_port *zport = &zs_sccs[chip].zport[side];
--			struct uart_port *uport = &zport->port;
--
--			zport->scc	= &zs_sccs[chip];
--			zport->clk_mode	= 16;
--
--			uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
--			uport->irq	= zs_parms.irq[chip];
--			uport->uartclk	= ZS_CLOCK;
--			uport->fifosize	= 1;
--			uport->iotype	= UPIO_MEM;
--			uport->flags	= UPF_BOOT_AUTOCONF;
--			uport->ops	= &zs_ops;
--			uport->line	= chip * ZS_NUM_CHAN + side;
--			uport->mapbase	= dec_kn_slot_base +
--					  zs_parms.scc[chip] +
--					  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
-+		zport->scc	= &zs_sccs[chip];
-+		zport->clk_mode	= 16;
- 
--			for (i = 0; i < ZS_NUM_REGS; i++)
--				zport->regs[i] = zs_init_regs[i];
+-			if (nskb) {
+-				rxrpc_new_skb(nskb, rxrpc_skb_new_unshared);
+-				rxrpc_input_call_packet(call, nskb);
+-				rxrpc_free_skb(nskb, rxrpc_skb_put_input);
+-			} else {
+-				/* OOM - Drop the packet. */
+-				rxrpc_see_skb(skb, rxrpc_skb_see_unshare_nomem);
+-			}
+-		} else {
+-			rxrpc_input_call_packet(call, skb);
 -		}
-+		uport->dev	= &pdev->dev;
-+		uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
-+		uport->irq	= irq_resource->start;
-+		uport->uartclk	= ZS_CLOCK;
-+		uport->fifosize	= 1;
-+		uport->iotype	= UPIO_MEM;
-+		uport->flags	= UPF_BOOT_AUTOCONF;
-+		uport->ops	= &zs_ops;
-+		uport->line	= chip * ZS_NUM_CHAN + side;
-+		uport->mapbase	= mem_resource->start +
-+				  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
-+
-+		for (i = 0; i < ZS_NUM_REGS; i++)
-+			zport->regs[i] = zs_init_regs[i];
-+
-+		if (uart_add_one_port(&zs_reg, uport))
-+			uport->dev = NULL;
- 	}
+-	}
++	if (skb)
++		rxrpc_input_call_packet(call, skb);
  
+ 	/* If we see our async-event poke, check for timeout trippage. */
+ 	now = ktime_get_real();
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -154,6 +154,7 @@ struct rxrpc_call *rxrpc_alloc_call(stru
+ 	spin_lock_init(&call->tx_lock);
+ 	refcount_set(&call->ref, 1);
+ 	call->debug_id		= debug_id;
++	call->rx_pkt_offset	= USHRT_MAX;
+ 	call->tx_total_len	= -1;
+ 	call->next_rx_timo	= 20 * HZ;
+ 	call->next_req_timo	= 1 * HZ;
+@@ -535,6 +536,7 @@ static void rxrpc_cleanup_ring(struct rx
+ {
+ 	rxrpc_purge_queue(&call->recvmsg_queue);
+ 	rxrpc_purge_queue(&call->rx_oos_queue);
++	kfree(call->rx_dec_buffer);
+ }
+ 
+ /*
+--- a/net/rxrpc/insecure.c
++++ b/net/rxrpc/insecure.c
+@@ -29,9 +29,6 @@ static int none_secure_packet(struct rxr
+ 
+ static int none_verify_packet(struct rxrpc_call *call, struct sk_buff *skb)
+ {
+-	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+-
+-	sp->flags |= RXRPC_RX_VERIFIED;
  	return 0;
  }
  
-+static void __exit zs_remove(struct platform_device *pdev)
-+{
-+	int chip, side;
-+
-+	chip = pdev->id;
-+	for (side = ZS_NUM_CHAN - 1; side >= 0; side--) {
-+		struct zs_port *zport = &zs_sccs[chip].zport[side];
-+		struct uart_port *uport = &zport->port;
-+
-+		if (uport->dev)
-+			uart_remove_one_port(&zs_reg, uport);
-+	}
-+}
-+
- 
- #ifdef CONFIG_SERIAL_ZS_CONSOLE
- static void zs_console_putchar(struct uart_port *uport, unsigned char ch)
-@@ -1192,20 +1183,14 @@ static int __init zs_console_setup(struc
- 	int bits = 8;
- 	int parity = 'n';
- 	int flow = 'n';
--	int ret;
--
--	ret = zs_map_port(uport);
--	if (ret)
--		return ret;
--
--	zs_reset(zport);
- 
-+	if (!zport->scc)
-+		return -ENODEV;
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
- 	return uart_set_options(uport, co, baud, parity, bits, flow);
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -143,15 +143,52 @@ static void rxrpc_rotate_rx_window(struc
  }
  
--static struct uart_driver zs_reg;
- static struct console zs_console = {
- 	.name	= "ttyS",
- 	.write	= zs_console_write,
-@@ -1216,23 +1201,6 @@ static struct console zs_console = {
- 	.data	= &zs_reg,
- };
- 
--/*
-- *	Register console.
-- */
--static int __init zs_serial_console_init(void)
--{
--	int ret;
--
--	ret = zs_probe_sccs();
--	if (ret)
--		return ret;
--	register_console(&zs_console);
--
--	return 0;
--}
--
--console_initcall(zs_serial_console_init);
--
- #define SERIAL_ZS_CONSOLE	&zs_console
- #else
- #define SERIAL_ZS_CONSOLE	NULL
-@@ -1248,47 +1216,31 @@ static struct uart_driver zs_reg = {
- 	.cons			= SERIAL_ZS_CONSOLE,
- };
- 
-+static struct platform_driver zs_driver = {
-+	.remove = __exit_p(zs_remove),
-+	.driver = { .name = "zs" },
-+};
-+
- /* zs_init inits the driver. */
- static int __init zs_init(void)
+ /*
+- * Decrypt and verify a DATA packet.
++ * Decrypt and verify a DATA packet.  The content of the packet is pulled out
++ * into a flat buffer rather than decrypting in place in the skbuff.  This also
++ * has the advantage of aligning the buffer correctly for the crypto routines.
++ *
++ * We keep track of the sequence number of the packet currently decrypted into
++ * the buffer in ->rx_dec_seq.  If MSG_PEEK is used and steps onto a new
++ * packet, subsequent recvmsg() calls will have to go back and re-decrypt the
++ * current packet.
+  */
+ static int rxrpc_verify_data(struct rxrpc_call *call, struct sk_buff *skb)
  {
--	int i, ret;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
 +	int ret;
  
- 	pr_info("%s%s\n", zs_name, zs_version);
- 
--	/* Find out how many Z85C30 SCCs we have.  */
--	ret = zs_probe_sccs();
--	if (ret)
--		return ret;
--
- 	ret = uart_register_driver(&zs_reg);
- 	if (ret)
- 		return ret;
-+	ret = platform_driver_probe(&zs_driver, zs_probe);
-+	if (ret)
-+		uart_unregister_driver(&zs_reg);
- 
--	for (i = 0; i < ZS_NUM_SCCS * ZS_NUM_CHAN; i++) {
--		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
--		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
--		struct uart_port *uport = &zport->port;
--
--		if (zport->scc)
--			uart_add_one_port(&zs_reg, uport);
--	}
--
--	return 0;
+-	if (sp->flags & RXRPC_RX_VERIFIED)
+-		return 0;
+-	return call->security->verify_packet(call, skb);
++	if (sp->len > call->rx_dec_bsize) {
++		/* Make sure we can hold a 1412-byte jumbo subpacket and make
++		 * sure that the buffer size is aligned to a crypto blocksize.
++		 */
++		size_t size = clamp(round_up(sp->len, 32), 2048, 65535);
++		void *buffer = krealloc(call->rx_dec_buffer, size, GFP_NOFS);
++
++		if (!buffer)
++			return -ENOMEM;
++		call->rx_dec_buffer = buffer;
++		call->rx_dec_bsize = size;
++	}
++
++	ret = -EFAULT;
++	if (skb_copy_bits(skb, sp->offset, call->rx_dec_buffer, sp->len) < 0)
++		goto err;
++
++	call->rx_dec_offset = 0;
++	call->rx_dec_len = sp->len;
++	call->rx_dec_seq = sp->hdr.seq;
++	ret = call->security->verify_packet(call, skb);
++	if (ret < 0)
++		goto err;
++	return 0;
++
++err:
++	kfree(call->rx_dec_buffer);
++	call->rx_dec_buffer = NULL;
++	call->rx_dec_bsize = 0;
++	call->rx_dec_offset = 0;
++	call->rx_dec_len = 0;
 +	return ret;
  }
  
- static void __exit zs_exit(void)
+ /*
+@@ -202,17 +239,22 @@ static int rxrpc_recvmsg_data(struct soc
+ 		if (msg)
+ 			sock_recv_timestamp(msg, sock->sk, skb);
+ 
+-		if (rx_pkt_offset == 0) {
++		if (call->rx_dec_seq != sp->hdr.seq ||
++		    !call->rx_dec_buffer) {
+ 			ret2 = rxrpc_verify_data(call, skb);
+ 			trace_rxrpc_recvdata(call, rxrpc_recvmsg_next, seq,
+-					     sp->offset, sp->len, ret2);
++					     call->rx_dec_offset,
++					     call->rx_dec_len, ret2);
+ 			if (ret2 < 0) {
+ 				kdebug("verify = %d", ret2);
+ 				ret = ret2;
+ 				goto out;
+ 			}
+-			rx_pkt_offset = sp->offset;
+-			rx_pkt_len = sp->len;
++		}
++
++		if (rx_pkt_offset == USHRT_MAX) {
++			rx_pkt_offset = call->rx_dec_offset;
++			rx_pkt_len = call->rx_dec_len;
+ 		} else {
+ 			trace_rxrpc_recvdata(call, rxrpc_recvmsg_cont, seq,
+ 					     rx_pkt_offset, rx_pkt_len, 0);
+@@ -224,10 +266,10 @@ static int rxrpc_recvmsg_data(struct soc
+ 		if (copy > remain)
+ 			copy = remain;
+ 		if (copy > 0) {
+-			ret2 = skb_copy_datagram_iter(skb, rx_pkt_offset, iter,
+-						      copy);
+-			if (ret2 < 0) {
+-				ret = ret2;
++			ret2 = copy_to_iter(call->rx_dec_buffer + rx_pkt_offset,
++					    copy, iter);
++			if (ret2 != copy) {
++				ret = -EFAULT;
+ 				goto out;
+ 			}
+ 
+@@ -248,7 +290,7 @@ static int rxrpc_recvmsg_data(struct soc
+ 		/* The whole packet has been transferred. */
+ 		if (sp->hdr.flags & RXRPC_LAST_PACKET)
+ 			ret = 1;
+-		rx_pkt_offset = 0;
++		rx_pkt_offset = USHRT_MAX;
+ 		rx_pkt_len = 0;
+ 
+ 		skb = skb_peek_next(skb, &call->recvmsg_queue);
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -414,27 +414,25 @@ static int rxkad_verify_packet_1(struct
+ 				 rxrpc_seq_t seq,
+ 				 struct skcipher_request *req)
  {
--	int i;
--
--	for (i = ZS_NUM_SCCS * ZS_NUM_CHAN - 1; i >= 0; i--) {
--		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
--		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
--		struct uart_port *uport = &zport->port;
--
--		if (zport->scc)
--			uart_remove_one_port(&zs_reg, uport);
+-	struct rxkad_level1_hdr sechdr;
++	struct rxkad_level1_hdr *sechdr;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rxrpc_crypt iv;
+-	struct scatterlist sg[16];
+-	u32 data_size, buf;
++	struct scatterlist sg[1];
++	void *data = call->rx_dec_buffer;
++	u32 len = sp->len, data_size, buf;
+ 	u16 check;
+ 	int ret;
+ 
+ 	_enter("");
+ 
+-	if (sp->len < 8)
++	if (len < 8)
+ 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
+ 					  rxkad_abort_1_short_header);
+ 
+ 	/* Decrypt the skbuff in-place.  TODO: We really want to decrypt
+ 	 * directly into the target buffer.
+ 	 */
+-	sg_init_table(sg, ARRAY_SIZE(sg));
+-	ret = skb_to_sgvec(skb, sg, sp->offset, 8);
+-	if (unlikely(ret < 0))
+-		return ret;
++	sg_init_one(sg, data, len);
+ 
+ 	/* start the decryption afresh */
+ 	memset(&iv, 0, sizeof(iv));
+@@ -448,13 +446,11 @@ static int rxkad_verify_packet_1(struct
+ 		return ret;
+ 
+ 	/* Extract the decrypted packet length */
+-	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
+-		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
+-					  rxkad_abort_1_short_encdata);
+-	sp->offset += sizeof(sechdr);
+-	sp->len    -= sizeof(sechdr);
++	sechdr = data;
++	call->rx_dec_offset = sizeof(*sechdr);
++	len -= sizeof(*sechdr);
+ 
+-	buf = ntohl(sechdr.data_size);
++	buf = ntohl(sechdr->data_size);
+ 	data_size = buf & 0xffff;
+ 
+ 	check = buf >> 16;
+@@ -463,10 +459,10 @@ static int rxkad_verify_packet_1(struct
+ 	if (check != 0)
+ 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
+ 					  rxkad_abort_1_short_check);
+-	if (data_size > sp->len)
++	if (data_size > len)
+ 		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
+ 					  rxkad_abort_1_short_data);
+-	sp->len = data_size;
++	call->rx_dec_len = data_size;
+ 
+ 	_leave(" = 0 [dlen=%x]", data_size);
+ 	return 0;
+@@ -480,43 +476,28 @@ static int rxkad_verify_packet_2(struct
+ 				 struct skcipher_request *req)
+ {
+ 	const struct rxrpc_key_token *token;
+-	struct rxkad_level2_hdr sechdr;
++	struct rxkad_level2_hdr *sechdr;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rxrpc_crypt iv;
+-	struct scatterlist _sg[4], *sg;
+-	u32 data_size, buf;
++	struct scatterlist sg[1];
++	void *data = call->rx_dec_buffer;
++	u32 len = sp->len, data_size, buf;
+ 	u16 check;
+-	int nsg, ret;
++	int ret;
+ 
+-	_enter(",{%d}", sp->len);
++	_enter(",{%d}", len);
+ 
+-	if (sp->len < 8)
++	if (len < 8)
+ 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
+ 					  rxkad_abort_2_short_header);
+ 
+ 	/* Don't let the crypto algo see a misaligned length. */
+-	sp->len = round_down(sp->len, 8);
++	len = round_down(len, 8);
+ 
+-	/* Decrypt the skbuff in-place.  TODO: We really want to decrypt
+-	 * directly into the target buffer.
++	/* Decrypt in place in the call's decryption buffer.  TODO: We really
++	 * want to decrypt directly into the target buffer.
+ 	 */
+-	sg = _sg;
+-	nsg = skb_shinfo(skb)->nr_frags + 1;
+-	if (nsg <= 4) {
+-		nsg = 4;
+-	} else {
+-		sg = kmalloc_array(nsg, sizeof(*sg), GFP_NOIO);
+-		if (!sg)
+-			return -ENOMEM;
 -	}
 -
-+	platform_driver_unregister(&zs_driver);
- 	uart_unregister_driver(&zs_reg);
+-	sg_init_table(sg, nsg);
+-	ret = skb_to_sgvec(skb, sg, sp->offset, sp->len);
+-	if (unlikely(ret < 0)) {
+-		if (sg != _sg)
+-			kfree(sg);
+-		return ret;
+-	}
++	sg_init_one(sg, data, len);
+ 
+ 	/* decrypt from the session key */
+ 	token = call->conn->key->payload.data[0];
+@@ -524,11 +505,9 @@ static int rxkad_verify_packet_2(struct
+ 
+ 	skcipher_request_set_sync_tfm(req, call->conn->rxkad.cipher);
+ 	skcipher_request_set_callback(req, 0, NULL, NULL);
+-	skcipher_request_set_crypt(req, sg, sg, sp->len, iv.x);
++	skcipher_request_set_crypt(req, sg, sg, len, iv.x);
+ 	ret = crypto_skcipher_decrypt(req);
+ 	skcipher_request_zero(req);
+-	if (sg != _sg)
+-		kfree(sg);
+ 	if (ret < 0) {
+ 		if (ret == -ENOMEM)
+ 			return ret;
+@@ -537,13 +516,11 @@ static int rxkad_verify_packet_2(struct
+ 	}
+ 
+ 	/* Extract the decrypted packet length */
+-	if (skb_copy_bits(skb, sp->offset, &sechdr, sizeof(sechdr)) < 0)
+-		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
+-					  rxkad_abort_2_short_len);
+-	sp->offset += sizeof(sechdr);
+-	sp->len    -= sizeof(sechdr);
++	sechdr = data;
++	call->rx_dec_offset = sizeof(*sechdr);
++	len -= sizeof(*sechdr);
+ 
+-	buf = ntohl(sechdr.data_size);
++	buf = ntohl(sechdr->data_size);
+ 	data_size = buf & 0xffff;
+ 
+ 	check = buf >> 16;
+@@ -553,17 +530,18 @@ static int rxkad_verify_packet_2(struct
+ 		return rxrpc_abort_eproto(call, skb, RXKADSEALEDINCON,
+ 					  rxkad_abort_2_short_check);
+ 
+-	if (data_size > sp->len)
++	if (data_size > len)
+ 		return rxrpc_abort_eproto(call, skb, RXKADDATALEN,
+ 					  rxkad_abort_2_short_data);
+ 
+-	sp->len = data_size;
++	call->rx_dec_len = data_size;
+ 	_leave(" = 0 [dlen=%x]", data_size);
+ 	return 0;
  }
  
---- a/drivers/tty/serial/zs.h
-+++ b/drivers/tty/serial/zs.h
-@@ -22,7 +22,6 @@
- struct zs_port {
- 	struct zs_scc	*scc;			/* Containing SCC.  */
- 	struct uart_port port;			/* Underlying UART.  */
--	int		initialised;		/* For the console port.  */
- 
- 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
- 
+ /*
+- * Verify the security on a received packet and the subpackets therein.
++ * Verify the security on a received (sub)packet.  If the packet needs
++ * modifying (e.g. decrypting), it must be copied.
+  */
+ static int rxkad_verify_packet(struct rxrpc_call *call, struct sk_buff *skb)
+ {
 
 
 
