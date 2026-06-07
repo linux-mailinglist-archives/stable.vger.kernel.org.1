@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-261886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M5HRC3RQJWp5GwIAu9opvQ
-	(envelope-from <stable+bounces-261886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:24 +0200
+	id 2NGFNINVJWp3HAIAu9opvQ
+	(envelope-from <stable+bounces-261844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B98A6504A7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714976506DA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tVGaQctl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261886-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261886-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0ID5ePjx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261844-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261844-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF8053011C6A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78D9C305FAF6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1CD31F983;
-	Sun,  7 Jun 2026 11:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5418E38BF72;
+	Sun,  7 Jun 2026 11:01:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE60531ED80;
-	Sun,  7 Jun 2026 11:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B038BF97;
+	Sun,  7 Jun 2026 11:01:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830238; cv=none; b=U9Vc8pGjBVmyboBzygw/YXk+xAc0GbMEhLcWXgntIqZblKTUKQ8/tFlX8XdPUARuF5IXt4sZRmz6nJRecwakGQLhblc7hqnBBp91NvekmhTw4XQDCU4LzWJavDISMQafdegOjPP8dCzUcfsJxJ8qaO1A5IA6AVKMZCp1ef4/TBI=
+	t=1780830069; cv=none; b=cNSkRNIK462dsb7J7VDkqmd3RMCyafoEzty7vrmi2/z0QI+5/GiegSJ9f4ghTsfEz+vmLXhD11pzTSdp7Y7t+KvNhOHyN1fMARZlga/DuCXGOgeC4g0Yy1alkhS9S1HPOmOk/xkmpYAPLeiHJ0OSPVNggbM4+B5EmFjTyvQ8DQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830238; c=relaxed/simple;
-	bh=pZgvohKSvAi9lgELWVf3I8ZbKoBqOmrQC8l36r3jW7E=;
+	s=arc-20240116; t=1780830069; c=relaxed/simple;
+	bh=yBd24V0dhazaPTcqLZxbsXYj+HZ20HFA2wXCanXgpOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4STs9N03Li0klE+QsH5CyqsBDY5O0/w9EJ8oEkbh2aX9sK1dP9mx/12k0QCX6OUeD+qr985FFE8pkYIjop46LzyEye28aiHVguk4NCqpP32WxbfFZbJf7zAZatFm3I8a9ATbUGhR0V/vOpUt8U0j+wjTQlfKIL3jqM067FYfEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVGaQctl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF621F00893;
-	Sun,  7 Jun 2026 11:03:56 +0000 (UTC)
+	 MIME-Version; b=D3hnIZ5u4mqokKekqvqQezEC8AXvKfeGfJsuakYDGad6ocq6LEjlagJm3EP69SlyR9xi0hUZukz1kvNN4C4Qmw2XaLFtzmWdFtE06JDmNMVrsKYpUU/vguQ4F3jQJbPJFioSR7U86N9rq2+eQbeSccpTzAHFN33/E1IiR5s3puI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ID5ePjx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8B21F00893;
+	Sun,  7 Jun 2026 11:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830237;
-	bh=mE1BrKILJY4O+Bqtywf5KUfdVfvPXsYlhwTNk70yTMg=;
+	s=korg; t=1780830066;
+	bh=+BAfTvLkz2vLiRT7/zSI0s2zaAcocD4cTjNNlJymltw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tVGaQctldUmY7+iqLxp4wSmUmVyDCzP587E1hZDctPpzg3FegmBbUxaOoJJ9WDt2R
-	 X8jE0f87wbJBclslQjDmcy/FpMg3hTucTNKNSwnJXPh3zGBdVe36S9mltwrXf4JYCV
-	 4sxW7HyVLIK0iaC0wN+lbnTKUiQ8K8hjfR5Po5gg=
+	b=0ID5ePjxwW1ib1c/pjzSWLp+mv4ewmLiZsMfykkNb+Uf9/tslP4wOFCXKsXDSNUW5
+	 XLdQz1fGhUwP/JL4busTt01/ApmrPOowPRDR2gNWkOftn/3aW1w3XvRHkR1bve2Mmn
+	 8q8y6b1MIexAdfVkrTy5FmjJUsiJwOTJdL0bsOKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 295/307] usb: musb: omap2430: Fix use-after-free in omap2430_probe()
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 305/315] USB: serial: digi_acceleport: fix memory corruption with small endpoints
 Date: Sun,  7 Jun 2026 12:01:32 +0200
-Message-ID: <20260607095738.574948809@linuxfoundation.org>
+Message-ID: <20260607095738.807746623@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,86 +70,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261886-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:vulab@iscas.ac.cn,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261844-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,iscas.ac.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B98A6504A7
+X-Rspamd-Queue-Id: 714976506DA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e194ce048f5a6c549b3a23a8c568c6470f40f772 ]
+commit cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 upstream.
 
-In omap2430_probe(), of_node_put(np) is called prematurely before the
-last access to np, leading to a use-after-free if the node's reference
-count drops to zero. Move the of_node_put() calls after the last use of
-np in both the success and error paths.
+Add the missing bulk-out buffer size sanity checks to avoid
+out-of-bounds memory accesses or slab corruption should a malicious
+device report smaller buffers than expected.
 
-Fixes: ffbe2feac59b ("usb: musb: omap2430: Fix probe regression for missing resources")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20260409101104.480623-1-vulab@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/omap2430.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -340,7 +340,6 @@ static int omap2430_probe(struct platfor
- 	} else {
- 		device_set_of_node_from_dev(&musb->dev, &pdev->dev);
- 	}
--	of_node_put(np);
+Should apply also to older trees without kzalloc_obj().
+
+Johan
+
+
+ drivers/usb/serial/digi_acceleport.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
+
+--- a/drivers/usb/serial/digi_acceleport.c
++++ b/drivers/usb/serial/digi_acceleport.c
+@@ -1229,15 +1229,34 @@ static int digi_port_init(struct usb_ser
+ static int digi_startup(struct usb_serial *serial)
+ {
+ 	struct digi_serial *serial_priv;
++	int oob_port_num;
+ 	int ret;
++	int i;
++
++	/*
++	 * The port bulk-out buffers must be large enough for header and
++	 * buffered data.
++	 */
++	for (i = 0; i < serial->type->num_ports; i++) {
++		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
++			return -EINVAL;
++	}
++
++	/*
++	 * The OOB port bulk-out buffer must be large enough for the two
++	 * commands in digi_set_modem_signals().
++	 */
++	oob_port_num = serial->type->num_ports;
++	if (serial->port[oob_port_num]->bulk_out_size < 8)
++		return -EINVAL;
  
- 	glue->dev			= &pdev->dev;
- 	glue->musb			= musb;
-@@ -458,6 +457,7 @@ static int omap2430_probe(struct platfor
- 		dev_err(&pdev->dev, "failed to register musb device\n");
- 		goto err3;
- 	}
-+	of_node_put(np);
+ 	serial_priv = kzalloc(sizeof(*serial_priv), GFP_KERNEL);
+ 	if (!serial_priv)
+ 		return -ENOMEM;
  
- 	return 0;
+ 	spin_lock_init(&serial_priv->ds_serial_lock);
+-	serial_priv->ds_oob_port_num = serial->type->num_ports;
+-	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
++	serial_priv->ds_oob_port_num = oob_port_num;
++	serial_priv->ds_oob_port = serial->port[oob_port_num];
  
-@@ -467,6 +467,7 @@ err_put_control_otghs:
- 	if (!IS_ERR(glue->control_otghs))
- 		put_device(glue->control_otghs);
- err2:
-+	of_node_put(np);
- 	platform_device_put(musb);
- 
- err0:
+ 	ret = digi_port_init(serial_priv->ds_oob_port,
+ 						serial_priv->ds_oob_port_num);
 
 
 
