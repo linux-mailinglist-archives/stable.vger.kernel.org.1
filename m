@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AHv8BB1OJWqCGgIAu9opvQ
-	(envelope-from <stable+bounces-261750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:25 +0200
+	id f+BxH+RNJWpsGgIAu9opvQ
+	(envelope-from <stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB6B65020F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148226501B7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="PMZ/J0AM";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261750-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261750-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zm3MlPpb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38740300C277
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15D2F30387BE
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AD831ED93;
-	Sun,  7 Jun 2026 10:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FCC308F38;
+	Sun,  7 Jun 2026 10:52:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95894308F38;
-	Sun,  7 Jun 2026 10:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7339A4071DD;
+	Sun,  7 Jun 2026 10:52:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829700; cv=none; b=tnf6n6wwXTmWis1SqBSNHoPcxTqy+rylvVEpz+16OwN0HWtoAVo8oY6rHQAQnXdo8Qtm4up8207VhN6rhrTBtRtSMfiizHGJO6epZE14B3fX0xU60pGauJr5oZ2MBqqlUhAU3g3CvqA1LZAnknxuRGxiQSGddILW+r1E72tsFDE=
+	t=1780829547; cv=none; b=WM4na5CQCFzWRcTYHGdLHciMZilPXgOgMZvJQZ2C9mcJgk1wLW8Hg5+UmztLZdoEdDJyjNn9UfqzYN3TBHo0j596TQL4BdrFc1sb15OtFimXBQqcF/o4bRKrp9m0pLeenSRLSjvEbkFelBcAkGj7+/tTRNuzxGYhz81leWKlR8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829700; c=relaxed/simple;
-	bh=qgw9KJ+M5scG+rFYtZWn8ETljrNG8ujsinc0+o5Whvs=;
+	s=arc-20240116; t=1780829547; c=relaxed/simple;
+	bh=VX+qVOjxPtvodOYAFKjS37teEA9bDqhZphK4UaQQm9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kk4pugf90BXkj1vn98qwLerh5UwkSO236USLJEM+OC2a521j7NYZl6sJVZflg/gYEMhKQG7S1j940SLpZ97boW4P44SZ8OGirdzeKhPSZUyCTcd25cVBcJWNG4nzk+xUq7Qeb+TIzfiXjQv9wsS8BCqu5/cHW9zPmBtZ+GBg3JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMZ/J0AM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F1D1F00893;
-	Sun,  7 Jun 2026 10:54:58 +0000 (UTC)
+	 MIME-Version; b=icfEOtBAjso0eM2qREqu3It9wKaaE2CsDrRX/ExXolqcUZP8Qj/+SAIB/4MmmXpIlSU5h9l8A0InhlNXnYYmhNNZg8JAOrMiYWj9b7XyMtErFq+F7GbfJQ+ZClaTtEWh8rIHJeIrCc6OTJK2C2G96f0HT39Y0kYUqF9YRJPlJ1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm3MlPpb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C98B1F00893;
+	Sun,  7 Jun 2026 10:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829699;
-	bh=YKhw7aAibVW1fYVBFojnIqliqw4RLewvl1pLoUhYOPY=;
+	s=korg; t=1780829546;
+	bh=7exdBBjHPsJgtftCZe6Qdv5cn0STR9SAXit1vyl0ZYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PMZ/J0AMqaAdjzwYSF0kxOX/p427qdaf55HTBILjY0uOWV7QZOTuLmVytNU9Hw5Fg
-	 8Pj42aYHephgMz+jiJz2yM21jgQ4v6pCd5dNJeb0Pc5/L+RbCHidZ9DJ2px45PDbBe
-	 1v9RwwjdtFa+JbJRRBRr1lJLH8o7gtIYimuNhsFo=
+	b=zm3MlPpbBaGypbz3HCQ5WU6CxKB/i//JU7SeRYNoXBalOJAaAnHx8HUNocP1V/4bU
+	 CrZueK0azu3y2GRaw1Vi3U6PUdUZT4RGgwEsYyUCx8eb4DR0K7LSmRRgHWlYywy6F8
+	 x68K9WEe0qlUYuGOg+1UjzoK/TB02uD9dkFBmJAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ijae Kim <ae878000@gmail.com>,
-	Myeonghun Pak <mhun512@gmail.com>
-Subject: [PATCH 6.12 247/307] serial: altera_jtaguart: handle uart_add_one_port() failures
+	Zhenghang Xiao <kipreyyy@gmail.com>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.18 257/315] drm/gem: fix race between change_handle and handle_delete
 Date: Sun,  7 Jun 2026 12:00:44 +0200
-Message-ID: <20260607095736.768122523@linuxfoundation.org>
+Message-ID: <20260607095736.998485181@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261750-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:ae878000@gmail.com,m:mhun512@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261708-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:airlied@redhat.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -95,67 +94,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AAB6B65020F
+X-Rspamd-Queue-Id: 148226501B7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myeonghun Pak <mhun512@gmail.com>
+From: Zhenghang Xiao <kipreyyy@gmail.com>
 
-commit ea66be25f0e934f49d24cd0c5845d13cdba3520b upstream.
+commit 7164d78559b0ff29931a366a840a9e5dd53d4b7c upstream.
 
-altera_jtaguart_probe() maps the register window before registering the
-UART port, but it ignores failures from uart_add_one_port(). If port
-registration fails, probe still returns success and the mapping remains
-live until a later remove path that is not part of probe failure cleanup.
+drm_gem_change_handle_ioctl leaves the old handle live in the IDR
+during the window between spin_unlock(table_lock) and the final
+spin_lock(table_lock). A concurrent drm_gem_handle_delete on the old
+handle succeeds in this window, decrements handle_count to 0, and frees
+the GEM object while the new handle's IDR entry still references it.
 
-Return the uart_add_one_port() error and unmap the register window on
-that failure path.
+NULL the old handle's IDR entry before dropping table_lock so that any
+concurrent GEM_CLOSE on the old handle sees NULL and returns -EINVAL.
+Restore the old entry on the prime-bookkeeping error path.
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
-
-Fixes: 5bcd601049c6 ("serial: Add driver for the Altera JTAG UART")
-Cc: stable <stable@kernel.org>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Link: https://patch.msgid.link/20260512065837.79528-1-mhun512@gmail.com
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260526085313.26791-1-kipreyyy@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/altera_jtaguart.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/altera_jtaguart.c
-+++ b/drivers/tty/serial/altera_jtaguart.c
-@@ -381,6 +381,7 @@ static int altera_jtaguart_probe(struct
- 	struct resource *res_mem;
- 	int i = pdev->id;
- 	int irq;
-+	int ret;
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -1015,6 +1015,7 @@ int drm_gem_change_handle_ioctl(struct d
+ 	       goto out_unlock;
+        }
  
- 	/* -1 emphasizes that the platform must have one port, no .N suffix */
- 	if (i == -1)
-@@ -420,7 +421,11 @@ static int altera_jtaguart_probe(struct
- 	port->flags = UPF_BOOT_AUTOCONF;
- 	port->dev = &pdev->dev;
++	idr_replace(&file_priv->object_idr, NULL, args->handle);
+ 	spin_unlock(&file_priv->table_lock);
  
--	uart_add_one_port(&altera_jtaguart_driver, port);
-+	ret = uart_add_one_port(&altera_jtaguart_driver, port);
-+	if (ret) {
-+		iounmap(port->membase);
-+		return ret;
-+	}
- 
- 	return 0;
- }
+ 	if (obj->dma_buf) {
+@@ -1023,6 +1024,7 @@ int drm_gem_change_handle_ioctl(struct d
+ 		if (ret < 0) {
+ 			spin_lock(&file_priv->table_lock);
+ 			idr_remove(&file_priv->object_idr, handle);
++			idr_replace(&file_priv->object_idr, obj, args->handle);
+ 			spin_unlock(&file_priv->table_lock);
+ 			goto out_unlock;
+ 		}
 
 
 
