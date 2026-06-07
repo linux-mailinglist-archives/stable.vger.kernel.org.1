@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LcTRJFJMJWqKGQIAu9opvQ
-	(envelope-from <stable+bounces-261626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:46 +0200
+	id Y5poJchLJWpnGQIAu9opvQ
+	(envelope-from <stable+bounces-261589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:45:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241D0650003
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187CD64FF8E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:45:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LZhQYZuK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261626-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261626-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JCmpy7Ka;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261589-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261589-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83E78300491D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABDD1301CC76
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05142E7376;
-	Sun,  7 Jun 2026 10:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502842E7390;
+	Sun,  7 Jun 2026 10:45:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF81A6822;
-	Sun,  7 Jun 2026 10:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12083286A4;
+	Sun,  7 Jun 2026 10:45:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829263; cv=none; b=RupVWbuOzxV+IqRzzClvARKsnKn5QxOZZujTKa5HYkaeMgqk1mXublddDrNomXnHinhj6qEd5O+IrAmBZQ/+HFdpJXVNN3kN2gHK/BGKU6hgivNMx7/6ZArptLjFG9KCQ3B62iKi1/MOBk/ZDnWLqDQddhcG05l7tf9KnTdD1Kw=
+	t=1780829126; cv=none; b=Nw62m5vNEKsk5T1wPqtu5kx8KzScI0bLu6QLNHEIAQY+mqrTIbxgsjVp5+7+Dmq33udlvEblE+FN1g6om0/ZH7R+iZcCuJe6nSSqDKkx7mzfmRGVtGwxwbTuNLM6rLb8KmOx/HWP2nvcXsqDtKI8F7R/Dm0ljHzdU3Pll/RqCMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829263; c=relaxed/simple;
-	bh=ujT58J1RoNF8iavbX8RqPVHUIQ0olQo5F7wLZck+Dwo=;
+	s=arc-20240116; t=1780829126; c=relaxed/simple;
+	bh=/McWc8yAHE0qBvlnZkUxl04/Ndjso83G92JSb/UXSoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lo065ivzYAYB0tGPMyq3aNFYQzP64eUzMg1I63SBgoroVDTBEIfbIh5LzGM6wJlYypehnOPMmkSILwl4bVSIxM+kt0mulR48ZfUIgYyP2oMtk6DFejTXsAbRxG+Azl0rnkbaBcmJjpU8r+Qu6od3W6BncEzTJ2QqqxqMdIAyQyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZhQYZuK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E3D1F00893;
-	Sun,  7 Jun 2026 10:47:41 +0000 (UTC)
+	 MIME-Version; b=H/KYO+VPx/0tofUhw5Yk7MkC/FAmNKQPOv3yP246Fo3VSptUcn995+ixJJHB1hHBVNVf/0YM2tckuA8HlNjP+q7sgW2oMfKBieSEUjCHAMSIbRAonp90BRtwpF07EeLs4qKETkgh4CaqDfRT0qRDEwgN7eVFnS5SdtNiGdOm3M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCmpy7Ka; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F91F00893;
+	Sun,  7 Jun 2026 10:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829262;
-	bh=3Gc70VtqN45AjtTf9Ct9P3oZ+iMUrhypcoWiLNHP14Y=;
+	s=korg; t=1780829124;
+	bh=/mbSRVP2X8fcS4WBnCaGuueRgevSssDBxd525A1PnW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LZhQYZuKm4GNJYTS0VYg91RKuM/xL5eToED1kFCuePRzMVr6uD5guERJ/3PtX16w8
-	 Scr7iYioDol2PMGsevxLPxGd9HxVaGeQyvsYUCWWklhtQhXM+RgwM/n9SnnIEXSdi5
-	 VzMVG71NdQKwuUG18x3e48r+0XS01nONj/qUUchU=
+	b=JCmpy7Kaj46r0fbiVBKYYtgRqS9NWDhszqrQB6GHSALRs2vUvJ7KeWDM4Ds6PduxZ
+	 Az10WLlPRbURiJqGbD6KYD+TrTyIPad8T9uj/Rf6maUyd3KZtC0fAbaIepMHH/UHwn
+	 0hg3J4L9OrgeT/iJxWYWMxnoq5D/7tXkKTYUqu+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nicol=C3=A1s=20Bazaes?= <contacto@bazaes.cl>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 209/307] Input: synaptics - add LEN2058 to SMBus passlist for ThinkPad E490
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.18 219/315] counter: Fix refcount leak in counter_alloc() error path
 Date: Sun,  7 Jun 2026 12:00:06 +0200
-Message-ID: <20260607095735.394230380@linuxfoundation.org>
+Message-ID: <20260607095735.623612327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261626-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contacto@bazaes.cl,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261589-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:wbg@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bazaes.cl,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bazaes.cl:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 241D0650003
+X-Rspamd-Queue-Id: 187CD64FF8E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolás Bazaes <contacto@bazaes.cl>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 16ca52bc209fa4bf9239cd9e5643e95533476b58 upstream.
+commit d9eeb0ea0d2de658663bfaa9c26eccdd8fd64440 upstream.
 
-The Lenovo ThinkPad E490 (PNP ID: LEN2058) has a Synaptics TM3471-020
-touchpad that supports SMBus/RMI4 mode but is not listed in
-smbus_pnp_ids[]. Without this entry, RMI4 over SMBus is not enabled
-by default, and the touchpad falls back to PS/2 mode.
+After device_initialize(), the lifetime of the embedded struct device
+is expected to be managed through the device core reference counting.
 
-Adding LEN2058 to the passlist enables automatic RMI4 detection without
-requiring the psmouse.synaptics_intertouch parameter, and matches
-the behavior of similar ThinkPad models already in the list
-(E480/LEN2054, E580/LEN2055).
+In counter_alloc(), if dev_set_name() fails after device_initialize(),
+the error path removes the chrdev, frees the ID, and frees the backing
+allocation directly instead of releasing the device reference with
+put_device(). This bypasses the normal device lifetime rules and may
+leave the reference count of the embedded struct device unbalanced,
+resulting in a refcount leak.
 
-Tested on ThinkPad E490 with kernel 7.0.5-zen1 and Arch Linux.
-RMI4 over SMBus is confirmed working without any kernel parameters.
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
 
-Signed-off-by: Nicolás Bazaes <contacto@bazaes.cl>
-Assisted-by: Claude:claude-sonnet-4-6
-Link: https://patch.msgid.link/20260514013552.14234-1-contacto@bazaes.cl
+Fix this by using put_device() in the dev_set_name() failure path and
+let counter_device_release() handle the final cleanup.
+
+Fixes: 4da08477ea1f ("counter: Set counter device name")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://lore.kernel.org/r/20260413134604.2861772-1-lgs201920130244@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/counter/counter-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -189,6 +189,7 @@ static const char * const smbus_pnp_ids[
- 	"LEN2044", /* L470  */
- 	"LEN2054", /* E480 */
- 	"LEN2055", /* E580 */
-+	"LEN2058", /* E490 */
- 	"LEN2068", /* T14 Gen 1 */
- 	"SYN1221", /* TUXEDO InfinityBook Pro 14 v5 */
- 	"SYN3003", /* HP EliteBook 850 G1 */
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -124,7 +124,8 @@ struct counter_device *counter_alloc(siz
+ 
+ err_dev_set_name:
+ 
+-	counter_chrdev_remove(counter);
++	put_device(dev);
++	return NULL;
+ err_chrdev_add:
+ 
+ 	ida_free(&counter_ida, dev->id);
 
 
 
