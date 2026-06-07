@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PDZnIC5NJWopGgIAu9opvQ
-	(envelope-from <stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:26 +0200
+	id bBSKALxNJWpXGgIAu9opvQ
+	(envelope-from <stable+bounces-261694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E3E6500E9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A403E65016C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X7bW2NTt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=usJWR3N2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261694-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261694-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C12A5300462A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 28831302DF51
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28D02E7390;
-	Sun,  7 Jun 2026 10:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E952DFF04;
+	Sun,  7 Jun 2026 10:51:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC51A6822;
-	Sun,  7 Jun 2026 10:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3E94071DD;
+	Sun,  7 Jun 2026 10:51:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829479; cv=none; b=Y/jnPl4SsbLVHE74nn+KbWkifn4SbBMvhLOvPNwxefN77dyZ8g2CMV6Ka2LLOvLmLqFQw/dfJXC0Uo2uO416TxyIWfUCizt5BuVSIft5LnyOXsZQWAwyLLjymMVA7dw+ydMA2kvetPPyK9lKs1mrw0+SOkZ5sGvFBaO6kvqUvcI=
+	t=1780829500; cv=none; b=cpHwmicBM1v140WmtwfOA1u/zuabrukyqffkTjxs2TqDwdPK8ZFAjEWg6ynSH7wKsCKz1YYjCVtiGhUSkAOkUgovcG5bKc2PuIXXzDmDi7v5gEeBu72WHgtzNqEqjaFbvnb9bsISWaHLoHC9Iewfkv/PvjlPaL3fQRk6+W81szI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829479; c=relaxed/simple;
-	bh=2/FKToOuhXR+pIIbytIcCyEKEQXlbap2WqDkltEmPS4=;
+	s=arc-20240116; t=1780829500; c=relaxed/simple;
+	bh=NOLqIINH3Q1S3eIqSvOt/ybjqmNTXgWvnEHUmpB7XVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KV/6DYjF4dyI7oRzkG7SephU5LPbX+Ul0uytrVIKqYy2mxxhK3zIkIa4xjf6abWS13llq4oLIdasPbM+0zrQuo5dwjA1NRHaXhI43M5TcDDqlIjDJX03hBZC0KIU68vQH5oPLnMsLTX6bxYKSagmfDFdKC7OYpOae4O5YkgoD4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7bW2NTt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693171F00893;
-	Sun,  7 Jun 2026 10:51:17 +0000 (UTC)
+	 MIME-Version; b=Kuu7sNTSIlN1lY8e8+DzL7QRe3n770NAUpdablDy5yFbWYM04rLcxR1Zi1t29mOCraVURWqCgxEtxhYOvx3rX5aIJ4Oy0wcwczjHA0n6BM3ZaJt4tEh1kYGNWK/EF7a60ajAcfnh3OHLi+OPSb2kA7vzx5LZMHr3AL9KFZ4bWqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usJWR3N2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003691F00898;
+	Sun,  7 Jun 2026 10:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829478;
-	bh=H1AoWYX6YuhCY53a8bHmGXWTm11lmqb6Lrf7Q9Iz4i8=;
+	s=korg; t=1780829499;
+	bh=sYsomLQ6ZICr7krSg7tCJIbwAF0VwN4oa7J0LjY07QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X7bW2NTtDr0aXDNlILLudGnow8T1mrizmMdhrOwTozccPKqZpULjElWhacTqJroJI
-	 yluSZXK/y62elPHljiR+9AckbWBrAKLfN14f3A5OJ9pXbze88/Ydb6yHhrE/+UiWtX
-	 BnGcGzneIOggbY2FBga3tAMonOaA5UvhVJc7/cBs=
+	b=usJWR3N2JJAAyVQSulJ+mk70vuBsDwsCP3/AdS1WmtPV8sbT8hFc1r16/TGGi4JN4
+	 cBFIcL5WWW0hdgFoIFzgBJZccBZXMM8+oXCKGVOvi/Yk+OZO9kO8zuvr3eMb7f5gRp
+	 ZIGCNUPG2MW1gdbJYrKn9ZuhRSfRzgt/eRW7ozvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 251/315] scsi: scsi_transport_fc: Widen FPIN pname walker counter to u32
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 269/332] USB: serial: keyspan: fix missing indat transfer sanity check
 Date: Sun,  7 Jun 2026 12:00:38 +0200
-Message-ID: <20260607095736.777087838@linuxfoundation.org>
+Message-ID: <20260607095737.916479576@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,205 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,oracle.com];
-	TAGGED_FROM(0.00)[bounces-261688-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hch@lst.de,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261694-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A3E3E6500E9
+X-Rspamd-Queue-Id: A403E65016C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit a9a39233ec1fc9f97ea1340a4d09bb7ec2be5153 upstream.
+commit ab8336a7e414f018430aa1af3a46944032f7ff96 upstream.
 
-An adjacent Fibre Channel fabric actor that can deliver an FPIN ELS
-frame to an lpfc or qla2xxx Linux initiator can trigger a non-return in
-the generic FC transport. This is not a local userspace or IP network
-path; the attacker must be able to inject fabric traffic, for example as
-a compromised switch or fabric controller, or as a same-zone N_Port on a
-fabric that permits source spoofing.
+Add the missing sanity check on the size of usa49wg indat transfers to
+avoid parsing stale or uninitialised slab data.
 
-The Link-Integrity and Peer-Congestion FPIN walkers used a u8 loop
-counter against the 32-bit on-wire pname_count field, and did not bound
-pname_count by the descriptor body already validated by the TLV walker.
-A pname_count of 256 therefore wraps the counter and keeps the loop
-condition true indefinitely.
-
-Factor the shared pname_list[] walk into one helper, widen the counter
-to u32, and clamp pname_count against the entries that fit in the
-descriptor body before iterating.
-
-Fixes: 3dcfe0de5a97 ("scsi: fc: Parse FPIN packets and update statistics")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20260520133015.1018937-1-michael.bommarito@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 0ca1268e109a ("USB Serial Keyspan: add support for USA-49WG & USA-28XG")
+Cc: stable@vger.kernel.org	# 2.6.23
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_fc.c |   77 ++++++++++++++++++++-------------------
- 1 file changed, 41 insertions(+), 36 deletions(-)
+ drivers/usb/serial/keyspan.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -735,6 +735,37 @@ fc_cn_stats_update(u16 event_type, struc
- 	}
- }
+--- a/drivers/usb/serial/keyspan.c
++++ b/drivers/usb/serial/keyspan.c
+@@ -1187,6 +1187,10 @@ static void usa49wg_indat_callback(struc
+ 	len = 0;
  
-+static void
-+fc_fpin_pname_stats_update(struct Scsi_Host *shost,
-+			   struct fc_rport *attach_rport, u16 event_type,
-+			   u32 desc_len, u32 fixed_len, u32 pname_count,
-+			   __be64 *pname_list,
-+			   void (*stats_update)(u16 event_type,
-+						struct fc_fpin_stats *stats))
-+{
-+	u32 i;
-+	struct fc_rport *rport;
-+	u64 wwpn;
-+
-+	if (desc_len < fixed_len)
-+		pname_count = 0;
-+	else
-+		pname_count = min(pname_count, (desc_len - fixed_len) /
-+				   sizeof(pname_list[0]));
-+
-+	for (i = 0; i < pname_count; i++) {
-+		wwpn = be64_to_cpu(pname_list[i]);
-+		rport = fc_find_rport_by_wwpn(shost, wwpn);
-+		if (rport &&
-+		    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
-+		     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
-+			if (rport == attach_rport)
-+				continue;
-+			stats_update(event_type, &rport->fpin_stats);
+ 	while (i < urb->actual_length) {
++		if (urb->actual_length - i < 3) {
++			dev_warn_ratelimited(&urb->dev->dev, "malformed indat packet\n");
++			break;
 +		}
-+	}
-+}
-+
- /*
-  * fc_fpin_li_stats_update - routine to update Link Integrity
-  * event statistics.
-@@ -745,13 +776,11 @@ fc_cn_stats_update(u16 event_type, struc
- static void
- fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_host_attrs *fc_host = shost_to_fc_host(shost);
- 	struct fc_fn_li_desc *li_desc = (struct fc_fn_li_desc *)tlv;
- 	u16 event_type = be16_to_cpu(li_desc->event_type);
--	u64 wwpn;
  
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(li_desc->attached_wwpn));
-@@ -762,22 +791,11 @@ fc_fpin_li_stats_update(struct Scsi_Host
- 		fc_li_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(li_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(li_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(li_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			    rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_li_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(li_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*li_desc),
-+				   be32_to_cpu(li_desc->pname_count),
-+				   li_desc->pname_list, fc_li_stats_update);
- 
- 	if (fc_host->port_name == be64_to_cpu(li_desc->attached_wwpn))
- 		fc_li_stats_update(event_type, &fc_host->fpin_stats);
-@@ -825,13 +843,11 @@ static void
- fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
- 				struct fc_tlv_desc *tlv)
- {
--	u8 i;
- 	struct fc_rport *rport = NULL;
- 	struct fc_rport *attach_rport = NULL;
- 	struct fc_fn_peer_congn_desc *pc_desc =
- 	    (struct fc_fn_peer_congn_desc *)tlv;
- 	u16 event_type = be16_to_cpu(pc_desc->event_type);
--	u64 wwpn;
- 
- 	rport = fc_find_rport_by_wwpn(shost,
- 				      be64_to_cpu(pc_desc->attached_wwpn));
-@@ -842,22 +858,11 @@ fc_fpin_peer_congn_stats_update(struct S
- 		fc_cn_stats_update(event_type, &attach_rport->fpin_stats);
- 	}
- 
--	if (be32_to_cpu(pc_desc->pname_count) > 0) {
--		for (i = 0;
--		    i < be32_to_cpu(pc_desc->pname_count);
--		    i++) {
--			wwpn = be64_to_cpu(pc_desc->pname_list[i]);
--			rport = fc_find_rport_by_wwpn(shost, wwpn);
--			if (rport &&
--			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
--			     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
--				if (rport == attach_rport)
--					continue;
--				fc_cn_stats_update(event_type,
--						   &rport->fpin_stats);
--			}
--		}
--	}
-+	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
-+				   be32_to_cpu(pc_desc->desc_len),
-+				   FC_TLV_DESC_LENGTH_FROM_SZ(*pc_desc),
-+				   be32_to_cpu(pc_desc->pname_count),
-+				   pc_desc->pname_list, fc_cn_stats_update);
- }
- 
- /*
+ 		/* Check port number from message */
+ 		if (data[i] >= serial->num_ports) {
 
 
 
