@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YTv/DVFHJWpqFwIAu9opvQ
-	(envelope-from <stable+bounces-261159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:25 +0200
+	id doTwCgdIJWrAFwIAu9opvQ
+	(envelope-from <stable+bounces-261235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE3B64FA80
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876DB64FB2D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kxBmP1aV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261159-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261159-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x0tf43ht;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261235-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261235-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1DFC3059FD8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58FC4303AAAE
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403342DB7A3;
-	Sun,  7 Jun 2026 10:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6724531F993;
+	Sun,  7 Jun 2026 10:22:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1961F4071DA;
-	Sun,  7 Jun 2026 10:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE7E31F983;
+	Sun,  7 Jun 2026 10:22:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827462; cv=none; b=KW6pGHo0xmnhfS+ozKW6azanhPH4bHtvMrfyWeklUdOwpdRHyRjETmN/p55aLPKhrhzfFi1+MFzjOui4euYMRtiySE4mklB8N7tJ5vDtX6+6z9lnYv5oKV487sNinTfrqpu1eh6kbgpcX2HaRUSSDOJBZVK2PoqkqrIliHjRelE=
+	t=1780827770; cv=none; b=SQZtzo3uemxZ779d4BxHOBoJdWDQoBhZei2Ze11O9W3jszJnzIBEpIqUpDTQYq4GxkwCVTkfiplypOuFUwkhya8OLNBuwKuuSylGd7Knr5gSSU/postGQRGXUg23EpGYkl6xaqucgXRsrGaDH6ti7UTn1Q4jd37wjfmBDWT/bHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827462; c=relaxed/simple;
-	bh=1timZgcX5VtzFc249Xcd6LYZqXKg17aiTEH35OT67/w=;
+	s=arc-20240116; t=1780827770; c=relaxed/simple;
+	bh=Nl+uz67fJVInqqpv9Q2+1NWiWVsxMTr1CnNYwP/Lh3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=feGbKrxpNdC+LF+gX+3XFSVVRWoq3+x3hINU8kYADbUI74nX1OKZhcktYsYWj8IgzLmtqGvjrZj5BplgNq0GNUIYZvcyMeSNnNMuhJq7efg5xsVyBTeNfxvBOZgH4cBJFTgoT86oeK52IKV9joLK9dGPc7LLoMGd8CQz37s9NZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxBmP1aV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504691F00893;
-	Sun,  7 Jun 2026 10:17:40 +0000 (UTC)
+	 MIME-Version; b=HPHA0WjgpKdMT6AIl3vDLEaqbX3pTS1y9UBVjltcrJ1wQZEM37KaZz2jifrXAZV35cYeVYV5/t1bT8lubUCYmZPeikK0m59etURbgQdKZarKaaTiKHwRz6RIInELeT2GAUJPZq5aYQ6RK3fdu0LR+/0pwjM900GhnL7z1qbBO68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0tf43ht; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE8E1F00893;
+	Sun,  7 Jun 2026 10:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827461;
-	bh=8ZQd2jagax9ku8Wnjpafwn8qZLHlHHznD7OKh24IbiA=;
+	s=korg; t=1780827769;
+	bh=LuJtZrrL6YTGsmaY7u8tJsuJDZOgcOVUuV3Mhfifx+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kxBmP1aVr7d5V8E3WCHG4OEIz0RXywQMC6gMNWpm8JIDthwCERjeoUmn+ELqSi449
-	 Dcdh+ZR6a1ZNNwKGZemuW5938Ny/1+AxPrzrNTOxkec1kc0qtGjpQJaoBVmgcX1jlO
-	 O6il9wIy04pSLQAa58WSQpHWX1GndMY8IOWh5Hks=
+	b=x0tf43htFbAHwZDXZqlvfxbS8peLv2q5712pfw6s98LK0jXkbLL1H+Z8p3bpg2Lvv
+	 ejLJTxGEK1Lp+PubCGskr1JdXTAB7a9kFWATxrAPsWcbCbbJHJ6mWoZvnmdxkBUYQc
+	 Hs5iQtztc1zOJs7iECeYeeb1JadhxSd+6Ocr2qIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 095/332] dpll: export __dpll_device_change_ntf() for use under dpll_lock
+Subject: [PATCH 6.12 067/307] ethtool: linkstate: fix unbalanced ethnl_ops_complete() on PHY lookup error
 Date: Sun,  7 Jun 2026 11:57:44 +0200
-Message-ID: <20260607095731.639607098@linuxfoundation.org>
+Message-ID: <20260607095730.217923685@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,105 +69,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261159-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261235-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ivecera@redhat.com,m:jiri@nvidia.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FE3B64FA80
+X-Rspamd-Queue-Id: 876DB64FB2D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 20040b2a3cb992f84d3db4c086b909eb9b906b31 ]
+[ Upstream commit 596c51ed9e125b12c4d85b4530dfd4c7847634b7 ]
 
-Export __dpll_device_change_ntf() so that drivers can send device
-change notifications from within device callbacks, which are already
-called under dpll_lock. Using dpll_device_change_ntf() in that
-context would deadlock.
+linkstate_prepare_data() calls ethnl_req_get_phydev() before
+ethnl_ops_begin(), but routes its error path through "goto out"
+which calls ethnl_ops_complete().
 
-Add lockdep_assert_held() to catch misuse without the lock held.
-
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20260526074525.1451008-2-ivecera@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: d733f519f644 ("dpll: zl3073x: use __dpll_device_change_ntf() and remove change_work")
+Fixes: fe55b1d401c6 ("ethtool: linkstate: migrate linkstate functions to support multi-PHY setups")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dpll/dpll_netlink.c | 13 +++++++++++--
- include/linux/dpll.h        |  1 +
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ net/ethtool/linkstate.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
-index 95ae786e98aab3..72aa5f4d5d3114 100644
---- a/drivers/dpll/dpll_netlink.c
-+++ b/drivers/dpll/dpll_netlink.c
-@@ -771,12 +771,21 @@ int dpll_device_delete_ntf(struct dpll_device *dpll)
- 	return dpll_device_event_send(DPLL_CMD_DEVICE_DELETE_NTF, dpll);
- }
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 05a5f72c99fab1..3dc52a39d34525 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -105,10 +105,8 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
  
--static int
--__dpll_device_change_ntf(struct dpll_device *dpll)
-+/**
-+ * __dpll_device_change_ntf - notify that the dpll device has been changed
-+ * @dpll: registered dpll pointer
-+ *
-+ * Context: caller must hold dpll_lock. Suitable for use inside device
-+ *          callbacks which are already invoked under dpll_lock.
-+ * Return: 0 if succeeds, error code otherwise.
-+ */
-+int __dpll_device_change_ntf(struct dpll_device *dpll)
- {
-+	lockdep_assert_held(&dpll_lock);
- 	dpll_device_notify(dpll, DPLL_DEVICE_CHANGED);
- 	return dpll_device_event_send(DPLL_CMD_DEVICE_CHANGE_NTF, dpll);
- }
-+EXPORT_SYMBOL_GPL(__dpll_device_change_ntf);
+ 	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_LINKSTATE_HEADER,
+ 				      info->extack);
+-	if (IS_ERR(phydev)) {
+-		ret = PTR_ERR(phydev);
+-		goto out;
+-	}
++	if (IS_ERR(phydev))
++		return PTR_ERR(phydev);
  
- /**
-  * dpll_device_change_ntf - notify that the dpll device has been changed
-diff --git a/include/linux/dpll.h b/include/linux/dpll.h
-index 8f97120ee7b37d..a77d5741dd3932 100644
---- a/include/linux/dpll.h
-+++ b/include/linux/dpll.h
-@@ -274,6 +274,7 @@ void dpll_pin_on_pin_unregister(struct dpll_pin *parent, struct dpll_pin *pin,
- int dpll_pin_ref_sync_pair_add(struct dpll_pin *pin,
- 			       struct dpll_pin *ref_sync_pin);
- 
-+int __dpll_device_change_ntf(struct dpll_device *dpll);
- int dpll_device_change_ntf(struct dpll_device *dpll);
- 
- int __dpll_pin_change_ntf(struct dpll_pin *pin);
+ 	ret = ethnl_ops_begin(dev);
+ 	if (ret < 0)
 -- 
 2.53.0
 
