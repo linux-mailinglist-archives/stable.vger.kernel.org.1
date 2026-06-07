@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id X1nEHZNQJWqAGwIAu9opvQ
-	(envelope-from <stable+bounces-261784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:55 +0200
+	id E6IdEkpNJWo2GgIAu9opvQ
+	(envelope-from <stable+bounces-261697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD64C6504C4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041DB650104
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P3seB2tI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261784-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261784-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ei2KjDkK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261697-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261697-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 171F23047274
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7127D3003605
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06B7330330;
-	Sun,  7 Jun 2026 10:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D2931E83A;
+	Sun,  7 Jun 2026 10:51:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E11712CDA5;
-	Sun,  7 Jun 2026 10:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E8D2DFF04;
+	Sun,  7 Jun 2026 10:51:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829830; cv=none; b=ZfXJU8DT98rhvGvcM+oWZfK0vSgEN+8KAhs2LKjXVTmVFECiT1zV6tmchVI/5cPBEZve5NEr7bFqCNT2zOtbk7WYTUUq7+jb8KyMbToFuvvbZDXUAtOl5V0fGBnrzJNk69e5TypObrzFIN7whMeoHwckK64CvWpKQWPplR6fGCQ=
+	t=1780829510; cv=none; b=MPD5WFeLfeSqyFQEuhliTgRIa7ruA2K3ebe+YcVYNltN843+anfqryigXNE8lG3psUBezHvQqAPXEhdXYbpsz37to6qZUxahSa3JMqosfTqkk28yzkO4jFptVIT5EN6ZP1hv9iC4qjjs4ATPdgHabjteb70EM87OwKxkjaEdZD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829830; c=relaxed/simple;
-	bh=Emwzz5TKo+mgSwynm4X18XxAFkjt1q2iukCJWqbQO2o=;
+	s=arc-20240116; t=1780829510; c=relaxed/simple;
+	bh=QnvOPBw0zzC2497CBEamSCRcrRdyXGdm18rCxRcdA7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUQxHfd/A026wSZJqZDnYnNwEY1DojsScl18tdHiYje/fgZH8GYNerzXSeDGB4CfmcNiqZ/iyZkmadmqmjSWOUsR7PYEoHNWVST1Ldd+OJgK4SyRPoezi4qSFIAoqBd8g8AzD7TuKEd90Arg3D4AMdMDp2Kdi4I9u61qyP1uQus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3seB2tI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3C11F00893;
-	Sun,  7 Jun 2026 10:57:08 +0000 (UTC)
+	 MIME-Version; b=SU4bvQ0fwZcnSk6HI07e+8PgPfCJgxW4p2dKbvossBcIBraaFcU1EJadEEHvM6h0sBmz16kYH0yr4FxbaJfOTZSc0D8xpFAoyQX26MmUhreXnIwtkYUOkn6qbnG0VH8D2MJet/L2fJo/wQFGJHg6DQzsT438aDUWuOIEbTi+aXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ei2KjDkK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD4C1F00893;
+	Sun,  7 Jun 2026 10:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829829;
-	bh=AUyxYZSOX9jqOHUUQleNBP/VTBQlrd/awYhb/wr2mSg=;
+	s=korg; t=1780829509;
+	bh=XO5GXOUrEXKjasZRdHnQLbCHFfzh5UE+lso1wSfYpN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P3seB2tILIWtMxKJaqe3JfdZB8QCZ20dBiGyjJTBGZskQtFV3Hth1YDe8ZZhdFnQx
-	 W8BNlLTKVQaAqB43Zmg6rLLqpqmejM9sYkwUoA9v+AkOXc/hhKMggX3IaHYvknVN7b
-	 DS/e0yW6jFH8QmGRNTZqKwV942kJgV463036qzxE=
+	b=ei2KjDkKW0ilfcaj6gMc61ANB3sExxxDuE+CaDvttRMsSlh5lbZ3N3FPSf0iOmRXt
+	 ZG/kwSZNSgm5Y60pmRc5fxTvwfiT2EUcvVGaTQldpS/PSrz4qsJd1WJJZWjH4plDSE
+	 Ytybvt4e4mzf7ZD8DPG1TBnA07KrnYh49S3tX8t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 6.12 257/307] serial: dz: Fix bootconsole handover lockup
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 7.0 285/332] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
 Date: Sun,  7 Jun 2026 12:00:54 +0200
-Message-ID: <20260607095737.128358181@linuxfoundation.org>
+Message-ID: <20260607095738.516471824@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,138 +67,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261784-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261697-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,orcam.me.uk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,oracle.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DD64C6504C4
+X-Rspamd-Queue-Id: 041DB650104
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7f127b2208e5e2b817243cad41fe4211a6d5a7a3 upstream.
+commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 upstream.
 
-Calling dz_reset() in the course of setting up the serial device causes
-line parameters to be reset and the transmitter disabled.  We've been
-lucky in that no message is usually produced to the kernel log between
-this call and the later call to uart_set_options() in the course of
-console setup done by dz_serial_console_init(), or the system would hang
-as the console output handler in the firmware tried to access a port the
-transmitter of which has been disabled and line parameters messed up.
+Two latent bugs in the Text-phase handler, both present since the
+original LIO integration in commit e48354ce078c ("iscsi-target: Add
+iSCSI fabric support for target v4.1"):
 
-This will change with the next change to the driver, so fix dz_reset()
-such that line parameters are set for 9600n8 console operation as with
-the system firmware and the transmitter re-enabled after reset.  This
-also means dz_pm() serves no purpose anymore, so drop it.
+1) DataDigest CRC buffer overread (4 bytes past text_in).
 
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062302010.46195@angie.orcam.me.uk
+   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
+   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
+   in the iovec, but the same (now-bumped) rx_size is passed as the
+   buffer length to iscsit_crc_buf():
+
+       if (conn->conn_ops->DataDigest) {
+               ...
+               rx_size += ISCSI_CRC_LEN;
+       }
+       ...
+       if (conn->conn_ops->DataDigest) {
+               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
+
+   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
+   when DataDigest is negotiated it reads 4 bytes past the end of the
+   text_in allocation.  KASAN reproduces this directly on the unpatched
+   mainline tree as slab-out-of-bounds in crc32c() called from the Text
+   PDU path.  The OOB bytes feed crc32c() and are then compared against
+   the initiator-supplied checksum, so the value does not flow back to
+   the attacker, but the kernel does read past the buffer on every Text
+   PDU with DataDigest=CRC32C.
+
+   Fix by passing the actual padded payload length
+   (ALIGN(payload_length, 4)) that was used for the kzalloc().
+
+2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
+   drop.
+
+   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
+   silently drops the PDU and lets the initiator plug the CmdSN gap:
+
+               kfree(text_in);
+               return 0;
+
+   cmd->text_in_ptr still points at the freed buffer.  The next Text
+   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
+   unconditionally does
+
+       kfree(cmd->text_in_ptr);
+       cmd->text_in_ptr = NULL;
+
+   freeing the same pointer a second time.  Session teardown via
+   iscsit_release_cmd() has the same shape and hits the same double-free
+   if the connection is dropped before a second Text Request arrives.
+
+   On an unmodified mainline tree the bug-1 CRC overread fires first on
+   the initial valid Text Request and perturbs the subsequent state, so
+   #4 was isolated by building a kernel with only the bug-1 hunk of this
+   patch applied plus temporary printk() observability around the three
+   relevant kfree() sites.  The observability prints are not part of
+   this patch.  On that build, a three-PDU Text Request sequence after
+   login produces two back-to-back splats:
+
+       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
+       BUG: KASAN: double-free in iscsit_release_cmd+0x??
+
+   showing the same pointer freed in the ERL>0 drop path and again in
+   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
+   more in iscsit_release_cmd() (session teardown).  On distro kernels
+   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
+   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
+   the slab freelist.
+
+   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
+   path.  With both hunks applied #4 is directly observable on the stock
+   tree without observability printks; fixing bug-1 alone would mask #4
+   less, not more, so the hunks are submitted together.
+
+Both fixes are one-liners.  The Text PDU state machine is unchanged and
+the wire protocol is unaffected.
+
+Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Tested-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/dz.c |   36 ++++++++++++------------------------
- 1 file changed, 12 insertions(+), 24 deletions(-)
+ drivers/target/iscsi/iscsi_target.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -571,6 +571,18 @@ static void dz_reset(struct dz_port *dpo
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -2281,7 +2281,9 @@ iscsit_handle_text_cmd(struct iscsit_con
+ 			goto reject;
  
-+	/*
-+	 * Set parameters across all lines such as not to interfere
-+	 * with the initial PROM-based console.  Otherwise any output
-+	 * produced before the console handover would cause the system
-+	 * firmware to produce rubbish.
-+	 */
-+	for (int line = 0; line < DZ_NB_PORT; line++)
-+		dz_out(dport, DZ_LPR, DZ_B9600 | DZ_CS8 | line);
-+
-+	/* Re-enable transmission for the initial PROM-based console.  */
-+	dz_out(dport, DZ_TCR, tcr);
-+
- 	/* Enable scanning.  */
- 	dz_out(dport, DZ_CSR, DZ_MSE);
- 
-@@ -654,26 +666,6 @@ static void dz_set_termios(struct uart_p
- 	uart_port_unlock_irqrestore(&dport->port, flags);
- }
- 
--/*
-- * Hack alert!
-- * Required solely so that the initial PROM-based console
-- * works undisturbed in parallel with this one.
-- */
--static void dz_pm(struct uart_port *uport, unsigned int state,
--		  unsigned int oldstate)
--{
--	struct dz_port *dport = to_dport(uport);
--	unsigned long flags;
--
--	uart_port_lock_irqsave(&dport->port, &flags);
--	if (state < 3)
--		dz_start_tx(&dport->port);
--	else
--		dz_stop_tx(&dport->port);
--	uart_port_unlock_irqrestore(&dport->port, flags);
--}
--
--
- static const char *dz_type(struct uart_port *uport)
- {
- 	return "DZ";
-@@ -769,7 +761,6 @@ static const struct uart_ops dz_ops = {
- 	.startup	= dz_startup,
- 	.shutdown	= dz_shutdown,
- 	.set_termios	= dz_set_termios,
--	.pm		= dz_pm,
- 	.type		= dz_type,
- 	.release_port	= dz_release_port,
- 	.request_port	= dz_request_port,
-@@ -894,10 +885,7 @@ static int __init dz_console_setup(struc
- 	if (ret)
- 		return ret;
- 
--	spin_lock_init(&dport->port.lock);	/* For dz_pm().  */
--
- 	dz_reset(dport);
--	dz_pm(uport, 0, -1);
- 
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
+ 		if (conn->conn_ops->DataDigest) {
+-			data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
++			data_crc = iscsit_crc_buf(text_in,
++						  ALIGN(payload_length, 4),
++						  0, NULL);
+ 			if (checksum != data_crc) {
+ 				pr_err("Text data CRC32C DataDigest"
+ 					" 0x%08x does not match computed"
+@@ -2300,6 +2302,7 @@ iscsit_handle_text_cmd(struct iscsit_con
+ 					" Command CmdSN: 0x%08x due to"
+ 					" DataCRC error.\n", hdr->cmdsn);
+ 					kfree(text_in);
++					cmd->text_in_ptr = NULL;
+ 					return 0;
+ 				}
+ 			} else {
 
 
 
