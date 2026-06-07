@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /7KZJt9OJWrKGgIAu9opvQ
-	(envelope-from <stable+bounces-261808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:39 +0200
+	id f/PZGBNOJWqAGgIAu9opvQ
+	(envelope-from <stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7E06502DD
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035CA650207
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X6LKU4qq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261808-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261808-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vOn/bDa1";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D58323004CA1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6EA5730054E5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414CC3264F2;
-	Sun,  7 Jun 2026 10:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1827A308F38;
+	Sun,  7 Jun 2026 10:55:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2021212CDA5;
-	Sun,  7 Jun 2026 10:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3218287510;
+	Sun,  7 Jun 2026 10:55:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829914; cv=none; b=Rmvi88VVa0cYXKu+FxoncDI4cejJWY70rPZORAE4Hceu/+KClKYb0Rd5Vf0dUi9Z9Dtuf9khb50aXcEHGTraNICw7pU22bM2i81X0pAcv35akv7ebb9yFrPYV4v2uMHA2/CGLi3Af9PAo4O9Dhtb9cS8TsuAkRWXEwAGDyQWaEE=
+	t=1780829713; cv=none; b=oqcdmEaiEVNVskQyyBbpuhFI0hUMJblhyc+fMk42MnP0bnZyg9p2yJLYAa2iCHVBGdLFkvRMH/f8VFegzzyxkXWgroKNLgysYs06fNYSQMgM6FIBI7P7KKkkRXJ1DuzJqPvQMeokErJt9gA0YtayiRcJ36le7eH79EVrdVQte60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829914; c=relaxed/simple;
-	bh=9RIWgkOhIK6Wui6/0T8k5XIpH7iBmI24/TiXrfesEKI=;
+	s=arc-20240116; t=1780829713; c=relaxed/simple;
+	bh=1aZpopYgdI7vGt0dVE3KMSdqbFDMTH1YOj2PlP9faeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IKTyJqKbkwqX99r9M7DeA5gOpEhuph43ckdJUBtUOAdb6qKVpFtulv4YXNrV6pKKNc8J8Y556HuX0ieHbYnomuc2/YuvwC7erthLZzMwHL4Utx2JHePnPVK7eYRTHGNCVxg7ZnyIB6V8LB10C6BNIskT8TBeYG9qYtHEzjb9eRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6LKU4qq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9671F00893;
-	Sun,  7 Jun 2026 10:58:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FZkuEVyzsq7EIl8IcaecfwhaHBjJrEvuf331Dr3D8z3nsbz93PvTyZW72WEYMDza1Yqm9XTrUJbs9Tv+/Bh08TV+mRRCz+GxInGAHeCVDNJcMjA9xrFg5MFHqDbr+kuAXVccyW/3Ein+kmGfOYyDU+459gRymVlY2W2ruNZ0Si4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOn/bDa1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45861F00893;
+	Sun,  7 Jun 2026 10:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829912;
-	bh=uAB6eM4/33hidlQQIon4ESlj3IiamC0CJTSZJA6m+yE=;
+	s=korg; t=1780829712;
+	bh=qIgGREfk34jAxaFVucJQ7q1eiYU2ZsOyeNsanXw1+Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X6LKU4qqJm1MlqU99EMHFV+/fZxAQEHbb8xzWSb1jl2hXrqabGtCv19QIEqovol9u
-	 oGg1xBFmnGppFd7j2T5h351SBEZjjzNygG9C5T6CxhKi0rYHm/BveoY3ef3rwBvufg
-	 m4yz5wVNfOC9cUqn/T8C8TqFkEGOO46w5rGLQH0o=
+	b=vOn/bDa1cq348/RDLU7w0j4fdMgc+3tj+Z5shH9ltrEkcaXpxxIqM/JygUbvgOwqZ
+	 6dKzY3pO9aUZwV9Rh8Kvm4okN8Jxp+zm8zBeAlkApzcyVnFaurBs78bfeLOLr+pMhO
+	 ZPXLb8KtFEzb6BEoTC6mtZNxjtKWuKfRD90dLFIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 289/315] Bluetooth: hci_qca: Migrate to serdev specific shutdown function
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 307/332] drm/amdgpu: fix amdgpu_hmm_range_get_pages
 Date: Sun,  7 Jun 2026 12:01:16 +0200
-Message-ID: <20260607095738.208478629@linuxfoundation.org>
+Message-ID: <20260607095739.359901296@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,22 +71,22 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@baylibre.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:vitaly.prosyak@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261808-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261753-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -95,61 +96,94 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B7E06502DD
+X-Rspamd-Queue-Id: 035CA650207
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 12a6a5726c515455935982429ac35dee2307233d ]
+commit 962d684b5dc0741dcd93485d41b450de402d5592 upstream.
 
-This saves a cast in the driver. The motivation is stop using the callback
-.shutdown in qca_serdev_driver.driver to make it possible to drop that.
+The notifier sequence must only be read once or otherwise we could work
+with invalid pages.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/261a3384e25c4837d4efee87958805f15d7d4e3c.1765526117.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 375ba7484132 ("Bluetooth: hci_qca: Convert timeout from jiffies to ms")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it also fix the coding style, e.g. drop the pre-initialized
+return value and use the common define for 2G range.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Tested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c08972f555945cda57b0adb72272a37910153390)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2567,11 +2567,10 @@ static void qca_serdev_remove(struct ser
- 	hci_uart_unregister_device(&qcadev->serdev_hu);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
+@@ -51,8 +51,6 @@
+ #include "amdgpu_amdkfd.h"
+ #include "amdgpu_hmm.h"
  
--static void qca_serdev_shutdown(struct device *dev)
-+static void qca_serdev_shutdown(struct serdev_device *serdev)
+-#define MAX_WALK_BYTE	(2UL << 30)
+-
+ /**
+  * amdgpu_hmm_invalidate_gfx - callback to notify about mm change
+  *
+@@ -171,11 +169,13 @@ int amdgpu_hmm_range_get_pages(struct mm
+ 			       void *owner,
+ 			       struct amdgpu_hmm_range *range)
  {
- 	int ret;
- 	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
--	struct serdev_device *serdev = to_serdev_device(dev);
- 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
- 	struct hci_uart *hu = &qcadev->serdev_hu;
- 	struct hci_dev *hdev = hu->hdev;
-@@ -2793,11 +2792,11 @@ static void hciqca_coredump(struct devic
- static struct serdev_device_driver qca_serdev_driver = {
- 	.probe = qca_serdev_probe,
- 	.remove = qca_serdev_remove,
-+	.shutdown = qca_serdev_shutdown,
- 	.driver = {
- 		.name = "hci_uart_qca",
- 		.of_match_table = of_match_ptr(qca_bluetooth_of_match),
- 		.acpi_match_table = ACPI_PTR(qca_bluetooth_acpi_match),
--		.shutdown = qca_serdev_shutdown,
- 		.pm = &qca_pm_ops,
- #ifdef CONFIG_DEV_COREDUMP
- 		.coredump = hciqca_coredump,
+-	unsigned long end;
++	const u64 max_bytes = SZ_2G;
++
++	struct hmm_range *hmm_range = &range->hmm_range;
+ 	unsigned long timeout;
+ 	unsigned long *pfns;
+-	int r = 0;
+-	struct hmm_range *hmm_range = &range->hmm_range;
++	unsigned long end;
++	int r;
+ 
+ 	pfns = kvmalloc_array(npages, sizeof(*pfns), GFP_KERNEL);
+ 	if (unlikely(!pfns)) {
+@@ -192,8 +192,9 @@ int amdgpu_hmm_range_get_pages(struct mm
+ 	end = start + npages * PAGE_SIZE;
+ 	hmm_range->dev_private_owner = owner;
+ 
++	hmm_range->notifier_seq = mmu_interval_read_begin(notifier);
+ 	do {
+-		hmm_range->end = min(hmm_range->start + MAX_WALK_BYTE, end);
++		hmm_range->end = min(hmm_range->start + max_bytes, end);
+ 
+ 		pr_debug("hmm range: start = 0x%lx, end = 0x%lx",
+ 			hmm_range->start, hmm_range->end);
+@@ -201,7 +202,6 @@ int amdgpu_hmm_range_get_pages(struct mm
+ 		timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 
+ retry:
+-		hmm_range->notifier_seq = mmu_interval_read_begin(notifier);
+ 		r = hmm_range_fault(hmm_range);
+ 		if (unlikely(r)) {
+ 			if (r == -EBUSY && !time_after(jiffies, timeout))
+@@ -211,7 +211,7 @@ retry:
+ 
+ 		if (hmm_range->end == end)
+ 			break;
+-		hmm_range->hmm_pfns += MAX_WALK_BYTE >> PAGE_SHIFT;
++		hmm_range->hmm_pfns += max_bytes >> PAGE_SHIFT;
+ 		hmm_range->start = hmm_range->end;
+ 	} while (hmm_range->end < end);
+ 
 
 
 
