@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8iRjG0tQJWpsGwIAu9opvQ
-	(envelope-from <stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:43 +0200
+	id nJt8Go5VJWqLHAIAu9opvQ
+	(envelope-from <stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7450C650489
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70F56506FE
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XQ0ox8NN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ApMcfANS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 979323009E11
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D31EB30A79CE
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0995F38BF97;
-	Sun,  7 Jun 2026 11:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B8136F428;
+	Sun,  7 Jun 2026 11:00:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DD6328255;
-	Sun,  7 Jun 2026 11:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328E936F8E7;
+	Sun,  7 Jun 2026 11:00:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830227; cv=none; b=Qa146jW8vlezrGTYyK63dLfqaCN/++fzlt3S3QtBb73uyS8vlkAYcozTrbA9eZN7ZMysbA/xZJ3nptUKG+tNCY53aHZ4+LRDMYS5gtjIU0OSfva9wV97GToKEU/P01zj9BW5CUhdICK3TrWtM66WX/D3GkbLuYRixWe4wa6aHsc=
+	t=1780830047; cv=none; b=dH7CrOyF7J93OoxQhHAblK6ROTrun/wUSO9r4GI5sWz2OHsr8pS70lCAp/BIzE5j3aCdqQAaBTSTLdG6fBNlmDksoF3XU69lK532fENpzkPY6li6iHg/TIYx+pGIQ282VvJTTT2nk9Tc1WjqST4VddIqty8HxSPjEmhDaBflNEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830227; c=relaxed/simple;
-	bh=ULb6PU7gaSLsYCpU3CSauHwnOq1Hq5xeBylDsol4/TA=;
+	s=arc-20240116; t=1780830047; c=relaxed/simple;
+	bh=7Is6Ikp221plxNJ4kzFhEPMYYu8H0NRCWRvdXP2Dw0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiyTjRf8uKfVzLwhn5v2JCKuYVgSUxJfEMdxehiRztINiNA2XutonnUbVsiRFrxjzy6EqLN8HAcapdh9IXXfTWSDE1me8hQaHpn5CQ5tdwJKJZCsdMp7LgyrztyZ28EfMXJNmhU6/6v8E53RXy6Ww7TBrgQOsFQNJ7u3TjKlpNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQ0ox8NN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF481F00893;
-	Sun,  7 Jun 2026 11:03:45 +0000 (UTC)
+	 MIME-Version; b=tBsdxSQV2r0pJ3iD1503yVMfuYXCnyi1WhGnI4ttz26OXy31zVVaI7cCDqX/3U0Px4uLBhsZaMZgwrLxb9G9xPqFt3nJ3sgoWv6OLn5hXFIFfZEY8iKlJcREMPLDgBHTedGNUOy9b7eUd+EK28cDBPEVJSFH6Xh3ratY2p26LLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApMcfANS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478D11F00893;
+	Sun,  7 Jun 2026 11:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830226;
-	bh=iqqY82abSEKji7Rl4x6mJFuJeS5TRk8OivVoRst/2hg=;
+	s=korg; t=1780830046;
+	bh=/pjqmAq60cEp13N68N/Sjk8/DV1aNyVMY4Zyq9EZPSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XQ0ox8NNuO7H9SgzaBk5nneKU6MIhui6J2mORKXaRc++kCNO1V3cVnM1dTMiaIIhh
-	 x9YBv676p2DfF3xndROBQhiVmhNyj2mZSwdRPftRUcwFc45ChDhXVMtb98NEervlg5
-	 CgxM3bJrk/IHqtqXTyu8P6qHsjna/JOKxudIjPTw=
+	b=ApMcfANSOaOP8YVKcuGkU1pcrZX5nDb7xJv0qKM1no7goiHdlaAJh4iQaZD3xk7TT
+	 0wLC8LrvnK77/1CuPng6WrnV7y5WrZGoogqS1wVwvz0ik3BNqNzBpKup4DMHcbEFb3
+	 peSzNQ101dA38roKSYRgWjhHuw06Ps6mQQ8f44Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/307] iio: dac: ad5686: fix ref bit initialization for single-channel parts
-Date: Sun,  7 Jun 2026 12:01:29 +0200
-Message-ID: <20260607095738.467410142@linuxfoundation.org>
+Subject: [PATCH 6.18 303/315] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
+Date: Sun,  7 Jun 2026 12:01:30 +0200
+Message-ID: <20260607095738.727629876@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,100 +69,131 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261883-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261839-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Thinh.Nguyen@synopsys.com,m:radhey.shyam.pandey@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,synopsys.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7450C650489
+X-Rspamd-Queue-Id: E70F56506FE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
+[ Upstream commit c1a0ecbf32c4b397353204e2ec94c5bb9f3300ed ]
 
-The reference bit position was ignored when writing the register at the
-probe() function (!!val was used). When such bit is 1, internal voltage
-reference is disabled so that an external one can be used. For
-multi-channel devices, bit 0 of the Internal Reference Setup command
-behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
-since support for single-channel devices were first introduced.
+Fix error handling and resource cleanup i.e remove invalid
+phy_exit() after failed phy_init(), route failures through
+proper cleanup paths and return 0 explicitly on success.
 
-Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
+Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://patch.msgid.link/20260519115529.2980421-1-radhey.shyam.pandey@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    6 +++---
- drivers/iio/dac/ad5686.h |    1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/dwc3-xilinx.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -528,7 +528,7 @@ int ad5686_probe(struct device *dev,
- 		break;
- 	case AD5686_REGMAP:
- 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
--		ref_bit_msk = 0;
-+		ref_bit_msk = AD5686_REF_BIT_MSK;
- 		break;
- 	case AD5693_REGMAP:
- 		cmd = AD5686_CMD_CONTROL_REG;
-@@ -540,9 +540,9 @@ int ad5686_probe(struct device *dev,
- 		goto error_disable_reg;
+--- a/drivers/usb/dwc3/dwc3-xilinx.c
++++ b/drivers/usb/dwc3/dwc3-xilinx.c
+@@ -190,15 +190,13 @@ static int dwc3_xlnx_init_zynqmp(struct
  	}
  
--	val = (voltage_uv | ref_bit_msk);
-+	val = voltage_uv ? ref_bit_msk : 0;
+ 	ret = phy_init(priv_data->usb3_phy);
+-	if (ret < 0) {
+-		phy_exit(priv_data->usb3_phy);
++	if (ret < 0)
+ 		goto err;
+-	}
  
--	ret = st->write(st, cmd, 0, !!val);
-+	ret = st->write(st, cmd, 0, val);
- 	if (ret)
- 		goto error_disable_reg;
+ 	ret = reset_control_deassert(apbrst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release APB reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
  
---- a/drivers/iio/dac/ad5686.h
-+++ b/drivers/iio/dac/ad5686.h
-@@ -46,6 +46,7 @@
+ 	/* Set PIPE Power Present signal in FPD Power Present Register*/
+@@ -210,27 +208,25 @@ static int dwc3_xlnx_init_zynqmp(struct
+ 	ret = reset_control_deassert(crst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release core reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
  
- #define AD5310_REF_BIT_MSK			BIT(8)
- #define AD5683_REF_BIT_MSK			BIT(12)
-+#define AD5686_REF_BIT_MSK			BIT(0)
- #define AD5693_REF_BIT_MSK			BIT(12)
+ 	ret = reset_control_deassert(hibrst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release hibernation reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
  
- /**
+ 	ret = phy_power_on(priv_data->usb3_phy);
+-	if (ret < 0) {
+-		phy_exit(priv_data->usb3_phy);
+-		goto err;
+-	}
++	if (ret < 0)
++		goto err_phy_exit;
+ 
+ skip_usb3_phy:
+ 	/* ulpi reset via gpio-modepin or gpio-framework driver */
+ 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(reset_gpio)) {
+-		return dev_err_probe(dev, PTR_ERR(reset_gpio),
+-				     "Failed to request reset GPIO\n");
++		ret = PTR_ERR(reset_gpio);
++		goto err_phy_power_off;
+ 	}
+ 
+ 	if (reset_gpio) {
+@@ -240,6 +236,13 @@ skip_usb3_phy:
+ 	}
+ 
+ 	dwc3_xlnx_set_coherency(priv_data, XLNX_USB_TRAFFIC_ROUTE_CONFIG);
++
++	return 0;
++
++err_phy_power_off:
++	phy_power_off(priv_data->usb3_phy);
++err_phy_exit:
++	phy_exit(priv_data->usb3_phy);
+ err:
+ 	return ret;
+ }
 
 
 
