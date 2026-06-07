@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q9lzM1pLJWpGGQIAu9opvQ
-	(envelope-from <stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:38 +0200
+	id tJePElNMJWqLGQIAu9opvQ
+	(envelope-from <stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B1164FF2F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A10F5650008
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tMLfJWBQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vwRfdd12;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261539-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3784303A8FD
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 195413049970
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF3A32D7F8;
-	Sun,  7 Jun 2026 10:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22BD31E850;
+	Sun,  7 Jun 2026 10:42:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9313332AAA3;
-	Sun,  7 Jun 2026 10:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ED970808;
+	Sun,  7 Jun 2026 10:42:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828841; cv=none; b=CqSFEBxbss3vI7QD8BMK0e6si2rx826YTgv4UAjXCXONtbw1yQ/NCjtrbdrPI3ucBllXucXsDERDQR3GcDYnUV3WaNasfD6sM7tEoUv4E1uybdxsby5Sf0w64+wTJPH6gQIgE4n/hHhXXVCFu53kDe6Vtcj7KYcUwAoMjEM/fKQ=
+	t=1780828937; cv=none; b=nIrve4xqWs9gKi0azVIMuBmGRMLT10uKprMPzih+zAqU5VOFKBhj1upMXi11J5zaoBAR3PISc0IHzOGN4rhd0sffJWkEHvMlf1C893S9Kia8JYC5WmJVNXk9XGbKIpzomfKjUuq6g7hIb2hWumGMjnY0AjwZ+WDVcZvsLgDVP+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828841; c=relaxed/simple;
-	bh=UozR8mgIIK/gu834K8gPuJDPpIilxrg80NwXg6li6hY=;
+	s=arc-20240116; t=1780828937; c=relaxed/simple;
+	bh=+5BbJukmPM4+M5BLyugmqs7Lj0lk5lGuLsvha9THYJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJ5EPW217uxZenedgrXLMciRPCuCHtBj0YpIN5V0I8Xi3QwXXaVmya2FienN2BE89k1dxrbuhqPH+SvIinfk91JBkyQrNi5yOzgQIuvn4ip5M3FIVKt75LAB9KWlQcn4138LPrG2edf+e6HSkzk2dc+EKS5WPY39bbxUvkCfxtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMLfJWBQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32D01F00893;
-	Sun,  7 Jun 2026 10:40:38 +0000 (UTC)
+	 MIME-Version; b=Wd3gF3lXNYhX8zEiJZ3E+MFLN0h98IdZKUPvS+tXe9XTVd5WpVxC9vgZBlWiLvy0tmUOVstYhxJHDoa2kbyVkhmMRD3xf9CaAh8AIwSgTd+H37EoX3EeCCudpHb44GiMRN1MTq7yRQKN6yBRMoNoXMKHnSKV+B0wOCSMIq4xO/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwRfdd12; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822AA1F00893;
+	Sun,  7 Jun 2026 10:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828839;
-	bh=xbuXXqw16+LACYj0GrTw3z0Oky/4s533Gsf309FSXMY=;
+	s=korg; t=1780828936;
+	bh=1I/CDymJNN2eqWqRRAx2IITc84G7V5F/QVTbIMoIGdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tMLfJWBQXjJIsMgVMuXoJteAtI1Tp76l2GhE2S/Z5uDTvmH9VEXVrXJz2oL13c3N/
-	 GYpwg71SFJr3zH5cORLaSIRZLEY7jEqsy18gWGcTO9H6tBVYgNISWwuIYk7s53rpeU
-	 GQ4NjDh5VednHgQGqmcOWWtLtOK2Dhf9LirIPUOU=
+	b=vwRfdd12hob16xDeK2Wj19omMpyfc+jx/r9S34u8nEPvjM1vEsXcbPXSP2dxZRciX
+	 iUbIw1dST1lL6qTk/ogTxPgkrCLnH3/KYUclBrKwD0iGmXQ2jkbhWNNGGjcJFR0+V4
+	 1xDkSzyKqFhhdGaY8RTpay01V/KAdfyR6JxI0r7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 7.0 220/332] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
-Date: Sun,  7 Jun 2026 11:59:49 +0200
-Message-ID: <20260607095736.144576583@linuxfoundation.org>
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 203/315] ALSA: scarlett2: Fix 2i2 Gen 4 direct monitor gain on firmware 2417
+Date: Sun,  7 Jun 2026 11:59:50 +0200
+Message-ID: <20260607095735.027166550@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,120 +75,140 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261539-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261513-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:g@b4.vu,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,suse.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 43B1164FF2F
+X-Rspamd-Queue-Id: A10F5650008
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit 98d0912e9f841e5529a5b89a972805f34cb1c69d upstream.
+commit db37cf47b67e38ade40de5cd74a4d4d772ff1416 upstream.
 
-pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
-the old skb_shared_info header into a new buffer via memcpy(), which
-includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
-Neither function calls net_zcopy_get() for the new shinfo, creating an
-unaccounted holder: every skb_shared_info with destructor_arg set will
-call skb_zcopy_clear() once when freed, but the corresponding
-net_zcopy_get() was never called for the new copy. Repeated calls
-drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
-TX skbs still hold live destructor_arg pointers.
+Firmware 2417 for the Scarlett 4th Gen 2i2 moved the direct monitor
+gain parameter by 4 bytes, from offset 0x2a0 to 0x2a4, breaking the
+"Direct Monitor X Mix Y" controls.
 
-KASAN reports use-after-free on a freed ubuf_info_msgzc:
+Special-case the offset in the get/set config helpers when the
+running firmware is 2417 or later.
 
-  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
-  Read of size 8 at addr ffff88801574d3e8 by task poc/220
-
-  Call Trace:
-   skb_release_data+0x77b/0x810
-   kfree_skb_list_reason+0x13e/0x610
-   skb_release_data+0x4cd/0x810
-   sk_skb_reason_drop+0xf3/0x340
-   skb_queue_purge_reason+0x282/0x440
-   rds_tcp_inc_free+0x1e/0x30
-   rds_recvmsg+0x354/0x1780
-   __sys_recvmsg+0xdf/0x180
-
-  Allocated by task 219:
-   msg_zerocopy_realloc+0x157/0x7b0
-   tcp_sendmsg_locked+0x2892/0x3ba0
-
-  Freed by task 219:
-   ip_recv_error+0x74a/0xb10
-   tcp_recvmsg+0x475/0x530
-
-The skb consuming the late access still referenced the same uarg via
-shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
-a refcount bump. This has been verified to be reliably exploitable: a
-working proof-of-concept achieves full root privilege escalation from
-an unprivileged local user on a default kernel configuration.
-
-The fix follows the pattern of pskb_expand_head() which has the same
-memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
-is placed after skb_orphan_frags() succeeds, so the orphan error path
-needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
-placed after all failure points and just before skb_release_data(), so
-no error path needs cleanup at all -- matching pskb_expand_head() more
-closely and avoiding the need for a balancing net_zcopy_put().
-
-Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4e809a299677 ("ALSA: scarlett2: Add support for Solo, 2i2, and 4i4 Gen 4")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/ahIWTueUlWA5xiV+@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/mixer_scarlett2.c |   33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6862,6 +6862,8 @@ static int pskb_carve_inside_header(stru
- 			skb_kfree_head(data, size);
- 			return -ENOMEM;
- 		}
-+		if (skb_zcopy(skb))
-+			net_zcopy_get(skb_zcopy(skb));
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
- 			skb_frag_ref(skb, i);
- 		if (skb_has_frag_list(skb))
-@@ -7010,6 +7012,8 @@ static int pskb_carve_inside_nonlinear(s
- 		skb_kfree_head(data, size);
- 		return -ENOMEM;
- 	}
-+	if (skb_zcopy(skb))
-+		net_zcopy_get(skb_zcopy(skb));
- 	skb_release_data(skb, SKB_CONSUMED);
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -2504,6 +2504,27 @@ static int scarlett2_has_config_item(
+ 	return !!private->config_set->items[config_item_num].offset;
+ }
  
- 	skb->head = data;
++/* Return the configuration item's offset, applying any per-firmware
++ * overrides.
++ *
++ * Firmware 2417 for the 2i2 Gen 4 moved DIRECT_MONITOR_GAIN by 4
++ * bytes. Apply that shift here so that the rest of the driver can
++ * keep using the single config set. This override can be removed
++ * once the multi-config-set framework lands.
++ */
++static int scarlett2_config_item_offset(
++	struct scarlett2_data *private, int config_item_num)
++{
++	int offset = private->config_set->items[config_item_num].offset;
++
++	if (config_item_num == SCARLETT2_CONFIG_DIRECT_MONITOR_GAIN &&
++	    private->info == &s2i2_gen4_info &&
++	    private->firmware_version >= 2417)
++		offset = 0x2a4;
++
++	return offset;
++}
++
+ /* Send a USB message to get configuration parameters; result placed in *buf */
+ static int scarlett2_usb_get_config(
+ 	struct usb_mixer_interface *mixer,
+@@ -2513,6 +2534,7 @@ static int scarlett2_usb_get_config(
+ 	const struct scarlett2_config *config_item =
+ 		&private->config_set->items[config_item_num];
+ 	int size, err, i;
++	int item_offset;
+ 	u8 *buf_8;
+ 	u8 value;
+ 
+@@ -2522,13 +2544,15 @@ static int scarlett2_usb_get_config(
+ 	if (!config_item->offset)
+ 		return -EFAULT;
+ 
++	item_offset = scarlett2_config_item_offset(private, config_item_num);
++
+ 	/* Writes to the parameter buffer are always 1 byte */
+ 	size = config_item->size ? config_item->size : 8;
+ 
+ 	/* For byte-sized parameters, retrieve directly into buf */
+ 	if (size >= 8) {
+ 		size = size / 8 * count;
+-		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
++		err = scarlett2_usb_get(mixer, item_offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+ 		if (config_item->size == 16) {
+@@ -2546,7 +2570,7 @@ static int scarlett2_usb_get_config(
+ 	}
+ 
+ 	/* For bit-sized parameters, retrieve into value */
+-	err = scarlett2_usb_get(mixer, config_item->offset, &value, 1);
++	err = scarlett2_usb_get(mixer, item_offset, &value, 1);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -2696,7 +2720,8 @@ static int scarlett2_usb_set_config(
+ 	 */
+ 	if (config_item->size >= 8) {
+ 		size = config_item->size / 8;
+-		offset = config_item->offset + index * size;
++		offset = scarlett2_config_item_offset(private, config_item_num) +
++			 index * size;
+ 
+ 	/* If updating a bit, retrieve the old value, set/clear the
+ 	 * bit as needed, and update value
+@@ -2705,7 +2730,7 @@ static int scarlett2_usb_set_config(
+ 		u8 tmp;
+ 
+ 		size = 1;
+-		offset = config_item->offset;
++		offset = scarlett2_config_item_offset(private, config_item_num);
+ 
+ 		err = scarlett2_usb_get(mixer, offset, &tmp, 1);
+ 		if (err < 0)
 
 
 
