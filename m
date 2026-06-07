@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8geMMXhJJWqwGAIAu9opvQ
-	(envelope-from <stable+bounces-261416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:36 +0200
+	id /4+EK69KJWoLGQIAu9opvQ
+	(envelope-from <stable+bounces-261473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2564C64FD59
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3157164FE53
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1ZRzxqgI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261416-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261416-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iWGk2SKQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261473-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261473-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54265300A8EE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A471D303BB35
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52973290AD;
-	Sun,  7 Jun 2026 10:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEB62D3A69;
+	Sun,  7 Jun 2026 10:38:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7782D3A69;
-	Sun,  7 Jun 2026 10:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7293254A9;
+	Sun,  7 Jun 2026 10:38:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828473; cv=none; b=V9PUBsg0CT1vvwK7d0Z/UMJF50aCta0JT3QCSygh31zh78zX9GQ+bTnmGxJ/9b4U5UgUS8aRrb78lV2PpnTSxdUsO6KgzJIxKHioIWbV56terTbaH7wAimljKrRil9TxN8/cIDGZTrRbGQJ7y4RwQFfF1L1kvFfB61Rjs+OK9wc=
+	t=1780828692; cv=none; b=Kvgjt9YFaG86PwZCwkUxyhdaRwtKeqSoBRVdQVK1UmlTnKt7dVMst3qj+iRJqVnEttsZCKtkKhuzoBB0fSyRlG7vIsp/GeBZgbd0nANypOjt480/Q5yIdXN736PBuCul9vIud3m3SY0SU/0vF94kdqlNngeBm0o/88RHramBb/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828473; c=relaxed/simple;
-	bh=zuRei42meaVO2eOD19O9V33gRpMm0J0JDhtQ9n8h1/4=;
+	s=arc-20240116; t=1780828692; c=relaxed/simple;
+	bh=N6CF56alpnWIMRHA+IyMohXQbnm7ZLnrMVVhoimCLuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdH8JqrxjGuvS6MQ0ImgTr22+gMDb1Ex5xeGHLwffnGPIt0UHQoN+ywJDbv+9xncf7sfgYxpw9DV+FWvhQwmMnOKtl4CH6VL4atMWwnWSSzMmbpPEsRI+KVPVRUe+dauWWI1Sc0aQA/69xsjvjtm19YRHULIJUT7ouUgEABHFNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZRzxqgI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7253A1F00899;
-	Sun,  7 Jun 2026 10:34:31 +0000 (UTC)
+	 MIME-Version; b=RTIyhoOdmaeR+ID37Q3HCQLQmxrFILKMmtYXqqiPwr2F3MlHMLYgKHwt5AeIYciHKJz/DMzfXjQFLxGOzn+6dTNuXZdwQo8bgjMW7VSjgMEfI7HUfUDSY+IBdXZ77uNW/L10gwPjieA26SkooloWf7lvRfCM9pc7KYkNFADVnE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWGk2SKQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A45A1F00893;
+	Sun,  7 Jun 2026 10:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828472;
-	bh=dsc4H21x3RzBDtQ/3bsiwMc6PT+f6NPIq7ecBw3epbQ=;
+	s=korg; t=1780828691;
+	bh=s/CpIhRHhy6cQOVNu4Fv8AzvR07JRG0WeamZ34vkg38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1ZRzxqgIvsu0rIonw2e7U0neiXgmhSSMrOEI14zUm8Fg/IJKgQaJUUYajTMfk4YJ5
-	 mkIgzLTOJhXCoWaUIRgBzdThYFbm907WbZLrYjQfYQmSo+BGywKUHKfHDk++LcQy/e
-	 14UloXD8of0J/EvqHCIPCvHXTe49pV8sO97fco0M=
+	b=iWGk2SKQQWhXqh/XJ8T3hDhAPAP1iKHl19dXUH2PwAsUWw99Xki7FqljZRzvkuJt6
+	 K0UuUJ8xf/X4M7aXyAWwT4xbp8Zu7+htTdfEJPti8vR7A72OreFNxs7eLJELWYxdx5
+	 hMEG049pmL23t9jPBDboY6WyKwKbA5Hpm+y0ZRMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 7.0 186/332] iio: adc: nxp-sar-adc: Avoid division by zero
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 158/307] KVM: SEV: Check PSC request indices against the actual size of the buffer
 Date: Sun,  7 Jun 2026 11:59:15 +0200
-Message-ID: <20260607095734.896842374@linuxfoundation.org>
+Message-ID: <20260607095733.523009597@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261416-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261473-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lkp@intel.com,m:andriy.shevchenko@linux.intel.com,m:daniel.lezcano@oss.qualcomm.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,81 +96,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,qualcomm.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2564C64FD59
+X-Rspamd-Queue-Id: 3157164FE53
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 7e5c0f97c66ad538b87c04a640573371fb434b4f upstream.
+commit 121d88de56bc5c0ba0ce2f6381af67f948a7e7c1 upstream.
 
-When Common Clock Framework is disabled, clk_get_rate() returns 0.
-This is used as part of the divisor to perform nanosecond delays
-with help of ndelay(). When the above condition occurs the compiler,
-due to unspecified behaviour, is free to do what it wants to. Here
-it saturates the value, which is logical from mathematics point of
-view. However, the ndelay() implementation has set a reasonable
-upper threshold and refuses to provide anything for such a long
-delay. That's why code may not be linked under these circumstances.
+When processing Page State Change (PSC) requests, validate the PSC buffer
+against the effective size of the scratch area, which could be less than
+the maximum size if the guest provided a pointer that isn't exactly at the
+start of the GHCB shared buffer.
 
-To solve the issue, provide a wrapper that calls ndelay() when
-the value is known not to be zero.
-
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603311958.ly6uROit-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@oss.qualcomm.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-10-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/nxp-sar-adc.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -198,6 +198,15 @@ static void nxp_sar_adc_irq_cfg(struct n
- 		writel(0, NXP_SAR_ADC_IMR(info->regs));
- }
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3729,7 +3729,7 @@ static int snp_begin_psc(struct vcpu_svm
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct psc_hdr *hdr = &psc->hdr;
+ 	struct psc_entry entry_start;
+-	u16 idx, idx_start, idx_end;
++	u16 idx, idx_start, idx_end, max_nr_entries;
+ 	int npages;
+ 	bool huge;
+ 	u64 gfn;
+@@ -3739,6 +3739,19 @@ static int snp_begin_psc(struct vcpu_svm
+ 		return 1;
+ 	}
  
-+static void nxp_sar_adc_wait_for(struct nxp_sar_adc *info, unsigned int cycles)
-+{
-+	u64 rate;
++	/*
++	 * GHCB v2 requires the scratch area to reside within the GHCB itself,
++	 * and PSC requests are only supported for GHCB v2+.  Thus it should be
++	 * impossible to exceed the max PSC entry count (which is derived from
++	 * the size of the shared GHCB buffer).
++	 */
++	max_nr_entries = (sev_es->ghcb_sa_len - sizeof(struct psc_hdr)) /
++			 sizeof(struct psc_entry);
++	if (WARN_ON_ONCE(max_nr_entries > VMGEXIT_PSC_MAX_COUNT)) {
++		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
++		return 1;
++	}
 +
-+	rate = clk_get_rate(info->clk);
-+	if (rate)
-+		ndelay(div64_u64(NSEC_PER_SEC, rate * cycles));
-+}
-+
- static bool nxp_sar_adc_set_enabled(struct nxp_sar_adc *info, bool enable)
- {
- 	u32 mcr;
-@@ -221,7 +230,7 @@ static bool nxp_sar_adc_set_enabled(stru
- 	 * configuration of NCMR and the setting of NSTART.
- 	 */
- 	if (enable)
--		ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk) * 3));
-+		nxp_sar_adc_wait_for(info, 3);
+ next_range:
+ 	/* There should be no other PSCs in-flight at this point. */
+ 	if (WARN_ON_ONCE(svm->sev_es.psc_inflight)) {
+@@ -3754,7 +3767,7 @@ next_range:
+ 	idx_start = hdr->cur_entry;
+ 	idx_end = hdr->end_entry;
  
- 	return pwdn;
- }
-@@ -468,7 +477,7 @@ static void nxp_sar_adc_stop_conversion(
- 	 * only when the capture finishes. The delay will be very
- 	 * short, usec-ish, which is acceptable in the atomic context.
- 	 */
--	ndelay(div64_u64(NSEC_PER_SEC, clk_get_rate(info->clk)) * 80);
-+	nxp_sar_adc_wait_for(info, 80);
- }
- 
- static int nxp_sar_adc_start_conversion(struct nxp_sar_adc *info, bool raw)
+-	if (idx_end >= VMGEXIT_PSC_MAX_COUNT) {
++	if (idx_end >= max_nr_entries) {
+ 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_HDR);
+ 		return 1;
+ 	}
 
 
 
