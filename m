@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hzpNN15NJWo8GgIAu9opvQ
-	(envelope-from <stable+bounces-261596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:14 +0200
+	id grqmAbROJWqzGgIAu9opvQ
+	(envelope-from <stable+bounces-261633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3C165011C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4DD6502A4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xG9DQqK5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261596-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261596-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IrV3XcXB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261633-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261633-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AC16307396F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D8993055D49
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035CB285CA4;
-	Sun,  7 Jun 2026 10:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8B330C343;
+	Sun,  7 Jun 2026 10:48:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C6C296BCC;
-	Sun,  7 Jun 2026 10:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0802D8378;
+	Sun,  7 Jun 2026 10:48:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829152; cv=none; b=glao5ev00J6EYLURbE9pWlviCrpOsgyVvcsxYbsLEW5OlfJjUjBbIIJpGTgDRgkx710SBQbqzOgT8Oloaki/ueHNiRSpikFT4FGPs91IkjYyzHow+abUJkp4ewrE4jIeQCWeaDuRY0eNMjSE10nl0hwP7kVv0LE4GQKgnGdrLsc=
+	t=1780829288; cv=none; b=dDA6oIIvwRq+t1B6wjDY7/Bhx6uhUcN7GkuKtc6OBM2AlO1ijV9eS4UApjsDqjsgFo3olWQWXWPia39oCrw4JIlzcstVI8nW0goyGZggRkA9hvhqCY2i5rnMbC52GzVPcHH7CF7F4dKT4ZXknBnjj9SBTi6oHZ+z5oCB03AosOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829152; c=relaxed/simple;
-	bh=c0KMqEgJ3n2SnXQQCsH/Eb+IhnTCnC1Dec0welORJ3M=;
+	s=arc-20240116; t=1780829288; c=relaxed/simple;
+	bh=+2+S0O5MnTD9qqCf4qimSrznS3JYdxLz+qzd9gVveds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0FKURXE3CcZf9mXxSbt+XLKjdioZAp4rz4Yspm/njpc6jL/XoG23KwTvTBji5TezmlnK+I98A41fnkx4mp/N2fXg7wdb8Zk3PKNUwrcKRGkd9AgaSNdg7nZozu0oIYfuYWwVGhvE3KsSK47BOKq0rZqP811fBaOmkzuyl2kPU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xG9DQqK5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96801F00893;
-	Sun,  7 Jun 2026 10:45:50 +0000 (UTC)
+	 MIME-Version; b=SipfeGfa+BJz5a1Lwe8fWNWgPKdwZ2Im04iW0zXz+EeLcu9/7HEdqvI4w/40MPJ5tjtKOGkTtXovnQJIzrJR/hvn9QEg3y3Yso7he2FRjRqavvnLeVyVaUsdW3qD4lB6IFkV7ScC3QKgSFMxEuTJYipWyPFWe+uDoV+Qgus6vLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrV3XcXB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A4E1F00893;
+	Sun,  7 Jun 2026 10:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829151;
-	bh=nqq7L5WOCh1MCzg8neTLrIjND1CrziPI2wZwStVJOFI=;
+	s=korg; t=1780829287;
+	bh=vhChUoGk5c+UgBLNFtuJOAM/HnwMPR0iaAISGCnSrwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xG9DQqK5FAv+YooaZkKRpM2Zl9omuuQSeSGtZJvBc3TRnBhHgG5JcyLdG+NdKXThG
-	 hQA8Gkj9APDokGD++p0avNLPu0+0XfW2ovL6Chy8WNPpposCsOflQQoAeUPbrnjAh4
-	 Y+2dzJVxuLO0uLS1Jc14WPtcpkRLAD2+hB+tywuI=
+	b=IrV3XcXBgPsfmFfzqFmPwCLrajLpWODhURWS8G8Wz7vLe9CNUZAsglhouNhbQM5KD
+	 u9imeqwp4wJ52QVyQ+AHzp0Au1hpTZYhr4Qnm192vjtmzYvJw3YvBiMAHLrdgZPN/T
+	 Klgsebimfh8lur/xGYb6qJbNaJauMcAiF4UNmncw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH 6.18 221/315] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.12 211/307] comedi: comedi_test: Fix limiting of convert_arg in waveform_ai_cmdtest()
 Date: Sun,  7 Jun 2026 12:00:08 +0200
-Message-ID: <20260607095735.693942145@linuxfoundation.org>
+Message-ID: <20260607095735.466927678@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261596-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261633-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,90 +97,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,vger.kernel.org:from_smtp,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mev.co.uk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1F3C165011C
+X-Rspamd-Queue-Id: 7B4DD6502A4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 upstream.
+commit 8a3bee801d420be8a7a0bae4a26547b353b8fe22 upstream.
 
-Sashiko identified a deadlock when the console flow is engaged [1].
+The function checks and possibly modifies the description of an
+asynchronous command to be run on the analog input subdevice of a comedi
+device attached to the "comedi_test" driver, returning 0 if no
+modifications were required, or a positive value that indicates which
+step of the checking process it failed on.  Step 4 fixes up various
+argument values for various trigger sources.
 
-When console flow control is enabled (UPF_CONS_FLOW),
-s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
-s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
+There are two bugs in the fixing up of the `convert_arg` value to keep
+the `scan_begin_arg` value within the range of `unsigned int` when
+`scan_begin_src` and `convert_src` both have the value `TRIG_TIMER`,
+which indicates that the corresponding `_arg` values hold a time period
+in nanoseconds.  The code also uses `scan_end_arg` which hold the number
+of "conversions" within each "scan".  The goal is to end up with the
+scan period being less than or equal to the convert period multiplied by
+the number of conversions per scan.  It intends to do that by clamping
+the `convert_arg` value to a maximum value of `UINT_MAX / scan_end_arg`
+rounded down to a multiple of 1000 (`NSEC_PER_USEC`).
 
-The serial core framework invokes the .stop_tx() and .start_tx()
-callbacks with the port->lock spinlock already held. Furthermore, all
-internal driver paths that invoke stop_tx (such as the DMA TX
-completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
-handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
-calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
-serial core).
+(The rounding from nanoseconds to microseconds is because the driver is
+modelling a device that uses a 1 MHz clock for timing.  This is partly
+because that is a more typical timing base for real hardware devices
+driven by comedi, and partly because the driver used to use `struct
+timeval` internally.)
 
-However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
-unconditionally attempt to acquire port->lock again using
-uart_port_lock_irqsave(). Since spinlocks are not recursive, this
-causes a deadlock on the same CPU when console flow control is engaged.
+The first bug is that the code checks if `scan_begin_arg == TRIG_TIMER`
+when it should be checking if `scan_begin_src == TRIG_TIMER`.  The
+bugged check will always fail because if `scan_begin_src == TRIG_TIMER`,
+then `scan_begin_arg` will be at least 1000 (`NSEC_PER_USEC`), otherwise
+`scan_begin_src == TRIG_FOLLOW` and `scan_begin_arg` will be 0.  (N.B
+`TRIG_TIMER` is defined as `0x10`.)  The second bug is that is rounding
+the maximum value down to a multiple of 1000000000 (`NSEC_PER_SEC`)
+instead of 1000 (`NSEC_PER_USEC`), however this bug is not reached due
+to the first bug.  This patch fixes both bugs.
 
-Remove the redundant lock acquisition from both rx helper functions.
-
+Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
+Fixes: 5afdcad2f818 ("staging: comedi: comedi_test: limit maximum convert_arg")
 Cc: stable <stable@kernel.org>
-Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
-Reported-by: John Ogness <john.ogness@linutronix.de>
-Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260422144637.27692-1-abbotti@mev.co.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/comedi/drivers/comedi_test.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -245,12 +245,9 @@ static bool s3c24xx_serial_txempty_nofif
- static void s3c24xx_serial_rx_enable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	int count = 10000;
- 	u32 ucon, ufcon;
- 
--	uart_port_lock_irqsave(port, &flags);
--
- 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
- 		udelay(100);
- 
-@@ -263,23 +260,18 @@ static void s3c24xx_serial_rx_enable(str
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 1;
--	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void s3c24xx_serial_rx_disable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	u32 ucon;
- 
--	uart_port_lock_irqsave(port, &flags);
--
- 	ucon = rd_regl(port, S3C2410_UCON);
- 	ucon &= ~S3C2410_UCON_RXIRQMODE;
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 0;
--	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void s3c24xx_serial_stop_tx(struct uart_port *port)
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -324,10 +324,10 @@ static int waveform_ai_cmdtest(struct co
+ 		arg = min(arg,
+ 			  rounddown(UINT_MAX, (unsigned int)NSEC_PER_USEC));
+ 		arg = NSEC_PER_USEC * DIV_ROUND_CLOSEST(arg, NSEC_PER_USEC);
+-		if (cmd->scan_begin_arg == TRIG_TIMER) {
++		if (cmd->scan_begin_src == TRIG_TIMER) {
+ 			/* limit convert_arg to keep scan_begin_arg in range */
+ 			limit = UINT_MAX / cmd->scan_end_arg;
+-			limit = rounddown(limit, (unsigned int)NSEC_PER_SEC);
++			limit = rounddown(limit, (unsigned int)NSEC_PER_USEC);
+ 			arg = min(arg, limit);
+ 		}
+ 		err |= comedi_check_trigger_arg_is(&cmd->convert_arg, arg);
 
 
 
