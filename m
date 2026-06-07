@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Gm/+IqlUJWpBHAIAu9opvQ
-	(envelope-from <stable+bounces-261786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:21 +0200
+	id a/t/L45VJWqMHAIAu9opvQ
+	(envelope-from <stable+bounces-261829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E1765066A
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31028650700
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tAswhOCI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261786-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261786-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="S/iVdxvM";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261829-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261829-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2020303FA88
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E269130547CD
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10A03264F2;
-	Sun,  7 Jun 2026 10:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAEE339870;
+	Sun,  7 Jun 2026 11:00:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629913242DF;
-	Sun,  7 Jun 2026 10:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD636F428;
+	Sun,  7 Jun 2026 11:00:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829837; cv=none; b=jI87TKtZJyncXvDvLqXHF9ILbEKTAo+55QZp4Mjywi2oDpwh70X0Ekh6Eh887G4ZXO2z58cZrt54jjeJpNgwxOxdzIqc2G1cVUZlFsxgm639mt4gaV+An/5CiOe95S7RFlHy/BxNUJ6n3qb/yertZkUH4KMcFyZBcgeCTG4VB9w=
+	t=1780830012; cv=none; b=Qa6ofb3uvWvSuT/dqhgIUbzCfyniLOVelHoVfvn+v1g89jslIl6Tf0Nw4ZNZr0BAJH4cnkHdQ5c/5GJ5cbMj365h8vlC6ZjzPtSl3SMrYHzQHhOVqrx8pnNWcLxD3WHOPqKOpTB0p2Lq0aAqsPIbx7TIlGzAkeLZmora7x6vGZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829837; c=relaxed/simple;
-	bh=r5vcVJvRUtT2TThrTrzdsMwQhcYtdU4J3UFq6K1E22Q=;
+	s=arc-20240116; t=1780830012; c=relaxed/simple;
+	bh=L0V31AYZeerDVEhmDT8uJgC+EYaZjycKMg7EoBWMuuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iOsC+q1si3mpocpjAvh187oWETlllNWulQf4sgnf93lnLnytWyDUkBSpAdNk2qaVf6Yd9Ug7wFZm2rQvQK/qV3f2vaUZyC31eDVp0SRxOeSPg5iFgx1/bLjJRyuIkGxOvQAPBS7KrMI50EpLUNcK/hwWoIkKas/DRxifxfGOeD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAswhOCI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649D51F00893;
-	Sun,  7 Jun 2026 10:57:15 +0000 (UTC)
+	 MIME-Version; b=HC9JY8F/I78dsyUvvT/5+egyYVbjEcMkbVc84fd4ASB0t0JP6GJDQcjlG57UgapeUmnYOjoA3tm591QHh3MaUZyTC1NHxUkHQNWju4rD5ksjRX9bOtb9c32v/8K06Ly0cZAkDrp5XsqP0zbUdC5Bs+AND+X8+yU070IPrS2wRPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/iVdxvM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75B41F00898;
+	Sun,  7 Jun 2026 11:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829836;
-	bh=2A9AMJLtQ+dhUSJ5nUEsc6PCCkN+fpA1UBIq17k+AB8=;
+	s=korg; t=1780830002;
+	bh=qMEa3gpAJVPpnK5qdnvRE8Je9qdFYi38nq7NVVC2X0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tAswhOCIOJh21M3hHEun83PE93kfIUr9RXXSMWCDjaZ9gOQPYfrlOBp4Sro3ysqbG
-	 /GOLzQhHsrd4c6KuwfN54uXNYairL1Rn0lQmGyhak/CaluPRcBpTivsFxUUqNS+kJT
-	 UAJ/iYyzcqizhlIRsVY/RW8/KuLdUuzItDemx/Mk=
+	b=S/iVdxvMgb0XMoo4zusio/qtQsz1+usTwMgjbn9yaH8/ELejTkleRcoBg32hV523w
+	 aLbCix3SHROTWuwb/wAHREdSYMl7WXTBuuRaGRCKydgjYwWn+dXPu9aImOm4+sqefD
+	 8vbTQFWqG8ZwUwOz0siLpkbuyAE0LBOchgpafC7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 282/315] platform/x86/intel/vsec: Refactor base_addr handling
+Subject: [PATCH 6.12 272/307] Bluetooth: hci_qca: Convert timeout from jiffies to ms
 Date: Sun,  7 Jun 2026 12:01:09 +0200
-Message-ID: <20260607095737.941712113@linuxfoundation.org>
+Message-ID: <20260607095737.702705899@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,167 +67,193 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: add header
-X-Spamd-Result: default: False [7.34 / 15.00];
-	URIBL_BLACK(7.50)[header.id:url];
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david.e.box@linux.intel.com,m:michael.j.ruhl@intel.com,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261786-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261829-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pmenzel@molgen.mpg.de,m:bartosz.golaszewski@linaro.org,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,header.id:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,linaro.org:email,intel.com:email,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25E1765066A
-X-Spam: Yes
+X-Rspamd-Queue-Id: 31028650700
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "David E. Box" <david.e.box@linux.intel.com>
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-[ Upstream commit 904b333fc51cc045941df9656302449a0fc9978e ]
+[ Upstream commit 375ba7484132662a4a8c7547d088fb6275c00282 ]
 
-The base_addr field in intel_vsec_platform_info was originally added to
-support devices that emulate PCI VSEC capabilities in MMIO. Previously,
-the code would check at registration time whether base_addr was set,
-falling back to the PCI BAR if not.
+Since the timer uses jiffies as its unit rather than ms, the timeout value
+must be converted from ms to jiffies when configuring the timer. Otherwise,
+the intended 8s timeout is incorrectly set to approximately 33s.
 
-Refactor this by making base_addr an explicit function parameter. This
-clarifies ownership of the value and removes conditional logic from
-intel_vsec_add_dev(). It also enables making intel_vsec_platform_info
-const in a later patch, since the function no longer needs to write to
-info->base_addr.
+To improve readability, embed msecs_to_jiffies() directly in the macro
+definitions and drop the _MS suffix from macros that now yield jiffies
+values: MEMDUMP_TIMEOUT, FW_DOWNLOAD_TIMEOUT, IBS_DISABLE_SSR_TIMEOUT,
+CMD_TRANS_TIMEOUT, and IBS_BTSOC_TX_IDLE_TIMEOUT.
 
-No functional change intended.
+IBS_WAKE_RETRANS_TIMEOUT_MS and IBS_HOST_TX_IDLE_TIMEOUT_MS are
+intentionally left unchanged. Their values are stored in the struct fields
+wake_retrans and tx_idle_delay, which hold ms values at runtime and can be
+modified via debugfs. The msecs_to_jiffies() conversion happens at each
+call site against the field value, so it cannot be embedded in the macro.
 
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Link: https://patch.msgid.link/20260313015202.3660072-2-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
+Wake timer depends on commit c347ca17d62a
+
+Cc: stable@vger.kernel.org
+Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vsec.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/bluetooth/hci_qca.c |   33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
---- a/drivers/platform/x86/intel/vsec.c
-+++ b/drivers/platform/x86/intel/vsec.c
-@@ -271,14 +271,13 @@ EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux,
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -47,13 +47,12 @@
+ #define HCI_MAX_IBS_SIZE	10
  
- static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *header,
- 			      struct intel_vsec_platform_info *info,
--			      unsigned long cap_id)
-+			      unsigned long cap_id, u64 base_addr)
+ #define IBS_WAKE_RETRANS_TIMEOUT_MS	100
+-#define IBS_BTSOC_TX_IDLE_TIMEOUT_MS	200
++#define IBS_BTSOC_TX_IDLE_TIMEOUT	msecs_to_jiffies(200)
+ #define IBS_HOST_TX_IDLE_TIMEOUT_MS	2000
+-#define CMD_TRANS_TIMEOUT_MS		100
+-#define MEMDUMP_TIMEOUT_MS		8000
+-#define IBS_DISABLE_SSR_TIMEOUT_MS \
+-	(MEMDUMP_TIMEOUT_MS + FW_DOWNLOAD_TIMEOUT_MS)
+-#define FW_DOWNLOAD_TIMEOUT_MS		3000
++#define CMD_TRANS_TIMEOUT		msecs_to_jiffies(100)
++#define MEMDUMP_TIMEOUT			msecs_to_jiffies(8000)
++#define FW_DOWNLOAD_TIMEOUT		msecs_to_jiffies(3000)
++#define IBS_DISABLE_SSR_TIMEOUT		(MEMDUMP_TIMEOUT + FW_DOWNLOAD_TIMEOUT)
+ 
+ /* susclk rate */
+ #define SUSCLK_RATE_32KHZ	32768
+@@ -1078,7 +1077,7 @@ static void qca_controller_memdump(struc
+ 
+ 			queue_delayed_work(qca->workqueue,
+ 					   &qca->ctrl_memdump_timeout,
+-					   msecs_to_jiffies(MEMDUMP_TIMEOUT_MS));
++					   MEMDUMP_TIMEOUT);
+ 			skb_pull(skb, sizeof(qca_memdump->ram_dump_size));
+ 			qca_memdump->current_seq_no = 0;
+ 			qca_memdump->received_dump = 0;
+@@ -1350,7 +1349,7 @@ static int qca_set_baudrate(struct hci_d
+ 
+ 	if (hu->serdev)
+ 		serdev_device_wait_until_sent(hu->serdev,
+-		      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
++		      CMD_TRANS_TIMEOUT);
+ 
+ 	/* Give the controller time to process the request */
+ 	switch (qca_soc_type(hu)) {
+@@ -1381,8 +1380,8 @@ static inline void host_set_baudrate(str
+ 
+ static int qca_send_power_pulse(struct hci_uart *hu, bool on)
  {
- 	struct intel_vsec_device __free(kfree) *intel_vsec_dev = NULL;
- 	struct resource __free(kfree) *res = NULL;
- 	struct resource *tmp;
- 	struct device *parent;
- 	unsigned long quirks = info->quirks;
--	u64 base_addr;
- 	int i;
- 
- 	if (info->parent)
-@@ -310,11 +309,6 @@ static int intel_vsec_add_dev(struct pci
- 	if (quirks & VSEC_QUIRK_TABLE_SHIFT)
- 		header->offset >>= TABLE_OFFSET_SHIFT;
- 
--	if (info->base_addr)
--		base_addr = info->base_addr;
--	else
--		base_addr = pdev->resource[header->tbir].start;
--
- 	/*
- 	 * The DVSEC/VSEC contains the starting offset and count for a block of
- 	 * discovery tables. Create a resource array of these tables to the
-@@ -412,7 +406,8 @@ static int get_cap_id(u32 header_id, uns
- 
- static int intel_vsec_register_device(struct pci_dev *pdev,
- 				      struct intel_vsec_header *header,
--				      struct intel_vsec_platform_info *info)
-+				      struct intel_vsec_platform_info *info,
-+				      u64 base_addr)
- {
- 	const struct vsec_feature_dependency *consumer_deps;
- 	struct vsec_priv *priv;
-@@ -428,7 +423,7 @@ static int intel_vsec_register_device(st
- 	 * For others using the exported APIs, add the device directly.
- 	 */
- 	if (!pci_match_id(intel_vsec_pci_ids, pdev))
--		return intel_vsec_add_dev(pdev, header, info, cap_id);
-+		return intel_vsec_add_dev(pdev, header, info, cap_id, base_addr);
- 
- 	priv = pci_get_drvdata(pdev);
- 	if (priv->state[cap_id] == STATE_REGISTERED ||
-@@ -444,7 +439,7 @@ static int intel_vsec_register_device(st
- 
- 	consumer_deps = get_consumer_dependencies(priv, cap_id);
- 	if (!consumer_deps || suppliers_ready(priv, consumer_deps, cap_id)) {
--		ret = intel_vsec_add_dev(pdev, header, info, cap_id);
-+		ret = intel_vsec_add_dev(pdev, header, info, cap_id, base_addr);
- 		if (ret)
- 			priv->state[cap_id] = STATE_SKIP;
- 		else
-@@ -464,7 +459,7 @@ static bool intel_vsec_walk_header(struc
++	int timeout = CMD_TRANS_TIMEOUT;
  	int ret;
+-	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
+ 	u8 cmd = on ? QCA_WCN3990_POWERON_PULSE : QCA_WCN3990_POWEROFF_PULSE;
  
- 	for ( ; *header; header++) {
--		ret = intel_vsec_register_device(pdev, *header, info);
-+		ret = intel_vsec_register_device(pdev, *header, info, info->base_addr);
- 		if (!ret)
- 			have_devices = true;
+ 	/* These power pulses are single byte command which are sent
+@@ -1584,7 +1583,7 @@ static void qca_wait_for_dump_collection
+ 	struct qca_data *qca = hu->priv;
+ 
+ 	wait_on_bit_timeout(&qca->flags, QCA_MEMDUMP_COLLECTION,
+-			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT_MS);
++			    TASK_UNINTERRUPTIBLE, MEMDUMP_TIMEOUT);
+ 
+ 	clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+ }
+@@ -2519,7 +2518,7 @@ static void qca_serdev_remove(struct ser
+ static void qca_serdev_shutdown(struct serdev_device *serdev)
+ {
+ 	int ret;
+-	int timeout = msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS);
++	int timeout = CMD_TRANS_TIMEOUT;
+ 	struct qca_serdev *qcadev = serdev_device_get_drvdata(serdev);
+ 	struct hci_uart *hu = &qcadev->serdev_hu;
+ 	struct hci_dev *hdev = hu->hdev;
+@@ -2576,7 +2575,7 @@ static int __maybe_unused qca_suspend(st
+ 	bool tx_pending = false;
+ 	int ret = 0;
+ 	u8 cmd;
+-	u32 wait_timeout = 0;
++	unsigned long wait_timeout = 0;
+ 
+ 	set_bit(QCA_SUSPENDING, &qca->flags);
+ 
+@@ -2597,15 +2596,15 @@ static int __maybe_unused qca_suspend(st
+ 	if (test_bit(QCA_IBS_DISABLED, &qca->flags) ||
+ 	    test_bit(QCA_SSR_TRIGGERED, &qca->flags)) {
+ 		wait_timeout = test_bit(QCA_SSR_TRIGGERED, &qca->flags) ?
+-					IBS_DISABLE_SSR_TIMEOUT_MS :
+-					FW_DOWNLOAD_TIMEOUT_MS;
++					IBS_DISABLE_SSR_TIMEOUT :
++					FW_DOWNLOAD_TIMEOUT;
+ 
+ 		/* QCA_IBS_DISABLED flag is set to true, During FW download
+ 		 * and during memory dump collection. It is reset to false,
+ 		 * After FW download complete.
+ 		 */
+ 		wait_on_bit_timeout(&qca->flags, QCA_IBS_DISABLED,
+-			    TASK_UNINTERRUPTIBLE, msecs_to_jiffies(wait_timeout));
++			    TASK_UNINTERRUPTIBLE, wait_timeout);
+ 
+ 		if (test_bit(QCA_IBS_DISABLED, &qca->flags)) {
+ 			bt_dev_err(hu->hdev, "SSR or FW download time out");
+@@ -2657,7 +2656,7 @@ static int __maybe_unused qca_suspend(st
+ 
+ 	if (tx_pending) {
+ 		serdev_device_wait_until_sent(hu->serdev,
+-					      msecs_to_jiffies(CMD_TRANS_TIMEOUT_MS));
++					      CMD_TRANS_TIMEOUT);
+ 		serial_clock_vote(HCI_IBS_TX_VOTE_CLOCK_OFF, hu);
  	}
-@@ -512,7 +507,8 @@ static bool intel_vsec_walk_dvsec(struct
- 		pci_read_config_dword(pdev, pos + PCI_DVSEC_HEADER2, &hdr);
- 		header.id = PCI_DVSEC_HEADER2_ID(hdr);
  
--		ret = intel_vsec_register_device(pdev, &header, info);
-+		ret = intel_vsec_register_device(pdev, &header, info,
-+						 pci_resource_start(pdev, header.tbir));
- 		if (ret)
- 			continue;
- 
-@@ -557,7 +553,8 @@ static bool intel_vsec_walk_vsec(struct
- 		header.tbir = INTEL_DVSEC_TABLE_BAR(table);
- 		header.offset = INTEL_DVSEC_TABLE_OFFSET(table);
- 
--		ret = intel_vsec_register_device(pdev, &header, info);
-+		ret = intel_vsec_register_device(pdev, &header, info,
-+						 pci_resource_start(pdev, header.tbir));
- 		if (ret)
- 			continue;
- 
+@@ -2666,7 +2665,7 @@ static int __maybe_unused qca_suspend(st
+ 	 */
+ 	ret = wait_event_interruptible_timeout(qca->suspend_wait_q,
+ 			qca->rx_ibs_state == HCI_IBS_RX_ASLEEP,
+-			msecs_to_jiffies(IBS_BTSOC_TX_IDLE_TIMEOUT_MS));
++			IBS_BTSOC_TX_IDLE_TIMEOUT);
+ 	if (ret == 0) {
+ 		ret = -ETIMEDOUT;
+ 		goto error;
 
 
 
