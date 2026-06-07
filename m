@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-261387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 10SfGDRJJWqCGAIAu9opvQ
-	(envelope-from <stable+bounces-261387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:28 +0200
+	id YwG7E5lIJWoXGAIAu9opvQ
+	(envelope-from <stable+bounces-261375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E0764FCE3
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF3864FBF2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Tsjcuku5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261387-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="FQMXk8c/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261375-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261375-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E72F3034309
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CB12300360E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C4E30D3F0;
-	Sun,  7 Jun 2026 10:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E9131E842;
+	Sun,  7 Jun 2026 10:31:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214651FE47B;
-	Sun,  7 Jun 2026 10:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE312D3A69;
+	Sun,  7 Jun 2026 10:31:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828355; cv=none; b=uJbrfwRYZG3PINhO0754Zvt1FgCl3ECTgRV48QD9gur1fW1npIoqGCfo4Yfvkc1bVh1rs9W7ZDkH3bj8P5RkQFwllXHHlKDIifCMbVU2xicagombHPFcRc+jWlJLbXKcI3RezO7mgP4Z5uM72Q4NX+4YeITiHx5qeFMhZwqIhyI=
+	t=1780828308; cv=none; b=ggkeIwPMsxMbok5jc3JAWunz7LR0C5nBcOeWBUSBJpTEubtclbYReeKpqmPBa6evxTuCdpbjRpZ/Xai6kbPhIoHXyYNHfZ5z8xoc9fniBg0zJxk431PmaFUCCUfL0I8jHLegLoprvQRCu0KwkPZ+zGcaHwgYZgoJUIQZly2hmgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828355; c=relaxed/simple;
-	bh=sVq3wJAw7CTzFqEp2vUDQpkuhJOUHkaKIBNhmoHqDeI=;
+	s=arc-20240116; t=1780828308; c=relaxed/simple;
+	bh=YzwnZZwrN7XqSRVqo2UkytGC76NZSw6zfjY3NtTaMf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz5mkZqqdH/AQIjmS7XC9RWhg5Y1kY24jkgAh5w/H1oRbnaaYWh1DK+3uaKrIgtk+MNGhR4Ysane0Oqsk4cRug09SzMOJrOsuZEFy3ta5IkbHiMoJ+rwIn2oivxizmMrzGnD+Vy4flMXXTtnC5i4SQ8tZz7ldJhLPQae9CUPFcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsjcuku5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD8F1F00893;
-	Sun,  7 Jun 2026 10:32:32 +0000 (UTC)
+	 MIME-Version; b=dK6SnlZb7Xk6cNPTUauWL7xst+Wvn7kUxNTPNjXgVjK7314RPHCXB48yfATicZcXdFuFQdQaoBd0T4c7ybuP6al19BthD0wpjuRcTT0Tvj3WSH6Y/xUzVg3gLoCJOjC3LyGPbce2AbZYoL3qvVE2bXebnk+R1Q+me396EEh1Jqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQMXk8c/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98F31F00893;
+	Sun,  7 Jun 2026 10:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828353;
-	bh=P6dbCCIGK3NZP0qtF+EUf08NuwpHsLSrhG/Hi+cHqv0=;
+	s=korg; t=1780828307;
+	bh=92CVT4akYco+6UUajsKPPs83gHj6CvCdcoOZW45amqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tsjcuku51CDKdxN6QiPUqPS0NXDRcqUf9nNNK6TzmQbW4rfmQKVYZl+wYLDIHnv5u
-	 qeNyx6FzoCs6l8fw9dUUBV6H6rO0irhhOnPlr5VzoU1/LX2+g7c+YoXvrrWFXacH2u
-	 7O6PG1LqwiaGbMvsltL4AmoEgN3v+plFHEucMNGU=
+	b=FQMXk8c/Rrhy/UyAQtikCiUX4Xn16K0ghw0K6nkqTExdDcjkvyHAbgNlmOmubDFdl
+	 S6eWlp4PnWnWkhoVKroa5vPThV4M4KLUhSP8QhW1ixYpyixE//YMpX9x5Ks2CRi8JZ
+	 cSnpBhsZ9OgqOc7yMGe0TqPT7vLb/5rbHmR8lyfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.18 152/315] Disable -Wattribute-alias for clang-23 and newer
-Date: Sun,  7 Jun 2026 11:58:59 +0200
-Message-ID: <20260607095733.189792177@linuxfoundation.org>
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 7.0 171/332] gpio: shared: fix deadlock on shared proxys parent removal
+Date: Sun,  7 Jun 2026 11:59:00 +0200
+Message-ID: <20260607095734.340516710@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,161 +71,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261387-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261375-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nathan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linusw@kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D0E0764FCE3
+X-Rspamd-Queue-Id: DCF3864FBF2
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-commit 175db11786bde9061db526bf1ac5107d915f5163 upstream.
+commit a1b836607304f71051f9f9dcccf8b5097b86a1fb upstream.
 
-Clang recently added support for -Wattribute-alias [1], which results in
-the same warnings that necessitated commit bee20031772a ("disable
--Wattribute-alias warning for SYSCALL_DEFINEx()") for GCC.
+Commit 710abda58055 ("gpio: shared: call gpio_chip::of_xlate() if set")
+used the mutex embedded in struct gpio_shared_entry to protect the
+offset field which now can be modified after assignment. The critical
+section however is too wide and introduced a potential deadlock on the
+removal of the shared GPIO proxy's parent.
 
-  kernel/time/itimer.c:325:1: error: alias and aliasee have different types 'long (unsigned int)' and 'long (typeof (__builtin_choose_expr((__builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0LL)) || __builtin_types_compatible_p(typeof ((unsigned int)0), typeof (0ULL))), 0LL, 0L)))' (aka 'long (long)') [-Werror,-Wattribute-alias]
-    325 | SYSCALL_DEFINE1(alarm, unsigned int, seconds)
-        | ^
-  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
-    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
-        |                                    ^
-  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
-    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
-        |         ^
-  include/linux/syscalls.h:251:18: note: expanded from macro '__SYSCALL_DEFINEx'
-    251 |                 __attribute__((alias(__stringify(__se_sys##name))));    \
-        |                                ^
-  kernel/time/itimer.c:325:1: note: aliasee is declared here
-  include/linux/syscalls.h:225:36: note: expanded from macro 'SYSCALL_DEFINE1'
-    225 | #define SYSCALL_DEFINE1(name, ...) SYSCALL_DEFINEx(1, _##name, __VA_ARGS__)
-        |                                    ^
-  include/linux/syscalls.h:236:2: note: expanded from macro 'SYSCALL_DEFINEx'
-    236 |         __SYSCALL_DEFINEx(x, sname, __VA_ARGS__)
-        |         ^
-  include/linux/syscalls.h:255:18: note: expanded from macro '__SYSCALL_DEFINEx'
-    255 |         asmlinkage long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))  \
-        |                         ^
-  <scratch space>:16:1: note: expanded from here
-     16 | __se_sys_alarm
-        | ^
+Make the critical section shorter - only protect the offset when it's
+being read.
 
-Disable the warnings in the same way for clang-23 and newer. Disable the
-warning about unknown warning options to avoid breaking the build for
-versions of clang-23 that do not have -Wattribute-alias, such as ones
-deployed by vendors like Android or CI systems or when bisecting LLVM
-between llvmorg-23-init and release/23.x.
+While at it: mention the fact that the entry lock is now also used to
+protect against concurrent access to the offset field in the structure's
+documentation.
 
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2163
-Link: https://github.com/llvm/llvm-project/commit/40da6920a0d71d49dfa2392b09153600b0759f5e [1]
-Link: https://patch.msgid.link/20260515-syscall-disable-attribute-alias-for-clang-v1-1-9a9d95d41df6@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: 710abda58055 ("gpio: shared: call gpio_chip::of_xlate() if set")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260522-gpio-shared-deadlock-v1-1-76bca088f8c0@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/syscall_wrapper.h |    4 ++++
- include/linux/compat.h                   |    4 ++++
- include/linux/compiler-clang.h           |    6 ++++++
- include/linux/compiler_types.h           |    4 ++++
- include/linux/syscalls.h                 |    4 ++++
- 5 files changed, 22 insertions(+)
+ drivers/gpio/gpiolib-shared.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/arch/riscv/include/asm/syscall_wrapper.h
-+++ b/arch/riscv/include/asm/syscall_wrapper.h
-@@ -32,6 +32,10 @@ asmlinkage long __riscv_sys_ni_syscall(c
- 	__diag_push();									\
- 	__diag_ignore(GCC, 8, "-Wattribute-alias",					\
- 			"Type aliasing is used to sanitize syscall arguments");		\
-+	__diag_ignore(clang, 23, "-Wunknown-warning-option",				\
-+		      "Avoid breaking versions without -Wattribute-alias");		\
-+	__diag_ignore(clang, 23, "-Wattribute-alias",					\
-+			"Type aliasing is used to sanitize syscall arguments");		\
- 	static long __se_##prefix##name(ulong, ulong, ulong, ulong, ulong, ulong, 	\
- 					ulong)						\
- 			__attribute__((alias(__stringify(___se_##prefix##name))));	\
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -72,6 +72,10 @@
- 	__diag_push();								\
- 	__diag_ignore(GCC, 8, "-Wattribute-alias",				\
- 		      "Type aliasing is used to sanitize syscall arguments");\
-+	__diag_ignore(clang, 23, "-Wunknown-warning-option",			\
-+		      "Avoid breaking versions without -Wattribute-alias");	\
-+	__diag_ignore(clang, 23, "-Wattribute-alias",				\
-+		      "Type aliasing is used to sanitize syscall arguments");	\
- 	asmlinkage long compat_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
- 		__attribute__((alias(__stringify(__se_compat_sys##name))));	\
- 	ALLOW_ERROR_INJECTION(compat_sys##name, ERRNO);				\
---- a/include/linux/compiler-clang.h
-+++ b/include/linux/compiler-clang.h
-@@ -131,6 +131,12 @@
- #define __diag_str(s)		__diag_str1(s)
- #define __diag(s)		_Pragma(__diag_str(clang diagnostic s))
+diff --git a/drivers/gpio/gpiolib-shared.c b/drivers/gpio/gpiolib-shared.c
+index e02d6b93a4ab..087b64c06c9f 100644
+--- a/drivers/gpio/gpiolib-shared.c
++++ b/drivers/gpio/gpiolib-shared.c
+@@ -53,7 +53,7 @@ struct gpio_shared_entry {
+ 	unsigned int offset;
+ 	/* Index in the property value array. */
+ 	size_t index;
+-	/* Synchronizes the modification of shared_desc. */
++	/* Synchronizes the modification of shared_desc and offset. */
+ 	struct mutex lock;
+ 	struct gpio_shared_desc *shared_desc;
+ 	struct kref ref;
+@@ -598,12 +598,11 @@ void gpio_device_teardown_shared(struct gpio_device *gdev)
+ 	struct gpio_shared_ref *ref;
  
-+#if CONFIG_CLANG_VERSION >= 230000
-+#define __diag_clang_23(s)	__diag(s)
-+#else
-+#define __diag_clang_23(s)
-+#endif
-+
- #define __diag_clang_13(s)	__diag(s)
+ 	list_for_each_entry(entry, &gpio_shared_list, list) {
+-		guard(mutex)(&entry->lock);
+-
+ 		if (!device_match_fwnode(&gdev->dev, entry->fwnode))
+ 			continue;
  
- #define __diag_ignore_all(option, comment) \
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -636,6 +636,10 @@ struct ftrace_likely_data {
- #define __diag_GCC(version, severity, string)
- #endif
+-		gpiod_free_commit(&gdev->descs[entry->offset]);
++		scoped_guard(mutex, &entry->lock)
++			gpiod_free_commit(&gdev->descs[entry->offset]);
  
-+#ifndef __diag_clang
-+#define __diag_clang(version, severity, string)
-+#endif
-+
- #define __diag_push()	__diag(push)
- #define __diag_pop()	__diag(pop)
- 
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -247,6 +247,10 @@ static inline int is_syscall_trace_event
- 	__diag_push();							\
- 	__diag_ignore(GCC, 8, "-Wattribute-alias",			\
- 		      "Type aliasing is used to sanitize syscall arguments");\
-+	__diag_ignore(clang, 23, "-Wunknown-warning-option",		\
-+		      "Avoid breaking versions without -Wattribute-alias");\
-+	__diag_ignore(clang, 23, "-Wattribute-alias",			\
-+		      "Type aliasing is used to sanitize syscall arguments");\
- 	asmlinkage long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))	\
- 		__attribute__((alias(__stringify(__se_sys##name))));	\
- 	ALLOW_ERROR_INJECTION(sys##name, ERRNO);			\
+ 		list_for_each_entry(ref, &entry->refs, list) {
+ 			guard(mutex)(&ref->lock);
+-- 
+2.54.0
+
 
 
 
