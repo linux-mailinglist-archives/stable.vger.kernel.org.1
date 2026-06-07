@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id plZrJDRHJWpUFwIAu9opvQ
-	(envelope-from <stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:56 +0200
+	id /4N7FTdFJWonFgIAu9opvQ
+	(envelope-from <stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE8064FA64
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E637964F7A0
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vVKjqrtc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261151-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f+7GAgJR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24741307A0DC
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 60BD8300360A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C132E1F0E;
-	Sun,  7 Jun 2026 10:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B772E1F0E;
+	Sun,  7 Jun 2026 10:17:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CFF34071DA;
-	Sun,  7 Jun 2026 10:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9364071DA;
+	Sun,  7 Jun 2026 10:17:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827435; cv=none; b=hHRPnai2qWZeGSZiYMj/nvJ/dX46D/AUEXVCi5PAqvbdEvZCjZxbCIeLzK9C27/wHECUyRLYp7cqHsGDl/RCzcEC2KtZH2CoN+Vcqg+i/24CtnugLsRX/BMTwXS1pKmeBFhEVFOM5RyCBVUgx7O3CNlz6zVlRACqVmRKTEzUDk0=
+	t=1780827445; cv=none; b=VQFmB95/CJtcGEEC2FYaDMbpZKvniYiIzfCxG+U2gB0HWk+vIU4wZpxaY3pDjWpNoo9PmVspIv4HhDQjpHtGPx2Wal4R8EiTdHefa1iEMB5nqtjRNFOZKHKmgspIfdsvNl4z6K9J2XfJjuMcOLSthOvvxQmxwOmQchdWLeM6ea0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827435; c=relaxed/simple;
-	bh=acnkdwPXszY2T/PgaEUqGnok8EJwsODBCfc6o3DUYoU=;
+	s=arc-20240116; t=1780827445; c=relaxed/simple;
+	bh=8Vo8V+GAWNAoCobwzEMN3VJuAHZqVoZQPu4vGkVc5VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQXqvkckTB5Ve+wpYs7pLD55fbGB5R01V/x2f3TD+S4RiuXr1TU8GLZCfR85TDPt6HxVm1HFNrB0ac2ATKtoyk1G5E1tf9w7uKPMY2gyoX7RYntejiKJfUy1EsXp0pH1ZISOqjHDLCkGKiYdAjZSeUg0D3r+Hjd6WJrtfmsbAXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVKjqrtc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E801F00893;
-	Sun,  7 Jun 2026 10:17:13 +0000 (UTC)
+	 MIME-Version; b=PwlN6aYRCjAFyssAcxGxUw38wvsqH/BguiisBA0/hkeXS821DErkQdkaKjembjLmoPbF6mTooEvhdfY+3wY7oyCGSsLURadAbzDVp9PcbLszZhVRqdnYuR7xLmhMJhhGe15obJIqwDtkvyZND0u0uX3fWBtyTg7+E0UnpK7ycG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+7GAgJR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366761F00893;
+	Sun,  7 Jun 2026 10:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827433;
-	bh=YsV0suLlUB520UMVFE8UbGZoqTPiNj9DUvZYWd+NlO4=;
+	s=korg; t=1780827443;
+	bh=z+jXFP4jy21DeC9fSOc+l8PY6+f4TiJXMwlu2S7z008=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vVKjqrtcqLYzvZB4p3fnNrWe+pAupbPPwDcLGFAlxxFXtS4gXjkxM/K7QTouJn/IQ
-	 rb3JBeaTtviE5S6Mixth3esOvtHmZdmbGPCCsh3I4PxJJYmo7H1r5BtWRH5L8YeJOl
-	 jl/g6vww7Z1XP0YmAf+L37r3Vl0/Gmfn9FSGWHgU=
+	b=f+7GAgJRTASFZq/6ZLfy/8osNb9PVS2N8h/38bYpn5+hghyj9nlHgO4ZhOPUF7ICg
+	 Ma/jV4f52iGAbyRcw2n32WE0ShXexsEN+0XGcdHjhiNuTOe1tFt278kiZbu2XGwxxx
+	 XJgerDWBuoGXU+KynWCP7he0wlKe/KejMWz7hCFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -52,9 +52,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/307] net: ethtool: Add new parameters and a function to support EPL
-Date: Sun,  7 Jun 2026 11:57:32 +0200
-Message-ID: <20260607095729.749604388@linuxfoundation.org>
+Subject: [PATCH 6.12 056/307] net: ethtool: Add support for writing firmware blocks using EPL payload
+Date: Sun,  7 Jun 2026 11:57:33 +0200
+Message-ID: <20260607095729.789170031@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -73,14 +73,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261154-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:petrm@nvidia.com,m:horms@kernel.org,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
@@ -88,7 +88,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,9 +100,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,davemloft.net:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1AE8064FA64
+X-Rspamd-Queue-Id: E637964F7A0
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
@@ -110,7 +110,7 @@ X-Rspamd-Queue-Id: 1AE8064FA64
 
 From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit edc344568922eb9588e77ba49de1ef0cb9a2ff1c ]
+[ Upstream commit 9a3b0d078bd825613c0821bf7bf5a2e1d8d60057 ]
 
 In the CMIS specification for pluggable modules, LPL (Local Payload) and
 EPL (Extended Payload) are two types of data payloads used for managing
@@ -123,10 +123,9 @@ blocks using EPL is much more efficient.
 Currently, only LPL payload is supported for writing firmware blocks to
 the module.
 
-Add EPL related parameters to the function ethtool_cmis_cdb_compose_args()
-and add a specific function for calculating the maximum allowable length
-extension for EPL. Both will be used in the next patch to add support for
-writing firmware blocks using EPL.
+Add support for writing firmware block using EPL payload, both to
+support modules that supports only EPL write mechanism, and to optimize
+the flashing process of modules that support LPL and EPL.
 
 Signed-off-by: Danielle Ratson <danieller@nvidia.com>
 Reviewed-by: Petr Machata <petrm@nvidia.com>
@@ -135,174 +134,294 @@ Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: 12c2496a71f8 ("ethtool: cmis: validate start_cmd_payload_size from module")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/cmis.h           | 12 +++++++-----
- net/ethtool/cmis_cdb.c       | 32 +++++++++++++++++++++-----------
- net/ethtool/cmis_fw_update.c | 17 ++++++++++-------
- 3 files changed, 38 insertions(+), 23 deletions(-)
+ net/ethtool/cmis.h           |  4 ++
+ net/ethtool/cmis_cdb.c       | 66 ++++++++++++++++++++++++--
+ net/ethtool/cmis_fw_update.c | 91 ++++++++++++++++++++++++++++++++----
+ 3 files changed, 148 insertions(+), 13 deletions(-)
 
 diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
-index aa32a675b8f8d2..e11e47b3f2fc8f 100644
+index e11e47b3f2fc8f..1ab96bdd2c6f92 100644
 --- a/net/ethtool/cmis.h
 +++ b/net/ethtool/cmis.h
-@@ -96,13 +96,15 @@ struct ethtool_cmis_cdb_rpl {
- 	u8 payload[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH];
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ 
+ #define ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH		120
++#define ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH		2048
+ #define ETHTOOL_CMIS_CDB_CMD_PAGE			0x9F
+ #define ETHTOOL_CMIS_CDB_PAGE_I2C_ADDR			0x50
+ 
+@@ -23,6 +24,7 @@ enum ethtool_cmis_cdb_cmd_id {
+ 	ETHTOOL_CMIS_CDB_CMD_FW_MANAGMENT_FEATURES	= 0x0041,
+ 	ETHTOOL_CMIS_CDB_CMD_START_FW_DOWNLOAD		= 0x0101,
+ 	ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_LPL		= 0x0103,
++	ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_EPL		= 0x0104,
+ 	ETHTOOL_CMIS_CDB_CMD_COMPLETE_FW_DOWNLOAD	= 0x0107,
+ 	ETHTOOL_CMIS_CDB_CMD_RUN_FW_IMAGE		= 0x0109,
+ 	ETHTOOL_CMIS_CDB_CMD_COMMIT_FW_IMAGE		= 0x010A,
+@@ -38,6 +40,7 @@ enum ethtool_cmis_cdb_cmd_id {
+  * @resv1: Added to match the CMIS standard request continuity.
+  * @resv2: Added to match the CMIS standard request continuity.
+  * @payload: Payload for the CDB commands.
++ * @epl: Extended payload for the CDB commands.
+  */
+ struct ethtool_cmis_cdb_request {
+ 	__be16 id;
+@@ -49,6 +52,7 @@ struct ethtool_cmis_cdb_request {
+ 		u8 resv2;
+ 		u8 payload[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH];
+ 	);
++	u8 *epl;	/* Everything above this field checksummed. */
  };
  
--u32 ethtool_cmis_get_max_payload_size(u8 num_of_byte_octs);
-+u32 ethtool_cmis_get_max_lpl_size(u8 num_of_byte_octs);
-+u32 ethtool_cmis_get_max_epl_size(u8 num_of_byte_octs);
- 
- void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
--				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *pl,
--				   u8 lpl_len, u16 max_duration,
--				   u8 read_write_len_ext, u16 msleep_pre_rpl,
--				   u8 rpl_exp_len, u8 flags);
-+				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *lpl,
-+				   u8 lpl_len, u8 *epl, u16 epl_len,
-+				   u16 max_duration, u8 read_write_len_ext,
-+				   u16 msleep_pre_rpl, u8 rpl_exp_len,
-+				   u8 flags);
- 
- void ethtool_cmis_cdb_check_completion_flag(u8 cmis_rev, u8 *flags);
- 
+ #define CDB_F_COMPLETION_VALID		BIT(0)
 diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
-index 690002366d965a..31142e239cf6b2 100644
+index 31142e239cf6b2..606d88df31f235 100644
 --- a/net/ethtool/cmis_cdb.c
 +++ b/net/ethtool/cmis_cdb.c
-@@ -11,25 +11,34 @@
-  * min(i, 15) byte octets where i specifies the allowable additional number of
-  * byte octets in a READ or a WRITE.
-  */
--u32 ethtool_cmis_get_max_payload_size(u8 num_of_byte_octs)
-+u32 ethtool_cmis_get_max_lpl_size(u8 num_of_byte_octs)
- {
- 	return 8 * (1 + min_t(u8, num_of_byte_octs, 15));
- }
- 
-+/* For accessing the EPL field on page 9Fh, the allowable length extension is
-+ * min(i, 255) byte octets where i specifies the allowable additional number of
-+ * byte octets in a READ or a WRITE.
-+ */
-+u32 ethtool_cmis_get_max_epl_size(u8 num_of_byte_octs)
-+{
-+	return 8 * (1 + min_t(u8, num_of_byte_octs, 255));
-+}
-+
- void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
--				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *pl,
--				   u8 lpl_len, u16 max_duration,
--				   u8 read_write_len_ext, u16 msleep_pre_rpl,
--				   u8 rpl_exp_len, u8 flags)
-+				   enum ethtool_cmis_cdb_cmd_id cmd, u8 *lpl,
-+				   u8 lpl_len, u8 *epl, u16 epl_len,
-+				   u16 max_duration, u8 read_write_len_ext,
-+				   u16 msleep_pre_rpl, u8 rpl_exp_len, u8 flags)
+@@ -33,12 +33,19 @@ void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
  {
  	args->req.id = cpu_to_be16(cmd);
  	args->req.lpl_len = lpl_len;
--	if (pl)
--		memcpy(args->req.payload, pl, args->req.lpl_len);
-+	if (lpl)
-+		memcpy(args->req.payload, lpl, args->req.lpl_len);
+-	if (lpl)
++	if (lpl) {
+ 		memcpy(args->req.payload, lpl, args->req.lpl_len);
++		args->read_write_len_ext =
++			ethtool_cmis_get_max_lpl_size(read_write_len_ext);
++	}
++	if (epl) {
++		args->req.epl_len = cpu_to_be16(epl_len);
++		args->req.epl = epl;
++		args->read_write_len_ext =
++			ethtool_cmis_get_max_epl_size(read_write_len_ext);
++	}
  
  	args->max_duration = max_duration;
- 	args->read_write_len_ext =
--		ethtool_cmis_get_max_payload_size(read_write_len_ext);
-+		ethtool_cmis_get_max_lpl_size(read_write_len_ext);
+-	args->read_write_len_ext =
+-		ethtool_cmis_get_max_lpl_size(read_write_len_ext);
  	args->msleep_pre_rpl = msleep_pre_rpl;
  	args->rpl_exp_len = rpl_exp_len;
  	args->flags = flags;
-@@ -183,7 +192,7 @@ cmis_cdb_validate_password(struct ethtool_cmis_cdb *cdb,
- 	}
+@@ -561,6 +568,49 @@ __ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
+ 	return err;
+ }
  
- 	ethtool_cmis_cdb_compose_args(&args, ETHTOOL_CMIS_CDB_CMD_QUERY_STATUS,
--				      (u8 *)&qs_pl, sizeof(qs_pl), 0,
-+				      (u8 *)&qs_pl, sizeof(qs_pl), NULL, 0, 0,
- 				      cdb->read_write_len_ext, 1000,
- 				      sizeof(*rpl),
- 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
-@@ -245,8 +254,9 @@ static int cmis_cdb_module_features_get(struct ethtool_cmis_cdb *cdb,
- 	ethtool_cmis_cdb_check_completion_flag(cdb->cmis_rev, &flags);
- 	ethtool_cmis_cdb_compose_args(&args,
- 				      ETHTOOL_CMIS_CDB_CMD_MODULE_FEATURES,
--				      NULL, 0, 0, cdb->read_write_len_ext,
--				      1000, sizeof(*rpl), flags);
-+				      NULL, 0, NULL, 0, 0,
-+				      cdb->read_write_len_ext, 1000,
-+				      sizeof(*rpl), flags);
++#define CMIS_CDB_EPL_PAGE_START			0xA0
++#define CMIS_CDB_EPL_PAGE_END			0xAF
++#define CMIS_CDB_EPL_FW_BLOCK_OFFSET_START	128
++#define CMIS_CDB_EPL_FW_BLOCK_OFFSET_END	255
++
++static int
++ethtool_cmis_cdb_execute_epl_cmd(struct net_device *dev,
++				 struct ethtool_cmis_cdb_cmd_args *args,
++				 struct ethtool_module_eeprom *page_data)
++{
++	u16 epl_len = be16_to_cpu(args->req.epl_len);
++	u32 bytes_written = 0;
++	u8 page;
++	int err;
++
++	for (page = CMIS_CDB_EPL_PAGE_START;
++	     page <= CMIS_CDB_EPL_PAGE_END && bytes_written < epl_len; page++) {
++		u16 offset = CMIS_CDB_EPL_FW_BLOCK_OFFSET_START;
++
++		while (offset <= CMIS_CDB_EPL_FW_BLOCK_OFFSET_END &&
++		       bytes_written < epl_len) {
++			u32 bytes_left = epl_len - bytes_written;
++			u16 space_left, bytes_to_write;
++
++			space_left = CMIS_CDB_EPL_FW_BLOCK_OFFSET_END - offset + 1;
++			bytes_to_write = min_t(u16, bytes_left,
++					       min_t(u16, space_left,
++						     args->read_write_len_ext));
++
++			err = __ethtool_cmis_cdb_execute_cmd(dev, page_data,
++							     page, offset,
++							     bytes_to_write,
++							     args->req.epl + bytes_written);
++			if (err < 0)
++				return err;
++
++			offset += bytes_to_write;
++			bytes_written += bytes_to_write;
++		}
++	}
++	return 0;
++}
++
+ static u8 cmis_cdb_calc_checksum(const void *data, size_t size)
+ {
+ 	const u8 *bytes = (const u8 *)data;
+@@ -582,7 +632,9 @@ int ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
+ 	int err;
  
- 	err = ethtool_cmis_cdb_execute_cmd(dev, &args);
- 	if (err < 0) {
+ 	args->req.chk_code =
+-		cmis_cdb_calc_checksum(&args->req, sizeof(args->req));
++		cmis_cdb_calc_checksum(&args->req,
++				       offsetof(struct ethtool_cmis_cdb_request,
++						epl));
+ 
+ 	if (args->req.lpl_len > args->read_write_len_ext) {
+ 		args->err_msg = "LPL length is longer than CDB read write length extension allows";
+@@ -604,6 +656,12 @@ int ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
+ 	if (err < 0)
+ 		return err;
+ 
++	if (args->req.epl_len) {
++		err = ethtool_cmis_cdb_execute_epl_cmd(dev, args, &page_data);
++		if (err < 0)
++			return err;
++	}
++
+ 	offset = CMIS_CDB_CMD_ID_OFFSET +
+ 		offsetof(struct ethtool_cmis_cdb_request, id);
+ 	err = __ethtool_cmis_cdb_execute_cmd(dev, &page_data,
 diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
-index 655ff5224ffa30..a514127985d44e 100644
+index a514127985d44e..48aef6220f0094 100644
 --- a/net/ethtool/cmis_fw_update.c
 +++ b/net/ethtool/cmis_fw_update.c
-@@ -54,7 +54,8 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
- 	ethtool_cmis_cdb_check_completion_flag(cdb->cmis_rev, &flags);
- 	ethtool_cmis_cdb_compose_args(&args,
- 				      ETHTOOL_CMIS_CDB_CMD_FW_MANAGMENT_FEATURES,
--				      NULL, 0, cdb->max_completion_time,
-+				      NULL, 0, NULL, 0,
-+				      cdb->max_completion_time,
- 				      cdb->read_write_len_ext, 1000,
- 				      sizeof(*rpl), flags);
+@@ -9,6 +9,7 @@
  
-@@ -122,7 +123,7 @@ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
+ struct cmis_fw_update_fw_mng_features {
+ 	u8	start_cmd_payload_size;
++	u8	write_mechanism;
+ 	u16	max_duration_start;
+ 	u16	max_duration_write;
+ 	u16	max_duration_complete;
+@@ -36,7 +37,9 @@ struct cmis_cdb_fw_mng_features_rpl {
+ };
  
- 	ethtool_cmis_cdb_compose_args(&args,
- 				      ETHTOOL_CMIS_CDB_CMD_START_FW_DOWNLOAD,
--				      (u8 *)&pl, lpl_len,
-+				      (u8 *)&pl, lpl_len, NULL, 0,
- 				      fw_mng->max_duration_start,
- 				      cdb->read_write_len_ext, 1000, 0,
- 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
-@@ -158,7 +159,7 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
- 	int err;
+ enum cmis_cdb_fw_write_mechanism {
++	CMIS_CDB_FW_WRITE_MECHANISM_NONE	= 0x00,
+ 	CMIS_CDB_FW_WRITE_MECHANISM_LPL		= 0x01,
++	CMIS_CDB_FW_WRITE_MECHANISM_EPL		= 0x10,
+ 	CMIS_CDB_FW_WRITE_MECHANISM_BOTH	= 0x11,
+ };
  
- 	max_lpl_len = min_t(u32,
--			    ethtool_cmis_get_max_payload_size(cdb->read_write_len_ext),
-+			    ethtool_cmis_get_max_lpl_size(cdb->read_write_len_ext),
- 			    ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH);
- 	max_block_size =
- 		max_lpl_len - sizeof_field(struct cmis_cdb_write_fw_block_lpl_pl,
-@@ -183,7 +184,7 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
+@@ -68,10 +71,9 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	}
  
- 		ethtool_cmis_cdb_compose_args(&args,
- 					      ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_LPL,
--					      (u8 *)&pl, lpl_len,
-+					      (u8 *)&pl, lpl_len, NULL, 0,
- 					      fw_mng->max_duration_write,
- 					      cdb->read_write_len_ext, 1, 0,
- 					      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
-@@ -212,7 +213,8 @@ cmis_fw_update_complete_download(struct ethtool_cmis_cdb *cdb,
+ 	rpl = (struct cmis_cdb_fw_mng_features_rpl *)args.req.payload;
+-	if (!(rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ||
+-	      rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_BOTH)) {
++	if (rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_NONE) {
+ 		ethnl_module_fw_flash_ntf_err(dev, ntf_params,
+-					      "Write LPL is not supported",
++					      "CDB write mechanism is not supported",
+ 					      NULL);
+ 		return  -EOPNOTSUPP;
+ 	}
+@@ -83,6 +85,10 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	 */
+ 	cdb->read_write_len_ext = rpl->read_write_len_ext;
+ 	fw_mng->start_cmd_payload_size = rpl->start_cmd_payload_size;
++	fw_mng->write_mechanism =
++		rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ?
++		CMIS_CDB_FW_WRITE_MECHANISM_LPL :
++		CMIS_CDB_FW_WRITE_MECHANISM_EPL;
+ 	fw_mng->max_duration_start = be16_to_cpu(rpl->max_duration_start);
+ 	fw_mng->max_duration_write = be16_to_cpu(rpl->max_duration_write);
+ 	fw_mng->max_duration_complete = be16_to_cpu(rpl->max_duration_complete);
+@@ -149,9 +155,9 @@ struct cmis_cdb_write_fw_block_lpl_pl {
+ };
  
- 	ethtool_cmis_cdb_compose_args(&args,
- 				      ETHTOOL_CMIS_CDB_CMD_COMPLETE_FW_DOWNLOAD,
--				      NULL, 0, fw_mng->max_duration_complete,
-+				      NULL, 0, NULL, 0,
-+				      fw_mng->max_duration_complete,
- 				      cdb->read_write_len_ext, 1000, 0,
- 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
+ static int
+-cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
+-			   struct ethtool_cmis_fw_update_params *fw_update,
+-			   struct cmis_fw_update_fw_mng_features *fw_mng)
++cmis_fw_update_write_image_lpl(struct ethtool_cmis_cdb *cdb,
++			       struct ethtool_cmis_fw_update_params *fw_update,
++			       struct cmis_fw_update_fw_mng_features *fw_mng)
+ {
+ 	u8 start = fw_mng->start_cmd_payload_size;
+ 	u32 offset, max_block_size, max_lpl_len;
+@@ -202,6 +208,67 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
+ 	return 0;
+ }
  
-@@ -294,7 +296,7 @@ cmis_fw_update_run_image(struct ethtool_cmis_cdb *cdb, struct net_device *dev,
- 	int err;
++struct cmis_cdb_write_fw_block_epl_pl {
++	u8 fw_block[ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH];
++};
++
++static int
++cmis_fw_update_write_image_epl(struct ethtool_cmis_cdb *cdb,
++			       struct ethtool_cmis_fw_update_params *fw_update,
++			       struct cmis_fw_update_fw_mng_features *fw_mng)
++{
++	u8 start = fw_mng->start_cmd_payload_size;
++	u32 image_size = fw_update->fw->size;
++	u32 offset, lpl_len;
++	int err;
++
++	lpl_len = sizeof_field(struct cmis_cdb_write_fw_block_lpl_pl,
++			       block_address);
++
++	for (offset = start; offset < image_size;
++	     offset += ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH) {
++		struct cmis_cdb_write_fw_block_lpl_pl lpl = {
++			.block_address = cpu_to_be32(offset - start),
++		};
++		struct cmis_cdb_write_fw_block_epl_pl *epl;
++		struct ethtool_cmis_cdb_cmd_args args = {};
++		u32 epl_len;
++
++		ethnl_module_fw_flash_ntf_in_progress(fw_update->dev,
++						      &fw_update->ntf_params,
++						      offset - start,
++						      image_size);
++
++		epl_len = min_t(u32, ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH,
++				image_size - offset);
++		epl = kmalloc_array(epl_len, sizeof(u8), GFP_KERNEL);
++		if (!epl)
++			return -ENOMEM;
++
++		memcpy(epl->fw_block, &fw_update->fw->data[offset], epl_len);
++
++		ethtool_cmis_cdb_compose_args(&args,
++					      ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_EPL,
++					      (u8 *)&lpl, lpl_len, (u8 *)epl,
++					      epl_len,
++					      fw_mng->max_duration_write,
++					      cdb->read_write_len_ext, 1, 0,
++					      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
++
++		err = ethtool_cmis_cdb_execute_cmd(fw_update->dev, &args);
++		kfree(epl);
++		if (err < 0) {
++			ethnl_module_fw_flash_ntf_err(fw_update->dev,
++						      &fw_update->ntf_params,
++						      "Write FW block EPL command failed",
++						      args.err_msg);
++			return err;
++		}
++	}
++
++	return 0;
++}
++
+ static int
+ cmis_fw_update_complete_download(struct ethtool_cmis_cdb *cdb,
+ 				 struct net_device *dev,
+@@ -238,9 +305,15 @@ cmis_fw_update_download_image(struct ethtool_cmis_cdb *cdb,
+ 	if (err < 0)
+ 		return err;
  
- 	ethtool_cmis_cdb_compose_args(&args, ETHTOOL_CMIS_CDB_CMD_RUN_FW_IMAGE,
--				      (u8 *)&pl, sizeof(pl),
-+				      (u8 *)&pl, sizeof(pl), NULL, 0,
- 				      cdb->max_completion_time,
- 				      cdb->read_write_len_ext, 1000, 0,
- 				      CDB_F_MODULE_STATE_VALID);
-@@ -326,7 +328,8 @@ cmis_fw_update_commit_image(struct ethtool_cmis_cdb *cdb,
+-	err = cmis_fw_update_write_image(cdb, fw_update, fw_mng);
+-	if (err < 0)
+-		return err;
++	if (fw_mng->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL) {
++		err = cmis_fw_update_write_image_lpl(cdb, fw_update, fw_mng);
++		if (err < 0)
++			return err;
++	} else {
++		err = cmis_fw_update_write_image_epl(cdb, fw_update, fw_mng);
++		if (err < 0)
++			return err;
++	}
  
- 	ethtool_cmis_cdb_compose_args(&args,
- 				      ETHTOOL_CMIS_CDB_CMD_COMMIT_FW_IMAGE,
--				      NULL, 0, cdb->max_completion_time,
-+				      NULL, 0, NULL, 0,
-+				      cdb->max_completion_time,
- 				      cdb->read_write_len_ext, 1000, 0,
- 				      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
- 
+ 	err = cmis_fw_update_complete_download(cdb, fw_update->dev, fw_mng,
+ 					       &fw_update->ntf_params);
 -- 
 2.53.0
 
