@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Env/LUNMJWqDGQIAu9opvQ
-	(envelope-from <stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:31 +0200
+	id Q9lzM1pLJWpGGQIAu9opvQ
+	(envelope-from <stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4327064FFF2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B1164FF2F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qqtKrK6K;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261535-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tMLfJWBQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261513-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5085030470F2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C3784303A8FD
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD15F3195FD;
-	Sun,  7 Jun 2026 10:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF3A32D7F8;
+	Sun,  7 Jun 2026 10:40:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FE870808;
-	Sun,  7 Jun 2026 10:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9313332AAA3;
+	Sun,  7 Jun 2026 10:40:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828922; cv=none; b=smAjF41uwkLpWHrqhiKchR4K3mxJKPztcJWseFdyUC8/YxUAVl/WRN2UP+nvJNtFLifYAoo5vIgvzqt//HYz+gwatKveYWxzPfSQj0SeJs9vVmVFOiSGrNjlTl/RIql7HwXXIjdoCGddQYTo4zSFQShO50FnRgZ/nhgncu8tVCo=
+	t=1780828841; cv=none; b=CqSFEBxbss3vI7QD8BMK0e6si2rx826YTgv4UAjXCXONtbw1yQ/NCjtrbdrPI3ucBllXucXsDERDQR3GcDYnUV3WaNasfD6sM7tEoUv4E1uybdxsby5Sf0w64+wTJPH6gQIgE4n/hHhXXVCFu53kDe6Vtcj7KYcUwAoMjEM/fKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828922; c=relaxed/simple;
-	bh=9YJIZM4CD3YTrPzFEB315LhCoLHAJ6PwIZE8i5VpmqE=;
+	s=arc-20240116; t=1780828841; c=relaxed/simple;
+	bh=UozR8mgIIK/gu834K8gPuJDPpIilxrg80NwXg6li6hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icY0ZcjVS6KNwiMrdrTluU4tGgk3YqtGYmjTzEp+r8aE7sAntme/KzQ3O2rediG7Km710yY2jmIrNRzSRuktj7ZWwrDrQ3TJuIUoM0BFE/xIpS2Xv56ZbH3CcNP4X8VtdusW3I3WcPrdIRpKa6rXd/mADwTFAPwa5SRkHU4fCy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqtKrK6K; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1181F00893;
-	Sun,  7 Jun 2026 10:42:00 +0000 (UTC)
+	 MIME-Version; b=BJ5EPW217uxZenedgrXLMciRPCuCHtBj0YpIN5V0I8Xi3QwXXaVmya2FienN2BE89k1dxrbuhqPH+SvIinfk91JBkyQrNi5yOzgQIuvn4ip5M3FIVKt75LAB9KWlQcn4138LPrG2edf+e6HSkzk2dc+EKS5WPY39bbxUvkCfxtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMLfJWBQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32D01F00893;
+	Sun,  7 Jun 2026 10:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828921;
-	bh=qUda5WrcgpgOYob5V66b6JuTrIGvC7mEVthh5WoJs5o=;
+	s=korg; t=1780828839;
+	bh=xbuXXqw16+LACYj0GrTw3z0Oky/4s533Gsf309FSXMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qqtKrK6KxVK4HDAUL7ZiYrfVnB7EkO7nX7R93EifCc3Js+FMDsTRSY3z9vwBwsy6d
-	 f4WVs/lEKfD7xylgrKdwBo8G1Z9PelaGrB4g2L7anfrCkXo1Rj9WPh5kXU+hCTv3SH
-	 XLgM05I/CjnUuLtW/EHCtbzvRud5AM3zhVwGVZsE=
+	b=tMLfJWBQXjJIsMgVMuXoJteAtI1Tp76l2GhE2S/Z5uDTvmH9VEXVrXJz2oL13c3N/
+	 GYpwg71SFJr3zH5cORLaSIRZLEY7jEqsy18gWGcTO9H6tBVYgNISWwuIYk7s53rpeU
+	 GQ4NjDh5VednHgQGqmcOWWtLtOK2Dhf9LirIPUOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.18 202/315] xfrm: ah: use skb_to_full_sk in async output callbacks
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 7.0 220/332] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
 Date: Sun,  7 Jun 2026 11:59:49 +0200
-Message-ID: <20260607095734.991801580@linuxfoundation.org>
+Message-ID: <20260607095736.144576583@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261535-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261513-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,redhat.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,99 +96,101 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4327064FFF2
+X-Rspamd-Queue-Id: 43B1164FF2F
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Minh Nguyen <minhnguyen.080505@gmail.com>
 
-commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
+commit 98d0912e9f841e5529a5b89a972805f34cb1c69d upstream.
 
-When AH output is offloaded to an asynchronous crypto provider
-(hardware accelerators such as AMD CCP, or a forced-async software
-shim used for testing), the digest completion fires
-ah_output_done() / ah6_output_done() on a workqueue.  The egress
-skb at that point may have been originated by a TCP listener
-sending a SYN-ACK, which sets skb->sk to a request_sock via
-skb_set_owner_edemux(); it may also have been originated by an
-inet_timewait_sock retransmit.  Neither is a full struct sock, and
-passing the raw skb->sk to xfrm_output_resume() then forwards a
-non-full socket through the rest of the xfrm output chain.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
+the old skb_shared_info header into a new buffer via memcpy(), which
+includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
+Neither function calls net_zcopy_get() for the new shinfo, creating an
+unaccounted holder: every skb_shared_info with destructor_arg set will
+call skb_zcopy_clear() once when freed, but the corresponding
+net_zcopy_get() was never called for the new copy. Repeated calls
+drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
+TX skbs still hold live destructor_arg pointers.
 
-xfrm_output_resume() and its downstream consumers expect a full
-sk where they dereference at all.  The natural egress path
-through ah_output_done() does not crash today because the
-consumers that read past sock_common are either gated by
-sk_fullsock() or short-circuit on flags that are clear on a fresh
-request_sock; an exhaustive walk of the 50 most plausible
-consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
-cgroup-egress BPF found no current unguarded deref.  The bug is
-still a real type confusion that future consumer changes could
-turn into a memory-corruption primitive.
+KASAN reports use-after-free on a freed ubuf_info_msgzc:
 
-This is the same bug class fixed for ESP in commit 1620c88887b1
-("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
-AH: convert skb->sk to a full socket pointer (or NULL) via
-skb_to_full_sk() before handing it to xfrm_output_resume().
+  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
+  Read of size 8 at addr ffff88801574d3e8 by task poc/220
 
-The same async AH callbacks were touched recently for an
-independent ESN-related ICV layout bug in commit ec54093e6a8f
-("xfrm: ah: account for ESN high bits in async callbacks"); the
-sk type-confusion addressed here is orthogonal.  This patch is
-part of an ongoing audit of the AH callback paths; an ah_output
-ihl-validation hardening series is also currently under review on
-netdev.
+  Call Trace:
+   skb_release_data+0x77b/0x810
+   kfree_skb_list_reason+0x13e/0x610
+   skb_release_data+0x4cd/0x810
+   sk_skb_reason_drop+0xf3/0x340
+   skb_queue_purge_reason+0x282/0x440
+   rds_tcp_inc_free+0x1e/0x30
+   rds_recvmsg+0x354/0x1780
+   __sys_recvmsg+0xdf/0x180
 
-Reproduced under UML + KASAN + lockdep with a forced-async
-hmac(sha1) shim that registers at priority 9999 and wraps the
-sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
-runs on every SYN-ACK egress through a transport-mode AH SA and
-skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
-patch, xfrm_output_resume() receives the listener (the result of
-sk_to_full_sk()) and consumer derefs land on full-sock fields as
-intended.
+  Allocated by task 219:
+   msg_zerocopy_realloc+0x157/0x7b0
+   tcp_sendmsg_locked+0x2892/0x3ba0
 
-Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+  Freed by task 219:
+   ip_recv_error+0x74a/0xb10
+   tcp_recvmsg+0x475/0x530
+
+The skb consuming the late access still referenced the same uarg via
+shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
+a refcount bump. This has been verified to be reliably exploitable: a
+working proof-of-concept achieves full root privilege escalation from
+an unprivileged local user on a default kernel configuration.
+
+The fix follows the pattern of pskb_expand_head() which has the same
+memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
+is placed after skb_orphan_frags() succeeds, so the orphan error path
+needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
+placed after all failure points and just before skb_release_data(), so
+no error path needs cleanup at all -- matching pskb_expand_head() more
+closely and avoiding the need for a balancing net_zcopy_put().
+
+Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ah4.c |    2 +-
- net/ipv6/ah6.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/core/skbuff.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -143,7 +143,7 @@ static void ah_output_done(void *data, i
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6862,6 +6862,8 @@ static int pskb_carve_inside_header(stru
+ 			skb_kfree_head(data, size);
+ 			return -ENOMEM;
+ 		}
++		if (skb_zcopy(skb))
++			net_zcopy_get(skb_zcopy(skb));
+ 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
+ 			skb_frag_ref(skb, i);
+ 		if (skb_has_frag_list(skb))
+@@ -7010,6 +7012,8 @@ static int pskb_carve_inside_nonlinear(s
+ 		skb_kfree_head(data, size);
+ 		return -ENOMEM;
  	}
++	if (skb_zcopy(skb))
++		net_zcopy_get(skb_zcopy(skb));
+ 	skb_release_data(skb, SKB_CONSUMED);
  
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
- 
- static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -337,7 +337,7 @@ static void ah6_output_done(void *data,
- 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
- 
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
- 
- static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 	skb->head = data;
 
 
 
