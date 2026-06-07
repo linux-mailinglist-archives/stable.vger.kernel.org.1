@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0ZjUG/xIJWpbGAIAu9opvQ
-	(envelope-from <stable+bounces-261371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:32 +0200
+	id 5LwHNIdIJWoMGAIAu9opvQ
+	(envelope-from <stable+bounces-261347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D0364FC81
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5056C64FBE4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ksROiC++;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261371-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261371-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2HWgogyb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261347-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261347-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0778301B4FC
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EC4530285F4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496ED3112A5;
-	Sun,  7 Jun 2026 10:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334F71DE8AE;
+	Sun,  7 Jun 2026 10:30:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3D72D3A69;
-	Sun,  7 Jun 2026 10:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBF623F417;
+	Sun,  7 Jun 2026 10:30:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828293; cv=none; b=TiDd4m6Oeuh0+W64tekOX4P8BtFLhowoW+1DilvO5H9uiQ/2rfDE9KT4ovxA18turU3evisjnI1gLJPt4nnt/QRQXw0Gw12oJQkLODBjvM+84YFuiBESOsE9jgLt+XdqgqAtg6dYFuBfAN3+TOfEqnxehevc8byktxA9P2o2OYY=
+	t=1780828201; cv=none; b=Px3xdop3hj7C1rQWDKyEJzY+awoPrO7nzbzQ5gxZsfAmT55UbrhbmtB/ffEwigbcO+1VbVfgbS9QbNWRN3xR5vpLcQpPMtGj6PYL0gcH34ZT+wmsCBMLqlRtgdAcbCPjRtWvKbSy6/gv93JVSOT7ModE4vk+RlS0DGwW6oXdtDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828293; c=relaxed/simple;
-	bh=0YzjiWMb17OX4LQqVcxtHaJXVptXXNEZT++3ttMNIcM=;
+	s=arc-20240116; t=1780828201; c=relaxed/simple;
+	bh=dYW/njfu0vz6+N10XF3jf1TgWJTMrCXYEs3umZZYd+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEIJkha1qZ1uunjmFeK9Lx3/SMr1KY8/GZ7Hsj8Mpq0BPKoZ7/xQRzQ2ga/o46FqwfetANOyBDmapsWBbO5KXr153PiV3+5mzOblQW6i4WpAHBR2VBp8gJ7fbx53n8hgkRi+WfdOPBKlB9a9d9S0LQHth5hAPOZBf1GVXUpNQyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksROiC++; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D231F00893;
-	Sun,  7 Jun 2026 10:31:31 +0000 (UTC)
+	 MIME-Version; b=YfDy8RopZbU54/UwWdkympAsL1gRWUEAmD73Mj6b9UEpW1zkxlXcz4ucZ+QMvbTvp62aIcFemLHEgU9+22w9RAx+KeqAJx4hZw8oMqKEyC1LGBCHsZQU6vMZFOnPEK359CMIoxmd7gRz5gOT2+vSMvbvT6Hyl+JPthD3UrUfeK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HWgogyb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272E11F00898;
+	Sun,  7 Jun 2026 10:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828292;
-	bh=6ACifZl0FqDE2ch6pi4ScPTcDX3zd1JooDbb3WqFNMU=;
+	s=korg; t=1780828199;
+	bh=rnYRJfSIVcm9wsvqiZ3lX8Jx2LG5GBkMnsUB5KeOvMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ksROiC++Nx1Y8rC8AC+ADFC1CZtUtlZObtvDU4940XFlKJbBC1JNDU0FQFvqZRjTG
-	 knfy9K2f0ZZIrg0OgSVAR6hJOYppQOWe/x04Mf0tUTClW90RXe54l9FQtkRcnkaiAn
-	 34Hvkv5ZcRgd5zwHkXjUirUgDROiGPX3GqSP5ckc=
+	b=2HWgogybGz6l0C74BPqKxbMvfQJrGGMGlRQffG3Q730S/RjjCn7S/X37wkAQirJnT
+	 H26TmvPTcEd6n3b/jYz/5gu0ag3iC1+mKgUiD89Wo8/zHOyc5iolxoO9RglaAFIKMx
+	 x5i4AQUTr9AhJQU5uLJ7jvwHNYL1dAnbE1Qg969E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 7.0 157/332] rust_binder: avoid calling pending_oneway_finished() on TF_UPDATE_TXN
-Date: Sun,  7 Jun 2026 11:58:46 +0200
-Message-ID: <20260607095733.847852978@linuxfoundation.org>
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH 6.18 140/315] USB: cdc-acm: Fix bit overlap and move quirk definitions to header
+Date: Sun,  7 Jun 2026 11:58:47 +0200
+Message-ID: <20260607095732.745855308@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,17 +76,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261371-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261347-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:aliceryhl@google.com,m:cmllamas@google.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:guanwentao@uniontech.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,95 +97,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6D0364FC81
+X-Rspamd-Queue-Id: 5056C64FBE4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-commit 4c19719eb8b8df08c5bec7c499f73ddaea6f09fc upstream.
+commit 5eb070769ea5e18405535609d1d3f6886f3755bd upstream.
 
-When an outdated transaction is removed from `oneway_todo` due to
-`TF_UPDATE_TXN`, its `Allocation` is dropped. The current implementation
-of `Allocation::drop` calls `pending_oneway_finished()`, assuming the
-transaction was executed. This leads to premature execution of the next
-queued one-way transaction.
+The VENDOR_CLASS_DATA_IFACE and ALWAYS_POLL_CTRL quirk flags added in
+commit f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10
+INGENIC touchscreen") were placed inside the acm_ctrl_msg() function
+rather than in the header with the other quirk flags.  Then, their
+values (BIT(9) and BIT(10)) collided with NO_UNION_12 which is already
+BIT(9).
 
-Fix this by taking the `oneway_node` from the `Allocation` of the
-outdated transaction before it is dropped. This prevents
-`Allocation::drop` from signaling completion.
+Move the definitions to drivers/usb/class/cdc-acm.h where they belong
+and shift them to BIT(10) and BIT(11) to avoid the overlap.
 
-We do not call `take_oneway_node()` from `Transaction::cancel` because
-it's actually correct to call `pending_oneway_finished()` on cancel if
-the transaction did not come from `oneway_todo`. This ensures that if
-`BINDER_THREAD_EXIT` is invoked and cancels a oneway transaction, then
-the next transaction is taken from `oneway_todo`.
-
-This bug does not lead to any issues in the kernel, but may lead to
-Binder delivering transactions to userspace earlier than userspace
-expected to receive them.
-
+Fixes: f58752ebcb35 ("USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10 INGENIC touchscreen")
 Cc: stable <stable@kernel.org>
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Assisted-by: Antigravity:gemini
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260414-tf-update-txn-fix-v1-1-d2b83303acc9@google.com
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Link: https://patch.msgid.link/20260522091357.1301196-1-guanwentao@uniontech.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder/allocation.rs  |    8 ++++++++
- drivers/android/binder/transaction.rs |   11 ++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/usb/class/cdc-acm.c |    2 --
+ drivers/usb/class/cdc-acm.h |    2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/android/binder/allocation.rs
-+++ b/drivers/android/binder/allocation.rs
-@@ -160,6 +160,14 @@ impl Allocation {
-         self.get_or_init_info().target_node = Some(target_node);
-     }
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -114,8 +114,6 @@ static int acm_ctrl_msg(struct acm *acm,
+ 	int retval;
  
-+    pub(crate) fn take_oneway_node(&mut self) -> Option<DArc<Node>> {
-+        if let Some(info) = self.allocation_info.as_mut() {
-+            info.oneway_node.take()
-+        } else {
-+            None
-+        }
-+    }
-+
-     /// Reserve enough space to push at least `num_fds` fds.
-     pub(crate) fn info_add_fd_reserve(&mut self, num_fds: usize) -> Result {
-         self.get_or_init_info()
---- a/drivers/android/binder/transaction.rs
-+++ b/drivers/android/binder/transaction.rs
-@@ -250,7 +250,8 @@ impl Transaction {
-     /// Not used for replies.
-     pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
-         // Defined before `process_inner` so that the destructor runs after releasing the lock.
--        let mut _t_outdated;
-+        let _t_outdated;
-+        let _oneway_node;
+ 	retval = usb_autopm_get_interface(acm->control);
+-#define VENDOR_CLASS_DATA_IFACE		BIT(9)  /* data interface uses vendor-specific class */
+-#define ALWAYS_POLL_CTRL		BIT(10) /* keep ctrl URB active even without an open TTY */
+ 	if (retval)
+ 		return retval;
  
-         let oneway = self.flags & TF_ONE_WAY != 0;
-         let process = self.to.clone();
-@@ -267,6 +268,14 @@ impl Transaction {
-                         if let Some(t_outdated) =
-                             target_node.take_outdated_transaction(&self, &mut process_inner)
-                         {
-+                            let mut alloc_guard = t_outdated.allocation.lock();
-+                            if let Some(alloc) = (*alloc_guard).as_mut() {
-+                                // Take the oneway node to prevent `Allocation::drop` from calling
-+                                // `pending_oneway_finished()`, which would be incorrect as this
-+                                // transaction is not being submitted.
-+                                _oneway_node = alloc.take_oneway_node();
-+                            }
-+                            drop(alloc_guard);
-                             // Save the transaction to be dropped after locks are released.
-                             _t_outdated = t_outdated;
-                         }
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -115,3 +115,5 @@ struct acm {
+ #define DISABLE_ECHO			BIT(7)
+ #define MISSING_CAP_BRK			BIT(8)
+ #define NO_UNION_12			BIT(9)
++#define VENDOR_CLASS_DATA_IFACE		BIT(10)  /* data interface uses vendor-specific class */
++#define ALWAYS_POLL_CTRL		BIT(11) /* keep ctrl URB active even without an open TTY */
 
 
 
