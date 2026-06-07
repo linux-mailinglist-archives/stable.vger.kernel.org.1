@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LMCBOctJJWrOGAIAu9opvQ
-	(envelope-from <stable+bounces-261443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:59 +0200
+	id YGE+C3RJJWqtGAIAu9opvQ
+	(envelope-from <stable+bounces-261410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A5464FD95
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5E164FD54
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="YjBhH/wA";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261443-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261443-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pH2ywrDX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261410-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261410-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A98FF3014694
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:36:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 466A6302F692
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E78328610;
-	Sun,  7 Jun 2026 10:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B94328610;
+	Sun,  7 Jun 2026 10:34:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3749C2D3A69;
-	Sun,  7 Jun 2026 10:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37072C1595;
+	Sun,  7 Jun 2026 10:34:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828579; cv=none; b=tw5QxE6z8IyEAj2jF6sxUXDUCik+m19RqIqdGR7+zZMdWUnAfOWvhSu1af1rI1oPYrnSOhEBBtAexducZRg5SA4RxhN2LfEy9OJKNLz3BhzjMXfxgf0tfD6exDcQt2qxawYz4+iIG+qE96zfsWPSmZjsoknW+juig0J+euJWzsY=
+	t=1780828443; cv=none; b=Kr7jOvKzivtzgiDJJrSdaGWf0+O8rCznFyMMrjGwzcQSjoTimd+t70t3KZ/l77oXniaCpxJibUZXr38Eul5k+OQisn+lQFMbKmz1yZRhO4MisNXr+/wTHHZdAx7VZqo4k5LjqEXhbQktLxcCm398y0At+k0FMo2ClO0PfccmgE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828579; c=relaxed/simple;
-	bh=McylQNd1GvpJTfwRgqRv0DxP/SU8j4htkU/hRPoy9tk=;
+	s=arc-20240116; t=1780828443; c=relaxed/simple;
+	bh=4H3pvQd4Or9MhveBxqQv58INC51KzN3sKaR1MkySxTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1MIUsvzeV9AATabStqLVWSsMmUCGDP1xC10tM7wn3XA311K8nLzOP629xUWB0YqJkO9mPQooyzDg6fcADkpa3BMfUZHT+RIs6rmPZ+D6cSqKzp4pJYPJb1pQ8Nj1vu1nNaqMUA9JZiwwQb/RMv4otX6u1WYtF1SyLV8+6SmE0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjBhH/wA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482C81F00893;
-	Sun,  7 Jun 2026 10:36:17 +0000 (UTC)
+	 MIME-Version; b=h26FljV3ooEHk526kR8/oA6Yfu6eSp78MgmF1XzoFXygnQiKAltYzo+hudIIpBfAYLmqIG+J/y1smtnMMUOpU+LVgk1X3HUjOe5tMbJ1gZs9JVjdHOxlIGo+vw+65KCu9WoTf/p3o2pQYoNIKgIpeeOZnVdbm6tsuWJz8x2HrsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH2ywrDX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47451F00893;
+	Sun,  7 Jun 2026 10:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828578;
-	bh=0XxCih5J20vg3yfPPTudKnMTh/jAc5DL4s27ya/p5ww=;
+	s=korg; t=1780828442;
+	bh=W+dGVpVVGB+utS0n+poZlZUlNT6P5jj7obNqamhN/Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YjBhH/wAUMBrwQpK3evAstHF8XZC2XL7IE+0NlSMkPIt4y+yluvp/G6OUdfUNIi7B
-	 vYtbCkVzik8x12VIBASLCcQzFdf7RvKT0Fg1PXcxu0ZN4QPOqTz/cT5GiQ6erww9Vg
-	 j9NQ+Y3BoB8ZZKC/EqGMuEbkJpbTx8inxPiRiajk=
+	b=pH2ywrDXBvZTVym5WkVcUITH9rwP3eRB3EQq2rgGtDOS5TU8gs7wcqLu1QDFQpyq5
+	 MgyVjWtm5jasfEAuUrjdvujbPpl5KUbHiDZreRNqEqBvrX/1pRTUldmcNfb6zzRn1l
+	 J+Rpxg194gnuw5uR1ddBTCaApTz/kpG9a3A6ue5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 149/307] Input: xpad - fix out-of-bounds access for Share button
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.18 159/315] iio: dac: ad5686: acquire lock when doing powerdown control
 Date: Sun,  7 Jun 2026 11:59:06 +0200
-Message-ID: <20260607095733.198791924@linuxfoundation.org>
+Message-ID: <20260607095733.435625376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +67,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261443-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261410-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 55A5464FD95
+X-Rspamd-Queue-Id: 9C5E164FD54
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-commit 6cdc46b38cf146ce81d4831b6472dbf7731849a2 upstream.
+commit 5237c3175cae5ab05f18878cec3301a04403859e upstream.
 
-xpadone_process_packet() receives len directly from urb->actual_length
-and uses it to index the share-button byte at data[len - 18] or
-data[len - 26]. Since both len and data[0] are under the device's
-control, a broken controller can send a GIP_CMD_INPUT packet with
-actual_length < 18 (e.g. 5 bytes) and reach this code path, causing
-accesses beyond the actual array.
+Protect access of pwr_down_mode and pwr_down_mask fields with existing
+mutex lock. Each channel exposes their own attributes for controlling
+powerdown modes and powerdown state. This fixes potential race conditions
+as those the write functions perform non-atomic read-modify-write
+operations to those pwr_down_* fields. This issue exists since the ad5686
+driver was first introduced.
 
-Fix this by calculating the offset and checking bounds against the
-packet length.
-
-Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 4ef46367073b ("Input: xpad - fix Share button on Xbox One controllers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/dac/ad5686.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -1081,10 +1081,10 @@ static void xpadone_process_packet(struc
- 		input_report_key(dev, BTN_START,  data[4] & BIT(2));
- 		input_report_key(dev, BTN_SELECT, data[4] & BIT(3));
- 		if (xpad->mapping & MAP_SHARE_BUTTON) {
--			if (xpad->mapping & MAP_SHARE_OFFSET)
--				input_report_key(dev, KEY_RECORD, data[len - 26] & BIT(0));
--			else
--				input_report_key(dev, KEY_RECORD, data[len - 18] & BIT(0));
-+			u32 offset = (xpad->mapping & MAP_SHARE_OFFSET) ? 26 : 18;
-+
-+			if (len >= offset)
-+				input_report_key(dev, KEY_RECORD, data[len - offset] & BIT(0));
- 		}
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -30,6 +30,8 @@ static int ad5686_get_powerdown_mode(str
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
  
- 		/* buttons A,B,X,Y */
++	guard(mutex)(&st->lock);
++
+ 	return ((st->pwr_down_mode >> (chan->channel * 2)) & 0x3) - 1;
+ }
+ 
+@@ -39,6 +41,8 @@ static int ad5686_set_powerdown_mode(str
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
++
+ 	st->pwr_down_mode &= ~(0x3 << (chan->channel * 2));
+ 	st->pwr_down_mode |= ((mode + 1) << (chan->channel * 2));
+ 
+@@ -57,6 +61,8 @@ static ssize_t ad5686_read_dac_powerdown
+ {
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
++	guard(mutex)(&st->lock);
++
+ 	return sysfs_emit(buf, "%d\n", !!(st->pwr_down_mask &
+ 				       (0x3 << (chan->channel * 2))));
+ }
+@@ -77,6 +83,8 @@ static ssize_t ad5686_write_dac_powerdow
+ 	if (ret)
+ 		return ret;
+ 
++	guard(mutex)(&st->lock);
++
+ 	if (readin)
+ 		st->pwr_down_mask |= (0x3 << (chan->channel * 2));
+ 	else
 
 
 
