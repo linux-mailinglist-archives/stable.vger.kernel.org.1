@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ioXuAWNLJWpIGQIAu9opvQ
-	(envelope-from <stable+bounces-261515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:47 +0200
+	id vz5ZHlJLJWpCGQIAu9opvQ
+	(envelope-from <stable+bounces-261557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7E564FF37
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968B764FF1F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tfkh8jXv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261515-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261515-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sOQeZY3k;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261557-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261557-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9ED4D303C3E6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD2BB300443C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8719F32B13F;
-	Sun,  7 Jun 2026 10:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11DC31F9AC;
+	Sun,  7 Jun 2026 10:43:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2997632AAA3;
-	Sun,  7 Jun 2026 10:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC4F1E98EF;
+	Sun,  7 Jun 2026 10:43:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828849; cv=none; b=g034j/vgy1EckTCp3UodIa1wd7//qk3TRs6F9FJ42nudhaHcizKhTvTQWQfl6oCmZlAW1OTrcD3TSummXeD/XMR4R5n68uNM+sn7CeHTbWH8BXJyI6FabCOJUmnkct8xkoT8wYypfq+HzBXEjVIQZ8fxVy/tqTgGXDIkV+6no28=
+	t=1780829005; cv=none; b=awMuVAwIhfgyFXaBl0+g/dSEq2Fl1mtOgLYd7Jm1s/v8ZPEu3+X84627YJSWb0qirOc5U4z3IHnJDXFtzpbWBCcL6KsFrwPmet84HngymPkLuNlTARV//k3sEb1uaoK8t578qLpCzoi2oICXdfWz88gejh5hQxV2XIHYlHcu24I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828849; c=relaxed/simple;
-	bh=WbCK5/02Xsf3gtJuABcd/CaHEj93cycl5PvrIyrUofQ=;
+	s=arc-20240116; t=1780829005; c=relaxed/simple;
+	bh=I6Bdj8AD4V+I79JZ6o6IMig3jQSYDrWCd6vrjAg64PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6VkUaeC8ya9hgJcJ2nT5mgSWMiVMqfXj7phxp8wgeWY+5l3MyqwYQ+iw77fsyOawsz8ecgbBzVtTriG+8A0bHadbtoULjHegw9RRHYU3FzkDBC34HlnL5cKkmSh8cYoY2xuzLRPvmZuNrtHlOa9LJ+8/v74+8C+GNTgtm2pNOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfkh8jXv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F45A1F00893;
-	Sun,  7 Jun 2026 10:40:45 +0000 (UTC)
+	 MIME-Version; b=DVLitEw3eK4wjmttCU5xf+7xIv6/p5ei/GPXxYjjqawh05V5rU/dBcl+BGF5PvpLIfRONknIbSBP3fZ8k6DXvScPeH7m5f0dB7VKjAj6WTlyFQRSa1+M3Zuw7+H7hI37kBKxdNDicF3BqVkW5lolQGym2S4Awfhj6/h9WEgZnbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOQeZY3k; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF811F00893;
+	Sun,  7 Jun 2026 10:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828847;
-	bh=Ig+l3yze5BMJxIH05qrU9D2Ze7eYyNrkLhzANVdjNNY=;
+	s=korg; t=1780829004;
+	bh=+zcdGxaVN+HhNRTQb+8BSXcA5WHGH8Mx0aDcFbExOCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tfkh8jXvx+1zJG2fAQgabO4Hgbxl+Cv2y25zXj0x/auuL4VnNX7r1+QuH6JUKblnz
-	 6W8xz5b94dnQqWHC1giZqwPyS8Xp3dUj927ndZyay5LX756teZGg7E/s07aOuuN61n
-	 PtmcYuHaQXGCSoZ3GWiaZ2Bj4QxESVJYWsGBtWu0=
+	b=sOQeZY3k4B97fcxGF4UjQzi1V5ulgSt/DvF+i/f3dfW6pxviHyFudlaQwb2HFDfA7
+	 fWOe7reFflBYZBQ7lS2ZpQtMlH2he6NWlTlnnlk2u92cys+EA9ifxr1sJhSTtJmR+y
+	 KcmxJmz8Y8zCf4W97RrnB0NBkNLbc3/EaaiUTpRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyu Xu <xtydtc@gmail.com>,
-	Santhosh Kumar K <s-k6@ti.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 196/315] spi: spi-mem: avoid mutating op template in spi_mem_supports_op()
+	Justin Iurman <justin.iurman@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 186/307] ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo()
 Date: Sun,  7 Jun 2026 11:59:43 +0200
-Message-ID: <20260607095734.770563336@linuxfoundation.org>
+Message-ID: <20260607095734.549260978@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,98 +67,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ti.com,bootlin.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261515-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xtydtc@gmail.com,m:s-k6@ti.com,m:miquel.raynal@bootlin.com,m:broonie@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261557-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ti.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D7E564FF37
+X-Rspamd-Queue-Id: 968B764FF1F
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santhosh Kumar K <s-k6@ti.com>
+From: Justin Iurman <justin.iurman@gmail.com>
 
-commit 79378db6a86c7014cce40b65252e6c18f5b8bcc2 upstream.
+commit d47548a36639095939f4747d4c43f2271366f565 upstream.
 
-spi_mem_supports_op() accepts a const struct spi_mem_op pointer but
-casts away const internally to call spi_mem_adjust_op_freq(). This
-mutates the caller's op template, which causes stale max_freq values
-when callers reuse persistent templates - subsequent calls won't
-re-apply the device frequency cap since spi_mem_adjust_op_freq()
-skips non-zero values.
+ipv6_hop_jumbo() calls pskb_trim_rcsum(), which can change skb pointers.
+Let's recompute nh pointer to make sure any change won't mess things up.
 
-Fix by operating on a stack-local copy instead.
-
-Fixes: a4f8e70d75dd ("spi: spi-mem: add spi_mem_adjust_op_freq() in spi_mem_supports_op()")
-Cc: Tianyu Xu <xtydtc@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260527173736.2243004-1-s-k6@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260522112013.12342-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/ipv6/exthdrs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -276,13 +276,20 @@ static bool spi_mem_internal_supports_op
-  */
- bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
- {
--	/* Make sure the operation frequency is correct before going futher */
--	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
-+	struct spi_mem_op eval_op = *op;
- 
--	if (spi_mem_check_op(op))
-+	/*
-+	 * Work on a local copy; this is a pure capability check and must
-+	 * not modify the caller's op. Stored templates with max_freq == 0
-+	 * must remain unset so their frequency is always re-capped to the
-+	 * current device maximum at execution time.
-+	 */
-+	spi_mem_adjust_op_freq(mem, &eval_op);
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -184,6 +184,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
+ 				case IPV6_TLV_JUMBO:
+ 					if (!ipv6_hop_jumbo(skb, off))
+ 						return false;
 +
-+	if (spi_mem_check_op(&eval_op))
- 		return false;
- 
--	return spi_mem_internal_supports_op(mem, op);
-+	return spi_mem_internal_supports_op(mem, &eval_op);
- }
- EXPORT_SYMBOL_GPL(spi_mem_supports_op);
- 
++					nh = skb_network_header(skb);
+ 					break;
+ 				case IPV6_TLV_CALIPSO:
+ 					if (!ipv6_hop_calipso(skb, off))
 
 
 
