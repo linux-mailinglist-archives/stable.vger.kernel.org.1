@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jMI0F6FJJWq9GAIAu9opvQ
-	(envelope-from <stable+bounces-261441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:17 +0200
+	id Y4IUIvhKJWooGQIAu9opvQ
+	(envelope-from <stable+bounces-261489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C36864FD73
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AEF64FEBC
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjcZBOqx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261441-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261441-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M8QHgkTL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261489-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261489-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 833123002F47
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:36:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B936B303E489
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C803264F5;
-	Sun,  7 Jun 2026 10:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06AAB3254A9;
+	Sun,  7 Jun 2026 10:39:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D79131E849;
-	Sun,  7 Jun 2026 10:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F3E212564;
+	Sun,  7 Jun 2026 10:39:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828570; cv=none; b=LPZAuDFwU5GtLP0iH33m0dS86ZJl5i5+mR0r54cMlI4FymelCah3RJU57ZKVIdT1Hlq7buzcRpoTV8yzQVzVlrw4jEV6vVV1bQce+U1t9rUpXI0QBcpEobiKKYa6pykaJLS75SFYwi5d+6mVkPrw2QP2X9GWj8DTj0gZ5Y1o8MY=
+	t=1780828752; cv=none; b=d6RUj7gahiBPVrsnKEwe59xcLhqvH3WGPt+LN04erjKnVfIbA7R186zIAT21J5rURFqhqSCNXqbFhZotSTuXOjTIsgsUCApY8N75+IrdM4DvDXINYkXULOse7uYTswRvvXnRK7UbC7YV/jMj3cHnTjdXGZCmYXb7UWsp3QUkrwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828570; c=relaxed/simple;
-	bh=6ssaO0uIK5O/bkqAq3ZOv4SzyBlZDevqhZBTdIOEpnI=;
+	s=arc-20240116; t=1780828752; c=relaxed/simple;
+	bh=N/qnIMnWdmWFHA68QDBt3/RMmJbPaklYZ50cbArO6yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hx6TCpRUUq/DJnvaSWLZh3og+MUIVI9+o6q8apoHZnbZs0MhbcVDVMrNNouTymQoFwAHt5TTo112cX1SGE2sRfRHwJ0oAp9BDVj6mVFCyT14ipHY4kS0gvrTj+tLGqwNC+YQkcKzY4OfgkQQCvyvfl94kMNQdBgTUdhzjczRN5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjcZBOqx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F871F00893;
-	Sun,  7 Jun 2026 10:36:07 +0000 (UTC)
+	 MIME-Version; b=soPs0VMMHnUi/GL/GnyfWsxocsk8eFSrku/6qfoQWho7OWmwo6SXC8iVf467UCm45bvUVv0hrIEMTquXQYev2D9UtbzvJZX5JfyqQOaTqEsuyHl0ImKnzOE6rJv+8KDfdFBH5DYml/3uXzJVe8aulJsWFV+1uVYn2psMBXZm+YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8QHgkTL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCC01F00893;
+	Sun,  7 Jun 2026 10:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828569;
-	bh=O7jtCPnUufsNbuNhql9l3/F8TQHwLXN5vaj9Z8buGO0=;
+	s=korg; t=1780828751;
+	bh=XZ13HxC/5WhRUzBNEiqHhKnGqNMU94io7jZpXBeX83Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EjcZBOqxUHQWdyjcwfJWmv5tPfzhKc28k4JnoapkTjHGIPhdIWjeuNKMyMfbUveJz
-	 dwHM06Z38Ikkt+NS5mfSvEbzCoxBuXOJkYn96K3lQEftA0GDqCgGhZJQrTnUQex4k3
-	 gObLFc5xuKFuk6KVnEwoIzR1J/BDNLNAUeqxa7+o=
+	b=M8QHgkTLgdqqawrvBaZqOZBaWcHxiB9lsDIJiVsWowt5XTLyQwKAZ2uv2hSDBfhy2
+	 4lvADpPKjPTy0DN+X3V6GPC/ae/ddmtPy26btpFMoLgKpVIECcgIvKCZDtQ+OZ1WGY
+	 NWMpMdxz+VVOJYOtrPz0UTyFjigmz7prK1n5kk5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aldo Conte <aldocontelk@gmail.com>,
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.18 173/315] iio: light: cm3323: fix reg_conf not being initialized correctly
+Subject: [PATCH 6.12 163/307] iio: adc: npcm: fix unbalanced clk_disable_unprepare()
 Date: Sun,  7 Jun 2026 11:59:20 +0200
-Message-ID: <20260607095733.940965929@linuxfoundation.org>
+Message-ID: <20260607095733.710619894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,102 +73,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261441-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aldocontelk@gmail.com,m:jic23@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261489-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5C36864FD73
+X-Rspamd-Queue-Id: E1AEF64FEBC
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aldo Conte <aldocontelk@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 1f4f0bcc5255dec5c4c3a1551bf49d8c33b69b20 upstream.
+commit 0d42e2c0bd6ceb89e44c6e065f9bdf9b1df3ef0c upstream.
 
-The code stores the return value of i2c_smbus_write_word_data()
-in data->reg_conf; however, this value represents the result
-of the write operation and not the value actually written to
-the configuration register. This meant that the contents of
-data->reg_conf did not truly reflect the contents
-of the hardware register.
+The driver acquired the ADC clock with devm_clk_get() and read its
+rate, but never called clk_prepare_enable(). The probe error path and
+npcm_adc_remove() both called clk_disable_unprepare() unconditionally,
+causing the clk framework's enable/prepare counts to underflow on
+probe failure or module unbind.
 
-Instead, save the value of the register before the write
-and use this value in the I2C write.
+The issue went unnoticed because NPCM BMC firmware leaves the ADC
+clock enabled at boot, so the driver happened to work in practice.
 
-The bug was found by code inspection: i2c_smbus_write_word_data()
-returns 0 on success, not the value written to the register.
+Switch to devm_clk_get_enabled() so the clock is properly enabled
+during probe and automatically released by the device-managed
+cleanup, and drop the now-redundant clk_disable_unprepare() from
+both the probe error path and remove().
 
-Tested using i2c-stub on a Raspberry Pi 3B running a custom 6.19.10
-kernel. Before loading the driver, the configuration register 0x00
-CM3323_CMD_CONF was populated with 0x0030 using
-`i2cset -y 11 0x10 0x00 0x0030 w`, encoding an integration time of 320ms
-in bits[6:4].
+While at it, drop the duplicate error message on devm_request_irq()
+failure since the IRQ core already logs it.
 
-Due to incorrect initialization of data->reg_conf in
-cm3323_init(), the print of integration_time returns 0.040000
-instead of the expected 0.320000. This happens because the read of the
-integration_time depends on cm3323_get_it_bits() that is based on the
-value of data->reg_conf, which is erroneously set to 0.
-
-With this fix applied, data->reg_conf correctly saves 0x0030 after init
-and the successive integration_time reports 0.320000 as expected.
-
-Fixes: 8b0544263761 ("iio: light: Add support for Capella CM3323 color sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aldo Conte <aldocontelk@gmail.com>
+Fixes: 9bf85fbc9d8f ("iio: adc: add NPCM ADC driver")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/cm3323.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/npcm_adc.c |   25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
---- a/drivers/iio/light/cm3323.c
-+++ b/drivers/iio/light/cm3323.c
-@@ -89,15 +89,14 @@ static int cm3323_init(struct iio_dev *i
+--- a/drivers/iio/adc/npcm_adc.c
++++ b/drivers/iio/adc/npcm_adc.c
+@@ -231,7 +231,7 @@ static int npcm_adc_probe(struct platfor
+ 	if (IS_ERR(info->reset))
+ 		return PTR_ERR(info->reset);
  
- 	/* enable sensor and set auto force mode */
- 	ret &= ~(CM3323_CONF_SD_BIT | CM3323_CONF_AF_BIT);
-+	data->reg_conf = ret;
+-	info->adc_clk = devm_clk_get(&pdev->dev, NULL);
++	info->adc_clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(info->adc_clk)) {
+ 		dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
+ 		return PTR_ERR(info->adc_clk);
+@@ -244,17 +244,13 @@ static int npcm_adc_probe(struct platfor
+ 	info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) * 2);
  
--	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, ret);
-+	ret = i2c_smbus_write_word_data(data->client, CM3323_CMD_CONF, data->reg_conf);
- 	if (ret < 0) {
- 		dev_err(&data->client->dev, "Error writing reg_conf\n");
- 		return ret;
- 	}
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto err_disable_clk;
+-	}
++	if (irq < 0)
++		return irq;
  
--	data->reg_conf = ret;
--
- 	return 0;
+ 	ret = devm_request_irq(&pdev->dev, irq, npcm_adc_isr, 0,
+ 			       "NPCM_ADC", indio_dev);
+-	if (ret < 0) {
+-		dev_err(dev, "failed requesting interrupt\n");
+-		goto err_disable_clk;
+-	}
++	if (ret < 0)
++		return ret;
+ 
+ 	reg_con = ioread32(info->regs + NPCM_ADCCON);
+ 	info->vref = devm_regulator_get_optional(&pdev->dev, "vref");
+@@ -262,7 +258,7 @@ static int npcm_adc_probe(struct platfor
+ 		ret = regulator_enable(info->vref);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Can't enable ADC reference voltage\n");
+-			goto err_disable_clk;
++			return ret;
+ 		}
+ 
+ 		iowrite32(reg_con & ~NPCM_ADCCON_REFSEL,
+@@ -272,10 +268,8 @@ static int npcm_adc_probe(struct platfor
+ 		 * Any error which is not ENODEV indicates the regulator
+ 		 * has been specified and so is a failure case.
+ 		 */
+-		if (PTR_ERR(info->vref) != -ENODEV) {
+-			ret = PTR_ERR(info->vref);
+-			goto err_disable_clk;
+-		}
++		if (PTR_ERR(info->vref) != -ENODEV)
++			return PTR_ERR(info->vref);
+ 
+ 		/* Use internal reference */
+ 		iowrite32(reg_con | NPCM_ADCCON_REFSEL,
+@@ -314,8 +308,6 @@ err_iio_register:
+ 	iowrite32(reg_con & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-err_disable_clk:
+-	clk_disable_unprepare(info->adc_clk);
+ 
+ 	return ret;
+ }
+@@ -332,7 +324,6 @@ static void npcm_adc_remove(struct platf
+ 	iowrite32(regtemp & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-	clk_disable_unprepare(info->adc_clk);
  }
  
+ static struct platform_driver npcm_adc_driver = {
 
 
 
