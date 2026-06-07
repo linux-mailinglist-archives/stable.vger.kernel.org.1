@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gChFBmtPJWojGwIAu9opvQ
-	(envelope-from <stable+bounces-261679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:59 +0200
+	id kCZeA9ZOJWq+GgIAu9opvQ
+	(envelope-from <stable+bounces-261642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC5E650396
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7581A6502C5
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DYxMBFXc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261679-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261679-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qXq8bmCw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261642-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261642-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF3DB305EA8B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5953309284D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340BA30C343;
-	Sun,  7 Jun 2026 10:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527722E7390;
+	Sun,  7 Jun 2026 10:48:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA78F4071DD;
-	Sun,  7 Jun 2026 10:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26AA2DFF04;
+	Sun,  7 Jun 2026 10:48:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829449; cv=none; b=V01sG9TK58xRv/Wo362mPb8Yun3z+yOVbzjChj81GVpbdCineYl795PzuZ+tnFg6pwL/xrnu4fpMwRlq9WLDqdY36kKBDmWTTGqLF69l6+OJDpXgkMSgiFQFuLmQRXmFP/4EdpjBTDQHJji5m95DWrFDiPxdlkpf0XXPF4qcyDg=
+	t=1780829319; cv=none; b=JZKmYWUB74b/EvdE8F6umOQ83zkOaUYsai931KllN78aQIsB/gIypjzdSrBdtYtIzgFlHgiMyp7WtDnWssSc7zOWhCU6xw2Qk8kYmnOCbMdSMDYxapbMYuu2yvD7MaCj7UNIVL3Td23Jn31rknK8V+meNlkZJcXQg2tYOoo08Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829449; c=relaxed/simple;
-	bh=73bGdKsYW6bAH716Hg4brE63MeU7jRxuGULAryZuLqA=;
+	s=arc-20240116; t=1780829319; c=relaxed/simple;
+	bh=hb8f+BWo/B5zJ1hD7EX7HtPDvmOM3XfqMkvBmZniGjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AU3qENFsHdr+dCOysnLDzVjPy+2HKxGErQCaKU2j/qiQ0+IZQRlbCaY9MDQ7wl6EJhrDylR766af3Ersgq55otYI0GaC1PUHxyVDI3prqrMZS+nfWilIUnNiPHnxXxFVUMi8CvdABqHg6viBfHcG5hUypWTtr0DUbxe2tQnfmdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYxMBFXc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE23A1F00893;
-	Sun,  7 Jun 2026 10:50:45 +0000 (UTC)
+	 MIME-Version; b=GYtc1dkxD0l1q6JxIwGZ7NnjCTFdSwxTIeITrCtg+tI666ovq4ix1dZOnqU/hHmiEGUYQKkQ1OJnmfJ9DMWIX9szeQVjtTvaU5jfnErOFdKdB7YmF+XphPYNNJJnb0OfGdjmGMMSoLJFPv2KILBDBDQ7N4HXH3F7rcbZW4Ln8nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXq8bmCw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B1F1F00893;
+	Sun,  7 Jun 2026 10:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829446;
-	bh=Jym0Zq/wYDIMn5dZmtTJhmL209ejBwlRdfM4vO4N+FQ=;
+	s=korg; t=1780829317;
+	bh=MjihBO+HZRLk8JSam8AQjO863/ln53r3d9p4bYVSmiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DYxMBFXcJQ1DdTdyx0w1Aw/O6BDbNXboWeRNf7LzKbdelIBqg2FzPPtPb5yqqXxjd
-	 YxbgiFWzC/KV+7wJqzDGOriQZufYhN4jtb6aSTrj+VW6FIx47e+tIvRRjcQ9/pBFBc
-	 b114kqWi0HxqZWx4Tgm7Q/0+3tIHm4QcXcV3UoT8=
+	b=qXq8bmCwYO4FundKAOMzsIkMrYhxb+hfgL5H28LIKjpG/9WMTIsrB4StpAnYjTxml
+	 c5KRQ5jL9ILzfnQPPNAl9Y0En/ph/e4ZZ2lec1X2kTirMk/VMk4QHv377HCTmUa1wV
+	 WI/HGRHGO6UEpD0YTE2H34BJieyt3WAaQs2ajmwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 225/307] USB: serial: belkin_sa: validate interrupt status length
+Subject: [PATCH 6.18 235/315] USB: serial: option: add missing RSVD(5) flag for Rolling RW135R-GL
 Date: Sun,  7 Jun 2026 12:00:22 +0200
-Message-ID: <20260607095735.970298498@linuxfoundation.org>
+Message-ID: <20260607095736.199977270@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,86 +71,167 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261642-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261679-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wanquan.zhong@fibocom.com,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fibocom.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9AC5E650396
+X-Rspamd-Queue-Id: 7581A6502C5
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-commit 4ce058df2ee02cc2a0f0fd5cd64ce6f1482a0b65 upstream.
+commit 689f2facc689c8add11d7ff69fbbad17d65ee596 upstream.
 
-The Belkin interrupt callback treats interrupt data as a four-byte
-status report and reads LSR/MSR fields at offsets 2 and 3. The
-interrupt-in buffer length is derived from endpoint wMaxPacketSize, and
-short interrupt transfers may complete successfully with a smaller
-actual_length.
+The RW135R-GL entry added in commit 01e8d0f74222 ("USB: serial: option:
+add support for Rolling Wireless RW135R-GL") was missing the
+.driver_info = RSVD(5) flag used by other Rolling Wireless MBIM laptop
+modules (e.g. RW135-GL and RW350-GL).
 
-Check the completed interrupt packet length before parsing status
-fields so short interrupt endpoints and short successful packets are
-ignored instead of causing out-of-bounds or stale status-byte reads.
+Without this flag, the option driver incorrectly binds to the reserved
+ADB interface (If#5) in multi-interface USB modes, causing AT/MBIM
+communication failures after mode switching. This matches the handling
+of other Rolling Wireless MBIM devices.
 
-KASAN report as below:
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-BUG: KASAN: slab-out-of-bounds in belkin_sa_read_int_callback()
-Read of size 1
-Call trace:
-  belkin_sa_read_int_callback() (drivers/usb/serial/belkin_sa.c:202)
-  __usb_hcd_giveback_urb() (drivers/usb/core/hcd.c:1630)
-  dummy_timer() (?:?)
+  0x1003: mbim, diag, AT, pipe
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x1003: mbim, diag, AT, ADB, pipe
+
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x1003: mbim, pipe
+
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Fixes: 01e8d0f74222 ("USB: serial: option: add support for Rolling Wireless RW135R-GL")
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/belkin_sa.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/belkin_sa.c
-+++ b/drivers/usb/serial/belkin_sa.c
-@@ -194,6 +194,9 @@ static void belkin_sa_read_int_callback(
- 
- 	usb_serial_debug_data(&port->dev, __func__, urb->actual_length, data);
- 
-+	if (urb->actual_length < BELKIN_SA_MSR_INDEX + 1)
-+		goto exit;
-+
- 	/* Handle known interrupt data */
- 	/* ignore data[0] and data[1] */
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2476,7 +2476,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff),			/* Rolling RW135R-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
