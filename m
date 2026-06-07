@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-260990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hBG6KMBDJWpxFQIAu9opvQ
-	(envelope-from <stable+bounces-260990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:12 +0200
+	id RF5rInxDJWpWFQIAu9opvQ
+	(envelope-from <stable+bounces-261022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F218C64F621
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8842064F5E3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FOMjz76Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260990-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260990-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KjUyePLs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261022-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261022-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0518730414A7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A4FD83003483
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483E42E1EFC;
-	Sun,  7 Jun 2026 10:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B349230C157;
+	Sun,  7 Jun 2026 10:09:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A54A1DE8AE;
-	Sun,  7 Jun 2026 10:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB7D2E1EFC;
+	Sun,  7 Jun 2026 10:09:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826888; cv=none; b=jVe4mxNSZf6G6Pmw+adKwpm6OICkKBn2v7idlp5YbrrWv6xnIqV+h3tdRAqZOpgXHHNUr1NlpUHPwMRJXe3tW1xIBWAE6NNkLjpaO0jM8cBXczA1xEo62Td6FsMc5rn3OFZW65oPhsJvYJXExqJzi3IEB36eyhmaMQq+rbiC990=
+	t=1780826999; cv=none; b=r9fFtpL0r/ltxRWy3aGSWIaRu57TZYZPwYZJEdl66LaVGOea6io77UqOhH+Qyn5EHOi01IfIEo1zTxwkZQoJxSms+qoU5Eu8SASlRew1Zr0QFaMoBSXxZl9NSYUF3vWho+hAl0BHciimUVpb/JYPZAMGdKveIeHc7Rk+zTV0iok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826888; c=relaxed/simple;
-	bh=jxsdPlYNM367oMzVZr4YmUtHhOW0S6dNtpdr3IyAXzo=;
+	s=arc-20240116; t=1780826999; c=relaxed/simple;
+	bh=ik/AbrY8Pvy87AL7KX24/MwhsQq3vFe1q5Fo/JMKsDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dse3Tz7isYWCeQArQEQGwKfYewVJ8JIu9m2WEdCExZY2536CQ04doVfR2vlohZgpGbvr9hun5BANSRT3ecxGm+v2vktYtmlp6LQrYDsDLxNwBKlZWUub8KfjvcYePLiBOIXSQxi+S3HlrshP41isHQ5jWfGd/gzTPRlIAs4w6YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOMjz76Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2026C1F00893;
-	Sun,  7 Jun 2026 10:08:05 +0000 (UTC)
+	 MIME-Version; b=Kdj7RNGGH+wi72odIKbZFub62wbGVG0FTGy8i9AYDs6nowrcgrtplN5UXUezD8Eiu49i2fyXSjijIIn4z9tz6N0NO7BhgsCWRiLFiD4Pmaj5EVPxSUlL8EveH8FDOHc6tpgPfPpbw7JX57jKhNmiNW3MsdHBlwUkPg4za7oxtJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjUyePLs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D781F00893;
+	Sun,  7 Jun 2026 10:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826887;
-	bh=L43s1tVkw5ZK46vZ9i6rpBmJWvHmsKo2skwRGp3xQ3c=;
+	s=korg; t=1780826997;
+	bh=ZsSLF4nvA8UASJ6DHY2FDaB6yCSSq2AJsSNq0AX7RWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FOMjz76QvJ4F447s3EGscMhiMAlTPEWU4xHkyxnnlPdhtQUQA5ZFVDff924yYP9i/
-	 QxMcI5k2+qFpVFbzK3ik2pTz8vIfTmSG4hF5FDzTgbWPk4+9Qhrv5SF7DukLUejjL2
-	 etvQuJPph3MnePQ0hpqYe5QiXpssZYBxrpNBm6n8=
+	b=KjUyePLsStS6m+OYYOtalG3yZ6+lNBkjHlGfgAomDLoFMd1QO1gEt8H+e2gLDczNn
+	 zhV+AQUExgqACDEdRYGgWrGvWlkw8hSrGnJs/X97A5YUcOhxSxD5zkg1BtanQzSaN9
+	 zr4RTiYLJWXPuACamtvVjIhNEtQfDzTGyJ2Q72H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 040/332] net: Avoid checksumming unreadable skb tail on trim
-Date: Sun,  7 Jun 2026 11:56:49 +0200
-Message-ID: <20260607095729.586856190@linuxfoundation.org>
+Subject: [PATCH 6.12 013/307] arm64: debug: call software breakpoint handlers statically
+Date: Sun,  7 Jun 2026 11:56:50 +0200
+Message-ID: <20260607095728.117424251@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +68,553 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260990-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn@kernel.org,m:leitao@debian.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261022-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F218C64F621
+X-Rspamd-Queue-Id: 8842064F5E3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@kernel.org>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit 2e357f002c61fd76fd8f12468744a06a5ec48eaa ]
+[ Upstream commit 6adfdc5e2ef9c71a76d8d127a2eb54f0fbe9be5e ]
 
-pskb_trim_rcsum_slow() keeps CHECKSUM_COMPLETE valid by subtracting
-the checksum of the bytes removed from the skb tail. That assumes the
-removed bytes can be read.
+Software breakpoints pass an immediate value in ESR ("comment") that can
+be used to call a specialized handler (KGDB, KASAN...).
+We do so in two different ways :
+ - During early boot, `early_brk64` statically checks against known
+   immediates and calls the corresponding handler,
+ - During init, handlers are dynamically registered into a list. When
+   called, the generic software breakpoint handler will iterate over
+   the list to find the appropriate handler.
 
-io_uring zcrx skbs may contain unreadable net_iov frags. With fbnic
-header/data split, small TCP/IPv4 packets can carry Ethernet padding
-in such a frag. ip_rcv_core() trims the skb to iph->tot_len before TCP
-sees it, and the CHECKSUM_COMPLETE adjustment then calls
-skb_checksum() on the padding.
+The dynamic registration does not provide any benefit here as it is not
+exported and all its uses are within the arm64 tree. It also depends on an
+RCU list, whose safe access currently relies on the non-preemptible state
+of `do_debug_exception`.
 
-This is exposed by IPv4 because small TCP/IPv4 frames can be shorter
-than the Ethernet minimum payload. TCP/IPv6 frames are large enough in
-the normal zcrx path, so they do not hit the same padding trim.
+Replace the list iteration logic in `call_break_hooks` to call
+the breakpoint handlers statically if they are enabled, like in
+`early_brk64`.
+Expose the handlers in their respective headers to be reachable from
+`arch/arm64/kernel/debug-monitors.c` at link time.
 
-Keep the existing checksum adjustment for readable skbs. If the
-remaining packet is fully linear, drop CHECKSUM_COMPLETE and let the
-stack validate the packet after trimming. If unreadable payload would
-remain, fail the trim; the checksum cannot be adjusted without reading
-the trimmed tail.
+Unify the naming of the software breakpoint handlers to XXX_brk_handler(),
+making it clear they are related and to differentiate from the
+hardware breakpoints.
 
-Also clear skb->unreadable when trimming removes all frags.
-
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-Signed-off-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260522120643.242974-1-bjorn@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250707114109.35672-4-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/kgdb.h                 |  3 +
+ arch/arm64/include/asm/kprobes.h              |  8 +++
+ arch/arm64/include/asm/traps.h                |  6 ++
+ arch/arm64/include/asm/uprobes.h              |  2 +
+ arch/arm64/kernel/debug-monitors.c            | 53 +++++++++++++----
+ arch/arm64/kernel/kgdb.c                      | 22 ++-----
+ arch/arm64/kernel/probes/kprobes.c            | 31 ++--------
+ arch/arm64/kernel/probes/kprobes_trampoline.S |  2 +-
+ arch/arm64/kernel/probes/uprobes.c            |  9 +--
+ arch/arm64/kernel/traps.c                     | 59 ++++---------------
+ 10 files changed, 82 insertions(+), 113 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 28bd8304796d7a..13af6f35428d52 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2811,6 +2811,8 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
- 		skb->data_len  = 0;
- 		skb_set_tail_pointer(skb, len);
- 	}
-+	if (!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
-+		skb->unreadable = 0;
+diff --git a/arch/arm64/include/asm/kgdb.h b/arch/arm64/include/asm/kgdb.h
+index 21fc85e9d2bed8..82a76b2102fb61 100644
+--- a/arch/arm64/include/asm/kgdb.h
++++ b/arch/arm64/include/asm/kgdb.h
+@@ -24,6 +24,9 @@ static inline void arch_kgdb_breakpoint(void)
+ extern void kgdb_handle_bus_error(void);
+ extern int kgdb_fault_expected;
  
- 	if (!skb->sk || skb->destructor == sock_edemux)
- 		skb_condense(skb);
-@@ -2818,16 +2820,37 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
- }
- EXPORT_SYMBOL(___pskb_trim);
- 
-+static int pskb_trim_rcsum_complete(struct sk_buff *skb, unsigned int len)
-+{
-+	int delta = skb->len - len;
++int kgdb_brk_handler(struct pt_regs *regs, unsigned long esr);
++int kgdb_compiled_brk_handler(struct pt_regs *regs, unsigned long esr);
 +
-+	if (skb_frags_readable(skb)) {
-+		skb->csum = csum_block_sub(skb->csum,
-+					   skb_checksum(skb, len, delta, 0),
-+					   len);
-+		return 0;
+ #endif /* !__ASSEMBLY__ */
+ 
+ /*
+diff --git a/arch/arm64/include/asm/kprobes.h b/arch/arm64/include/asm/kprobes.h
+index be7a3680dadff7..f2782560647bef 100644
+--- a/arch/arm64/include/asm/kprobes.h
++++ b/arch/arm64/include/asm/kprobes.h
+@@ -41,4 +41,12 @@ void __kretprobe_trampoline(void);
+ void __kprobes *trampoline_probe_handler(struct pt_regs *regs);
+ 
+ #endif /* CONFIG_KPROBES */
++
++int __kprobes kprobe_brk_handler(struct pt_regs *regs,
++				 unsigned long esr);
++int __kprobes kprobe_ss_brk_handler(struct pt_regs *regs,
++				 unsigned long esr);
++int __kprobes kretprobe_brk_handler(struct pt_regs *regs,
++				 unsigned long esr);
++
+ #endif /* _ARM_KPROBES_H */
+diff --git a/arch/arm64/include/asm/traps.h b/arch/arm64/include/asm/traps.h
+index 82cf1f879c61df..e3e8944a71c3e6 100644
+--- a/arch/arm64/include/asm/traps.h
++++ b/arch/arm64/include/asm/traps.h
+@@ -29,6 +29,12 @@ void arm64_force_sig_fault_pkey(unsigned long far, const char *str, int pkey);
+ void arm64_force_sig_mceerr(int code, unsigned long far, short lsb, const char *str);
+ void arm64_force_sig_ptrace_errno_trap(int errno, unsigned long far, const char *str);
+ 
++int bug_brk_handler(struct pt_regs *regs, unsigned long esr);
++int cfi_brk_handler(struct pt_regs *regs, unsigned long esr);
++int reserved_fault_brk_handler(struct pt_regs *regs, unsigned long esr);
++int kasan_brk_handler(struct pt_regs *regs, unsigned long esr);
++int ubsan_brk_handler(struct pt_regs *regs, unsigned long esr);
++
+ int early_brk64(unsigned long addr, unsigned long esr, struct pt_regs *regs);
+ 
+ /*
+diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
+index 014b02897f8e22..3659a79a9f325f 100644
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -28,4 +28,6 @@ struct arch_uprobe {
+ 	bool simulate;
+ };
+ 
++int uprobe_brk_handler(struct pt_regs *regs, unsigned long esr);
++
+ #endif
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index 8275b7f5754626..5e892448030005 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -21,8 +21,11 @@
+ #include <asm/cputype.h>
+ #include <asm/daifflags.h>
+ #include <asm/debug-monitors.h>
++#include <asm/kgdb.h>
++#include <asm/kprobes.h>
+ #include <asm/system_misc.h>
+ #include <asm/traps.h>
++#include <asm/uprobes.h>
+ 
+ /* Determine debug architecture. */
+ u8 debug_monitors_arch(void)
+@@ -299,22 +302,48 @@ void unregister_kernel_break_hook(struct break_hook *hook)
+ 
+ static int call_break_hook(struct pt_regs *regs, unsigned long esr)
+ {
+-	struct break_hook *hook;
+-	struct list_head *list;
+-	int (*fn)(struct pt_regs *regs, unsigned long esr) = NULL;
++	if (user_mode(regs)) {
++		if (IS_ENABLED(CONFIG_UPROBES) &&
++			esr_brk_comment(esr) == UPROBES_BRK_IMM)
++			return uprobe_brk_handler(regs, esr);
++		return DBG_HOOK_ERROR;
++	}
+ 
+-	list = user_mode(regs) ? &user_break_hook : &kernel_break_hook;
++	if (esr_brk_comment(esr) == BUG_BRK_IMM)
++		return bug_brk_handler(regs, esr);
+ 
+-	/*
+-	 * Since brk exception disables interrupt, this function is
+-	 * entirely not preemptible, and we can use rcu list safely here.
+-	 */
+-	list_for_each_entry_rcu(hook, list, node) {
+-		if ((esr_brk_comment(esr) & ~hook->mask) == hook->imm)
+-			fn = hook->fn;
++	if (IS_ENABLED(CONFIG_CFI_CLANG) && esr_is_cfi_brk(esr))
++		return cfi_brk_handler(regs, esr);
++
++	if (esr_brk_comment(esr) == FAULT_BRK_IMM)
++		return reserved_fault_brk_handler(regs, esr);
++
++	if (IS_ENABLED(CONFIG_KASAN_SW_TAGS) &&
++		(esr_brk_comment(esr) & ~KASAN_BRK_MASK) == KASAN_BRK_IMM)
++		return kasan_brk_handler(regs, esr);
++
++	if (IS_ENABLED(CONFIG_UBSAN_TRAP) && esr_is_ubsan_brk(esr))
++		return ubsan_brk_handler(regs, esr);
++
++	if (IS_ENABLED(CONFIG_KGDB)) {
++		if (esr_brk_comment(esr) == KGDB_DYN_DBG_BRK_IMM)
++			return kgdb_brk_handler(regs, esr);
++		if (esr_brk_comment(esr) == KGDB_COMPILED_DBG_BRK_IMM)
++			return kgdb_compiled_brk_handler(regs, esr);
+ 	}
+ 
+-	return fn ? fn(regs, esr) : DBG_HOOK_ERROR;
++	if (IS_ENABLED(CONFIG_KPROBES)) {
++		if (esr_brk_comment(esr) == KPROBES_BRK_IMM)
++			return kprobe_brk_handler(regs, esr);
++		if (esr_brk_comment(esr) == KPROBES_BRK_SS_IMM)
++			return kprobe_ss_brk_handler(regs, esr);
 +	}
 +
-+	if (len > skb_headlen(skb))
-+		return -EFAULT;
++	if (IS_ENABLED(CONFIG_KRETPROBES) &&
++		esr_brk_comment(esr) == KRETPROBES_BRK_IMM)
++		return kretprobe_brk_handler(regs, esr);
 +
-+	/* The trimmed bytes are unreadable, but the remaining packet can be
-+	 * checksummed by software after trimming.
-+	 */
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
- /* Note : use pskb_trim_rcsum() instead of calling this directly
-  */
- int pskb_trim_rcsum_slow(struct sk_buff *skb, unsigned int len)
- {
- 	if (skb->ip_summed == CHECKSUM_COMPLETE) {
--		int delta = skb->len - len;
-+		int err;
++	return DBG_HOOK_ERROR;
+ }
+ NOKPROBE_SYMBOL(call_break_hook);
  
--		skb->csum = csum_block_sub(skb->csum,
--					   skb_checksum(skb, len, delta, 0),
--					   len);
-+		err = pskb_trim_rcsum_complete(skb, len);
-+		if (err)
-+			return err;
- 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		int hdlen = (len > skb_headlen(skb)) ? skb_headlen(skb) : len;
- 		int offset = skb_checksum_start_offset(skb) + skb->csum_offset;
+diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
+index 4e1f983df3d1c2..e3c9e6e11a318c 100644
+--- a/arch/arm64/kernel/kgdb.c
++++ b/arch/arm64/kernel/kgdb.c
+@@ -234,21 +234,21 @@ int kgdb_arch_handle_exception(int exception_vector, int signo,
+ 	return err;
+ }
+ 
+-static int kgdb_brk_fn(struct pt_regs *regs, unsigned long esr)
++int kgdb_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	kgdb_handle_exception(1, SIGTRAP, 0, regs);
+ 	return DBG_HOOK_HANDLED;
+ }
+-NOKPROBE_SYMBOL(kgdb_brk_fn)
++NOKPROBE_SYMBOL(kgdb_brk_handler)
+ 
+-static int kgdb_compiled_brk_fn(struct pt_regs *regs, unsigned long esr)
++int kgdb_compiled_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	compiled_break = 1;
+ 	kgdb_handle_exception(1, SIGTRAP, 0, regs);
+ 
+ 	return DBG_HOOK_HANDLED;
+ }
+-NOKPROBE_SYMBOL(kgdb_compiled_brk_fn);
++NOKPROBE_SYMBOL(kgdb_compiled_brk_handler);
+ 
+ static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned long esr)
+ {
+@@ -260,16 +260,6 @@ static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned long esr)
+ }
+ NOKPROBE_SYMBOL(kgdb_step_brk_fn);
+ 
+-static struct break_hook kgdb_brkpt_hook = {
+-	.fn		= kgdb_brk_fn,
+-	.imm		= KGDB_DYN_DBG_BRK_IMM,
+-};
+-
+-static struct break_hook kgdb_compiled_brkpt_hook = {
+-	.fn		= kgdb_compiled_brk_fn,
+-	.imm		= KGDB_COMPILED_DBG_BRK_IMM,
+-};
+-
+ static struct step_hook kgdb_step_hook = {
+ 	.fn		= kgdb_step_brk_fn
+ };
+@@ -316,8 +306,6 @@ int kgdb_arch_init(void)
+ 	if (ret != 0)
+ 		return ret;
+ 
+-	register_kernel_break_hook(&kgdb_brkpt_hook);
+-	register_kernel_break_hook(&kgdb_compiled_brkpt_hook);
+ 	register_kernel_step_hook(&kgdb_step_hook);
+ 	return 0;
+ }
+@@ -329,8 +317,6 @@ int kgdb_arch_init(void)
+  */
+ void kgdb_arch_exit(void)
+ {
+-	unregister_kernel_break_hook(&kgdb_brkpt_hook);
+-	unregister_kernel_break_hook(&kgdb_compiled_brkpt_hook);
+ 	unregister_kernel_step_hook(&kgdb_step_hook);
+ 	unregister_die_notifier(&kgdb_notifier);
+ }
+diff --git a/arch/arm64/kernel/probes/kprobes.c b/arch/arm64/kernel/probes/kprobes.c
+index b0e0f0aed748a8..8661cd4064732a 100644
+--- a/arch/arm64/kernel/probes/kprobes.c
++++ b/arch/arm64/kernel/probes/kprobes.c
+@@ -306,8 +306,8 @@ int __kprobes kprobe_fault_handler(struct pt_regs *regs, unsigned int fsr)
+ 	return 0;
+ }
+ 
+-static int __kprobes
+-kprobe_breakpoint_handler(struct pt_regs *regs, unsigned long esr)
++int __kprobes
++kprobe_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	struct kprobe *p, *cur_kprobe;
+ 	struct kprobe_ctlblk *kcb;
+@@ -350,13 +350,8 @@ kprobe_breakpoint_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_HANDLED;
+ }
+ 
+-static struct break_hook kprobes_break_hook = {
+-	.imm = KPROBES_BRK_IMM,
+-	.fn = kprobe_breakpoint_handler,
+-};
+-
+-static int __kprobes
+-kprobe_breakpoint_ss_handler(struct pt_regs *regs, unsigned long esr)
++int __kprobes
++kprobe_ss_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+ 	unsigned long addr = instruction_pointer(regs);
+@@ -374,13 +369,8 @@ kprobe_breakpoint_ss_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_ERROR;
+ }
+ 
+-static struct break_hook kprobes_break_ss_hook = {
+-	.imm = KPROBES_BRK_SS_IMM,
+-	.fn = kprobe_breakpoint_ss_handler,
+-};
+-
+-static int __kprobes
+-kretprobe_breakpoint_handler(struct pt_regs *regs, unsigned long esr)
++int __kprobes
++kretprobe_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	if (regs->pc != (unsigned long)__kretprobe_trampoline)
+ 		return DBG_HOOK_ERROR;
+@@ -389,11 +379,6 @@ kretprobe_breakpoint_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_HANDLED;
+ }
+ 
+-static struct break_hook kretprobes_break_hook = {
+-	.imm = KRETPROBES_BRK_IMM,
+-	.fn = kretprobe_breakpoint_handler,
+-};
+-
+ /*
+  * Provide a blacklist of symbols identifying ranges which cannot be kprobed.
+  * This blacklist is exposed to userspace via debugfs (kprobes/blacklist).
+@@ -436,9 +421,5 @@ int __kprobes arch_trampoline_kprobe(struct kprobe *p)
+ 
+ int __init arch_init_kprobes(void)
+ {
+-	register_kernel_break_hook(&kprobes_break_hook);
+-	register_kernel_break_hook(&kprobes_break_ss_hook);
+-	register_kernel_break_hook(&kretprobes_break_hook);
+-
+ 	return 0;
+ }
+diff --git a/arch/arm64/kernel/probes/kprobes_trampoline.S b/arch/arm64/kernel/probes/kprobes_trampoline.S
+index a362f3dbb3d117..b60739d3983f60 100644
+--- a/arch/arm64/kernel/probes/kprobes_trampoline.S
++++ b/arch/arm64/kernel/probes/kprobes_trampoline.S
+@@ -12,7 +12,7 @@
+ SYM_CODE_START(__kretprobe_trampoline)
+ 	/*
+ 	 * Trigger a breakpoint exception. The PC will be adjusted by
+-	 * kretprobe_breakpoint_handler(), and no subsequent instructions will
++	 * kretprobe_brk_handler(), and no subsequent instructions will
+ 	 * be executed from the trampoline.
+ 	 */
+ 	brk #KRETPROBES_BRK_IMM
+diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
+index a2f137a595fc1c..fc1bd19c827e6f 100644
+--- a/arch/arm64/kernel/probes/uprobes.c
++++ b/arch/arm64/kernel/probes/uprobes.c
+@@ -165,7 +165,7 @@ int arch_uprobe_exception_notify(struct notifier_block *self,
+ 	return NOTIFY_DONE;
+ }
+ 
+-static int uprobe_breakpoint_handler(struct pt_regs *regs,
++int uprobe_brk_handler(struct pt_regs *regs,
+ 				     unsigned long esr)
+ {
+ 	if (uprobe_pre_sstep_notifier(regs))
+@@ -186,12 +186,6 @@ static int uprobe_single_step_handler(struct pt_regs *regs,
+ 	return DBG_HOOK_ERROR;
+ }
+ 
+-/* uprobe breakpoint handler hook */
+-static struct break_hook uprobes_break_hook = {
+-	.imm = UPROBES_BRK_IMM,
+-	.fn = uprobe_breakpoint_handler,
+-};
+-
+ /* uprobe single step handler hook */
+ static struct step_hook uprobes_step_hook = {
+ 	.fn = uprobe_single_step_handler,
+@@ -199,7 +193,6 @@ static struct step_hook uprobes_step_hook = {
+ 
+ static int __init arch_init_uprobes(void)
+ {
+-	register_user_break_hook(&uprobes_break_hook);
+ 	register_user_step_hook(&uprobes_step_hook);
+ 
+ 	return 0;
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index c38ebf715be764..013159bc0882ee 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -978,7 +978,7 @@ void do_serror(struct pt_regs *regs, unsigned long esr)
+ int is_valid_bugaddr(unsigned long addr)
+ {
+ 	/*
+-	 * bug_handler() only called for BRK #BUG_BRK_IMM.
++	 * bug_brk_handler() only called for BRK #BUG_BRK_IMM.
+ 	 * So the answer is trivial -- any spurious instances with no
+ 	 * bug table entry will be rejected by report_bug() and passed
+ 	 * back to the debug-monitors code and handled as a fatal
+@@ -988,7 +988,7 @@ int is_valid_bugaddr(unsigned long addr)
+ }
+ #endif
+ 
+-static int bug_handler(struct pt_regs *regs, unsigned long esr)
++int bug_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	switch (report_bug(regs->pc, regs)) {
+ 	case BUG_TRAP_TYPE_BUG:
+@@ -1008,13 +1008,8 @@ static int bug_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_HANDLED;
+ }
+ 
+-static struct break_hook bug_break_hook = {
+-	.fn = bug_handler,
+-	.imm = BUG_BRK_IMM,
+-};
+-
+ #ifdef CONFIG_CFI_CLANG
+-static int cfi_handler(struct pt_regs *regs, unsigned long esr)
++int cfi_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	unsigned long target;
+ 	u32 type;
+@@ -1037,15 +1032,9 @@ static int cfi_handler(struct pt_regs *regs, unsigned long esr)
+ 	arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
+ 	return DBG_HOOK_HANDLED;
+ }
+-
+-static struct break_hook cfi_break_hook = {
+-	.fn = cfi_handler,
+-	.imm = CFI_BRK_IMM_BASE,
+-	.mask = CFI_BRK_IMM_MASK,
+-};
+ #endif /* CONFIG_CFI_CLANG */
+ 
+-static int reserved_fault_handler(struct pt_regs *regs, unsigned long esr)
++int reserved_fault_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	pr_err("%s generated an invalid instruction at %pS!\n",
+ 		"Kernel text patching",
+@@ -1055,11 +1044,6 @@ static int reserved_fault_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_ERROR;
+ }
+ 
+-static struct break_hook fault_break_hook = {
+-	.fn = reserved_fault_handler,
+-	.imm = FAULT_BRK_IMM,
+-};
+-
+ #ifdef CONFIG_KASAN_SW_TAGS
+ 
+ #define KASAN_ESR_RECOVER	0x20
+@@ -1067,7 +1051,7 @@ static struct break_hook fault_break_hook = {
+ #define KASAN_ESR_SIZE_MASK	0x0f
+ #define KASAN_ESR_SIZE(esr)	(1 << ((esr) & KASAN_ESR_SIZE_MASK))
+ 
+-static int kasan_handler(struct pt_regs *regs, unsigned long esr)
++int kasan_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	bool recover = esr & KASAN_ESR_RECOVER;
+ 	bool write = esr & KASAN_ESR_WRITE;
+@@ -1098,26 +1082,14 @@ static int kasan_handler(struct pt_regs *regs, unsigned long esr)
+ 	arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
+ 	return DBG_HOOK_HANDLED;
+ }
+-
+-static struct break_hook kasan_break_hook = {
+-	.fn	= kasan_handler,
+-	.imm	= KASAN_BRK_IMM,
+-	.mask	= KASAN_BRK_MASK,
+-};
+ #endif
+ 
+ #ifdef CONFIG_UBSAN_TRAP
+-static int ubsan_handler(struct pt_regs *regs, unsigned long esr)
++int ubsan_brk_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	die(report_ubsan_failure(regs, esr & UBSAN_BRK_MASK), regs, esr);
+ 	return DBG_HOOK_HANDLED;
+ }
+-
+-static struct break_hook ubsan_break_hook = {
+-	.fn	= ubsan_handler,
+-	.imm	= UBSAN_BRK_IMM,
+-	.mask	= UBSAN_BRK_MASK,
+-};
+ #endif
+ 
+ /*
+@@ -1129,31 +1101,20 @@ int __init early_brk64(unsigned long addr, unsigned long esr,
+ {
+ #ifdef CONFIG_CFI_CLANG
+ 	if (esr_is_cfi_brk(esr))
+-		return cfi_handler(regs, esr) != DBG_HOOK_HANDLED;
++		return cfi_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+ #endif
+ #ifdef CONFIG_KASAN_SW_TAGS
+ 	if ((esr_brk_comment(esr) & ~KASAN_BRK_MASK) == KASAN_BRK_IMM)
+-		return kasan_handler(regs, esr) != DBG_HOOK_HANDLED;
++		return kasan_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+ #endif
+ #ifdef CONFIG_UBSAN_TRAP
+ 	if (esr_is_ubsan_brk(esr))
+-		return ubsan_handler(regs, esr) != DBG_HOOK_HANDLED;
++		return ubsan_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+ #endif
+-	return bug_handler(regs, esr) != DBG_HOOK_HANDLED;
++	return bug_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+ }
+ 
+ void __init trap_init(void)
+ {
+-	register_kernel_break_hook(&bug_break_hook);
+-#ifdef CONFIG_CFI_CLANG
+-	register_kernel_break_hook(&cfi_break_hook);
+-#endif
+-	register_kernel_break_hook(&fault_break_hook);
+-#ifdef CONFIG_KASAN_SW_TAGS
+-	register_kernel_break_hook(&kasan_break_hook);
+-#endif
+-#ifdef CONFIG_UBSAN_TRAP
+-	register_kernel_break_hook(&ubsan_break_hook);
+-#endif
+ 	debug_traps_init();
+ }
 -- 
 2.53.0
 
