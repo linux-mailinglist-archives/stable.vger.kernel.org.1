@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-261298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dGkFJfVHJWq2FwIAu9opvQ
-	(envelope-from <stable+bounces-261298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:09 +0200
+	id XXbEMdtHJWqlFwIAu9opvQ
+	(envelope-from <stable+bounces-261325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3BF64FB16
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A03364FAE3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Hc/NSJdl";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261298-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261298-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lCgjIkH0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261325-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261325-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC4123023E0D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6D32300232D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75618324B31;
-	Sun,  7 Jun 2026 10:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DDB326951;
+	Sun,  7 Jun 2026 10:28:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BAC1C5F27;
-	Sun,  7 Jun 2026 10:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187F43290D8;
+	Sun,  7 Jun 2026 10:28:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828015; cv=none; b=PufSlk9dMslhY1ryEMt6rYZjaVS9FtRlF8FjGSRFzrJT1Y0KHT/nHqQCGCd9djslv/M9pLgh+Omqss48C67DVb+vXkgMbAOEMpKcOxvcGhBglfM9bi6bn53vIXE472ehP6NVlRVzbvGGmZgD5PK+rt5rf281fTtuI9bvqSbnuRM=
+	t=1780828119; cv=none; b=FdGYKqzMGv8FEAsfJ2sacDnR697yIpi5xZ12MWZbjK6M07ZuPIb2uru070cYGNRro1eUvbfckHhrlaETQzHX/ZLey10eS7/tCs3UmarIzJI4HVlij31wdGUxaEH7SJsWDTEIYggmtrc+bbb5wIZnfzFrwuzpEl/9eTQpKygV7I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828015; c=relaxed/simple;
-	bh=bXfK/s1pi7z5UIefccBNcj/5ph0F36FJyqeXQva9v+I=;
+	s=arc-20240116; t=1780828119; c=relaxed/simple;
+	bh=ieAfsMDttXmf9n0TZ8gVBs9JTqz4O1bP0o+ooS+Lyck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHeXxExU4MhZWzSKH3BTXCbG24i1LUwA3ZvqRAK6VCF0OC9qNKqgxMlnmvY3e7b0tatROjYuXXPSCpWh/FIjAZwEBtv0Mjw5JXYsPyrbbxZ4o08FAJTdYD/Glu0jmVcpi41XVKwLB3u8nqWUvxSef/aDwmeztCbJRs7R1tbY830=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc/NSJdl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667251F00893;
-	Sun,  7 Jun 2026 10:26:53 +0000 (UTC)
+	 MIME-Version; b=r3oHbyWvTnkesrolMrZZTMHH8MiU4PNVtuvlLU05CoPuRVZRGowyQ/CPj4jr0pe034btZo6Z5NeyEWZjJT3SrBV6fLbL6P4qWzGQUuSNn3Aiw1EeBnfci0P/1QH3UsJb1vs2ceJoOs++Hv6iS+sVq4SVsEUpWpwcVmjB8Wv4T1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCgjIkH0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284F21F00893;
+	Sun,  7 Jun 2026 10:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828014;
-	bh=bEunoh0NNjPcsX7tefksX503v/GM/9jHf0WLjdgzwx8=;
+	s=korg; t=1780828116;
+	bh=1z0/jljo8vg6a/aJwmPGpJVWk5OCgPHed0Gw8f9S3co=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hc/NSJdlCktgTXuIewgH0ZdJBCSfrwG5Xwq7TK6NypeCkphsjcWscyLVYZmHOeTcN
-	 MZj/bccS1eg0DOFdlbALq8YGT5A5o8nHduA4M3UZm3REtCroLu4rJDS+1NqTeNoDBM
-	 tfISkEgNMfKcBLXZ26RjdzhaDdcUdX8ad4xivq6E=
+	b=lCgjIkH0g0KZCuxNBhAGT1QgMSawDd/3g2ZbYcxXdv3xyrFBPHD6fooZvNTDP/J98
+	 fknDYD/jCnIp6Iyw04xRlMnC9Sn7Yb7Mehik8ZvP07Un5cRnL+9X1dwljOaFmO6dLt
+	 SznVbHWDCypbh1N6HOTjVtq0oCV0rJcDlB6p3dKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/307] s390/cio: Restore GFP_DMA for CHSC allocation
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 132/332] USB: serial: cypress_m8: fix memory corruption with small endpoint
 Date: Sun,  7 Jun 2026 11:58:21 +0200
-Message-ID: <20260607095731.609190802@linuxfoundation.org>
+Message-ID: <20260607095732.946549670@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,190 +67,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261298-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oberpar@linux.ibm.com,m:hca@linux.ibm.com,m:agordeev@linux.ibm.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-261325-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1E3BF64FB16
+X-Rspamd-Queue-Id: 5A03364FAE3
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit ea34567db0a6b3a7ce78ba421592344315c8f90e ]
+commit e1a9d791fd66ab2431b9e6f6f835823809869047 upstream.
 
-Re-add GFP_DMA when allocating memory for CHSC control blocks.
-On some supported machines, CHSC cannot access memory outside
-the DMA zone, causing CHSC command failures.
+Make sure that the interrupt-out endpoint max packet size is at least
+eight bytes to avoid user-controlled slab corruption or NULL-pointer
+dereference should a malicious device report a smaller size.
 
-Cc: stable@vger.kernel.org
-Fixes: a3a64a4def8d ("s390/cio: remove unneeded DMA zone allocation")
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-[ adjusted context to account for missing commit bf4afc53b77ae ]
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Cc: stable@vger.kernel.org	# 2.6.26
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/chsc.c     |  4 ++--
- drivers/s390/cio/chsc_sch.c | 20 ++++++++++----------
- drivers/s390/cio/scm.c      |  2 +-
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/usb/serial/cypress_m8.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/s390/cio/chsc.c b/drivers/s390/cio/chsc.c
-index dcc1e1c34ca2e1..8fe6658dcfe1a3 100644
---- a/drivers/s390/cio/chsc.c
-+++ b/drivers/s390/cio/chsc.c
-@@ -1153,8 +1153,8 @@ int __init chsc_init(void)
- {
- 	int ret;
- 
--	sei_page = (void *)get_zeroed_page(GFP_KERNEL);
--	chsc_page = (void *)get_zeroed_page(GFP_KERNEL);
-+	sei_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	chsc_page = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sei_page || !chsc_page) {
- 		ret = -ENOMEM;
- 		goto out_err;
-diff --git a/drivers/s390/cio/chsc_sch.c b/drivers/s390/cio/chsc_sch.c
-index 1e58ee3cc87db1..9131ce3af1b8eb 100644
---- a/drivers/s390/cio/chsc_sch.c
-+++ b/drivers/s390/cio/chsc_sch.c
-@@ -293,7 +293,7 @@ static int chsc_ioctl_start(void __user *user_area)
- 	if (!css_general_characteristics.dynio)
- 		/* It makes no sense to try. */
- 		return -EOPNOTSUPP;
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!chsc_area)
- 		return -ENOMEM;
- 	request = kzalloc(sizeof(*request), GFP_KERNEL);
-@@ -341,7 +341,7 @@ static int chsc_ioctl_on_close_set(void __user *user_area)
- 		ret = -ENOMEM;
- 		goto out_unlock;
+--- a/drivers/usb/serial/cypress_m8.c
++++ b/drivers/usb/serial/cypress_m8.c
+@@ -445,6 +445,14 @@ static int cypress_generic_port_probe(st
+ 		return -ENODEV;
  	}
--	on_close_chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	on_close_chsc_area = (void *)get_zeroed_page(GFP_DMA | GFP_KERNEL);
- 	if (!on_close_chsc_area) {
- 		ret = -ENOMEM;
- 		goto out_free_request;
-@@ -393,7 +393,7 @@ static int chsc_ioctl_start_sync(void __user *user_area)
- 	struct chsc_sync_area *chsc_area;
- 	int ret, ccode;
  
--	chsc_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	chsc_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!chsc_area)
++	/*
++	 * The buffer must be large enough for the one or two-byte header (and
++	 * following data), but assume anything smaller than eight bytes is
++	 * broken.
++	 */
++	if (port->interrupt_out_size < 8)
++		return -EINVAL;
++
+ 	priv = kzalloc_obj(struct cypress_private);
+ 	if (!priv)
  		return -ENOMEM;
- 	if (copy_from_user(chsc_area, user_area, PAGE_SIZE)) {
-@@ -439,7 +439,7 @@ static int chsc_ioctl_info_channel_path(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scpcd_area;
- 
--	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpcd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpcd_area)
- 		return -ENOMEM;
- 	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
-@@ -501,7 +501,7 @@ static int chsc_ioctl_info_cu(void __user *user_cd)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *scucd_area;
- 
--	scucd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scucd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scucd_area)
- 		return -ENOMEM;
- 	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
-@@ -564,7 +564,7 @@ static int chsc_ioctl_info_sch_cu(void __user *user_cud)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sscud_area;
- 
--	sscud_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sscud_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sscud_area)
- 		return -ENOMEM;
- 	cud = kzalloc(sizeof(*cud), GFP_KERNEL);
-@@ -626,7 +626,7 @@ static int chsc_ioctl_conf_info(void __user *user_ci)
- 		u8 data[PAGE_SIZE - 20];
- 	} __attribute__ ((packed)) *sci_area;
- 
--	sci_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sci_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sci_area)
- 		return -ENOMEM;
- 	ci = kzalloc(sizeof(*ci), GFP_KERNEL);
-@@ -697,7 +697,7 @@ static int chsc_ioctl_conf_comp_list(void __user *user_ccl)
- 		u32 res;
- 	} __attribute__ ((packed)) *cssids_parm;
- 
--	sccl_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sccl_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sccl_area)
- 		return -ENOMEM;
- 	ccl = kzalloc(sizeof(*ccl), GFP_KERNEL);
-@@ -757,7 +757,7 @@ static int chsc_ioctl_chpd(void __user *user_chpd)
- 	int ret;
- 
- 	chpd = kzalloc(sizeof(*chpd), GFP_KERNEL);
--	scpd_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	scpd_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!scpd_area || !chpd) {
- 		ret = -ENOMEM;
- 		goto out_free;
-@@ -797,7 +797,7 @@ static int chsc_ioctl_dcal(void __user *user_dcal)
- 		u8 data[PAGE_SIZE - 36];
- 	} __attribute__ ((packed)) *sdcal_area;
- 
--	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL);
-+	sdcal_area = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
- 	if (!sdcal_area)
- 		return -ENOMEM;
- 	dcal = kzalloc(sizeof(*dcal), GFP_KERNEL);
-diff --git a/drivers/s390/cio/scm.c b/drivers/s390/cio/scm.c
-index c7894d61306d74..375cbfa31b5373 100644
---- a/drivers/s390/cio/scm.c
-+++ b/drivers/s390/cio/scm.c
-@@ -228,7 +228,7 @@ int scm_update_information(void)
- 	size_t num;
- 	int ret;
- 
--	scm_info = (void *)__get_free_page(GFP_KERNEL);
-+	scm_info = (void *)__get_free_page(GFP_KERNEL | GFP_DMA);
- 	if (!scm_info)
- 		return -ENOMEM;
- 
--- 
-2.53.0
-
 
 
 
