@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aNPFNcdPJWpFGwIAu9opvQ
-	(envelope-from <stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:31 +0200
+	id BuEhL1FSJWrVGwIAu9opvQ
+	(envelope-from <stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482216503FF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6D96505E5
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L5uiyxTI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Di7aaC2/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43352301BEDB
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A80893073944
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7158131ED80;
-	Sun,  7 Jun 2026 11:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3112328255;
+	Sun,  7 Jun 2026 11:03:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8CC224D6;
-	Sun,  7 Jun 2026 11:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB01E98E3;
+	Sun,  7 Jun 2026 11:03:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830120; cv=none; b=uF6kD/m4K2J87BN0YQEaH8waY3wu4V3gDnhVVEAwMmwNOgI0Dwpo9sIYOkTgIn7irk/AJEl3Rf3R/xT444jfSy1w/rxkR53d+LzWQoxz0CZJjV5eB05TyGijeZDKU+t0IGFRoosiqI7z9Yni4LoMVg0k9i4hyCFKnD/DBy9EF0o=
+	t=1780830186; cv=none; b=WybDSJ9EDZ7B+ctScLj6p9izrAeFxed3jU8T2vAr7idCBLsMgT82FLHHWYE28WtWPSDEPEKT8WK6sK8bY87Ir6KuWcOm0ancoV2Jet289OMy7LbrDPuypuHFO9Pr+gJ6Aal5VXPAK89rf+TmVzHIz1VuwiYpsjWJxkP6J7pNrjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830120; c=relaxed/simple;
-	bh=Jlv0QWXDQ/08qgsYEYc1lyYazB40MHM/jJsfBuBYcew=;
+	s=arc-20240116; t=1780830186; c=relaxed/simple;
+	bh=fXO5wCTBmz6MY8qh9hKFR5gXuqW+IHyaildeEi30z9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iq7oY5WsJ2Pg89e3q5EV2JrQju5kuCw62vMVnDWAqexGorft7BPih4IYSBmTtz0Q6zP4e98cZJU3/Rn3BJVz5ObBd871HASjEpkqzNQTE0JbHdhCqvjhWzoiU1F3u3PY95bvky16dPPFt4Bxvpa7cNLoMRNpBRyl1AbSNOJVX+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5uiyxTI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED21F00893;
-	Sun,  7 Jun 2026 11:01:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MRl6qtV911VDg3WY9u0BxBFHOyl1C2ChVKvbWN1kALqzN3uMj1QnuKA9H2eI9yr1j9sS4mQ5XHL/iSfuewgH/q5hpPA6gcTtNST0HRXQXpgePB7kGBp9D0Qm9esxsbJ3UZqO4bEEReUcWyqHw2PeM48VMKlrtg4oEXvP1KbK0cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di7aaC2/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CB61F00893;
+	Sun,  7 Jun 2026 11:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830119;
-	bh=PrET5f2WenRvJV667oiH1mczoWBsPO1x8CSllXbQCD4=;
+	s=korg; t=1780830185;
+	bh=GKjaC6oe34q2dmdFJuWDnpsmezkeg/BNrgJL9YTuwtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L5uiyxTIx8LnS31FrCGvRtJQz/Eo31w85PCQ59xcikG4KYqT768CKfuUsm8YKqsss
-	 yyrz1ZIEScCVYHsEPs5osrdyeWENjcL/TFBHaixgQLThaHPq/05gF1k+fhZcLzLSWC
-	 GEsBwlFAySi5nmZmZvhoYyA6Jw77MxzgZkvAgzZE=
+	b=Di7aaC2/eLZuNgE39709XQOeYntMXHOnEg5TNft9p3QdPVYIPoOaVbYcul1Nt7tdk
+	 7HdfPHC5wemwOOz8z3fXpQJgvCHKH7HRVhLmSXpksfN9Y1Yn4P/DZTC9k4E6VGIGsQ
+	 6H1l/a4ter74JYLn3n61aKQzU+sppNaRxIqHw2lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 311/315] net: phy: micrel: fix LAN8814 QSGMII soft reset
+Subject: [PATCH 6.12 301/307] x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines
 Date: Sun,  7 Jun 2026 12:01:38 +0200
-Message-ID: <20260607095739.044948139@linuxfoundation.org>
+Message-ID: <20260607095738.807754934@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +68,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261857-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261873-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:robert.marko@sartura.hr,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,alien8.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 482216503FF
+X-Rspamd-Queue-Id: 1D6D96505E5
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
-[ Upstream commit e027c218c482c6a0ae1948129ccda3b0a2033368 ]
+[ Upstream commit a17dc12bfed8868e6a86f3b45c16065a70641acb ]
 
-LAN8814 QSGMII soft reset was moved into the probe function to avoid
-triggering it for each of 4 PHY-s in the package.
+With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
+(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
+crashes on the first call into the traced function:
 
-However, that broke QSGMII link between the MAC and PHY on most LAN8814
-PHY-s, specificaly for us on the Microchip LAN969x switch.
-Reading the QSGMII status registers it was visible that lanes were only
-partially synced.
+  BUG: unable to handle page fault for address: ffff88817ae18880
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 4b53067 P4D 4b53067 PUD 0
+  Oops: Oops: 0002 [#1] SMP PTI
+  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
+  Call Trace:
+   <TASK>
+   ? find_held_lock
+   ? exc_page_fault
+   ? lock_release
+   ? __x64_sys_clock_nanosleep
+   ? lockdep_hardirqs_on_prepare
+   ? trace_hardirqs_on
+   __x64_sys_clock_nanosleep
+   do_syscall_64
+   ? exc_page_fault
+   ? call_depth_return_thunk
+   entry_SYSCALL_64_after_hwframe
+  ...
+  Kernel panic - not syncing: Fatal exception
 
-It looks like the reset timing is crucial, so lets move the reset back
-into the .config_init function but guard it with phy_package_init_once()
-to avoid it being triggered on each of 4 PHY-s in the package.
-Change the probe function to use phy_package_probe_once() for coma and PtP
-setup.
+This small reproducer allows to easily trigger the crash:
 
-Fixes: 96a9178a29a6 ("net: phy: micrel: lan8814 fix reset of the QSGMII interface")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Link: https://patch.msgid.link/20260428134138.1741253-1-robert.marko@sartura.hr
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
+  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
+  # usleep 1
+
+Monitoring the crash under GDB points to the exact instruction in charge of
+incrementing the call depth:
+
+  sarq $5, %gs:__x86_call_depth(%rip)
+
+This instruction matches the one inserted by the ftrace_regs_caller from
+ftrace_64.S. This emitted code was likely working fine until the introduction
+of
+
+  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
+
+it has made the call depth accounting addressing relative to $rip, instead of
+being based on an absolute address.
+
+As this code exact location depends on where the trampoline lives in memory,
+the corresponding displacement needs to be adjusted at runtime to actually
+correctly find the per-cpu __x86_call_depth value, otherwise the targeted
+address is wrong, leading to the page fault seen above.
+
+Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
+instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
+as it is done for example by the x86 BPF JIT compiler through
+x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
+in ftrace_caller and ftrace_regs_caller.
+
+  [ bp: Massage. ]
+
+Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/x86/kernel/ftrace.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index bc19880107ae42..e6f00aa9a99010 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -4389,6 +4389,13 @@ static int lan8814_config_init(struct phy_device *phydev)
- {
- 	struct kszphy_priv *lan8814 = phydev->priv;
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -371,6 +371,13 @@ create_trampoline(struct ftrace_ops *ops
+ 	}
  
-+	if (phy_package_init_once(phydev))
-+		/* Reset the PHY */
-+		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
-+				       LAN8814_QSGMII_SOFT_RESET,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT,
-+				       LAN8814_QSGMII_SOFT_RESET_BIT);
+ 	/*
++	 * Generated trampoline may contain rIP-relative addressing which
++	 * displacement needs to be fixed.
++	 */
++	text_poke_apply_relocation(trampoline, trampoline, size,
++				   (void *)start_offset, size);
 +
- 	/* Disable ANEG with QSGMII PCS Host side */
- 	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
- 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
-@@ -4473,13 +4480,7 @@ static int lan8814_probe(struct phy_device *phydev)
- 	devm_phy_package_join(&phydev->mdio.dev, phydev,
- 			      addr, sizeof(struct lan8814_shared_priv));
- 
--	if (phy_package_init_once(phydev)) {
--		/* Reset the PHY */
--		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
--				       LAN8814_QSGMII_SOFT_RESET,
--				       LAN8814_QSGMII_SOFT_RESET_BIT,
--				       LAN8814_QSGMII_SOFT_RESET_BIT);
--
-+	if (phy_package_probe_once(phydev)) {
- 		err = lan8814_release_coma_mode(phydev);
- 		if (err)
- 			return err;
--- 
-2.53.0
-
++	/*
+ 	 * The address of the ftrace_ops that is used for this trampoline
+ 	 * is stored at the end of the trampoline. This will be used to
+ 	 * load the third parameter for the callback. Basically, that
 
 
 
