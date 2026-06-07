@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JMLrKVZNJWo6GgIAu9opvQ
-	(envelope-from <stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:06 +0200
+	id cVHBKENLJWo8GQIAu9opvQ
+	(envelope-from <stable+bounces-261507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BBF650113
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191FE64FF0F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TrzBhvRd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tVlUNiSz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261507-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261507-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4A9F3072579
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F17C303853D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFEF2E7376;
-	Sun,  7 Jun 2026 10:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3FD328255;
+	Sun,  7 Jun 2026 10:40:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4993B2D8378;
-	Sun,  7 Jun 2026 10:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7573254A9;
+	Sun,  7 Jun 2026 10:40:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829145; cv=none; b=mGNtAzjcVAfbpkUWaveEVmxPdLlF8XR4NE2lqlMeDZY1MphCUvjtvcBimzm5HiOXLfo2C7QkqiVo9uS+bqhHbCps8LJV+LHib/XBMLp93USpAUiShJ+OnwLBawD9wS/5DiYOlXzongMcfwBYQu69d+toTPeR1VwzJ2n6jkzjgxg=
+	t=1780828819; cv=none; b=BqxzITGNDPOq3BY+eLKpbNqQ4fGPluX9h+Bo6NAowvofgyVToRMTijEBxAjVA7aaMfd9saIfE+FQWrvJGFm4pnHfraSUbrTL9uzkiXi9oCcVfUrruQiEp0MXWOXHIc6QPWa78MdRJxF7ks619WvHcj/Kr5nt2QKX6NpVFIcw2WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829145; c=relaxed/simple;
-	bh=KAucCjdqyNzAEMGn5Ai01fc0Gm9eWYQrBsxsT6o7lGI=;
+	s=arc-20240116; t=1780828819; c=relaxed/simple;
+	bh=W0jFBz4KgfZBhOlHUepPeF43MdbynhvGpHrtUtcVfLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WuKR/3VDUUqwtTMAUzIGgK9Fl63hYP3pbb62U4N+vPFWl/lTG8hdjpdxk15cuewmPXtz+BnFYEq/fV3VW3SPBy0efzU9U3Ehvj0chD7q7vz4Of4jaiVDEi+HQ1xq9dGKmCHQvnsv4gs56Pkky4GstirBOGo4BuC9YIZQ4riqpNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrzBhvRd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677621F00893;
-	Sun,  7 Jun 2026 10:45:43 +0000 (UTC)
+	 MIME-Version; b=tB/MFJNuJ3EMGjG4PX7uaCtfb+TQfzfER0hhn34a5W2JCbYC6uzUsQBBLs7rgqLQ5589UOZLzETjIBVMFXvsKkcu7PlxJQx8cqb1n25Z4xhr9xtohzajgSzl1ili9PJzosFGdpJ6F6kvolrHfQ2W7SV0TR/o8BShlswVuJaVhvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVlUNiSz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7B91F00893;
+	Sun,  7 Jun 2026 10:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829144;
-	bh=dco1Me2pkpA3XGv4lN3R+e4JR9E49p63U5HWKSnQMLA=;
+	s=korg; t=1780828818;
+	bh=sS6QyzqFWffcGaZpS+fl/V4KGhUtVRZQtzOBTpNsr44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TrzBhvRdVNF2WzCKHGN8jV3WGYjmHu8z8R4Wehp+O64sZfSoQe6noMpF2zPWr0pBx
-	 +rWpDeMmHRyEvMv3h+q4RaFoxjpEiIURXQ8DXpuzBLyJJLMcPv+MSea2uWjb2q5D21
-	 2g5u7ktPottsp/AiLN4jOMGEPCELyX6cBo81g7tU=
+	b=tVlUNiSznSn3U/6SiPkP/jpwZn/mO61DMP4aUh+D6LtH57x+wRCHuPGAZLAuznk8a
+	 54N/jiYh4NIHotkE4TAjNV4qXkTX62ii8OOdq6ncC3jrS730VQ87hV+zEKh9FlFaaz
+	 7OciJ3gn0h5dXRDVeHjOpQafvBf6uYy5Hw/QzoKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Tang <tpluszz77@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	James Chapman <jchapman@katalix.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 190/307] ipv6: validate extension header length before copying to cmsg
+Subject: [PATCH 7.0 218/332] l2tp: use refcount_inc_not_zero in l2tp_session_get_by_ifname
 Date: Sun,  7 Jun 2026 11:59:47 +0200
-Message-ID: <20260607095734.702386096@linuxfoundation.org>
+Message-ID: <20260607095736.069649533@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,207 +68,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,katalix.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261507-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261594-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tpluszz77@gmail.com,m:willemb@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jchapman@katalix.com,m:horms@kernel.org,m:kuba@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 12BBF650113
+X-Rspamd-Queue-Id: 191FE64FF0F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qi Tang <tpluszz77@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit dd433671fef381fdaf7b530c631e6b782d66e224 upstream.
+commit 05f95729ca844704d15e49ce14868af4b403b32b upstream.
 
-ip6_datagram_recv_specific_ctl() builds IPV6_{HOPOPTS,DSTOPTS,RTHDR}
-cmsgs (and their IPV6_2292* legacy counterparts) by trusting the
-on-wire hdrlen byte (ptr[1]) when computing the put_cmsg() length.
-The length was validated only at parse time (ipv6_parse_hopopts(),
-etc.).  An nftables payload-write expression can rewrite hdrlen after
-parsing and before the skb reaches recvmsg; the write itself is
-in-bounds but put_cmsg() then reads up to ((hdrlen+1) << 3) = 2040
-bytes from an 8-byte header.  nftables is reachable from an
-unprivileged user namespace, so this is an unprivileged
-slab-out-of-bounds read:
+A reader in l2tp_session_get_by_ifname() can return a pointer to a
+session whose refcount has reached zero. The getter takes its
+reference with plain refcount_inc(), but every other session getter
+in the same file (l2tp_v2_session_get, l2tp_v3_session_get, and the
+corresponding _get_next variants) uses refcount_inc_not_zero()
+because the IDR/RCU lookup can race with refcount_dec_and_test() ->
+l2tp_session_free() -> kfree_rcu(). The ifname getter is the only
+outlier; the inconsistency was raised on-list after 979c017803c4
+("l2tp: use list_del_rcu in l2tp_session_unhash").
 
-  BUG: KASAN: slab-out-of-bounds in put_cmsg+0x3ac/0x540
-   put_cmsg+0x3ac/0x540
-   udpv6_recvmsg+0xca0/0x1250
-   sock_recvmsg+0xdf/0x190
-   ____sys_recvmsg+0x1b1/0x620
+A reader inside rcu_read_lock_bh() that matches session->ifname can
+be preempted between the strcmp() and the refcount_inc(). If the
+last reference drops on another CPU in that window, the reader's
+refcount_inc() runs on a counter that has reached zero. refcount_t
+catches the addition-on-zero, prints "refcount_t: addition on 0;
+use-after-free", saturates the counter, and returns the saturated
+pointer to the caller. Session memory is held live by the in-flight
+RCU read section, but the kfree_rcu() callback queued from
+l2tp_session_free() will free it once the grace period closes; a
+caller that dereferences the returned session past that point hits
+a slab-use-after-free. On PREEMPT_RT local_bh_disable() is a per-CPU
+sleeping lock and the preemption window is real; on stock PREEMPT
+kernels local_bh_disable() is a preempt_count increment that closes
+the cross-CPU race in practice (see below).
 
-Add ipv6_get_exthdr_len() which validates that at least two bytes
-are accessible before reading the hdrlen field, then checks the
-computed length against skb_tail_pointer(skb), returning 0 on
-failure.  Extension headers are kept in the linear skb area by
-pskb_may_pull() during input, so skb_tail_pointer() is the correct
-bound.
+Use refcount_inc_not_zero() and continue the list walk on failure,
+matching the other session getters in the file. The ifname getter
+is the only session getter in net/l2tp/ that still uses the bare
+refcount_inc() pattern; this change restores file-internal
+consistency. The success path is unchanged.
 
-Use ipv6_get_exthdr_len() at all non-AH call sites: the five
-standalone cmsg blocks (HbH, 2292HbH, 2292DSTOPTS x2, 2292RTHDR)
-and the three standard cases in the extension-header walk loop
-(DSTOPTS, ROUTING, default).  AH retains an inline bounds check
-because its length formula differs ((ptr[1]+2)<<2).
-
-The walk loop also gets a pre-read bounds check at the top to
-validate ptr before any case accesses ptr[0] or ptr[1].
-
-When the walk loop detects a corrupted header, return from the
-function instead of continuing to process later socket options.
-
+Fixes: abe7a1a7d0b6 ("l2tp: improve tunnel/session refcount helpers")
 Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Qi Tang <tpluszz77@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260523143245.2281415-1-tpluszz77@gmail.com
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: James Chapman <jchapman@katalix.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260523023423.2568972-1-michael.bommarito@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/datagram.c |   54 ++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 46 insertions(+), 8 deletions(-)
+ net/l2tp/l2tp_core.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/ipv6/datagram.c
-+++ b/net/ipv6/datagram.c
-@@ -617,6 +617,18 @@ void ip6_datagram_recv_common_ctl(struct
- 	}
- }
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -441,12 +441,13 @@ struct l2tp_session *l2tp_session_get_by
+ 	idr_for_each_entry_ul(&pn->l2tp_tunnel_idr, tunnel, tmp, tunnel_id) {
+ 		if (tunnel) {
+ 			list_for_each_entry_rcu(session, &tunnel->session_list, list) {
+-				if (!strcmp(session->ifname, ifname)) {
+-					refcount_inc(&session->ref_count);
+-					rcu_read_unlock_bh();
++				if (strcmp(session->ifname, ifname))
++					continue;
++				if (!refcount_inc_not_zero(&session->ref_count))
++					continue;
++				rcu_read_unlock_bh();
  
-+static u16 ipv6_get_exthdr_len(const struct sk_buff *skb, const u8 *ptr)
-+{
-+	u16 len;
-+
-+	if (ptr + 2 > skb_tail_pointer(skb))
-+		return 0;
-+
-+	len = (ptr[1] + 1) << 3;
-+
-+	return (len <= skb_tail_pointer(skb) - ptr) ? len : 0;
-+}
-+
- void ip6_datagram_recv_specific_ctl(struct sock *sk, struct msghdr *msg,
- 				    struct sk_buff *skb)
- {
-@@ -643,7 +655,10 @@ void ip6_datagram_recv_specific_ctl(stru
- 	/* HbH is allowed only once */
- 	if (np->rxopt.bits.hopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
- 		u8 *ptr = nh + sizeof(struct ipv6hdr);
--		put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, len, ptr);
- 	}
- 
- 	if (opt->lastopt &&
-@@ -664,26 +679,37 @@ void ip6_datagram_recv_specific_ctl(stru
- 			unsigned int len;
- 			u8 *ptr = nh + off;
- 
-+			if (ptr + 2 > skb_tail_pointer(skb))
-+				return;
-+
- 			switch (nexthdr) {
- 			case IPPROTO_DSTOPTS:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				if (np->rxopt.bits.dstopts)
- 					put_cmsg(msg, SOL_IPV6, IPV6_DSTOPTS, len, ptr);
- 				break;
- 			case IPPROTO_ROUTING:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				if (np->rxopt.bits.srcrt)
- 					put_cmsg(msg, SOL_IPV6, IPV6_RTHDR, len, ptr);
- 				break;
- 			case IPPROTO_AH:
- 				nexthdr = ptr[0];
- 				len = (ptr[1] + 2) << 2;
-+				if (ptr + len > skb_tail_pointer(skb))
-+					return;
- 				break;
- 			default:
- 				nexthdr = ptr[0];
--				len = (ptr[1] + 1) << 3;
-+				len = ipv6_get_exthdr_len(skb, ptr);
-+				if (!len)
-+					return;
- 				break;
+-					return session;
+-				}
++				return session;
  			}
- 
-@@ -705,19 +731,31 @@ void ip6_datagram_recv_specific_ctl(stru
+ 		}
  	}
- 	if (np->rxopt.bits.ohopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
- 		u8 *ptr = nh + sizeof(struct ipv6hdr);
--		put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.odstopts && opt->dst0) {
- 		u8 *ptr = nh + opt->dst0;
--		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.osrcrt && opt->srcrt) {
- 		struct ipv6_rt_hdr *rthdr = (struct ipv6_rt_hdr *)(nh + opt->srcrt);
--		put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, (rthdr->hdrlen+1) << 3, rthdr);
-+		u16 len = ipv6_get_exthdr_len(skb, (u8 *)rthdr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, len, rthdr);
- 	}
- 	if (np->rxopt.bits.odstopts && opt->dst1) {
- 		u8 *ptr = nh + opt->dst1;
--		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
-+		u16 len = ipv6_get_exthdr_len(skb, ptr);
-+
-+		if (len)
-+			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
- 	}
- 	if (np->rxopt.bits.rxorigdstaddr) {
- 		struct sockaddr_in6 sin6;
 
 
 
