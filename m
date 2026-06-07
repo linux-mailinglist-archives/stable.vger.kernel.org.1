@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-261275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id w2DHGDFIJWrcFwIAu9opvQ
-	(envelope-from <stable+bounces-261275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:09 +0200
+	id bQhhKNNGJWocFwIAu9opvQ
+	(envelope-from <stable+bounces-261253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC5264FB6F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A400464F9DB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uDH1lw+w;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261275-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261275-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JEoAPS3d;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261253-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261253-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63D5C303FF9D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 115A63004C96
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FCF3246F4;
-	Sun,  7 Jun 2026 10:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD764322C88;
+	Sun,  7 Jun 2026 10:24:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E832D8378;
-	Sun,  7 Jun 2026 10:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B45831F983;
+	Sun,  7 Jun 2026 10:24:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827930; cv=none; b=sAOFTDuF1w9JRM+HxS8ggJykA0aF/BdqpJeyjJCvO9N5xcI9c7XwU8N+oJMGXNzuQn7p1hbCzWzUM5am86zcJhbyGj5w7gqJMbGDYyYC9O51SYVbwJFBiGybA5JRb2HKXTlZD/XSjPshYPO59iBBDomBugPcBJcyuYSTuJw+8QA=
+	t=1780827842; cv=none; b=CBbHmBW/j6Ho6N1OvzmQDfqxqc/KrSqtf42lxCWebP2GD8gZMgFFciI8zRw2GL6GBZgJSyKNFOdgX0MIu9vYFiFO5woGKCRMwdkwegQxAkXVg/MSOKXRZT6xvKVipYfWkinZdjvRqwk4mXoj9kRSjWpHjTlqmTD/wBJFQPZt8WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827930; c=relaxed/simple;
-	bh=VlDVyjUmzymttEYTixpBLHB8oUkt5vQ8qlB+IT0+6WY=;
+	s=arc-20240116; t=1780827842; c=relaxed/simple;
+	bh=7AkqWxJzn5d81XkIc7gAgJVT5neUZlr9XxJNqlsZs/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEyO+oshzMUvSwqbHnLITgQ1IeJsviehOxjS/Up/n8lhhxMde67phMVHBKOqfOr7c4sdZEiu5BmQ7kEnD3UzahDY+bmFA+LOkA7s7A+mk1IS/rUvDh5x1EofPn/hez/WOy+Lux0awAyZF2y9rWVC8tno2+Wjmz0sOwo6cYgoRvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDH1lw+w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B4C1F00893;
-	Sun,  7 Jun 2026 10:25:28 +0000 (UTC)
+	 MIME-Version; b=YBb0OFMOlD39Y/hZtqlIqKpojGih2Wl5cJFjpITGgSM0r8ICD2zR71a4Nxuhlnd3LF3aPsld7t5uRVP9tHHC6pjH2tIw9N0xR42KW8qgU4irjMxJk0E5u2Y8NjTLg70rG1+wpU70ABVBxPH5AKQ6Dkuq8ewlSQQBzQmgB6xhJks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEoAPS3d; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BA41F00893;
+	Sun,  7 Jun 2026 10:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827929;
-	bh=PrQnPQVwAUFgKwhAym/lqHalC+l0RA0tXtwUG11WUWI=;
+	s=korg; t=1780827841;
+	bh=5zWBmyj67lcIzfjwe9m7dsNOxH4dvYwLt9PB93z9T68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uDH1lw+w2eByu0NN5TA6gN3M7CqC6DWEVbsvvgJlI3xM+Dv5vEMTB8gmO86DdFylp
-	 gw5UfzFGuKddNgw4lYJFHaz9TWoyd3KN49jaaQ5FIbE/5eyUBAR6iYRcxuSHQ06OqY
-	 zF4OZt0/OBHSaQI6/CvFrfsA2E4BGIhhm4n31sYo=
+	b=JEoAPS3dqfT/a12tNHN7E/kw87Su5L6DiisbRGwH5BOAJLHK6dQlE8TgEa9KsqC1h
+	 J1jzDq3lzQpGhEJ5DSCLOsi2+/HQbXXHiBqgdQz7khM00pvjBUVjyywWrhThWO22Fn
+	 OiR8/gxHf/wiKSfr1gdWDvvf7WJjXhuejj+FzMVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/307] batman-adv: v: stop OGMv2 on disabled interface
-Date: Sun,  7 Jun 2026 11:58:14 +0200
-Message-ID: <20260607095731.343879917@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 7.0 126/332] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
+Date: Sun,  7 Jun 2026 11:58:15 +0200
+Message-ID: <20260607095732.737538259@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,185 +71,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,narfation.org];
-	TAGGED_FROM(0.00)[bounces-261275-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261253-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,lzu.edu.cn:email,vger.kernel.org:from_smtp,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8FC5264FB6F
+X-Rspamd-Queue-Id: A400464F9DB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit f8ce8b8331a1bc44ad4905886a482214d428b253 upstream.
+commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
 
-When a batadv_hard_iface is disabled, its mesh_iface pointer is set to
-NULL. However, batadv_v_ogm_send_meshif() may still dispatch OGMs via
-batadv_v_ogm_queue_on_if() for interfaces that have since lost their
-mesh_iface association. This results in a NULL pointer dereference when
-batadv_v_ogm_queue_on_if() unconditionally calls netdev_priv() on the
-now NULL hard_iface->mesh_iface to retrieve the batadv_priv.
+wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
+struct pd_message with
 
-It is necessary to ensure that the batadv_v_ogm_queue_on_if() checks that
-it is using the same mesh_iface for which batadv_v_ogm_send_meshif() was
-called.
+	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
+		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
 
-Cc: stable@kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reviewed-by: Yuan Tan <yuantan098@gmail.com>
-[ switch to old "mesh_iface" name "soft_iface" ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which has two problems:
+
+USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
+is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
+The byte count latched in RXINFO is the number of bytes the port partner
+put on the wire, so a malicious partner that transmits a 31-byte frame
+can drive the loop one byte past the destination if the WCOVE BMC
+receiver does not enforce the PD object-count limit in hardware. The
+existing FIXME flagged this as unverified.
+
+Independently, regmap_read() takes an unsigned int * and stores a full
+unsigned int at the destination. Passing the byte pointer msg + i means
+each iteration writes four bytes; the high three are zero (val_bits is
+8) and are normally overwritten by the next iteration, but the final
+iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
+already writes three zero bytes past msg, which sits on the IRQ thread's
+stack in wcove_typec_irq().
+
+Clamp the loop to sizeof(struct pd_message) and read each register into
+a local before storing only its low byte, so the copy can never exceed
+the destination regardless of what RXINFO reports.
+
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_ogm.c | 33 +++++++++++++++++++++------------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 8f89ffe6020ced..310248a5812c49 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -115,14 +115,14 @@ static void batadv_v_ogm_start_timer(struct batadv_priv *bat_priv)
- 
- /**
-  * batadv_v_ogm_send_to_if() - send a batman ogm using a given interface
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @skb: the OGM to send
-  * @hard_iface: the interface to use to send the OGM
-  */
--static void batadv_v_ogm_send_to_if(struct sk_buff *skb,
-+static void batadv_v_ogm_send_to_if(struct batadv_priv *bat_priv,
-+				    struct sk_buff *skb,
- 				    struct batadv_hard_iface *hard_iface)
- {
--	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
--
- 	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
- 		kfree_skb(skb);
- 		return;
-@@ -189,6 +189,7 @@ static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
- 
- /**
-  * batadv_v_ogm_aggr_send() - flush & send aggregation queue
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @hard_iface: the interface with the aggregation queue to flush
-  *
-  * Aggregates all OGMv2 packets currently in the aggregation queue into a
-@@ -198,7 +199,8 @@ static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
-  *
-  * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
-  */
--static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
-+static void batadv_v_ogm_aggr_send(struct batadv_priv *bat_priv,
-+				   struct batadv_hard_iface *hard_iface)
- {
- 	unsigned int aggr_len = hard_iface->bat_v.aggr_len;
- 	struct sk_buff *skb_aggr;
-@@ -228,27 +230,32 @@ static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
- 		consume_skb(skb);
- 	}
- 
--	batadv_v_ogm_send_to_if(skb_aggr, hard_iface);
-+	batadv_v_ogm_send_to_if(bat_priv, skb_aggr, hard_iface);
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
+ 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
  }
  
- /**
-  * batadv_v_ogm_queue_on_if() - queue a batman ogm on a given interface
-+ * @bat_priv: the bat priv with all the mesh interface information
-  * @skb: the OGM to queue
-  * @hard_iface: the interface to queue the OGM on
-  */
--static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
-+static void batadv_v_ogm_queue_on_if(struct batadv_priv *bat_priv,
-+				     struct sk_buff *skb,
- 				     struct batadv_hard_iface *hard_iface)
+-static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
++static int wcove_read_rx_buffer(struct wcove_typec *wcove,
++				struct pd_message *msg)
  {
--	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
-+	if (hard_iface->soft_iface != bat_priv->soft_iface) {
-+		kfree_skb(skb);
-+		return;
-+	}
+-	unsigned int info;
++	unsigned int info, val, len;
++	u8 *buf = (u8 *)msg;
+ 	int ret;
+ 	int i;
  
- 	if (!atomic_read(&bat_priv->aggregated_ogms)) {
--		batadv_v_ogm_send_to_if(skb, hard_iface);
-+		batadv_v_ogm_send_to_if(bat_priv, skb, hard_iface);
- 		return;
+@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
+ 	if (ret)
+ 		return ret;
+ 
+-	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
++	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
+ 
+-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
+-		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
++	for (i = 0; i < len; i++) {
++		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
+ 		if (ret)
+ 			return ret;
++		buf[i] = val;
  	}
  
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
--		batadv_v_ogm_aggr_send(hard_iface);
-+		batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
- 	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-@@ -347,7 +354,7 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
- 			break;
- 		}
- 
--		batadv_v_ogm_queue_on_if(skb_tmp, hard_iface);
-+		batadv_v_ogm_queue_on_if(bat_priv, skb_tmp, hard_iface);
- 		batadv_hardif_put(hard_iface);
- 	}
- 	rcu_read_unlock();
-@@ -387,12 +394,14 @@ void batadv_v_ogm_aggr_work(struct work_struct *work)
- {
- 	struct batadv_hard_iface_bat_v *batv;
- 	struct batadv_hard_iface *hard_iface;
-+	struct batadv_priv *bat_priv;
- 
- 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
- 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
-+	bat_priv = netdev_priv(hard_iface->soft_iface);
- 
- 	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
--	batadv_v_ogm_aggr_send(hard_iface);
-+	batadv_v_ogm_aggr_send(bat_priv, hard_iface);
- 	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- 
- 	batadv_v_ogm_start_queue_timer(hard_iface);
-@@ -582,7 +591,7 @@ static void batadv_v_ogm_forward(struct batadv_priv *bat_priv,
- 		   if_outgoing->net_dev->name, ntohl(ogm_forward->throughput),
- 		   ogm_forward->ttl, if_incoming->net_dev->name);
- 
--	batadv_v_ogm_queue_on_if(skb, if_outgoing);
-+	batadv_v_ogm_queue_on_if(bat_priv, skb, if_outgoing);
- 
- out:
- 	batadv_orig_ifinfo_put(orig_ifinfo);
--- 
-2.53.0
-
+ 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
 
 
 
