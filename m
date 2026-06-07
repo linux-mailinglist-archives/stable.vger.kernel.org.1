@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-261785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QuRXEZRQJWqBGwIAu9opvQ
-	(envelope-from <stable+bounces-261785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:56 +0200
+	id vOklN4tNJWpLGgIAu9opvQ
+	(envelope-from <stable+bounces-261687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB3F6504C7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4B365013C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YtUATppg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261785-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261785-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ahwhJ6/7";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261687-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261687-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94719308E264
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 500B5301AABC
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063F83264F2;
-	Sun,  7 Jun 2026 10:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4FB2E7390;
+	Sun,  7 Jun 2026 10:51:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72C312CDA5;
-	Sun,  7 Jun 2026 10:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96FB2DFF04;
+	Sun,  7 Jun 2026 10:51:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829833; cv=none; b=VAjF7Yrguoa0ILCWYo5m/KUWABwvLCPkK6F8LqtfxA/kdax9sGZPGXLkFc8ngpdN/sG4BfTctmAUUG+7UGxBc99YoMJyRKA5rTjXWtSScPyoeJ/PMVFGU+MiCSTH5kmK5k2dl8V0lOYAJNRZHt4BlR4A9EZif3fWzOuG0z3E+vw=
+	t=1780829475; cv=none; b=rr+/KPlmFIhhxaqoxVHMKdLIfM8nK3GjHaw/Jlf2UIajOPfcgvGTTtf6Xzde6Z5U5+Zx0vDRDJ0o4rw9h7TWHIxw5k3g/RuZdM3eNGiKYw+uSqWK0R/2j8V3lFvks18xFyY0GMfPOEHADi+rFXZwoTJzB4n+2FmfrMXYK2MtA6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829833; c=relaxed/simple;
-	bh=ReyHCevcVavu3jGW/EAcde77P6FARZmA7xADER4MtKE=;
+	s=arc-20240116; t=1780829475; c=relaxed/simple;
+	bh=p/0HdFL7Kb03RH5aH3IaKMNo94EOSsFSL2A942OOR6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/Hia4XqN3EcMvm8TCklgwzhIanjxFT61hqTkgcEIOF19UwtMPr2SoT8b9gPqf4EvGzkrD9iEjL3TEi0AuTAlY52gLefUvKhIHP8GLjQWMJnuP9oEk7b06/GqOvmD9X389PpfsqQ78H9U4OVaAvHHSG7pFF/5o6xL/+KzTUr4yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtUATppg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5361F00893;
-	Sun,  7 Jun 2026 10:57:11 +0000 (UTC)
+	 MIME-Version; b=KPB511BtZB1W9gNMUHsW2GkUg1BIXO19MPknZJci4dz2ekHaLfjjfH4kbAO++IhpwSJl2CLXSeDJBMTNWVjfLxsorMFi4EnecsDsblYCDzDzsDiyE9UxSrq7D/S23cEJv0Hz2GmCTX2oNmBzNIHo2WqzUj5iB8bMtJn9Fypfo+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahwhJ6/7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58931F00893;
+	Sun,  7 Jun 2026 10:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829832;
-	bh=6Vah41ns4ZiHwnXYHojg36ukwxBSQUn1ogDHow6WCzE=;
+	s=korg; t=1780829474;
+	bh=YhWmIHYveLvf09cWijtM3w35I2fSgfAygPPe8k4QSLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YtUATppg/cJ0lAsxrIvjodySkeMJBoCo1L/11NkvmIyvkeZznB2SoZ/ex/k2gAXhG
-	 dvGHeA3buFXnZ42uK80TJhyRzi3AZCZSboaHx+TFkbrt5Vk1zQviUhYTEStqUzUAjN
-	 L8G/9i4Z5tf7CE42f4gop0WnZzPhLo8QHBytSgks=
+	b=ahwhJ6/7RFzSx4IS1rdLAL5KT3vEbq+/wiWNSPmaxSLqvNVA4KVEjoynphK9a7n1w
+	 Wlt/C2rM3ODYB3WgRtLYDkUkZt5H1eg1BCZ04YH2vs9CRb/bq/lp+MwS/vNtZMhoKe
+	 GT9Xdizofg6zz0fsIXprWwlPUtdh6iliM/jEk1pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 6.18 264/315] serial: sh-sci: fix memory region release in error path
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 7.0 282/332] thunderbolt: property: Cap recursion depth in __tb_property_parse_dir()
 Date: Sun,  7 Jun 2026 12:00:51 +0200
-Message-ID: <20260607095737.266117240@linuxfoundation.org>
+Message-ID: <20260607095738.403038203@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,77 +71,145 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,gmail.com,kylinos.cn,glider.be];
-	TAGGED_FROM(0.00)[bounces-261785-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lkp@intel.com,m:error27@gmail.com,m:zenghongling@kylinos.cn,m:geert+renesas@glider.be,m:geert@glider.be,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261687-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,glider.be:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8AB3F6504C7
+X-Rspamd-Queue-Id: 5C4B365013C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongling Zeng <zenghongling@kylinos.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 92b1ea22454b08a39baef3a7290fb3ec50366616 upstream.
+commit 928abe19fbf0127003abcb1ea69cabc1c897d0ab upstream.
 
-The sci_request_port() function uses request_mem_region() to reserve
-I/O memory, but in the error path when sci_remap_port() fails, it
-incorrectly calls release_resource() instead of release_mem_region().
+A DIRECTORY entry's value field is used as the dir_offset for a
+recursive call into __tb_property_parse_dir() with no depth counter.
+A crafted peer that chains DIRECTORY entries into a back-reference
+loop drives the parser until the kernel stack is exhausted and the
+guard page fires.  Any untrusted XDomain peer (cable, dock, in-line
+inspector, adjacent host) that reaches the PROPERTIES_REQUEST
+control-plane exchange can trigger this without authentication.
 
-This mismatch can cause resource accounting issues. Fix it by using
-the correct release function, consistent with sci_release_port().
+Thread a depth counter through tb_property_parse() and
+__tb_property_parse_dir(), and reject blocks that exceed
+TB_PROPERTY_MAX_DEPTH = 8.  That is comfortably larger than any
+observed legitimate XDomain layout.
 
-Fixes: e2651647080930a1 ("serial: sh-sci: Handle port memory region reservations.")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202604032356.SzEjYkBC-lkp@intel.com/
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260421065737.724187-1-zenghongling@kylinos.cn
+Operators who do not need XDomain host-to-host discovery can disable
+the path entirely with thunderbolt.xdomain=0 on the kernel command
+line.
+
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/property.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -2845,7 +2845,7 @@ int sci_request_port(struct uart_port *p
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -35,10 +35,11 @@ struct tb_property_dir_entry {
+ };
  
- 	ret = sci_remap_port(port);
- 	if (unlikely(ret != 0)) {
--		release_resource(res);
-+		release_mem_region(port->mapbase, sport->reg_size);
- 		return ret;
- 	}
+ #define TB_PROPERTY_ROOTDIR_MAGIC	0x55584401
++#define TB_PROPERTY_MAX_DEPTH		8
  
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+ 	size_t block_len, unsigned int dir_offset, size_t dir_len,
+-	bool is_root);
++	bool is_root, unsigned int depth);
+ 
+ static inline void parse_dwdata(void *dst, const void *src, size_t dwords)
+ {
+@@ -97,7 +98,8 @@ tb_property_alloc(const char *key, enum
+ }
+ 
+ static struct tb_property *tb_property_parse(const u32 *block, size_t block_len,
+-					const struct tb_property_entry *entry)
++					const struct tb_property_entry *entry,
++					unsigned int depth)
+ {
+ 	char key[TB_PROPERTY_KEY_SIZE + 1];
+ 	struct tb_property *property;
+@@ -118,7 +120,7 @@ static struct tb_property *tb_property_p
+ 	switch (property->type) {
+ 	case TB_PROPERTY_TYPE_DIRECTORY:
+ 		dir = __tb_property_parse_dir(block, block_len, entry->value,
+-					      entry->length, false);
++					      entry->length, false, depth + 1);
+ 		if (!dir) {
+ 			kfree(property);
+ 			return NULL;
+@@ -163,13 +165,17 @@ static struct tb_property *tb_property_p
+ }
+ 
+ static struct tb_property_dir *__tb_property_parse_dir(const u32 *block,
+-	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root)
++	size_t block_len, unsigned int dir_offset, size_t dir_len, bool is_root,
++	unsigned int depth)
+ {
+ 	const struct tb_property_entry *entries;
+ 	size_t i, content_len, nentries;
+ 	unsigned int content_offset;
+ 	struct tb_property_dir *dir;
+ 
++	if (depth > TB_PROPERTY_MAX_DEPTH)
++		return NULL;
++
+ 	dir = kzalloc_obj(*dir);
+ 	if (!dir)
+ 		return NULL;
+@@ -200,7 +206,7 @@ static struct tb_property_dir *__tb_prop
+ 	for (i = 0; i < nentries; i++) {
+ 		struct tb_property *property;
+ 
+-		property = tb_property_parse(block, block_len, &entries[i]);
++		property = tb_property_parse(block, block_len, &entries[i], depth);
+ 		if (!property) {
+ 			tb_property_free_dir(dir);
+ 			return NULL;
+@@ -239,7 +245,7 @@ struct tb_property_dir *tb_property_pars
+ 		return NULL;
+ 
+ 	return __tb_property_parse_dir(block, block_len, 0, rootdir->length,
+-				       true);
++				       true, 0);
+ }
+ 
+ /**
 
 
 
