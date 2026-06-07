@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 17zkL+dHJWquFwIAu9opvQ
-	(envelope-from <stable+bounces-261329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:55 +0200
+	id 6zs8LrZIJWonGAIAu9opvQ
+	(envelope-from <stable+bounces-261353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB3764FAFE
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2F064FC16
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WGaYBePN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261329-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261329-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UGT8D6KO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261353-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261353-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F138F3002B0E
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE97D3023058
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3522EEE76;
-	Sun,  7 Jun 2026 10:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B75E2D3A69;
+	Sun,  7 Jun 2026 10:30:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FD94071E3;
-	Sun,  7 Jun 2026 10:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A5E32AAD6;
+	Sun,  7 Jun 2026 10:30:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828131; cv=none; b=HkWtsJ3+rh0/CVq8s8az5qh3LETwOun7Fbq4AcaX5BXAuu/HMOKIblDy+EZ9tltCPveM+i2eMGfpxEDelf2vdipYHa3sgOm0BhXBAfGyik4Sk69KjLc0RxSNTqip2ty+sYe8gkwj/XbuA3sGy4m5LUlfhX+KWye2oHJfNF1EQJg=
+	t=1780828223; cv=none; b=b9hBJYW4SB9V1HbGHCDgsLCCaRM13cCJsT/IB9t9MjWhMyu06iu2kI/0vgn6XlvFR0/vF1VkJRv80AYUyghphrrGhjCTVbzFTXPcUpmZdQgWfY39swq+DN8c6qqfUHaVdTx7BHo7zGRsSHi0IM7JhelZlQOK+DmaQlZq4fgeV9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828131; c=relaxed/simple;
-	bh=rycBSACLauWzeORa3hZ/9qzLowJ95AFWR65r+SXLwi4=;
+	s=arc-20240116; t=1780828223; c=relaxed/simple;
+	bh=UCd5hxF3pqSYUdH1tVljfLAOB8ppj0vUw3cQDyHKVn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nhj0cvowsE0OWQVwl4YyUGvC7lxs9wI938rEnwGM6q/QafTYNVfo4NFLcTvsXGHtjK0fg0iJK9l9goh2Ja6kbErJfGX7cVluSwRHe9poq5Rdv0JYFJmhC8HuFMh5EWOt6Qxqk8HPXso+ymiUqVuSExoUGbhxpqthsKv6oT4nbc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGaYBePN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E721F00893;
-	Sun,  7 Jun 2026 10:28:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mGXD2UNN8AOTR1psDLSqU6o88uIs7LfIUx6ROLyT15KQhh31CBFWtxWnAtDC8OPuD22RwqruBrYt01ViYQCvLxKU0lu1tArJ+jhIRiPh8eZcM2XsYLqZUgKb4N/oUCYNVsGU7jt5Yf5jIo8MmIENqTN+aWlMObtE7C8JmqBWdLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGT8D6KO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB511F00893;
+	Sun,  7 Jun 2026 10:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828130;
-	bh=7yRhTjBsQi+kmL3vv0Fy2klaeL1PnQ+7QzQTt1Br0W0=;
+	s=korg; t=1780828222;
+	bh=1TJOKY8YNYzBgzeKN1qBSzB2ng0tQT23eGCLYl88YHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WGaYBePN2lu7KjxoEGi8Q2QspaJ3jXnMkI4m3fyqMY0MUmXtrL2F6825UMzT5zXdw
-	 qjRm1VlY1FzJP6J1hLJ1Wh2OqvrO0Mdp/lcNi+yXCX5+GbIszyijSlCoo5KKPEF9Zr
-	 EAkRPVfR9C3dcSh+zojtHn0EkmaoMaKYKIvxNWxw=
+	b=UGT8D6KOLuzXL42KtW3v0OJDHyUnXa5zdbQwXqj1SOY1bm0PuPKcEjLcmyLiAtUu6
+	 0qyplDtpWDozI5wP/ZZ/cw+3CKL6PDa3sUnOEasSxJpgWvZIiHj8gXRXjA8eegkFNb
+	 hBIjaPSWxAUPzJCNEj6/O02/2mGErCl2WDjJv54o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 130/315] Bluetooth: HIDP: fix missing length checks in hidp_input_report()
-Date: Sun,  7 Jun 2026 11:58:37 +0200
-Message-ID: <20260607095732.394500666@linuxfoundation.org>
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 121/307] drm/i915/psr: Apply Intel DPCD workaround when SDP on prior line used
+Date: Sun,  7 Jun 2026 11:58:38 +0200
+Message-ID: <20260607095732.207036408@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,123 +66,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-261353-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261329-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,ursulin.net:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7EB3764FAFE
+X-Rspamd-Queue-Id: 5C2F064FC16
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit 2a3ac9ee11dbb9845f3947cef4a79dba658cf6f6 upstream.
+commit 4703049f768fc1c1caac754134118bee1a3af189 upstream.
 
-hidp_input_report() reads keyboard and mouse payload data from an skb
-without first verifying that skb->len contains enough data.
+There is Intel specific workaround DPCD address containing workaround for
+case where SDP is on prior line. Apply this workaround according to values
+in the offset.
 
-hidp_recv_intr_frame() pulls the 1-byte HIDP header before dispatching
-to hidp_input_report(). If a paired device sends a truncated packet,
-the handler reads beyond the valid skb data, resulting in an
-out-of-bounds read of skb data. The OOB bytes may be interpreted as
-phantom key presses or spurious mouse movement.
-
-Replace the open-coded length tracking and pointer arithmetic with
-skb_pull_data() calls. skb_pull_data() returns NULL if the requested
-bytes are not present, eliminating the need for a manual size variable
-and the separate skb->len guard.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61e887329e33 ("drm/i915/xelpd: Handle PSR2 SDP indication in the prior scanline")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-4-jouni.hogander@intel.com
+(cherry picked from commit c3fe899fbeac86ea4a5ca9dd845b2cbc0da46249)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hidp/core.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 27 +++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/hidp/core.c
-+++ b/net/bluetooth/hidp/core.c
-@@ -179,12 +179,21 @@ static void hidp_input_report(struct hid
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 9c38b957701675..5173f5759ce888 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1303,6 +1303,30 @@ static bool psr2_granularity_check(struct intel_dp *intel_dp,
+ 	return true;
+ }
+ 
++static bool apply_scanline_indication_wa(struct intel_dp *intel_dp,
++					 struct intel_crtc_state *crtc_state)
++{
++	u8 early_scanline_support = intel_dp->intel_wa_dpcd &
++		INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK;
++
++	if (intel_dp->edp_dpcd[0] >= DP_EDP_15)
++		return true;
++
++	switch (early_scanline_support)	{
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return false;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE:
++		return true;
++	case INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE:
++		crtc_state->req_psr2_sdp_prior_scanline = false;
++		return true;
++	default:
++		MISSING_CASE(early_scanline_support);
++		return false;
++	}
++}
++
+ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_dp,
+ 							struct intel_crtc_state *crtc_state)
  {
- 	struct input_dev *dev = session->input;
- 	unsigned char *keys = session->keys;
--	unsigned char *udata = skb->data + 1;
--	signed char *sdata = skb->data + 1;
--	int i, size = skb->len - 1;
-+	unsigned char *udata;
-+	signed char *sdata;
-+	u8 *hdr;
-+	int i;
+@@ -1324,7 +1348,8 @@ static bool _compute_psr2_sdp_prior_scanline_indication(struct intel_dp *intel_d
+ 		return false;
+ 
+ 	crtc_state->req_psr2_sdp_prior_scanline = true;
+-	return true;
 +
-+	hdr = skb_pull_data(skb, 1);
-+	if (!hdr)
-+		return;
++	return apply_scanline_indication_wa(intel_dp, crtc_state);
+ }
  
--	switch (skb->data[0]) {
-+	switch (*hdr) {
- 	case 0x01:	/* Keyboard report */
-+		udata = skb_pull_data(skb, 8);
-+		if (!udata)
-+			break;
-+
- 		for (i = 0; i < 8; i++)
- 			input_report_key(dev, hidp_keycode[i + 224], (udata[0] >> i) & 1);
- 
-@@ -213,6 +222,10 @@ static void hidp_input_report(struct hid
- 		break;
- 
- 	case 0x02:	/* Mouse report */
-+		sdata = skb_pull_data(skb, 3);
-+		if (!sdata)
-+			break;
-+
- 		input_report_key(dev, BTN_LEFT,   sdata[0] & 0x01);
- 		input_report_key(dev, BTN_RIGHT,  sdata[0] & 0x02);
- 		input_report_key(dev, BTN_MIDDLE, sdata[0] & 0x04);
-@@ -222,7 +235,7 @@ static void hidp_input_report(struct hid
- 		input_report_rel(dev, REL_X, sdata[1]);
- 		input_report_rel(dev, REL_Y, sdata[2]);
- 
--		if (size > 3)
-+		if (skb->len > 0)
- 			input_report_rel(dev, REL_WHEEL, sdata[3]);
- 		break;
- 	}
+ static int intel_psr_entry_setup_frames(struct intel_dp *intel_dp,
+-- 
+2.53.0
+
 
 
 
