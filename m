@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-261706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5c6FD91NJWplGgIAu9opvQ
-	(envelope-from <stable+bounces-261706-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:21 +0200
+	id QkgrFHJMJWqVGQIAu9opvQ
+	(envelope-from <stable+bounces-261634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34E36501A7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A349650028
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PnlKGgAO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261706-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261706-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jzN+ujQh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261634-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261634-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47B143036E95
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6CCF83004CB2
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49EE308F38;
-	Sun,  7 Jun 2026 10:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778F62E7390;
+	Sun,  7 Jun 2026 10:48:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84584071DD;
-	Sun,  7 Jun 2026 10:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C7D2D8378;
+	Sun,  7 Jun 2026 10:48:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829540; cv=none; b=f1u/LSbXZuIMLXvIuVvSntYeQ7b1PYcIDB+m/i+EwXj6/rMtcFNBHuM9kY186CBoZC3bLcRMtJOZ2HhU3j0Q4NnY6TZlBGnfQwdvzHNCsbVfTlOusQ/jn9lLm0ICSoLkrPUCwtgey6UUeSUL+A/6urcSFEyFqRFZ/0dpVlTExy0=
+	t=1780829292; cv=none; b=oWL9MbSwkierZZY4gOFQfxv9PfB0ltM3LWyrgFAmBSHIRCGz+SlJn44kHpDfbU4fEx+GHUSyl6gtXOqKIeJkJvg+a8xuGZLPIkT6ssazp5Fpy1N9RbEjFu+HlsWEWxGVljaE3NPn6jBKC6qKCazGkfgFL2UiQ4JCSkjdyy2yDzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829540; c=relaxed/simple;
-	bh=vXDaQH8u/H6pec7gq8rNW9YCJ76d6lC19rBaEqLsdNM=;
+	s=arc-20240116; t=1780829292; c=relaxed/simple;
+	bh=LciETTITXJzhzty/ksCxEeZLD6bktkCbItfWesgn8qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dTKQIRRI348kVRwXLQcJzdBg741euKUOA7ZO/1rdDs/Bo7rfcwLkhIDMg0I3fqLZD6mbn2oyj8mf3seRbBpzOJ8QJfuFBO8VGHkqBQbfAjA2xt4bRwk/HishFSQpDg47FuCP92JbexZpDZ/nvNxEdpMmrznW+IpZ6PM987uG3Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnlKGgAO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37991F00893;
-	Sun,  7 Jun 2026 10:52:18 +0000 (UTC)
+	 MIME-Version; b=sPX1WnlbnWvE7jasjOX8GwY4RswE9sDTaZyaSmkzq6MnxfheR9weXP2A+FLPvQn2oLj2Xl2Z7sq6ezMoiJb5dGSpZRn4YBoFqR7Wp+JiWFbc1IshIh50wS5C/YM9P0crtIAZ72Yx8nnM0Bp1c55NQtCTyG63w8JhT57Bht2K9DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzN+ujQh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A7E1F00893;
+	Sun,  7 Jun 2026 10:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829539;
-	bh=UxEoqBVXQU8nqWcvVHJWJVzwhIBbj7ChCWIPSxs3vxs=;
+	s=korg; t=1780829291;
+	bh=nTF1Z1qHm12ThAmBOlWVU8KZTqXlHe2KY2qccKUYjGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PnlKGgAOzE3Rw6gDLimGcEac+YboK7QrUuwr6OfOF9x+V3I6VXEJwR9+ZKMUpzWLN
-	 9oNEu42EJXSzjrZvb63WTiPAD24TwQ0+zamWZhpsSM0zo5OgToh3di0rpqi0Qkr99t
-	 Ii6a43CcWQIBSFnwYWf7gy8+GfBqjDjXxOO8PGr0=
+	b=jzN+ujQhEFEqegZ3f2jDl+SBj5wz2eWYnmwId+H9mR5iTUfM207Jo5LGl1M0f09g4
+	 07iply41hRrzQ5kYgOf11GGWg+3xNj3WOXq3B61NDmEJmyRiTiRTLZDjIbldwxKe4D
+	 fD/eZFivP6ElQy6ad1B6h/JMvQITYPL6/mzxn6kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Jeremy Erazo <mendozayt13@gmail.com>
-Subject: [PATCH 6.12 233/307] usb: gadget: composite: fix integer underflow in WebUSB GET_URL handling
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 7.0 261/332] usb: typec: tcpm: improve handling of DISCOVER_MODES failures
 Date: Sun,  7 Jun 2026 12:00:30 +0200
-Message-ID: <20260607095736.262070776@linuxfoundation.org>
+Message-ID: <20260607095737.629781826@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +71,223 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261706-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:mendozayt13@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-261634-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,m:sebastian.reichel@collabora.com,m:rdbabiera@google.com,m:badhri@google.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,collabora.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A34E36501A7
+X-Rspamd-Queue-Id: 4A349650028
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Erazo <mendozayt13@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit 6c5dbc104dadd79fc2923497c20bae759a18758c upstream.
+commit c06e6cd488194e37ed4dc29d1488d1ffb760de60 upstream.
 
-The WebUSB GET_URL handler in composite_setup() narrows
-landing_page_length to fit the host-supplied wLength using
+UGREEN USB-C Multifunction Adapter Model CM512 (AKA "Revodok 107")
+exposes two SVIDs: 0xff01 (DP Alt Mode) and 0x1d5c. The DISCOVER_MODES
+step succeeds for 0xff01 and gets a NAK for 0x1d5c. Currently this
+results in DP Alt Mode not being registered either, since the modes
+are only registered once all of them have been discovered. The NAK
+results in the processing being stopped and thus no Alt modes being
+registered.
 
-	landing_page_length = w_length
-		- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset;
+Improve the situation by handling the NAK gracefully and continue
+processing the other modes.
 
-If wLength is smaller than WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH the
-unsigned subtraction wraps, and the subsequent
+Before this change, the TCPM log ends like this:
 
-	memcpy(url_descriptor->URL,
-	       cdev->landing_page + landing_page_offset,
-	       landing_page_length - landing_page_offset);
+(more log entries before this)
+[    5.028287] AMS DISCOVER_SVIDS finished
+[    5.028291] cc:=4
+[    5.040040] SVID 1: 0xff01
+[    5.040054] SVID 2: 0x1d5c
+[    5.040082] AMS DISCOVER_MODES start
+[    5.040096] PD TX, header: 0x1b6f
+[    5.050946] PD TX complete, status: 0
+[    5.059609] PD RX, header: 0x264f [1]
+[    5.059626] Rx VDM cmd 0xff018043 type 1 cmd 3 len 2
+[    5.059640] AMS DISCOVER_MODES finished
+[    5.059644] cc:=4
+[    5.069994]  Alternate mode 0: SVID 0xff01, VDO 1: 0x000c0045
+[    5.070029] AMS DISCOVER_MODES start
+[    5.070043] PD TX, header: 0x1d6f
+[    5.081139] PD TX complete, status: 0
+[    5.087498] PD RX, header: 0x184f [1]
+[    5.087515] Rx VDM cmd 0x1d5c8083 type 2 cmd 3 len 1
+[    5.087529] AMS DISCOVER_MODES finished
+[    5.087534] cc:=4
+(no further log entries after this point)
 
-ends up copying close to UINT_MAX bytes from cdev->landing_page into
-cdev->req->buf.  KASAN reports a slab-out-of-bounds in composite_setup
-on the kmalloc-2k gadget_info allocation, and FORTIFY_SOURCE traps the
-memcpy as a 4294967293-byte field-spanning write into
-url_descriptor->URL (size 252).
+After this patch the TCPM log looks exactly the same, but then
+continues like this:
 
-A USB host can reach this from a single SETUP packet against any
-gadget that has webusb/use=1 and a landingPage configured.
+[    5.100222] Skip SVID 0x1d5c (failed to discover mode)
+[    5.101699] AMS DFP_TO_UFP_ENTER_MODE start
+(log goes on as the system initializes DP AltMode)
 
-Handle the small-wLength case before the math: when the host requested
-fewer bytes than the URL descriptor header, only the header is
-meaningful and no URL bytes need to be copied.  Setting
-landing_page_length to landing_page_offset makes the existing memcpy a
-no-op and leaves the descriptor returned to the host unchanged for all
-larger wLength values.
-
-Fixes: 93c473948c58 ("usb: gadget: add WebUSB landing page support")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Jeremy Erazo <mendozayt13@gmail.com>
-Link: https://patch.msgid.link/20260512160530.352318-1-mendozayt13@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41d9d75344d9 ("usb: typec: tcpm: add discover svids and discover modes support for sop'")
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://patch.msgid.link/20260429-tcpm-discover-modes-nak-fix-v4-1-75945d0ed30f@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |   97 ++++++++++++++++++++++++++----------------
+ 1 file changed, 61 insertions(+), 36 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2196,7 +2196,10 @@ unknown:
- 				sizeof(url_descriptor->URL)
- 				- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset);
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2002,6 +2002,55 @@ static bool tcpm_cable_vdm_supported(str
+ 	       tcpm_can_communicate_sop_prime(port);
+ }
  
--			if (w_length < WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_length)
-+			if (w_length < WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH)
-+				landing_page_length = landing_page_offset;
-+			else if (w_length <
-+				 WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_length)
- 				landing_page_length = w_length
- 				- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset;
- 
++static int tcpm_handle_discover_mode(struct tcpm_port *port, u32 *response,
++				     enum tcpm_transmit_type rx_sop_type,
++				     enum tcpm_transmit_type *response_tx_sop_type)
++{
++	struct typec_port *typec = port->typec_port;
++	struct pd_mode_data *modep;
++
++	if (rx_sop_type == TCPC_TX_SOP) {
++		modep = &port->mode_data;
++		modep->svid_index++;
++
++		if (modep->svid_index < modep->nsvids) {
++			u16 svid = modep->svids[modep->svid_index];
++			*response_tx_sop_type = TCPC_TX_SOP;
++			response[0] = VDO(svid, 1,
++					  typec_get_negotiated_svdm_version(typec),
++					  CMD_DISCOVER_MODES);
++			return 1;
++		}
++
++		if (tcpm_cable_vdm_supported(port)) {
++			*response_tx_sop_type = TCPC_TX_SOP_PRIME;
++			response[0] = VDO(USB_SID_PD, 1,
++					  typec_get_cable_svdm_version(typec),
++					  CMD_DISCOVER_SVID);
++			return 1;
++		}
++
++		tcpm_register_partner_altmodes(port);
++	} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
++		modep = &port->mode_data_prime;
++		modep->svid_index++;
++
++		if (modep->svid_index < modep->nsvids) {
++			u16 svid = modep->svids[modep->svid_index];
++			*response_tx_sop_type = TCPC_TX_SOP_PRIME;
++			response[0] = VDO(svid, 1,
++					  typec_get_cable_svdm_version(typec),
++					  CMD_DISCOVER_MODES);
++			return 1;
++		}
++
++		tcpm_register_plug_altmodes(port);
++		tcpm_register_partner_altmodes(port);
++	}
++
++	return 0;
++}
++
+ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
+ 			const u32 *p, int cnt, u32 *response,
+ 			enum adev_actions *adev_action,
+@@ -2259,41 +2308,11 @@ static int tcpm_pd_svdm(struct tcpm_port
+ 			}
+ 			break;
+ 		case CMD_DISCOVER_MODES:
+-			if (rx_sop_type == TCPC_TX_SOP) {
+-				/* 6.4.4.3.3 */
+-				svdm_consume_modes(port, p, cnt, rx_sop_type);
+-				modep->svid_index++;
+-				if (modep->svid_index < modep->nsvids) {
+-					u16 svid = modep->svids[modep->svid_index];
+-					*response_tx_sop_type = TCPC_TX_SOP;
+-					response[0] = VDO(svid, 1, svdm_version,
+-							  CMD_DISCOVER_MODES);
+-					rlen = 1;
+-				} else if (tcpm_cable_vdm_supported(port)) {
+-					*response_tx_sop_type = TCPC_TX_SOP_PRIME;
+-					response[0] = VDO(USB_SID_PD, 1,
+-							  typec_get_cable_svdm_version(typec),
+-							  CMD_DISCOVER_SVID);
+-					rlen = 1;
+-				} else {
+-					tcpm_register_partner_altmodes(port);
+-				}
+-			} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
+-				/* 6.4.4.3.3 */
+-				svdm_consume_modes(port, p, cnt, rx_sop_type);
+-				modep_prime->svid_index++;
+-				if (modep_prime->svid_index < modep_prime->nsvids) {
+-					u16 svid = modep_prime->svids[modep_prime->svid_index];
+-					*response_tx_sop_type = TCPC_TX_SOP_PRIME;
+-					response[0] = VDO(svid, 1,
+-							  typec_get_cable_svdm_version(typec),
+-							  CMD_DISCOVER_MODES);
+-					rlen = 1;
+-				} else {
+-					tcpm_register_plug_altmodes(port);
+-					tcpm_register_partner_altmodes(port);
+-				}
+-			}
++			/* 6.4.4.3.3 */
++			svdm_consume_modes(port, p, cnt, rx_sop_type);
++			rlen = tcpm_handle_discover_mode(port, response,
++							 rx_sop_type,
++							 response_tx_sop_type);
+ 			break;
+ 		case CMD_ENTER_MODE:
+ 			*response_tx_sop_type = rx_sop_type;
+@@ -2336,9 +2355,15 @@ static int tcpm_pd_svdm(struct tcpm_port
+ 		switch (cmd) {
+ 		case CMD_DISCOVER_IDENT:
+ 		case CMD_DISCOVER_SVID:
+-		case CMD_DISCOVER_MODES:
+ 		case VDO_CMD_VENDOR(0) ... VDO_CMD_VENDOR(15):
+ 			break;
++		case CMD_DISCOVER_MODES:
++			tcpm_log(port, "Skip SVID 0x%04x (failed to discover mode)",
++				 PD_VDO_SVID_SVID0(p[0]));
++			rlen = tcpm_handle_discover_mode(port, response,
++							 rx_sop_type,
++							 response_tx_sop_type);
++			break;
+ 		case CMD_ENTER_MODE:
+ 			/* Back to USB Operation */
+ 			*adev_action = ADEV_NOTIFY_USB_AND_QUEUE_VDM;
 
 
 
