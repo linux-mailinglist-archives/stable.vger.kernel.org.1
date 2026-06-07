@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FS0JBm5FJWpGFgIAu9opvQ
-	(envelope-from <stable+bounces-261168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:22 +0200
+	id vibIJgZFJWoRFgIAu9opvQ
+	(envelope-from <stable+bounces-261139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CC4064F7EF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C69B64F765
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hKbORNFQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261168-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261168-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hk+ygIMy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261139-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261139-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1753330039B1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:18:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 21256300463B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFF72EB87F;
-	Sun,  7 Jun 2026 10:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBC923392F;
+	Sun,  7 Jun 2026 10:16:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAEF4071DA;
-	Sun,  7 Jun 2026 10:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5504071DA;
+	Sun,  7 Jun 2026 10:16:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827500; cv=none; b=IP8ZGAVjqhi2Rj9aNWOqOAmsSe3+zCRYdSxOm+mRxRSI0Kr3po3hzE7S8xmKA+W+GP4yL8hsdwR/7uusqBhXYXlRoiUBkEhFMDLSM2LrG53NF+5C3TjhmvcAtDnUTtVnj3CNq2DGDppbl4pX674BKb8NeOPaOhZGMszEukGX0lI=
+	t=1780827394; cv=none; b=uuSoVYdi2ksgBSkr8DQg/kidy24rVZYZGqI3LPsUwxCEI0PR/tc/Iv/gP+8rjr60h88PTgFt/hB4rxuiaFTUm+GOgBDzyDtjJIXgGsx/zQGrc3m5JyNVOx2JGB2mK8mZKIeMlcWVPGR8UTmNLKE/GWvbmxfVMka2GeyhTlOCUxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827500; c=relaxed/simple;
-	bh=xPHmhH7Zskssth0zc14V5yiO0G8m6E45XatDw9gjgjg=;
+	s=arc-20240116; t=1780827394; c=relaxed/simple;
+	bh=YXj9vh21NBPHPHnZUXAC5RbF+5wmAMKpY1DWRcjA9OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGgKL/+a2Gi0LPVjgn7vNGg2wyGYr2KAH9mVZiOkBCuuMyPE77MxIuduzmhDtCKwy5jf6jdIfta0eC9/+Y5PNIUStPi6tCS7tZIxlt4SowUbQI0vMmpZNGl+7O8Y1co94cewlwk7t741W/kpsZ9UGDhwAmr3gorCq1qKu3ZZp+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKbORNFQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E2B1F00893;
-	Sun,  7 Jun 2026 10:18:18 +0000 (UTC)
+	 MIME-Version; b=aqgYFJqQOXTctOfG7FRkm4Q6RvNqUMBBHHCUcbkd43zLsG/ZNrBsfuc62KluD+g2EPFlFpTK7OhY76XunPjmy/DLj+mGPfr7mzvlboDZizzLwwp2q00ib2FFuhOp/+dlAGItH2Gl/9c3DnrbJLLy+8vnsMza7adybXeNmDTnU4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hk+ygIMy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB331F00893;
+	Sun,  7 Jun 2026 10:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827499;
-	bh=XKs7wBHOqz9WyjosjyKBpft+SNfdWak/LkZnpxxldww=;
+	s=korg; t=1780827392;
+	bh=xxpmV4M7yljFf3XkT7u+BYev1e8Lk4JLv44iLbv7kbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hKbORNFQX/ypVdIAMvYcUyTMmR29Tkwedz2tV06ikkeNgUeLi5Tu49jVDRZNErCm4
-	 DhuogzTNl8vZqEOGpFWsle9Z58XGklDptSSPs4PlPugbgwuVF+ZQyte1Sy/uA6AIn7
-	 vNf71vW/t93LcevHToswqY8zZ6q2u4NJdrkYf7n8=
+	b=hk+ygIMySlqagaUO7VbEhmOSf2TCC8PtBaj/Q2hNtw7zRUjOPobvmHFI8VcTa0LtT
+	 YNELxrcH11Xp8GVVRH/ISiOzd8+5KpxWSQPbF6MP/qbzErzI3B3ZzyFjlfLrzSVzaX
+	 lFMY5KEffjDDy7cihE61uD5AiOZC1LAufMPW3DnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/307] tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]()
-Date: Sun,  7 Jun 2026 11:57:37 +0200
-Message-ID: <20260607095729.946026838@linuxfoundation.org>
+Subject: [PATCH 7.0 089/332] net/handshake: Pass negative errno through handshake_complete()
+Date: Sun,  7 Jun 2026 11:57:38 +0200
+Message-ID: <20260607095731.416875228@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261168-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261139-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:sbrivio@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -99,92 +99,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9CC4064F7EF
+X-Rspamd-Queue-Id: 6C69B64F765
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit b4bc94353050b1fa7b702bd4c6600710dd926cff ]
+[ Upstream commit 6b22d433aa13f68e3cd9534ca9a5f4277bfa01c2 ]
 
-Sashiko found that iptunnel_pmtud_build_icmp() and
-iptunnel_pmtud_build_icmpv6() were caching ip_hdr() and ipv6_hdr()
-before an skb_cow() call which can reallocate skb->head.
+handshake_complete() declares status as unsigned int and
+tls_handshake_done() negates that value (-status) before handing
+it to the TLS consumer. Consumers match on negative errno
+constants -- xs_tls_handshake_done() has
 
-Fix this possible UAF by initializing the local variables
-after the skb_cow() call.
+	switch (status) {
+	case 0:
+	case -EACCES:
+	case -ETIMEDOUT:
+		lower_transport->xprt_err = status;
+		break;
+	default:
+		lower_transport->xprt_err = -EACCES;
+	}
 
-Remove skb_reset_network_header() calls which were not needed.
+so the API as designed expects callers to pass positive errno
+values that the tlshd shim then negates.
 
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20260525201335.2361845-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Three internal callers in handshake_nl_accept_doit(), the
+net-exit drain, and a kunit test follow kernel convention and
+pass negative errnos -- -EIO, -ETIMEDOUT, -ETIMEDOUT. The
+implicit conversion to unsigned int turns -ETIMEDOUT into
+0xFFFFFF92; the subsequent -status in tls_handshake_done()
+wraps back to 110, the consumer's switch falls through, and
+the xprt reports -EACCES on what should be -ETIMEDOUT or -EIO.
+
+Fix the API rather than the call sites. The natural kernel
+convention is negative errno in, negative errno out. Change
+handshake_complete() and hp_done to take int status, drop the
+negation in tls_handshake_done(), and negate once in
+handshake_nl_done_doit() where status arrives from the wire
+as an unsigned netlink attribute. The three internal callers
+were already correct under that convention and need no change.
+
+At the same wire boundary, declare MAX_ERRNO as the netlink
+policy upper bound for HANDSHAKE_A_DONE_STATUS. Attribute
+validation rejects out-of-range values before
+handshake_nl_done_doit() runs, and negating a bounded u32 there
+stays within int range -- closing the UBSAN-visible signed-
+integer overflow that an unconstrained u32 would invoke.
+
+Fixes: 3b3009ea8abb ("net/handshake: Create a NETLINK service for handling handshake requests")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-3-66c616906ead@oracle.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ Documentation/netlink/specs/handshake.yaml | 8 ++++++++
+ net/handshake/genl.c                       | 3 ++-
+ net/handshake/genl.h                       | 1 +
+ net/handshake/handshake-test.c             | 2 +-
+ net/handshake/handshake.h                  | 4 ++--
+ net/handshake/netlink.c                    | 2 +-
+ net/handshake/request.c                    | 2 +-
+ net/handshake/tlshd.c                      | 4 ++--
+ 8 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 507f2f9ec400ce..cf496644d3df6c 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -210,7 +210,7 @@ EXPORT_SYMBOL_GPL(iptunnel_handle_offloads);
-  */
- static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+diff --git a/Documentation/netlink/specs/handshake.yaml b/Documentation/netlink/specs/handshake.yaml
+index 95c3fade7a8d7b..1024297b38513a 100644
+--- a/Documentation/netlink/specs/handshake.yaml
++++ b/Documentation/netlink/specs/handshake.yaml
+@@ -12,6 +12,12 @@ protocol: genetlink
+ doc: Netlink protocol to request a transport layer security handshake.
+ 
+ definitions:
++  -
++    type: const
++    name: max-errno
++    value: 4095
++    header: linux/err.h
++    scope: kernel
+   -
+     type: enum
+     name: handler-class
+@@ -80,6 +86,8 @@ attribute-sets:
+       -
+         name: status
+         type: u32
++        checks:
++          max: max-errno
+       -
+         name: sockfd
+         type: s32
+diff --git a/net/handshake/genl.c b/net/handshake/genl.c
+index 8706126094915d..4b20cd9cdd0e09 100644
+--- a/net/handshake/genl.c
++++ b/net/handshake/genl.c
+@@ -10,6 +10,7 @@
+ #include "genl.h"
+ 
+ #include <uapi/linux/handshake.h>
++#include <linux/err.h>
+ 
+ /* HANDSHAKE_CMD_ACCEPT - do */
+ static const struct nla_policy handshake_accept_nl_policy[HANDSHAKE_A_ACCEPT_HANDLER_CLASS + 1] = {
+@@ -18,7 +19,7 @@ static const struct nla_policy handshake_accept_nl_policy[HANDSHAKE_A_ACCEPT_HAN
+ 
+ /* HANDSHAKE_CMD_DONE - do */
+ static const struct nla_policy handshake_done_nl_policy[HANDSHAKE_A_DONE_REMOTE_AUTH + 1] = {
+-	[HANDSHAKE_A_DONE_STATUS] = { .type = NLA_U32, },
++	[HANDSHAKE_A_DONE_STATUS] = NLA_POLICY_MAX(NLA_U32, MAX_ERRNO),
+ 	[HANDSHAKE_A_DONE_SOCKFD] = { .type = NLA_S32, },
+ 	[HANDSHAKE_A_DONE_REMOTE_AUTH] = { .type = NLA_U32, },
+ };
+diff --git a/net/handshake/genl.h b/net/handshake/genl.h
+index 8d3e18672dafcf..46b65f131669a6 100644
+--- a/net/handshake/genl.h
++++ b/net/handshake/genl.h
+@@ -11,6 +11,7 @@
+ #include <net/genetlink.h>
+ 
+ #include <uapi/linux/handshake.h>
++#include <linux/err.h>
+ 
+ int handshake_nl_accept_doit(struct sk_buff *skb, struct genl_info *info);
+ int handshake_nl_done_doit(struct sk_buff *skb, struct genl_info *info);
+diff --git a/net/handshake/handshake-test.c b/net/handshake/handshake-test.c
+index 55442b2f518afb..df3948e807a0fd 100644
+--- a/net/handshake/handshake-test.c
++++ b/net/handshake/handshake-test.c
+@@ -25,7 +25,7 @@ static int test_accept_func(struct handshake_req *req, struct genl_info *info,
+ 	return 0;
+ }
+ 
+-static void test_done_func(struct handshake_req *req, unsigned int status,
++static void test_done_func(struct handshake_req *req, int status,
+ 			   struct genl_info *info)
  {
--	const struct iphdr *iph = ip_hdr(skb);
-+	const struct iphdr *iph;
- 	struct icmphdr *icmph;
- 	struct iphdr *niph;
- 	struct ethhdr eh;
-@@ -224,7 +224,6 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+ }
+diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
+index a48163765a7a1d..2289b0e274f40a 100644
+--- a/net/handshake/handshake.h
++++ b/net/handshake/handshake.h
+@@ -57,7 +57,7 @@ struct handshake_proto {
+ 	int			(*hp_accept)(struct handshake_req *req,
+ 					     struct genl_info *info, int fd);
+ 	void			(*hp_done)(struct handshake_req *req,
+-					   unsigned int status,
++					   int status,
+ 					   struct genl_info *info);
+ 	void			(*hp_destroy)(struct handshake_req *req);
+ };
+@@ -86,7 +86,7 @@ struct handshake_req *handshake_req_hash_lookup(struct sock *sk);
+ struct handshake_req *handshake_req_next(struct handshake_net *hn, int class);
+ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 			 gfp_t flags);
+-void handshake_complete(struct handshake_req *req, unsigned int status,
++void handshake_complete(struct handshake_req *req, int status,
+ 			struct genl_info *info);
+ bool handshake_req_cancel(struct sock *sk);
  
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
--	skb_reset_network_header(skb);
+diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
+index 97114ec8027a5a..039344979de934 100644
+--- a/net/handshake/netlink.c
++++ b/net/handshake/netlink.c
+@@ -160,7 +160,7 @@ int handshake_nl_done_doit(struct sk_buff *skb, struct genl_info *info)
  
- 	err = pskb_trim(skb, 576 - sizeof(*niph) - sizeof(*icmph));
- 	if (err)
-@@ -234,7 +233,7 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- 	err = skb_cow(skb, sizeof(*niph) + sizeof(*icmph) + ETH_HLEN);
- 	if (err)
- 		return err;
--
-+	iph = ip_hdr(skb);
- 	icmph = skb_push(skb, sizeof(*icmph));
- 	*icmph = (struct icmphdr) {
- 		.type			= ICMP_DEST_UNREACH,
-@@ -306,7 +305,7 @@ static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
-  */
- static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	status = -EIO;
+ 	if (info->attrs[HANDSHAKE_A_DONE_STATUS])
+-		status = nla_get_u32(info->attrs[HANDSHAKE_A_DONE_STATUS]);
++		status = -(int)nla_get_u32(info->attrs[HANDSHAKE_A_DONE_STATUS]);
+ 
+ 	handshake_complete(req, status, info);
+ 	sockfd_put(sock);
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 5d4a17f902d201..97f9f823994994 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -284,7 +284,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ }
+ EXPORT_SYMBOL(handshake_req_submit);
+ 
+-void handshake_complete(struct handshake_req *req, unsigned int status,
++void handshake_complete(struct handshake_req *req, int status,
+ 			struct genl_info *info)
  {
--	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-+	const struct ipv6hdr *ip6h;
- 	struct icmp6hdr *icmp6h;
- 	struct ipv6hdr *nip6h;
- 	struct ethhdr eh;
-@@ -321,7 +320,6 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	struct sock *sk = req->hr_sk;
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index af294c6cc71731..7567150c2a4f95 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -93,7 +93,7 @@ static void tls_handshake_remote_peerids(struct tls_handshake_req *treq,
+  *
+  */
+ static void tls_handshake_done(struct handshake_req *req,
+-			       unsigned int status, struct genl_info *info)
++			       int status, struct genl_info *info)
+ {
+ 	struct tls_handshake_req *treq = handshake_req_private(req);
  
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
--	skb_reset_network_header(skb);
+@@ -104,7 +104,7 @@ static void tls_handshake_done(struct handshake_req *req,
+ 	if (!status)
+ 		set_bit(HANDSHAKE_F_REQ_SESSION, &req->hr_flags);
  
- 	err = pskb_trim(skb, IPV6_MIN_MTU - sizeof(*nip6h) - sizeof(*icmp6h));
- 	if (err)
-@@ -332,6 +330,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	if (err)
- 		return err;
+-	treq->th_consumer_done(treq->th_consumer_data, -status,
++	treq->th_consumer_done(treq->th_consumer_data, status,
+ 			       treq->th_peerid[0]);
+ }
  
-+	ip6h = ipv6_hdr(skb);
- 	icmp6h = skb_push(skb, sizeof(*icmp6h));
- 	*icmp6h = (struct icmp6hdr) {
- 		.icmp6_type		= ICMPV6_PKT_TOOBIG,
 -- 
 2.53.0
 
