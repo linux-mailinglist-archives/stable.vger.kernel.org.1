@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TKyVDOVJJWrcGAIAu9opvQ
-	(envelope-from <stable+bounces-261459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:25 +0200
+	id 03u/JhBKJWrmGAIAu9opvQ
+	(envelope-from <stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFF864FDB7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B964FDD5
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tghpHeMh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261459-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261459-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OkWT9LtR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4B7C93001FA3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 564EA300767F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A76325706;
-	Sun,  7 Jun 2026 10:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4A0328255;
+	Sun,  7 Jun 2026 10:37:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AD42D3A69;
-	Sun,  7 Jun 2026 10:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306B3254A9;
+	Sun,  7 Jun 2026 10:37:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828640; cv=none; b=bdQMi7Hgho3fJX+EcfhOncv0dzkAtfEtioA2TaLkhqY0aQ/5PP75RCyIhzFjdhXjx/tFaq9ZgSqoTRbR7Ql63HvsVDgeRJEijVQGJhDWyNbZiTE1n2/UUJzQkY/GnRHzKGKCjEpceZKufIGV5UGDuRP2iA9n/uqAqAx5+gjooQE=
+	t=1780828665; cv=none; b=c0ZcuJrZtv8HWHFlowlcxpsnTJ7VWzNIEyRpKaRWhAnXzwbJe0w6JQdTq+2Jj2QFBSQ+T2XtTG/yu/RgUz7Wk1fkHU2gS5+phVEDspX3jGx5kGvRQh1g70lkYtkHqBcZe++nk9AHi1hab0FsN/btsZBD01sR9SWNVTcd+Vg7FLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828640; c=relaxed/simple;
-	bh=RYB20Cq/LeEC9KK8r2i9Qa993iZj8TzaM8/AyR2DSO0=;
+	s=arc-20240116; t=1780828665; c=relaxed/simple;
+	bh=jBhQt/o3ctMPY/7Z1FBxKhuabeXlyM5XQc9tlpkSLNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a/eDyiSsOhZ5StVkJA9VlcnCjCMosDRVTg0P+GAAJJHABLmy/dRpXLqrjUkIf6NoCgrGiomA9bp3HNsO5bvflG99TeRoX6OD3ohBmXboloaN1rCKJJIE+JSWkiHhiHDXP/2G6GawIJ+klPWKOT8P0IoD8dm/fGtZkvjZvdb9ngw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tghpHeMh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5441F00893;
-	Sun,  7 Jun 2026 10:37:17 +0000 (UTC)
+	 MIME-Version; b=s88BWABULFaa1vCPw1qXLwb2ChDDywb38KnU0iCaQbWM8X4HEu5bln46NUwzH2SoFBpnj9ZUjdYHMVaKNiRd2tUA6gNCDRf13iOFz5yv7es7jqx23AJ3MigJo0t7LsAJb8cR9jM5IKaifbe0t5MBtHkOKIUivO7gFZvNBxX+x/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkWT9LtR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B5F1F00893;
+	Sun,  7 Jun 2026 10:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828638;
-	bh=tNxqzq5WKPIzU0d/zk5AD9IiHqmRf6r9l700aPdHIAQ=;
+	s=korg; t=1780828664;
+	bh=peshYLbFyqUgd2ouW9mMDohPFF10+jsYQGq0cImIXZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tghpHeMhMoBvSXpwOOKNwcZQpgZAsdpwh6z1i4EnmATNv8sYPyBBY0KrOKRd8Wqqe
-	 E8Owg5qoeQsd+y4SsxiQFA+UH6Zs4H5JRZCGqSrCcfRVYKj67U+sEnL8EeA/y3w8/U
-	 crAZOShfAIM32uLsGvI+rJ7VJQ1WqkQrUNvxOSg4=
+	b=OkWT9LtR3HHDkP5KUqTnojhX+kK0FBQw1MFPYJqR1oGe+r/U9D6k345uDXjv7RDnr
+	 yDr3ZA+8l1ZpADoq/53WCev8m6IkwqtWZRsdGJrwBkC/Vv/5W6M1xBooe4MPk3ITsx
+	 D95fN3VVlfbJRMMhCbDQwZPeoOVHl1Gpw6UQ+KY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Radu Sabau <radu.sabau@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 7.0 184/332] iio: adc: ad4695: Fix call ordering in offload buffer postenable
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 156/307] KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0
 Date: Sun,  7 Jun 2026 11:59:13 +0200
-Message-ID: <20260607095734.824250746@linuxfoundation.org>
+Message-ID: <20260607095733.452454191@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,126 +66,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261459-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nuno.sa@analog.com,m:dlechner@baylibre.com,m:radu.sabau@analog.com,m:Stable@vger.kernel.org,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261466-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,baylibre.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2CFF864FDB7
+X-Rspamd-Queue-Id: 0B4B964FDD5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Sabau <radu.sabau@analog.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 1a772719318c11e146f6fbe621fffd230a6f456a upstream.
+commit f185e05dce6f170f83c4ba602e969b1c3c7a22e6 upstream.
 
-ad4695_enter_advanced_sequencer_mode() was called after
-spi_offload_trigger_enable(). That is wrong because
-ad4695_enter_advanced_sequencer_mode() issues regular SPI transfers to
-put the ADC into advanced sequencer mode, and not all SPI offload capable
-controllers support regular SPI transfers while offloading is enabled.
+Now that all paths in KVM properly validate the length needed for the
+scratch area, and are guaranteed to pass in a non-zero length, WARN if KVM
+attempts to configured the scratch area with min_len==0 to guard against
+future bugs.
 
-Fix this by calling ad4695_enter_advanced_sequencer_mode() before
-spi_offload_trigger_enable(), so the ADC is fully configured before the
-first CNV pulse can occur. This is consistent with the same constraint
-that already applies to the BUSY_GP_EN write above it.
-
-Update the error unwind labels accordingly: add err_exit_conversion_mode
-so that a failure of spi_offload_trigger_enable() correctly exits
-conversion mode before clearing BUSY_GP_EN.
-
-Fixes: f09f140e3ea8 ("iio: adc: ad4695: Add support for SPI offload")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Radu Sabau <radu.sabau@analog.com>
-Cc: Stable@vger.kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-8-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad4695.c |   23 ++++++++---------------
- 1 file changed, 8 insertions(+), 15 deletions(-)
+ arch/x86/kvm/svm/sev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/adc/ad4695.c
-+++ b/drivers/iio/adc/ad4695.c
-@@ -876,14 +876,14 @@ static int ad4695_offload_buffer_postena
- 	if (ret)
- 		goto err_unoptimize_message;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3509,6 +3509,9 @@ static int setup_vmgexit_scratch(struct
+ 	u64 scratch_gpa_beg, scratch_gpa_end;
+ 	void *scratch_va;
  
--	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger,
--					 &config);
-+	ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
- 	if (ret)
- 		goto err_disable_busy_output;
- 
--	ret = ad4695_enter_advanced_sequencer_mode(st, num_slots);
-+	ret = spi_offload_trigger_enable(st->offload, st->offload_trigger,
-+					 &config);
- 	if (ret)
--		goto err_offload_trigger_disable;
-+		goto err_exit_conversion_mode;
- 
- 	mutex_lock(&st->cnv_pwm_lock);
- 	pwm_get_state(st->cnv_pwm, &state);
-@@ -895,23 +895,16 @@ static int ad4695_offload_buffer_postena
- 	ret = pwm_apply_might_sleep(st->cnv_pwm, &state);
- 	mutex_unlock(&st->cnv_pwm_lock);
- 	if (ret)
--		goto err_offload_exit_conversion_mode;
-+		goto err_offload_trigger_disable;
- 
- 	return 0;
- 
--err_offload_exit_conversion_mode:
--	/*
--	 * We have to unwind in a different order to avoid triggering offload.
--	 * ad4695_exit_conversion_mode() triggers a conversion, so it has to be
--	 * done after spi_offload_trigger_disable().
--	 */
--	spi_offload_trigger_disable(st->offload, st->offload_trigger);
--	ad4695_exit_conversion_mode(st);
--	goto err_disable_busy_output;
--
- err_offload_trigger_disable:
- 	spi_offload_trigger_disable(st->offload, st->offload_trigger);
- 
-+err_exit_conversion_mode:
-+	ad4695_exit_conversion_mode(st);
++	if (WARN_ON_ONCE(!min_len))
++		goto e_scratch;
 +
- err_disable_busy_output:
- 	regmap_clear_bits(st->regmap, AD4695_REG_GP_MODE,
- 			  AD4695_REG_GP_MODE_BUSY_GP_EN);
+ 	scratch_gpa_beg = svm->sev_es.sw_scratch;
+ 	if (!scratch_gpa_beg) {
+ 		pr_err("vmgexit: scratch gpa not provided\n");
 
 
 
