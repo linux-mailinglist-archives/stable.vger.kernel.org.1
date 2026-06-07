@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3UJOAg1PJWrYGgIAu9opvQ
-	(envelope-from <stable+bounces-261777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:25 +0200
+	id uR0ZIydPJWrfGgIAu9opvQ
+	(envelope-from <stable+bounces-261822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F4D650313
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D82650330
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MgH9cAQD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261777-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261777-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wuGP50FN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261822-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261822-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3456302A4E4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9B2EB3004DBD
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6F6325706;
-	Sun,  7 Jun 2026 10:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A335334AB06;
+	Sun,  7 Jun 2026 10:59:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721793264F2;
-	Sun,  7 Jun 2026 10:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463332FA14;
+	Sun,  7 Jun 2026 10:59:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829806; cv=none; b=bAcJoTlpLRHOMIC2zUOpzDiS9YzbLluAA4QNSWN7B0Bl4nlL4uifzLN/Vw3G4E62GKEtEHNuzeZJTECs6PkY9DBHWU5hinRaY09D1Lh9INuMs5rpz1lEfbc7oxVcK6Ew+fHlX2xs3QXTU+I+yF5lZkyte0xKt569SKx3b482lc8=
+	t=1780829976; cv=none; b=HQRnD0GmgpfyRd2YFLc47ui2jBYGlTKqfxF/A6ek/MpX2WMKWa5l6mA0BI5WBbe1ql4TQG0PjyN0E9KujmQHkSmTtwpj6/ULIBuDpYTOyC6OIvJZAhCk6R8QHLLivClEmDhBQYNDhapeCyAVv0KL0tXOlRlOwIrsTrgX1Hrr7Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829806; c=relaxed/simple;
-	bh=pBU3T66hG1AvfRU8Hmseun8RTWWdg8fffdfK2qFMtEs=;
+	s=arc-20240116; t=1780829976; c=relaxed/simple;
+	bh=xA89tAmCTEjTKR9Oni5jyVswrrMSVh3uvBZqpN/nNmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nJsymdEwlKpwarwGrsJHlx3kEU0q9oT/dqBL3tSEi3vOMmhv5YW4Wt6Q+BfuG1KpUgcWCT52I5K/6FtR3BWCLK7UvAMVMsbBJ5cl30Jwsv44WC+szvmAOFzaaL37cQG+iPD41pm/8nQeW2KR9Qs7if8iZcnG6ktWo3HlRXi1RDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgH9cAQD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121531F00893;
-	Sun,  7 Jun 2026 10:56:42 +0000 (UTC)
+	 MIME-Version; b=ohmRJRfrRjRrJeLO6Qw9zmjv0yd720liLtO6U91KgyToM2XAIK5/qyHdGdtHNYBkjLvVp5EJSARID7JFNG4bNCmkx8el0e4Sd1ibPzbNaqXVIF6N1ULgKr4aSCzO+Vnj8mLwayxME+Ctx35buIG08BDH3ZIyC8uwtRnAy04m91s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuGP50FN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D231F00898;
+	Sun,  7 Jun 2026 10:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829804;
-	bh=VEqp58mrNQugdtVtJ55keDEG5NzFXnijEqY3x5fgqKY=;
+	s=korg; t=1780829973;
+	bh=tFs6ZtOuKv0KQ5Hmqg5uzYLxMbGIDcqGeMpXZVNXyRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MgH9cAQDC5BpRI2aGdpXrePhBsEEUj2WX6enXO5OKVw4/dnIkzM+HYVCb0WmLKeeg
-	 PmTwYXc6fTCeAX4UI4tdbsADucWR0mDegFzlW1USN4JcJRWL8+87eg7Tk25i3rgX15
-	 LI1Pqe6ExpO81bm5D2r0WK7CN/IwyvK87Heyy3RQ=
+	b=wuGP50FNXavgpcKiI7tyve+ft4QK9qaayv0cP/DsFSmbcn1TDxJkR2LnLMTEOm2nV
+	 8nxbcnmwzGuJ/d6kvlj9mfIQ+GAqyuBk7mOxq8hqF3vdOQ48H9qXbx+hfBihJnf0ck
+	 4eRlF6vOSuKa7OSusn5b/B/tjtvNKhJ6VoKiYGxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 7.0 314/332] serial: zs: Convert to use a platform device
+	Zeng Heng <zengheng4@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 296/315] arm64: tlb: Flush walk cache when unsharing PMD tables
 Date: Sun,  7 Jun 2026 12:01:23 +0200
-Message-ID: <20260607095739.650529016@linuxfoundation.org>
+Message-ID: <20260607095738.465965195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,512 +72,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261777-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261822-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zengheng4@huawei.com,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,orcam.me.uk:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,vger.kernel.org:from_smtp,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 78F4D650313
+X-Rspamd-Queue-Id: 86D82650330
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Zeng Heng <zengheng4@huawei.com>
 
-commit 7cac59d08a73cb866ec51a483a6f3fe0f531947c upstream.
+[ Upstream commit c2ff4764e03e7a8d758352f4aceb8fe1be6ac971 ]
 
-Prevent a crash from happening as the first serial port is initialised:
+When huge_pmd_unshare() is called to unshare a PMD table, the
+tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
+but the aarch64 tlb_flush() only checked tlb->freed_tables to
+determine whether to use TLBF_NONE (vae1is, invalidates walk
+cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
 
-  Console: switching to mono frame buffer device 160x64
-  fb0: PMAG-AA frame buffer device at tc0
-  DECstation Z85C30 serial driver version 0.10
-  CPU 0 Unable to handle kernel paging request at virtual address 0000002c, epc == 803ab00c, ra == 803aafe0
-  Oops[#1]:
-  CPU: 0 PID: 1 Comm: swapper Not tainted 6.4.0-rc3-00031-g84a9582fd203-dirty #57
-  $ 0   : 00000000 10012c00 803aaeb0 00000000
-  $ 4   : 80e12f60 80e12f50 80e12f58 81000030
-  $ 8   : 00000000 805ff37c 00000000 33433538
-  $12   : 65732030 00000006 80c2915d 6c616972
-  $16   : 80e12f00 807b7630 00000000 00000000
-  $20   : 00000004 00000348 000001a0 807623b8
-  $24   : 00000018 00000000
-  $28   : 80c24000 80c25d60 8078b148 803aafe0
-  Hi    : 00000000
-  Lo    : 00000000
-  epc   : 803ab00c serial_base_ctrl_add+0x78/0xf4
-  ra    : 803aafe0 serial_base_ctrl_add+0x4c/0xf4
-  Status: 10012c03	KERNEL EXL IE
-  Cause : 00000008 (ExcCode 02)
-  BadVA : 0000002c
-  PrId  : 00000440 (R4400SC)
-  Modules linked in:
-  Process swapper (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
-  Stack : 80760000 00000cc0 00400044 00400040 803aa02c 80d61ab8 00000000 807b7630
-          80760000 807623b8 807b7628 803aa644 80386998 00000000 80e17780 80220f68
-          80e17780 80d61ab8 80c17d80 80e17780 80e17780 8063c798 80e17780 80383fa0
-          00000010 80e17780 00000000 80386998 807a0000 00000000 00400040 8038f848
-          807623b8 80d61ab8 00000004 80e17780 00000000 803a68e4 80c25e2c 803bb884
-          ...
-  Call Trace:
-  [<803ab00c>] serial_base_ctrl_add+0x78/0xf4
-  [<803aa644>] serial_core_register_port+0x174/0x69c
-  [<8077e9ac>] zs_init+0xc8/0xfc
-  [<800404d4>] do_one_initcall+0x40/0x2ac
-  [<8076cecc>] kernel_init_freeable+0x1e4/0x270
-  [<80605bec>] kernel_init+0x20/0x108
-  [<800431e8>] ret_from_kernel_thread+0x14/0x1c
+This caused the stale PMD page table entry to remain in the walk cache
+after unshare, potentially leading to incorrect page table walks.
 
-  Code: 2442aeb0  ae120024  ae0200d0 <8c67002c> 50e00001  8c670000  3c06806e  3c05806e  afb30010
+Fix by including unshared_tables in the check, so that when
+unsharing tables, TLBF_NONE is used and the walk cache is properly
+invalidated.
 
-  ---[ end trace 0000000000000000 ]---
+Here is the detailed distinction between vae1is and vale1is:
 
-(report at the offending commit) -- where a pointer is dereferenced that
-has been derived from a null pointer to the port's parent device.
+| Instruction Combination  | Actual Invalidation Scope                         |
+| ------------------------ | --------------------------------------------------|
+| `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
+| `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
+| `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
+| `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
 
-Since no device is available with legacy probing and it's not anymore a
-preferable way to discover devices anyway, switch the driver to using a
-platform device and use it as the port's parent device.  Update resource
-handling accordingly and only request the actual span of addresses used
-within the slot, which will have had its resource already requested by
-generic platform device code.
-
-Use platform_driver_probe() not just because SCC devices are fixed with
-solder on board and not straightforward to remove, but foremost because
-the associated TTY's major device number is the same as used by the dz
-driver and the first driver to claim it will prevent the other one from
-using it.  Either one DZ device or some SCC devices will be present in a
-given system but never both at a time, and therefore we want the major
-device number to be claimed by the first driver to actually successfully
-bind to its device and platform_driver_probe() is a way to fulfil that.
-
-An unfortunate consequence of the switch to a platform device is we now
-hand the console over from the bootconsole much later in the bootstrap.
-The firmware console handler appears good enough though to work so late
-and in particular with interrupts enabled.
-
-Since there is one way only remaining to reach zs_reset() now, remove
-the port initialisation marker as no longer needed and go through the
-channel reset unconditionally.
-
-Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # needs to use .remove_new for <= 6.10
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062328480.46195@angie.orcam.me.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/platform.c |   60 ++++++++++++++
- drivers/tty/serial/zs.c  |  190 +++++++++++++++++------------------------------
- drivers/tty/serial/zs.h  |    1 
- 3 files changed, 128 insertions(+), 123 deletions(-)
+ arch/arm64/include/asm/tlb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/dec/platform.c
-+++ b/arch/mips/dec/platform.c
-@@ -13,6 +13,7 @@
- #include <asm/bootinfo.h>
- 
- #include <asm/dec/interrupts.h>
-+#include <asm/dec/ioasic_addrs.h>
- #include <asm/dec/kn01.h>
- #include <asm/dec/kn02.h>
- #include <asm/dec/system.h>
-@@ -53,10 +54,37 @@ static struct platform_device *dec_dz_de
- 	&dec_dz_device,
- };
- 
-+static struct resource dec_zs_resources[][2] = {
-+	{
-+		{ .name = "scc0", .flags = IORESOURCE_MEM, },
-+		{ .name = "scc0", .flags = IORESOURCE_IRQ, },
-+	},
-+	{
-+		{ .name = "scc1", .flags = IORESOURCE_MEM, },
-+		{ .name = "scc1", .flags = IORESOURCE_IRQ, },
-+	},
-+};
-+
-+static struct platform_device dec_zs_device[] = {
-+	{
-+		.name = "zs",
-+		.id = 0,
-+		.resource = dec_zs_resources[0],
-+		.num_resources = ARRAY_SIZE(dec_zs_resources[0]),
-+	},
-+	{
-+		.name = "zs",
-+		.id = 1,
-+		.resource = dec_zs_resources[1],
-+		.num_resources = ARRAY_SIZE(dec_zs_resources[1]),
-+	},
-+};
-+
- static int __init dec_add_devices(void)
+--- a/arch/arm64/include/asm/tlb.h
++++ b/arch/arm64/include/asm/tlb.h
+@@ -53,7 +53,7 @@ static inline int tlb_get_level(struct m
+ static inline void tlb_flush(struct mmu_gather *tlb)
  {
--	int ret1, ret2;
--	int num_dz;
-+	struct platform_device *dec_zs_devices[ARRAY_SIZE(dec_zs_device)];
-+	int ret1, ret2, ret3;
-+	int num_dz, num_zs;
- 	int irq, i;
- 
- 	dec_rtc_resources[0].start = RTC_PORT(0);
-@@ -84,10 +112,36 @@ static int __init dec_add_devices(void)
- 	}
- 	num_dz = i;
- 
-+	i = 0;
-+	irq = dec_interrupt[DEC_IRQ_SCC0];
-+	if (irq >= 0) {
-+		resource_size_t base = dec_kn_slot_base + IOASIC_SCC0;
-+
-+		dec_zs_device[i].resource[0].start = base;
-+		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
-+		dec_zs_device[i].resource[1].start = irq;
-+		dec_zs_device[i].resource[1].end = irq;
-+		dec_zs_devices[i] = &dec_zs_device[i];
-+		i++;
-+	}
-+	irq = dec_interrupt[DEC_IRQ_SCC1];
-+	if (irq >= 0) {
-+		resource_size_t base = dec_kn_slot_base + IOASIC_SCC1;
-+
-+		dec_zs_device[i].resource[0].start = base;
-+		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
-+		dec_zs_device[i].resource[1].start = irq;
-+		dec_zs_device[i].resource[1].end = irq;
-+		dec_zs_devices[i] = &dec_zs_device[i];
-+		i++;
-+	}
-+	num_zs = i;
-+
- 	ret1 = platform_device_register(&dec_rtc_device);
- 	ret2 = IS_ENABLED(CONFIG_32BIT) ?
- 	       platform_add_devices(dec_dz_devices, num_dz) : 0;
--	return ret1 ? ret1 : ret2;
-+	ret3 = platform_add_devices(dec_zs_devices, num_zs);
-+	return ret1 ? ret1 : ret2 ? ret2 : ret3;
- }
- 
- device_initcall(dec_add_devices);
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -56,6 +56,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/major.h>
-+#include <linux/platform_device.h>
- #include <linux/serial.h>
- #include <linux/serial_core.h>
- #include <linux/spinlock.h>
-@@ -66,10 +67,6 @@
- 
- #include <linux/atomic.h>
- 
--#include <asm/dec/interrupts.h>
--#include <asm/dec/ioasic_addrs.h>
--#include <asm/dec/system.h>
--
- #include "zs.h"
- 
- 
-@@ -79,7 +76,7 @@ MODULE_LICENSE("GPL");
- 
- 
- static char zs_name[] __initdata = "DECstation Z85C30 serial driver version ";
--static char zs_version[] __initdata = "0.10";
-+static char zs_version[] __initdata = "0.11";
- 
- /*
-  * It would be nice to dynamically allocate everything that
-@@ -98,12 +95,8 @@ static char zs_version[] __initdata = "0
- 
- #define to_zport(uport) container_of(uport, struct zs_port, port)
- 
--struct zs_parms {
--	resource_size_t scc[ZS_NUM_SCCS];
--	int irq[ZS_NUM_SCCS];
--};
--
- static struct zs_scc zs_sccs[ZS_NUM_SCCS];
-+static struct uart_driver zs_reg;
- 
- /*
-  * Set parameters in WR5, WR12, WR13 such as not to interfere
-@@ -839,16 +832,15 @@ static void zs_reset(struct zs_port *zpo
- 
- 	spin_lock_irqsave(&scc->zlock, flags);
- 	irq = !irqs_disabled_flags(flags);
--	if (!zport->initialised) {
--		/* Reset the pointer first, just in case...  */
--		read_zsreg(zport, R0);
--		/* And let the current transmission finish.  */
--		zs_line_drain(zport, irq);
--		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
--		udelay(10);
--		write_zsreg(zport, R9, 0);
--		zport->initialised = 1;
--	}
-+
-+	/* Reset the pointer first, just in case...  */
-+	read_zsreg(zport, R0);
-+	/* And let the current transmission finish.  */
-+	zs_line_drain(zport, irq);
-+	write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
-+	udelay(10);
-+	write_zsreg(zport, R9, 0);
-+
- 	load_zsregs(zport, zport->regs, irq);
- 	spin_unlock_irqrestore(&scc->zlock, flags);
- }
-@@ -1055,63 +1047,62 @@ static const struct uart_ops zs_ops = {
- /*
-  * Initialize Z85C30 port structures.
-  */
--static int __init zs_probe_sccs(void)
-+static int __init zs_probe(struct platform_device *pdev)
- {
--	static int probed;
--	struct zs_parms zs_parms;
--	int chip, side, irq;
--	int n_chips = 0;
-+	struct resource *mem_resource, *irq_resource;
-+	int chip, side;
- 	int i;
- 
--	if (probed)
--		return 0;
-+	mem_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	irq_resource = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!mem_resource || !irq_resource)
-+		return -ENODEV;
-+
-+	chip = pdev->id;
-+	spin_lock_init(&zs_sccs[chip].zlock);
-+	for (side = 0; side < ZS_NUM_CHAN; side++) {
-+		struct zs_port *zport = &zs_sccs[chip].zport[side];
-+		struct uart_port *uport = &zport->port;
- 
--	irq = dec_interrupt[DEC_IRQ_SCC0];
--	if (irq >= 0) {
--		zs_parms.scc[n_chips] = IOASIC_SCC0;
--		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC0];
--		n_chips++;
--	}
--	irq = dec_interrupt[DEC_IRQ_SCC1];
--	if (irq >= 0) {
--		zs_parms.scc[n_chips] = IOASIC_SCC1;
--		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC1];
--		n_chips++;
--	}
--	if (!n_chips)
--		return -ENXIO;
--
--	probed = 1;
--
--	for (chip = 0; chip < n_chips; chip++) {
--		spin_lock_init(&zs_sccs[chip].zlock);
--		for (side = 0; side < ZS_NUM_CHAN; side++) {
--			struct zs_port *zport = &zs_sccs[chip].zport[side];
--			struct uart_port *uport = &zport->port;
--
--			zport->scc	= &zs_sccs[chip];
--			zport->clk_mode	= 16;
--
--			uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
--			uport->irq	= zs_parms.irq[chip];
--			uport->uartclk	= ZS_CLOCK;
--			uport->fifosize	= 1;
--			uport->iotype	= UPIO_MEM;
--			uport->flags	= UPF_BOOT_AUTOCONF;
--			uport->ops	= &zs_ops;
--			uport->line	= chip * ZS_NUM_CHAN + side;
--			uport->mapbase	= dec_kn_slot_base +
--					  zs_parms.scc[chip] +
--					  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
-+		zport->scc	= &zs_sccs[chip];
-+		zport->clk_mode	= 16;
- 
--			for (i = 0; i < ZS_NUM_REGS; i++)
--				zport->regs[i] = zs_init_regs[i];
--		}
-+		uport->dev	= &pdev->dev;
-+		uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
-+		uport->irq	= irq_resource->start;
-+		uport->uartclk	= ZS_CLOCK;
-+		uport->fifosize	= 1;
-+		uport->iotype	= UPIO_MEM;
-+		uport->flags	= UPF_BOOT_AUTOCONF;
-+		uport->ops	= &zs_ops;
-+		uport->line	= chip * ZS_NUM_CHAN + side;
-+		uport->mapbase	= mem_resource->start +
-+				  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
-+
-+		for (i = 0; i < ZS_NUM_REGS; i++)
-+			zport->regs[i] = zs_init_regs[i];
-+
-+		if (uart_add_one_port(&zs_reg, uport))
-+			uport->dev = NULL;
- 	}
- 
- 	return 0;
- }
- 
-+static void __exit zs_remove(struct platform_device *pdev)
-+{
-+	int chip, side;
-+
-+	chip = pdev->id;
-+	for (side = ZS_NUM_CHAN - 1; side >= 0; side--) {
-+		struct zs_port *zport = &zs_sccs[chip].zport[side];
-+		struct uart_port *uport = &zport->port;
-+
-+		if (uport->dev)
-+			uart_remove_one_port(&zs_reg, uport);
-+	}
-+}
-+
- 
- #ifdef CONFIG_SERIAL_ZS_CONSOLE
- static void zs_console_putchar(struct uart_port *uport, unsigned char ch)
-@@ -1192,20 +1183,14 @@ static int __init zs_console_setup(struc
- 	int bits = 8;
- 	int parity = 'n';
- 	int flow = 'n';
--	int ret;
--
--	ret = zs_map_port(uport);
--	if (ret)
--		return ret;
--
--	zs_reset(zport);
- 
-+	if (!zport->scc)
-+		return -ENODEV;
- 	if (options)
- 		uart_parse_options(options, &baud, &parity, &bits, &flow);
- 	return uart_set_options(uport, co, baud, parity, bits, flow);
- }
- 
--static struct uart_driver zs_reg;
- static struct console zs_console = {
- 	.name	= "ttyS",
- 	.write	= zs_console_write,
-@@ -1216,23 +1201,6 @@ static struct console zs_console = {
- 	.data	= &zs_reg,
- };
- 
--/*
-- *	Register console.
-- */
--static int __init zs_serial_console_init(void)
--{
--	int ret;
--
--	ret = zs_probe_sccs();
--	if (ret)
--		return ret;
--	register_console(&zs_console);
--
--	return 0;
--}
--
--console_initcall(zs_serial_console_init);
--
- #define SERIAL_ZS_CONSOLE	&zs_console
- #else
- #define SERIAL_ZS_CONSOLE	NULL
-@@ -1248,47 +1216,31 @@ static struct uart_driver zs_reg = {
- 	.cons			= SERIAL_ZS_CONSOLE,
- };
- 
-+static struct platform_driver zs_driver = {
-+	.remove = __exit_p(zs_remove),
-+	.driver = { .name = "zs" },
-+};
-+
- /* zs_init inits the driver. */
- static int __init zs_init(void)
- {
--	int i, ret;
-+	int ret;
- 
- 	pr_info("%s%s\n", zs_name, zs_version);
- 
--	/* Find out how many Z85C30 SCCs we have.  */
--	ret = zs_probe_sccs();
--	if (ret)
--		return ret;
--
- 	ret = uart_register_driver(&zs_reg);
- 	if (ret)
- 		return ret;
-+	ret = platform_driver_probe(&zs_driver, zs_probe);
-+	if (ret)
-+		uart_unregister_driver(&zs_reg);
- 
--	for (i = 0; i < ZS_NUM_SCCS * ZS_NUM_CHAN; i++) {
--		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
--		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
--		struct uart_port *uport = &zport->port;
--
--		if (zport->scc)
--			uart_add_one_port(&zs_reg, uport);
--	}
--
--	return 0;
-+	return ret;
- }
- 
- static void __exit zs_exit(void)
- {
--	int i;
--
--	for (i = ZS_NUM_SCCS * ZS_NUM_CHAN - 1; i >= 0; i--) {
--		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
--		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
--		struct uart_port *uport = &zport->port;
--
--		if (zport->scc)
--			uart_remove_one_port(&zs_reg, uport);
--	}
--
-+	platform_driver_unregister(&zs_driver);
- 	uart_unregister_driver(&zs_reg);
- }
- 
---- a/drivers/tty/serial/zs.h
-+++ b/drivers/tty/serial/zs.h
-@@ -22,7 +22,6 @@
- struct zs_port {
- 	struct zs_scc	*scc;			/* Containing SCC.  */
- 	struct uart_port port;			/* Underlying UART.  */
--	int		initialised;		/* For the console port.  */
- 
- 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
+ 	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
+-	bool last_level = !tlb->freed_tables;
++	bool last_level = !(tlb->freed_tables || tlb->unshared_tables);
+ 	unsigned long stride = tlb_get_unmap_size(tlb);
+ 	int tlb_level = tlb_get_level(tlb);
  
 
 
