@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id er2oGnZGJWrwFgIAu9opvQ
-	(envelope-from <stable+bounces-261233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:46 +0200
+	id nLkTNOVGJWolFwIAu9opvQ
+	(envelope-from <stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D415864F981
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E3664F9F0
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bHjWdSpd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261233-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261233-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="pRn/W2N8";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261248-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D7363002B0D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 543423028CA5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EC331F990;
-	Sun,  7 Jun 2026 10:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7AAE3264F5;
+	Sun,  7 Jun 2026 10:23:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653E12E7179;
-	Sun,  7 Jun 2026 10:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2510930F55F;
+	Sun,  7 Jun 2026 10:23:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827762; cv=none; b=bteNS/D4xNjH+TTtuMQvjgd0pdn7FM5u6Iuts7/cf9l5ATEbdiKbf/4Sna1pioKe63m5MbVR5JXDiheL6Mdsabxw5ZL3JasZ0CseiLQS2KvTUWtDeQB1wQpg1gLpTcYdFZ2Y8PnChturRfoEANNCjaakeDmy7Ycfyz58BZ18sn8=
+	t=1780827824; cv=none; b=jVbXlQW1s/I6wnxYjRLiQsCC8qPHWoM/K6szXH+ooY7MYfO2s3o10J0f/ISa6K7r+H+6ARLIZ5NN/1DTJFNrVwZeSb5u3OQiJDAXtKy+BaCD03SgG26nEbrHz2oc0MCqcGHqjoVlNlWDSvdEEoJLfFHVtSTXjxgfJgR2bgSYCW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827762; c=relaxed/simple;
-	bh=ygYd+bNrp9nZSSwsfHGYku7WB+8KGX5fDQbyCOAFJaw=;
+	s=arc-20240116; t=1780827824; c=relaxed/simple;
+	bh=sn7xeTflO47J1ADu2W3KeYgjiA1f496yVzTBuvYS29c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aq//YbTJaQk4uqatKdF7ZHJyYDcUCrAwL279puHFY2OcvxhfTH9GEqXWTZp2RA1yxPF+RiY6lTo7cR/OMXuVtuKrWIDKf6IFSvAT4Sfzj58pgrc7KJUbtVaCLVhF5uuSauXj1QCdUhTi1RPIBA5aBEXKaVw0h3n5jNdr5q3nVE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHjWdSpd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4F31F00893;
-	Sun,  7 Jun 2026 10:22:40 +0000 (UTC)
+	 MIME-Version; b=EpTBsZUMujd/aSWK5mCfXYSU8hBntNGlEGUoKqiqNh0RmW2X5PdVIE1/J+VFMgPEN1vGK+pBNsAmSvrhrBRsMWEnA+OqlRcfg1JNnaOMbZgP/SeSgpfIi6Xo3VasUWUF5wvx0HCAzneLb8obWhlVzRw/YRQYcKRe8moBiJtdAIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRn/W2N8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E641F00893;
+	Sun,  7 Jun 2026 10:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827761;
-	bh=dpe2jekmI+4xriABGFW27e87on3A7pWLKemtYMofJWM=;
+	s=korg; t=1780827821;
+	bh=Smtc6whxZCMDLObpQDqiCqMAZGIwj1BgRzxFEUmf2iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bHjWdSpdFWTmsbgHeypChnZWX3k31L0qXPVvExtmNuNCaO41WDwqCIRP3CPDNEo56
-	 NxB35+UWaeDlc8QVtL839km/ucBzDEU02AKdxtjbsHZeLxNlZ7gVNf2YPSVmq3Y2Go
-	 np2LZTE3Fp5o2wGYXmxvRBlW1QyEFPdlEnbKf8mc=
+	b=pRn/W2N8nXHfK6gkSggkVv4PJmnBOJsfh84U1Y7dleBfyXWtQ58T6u4L3mSXDjIPU
+	 yw0gZz3GQuirjlCIhQ2hVKNb06ThjV3+h7aSXVjJLXUL9TrZRnd0sxNnl7j7VjveV/
+	 rJrXZ/P07PHC6LOzal2bx5/LFkcytPxEd6uuTys8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 7.0 120/332] iio: pressure: bmp280: fix stack leak in bmp580 trigger handler
-Date: Sun,  7 Jun 2026 11:58:09 +0200
-Message-ID: <20260607095732.517046828@linuxfoundation.org>
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 103/315] phy: mscc: Use PHY_ID_MATCH_EXACT for VSC8584, VSC8582, VSC8575, VSC856X
+Date: Sun,  7 Jun 2026 11:58:10 +0200
+Message-ID: <20260607095731.431794862@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +66,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261233-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261248-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:horatiu.vultur@microchip.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email,vger.kernel.org:from_smtp,microchip.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D415864F981
+X-Rspamd-Queue-Id: 70E3664F9F0
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 387c86b582e0782ab332e7bfcd4e6e3f93922961 upstream.
+[ Upstream commit 1bc80d673087e5704adbb3ee8e4b785c14899cce ]
 
-bmp580_trigger_handler() declares its scan buffer on the stack without
-an initializer and then memcpy()s 3 bytes of 24-bit sensor data into
-each 4-byte __le32 field.  The high byte of comp_temp and comp_press is
-left uninitialized, and the channel storagebits is 32, so two bytes of
-stack are pushed to userspace per scan.
+As the PHYs VSC8584, VSC8582, VSC8575 and VSC856X exists only as rev B,
+we can use PHY_ID_MATCH_EXACT to match exactly on revision B of the PHY.
+Because of this change then there is not need the check if it is a
+different revision than rev B in the function vsc8584_probe() as we
+already know that this will never happen.
+These changes are a preparation for the next patch because in that patch
+we will make the PHYs VSC8574 and VSC8572 to use vsc8584_probe() and
+these PHYs have multiple revision.
 
-This is a regression from when the buffer lived in the private data, the
-move to a stack-local struct dropped the implicit zeroing.
-bme280_trigger_handler() was fixed up to handle this bug, but this
-driver was not fixed because there was no padding hole, but rather a
-short-fill issue.
-
-Fix this all by just zero-initializing the structure on the stack.
-
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Fixes: 872c8014e05e ("iio: pressure: bmp280: drop sensor_data array")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251023191350.190940-2-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc.h      |  8 ++++----
+ drivers/net/phy/mscc/mscc_main.c | 23 ++++-------------------
+ 2 files changed, 8 insertions(+), 23 deletions(-)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -2616,7 +2616,7 @@ static irqreturn_t bmp580_trigger_handle
- 		__le32 comp_temp;
- 		__le32 comp_press;
- 		aligned_s64 timestamp;
--	} buffer;
-+	} buffer = { };
+diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
+index 2d8eca54c40a29..2eef5956b9cc59 100644
+--- a/drivers/net/phy/mscc/mscc.h
++++ b/drivers/net/phy/mscc/mscc.h
+@@ -289,12 +289,12 @@ enum rgmii_clock_delay {
+ #define PHY_ID_VSC8540			  0x00070760
+ #define PHY_ID_VSC8541			  0x00070770
+ #define PHY_ID_VSC8552			  0x000704e0
+-#define PHY_ID_VSC856X			  0x000707e0
++#define PHY_ID_VSC856X			  0x000707e1
+ #define PHY_ID_VSC8572			  0x000704d0
+ #define PHY_ID_VSC8574			  0x000704a0
+-#define PHY_ID_VSC8575			  0x000707d0
+-#define PHY_ID_VSC8582			  0x000707b0
+-#define PHY_ID_VSC8584			  0x000707c0
++#define PHY_ID_VSC8575			  0x000707d1
++#define PHY_ID_VSC8582			  0x000707b1
++#define PHY_ID_VSC8584			  0x000707c1
+ #define PHY_VENDOR_MSCC			0x00070400
+ 
+ #define MSCC_VDDMAC_1500		  1500
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 48d43f60b8ff8c..8678ebf89cca51 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -1724,12 +1724,6 @@ static int vsc8584_config_init(struct phy_device *phydev)
+ 	 * in this pre-init function.
+ 	 */
+ 	if (phy_package_init_once(phydev)) {
+-		/* The following switch statement assumes that the lowest
+-		 * nibble of the phy_id_mask is always 0. This works because
+-		 * the lowest nibble of the PHY_ID's below are also 0.
+-		 */
+-		WARN_ON(phydev->drv->phy_id_mask & 0xf);
+-
+ 		switch (phydev->phy_id & phydev->drv->phy_id_mask) {
+ 		case PHY_ID_VSC8504:
+ 		case PHY_ID_VSC8552:
+@@ -2290,11 +2284,6 @@ static int vsc8584_probe(struct phy_device *phydev)
+ 	   VSC8531_DUPLEX_COLLISION};
  	int ret;
  
- 	guard(mutex)(&data->lock);
+-	if ((phydev->phy_id & MSCC_DEV_REV_MASK) != VSC8584_REVB) {
+-		dev_err(&phydev->mdio.dev, "Only VSC8584 revB is supported.\n");
+-		return -ENOTSUPP;
+-	}
+-
+ 	vsc8531 = devm_kzalloc(&phydev->mdio.dev, sizeof(*vsc8531), GFP_KERNEL);
+ 	if (!vsc8531)
+ 		return -ENOMEM;
+@@ -2587,9 +2576,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_inband  = vsc85xx_config_inband,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC856X,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC856X),
+ 	.name		= "Microsemi GE VSC856X SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2667,9 +2655,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_inband  = vsc85xx_config_inband,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8575,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8575),
+ 	.name		= "Microsemi GE VSC8575 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2693,9 +2680,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_inband  = vsc85xx_config_inband,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8582,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8582),
+ 	.name		= "Microsemi GE VSC8582 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+@@ -2719,9 +2705,8 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_inband  = vsc85xx_config_inband,
+ },
+ {
+-	.phy_id		= PHY_ID_VSC8584,
++	PHY_ID_MATCH_EXACT(PHY_ID_VSC8584),
+ 	.name		= "Microsemi GE VSC8584 SyncE",
+-	.phy_id_mask	= 0xfffffff0,
+ 	/* PHY_GBIT_FEATURES */
+ 	.soft_reset	= &genphy_soft_reset,
+ 	.config_init    = &vsc8584_config_init,
+-- 
+2.53.0
+
 
 
 
