@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PUF5LW5FJWpHFgIAu9opvQ
-	(envelope-from <stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:22 +0200
+	id c229MRdGJWq1FgIAu9opvQ
+	(envelope-from <stable+bounces-261103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F3D64F7F2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1809C64F8F2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ign+1JqH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qvF+bMo9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261103-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261103-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2187730138BD
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:18:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C0C6304CEA1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7B52EC54A;
-	Sun,  7 Jun 2026 10:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7085303CAE;
+	Sun,  7 Jun 2026 10:14:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924054071DA;
-	Sun,  7 Jun 2026 10:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579D1E98EF;
+	Sun,  7 Jun 2026 10:14:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827496; cv=none; b=GHQZiotr4pP8yRlNUgJK9gDa3+ohRHYu4y4K8IVpgN3opEyaaAgR/7P/tRn1Ne6JCL3+sDYAW7xl8wi5oKnZJvIIHV3llmTgug1qlQkFbSs7DOIbLJQ49rHYVljSUOWmPwzn0FfFqPydeyeE835/B446+2wQHIdiaVOkgGhDbbQ=
+	t=1780827271; cv=none; b=KD3upxk2Sq64j8IqGHrkGhzFGIgmJEPvAN0QY7qrAISH3rVv+5Vgun59Hhm0Lwhrd4iSi8PD3FWy0KAJ/zRZoR6e8zcgOPu46eCkOXKpqzrQV9Uj40eQ7vVG2uP3cekBYj9zxiB5YKutvuYMyYJgRYeGOpQrQgUfVqwxDRMds3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827496; c=relaxed/simple;
-	bh=3RFtf7UWcMQq00+F8fVyyf/xUhkJ49i5HQqrixFbNjs=;
+	s=arc-20240116; t=1780827271; c=relaxed/simple;
+	bh=v/bs8aqtI5HdZDDKBztVXa9QM88/NghD5rox98VhIqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYvCxyAgTDSchvEXpGYjKuzn2IDX8vJG2041S/PRSqac0s4bBG63Qth2Zs9hfjHGFU9vZgb2tzt2yAXZCTcwwJ5230ejjtr8i4utTSt7GlpKlsSLHPGy1QUTE5nWa0pcxBvg00+4qKXiCVP4u83JD/Z3SWItgBBjsZrJ2+1rnhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ign+1JqH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A352D1F00893;
-	Sun,  7 Jun 2026 10:18:14 +0000 (UTC)
+	 MIME-Version; b=sp1hrTj5OHX6Ekrn16G5FVq3NqoTjjOtO8aeFr9o5R0fUfet1PXL4s0EOyVw1TjBIzEcHwZAgr2NKbvd6czz7altf/HFHS1/cg8AIcm94L3P5bU8h//l13/Y89I0UUXgi+peAEki9pOofu7asalXpNC3k8zXcXZbRqIMBsLgUJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvF+bMo9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38E11F00893;
+	Sun,  7 Jun 2026 10:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827495;
-	bh=7521GtjayYAUv5tCugkzKFtLlSKGJH1wlbZOAxcOYho=;
+	s=korg; t=1780827270;
+	bh=9oDlDX6P5QbEKPzQk41v0t3e1No8lITDNOCi6RxaR4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ign+1JqHeIKyAgDrNmu9cbi8Wt6amLrHfPuOq9qXqLDrbThyA+zaGvqiBdeGc1iey
-	 YcjHqqBycFx5k8I+ykyKH1nW46/N0QSTxZ59tQUlkhzeGAOIgoLbT5gxAOD/pe+C5M
-	 aqtD30U10lDNQ1A0AEkGc28wFhslCqx05Y9RaZb0=
+	b=qvF+bMo9WN9N0ObMaP86OpW8vzGUHuRUK6z9OeR7s9z5EuXkge1WfuLbMoUYd9ZYg
+	 QslzlWJeYjCZJuQlQTT/Y+MyPsv/59b/OpEIqMKEJwiuN3YOj/+RRZOsowUDIhzQzi
+	 TdQZY3IM10zgysN6yYOQyRMNe3heVAhiTGSU1wPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
 	Alexandra Winter <wintera@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/307] net/smc: Do not re-initialize smc hashtables
-Date: Sun,  7 Jun 2026 11:57:16 +0200
-Message-ID: <20260607095729.129371020@linuxfoundation.org>
+Subject: [PATCH 6.12 040/307] net/iucv: fix locking in .getsockopt
+Date: Sun,  7 Jun 2026 11:57:17 +0200
+Message-ID: <20260607095729.166033711@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -69,96 +69,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261167-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,debian.org,linux.ibm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261103-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pasic@linux.ibm.com,m:wintera@linux.ibm.com,m:mjambigi@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdf.kernel@gmail.com,m:leitao@debian.org,m:wintera@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,m:sdfkernel@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66F3D64F7F2
+X-Rspamd-Queue-Id: 1809C64F8F2
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 9e4389b0038781f19f97895186ed941ff8ac1678 ]
+[ Upstream commit 3589d20a666caf30ad100c960a2de7de390fce88 ]
 
-INIT_HLIST_HEAD(&smc_v*_hashinfo.ht) are called after smc_nl_init(),
-proto_register() and sock_register(). This can lead to smc_v*_hashinfo.ht
-being reset even though hash entries already exist and are being used,
-possibly resulting in a corrupted list.
+Mirror iucv_sock_setsockopt() and wrap the whole switch in
+lock_sock()/release_sock(). The pre-existing SO_MSGLIMIT-only lock
+becomes redundant and is removed.
 
-Remove unnecessary and dangerous re-initialisation of smc_v*_hashinfo.ht in
-smc_init(); it is implicitly initialised to zero anyhow. Add
-HLIST_HEAD_INIT to the definitions for clarity.
+Any AF_IUCV HIPER user can potentially crash the kernel by racing
+recvmsg() with getsockopt(SO_MSGSIZE): the SO_MSGSIZE arm dereferences
+iucv->hs_dev->mtu after iucv_sock_close() (called from the racing
+recvmsg()) has set hs_dev to NULL, producing a NULL pointer dereference
+oops.
 
-Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-Suggested-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Link: https://patch.msgid.link/20260521145639.10317-1-wintera@linux.ibm.com
+Suggested-by: Stanislav Fomichev <sdf.kernel@gmail.com>
+Fixes: 51363b8751a6 ("af_iucv: allow retrieval of maximum message size")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Tested-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://patch.msgid.link/20260521-af_iucv_fix2-v1-1-f16b1c510aa9@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/iucv/af_iucv.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index c96abb1386be4b..6f3469ad54a165 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -187,10 +187,12 @@ static bool smc_hs_congested(const struct sock *sk)
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index 7929df08d4e023..1a0b41fcea8131 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -1537,7 +1537,7 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct iucv_sock *iucv = iucv_sk(sk);
+ 	unsigned int val;
+-	int len;
++	int len, rc;
  
- struct smc_hashinfo smc_v4_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v4_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
+ 	if (level != SOL_IUCV)
+ 		return -ENOPROTOOPT;
+@@ -1550,26 +1550,34 @@ static int iucv_sock_getsockopt(struct socket *sock, int level, int optname,
  
- struct smc_hashinfo smc_v6_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v6_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
+ 	len = min_t(unsigned int, len, sizeof(int));
  
- int smc_hash_sk(struct sock *sk)
-@@ -3594,8 +3596,6 @@ static int __init smc_init(void)
- 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
- 		goto out_proto6;
++	rc = 0;
++
++	lock_sock(sk);
+ 	switch (optname) {
+ 	case SO_IPRMDATA_MSG:
+ 		val = (iucv->flags & IUCV_IPRMDATA) ? 1 : 0;
+ 		break;
+ 	case SO_MSGLIMIT:
+-		lock_sock(sk);
+ 		val = (iucv->path != NULL) ? iucv->path->msglim	/* connected */
+ 					   : iucv->msglimit;	/* default */
+-		release_sock(sk);
+ 		break;
+ 	case SO_MSGSIZE:
+-		if (sk->sk_state == IUCV_OPEN)
+-			return -EBADFD;
++		if (sk->sk_state == IUCV_OPEN) {
++			rc = -EBADFD;
++			break;
++		}
+ 		val = (iucv->hs_dev) ? iucv->hs_dev->mtu -
+ 				sizeof(struct af_iucv_trans_hdr) - ETH_HLEN :
+ 				0x7fffffff;
+ 		break;
+ 	default:
+-		return -ENOPROTOOPT;
++		rc = -ENOPROTOOPT;
++		break;
  	}
--	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
--	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
++	release_sock(sk);
++
++	if (rc)
++		return rc;
  
- 	rc = smc_ib_register_client();
- 	if (rc) {
+ 	if (put_user(len, optlen))
+ 		return -EFAULT;
 -- 
 2.53.0
 
