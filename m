@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Wrj+HPZOJWrPGgIAu9opvQ
-	(envelope-from <stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:02 +0200
+	id 5ECQJt9RJWqwGwIAu9opvQ
+	(envelope-from <stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 063E26502EF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE1365057E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BnrFDTeN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="0q/V58eB";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 79B7D3004F27
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5753930ADFF0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208232F764;
-	Sun,  7 Jun 2026 10:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7157E3164A1;
+	Sun,  7 Jun 2026 11:01:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED0E12CDA5;
-	Sun,  7 Jun 2026 10:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3A53382C8;
+	Sun,  7 Jun 2026 11:01:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829939; cv=none; b=qT+JhwVwcG1BPrpO1oBWnYtkgNarWGSpwHgJRjiv23is9N9yW21/FKr3nKchRlj+a+KIbw3ysahdBtueTRtANglllJC/TcLUUFxwqI2s/s9snp8AAeyw8121IXiTWuOnuvE7QtE46dtXLF4jBgBR/47A7Qa761LeNCSajlGz4E4=
+	t=1780830112; cv=none; b=FxbsQRMt7uc+/Br6Yq6ucOhgNPoY5TdGASN6fcI+yyzprhQ108Li2fkMh+z3z7IQn+vioBWjvDZfwW2fVl+pnPW5CNvnt6m7alCwWsGZ/ggFplkf52OI1wkP50m5BiPxgGgLJiUc2h1cYS/guuxMXxJS6z9mtGFHZQjdkgmpGnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829939; c=relaxed/simple;
-	bh=3SOKXIaBQno+5AaSAjhDpPTO0v9c60Ff3NdKwL6zYrY=;
+	s=arc-20240116; t=1780830112; c=relaxed/simple;
+	bh=qoTgSQhVhsQYZuFlGiwEqnB2C5Wuihrx08J+DNDqZ6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKdTSFF7lYmKZuM9Urq9OdP9/IXgob2JX9n+2R8kR0otZ7OdlgXtDfW2pxoPfcFyzHtI8Jsoa65lfprgumPmwyS0HsiLJVul5p9wg7qFWiVIfVbl8mw+Gnh2T22pBsGOW6wkrSKazLByOlM+2RQCvyi7jQjOqMi87shI41kHci4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnrFDTeN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49CF1F00893;
-	Sun,  7 Jun 2026 10:58:57 +0000 (UTC)
+	 MIME-Version; b=O/0iaE8Ecv8C9y/3c2C1oje4nIdfLOf0dKgMe+rhOA2sYnd+Aegcd+yRa3j58mFJo3EomJUIhaaLy0fAPbSKRc0OwaOHSYMZ8iYPsgfniHfGLJCH8Lt5HzVBOAT8Wn+c8QBzBNYInmgkHkaXTXvZQpbGHnNuyicxyFDmnYLY0zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0q/V58eB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F7D1F00893;
+	Sun,  7 Jun 2026 11:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829938;
-	bh=/GSDwjDsuQnekFrkVZadFZWEsGU2enI/OuUHlyNImzo=;
+	s=korg; t=1780830110;
+	bh=5IafX1g93oduRvZAJzmDGoKvJgU79IMqWWI9H7LmWRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BnrFDTeNWPHlklClXucl+WArk2X/I0SW9NoIi61wUrC2+zUDvC0TGBsGQuWvpO54Q
-	 wLZoW0p5q0al06Mqk62xRTOB3+olzkGnR7Gm+roMR+QTIWJXg6OHOFtY9cMG2RPXSs
-	 ttdf+auhNr/oTwrmHM7KcoJFgOQrnnF43205JWPU=
+	b=0q/V58eBF2N/GjjGaSQVaz9//S9Lzb3YyNFUoR4haZKjfzGu/8qx+TK2Em6r2dCNw
+	 Bzw/B2/+sAM20JSYWBjFtNhzWhWHXMNxc3xFUIcsCerfuzEn8SfCqHTg114Pr6kYKI
+	 DNPoXDdblQFK3NNcRIJcyi44j4x26v3sWbjxVXZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Qing Wang <wangqing7171@gmail.com>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 328/332] hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock
+Subject: [PATCH 6.18 310/315] mm/slub: hold cpus_read_lock around flush_rcu_sheaves_on_cache()
 Date: Sun,  7 Jun 2026 12:01:37 +0200
-Message-ID: <20260607095740.179479064@linuxfoundation.org>
+Message-ID: <20260607095739.003476876@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,80 +72,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261814-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261855-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wangqing7171@gmail.com,m:vbabka@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,nexthop.ai:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 063E26502EF
+X-Rspamd-Queue-Id: 0FE1365057E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Qing Wang <wangqing7171@gmail.com>
 
-[ Upstream commit 4e4af55aaca7f6d7673d5f9889ad0529db86a048 ]
+[ Upstream commit 67ea9d353d0ba12bdbc9183ff568dead9e949b80 ]
 
-adm1266_state_read() backs the sequencer_state debugfs entry and
-issues an i2c_smbus_read_word_data(client, ADM1266_READ_STATE)
-against the device without taking pmbus_lock.  pmbus_core holds
-pmbus_lock around its own multi-transaction sequences (notably the
-"set PAGE, then read paged register" pattern used by hwmon
-attributes), so an unlocked debugfs reader can land between a PAGE
-write and the subsequent paged read in another thread.  READ_STATE
-itself is not paged, so it cannot corrupt PAGE in flight, but the
-same defensive serialisation that applies to the GPIO accessors
-applies here: any direct device access from outside pmbus_core
-should be ordered with respect to pmbus_core's own.
+flush_rcu_sheaves_on_cache() calls queue_work_on() in a
+for_each_online_cpu() loop, which requires the cpu to stay online.
+But cpus_read_lock() is not held in kvfree_rcu_barrier_on_cache() and the
+set of "online cpus" is subject to change.
 
-Take pmbus_lock at the top of adm1266_state_read() via the
-scope-based guard().
+There are two paths that call flush_rcu_sheaves_on_cache():
 
-Fixes: ed1ff457e187 ("hwmon: (pmbus/adm1266) add debugfs for states")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-8-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+  // has cpus_read_lock()
+  flush_all_rcu_sheaves()
+    -> flush_rcu_sheaves_on_cache()
+
+  // no cpus_read_lock()
+  kvfree_rcu_barrier_on_cache()
+    -> flush_rcu_sheaves_on_cache()
+
+Fix this by holding cpus_read_lock() in kvfree_rcu_barrier_on_cache().
+
+Why not move cpus_read_lock() from flush_all_rcu_sheaves() into
+flush_rcu_sheaves_on_cache()? The reason is it would introduce a new lock
+order (slab_mutex -> cpu_hotplug_lock). The reverse order
+(cpu_hotplug_lock -> slab_mutex) is established by
+
+- cpuhp_setup_state_nocalls(..., slub_cpu_setup, ...)
+- kmem_cache_destroy()
+
+The two orders together would form an AB-BA deadlock.
+
+Finally, add lockdep_assert_cpus_held() in flush_rcu_sheaves_on_cache()
+to catch the same problem in the future.
+
+Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qing Wang <wangqing7171@gmail.com>
+Link: https://patch.msgid.link/20260512035035.762317-1-wangqing7171@gmail.com
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/slab_common.c |    2 ++
+ mm/slub.c        |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -328,6 +328,7 @@ static int adm1266_state_read(struct seq
- 	struct i2c_client *client = to_i2c_client(dev);
- 	int ret;
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -2135,7 +2135,9 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+ void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+ {
+ 	if (s->cpu_sheaves) {
++		cpus_read_lock();
+ 		flush_rcu_sheaves_on_cache(s);
++		cpus_read_unlock();
+ 		rcu_barrier();
+ 	}
  
-+	guard(pmbus_lock)(client);
- 	ret = i2c_smbus_read_word_data(client, ADM1266_READ_STATE);
- 	if (ret < 0)
- 		return ret;
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4203,6 +4203,7 @@ void flush_rcu_sheaves_on_cache(struct k
+ 	struct slub_flush_work *sfw;
+ 	unsigned int cpu;
+ 
++	lockdep_assert_cpus_held();
+ 	mutex_lock(&flush_lock);
+ 
+ 	for_each_online_cpu(cpu) {
 
 
 
