@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KR5TJ9BIJWo6GAIAu9opvQ
-	(envelope-from <stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:48 +0200
+	id huqcLLlIJWotGAIAu9opvQ
+	(envelope-from <stable+bounces-261354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB4C64FC39
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A3DD64FC1E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HSIMVe9U;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pZidX1+H;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261354-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261354-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40A823002F6C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 65C333023320
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6876B2D3A69;
-	Sun,  7 Jun 2026 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975AD31E842;
+	Sun,  7 Jun 2026 10:30:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F411FE47B;
-	Sun,  7 Jun 2026 10:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774D82C1595;
+	Sun,  7 Jun 2026 10:30:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828363; cv=none; b=CDLD1zlo+uk+XDAJ3skHWaB0R12Z7e9VnwVexS1Ptc5ntpudSwI1ALcCzXBYJIS1tzNLfa8hQwSDzXCDErkmAW1m/xMXrQ9TKQZJDKENhxYtNs/5cqZ2uplSdTVKS2IYzMSci36aLH5SZYba18do+IpMKUHqPRgMtD14jTNLp8I=
+	t=1780828227; cv=none; b=Au8/S8xBi8x5srJuLTDx0KDhlOI+GpodRSp6WR+ZCIk4KKNf3O6MFi3pTB19J8ESojryGa374uQ/324B7iRGzWfvFbDKMEoq0RrvZuUHAiFuMI7sa+tX2I3/mZ2ldRJJKF4TYq3Hl/mLIcFZQImFQqiunMplH+0jmmhwmZaozwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828363; c=relaxed/simple;
-	bh=BIGbVsStEv8nWWgqRJRYfWiMPNIBHvHYwcr2glkouds=;
+	s=arc-20240116; t=1780828227; c=relaxed/simple;
+	bh=IvR6CgNJ2OuEJrLqppbANO0C/xOGDqP5XKizJLfYziM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZDDTg5X9FhkhK3C77kLAaEB+1q3JmcmJCOtG/bBiJZEFpg+FlwDP4zBMDVfLteiYSYNqgfXqeyi47FKw2MjKaKjyJraphyUbMYB1Jgj+mNvX3RfUhMnRzP4qovobKLKT2OnweFRBgqor6mqvsYNfBWqOR1bNQRqZtlV3VKkCtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSIMVe9U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723E91F00893;
-	Sun,  7 Jun 2026 10:32:41 +0000 (UTC)
+	 MIME-Version; b=SM467uMPrBgCQojHa/sMabgC7t5m42asePdM/QEV3PU8j7oEJfp7bd29Fwfd6vJEN1sSrJOp0od7blMjs7iR3Y31bFVdQXxDkw4LZNOoo/pu+zUBR8SH7MwrEiZfeq+BvgYm3F0E+WS8TiQE5qyQy8ChpEV6mVv0wu1YIEE+hhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZidX1+H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452CC1F00893;
+	Sun,  7 Jun 2026 10:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828362;
-	bh=o6vOzZr4xsAdfoxmzdG4a8fioQLzX/gLv++7DsQn8h0=;
+	s=korg; t=1780828225;
+	bh=IQZYTiLnVtwbOKJUwbDK0/TN9/BfbNUz3DkIVD2V6rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HSIMVe9UpWHr1C4Avu3pHwgUPGqo5NOliq+UjcDaJct2HlL8flyYrjkhcKoLb3HOC
-	 h+IL6yc9xak59PtXliA8veHVgeN4oIU379s+O8aXusXpitaIrUcvEvjcy72p5X0oYy
-	 Qq0gB9hEw5XzF9Wm5Z8kBn1bVYdGyTj2vJMB+b4Y=
+	b=pZidX1+H+bVQvpkyxIlCp22y2hA3lfh4At0OhxS2toltDervrULJnCfOFnFv/OFL6
+	 +EAvIj27RKS9f7E306KfdG6oxg3Qf4UzA7uboF+yQ9G3JlJRD6EXKM2a92NAvAHH8G
+	 KLF5lVVP62hVUo6KNw0sFkmUeRjG1EOw4fCbjyGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 132/307] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
+	Qiang Ma <maqianga@uniontech.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 142/315] KVM: arm64: PMU: Preserve AArch32 counter low bits
 Date: Sun,  7 Jun 2026 11:58:49 +0200
-Message-ID: <20260607095732.599696089@linuxfoundation.org>
+Message-ID: <20260607095732.816625615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261389-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261354-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maqianga@uniontech.com,m:maz@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,88 +97,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BBB4C64FC39
+X-Rspamd-Queue-Id: 3A3DD64FC1E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Qiang Ma <maqianga@uniontech.com>
 
-commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
+commit 1750ad1388e03fb27068cd1f22c9c8b4590fe936 upstream.
 
-wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
-struct pd_message with
+AArch32 writes to PMU event counters cannot update the top 32 bits,
+even when PMUv3p5 makes the counters 64-bit. KVM therefore needs to
+preserve the existing high half and only update the low half written by
+the guest, unless the caller explicitly forces a full reset through
+PMCR.P.
 
-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
-		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
+The current code masks @val down to the old high half before taking
+lower_32_bits(val), which means the low half is always zero. As a
+result, AArch32 writes to event counters discard the guest-provided low
+32 bits instead of storing them.
 
-which has two problems:
+Build the new value from the old high 32 bits and the low 32 bits of
+the value supplied by the guest.
 
-USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
-is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
-The byte count latched in RXINFO is the number of bytes the port partner
-put on the wire, so a malicious partner that transmits a 31-byte frame
-can drive the loop one byte past the destination if the WCOVE BMC
-receiver does not enforce the PD object-count limit in hardware. The
-existing FIXME flagged this as unverified.
-
-Independently, regmap_read() takes an unsigned int * and stores a full
-unsigned int at the destination. Passing the byte pointer msg + i means
-each iteration writes four bytes; the high three are zero (val_bits is
-8) and are normally overwritten by the next iteration, but the final
-iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
-already writes three zero bytes past msg, which sits on the IRQ thread's
-stack in wcove_typec_irq().
-
-Clamp the loop to sizeof(struct pd_message) and read each register into
-a local before storing only its low byte, so the copy can never exceed
-the destination regardless of what RXINFO reports.
-
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
+Fixes: 26d2d0594d70 ("KVM: arm64: PMU: Do not let AArch32 change the counters' top 32 bits")
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://patch.msgid.link/20260526074640.791991-1-maqianga@uniontech.com
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/kvm/pmu-emul.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/wcove.c
-+++ b/drivers/usb/typec/tcpm/wcove.c
-@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
- 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
- }
- 
--static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
-+static int wcove_read_rx_buffer(struct wcove_typec *wcove,
-+				struct pd_message *msg)
- {
--	unsigned int info;
-+	unsigned int info, val, len;
-+	u8 *buf = (u8 *)msg;
- 	int ret;
- 	int i;
- 
-@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
- 	if (ret)
- 		return ret;
- 
--	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
-+	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
- 
--	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
--		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
-+	for (i = 0; i < len; i++) {
-+		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
- 		if (ret)
- 			return ret;
-+		buf[i] = val;
+--- a/arch/arm64/kvm/pmu-emul.c
++++ b/arch/arm64/kvm/pmu-emul.c
+@@ -174,8 +174,8 @@ static void kvm_pmu_set_pmc_value(struct
+ 		 * action is to use PMCR.P, which will reset them to
+ 		 * 0 (the only use of the 'force' parameter).
+ 		 */
+-		val  = __vcpu_sys_reg(vcpu, reg) & GENMASK(63, 32);
+-		val |= lower_32_bits(val);
++		val = (__vcpu_sys_reg(vcpu, reg) & GENMASK(63, 32)) |
++		      lower_32_bits(val);
  	}
  
- 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
+ 	__vcpu_assign_sys_reg(vcpu, reg, val);
 
 
 
