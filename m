@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cz8jKQdOJWp/GgIAu9opvQ
-	(envelope-from <stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:03 +0200
+	id s9f9IaRNJWpSGgIAu9opvQ
+	(envelope-from <stable+bounces-261724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ABD650201
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1711B650159
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0TvPRMJJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261721-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mZaPzb3T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261724-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261724-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77C45301F48B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6010F3004F27
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AA52EBB9E;
-	Sun,  7 Jun 2026 10:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACA331E822;
+	Sun,  7 Jun 2026 10:53:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC3F32ED3A;
-	Sun,  7 Jun 2026 10:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5551B4204E;
+	Sun,  7 Jun 2026 10:53:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829593; cv=none; b=JrM8wO0YkYL3uuqlr7s5C0QWWuW/wolLpiGWAvpXiI3cafMgRrTJBsnHAnPzLEWdQh2Ec7s1+F8aFbL6ehv4tffuL/iYJ3st2rDS5444cFC1K4wszmGt94vdRXml58AMe/wZKzSYXMFMNkJ/7W9dhB77Hlo9Z/WtJtSsV96u7jk=
+	t=1780829602; cv=none; b=LksKNL9RhWsyDNzElB01x37r7OmCcQtD7qbhtRap+d4IJwkGkF0vWqsqpGuWyVDroLpPjQ75tUYKDv3DlhnLG1w6+w8IDEtihIhpnHswZ0nk7bcxOwANp5l0N80fJT/F2aQftO7zIriyEoPQH8K/HZWTp+5t2iK/S2VKe/vFWFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829593; c=relaxed/simple;
-	bh=LhAAfeHcUbCufhFLxxip50hdcANE6Rl5sR/y5oUpyxc=;
+	s=arc-20240116; t=1780829602; c=relaxed/simple;
+	bh=bbGqRxX4qOAe0Ysr/9LVVtif/1sflP0mrBYkpBmAcmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtAO8aHtSu1BoOn0SYLbHtmJ7Gq6g/xpQVzisoT9DW+sIqXm9KK8vp7H72jd3eqWXUdxAU3LdyfQAjvWcpZviW4qch4ICCAEZtsuX2wmrKGxA7VTc9O16Izij+2stheyXkOVhtbn2uvykF4xpDhoHKscv/C/W4hWMSrtS/aPeHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TvPRMJJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837981F00893;
-	Sun,  7 Jun 2026 10:53:10 +0000 (UTC)
+	 MIME-Version; b=M1vpSX8uyr+ZujGY36XrmzqdZnLktS0nQC/U4kAe2n7txBxZNhk0rClH9FeNs8Ty1OVqv+nruzdeR/tfI9nTE57lL19MmrLprzuQdk333CBc/KnG+NAIQHg+tI87Pe+kYY4Sz8oaizxFEeJ8z3+qPqsuzN/FV+pkx6qxfiomzt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZaPzb3T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1711F00893;
+	Sun,  7 Jun 2026 10:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829591;
-	bh=5kzWj/0ZoZWKoir3oL9Ggv7ALOQbnikfmbZPuK1oPuI=;
+	s=korg; t=1780829601;
+	bh=RHTV5wrG2R2fi+Asn/NB8hAxGOzq2JVjeKaxHYDA88E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0TvPRMJJwZgOk/E1KTKQ8vjgkvpZAyRql072FcM6QO0RM2gxl8nyiNXHhp4OEJJxM
-	 qvYzbzIja5X4CA1d6SIbLJzNqH9DTi6jU7SAoXh0/eXJyoP7eAaqd/EavfvPclkX/n
-	 +IXVMUHBoGtAIGe+gMWajSgImgS9+3jlLkyZUpPI=
+	b=mZaPzb3T2BIipc+dFGTfnhluogjSmEfnFl24dHR0vDVUMpk8mf/pCfp7bn9SgPbOE
+	 aGGWEx7DttKuS+1q5GvRCfKuwmLvOo+GPzY1tZF7+i6sxj05yA6Q+xrc8MClcHyTWb
+	 vr5CvBRPUyWdX1tpFzHw020VKJeIfQsPolFJ3kqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Ijae Kim <ae878000@gmail.com>,
-	Myeonghun Pak <mhun512@gmail.com>
-Subject: [PATCH 6.18 261/315] serial: altera_jtaguart: handle uart_add_one_port() failures
-Date: Sun,  7 Jun 2026 12:00:48 +0200
-Message-ID: <20260607095737.158799410@linuxfoundation.org>
+	Prasanna S <prasanna.s@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 6.18 262/315] serial: qcom-geni: fix UART_RX_PAR_EN bit position
+Date: Sun,  7 Jun 2026 12:00:49 +0200
+Message-ID: <20260607095737.194399466@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -72,90 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261724-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261721-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:ae878000@gmail.com,m:mhun512@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:prasanna.s@oss.qualcomm.com,m:konrad.dybcio@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 22ABD650201
+X-Rspamd-Queue-Id: 1711B650159
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myeonghun Pak <mhun512@gmail.com>
+From: Prasanna S <prasanna.s@oss.qualcomm.com>
 
-commit ea66be25f0e934f49d24cd0c5845d13cdba3520b upstream.
+commit ca2584d841b69391ffc4144840563d2e1a0018df upstream.
 
-altera_jtaguart_probe() maps the register window before registering the
-UART port, but it ignores failures from uart_add_one_port(). If port
-registration fails, probe still returns success and the mapping remains
-live until a later remove path that is not part of probe failure cleanup.
+UART_RX_PAR_EN is incorrectly defined as bit 3, which triggers false
+framing errors (S_GP_IRQ_1_EN) and causes received data to be dropped
+when parity is enabled and the parity bit is 0.
 
-Return the uart_add_one_port() error and unmap the register window on
-that failure path.
+Define UART_RX_PAR_EN as bit 4 of the SE_UART_RX_TRANS_CFG register, as
+specified in the reference manual.
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
-
-Fixes: 5bcd601049c6 ("serial: Add driver for the Altera JTAG UART")
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
 Cc: stable <stable@kernel.org>
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Link: https://patch.msgid.link/20260512065837.79528-1-mhun512@gmail.com
+Signed-off-by: Prasanna S <prasanna.s@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260428-serial-bit-correct-v1-1-9131ad5b97d8@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/altera_jtaguart.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/tty/serial/qcom_geni_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/altera_jtaguart.c
-+++ b/drivers/tty/serial/altera_jtaguart.c
-@@ -379,6 +379,7 @@ static int altera_jtaguart_probe(struct
- 	struct resource *res_mem;
- 	int i = pdev->id;
- 	int irq;
-+	int ret;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -49,7 +49,7 @@
+ #define TX_STOP_BIT_LEN_2		2
  
- 	/* -1 emphasizes that the platform must have one port, no .N suffix */
- 	if (i == -1)
-@@ -418,7 +419,11 @@ static int altera_jtaguart_probe(struct
- 	port->flags = UPF_BOOT_AUTOCONF;
- 	port->dev = &pdev->dev;
+ /* SE_UART_RX_TRANS_CFG */
+-#define UART_RX_PAR_EN			BIT(3)
++#define UART_RX_PAR_EN			BIT(4)
  
--	uart_add_one_port(&altera_jtaguart_driver, port);
-+	ret = uart_add_one_port(&altera_jtaguart_driver, port);
-+	if (ret) {
-+		iounmap(port->membase);
-+		return ret;
-+	}
- 
- 	return 0;
- }
+ /* SE_UART_RX_WORD_LEN */
+ #define RX_WORD_LEN_MASK		GENMASK(9, 0)
 
 
 
