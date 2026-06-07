@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5MCxAulKJWohGQIAu9opvQ
-	(envelope-from <stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:45 +0200
+	id M/LSJEBMJWqCGQIAu9opvQ
+	(envelope-from <stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:28 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7867464FEA9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D906064FFEF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pAO7I6ql;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="V/j3lNW2";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2378301ECE4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E85C63046D64
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004731E849;
-	Sun,  7 Jun 2026 10:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7327831E850;
+	Sun,  7 Jun 2026 10:41:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AE9212564;
-	Sun,  7 Jun 2026 10:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5502D291C10;
+	Sun,  7 Jun 2026 10:41:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828737; cv=none; b=dOU1WEEnojYT2AjkiySQq1T34yIBObQnXg2PSmnEOVxpu4cMvmSUOOZysNt+7I0W+W+2kwIJIpeLpoLwMzbAPmjgqlX2tpcbS1CRFX5eVL1B28dU6Zp02p09jFnqljTCGHD7OYeDrkiqPkbjdntKpG0Juwr8GdrqmXnLixlnp9Y=
+	t=1780828919; cv=none; b=r9tbCXjXtjlhz3PD79mW/J/mivWk3naiyRx/GHtoUv0MfkTRI0GLOjXuKlHP2L0K1Ntus2GWR2O9U8UYu4+C0FpEYDJqpZo8G18ueE9yYQXSOGZO3H6adA/4HVJzsa7FzBK3ILLhSW1MOXK7e4g204FU0q8peuyJwWYN4ly62zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828737; c=relaxed/simple;
-	bh=Yl/UG+k1sIO57gZLLc4SyuwD+BFo2iKo5OEEl2YJUxA=;
+	s=arc-20240116; t=1780828919; c=relaxed/simple;
+	bh=gmZh01dtuI/6Sq7cG1cErXSCOyNT2n8smINk8nNmfz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SYiEXrmN1Ij4kVeDEsKdlazb9Btg2imepBtY/bG3EFHGF1ecTZxaYpbVbe7r2/TzGL1Ya8RNY3eCZeiqbwmyunruiw9gEeBzaAYJ2vQ9xOSW9gp25D6yPGJSmbbMYzw2qu2vHX3NY6YNhP+98KKFyQnuVwwEU5qkiLUQ9HZVAq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAO7I6ql; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFD11F00893;
-	Sun,  7 Jun 2026 10:38:54 +0000 (UTC)
+	 MIME-Version; b=c+Zc2RKq2P11VPozMolsiBoHaN0MsCXGtj1J4CXWXLDr675CbITZUF4pxMMr/xkhdC/IyLCbjjPRsBAHbqYRFiOImeL3T/50CJ5Z7fEy3GXeOVVhoJ1mF4LuoFLwnTjDdGCnYhJQHE4gqpyX7lJKXhiGB8GoU924Pz4FezkkkQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/j3lNW2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E921F00893;
+	Sun,  7 Jun 2026 10:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828735;
-	bh=ekKPsQrXp4D1ymMixNC+0EPm2HC+C70C14h16qePIIg=;
+	s=korg; t=1780828918;
+	bh=fsOUGX/91KiE2DBrzoR4HQ+i1iQV1s5aBwqHlVOi1yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pAO7I6qlv20k48TSJ91QVltLomDUlAwjBWxcnzaVJV8WoKirS86wAe8AYsnXFjMX+
-	 J2Lav7ytv3kQ8bxNBtC47BYpdYHcoFfolpNTw0f+vIrjvY0YoufyWTa9A5h3dSuTBf
-	 wRCutkbMJ7V2g9eicNZ5ASWWqPAjyzJv4PPnKb+0=
+	b=V/j3lNW2NS8j+CTskQrwUisSKsj0aiHyg82l4bbgN1pvvf5Q78djb6e9r4TsWa5Db
+	 5DU4uHTHEcAx2b34NgX042G6SNvYY0OvVDBpQCyfZ4hZ1UfNWXa/1wLvn4tKDfXW3M
+	 Yyn6QL7hyATUQchjDkY0DnaG7/cIunY0v38yU0B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	stable@kernel.org
-Subject: [PATCH 7.0 207/332] x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines
+	stable <stable@kernel.org>,
+	sashiko-bot <sashiko-bot@kernel.org>,
+	Peter Chen <peter.chen@cixtech.com>
+Subject: [PATCH 6.12 179/307] usb: cdns3: plat: fix leaked usb2_phy initialization on usb3_phy acquisition failure
 Date: Sun,  7 Jun 2026 11:59:36 +0200
-Message-ID: <20260607095735.670989228@linuxfoundation.org>
+Message-ID: <20260607095734.288174513@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,140 +65,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261485-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261534-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:peter.chen@cixtech.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,alien8.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,bootlin.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,cixtech.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7867464FEA9
+X-Rspamd-Queue-Id: D906064FFEF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Peter Chen <peter.chen@cixtech.com>
 
-commit a17dc12bfed8868e6a86f3b45c16065a70641acb upstream.
+commit e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c upstream.
 
-With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
-(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
-crashes on the first call into the traced function:
+Move usb2_phy initialization after usb3_phy acquisition.
 
-  BUG: unable to handle page fault for address: ffff88817ae18880
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 4b53067 P4D 4b53067 PUD 0
-  Oops: Oops: 0002 [#1] SMP PTI
-  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
-  Call Trace:
-   <TASK>
-   ? find_held_lock
-   ? exc_page_fault
-   ? lock_release
-   ? __x64_sys_clock_nanosleep
-   ? lockdep_hardirqs_on_prepare
-   ? trace_hardirqs_on
-   __x64_sys_clock_nanosleep
-   do_syscall_64
-   ? exc_page_fault
-   ? call_depth_return_thunk
-   entry_SYSCALL_64_after_hwframe
-  ...
-  Kernel panic - not syncing: Fatal exception
-
-This small reproducer allows to easily trigger the crash:
-
-  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
-  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
-  # usleep 1
-
-Monitoring the crash under GDB points to the exact instruction in charge of
-incrementing the call depth:
-
-  sarq $5, %gs:__x86_call_depth(%rip)
-
-This instruction matches the one inserted by the ftrace_regs_caller from
-ftrace_64.S. This emitted code was likely working fine until the introduction
-of
-
-  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
-
-it has made the call depth accounting addressing relative to $rip, instead of
-being based on an absolute address.
-
-As this code exact location depends on where the trampoline lives in memory,
-the corresponding displacement needs to be adjusted at runtime to actually
-correctly find the per-cpu __x86_call_depth value, otherwise the targeted
-address is wrong, leading to the page fault seen above.
-
-Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
-instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
-as it is done for example by the x86 BPF JIT compiler through
-x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
-in ftrace_caller and ftrace_regs_caller.
-
-  [ bp: Massage. ]
-
-Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
+Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
+Cc: stable <stable@kernel.org>
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
+Signed-off-by: Peter Chen <peter.chen@cixtech.com>
+Link: https://patch.msgid.link/20260513085310.2217547-2-peter.chen@cixtech.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/ftrace.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/cdns3/cdns3-plat.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -376,6 +376,13 @@ create_trampoline(struct ftrace_ops *ops
- 	}
+--- a/drivers/usb/cdns3/cdns3-plat.c
++++ b/drivers/usb/cdns3/cdns3-plat.c
+@@ -126,15 +126,15 @@ static int cdns3_plat_probe(struct platf
+ 		return dev_err_probe(dev, PTR_ERR(cdns->usb2_phy),
+ 				     "Failed to get cdn3,usb2-phy\n");
  
- 	/*
-+	 * Generated trampoline may contain rIP-relative addressing which
-+	 * displacement needs to be fixed.
-+	 */
-+	text_poke_apply_relocation(trampoline, trampoline, size,
-+				   (void *)start_offset, size);
+-	ret = phy_init(cdns->usb2_phy);
+-	if (ret)
+-		return ret;
+-
+ 	cdns->usb3_phy = devm_phy_optional_get(dev, "cdns3,usb3-phy");
+ 	if (IS_ERR(cdns->usb3_phy))
+ 		return dev_err_probe(dev, PTR_ERR(cdns->usb3_phy),
+ 				     "Failed to get cdn3,usb3-phy\n");
+ 
++	ret = phy_init(cdns->usb2_phy);
++	if (ret)
++		return ret;
 +
-+	/*
- 	 * The address of the ftrace_ops that is used for this trampoline
- 	 * is stored at the end of the trampoline. This will be used to
- 	 * load the third parameter for the callback. Basically, that
+ 	ret = phy_init(cdns->usb3_phy);
+ 	if (ret)
+ 		goto err_phy3_init;
 
 
 
