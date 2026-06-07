@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id b8hmL7FEJWruFQIAu9opvQ
-	(envelope-from <stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:13 +0200
+	id IJb9F3NFJWpJFgIAu9opvQ
+	(envelope-from <stable+bounces-261069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F9764F71A
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B240F64F7FA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sJZZvP51;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261042-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=loA+ykwR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261069-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261069-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 94BAA30547F5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA06B301ECC1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8AE2E1EFC;
-	Sun,  7 Jun 2026 10:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BDD308F0A;
+	Sun,  7 Jun 2026 10:12:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B449309DAF;
-	Sun,  7 Jun 2026 10:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C660E2E7373;
+	Sun,  7 Jun 2026 10:12:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827070; cv=none; b=h7mTIFLPn6sDgMzYlx7u3kqME0HblOVc+bsheFngOg4qMG3brJ3gcWW2Xx+8XKDHux3BSX4xnrfghiHOsxb9mm6Wz0iNmNga05G2oV7u015qlA8V/O9G2F+wFY3mFA/TFUzEpsyOHkSHPENVIirILJH8y4+qKGmxvtnKRv2jqeY=
+	t=1780827157; cv=none; b=QAOyo221b/NLUo7BcPKvoDBVZm9F/Pe7BUJn51v93/y+4KLmFtKlCpfaoMi2xZj7FWUTgKjZwlTU5oQlUPXZaXL++HuOxNETfwp38ga5vJRgHt7TMGSNh3rkR8AFku5gPu0Ry2ab3QRe/Nq2nu8wBCANz3mo46zdZAWITXw3lAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827070; c=relaxed/simple;
-	bh=0fH2SXwGv+8tKhFlMrsRog+JyXYWKDN2XAhCieazW/o=;
+	s=arc-20240116; t=1780827157; c=relaxed/simple;
+	bh=1bc5xPfLOVPwI0fwu9vyaQKpw2UrVACtVfs5OaZAuqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=maqhk+filiRCtSDUy/rTAlD4TzqWrwHk8E10gK5Wd2rfRsj8F6T2JN2mpDeg6ZdSu0nUcZwGT7K1MpLNVaB6O96UzvhE/03aa1ia0CbFvD+B8hHtLc/ctgJXd+H2oY+ntrHj7YYQ42DGE90ZEo01JvEX8r7CssqYKLznPDMFwtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJZZvP51; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737B41F00898;
-	Sun,  7 Jun 2026 10:11:08 +0000 (UTC)
+	 MIME-Version; b=kxzaBdJBUaNJoR3UseXywP1PeudpptlG0LOXJbnN++acOmm2y8w0SJYP5RBLqNRSojyf8QArWLrJEq5NoZPXqPKNR4PhwkPJK3iCEZsOqJMgSMcPMmFprxYqZ9Jl8kvlooiyCpKbc9dy6RdbNH1HPCTRa1lDj5m3h72dN24+LkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loA+ykwR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE27B1F00893;
+	Sun,  7 Jun 2026 10:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827069;
-	bh=/uD2iRGGO8kF9zK3D+yLkW91DMGO2VT+RznF37Hgqpw=;
+	s=korg; t=1780827156;
+	bh=GjM1JlviUvH6vXGYtVpyMH/41kD0tZ98ojdGTYJHzKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sJZZvP51iWL8+FV77cZOUjIQX6XJIiLS7SaVIxKWSrYzLHkTDXGzzWaWBEMVcWyfN
-	 9fBIV5ohMEzle50sFcOJ/QNywnueaH7HguRNJK3J8iih8Yq3BdoNOsnWSaqnrNIYSJ
-	 9wLSVcufhZJhd1xkUBSD1d2Brf6wsvjQFixRoW7M=
+	b=loA+ykwR1g1n4FjBOkTO+YEfegG8CNe3sHorBCcUqo3qVesJs8oIgDRL/9O8BgLIy
+	 v0mYY+4gfwoL+uXk4/xJTW9UpUChSPrj5fH2SjMsxoWYIeX3pHoIacRaak5qX4MGgW
+	 RE023idp4JZmOBItvkmzetURMkeJ+Z0CmWEZGDQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/315] net: Avoid checksumming unreadable skb tail on trim
+Subject: [PATCH 6.12 027/307] xfrm: Check for underflow in xfrm_state_mtu
 Date: Sun,  7 Jun 2026 11:57:04 +0200
-Message-ID: <20260607095728.903365760@linuxfoundation.org>
+Message-ID: <20260607095728.647984280@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +66,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261042-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn@kernel.org,m:leitao@debian.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261069-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,depthfirst.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 14F9764F71A
+X-Rspamd-Queue-Id: B240F64F7FA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@kernel.org>
+From: David Ahern <dahern@nvidia.com>
 
-[ Upstream commit 2e357f002c61fd76fd8f12468744a06a5ec48eaa ]
+[ Upstream commit 742b04d0550b0ec89dcbc99537ec88653bd1ad90 ]
 
-pskb_trim_rcsum_slow() keeps CHECKSUM_COMPLETE valid by subtracting
-the checksum of the bytes removed from the skb tail. That assumes the
-removed bytes can be read.
+Leo Lin reported OOB write issue in esp component:
 
-io_uring zcrx skbs may contain unreadable net_iov frags. With fbnic
-header/data split, small TCP/IPv4 packets can carry Ethernet padding
-in such a frag. ip_rcv_core() trims the skb to iph->tot_len before TCP
-sees it, and the CHECKSUM_COMPLETE adjustment then calls
-skb_checksum() on the padding.
+  xfrm_state_mtu() returns u32 but performs its arithmetic in unsigned
+  modulo-2^32 space using an attacker-influenced "header_len + authsize +
+  net_adj" subtracted from a small "mtu" argument. A nobody user can
+  install an IPv4 ESP tunnel SA with a large authentication key
+  (XFRMA_ALG_AUTH_TRUNC, e.g. hmac(sha512), 64-byte key, 64-byte trunc),
+  configure a small interface MTU (68 bytes), and set XFRMA_TFCPAD to a
+  large value. When a single UDP datagram is then sent through the
+  tunnel, xfrm_state_mtu() underflows to a near-2^32 value, and
+  esp_output() consumes it as a signed int via:
 
-This is exposed by IPv4 because small TCP/IPv4 frames can be shorter
-than the Ethernet minimum payload. TCP/IPv6 frames are large enough in
-the normal zcrx path, so they do not hit the same padding trim.
+        padto      = min(x->tfcpad, xfrm_state_mtu(x, mtu_cached))
+        esp.tfclen = padto - skb->len   (assigned to int)
 
-Keep the existing checksum adjustment for readable skbs. If the
-remaining packet is fully linear, drop CHECKSUM_COMPLETE and let the
-stack validate the packet after trimming. If unreadable payload would
-remain, fail the trim; the checksum cannot be adjusted without reading
-the trimmed tail.
+  esp.tfclen ends up negative (e.g. -207). It is sign-extended to size_t
+  when passed to memset() inside esp_output_fill_trailer(), producing a
+  ~16 EB write of zeroes at skb_tail_pointer(skb). KASAN logs it as
+  "Write of size 18446744073709551537 at addr ffff888...".
 
-Also clear skb->unreadable when trimming removes all frags.
+Check for underflow and return 1. This causes the sendmsg attempt to
+fail with ENETUNREACH.
 
-Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-Signed-off-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260522120643.242974-1-bjorn@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c5c252389374 ("[XFRM]: Optimize MTU calculation")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Assisted-by: Codex:26.506.31004
+Signed-off-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ net/xfrm/xfrm_state.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index a8911f1b90c15d..6618bfa70ca444 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -2739,6 +2739,8 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
- 		skb->data_len  = 0;
- 		skb_set_tail_pointer(skb, len);
- 	}
-+	if (!skb_shinfo(skb)->nr_frags && !skb_has_frag_list(skb))
-+		skb->unreadable = 0;
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 6a92d88f9e0363..4823a9c054ae2b 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3022,10 +3022,14 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 	const struct xfrm_type *type = READ_ONCE(x->type);
+ 	struct crypto_aead *aead;
+ 	u32 blksize, net_adj = 0;
++	u32 overhead, payload_mtu;
  
- 	if (!skb->sk || skb->destructor == sock_edemux)
- 		skb_condense(skb);
-@@ -2746,16 +2748,37 @@ int ___pskb_trim(struct sk_buff *skb, unsigned int len)
- }
- EXPORT_SYMBOL(___pskb_trim);
- 
-+static int pskb_trim_rcsum_complete(struct sk_buff *skb, unsigned int len)
-+{
-+	int delta = skb->len - len;
-+
-+	if (skb_frags_readable(skb)) {
-+		skb->csum = csum_block_sub(skb->csum,
-+					   skb_checksum(skb, len, delta, 0),
-+					   len);
-+		return 0;
+ 	if (x->km.state != XFRM_STATE_VALID ||
+-	    !type || type->proto != IPPROTO_ESP)
++	    !type || type->proto != IPPROTO_ESP) {
++		if (mtu <= x->props.header_len)
++			return 1;
+ 		return mtu - x->props.header_len;
 +	}
-+
-+	if (len > skb_headlen(skb))
-+		return -EFAULT;
-+
-+	/* The trimmed bytes are unreadable, but the remaining packet can be
-+	 * checksummed by software after trimming.
-+	 */
-+	skb->ip_summed = CHECKSUM_NONE;
-+	return 0;
-+}
-+
- /* Note : use pskb_trim_rcsum() instead of calling this directly
-  */
- int pskb_trim_rcsum_slow(struct sk_buff *skb, unsigned int len)
- {
- 	if (skb->ip_summed == CHECKSUM_COMPLETE) {
--		int delta = skb->len - len;
-+		int err;
  
--		skb->csum = csum_block_sub(skb->csum,
--					   skb_checksum(skb, len, delta, 0),
--					   len);
-+		err = pskb_trim_rcsum_complete(skb, len);
-+		if (err)
-+			return err;
- 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		int hdlen = (len > skb_headlen(skb)) ? skb_headlen(skb) : len;
- 		int offset = skb_checksum_start_offset(skb) + skb->csum_offset;
+ 	aead = x->data;
+ 	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
+@@ -3045,8 +3049,17 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 		break;
+ 	}
+ 
+-	return ((mtu - x->props.header_len - crypto_aead_authsize(aead) -
+-		 net_adj) & ~(blksize - 1)) + net_adj - 2;
++	overhead = x->props.header_len + crypto_aead_authsize(aead) + net_adj;
++	if (mtu <= overhead)
++		return 1;
++
++	payload_mtu = mtu - overhead;
++	payload_mtu &= ~(blksize - 1);
++	if (payload_mtu <= 2)
++		return 1;
++
++	return payload_mtu + net_adj - 2;
++
+ }
+ EXPORT_SYMBOL_GPL(xfrm_state_mtu);
+ 
 -- 
 2.53.0
 
