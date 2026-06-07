@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UJ/2GmJGJWrlFgIAu9opvQ
-	(envelope-from <stable+bounces-261121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:26 +0200
+	id xMGuN8NFJWp9FgIAu9opvQ
+	(envelope-from <stable+bounces-261091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5C564F95F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7032264F87F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X4JOBWyJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261121-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261121-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ETZSUpSy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261091-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261091-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66B843073424
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67514303BB00
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7512DB7A3;
-	Sun,  7 Jun 2026 10:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7BD308F0A;
+	Sun,  7 Jun 2026 10:13:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99212AD00;
-	Sun,  7 Jun 2026 10:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42831E98EF;
+	Sun,  7 Jun 2026 10:13:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827330; cv=none; b=HbtUfxr3/76QhZX4nmm7ZdG+YaMaZgY5BsiaOy+s5STvoDBgmkzkCBFYfV99D/lZfC+t3rlRToKYbK+zV3CZoBHFxFa4t2vpMexnxVkmc6gw78vdeei47UdDGm8S7R8JaBC5u2jNF0YOrId7hK0t18reZTEgYyY0PMa7LCbSwC8=
+	t=1780827231; cv=none; b=cJBpu8au6MN8R39ip8DROENg/SOhLc0Kzhw2e9UbTdOotgLA7cHXfwfDkhwgocdK1cjNcmj+uWYFS2LZGfHmdsBivS5XmC7dq26W1HL2hS/8oLMjJGI915r9EiWJXpn8jKZXc/g0t/f7yFvIGet9TAMBb7IRBZ623W3JBGbGWUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827330; c=relaxed/simple;
-	bh=4qIrHHKgOHhYP5qY4T0bhYiuS2j64CL1yB11HoSI3tY=;
+	s=arc-20240116; t=1780827231; c=relaxed/simple;
+	bh=cFz2rfirBGVi/6ODMIa9v8AFT9U4FsqJbm4YQYcj/JQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZqMfbYPEN8J73RQSPQbBifOkafqMm8kvArI1S+z3OyQIX+x1gP8uMIb8+X/LKer32k9qqY0uTsSjtvgQozzq3lmp3l1/zAJb8vtmg2Wq6PCx7ZURuHUeRIyDIAA5ZrK8bdOFSwE/xFau7+Igc32BdHN7irX8ncQ84MF3GVO3Eeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4JOBWyJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3158A1F00893;
-	Sun,  7 Jun 2026 10:15:28 +0000 (UTC)
+	 MIME-Version; b=USCJb8eqoTQvIYEqY1mu3LHEOwq23YF49/isIDwCV3A/zFNSQI+5a74GWG+qPJYV6DfKiaPg5xxlJbIWuj+H/9qY8RgSMxk+lbTtIC0U8F1wUAqe1XkvWH6Nxcavt82g5jELkQ+pYrx14rJHoRZHf+Vs37abC6BK146MX++bujU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETZSUpSy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08671F00893;
+	Sun,  7 Jun 2026 10:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827329;
-	bh=FZTiQUl5LtfezJdW2qymqcs86DNXGpOeEMzR/bGnvxw=;
+	s=korg; t=1780827230;
+	bh=qhzMcvFQoHFUsKc1HikrTMknfJuGrl3w6CZdTKb/lv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X4JOBWyJ+tklzx0qXMMROcW0jc5mS1d8ALLqsOrj1g+f/YiyboUKOypxSGLnYVvVM
-	 /T4QGP8km+Z1hBuBn1hhpYM1n1sP4aRWF9N5IwEJtAi/xKrxWX2Z5VAlCPEStQehD9
-	 8zfInokjfu88ZvQfeoW3TEr2kCpvg48iImHSV80E=
+	b=ETZSUpSyS9Fea2N+zUD42cdNw+J90rJXyzMLb9rVrG9FqnbbklVQ5IaDCLOx/DQAw
+	 R/hKiHXQhMjtL/6LafoZ5qWbave/qXiGq6e6PDdRpwt970v+ZCVI54iJIleSVdyN+P
+	 DX8nvP9HSshkucDKXcmhnx5UBZ/3pT4vReVe5r1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/307] accel/ivpu: prevent uninitialized data bug in debugfs
+Subject: [PATCH 7.0 074/332] ethtool: tsinfo: dont pass ERR_PTR to genlmsg_cancel on prepare failure
 Date: Sun,  7 Jun 2026 11:57:23 +0200
-Message-ID: <20260607095729.399124788@linuxfoundation.org>
+Message-ID: <20260607095730.857406776@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +70,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261121-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:error27@gmail.com,m:karol.wachowski@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261091-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kory.maincent@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CF5C564F95F
+X-Rspamd-Queue-Id: 7032264F87F
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 44e151be23deb788d9f6124de93823faf6e04e99 ]
+[ Upstream commit c3fc9976f686f9a95baf87db9d387f218fd65394 ]
 
-The simple_write_to_buffer() will only initialize data starting from
-the *pos offset so if it's non-zero then the first part of the buffer
-uninitialized.  Really, if *pos is non-zero then this code won't work
-so just check for that at the start of the function.
+The goto err label leads to:
 
-Fixes: 320323d2e545 ("accel/ivpu: Add debugfs interface for setting HWS priority bands")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/ahP24m6Mii9EDL7Q@stanley.mountain
+	genlmsg_cancel(skb, ehdr);
+	return ret;
+
+If ethnl_tsinfo_prepare_dump() failed, it has not started a genlmsg.
+There's nothing to cancel, and passing an error pointer to
+genlmsg_cancel() would cause a crash.
+
+Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-8-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/tsinfo.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
-index df89c1c0da6dd7..1da4ce6a99cd9b 100644
---- a/drivers/accel/ivpu/ivpu_debugfs.c
-+++ b/drivers/accel/ivpu/ivpu_debugfs.c
-@@ -447,7 +447,7 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
- 	u32 band;
- 	int ret;
+diff --git a/net/ethtool/tsinfo.c b/net/ethtool/tsinfo.c
+index cb1491e0a28bac..64e6016a7a1772 100644
+--- a/net/ethtool/tsinfo.c
++++ b/net/ethtool/tsinfo.c
+@@ -405,10 +405,8 @@ static int ethnl_tsinfo_dump_one_netdev(struct sk_buff *skb,
+ 			continue;
  
--	if (size >= sizeof(buf))
-+	if (*pos != 0 || size >= sizeof(buf))
- 		return -EINVAL;
+ 		ehdr = ethnl_tsinfo_prepare_dump(skb, dev, reply_data, cb);
+-		if (IS_ERR(ehdr)) {
+-			ret = PTR_ERR(ehdr);
+-			goto err;
+-		}
++		if (IS_ERR(ehdr))
++			return PTR_ERR(ehdr);
  
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, pos, user_buf, size);
+ 		reply_data->ts_info.phc_qualifier = ctx->pos_phcqualifier;
+ 		ret = ops->get_ts_info(dev, &reply_data->ts_info);
 -- 
 2.53.0
 
