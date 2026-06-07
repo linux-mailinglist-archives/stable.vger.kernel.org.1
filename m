@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dCTjMAdLJWorGQIAu9opvQ
-	(envelope-from <stable+bounces-261538-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:15 +0200
+	id DRI5G99JJWrYGAIAu9opvQ
+	(envelope-from <stable+bounces-261447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F8C64FECA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B86A64FDB1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:37:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uF2LNimQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261538-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261538-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SQP5c2gZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261447-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261447-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C06233003811
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7CC03009570
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9BD3195FD;
-	Sun,  7 Jun 2026 10:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015823264F5;
+	Sun,  7 Jun 2026 10:36:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11A870808;
-	Sun,  7 Jun 2026 10:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB852D3A69;
+	Sun,  7 Jun 2026 10:36:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828933; cv=none; b=HkqXC81RkoK8Y35D/nQ0z3MPcGfBAVLGfSvVRJsmwOO6oGBVjUVp984R1BE1xp84kwg4v4g5UPJ+PRf6ktM+eQ5+AMkTxy/KH/9qAUQaPRTIavkavWNuS450JASzndcb7p2zeIlRCDFW1ET1dSc8s0qfFCSg82xC5Ivun8drBcU=
+	t=1780828595; cv=none; b=NPSTwyTvR/d6mBKmQV6nHXSrtXWYh+WL6ZT1aJCVj0InoFxq7kNGbQJRvxPp4b1Udqs1NmQZjjQhm/lkN99SRQZC9pMplWmDQSyBO80+8Oj5byqOP0ku3sfOSxYUIvnDGXaZxaRI6X4zHa3P6V4iYI2zADmT1/PA+dumHcTyPzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828933; c=relaxed/simple;
-	bh=HIeOps/rWuzordl0sussBK+TPoepsW2/GvELsJtQKKw=;
+	s=arc-20240116; t=1780828595; c=relaxed/simple;
+	bh=PZXJNYXuV31V2YFAtnjI1hDhfePlDLJCVeRLxyLtbaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rr3/JjZkoaUVRxasGgKYtx5SjbbN41qkcaLvIiNKAlf+dWrs7dJxYOh39g2rLdrZ+yzbA6tgQs+qx8KuABlzOGhRnxIDlz3qRfUErTX/GntUQ0L0AJj1vCjZJJyeSKEjcScqQGt1mMZQDCUOxplz1F6Gt38ZMpBXdQDqUZa71h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF2LNimQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8FF1F00893;
-	Sun,  7 Jun 2026 10:42:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A2SNGnBiBY67efF68xycZ7m7vpRe28f/Llv8RV8ObXaYQn61Ii5s7JQFEFX6m3+cszg2lUj7OfWj534OWsMASTxgsW0O+sx5fRclsruO8HrN00O9IWJyaswk0P194N3L84FHBwPwDtQ8hcHYPZxk0WJYuh4bxQiEoNnqQPSGhwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQP5c2gZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EC31F00893;
+	Sun,  7 Jun 2026 10:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828932;
-	bh=ztDHy9ITVWAmAi12MGk9w8eKu7si1YgM8U8kr2r7/PM=;
+	s=korg; t=1780828594;
+	bh=Ql2S4sO2L2ISXQL0PyvhDjY5IPTVI4eQIE/lTnoRfIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uF2LNimQS5D1spQKxAJyZbbMJghtFMYm7QgPucbGswW25oUtfdVX/Zrhvk87PTr/m
-	 banAvNtDkk/w+aZCIYU8T/rb/z30qsc/oi44LsVQ/6o+s92xAEONhCED7mk3P1z7Xd
-	 WC1lm4VkGq0r4mfbObZ92dzdYD6Qlc014oNvgkQw=
+	b=SQP5c2gZtCysoXZURurtsp1qRSpD/YaUYvT4ID4ajDgqEIh023z8I+WsUvCP+yJK6
+	 w4PBMQfZUqD1sytQ5slWGFO9sXM2fFRNzU/5xKsIiss+bnJBDNIAlawNDMI/rerbdj
+	 oECP70WshVxwHI9eREul5tx0FOhCRTfxAbDb24UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	=?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@bootlin.com>,
+	Paul Cercueil <paul@crapouillou.net>,
 	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.12 165/307] iio: dac: ad5686: fix input raw value check
+	Jonathan Cameron <jic23@kernel.org>,
+	James Nuss <jamesnuss@nanometrics.ca>
+Subject: [PATCH 6.18 175/315] iio: buffer: Fix DMA fence leak in iio_buffer_enqueue_dmabuf()
 Date: Sun,  7 Jun 2026 11:59:22 +0200
-Message-ID: <20260607095733.782762722@linuxfoundation.org>
+Message-ID: <20260607095734.011548643@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261538-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261447-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:benoit.monin@bootlin.com,m:paul@crapouillou.net,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:jamesnuss@nanometrics.ca,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 51F8C64FECA
+X-Rspamd-Queue-Id: 0B86A64FDB1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Benoît Monin <benoit.monin@bootlin.com>
 
-commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
+commit a093999355084bdbfe6e97f1dd232e58a1525f0b upstream.
 
-Fix range check for input raw value, which is off by one, i.e., for a
-10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
-passes the previous check, allowing an out-of-range write. The issue
-exists since the ad5686 driver was first introduced.
+iio_buffer_enqueue_dmabuf() allocates a struct iio_dma_fence (104 bytes,
+kmalloc-128) via kmalloc_obj()+dma_fence_init(), which sets the initial
+kref to 1.  It then calls dma_resv_add_fence() which takes a second
+reference (kref=2), and stores a raw pointer in block->fence.
 
-Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+On the success path the function returns without calling dma_fence_put()
+to release the initial reference, so every buffer enqueue permanently
+leaks one kmalloc-128 allocation.
+
+The iio_buffer_cleanup() work item only releases the temporary reference
+taken during completion signalling by iio_buffer_signal_dmabuf_done();
+the initial reference from dma_fence_init() is never released.
+
+With four iio_rwdev instances at 240kHz and 512 samples per buffer,
+this produces ~1875 kmalloc-128 allocations per second matching the
+observed slab growth exactly. A test with ftrace confirmed that the
+dma_fence_destroy event was never triggered.
+
+Fix by calling dma_fence_put() after dma_resv_add_fence(), transferring
+ownership of the fence to the DMA reservation object. The DMA fence then
+gets properly discarded after being signalled.
+
+Fixes: 3e26d9f08fbe0 ("iio: core: Add new DMABUF interface infrastructure")
+Originally-by: James Nuss <jamesnuss@nanometrics.ca>
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5686.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/industrialio-buffer.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -1911,6 +1911,7 @@ static int iio_buffer_enqueue_dmabuf(str
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		if (val > (1 << chan->scan_type.realbits) || val < 0)
-+		if (val >= (1 << chan->scan_type.realbits) || val < 0)
- 			return -EINVAL;
+ 	dma_resv_add_fence(dmabuf->resv, &fence->base,
+ 			   dma_to_ram ? DMA_RESV_USAGE_WRITE : DMA_RESV_USAGE_READ);
++	dma_fence_put(&fence->base);
+ 	dma_resv_unlock(dmabuf->resv);
  
- 		mutex_lock(&st->lock);
+ 	cookie = dma_fence_begin_signalling();
 
 
 
