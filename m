@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E8QeL4BVJWpzHAIAu9opvQ
-	(envelope-from <stable+bounces-261818-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:56 +0200
+	id uq8+DSVSJWrFGwIAu9opvQ
+	(envelope-from <stable+bounces-261858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:12:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430986506D0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AE56505B1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:12:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JslXi4Ii;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261818-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261818-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="iNvcoiH/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261858-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261858-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48ED23008753
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93D8C3013A8F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9809330330;
-	Sun,  7 Jun 2026 10:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B758329E7E;
+	Sun,  7 Jun 2026 11:02:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4DE12CDA5;
-	Sun,  7 Jun 2026 10:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167BD3164A1;
+	Sun,  7 Jun 2026 11:02:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829955; cv=none; b=FnIP5avRy87J3J7k2r7OeyaaBoHQMC9O5pR+MnLiKN14rfvnqx/yoU9vnRUGGRtB3tcikMvjGCwX2USAw8ewG2j5fn7jxTLpYAG6L+OyAprk8rKxWfZXJrux7gV2+GBqQBS7bWxC8VoG2lMJMRpUOiVOO4Lr2FFgATjLF3iCqCY=
+	t=1780830125; cv=none; b=A56sIIDM0vmZHRyjC5lGOqbCUy48R67wtGUgqzNnu0KQegY8nOdnU0ivLVQscpBdY6cCRm1yl/i4pntF9LnNdVfHC9gmcoqSvV9nwNu5XELGqIOeQbWQAMXuzq3SYxEBNfVOlZLsDBt/kgAj5x1te+4FWeMr7rCWSymfqu5tjGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829955; c=relaxed/simple;
-	bh=TXcTwm7sHGppeF9QKrpsbJV7DzMniGuoN2hQmm82bfg=;
+	s=arc-20240116; t=1780830125; c=relaxed/simple;
+	bh=D/PDZNOIlChlZljSqI/EKkbJJ2W3QkjPCcsp2tGrpjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/tkT97bZiCFkS6y9LUO3Kk8PG/xq4hdrEaTnCMqnBzrlh4bNpVRwJUNdHikwMUAag7PCrdfN93+4guZe24Ssz0jaaC90Q7Q8a1/Yy6iMHfJPcWEuCXp9sGZH7iEczB/i5Y2ecm18e4Tx3dQo3GJmctO814YKiE4P+FlQDSXRZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JslXi4Ii; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18591F00893;
-	Sun,  7 Jun 2026 10:59:13 +0000 (UTC)
+	 MIME-Version; b=R0Ci3uX9kJc3CiH0frgJ9MqAq+jDUM602dT03Fmsy5C0jFr0RJCU1QPsM+4RVRypQSDdL612yVKwGj3pDR5RxYJP8D/FVS2I1/NtWsOFSOTh8tO+9P2P4yP62ABK+/ApGS+iQmMwfMVuIbpa4WwYvkMTKz83hqLdEdcOum44YhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNvcoiH/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C711F00893;
+	Sun,  7 Jun 2026 11:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829954;
-	bh=HtbauBaSCFsNTmOA4vzu6hEV0p7tmLM9Ho/moACh6rc=;
+	s=korg; t=1780830124;
+	bh=wPxVBCBh998H028mWF2LCRW7NINuo4i0F2MkORRz+y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JslXi4IiEhxnlozD/tuYt9fmPI185SJtWC4LEcHPAE1zNFEnhGLjXMwqDqIHkKgnW
-	 yxOpHZDDlpopJEb2jHHPqNA7zeI0Tonwc3bFYbr3PiTnmcsBOWI4HtF++8UHfyaVQb
-	 D1snBRROLLd9Rfvwz06bkklifaPvp2+R7fjjA5ss=
+	b=iNvcoiH/u6nB5n7gLuWjZK3nra3pS64JgFTGQiqQOtMZp18npLC75EQvC3rAcFv7L
+	 TFsdW2Kw0ix90GrzjH/pgjhuCHwRgU1k4YFYTVxvOTkBUOl4xzyLdbj4Tyop8n0fCH
+	 gmwrvG5q8AxPMqTJvdN13+auJUZ6x+Wmbw19W1KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shardul Bankar <shardul.b@mpiricsoftware.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 295/315] mptcp: do not drop partial packets
+Subject: [PATCH 6.12 285/307] octeontx2-pf: avoid double free of pool->stack on AQ init failure
 Date: Sun,  7 Jun 2026 12:01:22 +0200
-Message-ID: <20260607095738.430568169@linuxfoundation.org>
+Message-ID: <20260607095738.201098362@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +80,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261818-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261858-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shardul.b@mpiricsoftware.com,m:pabeni@redhat.com,m:matttbe@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -96,87 +97,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,mpiricsoftware.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 430986506D0
+X-Rspamd-Queue-Id: A3AE56505B1
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-[ Upstream commit 50c2d91c5dfa0e465826ec1f8dbad9cdc254bd85 ]
+[ Upstream commit 9b244c242bec48b37e82b89787afd6a4c43457e1 ]
 
-When a packet arrives with map_seq < ack_seq < end_seq, the beginning
-of the packet has already been acknowledged but the end contains new
-data. Currently the entire packet is dropped as "old data," forcing
-the sender to retransmit.
+otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
+allocation fails, but leaves the pointer unchanged. Later,
+otx2_sq_aura_pool_init() unwinds the partial setup through
+otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
+cn20k_pool_aq_init() implementation has the same bug in
+its corresponding error path.
 
-Instead, skip the already-acked bytes by adjusting the skb offset and
-enqueue only the new portion. Update bytes_received and ack_seq to
-reflect the new data consumed.
+Set pool->stack to NULL immediately after the local free so the shared
+cleanup path does not free the same stack again while cleaning up
+partially initialized pool state.
 
-A previous attempt at this fix has been sent by Paolo Abeni [1], but had
-issues [2]: it also added a zero-window check and changed rcv_wnd_sent
-initialization, which caused test regressions. This version addresses
-only the partial packet handling without modifying receive window
-accounting.
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still present in
+v7.1-rc3.
 
-Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
+Runtime validation was not performed because reproducing this path
+requires OcteonTX2/CN20K hardware.
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
-Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-[pabeni@redhat.com: update map]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260515151826.1005397-1-dawei.feng@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -395,12 +395,26 @@ static bool __mptcp_move_skb(struct sock
- 		return false;
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1386,11 +1386,13 @@ int otx2_pool_init(struct otx2_nic *pfvf
+ 		err = otx2_sync_mbox_msg(&pfvf->mbox);
+ 		if (err) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return err;
+ 		}
+ 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
+ 		if (!aq) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return -ENOMEM;
+ 		}
  	}
- 
--	/* old data, keep it simple and drop the whole pkt, sender
--	 * will retransmit as needed, if needed.
-+	/* Completely old data? */
-+	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
-+		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
-+		mptcp_drop(sk, skb);
-+		return false;
-+	}
-+
-+	/* Partial packet: map_seq < ack_seq < end_seq.
-+	 * Skip the already-acked bytes and enqueue the new data.
- 	 */
--	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
--	mptcp_drop(sk, skb);
--	return false;
-+	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
-+	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
-+	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
-+				      MPTCP_SKB_CB(skb)->map_seq;
-+	msk->bytes_received += copy_len;
-+	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
-+
-+	skb_set_owner_r(skb, sk);
-+	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	return true;
- }
- 
- static void mptcp_stop_rtx_timer(struct sock *sk)
 
 
 
