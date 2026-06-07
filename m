@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-261659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JHWYCcZMJWrEGQIAu9opvQ
-	(envelope-from <stable+bounces-261659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:42 +0200
+	id HGkIBTFPJWoMGwIAu9opvQ
+	(envelope-from <stable+bounces-261663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74EA650091
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E6C65034E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YOqbgp3X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261659-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hPmjvBgp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261663-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261663-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4FB483004938
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD6D83051D17
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FE12EBB9E;
-	Sun,  7 Jun 2026 10:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61092308F38;
+	Sun,  7 Jun 2026 10:49:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3AC2D8378;
-	Sun,  7 Jun 2026 10:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B592D8378;
+	Sun,  7 Jun 2026 10:49:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829379; cv=none; b=Ib57E+zzRjtso4hnz3gqNwyf0B04VheIIkn/nqZJ52FzgswBzJrcOSjSp8k0kJonXZ6xcET4/+WMDUyyfPXffpdc+WzEiO7+W3JVgYG+H2DVnaWs6iNKO4r6I/HjlNZwcbGjO0tNlWpyY8gGFRN5d/o+Ch1g7tvPjlU6M9WNqo0=
+	t=1780829394; cv=none; b=pln3xRPYPwNtMJY7tsNb0MhqV9VHrp6enw6LfqoTjVt29zgmxvEqzz5TLP1LyBEUeWvYkb4AIh+XRxOOe7tDTL0MvLFwioD4sbR3JyzcWVUcovEPUMiQZGYF4ArQ9JOkzgyuNoxaNkTIA/40wJQsiWtOeYxuJ4CIHgK2eI3/5j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829379; c=relaxed/simple;
-	bh=1SJUdA+Q/ZNSAVjH4S4LRMCqosrsAyAiW+CO9uDOJDM=;
+	s=arc-20240116; t=1780829394; c=relaxed/simple;
+	bh=4aK1T500EioE1+ICCEA11y45ScGtdpYu7BHtDh65hO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PX5FQJmxcEkT3xd33r4IYO7fDDmbHLWUTMTSIARmziAO1t0zTTxcdJ40CGwiBh086CQ3IIeOy774qX/RSwETk4G6Ec2eIbZeD6ORp9an46dwihe7D5YI5+ZaUmiDNjniiXTU22AUOAJCZRiU5qHRR/S4NOKeAaOABefVfCS4cx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOqbgp3X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD57C1F00893;
-	Sun,  7 Jun 2026 10:49:37 +0000 (UTC)
+	 MIME-Version; b=Zlu4GTmYVeeYcbmYUKtnuh3Q2vwMRlYSy9yeX2UtVt0Bm/pGu6Jjknqw3WV5WIAiFW7+qZfpwtYpLaheilllq9E8UnlO77zbs7g9/wKAizmYza6RvoCe1rKr0lgoNmDhLJ9tCi8VGte5N06dxjYefXgcMnSNIXMbgzvyzSVPPBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPmjvBgp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E8B1F00893;
+	Sun,  7 Jun 2026 10:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829378;
-	bh=jIHN0PHtEf5D8kVnHhdvFZTgNwtfT5I2Ne1Z8FVEBb0=;
+	s=korg; t=1780829393;
+	bh=lHdF/v842TXvy1zzImnc1eBtufOnYfzsLxZzMSqqxAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YOqbgp3XaXTVVtnLtfLCoIfoOsJIBILIfSKNVMM0VNcz4o7bnrjRFNCLrQuaWoBsM
-	 91HEFZXj1t23AqOSt2Frj1OmZBGd+dslrmetMTcLkQOXz0bPYqNwsCRNLQvpcPyuNQ
-	 0yjLkmwYK2N89389LxUnxc8dBoTlJ/i9WFRsPv3c=
+	b=hPmjvBgpkIZPmqrhwoXpdKTCkzC9A06znYVOmb0ew31rTCRGYZ52q2Rh4m9wif01J
+	 oDzMuRNotoGeS/h/TLHb4aFuM4I/a5wun1+cUigj7Sct3/ZRcCYbnRI8kqntx3cXs/
+	 NikFSw75wTKNjBbWC5JcuNzyNWF0VhxixDS5ZAqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,
 	stable <stable@kernel.org>,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.12 219/307] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
-Date: Sun,  7 Jun 2026 12:00:16 +0200
-Message-ID: <20260607095735.759722223@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 6.12 220/307] usb: usbtmc: check URB actual_length for interrupt-IN notifications
+Date: Sun,  7 Jun 2026 12:00:17 +0200
+Message-ID: <20260607095735.794643142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -73,15 +73,15 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-261659-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,igalia.com];
+	TAGGED_FROM(0.00)[bounces-261663-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,m:stable@kernel.org,m:michal.pecio@gmail.com,m:halves@igalia.com,m:syzbot@syzkaller.appspotmail.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -97,90 +97,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,abbfd103085885cf16a2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,syzkaller.appspot.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,igalia.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D74EA650091
+X-Rspamd-Queue-Id: 60E6C65034E
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
+commit 52f2ad3f7e5eb3b5908e1d685d4342519dc9cfcd upstream.
 
-This patch follows up Zheng Wang's 2023 report of a use-after-free in
-vudc_remove(). The original thread stalled on Shuah Khan's request for
-runtime testing of the unplug/unbind path. This patch supplies that
-testing and keeps Zheng's original fix shape.
+USBTMC devices can use an optional interrupt endpoint for notification
+messages. These typically contain two-byte headers indicating the
+payload format, but the driver does not check if these headers are
+present before accessing the data buffers. In cases where the URB
+actual_length is not enough to fit these headers, the driver will either
+cause an out-of-bounds read, or consume stale leftover data from a
+previous notification.
 
-In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
-usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
-vudc_remove() can then free the containing struct vudc while the timer is
-still pending or executing.
+Fix by checking if actual_data contains enough bytes for the headers,
+otherwise resubmit URB to the interrupt endpoint.
 
-KASAN confirms the race on an unpatched x86_64 QEMU guest with
-CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
-that repeatedly writes a socket fd to usbip_sockfd, closes the socket
-pair, and unbinds/rebinds usbip-vudc.0:
-
-  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
-  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
-  Allocated by task 239:
-    vudc_probe+0x4d/0xaa0
-  Freed by task 239:
-    kfree+0x18f/0x520
-    device_release_driver_internal+0x388/0x540
-    unbind_store+0xd9/0x100
-
-This lands in the timer core rather than v_timer() itself because the
-embedded timer_list is being walked after its containing struct vudc has
-already been freed. The underlying lifetime bug is the same one Zheng
-reported.
-
-With v_stop_timer() called from vudc_remove() and the timer deleted
-synchronously, the same harness completed 5000 bind/unbind iterations
-with no KASAN report.
-
-Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
+Fixes: dbf3e7f654c0 ("Implement an ioctl to support the USMTMC-USB488 READ_STATUS_BYTE operation.")
+Reported-by: syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=abbfd103085885cf16a2
 Cc: stable <stable@kernel.org>
-Reported-by: Zheng Wang <zyytlz.wz@163.com>
-Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Link: https://patch.msgid.link/20260505-usbtmc-iin-size-v3-1-a36113f62db7@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/usbip/vudc_dev.c      |    1 +
- drivers/usb/usbip/vudc_transfer.c |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/class/usbtmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/usbip/vudc_dev.c
-+++ b/drivers/usb/usbip/vudc_dev.c
-@@ -632,6 +632,7 @@ void vudc_remove(struct platform_device
- {
- 	struct vudc *udc = platform_get_drvdata(pdev);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -2310,6 +2310,14 @@ static void usbtmc_interrupt(struct urb
  
-+	v_stop_timer(udc);
- 	usb_del_gadget_udc(&udc->gadget);
- 	cleanup_vudc_hw(udc);
- 	kfree(udc);
---- a/drivers/usb/usbip/vudc_transfer.c
-+++ b/drivers/usb/usbip/vudc_transfer.c
-@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
- {
- 	struct transfer_timer *t = &udc->tr_timer;
- 
--	/* timer itself will take care of stopping */
-+	/* Delete the timer synchronously before teardown frees udc. */
- 	dev_dbg(&udc->pdev->dev, "timer stop");
-+	timer_delete_sync(&t->timer);
- 	t->state = VUDC_TR_STOPPED;
- }
+ 	switch (status) {
+ 	case 0: /* SUCCESS */
++		/* ensure at least two bytes of headers were transferred */
++		if (urb->actual_length < 2) {
++			dev_warn(dev,
++				"actual length %d not sufficient for interrupt headers\n",
++				urb->actual_length);
++			goto exit;
++		}
++
+ 		/* check for valid STB notification */
+ 		if (data->iin_buffer[0] > 0x81) {
+ 			data->bNotify1 = data->iin_buffer[0];
 
 
 
