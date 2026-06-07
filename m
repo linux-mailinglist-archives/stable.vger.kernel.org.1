@@ -1,62 +1,82 @@
-Return-Path: <stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1ySJM9dCJWoIFQIAu9opvQ
-	(envelope-from <stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:19 +0200
+	id ixxACZ1DJWphFQIAu9opvQ
+	(envelope-from <stable+bounces-260980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D415264F556
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7965464F5F8
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0p8nsbm6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cbAV8qvL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260980-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260980-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0DE903002D30
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F55E303C3C5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A872F7EFE;
-	Sun,  7 Jun 2026 10:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882632F49FD;
+	Sun,  7 Jun 2026 10:07:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D107234994;
-	Sun,  7 Jun 2026 10:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4DB234994;
+	Sun,  7 Jun 2026 10:07:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826834; cv=none; b=a/9T0TikLaoGfg9y4LuSFZbMnYufn6ujTVSSvRtsDwIMWrXRvwYJxw+NbD2cLyAcoNCj6P6bY/ZwwL0OH+FTMsC7AEaT6S9Vw9tI2C7tm1RAfqP31n/kC/qRQsQJCQSBWy/Aitp9mIrGK9VmOx4+QclgK6GlXzss1Syhz1g2xzM=
+	t=1780826854; cv=none; b=u1O4q1og2PvyAPOiPLi0CaUmi7SsjqW8nDTCUDWhiVNK0kq7txv7wg1aRn0Wxo5j7LcgFkN7Vmb/p8o9ph3FytJGCzV0W55pSb3An8xXlsSP8zC3dIoh840A26wtq1cKmbPS+OBzCp5UHSR4sUnI39F6/eSWtHMQfFFWP8/usvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826834; c=relaxed/simple;
-	bh=KCeP6r4WcKOYd0Orv8+Zs2ax3pvSCEEZBcuOEQGfh3Y=;
+	s=arc-20240116; t=1780826854; c=relaxed/simple;
+	bh=yuQLiYC30TovAZeWE0BzvmzBG+tBjUXy7byWvV3YLcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KQOAZ2xENc/e1weOQD+hZ6yMWkl16pUOp6GNz47oTgermOibiQd2GUqC7qJXaQDyTMI91pn2NywiGyB+tgFmPvdJ3hzqrvhmTWCga4AYL/Ct7Z6+nhJ3Tkxm4dpyCFyA00JpPVtSEJmIKWsj5Wpma3afpoVbMV6KFnzEDkGsr0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p8nsbm6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F251F00893;
-	Sun,  7 Jun 2026 10:07:12 +0000 (UTC)
+	 MIME-Version; b=ME6k47rwvYKIVXHt5+wFdTKKra+Z9AYo4Ize47bKPBYsxuvAeIJbAWgemWa/PtVBVZ4HhVNnpeianw35Ho2n5MwlDjORyvAHHDVTdp4iXYgdAwCHRfv5ZeBrnRoBJjOjL2oC3Iy1grvYoR9N4AK1YZxKnwNh5UabuZkewQS2mH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbAV8qvL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F811F00893;
+	Sun,  7 Jun 2026 10:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826833;
-	bh=WpaUjSySEJqcVpIYaX1c4bukNrWW8ixaa3GAdX05Ays=;
+	s=korg; t=1780826853;
+	bh=EqXyAD9y3kdIGYutZXR5X8+BoudR2PyTvq0Dst1n/Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0p8nsbm6CC+UQdgyFq2kZlZ9/eibjNYJ49iR9EJgbQ5V5gMdcX4FXzz4DLLaAP4uM
-	 ENOQOezEdZLD8geGj1K0RTQWn7HbOZym52nFjGwF5ldppNlmLD6PzBcj4cSafIhVkx
-	 8q0v4+/i5Z2BQYskk0fVmaMoLyGXxGOJOEXR2+kU=
+	b=cbAV8qvLUMyOB4qrXcE6bfku63VAnXmAIHvHPy9AfMFEG+EJ3UGs+HyT6+RrAShnP
+	 /auFpBie28WoL1vOFlMblliud2MbrGHtMek1y+e5I5NPoFMs84XXuJUY8Nm92qi5E7
+	 wz2OadnoBJZIS3B4amsUMfMLYdOA9uoQ8TbJ60QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Deepanshu Kartikey <Kartikey406@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,
+	Michal Hocko <mhocko@suse.com>,
+	Ben Segall <bsegall@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	Liam Howlett <liam@infradead.org>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 033/332] ALSA: pcm: oss: Fix setup list UAF on proc write error
+Subject: [PATCH 6.18 015/315] kernel/fork: validate exit_signal in kernel_clone()
 Date: Sun,  7 Jun 2026 11:56:42 +0200
-Message-ID: <20260607095729.310033227@linuxfoundation.org>
+Message-ID: <20260607095728.055006611@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,122 +86,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260974-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de,kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[27];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260980-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Kartikey406@gmail.com,m:oleg@redhat.com,m:syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com,m:mhocko@suse.com,m:bsegall@google.com,m:brauner@kernel.org,m:david@kernel.org,m:dietmar.eggemann@arm.com,m:mingo@redhat.com,m:juri.lelli@redhat.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:mgorman@suse.de,m:rppt@kernel.org,m:peterz@infradead.org,m:rostedt@goodmis.org,m:surenb@google.com,m:vschneid@redhat.com,m:vincent.guittot@linaro.org,m:vbabka@kernel.org,m:penguin-kernel@I-love.SAKURA.ne.jp,m:akpm@linux-foundation.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,syzkaller.appspotmail.com,suse.com,google.com,kernel.org,arm.com,infradead.org,suse.de,goodmis.org,linaro.org,I-love.SAKURA.ne.jp,linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable,8e498074a794999eb41c];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable,bbe6b99feefc3a0842de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D415264F556
+X-Rspamd-Queue-Id: 7965464F5F8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 4cc54bdd54b337e77115be5b55577d1c58608eae ]
+[ Upstream commit 09e7827e785729f391c8d46dc71becce70d296ab ]
 
-snd_pcm_oss_proc_write() links a newly allocated setup entry into the
-OSS setup list before duplicating the task name. If the task-name
-allocation fails, the error path frees the already linked entry and
-leaves setup_list pointing at freed memory.
+When a child process exits, it sends exit_signal to its parent via
+do_notify_parent().  The clone() syscall constructs exit_signal as:
 
-A later OSS device open can then walk the stale list entry in
-snd_pcm_oss_look_for_setup() and dereference freed memory.
+(lower_32_bits(clone_flags) & CSIGNAL)
 
-Allocate the task name and initialize the setup entry before publishing
-the entry on setup_list. Also fetch the initial proc read iterator only
-after taking setup_mutex, so all setup_list traversal follows the same
-list lifetime rules.
+CSIGNAL is 0xff, so values in the range 65-255 are possible.  However,
+valid_signal() only accepts signals up to _NSIG (64 on x86_64).  A
+non-zero non-valid exit_signal acts the same as exit_signal == 0: the
+parent process is not signaled when the child terminates.
 
-Reported-by: syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a1062b7.170a0220.35b2b7.0003.GAE@google.com
-Closes: https://syzkaller.appspot.com/bug?extid=8e498074a794999eb41c
-Fixes: 060d77b9c04a ("[ALSA] Fix / clean up PCM-OSS setup hooks")
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260522-alsa-pcm-oss-setup-uaf-v1-1-40bdcc4d17e8@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The syzkaller reproducer triggers this by calling clone() with flags=0x80,
+resulting in exit_signal = (0x80 & CSIGNAL) = 128, which exceeds _NSIG and
+is not a valid signal.
+
+The v1 of this patch added the check only in the clone() syscall handler,
+which is incomplete.  kernel_clone() has other callers such as
+sys_ia32_clone() which would remain unprotected.  Move the check to
+kernel_clone() to cover all callers.
+
+Since the valid_signal() check is now in kernel_clone() and covers all
+callers including clone3(), the same check in copy_clone_args_from_user()
+becomes redundant and is removed.  The higher 32bits check for clone3() is
+kept as it is clone3() specific.
+
+Note that this is a user-visible change: previously, passing an invalid
+exit_signal to clone() was silently accepted.  The man page for clone()
+does not document any defined behavior for invalid exit_signal values, so
+rejecting them with -EINVAL is the correct behavior.  It is unlikely that
+any sane application relies on passing an invalid exit_signal.
+
+[oleg@redhat.com: the comment above kernel_clone() should be updated]
+  Link: https://lore.kernel.org/abwvgU17W8wuW2-J@redhat.com
+Link: https://lore.kernel.org/20260316151956.563558-1-kartikey406@gmail.com
+Fixes: 3f2c788a1314 ("fork: prevent accidental access to clone3 features")
+Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Reported-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe6b99feefc3a0842de
+Tested-by: syzbot+bbe6b99feefc3a0842de@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20260307064202.353405-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20260316104536.558108-1-kartikey406@gmail.com/T/ [v2]
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/oss/pcm_oss.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ kernel/fork.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/sound/core/oss/pcm_oss.c b/sound/core/oss/pcm_oss.c
-index 6af26ec2ecfd59..b1b4c7d017beea 100644
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -2968,8 +2968,10 @@ static void snd_pcm_oss_proc_read(struct snd_info_entry *entry,
- 				  struct snd_info_buffer *buffer)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 1215d3f52c6d21..521e9d2be6f097 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2562,8 +2562,6 @@ struct task_struct *create_io_thread(int (*fn)(void *), void *arg, int node)
+  *
+  * It copies the process, and if successful kick-starts
+  * it and waits for it to finish using the VM if required.
+- *
+- * args->exit_signal is expected to be checked for sanity by the caller.
+  */
+ pid_t kernel_clone(struct kernel_clone_args *args)
  {
- 	struct snd_pcm_str *pstr = entry->private_data;
--	struct snd_pcm_oss_setup *setup = pstr->oss.setup_list;
-+	struct snd_pcm_oss_setup *setup;
+@@ -2588,6 +2586,9 @@ pid_t kernel_clone(struct kernel_clone_args *args)
+ 	    (args->pidfd == args->parent_tid))
+ 		return -EINVAL;
+ 
++	if (!valid_signal(args->exit_signal))
++		return -EINVAL;
 +
- 	guard(mutex)(&pstr->oss.setup_mutex);
-+	setup = pstr->oss.setup_list;
- 	while (setup) {
- 		snd_iprintf(buffer, "%s %u %u%s%s%s%s%s%s\n",
- 			    setup->task_name,
-@@ -3054,6 +3056,13 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
- 				buffer->error = -ENOMEM;
- 				return;
- 			}
-+			template.task_name = kstrdup(task_name, GFP_KERNEL);
-+			if (!template.task_name) {
-+				kfree(setup);
-+				buffer->error = -ENOMEM;
-+				return;
-+			}
-+			*setup = template;
- 			if (pstr->oss.setup_list == NULL)
- 				pstr->oss.setup_list = setup;
- 			else {
-@@ -3061,12 +3070,7 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
- 				     setup1->next; setup1 = setup1->next);
- 				setup1->next = setup;
- 			}
--			template.task_name = kstrdup(task_name, GFP_KERNEL);
--			if (! template.task_name) {
--				kfree(setup);
--				buffer->error = -ENOMEM;
--				return;
--			}
-+			continue;
- 		}
- 		*setup = template;
- 	}
+ 	/*
+ 	 * Determine whether and which event to report to ptracer.  When
+ 	 * called from kernel_thread or CLONE_UNTRACED is explicitly
+@@ -2786,11 +2787,9 @@ static noinline int copy_clone_args_from_user(struct kernel_clone_args *kargs,
+ 		return -EINVAL;
+ 
+ 	/*
+-	 * Verify that higher 32bits of exit_signal are unset and that
+-	 * it is a valid signal
++	 * Verify that higher 32bits of exit_signal are unset
+ 	 */
+-	if (unlikely((args.exit_signal & ~((u64)CSIGNAL)) ||
+-		     !valid_signal(args.exit_signal)))
++	if (unlikely(args.exit_signal & ~((u64)CSIGNAL)))
+ 		return -EINVAL;
+ 
+ 	if ((args.flags & CLONE_INTO_CGROUP) &&
 -- 
 2.53.0
 
