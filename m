@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-261527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oZ4KBhVMJWp2GQIAu9opvQ
-	(envelope-from <stable+bounces-261527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:45 +0200
+	id mywRMzxLJWo6GQIAu9opvQ
+	(envelope-from <stable+bounces-261551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8614F64FFC6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:44 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30B164FF06
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DVssAphq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261527-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261527-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=scp2HD45;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261551-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261551-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABC183044A65
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DDC793004605
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C81F32B11A;
-	Sun,  7 Jun 2026 10:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDC931E850;
+	Sun,  7 Jun 2026 10:43:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC2F3264F5;
-	Sun,  7 Jun 2026 10:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694721E98EF;
+	Sun,  7 Jun 2026 10:43:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828894; cv=none; b=rnOh0/5/uaAnK9OLxtX/bc8rr37NRvrBz7TN4yMoAQdq1bumtrxocvRSed9mwAADUtPadnZBdBXrv1/tGbazoAehmoubLe5i4GLBXT3v0K4/4RXaWbDFAmAFUTDQ36bv0uqO0LIjnh/5k4enfetHYUij5UoYCLtpDy5vae0OU5c=
+	t=1780828983; cv=none; b=QBxWAYa2QpOqhVGF5iL5ZwR8aogwT9x0E8jxq+oCQ9B6bV9lb/keLczSdWyEYZXtaxNF9zv9sDgv9iaq0ZGM3l+smdPIqXtUoTGE1b4VY81gTl/Hn47/2tSXcs+SHQbv7OC7RnrEk6CP8vOW0cw7hqLvzIUrp9cUuNJ95CYYFFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828894; c=relaxed/simple;
-	bh=JLWBrGm5lEZt87kz0Iiclsj1leE1DXu3pzwPwBSlj0A=;
+	s=arc-20240116; t=1780828983; c=relaxed/simple;
+	bh=suTgiXbI5TJZirGIvS6IyYbc0TAYdNh0CxbV+WMSvZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuEpJ/38BI9leG2L9f+uZY3q6f9SsAz+fLKAyNg6CjgcmF/p1+2JDne+unvBoXBsqczn7CHRcVTOidK4nxXV58tjMkeJRk1fIcvudSV8pEIyA6Aaus83+uWTljmd6VsunNkxi5dG1UyGyFS1h+39ouYzyDmzb8MxLHBrMlZ8Ha4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVssAphq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6381F00893;
-	Sun,  7 Jun 2026 10:41:31 +0000 (UTC)
+	 MIME-Version; b=QQ5VdWJLu45QBg8CRz30HUdoYDSugGmfSGthxh7B5R5JFkbJJlLV8XqTomvfIm7ro3i87MCGeh4UoHwDdhve0BDQwljph60PrZ6tO4Kd13YtaLz1vKajfFcex1nAMfaZ/KinDb/D9UAnFZ1SdtdoAeOTpzQCvlWdJq+CUuAU9Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scp2HD45; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB2E1F00893;
+	Sun,  7 Jun 2026 10:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828892;
-	bh=btV+a4iPjVwdgssJ29uR6wa+WNkPzXKGyoJSDwwz8f0=;
+	s=korg; t=1780828982;
+	bh=vs/gxlNSn5CsYj4zxYf3Z5xIp+Echpv/oVnY9h/AqAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DVssAphq/2ecp/n6dVhqnGYrbv2R+m+esaZhyWV64UTPFO1vJ/zTIgDPKS1klemXB
-	 X1EhTfvLrKc1MOs11aGXuM2Mt2nPa69xblsh4dt1R+U0HytVFAXcjXiztihbMtoIl3
-	 DbjZSipBSpBQBwZq4estpbe4TULxdFMBGrdHr+8s=
+	b=scp2HD451F8YjXXuWh57tQRIF3Hp9If9VgVKCJLfQkQYl7nSw48rbqkYKi3mWHTD2
+	 2bekULh0yUbBxOo33o20MnLUO4BMesB2D9NOg86aE02siyDWgt/C9oP7S2qyfpo7/G
+	 XKmDXURRdmjg+hp7i9xZtSul2m2asyj642XT1+qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 7.0 212/332] ASoC: qcom: q6asm-dai: fix error handling in prepare and set_params
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 184/307] bpf: sockmap: fix tail fragment offset in bpf_msg_push_data
 Date: Sun,  7 Jun 2026 11:59:41 +0200
-Message-ID: <20260607095735.853117753@linuxfoundation.org>
+Message-ID: <20260607095734.474415851@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,118 +76,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261527-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
+	TAGGED_FROM(0.00)[bounces-261551-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lzu.edu.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lenovo.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8614F64FFC6
+X-Rspamd-Queue-Id: C30B164FF06
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Yuqi Xu <xuyq21@lenovo.com>
 
-commit 4b4db09f283df65d780bc7cee66cb4a7e9bf4770 upstream.
+commit f72eed9b84fb771019a955908132410a9ba9ea3f upstream.
 
-Fix error handling in q6asm_dai_compr_set_params() and q6asm_dai_prepare()
-for both CMD_CLOSE and q6asm_unmap_memory_regions().
+When bpf_msg_push_data() inserts data in the middle of a scatterlist
+entry, it splits the original entry into a left fragment and a right
+fragment.
 
-In both the functions, we are doing q6asm_audio_client_free in failure
-cases, which means if prepare or set_params fail, we can never recover.
-Now open and close are done in respective dai_open/close functions.
+The right fragment offset is page-local, but the code advances it with
+`start`, which is the message-global insertion point. For inserts into a
+non-first SG entry, this over-advances the offset and leaves the split
+layout inconsistent.
 
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260518092347.3446946-4-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Advance the right fragment offset by the fragment-local delta,
+`start - offset`, which matches the length removed from the front of the
+original entry.
+
+Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Link: https://patch.msgid.link/8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ net/core/filter.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -227,9 +227,19 @@ static int q6asm_dai_prepare(struct snd_
- 	/* rate and channels are sent to audio driver */
- 	if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 		/* clear the previous setup if any  */
--		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
--		q6asm_unmap_memory_regions(substream->stream,
--					   prtd->audio_client);
-+		ret = q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to close q6asm stream %d\n", prtd->stream_id);
-+			return ret;
-+		}
-+
-+		ret = q6asm_unmap_memory_regions(substream->stream, prtd->audio_client);
-+		if (ret < 0) {
-+			dev_err(dev, "Failed to unmap memory regions for q6asm stream %d\n",
-+				prtd->stream_id);
-+			return ret;
-+		}
-+
- 		q6routing_stream_close(soc_prtd->dai_link->id,
- 					 substream->stream);
- 		prtd->state = Q6ASM_STREAM_STOPPED;
-@@ -297,8 +307,6 @@ routing_err:
- 	q6asm_cmd(prtd->audio_client, prtd->stream_id,  CMD_CLOSE);
- open_err:
- 	q6asm_unmap_memory_regions(substream->stream, prtd->audio_client);
--	q6asm_audio_client_free(prtd->audio_client);
--	prtd->audio_client = NULL;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2867,7 +2867,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
  
- 	return ret;
- }
-@@ -916,7 +924,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		goto q6_err;
-+		goto routing_err;
- 	}
+ 		psge->length = start - offset;
+ 		rsge.length -= psge->length;
+-		rsge.offset += start;
++		rsge.offset += start - offset;
  
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -942,11 +950,11 @@ static int q6asm_dai_compr_set_params(st
- 	return 0;
- 
- q6_err:
-+	q6routing_stream_close(rtd->dai_link->id, dir);
-+routing_err:
- 	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
- 
- open_err:
--	q6asm_audio_client_free(prtd->audio_client);
--	prtd->audio_client = NULL;
- 	return ret;
- }
- 
+ 		sk_msg_iter_var_next(i);
+ 		sg_unmark_end(psge);
 
 
 
