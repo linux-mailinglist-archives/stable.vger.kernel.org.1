@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-261924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RucbD+m7JWpyLAIAu9opvQ
-	(envelope-from <stable+bounces-261924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:43:53 +0200
+	id ei6TAhy8JWp7LAIAu9opvQ
+	(envelope-from <stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:44:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968AB6514AB
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF286514CA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 20:44:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gL2foLEk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261924-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261924-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vbm9yYaS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261925-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA5423004581
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 18:43:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77E573007647
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 18:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB132317163;
-	Sun,  7 Jun 2026 18:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FE12D8DC2;
+	Sun,  7 Jun 2026 18:44:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19D12D3ECF;
-	Sun,  7 Jun 2026 18:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934B81BD9C9;
+	Sun,  7 Jun 2026 18:44:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780857827; cv=none; b=Fm/xxcKYpRHdDwD3GYJ00I69X1v5Ce5zSLjtYgv0V/pkhy57fK5728aKujgydstNNW4nTJiVZxiebRx3B6TJGEbvhGXt55ueHtOG10vrrheLzc7gIftt4OAyP+EV7NhYZqDc6Aom21YJxrVf0A0Aj5oK00ucP6wIRzNgvWls/aE=
+	t=1780857879; cv=none; b=HT18el/adUd094I0SWiWaomncDYzIpma5G3Kom756DjFvNCDOvhB06b0m1c+8CPxTG1V1NNV47/mwq95MJrHxKxqcFVxm1m7nEEtwEO1pHZqw7bizZOl9hfAFKPYbLF6oaUDyLHvDFbqTnuvqXkaEton+BcXPnhe2AnMht90VRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780857827; c=relaxed/simple;
-	bh=7HzqzMuc3ofXnI5vCVU67os1/8gsS7DsbHTCwjddAMY=;
+	s=arc-20240116; t=1780857879; c=relaxed/simple;
+	bh=7yZxF2UMVwXMaKLziKlcZXqPXJCVcrz9+UAwCS1rdFI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ko6UWagTw7fZMN41vFgdiLc5jP+IggkIN7ma8gPkMZo0fmpM5KbE1hZ/jr4djISLnwucblXRiPNh5Tv8ESlQofG7GgKslqAuTlVnnrZXtYh8SiPPchhkl9MQTn0FQ+dfWGp/tt4L1yefHMC5+pqs5qDjE1gOpvMzUb4HRSaiHfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gL2foLEk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2217B1F00893;
-	Sun,  7 Jun 2026 18:43:44 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=cZOyxjodzcPw+XjFgHdcroKSBlzgBat8C9N2gwAxKhL/qJuXCk1gVMz1iD4XTuqx+sF+Wzf6ctTEz+vj1GVdQWwxvxbLH0RykI2aXDEADu4beDibcpluhyAE2O8THudcmJvoXdI5o+9OjwxVC1UhO6GlzTCXSO3si9kdn2p4ED4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vbm9yYaS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101321F00893;
+	Sun,  7 Jun 2026 18:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780857826;
-	bh=IYcS9qd8NGPrhWDiq3bV+IGAIyt7OX+OMs6BafJIq3U=;
+	s=k20260515; t=1780857878;
+	bh=UQvXkO+DoHYxYwFn5fP55zszm2KanotFEhO1BqL9ktk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gL2foLEk3Eeyx+lsHM4Tj8CxIOo5OpCAF0NtsnLhGRB5c0bRh2WZLCCtSrXEYHI0F
-	 VG2vHCvUFQga736X1nC2e5HN3rzhZittardBJ/Uruz+fZLh7FSGkBPtvyYfOddVhfJ
-	 LDzENOAYs4fwCXQiXu+pa2lE6m45DdOEqzTFeyMP5S/BnPWEh2t1z1W9mbg4BuFGC2
-	 NNRbA68c3ZIjHaG4LxYKznVMSlhR6mjyhnVRKGWILPYUcQY8CHrD2dt9XGOfx4qOvC
-	 wdt0xNt7+H/iqTPGSGKgsObl7ALB9fG8T6xok3664UpNXejtC2KaRO1CYt3RbtYlE8
-	 nBipasDQsXhTw==
-Message-ID: <148e4311-5d45-4c89-b93d-898282282f7b@kernel.org>
-Date: Sun, 7 Jun 2026 20:43:42 +0200
+	b=Vbm9yYaSrpAL0Ufyn8i6slEAH2rKYnSYG3RnMBgecKuAnVG6yMEoRdZguTpk3PNSV
+	 VZcF2AGFkIM1m0eDL60yzqk2VcZIalOkQyZj+/lN99o5RVxABbojNC5Y0XQCqyJh0V
+	 W24jj1b6ISRv6eVQ13g+K5LBGczvJakjgcwWJLbGep10gOZbrAyztt6GiF+CUY83pu
+	 PoNSSDOVmL0Z1l9tEVBj5jATY2eWg/qE+sFZhGPZRFVtkFpbxeHbfnGQdGphp42hg4
+	 OMcUmQQi32Csx0B2bmAzJIyCd3OMDxBwTMBeMnjZPeHk2xg+knsSz+0qWIdn0ATn54
+	 CwyFO/SHSJQmQ==
+Message-ID: <dd36757c-62b3-476e-bc9f-09231c495ebc@kernel.org>
+Date: Sun, 7 Jun 2026 20:44:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,13 +55,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 243/332] gpib: cb7210: Fix region leak when
- request_irq fails
+Subject: Re: [PATCH 7.0 016/332] esp: fix page frag reference leak on
+ skb_to_sgvec failure
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Hongling Zeng <zenghongling@kylinos.cn>,
- stable <stable@kernel.org>
+Cc: patches@lists.linux.dev, Alessandro Schino <7991aleschino@gmail.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Sasha Levin <sashal@kernel.org>
 References: <20260607095728.031258202@linuxfoundation.org>
- <20260607095736.972391850@linuxfoundation.org>
+ <20260607095728.644422375@linuxfoundation.org>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -106,7 +107,7 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20260607095736.972391850@linuxfoundation.org>
+In-Reply-To: <20260607095728.644422375@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
@@ -118,18 +119,19 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-261925-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:zenghongling@kylinos.cn,m:stable@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:7991aleschino@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,secunet.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261924-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -138,22 +140,22 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sbb.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 968AB6514AB
+X-Rspamd-Queue-Id: 6DF286514CA
 
-On 07. 06. 26, 12:00, Greg Kroah-Hartman wrote:
+On 07. 06. 26, 11:56, Greg Kroah-Hartman wrote:
 > 7.0-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
-> From: Hongling Zeng <zenghongling@kylinos.cn>
+> From: e521588 <alessandro.schino@sbb.ch>
 > 
-> commit 2eae90a457baa0048a96ed38ad93090ee38c8b2f upstream.
+> [ Upstream commit 2982e599fff6faa21c8df147d96fc7af6c1a2f24 ]
 
-This was reverted by 05d5d79440c2cc0784f91b61f2012753e66be472.
+This was reverted by 6851161feb01cea41358c9ec304bd2f981fc8505.
 
 thanks,
 -- 
