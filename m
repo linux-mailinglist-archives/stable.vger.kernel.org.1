@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /CU7NONDJWqDFQIAu9opvQ
-	(envelope-from <stable+bounces-261000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:47 +0200
+	id 0NB/JjBEJWqmFQIAu9opvQ
+	(envelope-from <stable+bounces-261019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F1264F645
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0187E64F695
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fCTX0K+H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261000-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261000-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WoZLkG2z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261019-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261019-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FBDC3047243
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62473302DB7E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2A12E3709;
-	Sun,  7 Jun 2026 10:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112F52E3709;
+	Sun,  7 Jun 2026 10:09:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8BE1DE8AE;
-	Sun,  7 Jun 2026 10:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92611DE8AE;
+	Sun,  7 Jun 2026 10:09:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826921; cv=none; b=kiisx88dQd5t/MY4p5KyB1r0cPDpQI/LLrHBE9wU2wzd2b9goNMk1XLIFgOO+PsDSZpYH3Py2fWOlkDojkYMcQYtrjwCVgCKnLBp8Ng/zH28jGi0/Rxu3SiOga30q8wEtSSwacNWSSyaCjor5D2b3SF+oWca5/128c6YHiZ6KHY=
+	t=1780826988; cv=none; b=oAFxWRrzEcoGZTLyfXQiJ1t01TIK9leAueBLlbyM5tVZ6UaWCu4Dz8fFdsKE6givUumdGJJkj9xi4tnKSwf2lE4v45BUPtPm47AGYzl+7nYoyYKtsVWAKCz1C/mbAGZXNGSJ/jpeimYu/DAmBUdk+PEQTxSFgywzaSIBAj+CeYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826921; c=relaxed/simple;
-	bh=6h3WX728kUUbmex5HA2outUGuNIv61xUWy/KwyZFRgc=;
+	s=arc-20240116; t=1780826988; c=relaxed/simple;
+	bh=BLS6S/7FxlHFqJnRhm4lPhH399omtoER/AvxHD4dxNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJuBQlcaDHIyzAMi2mVJAM31kY98mp/1J9gmyBVRTZT47kYZyFm3npYu9Rpx3kGn0u3w+oPoNz3bDuYgxll0G2aiWH+QTY28t5rwsLJYLHZ0gq6Qxfo11yzbjeNsbvJlrGU/kGsyFo41lnngoxpxw8Y/s3SxfZdEGeqkFcpTxWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCTX0K+H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0065C1F00893;
-	Sun,  7 Jun 2026 10:08:39 +0000 (UTC)
+	 MIME-Version; b=lQm6RXi/QpS3vR/90OAszDrbMDHRb2RfhUfRaUFsLPYBFF5ME00QgIOo9WHfjJEfHi2mi7guORbfqULerZPPyuviyoXJAwIDUbyrrYntvlQ2sSvkUV3WsvQey9V3U516LrD4BREB6TsHA3xp/M48Hx74nz+g7LV4lzJRNjLKO8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoZLkG2z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29FE61F00893;
+	Sun,  7 Jun 2026 10:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826920;
-	bh=ukTDgJK7e3z10nFRiHtRT4EpHdpSA8ulfAyeikQFoek=;
+	s=korg; t=1780826987;
+	bh=osCT1OFlpKgTazNObqSyHHVg/wm+9i3SVJWngFxXXMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fCTX0K+HAI0oeEGOzzx2K1wrxZhSNqXEyjqpHXIH/iRHvUTKpX7kchNT9iLAM/33D
-	 NsoeKpuSYDDzGxszYnGhEzZsaDgGU1kAASR08lmmkG7xoBnlkdQviZUgJmAtltSJgc
-	 2vc1c2149SlXSDGfm44kY9Byh+Efy6AspwXvHqL0=
+	b=WoZLkG2zkYfgMaw/OD4LMNGKIUuZ82ow2xwrH5EHAwj6uVZBqILDPmSnnAUHBf+Wv
+	 mFQ6EUsCiqlr7AX41OeoI7iXOroLyEvFnHxXkb0D7BWmaCap8+anJPIZOLOfCnl3SX
+	 7Ryw9qwLL1kiuPot/XSQh7nNzonCORYk39Djrt+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leo Lin <leo@depthfirst.com>,
+	David Ahern <dahern@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 027/332] net/smc: Do not re-initialize smc hashtables
+Subject: [PATCH 6.18 009/315] xfrm: Check for underflow in xfrm_state_mtu
 Date: Sun,  7 Jun 2026 11:56:36 +0200
-Message-ID: <20260607095729.083162424@linuxfoundation.org>
+Message-ID: <20260607095727.849611722@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261000-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261019-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pasic@linux.ibm.com,m:wintera@linux.ibm.com,m:mjambigi@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leo@depthfirst.com,m:dahern@nvidia.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,68 +96,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,depthfirst.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 45F1264F645
+X-Rspamd-Queue-Id: 0187E64F695
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: David Ahern <dahern@nvidia.com>
 
-[ Upstream commit 9e4389b0038781f19f97895186ed941ff8ac1678 ]
+[ Upstream commit 742b04d0550b0ec89dcbc99537ec88653bd1ad90 ]
 
-INIT_HLIST_HEAD(&smc_v*_hashinfo.ht) are called after smc_nl_init(),
-proto_register() and sock_register(). This can lead to smc_v*_hashinfo.ht
-being reset even though hash entries already exist and are being used,
-possibly resulting in a corrupted list.
+Leo Lin reported OOB write issue in esp component:
 
-Remove unnecessary and dangerous re-initialisation of smc_v*_hashinfo.ht in
-smc_init(); it is implicitly initialised to zero anyhow. Add
-HLIST_HEAD_INIT to the definitions for clarity.
+  xfrm_state_mtu() returns u32 but performs its arithmetic in unsigned
+  modulo-2^32 space using an attacker-influenced "header_len + authsize +
+  net_adj" subtracted from a small "mtu" argument. A nobody user can
+  install an IPv4 ESP tunnel SA with a large authentication key
+  (XFRMA_ALG_AUTH_TRUNC, e.g. hmac(sha512), 64-byte key, 64-byte trunc),
+  configure a small interface MTU (68 bytes), and set XFRMA_TFCPAD to a
+  large value. When a single UDP datagram is then sent through the
+  tunnel, xfrm_state_mtu() underflows to a near-2^32 value, and
+  esp_output() consumes it as a signed int via:
 
-Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-Suggested-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Link: https://patch.msgid.link/20260521145639.10317-1-wintera@linux.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+        padto      = min(x->tfcpad, xfrm_state_mtu(x, mtu_cached))
+        esp.tfclen = padto - skb->len   (assigned to int)
+
+  esp.tfclen ends up negative (e.g. -207). It is sign-extended to size_t
+  when passed to memset() inside esp_output_fill_trailer(), producing a
+  ~16 EB write of zeroes at skb_tail_pointer(skb). KASAN logs it as
+  "Write of size 18446744073709551537 at addr ffff888...".
+
+Check for underflow and return 1. This causes the sendmsg attempt to
+fail with ENETUNREACH.
+
+Fixes: c5c252389374 ("[XFRM]: Optimize MTU calculation")
+Reported-by: Leo Lin <leo@depthfirst.com>
+Assisted-by: Codex:26.506.31004
+Signed-off-by: David Ahern <dahern@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_state.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index f744f791121776..de034a3e5d801f 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -188,10 +188,12 @@ static bool smc_hs_congested(const struct sock *sk)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index f6ba58f18ac18e..1b81e92e3eee78 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -3113,10 +3113,14 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 	const struct xfrm_type *type = READ_ONCE(x->type);
+ 	struct crypto_aead *aead;
+ 	u32 blksize, net_adj = 0;
++	u32 overhead, payload_mtu;
  
- struct smc_hashinfo smc_v4_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v4_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
+ 	if (x->km.state != XFRM_STATE_VALID ||
+-	    !type || type->proto != IPPROTO_ESP)
++	    !type || type->proto != IPPROTO_ESP) {
++		if (mtu <= x->props.header_len)
++			return 1;
+ 		return mtu - x->props.header_len;
++	}
  
- struct smc_hashinfo smc_v6_hashinfo = {
- 	.lock = __RW_LOCK_UNLOCKED(smc_v6_hashinfo.lock),
-+	.ht = HLIST_HEAD_INIT,
- };
- 
- int smc_hash_sk(struct sock *sk)
-@@ -3522,8 +3524,6 @@ static int __init smc_init(void)
- 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
- 		goto out_proto6;
+ 	aead = x->data;
+ 	blksize = ALIGN(crypto_aead_blocksize(aead), 4);
+@@ -3139,8 +3143,17 @@ u32 xfrm_state_mtu(struct xfrm_state *x, int mtu)
+ 		break;
  	}
--	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
--	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
  
- 	rc = smc_ib_register_client();
- 	if (rc) {
+-	return ((mtu - x->props.header_len - crypto_aead_authsize(aead) -
+-		 net_adj) & ~(blksize - 1)) + net_adj - 2;
++	overhead = x->props.header_len + crypto_aead_authsize(aead) + net_adj;
++	if (mtu <= overhead)
++		return 1;
++
++	payload_mtu = mtu - overhead;
++	payload_mtu &= ~(blksize - 1);
++	if (payload_mtu <= 2)
++		return 1;
++
++	return payload_mtu + net_adj - 2;
++
+ }
+ EXPORT_SYMBOL_GPL(xfrm_state_mtu);
+ 
 -- 
 2.53.0
 
