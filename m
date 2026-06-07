@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ubiINqlLJWpjGQIAu9opvQ
-	(envelope-from <stable+bounces-261581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:57 +0200
+	id W34ZByVPJWreGgIAu9opvQ
+	(envelope-from <stable+bounces-261656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7186E64FF7D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5865032D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RA9hwms4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261581-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261581-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SN75zdig;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261656-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261656-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E182530041C4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61EF9303B4CE
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FA63254A5;
-	Sun,  7 Jun 2026 10:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208A030C153;
+	Sun,  7 Jun 2026 10:49:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38A931F9AC;
-	Sun,  7 Jun 2026 10:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF22DFF04;
+	Sun,  7 Jun 2026 10:49:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829095; cv=none; b=APnvs+HJfIqga9LW/sncbZNnXpAWVTBmPVKqw/pFEXu7z1bUHN9Zv3i+sSCaaJoGpcFdZNnF6Lxa/Tz+XgBUHUaERR6gJzyW+6GWbEMlq/xXjqGTxz33/t7QTkrJh2Gz4ypwmdQaZP/M4AY+WCNbtf8UH2MhplMo9allzcSHOeo=
+	t=1780829368; cv=none; b=K9o1O+6kS7rx/a0Z8XDigX6ZGkn/asea3xaKtFuQr7xJ8Ik8kRZaGaoPRHTG07a/kTnZBO3nw7A1xaGNur6POrdrAHng7B7Er+L6z0wWUiXqHu9EhMhdHQRRvkLV8Jq2a07esImZOnC1VOko5dsMZbdpguIEnQJuc+vmkNDo8tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829095; c=relaxed/simple;
-	bh=zDkvQa9HCM32t+ih2wMrC9KwbRp64ZkD9vnZLEFUfS4=;
+	s=arc-20240116; t=1780829368; c=relaxed/simple;
+	bh=xMWgCxGLe7zxNnXltd9TMc6uY676QprFK8elW/Z7Gq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdOQvYpyK6glq1ozaOfpCmlfcVEvEjS5RyERlv41qLSVdBErO3oV2F5yO+5+RLgGhdkygMqKF81YW+M4V5DCF4PGTTB+pq/7xSMYWZ8cKz4z2DgMiK54tvRQqdYg3RdLtJcM16/NjGP6vvuxJjmPLxG3aN4pxUvm2Ef6WEAkae8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA9hwms4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F891F00893;
-	Sun,  7 Jun 2026 10:44:53 +0000 (UTC)
+	 MIME-Version; b=kR2v7sY8MUhSOePLLkSFPAIVkoQYdPhf/lZCCLyPcVvIMUJTCdSCqXfE3QulSQnMBlqX9fA09921BFemMyHgHYj3f45m3bJZFrQZXnBukDn6UM6yoHzEiblCwpL7cCmf/ecBr9bWqW5lA0AVLskgmCkaQ0QbqH2s3eYbY7cUIF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN75zdig; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333AB1F00893;
+	Sun,  7 Jun 2026 10:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829094;
-	bh=J2nRWYuiiZvVORAQryv1NpG4spneeS8Wsjq5kMgRMJI=;
+	s=korg; t=1780829367;
+	bh=zbsbscQCHGyuSihXNXWfMe04w0eJMM7k1iIcX7QUats=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RA9hwms4qVUQRX0m0avOc2zMqW6uaIICdmnYNmgQSwYGJVQQgDYRnl6OxMSp5q8rP
-	 eEjR1YowphbEl67Nf6ljqSaFFOb+4Pgp9YYnaU24vQDxTiKOWNxEaN2a/r+diRF36u
-	 7h1ic+wJ5wHXxjqITB54eyX7TedsIQDSL1wL/kco=
+	b=SN75zdigWDSzC0VJCBEzgCZi8HnmK2J5H4KgrFVR3Wm0atQPgJdlNXAmdg9IYPrcA
+	 VC1UvhTig67wBdP2/L1SmtgjmDi2WsOF8RMFZeZVDxSUkMk5cuab1IkuyHc+cJkka3
+	 zbYQjs5y5tEECrqcKRaO8qCbFgI5Mi1oXAIRhP0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 7.0 245/332] comedi: comedi_test: fix check for valid scan_begin_src in waveform_ai_cmdtest()
-Date: Sun,  7 Jun 2026 12:00:14 +0200
-Message-ID: <20260607095737.040320945@linuxfoundation.org>
+	Sam Burkels <sam@1a38.nl>,
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 218/307] usb: storage: Add quirks for PNY Elite Portable SSD
+Date: Sun,  7 Jun 2026 12:00:15 +0200
+Message-ID: <20260607095735.723636562@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261581-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261656-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,46 +98,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,1a38.nl:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,suse.com:email,msgid.link:url,synopsys.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7186E64FF7D
+X-Rspamd-Queue-Id: 7AA5865032D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Sam Burkels <sam@1a38.nl>
 
-commit 542f5248cb481073203e0dadab5bcbd28aeae308 upstream.
+commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
 
-Commit 783ddaebd397 ("staging: comedi: comedi_test: support
-scan_begin_src == TRIG_FOLLOW") neglected to add a test that
-`scan_begin_src` has only one bit set.  The allowed values are
-`TRIG_FOLLOW` and `TRIG_TIMER`, but the code incorrectly also allows
-`TRIG_FOLLOW | TRIG_TIMER`.  Add a call to
-`comedi_check_trigger_is_unique()` to check that only one trigger source
-bit is set.
+The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
+already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
+siblings, it uses a Phison-based USB-SATA bridge that exhibits
+firmware bugs when bound to the uas driver.
 
-Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
+Without quirks, the device fails to complete READ CAPACITY commands
+when accessed over UAS on a SuperSpeed (USB 3) port. The device
+enumerates and reports as a SCSI direct-access device, but reports
+zero logical blocks and never finishes spin-up:
+
+    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
+    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
+    usb 2-3: Product: PNY ELITE PSSD
+    usb 2-3: Manufacturer: PNY
+    scsi host0: uas
+    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
+    sd 0:0:0:0: [sda] Spinning up disk...
+    [...10+ seconds of polling, no progress...]
+    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
+    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
+
+Tested each individual quirk to find the minimum that fixes this:
+  - US_FL_NO_ATA_1X alone: device hangs on spin-up
+  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
+  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
+
+With both quirks the device enumerates correctly while still using
+the uas driver, and delivers full UAS throughput (~281 MB/s
+sequential read on a USB 3.0 Gen 1 port).
+
+The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
+but this device additionally chokes on REPORT OPCODES under
+SuperSpeed.
+
+Signed-off-by: Sam Burkels <sam@1a38.nl>
+Acked-by: Oliver Neukum <oneukum@suse.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20260422162138.36003-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/drivers/comedi_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/storage/unusual_uas.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/comedi/drivers/comedi_test.c
-+++ b/drivers/comedi/drivers/comedi_test.c
-@@ -274,6 +274,7 @@ static int waveform_ai_cmdtest(struct co
- 	/* Step 2a : make sure trigger sources are unique */
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 		US_FL_NO_REPORT_OPCODES),
  
- 	err |= comedi_check_trigger_is_unique(cmd->convert_src);
-+	err |= comedi_check_trigger_is_unique(cmd->scan_begin_src);
- 	err |= comedi_check_trigger_is_unique(cmd->stop_src);
- 
- 	/* Step 2b : and mutually compatible */
++/* Reported-by: Sam Burkels <sam@1a38.nl> */
++UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
++		"PNY",
++		"PNY ELITE PSSD",
++		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
++		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
++
+ /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
+ UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
+ 		"PNY",
 
 
 
