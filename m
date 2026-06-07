@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-261196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P/2bJfpFJWqjFgIAu9opvQ
-	(envelope-from <stable+bounces-261196-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:42 +0200
+	id 2MG7Na5FJWpvFgIAu9opvQ
+	(envelope-from <stable+bounces-261182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A7D64F8C9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C20864F855
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rYTueWl+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261196-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261196-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QeHGuIvB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261182-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261182-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75F82300348A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A9E113003618
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C8723392F;
-	Sun,  7 Jun 2026 10:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4232E3AF1;
+	Sun,  7 Jun 2026 10:19:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB542EC54A;
-	Sun,  7 Jun 2026 10:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304604071DA;
+	Sun,  7 Jun 2026 10:19:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827618; cv=none; b=bZu4hRc4/dYV4mdejRPUjPCTofGkfba+5KgsaPta0a5Y6+qLcOxcxBmDr5oezOmEsRDhRSFzdsuMyrquGwhBs9PJgMaCQgTos8X7HPuiKDqx4gQvv1p1shJTo5CksLvs95NuUHcRXQtodgmFZPfJ7EN6iyCr3AlF/pKkv/YEzcs=
+	t=1780827562; cv=none; b=ARvBx9rp9ue0atTVgv363Ao+URkLXEUrRqpcCi+5lKmeAv9L1e566dDapCoRtmpqzPpjjzWnLfiJ6Qbfu/TfElM9lF0rIF93l1xIrUv+YpBLijB2qptG1QamITtsTWkOdoAwWw9INFrmQTPOD882yYzUxsg/SiwfrwZLYiahqZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827618; c=relaxed/simple;
-	bh=6w8pRbl9gumXPkJo4tXuPDJJAlf/7308/AzmCaHTUsI=;
+	s=arc-20240116; t=1780827562; c=relaxed/simple;
+	bh=QfZxvk1n/pDqkJy8dMfdhpFh39amgJynkLNYJuY10rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lESjErKJNrRCeWgdq5Eb4NYlB9kxxZP56sVdt1SoLoZW0ySNAel7FOSHGCFKd1bDx1TLu9H8/JNWldXjVelOR5HGsy+HhprR9arSmYci6ViesBElVLXKo1n49rwaQkIR+hlVLSe7oilU1z657ccLMzlmTEdkjTHcvYDrzVRheoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYTueWl+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D231F00893;
-	Sun,  7 Jun 2026 10:20:16 +0000 (UTC)
+	 MIME-Version; b=XvDv2kACSYWZkSTU58QdDaDhYxJsB7gaAEjJ6MAlUXxBGuoZ6Aho2ryhF15zyW6yNFtu4qLv6n3FBlclr2pzruo09rg6zoknumVfWl2fgvs+UVbq7WbJ1218TRfOU1AZAX4ftHvufWH2np5yzCxFOCgApzC7m+rLhWIWgA2+Hl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeHGuIvB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F414C1F00893;
+	Sun,  7 Jun 2026 10:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827617;
-	bh=8S0eEAhknccBGrXlTi/EjdZNP3uRjtiv7mw0i+xJDPA=;
+	s=korg; t=1780827560;
+	bh=GmQ54+Q5MRqjqIDKqyDvWXkB7LKvOryekYRjL+rGAt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rYTueWl+BLJ9QjGesmQ+85CZJCAxZJfOmBzBGg9GL2Qv5mjaqkQrQj/r6yWaWAM6j
-	 LT+ik7BdeVwEEAAZaShVmCkedGsoJvcwcNr5JGl2LWEQEFES9FAaOrPLe2ux3DoE3q
-	 JLeyyFT1/xhjGQSA6dPkp5fHXY1pacXwhX/uvG9I=
+	b=QeHGuIvBBcnE9jX5eUXF6bwFc4YVZdfLfKFYSjkPpJd7kF+KR1KiELxImBKVAoJSN
+	 LwPXXtqqQAuBLF4AY3ef/p8OX5h/vYk1N6ur/IjSCHmX+/oXBjv9ByzDcSoEL/bmEa
+	 i6VWvZdIxdD2XTD9MyQi/86VVamfd6RREImGiTQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ji-Soo Chung <jschung2@proton.me>,
-	Gerlinde <lrGerlinde@mailfence.com>,
-	zyc zyc <zyc199902@zohomail.cn>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/307] net/sched: Revert "net/sched: Restrict conditions for adding duplicating netems to qdisc tree"
+Subject: [PATCH 6.18 083/315] Bluetooth: hci_sync: Reset device counters in hci_dev_close_sync()
 Date: Sun,  7 Jun 2026 11:57:50 +0200
-Message-ID: <20260607095730.443050343@linuxfoundation.org>
+Message-ID: <20260607095730.668518943@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,134 +72,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,mailfence.com,zohomail.cn,gmail.com,networkplumber.org,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261196-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261182-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jschung2@proton.me,m:lrGerlinde@mailfence.com,m:zyc199902@zohomail.cn,m:ghandatmanas@gmail.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:halves@igalia.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,networkplumber.org:email,mojatatu.com:email,mailfence.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,igalia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B3A7D64F8C9
+X-Rspamd-Queue-Id: 3C20864F855
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-[ Upstream commit eda0b7f203bb166c98d1418b204135bd566ac83b ]
+[ Upstream commit cdf88b35e06f1b385f7f6228060ae541d44fbb72 ]
 
-This reverts commit ec8e0e3d7adef940cdf9475e2352c0680189d14e.
+Before resetting or closing the device, protocol counters should also be
+zeroed.
 
-The original patch rejects any tree containing two netems when
-either has duplication set, even when they sit on unrelated classes
-of the same classful parent. That broke configurations that have
-worked since netem was introduced.
-
-The re-entrancy problem the original commit was trying to solve is
-handled by later patch using tc_depth flag.
-
-Doing this revert will (re)expose the original bug with multiple
-netem duplication. When this patch is backported make sure
-and get the full series.
-
-Fixes: ec8e0e3d7ade ("net/sched: Restrict conditions for adding duplicating netems to qdisc tree")
-Reported-by: Ji-Soo Chung <jschung2@proton.me>
-Reported-by: Gerlinde <lrGerlinde@mailfence.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220774
-Reported-by: zyc zyc <zyc199902@zohomail.cn>
-Closes: https://lore.kernel.org/all/19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn/
-Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
-Closes: https://lore.kernel.org/netdev/f69b2c8f-8325-4c2e-a011-6dbc089f30e4@gmail.com/
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-3-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d0b137062b2d ("Bluetooth: hci_sync: Rework init stages")
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 40 ----------------------------------------
- 1 file changed, 40 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 498c18d7d9c39b..1fdebf2ab7ee46 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -1005,41 +1005,6 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
- 
--static const struct Qdisc_class_ops netem_class_ops;
--
--static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
--			       struct netlink_ext_ack *extack)
--{
--	struct Qdisc *root, *q;
--	unsigned int i;
--
--	root = qdisc_root_sleeping(sch);
--
--	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
--		if (duplicates ||
--		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
--			goto err;
--	}
--
--	if (!qdisc_dev(root))
--		return 0;
--
--	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
--		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
--			if (duplicates ||
--			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
--				goto err;
--		}
--	}
--
--	return 0;
--
--err:
--	NL_SET_ERR_MSG(extack,
--		       "netem: cannot mix duplicating netems with other netems in tree");
--	return -EINVAL;
--}
--
- /* Parse netlink message to set options */
- static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			struct netlink_ext_ack *extack)
-@@ -1116,11 +1081,6 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	q->gap = qopt->gap;
- 	q->counter = 0;
- 	q->loss = qopt->loss;
--
--	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
--	if (ret)
--		goto unlock;
--
- 	q->duplicate = qopt->duplicate;
- 
- 	/* for compatibility with earlier versions.
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 73e429c41e17b5..277de808ebeb5a 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5338,6 +5338,10 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+ 	/* Reset device */
+ 	skb_queue_purge(&hdev->cmd_q);
+ 	atomic_set(&hdev->cmd_cnt, 1);
++	hdev->acl_cnt = 0;
++	hdev->sco_cnt = 0;
++	hdev->le_cnt = 0;
++	hdev->iso_cnt = 0;
+ 	if (hci_test_quirk(hdev, HCI_QUIRK_RESET_ON_CLOSE) &&
+ 	    !auto_off && !hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+ 		set_bit(HCI_INIT, &hdev->flags);
 -- 
 2.53.0
 
