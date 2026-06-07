@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-261166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FhU+LGZFJWpAFgIAu9opvQ
-	(envelope-from <stable+bounces-261166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:14 +0200
+	id AAieL/tGJWo7FwIAu9opvQ
+	(envelope-from <stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6344B64F7E2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BEBD64FA25
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ekuZ3pe7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261166-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261166-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GEnr6Tc+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D07D83002B02
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:18:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CF4A301F15C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1242B30F81A;
-	Sun,  7 Jun 2026 10:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8624D324B2C;
+	Sun,  7 Jun 2026 10:24:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D0B2AD00;
-	Sun,  7 Jun 2026 10:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DCB320A37;
+	Sun,  7 Jun 2026 10:24:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827492; cv=none; b=T5ggQOhgmU86NjUQ3cevvohe83JVCG7SflNgmE0pKK9c3a3FOBQuePJDK6ZyN2T0OC8a2dVNctqcPpY3EY603MJOCdGfwauzJtk3Isz4Ryp4c5RFrzWnzHesmSHw5NOHWGWAEEQ8Kh27DGU56z1dYSX2y0wS3T6ifbp97/7Mot8=
+	t=1780827860; cv=none; b=T43+ZpNYznBmAk095s9YN1Tv0hHGWr9W2IkLZgjO70TI3OUi9ZX7GKGlosy9jrU+O0NhKU+bIonIHgGwuW2ONKgmw+sA0a34C3SOHuAg0gfnDXKystAEzj+bnKTuYrtWNsgQKyXsT2RgWa356Xee8krkX9MwrLOa+NOE6v5ySoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827492; c=relaxed/simple;
-	bh=Gb4ycSgy6xQ6SwVviEre2BeVmVgY2bjPc/QGXbRRaHQ=;
+	s=arc-20240116; t=1780827860; c=relaxed/simple;
+	bh=mMN4UeIrKwGZUiszDDN1TQoVRawo7zb86Xwj9bkdlbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJAz/gEb1w5pKewli13QtgxfTcZOZDsJNoahQYMuasXRsMeNr64rWIqFPb/XwNpLdRtpJimcals7cgiXf2Z84WzqnOBSDklcZ8EralCuGT22+a2afntLTgTdpfgouT3gUjtBkbOtze3MmztrHinEyoST+33rwK6u4iWJwx+f4vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekuZ3pe7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38E31F00893;
-	Sun,  7 Jun 2026 10:18:10 +0000 (UTC)
+	 MIME-Version; b=J8MsvwWpbANS5EOXjEEJtLLOohcpq5BUsp/Bz+793H0bMVj+RD+XBnDbQPga7iCnAGT/L6hYxIrJnthIcePIp8aTqJ/jGbl07LXHuh/QcmeErEmHL/XvhTsBzVHnmFrQpBg8aeX3jV3na+v2a7+Z9GG8/pIk4gM2G+TqROo/aMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEnr6Tc+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA921F00893;
+	Sun,  7 Jun 2026 10:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827491;
-	bh=kZZGD0ZqjqbbXZr4F5Nc2BUh6rwH2PvojxFxz9ad4lo=;
+	s=korg; t=1780827859;
+	bh=l2QEb1GPtgs4AYs+KbjyziJtUt6ECD2aK7fV7Aas9CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ekuZ3pe7SsbXGLx8sG9XlugYLz9hCLCG29OlkZTqNCHZXvQ2V6BQQXOv7BjxiEEPL
-	 wJU782cmJbgKzcVypArcF3ONrxxlJGTU89FvPiCj1/o+pXzNroJ8+1bSZvjZBupe2B
-	 HIU8jnPWtDVmmEgLS95QHr+O8Uy1bECfTWDoycEw=
+	b=GEnr6Tc+v71ekK5O9LAqrCWzGkzw/AGiY+MUhkk0YQd+dezFMCt50Sm3BR4hOTfyM
+	 Ll6r+e1QBZTdVtzzE/43Naitqz2sHThteQhYybGEkzVRK9c7GANOkIka0go1NVyH/U
+	 XD5SpoWEMhst49ZhS+fEcLu2jqMaMnOTSJBS3jNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Hannes Reinecke <hare@kernel.org>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/315] nvme-tcp: store negative errno in queue->tls_err
+Subject: [PATCH 6.12 068/307] ethtool: pse-pd: fix missing ethnl_ops_complete()
 Date: Sun,  7 Jun 2026 11:57:45 +0200
-Message-ID: <20260607095730.481366944@linuxfoundation.org>
+Message-ID: <20260607095730.254935443@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,86 +69,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261166-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261257-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:alistair.francis@wdc.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,oracle.com:email,wdc.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6344B64F7E2
+X-Rspamd-Queue-Id: 4BEBD64FA25
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 9015985b5eb1a90eb86caf5bce1dfcf1aa38f8ad ]
+[ Upstream commit ab5bf428fb6bd361163c7247b92750d1d24ca2ed ]
 
-nvme_tcp_tls_done() assigns queue->tls_err in three branches.  The
-ENOKEY lookup failure and the EOPNOTSUPP initializer both store
-negative errnos.  The third branch, reached when the handshake
-layer reports a non-zero status, stores -status.
+pse_prepare_data() is missing ethnl_ops_complete() if
+ethnl_req_get_phydev() returned an error. Move getting
+phydev up so that we don't have to worry about this
+(similar order to linkstate_prepare_data()).
 
-The handshake layer delivers status to the consumer callback as a
-negative errno; the other in-tree consumers --
-xs_tls_handshake_done() and the nvmet target callback -- treat
-their status argument that way.  The extra negation in
-nvme_tcp_tls_done() flips the sign, leaving tls_err as a positive
-value (for instance, +EIO), which nvme_tcp_start_tls() then
-returns to its caller.
+Note that phydev may still be NULL (this is checked in
+pse_get_pse_attributes()), the goal isn't really to avoid
+the _begin() / _complete() calls, only to simplify the error
+handling.
 
-Drop the extra negation so queue->tls_err uniformly carries a
-negative errno on failure.
+While at it propagate the original error. Why this code
+overrides the error with -ENODEV but !phydev generates
+-EOPNOTSUPP is unclear to me...
 
-Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-2-66c616906ead@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 31748765bed3 ("net: ethtool: pse-pd: Target the command to the requested PHY")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-5-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/pse-pd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 9a96df1a511c02..afdbcff3d4821e 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1687,7 +1687,7 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
- 		qid, pskid, status);
+diff --git a/net/ethtool/pse-pd.c b/net/ethtool/pse-pd.c
+index 71843de832cca7..01517c53113def 100644
+--- a/net/ethtool/pse-pd.c
++++ b/net/ethtool/pse-pd.c
+@@ -60,14 +60,14 @@ static int pse_prepare_data(const struct ethnl_req_info *req_base,
+ 	struct phy_device *phydev;
+ 	int ret;
  
- 	if (status) {
--		queue->tls_err = -status;
-+		queue->tls_err = status;
- 		goto out_complete;
- 	}
+-	ret = ethnl_ops_begin(dev);
+-	if (ret < 0)
+-		return ret;
+-
+ 	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_PSE_HEADER,
+ 				      info->extack);
+ 	if (IS_ERR(phydev))
+-		return -ENODEV;
++		return PTR_ERR(phydev);
++
++	ret = ethnl_ops_begin(dev);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = pse_get_pse_attributes(phydev, info->extack, data);
  
 -- 
 2.53.0
