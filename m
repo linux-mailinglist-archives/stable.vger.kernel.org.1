@@ -1,62 +1,69 @@
-Return-Path: <stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DRGjA9BPJWpKGwIAu9opvQ
-	(envelope-from <stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:40 +0200
+	id dat+LABQJWpXGwIAu9opvQ
+	(envelope-from <stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9C3650404
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:37 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2462A650431
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:03:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gP4K0LHe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261861-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EqSUQPpF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261877-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9B07300E601
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E847300D9FA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4AA335081;
-	Sun,  7 Jun 2026 11:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8D53290C3;
+	Sun,  7 Jun 2026 11:03:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAE9291C10;
-	Sun,  7 Jun 2026 11:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288B91E98E3;
+	Sun,  7 Jun 2026 11:03:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830138; cv=none; b=h7/IXoXI1RHjGIj4BrbrAEA6XlN22cfPE20D/oadkhuBre+iVIs3i+Lh6lv3JN6T1UEAXBh71HXNN9WapZdsT5x2vWa84TRajeo1KpK7kr6zYp/MUX9gPaIlh3M5NxUTctFb7amVeg3GBi9by1RszQRPQMHLuJu8lh45qpoGm0Q=
+	t=1780830206; cv=none; b=jtTKOApZDLy5b/W9ujOYjabATKTO3N+nAmhWWEp0U6/Wek5v8LqX5v2EU3O499UnEVus86yopqnpTo6zp1ps9Qc/8QtVBtqzwvMuL9qaafPrSXcMxlGXHeucVh+WkTrsrVXe08DBGaFLoVl5Efmh9Xj/IktYVwH8ErJQO6ueru4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830138; c=relaxed/simple;
-	bh=jzeB4CrEB4qsqcrZpZYNV8ecwZjkv9IooQ5+yx7r12o=;
+	s=arc-20240116; t=1780830206; c=relaxed/simple;
+	bh=cBsuNYDB1CgDEhGR8tRfpAB05f4zgYcv95PsEY8z/Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QlcNQI3DX+Q7lPfCoX8LoTlzhgdNQ4vcecAO0yGCruOTqKAVVdMGRXWR0jLoDA/SxOYooQVC+lOUAzjobNuzuglZe3bq8o4txGFX2QQIY7xzochacdbUSzR3kvvkzzMNmudKraiw3HPsY2PP+4hiu6l+a6KvdSZMi1AtDg/HplY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gP4K0LHe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9DC1F00893;
-	Sun,  7 Jun 2026 11:02:15 +0000 (UTC)
+	 MIME-Version; b=uGOcCa3mTVlxjn4BBRl8yn7ShotZU2raNkOEVuzNYHp2fQ8W0vLAHeQblXLh2zUD5x0xV8HB06S5cU6lloWCDd7QLa9beuU8wk2OUVdkMmqxPpDIOBXNO5JBg5ABC1F+leZQK3L3uY85ug42+IBcghfqXLQldHz4pMX+nWYcn+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqSUQPpF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27351F00893;
+	Sun,  7 Jun 2026 11:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830136;
-	bh=GAmDCdEyDdr4qxpe7KajtayuwtIWA/FGVhJw4YnCaAs=;
+	s=korg; t=1780830205;
+	bh=B1BP8cqYbJj0Aho+9eH9CkHXLiZ8PXBiIp1Lkx2Vsr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gP4K0LHebLx7droplyrZP9avTncnwUjzAEGRlwyqHcKlBX8QmWacUQTqW1nCPKJBm
-	 gz54/+dIvL77LFBJxNVtFEnC/FUdtVhnJs0A8NJ73Y9t6oCv9xcIpVQsabIwZzU7/J
-	 oCLzKdNcS2yUh4TSmECYDurQo+R2oP4K6O/mj4n4=
+	b=EqSUQPpF/0mieCuKkMZud5HEmfcrr9qRCddhY6PXRIiFE5AMAExGGXNN0F6gu4rtP
+	 uD+lJOTmrF1YmIm9WEaeOd3irOJ53SXy3ruTZbrjig3lamr3gNBIkp83ldTwGjwfUU
+	 y3+HOqu62MEbqWQmXxvi8yASuhsxNBpB0HGfU9D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	Jann Horn <jannh@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Jeff Xu <jeffxu@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 314/315] drm/i915/psr: Use DC_OFF wake reference to block DC6 on vblank enable
-Date: Sun,  7 Jun 2026 12:01:41 +0200
-Message-ID: <20260607095739.156163880@linuxfoundation.org>
+Subject: [PATCH 6.12 305/307] mm: perform all memfd seal checks in a single place
+Date: Sun,  7 Jun 2026 12:01:42 +0200
+Message-ID: <20260607095738.958359410@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,179 +73,338 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261861-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261877-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo.stoakes@oracle.com,m:isaacmanjarres@google.com,m:hughd@google.com,m:jannh@google.com,m:kaleshsingh@google.com,m:Liam.Howlett@Oracle.com,m:muchun.song@linux.dev,m:vbabka@suse.cz,m:jeffxu@chromium.org,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:michal.grzelak@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ursulin.net:email,vger.kernel.org:from_smtp,intel.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7E9C3650404
+X-Rspamd-Queue-Id: 2462A650431
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 3549a9649dc7c5fc586ab12f675279283cdcb2a7 ]
+[ Upstream commit fa00b8ef1803fe133b4897c25227aa0d298dd093 ]
 
-We are observing following warnings:
+We no longer actually need to perform these checks in the f_op->mmap()
+hook any longer.
 
-*ERROR* power well DC_off state mismatch (refcount 0/enabled 1)
+We already moved the operation which clears VM_MAYWRITE on a read-only
+mapping of a write-sealed memfd in order to work around the restrictions
+imposed by commit 5de195060b2e ("mm: resolve faulty mmap_region() error
+path behaviour").
 
-gen9_dc_off_power_well_enabled is considering target state DC_STATE_DISABLE
-as DC_OFF power well being enabled. Fix this by using wakeref for the
-purpose.
+There is no reason for us not to simply go ahead and additionally check to
+see if any pre-existing seals are in place here rather than defer this to
+the f_op->mmap() hook.
 
-To achieve this we need to modify notification code as well. Currently it
-is possible that PSR gets notified vblank enable/disable twice on same
-status. This is currently not a problem as it is just triggering call to
-intel_display_power_set_target_dc_state with same target state as a
-parameter. When using wakeref this becomes a problem due to reference
-counting. Fix this storing vbank status on last notification and use that
-to ensure there are no more than one notification with same vblank status.
+By doing this we remove more logic from shmem_mmap() which doesn't belong
+there, as well as doing the same for hugetlbfs_file_mmap().  We also
+remove dubious shared logic in mm.h which simply does not belong there
+either.
 
-v2: ensure there is no subsequent notifications with same status
+It makes sense to do these checks at the earliest opportunity, we know
+these are shmem (or hugetlbfs) mappings whose relevant VMA flags will not
+change from the invoking do_mmap() so there is simply no need to wait.
 
-Fixes: aa451abcffb5 ("drm/i915/display: Prevent DC6 while vblank is enabled for Panel Replay")
-Cc: <stable@vger.kernel.org> # v6.13+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-Link: https://patch.msgid.link/20260520104944.239797-2-jouni.hogander@intel.com
-(cherry picked from commit 35485ac56d878192a3829a58cb26503125ec7104)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+This also means the implementation of further memfd seal flags can be done
+within mm/memfd.c and also have the opportunity to modify VMA flags as
+necessary early in the mapping logic.
+
+[lorenzo.stoakes@oracle.com: fix typos in !memfd inline stub]
+  Link: https://lkml.kernel.org/r/7dee6c5d-480b-4c24-b98e-6fa47dbd8a23@lucifer.local
+Link: https://lkml.kernel.org/r/20241206212846.210835-1-lorenzo.stoakes@oracle.com
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Tested-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jeff Xu <jeffxu@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 3b041514cb6e ("memfd: deny writeable mappings when implying SEAL_WRITE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_core.h  |    1 
- drivers/gpu/drm/i915/display/intel_display_irq.c   |    8 +++++--
- drivers/gpu/drm/i915/display/intel_display_types.h |    2 +
- drivers/gpu/drm/i915/display/intel_psr.c           |   24 +++++++--------------
- 4 files changed, 18 insertions(+), 17 deletions(-)
+ fs/hugetlbfs/inode.c  |    5 ----
+ include/linux/memfd.h |   23 ++++++++++----------
+ include/linux/mm.h    |   55 --------------------------------------------------
+ mm/memfd.c            |   44 +++++++++++++++++++++++++++++++++++++++-
+ mm/mmap.c             |   12 ++++++++--
+ mm/shmem.c            |    6 -----
+ 6 files changed, 63 insertions(+), 82 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_core.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_core.h
-@@ -472,6 +472,7 @@ struct intel_display {
- 		u8 vblank_enabled;
- 
- 		int vblank_enable_count;
-+		bool vblank_status_last_notified;
- 
- 		struct work_struct vblank_notify_work;
- 
---- a/drivers/gpu/drm/i915/display/intel_display_irq.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_irq.c
-@@ -1707,8 +1707,12 @@ static void intel_display_vblank_notify_
- 	struct intel_display *display =
- 		container_of(work, typeof(*display), irq.vblank_notify_work);
- 	int vblank_enable_count = READ_ONCE(display->irq.vblank_enable_count);
-+	bool vblank_status = !!vblank_enable_count;
- 
--	intel_psr_notify_vblank_enable_disable(display, vblank_enable_count);
-+	if (display->irq.vblank_status_last_notified != vblank_status) {
-+		intel_psr_notify_vblank_enable_disable(display, vblank_status);
-+		display->irq.vblank_status_last_notified = vblank_status;
-+	}
- }
- 
- int bdw_enable_vblank(struct drm_crtc *_crtc)
-@@ -1721,10 +1725,10 @@ int bdw_enable_vblank(struct drm_crtc *_
- 	if (gen11_dsi_configure_te(crtc, true))
- 		return 0;
- 
-+	spin_lock_irqsave(&display->irq.lock, irqflags);
- 	if (crtc->vblank_psr_notify && display->irq.vblank_enable_count++ == 0)
- 		schedule_work(&display->irq.vblank_notify_work);
- 
--	spin_lock_irqsave(&display->irq.lock, irqflags);
- 	bdw_enable_pipe_irq(display, pipe, GEN8_PIPE_VBLANK);
- 	spin_unlock_irqrestore(&display->irq.lock, irqflags);
- 
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1690,6 +1690,8 @@ struct intel_psr {
- 	bool pkg_c_latency_used;
- 
- 	u8 active_non_psr_pipes;
-+
-+	struct ref_tracker *vblank_wakeref;
- };
- 
- struct intel_dp {
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -3982,14 +3982,20 @@ void intel_psr_notify_vblank_enable_disa
- 					    bool enable)
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -96,7 +96,6 @@ static const struct fs_parameter_spec hu
+ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
  {
- 	struct intel_encoder *encoder;
--	bool block_dc_states = false;
+ 	struct inode *inode = file_inode(file);
+-	struct hugetlbfs_inode_info *info = HUGETLBFS_I(inode);
+ 	loff_t len, vma_len;
+ 	int ret;
+ 	struct hstate *h = hstate_file(file);
+@@ -113,10 +112,6 @@ static int hugetlbfs_file_mmap(struct fi
+ 	vm_flags_set(vma, VM_HUGETLB | VM_DONTEXPAND);
+ 	vma->vm_ops = &hugetlb_vm_ops;
  
- 	for_each_intel_encoder_with_psr(display->drm, encoder) {
- 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
+-	ret = seal_check_write(info->seals, vma);
+-	if (ret)
+-		return ret;
+-
+ 	/*
+ 	 * page based offset in vm_pgoff could be sufficiently large to
+ 	 * overflow a loff_t when converted to byte offset.  This can
+--- a/include/linux/memfd.h
++++ b/include/linux/memfd.h
+@@ -7,7 +7,14 @@
+ #ifdef CONFIG_MEMFD_CREATE
+ extern long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg);
+ struct folio *memfd_alloc_folio(struct file *memfd, pgoff_t idx);
+-unsigned int *memfd_file_seals_ptr(struct file *file);
++/*
++ * Check for any existing seals on mmap, return an error if access is denied due
++ * to sealing, or 0 otherwise.
++ *
++ * We also update VMA flags if appropriate by manipulating the VMA flags pointed
++ * to by vm_flags_ptr.
++ */
++int memfd_check_seals_mmap(struct file *file, unsigned long *vm_flags_ptr);
+ #else
+ static inline long memfd_fcntl(struct file *f, unsigned int c, unsigned int a)
+ {
+@@ -17,19 +24,11 @@ static inline struct folio *memfd_alloc_
+ {
+ 	return ERR_PTR(-EINVAL);
+ }
+-
+-static inline unsigned int *memfd_file_seals_ptr(struct file *file)
++static inline int memfd_check_seals_mmap(struct file *file,
++					 unsigned long *vm_flags_ptr)
+ {
+-	return NULL;
++	return 0;
+ }
+ #endif
  
- 		mutex_lock(&intel_dp->psr.lock);
--		if (CAN_PANEL_REPLAY(intel_dp))
--			block_dc_states = true;
-+		if (CAN_PANEL_REPLAY(intel_dp)) {
-+			if (enable)
-+				intel_dp->psr.vblank_wakeref =
-+					intel_display_power_get(display,
-+								POWER_DOMAIN_DC_OFF);
-+			else
-+				intel_display_power_put(display, POWER_DOMAIN_DC_OFF,
-+							intel_dp->psr.vblank_wakeref);
-+		}
+-/* Retrieve memfd seals associated with the file, if any. */
+-static inline unsigned int memfd_file_seals(struct file *file)
+-{
+-	unsigned int *sealsp = memfd_file_seals_ptr(file);
+-
+-	return sealsp ? *sealsp : 0;
+-}
+-
+ #endif /* __LINUX_MEMFD_H */
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4140,61 +4140,6 @@ void mem_dump_obj(void *object);
+ static inline void mem_dump_obj(void *object) {}
+ #endif
  
- 		if (intel_dp->psr.enabled && !intel_dp->psr.panel_replay_enabled &&
- 		    intel_dp->psr.pkg_c_latency_used)
-@@ -3997,18 +4003,6 @@ void intel_psr_notify_vblank_enable_disa
- 
- 		mutex_unlock(&intel_dp->psr.lock);
- 	}
+-static inline bool is_write_sealed(int seals)
+-{
+-	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
+-}
+-
+-/**
+- * is_readonly_sealed - Checks whether write-sealed but mapped read-only,
+- *                      in which case writes should be disallowing moving
+- *                      forwards.
+- * @seals: the seals to check
+- * @vm_flags: the VMA flags to check
+- *
+- * Returns whether readonly sealed, in which case writess should be disallowed
+- * going forward.
+- */
+-static inline bool is_readonly_sealed(int seals, vm_flags_t vm_flags)
+-{
+-	/*
+-	 * Since an F_SEAL_[FUTURE_]WRITE sealed memfd can be mapped as
+-	 * MAP_SHARED and read-only, take care to not allow mprotect to
+-	 * revert protections on such mappings. Do this only for shared
+-	 * mappings. For private mappings, don't need to mask
+-	 * VM_MAYWRITE as we still want them to be COW-writable.
+-	 */
+-	if (is_write_sealed(seals) &&
+-	    ((vm_flags & (VM_SHARED | VM_WRITE)) == VM_SHARED))
+-		return true;
+-
+-	return false;
+-}
+-
+-/**
+- * seal_check_write - Check for F_SEAL_WRITE or F_SEAL_FUTURE_WRITE flags and
+- *                    handle them.
+- * @seals: the seals to check
+- * @vma: the vma to operate on
+- *
+- * Check whether F_SEAL_WRITE or F_SEAL_FUTURE_WRITE are set; if so, do proper
+- * check/handling on the vma flags.  Return 0 if check pass, or <0 for errors.
+- */
+-static inline int seal_check_write(int seals, struct vm_area_struct *vma)
+-{
+-	if (!is_write_sealed(seals))
+-		return 0;
 -
 -	/*
--	 * NOTE: intel_display_power_set_target_dc_state is used
--	 * only by PSR code for DC3CO handling. DC3CO target
--	 * state is currently disabled in * PSR code. If DC3CO
--	 * is taken into use we need take that into account here
--	 * as well.
+-	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+-	 * write seals are active.
 -	 */
--	if (block_dc_states)
--		intel_display_power_set_target_dc_state(display, enable ?
--							DC_STATE_DISABLE :
--							DC_STATE_EN_UPTO_DC6);
+-	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_WRITE))
+-		return -EPERM;
+-
+-	return 0;
+-}
+-
+ #ifdef CONFIG_ANON_VMA_NAME
+ int madvise_set_anon_name(struct mm_struct *mm, unsigned long start,
+ 			  unsigned long len_in,
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -197,7 +197,7 @@ static int memfd_wait_for_pins(struct ad
+ 	return error;
  }
  
- static void
+-unsigned int *memfd_file_seals_ptr(struct file *file)
++static unsigned int *memfd_file_seals_ptr(struct file *file)
+ {
+ 	if (shmem_file(file))
+ 		return &SHMEM_I(file_inode(file))->seals;
+@@ -354,6 +354,48 @@ static int check_sysctl_memfd_noexec(uns
+ 	return 0;
+ }
+ 
++static inline bool is_write_sealed(unsigned int seals)
++{
++	return seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE);
++}
++
++static int check_write_seal(unsigned long *vm_flags_ptr)
++{
++	unsigned long vm_flags = *vm_flags_ptr;
++	unsigned long mask = vm_flags & (VM_SHARED | VM_WRITE);
++
++	/* If a private matting then writability is irrelevant. */
++	if (!(mask & VM_SHARED))
++		return 0;
++
++	/*
++	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
++	 * write seals are active.
++	 */
++	if (mask & VM_WRITE)
++		return -EPERM;
++
++	/*
++	 * This is a read-only mapping, disallow mprotect() from making a
++	 * write-sealed mapping writable in future.
++	 */
++	*vm_flags_ptr &= ~VM_MAYWRITE;
++
++	return 0;
++}
++
++int memfd_check_seals_mmap(struct file *file, unsigned long *vm_flags_ptr)
++{
++	int err = 0;
++	unsigned int *seals_ptr = memfd_file_seals_ptr(file);
++	unsigned int seals = seals_ptr ? *seals_ptr : 0;
++
++	if (is_write_sealed(seals))
++		err = check_write_seal(vm_flags_ptr);
++
++	return err;
++}
++
+ SYSCALL_DEFINE2(memfd_create,
+ 		const char __user *, uname,
+ 		unsigned int, flags)
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -369,8 +369,8 @@ unsigned long do_mmap(struct file *file,
+ 
+ 	if (file) {
+ 		struct inode *inode = file_inode(file);
+-		unsigned int seals = memfd_file_seals(file);
+ 		unsigned long flags_mask;
++		int err;
+ 
+ 		if (!file_mmap_ok(file, inode, pgoff, len))
+ 			return -EOVERFLOW;
+@@ -410,8 +410,6 @@ unsigned long do_mmap(struct file *file,
+ 			vm_flags |= VM_SHARED | VM_MAYSHARE;
+ 			if (!(file->f_mode & FMODE_WRITE))
+ 				vm_flags &= ~(VM_MAYWRITE | VM_SHARED);
+-			else if (is_readonly_sealed(seals, vm_flags))
+-				vm_flags &= ~VM_MAYWRITE;
+ 			fallthrough;
+ 		case MAP_PRIVATE:
+ 			if (!(file->f_mode & FMODE_READ))
+@@ -431,6 +429,14 @@ unsigned long do_mmap(struct file *file,
+ 		default:
+ 			return -EINVAL;
+ 		}
++
++		/*
++		 * Check to see if we are violating any seals and update VMA
++		 * flags if necessary to avoid future seal violations.
++		 */
++		err = memfd_check_seals_mmap(file, &vm_flags);
++		if (err)
++			return (unsigned long)err;
+ 	} else {
+ 		switch (flags & MAP_TYPE) {
+ 		case MAP_SHARED:
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2820,12 +2820,6 @@ out_nomem:
+ static int shmem_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct inode *inode = file_inode(file);
+-	struct shmem_inode_info *info = SHMEM_I(inode);
+-	int ret;
+-
+-	ret = seal_check_write(info->seals, vma);
+-	if (ret)
+-		return ret;
+ 
+ 	file_accessed(file);
+ 	/* This is anonymous shared memory if it is unlinked at the time of mmap */
 
 
 
