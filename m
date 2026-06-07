@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-261486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261429-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Js+gMexKJWoiGQIAu9opvQ
-	(envelope-from <stable+bounces-261486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:48 +0200
+	id IqsQDIJJJWq0GAIAu9opvQ
+	(envelope-from <stable+bounces-261429-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5018264FEAC
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9627C64FD61
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rt+VlOhG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261486-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261486-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bQPNOucT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261429-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261429-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3587B3020A7A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:39:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B40930038C0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27F63264F5;
-	Sun,  7 Jun 2026 10:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B7A30D3F0;
+	Sun,  7 Jun 2026 10:35:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F835212564;
-	Sun,  7 Jun 2026 10:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744F92D3A69;
+	Sun,  7 Jun 2026 10:35:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828741; cv=none; b=qcXHeKpJAB/yllGIXYFE1D085F2H283O9zvRrd09o6EDTZ9asDNMZkJwLMkNMzCJ8END9vO4Xx+OYta494pHOetyc+2id+kdZlfCaD/nGmtrHxB3NAc+AbeS7NPOvTYlvH0OqvZE6i4nWiG5P6ujgC+TwAKrQP9m85rWjc1FXY4=
+	t=1780828522; cv=none; b=ut+QSF1n6UVetf/s4C0/rHJjbM+D9Cus3pxiNk+FKLzdtTE1Isa5EKDkOoA+4bjAxVO3SXpbrH2s3v6C4LOzAKQkJyZakFhjJPv6qcBYptAZeIITJkc30OoswhlY5kpcbsWtKbB/2jTowGcy3Y6j6kBjYFPKCxRBlgkxMASp+RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828741; c=relaxed/simple;
-	bh=F3nl9qxUjrq0jcNsdluct9CC9tK0hYV/gAqiqBv3PKI=;
+	s=arc-20240116; t=1780828522; c=relaxed/simple;
+	bh=qmne2RHxWv8ZXW/BPfDHrC8v/eBc+DkYlEi0MlJUJsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mOzd0974dP92eYi9l/IbhkrMhIfGslE6ce4iO9jX+phkHhvy0AOMuWk+//1ynfsEoHkDxP8oMw4HvlxHjdlfvV7e2qttjCNhErjf0o7axQ8hhMjll+8+ej4S2W1HLmGoE8ipb3Z4D2YwThyJLbEzuN09+HCYJz1b2e3ghj62B3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rt+VlOhG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5551F00893;
-	Sun,  7 Jun 2026 10:38:59 +0000 (UTC)
+	 MIME-Version; b=dj8grAyph5FuZG8HTHx+KS5uxbzfGi4i/6lfYNI4xANiubboXB30wFrhJb85m47hx+RbWvTIey7Zw9AENl6R1SQe4hO0Tdltqdfa/Bdl7s5omObfi67Mnc8yzIKhHYqtp61P/Vr1kO7K8QfDPzS1NXnbjkNWc3zTkeL7zHrdjdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQPNOucT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CC01F00893;
+	Sun,  7 Jun 2026 10:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828740;
-	bh=ZK3xzgD4Vd7y1a2VI2BPp0w1/e/YCgWZhTK9yAk811k=;
+	s=korg; t=1780828521;
+	bh=gZ/W1DIrpOw1QAxCtiPYCkFGJBke7u7Cv1Ukjnz8jJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rt+VlOhGqM2082I8uy9EljpszakD0Kj6YOjHOB0Epd6wSpuWuLNxB/Jksyg4FWrAO
-	 yAfx0rx15EJJ4s5e3z9tHwMGs55TtZHUFxpeHVxQ8QVkK5mKkN4q9P6URTOkubIonv
-	 lp8BKkpeTGZiZ+T+BkAZT/tYeqlFYnw4epjMIj8Q=
+	b=bQPNOucTUYSdu3F1qONx4Gv1aHsMv9Bw9OHriQbVQgM6wKWu29P8FNf+srD8+9AqR
+	 a97bBZvTJQRC3FWMqPqI4SKMsgL0P20lx2J1Tl65SwZAcpg4h3wiSvKNMa4MrTz8l+
+	 cNFLGxBCLoGyEBkGS45Fb8UUldJxRDIqA9AeUFZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christofer Jonason <christofer.jonason@guidelinegeo.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Salih Erim <salih.erim@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 162/307] iio: adc: xilinx-xadc: Fix sequencer mode in postdisable for dual mux
+	Sanjay Chitroda <sanjayembeddedse@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 7.0 190/332] iio: ssp_sensors: cancel delayed work_refresh on remove
 Date: Sun,  7 Jun 2026 11:59:19 +0200
-Message-ID: <20260607095733.669633050@linuxfoundation.org>
+Message-ID: <20260607095735.046511257@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +65,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261486-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christofer.jonason@guidelinegeo.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:salih.erim@amd.com,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261429-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sanjayembeddedse@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,huawei.com:email,amd.com:email,guidelinegeo.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5018264FEAC
+X-Rspamd-Queue-Id: 9627C64FD61
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+From: Sanjay Chitroda <sanjayembeddedse@gmail.com>
 
-commit 852534744c2d35626a604f128ff0b8ec12805591 upstream.
+commit eedf7602fbd929e97e0c480da501dc7a34beb2a8 upstream.
 
-xadc_postdisable() unconditionally sets the sequencer to continuous
-mode. For dual external multiplexer configurations this is incorrect:
-simultaneous sampling mode is required so that ADC-A samples through
-the mux on VAUX[0-7] while ADC-B simultaneously samples through the
-mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
-VAUX[8-15] channels return incorrect data.
+The work_refresh may still be pending or running when the device is
+removed, cancel the delayed work_refresh in remove path.
 
-Since postdisable is also called from xadc_probe() to set the initial
-idle state, the wrong sequencer mode is active from the moment the
-driver loads.
-
-The preenable path already uses xadc_get_seq_mode() which returns
-SIMULTANEOUS for dual mux. Fix postdisable to do the same.
-
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Salih Erim <salih.erim@amd.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 50dd64d57eee ("iio: common: ssp_sensors: Add sensorhub driver")
+Signed-off-by: Sanjay Chitroda <sanjayembeddedse@gmail.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/iio/common/ssp_sensors/ssp_dev.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -817,6 +817,7 @@ static int xadc_postdisable(struct iio_d
- {
- 	struct xadc *xadc = iio_priv(indio_dev);
- 	unsigned long scan_mask;
-+	int seq_mode;
- 	int ret;
- 	int i;
+--- a/drivers/iio/common/ssp_sensors/ssp_dev.c
++++ b/drivers/iio/common/ssp_sensors/ssp_dev.c
+@@ -590,6 +590,7 @@ static void ssp_remove(struct spi_device
+ 	ssp_clean_pending_list(data);
  
-@@ -824,6 +825,12 @@ static int xadc_postdisable(struct iio_d
- 	for (i = 0; i < indio_dev->num_channels; i++)
- 		scan_mask |= BIT(indio_dev->channels[i].scan_index);
+ 	free_irq(data->spi->irq, data);
++	cancel_delayed_work_sync(&data->work_refresh);
  
-+	/*
-+	 * Use the correct sequencer mode for the idle state: simultaneous
-+	 * mode for dual external mux configurations, continuous otherwise.
-+	 */
-+	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
-+
- 	/* Enable all channels and calibration */
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
- 	if (ret)
-@@ -834,11 +841,11 @@ static int xadc_postdisable(struct iio_d
- 		return ret;
- 
- 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
--		XADC_CONF1_SEQ_CONTINUOUS);
-+				  seq_mode);
- 	if (ret)
- 		return ret;
- 
--	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
-+	return xadc_power_adc_b(xadc, seq_mode);
- }
- 
- static int xadc_preenable(struct iio_dev *indio_dev)
+ 	timer_delete_sync(&data->wdt_timer);
+ 	cancel_work_sync(&data->work_wdt);
 
 
 
