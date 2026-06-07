@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-261419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IKmBF5BJJWq5GAIAu9opvQ
-	(envelope-from <stable+bounces-261419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:00 +0200
+	id ev9ZNlFJJWqWGAIAu9opvQ
+	(envelope-from <stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BA064FD6A
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C8664FD1B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=avZhWiGm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261419-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261419-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MF4do9HQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 819EB3012C4B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E10B230041D0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A784F3112A5;
-	Sun,  7 Jun 2026 10:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291FD3112A5;
+	Sun,  7 Jun 2026 10:34:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF2D2D3A69;
-	Sun,  7 Jun 2026 10:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097AB2D3A69;
+	Sun,  7 Jun 2026 10:34:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828483; cv=none; b=tXtWCo4hK+VezCmKG6SKKXyLfOFHGrPiskOmmHHaED6kDjft59w3BDlauF2yfLfIsegGbzU4Xf9CpBreQ7pm6gxMI7l4jFN1Odsy8a5ljU6aAzX3NxKqmp3V+W/bMr6v1Bz9RvGEFZzswAajjiKj8NNFEI9CNa6TaatoQ91pkyY=
+	t=1780828495; cv=none; b=nrI6BTLY48oNDs84J8KDNG4yXMgfIIzbdL0DGJ7uU3z0AgAGtWS2FYQjAQi85NaD01F1vJGW9Sn/7V9PH4XWMRwIeHf5ONXhgTtR1Ayir4c0FxMDw/sR7A398ichxE5rtIVk/VYUYlv85j03b9YZlgclvW02iQ3rcHdfsBRiT9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828483; c=relaxed/simple;
-	bh=nTQabIpeVBRGRsGWI1BL7TxvEfmm9Vn/XR/4OGII5uU=;
+	s=arc-20240116; t=1780828495; c=relaxed/simple;
+	bh=B/UQ0d0hRhcMWJKn7ycCxwvoMkkuJYFnDxekHRYgeP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UaitCK10sw+y+hf6+0jk/rHF6z3EJkcg8gEYsRn6N9tyCoiRCz9goSLdHS/mvIaaal8o5GxUOxmrBJwzSqew+LWPa69bDVSdvPi/MZzmGfsLx5IIB+W6upP6792OZ35yOa56nU3X8X+8i5Q+EenpjWnR1OnV9lQDio/cO4eg1/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avZhWiGm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2D91F00893;
-	Sun,  7 Jun 2026 10:34:41 +0000 (UTC)
+	 MIME-Version; b=YhwNKiI0mb+BrOOCjbEx3Jcwydd1B/DQh+WfvuloF35j3TVWzgnxhDS8KBHDDHJg5878fhom4WZgT5kMrM4N2AgA30Rhz11/YcJVCYTtVmbZKUkmMZ06hB9pcm9Rct9ZgKKhlLeqhoUxsyYiWtqO8WSiOckd2QsXEfHS5H5j8mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF4do9HQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC261F00893;
+	Sun,  7 Jun 2026 10:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828482;
-	bh=esxG0K32zoW4Ly7JX23GlASS7i3W8gs6AAgkf+Do51w=;
+	s=korg; t=1780828493;
+	bh=xQyShybSuHSL9Q0otalrKJn3Jrj82YrpX77oDAD5TIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=avZhWiGmLuwNeYtPlaTknZqX2AM2llP7U4Jcu8QIS+neDCoOMYtrMf5yk4FoGKQmr
-	 6hrLRsESxDUfccxEXCBnn1zUkdYtmhgIwSn6aRKnrRtqnQZc02IGFjH/lgKco3eoO+
-	 FcXiiBDjOjcPFO5Pr4HpMuUMSDNu4XUW7qmEDkNw=
+	b=MF4do9HQ/jaeSY21m83BWnD+eJBLClToqBAHwTI2y4mO7GAtIJtUkoDuBv7KlapKo
+	 5vF1QxpO3Ha1SDIxquV2Ujubh5JjHPyPgqcMXW5va7PMsCU61GZmKBmKwcmNNSKmyJ
+	 cFZ9lU69oIkoCsqCEVtQEvQctY2A0YvClwTktK6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuvam Pandey <shuvampandey1@gmail.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
 	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 7.0 187/332] iio: adc: nxp-sar-adc: zero-initialize dma_slave_config
-Date: Sun,  7 Jun 2026 11:59:16 +0200
-Message-ID: <20260607095734.933769833@linuxfoundation.org>
+Subject: [PATCH 7.0 188/332] iio: gyro: itg3200: fix i2c read into the wrong stack location
+Date: Sun,  7 Jun 2026 11:59:17 +0200
+Message-ID: <20260607095734.971529590@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -73,72 +72,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,baylibre.com,vger.kernel.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261419-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuvampandey1@gmail.com,m:dlechner@baylibre.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261422-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C0BA064FD6A
+X-Rspamd-Queue-Id: 71C8664FD1B
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuvam Pandey <shuvampandey1@gmail.com>
+From: David Carlier <devnexen@gmail.com>
 
-commit 8ce176501f836634f9c0419c0820140f968e9dc5 upstream.
+commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
 
-nxp_sar_adc_start_cyclic_dma() only fills the RX-side members of
-dma_slave_config before passing it to dmaengine_slave_config().
+itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
+fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
+parameter (a pointer), `&buf' is the address of the local pointer
+slot on the stack of itg3200_read_all_channels(), not the address
+of the caller's scan buffer. The (char *) cast hides the type
+mismatch.
 
-Zero-initialize the structure so unused members do not contain stack
-garbage. Some DMA engines consult optional dma_slave_config fields, so
-leaving them uninitialized can cause DMA setup failures.
+i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
+= 8 bytes into the parameter's stack slot, which is discarded when
+the function returns. The caller's scan buffer in
+itg3200_trigger_handler() is never written to, so
+iio_push_to_buffers_with_timestamp() pushes uninitialised stack
+contents to userspace via /dev/iio:deviceX every scan -- both a
+functional bug (no actual gyroscope or temperature data is
+delivered through the triggered buffer) and an information leak.
 
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
+The non-buffered read_raw() path is unaffected: it goes through
+itg3200_read_reg_s16() which uses `&out' on a local s16 value,
+where that is correct.
+
+Drop the spurious `&' so the i2c read writes into the caller's
+buffer.
+
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/nxp-sar-adc.c |    2 +-
+ drivers/iio/gyro/itg3200_buffer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -675,7 +675,7 @@ static void nxp_sar_adc_dma_cb(void *dat
- static int nxp_sar_adc_start_cyclic_dma(struct iio_dev *indio_dev)
- {
- 	struct nxp_sar_adc *info = iio_priv(indio_dev);
--	struct dma_slave_config config;
-+	struct dma_slave_config config = { };
- 	struct dma_async_tx_descriptor *desc;
- 	int ret;
+--- a/drivers/iio/gyro/itg3200_buffer.c
++++ b/drivers/iio/gyro/itg3200_buffer.c
+@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
+ 			.addr = i2c->addr,
+ 			.flags = i2c->flags | I2C_M_RD,
+ 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
+-			.buf = (char *)&buf,
++			.buf = (char *)buf,
+ 		},
+ 	};
  
 
 
