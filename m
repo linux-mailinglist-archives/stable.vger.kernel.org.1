@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5AYfJZtLJWphGQIAu9opvQ
-	(envelope-from <stable+bounces-261576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:43 +0200
+	id uPlrDHROJWqfGgIAu9opvQ
+	(envelope-from <stable+bounces-261617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0539364FF75
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2AE650261
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="e1A5o/zV";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261576-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261576-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="TgWjyB/A";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261617-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261617-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 995BD301DC2C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81649308D18F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524BD31E850;
-	Sun,  7 Jun 2026 10:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A285D2DFF04;
+	Sun,  7 Jun 2026 10:47:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147E831F9AC;
-	Sun,  7 Jun 2026 10:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E5B2AF1D;
+	Sun,  7 Jun 2026 10:47:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829077; cv=none; b=hltIbKJy6SCunTo4HfOXenGE6CvgFVq23jafE/ZRlwXnH+UBtNtjDtNJaOcCOpIxaXuKxyNxFzxKT/54xfog4bvn/GCx1qh1Yv39FRUlkAkd1bR2NeBQwcNukekuYSAH41o9HZsxICLWBXCWZ0k/hfRkHrpcQi7c1y3J1X71YN8=
+	t=1780829232; cv=none; b=gBleFE7qjNGJqo8Ws+eZpUHrwXb4/EcXRTKLTBbHhvXurX84rPvyZm75yLXJn+qKcdFqQAN+WxYb80CX1X851wbdGtFUzb7U52K6vyiB6Vw9lwbV9oLEujv9BT3QykgSgt6Lip5BjRt/5pUnMvO/5xvLexgEyXMraUurbWEP99A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829077; c=relaxed/simple;
-	bh=bbo+Nudw8wJhlUYnldZqq4EoBQnxSp2QE4dwnvroff0=;
+	s=arc-20240116; t=1780829232; c=relaxed/simple;
+	bh=Bslrw6000OzW7/xlh7JdgxOlUJmDqQiii6I6UJNELF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CnevTNHzjjn88uizgH9UB6WW+3zwIyYp64+0zVQIU+AYsXj3vF1VZoGCiBnFkG9oRI+jQC+8KJfZg0InjuyY//GqJcziGOo3AbBjHt64uO1vxn3+5Utf5h5+D97UyI0BZV84HDPfa8qw9P0HtNPqHgQ2A149zXCbmfe7MVH1dkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1A5o/zV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323751F00893;
-	Sun,  7 Jun 2026 10:44:35 +0000 (UTC)
+	 MIME-Version; b=mwcX4rerZmzqHlHsqMv2LoMjxUb8jdPoMmL1j/XfiWbo7k/HArR/00jKtvoem3YkeqbzPMPSimKKjFOUlaktazB4Anjg9wV5ExwXLKKY2E+qQ4mOs4dM9vyS80GUElEMe2jYN0Mz/HpXZPllEBimqi19mM18/IZ6jRY6gHDb60Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgWjyB/A; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3071F00893;
+	Sun,  7 Jun 2026 10:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829076;
-	bh=WW+mfBNrCYruXq8V7eN0E17zeVDAhY0ss/obYbrGT6k=;
+	s=korg; t=1780829231;
+	bh=at1HUJmLdYoWm7YmLR9fS7/Q3YQJewCv7YRv+e0gE5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e1A5o/zV8M/xwYQtbi6lehMrV5oUMZHmyyxkeZ30PZ1LV+2/CMzf1PBWstSLw3I0Z
-	 Ebnzd1QX4iaZQpQu0mKffEnIPXxlXr+i64R8cm6lQ57t3lXJqW7IKa76UdqmwdJzhz
-	 JEy0F7Mrby68MvSIDgwsp+Vk+qHXK1XPYuZaLblw=
+	b=TgWjyB/Ak/6DYVU1AFDMuAz9CeqgZIBl2WIbPvE6hcMKXNcFp7eqk4GlREbabujhf
+	 /VScv4hLRLS2CpGNV2XR7+mlMhkuffJJPHW93vcOsDzggofhfqWuL4+6VjVJkgUTfV
+	 WAEs40+kBZ5lOtI0NSsJhwvjx1h+F8eySOu6s41E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nicol=C3=A1s=20Bazaes?= <contacto@bazaes.cl>,
+	Dmitriy Zharov <contact@zharov.dev>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 215/315] Input: synaptics - add LEN2058 to SMBus passlist for ThinkPad E490
-Date: Sun,  7 Jun 2026 12:00:02 +0200
-Message-ID: <20260607095735.458950198@linuxfoundation.org>
+Subject: [PATCH 6.12 206/307] Input: xpad - add support for ASUS ROG RAIKIRI II
+Date: Sun,  7 Jun 2026 12:00:03 +0200
+Message-ID: <20260607095735.289652843@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261576-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contacto@bazaes.cl,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261617-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:contact@zharov.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bazaes.cl,gmail.com];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,zharov.dev,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,bazaes.cl:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,zharov.dev:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0539364FF75
+X-Rspamd-Queue-Id: 7A2AE650261
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolás Bazaes <contacto@bazaes.cl>
+From: Dmitriy Zharov <contact@zharov.dev>
 
-commit 16ca52bc209fa4bf9239cd9e5643e95533476b58 upstream.
+commit c897cf120696b94f56ed0f3197ba9a77071a59ec upstream.
 
-The Lenovo ThinkPad E490 (PNP ID: LEN2058) has a Synaptics TM3471-020
-touchpad that supports SMBus/RMI4 mode but is not listed in
-smbus_pnp_ids[]. Without this entry, RMI4 over SMBus is not enabled
-by default, and the touchpad falls back to PS/2 mode.
+Add the VID/PIDs for the ASUS ROG RAIKIRI II controller to xpad_device
+and the VID to xpad_table. The controller has a physical PC/XBOX toggle
+which switches between XBOX360 and XBOXONE protocols.
 
-Adding LEN2058 to the passlist enables automatic RMI4 detection without
-requiring the psmouse.synaptics_intertouch parameter, and matches
-the behavior of similar ThinkPad models already in the list
-(E480/LEN2054, E580/LEN2055).
-
-Tested on ThinkPad E490 with kernel 7.0.5-zen1 and Arch Linux.
-RMI4 over SMBus is confirmed working without any kernel parameters.
-
-Signed-off-by: Nicolás Bazaes <contacto@bazaes.cl>
-Assisted-by: Claude:claude-sonnet-4-6
-Link: https://patch.msgid.link/20260514013552.14234-1-contacto@bazaes.cl
+Signed-off-by: Dmitriy Zharov <contact@zharov.dev>
+Link: https://patch.msgid.link/20260430183522.122151-1-contact@zharov.dev
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/joystick/xpad.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -190,6 +190,7 @@ static const char * const smbus_pnp_ids[
- 	"LEN2044", /* L470  */
- 	"LEN2054", /* E480 */
- 	"LEN2055", /* E580 */
-+	"LEN2058", /* E490 */
- 	"LEN2068", /* T14 Gen 1 */
- 	"SYN1221", /* TUXEDO InfinityBook Pro 14 v5 */
- 	"SYN3003", /* HP EliteBook 850 G1 */
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -215,6 +215,10 @@ static const struct xpad_device {
+ 	{ 0x07ff, 0xffff, "Mad Catz GamePad", 0, XTYPE_XBOX360 },
+ 	{ 0x0b05, 0x1a38, "ASUS ROG RAIKIRI", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x0b05, 0x1abb, "ASUS ROG RAIKIRI PRO", 0, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1c91, "ASUS ROG RAIKIRI II", 0, XTYPE_XBOX360 },
++	{ 0x0b05, 0x1c92, "ASUS ROG RAIKIRI II WIRELESS", 0, XTYPE_XBOX360 },
++	{ 0x0b05, 0x1c96, "ASUS ROG RAIKIRI II XBOX", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
++	{ 0x0b05, 0x1d04, "ASUS ROG RAIKIRI II XBOX WIRELESS", MAP_SHARE_BUTTON, XTYPE_XBOXONE },
+ 	{ 0x0c12, 0x0005, "Intec wireless", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8801, "Nyko Xbox Controller", 0, XTYPE_XBOX },
+ 	{ 0x0c12, 0x8802, "Zeroplus Xbox Controller", 0, XTYPE_XBOX },
+@@ -528,6 +532,7 @@ static const struct usb_device_id xpad_t
+ 	{ USB_DEVICE(0x0738, 0x4540) },		/* Mad Catz Beat Pad */
+ 	XPAD_XBOXONE_VENDOR(0x0738),		/* Mad Catz FightStick TE 2 */
+ 	XPAD_XBOX360_VENDOR(0x07ff),		/* Mad Catz Gamepad */
++	XPAD_XBOX360_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0b05),		/* ASUS controllers */
+ 	XPAD_XBOX360_VENDOR(0x0c12),		/* Zeroplus X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x0db0),		/* Micro Star International X-Box 360 controllers */
 
 
 
