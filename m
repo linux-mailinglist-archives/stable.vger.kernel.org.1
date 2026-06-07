@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-260935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r6jUHeRBJWqtFAIAu9opvQ
-	(envelope-from <stable+bounces-260935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:03:16 +0200
+	id KLv+EItCJWroFAIAu9opvQ
+	(envelope-from <stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:06:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1936964F4E4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:03:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D9D64F52B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:06:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ByYTmskd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260935-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260935-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="oS7T18d/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260951-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41FC93003836
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:03:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE17D3010D94
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C0A2F5A13;
-	Sun,  7 Jun 2026 10:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3D02E7360;
+	Sun,  7 Jun 2026 10:05:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC0D2EEE7D;
-	Sun,  7 Jun 2026 10:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103F72E1EFC;
+	Sun,  7 Jun 2026 10:05:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826593; cv=none; b=pLSblbzjjjqb0CQQ5MhUliQFigXGX7UfwFoxR5gsAvMlNOzgsjSkzd4PNB2sQG1B/jqSoZ6Oz6V6rTuIG8hWLRj3IFItxPurAlIDr6X4W5BRWZyuUriqUu5DIk1EK3HPuPmtpH+o+/eERQzPqSlwUsbajBgnDxYToVY8QHn1QLg=
+	t=1780826758; cv=none; b=hRiXT5XdgZq5DOSTnmtcEs49EkpJJH/rInE5OltHW17UsYwvNVuG69GjOG7Vpid1waRKdBOdg739gOscBTo6dT71N0aQmd1O5CYjqIL0sK/SjXtpDYtkiBsrRgk3Xst1FjGS9uC442a4aFmdp/NSeA7r1ZPxu+2iOr+7qVpWC5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826593; c=relaxed/simple;
-	bh=IdUF73tc6E0RERVUj33AmYNqKY61kor8ywIZjyUvAXk=;
+	s=arc-20240116; t=1780826758; c=relaxed/simple;
+	bh=YukAIboKwEXQC+7pBlLMzeofF19VLAeQb0iTWeIrrME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nr/I1MfNkC6+XGAMQ5nEdP1G3WnJRqU+koQcQ3/MUQMBdEDqvqn7rY3HWZ2Akwn7C14ZGuUTur5h44RAlmyqo2IdKJpd9bUeWRJNO3slmMGccEvqMOEKOTsaA1Hu3l1dCHf/ns5T9rLJDL7KXTvzMz03f9Wvy6KjdXcTFmh5JBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByYTmskd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94FF1F00893;
-	Sun,  7 Jun 2026 10:03:11 +0000 (UTC)
+	 MIME-Version; b=WyUXJfFTek4VfMgK4Rwd0XUbELmDW2A02kn67X9BdTKsrvNRttML9xdYKtkS5jGLEsAYmcgIb78hxL70HguHlFuytWYVeObdc2GKOZwjuWLiiar9TOiCP7jl4uHH54q+ScJ6GJff2zN1A3zA3sYy6P7322NG4HgeC8/RK26THKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS7T18d/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0551F00893;
+	Sun,  7 Jun 2026 10:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826592;
-	bh=tZfv0ng5ZX/qfnBe5DLlu08eHZzdLALQdJfVBh8FIx8=;
+	s=korg; t=1780826756;
+	bh=GxDU3CWxN+XgjC5IPhODwTcMqbyvHHA7xx2GWnMU9Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ByYTmskdN/O6Eytfqj++lqn9On3mSiEhNCPHuDTC0jECmtGZa+Gb66w1aDfD/MRu6
-	 zzxc9aOTElsODeR42D0BkfGVSTb4vB9YgF88tPTkOZWBVJVcA5oChn6X0jJrvuvsDb
-	 B2T9/OtvKyk0xbh9+xugwSpZ9GKzcnXor6hU7I5Y=
+	b=oS7T18d/mGinvSADG0GSFflWjsbUJXV654BX3BydJvZzlB+LCjrRinX55DR9F2rbZ
+	 7MYZrjuF9ZxNZZUhzihPGq+NO7nW2kjf2r66rJVGvvnyT46GG7oJNqk3BUsmRSRb/b
+	 hQWxaxt4UzY1mON677YFVlSDeFQjiYMQHxQdtBMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 001/315] Input: usbtouchscreen - clamp NEXIO data_len/x_len to URB buffer size
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 019/332] netfilter: ebtables: fix OOB read in compat_mtw_from_user
 Date: Sun,  7 Jun 2026 11:56:28 +0200
-Message-ID: <20260607095727.580617827@linuxfoundation.org>
+Message-ID: <20260607095728.766022257@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +71,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-260935-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-260951-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:rakukuip@gmail.com,m:n05ec@lzu.edu.cn,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:stable@kernel.org,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,suse.de,strlen.de,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1936964F4E4
+X-Rspamd-Queue-Id: 93D9D64F52B
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 2905281cbda52ec9df540113b35b835feb5fafd3 upstream.
+[ Upstream commit f438d1786d657d57790c5d138d6db3fc9fdac392 ]
 
-nexio_read_data() pulls data_len and x_len from a packed __be16 header
-in the device's interrupt packet and then walks packet->data[0..x_len)
-and packet->data[x_len..data_len) comparing each byte against a
-threshold.
+Luxiao Xu says:
 
-Both fields are 16-bit on the wire (max 65535).  The existing
-adjustments shave at most 0x100 / 0x80 off, so the loop bound can still
-reach roughly 0xfeff.  The URB transfer buffer for NEXIO is rept_size
-(1024) bytes from usb_alloc_coherent(), with the first 7 occupied by the
-packed header — so packet->data[] has 1017 valid bytes.  read_data()
-callbacks are not given urb->actual_length, and nothing else bounds the
-walk.
+ The function compat_mtw_from_user() converts ebtables extensions from
+ 32-bit user structures to kernel native structures. However, it lacks
+ proper validation of the user-supplied match_size/target_size.
 
-A device that lies about its length can get a ~64 KiB out-of-bounds read
-past the coherent DMA allocation.  The first index whose byte exceeds
-NEXIO_THRESHOLD lands in begin_x / begin_y and from there into the
-reported touch coordinates, so adjacent kernel memory contents leak to
-userspace as ABS_X / ABS_Y events.  Far enough out, the read can also
-hit an unmapped page and fault.
+ When certain extensions are processed, the kernel-side translation
+ logic may perform memory accesses based on the extension's expected
+ size. If the user provides a size smaller than what the extension
+ requires, it results in an out-of-bounds read as reported by KASAN.
 
-Fix this all by clamping data_len to the buffer's data[] capacity and
-x_len to data_len.
+ This fix introduces a check to ensure match_size is at least as large
+ as the extension's required compatsize. This covers matches, watchers,
+ and targets, while maintaining compatibility with standard targets.
 
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Fixes: 5197424cdccc ("Input: usbtouchscreen - add NEXIO (or iNexio) support")
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026042026-chlorine-epidermis-fd6d@gregkh
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+AFAIU this is relevant for matches that need to go though
+match->compat_from_user() call.  Those that use plain memcpy with the
+user-provided size are ok because the caller checks that size vs the
+start of the next rule entry offset (which itself is checked vs. total
+size copied from userspace).
+
+The ->compat_from_user() callbacks assume they can read compatsize bytes,
+so they need this extra check.
+
+Based on an earlier patch from Luxiao Xu.
+
+Fixes: 81e675c227ec ("netfilter: ebtables: add CONFIG_COMPAT support")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/usbtouchscreen.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/bridge/netfilter/ebtables.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/input/touchscreen/usbtouchscreen.c
-+++ b/drivers/input/touchscreen/usbtouchscreen.c
-@@ -1070,6 +1070,11 @@ static int nexio_read_data(struct usbtou
- 	if (x_len > 0xff)
- 		x_len -= 0x80;
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index b9f4daac09af36..8a6a069329d21d 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -1956,6 +1956,25 @@ enum compat_mwt {
+ 	EBT_COMPAT_TARGET,
+ };
  
-+	if (data_len > usbtouch->data_size - sizeof(*packet))
-+		data_len = usbtouch->data_size - sizeof(*packet);
-+	if (x_len > data_len)
-+		x_len = data_len;
++static bool match_size_ok(const struct xt_match *match, unsigned int match_size)
++{
++	u16 csize;
 +
- 	/* send ACK */
- 	ret = usb_submit_urb(priv->ack, GFP_ATOMIC);
- 	if (ret)
++	if (match->matchsize == -1) /* cannot validate ebt_among */
++		return true;
++
++	csize = match->compatsize ? : match->matchsize;
++
++	return match_size >= csize;
++}
++
++static bool tgt_size_ok(const struct xt_target *tgt, unsigned int tgt_size)
++{
++	u16 csize = tgt->compatsize ? : tgt->targetsize;
++
++	return tgt_size >= csize;
++}
++
+ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 				enum compat_mwt compat_mwt,
+ 				struct ebt_entries_buf_state *state,
+@@ -1981,6 +2000,11 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 		if (IS_ERR(match))
+ 			return PTR_ERR(match);
+ 
++		if (!match_size_ok(match, match_size)) {
++			module_put(match->me);
++			return -EINVAL;
++		}
++
+ 		off = ebt_compat_match_offset(match, match_size);
+ 		if (dst) {
+ 			if (match->compat_from_user)
+@@ -2000,6 +2024,12 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 					    mwt->u.revision);
+ 		if (IS_ERR(wt))
+ 			return PTR_ERR(wt);
++
++		if (!tgt_size_ok(wt, match_size)) {
++			module_put(wt->me);
++			return -EINVAL;
++		}
++
+ 		off = xt_compat_target_offset(wt);
+ 
+ 		if (dst) {
+-- 
+2.53.0
+
 
 
 
