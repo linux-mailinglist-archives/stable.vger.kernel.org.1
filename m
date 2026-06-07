@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 70+lA8lEJWr1FQIAu9opvQ
-	(envelope-from <stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:37 +0200
+	id uFp7ANpEJWr8FQIAu9opvQ
+	(envelope-from <stable+bounces-261127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A243664F727
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A40D264F737
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=maYCse1n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kpdi9fTe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261127-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261127-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E58CB3003344
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2238F300336F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3CB2AD00;
-	Sun,  7 Jun 2026 10:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D5C23392F;
+	Sun,  7 Jun 2026 10:15:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05A2ECEB9;
-	Sun,  7 Jun 2026 10:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910DF4071DA;
+	Sun,  7 Jun 2026 10:15:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827334; cv=none; b=oEFCN+FMAChDAvfJKZ9FrnQvhRYS6pUdNvrh6D/0303CK9Agt21ucLOX6GR0S4Ni9h83IsLZaY32vwn02g3W1SskTWbMLeh51xyVUu6iroLX1X9+1d+uVbj6oXri5UlzORS4TcF2fye/do6Lr0po0V18uYblGLOGsUZwor4uWtc=
+	t=1780827351; cv=none; b=TmCsO1W4mJvZLhQfZSVwuHKUgrQ0j6mX7i5JAuEo4O3jY/jAtAmZDQJan+hNNO1sd8Od6rdWWxq/YMtDz2q39z8R6ofV1hCURvzVXyheoEtTNXttNJxC56srQc6Iq5evR7TtABrfOmUVd3rZmoyr+tLmkBqVASo5jCWLk07oTyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827334; c=relaxed/simple;
-	bh=2pzLPyyNZ7zk5g0gi3Hr6Aa6AUOglc5dIJqNDNnIUk0=;
+	s=arc-20240116; t=1780827351; c=relaxed/simple;
+	bh=DSNo6gXepNVA6FgvvDk/52frQnmdlxxZ3C8cPI6Vflc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OffTqGG5WPtzH4Yj1AG9aIIGPr91vzQ9dvLzcWSQFKXiyP4zfbjc8aEBLI7rQ3XgV+iwdYXOUysKdTxmMCQnXRyO0x/EnSrIQalbA5uioMukSs0Gp2YgrA1ub2yAEKM2Qm/2W7kS3LLIJd6n7+/1vpYQ+SlJR33NKws+hc/n/xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maYCse1n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBF31F00893;
-	Sun,  7 Jun 2026 10:15:32 +0000 (UTC)
+	 MIME-Version; b=qnJ+hns//ecsJE3k9+rpH8OOH22/zfgAdCbkC8tsThzjRxslAiamnK3Aj5h3t8BpsUqZcc9GFnf2tl0xzrhvT2NdhXBr2efCrygaWU5l5clKJ9HK1WpNYp0tWW2DgxC0xIeKgCR2QkGtaWbc7p9KURBF867WJIPdXurBBnI2gvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpdi9fTe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71211F00893;
+	Sun,  7 Jun 2026 10:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827333;
-	bh=UF+7b/0S/3uEu5HdVrbmygy+FFHaDnXLpBe1t3Pwb1Q=;
+	s=korg; t=1780827350;
+	bh=YhgMs2mzf1ed7LPTRhluwe3IDG5Om4ZxSF6gPzZHwpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=maYCse1nZfTigse10T7NjwmQZjQEn4bZrGs9rHx1HwP1KWNYbcVJiXTQ7Hwhl+OGF
-	 VuZNNAJ6lt0PAAQQIgWDLdtytP505P94fOnT3sz28SfRhCLFYVR4lIgGSZHq8Cmhgm
-	 AlA/D2XFiB8t9/VwmiDanp9jpnILRX2tjKzt8QhY=
+	b=kpdi9fTehBBv3Ruibi3e59iVBEQpSaABKrwxCzmCXADYpbe/9DQBSsAICklwU4qbC
+	 IO3xS9RMdaYnUup1TLDjNdFNsyrtWG/HXeriYkq22GJzvAELj7PoKpi68BDLMyGNuz
+	 0mWl5TkVWKz3hHhH/X9JpQYG8q9GuGD6YIIQutbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 084/332] net/sched: act_mirred: Fix return code in early mirred redirect error paths
+Subject: [PATCH 6.18 066/315] ethtool: linkstate: fix unbalanced ethnl_ops_complete() on PHY lookup error
 Date: Sun,  7 Jun 2026 11:57:33 +0200
-Message-ID: <20260607095731.230784677@linuxfoundation.org>
+Message-ID: <20260607095730.035308367@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,133 +69,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261122-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261127-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:victor@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sashiko.dev:url,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A243664F727
+X-Rspamd-Queue-Id: A40D264F737
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e80ad525fc7e8c933ad78478c5dda286cfd55c60 ]
+[ Upstream commit 596c51ed9e125b12c4d85b4530dfd4c7847634b7 ]
 
-Since retval is set as TC_ACT_STOLEN in the mirred redirect case, returning
-retval in cases where redirect failed will make the callers not register
-the skb as being dropped.
+linkstate_prepare_data() calls ethnl_req_get_phydev() before
+ethnl_ops_begin(), but routes its error path through "goto out"
+which calls ethnl_ops_complete().
 
-Fix this by returning TC_ACT_SHOT instead in such scenarios.
-
-Fixes: 16085e48cb48 ("net/sched: act_mirred: Create function tcf_mirred_to_dev and improve readability")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260413082027.2244884-1-hxzene%40gmail.com
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-8-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fe55b1d401c6 ("ethtool: linkstate: migrate linkstate functions to support multi-PHY setups")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20260526153533.2779187-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_mirred.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ net/ethtool/linkstate.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index dbe4a4ff3e08b8..553342c55cf7c6 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -372,7 +372,8 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
- 					 dev_is_mac_header_xmit(dev_prev),
- 					 m_eaction, retval);
+diff --git a/net/ethtool/linkstate.c b/net/ethtool/linkstate.c
+index 05a5f72c99fab1..3dc52a39d34525 100644
+--- a/net/ethtool/linkstate.c
++++ b/net/ethtool/linkstate.c
+@@ -105,10 +105,8 @@ static int linkstate_prepare_data(const struct ethnl_req_info *req_base,
  
--	return retval;
-+	/* If the packet wasn't redirected, we have to register as a drop */
-+	return TC_ACT_SHOT;
- }
+ 	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_LINKSTATE_HEADER,
+ 				      info->extack);
+-	if (IS_ERR(phydev)) {
+-		ret = PTR_ERR(phydev);
+-		goto out;
+-	}
++	if (IS_ERR(phydev))
++		return PTR_ERR(phydev);
  
- static int tcf_blockcast_mirror(struct sk_buff *skb, struct tcf_mirred *m,
-@@ -410,7 +411,7 @@ static int tcf_blockcast(struct sk_buff *skb, struct tcf_mirred *m,
- 	block = tcf_block_lookup(dev_net(skb->dev), blockid);
- 	if (!block || xa_empty(&block->ports)) {
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
-+		return is_redirect ? TC_ACT_SHOT : retval;
- 	}
- 
- 	if (is_redirect)
-@@ -428,8 +429,8 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- {
- 	struct tcf_mirred *m = to_mirred(a);
- 	int retval = READ_ONCE(m->tcf_action);
-+	bool m_mac_header_xmit, is_redirect;
- 	struct netdev_xmit *xmit;
--	bool m_mac_header_xmit;
- 	struct net_device *dev;
- 	bool want_ingress;
- 	int i, m_eaction;
-@@ -462,11 +463,13 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		return retval;
- 	}
- 
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
-+
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		return retval;
-+		goto err_out;
- 	}
- 
- 	if (!want_ingress) {
-@@ -476,7 +479,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 			pr_notice_once("tc mirred: loop on device %s\n",
- 				       netdev_name(dev));
- 			tcf_action_inc_overlimit_qstats(&m->common);
--			return retval;
-+			goto err_out;
- 		}
- 		xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
- 	}
-@@ -489,6 +492,11 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 		xmit->sched_mirred_nest--;
- 
- 	return retval;
-+
-+err_out:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	return retval;
- }
- 
- static void tcf_stats_update(struct tc_action *a, u64 bytes, u64 packets,
+ 	ret = ethnl_ops_begin(dev);
+ 	if (ret < 0)
 -- 
 2.53.0
 
