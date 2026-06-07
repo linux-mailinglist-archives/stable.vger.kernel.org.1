@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-261595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A2NtD1pNJWo7GgIAu9opvQ
-	(envelope-from <stable+bounces-261595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:10 +0200
+	id wyojKGZNJWo+GgIAu9opvQ
+	(envelope-from <stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDF0650118
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01012650124
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Dn1T+xWI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261595-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261595-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XCI53C2V;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7390630731F5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71F653075404
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361A52F6920;
-	Sun,  7 Jun 2026 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAC62E7376;
+	Sun,  7 Jun 2026 10:46:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C22DFF04;
-	Sun,  7 Jun 2026 10:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DA14071FD;
+	Sun,  7 Jun 2026 10:45:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829149; cv=none; b=dHo9nttdtanj27jCiQGWViAgWjTauEQBH5fzgtewMfy418vBZ6y2TZ+povTeWMWmdzMHrKS3V3De0fTzkEr4Snng/gKZVppdGllrllTKxmbkl/O1a3DOxPa3ydSE5Zc8UMA1QWTxxeiGA0x3ZkSvxP7grzu3aXZAN7ZqZznXvg0=
+	t=1780829160; cv=none; b=EZjbLBDQ8xvCYFrueFMPviMkDxFqifLmaO41+CjtoMTaHYkyd9aMjSYRQadDhKhflZ5S/YGucGkgPI7SMjKqwzV7r4u8Gfo4sE7eflnjjekO4IkfRs2r7gHj3kUkkVtZT8rYofw4DUHnAdB+hXE21JpRuvTSZnnIQABI/Ax8Mgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829149; c=relaxed/simple;
-	bh=ImW1mgwrhGoCzLp51XDvCPq5oc8e0UT1CNZUoijJ4Sg=;
+	s=arc-20240116; t=1780829160; c=relaxed/simple;
+	bh=glsFfIJCT06sinpzsfuoJ2ow107Q3cKI7no9lqHzMiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dy9sZgt5uDZ9nS7OB1P32sTIUU5bTO04eP5DT2gILzPwY+UIv4vmJh7BKvXFZ2zRuFeLCAELLahV+4v0vkSxIiHzcJ6OiYMbudmOtoESSZidY4Mu0lQaD/6H5/V8VPasK1Gn92muWAiNkvIrQjaThF0leYZHtTEdu4/q/j07l38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn1T+xWI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C21D1F00893;
-	Sun,  7 Jun 2026 10:45:47 +0000 (UTC)
+	 MIME-Version; b=ZIlsGq7YD8EMyGwaaHryPTLmhXNXYEHxJbq49jGTQF6741ba7j1EM9bWFXp5E+Xfq+EHVUYex4RzxlXFZtZR12WK/a2D1SUMYWWooqQuN3VsQNMHI12UILpFHFy2Q9VmaUVSMSN2LYbmnvJ3uYvUtojj4wLlSG4aDYRbyCHH37w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCI53C2V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B657E1F00893;
+	Sun,  7 Jun 2026 10:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829147;
-	bh=zX9NcxV1Kt7ii98gXbkvIs+62U4SeKuz4JC8lXAmnJA=;
+	s=korg; t=1780829159;
+	bh=zLL3QisGb6SatQnAydsiPNdZxI+xgpOJwK8mZnAGSBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dn1T+xWI+SuiVt8yY/iPQIS9RogDeAr6YNGDgO/1fcUvYl6945Ra0QR5MXGGYWzBY
-	 lS6YXZp+tfQq6o230ScYNl3al0WjxT3d5NqaK82C6OvZKvFjAF1QlLNe8tDFHSdG7y
-	 ZcTsp//ydr/2O53XC088BTBNpNDROZA5bCJObivU=
+	b=XCI53C2VLzWTZY7DBxCfwF8WzsLuO8IAd3SuITtNiIw6R3pKf9/eKaPkByR+f6krD
+	 BAjrwzgoA4uBiM+6jGPhTfiSahKYCfQqSGzBl+66tzCgRxBZAxRQE9eEku7MyYw8GW
+	 b+aj291ndK4hrVt6chJcsZBlW0NoR8yfaG2lm5Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>
-Subject: [PATCH 7.0 249/332] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
-Date: Sun,  7 Jun 2026 12:00:18 +0200
-Message-ID: <20260607095737.193805815@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>
+Subject: [PATCH 7.0 250/332] uio: uio_pci_generic_sva: fix double free of devm_kzalloc() memory
+Date: Sun,  7 Jun 2026 12:00:19 +0200
+Message-ID: <20260607095737.227949051@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -76,112 +75,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261595-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261598-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lgs201920130244@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,msgid.link:url,vger.kernel.org:from_smtp,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AFDF0650118
+X-Rspamd-Queue-Id: 01012650124
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 upstream.
+commit f74c8696f14149d5e43cc28b015326a759c48f00 upstream.
 
-Sashiko identified a deadlock when the console flow is engaged [1].
+uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
+probe(), but then calls kfree(udev) both on the probe() error path
+(label out_free) and again in remove().
 
-When console flow control is enabled (UPF_CONS_FLOW),
-s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
-s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
+Because devm_kzalloc() allocations are devres-managed and are freed
+automatically when the device is detached (including after a failing
+probe() and during driver unbind), the explicit kfree() can lead to a
+double free.
 
-The serial core framework invokes the .stop_tx() and .start_tx()
-callbacks with the port->lock spinlock already held. Furthermore, all
-internal driver paths that invoke stop_tx (such as the DMA TX
-completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
-handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
-calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
-serial core).
+If probe() fails after devm_kzalloc(), the error path frees udev and
+devres cleanup will free it again when the core unwinds the partially
+bound device. On normal driver removal, remove() frees udev and devres
+will free it again when the device is detached.
 
-However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
-unconditionally attempt to acquire port->lock again using
-uart_port_lock_irqsave(). Since spinlocks are not recursive, this
-causes a deadlock on the same CPU when console flow control is engaged.
+This issue was identified by a static analysis tool I developed and
+confirmed by manual review. Fix by removing the manual kfree() calls
+and dropping the now-unused label.
 
-Remove the redundant lock acquisition from both rx helper functions.
-
+Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
 Cc: stable <stable@kernel.org>
-Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
-Reported-by: John Ogness <john.ogness@linutronix.de>
-Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://patch.msgid.link/20260505150256.614071-1-lgs201920130244@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/uio/uio_pci_generic_sva.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -245,12 +245,9 @@ static bool s3c24xx_serial_txempty_nofif
- static void s3c24xx_serial_rx_enable(struct uart_port *port)
+--- a/drivers/uio/uio_pci_generic_sva.c
++++ b/drivers/uio/uio_pci_generic_sva.c
+@@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, c
+ 	ret = devm_uio_register_device(&pdev->dev, &udev->info);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to register uio device\n");
+-		goto out_free;
++		goto out_disable;
+ 	}
+ 
+ 	pci_set_drvdata(pdev, udev);
+ 
+ 	return 0;
+ 
+-out_free:
+-	kfree(udev);
+ out_disable:
+ 	pci_disable_device(pdev);
+ 
+@@ -146,11 +144,8 @@ out_disable:
+ 
+ static void remove(struct pci_dev *pdev)
  {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	int count = 10000;
- 	u32 ucon, ufcon;
- 
--	uart_port_lock_irqsave(port, &flags);
+-	struct uio_pci_sva_dev *udev = pci_get_drvdata(pdev);
 -
- 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
- 		udelay(100);
- 
-@@ -263,23 +260,18 @@ static void s3c24xx_serial_rx_enable(str
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 1;
--	uart_port_unlock_irqrestore(port, flags);
+ 	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+-	kfree(udev);
  }
  
- static void s3c24xx_serial_rx_disable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	u32 ucon;
- 
--	uart_port_lock_irqsave(port, &flags);
--
- 	ucon = rd_regl(port, S3C2410_UCON);
- 	ucon &= ~S3C2410_UCON_RXIRQMODE;
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 0;
--	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void s3c24xx_serial_stop_tx(struct uart_port *port)
+ static ssize_t pasid_show(struct device *dev,
 
 
 
