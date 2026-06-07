@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-261723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uvtJIKNNJWpQGgIAu9opvQ
-	(envelope-from <stable+bounces-261723-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:23 +0200
+	id uYPMIo1VJWqDHAIAu9opvQ
+	(envelope-from <stable+bounces-261810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C474650151
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D176506EF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xB8Fd9VV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261723-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261723-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UDTZ0SrP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261810-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261810-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F7693004927
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED756309A7B7
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9776B2EBB9E;
-	Sun,  7 Jun 2026 10:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CAF3264F2;
+	Sun,  7 Jun 2026 10:58:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565724204E;
-	Sun,  7 Jun 2026 10:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F81325706;
+	Sun,  7 Jun 2026 10:58:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829599; cv=none; b=jMnNLeuIMtWElBfFpKIPZDqyjkw5WhhL1Rw5rGcngVJxoB+LbMkj0+XPL94uS8HyaMSE/7PZoF+aCIZuGPVLSTrvwk0l9IrgBneQiCjfIc4ECv3V+NEYKHrEsxUrgI28Ys8z9h5fG2ZbTlweiuz+zkkX570he+DWrMtvhq6Kgrs=
+	t=1780829920; cv=none; b=DAr61w8kfThnvjcADexyirTaUHlg/bDZQT95nw8wIVfb0mvA6pb+l95zzIa3R+5kC67mWWZqw79h7imrHpUZzwL/PtxnNozhyaJitabTuR8g7mcfjQ79XEQt/xG+7OTmGCWZ06R10LPKZQLKpjeMA823Vkk94BYNAPSNwQeeWTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829599; c=relaxed/simple;
-	bh=7SHlzpfrT58scBviEPPM/oAlsUzY7EJwp2UikSOZUPU=;
+	s=arc-20240116; t=1780829920; c=relaxed/simple;
+	bh=Jx9oc48iDYPp1zvs1hAOzbcFCSz4+DPpDBEQfJCx1B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rbPhPaaTXZMFwbvOarwkixRKlGTBCuiR7Axkn9Cfnr7bDTrjD1td2y++fIK7k9fle4LjjdVpZ+8dAYeGm0mcDIoN3yuBIM9huE405bquodkBfq8PpQHHUsTNPahyLfI1jUkkLzL22a+uG7Ty+wBF1U5NAkp1X7ph5GgmW0SHIR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xB8Fd9VV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D251F00893;
-	Sun,  7 Jun 2026 10:53:17 +0000 (UTC)
+	 MIME-Version; b=ZS1i1NgO233Tf/ZZdIYR4uMCfr3ecPcwq3yVUmEg1OsuESqjuPVnTJa9hJqqdZN72kLtHk5m4ZeurWLGm1SmRWu3AuQ+fsQNoZde8JvIqIyr+TkLJ9gEfrjU6PsabIbT5ePbQNW8Qwcp/M31JGE0J6IJvpbPBkhrIJu03L77kdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UDTZ0SrP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054651F00893;
+	Sun,  7 Jun 2026 10:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829597;
-	bh=DWEtiNskyyYvZ5Jk/F69xfFtHP6t7x5ffBwtBm/mUeY=;
+	s=korg; t=1780829919;
+	bh=1Nhfz/qyi2U9QYtWKsKUEtZILHkj0c5zX2ogwA/pKsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xB8Fd9VVkBBxnlgMzLYuGMOk0pTovR8urRFQaU2xB4W3AKKTqrPNy70Bubm80B0ch
-	 xZGNRcB8gzkmgcnwP1A/lX4VyisabGb5glIOK0lLcrpdYWoKXyBPm6ixBgglzsfOTM
-	 NPnpFYIdsK4D9+Qoqw+bUcu23MDE8Tp+URxqLszY=
+	b=UDTZ0SrPczVvTek6oyXDHgI8wARKUHJooM3uN1VT/b1NC35uj7tIF/3BOtwrHM2zu
+	 Piyxpj+oWyQzP4U8vouzW5sbc46izkz3z0lM+z/jbWelM+UMy26ndK5SPx3zQ7xaKQ
+	 7zNp/Qcz3057y9VdILg8OBP7OUnl30hsZrcM5eAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 7.0 293/332] drm/i915/psr: Use DC_OFF wake reference to block DC6 on vblank enable
-Date: Sun,  7 Jun 2026 12:01:02 +0200
-Message-ID: <20260607095738.820529113@linuxfoundation.org>
+	Brian Gerst <brgerst@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 266/307] x86/boot: Disable stack protector for early boot code
+Date: Sun,  7 Jun 2026 12:01:03 +0200
+Message-ID: <20260607095737.475342365@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,178 +67,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-261810-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:michal.grzelak@intel.com,m:tursulin@ursulin.net,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brgerst@gmail.com,m:mingo@kernel.org,m:ardb@kernel.org,m:torvalds@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261723-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,ursulin.net:email,msgid.link:url,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C474650151
+X-Rspamd-Queue-Id: 11D176506EF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Brian Gerst <brgerst@gmail.com>
 
-commit 3549a9649dc7c5fc586ab12f675279283cdcb2a7 upstream.
+[ Upstream commit a9a76b38aaf577887103e3ebb41d70e6aa5a4b19 ]
 
-We are observing following warnings:
+On 64-bit, this will prevent crashes when the canary access is changed
+from %gs:40 to %gs:__stack_chk_guard(%rip).  RIP-relative addresses from
+the identity-mapped early boot code will target the wrong address with
+zero-based percpu.  KASLR could then shift that address to an unmapped
+page causing a crash on boot.
 
-*ERROR* power well DC_off state mismatch (refcount 0/enabled 1)
+This early boot code runs well before user-space is active and does not
+need stack protector enabled.
 
-gen9_dc_off_power_well_enabled is considering target state DC_STATE_DISABLE
-as DC_OFF power well being enabled. Fix this by using wakeref for the
-purpose.
-
-To achieve this we need to modify notification code as well. Currently it
-is possible that PSR gets notified vblank enable/disable twice on same
-status. This is currently not a problem as it is just triggering call to
-intel_display_power_set_target_dc_state with same target state as a
-parameter. When using wakeref this becomes a problem due to reference
-counting. Fix this storing vbank status on last notification and use that
-to ensure there are no more than one notification with same vblank status.
-
-v2: ensure there is no subsequent notifications with same status
-
-Fixes: aa451abcffb5 ("drm/i915/display: Prevent DC6 while vblank is enabled for Panel Replay")
-Cc: <stable@vger.kernel.org> # v6.13+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Michał Grzelak <michal.grzelak@intel.com>
-Link: https://patch.msgid.link/20260520104944.239797-2-jouni.hogander@intel.com
-(cherry picked from commit 35485ac56d878192a3829a58cb26503125ec7104)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250123190747.745588-4-brgerst@gmail.com
+Stable-dep-of: 917e3ad3321e ("x86/kexec: Disable KCOV instrumentation after load_segments()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_core.h  |    1 
- drivers/gpu/drm/i915/display/intel_display_irq.c   |    8 +++++--
- drivers/gpu/drm/i915/display/intel_display_types.h |    2 +
- drivers/gpu/drm/i915/display/intel_psr.c           |   24 +++++++--------------
- 4 files changed, 18 insertions(+), 17 deletions(-)
+ arch/x86/kernel/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_display_core.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_core.h
-@@ -494,6 +494,7 @@ struct intel_display {
- 		u8 vblank_enabled;
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index f7918980667a33..f42c0903ef86d4 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -44,6 +44,8 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
+ KCOV_INSTRUMENT_unwind_frame.o				:= n
+ KCOV_INSTRUMENT_unwind_guess.o				:= n
  
- 		int vblank_enable_count;
-+		bool vblank_status_last_notified;
++CFLAGS_head32.o := -fno-stack-protector
++CFLAGS_head64.o := -fno-stack-protector
+ CFLAGS_irq.o := -I $(src)/../include/asm/trace
  
- 		struct work_struct vblank_notify_work;
- 
---- a/drivers/gpu/drm/i915/display/intel_display_irq.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_irq.c
-@@ -1773,8 +1773,12 @@ static void intel_display_vblank_notify_
- 	struct intel_display *display =
- 		container_of(work, typeof(*display), irq.vblank_notify_work);
- 	int vblank_enable_count = READ_ONCE(display->irq.vblank_enable_count);
-+	bool vblank_status = !!vblank_enable_count;
- 
--	intel_psr_notify_vblank_enable_disable(display, vblank_enable_count);
-+	if (display->irq.vblank_status_last_notified != vblank_status) {
-+		intel_psr_notify_vblank_enable_disable(display, vblank_status);
-+		display->irq.vblank_status_last_notified = vblank_status;
-+	}
- }
- 
- int bdw_enable_vblank(struct drm_crtc *_crtc)
-@@ -1787,10 +1791,10 @@ int bdw_enable_vblank(struct drm_crtc *_
- 	if (gen11_dsi_configure_te(crtc, true))
- 		return 0;
- 
-+	spin_lock_irqsave(&display->irq.lock, irqflags);
- 	if (crtc->vblank_psr_notify && display->irq.vblank_enable_count++ == 0)
- 		schedule_work(&display->irq.vblank_notify_work);
- 
--	spin_lock_irqsave(&display->irq.lock, irqflags);
- 	bdw_enable_pipe_irq(display, pipe, GEN8_PIPE_VBLANK);
- 	spin_unlock_irqrestore(&display->irq.lock, irqflags);
- 
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1785,6 +1785,8 @@ struct intel_psr {
- 	u8 active_non_psr_pipes;
- 
- 	const char *no_psr_reason;
-+
-+	struct ref_tracker *vblank_wakeref;
- };
- 
- struct intel_dp {
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -4141,14 +4141,20 @@ void intel_psr_notify_vblank_enable_disa
- 					    bool enable)
- {
- 	struct intel_encoder *encoder;
--	bool block_dc_states = false;
- 
- 	for_each_intel_encoder_with_psr(display->drm, encoder) {
- 		struct intel_dp *intel_dp = enc_to_intel_dp(encoder);
- 
- 		mutex_lock(&intel_dp->psr.lock);
--		if (CAN_PANEL_REPLAY(intel_dp))
--			block_dc_states = true;
-+		if (CAN_PANEL_REPLAY(intel_dp)) {
-+			if (enable)
-+				intel_dp->psr.vblank_wakeref =
-+					intel_display_power_get(display,
-+								POWER_DOMAIN_DC_OFF);
-+			else
-+				intel_display_power_put(display, POWER_DOMAIN_DC_OFF,
-+							intel_dp->psr.vblank_wakeref);
-+		}
- 
- 		if (intel_dp->psr.enabled && !intel_dp->psr.panel_replay_enabled &&
- 		    intel_dp->psr.pkg_c_latency_used)
-@@ -4156,18 +4162,6 @@ void intel_psr_notify_vblank_enable_disa
- 
- 		mutex_unlock(&intel_dp->psr.lock);
- 	}
--
--	/*
--	 * NOTE: intel_display_power_set_target_dc_state is used
--	 * only by PSR code for DC3CO handling. DC3CO target
--	 * state is currently disabled in * PSR code. If DC3CO
--	 * is taken into use we need take that into account here
--	 * as well.
--	 */
--	if (block_dc_states)
--		intel_display_power_set_target_dc_state(display, enable ?
--							DC_STATE_DISABLE :
--							DC_STATE_EN_UPTO_DC6);
- }
- 
- static void
+ obj-y			+= head_$(BITS).o
+-- 
+2.53.0
+
 
 
 
