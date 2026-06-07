@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-261651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U1rOGQFPJWrSGgIAu9opvQ
-	(envelope-from <stable+bounces-261651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:13 +0200
+	id nLtQJA1PJWrZGgIAu9opvQ
+	(envelope-from <stable+bounces-261654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC4C6502F9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F77650316
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uvJb+QkN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261651-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261651-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="QE35UVq/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261654-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261654-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 685E830942C5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD3D6304F2ED
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BF42EBB9E;
-	Sun,  7 Jun 2026 10:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D91308F38;
+	Sun,  7 Jun 2026 10:49:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93162DFF04;
-	Sun,  7 Jun 2026 10:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2372DFF04;
+	Sun,  7 Jun 2026 10:49:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829350; cv=none; b=NTzEBLjogzz+vl4eWUVFuaFyUhlqoQyY8CaGTQ+FX8m+28kO3lXlAZgwd9CWT1AJnqKGtziu0KHhKnnBbnXLlMt4zy8/r6mDIpE9++NSfbz4cOQH0mMFCc04eCe73KeoY+FIqCn92nm4iW68N7O7lk7O8eZcHOfFe1bi74/O0Ys=
+	t=1780829361; cv=none; b=ELTFtpu/13Wq4yCEj72/G3iw23hSKRJFlXGCSTjRIkQxoBHf+UZuIMMSTrDAwy63KpxppAcBSbqiXsbqfhB+D/LP3E9FnCexy7XoHuJBsDtK+2EpiqMpWxqo2XelptmaJ8GNAmq6lT9w0keFLrO98PW0maJZ/ERuxatrIkkaY3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829350; c=relaxed/simple;
-	bh=3qmM8CbV78cMB7l2uydIm6jk1+2FLjyPUtFsb3rICO4=;
+	s=arc-20240116; t=1780829361; c=relaxed/simple;
+	bh=lxcSILrbi5S7OXBSyffILS5l2ydIJXXj2c7dVR4+ZwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l59QRiwbvviBmq54LHBAWGA2kcGKEZ3dax76httyM7+MmXQVQS+8k4hheJ+gMXhWS/DG2BOvQGlHOKjJqQA78J+p4oJoyIt07hz76z5X6f2HNR7f4D2DaLwC4WXVxqfZ8VPIjuU8XDvHhDDY/IkKOVigH37p2X8zPk/8NZS0BF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvJb+QkN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C88B1F00893;
-	Sun,  7 Jun 2026 10:49:09 +0000 (UTC)
+	 MIME-Version; b=Fm7WliysntAY+eASWfn9UFlZFAh3BB3ksZ4Tzlq9TOkh6pTXnRo3cPWIy0gE2pznl7NGF358KURTHoesZPJNuF/v7mlkXltRb75hzkUFy1/EVy/iHVA0akRzQoksWUQFOdvb9NjeMmiosYjK5KCEZZmofHYBSlNSEa3f3awMwRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QE35UVq/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EBE1F00893;
+	Sun,  7 Jun 2026 10:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829349;
-	bh=dXf5DvzPmYx5xHBdSxCNX9LQIYtVfe7N3+2WqfxmjEI=;
+	s=korg; t=1780829360;
+	bh=/eA/+8aEbqyKCVzHdb9IMepH+p+0m228jidPOE4y0rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uvJb+QkNxieCWi6HXtZITgwt/WXtSZAk9GTR5mVOB2T5+AUgpaFU5EJUmdIvwVCWJ
-	 UwvnRvfWNWhNVgKI84N3to3tVQ2EE0Wx/IOshquNmhnevPntv79Xu7McHD10NlNvPr
-	 naQBzRgsOyjfq5LM/lGuXb0p9VL8KROHYu0L+RK4=
+	b=QE35UVq/4p/bD7xAvvnyix5E3Of6h+RwcWC76+TxdA25nEAxhWN1Yh59QcqyJ917S
+	 0CpJr91043tRzX7Dh+OoxPy0kstQIlG+NMuaHdfXq+6sn3oQ+hEkKlEYr6lgE0H+Gd
+	 l6PfxEEhK+2dTJgvAgJQ9eYsmXrEkmLBcMcsAC20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 7.0 271/332] USB: serial: mct_u232: fix memory corruption with small endpoint
-Date: Sun,  7 Jun 2026 12:00:40 +0200
-Message-ID: <20260607095737.994596907@linuxfoundation.org>
+Subject: [PATCH 7.0 272/332] USB: serial: mct_u232: fix missing interrupt-in transfer sanity check
+Date: Sun,  7 Jun 2026 12:00:41 +0200
+Message-ID: <20260607095738.033839604@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261651-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261654-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
@@ -98,7 +98,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCC4C6502F9
+X-Rspamd-Queue-Id: 22F77650316
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -106,14 +106,11 @@ X-Rspamd-Queue-Id: BCC4C6502F9
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
+commit 245aba83e3c288e176ed037a1f6b618b09e92ed8 upstream.
 
-The driver overrides the maximum transfer size for a specific device
-which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
-
-Make sure to never increase the maximum transfer size to prevent slab
-corruption should a malicious device report a smaller endpoint max
-packet size than expected.
+Add the missing sanity check on the size of interrupt-in transfers to
+avoid parsing stale or uninitialised slab data (and leaking it to user
+space).
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
@@ -121,60 +118,23 @@ Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/mct_u232.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/usb/serial/mct_u232.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
 --- a/drivers/usb/serial/mct_u232.c
 +++ b/drivers/usb/serial/mct_u232.c
-@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct us
- {
- 	struct usb_serial *serial = port->serial;
- 	struct mct_u232_private *priv;
-+	u16 pid;
- 
- 	/* check first to simplify error handling */
- 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
-@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct us
- 		return -ENODEV;
+@@ -544,6 +544,11 @@ static void mct_u232_read_int_callback(s
+ 		goto exit;
  	}
  
-+	/*
-+	 * Compensate for a hardware bug: although the Sitecom U232-P25
-+	 * device reports a maximum output packet size of 32 bytes,
-+	 * it seems to be able to accept only 16 bytes (and that's what
-+	 * SniffUSB says too...)
-+	 */
-+	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
-+	if (pid == MCT_U232_SITECOM_PID)
-+		port->bulk_out_size = min(16, port->bulk_out_size);
++	if (urb->actual_length < 2) {
++		dev_warn_ratelimited(&port->dev, "short interrupt-in packet\n");
++		goto exit;
++	}
 +
- 	priv = kzalloc_obj(*priv);
- 	if (!priv)
- 		return -ENOMEM;
-@@ -410,7 +421,6 @@ static void mct_u232_port_remove(struct
- 
- static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
- {
--	struct usb_serial *serial = port->serial;
- 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
- 	int retval = 0;
- 	unsigned int control_state;
-@@ -418,15 +428,6 @@ static int  mct_u232_open(struct tty_str
- 	unsigned char last_lcr;
- 	unsigned char last_msr;
- 
--	/* Compensate for a hardware bug: although the Sitecom U232-P25
--	 * device reports a maximum output packet size of 32 bytes,
--	 * it seems to be able to accept only 16 bytes (and that's what
--	 * SniffUSB says too...)
--	 */
--	if (le16_to_cpu(serial->dev->descriptor.idProduct)
--						== MCT_U232_SITECOM_PID)
--		port->bulk_out_size = 16;
--
- 	/* Do a defined restart: the normal serial device seems to
- 	 * always turn on DTR and RTS here, so do the same. I'm not
- 	 * sure if this is really necessary. But it should not harm
+ 	/*
+ 	 * The interrupt-in pipe signals exceptional conditions (modem line
+ 	 * signal changes and errors). data[0] holds MSR, data[1] holds LSR.
 
 
 
