@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-261670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i00BDkJPJWoSGwIAu9opvQ
-	(envelope-from <stable+bounces-261670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:18 +0200
+	id l1/0BVVPJWoaGwIAu9opvQ
+	(envelope-from <stable+bounces-261674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0DD650363
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB3E650376
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=c3aF0yPc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261670-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261670-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XGZzAY5N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261674-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261674-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99D9A3096B45
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6559530976E5
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1980A2EBB9E;
-	Sun,  7 Jun 2026 10:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F36B2D8378;
+	Sun,  7 Jun 2026 10:50:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE212E7390;
-	Sun,  7 Jun 2026 10:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314C82E7390;
+	Sun,  7 Jun 2026 10:50:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829417; cv=none; b=MQg/TTjP43RNK/HmbMys4lASbkGpZ0jpLm/l7DzNszARg50imUtYRN1PGwgLm1FzIWeflXqSNuWyiNHFayDjnMS+SbPBFT9evql3uU9CDC+iT0ecSUdZFNU/oyXI2+oJomN3hMfKzC6jkYtTtG7a1ki1WM/0omT2AZAWD37mXmk=
+	t=1780829431; cv=none; b=VRevzcrsUu4cYdFAvxFOfG5mlnyFz8fozEbbQCM3BeFFEMkcZbgZG2m6aUDm7xPgeYWToK06gf9i2lGxTLZ/rowAOm0w3/rutab6bPiyjAxn9Rbt8gTP/R27q/XYVAt3wbVSdJGfQwjFO17QwCpxHohvxOG/YYXr9RM8EX3o3fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829417; c=relaxed/simple;
-	bh=HX7Fnk4TOJx9uAPAEYliLGQRCO4b1OxffPZZOxXx5jY=;
+	s=arc-20240116; t=1780829431; c=relaxed/simple;
+	bh=CnMqB+SfCB3M6Hxm+MZZeOvRdTLqCN8P7Z9VQ0GmMA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2agBgZkgN981N5kHdVu8rKGiIm5AAILh+aDnUV4diBZtsEewvjVxrVjCBnV6jPdkxgqLbXHqeXCADtLdeILfTDUH6GMlT3LHON7/ogL5gbuseHP+/fsIaVdHlFYRvvhKoSrMMv5hpJ6pHYUV/jichgV8q7e3H0fvhlqWPUXcXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3aF0yPc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F9A1F00893;
-	Sun,  7 Jun 2026 10:50:16 +0000 (UTC)
+	 MIME-Version; b=KjYPO65BPm+m0l0w3Fyfwt/OjhTLG70GvFLr902ybFf5v0CpGAtPNYyLpd21XnUevvIOeczXa3r0/q8ssxDUvPxW/EpD/EiXTQ9Ff8McVuRWQynN3bXzN7VHk+pqO3klsjw4qOrQkO1n7UjGIQiuVPydT2zvxKlm9StDvSz7WQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGZzAY5N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740511F00893;
+	Sun,  7 Jun 2026 10:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829416;
-	bh=nlWWIyM+9qlBH0FqHWZM1v3yAyj7Teoq5meK4mIkzbg=;
+	s=korg; t=1780829430;
+	bh=ml4m5CjOu4TMOL/vPKi1Jz+b2nc+psdagHrJMf9WpZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c3aF0yPc+kAa5xKvsi6XbDRV/va4NERqz9EOhRnhMyqpkiFx1I2cHQ7JrAjDS54gA
-	 Ws3ti22Lh5gCHnDkqNOnnQLjGH7QVOoId8J3Th1eb1i6m2N92hWgdmz+m4Gtgj4G0c
-	 YywhnMP1rr8QOlo/aPkxFVPN8mz9XKifqgkQ1RD4=
+	b=XGZzAY5NUAaCtXZUNLk4vhHbKCfvZJNYKw4Y6USPB/SDOGEP/oLbvxpsDNc2qXxDC
+	 CQR//LlrvrkjVo4O0Q5vaZstUDNf4s9G0LJxFDa5DZq9ZciTtTR74Ut3MOXyeRY+LA
+	 MVCYkKBcwEoEfSHQLiysEoGEBr2FHbUPEO3iDdDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Seungjin Bae <eeodqql09@gmail.com>
-Subject: [PATCH 7.0 277/332] usb: gadget: dummy_hcd: Reject hub port requests for non-existent ports
-Date: Sun,  7 Jun 2026 12:00:46 +0200
-Message-ID: <20260607095738.218890078@linuxfoundation.org>
+	Michael Bommarito <michael.bommarito@gmail.com>
+Subject: [PATCH 7.0 278/332] usb: gadget: f_fs: copy only received bytes on short ep0 read
+Date: Sun,  7 Jun 2026 12:00:47 +0200
+Message-ID: <20260607095738.256683080@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -67,7 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -78,16 +78,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261670-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:stern@rowland.harvard.edu,m:eeodqql09@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,rowland.harvard.edu,gmail.com];
+	TAGGED_FROM(0.00)[bounces-261674-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,63 +95,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8A0DD650363
+X-Rspamd-Queue-Id: 9DB3E650376
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 7d9633528dd40e33964d2dc74a5abbf5c4d116ce upstream.
+commit 4e036c10e7f4df5d951c69cc3697bc8e209c6d02 upstream.
 
-The `dummy_hub_control()` function handles USB hub class requests
-to the virtual root hub. The `GetPortStatus` case returns -EPIPE for
-requests with `wIndex != 1`, since the virtual root hub has only a
-single port. However, the `ClearPortFeature` and `SetPortFeature`
-cases lack the same check.
+ffs_ep0_read() allocates its control-OUT data buffer with
+kmalloc() (not kzalloc) at the Length value from the Setup
+packet, then copies that full len to userspace regardless of
+how many bytes were actually received:
 
-Fix this by extending the `wIndex != 1` rejection to both cases,
-matching the existing behavior of `GetPortStatus`.
+    data = kmalloc(len, GFP_KERNEL);
+    ...
+    ret = __ffs_ep0_queue_wait(ffs, data, len);
+    if ((ret > 0) && (copy_to_user(buf, data, len)))
+            ret = -EFAULT;
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+__ffs_ep0_queue_wait() returns req->actual, which on a short
+control OUT transfer is strictly less than len.  The
+copy_to_user() call still copies len bytes, so on a short OUT
+the last (len - ret) bytes of the kmalloc() buffer --
+uninitialised slab residue -- are delivered to the FunctionFS
+daemon.
+
+Short ep0 OUT completions are specified USB control-transfer
+behavior and are produced by in-tree UDCs:
+
+  * dwc2 continues on req->actual < req->length for ep0 DATA OUT
+    (short-not-ok is the only ep0-OUT stall path).
+  * aspeed_udc ends ep0 OUT on rx_len < ep->ep.maxpacket.
+  * renesas_usbf logs "ep0 short packet" and completes the
+    request.
+  * dwc3 stalls on short IN but not on short OUT.
+
+A short ep0 OUT is therefore not evidence of a broken UDC; it is
+a normal condition f_fs has to cope with.  The sibling gadgetfs
+implementation in drivers/usb/gadget/legacy/inode.c already does
+this correctly via min(len, dev->req->actual) before
+copy_to_user().  This patch brings f_fs.c to the same safe
+pattern rather than trimming at a defensive layer.
+
+The bug is reached from the FunctionFS device node, which in
+real deployments is owned by the privileged gadget daemon
+(adbd, UMS, composite gadget services, etc.); it is not
+reachable from unprivileged userspace.  Linux host stacks
+normally reject short-wLength control OUTs before they reach
+the gadget, so reproducing this required a build that
+bypasses that host-side check.  With the bypass in place, a
+1-byte payload on a 64-byte Setup produces 63 bytes of
+non-canary slab residue in the daemon's read buffer.
+
+Fix by copying only ret (actually received) bytes to
+userspace.
+
+Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
 Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20260518234314.1889396-1-eeodqql09@gmail.com
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260419160359.1577270-1-michael.bommarito@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -2134,6 +2134,8 @@ static int dummy_hub_control(
- 	case ClearHubFeature:
- 		break;
- 	case ClearPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_SUSPEND:
- 			if (hcd->speed == HCD_USB3) {
-@@ -2248,6 +2250,8 @@ static int dummy_hub_control(
- 		retval = -EPIPE;
- 		break;
- 	case SetPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_LINK_STATE:
- 			if (hcd->speed != HCD_USB3) {
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -619,7 +619,7 @@ static ssize_t ffs_ep0_read(struct file
+ 
+ 		/* unlocks spinlock */
+ 		ret = __ffs_ep0_queue_wait(ffs, data, len);
+-		if ((ret > 0) && (copy_to_user(buf, data, len)))
++		if ((ret > 0) && (copy_to_user(buf, data, ret)))
+ 			ret = -EFAULT;
+ 		goto done_mutex;
+ 
 
 
 
