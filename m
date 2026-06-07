@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-261328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DE8zGipIJWrbFwIAu9opvQ
-	(envelope-from <stable+bounces-261328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:02 +0200
+	id PStlFwhJJWpiGAIAu9opvQ
+	(envelope-from <stable+bounces-261309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D147164FB68
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE32364FC96
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZSXVCmtE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261328-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261328-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oPqf7S4x;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261309-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261309-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 313A3301C938
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA5E63051D0B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8A5328610;
-	Sun,  7 Jun 2026 10:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6423254B3;
+	Sun,  7 Jun 2026 10:27:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712554071FE;
-	Sun,  7 Jun 2026 10:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB91C5F27;
+	Sun,  7 Jun 2026 10:27:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828128; cv=none; b=nRIlbk0uvjI0oROcDgbQVWGNK9jN1LFhQpAgcNpQmSlDSha7o9JS25p/bVCsBIKSgUg6WCnuExPRtbXDqZ8WQfhcjWCF3SRPnZKyCWS0KlmFrm45C3TL/iZwN/1vzyxk9tC4yiEF5bUrgpDm6FzOqoNCPpIjqgL0IiVL0f0VzMI=
+	t=1780828056; cv=none; b=CiMpw1sygByZ557h6gGN4PUM8/mdQF83cjKgt5Bx013054ebwgMQYE8o2lywhJJo/kUM0Mz8qB+4D0V6a3C71FaV6znCaPCuWu0yfXGgiYffGy0r/nNtYBK/e9114OFUy8fwB60CpvtA/ihBYeI5IVDmQF1JRSqfOenWj88hKko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828128; c=relaxed/simple;
-	bh=UzdEg3B6BTpFHqjCAbuxZm3t8Yw2B+eIjsYI8pJsLFs=;
+	s=arc-20240116; t=1780828056; c=relaxed/simple;
+	bh=KZNbvooBaBlsTS7bCPsXKutY8m5Mhov9lCEA2SLvvZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSuQNrZdq5jHmDXQFcrFcorCsI6b9t7opHljebKgbGugLXOuDKeSYXVsAfAYNTbmr0K/PPCrMy9y/81UVTskIobXBZyTnL92IqNEFpnLX0bt7ZIR1GpRMKEtAtC52qv1Cyozwdd597B8UvNYjPXBOL6jhee8uBZZTwVhNFytsx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSXVCmtE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21091F00893;
-	Sun,  7 Jun 2026 10:28:46 +0000 (UTC)
+	 MIME-Version; b=HCPKofxttZA0pU1RiTPqn4HCwfWNYajvWixm1ByHgxXWNbn1kVT010ASxEMNy1FM4M9D2QSMHXeum7F+uhfNQT3tYmWM9QuB9frJ/kKUxHMS+B500F5Y7gRIIHWTfnm26kKUU3Nw1+n3K8o60higKrWp+crCSmqgjPL5gHGYmgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPqf7S4x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9721F00893;
+	Sun,  7 Jun 2026 10:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828127;
-	bh=8zCdVjZPiZYWl6e3JFyD6RBP4pF/ORA8s1pD/Ceppb8=;
+	s=korg; t=1780828055;
+	bh=2V0dwLcxcrx19ts06zdnzQ364/Do0lrJw/CixTEMXrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZSXVCmtEV/rc3fVdOwYI/q3m8zTLIFLEnlXyfaLCFZqbGPDuJyq9MXVpnxB2fZHaP
-	 Q4O7KcHrULZBNaknqORDGgp/Nx3IXPEGcbCB0ReK8uLEmAK7s9bhnVlkYIUz7bD7Wr
-	 hS6yK0X8dRo0WiIcD7HPRPdWybyEqJNlq0h0JY3Y=
+	b=oPqf7S4xC6wEySHs7OogwoGtgyXd7//UD+bXEGVBF6fUMwKM9R/drn9qx02cD4qhH
+	 M1PTDlZZUKILtAIF7LWxAbUDPbCv4yOvONI+8BdPbXYfFSVvaGPNXVOxUhFIQVeL6V
+	 FwnKTEjLlC9enMVux22Pz5fbsY8g8NvC9cQ9ofsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 113/307] inet: frags: flush pending skbs in fqdir_pre_exit()
-Date: Sun,  7 Jun 2026 11:58:30 +0200
-Message-ID: <20260607095731.926068575@linuxfoundation.org>
+	"Pratyush Yadav (Google)" <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Jeff Xu <jeffxu@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Greg Thelen <gthelen@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	Kees Cook <kees@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 124/315] memfd: deny writeable mappings when implying SEAL_WRITE
+Date: Sun,  7 Jun 2026 11:58:31 +0200
+Message-ID: <20260607095732.176645045@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,230 +74,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-261328-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:681739313@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-261309-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pratyush@kernel.org,m:pasha.tatashin@soleen.com,m:jeffxu@google.com,m:baolin.wang@linux.alibaba.com,m:jackmanb@google.com,m:gthelen@google.com,m:hughd@google.com,m:kees@kernel.org,m:david@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,139.com:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,linux-foundation.org:email,alibaba.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D147164FB68
+X-Rspamd-Queue-Id: CE32364FC96
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-[ Upstream commit 006a5035b495dec008805df249f92c22c89c3d2e ]
+commit 3b041514cb6eae45869b020f743c14d983363222 upstream.
 
-We have been seeing occasional deadlocks on pernet_ops_rwsem since
-September in NIPA. The stuck task was usually modprobe (often loading
-a driver like ipvlan), trying to take the lock as a Writer.
-lockdep does not track readers for rwsems so the read wasn't obvious
-from the reports.
+When SEAL_EXEC is added, SEAL_WRITE is implied to make W^X.  But the
+implied seal is set after the check that makes sure the memfd can not have
+any writable mappings.  This means one can use SEAL_EXEC to apply
+SEAL_WRITE while having writeable mappings.
 
-On closer inspection the Reader holding the lock was conntrack looping
-forever in nf_conntrack_cleanup_net_list(). Based on past experience
-with occasional NIPA crashes I looked thru the tests which run before
-the crash and noticed that the crash follows ip_defrag.sh. An immediate
-red flag. Scouring thru (de)fragmentation queues reveals skbs sitting
-around, holding conntrack references.
+This breaks the contract that SEAL_WRITE provides and can be used by an
+attacker to pass a memfd that appears to be write sealed but can still be
+modified arbitrarily.
 
-The problem is that since conntrack depends on nf_defrag_ipv6,
-nf_defrag_ipv6 will load first. Since nf_defrag_ipv6 loads first its
-netns exit hooks run _after_ conntrack's netns exit hook.
+Fix this by adding the implied seals before the call for
+mapping_deny_writable() is done.
 
-Flush all fragment queue SKBs during fqdir_pre_exit() to release
-conntrack references before conntrack cleanup runs. Also flush
-the queues in timer expiry handlers when they discover fqdir->dead
-is set, in case packet sneaks in while we're running the pre_exit
-flush.
-
-The commit under Fixes is not exactly the culprit, but I think
-previously the timer firing would eventually unblock the spinning
-conntrack.
-
-Fixes: d5dd88794a13 ("inet: fix various use-after-free in defrags units")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251207010942.1672972-4-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260505133922.797635-1-pratyush@kernel.org
+Fixes: c4f75bc8bd6b ("mm/memfd: add write seals when apply SEAL_EXEC to executable memfd")
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Acked-by: Jeff Xu <jeffxu@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_frag.h  | 13 +------------
- include/net/ipv6_frag.h  |  9 ++++++---
- net/ipv4/inet_fragment.c | 36 ++++++++++++++++++++++++++++++++++++
- net/ipv4/ip_fragment.c   | 12 +++++++-----
- 4 files changed, 50 insertions(+), 20 deletions(-)
+ mm/memfd.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
-index 94edc0e130d2c4..fcabb34fff35de 100644
---- a/include/net/inet_frag.h
-+++ b/include/net/inet_frag.h
-@@ -123,18 +123,7 @@ void inet_frags_fini(struct inet_frags *);
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -284,6 +284,12 @@ static int memfd_add_seals(struct file *
+ 		goto unlock;
+ 	}
  
- int fqdir_init(struct fqdir **fqdirp, struct inet_frags *f, struct net *net);
- 
--static inline void fqdir_pre_exit(struct fqdir *fqdir)
--{
--	/* Prevent creation of new frags.
--	 * Pairs with READ_ONCE() in inet_frag_find().
--	 */
--	WRITE_ONCE(fqdir->high_thresh, 0);
--
--	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
--	 * and ip6frag_expire_frag_queue().
--	 */
--	WRITE_ONCE(fqdir->dead, true);
--}
-+void fqdir_pre_exit(struct fqdir *fqdir);
- void fqdir_exit(struct fqdir *fqdir);
- 
- void inet_frag_kill(struct inet_frag_queue *q);
-diff --git a/include/net/ipv6_frag.h b/include/net/ipv6_frag.h
-index 7321ffe3a108c1..df61b98b521531 100644
---- a/include/net/ipv6_frag.h
-+++ b/include/net/ipv6_frag.h
-@@ -68,9 +68,6 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
- 	struct sk_buff *head;
- 
- 	rcu_read_lock();
--	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
--	if (READ_ONCE(fq->q.fqdir->dead))
--		goto out_rcu_unlock;
- 	spin_lock(&fq->q.lock);
- 
- 	if (fq->q.flags & INET_FRAG_COMPLETE)
-@@ -79,6 +76,12 @@ ip6frag_expire_frag_queue(struct net *net, struct frag_queue *fq)
- 	fq->q.flags |= INET_FRAG_DROP;
- 	inet_frag_kill(&fq->q);
- 
-+	/* Paired with the WRITE_ONCE() in fqdir_pre_exit(). */
-+	if (READ_ONCE(fq->q.fqdir->dead)) {
-+		inet_frag_queue_flush(&fq->q, 0);
-+		goto out;
-+	}
-+
- 	dev = dev_get_by_index_rcu(net, fq->iif);
- 	if (!dev)
- 		goto out;
-diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
-index 70640906337757..f9cf20b21a0781 100644
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -219,6 +219,41 @@ static int __init inet_frag_wq_init(void)
- 
- pure_initcall(inet_frag_wq_init);
- 
-+void fqdir_pre_exit(struct fqdir *fqdir)
-+{
-+	struct inet_frag_queue *fq;
-+	struct rhashtable_iter hti;
-+
-+	/* Prevent creation of new frags.
-+	 * Pairs with READ_ONCE() in inet_frag_find().
++	/*
++	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
 +	 */
-+	WRITE_ONCE(fqdir->high_thresh, 0);
++	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
++		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
 +
-+	/* Pairs with READ_ONCE() in inet_frag_kill(), ip_expire()
-+	 * and ip6frag_expire_frag_queue().
-+	 */
-+	WRITE_ONCE(fqdir->dead, true);
-+
-+	rhashtable_walk_enter(&fqdir->rhashtable, &hti);
-+	rhashtable_walk_start(&hti);
-+
-+	while ((fq = rhashtable_walk_next(&hti))) {
-+		if (IS_ERR(fq)) {
-+			if (PTR_ERR(fq) != -EAGAIN)
-+				break;
-+			continue;
-+		}
-+		spin_lock_bh(&fq->lock);
-+		if (!(fq->flags & INET_FRAG_COMPLETE))
-+			inet_frag_queue_flush(fq, 0);
-+		spin_unlock_bh(&fq->lock);
-+	}
-+
-+	rhashtable_walk_stop(&hti);
-+	rhashtable_walk_exit(&hti);
-+}
-+EXPORT_SYMBOL(fqdir_pre_exit);
-+
- void fqdir_exit(struct fqdir *fqdir)
- {
- 	INIT_WORK(&fqdir->destroy_work, fqdir_work_fn);
-@@ -291,6 +326,7 @@ void inet_frag_queue_flush(struct inet_frag_queue *q,
- {
- 	unsigned int sum;
+ 	if ((seals & F_SEAL_WRITE) && !(*file_seals & F_SEAL_WRITE)) {
+ 		error = mapping_deny_writable(file->f_mapping);
+ 		if (error)
+@@ -296,12 +302,6 @@ static int memfd_add_seals(struct file *
+ 		}
+ 	}
  
-+	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
- 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
- 	sub_frag_mem_limit(q->fqdir, sum);
- }
-diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
-index eb5f6060b85d52..124c0d64d4204b 100644
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -148,11 +148,6 @@ static void ip_expire(struct timer_list *t)
- 	net = qp->q.fqdir->net;
- 
- 	rcu_read_lock();
+-	/*
+-	 * SEAL_EXEC implies SEAL_WRITE, making W^X from the start.
+-	 */
+-	if (seals & F_SEAL_EXEC && inode->i_mode & 0111)
+-		seals |= F_SEAL_SHRINK|F_SEAL_GROW|F_SEAL_WRITE|F_SEAL_FUTURE_WRITE;
 -
--	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
--	if (READ_ONCE(qp->q.fqdir->dead))
--		goto out_rcu_unlock;
--
- 	spin_lock(&qp->q.lock);
+ 	*file_seals |= seals;
+ 	error = 0;
  
- 	if (qp->q.flags & INET_FRAG_COMPLETE)
-@@ -160,6 +155,13 @@ static void ip_expire(struct timer_list *t)
- 
- 	qp->q.flags |= INET_FRAG_DROP;
- 	ipq_kill(qp);
-+
-+	/* Paired with WRITE_ONCE() in fqdir_pre_exit(). */
-+	if (READ_ONCE(qp->q.fqdir->dead)) {
-+		inet_frag_queue_flush(&qp->q, 0);
-+		goto out;
-+	}
-+
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMFAILS);
- 	__IP_INC_STATS(net, IPSTATS_MIB_REASMTIMEOUT);
- 
--- 
-2.53.0
-
 
 
 
