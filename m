@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HeBhFLpGJWoSFwIAu9opvQ
-	(envelope-from <stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:54 +0200
+	id trDeCutHJWqwFwIAu9opvQ
+	(envelope-from <stable+bounces-261230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDACA64F9C4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E51864FB03
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="InytbgY/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q1VYq+g2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261230-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261230-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E54A301DD8D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF364303747C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5039E320A37;
-	Sun,  7 Jun 2026 10:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C0C31E838;
+	Sun,  7 Jun 2026 10:22:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA7131F993;
-	Sun,  7 Jun 2026 10:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA9832143D;
+	Sun,  7 Jun 2026 10:22:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827793; cv=none; b=FRh5llikEdnBNh21Bh8qGAYwrxECQJRHriSxBbdKu7du3e8mkbdxhJQWB+xRDFgRZ3ZVAZ4AeRTy1oEd7A6ft/nn/i24+Z3cUD0E7KWW/npIKRAPgTi7UVhxwo9mRRUdZ82hT/o+0W2/mSDz6R2U7+qCiwp9+FrQ4XpXj60KZts=
+	t=1780827752; cv=none; b=prxikFdM39UKsiDzwBq1XZyDgmN8m/Ri+ylLtSfAv7PNgjHsQdwHfGUpzsXiNYbs5d9Vf+x7B6xoOr+wEtIQ8YuchIDWyvn+KmnG2EZx5EngbjiQF+Ecx+j5Jcfr7jv7ow1ABNa4epwTTq+kWN7igTk21vO07dta5h1jDc00OAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827793; c=relaxed/simple;
-	bh=T2kZI8L5wiuspX/lOXXjYgIk4IXkYzTCWgeKhdFycxI=;
+	s=arc-20240116; t=1780827752; c=relaxed/simple;
+	bh=8Yez7Q5s08A6ezYFfwjfJFUIrCQdAdZXVmtq3BXpxzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iGSKt7Uxx7S1BcdPUsT6KbJ4TLzRmtHuDCQkXmzITjxayq8bvxQqDpH6Slt/njeH8w5oq6tRRHmoScSVGpCehjy1RYOByxxeKBHfWKBT/QmmlNDNkaFep4pOxRmaGw/BdIk59PRUJn5cTwCr7gxVjxNotocWnnoYwSCubhA12Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InytbgY/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5621F00893;
-	Sun,  7 Jun 2026 10:23:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V/pXoiOIytFnfjIltjPx/oJHmRKxSXwjd2h4101/ogmyZdT89fckBA2bkAtHlVgVBNrwCG7cr7z4+zwmrv9cBjKONXLDUovV6DwCm2iyBNt8XvwJ9lq185nmMLas963t/aQAolbGYTHV1gwzMaFCAaqovZv9xGSxzYXiy/MiRwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1VYq+g2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E391F00893;
+	Sun,  7 Jun 2026 10:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827792;
-	bh=+/CgDUKqf2FM99tH5OZUOJCDQKMQquN+tYmHqxKfV9k=;
+	s=korg; t=1780827750;
+	bh=FfGu/DlmdDGzU02x3H671MCrhLj0560uTwMNjh4Z5Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=InytbgY/NknMjwg2k87lpES2XpHwi0gtJPyuEwEJ6Ny8GRIkdM9/Ugl7Bu6CpxlsT
-	 vmOp8rXzOjjHDw/H2eiMdPLec/qCDAkg5W0H+lKuO76VyNT9mPp+SQ/Eqbm0TEy15R
-	 cuRs93KDoaT9HNUXcstACOt8l+kZvE+LRIgsY2L8=
+	b=Q1VYq+g2B51DnLBWraVCHXIFBvx9Q0WahVDzEGnkwdEh3560of59WBgN8Vy/08rTc
+	 Y7PCoZ3wykXYunDJ2XK/kY25c9KmB7mpoPFYjnyRRB8iv4PJdozWd4AbVf2S0Pf6hb
+	 C6q/IwVDYHxYOec34EQH9takebt7F2EaHF/mNxoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 101/315] drm/i915/psr: Read Intel DPCD workaround register
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 119/332] iio: imu: adis16550: fix stack leak in trigger handler
 Date: Sun,  7 Jun 2026 11:58:08 +0200
-Message-ID: <20260607095731.356111500@linuxfoundation.org>
+Message-ID: <20260607095732.483634970@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,100 +75,82 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261241-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261230-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lars@metafoo.de,m:Michael.Hennerich@analog.com,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,ursulin.net:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,baylibre.com:email,vger.kernel.org:from_smtp,metafoo.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BDACA64F9C4
+X-Rspamd-Queue-Id: 6E51864FB03
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit f30bece421a4ae34359254e1dc2a187a42b6af9b upstream.
+commit 474f8928d50b09f7dcf507049f08732640b88b49 upstream.
 
-Read Intel DPCD workaround register and store it into
-intel_connector->dp.psr_caps. psr_caps was chosen as currently it contains
-only PSR workaround for PSR2 SDP on prior scanline implementation.
+adis16550_trigger_handler() declares the scan data array on the stack
+without initializing it.  The memcpy() at the bottom fills only the
+first 28 bytes (TEMP + 6 channels of GYRO/ACCEL data), and
+iio_push_to_buffers_with_timestamp() writes the s64 timestamp at the
+8-byte-aligned offset 32.  Bytes 28-31 remain uninitialized stack data
+which leaks to userspace on ever trigger.
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-3-jouni.hogander@intel.com
-(cherry picked from commit c48ff24d0f4ab7ad696b2d35ad64ce7e049c668c)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this all by just zero-initializing the structure on the stack.
+
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>
+Cc: "Nuno Sá" <nuno.sa@analog.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Fixes: e4570f4bb231 ("iio: imu: adis16550: align buffers for timestamp")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_types.h | 1 +
- drivers/gpu/drm/i915/display/intel_psr.c           | 7 +++++++
- 2 files changed, 8 insertions(+)
+ drivers/iio/imu/adis16550.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 39dd7389f1a71a..197bdb6592a7f9 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1710,6 +1710,7 @@ struct intel_dp {
- 	u8 lttpr_common_caps[DP_LTTPR_COMMON_CAP_SIZE];
- 	u8 lttpr_phy_caps[DP_MAX_LTTPR_COUNT][DP_LTTPR_PHY_CAP_SIZE];
- 	u8 pcon_dsc_dpcd[DP_PCON_DSC_ENCODER_CAP_SIZE];
-+	u8 intel_wa_dpcd;
- 	/* source rates */
- 	int num_source_rates;
- 	const int *source_rates;
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 1da20065ea7763..802a671b2afaaa 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -41,6 +41,7 @@
- #include "intel_display_types.h"
- #include "intel_dmc.h"
- #include "intel_dp.h"
-+#include "intel_dpcd.h"
- #include "intel_dp_aux.h"
- #include "intel_dsb.h"
- #include "intel_frontbuffer.h"
-@@ -679,6 +680,12 @@ static void _psr_init_dpcd(struct intel_dp *intel_dp)
- 		drm_dbg_kms(display->drm, "PSR2 %ssupported\n",
- 			    intel_dp->psr.sink_psr2_support ? "" : "not ");
- 	}
-+
-+	if (intel_dp->psr.sink_psr2_support)
-+		drm_dp_dpcd_read(&intel_dp->aux,
-+				 INTEL_DPCD_INTEL_WA_REGISTER_CAPS,
-+				 &intel_dp->intel_wa_dpcd,
-+				 sizeof(intel_dp->intel_wa_dpcd));
- }
- 
- void intel_psr_init_dpcd(struct intel_dp *intel_dp)
--- 
-2.53.0
-
+--- a/drivers/iio/imu/adis16550.c
++++ b/drivers/iio/imu/adis16550.c
+@@ -836,7 +836,7 @@ static irqreturn_t adis16550_trigger_han
+ 	u16 dummy;
+ 	bool valid;
+ 	struct iio_poll_func *pf = p;
+-	__be32 data[ADIS16550_MAX_SCAN_DATA] __aligned(8);
++	__be32 data[ADIS16550_MAX_SCAN_DATA] __aligned(8) = { };
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct adis16550 *st = iio_priv(indio_dev);
+ 	struct adis *adis = iio_device_get_drvdata(indio_dev);
 
 
 
