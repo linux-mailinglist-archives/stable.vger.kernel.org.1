@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f+BxH+RNJWpsGgIAu9opvQ
-	(envelope-from <stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:28 +0200
+	id q/fqHNhMJWrqGQIAu9opvQ
+	(envelope-from <stable+bounces-261664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148226501B7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DBE6500A2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zm3MlPpb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261708-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iUUhz0Tp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261664-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261664-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 15D2F30387BE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2D5213004909
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FCC308F38;
-	Sun,  7 Jun 2026 10:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038F308F38;
+	Sun,  7 Jun 2026 10:49:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7339A4071DD;
-	Sun,  7 Jun 2026 10:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFACA2D8378;
+	Sun,  7 Jun 2026 10:49:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829547; cv=none; b=WM4na5CQCFzWRcTYHGdLHciMZilPXgOgMZvJQZ2C9mcJgk1wLW8Hg5+UmztLZdoEdDJyjNn9UfqzYN3TBHo0j596TQL4BdrFc1sb15OtFimXBQqcF/o4bRKrp9m0pLeenSRLSjvEbkFelBcAkGj7+/tTRNuzxGYhz81leWKlR8g=
+	t=1780829397; cv=none; b=BDn/OKbEsQAY5ZBZVOhZoSxAmk+LuNAm6gi9tssPo2OYFf462dzZPf2E8i1UB1gm5Z4NSAbWU/qKc/sjfdxSP6sz9CpA2k6oLBSV5VMuWueVc+datlEk3dB8KNAyyCmGo/w6OhtmIIbVhnN8AScUMYjI2yjzH/eRTLuedoSfcx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829547; c=relaxed/simple;
-	bh=VX+qVOjxPtvodOYAFKjS37teEA9bDqhZphK4UaQQm9o=;
+	s=arc-20240116; t=1780829397; c=relaxed/simple;
+	bh=pAEanxCdDb35o5kwWcVZQc8oQHSuxX+VQGJgN120n4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icfEOtBAjso0eM2qREqu3It9wKaaE2CsDrRX/ExXolqcUZP8Qj/+SAIB/4MmmXpIlSU5h9l8A0InhlNXnYYmhNNZg8JAOrMiYWj9b7XyMtErFq+F7GbfJQ+ZClaTtEWh8rIHJeIrCc6OTJK2C2G96f0HT39Y0kYUqF9YRJPlJ1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm3MlPpb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C98B1F00893;
-	Sun,  7 Jun 2026 10:52:25 +0000 (UTC)
+	 MIME-Version; b=U+vV2JWryhwWxulDkmjhSO9C+n0dFp+E22MiaFdbC7ukfiGFSBWspnaOaR2ia8AHtUiKZj55UkewzoW3pewkKxMu9kX+tSWekh9QI4orEyGgEaH09t8OSkcYBHjWdA9+EdooUrGm52qT6c2HmWGz1joadHzBJjgNN/mXIFhzuss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUUhz0Tp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0828F1F00893;
+	Sun,  7 Jun 2026 10:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829546;
-	bh=7exdBBjHPsJgtftCZe6Qdv5cn0STR9SAXit1vyl0ZYs=;
+	s=korg; t=1780829396;
+	bh=FCUrVrfc9o3Iu30u3VKiKyPy84KsUj6MzzsnyaXtYIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zm3MlPpbBaGypbz3HCQ5WU6CxKB/i//JU7SeRYNoXBalOJAaAnHx8HUNocP1V/4bU
-	 CrZueK0azu3y2GRaw1Vi3U6PUdUZT4RGgwEsYyUCx8eb4DR0K7LSmRRgHWlYywy6F8
-	 x68K9WEe0qlUYuGOg+1UjzoK/TB02uD9dkFBmJAk=
+	b=iUUhz0Tp5+5gv4y1taSH+s1gogRiLgIxDpMWoAoDyDu0jA6CzMdfD+z23cAAsmbnT
+	 l9Fx4W/JJI1dypQgHJoXg0XCR9Gi1HL/7+IKpmR8SHi9eiki+DV6ArdatGV3bgm9bG
+	 KAjy4wiv95xfvObYnX0hciF4PDPUTS3+f3UofTM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.18 257/315] drm/gem: fix race between change_handle and handle_delete
+	stable <stable@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>
+Subject: [PATCH 7.0 275/332] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
 Date: Sun,  7 Jun 2026 12:00:44 +0200
-Message-ID: <20260607095736.998485181@linuxfoundation.org>
+Message-ID: <20260607095738.146509790@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261708-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:airlied@redhat.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261664-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,60 +95,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 148226501B7
+X-Rspamd-Queue-Id: B2DBE6500A2
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 7164d78559b0ff29931a366a840a9e5dd53d4b7c upstream.
+commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 upstream.
 
-drm_gem_change_handle_ioctl leaves the old handle live in the IDR
-during the window between spin_unlock(table_lock) and the final
-spin_lock(table_lock). A concurrent drm_gem_handle_delete on the old
-handle succeeds in this window, decrements handle_count to 0, and frees
-the GEM object while the new handle's IDR entry still references it.
+hidg_alloc() initializes hidg->dev with device_initialize() before
+calling dev_set_name(). If dev_set_name() fails, the function currently
+jumps to err_unlock and returns without calling put_device().
 
-NULL the old handle's IDR entry before dropping table_lock so that any
-concurrent GEM_CLOSE on the old handle sees NULL and returns -EINVAL.
-Restore the old entry on the prime-bookkeeping error path.
+This leaves the device reference unbalanced and prevents hidg_release()
+from being called. Calling put_device() here is also safe, since
+hidg_release() only frees resources owned by hidg.
 
-Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/20260526085313.26791-1-kipreyyy@gmail.com
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Route the dev_set_name() failure path through err_put_device so the
+device reference is dropped properly.
+
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Johan Hovold johan@kernel.org
+Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/gadget/function/f_hid.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -1015,6 +1015,7 @@ int drm_gem_change_handle_ioctl(struct d
- 	       goto out_unlock;
-        }
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -1620,7 +1620,7 @@ static struct usb_function *hidg_alloc(s
+ 	hidg->dev.devt = MKDEV(major, opts->minor);
+ 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
+ 	if (ret)
+-		goto err_unlock;
++		goto err_put_device;
  
-+	idr_replace(&file_priv->object_idr, NULL, args->handle);
- 	spin_unlock(&file_priv->table_lock);
+ 	hidg->bInterfaceSubClass = opts->subclass;
+ 	hidg->bInterfaceProtocol = opts->protocol;
+@@ -1657,7 +1657,6 @@ static struct usb_function *hidg_alloc(s
  
- 	if (obj->dma_buf) {
-@@ -1023,6 +1024,7 @@ int drm_gem_change_handle_ioctl(struct d
- 		if (ret < 0) {
- 			spin_lock(&file_priv->table_lock);
- 			idr_remove(&file_priv->object_idr, handle);
-+			idr_replace(&file_priv->object_idr, obj, args->handle);
- 			spin_unlock(&file_priv->table_lock);
- 			goto out_unlock;
- 		}
+ err_put_device:
+ 	put_device(&hidg->dev);
+-err_unlock:
+ 	mutex_unlock(&opts->lock);
+ 	return ERR_PTR(ret);
+ }
 
 
 
