@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ctwBKRxJJWpwGAIAu9opvQ
-	(envelope-from <stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:04 +0200
+	id 0K/qAihJJWp5GAIAu9opvQ
+	(envelope-from <stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEB264FCB7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B426F64FCD0
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XF11DfZW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261409-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rqi9V8nP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A636D30034B8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F07F30041D1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A18A3290AD;
-	Sun,  7 Jun 2026 10:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FCB2D3A69;
+	Sun,  7 Jun 2026 10:34:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4192C1595;
-	Sun,  7 Jun 2026 10:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4800912CDA5;
+	Sun,  7 Jun 2026 10:34:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828439; cv=none; b=pAp6dEQ2MCEy+QB1Omo98OHZQRYAiKfRBLtM6now/VrXqigGYhojHi6Ratnr0lFi+HOIih1n7PoifTVlJVPo7fEyzN9FC9AnuS0wGQceEdNlpMRepmJXw2fEZute9wZksbvAFcthhSzLGtksQvLKD9oeVDsHUuDAsN+675owrxk=
+	t=1780828452; cv=none; b=g05ZXe0+v569gH5VkBtCxAqjiK/UBNAv4s4ZHXXiSkQDVdFSZ3YGvLIrpcBloB2iBAkqtX8W3gAfN+rFc/yYK6u9eiuefemjLQIWAQSHSiY2MFLaTA2GVv82ZaxlTKqm9SOP8+umlSyJ1qtw361jR7tjtcPn3fiVo4Qyvlm3OHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828439; c=relaxed/simple;
-	bh=pCospr9bEp3GqCTLKgRvvSUoARgu2Laa3g0jPJWiaqM=;
+	s=arc-20240116; t=1780828452; c=relaxed/simple;
+	bh=6OCilophEIHUpoRH48neu2mYotDRu+Qkn8q3tlei2K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP+96ccC9u/SYXH0RQsbqaefEw1wFAqMHYnycIUNHDHWXLMbgl4o3+y/SmSyeDF+MGMN49HCRH7PclV6QUabqLhDFJ+B1QQSdGhmE+XdNdc2DgHyB52LHtZc5k5UjeSNV9Hv3Rfb/Oi11MZ0+9PzMU/UdGKFuO6aVRAzr8JeNE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF11DfZW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B131F00893;
-	Sun,  7 Jun 2026 10:33:57 +0000 (UTC)
+	 MIME-Version; b=ifCrvrJdCZ2cy+FO3J3TFaFVaDo1KX330ZegA4f21q5tz5FCW4hxdmlNuLH0Q8cunaLMghq6MyO/jpEOkS6lFBlg5NGpAl3r9EZqK37eb0BMnhffPLyuco2V1dM3KJWBzg7bEcZL1HHo2T0eMsVJvB2GoteOcPLDjhOI8GJRS5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rqi9V8nP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232101F00893;
+	Sun,  7 Jun 2026 10:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828438;
-	bh=vIebKaf1oQJQCGgbZDgEWUPAYx1LCwyRyOVv3DlRq9E=;
+	s=korg; t=1780828451;
+	bh=GbIB+PNazU5g8Fa4kph1LzNL5Wey/704joyZzd6LkgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XF11DfZWJCkjmix/LcWP5XTDBzlUFelRkxq8swaVbMHE1iBujNwyV2uPr9t4AotV/
-	 2AZqvDh/Ka5lRA36oWf1CsCUYxTgQg2LP9/y0/41gL9ha4C1r0lfRIDCa8mJON6w4H
-	 I6sAy15Ohclfw/7eyMF/M+Wn0D8sah+cId9Wozvs=
+	b=Rqi9V8nPKOgeQ7PBZGFyBUffn+eHV4V5xMpiCMU13fkWyCsCOJNtWd7lgKQ9OO65p
+	 V4AdoK2Gha+UbbSBFW8nQrKFW/jSV/q5uEYOOEbBC5DY1IcUW7mYuVBg6RTWu1ERKY
+	 ZXHazkUYmjKL1gsuVoCNThc/3RgrQ4hda5pdHeFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hlleng <a909204013@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.12 138/307] HID: quirks: Add ALWAYS_POLL quirk for SIGMACHIP USB mouse
-Date: Sun,  7 Jun 2026 11:58:55 +0200
-Message-ID: <20260607095732.804955626@linuxfoundation.org>
+	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 139/307] Bluetooth: btusb: Allow firmware re-download when version matches
+Date: Sun,  7 Jun 2026 11:58:56 +0200
+Message-ID: <20260607095732.837928183@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -71,84 +71,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261412-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261409-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:a909204013@gmail.com,m:bentiss@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9BEB264FCB7
+X-Rspamd-Queue-Id: B426F64FCD0
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hlleng <a909204013@gmail.com>
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-commit 07466fc91c55532edcfb5c6a7ccd2ea52728d6bd upstream.
+commit 82855073c1081732656734b74d7d1d5e4cfd0da7 upstream.
 
-The SIGMACHIP USB mouse with VID/PID 1c4f:0034 can disconnect and
-re-enumerate repeatedly after it has been enumerated if its interrupt
-endpoint is not continuously polled.
+The Bluetooth host decides whether to download firmware by reading the
+controller firmware download completion flag and firmware version
+information.
 
-This was observed with the device reporting itself as "SIGMACHIP Usb
-Mouse". Keeping the input event device open avoids the disconnects.
+If a USB error occurs during the firmware download process (for example
+due to a USB disconnect), the download is aborted immediately. An
+incomplete firmware transfer does not cause the controller to set the
+download completion flag, but the firmware version information may be
+updated at an early stage of the download process.
 
-Add HID_QUIRK_ALWAYS_POLL for this device so the HID core keeps polling
-it even when there is no userspace input consumer.
+In this case, after USB reconnection, the host attempts to re-download
+the firmware because the download completion flag is not set. However,
+since the controller reports the same firmware version as the target
+firmware, the download is skipped. This ultimately results in the
+firmware not being properly updated on the controller.
 
+This change removes the restriction that skips firmware download when
+the versions are equal. It covers scenarios where the USB connection
+can be disconnected at any time and ensures that firmware download can
+be retriggered after USB reconnection, allowing the Bluetooth firmware
+to be correctly and completely updated.
+
+Fixes: 3267c884cefa ("Bluetooth: btusb: Add support for QCA ROME chipset family")
 Cc: stable@vger.kernel.org
-Signed-off-by: hlleng <a909204013@gmail.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h    |    1 +
- drivers/hid/hid-quirks.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/bluetooth/btusb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -1230,6 +1230,7 @@
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3430,7 +3430,13 @@ static int btusb_setup_qca_load_rampatch
+ 		    "firmware rome 0x%x build 0x%x",
+ 		    rver_rom, rver_patch, ver_rom, ver_patch);
  
- #define USB_VENDOR_ID_SIGMA_MICRO	0x1c4f
- #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD	0x0002
-+#define USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE	0x0034
- #define USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD2	0x0059
- 
- #define USB_VENDOR_ID_SIGMATEL		0x066F
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -186,6 +186,7 @@ static const struct hid_device_id hid_qu
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SEMICO, USB_DEVICE_ID_SEMICO_USB_KEYKOARD), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SENNHEISER, USB_DEVICE_ID_SENNHEISER_BTD500USB), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_KEYBOARD), HID_QUIRK_NO_INIT_REPORTS },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMA_MICRO, USB_DEVICE_ID_SIGMA_MICRO_USB_MOUSE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIGMATEL, USB_DEVICE_ID_SIGMATEL_STMP3780), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS1030_TOUCH), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_SIS_TOUCH, USB_DEVICE_ID_SIS817_TOUCH), HID_QUIRK_NOGET },
+-	if (rver_rom != ver_rom || rver_patch <= ver_patch) {
++	/* Allow rampatch when the patch version equals the firmware version.
++	 * A firmware download may be aborted by a transient USB error (e.g.
++	 * disconnect) after the controller updates version info but before
++	 * completion.
++	 * Allowing equal versions enables re-flashing during recovery.
++	 */
++	if (rver_rom != ver_rom || rver_patch < ver_patch) {
+ 		bt_dev_err(hdev, "rampatch file version did not match with firmware");
+ 		err = -EINVAL;
+ 		goto done;
 
 
 
