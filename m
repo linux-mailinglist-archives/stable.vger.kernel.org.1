@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PjhWCU5IJWrwFwIAu9opvQ
-	(envelope-from <stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:38 +0200
+	id KR5TJ9BIJWo6GAIAu9opvQ
+	(envelope-from <stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5992E64FBA8
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4C64FC39
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=q9129h7b;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HSIMVe9U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261389-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 005D03005178
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 40A823002F6C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEF731E842;
-	Sun,  7 Jun 2026 10:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6876B2D3A69;
+	Sun,  7 Jun 2026 10:32:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D033E329E7E;
-	Sun,  7 Jun 2026 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F411FE47B;
+	Sun,  7 Jun 2026 10:32:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828216; cv=none; b=SUnClCDdU3TvvNKGRHCcOejLmTMQ++FOHmqBbH29parcuYdkZ8+fWQuj6uarrdHsdbY3Edu5AzVEpPV6hZUbZHgPYoDmKpiknboyDFOUE5V9hlKf/LVD4IuCJ5NhhwuKx6IM+eKrisIn48HTATF/4J1vpOLmEo/LTtvIEZfSZ1Y=
+	t=1780828363; cv=none; b=CDLD1zlo+uk+XDAJ3skHWaB0R12Z7e9VnwVexS1Ptc5ntpudSwI1ALcCzXBYJIS1tzNLfa8hQwSDzXCDErkmAW1m/xMXrQ9TKQZJDKENhxYtNs/5cqZ2uplSdTVKS2IYzMSci36aLH5SZYba18do+IpMKUHqPRgMtD14jTNLp8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828216; c=relaxed/simple;
-	bh=rHictp+nackwG7xNJ696uWZZC8jcPBOxD+Gcj6mJsmw=;
+	s=arc-20240116; t=1780828363; c=relaxed/simple;
+	bh=BIGbVsStEv8nWWgqRJRYfWiMPNIBHvHYwcr2glkouds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7/WMdCppFW4y9pLQjzj53I8TZ17XDU2cjjhDmA9aWssD/yeX7c0P6MyUaodxLZE/Ssb3FKClXGlg4V/x6pF1LksRwxXRdRa5A9r1wBVxBpbT2icXeX9mrkDeClEVMVXvBdc6Z+MA91e3kzlQM9nBP9IiYgntSvBGT9UfEawgLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9129h7b; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DA31F00893;
-	Sun,  7 Jun 2026 10:30:13 +0000 (UTC)
+	 MIME-Version; b=TZDDTg5X9FhkhK3C77kLAaEB+1q3JmcmJCOtG/bBiJZEFpg+FlwDP4zBMDVfLteiYSYNqgfXqeyi47FKw2MjKaKjyJraphyUbMYB1Jgj+mNvX3RfUhMnRzP4qovobKLKT2OnweFRBgqor6mqvsYNfBWqOR1bNQRqZtlV3VKkCtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSIMVe9U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723E91F00893;
+	Sun,  7 Jun 2026 10:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828214;
-	bh=SI99nOLySRerxcxSUJ2BM0Keu5DGwL0+JoWmkb9soA8=;
+	s=korg; t=1780828362;
+	bh=o6vOzZr4xsAdfoxmzdG4a8fioQLzX/gLv++7DsQn8h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q9129h7b9gN0LgdJa050wlATJ4AOYSz1/+F/P7rUclfuuKufnOHCj+ywQ3rzlcs7t
-	 fpfuq1M79dPt6d2/61GP46z3UcYe3En4VaU5PDtFSu115YjUzl2FHmDyUKq/7OxrWr
-	 +o01tsDWX/y8iccj6LvnyIOhuw7OVcSHOo4GnpnA=
+	b=HSIMVe9UpWHr1C4Avu3pHwgUPGqo5NOliq+UjcDaJct2HlL8flyYrjkhcKoLb3HOC
+	 h+IL6yc9xak59PtXliA8veHVgeN4oIU379s+O8aXusXpitaIrUcvEvjcy72p5X0oYy
+	 Qq0gB9hEw5XzF9Wm5Z8kBn1bVYdGyTj2vJMB+b4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 141/315] KVM: arm64: Correctly cap ZCR_EL2 provided by a guest hypervisor
-Date: Sun,  7 Jun 2026 11:58:48 +0200
-Message-ID: <20260607095732.780900893@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 132/307] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
+Date: Sun,  7 Jun 2026 11:58:49 +0200
+Message-ID: <20260607095732.599696089@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261351-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261389-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:broonie@kernel.org,m:maz@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,168 +97,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5992E64FBA8
+X-Rspamd-Queue-Id: BBB4C64FC39
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 83726330748981372bde86ed5411d7b306612991 upstream.
+commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
 
-ZCR_EL2 can be updated by a VHE guest hypervisor either using ZCR_EL2
-(which traps) or ZCR_EL1 (which does not trap). KVM handles both in
-different way:
+wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
+struct pd_message with
 
-- on ZCR_EL2 trap, ZCR_EL2.LEN is immediately capped at the VM's own
-  VL limit. This has the potential to break existing SW that relies
-  on the full LEN field to be stateful.
+	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
+		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
 
-- on ZCR_EL1 access, we do absolutely nothing.
+which has two problems:
 
-On restoring the SVE context for an L2 guest, we directly restore the
-guest hypervisor's view of ZCR_EL2 into the physical ZCR_EL2. If the
-guest's view of the register was updated using the ZCR_EL2 accessor,
-the value has already been sanitised (with the caveat mentioned above).
+USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
+is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
+The byte count latched in RXINFO is the number of bytes the port partner
+put on the wire, so a malicious partner that transmits a 31-byte frame
+can drive the loop one byte past the destination if the WCOVE BMC
+receiver does not enforce the PD object-count limit in hardware. The
+existing FIXME flagged this as unverified.
 
-But if the guest used ZCR_EL1, the raw value is written into the HW,
-and the L2 guest can now access VLs that it shouldn't.
+Independently, regmap_read() takes an unsigned int * and stores a full
+unsigned int at the destination. Passing the byte pointer msg + i means
+each iteration writes four bytes; the high three are zero (val_bits is
+8) and are normally overwritten by the next iteration, but the final
+iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
+already writes three zero bytes past msg, which sits on the IRQ thread's
+stack in wcove_typec_irq().
 
-Fix all the above by moving the VL capping to the restore points,
-ensuring that:
+Clamp the loop to sizeof(struct pd_message) and read each register into
+a local before storing only its low byte, so the copy can never exceed
+the destination regardless of what RXINFO reports.
 
-- the HW is always programmed with a capped value, irrespective of
-  the accessor being used,
-
-- the ZCR_EL2.LEN field is always completely stateful, irrespective
-  of the accessor being used.
-
-Additionally, move ZCR_EL2 to be a sanitised register, ensuring that
-only the LEN field is actually stateful. This requires some creative
-construction of the RES0 mask, as the sysreg generation script does
-not yet generate RAZ/WI fields.
-
-Fixes: b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org
-[maz: rewrote commit message, tidy up access_zcr_el2()]
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h       |    2 +-
- arch/arm64/kvm/hyp/include/hyp/switch.h |   16 ++++++++++------
- arch/arm64/kvm/nested.c                 |    5 +++++
- arch/arm64/kvm/sys_regs.c               |   11 +++--------
- 4 files changed, 19 insertions(+), 15 deletions(-)
+ drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -496,7 +496,6 @@ enum vcpu_sysreg {
- 	ACTLR_EL2,	/* Auxiliary Control Register (EL2) */
- 	CPTR_EL2,	/* Architectural Feature Trap Register (EL2) */
- 	HACR_EL2,	/* Hypervisor Auxiliary Control Register */
--	ZCR_EL2,	/* SVE Control Register (EL2) */
- 	TTBR0_EL2,	/* Translation Table Base Register 0 (EL2) */
- 	TTBR1_EL2,	/* Translation Table Base Register 1 (EL2) */
- 	TCR_EL2,	/* Translation Control Register (EL2) */
-@@ -527,6 +526,7 @@ enum vcpu_sysreg {
- 	SCTLR2_EL2,	/* System Control Register 2 (EL2) */
- 	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
- 	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
-+	ZCR_EL2,	/* SVE Control Register (EL2) */
- 
- 	/* Any VNCR-capable reg goes after this point */
- 	MARKER(__VNCR_START__),
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -433,11 +433,13 @@ static inline bool kvm_hyp_handle_mops(s
- 
- static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
- {
-+	u64 zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+
- 	/*
- 	 * The vCPU's saved SVE state layout always matches the max VL of the
- 	 * vCPU. Start off with the max VL so we can load the SVE state.
- 	 */
--	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
-+	sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
- 	__sve_restore_state(vcpu_sve_pffr(vcpu),
- 			    &vcpu->arch.ctxt.fp_regs.fpsr,
- 			    true);
-@@ -447,8 +449,10 @@ static inline void __hyp_sve_restore_gue
- 	 * nested guest, as the guest hypervisor could select a smaller VL. Slap
- 	 * that into hardware before wrapping up.
- 	 */
--	if (is_nested_ctxt(vcpu))
--		sve_cond_update_zcr_vq(__vcpu_sys_reg(vcpu, ZCR_EL2), SYS_ZCR_EL2);
-+	if (is_nested_ctxt(vcpu)) {
-+		zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
-+		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
-+	}
- 
- 	write_sysreg_el1(__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)), SYS_ZCR);
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
+ 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
  }
-@@ -472,11 +476,11 @@ static inline void fpsimd_lazy_switch_to
- 		return;
  
- 	if (vcpu_has_sve(vcpu)) {
-+		zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+
- 		/* A guest hypervisor may restrict the effective max VL. */
- 		if (is_nested_ctxt(vcpu))
--			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
--		else
--			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
-+			zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
- 
- 		write_sysreg_el2(zcr_el2, SYS_ZCR);
- 
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1772,6 +1772,11 @@ int kvm_init_nv_sysregs(struct kvm_vcpu
- 	/* VNCR_EL2 */
- 	set_sysreg_masks(kvm, VNCR_EL2, VNCR_EL2_RES0, VNCR_EL2_RES1);
- 
-+	/* ZCR_EL2 - bits 8:4 are RAZ/WI so treat them as RES0 */
-+	resx.res0 = ZCR_ELx_RES0 | GENMASK_ULL(8, 4);
-+	resx.res1 = ZCR_ELx_RES1;
-+	set_sysreg_masks(kvm, ZCR_EL2, resx);
-+
- out:
- 	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
- 		__vcpu_rmw_sys_reg(vcpu, sr, |=, 0);
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2749,21 +2749,16 @@ static bool access_zcr_el2(struct kvm_vc
- 			   struct sys_reg_params *p,
- 			   const struct sys_reg_desc *r)
+-static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
++static int wcove_read_rx_buffer(struct wcove_typec *wcove,
++				struct pd_message *msg)
  {
--	unsigned int vq;
--
- 	if (guest_hyp_sve_traps_enabled(vcpu)) {
- 		kvm_inject_nested_sve_trap(vcpu);
- 		return false;
+-	unsigned int info;
++	unsigned int info, val, len;
++	u8 *buf = (u8 *)msg;
+ 	int ret;
+ 	int i;
+ 
+@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
+ 	if (ret)
+ 		return ret;
+ 
+-	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
++	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
+ 
+-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
+-		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
++	for (i = 0; i < len; i++) {
++		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
+ 		if (ret)
+ 			return ret;
++		buf[i] = val;
  	}
  
--	if (!p->is_write) {
-+	if (!p->is_write)
- 		p->regval = __vcpu_sys_reg(vcpu, ZCR_EL2);
--		return true;
--	}
-+	else
-+		__vcpu_assign_sys_reg(vcpu, ZCR_EL2, p->regval);
- 
--	vq = SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
--	vq = min(vq, vcpu_sve_max_vq(vcpu));
--	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
- 	return true;
- }
- 
+ 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
 
 
 
