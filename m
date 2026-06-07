@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-260955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NCKWIthCJWoJFQIAu9opvQ
-	(envelope-from <stable+bounces-260955-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:20 +0200
+	id AVUPLRhDJWokFQIAu9opvQ
+	(envelope-from <stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4BC64F55B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E8E64F56D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UJIpTwih;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260955-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260955-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="SvPYm0/H";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1A693016261
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:06:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84D4B30237CA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEEA4071F8;
-	Sun,  7 Jun 2026 10:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501CB3101A6;
+	Sun,  7 Jun 2026 10:06:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5B678C9C;
-	Sun,  7 Jun 2026 10:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264A34071F8;
+	Sun,  7 Jun 2026 10:06:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826771; cv=none; b=Kc23Unz8SrLEcJCOQZP1T0t+CoXJKz1SbK7OrmYweVnVV2juAHfpJCKgMc3dtpNeC+kFP6vRtIKbh/K+6kHXNxperM8mklzkrEWXKzNZL3g3Y1p9x7cek9CT777EcBEYuetgjO/EAGvCCWG5rj8M8f5H92H2RkVBn0uw3c2i4Zw=
+	t=1780826812; cv=none; b=a2NJ/5Tu3N6mxQ5pFy4sovH0NySM/32spxQv/Oz3ABCFRsXgy8XunEwSuSoHnFXzJeu+j1W5gw7Y61OylxQYenLvXt6SK/SEjoBt8+IXjYinD09fPVU7QmBWJ+pHLsYvBUgCdHafWEebDITpOkZ0i1gVFVFCC8zLVY7Nnha56Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826771; c=relaxed/simple;
-	bh=GodA7kWoUWgofy4+4FB/bNj6Tcor11TQf61VSD5uPLg=;
+	s=arc-20240116; t=1780826812; c=relaxed/simple;
+	bh=nUT5GR9QNO5sfoRecETlBNZjCHUR7zOS5/6eiTCJgzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lElMKmDaI3y5XZRO5ZyLyPubNAutt+i+TWHqiOI2hhefSxXBXp0w/l42/B/a/g8G2RSO2hRlKzvknHVhL+Dug9FQrH2FjnPwmTlAqfrMkBIO9vOSaSrGr0l98tD0p67B333K41LUyhkL9WT8ykd4g2++guvvbAQk7QRVStEpPXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJIpTwih; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4933D1F00893;
-	Sun,  7 Jun 2026 10:06:09 +0000 (UTC)
+	 MIME-Version; b=ZIK1yb8uon968R+jN6hMvV4ssPfiRXrRPBacSgr0IwIY9AhnFJXzVMcct/SyZORiO9ulElYf17MOqXBSX67e6xBq5thZzUSrhYpFo7zWHkYXN0BwpwF7ySkwwGJs9oTnanhmeQwxJrOkRyeydrwIZ2pldeQlINQ9mpp/OYrthrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvPYm0/H; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E4B1F00893;
+	Sun,  7 Jun 2026 10:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826769;
-	bh=sdgItA8OJLCvvwF7fj8lhPuoAmZIsCsZJ8VUQ/3j3Kw=;
+	s=korg; t=1780826809;
+	bh=0GTR9Aj8qJZwlVFxzmNJhAC50skRV1xVu8rJT8ol1ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UJIpTwihsZmQxWHijdjuBU8041Jk7WA0WVt67uLUCv2GsJGjK4pe533eMqPgF38i4
-	 t9c08tZMj4ajKML0fFuKXaYAs3Cd+8IufXwsotaqCps+hGK3lGTfmzqw5TTgv0aV4N
-	 DcY0b/oPnkKJdhwEw1h0Jyv2HNOXllH/sJfueaIQ=
+	b=SvPYm0/HvcRz07trPFExl3WzL1siStdWnllBVbQ4p5KGL6BS8l788bDpUdO3nCUtA
+	 cLzSFxQ8EkPbW1bq8EwVJzLzgGYaLDZ3x0tkVKbCCZchgaR9DpMGxLLN9yR04wkK3x
+	 zEa59qsiuM96q7MDeIYlT4irVriVQNH2KEMM+IGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Victor Nogueria <victor@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 023/332] tun: free page on build_skb failure in tun_xdp_one()
+Subject: [PATCH 6.18 005/315] net/sched: sch_sfb: Replace direct dequeue call with peek and qdisc_dequeue_peeked
 Date: Sun,  7 Jun 2026 11:56:32 +0200
-Message-ID: <20260607095728.922672474@linuxfoundation.org>
+Message-ID: <20260607095727.706623786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +70,113 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-260955-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-260967-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:victor@mojatatu.com,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,asu.edu:email,oracle.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,mojatatu.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED4BC64F55B
+X-Rspamd-Queue-Id: 28E8E64F56D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Victor Nogueria <victor@mojatatu.com>
 
-[ Upstream commit aa8963fdce667a42fb7f0bdd2909fadcab02f9a8 ]
+[ Upstream commit 1b9bc71153b01dbde8045b9edede4240f4f5520e ]
 
-When build_skb() fails in tun_xdp_one(), the function sets ret to
--ENOMEM and jumps to the out label, which returns without freeing the
-page that vhost_net_build_xdp() allocated for the frame. As with the
-short-frame rejection path, tun_sendmsg() discards the per-buffer error
-and still returns total_len, so vhost_tx_batch() takes the success path
-and never frees the page. Each build_skb() failure in a batch leaks one
-page-frag chunk.
+When sfb has children (eg qfq qdisc) whose peek() callback is
+qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
+qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
+its child (sfb in this case), it will do the following:
+ 1a. do a peek() - and when sensing there's an skb the child can offer, then
+     - the child in this case(sfb) calls its child's (qfq) peek.
+        qfq does the right thing and will return the gso_skb queue packet.
+        Note: if there wasnt a gso_skb entry then qfq will store it there.
+ 1b. invoke a dequeue() on the child (sfb). And herein lies the problem.
+     - sfb will call the child's dequeue() which will essentially just
+       try to grab something of qfq's queue.
 
-Free the page before taking the error path, matching the put_page() the
-other error exits of tun_xdp_one() already perform.
+[  127.594489][  T453] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
+[  127.594741][  T453] CPU: 2 UID: 0 PID: 453 Comm: ping Not tainted 7.1.0-rc1-00035-gac961974495b-dirty #793 PREEMPT(full)
+[  127.595059][  T453] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  127.595254][  T453] RIP: 0010:qfq_dequeue+0x35c/0x1650 [sch_qfq]
+[  127.595461][  T453] Code: 00 fc ff df 80 3c 02 00 0f 85 17 0e 00 00 4c 8d 73 48 48 89 9d b8 02 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 76 0c 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b
+[  127.596081][  T453] RSP: 0018:ffff88810e5af440 EFLAGS: 00010216
+[  127.596337][  T453] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: dffffc0000000000
+[  127.596623][  T453] RDX: 0000000000000009 RSI: 0000001880000000 RDI: ffff888104fd82b0
+[  127.596917][  T453] RBP: ffff888104fd8000 R08: ffff888104fd8280 R09: 1ffff110211893a3
+[  127.597165][  T453] R10: 1ffff110211893a6 R11: 1ffff110211893a7 R12: 0000001880000000
+[  127.597404][  T453] R13: ffff888104fd82b8 R14: 0000000000000048 R15: 0000000040000000
+[  127.597644][  T453] FS:  00007fc380cbfc40(0000) GS:ffff88816f2a8000(0000) knlGS:0000000000000000
+[  127.597956][  T453] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  127.598160][  T453] CR2: 00005610aa9890a8 CR3: 000000010369e000 CR4: 0000000000750ef0
+[  127.598390][  T453] PKRU: 55555554
+[  127.598509][  T453] Call Trace:
+[  127.598629][  T453]  <TASK>
+[  127.598718][  T453]  ? mark_held_locks+0x40/0x70
+[  127.598890][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  127.599053][  T453]  sfb_dequeue+0x88/0x4d0
+[  127.599174][  T453]  ? ktime_get+0x137/0x230
+[  127.599328][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  127.599480][  T453]  ? qdisc_peek_dequeued+0x7b/0x350 [sch_qfq]
+[  127.599670][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  127.599831][  T453]  tbf_dequeue+0x6b1/0x1098 [sch_tbf]
+[  127.599988][  T453]  __qdisc_run+0x169/0x1900
 
-Fixes: 043d222f93ab ("tuntap: accept an array of XDP buffs through sendmsg()")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260521163312.1479805-2-bestswngs@gmail.com
+The right thing to do in #1b is to grab the skb off gso_skb queue.
+This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
+method instead.
+
+Fixes: e13e02a3c68d ("net_sched: SFB flow scheduler")
+Signed-off-by: Victor Nogueria <victor@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260430152957.194015-3-jhs@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_sfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 8154d18a2a235a..ca0ae5df73af78 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2437,6 +2437,7 @@ static int tun_xdp_one(struct tun_struct *tun,
- build:
- 	skb = build_skb(xdp->data_hard_start, buflen);
- 	if (!skb) {
-+		put_page(virt_to_head_page(xdp->data));
- 		ret = -ENOMEM;
- 		goto out;
- 	}
+diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
+index 00286c930b8de7..14ac8897784757 100644
+--- a/net/sched/sch_sfb.c
++++ b/net/sched/sch_sfb.c
+@@ -441,7 +441,7 @@ static struct sk_buff *sfb_dequeue(struct Qdisc *sch)
+ 	struct Qdisc *child = q->qdisc;
+ 	struct sk_buff *skb;
+ 
+-	skb = child->dequeue(q->qdisc);
++	skb = qdisc_dequeue_peeked(child);
+ 
+ 	if (skb) {
+ 		qdisc_bstats_update(sch, skb);
 -- 
 2.53.0
 
