@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261217-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kKoYAr1GJWoVFwIAu9opvQ
-	(envelope-from <stable+bounces-261242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:57 +0200
+	id o5W+HH1GJWr3FgIAu9opvQ
+	(envelope-from <stable+bounces-261217-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7381164F9C7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C03BD64F98E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wfDG9oAq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261242-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261242-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CmSFgrUs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261217-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261217-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F97C301F141
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9722301DD8F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1594232470F;
-	Sun,  7 Jun 2026 10:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D7531A065;
+	Sun,  7 Jun 2026 10:21:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1C231F993;
-	Sun,  7 Jun 2026 10:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4872FB97B;
+	Sun,  7 Jun 2026 10:21:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827796; cv=none; b=g73X7z2fQLgMUUSJvRaRdMK/xC7RAhhD8nXCsna+e+riDji9n8BdCWpb78uw/rqnhTTp/g0y6PacFiYifCE4auf+wwjThjOZ7NxUXYF1qFBfqQQQGeZSObRyaaSmvLzDo6q5tPqLbOzhV7OwRY74aRxVrd4VRM3RgXErbegYcpg=
+	t=1780827702; cv=none; b=OyxZ2hy46A1srFNw4xG0SSA/cCFyD8jW6WfDuOai7AFCsWC7qCXCXBa3Lp5BAyqAb4wTdxj6Z0iHnXp+fVata8rohfCT6HrXtj1GXxyyeQigk6fFktx3WIhbcaC1cP0e/nQvEfT4TxnyrkEB8WiMkhGldEYjpm6ueEhQ9NyuFCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827796; c=relaxed/simple;
-	bh=73vPq6iq4Re5e0PHOnV39sg6Tv0c1hBcHr9qL+X+sDs=;
+	s=arc-20240116; t=1780827702; c=relaxed/simple;
+	bh=TUgZHCkKTaHoHt+13hljNFZ74XRB9cSZuPyBloO4S2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nblim6AT2XaCVDD+hb5pr2A2vLlF3uzp1qrM94am6hHCNSM7G1vL9IBj05e9cMPW9xBXVmSW3k6UfXhjTpgbBQSroouuH+YF774PRv67NhvuAhUhyy7KYj8LsKbuP7E/hzBvKah3UrORETIIHlLx+Sk2NUVP24Vp1fRmo72VmDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfDG9oAq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FA81F00893;
-	Sun,  7 Jun 2026 10:23:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sEhtn5rpu8+aNbgOlDKRpFoHoJ9PrkjyAmqsD7gF12HD//EaCO8UN90xJsbEyJ6icMr+LCLt/nNU5X/lxaCAuhrZqN9L4k6DMmZOB+AxZfJYIwJKiqfxWDDmvejJF4Fd6a3OWmoEv9HNc9/yN2YPrzGkWe8GOhGohrR++bAT7eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmSFgrUs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95671F00893;
+	Sun,  7 Jun 2026 10:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827795;
-	bh=36HI4xnjwaYmu/kv6PuJLymjRwNce2RD3a60gYyxHwQ=;
+	s=korg; t=1780827700;
+	bh=Idr4WwI9FdqaQXlKafU76VeExHcx/EGKU2cNCZm+4M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wfDG9oAqqkcOWPlwoqbfOhIBXomwd8l2La0dAy8c6IBzZWiBRJHW4DRpvMnf5XRTV
-	 Uxg0Ms/aggo13CfsMWjCvcrla3WVrDHiOTpdfio30r+FtohnWEiNUyFkG+CZry+B5Y
-	 4udm2j0vFLqYBM5KhdLtTlFGfBhznte65zwLNIr4=
+	b=CmSFgrUsaATH94Si2AOe/8eKrZae989/nJNpaCQNPs2zlXpuyn5QjMroNzV2/Wg0j
+	 4jZi2lMzFYBJ+e01vaZqjmZd6XyvvGWTDHBm6GizGp/+qObS81qNumXkEo0DzACJHz
+	 4uszqqp3+qKVfvMIxwYiAzh8T6837z/ypfnlKKxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/307] Bluetooth: L2CAP: Fix possible crash on l2cap_ecred_conn_rsp
+Subject: [PATCH 7.0 115/332] drm/i915/psr: Add defininitions for INTEL_WA_REGISTER_CAPS DPCD register
 Date: Sun,  7 Jun 2026 11:58:04 +0200
-Message-ID: <20260607095730.969886994@linuxfoundation.org>
+Message-ID: <20260607095732.333749998@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,121 +66,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261242-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261217-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,ursulin.net:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7381164F9C7
+X-Rspamd-Queue-Id: C03BD64F98E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit 41c2713b204e6cb6a94587bc6bf6935107df5479 ]
+commit fbceb39b536e40c2f7cc47ab42037bb7c2b7ced9 upstream.
 
-If dcid is received for an already-assigned destination CID the spec
-requires that both channels to be discarded, but calling l2cap_chan_del
-may invalidate the tmp cursor created by list_for_each_entry_safe and
-in fact it is the wrong procedure as the chan->dcid may be assigned
-previously it really needs to be disconnected.
+EDP specification says:
 
-Calling l2cap_chan_clone directly may still lead to l2cap_chan_del so
-instead schedule l2cap_chan_timeout with delay 0 to close the channel
-asynchronously.
+"If either VSC SDP is unable to be transmitted 100 ns before the SU region,
+the Source device may optionally transmit the VSC SDP during the prior
+video scan line’s HBlank period There is a Intel specific drm dp register
+currently containing bits related how TCON can support PSR2 with SDP on
+prior line."
 
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Unfortunately many panels are having problems in implementing this. So
+there is a custom Intel specific DPCD register (INTEL_WA_REGISTER_CAPS) to
+figure out if this is properly implemented on a panel or if panel doesn't
+require that 100 ns delay before the SU region. Here are the definitions in
+this custom DPCD address:
+
+0 = Panel doesn't support SDP on prior line
+1 = Panel supports SDP on prior line
+2 = Panel doesn't have 100ns requirement
+3 = Reserved
+
+Add definitions for this new register and it's values into new header
+intel_dpcd.h.
+
+v2: add INTEL_DPCD_ prefix to definitions
+
+Bspec: 74741
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-2-jouni.hogander@intel.com
+(cherry picked from commit 1da1c9294825f08f622c473480d185680c2a3b75)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dpcd.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+ create mode 100644 drivers/gpu/drm/i915/display/intel_dpcd.h
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9de5d545966d60..f0b0f347ebc10a 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5194,6 +5194,7 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
- 	cmd_len -= sizeof(*rsp);
- 
- 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
-+		struct l2cap_chan *orig;
- 		u16 dcid;
- 
- 		if (chan->ident != cmd->ident ||
-@@ -5215,8 +5216,10 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
- 
- 		BT_DBG("dcid[%d] 0x%4.4x", i, dcid);
- 
-+		orig = __l2cap_get_chan_by_dcid(conn, dcid);
+diff --git a/drivers/gpu/drm/i915/display/intel_dpcd.h b/drivers/gpu/drm/i915/display/intel_dpcd.h
+new file mode 100644
+index 00000000000000..4aea5326f2ed48
+--- /dev/null
++++ b/drivers/gpu/drm/i915/display/intel_dpcd.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Intel Corporation
++ */
 +
- 		/* Check if dcid is already in use */
--		if (dcid && __l2cap_get_chan_by_dcid(conn, dcid)) {
-+		if (dcid && orig) {
- 			/* If a device receives a
- 			 * L2CAP_CREDIT_BASED_CONNECTION_RSP packet with an
- 			 * already-assigned Destination CID, then both the
-@@ -5225,10 +5228,24 @@ static inline int l2cap_ecred_conn_rsp(struct l2cap_conn *conn,
- 			 */
- 			l2cap_chan_del(chan, ECONNREFUSED);
- 			l2cap_chan_unlock(chan);
--			chan = __l2cap_get_chan_by_dcid(conn, dcid);
--			l2cap_chan_lock(chan);
--			l2cap_chan_del(chan, ECONNRESET);
--			l2cap_chan_unlock(chan);
++#ifndef __INTEL_DPCD_H__
++#define __INTEL_DPCD_H__
 +
-+			/* Check that the dcid channel mode is
-+			 * L2CAP_MODE_EXT_FLOWCTL since this procedure is only
-+			 * valid for that mode and shouldn't disconnect a dcid
-+			 * in other modes.
-+			 */
-+			if (orig->mode == L2CAP_MODE_EXT_FLOWCTL) {
-+				l2cap_chan_lock(orig);
-+				/* Disconnect the original channel as it may be
-+				 * considered connected since dcid has already
-+				 * been assigned; don't call l2cap_chan_close
-+				 * directly since that could lead to
-+				 * l2cap_chan_del and then removing the channel
-+				 * from the list while we're iterating over it.
-+				 */
-+				__set_chan_timer(orig, 0);
-+				l2cap_chan_unlock(orig);
-+			}
- 			continue;
- 		}
- 
++#define INTEL_DPCD_INTEL_WA_REGISTER_CAPS					0x3f0
++# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK	REG_GENMASK(1, 0)
++# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1			0
++# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE		1
++# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE		2
++
++#endif /* __INTEL_DPCD_H__ */
 -- 
 2.53.0
 
