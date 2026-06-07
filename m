@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-261533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x0WlE/ZKJWonGQIAu9opvQ
-	(envelope-from <stable+bounces-261533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:58 +0200
+	id PkonDFdLJWpFGQIAu9opvQ
+	(envelope-from <stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D817F64FEB9
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD8664FF27
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LFP461LB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261533-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261533-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EucgurWe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56F9F3003605
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 505783004420
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873043195FD;
-	Sun,  7 Jun 2026 10:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D371E98EF;
+	Sun,  7 Jun 2026 10:43:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CEB2C1595;
-	Sun,  7 Jun 2026 10:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E419E32A3C9;
+	Sun,  7 Jun 2026 10:43:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828915; cv=none; b=B0K0xCN/wM/Ib4N1/5UcUXVUzZjFuHCGTd+Z2252pu911ug6NfIILUdqAS+c7pVqcbj4bIKCIFDzTIibo93+EPlpjW9hk9eAckp1ubNP6jOKrSRiuJxpgGnTwOJvblrx4JX9eF0zZ8fqJIskX9n5Z0Cj2Mk3/UBKm/yCRXuj49s=
+	t=1780829010; cv=none; b=ISQhbri5PhJbTixzTngbyR+K+c96WX31srSwKLfCSaSNgGXXIgrYbICo9EAzKyn7LrdYOyOvIvBiw5lbZUwwXxBZVQlA9wq5JGI8dSaqxEswv2OC5gFN4MiXsenQswrQfA1CDVlVq1YqLr5+Dh2JW4gqvT9PrRnRm56bkoVeY2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828915; c=relaxed/simple;
-	bh=JKDULnPbaWfE8BdNybKHfwUtDPDA23rH2SIUziu/V4I=;
+	s=arc-20240116; t=1780829010; c=relaxed/simple;
+	bh=R9xaKPGI12V+uZCOa+tkHctLCJlznjdpEEUxoe46sU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svocOw5rLQe9ADnEtxlpNq/ePAaiaZcwjhtF8WYeftzqUoP9d7ofa6xcmiMyFVIJ3Si948OwFO4PclYfKXsgl0o3LY0dkPdKda0LOrZx+mxs0H0+rrJCaB+xF4mUNWHWVL/uyHkBno1LrkW7NFY4ADh/1nTmYVwn+LMFymv4mUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFP461LB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3071F00893;
-	Sun,  7 Jun 2026 10:41:53 +0000 (UTC)
+	 MIME-Version; b=PcbsECTxqha8cRwawPehypmveAOlyII+QrQVr8+hmT+TQE2oGWzBgGCtCxUiEqQuu1Qa7JsmQtCeUkmvGjlafVhsaw2AQ9sUx3GqaB9+vIDvJfV+MSRSUb/+8MiYL2T2+Gqnfxp949kpkwgJgD/W7qSbPVEE3/mnU2AbEXr9c+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EucgurWe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A283F1F00893;
+	Sun,  7 Jun 2026 10:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828914;
-	bh=aKrnndO3xXqiy4Eh1K4Xf/vj3rFtCqMSLmf8EgS8AvE=;
+	s=korg; t=1780829008;
+	bh=vqZY43GL5hMco3bYsEx5w6276g7v8n1nearov0jvvcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LFP461LBRm2X3fq7pT0I9rQMgY5xpmWH2GEPgpHimHcxAAOzeoeJvXVXPc6K+f2sC
-	 lY77qk/f8hHVEXxlEO/whJjo78fTBt+O0wvtOg6bXSQjVpoMX5MXnmPbCNJRtN19wX
-	 MPjwU4gkL9jhq6S/ICMZSkiXsZfXQNseEBfoj5EM=
+	b=EucgurWeY9cEPswpw0Xg0raZXe09ILzUENS83oIbYH/zTwnrg3VOITHPo2X1tZkuL
+	 li7tvwlyr3ZiCeLCeix2ssifUJkUKXDz3qtk7aGslEuLk4eckIjAYC/y4rp5nkthHi
+	 mFLWW3cTk3JC+dN5hUa5v2C316pLu7S7DbTFmqiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yilin Zhu <zylzyl2333@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 7.0 226/332] xfrm: ipcomp: Free destination pages on acomp errors
-Date: Sun,  7 Jun 2026 11:59:55 +0200
-Message-ID: <20260607095736.360780668@linuxfoundation.org>
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 209/315] ALSA: hda/realtek: Fix speaker output on ASUS ROG Strix G615LP
+Date: Sun,  7 Jun 2026 11:59:56 +0200
+Message-ID: <20260607095735.234169046@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,95 +71,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,gondor.apana.org.au,secunet.com];
-	TAGGED_FROM(0.00)[bounces-261533-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261558-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:herbert@gondor.apana.org.au,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhangheng@kylinos.cn,m:tiwai@suse.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,suse.de:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D817F64FEB9
+X-Rspamd-Queue-Id: 3BD8664FF27
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit 7dbac7680eb629b3b4dc7e98c34f943b8814c0c8 upstream.
+commit 20587302f8d700f26ee2c8a60ffb0a69ae0edf16 upstream.
 
-Move the out_free_req label up by a couple of lines so that the
-allocated dst SG list gets freed on error as well as success.
+Add quirk for ALC294 codec on ASUS ROG Strix G615LP
+(SSID 1043:1214) using ALC287_FIXUP_TXNW2781_I2C_ASUS to
+fix speaker output.
 
-Fixes: eb2953d26971 ("xfrm: ipcomp: Use crypto_acomp interface")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yilin Zhu <zylzyl2333@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221173
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260526013611.1954949-1-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_ipcomp.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/xfrm/xfrm_ipcomp.c
-+++ b/net/xfrm/xfrm_ipcomp.c
-@@ -51,11 +51,15 @@ static int ipcomp_post_acomp(struct sk_b
- 	struct scatterlist *dsg;
- 	int len, dlen;
- 
--	if (unlikely(err))
--		goto out_free_req;
-+	if (unlikely(!req))
-+		return err;
- 
- 	extra = acomp_request_extra(req);
- 	dsg = extra->sg;
-+
-+	if (unlikely(err))
-+		goto out_free_req;
-+
- 	dlen = req->dlen;
- 
- 	pskb_trim_unique(skb, 0);
-@@ -84,10 +88,10 @@ static int ipcomp_post_acomp(struct sk_b
- 		skb_shinfo(skb)->nr_frags++;
- 	} while ((dlen -= len));
- 
--	for (; dsg; dsg = sg_next(dsg))
-+out_free_req:
-+	for (; dsg && sg_page(dsg); dsg = sg_next(dsg))
- 		__free_page(sg_page(dsg));
- 
--out_free_req:
- 	acomp_request_free(req);
- 	return err;
- }
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7053,6 +7053,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	HDA_CODEC_QUIRK(0x1043, 0x1204, "ASUS Strix G16 G615JMR", ALC287_FIXUP_TXNW2781_I2C_ASUS),
+ 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
++	HDA_CODEC_QUIRK(0x1043, 0x1214, "ASUS ROG Strix G615LP", ALC287_FIXUP_TXNW2781_I2C_ASUS),
+ 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
 
 
 
