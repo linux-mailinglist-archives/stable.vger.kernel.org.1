@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-261571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id utPFFt5MJWr3GQIAu9opvQ
-	(envelope-from <stable+bounces-261571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:06 +0200
+	id tKpuMGVKJWr+GAIAu9opvQ
+	(envelope-from <stable+bounces-261494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D6D96500A5
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C72164FE1C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="dQp4/BMM";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261571-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261571-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i4XkPpdZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261494-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261494-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E965F3053EAD
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35EC4300789D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E31331F9AC;
-	Sun,  7 Jun 2026 10:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC003254A9;
+	Sun,  7 Jun 2026 10:39:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE051E98EF;
-	Sun,  7 Jun 2026 10:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7E9212564;
+	Sun,  7 Jun 2026 10:39:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829057; cv=none; b=gs3tEDCECVpfP41LVux+MkOIk5zzIZE2x5tmm9KXH5IXJeKfjcVlf3NX8rTZdIU9K9a5T+xmu3NXEHB4Hh/I0yVSWVE86ArjbuUfDrCa9TL6HX2jilaF5vQ1hJ4pqXRQioxXgZTV6asum39UrBM9rZzSKtxzQBmBu9nh3fOncg4=
+	t=1780828771; cv=none; b=IZE8iUfi7aLv0AT4cROFJ1k8Y+TzgrsahNZZTM0E05MwWWp91fKeS122xXDPcXT3XX0Z9oVXDhjw8WO16bzeRvwag5Sxv3UQ3Ls6d5AyGQa5NKm82YG46/UGJJImlVo9R3prIRwATAxe1u9oDaQlWcwIidxVcgd8mYf5d2K5LzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829057; c=relaxed/simple;
-	bh=ADP8U5kMtaeylYZ1WIaRF75ez4TBsSh1W031smC8W14=;
+	s=arc-20240116; t=1780828771; c=relaxed/simple;
+	bh=4OXHpfFKsp+Md0/xYHSkTIBOq2nMGxYyV0oJQ5WIZcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obLXTy8nY0dP7XQ8cScAZxFv5QOMTsv0VE0bO9TtewSVCo7YqFm+lSy9ni5/fDYOoVlHfZ74nD6syS4bOUWhvvzCODHmwbf83TfPxRFFQnGIYTvztBpb6xIhdqu3RSeG4rM3ZecvqbyIR/hOsNj6ApNGegPq2zmPjfLz0CV8Ow0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQp4/BMM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C691F00893;
-	Sun,  7 Jun 2026 10:44:14 +0000 (UTC)
+	 MIME-Version; b=RpqSDKJabePEwi20XU923esbOj0oVvNTo04a11GCooq/O7p2g51JmQwwKkMXpmKio05vCEI6wfvzzwdOKEDL4Slgj+WETXBwiHJ4nrMyN66DaCVbeqQKXWIcfZb/Pt4124TZ+umVERR0UwtQ1LuEBvEd8kQ0d5ew8Mg9Nx8g/8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4XkPpdZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C781F00893;
+	Sun,  7 Jun 2026 10:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829056;
-	bh=0wsacAC8oV2wFZmJwyFapsuvFBHUhHEjzmUkXUJiZ+g=;
+	s=korg; t=1780828770;
+	bh=nMFZqEID5k4gjNVJI5c5ZRfaULSEJZO4j3I+cYI5Chc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dQp4/BMMqNV6Tk7u2mEb/rbM7wa3DBYlXWHmcU+mgOswnCNoEU0onOk1RGJbedMj9
-	 8kc02n9K2/QhIqDWsZ4tO2n8mouCSu4RkBW6uMkEQvNP7r+mF6ZJ9i4HMoxAkcwQxd
-	 +V+4LbWrWxCemNzoV0m1G1GYlrM2207gKyGkWSEs=
+	b=i4XkPpdZ2bmNmFJdQzScin2F7zcWAf/CFTMkD9Asob6uytViqeqhcLZeK9dwANWqS
+	 7zdwTDxj3uEkGUZL/fDzQd5QIL627zZxM2oa5O0JxeMaBQBxsrQBKXi59qI2MB8pa7
+	 HtTlMFd9DcKUWaofgSSAvOgLUTkR7v2FXU4QiRqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 209/332] bpf: sockmap: fix tail fragment offset in bpf_msg_push_data
-Date: Sun,  7 Jun 2026 11:59:38 +0200
-Message-ID: <20260607095735.743300653@linuxfoundation.org>
+Subject: [PATCH 7.0 210/332] macsec: fix replay protection at XPN lower-PN wrap
+Date: Sun,  7 Jun 2026 11:59:39 +0200
+Message-ID: <20260607095735.779924163@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -76,83 +72,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
-	TAGGED_FROM(0.00)[bounces-261571-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261494-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lenovo.com:email,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D6D96500A5
+X-Rspamd-Queue-Id: 2C72164FE1C
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit f72eed9b84fb771019a955908132410a9ba9ea3f upstream.
+commit e68842b3356471ba56c882209f324613dac47f64 upstream.
 
-When bpf_msg_push_data() inserts data in the middle of a scatterlist
-entry, it splits the original entry into a left fragment and a right
-fragment.
+In macsec_post_decrypt(), when pn is U32_MAX, pn + 1 overflows u32 to 0
+and the first branch never fires. If next_pn_halves.lower is also in the
+upper half, pn_same_half(pn, lower) is true and the XPN else-if does not
+fire either, leaving next_pn_halves unchanged. An attacker that captures
+the legitimate frame carrying pn == 0xFFFFFFFF on an XPN association
+can then replay it indefinitely, since lowest_pn never rises above
+the captured pn and macsec_decrypt() reconstructs the same IV.
 
-The right fragment offset is page-local, but the code advances it with
-`start`, which is the message-global insertion point. For inserts into a
-non-first SG entry, this over-advances the offset and leaves the split
-layout inconsistent.
+Extend the XPN else-if to also fire when pn + 1 wraps to 0, so receipt
+of pn == U32_MAX advances next_pn_halves to (upper + 1, 0).
 
-Advance the right fragment offset by the fragment-local delta,
-`start - offset`, which matches the length removed from the front of the
-original entry.
-
-Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Link: https://patch.msgid.link/8b129d10566aa3eb43f61a8f9757bcf51707d324.1779636774.git.xuyq21@lenovo.com
+Fixes: a21ecf0e0338 ("macsec: Support XPN frame handling - IEEE 802.1AEbw")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78813FD49E58F253B989F197AF012@SYBPR01MB7881.ausprd01.prod.outlook.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/macsec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2865,7 +2865,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_
- 
- 		psge->length = start - offset;
- 		rsge.length -= psge->length;
--		rsge.offset += start;
-+		rsge.offset += start - offset;
- 
- 		sk_msg_iter_var_next(i);
- 		sg_unmark_end(psge);
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -804,7 +804,8 @@ static bool macsec_post_decrypt(struct s
+ 		if (pn + 1 > rx_sa->next_pn_halves.lower) {
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		} else if (secy->xpn &&
+-			   !pn_same_half(pn, rx_sa->next_pn_halves.lower)) {
++			   (pn + 1 == 0 ||
++			    !pn_same_half(pn, rx_sa->next_pn_halves.lower))) {
+ 			rx_sa->next_pn_halves.upper++;
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		}
 
 
 
