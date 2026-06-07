@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G7sTEsNGJWoXFwIAu9opvQ
-	(envelope-from <stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:03 +0200
+	id XGnAKvBHJWqzFwIAu9opvQ
+	(envelope-from <stable+bounces-261231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E3A64F9D0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073F864FB0C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yLBEuE5J;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZDU58xzq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261231-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261231-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02FC43020863
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABF63037D42
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A693254BD;
-	Sun,  7 Jun 2026 10:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CDF31E831;
+	Sun,  7 Jun 2026 10:22:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F33264C2;
-	Sun,  7 Jun 2026 10:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC30322C6D;
+	Sun,  7 Jun 2026 10:22:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827809; cv=none; b=Z6a8YwmD0u4PMjTqCt2uRai20OFsW4v+mQgsRkDTAuMXNxci7cadesHhNbdOpUzd77AEhLLbJBv0Jhy5WbjF0K6jXugbeT854zaGVY+aKkjsUzyWK6xwxDQuFxDxuX63kM8EkeVyiGHlV6GoBioptPEAWXMlj8gqH0lqxhxwN6s=
+	t=1780827756; cv=none; b=q+QQtYRWMRF4XdwbXHTW9FSxKkTNV1YxsoTbkr1Da6M20ZYFOKf4Rv6pQ3/nQhlbDOK+u6ZRcurwLRhI8RJuPTRJUwA0BPMTs3D80j8nzZ7j0ycBwpAwOkLaVJgTMKT8F69LEXGaNemwo6SZsauQ1xM84Ma0Kk/OT5hEg4FkkcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827809; c=relaxed/simple;
-	bh=qmYJsPCASWr3cinDHOwJLwnvCH6MCLHZT3wb4EnpT2U=;
+	s=arc-20240116; t=1780827756; c=relaxed/simple;
+	bh=NkYqs61n6pZsDVsx/GTQJrBzgyc45s7/Z8UQkDjI+D4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETI0Q0oydqINnIUo/oyDqikDhuJJEn0PSU2smo40tS0rEsaXJbgIwKGuNYcEQ3Y09By04CbybSrBDws4/6yaFhgrpnuPmZfe5OVv2T5S6weezNN+UnXVKRecCzH7lL/+F/0TFkMh0MeRTrSaM8Axn8hdbyOKJeK2Ob8q1/s2HM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLBEuE5J; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2081F00893;
-	Sun,  7 Jun 2026 10:23:25 +0000 (UTC)
+	 MIME-Version; b=qD0lDM79uF1cr+Hu88RYj90usmD+zHUUKbZgTnXZlohI6xpSLxaL++2uBfNo4Rqcgx1kXV6TZsHpNH21PFfTTntQUu/Dy1CxGqPLcaFZsTKDYrs6Gj6x0LHBGQjvAB/wdOw2BjV6RMJW9vMiZaXZr785a+2k71IYys6TAsZ3MyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDU58xzq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626E51F00893;
+	Sun,  7 Jun 2026 10:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827806;
-	bh=XzN+f+c27bKXrqj4j8hN7QG2GHrmhZDQFgdS3xNVFBE=;
+	s=korg; t=1780827754;
+	bh=mpOI8JKnFIXVp4VHOa8wazG4NEV+emsX/Ooo8qrBIeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yLBEuE5JmoBHmCxkQeOmz2xv019im7rtXG9xzWmOZA5uJZuVMqOxE53l51cq6SLdO
-	 coASAxKjXcChWFygtxcnSQdhzTjXG/paJgTbZkCpgzdbuzCJBGN1TGoXvQCOEf+MCL
-	 o3IAbSiHMnwkJMeK++PSIAdZ7mMNRwpz8V1EvueY=
+	b=ZDU58xzqgPB8r0EzfFOMhxhoywlxc06CWpL1hyB3lCEZ5YhRk6b5mXUlb4M/ssc7h
+	 S+du4tfVP0Nflseue+GX1qRVU9BgR5CG6zMEyujS6ByFXzHBv8wuq8fPCdjTHIbHwj
+	 wS5FzbpG/JTeCBTpe/P8lDvBF/eFmmvv3oe5Gy5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heitor Alves de Siqueira <halves@igalia.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Andrei Vagin <avagin@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/307] Bluetooth: hci_sync: Set HCI_CMD_DRAIN_WORKQUEUE during device close
+Subject: [PATCH 6.18 098/315] Revert "x86/fpu: Refine and simplify the magic number check during signal return"
 Date: Sun,  7 Jun 2026 11:58:05 +0200
-Message-ID: <20260607095731.008616776@linuxfoundation.org>
+Message-ID: <20260607095731.237874056@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +70,134 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261245-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:halves@igalia.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261231-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:avagin@google.com,m:bp@alien8.de,m:chang.seok.bae@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,alien8.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A1E3A64F9D0
+X-Rspamd-Queue-Id: 073F864FB0C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heitor Alves de Siqueira <halves@igalia.com>
+From: Andrei Vagin <avagin@google.com>
 
-[ Upstream commit 525daaea459fc215f432de1b8debbd9144bf97b0 ]
+[ Upstream commit 44eeff9bc467bc7d1fec34fc3f6001f385fe462c ]
 
-Since hci_dev_close_sync() can now be called during the reset path, we
-should also set HCI_CMD_DRAIN_WORKQUEUE. This avoids queuing timeouts
-while the hdev workqueue is being drained.
+This reverts
 
-Fixes: 877afadad2dc ("Bluetooth: When HCI work queue is drained, only queue chained work")
-Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+  dc8aa31a7ac2 ("x86/fpu: Refine and simplify the magic number check during signal return").
+
+The aforementioned commit broke applications that construct signal frames in
+userspace (such as CRIU and gVisor) if the frame's xstate size is smaller than
+the kernel's fpstate->user_size.
+
+Furthermore, this introduces a critical issue for checkpoint/restore tools
+like CRIU. If a process is checkpointed while inside a signal handler, its
+stack contains a signal frame formatted according to the source host's xstate
+capabilities.
+
+If that process is later restored on a destination host with larger xstate
+capabilities (e.g., a newer CPU with more features enabled, resulting in
+a larger fpstate->user_size), the kernel will look for FP_XSTATE_MAGIC2 at the
+destination host's larger user_size offset instead of the offset encoded in
+the frame's fx_sw->xstate_size.
+
+This causes the magic2 check to fail, forcing sigreturn to silently fall back
+to "FX-only" mode. Upon return from the signal handler, the process's extended
+state is reset to initial values instead of being restored, leading to silent
+data corruption.
+
+The aforementioned commit cited
+
+  d877550eaf2d ("x86/fpu: Stop relying on userspace for info to fault in xsave buffer")
+
+as justification to stop relying on userspace for the magic number check.
+
+However, these two changes are fundamentally different. The last one only
+changed how much memory the kernel ensures is paged-in before running XRSTOR
+to prevent an infinite loop. It did not change the signal frame format or how
+the layout is validated.
+
+Reverting this change restores the use of fx_sw->xstate_size for
+locating magic2 and restores the necessary sanity checks, ensuring that
+the signal frame remains self-describing and portable.
+
+  [ bp: Massage commit message. ]
+
+Fixes: dc8aa31a7ac2 ("x86/fpu: Refine and simplify the magic number check during signal return")
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Chang S. Bae <chang.seok.bae@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20260429000623.3356606-1-avagin@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kernel/fpu/signal.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index fbcb3bbfef4fde..f6e133756bd9ba 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5223,6 +5223,12 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index c3ec2512f2bbe4..20b638c507ca2d 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -27,14 +27,19 @@
+ static inline bool check_xstate_in_sigframe(struct fxregs_state __user *fxbuf,
+ 					    struct _fpx_sw_bytes *fx_sw)
+ {
++	int min_xstate_size = sizeof(struct fxregs_state) +
++			      sizeof(struct xstate_header);
+ 	void __user *fpstate = fxbuf;
+ 	unsigned int magic2;
  
- 	bt_dev_dbg(hdev, "");
+ 	if (__copy_from_user(fx_sw, &fxbuf->sw_reserved[0], sizeof(*fx_sw)))
+ 		return false;
  
-+	/* Set HCI_DRAIN_WORKQUEUE flag to prevent queuing work during
-+	 * reset/close. See hci_cmd_work() and handle_cmd_cnt_and_timer().
-+	 */
-+	hci_dev_set_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
-+	synchronize_rcu();
-+
- 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
- 		disable_delayed_work(&hdev->power_off);
- 		disable_delayed_work(&hdev->ncmd_timer);
-@@ -5246,6 +5252,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+-	/* Check for the first magic field */
+-	if (fx_sw->magic1 != FP_XSTATE_MAGIC1)
++	/* Check for the first magic field and other error scenarios. */
++	if (fx_sw->magic1 != FP_XSTATE_MAGIC1 ||
++	    fx_sw->xstate_size < min_xstate_size ||
++	    fx_sw->xstate_size > x86_task_fpu(current)->fpstate->user_size ||
++	    fx_sw->xstate_size > fx_sw->extended_size)
+ 		goto setfx;
  
- 	if (!test_and_clear_bit(HCI_UP, &hdev->flags)) {
- 		cancel_delayed_work_sync(&hdev->cmd_timer);
-+		hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
- 		return err;
- 	}
+ 	/*
+@@ -43,7 +48,7 @@ static inline bool check_xstate_in_sigframe(struct fxregs_state __user *fxbuf,
+ 	 * fpstate layout with out copying the extended state information
+ 	 * in the memory layout.
+ 	 */
+-	if (__get_user(magic2, (__u32 __user *)(fpstate + x86_task_fpu(current)->fpstate->user_size)))
++	if (__get_user(magic2, (__u32 __user *)(fpstate + fx_sw->xstate_size)))
+ 		return false;
  
-@@ -5345,6 +5352,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
- 	/* Clear flags */
- 	hdev->flags &= BIT(HCI_RAW);
- 	hci_dev_clear_volatile_flags(hdev);
-+	hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
- 
- 	memset(hdev->eir, 0, sizeof(hdev->eir));
- 	memset(hdev->dev_class, 0, sizeof(hdev->dev_class));
+ 	if (likely(magic2 == FP_XSTATE_MAGIC2))
 -- 
 2.53.0
 
