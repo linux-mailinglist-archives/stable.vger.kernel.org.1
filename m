@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZkEjNwFOJWp8GgIAu9opvQ
-	(envelope-from <stable+bounces-261748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:57 +0200
+	id WevvJ/JNJWp0GgIAu9opvQ
+	(envelope-from <stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BAE6501F4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A506501D6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DnWcgzKk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261748-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261748-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tbGDcWOB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F161A3004DE7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:54:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D80A303B596
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDEF2EEE7D;
-	Sun,  7 Jun 2026 10:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98860308F38;
+	Sun,  7 Jun 2026 10:52:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3D92E3AF1;
-	Sun,  7 Jun 2026 10:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E32E3AF1;
+	Sun,  7 Jun 2026 10:52:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829693; cv=none; b=roBIBuYsVAkjlfbXP84ogYIXb3zQ+wUVmUMCshsc/mZO1XlLGkiX8TLSyBcjnR9LwPzOZ1uR+VZnt0IupaoY3I7SbZNA998Nbn0KHfqwydCxd5H8GQHVpBIRzD/XRweTEXTJ0U4eulMjnGHPR49tIhOz31PYWoWmWDop5doYwBY=
+	t=1780829564; cv=none; b=a3uxjIiwGzf0xOHMhUqksCeZcVINkcqj7Rkp+a9j1AkeRgTdcO/i/skIjK8yBjIB1Ge1+WwWbocYUMAjKlUC+8x2QoykSvCEx0XiVI+dsSP2gYUc0bg6wBde+eETYT0yPYnYNtm+p0ZSFFVE9zJsyPi0/EIRTgUCn7K6r8HejMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829693; c=relaxed/simple;
-	bh=OFKTwsu4CHn6OcwYCzVp+20D2A8H188dWHzaYhymSVs=;
+	s=arc-20240116; t=1780829564; c=relaxed/simple;
+	bh=iBn8xnGReTDV8PX3SnIiyWBMktcynjWHfJicdjrzqQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A2TC1t48VBGwAn0s9RcdxA15eBn/EkC78RNvmAX7sl2G6BQPYJiYo38BBrL5U4ZTM60LU0CuZAkX/YEfazJS10bE/7n8BHm4Cw+kUi4b84DvQOdKXNw7rVfTZ+QdNG+dwfgYrscY5OEpiDCn0sgz7DHCAprseYg9uB2OeWf8/WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnWcgzKk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1FC1F00893;
-	Sun,  7 Jun 2026 10:54:51 +0000 (UTC)
+	 MIME-Version; b=pBLSQLCdfkeUot05TsUFP41esn+KA4IVWlN8ihwzeDx3cgV9R0r+TEQVchHMFAnWT0mB/TuwHdOjIU6H08zi1D41PCKX3vNv7qIUslAuozKQuI7IxTAY34OSRuxQd5RYbqWDumubYN6SlUQO5ICvECkkhuXGF9GF7ALxP5w+/S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbGDcWOB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CC31F00893;
+	Sun,  7 Jun 2026 10:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829692;
-	bh=5fSG4T46aGGIbtVTWx7N8GEh/EeyHLZaulPiOxJcbgs=;
+	s=korg; t=1780829563;
+	bh=O3Xw0hgBE1FJ7Y9b7cqcTRC2xkbaWYIFtPeDB33nC1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DnWcgzKkJiRFYf8dIbcgzAdhZF3I+IEm0+qUgWqJQBxCO98nheH3AvjmIYirJs/QN
-	 MtWoeU8c097YCb6EkCc0UGiZ5WWZXTh7Uz+n34/1wcmTgRYhorg0wy87sbAM3ynbF5
-	 BbI9ADMgubHhjg5yvAgQiRzktp8hJpdK2OT3hvXo=
+	b=tbGDcWOB29ajg041zsqT12ZOf6uBQfsufEPp4qHNXmmlfaXK54NnFY9/O0gQXBTYE
+	 jK10oUrnwbEBtopFo0xAwTUm6ZiV75gxJVEmFIP1Y0pkrtSCt1an4VMyg1GSS1kc1/
+	 qh4oxVOKvb2LkwA1GBX3wHisBgNRczXY3rBW69Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 271/315] drm/amdgpu: fix calling VM invalidation in amdgpu_hmm_invalidate_gfx
-Date: Sun,  7 Jun 2026 12:00:58 +0200
-Message-ID: <20260607095737.517833520@linuxfoundation.org>
+	Zhenghang Xiao <kipreyyy@gmail.com>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 7.0 290/332] drm/gem: fix race between change_handle and handle_delete
+Date: Sun,  7 Jun 2026 12:00:59 +0200
+Message-ID: <20260607095738.700475098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:vitaly.prosyak@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261748-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261713-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:airlied@redhat.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 83BAE6501F4
+X-Rspamd-Queue-Id: 44A506501D6
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Zhenghang Xiao <kipreyyy@gmail.com>
 
-commit 1c824497d8acd3187d585d6187cedc1897dcc871 upstream.
+commit 7164d78559b0ff29931a366a840a9e5dd53d4b7c upstream.
 
-Otherwise we don't invalidate page tables on next CS.
+drm_gem_change_handle_ioctl leaves the old handle live in the IDR
+during the window between spin_unlock(table_lock) and the final
+spin_lock(table_lock). A concurrent drm_gem_handle_delete on the old
+handle succeeds in this window, decrements handle_count to 0, and frees
+the GEM object while the new handle's IDR entry still references it.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Tested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b6444d1bcbc34f6f2a31a3aab3059be082f3683e)
+NULL the old handle's IDR entry before dropping table_lock so that any
+concurrent GEM_CLOSE on the old handle sees NULL and returns -EINVAL.
+Restore the old entry on the prime-bookkeeping error path.
+
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260526085313.26791-1-kipreyyy@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c |    1 +
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c  |    7 +++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_gem.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-@@ -78,6 +78,7 @@ static bool amdgpu_hmm_invalidate_gfx(st
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -1047,6 +1047,7 @@ int drm_gem_change_handle_ioctl(struct d
+ 	       goto out_unlock;
+        }
  
- 	mmu_interval_set_seq(mni, cur_seq);
++	idr_replace(&file_priv->object_idr, NULL, args->handle);
+ 	spin_unlock(&file_priv->table_lock);
  
-+	amdgpu_vm_bo_invalidate(bo, false);
- 	r = dma_resv_wait_timeout(bo->tbo.base.resv, DMA_RESV_USAGE_BOOKKEEP,
- 				  false, MAX_SCHEDULE_TIMEOUT);
- 	mutex_unlock(&adev->notifier_lock);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -1610,6 +1610,7 @@ int amdgpu_vm_handle_moved(struct amdgpu
- {
- 	struct amdgpu_bo_va *bo_va;
- 	struct dma_resv *resv;
-+	struct amdgpu_bo *bo;
- 	bool clear, unlock;
- 	int r;
- 
-@@ -1629,11 +1630,13 @@ int amdgpu_vm_handle_moved(struct amdgpu
- 	while (!list_empty(&vm->invalidated)) {
- 		bo_va = list_first_entry(&vm->invalidated, struct amdgpu_bo_va,
- 					 base.vm_status);
--		resv = bo_va->base.bo->tbo.base.resv;
-+		bo = bo_va->base.bo;
-+		resv = bo->tbo.base.resv;
- 		spin_unlock(&vm->status_lock);
- 
- 		/* Try to reserve the BO to avoid clearing its ptes */
--		if (!adev->debug_vm && dma_resv_trylock(resv)) {
-+		if (!adev->debug_vm && !amdgpu_ttm_tt_get_usermm(bo->tbo.ttm) &&
-+		    dma_resv_trylock(resv)) {
- 			clear = false;
- 			unlock = true;
- 		/* The caller is already holding the reservation lock */
+ 	if (obj->dma_buf) {
+@@ -1055,6 +1056,7 @@ int drm_gem_change_handle_ioctl(struct d
+ 		if (ret < 0) {
+ 			spin_lock(&file_priv->table_lock);
+ 			idr_remove(&file_priv->object_idr, handle);
++			idr_replace(&file_priv->object_idr, obj, args->handle);
+ 			spin_unlock(&file_priv->table_lock);
+ 			goto out_unlock;
+ 		}
 
 
 
