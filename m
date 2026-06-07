@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M/LSJEBMJWqCGQIAu9opvQ
-	(envelope-from <stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:28 +0200
+	id 3TtFHW9KJWoBGQIAu9opvQ
+	(envelope-from <stable+bounces-261496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D906064FFEF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F5364FE29
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="V/j3lNW2";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261534-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l2IvH9TI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261496-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261496-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E85C63046D64
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A30FC3004C9A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7327831E850;
-	Sun,  7 Jun 2026 10:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860F93254A9;
+	Sun,  7 Jun 2026 10:39:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5502D291C10;
-	Sun,  7 Jun 2026 10:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578922D3A69;
+	Sun,  7 Jun 2026 10:39:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828919; cv=none; b=r9tbCXjXtjlhz3PD79mW/J/mivWk3naiyRx/GHtoUv0MfkTRI0GLOjXuKlHP2L0K1Ntus2GWR2O9U8UYu4+C0FpEYDJqpZo8G18ueE9yYQXSOGZO3H6adA/4HVJzsa7FzBK3ILLhSW1MOXK7e4g204FU0q8peuyJwWYN4ly62zA=
+	t=1780828778; cv=none; b=MvUPL/vbcGbtHLsUdVurNV2QfdycasKauuMd6DUT3xhRcLWFH9oaV3aU7FT7wdx8xsd+RJk214G1sbfbIO4l1alqW7qYbPbxdZJZvYGd6Pddsh2Sr3cfDViicccIkrZm+AnwNmPX1eY2jBghglJ0k8hdaJMq/7ijV5bdYZ/G6sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828919; c=relaxed/simple;
-	bh=gmZh01dtuI/6Sq7cG1cErXSCOyNT2n8smINk8nNmfz0=;
+	s=arc-20240116; t=1780828778; c=relaxed/simple;
+	bh=AWQLYxcp+SN+xiOu4W7kTVQUUA6QbOlXctKxGDF7MsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+Zc2RKq2P11VPozMolsiBoHaN0MsCXGtj1J4CXWXLDr675CbITZUF4pxMMr/xkhdC/IyLCbjjPRsBAHbqYRFiOImeL3T/50CJ5Z7fEy3GXeOVVhoJ1mF4LuoFLwnTjDdGCnYhJQHE4gqpyX7lJKXhiGB8GoU924Pz4FezkkkQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/j3lNW2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E921F00893;
-	Sun,  7 Jun 2026 10:41:57 +0000 (UTC)
+	 MIME-Version; b=pavAHdV/ldRiZ6OvvGo57uGDHwnX2x6+2y5XJQnTiPj1gvIUNWJfDjW5kazXjawcUgMfkLsrKUBZmg6w2DTFr+K7sE9AP22LErBT3Lwp6qdl4BzFlAjDdyUVtq1c7C6kejEi1ujKcsd03SkAHKl692dYOwrwR9uPRTxroWgum8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2IvH9TI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9629D1F00893;
+	Sun,  7 Jun 2026 10:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828918;
-	bh=fsOUGX/91KiE2DBrzoR4HQ+i1iQV1s5aBwqHlVOi1yY=;
+	s=korg; t=1780828777;
+	bh=lPbzOxEQd5ZVZ5zUsnn0eydlYWvXZDHGcm15OmJPN5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V/j3lNW2NS8j+CTskQrwUisSKsj0aiHyg82l4bbgN1pvvf5Q78djb6e9r4TsWa5Db
-	 5DU4uHTHEcAx2b34NgX042G6SNvYY0OvVDBpQCyfZ4hZ1UfNWXa/1wLvn4tKDfXW3M
-	 Yyn6QL7hyATUQchjDkY0DnaG7/cIunY0v38yU0B4=
+	b=l2IvH9TImRgDZYZs0nlzLAYaadC8OlIBYhrb5biWvbGa92yxIfWvY/0TGHGBzhmlr
+	 2ChijYa7+zDfE3beMm4q5AeG3MWChGOal9leGCu3FY9wNmr+YWoGH7F9LS8EYW4wpa
+	 Yn2jV+w+8bc9jzRptSifAs4LniYBVhmjiC1ZAUe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	sashiko-bot <sashiko-bot@kernel.org>,
-	Peter Chen <peter.chen@cixtech.com>
-Subject: [PATCH 6.12 179/307] usb: cdns3: plat: fix leaked usb2_phy initialization on usb3_phy acquisition failure
-Date: Sun,  7 Jun 2026 11:59:36 +0200
-Message-ID: <20260607095734.288174513@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Maoyi Xie <maoyixie.tju@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 190/315] ip6: vti: Use ip6_tnl.net in vti6_siocdevprivate().
+Date: Sun,  7 Jun 2026 11:59:37 +0200
+Message-ID: <20260607095734.552873937@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +68,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261534-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-261496-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sashiko-bot@kernel.org,m:peter.chen@cixtech.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:shaw.leon@gmail.com,m:maoyixie.tju@gmail.com,m:pabeni@redhat.com,m:shawleon@gmail.com,m:maoyixietju@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,cixtech.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D906064FFEF
+X-Rspamd-Queue-Id: 84F5364FE29
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chen <peter.chen@cixtech.com>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-commit e6970cda63fd4b4546aeed9d0e2f53a7c95cd09c upstream.
+commit 8b484efd5cb4eeef9021a661e198edc5349dacf6 upstream.
 
-Move usb2_phy initialization after usb3_phy acquisition.
+After patch 1/2 in this series, vti6_update() unlinks and relinks
+the tunnel through t->net. vti6_siocdevprivate() still uses
+dev_net(dev) for the collision lookup. For a tunnel moved through
+IFLA_NET_NS_FD, dev_net(dev) is the new netns, not t->net.
 
-Fixes: f738957277ba ("usb: cdns3: Split core.c into cdns3-plat and core.c file")
-Cc: stable <stable@kernel.org>
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/linux-devicetree/agKaEePSFknhDBg2@nchen-desktop/T/#m21e1d9c1574eb127ce03c0c2a1a49002ce435b52
-Signed-off-by: Peter Chen <peter.chen@cixtech.com>
-Link: https://patch.msgid.link/20260513085310.2217547-2-peter.chen@cixtech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+SIOCCHGTUNNEL on a migrated tunnel then runs:
+
+  net = dev_net(dev)                    /* migrated netns */
+  t   = vti6_locate(net, &p1, false)    /* misses target in t->net */
+  ...
+  t   = netdev_priv(dev)
+  vti6_update(t, &p1, false)            /* mutates t->net's hash */
+
+A caller in the migrated netns picks params that match a tunnel
+in the creation netns. The lookup in dev_net(dev) finds nothing.
+vti6_update() prepends the migrated tunnel at the head of the
+creation netns hash bucket for those params. Later lookups in
+the creation netns resolve to the migrated device. xfrm receive
+delivers the matched packets through a device the caller controls.
+
+Reachable from an unprivileged user namespace (unshare --user
+--map-root-user --net). Cross tenant scope on container hosts.
+
+Switch the SIOCCHGTUNNEL path on a non fallback device to use
+t->net for the lookup. The lookup now matches the netns
+vti6_update() operates on.
+
+Also add ns_capable(self->net->user_ns, CAP_NET_ADMIN) before
+the lookup. The check at the top of the case is against
+dev_net(dev)->user_ns, which after migration is the attacker's
+netns. A caller there can pick params absent from self->net,
+the lookup returns NULL, t becomes self, and vti6_update()
+inserts the device into the creation netns hash. The new check
+requires CAP_NET_ADMIN in the creation netns user_ns too.
+
+SIOCADDTUNNEL and SIOCCHGTUNNEL on the fallback device keep
+dev_net(dev), which equals init_net there.
+
+Fixes: 61220ab34948 ("vti6: Enable namespace changing")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Xiao Liang <shaw.leon@gmail.com>
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
+Link: https://patch.msgid.link/20260521130555.3421684-3-maoyixie.tju@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-plat.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_vti.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -126,15 +126,15 @@ static int cdns3_plat_probe(struct platf
- 		return dev_err_probe(dev, PTR_ERR(cdns->usb2_phy),
- 				     "Failed to get cdn3,usb2-phy\n");
- 
--	ret = phy_init(cdns->usb2_phy);
--	if (ret)
--		return ret;
--
- 	cdns->usb3_phy = devm_phy_optional_get(dev, "cdns3,usb3-phy");
- 	if (IS_ERR(cdns->usb3_phy))
- 		return dev_err_probe(dev, PTR_ERR(cdns->usb3_phy),
- 				     "Failed to get cdn3,usb3-phy\n");
- 
-+	ret = phy_init(cdns->usb2_phy);
-+	if (ret)
-+		return ret;
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -834,17 +834,24 @@ vti6_siocdevprivate(struct net_device *d
+ 		if (p.proto != IPPROTO_IPV6  && p.proto != 0)
+ 			break;
+ 		vti6_parm_from_user(&p1, &p);
+-		t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
+ 		if (dev != ip6n->fb_tnl_dev && cmd == SIOCCHGTUNNEL) {
++			struct ip6_tnl *self = netdev_priv(dev);
 +
- 	ret = phy_init(cdns->usb3_phy);
- 	if (ret)
- 		goto err_phy3_init;
++			err = -EPERM;
++			if (!ns_capable(self->net->user_ns, CAP_NET_ADMIN))
++				break;
++			t = vti6_locate(self->net, &p1, false);
+ 			if (t) {
+ 				if (t->dev != dev) {
+ 					err = -EEXIST;
+ 					break;
+ 				}
+ 			} else
+-				t = netdev_priv(dev);
++				t = self;
+ 
+ 			err = vti6_update(t, &p1, false);
++		} else {
++			t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
+ 		}
+ 		if (t) {
+ 			err = 0;
 
 
 
