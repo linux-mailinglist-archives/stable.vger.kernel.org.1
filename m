@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-261891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GZ1ZLMFVJWqZHAIAu9opvQ
-	(envelope-from <stable+bounces-261891-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:28:01 +0200
+	id 4Nr7JqVXJWrrHAIAu9opvQ
+	(envelope-from <stable+bounces-261892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:36:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDCB650724
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:28:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F231165075F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:36:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=pgDWmYD2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261891-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261891-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=O8ImGRje;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261892-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261892-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A567301CF82
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:24:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8599300E26B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47C33A1A54;
-	Sun,  7 Jun 2026 11:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB50B39FCB5;
+	Sun,  7 Jun 2026 11:35:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E56B1A682F;
-	Sun,  7 Jun 2026 11:24:41 +0000 (UTC)
+Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net (zg8tmtyylji0my4xnjqumte4.icoremail.net [162.243.164.118])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2985C347FC0;
+	Sun,  7 Jun 2026 11:35:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780831488; cv=none; b=e6b2iWbqsZ3xTllcOd537MQGSet+S79/QyNf+7xX4QCm3/sXJtA1CvYjr2ThyJ1fQsfvR248hEjyQvTbV3vjFcuwElvCtB9Q848Z+bV77paeI/cNICn0gfi2DjieI68tB3i4pRjz+GOHoHZcz257v3ZKZaWt4GFDaRzwhCr730s=
+	t=1780832158; cv=none; b=C6tXa5d//5ovL2sXszqQZDacRWFWzp9gihQf0WQL/4hboEzy6tzf+qX2tIwRrcFLZzrEYNb1gunij6qJSaMF90LkwG/YyqheEutm0hsNHl0sIyiti3uY9PFcze5ju0cgBtd2Q+2RdjMf55H0yjVjDGstmJR/lhwGezw1F726Ge0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780831488; c=relaxed/simple;
-	bh=+nmq43sNgGmd2vNw2NvmZs8Ush/0vhGvg1Eifh/Tp54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VPzV2YAZEOt09eG25B0YbEtJRyXTUF8anF7ht7XIyZdegaOBtDuTk5kRTj+t+biK+Djsc24hgp2kqTPtHcy1QQd79ilzMY8MduZeKMkRc25V/zZZEMAB0AMUFaQFo/XuE2CpaRkwTgmxgvWe/HNNXKa3xvTUYya7mmViXjxsY5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=pgDWmYD2; arc=none smtp.client-ip=207.46.229.174
+	s=arc-20240116; t=1780832158; c=relaxed/simple;
+	bh=ysleqvi/ZyuwE5I21DlluB529sBtmOC38NzLRoU5bDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m+wBmEv1hptVTHBj5DXDClZB2hi4mvW8WRdWgLODwXU6jzonKw9nxVIUG/jg1u/N9KQ1ks40L4o0xrKGMUS7lrA6lqlV1cL1fXSVNoaa9Vm5R3hjisdDct+qEfFvtM/38OZpJx2gMOhUk7L6hwQif3Le02XwN/oKrbUzRlTRuu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=O8ImGRje; arc=none smtp.client-ip=162.243.164.118
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=DARBR
-	pjjX9MOXcdBF/nIEpLCCYsDkglVoq0NbmWOMXk=; b=pgDWmYD2uZ4UZHpdeIyK9
-	Mej0vW0tj7aFEzMHm3cOLXDLktNQ3h6JlVNS+XtWD7nnCZYOpRXRNKwdYLt18QNp
-	oxiXCj/+RTK1Pugiz7TP8i+EPqKwKjmHtCSQKOGAj1cEr+xCokya1YZ3RE6zkkuZ
-	eDFctaTPR0zKe3q0HUx+AM=
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=3aWVc
+	nroJFqAiNfaxYPZenV1m8jAT+VZ8WaKxDim/qE=; b=O8ImGRjeDXXN8UklWrAUZ
+	26m/raIabnMJnparAWAbBW0ofMWxUSFwmgfBVEVNa0k1vSuJrzJwJ5AFZhmDfJns
+	iK8/ojePVbKytWTnrOTsgLH7gMgim9Imr9a7O6COFVuNeO1fIrjv1HkIhvPi3osN
+	jwYB2//xAHvGLOeZ+JD3F4=
 Received: from localhost.localdomain (unknown [101.5.11.216])
-	by web2 (Coremail) with SMTP id yQQGZQDHn5fmVCVqOR0YAg--.32045S2;
-	Sun, 07 Jun 2026 19:24:22 +0800 (CST)
+	by web4 (Coremail) with SMTP id ywQGZQAnC5uLVyVq_ogTAg--.35520S2;
+	Sun, 07 Jun 2026 19:35:39 +0800 (CST)
 From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 To: netdev@vger.kernel.org
 Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
@@ -49,6 +49,7 @@ Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
@@ -56,9 +57,9 @@ Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
 	Xuewei Feng <fengxw06@126.com>,
 	Qi Li <qli01@tsinghua.edu.cn>,
 	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH net] fddi: validate skb length before parsing headers
-Date: Sun,  7 Jun 2026 19:24:04 +0800
-Message-ID: <20260607112408.92988-1-zhaoyz24@mails.tsinghua.edu.cn>
+Subject: [PATCH net] vlan: prevent cross-netns promisc/allmulti propagation
+Date: Sun,  7 Jun 2026 19:35:28 +0800
+Message-ID: <20260607113529.98178-1-zhaoyz24@mails.tsinghua.edu.cn>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,10 +68,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:yQQGZQDHn5fmVCVqOR0YAg--.32045S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4rWr4DtFW7Cr17Jr4xWFg_yoW8KFyrpF
-	ZrGrs0yrZrKrsxArn2ya10vrW5tr4vkaySgrW8KFyYvFn8W3WYyw48KF42gr1kZF48KFy7
-	AFWDXr98uwn8trDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:ywQGZQAnC5uLVyVq_ogTAg--.35520S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGw1kCFWxJrWDZw47WryxuFg_yoW5CrWxpF
+	WUCFn8ArW8GFyS9aySvry7GFWUtF4kZw4Ikw1rta48uws8XFyfXr4rK3sxCryqvrW7AFy8
+	AFZFvr1jkF4UWaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUU9m1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
 	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
 	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l
@@ -84,7 +85,7 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7tr4rWr4DtFW7Cr17Jr4xWFg_yoW8KFyrpF
 	AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IY
 	s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr
 	0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0Jj4NtsUUUUU=
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgAJAWojJY4SbQACsV
+X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgILAWoknpt7nwAAsl
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -92,16 +93,16 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
 	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261891-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261892-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:kees@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -115,35 +116,35 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mails.tsinghua.edu.cn:mid,mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim,tsinghua.edu.cn:email,seu.edu.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,vger.kernel.org:from_smtp,tsinghua.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mails.tsinghua.edu.cn:mid,mails.tsinghua.edu.cn:from_mime,mails.tsinghua.edu.cn:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BDCB650724
+X-Rspamd-Queue-Id: F231165075F
 
-fddi_type_trans() reads FDDI header fields from skb->data without first
-checking that the received frame is long enough for those fields.
+vlan_dev_change_rx_flags() propagates IFF_PROMISC and IFF_ALLMULTI
+changes from a VLAN device to its real device. If the VLAN device has
+been moved to another network namespace, a user with CAP_NET_ADMIN in
+that namespace can toggle these flags on the VLAN device and change the
+promiscuity/allmulti counters on the real device in the original
+namespace.
 
-The destination address spans offsets 1-6 and the LLC dsap field is at
-offset 13.  For SNAP frames, fddi->hdr.llc_snap.ethertype is at offsets
-19-20.  A truncated 15-byte frame with dsap != 0xe0 therefore enters the
-SNAP branch and reads the ethertype past the end of the frame.
+This breaks the namespace boundary for receive-mode state. In a QEMU
+reproducer using dummy0 and dummy0.100, dummy0 started with flags 0x83.
+After moving dummy0.100 to another netns and running:
 
-KASAN reports this when such a frame is processed through a dummy FDDI
-netdev that calls the real fddi_type_trans() on an exact kmalloc() copy
-of the frame:
+  ip netns exec testns ip link set dummy0.100 promisc on
+  ip netns exec testns ip link set dummy0.100 allmulticast on
 
-  BUG: KASAN: slab-out-of-bounds in fddi_type_trans+0x385/0x3a0
-  Read of size 2 at addr ffff888009c6fe33
-  The buggy address is located 4 bytes to the right of
-  allocated 15-byte region [ffff888009c6fe20, ffff888009c6fe2f)
+dummy0 changed to 0x183 and then 0x383. dmesg also showed both
+dummy0.100 and dummy0 entering promiscuous/allmulticast mode.
 
-Reject short frames before reading the fields: require the minimum 802.2
-header length before accessing dsap or daddr, and require the full SNAP
-header length before reading the SNAP ethertype.  Returning protocol 0
-causes the malformed packet to be ignored by protocol handlers.
+vlan_dev_set_rx_mode() has the same cross-netns issue for unicast and
+multicast address sync. Return early in both paths when the VLAN device
+and real device are not in the same network namespace. This matches the
+existing vlan_hwtstamp_set() namespace check in the same driver.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 6c78dcbd47a6 ("[VLAN]: Fix promiscous/allmulti synchronization races")
 Cc: stable@vger.kernel.org
 Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
@@ -154,33 +155,45 @@ Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
 Assisted-by: GLM:GLM-5.1
 Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 ---
- net/802/fddi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+QEMU verification:
+- Before patch: dummy0 0x83 -> 0x183 -> 0x383; PROMISC_PROPAGATED and
+  ALLMULTI_PROPAGATED.
+- After patch: dummy0 stayed 0x83; PROMISC_NOT_PROPAGATED and
+  ALLMULTI_NOT_PROPAGATED.
 
-diff --git a/net/802/fddi.c b/net/802/fddi.c
-index 888379ae35ec..e26f4549e904 100644
---- a/net/802/fddi.c
-+++ b/net/802/fddi.c
-@@ -103,6 +103,9 @@ __be16 fddi_type_trans(struct sk_buff *skb, struct net_device *dev)
- 	skb->dev = dev;
- 	skb_reset_mac_header(skb);	/* point to frame control (FC) */
+ net/8021q/vlan_dev.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index 7aa3af8b10ea..3d1ed61e5a10 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -471,6 +471,9 @@ static void vlan_dev_change_rx_flags(struct net_device *dev, int change)
+ {
+ 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
  
-+	if (skb->len < FDDI_K_8022_HLEN)
-+		return htons(0);
++	if (!net_eq(dev_net(dev), dev_net(real_dev)))
++		return;
 +
- 	if(fddi->hdr.llc_8022_1.dsap==0xe0)
- 	{
- 		skb_pull(skb, FDDI_K_8022_HLEN-3);
-@@ -110,6 +113,8 @@ __be16 fddi_type_trans(struct sk_buff *skb, struct net_device *dev)
- 	}
- 	else
- 	{
-+		if (skb->len < FDDI_K_SNAP_HLEN)
-+			return htons(0);
- 		skb_pull(skb, FDDI_K_SNAP_HLEN);		/* adjust for 21 byte header */
- 		type=fddi->hdr.llc_snap.ethertype;
- 	}
-
+ 	if (change & IFF_ALLMULTI)
+ 		dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+ 	if (change & IFF_PROMISC)
+@@ -479,8 +482,13 @@ static void vlan_dev_change_rx_flags(struct net_device *dev, int change)
+ 
+ static void vlan_dev_set_rx_mode(struct net_device *vlan_dev)
+ {
+-	dev_mc_sync(vlan_dev_priv(vlan_dev)->real_dev, vlan_dev);
+-	dev_uc_sync(vlan_dev_priv(vlan_dev)->real_dev, vlan_dev);
++	struct net_device *real_dev = vlan_dev_priv(vlan_dev)->real_dev;
++
++	if (!net_eq(dev_net(vlan_dev), dev_net(real_dev)))
++		return;
++
++	dev_mc_sync(real_dev, vlan_dev);
++	dev_uc_sync(real_dev, vlan_dev);
+ }
+ 
+ static __be16 vlan_parse_protocol(const struct sk_buff *skb)
 -- 
 2.43.0
 
