@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PkonDFdLJWpFGQIAu9opvQ
-	(envelope-from <stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:35 +0200
+	id dnt3C1NNJWo5GgIAu9opvQ
+	(envelope-from <stable+bounces-261593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD8664FF27
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D00D650110
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EucgurWe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261558-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LbJrSHZA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261593-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261593-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 505783004420
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3018E3071C59
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D371E98EF;
-	Sun,  7 Jun 2026 10:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7A92E7376;
+	Sun,  7 Jun 2026 10:45:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E419E32A3C9;
-	Sun,  7 Jun 2026 10:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865CC286A4;
+	Sun,  7 Jun 2026 10:45:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829010; cv=none; b=ISQhbri5PhJbTixzTngbyR+K+c96WX31srSwKLfCSaSNgGXXIgrYbICo9EAzKyn7LrdYOyOvIvBiw5lbZUwwXxBZVQlA9wq5JGI8dSaqxEswv2OC5gFN4MiXsenQswrQfA1CDVlVq1YqLr5+Dh2JW4gqvT9PrRnRm56bkoVeY2s=
+	t=1780829141; cv=none; b=o8O46rIoexEcwbC2KQjV9XypepLMrDv0SzWNXhchvgmV+3vyt1gCjgc+ugqOIO2ALVI3LOhGHznIM/44IMVcuepqVWITiuUYBDs73Qhf3GQ8Dij8/bJWgnnVxptqPhZ6zH/062HMYwpn+Wh4fbNywZtC0SamXqmgcla/lEZJRJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829010; c=relaxed/simple;
-	bh=R9xaKPGI12V+uZCOa+tkHctLCJlznjdpEEUxoe46sU8=;
+	s=arc-20240116; t=1780829141; c=relaxed/simple;
+	bh=Dajycjm7EfglQ0Z7Eum8UiQOe3+X46+f6VthfGoXOD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PcbsECTxqha8cRwawPehypmveAOlyII+QrQVr8+hmT+TQE2oGWzBgGCtCxUiEqQuu1Qa7JsmQtCeUkmvGjlafVhsaw2AQ9sUx3GqaB9+vIDvJfV+MSRSUb/+8MiYL2T2+Gqnfxp949kpkwgJgD/W7qSbPVEE3/mnU2AbEXr9c+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EucgurWe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A283F1F00893;
-	Sun,  7 Jun 2026 10:43:27 +0000 (UTC)
+	 MIME-Version; b=ifWsv6Co76CI+gJbsU6IdD0RAYevUTuGJ05Jy6zQcKcJAs+mc3Ttz32uSTfUsCUibZE9wRid6yIf8B8mffS3j7aSc8ctuN1fMr1VW/KDcTSz0sGApBtFBFcEvU6aKVoRItwvhBy7f/tPQIh6IWYWQN5UluMPParS1y9IFVWJqQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbJrSHZA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7941F00893;
+	Sun,  7 Jun 2026 10:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829008;
-	bh=vqZY43GL5hMco3bYsEx5w6276g7v8n1nearov0jvvcQ=;
+	s=korg; t=1780829140;
+	bh=9wSwsMlPaRXKC0AMBZXeLM+qGcX3gLs0g2WP3oGjOXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EucgurWeY9cEPswpw0Xg0raZXe09ILzUENS83oIbYH/zTwnrg3VOITHPo2X1tZkuL
-	 li7tvwlyr3ZiCeLCeix2ssifUJkUKXDz3qtk7aGslEuLk4eckIjAYC/y4rp5nkthHi
-	 mFLWW3cTk3JC+dN5hUa5v2C316pLu7S7DbTFmqiM=
+	b=LbJrSHZAu58jWWDFgxcK6rcKkGCfE0rxO2eiRl9xhQXKvSYmHFOb2QhqpDAUZ2XQD
+	 XZkjC6InTmvzVgEFqQDs3pL7LHzDzBtr3S0jVc0IZNO5aSNjHRYrN2nnZaZqm0o3W5
+	 y+6ATGOM2KYx+0rYMZtwiqiXRj49HypX1nIe+4/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 209/315] ALSA: hda/realtek: Fix speaker output on ASUS ROG Strix G615LP
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.12 199/307] xfrm: ah: use skb_to_full_sk in async output callbacks
 Date: Sun,  7 Jun 2026 11:59:56 +0200
-Message-ID: <20260607095735.234169046@linuxfoundation.org>
+Message-ID: <20260607095735.036825249@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +66,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261558-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhangheng@kylinos.cn,m:tiwai@suse.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261593-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,suse.de:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,kylinos.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,secunet.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3BD8664FF27
+X-Rspamd-Queue-Id: 7D00D650110
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 20587302f8d700f26ee2c8a60ffb0a69ae0edf16 upstream.
+commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
 
-Add quirk for ALC294 codec on ASUS ROG Strix G615LP
-(SSID 1043:1214) using ALC287_FIXUP_TXNW2781_I2C_ASUS to
-fix speaker output.
+When AH output is offloaded to an asynchronous crypto provider
+(hardware accelerators such as AMD CCP, or a forced-async software
+shim used for testing), the digest completion fires
+ah_output_done() / ah6_output_done() on a workqueue.  The egress
+skb at that point may have been originated by a TCP listener
+sending a SYN-ACK, which sets skb->sk to a request_sock via
+skb_set_owner_edemux(); it may also have been originated by an
+inet_timewait_sock retransmit.  Neither is a full struct sock, and
+passing the raw skb->sk to xfrm_output_resume() then forwards a
+non-full socket through the rest of the xfrm output chain.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221173
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260526013611.1954949-1-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+xfrm_output_resume() and its downstream consumers expect a full
+sk where they dereference at all.  The natural egress path
+through ah_output_done() does not crash today because the
+consumers that read past sock_common are either gated by
+sk_fullsock() or short-circuit on flags that are clear on a fresh
+request_sock; an exhaustive walk of the 50 most plausible
+consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
+cgroup-egress BPF found no current unguarded deref.  The bug is
+still a real type confusion that future consumer changes could
+turn into a memory-corruption primitive.
+
+This is the same bug class fixed for ESP in commit 1620c88887b1
+("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
+AH: convert skb->sk to a full socket pointer (or NULL) via
+skb_to_full_sk() before handing it to xfrm_output_resume().
+
+The same async AH callbacks were touched recently for an
+independent ESN-related ICV layout bug in commit ec54093e6a8f
+("xfrm: ah: account for ESN high bits in async callbacks"); the
+sk type-confusion addressed here is orthogonal.  This patch is
+part of an ongoing audit of the AH callback paths; an ah_output
+ihl-validation hardening series is also currently under review on
+netdev.
+
+Reproduced under UML + KASAN + lockdep with a forced-async
+hmac(sha1) shim that registers at priority 9999 and wraps the
+sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
+runs on every SYN-ACK egress through a transport-mode AH SA and
+skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
+patch, xfrm_output_resume() receives the listener (the result of
+sk_to_full_sk()) and consumer derefs land on full-sock fields as
+intended.
+
+Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/ah4.c |    2 +-
+ net/ipv6/ah6.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7053,6 +7053,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	HDA_CODEC_QUIRK(0x1043, 0x1204, "ASUS Strix G16 G615JMR", ALC287_FIXUP_TXNW2781_I2C_ASUS),
- 	SND_PCI_QUIRK(0x1043, 0x1204, "ASUS Strix G615JHR_JMR_JPR", ALC287_FIXUP_TAS2781_I2C),
-+	HDA_CODEC_QUIRK(0x1043, 0x1214, "ASUS ROG Strix G615LP", ALC287_FIXUP_TXNW2781_I2C_ASUS),
- 	SND_PCI_QUIRK(0x1043, 0x1214, "ASUS Strix G615LH_LM_LP", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+--- a/net/ipv4/ah4.c
++++ b/net/ipv4/ah4.c
+@@ -143,7 +143,7 @@ static void ah_output_done(void *data, i
+ 	}
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
+ 
+ static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
+--- a/net/ipv6/ah6.c
++++ b/net/ipv6/ah6.c
+@@ -337,7 +337,7 @@ static void ah6_output_done(void *data,
+ 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+ 
+ 	kfree(AH_SKB_CB(skb)->tmp);
+-	xfrm_output_resume(skb->sk, skb, err);
++	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
+ }
+ 
+ static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
 
 
 
