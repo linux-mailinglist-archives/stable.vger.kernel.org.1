@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-261511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RqseAlNLJWpDGQIAu9opvQ
-	(envelope-from <stable+bounces-261511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:31 +0200
+	id CoAhEwlKJWrlGAIAu9opvQ
+	(envelope-from <stable+bounces-261462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A0164FF24
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A358664FDD2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JPc2b8DZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261511-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="IYb/3WWZ";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261462-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261462-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 68ABE3039CAF
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A88D9300DD66
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9283264F5;
-	Sun,  7 Jun 2026 10:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F423264F5;
+	Sun,  7 Jun 2026 10:37:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C7E3195FD;
-	Sun,  7 Jun 2026 10:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342A72D3A69;
+	Sun,  7 Jun 2026 10:37:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828833; cv=none; b=dsI6Ow6gHpCsRyQ4Y3NRJZXOUZE7+wdeROd0PNvlLaTSEVF1uYekEf1bwoSwE5mawLCv0w5Mth5a7ZilappCiphznvGxrTlC+cFHplnYCdGeUBYQ2VV7NHNEmxHVMocq9SbZeqBckL+POLyDt8n2MMPV3sy6/K80jnCTzMzAyiQ=
+	t=1780828651; cv=none; b=QMeqR69FyhD1tfh8yQ3yx9d9l7wx9cEjmtPuPH09ViZPF84y2aSF41LASRMtpcxFa6rSWKH6bkGfdQ9OqoDL0pqVyJPdiPUNY5OabQiwjHu6xUEqRRFrwmnBFeGUSkGuvKrsLIpvGHvMg6vJjjFSLkMAapwJY5/HvTKUcdzybwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828833; c=relaxed/simple;
-	bh=XOAbIzgVLcbhJKvrKaTRQahCmPKiwzog6Wlyoj5lzdM=;
+	s=arc-20240116; t=1780828651; c=relaxed/simple;
+	bh=oSnUttzP8pY6pVE+MtfbIZf920FTRoVTwdCR5YrghhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAhxpdOibgnNFblxmntI1g1JojP91C4tKgLklElNjm5Fy28ylw+Bwg93whrXpOqQ+GwdtbgE4h+OANQzXJ9Ni1GM/JYZRyZIONI0hKVvZJUeYF1Z0d0ig3w7CW7l2qiWqxQIpBbZO9OBPC4+O6Bct0SRh8XLofCjaUlhxUb+QHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPc2b8DZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624BE1F00893;
-	Sun,  7 Jun 2026 10:40:31 +0000 (UTC)
+	 MIME-Version; b=puL5suvP2wlCgfCiGgWj/ateBZHxIx35RowK6U85tKY0wNbuUSfPtpUK+yeIb2heZowo/eGhrr3dzqmz7+VuXUoGYgTl/wKTdzdR+MXSW+PagXTV58EunLe4BJt+M3nh8/0NYo0zdXvQv1acTs0xBCqm4wruS1rSFmWNMeqKiDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYb/3WWZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389971F00893;
+	Sun,  7 Jun 2026 10:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828832;
-	bh=fj10uKCpPrFS3leCU3UuAsOS1msa5jwhwkavcYLT95Y=;
+	s=korg; t=1780828649;
+	bh=gyuR+EuvzNuqeEqTktt2uRJanoULfmfdrWeKUJdGtJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JPc2b8DZDVB7J44A6mtGE9pcgNpwqJTZCv6ZkMlN/75Fi6jZbcMGnEgMTrOKTZ9yI
-	 v3VUsAVnvuXHo/nvqfZTkUaobu734xW+Vq5QnnG43KXmNRp4QtvwOmQlHdHVsERvQH
-	 dT1fcJrW/LqWzmh5C/utAgtg1nFE+uh1hk6ItmvA=
+	b=IYb/3WWZyH/1j1zFbEI/clQqL5zZPDbsx7kEVLQysfaPYXWZyIOfFT0fYST/kbnaU
+	 D7g53q91uF6ZYlQfy6fVipVpgE8ZTt4A9Prd9xmDH0m/YkLIa4cBauY2+ZuBz059Ie
+	 3NvxtkNBbckNmL4J1/SOcmm5Nohpl1vMvQoZX4L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.12 172/307] iio: temperature: tsys01: fix broken PROM checksum validation
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 7.0 200/332] USB: serial: omninet: fix memory corruption with small endpoint
 Date: Sun,  7 Jun 2026 11:59:29 +0200
-Message-ID: <20260607095734.035705484@linuxfoundation.org>
+Message-ID: <20260607095735.399243168@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +65,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261511-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-261462-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85A0164FF24
+X-Rspamd-Queue-Id: A358664FDD2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4701e471c16866e7aa8f5e6a3a6b0d31e097e2c9 upstream.
+commit 60df93d30f9bdd27db17c4d80ed80ef718d7226b upstream.
 
-The current implementation of tsys01_crc_valid() incorrectly sums the
-first word (n_prom[0]) repeatedly instead of iterating over the 8 words
-retrieved from the PROM. This leads to a checksum mismatch and probe
-failure on hardware.
+Make sure that the bulk-out buffers are at least as large as the
+hardcoded transfer size to avoid user-controlled slab corruption should
+a malicious device report a smaller endpoint max packet size than
+expected.
 
-According to the TSYS01 datasheet, the PROM consists of 8 words. A valid
-check must iterate through all 8 words to verify the integrity of the
-calibration data. The current driver only checks the first word 8 times.
-
-Note: This fix was identified during a code audit and is based on
-datasheet specifications. It has not been tested on real hardware.
-
-Fixes: 43e53407f680 ("Add tsys01 meas-spec driver support")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/temperature/tsys01.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/omninet.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -119,7 +119,7 @@ static bool tsys01_crc_valid(u16 *n_prom
- 	u8 sum = 0;
+--- a/drivers/usb/serial/omninet.c
++++ b/drivers/usb/serial/omninet.c
+@@ -30,6 +30,10 @@
+ /* This one seems to be a re-branded ZyXEL device */
+ #define BT_IGNITIONPRO_ID	0x2000
  
- 	for (cnt = 0; cnt < TSYS01_PROM_WORDS_NB; cnt++)
--		sum += ((n_prom[0] >> 8) + (n_prom[0] & 0xFF));
-+		sum += ((n_prom[cnt] >> 8) + (n_prom[cnt] & 0xFF));
- 
- 	return (sum == 0);
++#define OMNINET_HEADERLEN	4
++#define OMNINET_BULKOUTSIZE	64
++#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
++
+ /* function prototypes */
+ static void omninet_process_read_urb(struct urb *urb);
+ static int omninet_prepare_write_buffer(struct usb_serial_port *port,
+@@ -54,6 +58,7 @@ static struct usb_serial_driver zyxel_om
+ 	.description =		"ZyXEL - omni.net usb",
+ 	.id_table =		id_table,
+ 	.num_bulk_out =		2,
++	.bulk_out_size =	OMNINET_BULKOUTSIZE,
+ 	.calc_num_ports =	omninet_calc_num_ports,
+ 	.port_probe =		omninet_port_probe,
+ 	.port_remove =		omninet_port_remove,
+@@ -130,10 +135,6 @@ static void omninet_port_remove(struct u
+ 	kfree(od);
  }
+ 
+-#define OMNINET_HEADERLEN	4
+-#define OMNINET_BULKOUTSIZE	64
+-#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
+-
+ static void omninet_process_read_urb(struct urb *urb)
+ {
+ 	struct usb_serial_port *port = urb->context;
 
 
 
