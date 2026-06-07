@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MzAUDEhSJWrOGwIAu9opvQ
-	(envelope-from <stable+bounces-261870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:12 +0200
+	id ULtrMzxSJWrLGwIAu9opvQ
+	(envelope-from <stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9015F6505D4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414166505C5
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vDOFA30P;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261870-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261870-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OFEpcdld;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE03E3067152
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0681C30B14BE
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832393290C3;
-	Sun,  7 Jun 2026 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA603290C3;
+	Sun,  7 Jun 2026 11:02:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D12291C10;
-	Sun,  7 Jun 2026 11:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CBA1E98E3;
+	Sun,  7 Jun 2026 11:02:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830173; cv=none; b=OTJDgWoCKC35+xtaA2FkLVmsbxcwraglbFmiI5To3bMRsOtOsSUNoZGTk4/gI0gpZsbTCWB1jNT0zgWJRTP/NQATgCsOFiASd7s+aC6dQQnA8A253pPq3UScTunVbBK5YcRLIFPTlnXymvuJvlaC8DRdJgrI82KNPVcTU0ARU3A=
+	t=1780830156; cv=none; b=uSp/HCRWX/j8+B+Z74MGK6vEVu7yiRVEMTSm4GPvQ+j3vCrAIN0bf65E5QeG7WZTuVWrV1K68Ml3Ps3Vz2pr09q0KFZQCdCyRQlkQw+52RGbUVpH0XfMdWxU5E2NQb3voEIlXVTGcevXit/q9wybUqRwNdA2LI6p/hRjunwWUus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830173; c=relaxed/simple;
-	bh=UBdbq7V7rVjsugXefP2rGZaKbc0UnNDfD/0ue39SVXg=;
+	s=arc-20240116; t=1780830156; c=relaxed/simple;
+	bh=yQudyhAqKS02hrdiBIwqFxJTKpxNcHbioWc9T/mKbpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhLhGwRihWOjfFxNavMQrrQuz4IkMShQhfDLBuNKzASu+wzvKXiH8wTrVgFNMF6a9mETFlqjEho0zspxMNfeTEHOST3Vze+IlcsPECJYl41DehdFNm+dXNuvmAIxP/3WZ6SCXml5LBGt5hAG7TJSRti8d6wHVDPxWHExz9THKcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDOFA30P; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B6F1F00893;
-	Sun,  7 Jun 2026 11:02:50 +0000 (UTC)
+	 MIME-Version; b=MxPvUn0DhpGQz0xURwRLzU49Ds4u2hTB/s6pqZ9bLfm+qA0SvVENott8Qhj9TDGPWsb+EiBpVJgymvd1LveK+2kBIQDDX4wgUmvmL6FVHFanN3PC67+CaGrUOIljCs++pij3qF/T3k1A7QOtFjeDvWYbkMKCXjO0iLLh/emvRS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFEpcdld; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A050E1F00893;
+	Sun,  7 Jun 2026 11:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830172;
-	bh=cng/bFt7//Bl49vXXQGqUb1wSfyOpDivzdVR9YjSBE0=;
+	s=korg; t=1780830155;
+	bh=KY7WZoqpnOXRm4oC2twvWevNb8qM86xpBeo2elnNG9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vDOFA30PwHt9QO/BjmsSkDNN87K4Az7pT27HKKzuv1GJcZYQmNVomm6Zfn7er5fsM
-	 a08HFPEtCQxOJLRaBxljGncyycTP0qy4LuIYT4UZUyWLtsvSRoe/JSaPGtIoyvaehL
-	 rnO/CvbZGlfyspCW36snBKq0+hrGK1IhJW8n3dnY=
+	b=OFEpcdld6IHRbbWfEZdJtCDeGz9k6StY6JCN86h6nmY964040syi9aiRxKE5HY/qd
+	 K2E9a/XeF/Kd/aVi/XoeWMEhaK35P3e+mNnXrZW1O0ks/XsfSAt+LDqMGE7Inj8Dbz
+	 3hSuOQfscTq0whEBgNhxDgkrtVXLEuO3SY2B+uMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Saurav Sachidanand <sauravsc@amazon.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 298/307] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
+Subject: [PATCH 7.0 326/332] i2c: tegra: make tegra_i2c_mutex_unlock() return void
 Date: Sun,  7 Jun 2026 12:01:35 +0200
-Message-ID: <20260607095738.686278531@linuxfoundation.org>
+Message-ID: <20260607095740.107078591@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,163 +69,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261870-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261866-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sauravsc@amazon.com,m:jonathanh@nvidia.com,m:treding@nvidia.com,m:andi.shyti@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,nvidia.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9015F6505D4
+X-Rspamd-Queue-Id: 414166505C5
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Saurav Sachidanand <sauravsc@amazon.com>
 
-[ Upstream commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 ]
+[ Upstream commit 30792d12842901f5276f466a960962d5bfa15cc8 ]
 
-Two latent bugs in the Text-phase handler, both present since the
-original LIO integration in commit e48354ce078c ("iscsi-target: Add
-iSCSI fabric support for target v4.1"):
+tegra_i2c_mutex_unlock() returning an error that overwrites the transfer
+result causes silent loss of I2C transfer errors. If the transfer failed
+but the unlock succeeded, the error was lost and the function incorrectly
+reported success.
 
-1) DataDigest CRC buffer overread (4 bytes past text_in).
+Rather than propagating the unlock error (which is not actionable by the
+caller - the I2C message may have been sent regardless), convert the
+function to return void and WARN on the unexpected condition. If the
+unlock fails, subsequent lock attempts will fail anyway, making the error
+visible on the next transfer.
 
-   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
-   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
-   in the iovec, but the same (now-bumped) rx_size is passed as the
-   buffer length to iscsit_crc_buf():
-
-       if (conn->conn_ops->DataDigest) {
-               ...
-               rx_size += ISCSI_CRC_LEN;
-       }
-       ...
-       if (conn->conn_ops->DataDigest) {
-               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
-
-   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
-   when DataDigest is negotiated it reads 4 bytes past the end of the
-   text_in allocation.  KASAN reproduces this directly on the unpatched
-   mainline tree as slab-out-of-bounds in crc32c() called from the Text
-   PDU path.  The OOB bytes feed crc32c() and are then compared against
-   the initiator-supplied checksum, so the value does not flow back to
-   the attacker, but the kernel does read past the buffer on every Text
-   PDU with DataDigest=CRC32C.
-
-   Fix by passing the actual padded payload length
-   (ALIGN(payload_length, 4)) that was used for the kzalloc().
-
-2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
-   drop.
-
-   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
-   silently drops the PDU and lets the initiator plug the CmdSN gap:
-
-               kfree(text_in);
-               return 0;
-
-   cmd->text_in_ptr still points at the freed buffer.  The next Text
-   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
-   unconditionally does
-
-       kfree(cmd->text_in_ptr);
-       cmd->text_in_ptr = NULL;
-
-   freeing the same pointer a second time.  Session teardown via
-   iscsit_release_cmd() has the same shape and hits the same double-free
-   if the connection is dropped before a second Text Request arrives.
-
-   On an unmodified mainline tree the bug-1 CRC overread fires first on
-   the initial valid Text Request and perturbs the subsequent state, so
-   #4 was isolated by building a kernel with only the bug-1 hunk of this
-   patch applied plus temporary printk() observability around the three
-   relevant kfree() sites.  The observability prints are not part of
-   this patch.  On that build, a three-PDU Text Request sequence after
-   login produces two back-to-back splats:
-
-       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
-       BUG: KASAN: double-free in iscsit_release_cmd+0x??
-
-   showing the same pointer freed in the ERL>0 drop path and again in
-   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
-   more in iscsit_release_cmd() (session teardown).  On distro kernels
-   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
-   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
-   the slab freelist.
-
-   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
-   path.  With both hunks applied #4 is directly observable on the stock
-   tree without observability printks; fixing bug-1 alone would mask #4
-   less, not more, so the hunks are submitted together.
-
-Both fixes are one-liners.  The Text PDU state machine is unchanged and
-the wire protocol is unaffected.
-
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 6077cfd716fb ("i2c: tegra: Add support for SW mutex register")
+Signed-off-by: Saurav Sachidanand <sauravsc@amazon.com>
+Cc: <stable@vger.kernel.org> # v7.0+
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260507221145.62183-3-sauravsc@amazon.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-tegra.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target.c
-+++ b/drivers/target/iscsi/iscsi_target.c
-@@ -2329,8 +2329,9 @@ iscsit_handle_text_cmd(struct iscsit_con
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -445,25 +445,22 @@ static int tegra_i2c_mutex_lock(struct t
+ 	return ret;
+ }
  
- 		if (conn->conn_ops->DataDigest) {
- 			iscsit_do_crypto_hash_buf(conn->conn_rx_hash,
--						  text_in, rx_size, 0, NULL,
--						  &data_crc);
-+						  text_in,
-+						  ALIGN(payload_length, 4),
-+						  0, NULL, &data_crc);
+-static int tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
++static void tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
+ {
+ 	unsigned int reg = tegra_i2c_reg_addr(i2c_dev, I2C_SW_MUTEX);
+ 	u32 val, id;
  
- 			if (checksum != data_crc) {
- 				pr_err("Text data CRC32C DataDigest"
-@@ -2350,6 +2351,7 @@ iscsit_handle_text_cmd(struct iscsit_con
- 					" Command CmdSN: 0x%08x due to"
- 					" DataCRC error.\n", hdr->cmdsn);
- 					kfree(text_in);
-+					cmd->text_in_ptr = NULL;
- 					return 0;
- 				}
- 			} else {
+ 	if (!i2c_dev->hw->has_mutex)
+-		return 0;
++		return;
+ 
+ 	val = readl(i2c_dev->base + reg);
+ 
+ 	id = FIELD_GET(I2C_SW_MUTEX_GRANT, val);
+-	if (id && id != I2C_SW_MUTEX_ID_CCPLEX) {
+-		dev_warn(i2c_dev->dev, "unable to unlock mutex, mutex is owned by: %u\n", id);
+-		return -EPERM;
+-	}
++	if (WARN(id && id != I2C_SW_MUTEX_ID_CCPLEX,
++		 "unable to unlock mutex, mutex is owned by: %u\n", id))
++		return;
+ 
+ 	writel(0, i2c_dev->base + reg);
+-
+-	return 0;
+ }
+ 
+ static void tegra_i2c_mask_irq(struct tegra_i2c_dev *i2c_dev, u32 mask)
+@@ -1556,7 +1553,7 @@ static int tegra_i2c_xfer(struct i2c_ada
+ 			break;
+ 	}
+ 
+-	ret = tegra_i2c_mutex_unlock(i2c_dev);
++	tegra_i2c_mutex_unlock(i2c_dev);
+ 	pm_runtime_put(i2c_dev->dev);
+ 
+ 	return ret ?: i;
 
 
 
