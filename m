@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-261792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g1lvObpQJWqMGwIAu9opvQ
-	(envelope-from <stable+bounces-261792-lists+stable=lfdr.de@vger.kernel.org>)
+	id Sa6rLLpQJWqLGwIAu9opvQ
+	(envelope-from <stable+bounces-261795-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9616504EA
+	by mail.lfdr.de (Postfix) with ESMTPS id 259B56504E9
 	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pei5QrX4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261792-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261792-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m6xgRkRa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261795-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261795-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4B553090A06
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 201A43097FD9
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4743264F2;
-	Sun,  7 Jun 2026 10:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37538330330;
+	Sun,  7 Jun 2026 10:57:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DAF12CDA5;
-	Sun,  7 Jun 2026 10:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0866B12CDA5;
+	Sun,  7 Jun 2026 10:57:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829858; cv=none; b=lBB/m3ACY7SX85TdpWGVcSeH4wb5irAWlIU+ALTUZ5joR6JsOUrUzHKlkmNxNqn8l7QLYYO9utGxJRS+GI4BgjFtXo9CcaABYx2KEWRoI6jnbCWJ5djR2/Baxxyqx7+A4LdJTAUNGssA/11Enqmr1wgDN6Lb3b3eAhWQoJ/NohU=
+	t=1780829869; cv=none; b=FtwLNRzjcv2pJxBxOI0VpOiYbb1DXJxEhPLZiSjf6o6N1qsAIJGfHPQMWOtV2VvkrSY/6xUV0KNmUHbNJZOuHgr3xGYu5ZdD/l1GZQtF/w5ucJwcTVoa/Zo1A1Hla2DAqiAFjk67rScb2tEticKavhdehTtadV/CVfa1BGqaraU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829858; c=relaxed/simple;
-	bh=SMV3i2ldu0Noo1phd0z9Z86nXxD5voA40ADjoyLfmx4=;
+	s=arc-20240116; t=1780829869; c=relaxed/simple;
+	bh=4PQKaJXhzXsfaW1sXkv6mhTt8+o90bJoTemEiPQ2dmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CelTNBoVZOgjzTlH4P/0uyZY1u/lrlR5aSg022zPD2sWObKSDm2pOkSRZISWgsVVuRQ9qvAs+fZESrUVD7cYdNoNV7X9FT32h8n+QJYR8yoL3ISAbv6OqQ2c6HhgpBHB2N5NOJqf+s5laYOP+lHkRy68R25JiAYJQO+7BUSXiQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pei5QrX4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D757F1F00893;
-	Sun,  7 Jun 2026 10:57:35 +0000 (UTC)
+	 MIME-Version; b=OHJp75jCo42ZzrzQJN8UYWTInb8kqPi6oiOQH7GkiFp0thi6oWwBUsf0u496Y4ketVDsRG5GA0Y3fFriV5gHMLl67J17OMo+CK/z9Xu9BVC4t4Z7Xu1zmg/3/bZXOR0TMoPRfLqqHL4vegN0PuRC+EeTRGIXVXijkRrCbsHvDDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6xgRkRa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBD81F00893;
+	Sun,  7 Jun 2026 10:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829857;
-	bh=Vy9K3jNkI+SPEKqOvdOu4qJMzEkjm3/CAoIlTB2dmts=;
+	s=korg; t=1780829867;
+	bh=WV2F715W2dJOHc00U0PTMMDt+rFhE7R/Y6UN6ITWJu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pei5QrX4l5tmYfGejWz2LtDQe5rvMgdQnQjtxfmKwFbjl5hvWsSBtAmQb5V1exNpo
-	 RN2kqfz2hxAFrfFmBP0MeWKsP7EvtFuSKuZhGTg4Sqc0xwFu/bdUBJor2hJcwr8NOE
-	 xXbVv8xRG30KJAoJuxVm5hUHqUesug49iFl/89cQ=
+	b=m6xgRkRa5hK1zNPRnqe9gqV7dbHJHcwfgpHri0cdNfLlfdhPtQ8AV0UTWw6H+jj25
+	 n8lY8QQuY4ZtyZgB2vQr9kUTKnyFgjLJGfMINLdl0veY3l9yFUWkPxlOTmre/qxIom
+	 tcaBiUCrt0TXeUduEx/9B3qQIKP4PLHdSaOQg/64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Rik van Riel <riel@surriel.com>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 284/315] platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery
-Date: Sun,  7 Jun 2026 12:01:11 +0200
-Message-ID: <20260607095738.018307323@linuxfoundation.org>
+Subject: [PATCH 6.18 285/315] x86/mm: Disable broadcast TLB flush when PCID is disabled
+Date: Sun,  7 Jun 2026 12:01:12 +0200
+Message-ID: <20260607095738.054087848@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -65,170 +68,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lukas@wunner.de,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261792-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261795-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dave.hansen@intel.com,m:thomas.lendacky@amd.com,m:bp@alien8.de,m:riel@surriel.com,m:stable@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,wunner.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6E9616504EA
+X-Rspamd-Queue-Id: 259B56504E9
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit 348ccc754d8939e21ca5956ff45720b81d6e407f ]
+[ Upstream commit 44126343d58c68adaa8343fbf1c07dd20078c35e ]
 
-After a PCIe Uncorrectable Error has been reported by a device with
-Intel Vendor Specific Extended Capabilities and has been recovered
-through a Secondary Bus Reset, its driver calls intel_vsec_pci_probe()
-to rescan and reinitialize VSECs.
+Booting with "nopcid" clears X86_FEATURE_PCID and keeps CR4.PCIDE from being
+set to one. On AMD CPUs that support INVLPGB, broadcast TLB flushing remains
+enabled.
 
-intel_vsec_pci_probe() invokes pcim_enable_device() and thereby adds
-another devm action which calls pcim_disable_device() on driver unbind.
+There are two checks that decide whether the global ASID code runs,
+mm_global_asid() and consider_global_asid(), that key off of the
+X86_FEATURE_INVLPGB feature. Once an mm becomes active on more than three
+CPUs, consider_global_asid() assigns it a global ASID, after which
+flush_tlb_mm_range() takes the broadcast_tlb_flush() path using a non-zero
+PCID. Issuing an INVLPGB with a non-zero PCID while CR4.PCIDE is not set
+results in a #GP:
 
-So once the driver unbinds, pcim_disable_device() will be called as many
-times as an Uncorrectable Error occurred, plus one.  This will lead to
-an enable_cnt imbalance on driver unbind.
+  Oops: general protection fault, kernel NULL pointer dereference 0x1: 0000 [#1] SMP NOPTI
+  CPU: 158 UID: 0 PID: 3119 Comm: snap Not tainted 7.1.0-rc3 #1 PREEMPT(full)
+  Hardware name: ...
+  RIP: 0010:broadcast_tlb_flush
+  Code: ... 89 da 48 83 c8 07 <0f> 01 fe eb 08 cc cc cc ...
+  Call Trace:
+   <TASK>
+   flush_tlb_mm_range
+   ptep_clear_flush
+   wp_page_copy
+   ? _raw_spin_unlock
+   __handle_mm_fault
+   handle_mm_fault
+   do_user_addr_fault
+   exc_page_fault
+   asm_exc_page_fault
 
-Additionally, since commit dc957ab6aa05 ("platform/x86/intel/vsec: Add
-private data for per-device data"), a devm_kzalloc() allocation is
-leaked on every Uncorrectable Error.
+All processors that support broadcast TLB invalidation also have PCID support,
+so it is only the "nopcid" scenario that is of concern. In this situation just
+disable the broadcast TLB support using the CPUID dependency support by making
+X86_FEATURE_INVLPGB dependent on X86_FEATURE_PCID.
 
-Avoid by splitting the VSEC rescan out of intel_vsec_pci_probe() into a
-separate helper and calling that on PCIe error recovery.
+  [ bp: Massage commit message. ]
 
-Fixes: 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery support to Intel PMT")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org  # v6.0+
-Link: https://patch.msgid.link/bd594d09fa866dc51dddc9a447c3b23f9b1402cc.1778736835.git.lukas@wunner.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 4afeb0ed1753 ("x86/mm: Enable broadcast TLB invalidation for multi-threaded processes")
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Assisted-by: Claude:claude-opus-4.7
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Rik van Riel <riel@surriel.com>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/b915acfd63e8b2a094fdeb8dc608738072518764.1779296450.git.thomas.lendacky@amd.com
+[ adjusted insertion point to after X86_FEATURE_SPEC_CTRL_SSBD ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vsec.c |   54 +++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ arch/x86/kernel/cpu/cpuid-deps.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/intel/vsec.c
-+++ b/drivers/platform/x86/intel/vsec.c
-@@ -620,29 +620,13 @@ static void intel_vsec_skip_missing_depe
- 	}
- }
+--- a/arch/x86/kernel/cpu/cpuid-deps.c
++++ b/arch/x86/kernel/cpu/cpuid-deps.c
+@@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps
+ 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
+ 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
+ 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
++	{ X86_FEATURE_INVLPGB,			X86_FEATURE_PCID      },
+ 	{}
+ };
  
--static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+static int intel_vsec_pci_init(struct pci_dev *pdev)
- {
--	const struct intel_vsec_platform_info *info;
--	struct vsec_priv *priv;
--	int num_caps, ret;
-+	struct vsec_priv *priv = pci_get_drvdata(pdev);
-+	const struct intel_vsec_platform_info *info = priv->info;
- 	int run_once = 0;
- 	bool found_any = false;
--
--	ret = pcim_enable_device(pdev);
--	if (ret)
--		return ret;
--
--	pci_save_state(pdev);
--	info = (const struct intel_vsec_platform_info *)id->driver_data;
--	if (!info)
--		return -EINVAL;
--
--	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv)
--		return -ENOMEM;
--
--	priv->info = info;
--	pci_set_drvdata(pdev, priv);
-+	int num_caps;
- 
- 	num_caps = hweight_long(info->caps);
- 	while (num_caps--) {
-@@ -663,6 +647,31 @@ static int intel_vsec_pci_probe(struct p
- 	return 0;
- }
- 
-+static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	const struct intel_vsec_platform_info *info;
-+	struct vsec_priv *priv;
-+	int ret;
-+
-+	ret = pcim_enable_device(pdev);
-+	if (ret)
-+		return ret;
-+
-+	pci_save_state(pdev);
-+	info = (const struct intel_vsec_platform_info *)id->driver_data;
-+	if (!info)
-+		return -EINVAL;
-+
-+	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->info = info;
-+	pci_set_drvdata(pdev, priv);
-+
-+	return intel_vsec_pci_init(pdev);
-+}
-+
- int intel_vsec_set_mapping(struct oobmsm_plat_info *plat_info,
- 			   struct intel_vsec_device *vsec_dev)
- {
-@@ -796,7 +805,6 @@ static pci_ers_result_t intel_vsec_pci_s
- {
- 	struct intel_vsec_device *intel_vsec_dev;
- 	pci_ers_result_t status = PCI_ERS_RESULT_DISCONNECT;
--	const struct pci_device_id *pci_dev_id;
- 	unsigned long index;
- 
- 	dev_info(&pdev->dev, "Resetting PCI slot\n");
-@@ -817,10 +825,8 @@ static pci_ers_result_t intel_vsec_pci_s
- 		devm_release_action(&pdev->dev, intel_vsec_remove_aux,
- 				    &intel_vsec_dev->auxdev);
- 	}
--	pci_disable_device(pdev);
- 	pci_restore_state(pdev);
--	pci_dev_id = pci_match_id(intel_vsec_pci_ids, pdev);
--	intel_vsec_pci_probe(pdev, pci_dev_id);
-+	intel_vsec_pci_init(pdev);
- 
- out:
- 	return status;
 
 
 
