@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AVUPLRhDJWokFQIAu9opvQ
-	(envelope-from <stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:24 +0200
+	id UopZKrtDJWpwFQIAu9opvQ
+	(envelope-from <stable+bounces-260989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E8E64F56D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590D64F61B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="SvPYm0/H";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260967-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w6PuUBiR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260989-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260989-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84D4B30237CA
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:06:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB6BF3040AB1
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501CB3101A6;
-	Sun,  7 Jun 2026 10:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8388F2E3709;
+	Sun,  7 Jun 2026 10:08:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264A34071F8;
-	Sun,  7 Jun 2026 10:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2DB1DE8AE;
+	Sun,  7 Jun 2026 10:08:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826812; cv=none; b=a2NJ/5Tu3N6mxQ5pFy4sovH0NySM/32spxQv/Oz3ABCFRsXgy8XunEwSuSoHnFXzJeu+j1W5gw7Y61OylxQYenLvXt6SK/SEjoBt8+IXjYinD09fPVU7QmBWJ+pHLsYvBUgCdHafWEebDITpOkZ0i1gVFVFCC8zLVY7Nnha56Oc=
+	t=1780826884; cv=none; b=sWPxX/1uFVqHUEDH47rM6GgU9x99PjNTN0Zi0CYdnlteWQIeBxfv9cLJgkVQuc6lt1rJRlAbIZB/QmguwpeGjwYum2h38rReBypLWsH7mI+IE2c2BqmLNVzKQWNX4vFTuyl8mLctJTrnWbOnRhJss+VP+rG2NTYZHFV8EvBDMg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826812; c=relaxed/simple;
-	bh=nUT5GR9QNO5sfoRecETlBNZjCHUR7zOS5/6eiTCJgzI=;
+	s=arc-20240116; t=1780826884; c=relaxed/simple;
+	bh=9Xg+C5PWom7MBWGM3oBELFmo0AGF7VfetdzY70iIA2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIK1yb8uon968R+jN6hMvV4ssPfiRXrRPBacSgr0IwIY9AhnFJXzVMcct/SyZORiO9ulElYf17MOqXBSX67e6xBq5thZzUSrhYpFo7zWHkYXN0BwpwF7ySkwwGJs9oTnanhmeQwxJrOkRyeydrwIZ2pldeQlINQ9mpp/OYrthrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvPYm0/H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E4B1F00893;
-	Sun,  7 Jun 2026 10:06:48 +0000 (UTC)
+	 MIME-Version; b=LrgStKoQYFh5hMucUUK5qcYFfTnfisll2TJhSLmYeX67tT9T3nQN54oIxSIbjuYvlQqnNl3YSoU+GmmSUbYTsymjr/e1FcX2rRWLOdVq1k4dBvJg5Q5LqXkzPLAQi3pTTPrzXiGg8P9vwadme/YDETel85hR3ieZVGCnSnqx8yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6PuUBiR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970071F00893;
+	Sun,  7 Jun 2026 10:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826809;
-	bh=0GTR9Aj8qJZwlVFxzmNJhAC50skRV1xVu8rJT8ol1ic=;
+	s=korg; t=1780826883;
+	bh=FrfBfdS0gsqPIj/OR9dj1+j7K+fmqxD2LpS+4ykt+xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SvPYm0/HvcRz07trPFExl3WzL1siStdWnllBVbQ4p5KGL6BS8l788bDpUdO3nCUtA
-	 cLzSFxQ8EkPbW1bq8EwVJzLzgGYaLDZ3x0tkVKbCCZchgaR9DpMGxLLN9yR04wkK3x
-	 zEa59qsiuM96q7MDeIYlT4irVriVQNH2KEMM+IGk=
+	b=w6PuUBiRVlq35o8mKJuiDpA/7t4j+yQX2xSdiV0KVtKcgpCjWCP6VGsE/CPUET8sf
+	 UkBIIyKj7Oy7MaFsu/6q4hbebqzjHA6jUheKrZVHgB7RGJFEkUuk/E++qlm738jQon
+	 xr4B6sz+NIM83X0tzkfQvc2CzAKlSRjtnxETII00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Nogueria <victor@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 005/315] net/sched: sch_sfb: Replace direct dequeue call with peek and qdisc_dequeue_peeked
-Date: Sun,  7 Jun 2026 11:56:32 +0200
-Message-ID: <20260607095727.706623786@linuxfoundation.org>
+Subject: [PATCH 6.18 006/315] bcache: fix uninitialized closure object
+Date: Sun,  7 Jun 2026 11:56:33 +0200
+Message-ID: <20260607095727.739580908@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260967-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260989-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:victor@mojatatu.com,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mingzhe.zou@easystack.cn,m:colyli@fnnas.com,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,84 +99,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,mojatatu.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,fnnas.com:email,easystack.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 28E8E64F56D
+X-Rspamd-Queue-Id: 0590D64F61B
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueria <victor@mojatatu.com>
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-[ Upstream commit 1b9bc71153b01dbde8045b9edede4240f4f5520e ]
+[ Upstream commit 20a8e451ec1c7e99060b1bbaaad03ce88c39ddb8 ]
 
-When sfb has children (eg qfq qdisc) whose peek() callback is
-qdisc_peek_dequeued(), we could get a kernel panic. When the parent of such
-qdiscs (eg illustrated in patch #3 as tbf) wants to retrieve an skb from
-its child (sfb in this case), it will do the following:
- 1a. do a peek() - and when sensing there's an skb the child can offer, then
-     - the child in this case(sfb) calls its child's (qfq) peek.
-        qfq does the right thing and will return the gso_skb queue packet.
-        Note: if there wasnt a gso_skb entry then qfq will store it there.
- 1b. invoke a dequeue() on the child (sfb). And herein lies the problem.
-     - sfb will call the child's dequeue() which will essentially just
-       try to grab something of qfq's queue.
+In the previous patch ("bcache: fix cached_dev.sb_bio use-after-free and
+crash"), we adopted a simple modification suggestion from AI to fix the
+use-after-free.
 
-[  127.594489][  T453] KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-[  127.594741][  T453] CPU: 2 UID: 0 PID: 453 Comm: ping Not tainted 7.1.0-rc1-00035-gac961974495b-dirty #793 PREEMPT(full)
-[  127.595059][  T453] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[  127.595254][  T453] RIP: 0010:qfq_dequeue+0x35c/0x1650 [sch_qfq]
-[  127.595461][  T453] Code: 00 fc ff df 80 3c 02 00 0f 85 17 0e 00 00 4c 8d 73 48 48 89 9d b8 02 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 76 0c 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b
-[  127.596081][  T453] RSP: 0018:ffff88810e5af440 EFLAGS: 00010216
-[  127.596337][  T453] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: dffffc0000000000
-[  127.596623][  T453] RDX: 0000000000000009 RSI: 0000001880000000 RDI: ffff888104fd82b0
-[  127.596917][  T453] RBP: ffff888104fd8000 R08: ffff888104fd8280 R09: 1ffff110211893a3
-[  127.597165][  T453] R10: 1ffff110211893a6 R11: 1ffff110211893a7 R12: 0000001880000000
-[  127.597404][  T453] R13: ffff888104fd82b8 R14: 0000000000000048 R15: 0000000040000000
-[  127.597644][  T453] FS:  00007fc380cbfc40(0000) GS:ffff88816f2a8000(0000) knlGS:0000000000000000
-[  127.597956][  T453] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  127.598160][  T453] CR2: 00005610aa9890a8 CR3: 000000010369e000 CR4: 0000000000750ef0
-[  127.598390][  T453] PKRU: 55555554
-[  127.598509][  T453] Call Trace:
-[  127.598629][  T453]  <TASK>
-[  127.598718][  T453]  ? mark_held_locks+0x40/0x70
-[  127.598890][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  127.599053][  T453]  sfb_dequeue+0x88/0x4d0
-[  127.599174][  T453]  ? ktime_get+0x137/0x230
-[  127.599328][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  127.599480][  T453]  ? qdisc_peek_dequeued+0x7b/0x350 [sch_qfq]
-[  127.599670][  T453]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  127.599831][  T453]  tbf_dequeue+0x6b1/0x1098 [sch_tbf]
-[  127.599988][  T453]  __qdisc_run+0x169/0x1900
+But in actual testing, we found an extreme case where the device is
+stopped before calling bch_write_bdev_super().
 
-The right thing to do in #1b is to grab the skb off gso_skb queue.
-This patchset fixes that issue by changing #1b to use qdisc_dequeue_peeked()
-method instead.
+At this point, struct closure sb_write has not been initialized yet.
+For this patch, we ensure that sb_bio has been completed via
+sb_write_mutex.
 
-Fixes: e13e02a3c68d ("net_sched: SFB flow scheduler")
-Signed-off-by: Victor Nogueria <victor@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260430152957.194015-3-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Signed-off-by: Coly Li <colyli@fnnas.com>
+Link: https://patch.msgid.link/20260403042135.2221247-1-colyli@fnnas.com
+Fixes: fec114a98b87 ("bcache: fix cached_dev.sb_bio use-after-free and crash")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/bcache/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_sfb.c b/net/sched/sch_sfb.c
-index 00286c930b8de7..14ac8897784757 100644
---- a/net/sched/sch_sfb.c
-+++ b/net/sched/sch_sfb.c
-@@ -441,7 +441,7 @@ static struct sk_buff *sfb_dequeue(struct Qdisc *sch)
- 	struct Qdisc *child = q->qdisc;
- 	struct sk_buff *skb;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 2f06945533d673..d4ebd13a59f820 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1378,7 +1378,8 @@ static CLOSURE_CALLBACK(cached_dev_free)
+ 	 * The sb_bio is embedded in struct cached_dev, so we must
+ 	 * ensure no I/O is in progress.
+ 	 */
+-	closure_sync(&dc->sb_write);
++	down(&dc->sb_write_mutex);
++	up(&dc->sb_write_mutex);
  
--	skb = child->dequeue(q->qdisc);
-+	skb = qdisc_dequeue_peeked(child);
- 
- 	if (skb) {
- 		qdisc_bstats_update(sch, skb);
+ 	if (dc->sb_disk)
+ 		folio_put(virt_to_folio(dc->sb_disk));
 -- 
 2.53.0
 
