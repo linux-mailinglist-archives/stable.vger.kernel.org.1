@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261086-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qDFsFglFJWoSFgIAu9opvQ
-	(envelope-from <stable+bounces-261056-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:41 +0200
+	id h3OXGFFEJWq+FQIAu9opvQ
+	(envelope-from <stable+bounces-261086-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22E664F768
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE18E64F6BB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lZ88i/U6";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261056-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261056-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="F/DiLpzz";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261086-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261086-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2C6E304857A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF1E23011786
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8595A1E98EF;
-	Sun,  7 Jun 2026 10:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6EF30C157;
+	Sun,  7 Jun 2026 10:13:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9372E2DDD;
-	Sun,  7 Jun 2026 10:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020F61E98EF;
+	Sun,  7 Jun 2026 10:13:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827118; cv=none; b=U+90pyQXZTmwfhRQd7n6TnpXz7Nm3xustRa+wk9sj71k0pgT9RAXvaaPHdB178yTxGr1oFnKCcfIHtG2xWQ0B/DwpkJMw49eDGbF0/nUiwVM7c/273uGUNolPpgnX4I3gOd0AUl++c0tXP3nU/63ahXTFjZJJbAbIZbd/A3PcAM=
+	t=1780827214; cv=none; b=XW1SIUBi+Rf6PY1WiA8FHbIkhsbO9dBJRPlLqqqL/ZY7IRLCmtdQAE9Aa5/J5360v87WgxCfQE4h6ErA4noFYgXP5rmkiInHx5pJzyJiDXGNmlP8sG/DjFl8hbuyNphi8W3J1NNmtpPF26y0aF5im7YiCt4hGRhXoSC4dmleMH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827118; c=relaxed/simple;
-	bh=LWRdmDogP7gRaAYhsjomeeznepuxl95H9EgzkV6cQVQ=;
+	s=arc-20240116; t=1780827214; c=relaxed/simple;
+	bh=5J7PapYpLQWUQo9mjBXSxWtotqhnY0Fp1G3I4WRK2Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLfY2Ko9hPoaNNVC5u7xf+PCgYOzgJPdBilKCqTExuMXdKqpqV6Wi+EZo1ogbeaRhzJ5OpEx2aKmSC8Rv1qbF0lUFKbD5jG6jQSa5WO58JPP4A8vd9XMuEMGxYnzKc5zUD3e9NsIBnz+506tCrMCIXKiYmUcB/Etq7ULufwE9v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ88i/U6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9481F00893;
-	Sun,  7 Jun 2026 10:11:55 +0000 (UTC)
+	 MIME-Version; b=fI8xIX4wU8IL/ELF63gv53KbqSVgqNLJazxa2mvLm5bAyXh1C3+bkENYnnquZRj4eiOXTvg2G/CWCYxGRnJF8YNXJKN9+hcdWbes8UcBRkApWJzXIuLQ4E3/UnZU9P+xoifrUdy0WE0ZghyeFAUwEei1hI0CH9SS/2SheckI07k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/DiLpzz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8681F00893;
+	Sun,  7 Jun 2026 10:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827116;
-	bh=TaEF/ojAn5k5XLuWzEeulNxG4DufuQzN1cHTwDlUobM=;
+	s=korg; t=1780827213;
+	bh=v7k4wdLJS9R6m10NwMyvwY47IIOvKneRvo6HMJEmtco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lZ88i/U6yrGev7S4Zz0WVLtt5RYfVSj9wHeDbN5KeLmN1F1BvFwgsCM096A467Usg
-	 bgMmZT3ekqPfVe1VCTySUI5VivFXy6yWUVLxKuUp2LKlMvy83ypAPkMYZ/IwD2GW3c
-	 3UY2o8hnvsVFhSW0pWTMY27GpPsMo1u/AHXPCHZM=
+	b=F/DiLpzz00W62DXtb0Kh5VJsOh+PVOD3i6+SV5tdDOrQBvNer6KLU7V+fOXGPge2x
+	 Zd35NujbtQjwgP9cjbqzaZL9qxba4CcJaXc98GLdHGI/x4NNhxhOlHe/Zwhn/sHKcr
+	 FJMZIxaH3DxY/VAQ3Pj7E+V/hsUBmhARn6CeuyM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 041/315] ethtool: rss: fix indir_table and hkey leak on get_rxfh failure
-Date: Sun,  7 Jun 2026 11:57:08 +0200
-Message-ID: <20260607095729.069563070@linuxfoundation.org>
+Subject: [PATCH 6.12 032/307] netfilter: xt_cpu: prefer raw_smp_processor_id
+Date: Sun,  7 Jun 2026 11:57:09 +0200
+Message-ID: <20260607095728.842399003@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +67,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261056-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261086-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com,m:fw@strlen.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,690d3e3ffa7335ac10eb];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,strlen.de:email,appspotmail.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B22E664F768
+X-Rspamd-Queue-Id: CE18E64F6BB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 266297692f97008ca48bc311775c087c59bd7fe3 ]
+[ Upstream commit c376f07e16c02239ed44cabb97145d03f65b4d15 ]
 
-rss_prepare_get() allocates the indirection table and hash key buffer
-via rss_get_data_alloc(), then calls ops->get_rxfh() to populate them.
-If get_rxfh() fails, the function returns an error without freeing
-the allocation.
+With PREEMPT_RCU we get splat:
 
-Fixes: 4f038a6a02d2 ("net: ethtool: Don't call .cleanup_data when prepare_data fails")
-Link: https://patch.msgid.link/20260522230647.1705600-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+BUG: using smp_processor_id() in preemptible [..]
+caller is cpu_mt+0x53/0xd0 net/netfilter/xt_cpu.c:37
+CPU: 1 .. Comm: syz.3.1377 #0 PREEMPT(full)
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ check_preemption_disabled+0xd3/0xe0 lib/smp_processor_id.c:47
+ cpu_mt+0x53/0xd0 net/netfilter/xt_cpu.c:37
+ [..]
+
+Just use raw version instead.
+This is similar to 14d14a5d2957 ("netfilter: nft_meta: use raw_smp_processor_id()").
+
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Reported-by: syzbot+690d3e3ffa7335ac10eb@syzkaller.appspotmail.com
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/rss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/xt_cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index 4877655f724419..5416aec13b7fe7 100644
---- a/net/ethtool/rss.c
-+++ b/net/ethtool/rss.c
-@@ -168,8 +168,10 @@ rss_prepare_get(const struct rss_req_info *request, struct net_device *dev,
- 	rxfh.key = data->hkey;
+diff --git a/net/netfilter/xt_cpu.c b/net/netfilter/xt_cpu.c
+index 3bdc302a0f9137..9cb259902a586b 100644
+--- a/net/netfilter/xt_cpu.c
++++ b/net/netfilter/xt_cpu.c
+@@ -34,7 +34,7 @@ static bool cpu_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ {
+ 	const struct xt_cpu_info *info = par->matchinfo;
  
- 	ret = ops->get_rxfh(dev, &rxfh);
--	if (ret)
-+	if (ret) {
-+		rss_get_data_free(data);
- 		goto out_unlock;
-+	}
+-	return (info->cpu == smp_processor_id()) ^ info->invert;
++	return (info->cpu == raw_smp_processor_id()) ^ info->invert;
+ }
  
- 	data->hfunc = rxfh.hfunc;
- 	data->input_xfrm = rxfh.input_xfrm;
+ static struct xt_match cpu_mt_reg __read_mostly = {
 -- 
 2.53.0
 
