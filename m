@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YjEVEsVIJWozGAIAu9opvQ
-	(envelope-from <stable+bounces-261386-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:37 +0200
+	id PjhWCU5IJWrwFwIAu9opvQ
+	(envelope-from <stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423C264FC28
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5992E64FBA8
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iYwGbd1E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261386-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261386-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=q9129h7b;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261351-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2C3230046A8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 005D03005178
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FE2329391;
-	Sun,  7 Jun 2026 10:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEF731E842;
+	Sun,  7 Jun 2026 10:30:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9C92D3A69;
-	Sun,  7 Jun 2026 10:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D033E329E7E;
+	Sun,  7 Jun 2026 10:30:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828350; cv=none; b=Q10Yxq96G1qGc6xAsbKDCk3XyzLWZydSPLaiB1NiVfFEarX+I4zW/lNAQbvqxGZATdP241Gfq39DCZgsZSULwKhg9BM3bkpMGy2vnVBjTiKCQhb5TnhiChUW0KTetNu6jgSa1kovzdml8/DeBAJj7aqyYGEzXQTZa027DMtNSfk=
+	t=1780828216; cv=none; b=SUnClCDdU3TvvNKGRHCcOejLmTMQ++FOHmqBbH29parcuYdkZ8+fWQuj6uarrdHsdbY3Edu5AzVEpPV6hZUbZHgPYoDmKpiknboyDFOUE5V9hlKf/LVD4IuCJ5NhhwuKx6IM+eKrisIn48HTATF/4J1vpOLmEo/LTtvIEZfSZ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828350; c=relaxed/simple;
-	bh=Qt4BBaNLZ08Hsk+hegKv3Zm/+r6qCP6MS2pa02K5rz0=;
+	s=arc-20240116; t=1780828216; c=relaxed/simple;
+	bh=rHictp+nackwG7xNJ696uWZZC8jcPBOxD+Gcj6mJsmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiWxv3xS7/ENLGouqT8M2S2HYL+JKAUqn9quCTJBMRUziouYRwElnqv4C8IqexAAvBjaEL+tkNzzXTRHCfn0Ie9wc7+1r+wWxeGxgSQzCwLbZ68C1GYI0GQDHd0hsl2ZHE1HmBCvlQfc16ShXP9UFgsEHNqS49BFaU5CAjR+EF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYwGbd1E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5541F00898;
-	Sun,  7 Jun 2026 10:32:28 +0000 (UTC)
+	 MIME-Version; b=R7/WMdCppFW4y9pLQjzj53I8TZ17XDU2cjjhDmA9aWssD/yeX7c0P6MyUaodxLZE/Ssb3FKClXGlg4V/x6pF1LksRwxXRdRa5A9r1wBVxBpbT2icXeX9mrkDeClEVMVXvBdc6Z+MA91e3kzlQM9nBP9IiYgntSvBGT9UfEawgLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9129h7b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DA31F00893;
+	Sun,  7 Jun 2026 10:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828349;
-	bh=7ncqu5YWZUulQMXiaBYL8tBAvFv43DoGBqZejlDBNaw=;
+	s=korg; t=1780828214;
+	bh=SI99nOLySRerxcxSUJ2BM0Keu5DGwL0+JoWmkb9soA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iYwGbd1EcI4vJXJAOkLZtsgo3YRIpHyJIFjXznltGUa2suYnmlpyHjldU985qpVqY
-	 Hv8wGskL6CQiPcODxy33gc7+glExDlrGQAmVvggLGQuL4GrQGVKQVMeivvIoqC6lKD
-	 QVa4yI4Z0NfF6A3nkQU/hrlGf8r/Sg9gyqWY0dv8=
+	b=q9129h7b9gN0LgdJa050wlATJ4AOYSz1/+F/P7rUclfuuKufnOHCj+ywQ3rzlcs7t
+	 fpfuq1M79dPt6d2/61GP46z3UcYe3En4VaU5PDtFSu115YjUzl2FHmDyUKq/7OxrWr
+	 +o01tsDWX/y8iccj6LvnyIOhuw7OVcSHOo4GnpnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 131/307] usb: typec: altmodes/displayport: validate count before reading Status Update VDO
+	Mark Brown <broonie@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 141/315] KVM: arm64: Correctly cap ZCR_EL2 provided by a guest hypervisor
 Date: Sun,  7 Jun 2026 11:58:48 +0200
-Message-ID: <20260607095732.566401774@linuxfoundation.org>
+Message-ID: <20260607095732.780900893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261386-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261351-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:broonie@kernel.org,m:maz@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,44 +97,168 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 423C264FC28
+X-Rspamd-Queue-Id: 5992E64FBA8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit 8a18f896e667df491331371b55d4ad644dc51d60 upstream.
+commit 83726330748981372bde86ed5411d7b306612991 upstream.
 
-A broken/malicious device can send the incorrect count for a status
-update VDO, which will cause the kernel to read uninitialized stack data
-and send it off elsewhere.
+ZCR_EL2 can be updated by a VHE guest hypervisor either using ZCR_EL2
+(which traps) or ZCR_EL1 (which does not trap). KVM handles both in
+different way:
 
-Fix this up by correctly verifying the count for the update object.
+- on ZCR_EL2 trap, ZCR_EL2.LEN is immediately capped at the VM's own
+  VL limit. This has the potential to break existing SW that relies
+  on the full LEN field to be stateful.
 
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051350-reacquire-sculpture-4244@gregkh
+- on ZCR_EL1 access, we do absolutely nothing.
+
+On restoring the SVE context for an L2 guest, we directly restore the
+guest hypervisor's view of ZCR_EL2 into the physical ZCR_EL2. If the
+guest's view of the register was updated using the ZCR_EL2 accessor,
+the value has already been sanitised (with the caveat mentioned above).
+
+But if the guest used ZCR_EL1, the raw value is written into the HW,
+and the L2 guest can now access VLs that it shouldn't.
+
+Fix all the above by moving the VL capping to the restore points,
+ensuring that:
+
+- the HW is always programmed with a capped value, irrespective of
+  the accessor being used,
+
+- the ZCR_EL2.LEN field is always completely stateful, irrespective
+  of the accessor being used.
+
+Additionally, move ZCR_EL2 to be a sanitised register, ensuring that
+only the LEN field is actually stateful. This requires some creative
+construction of the RES0 mask, as the sysreg generation script does
+not yet generate RAZ/WI fields.
+
+Fixes: b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260529-kvm-arm64-fix-zcr-len-nv-v2-1-86cad51992bd@kernel.org
+[maz: rewrote commit message, tidy up access_zcr_el2()]
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/kvm_host.h       |    2 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h |   16 ++++++++++------
+ arch/arm64/kvm/nested.c                 |    5 +++++
+ arch/arm64/kvm/sys_regs.c               |   11 +++--------
+ 4 files changed, 19 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -386,6 +386,8 @@ static int dp_altmode_vdm(struct typec_a
- 				dp->state = DP_STATE_EXIT_PRIME;
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
-+			if (count < 2)
-+				break;
- 			dp->data.status = *vdo;
- 			ret = dp_altmode_status_update(dp);
- 			break;
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -496,7 +496,6 @@ enum vcpu_sysreg {
+ 	ACTLR_EL2,	/* Auxiliary Control Register (EL2) */
+ 	CPTR_EL2,	/* Architectural Feature Trap Register (EL2) */
+ 	HACR_EL2,	/* Hypervisor Auxiliary Control Register */
+-	ZCR_EL2,	/* SVE Control Register (EL2) */
+ 	TTBR0_EL2,	/* Translation Table Base Register 0 (EL2) */
+ 	TTBR1_EL2,	/* Translation Table Base Register 1 (EL2) */
+ 	TCR_EL2,	/* Translation Control Register (EL2) */
+@@ -527,6 +526,7 @@ enum vcpu_sysreg {
+ 	SCTLR2_EL2,	/* System Control Register 2 (EL2) */
+ 	MDCR_EL2,	/* Monitor Debug Configuration Register (EL2) */
+ 	CNTHCTL_EL2,	/* Counter-timer Hypervisor Control register */
++	ZCR_EL2,	/* SVE Control Register (EL2) */
+ 
+ 	/* Any VNCR-capable reg goes after this point */
+ 	MARKER(__VNCR_START__),
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -433,11 +433,13 @@ static inline bool kvm_hyp_handle_mops(s
+ 
+ static inline void __hyp_sve_restore_guest(struct kvm_vcpu *vcpu)
+ {
++	u64 zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
++
+ 	/*
+ 	 * The vCPU's saved SVE state layout always matches the max VL of the
+ 	 * vCPU. Start off with the max VL so we can load the SVE state.
+ 	 */
+-	sve_cond_update_zcr_vq(vcpu_sve_max_vq(vcpu) - 1, SYS_ZCR_EL2);
++	sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
+ 	__sve_restore_state(vcpu_sve_pffr(vcpu),
+ 			    &vcpu->arch.ctxt.fp_regs.fpsr,
+ 			    true);
+@@ -447,8 +449,10 @@ static inline void __hyp_sve_restore_gue
+ 	 * nested guest, as the guest hypervisor could select a smaller VL. Slap
+ 	 * that into hardware before wrapping up.
+ 	 */
+-	if (is_nested_ctxt(vcpu))
+-		sve_cond_update_zcr_vq(__vcpu_sys_reg(vcpu, ZCR_EL2), SYS_ZCR_EL2);
++	if (is_nested_ctxt(vcpu)) {
++		zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
++		sve_cond_update_zcr_vq(zcr_el2, SYS_ZCR_EL2);
++	}
+ 
+ 	write_sysreg_el1(__vcpu_sys_reg(vcpu, vcpu_sve_zcr_elx(vcpu)), SYS_ZCR);
+ }
+@@ -472,11 +476,11 @@ static inline void fpsimd_lazy_switch_to
+ 		return;
+ 
+ 	if (vcpu_has_sve(vcpu)) {
++		zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
++
+ 		/* A guest hypervisor may restrict the effective max VL. */
+ 		if (is_nested_ctxt(vcpu))
+-			zcr_el2 = __vcpu_sys_reg(vcpu, ZCR_EL2);
+-		else
+-			zcr_el2 = vcpu_sve_max_vq(vcpu) - 1;
++			zcr_el2 = min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
+ 
+ 		write_sysreg_el2(zcr_el2, SYS_ZCR);
+ 
+--- a/arch/arm64/kvm/nested.c
++++ b/arch/arm64/kvm/nested.c
+@@ -1772,6 +1772,11 @@ int kvm_init_nv_sysregs(struct kvm_vcpu
+ 	/* VNCR_EL2 */
+ 	set_sysreg_masks(kvm, VNCR_EL2, VNCR_EL2_RES0, VNCR_EL2_RES1);
+ 
++	/* ZCR_EL2 - bits 8:4 are RAZ/WI so treat them as RES0 */
++	resx.res0 = ZCR_ELx_RES0 | GENMASK_ULL(8, 4);
++	resx.res1 = ZCR_ELx_RES1;
++	set_sysreg_masks(kvm, ZCR_EL2, resx);
++
+ out:
+ 	for (enum vcpu_sysreg sr = __SANITISED_REG_START__; sr < NR_SYS_REGS; sr++)
+ 		__vcpu_rmw_sys_reg(vcpu, sr, |=, 0);
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2749,21 +2749,16 @@ static bool access_zcr_el2(struct kvm_vc
+ 			   struct sys_reg_params *p,
+ 			   const struct sys_reg_desc *r)
+ {
+-	unsigned int vq;
+-
+ 	if (guest_hyp_sve_traps_enabled(vcpu)) {
+ 		kvm_inject_nested_sve_trap(vcpu);
+ 		return false;
+ 	}
+ 
+-	if (!p->is_write) {
++	if (!p->is_write)
+ 		p->regval = __vcpu_sys_reg(vcpu, ZCR_EL2);
+-		return true;
+-	}
++	else
++		__vcpu_assign_sys_reg(vcpu, ZCR_EL2, p->regval);
+ 
+-	vq = SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
+-	vq = min(vq, vcpu_sve_max_vq(vcpu));
+-	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
+ 	return true;
+ }
+ 
 
 
 
