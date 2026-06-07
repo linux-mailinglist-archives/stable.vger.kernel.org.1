@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aCILERhIJWrPFwIAu9opvQ
-	(envelope-from <stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:44 +0200
+	id Nq2mC+FHJWqoFwIAu9opvQ
+	(envelope-from <stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B735064FB54
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC9B64FAEE
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CSbw9QdB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261323-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sgn6MQyo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1A0A3028C17
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10FC230028A6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBC23290C3;
-	Sun,  7 Jun 2026 10:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C592F8E97;
+	Sun,  7 Jun 2026 10:28:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB8431AF3B;
-	Sun,  7 Jun 2026 10:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293B023F417;
+	Sun,  7 Jun 2026 10:28:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828111; cv=none; b=aaU/0boaVrPxYCqyxdmEf2fMVVRSUX9J1wTDYQFdCZfVa19pirY3gPhkFSuKSmClhg+awtiTV2NExM4Qk8cYy+m2nNbYkI1ONiLCu85mmzoFVBJ0zTViEDamr+MUllPH8qSWUsabCkFJg3KCMlryU+EsddrkPDcKzZiBiHnj1jY=
+	t=1780828125; cv=none; b=Cg9l77CLcs4d4PeyhpIvbABZiWX+2TEfyxS1B2ja10zKL/lUQSVLaw7Tuv1heldpfEZoQCYmVEuNOu0vqdAxal5hmu9x3+u2Of242gIsfn+j5VqXtV2dXMv7DD2nf7TmCkX7//jV/KaDTmMtc1D0/n0zCFqmfuVYZpKd5fAg2GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828111; c=relaxed/simple;
-	bh=E5H86kwGI09TN91Eh0p/qOvwDebuYb+2Qsvr+SFlqds=;
+	s=arc-20240116; t=1780828125; c=relaxed/simple;
+	bh=28HUnPofX8lU7jOzOk8mXMZR9D8MS2w5OvJwIKcwesA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FVOuL2o5ArT0S+82jgKnSRBLbzcvX1eQ2cX4PHXqVkFlfqZA5jFPc2aUZ+w4geifASemhjJvNBxc9AQNfSdbwUYfevTay2b69uQSKRCeBZsoeWQYz9yuugnKYKlMy+q73f7Gs+Rx4XNvWDwOabzF/98L1XiZ8/821/E8P0+bW00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSbw9QdB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38531F00893;
-	Sun,  7 Jun 2026 10:28:28 +0000 (UTC)
+	 MIME-Version; b=Il9puBgXLE/MPKqCt+Bi8MfYvyYrlc72UHvV1Lgm6DRPaSioHZGP3MdFrNHf+SktM6Gs3OavVsSEekZAoGVeBFP65ejdn1WVjFn++mqfMx5KO6jCW9wCZpjYe0Np1GL0R46eDkyuLpuz2KOPYbpckQgpEkdBP7+y0ijtuUfrPKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgn6MQyo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8E81F00893;
+	Sun,  7 Jun 2026 10:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828109;
-	bh=WHvPbjw0sim4zM5ki70MwLnLaTBNjGX40eyssCXk6E0=;
+	s=korg; t=1780828124;
+	bh=c56ob4hjnD8leO2diGdXNzvPoHtkrBWsiveMuYtkbUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CSbw9QdBOlbBp6n7RZKSfVHWWmi7WVNF25ocoWhrRxTlidCsN5W3bhnVJ5Acysbdi
-	 LhohW95s9ng3ybtGtvQqj4Pt5Imt1UqRSLi6jP4gr8qQLp7THNvHZZjFnX352MSMzM
-	 mDr5czlKSSr/wqKIxyzIavpg9nHIyLextmak9bKA=
+	b=Sgn6MQyob2eybsYP98WtSIDIrDlacKHGXFi9vOCqNSqyGSP/wZbkf/vxBbgjxhO7e
+	 c3a3IyZORaO3WuzEZ0uZDa76WOzjD4egAcKHtCs62AxqdvXlkzOoTY6+cyJ/p+IuBt
+	 YzcSfY50m8NUQGk/oVYJOHTImbjXGAAjBjI1+zmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Doruk Tan Ozturk <doruk@0sec.ai>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 152/332] Bluetooth: hci_qca: Use 100 ms SSR delay for rampatch and NVM loading
-Date: Sun,  7 Jun 2026 11:58:41 +0200
-Message-ID: <20260607095733.670004676@linuxfoundation.org>
+Subject: [PATCH 7.0 153/332] Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync
+Date: Sun,  7 Jun 2026 11:58:42 +0200
+Message-ID: <20260607095733.705076382@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261323-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261327-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,63 +97,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B735064FB54
+X-Rspamd-Queue-Id: BBC9B64FAEE
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+From: Doruk Tan Ozturk <doruk@0sec.ai>
 
-commit fa21e86caba2347e89eb65af926205a36a097c53 upstream.
+commit bfea6091e0fffb270c20e74384b660910277eb6c upstream.
 
-When bt_en is pulled high by hardware, the host does not re-download
-the firmware after SSR. The controller loads the rampatch and NVM
-internally.
+hci_le_create_cis_sync() dereferences conn->conn_timeout after releasing
+both rcu_read_lock() and hci_dev_lock(hdev).  The conn pointer was
+obtained from an RCU-protected iteration over hdev->conn_hash.list and
+is not valid once these locks are dropped.  A concurrent disconnect can
+free the hci_conn between the unlock and the dereference, causing a
+use-after-free read.
 
-On HMT chip, the rampatch is ~264 KB and the NVM is ~9.4 KB. The
-loading process takes approximately 70 ms. The previous 50 ms delay is
-too short, causing the controller to not respond to the reset command
-sent by the host, which leads to BT initialization failure:
+The cancellation mechanism in hci_conn_del() cannot prevent this because
+hci_le_create_cis_pending() queues hci_create_cis_sync with data=NULL:
 
- Bluetooth: hci0: QCA memdump Done, received 458752, total 458752
- Bluetooth: hci0: mem_dump_status: 2
- Bluetooth: hci0: Opcode 0x0c03 failed: -110
+    hci_cmd_sync_queue(hdev, hci_create_cis_sync, NULL, NULL);
 
-Increase the delay to 100 ms, which was confirmed as a safe value by
-the controller, to ensure the controller has finished loading the
-firmware before the host sends commands.
+While hci_conn_del() dequeues with data=conn:
 
-Steps to reproduce:
-1. Trigger SSR and wait for SSR to complete:
-   hcitool cmd 0x3f 0c 26
-2. Run "bluetoothctl power on" and observe that BT fails to start.
+    hci_cmd_sync_dequeue(hdev, NULL, conn, NULL);
 
-Fixes: fce1a9244a0f ("Bluetooth: hci_qca: Fix SSR (SubSystem Restart) fail when BT_EN is pulled up by hw")
+Since NULL != conn, the lookup in _hci_cmd_sync_lookup_entry() never
+matches, and the pending work item is not cancelled.
+
+Fix this by saving conn->conn_timeout into a local variable while the
+locks are still held, so the stale conn pointer is never dereferenced
+after unlock.
+
+This is the same class of bug as the one fixed by commit 035c25007c9e
+("Bluetooth: hci_sync: Fix UAF on le_read_features_complete") which
+addressed the identical pattern in a different function.
+
+This vulnerability was identified using 0sec.ai, an open-source
+automated security auditing platform (https://github.com/0sec-labs).
+
+Fixes: c09b80be6ffc ("Bluetooth: hci_conn: Fix not waiting for HCI_EVT_LE_CIS_ESTABLISHED")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
+Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_sync.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1677,8 +1677,8 @@ static void qca_hw_error(struct hci_dev
- 		mod_timer(&qca->tx_idle_timer, jiffies +
- 				  msecs_to_jiffies(qca->tx_idle_delay));
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6711,6 +6711,7 @@ int hci_le_create_cis_sync(struct hci_de
+ 	DEFINE_FLEX(struct hci_cp_le_create_cis, cmd, cis, num_cis, 0x1f);
+ 	size_t aux_num_cis = 0;
+ 	struct hci_conn *conn;
++	u16 timeout = 0;
+ 	u8 cig = BT_ISO_QOS_CIG_UNSET;
  
--		/* Controller reset completion time is 50ms */
--		msleep(50);
-+		/* Wait for the controller to load the rampatch and NVM. */
-+		msleep(100);
+ 	/* The spec allows only one pending LE Create CIS command at a time. If
+@@ -6781,6 +6782,7 @@ int hci_le_create_cis_sync(struct hci_de
+ 		set_bit(HCI_CONN_CREATE_CIS, &conn->flags);
+ 		cis->acl_handle = cpu_to_le16(conn->parent->handle);
+ 		cis->cis_handle = cpu_to_le16(conn->handle);
++		timeout = conn->conn_timeout;
+ 		aux_num_cis++;
  
- 		clear_bit(QCA_SSR_TRIGGERED, &qca->flags);
- 		clear_bit(QCA_IBS_DISABLED, &qca->flags);
+ 		if (aux_num_cis >= cmd->num_cis)
+@@ -6800,7 +6802,7 @@ done:
+ 	return __hci_cmd_sync_status_sk(hdev, HCI_OP_LE_CREATE_CIS,
+ 					struct_size(cmd, cis, cmd->num_cis),
+ 					cmd, HCI_EVT_LE_CIS_ESTABLISHED,
+-					conn->conn_timeout, NULL);
++					timeout, NULL);
+ }
+ 
+ int hci_le_remove_cig_sync(struct hci_dev *hdev, u8 handle)
 
 
 
