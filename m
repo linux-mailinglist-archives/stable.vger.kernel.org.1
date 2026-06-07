@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-261295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NbI+AOtHJWqvFwIAu9opvQ
-	(envelope-from <stable+bounces-261295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:59 +0200
+	id OxjVFC9HJWpSFwIAu9opvQ
+	(envelope-from <stable+bounces-261274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDE464FB04
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE7A64FA5B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QgFUhZRh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261295-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261295-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="OmuROP/C";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261274-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261274-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D19C3020122
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F37F7300CFE4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254CD324B31;
-	Sun,  7 Jun 2026 10:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF023254A9;
+	Sun,  7 Jun 2026 10:25:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C361C13DBA0;
-	Sun,  7 Jun 2026 10:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE22E2D8378;
+	Sun,  7 Jun 2026 10:25:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828004; cv=none; b=ks5S8O1DYIVAt9DRl7SOHJFY8ls4rtXsTgixYV/H3gb5PY2ZmUq8/IMuoTC71dnWI2zs8am8A4Wcuomq99V+LGvB7QkvAPK/PWNZoOsvHqKzgKyl+6q5EnagVrO7i96LXZeBZomU/GAqkFXkeD1uhhX9oRK+fyBo6+W3qjgvmUQ=
+	t=1780827926; cv=none; b=rKpZPX0Vcf+BXlNilRXH7xNIVlv2UN//np4E7DTd4cs3yRJbv+BHpqcGL/r7Q9lhv5q2iePepGtxQuv6Le2ADxz2jGS1ET9aDZrOp+e+kNeAx/UmtfOrEaseBVecnas3dX2pPFSoXlasl7lQSByML1DKQc+ckSu9/9fJo1Eyb0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828004; c=relaxed/simple;
-	bh=z7GMgmIMtB3mApwBB2crcXf6Cpeafuh8pbmXb5wRHLc=;
+	s=arc-20240116; t=1780827926; c=relaxed/simple;
+	bh=7jeiiOd7Fe+T8y/gxysAl/b/Lvtb2L18CB+adX6/svM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPba//h6EKmmwbs6zrRQozUYyuMOhO1ty0YKHkIaCkoak6F6zmZpFRHVXc0dgDG1nzV0lfaHTkgALkaOTD0yccFATS8CzAiJRCbY7a0yhtOv07OksYEeD/2GfdocckxTUhkIwCobA5s4VAh0vkz7q5iCJK08tXI6R8y1yTXMHAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgFUhZRh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131DF1F00893;
-	Sun,  7 Jun 2026 10:26:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bR5IAG5qUfcDyBpxs0BQYV7CHZVq7FbfE9GfiSNIp54guhEoIZb63TSKQafiIKskTJDbMJrjyA2vwj6ofZSSCy6N3WyqLSWj+bj5LpGZjvZ8Lq+PIkSzYxEbvYdagy9pdUAZRexhrhYe6uxgD7M9Ybifz7fDWnhtXVaGIZIj9ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmuROP/C; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080B61F00893;
+	Sun,  7 Jun 2026 10:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828003;
-	bh=tP7LmliLV0Ks1wqowCpAhKso+8GFjW6/uG5e86JW3yc=;
+	s=korg; t=1780827925;
+	bh=ogJCWID7T3SpDh4hmIfDyUiTjNz2WlNgmeMHYlmxbHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QgFUhZRhdr4vu0OPYk2KE/HRNs5kwoDvCEN+YAd8v22XEiG/kss2lehrbPN7m1T3e
-	 ReqMwGtmSbjVZdlLUzDwXwsySWqf+TGyC/YvfgT9nIumjsvBWLUkHot+TnpFops/BQ
-	 7pqLOZScuTQ3pcAgJr3yXTQPC/S5f6nZLYg8tIjc=
+	b=OmuROP/CaZd+/ctgamEcv5Yl8aPB0xGl3IpkADzNPEj+Y4MTZ5x+XoXSTnO4puImi
+	 m382rjEfrTkF1UFnXlcm3bOI7v4OCJEaWEjoXCGJzYhBB0iN5bRDlcO+HK8uA1xIgu
+	 d+eOQqRlBv4jfhR2lPiGNXhWKSbu+372NsgW5ukQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/307] batman-adv: tp_meter: avoid role confusion in tp_list
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Amit Sunil Dhamne <amitsd@google.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 113/315] usb: typec: tcpm/tcpci_maxim: validate header NDO against RX_BYTE_CNT
 Date: Sun,  7 Jun 2026 11:58:20 +0200
-Message-ID: <20260607095731.574949020@linuxfoundation.org>
+Message-ID: <20260607095731.790756545@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,238 +67,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261295-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261274-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heikki.krogerus@linux.intel.com,m:andre.draszik@linaro.org,m:badhri@google.com,m:amitsd@google.com,m:stable@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,narfation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7BDE464FB04
+X-Rspamd-Queue-Id: EAE7A64FA5B
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit ff24f2ecfd94c07a2b89bac497433e3b23271cac upstream.
+commit aa2f716327be1818e1cb156da8a2844804aaec2f upstream.
 
-Session lookups in tp_list matched only on destination address (and
-optionally session ID), leaving role validation to the caller. If two
-sessions with the same other_end coexisted (one as sender, one as receiver)
-a lookup could silently return the wrong one, causing the caller's role to
-bail out early, potentially skipping necessary cleanup.
+A broken/malicious port can transmit a CRC-valid frame whose header
+advertises up to seven data objects but whose body carries fewer than
+that.  Check for this, and rightfully reject the message, instead of
+reading from uninitialized stack memory.
 
-Move the role check into the lookup functions themselves so the correct
-entry is always returned, or none at all. Since batadv_tp_start()
-legitimately needs to detect any active session to a destination regardless
-of role, introduce a dedicated helper for that case rather than bending the
-existing lookup semantics.
-
-Cc: stable@kernel.org
-Fixes: 33a3bb4a3345 ("batman-adv: throughput meter implementation")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: "André Draszik" <andre.draszik@linaro.org>
+Cc: Badhri Jagan Sridharan <badhri@google.com>
+Cc: Amit Sunil Dhamne <amitsd@google.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/2026051350-sitter-canopener-9045@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/tp_meter.c | 59 ++++++++++++++++++++++++---------------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_maxim_core.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/batman-adv/tp_meter.c b/net/batman-adv/tp_meter.c
-index 04a83d6be45bc0..bc3dc377f0bfd0 100644
---- a/net/batman-adv/tp_meter.c
-+++ b/net/batman-adv/tp_meter.c
-@@ -255,6 +255,7 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
-  * batadv_tp_list_find() - find a tp_vars object in the global list
-  * @bat_priv: the bat priv with all the soft interface information
-  * @dst: the other endpoint MAC address to look for
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point and return it after
-  * having increment the refcounter. Return NULL is not found
-@@ -262,7 +263,8 @@ static void batadv_tp_batctl_error_notify(enum batadv_tp_meter_reason reason,
-  * Return: matching tp_vars or NULL when no tp_vars with @dst was found
-  */
- static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
--						  const u8 *dst)
-+						  const u8 *dst,
-+						  enum batadv_tp_meter_role role)
- {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
- 
-@@ -271,6 +273,9 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
- 		if (!batadv_compare_eth(pos->other_end, dst))
- 			continue;
- 
-+		if (pos->role != role)
-+			continue;
+--- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+@@ -186,6 +186,15 @@ static void process_rx(struct max_tcpci_
+ 	rx_buf_ptr = rx_buf + TCPC_RECEIVE_BUFFER_RX_BYTE_BUF_OFFSET;
+ 	msg.header = cpu_to_le16(*(u16 *)rx_buf_ptr);
+ 	rx_buf_ptr = rx_buf_ptr + sizeof(msg.header);
 +
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sens to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -286,12 +291,33 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
- 	return tp_vars;
- }
- 
-+/**
-+ * batadv_tp_list_active() - check if session from/to destination is ongoing
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @dst: the other endpoint MAC address to look for
-+ *
-+ * Return: if matching session with @dst was found
-+ */
-+static bool batadv_tp_list_active(struct batadv_priv *bat_priv, const u8 *dst)
-+	__must_hold(&bat_priv->tp_list_lock)
-+{
-+	struct batadv_tp_vars *tp_vars;
-+
-+	hlist_for_each_entry_rcu(tp_vars, &bat_priv->tp_list, list) {
-+		if (batadv_compare_eth(tp_vars->other_end, dst))
-+			return true;
++	if (count < TCPC_RECEIVE_BUFFER_RX_BYTE_BUF_OFFSET + sizeof(msg.header) +
++		    pd_header_cnt_le(msg.header) * sizeof(msg.payload[0])) {
++		max_tcpci_write16(chip, TCPC_ALERT, TCPC_ALERT_RX_STATUS);
++		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d for header cnt %d\n",
++			count, pd_header_cnt_le(msg.header));
++		return;
 +	}
 +
-+	return false;
-+}
-+
- /**
-  * batadv_tp_list_find_session() - find tp_vars session object in the global
-  *  list
-  * @bat_priv: the bat priv with all the soft interface information
-  * @dst: the other endpoint MAC address to look for
-  * @session: session identifier
-+ * @role: role of the session
-  *
-  * Look for a tp_vars object matching dst as end_point, session as tp meter
-  * session and return it after having increment the refcounter. Return NULL
-@@ -301,7 +327,7 @@ static struct batadv_tp_vars *batadv_tp_list_find(struct batadv_priv *bat_priv,
-  */
- static struct batadv_tp_vars *
- batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
--			    const u8 *session)
-+			    const u8 *session, enum batadv_tp_meter_role role)
- {
- 	struct batadv_tp_vars *pos, *tp_vars = NULL;
- 
-@@ -313,6 +339,9 @@ batadv_tp_list_find_session(struct batadv_priv *bat_priv, const u8 *dst,
- 		if (memcmp(pos->session, session, sizeof(pos->session)) != 0)
- 			continue;
- 
-+		if (pos->role != role)
-+			continue;
-+
- 		/* most of the time this function is invoked during the normal
- 		 * process..it makes sense to pay more when the session is
- 		 * finished and to speed the process up during the measurement
-@@ -671,13 +700,10 @@ static void batadv_tp_recv_ack(struct batadv_priv *bat_priv,
- 
- 	/* find the tp_vars */
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_SENDER);
- 	if (unlikely(!tp_vars))
- 		return;
- 
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out;
--
- 	if (unlikely(batadv_tp_sender_stopped(tp_vars)))
- 		goto out;
- 
-@@ -986,10 +1012,8 @@ void batadv_tp_start(struct batadv_priv *bat_priv, const u8 *dst,
- 		return;
- 	}
- 
--	tp_vars = batadv_tp_list_find(bat_priv, dst);
--	if (tp_vars) {
-+	if (batadv_tp_list_active(bat_priv, dst)) {
- 		spin_unlock_bh(&bat_priv->tp_list_lock);
--		batadv_tp_vars_put(tp_vars);
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: test to or from the same node already ongoing, aborting\n");
- 		batadv_tp_batctl_error_notify(BATADV_TP_REASON_ALREADY_ONGOING,
-@@ -1110,18 +1134,14 @@ void batadv_tp_stop(struct batadv_priv *bat_priv, const u8 *dst,
- 	if (!orig_node)
- 		return;
- 
--	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig);
-+	tp_vars = batadv_tp_list_find(bat_priv, orig_node->orig, BATADV_TP_SENDER);
- 	if (!tp_vars) {
- 		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 			   "Meter: trying to interrupt an already over connection\n");
- 		goto out_put_orig_node;
- 	}
- 
--	if (unlikely(tp_vars->role != BATADV_TP_SENDER))
--		goto out_put_tp_vars;
--
- 	batadv_tp_sender_shutdown(tp_vars, return_value);
--out_put_tp_vars:
- 	batadv_tp_vars_put(tp_vars);
- out_put_orig_node:
- 	batadv_orig_node_put(orig_node);
-@@ -1377,7 +1397,7 @@ batadv_tp_init_recv(struct batadv_priv *bat_priv,
- 		goto out_unlock;
- 
- 	tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--					      icmp->session);
-+					      icmp->session, BATADV_TP_RECEIVER);
- 	if (tp_vars)
- 		goto out_unlock;
- 
-@@ -1448,7 +1468,7 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		}
- 	} else {
- 		tp_vars = batadv_tp_list_find_session(bat_priv, icmp->orig,
--						      icmp->session);
-+						      icmp->session, BATADV_TP_RECEIVER);
- 		if (!tp_vars) {
- 			batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
- 				   "Unexpected packet from %pM!\n",
-@@ -1457,13 +1477,6 @@ static void batadv_tp_recv_msg(struct batadv_priv *bat_priv,
- 		}
- 	}
- 
--	if (unlikely(tp_vars->role != BATADV_TP_RECEIVER)) {
--		batadv_dbg(BATADV_DBG_TP_METER, bat_priv,
--			   "Meter: dropping packet: not expected (role=%u)\n",
--			   tp_vars->role);
--		goto out;
--	}
--
- 	tp_vars->last_recv_time = jiffies;
- 
- 	/* if the packet is a duplicate, it may be the case that an ACK has been
--- 
-2.53.0
-
+ 	for (payload_index = 0; payload_index < pd_header_cnt_le(msg.header); payload_index++,
+ 	     rx_buf_ptr += sizeof(msg.payload[0]))
+ 		msg.payload[payload_index] = cpu_to_le32(*(u32 *)rx_buf_ptr);
 
 
 
