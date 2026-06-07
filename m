@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7Y45AqlUJWpAHAIAu9opvQ
-	(envelope-from <stable+bounces-261809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:21 +0200
+	id qXBlNI1VJWqFHAIAu9opvQ
+	(envelope-from <stable+bounces-261811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58865650665
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459706506F1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GqPzkGBz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261809-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261809-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZsxkqW7Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261811-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261811-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D47A2309A62D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D38133092F1C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EB1330330;
-	Sun,  7 Jun 2026 10:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83492330330;
+	Sun,  7 Jun 2026 10:58:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B33325706;
-	Sun,  7 Jun 2026 10:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AE83242DF;
+	Sun,  7 Jun 2026 10:58:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829917; cv=none; b=L0195ktETxQrEtxNUbMK8KPYL5d0UH4Y5xtq+aj4saWU0yIjYqKHDfhvbicQ13KAyjiBEl8eV4UC4PjCPpSxgcpuIHpdmjKp+GrthNf/b3ewAPhDWYE4rrfkxJZuxdtsoXTcdqjNuUy3F0BkkFvRhircAu38cVdO9JHuSl7KDTs=
+	t=1780829924; cv=none; b=qUMjxJmnhQdIukbxpBGKbVpGS1RpNeDMa4MVRSvJZ5jXZDfTKPBPGjJ+jEWmRvbawB3L61Wku6NEaVJ2SM7YHDrPtVHQTEFit8mVCk7RUCSxkeV3EVbifebckfGfjOpQrzCNk03u71QyKimYjEX1b32a1zjbPUadh4qC71CWVs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829917; c=relaxed/simple;
-	bh=mg0x62yyqWVlnuX1PO2AQBP5Xp2qmm359jodj9Z523Q=;
+	s=arc-20240116; t=1780829924; c=relaxed/simple;
+	bh=2+6LrjtZUMVYckpD8em6/m/pB+uttGxMZmS08HdEit8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jrpma/AzLc3vxRs4HlEmPUmMeAZJjpIzAqz2tsjxpSA0n8cMZeFFGoFOHuNEo3AQUkKrPxftIbCvXewfBhZxNFsxQryeRC8FRT1amXDGFL6PD7/kMggzNpxxrmHsuuFo4mWngYaqOGL21flguEs9a5d94lfYHBWBXa8jlDqDzFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqPzkGBz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8408F1F00893;
-	Sun,  7 Jun 2026 10:58:35 +0000 (UTC)
+	 MIME-Version; b=QhWnp/1PERvt9TaO12H/8AeaEnKfycbWiSBiYcs3W5gGSTqyFbW1eKzAEVloh4rqwU16WhizYyiUYjTkfLL8o/gbMGaSrPv9M2iwddAkZEQg0Cpruteg06F2RLlVWHtDAFwg9nC5HuyonXYSZ0PIgSl41mav8e+tfsrj48m3oGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsxkqW7Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F43F1F00893;
+	Sun,  7 Jun 2026 10:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829916;
-	bh=jmdWCjY9kKUvsVxVU97khU+/Fn2FgjGXV60bZeiLDGs=;
+	s=korg; t=1780829923;
+	bh=aoeHEsC8SIiCPg1WA3C1RV51MFdqZ+81jzW0MxlFWbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GqPzkGBzmTwU/mU1EuN6pM/02H9QM++KqPMnGbyXa4svQW32eICOBou4DuMW0Zv+v
-	 3VpOtmzZ3TuNxgy0vx2uml8fOrDQszb1kAF8L9r6HpLDt/foxLx0gTMed3xg+Uhfbj
-	 dmdUhlCZq/6t/ahww1lJoi03sBt9b+y9VmA0lvp0=
+	b=ZsxkqW7YAXIpPGTMhbOOt7ynG780ef3QFYH/yrHwkNX/I9wzFkqYkKhyKvaZXWzt4
+	 Mb2JyTjkJI2GaBf8tZ/h2HBAkNysBOysygSN+WdTKRZ3C7L3t6tP/F8Hh3lOqoBmv+
+	 no077UeLT4KIEvCdbEJcsNcLZ61xcsnx4SxE3bdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 292/315] net: devmem: reject dma-buf bind with non-page-aligned size or SG length
-Date: Sun,  7 Jun 2026 12:01:19 +0200
-Message-ID: <20260607095738.322475031@linuxfoundation.org>
+Subject: [PATCH 6.18 293/315] mptcp: handle first subflow closing consistently
+Date: Sun,  7 Jun 2026 12:01:20 +0200
+Message-ID: <20260607095738.358606998@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -72,109 +71,139 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,meta.com,fomichev.me,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261809-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:bobbyeshleman@meta.com,m:sdf@fomichev.me,m:almasrymina@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261811-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fomichev.me:email,meta.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 58865650665
+X-Rspamd-Queue-Id: 459706506F1
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 4eb82ba543421e9e38cc14e4e82058b78850df50 ]
+[ Upstream commit 0eeb372deebce6c25b9afc09e35d6c75a744299a ]
 
-net_devmem_bind_dmabuf() trusts dmabuf->size and sg_dma_len() to be
-PAGE_SIZE multiples without checking:
+Currently, as soon as the PM closes a subflow, the msk stops accepting
+data from it, even if the TCP socket could be still formally open in the
+incoming direction, with the notable exception of the first subflow.
 
-  - tx_vec is sized dmabuf->size / PAGE_SIZE, and
-    net_devmem_get_niov_at() only bounds-checks virt_addr < dmabuf->size
-    before indexing tx_vec[virt_addr / PAGE_SIZE]. With size =
-    N*PAGE_SIZE + r (1 <= r < PAGE_SIZE), sendmsg() at iov_base =
-    N*PAGE_SIZE passes the bound check and reads tx_vec[N] -- one past.
+The root cause of such behavior is that code currently piggy back two
+separate semantic on the subflow->disposable bit: the subflow context
+must be released and that the subflow must stop accepting incoming
+data.
 
-  - owner->area.num_niovs = len / PAGE_SIZE while gen_pool_add_owner()
-    covers the full byte len, so a non-page-multiple non-final sg
-    desyncs num_niovs from the gen_pool region for every later sg, on
-    both RX and TX.
+The first subflow is never disposed, so it also never stop accepting
+incoming data. Use a separate bit to mark the latter status and set such
+bit in __mptcp_close_ssk() for all subflows.
 
-dma-buf does not require page-aligned sizes, so the bind path has to
-enforce what its own indexing assumes. Reject both with -EINVAL.
+Beyond making per subflow behaviour more consistent this will also
+simplify the next patch.
 
-The size check is TX-only (only tx_vec is sized off dmabuf->size); the
-SG-length check covers both directions.
-
-Fixes: bd61848900bf ("net: devmem: Implement TX path")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20260519203530.66310-1-devnexen@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251121-net-next-mptcp-memcg-backlog-imp-v1-11-1f34b6c1e0b1@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/devmem.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/mptcp/protocol.c |   14 +++++++++-----
+ net/mptcp/protocol.h |    3 ++-
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -232,6 +232,11 @@ net_devmem_bind_dmabuf(struct net_device
- 	}
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -854,10 +854,10 @@ void mptcp_data_ready(struct sock *sk, s
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
  
- 	if (direction == DMA_TO_DEVICE) {
-+		if (!IS_ALIGNED(dmabuf->size, PAGE_SIZE)) {
-+			err = -EINVAL;
-+			NL_SET_ERR_MSG(extack, "TX dma-buf size must be a multiple of PAGE_SIZE");
-+			goto err_unmap;
-+		}
- 		binding->tx_vec = kvmalloc_array(dmabuf->size / PAGE_SIZE,
- 						 sizeof(struct net_iov *),
- 						 GFP_KERNEL);
-@@ -259,6 +264,12 @@ net_devmem_bind_dmabuf(struct net_device
- 		size_t len = sg_dma_len(sg);
- 		struct net_iov *niov;
+ 	/* The peer can send data while we are shutting down this
+-	 * subflow at msk destruction time, but we must avoid enqueuing
++	 * subflow at subflow destruction time, but we must avoid enqueuing
+ 	 * more data to the msk receive queue
+ 	 */
+-	if (unlikely(subflow->disposable))
++	if (unlikely(subflow->closing))
+ 		return;
  
-+		if (!IS_ALIGNED(len, PAGE_SIZE)) {
-+			err = -EINVAL;
-+			NL_SET_ERR_MSG(extack, "dma-buf SG length must be PAGE_SIZE aligned");
-+			goto err_free_chunks;
-+		}
+ 	mptcp_data_lock(sk);
+@@ -2455,6 +2455,13 @@ static void __mptcp_close_ssk(struct soc
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	bool dispose_it, need_push = false;
+ 
++	/* Do not pass RX data to the msk, even if the subflow socket is not
++	 * going to be freed (i.e. even for the first subflow on graceful
++	 * subflow close.
++	 */
++	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
++	subflow->closing = 1;
 +
- 		owner = kzalloc_node(sizeof(*owner), GFP_KERNEL,
- 				     dev_to_node(&dev->dev));
- 		if (!owner) {
+ 	/* If the first subflow moved to a close state before accept, e.g. due
+ 	 * to an incoming reset or listener shutdown, the subflow socket is
+ 	 * already deleted by inet_child_forget() and the mptcp socket can't
+@@ -2465,7 +2472,6 @@ static void __mptcp_close_ssk(struct soc
+ 		/* ensure later check in mptcp_worker() will dispose the msk */
+ 		sock_set_flag(sk, SOCK_DEAD);
+ 		mptcp_set_close_tout(sk, tcp_jiffies32 - (mptcp_close_timeout(sk) + 1));
+-		lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 		mptcp_subflow_drop_ctx(ssk);
+ 		goto out_release;
+ 	}
+@@ -2474,8 +2480,6 @@ static void __mptcp_close_ssk(struct soc
+ 	if (dispose_it)
+ 		list_del(&subflow->node);
+ 
+-	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+-
+ 	if (subflow->send_fastclose && ssk->sk_state != TCP_CLOSE)
+ 		tcp_set_state(ssk, TCP_CLOSE);
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -537,12 +537,13 @@ struct mptcp_subflow_context {
+ 		send_infinite_map : 1,
+ 		remote_key_valid : 1,        /* received the peer key from */
+ 		disposable : 1,	    /* ctx can be free at ulp release time */
++		closing : 1,	    /* must not pass rx data to msk anymore */
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+ 		valid_csum_seen : 1,        /* at least one csum validated */
+ 		is_mptfo : 1,	    /* subflow is doing TFO */
+ 		close_event_done : 1,       /* has done the post-closed part */
+ 		mpc_drop : 1,	    /* the MPC option has been dropped in a rtx */
+-		__unused : 9;
++		__unused : 8;
+ 	bool	data_avail;
+ 	bool	scheduled;
+ 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
 
 
 
