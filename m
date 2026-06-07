@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pz9xD8BNJWpYGgIAu9opvQ
-	(envelope-from <stable+bounces-261731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:52 +0200
+	id PDZnIC5NJWopGgIAu9opvQ
+	(envelope-from <stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B5650171
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:53:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E3E6500E9
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dPgtzN46;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261731-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261731-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X7bW2NTt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261688-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 623CA3004DA3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C12A5300462A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87112E3AF1;
-	Sun,  7 Jun 2026 10:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28D02E7390;
+	Sun,  7 Jun 2026 10:51:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881B7296BCC;
-	Sun,  7 Jun 2026 10:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC51A6822;
+	Sun,  7 Jun 2026 10:51:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829626; cv=none; b=hJEqMBQuQUrmKosXTNOqwznZdiYgLcBOTlT+TRQBxFFDzMuGSREUCc0XPFB7ACpKFhlB4zyl8jVqQUyNV382/ld+R/ER7+YEv0VSp1ULNprUZXQsYDt7tYX6UydpXnaOjRpNcviLldj1gry15f9o0yvADufTnJjCTqFRKH4F/O0=
+	t=1780829479; cv=none; b=Y/jnPl4SsbLVHE74nn+KbWkifn4SbBMvhLOvPNwxefN77dyZ8g2CMV6Ka2LLOvLmLqFQw/dfJXC0Uo2uO416TxyIWfUCizt5BuVSIft5LnyOXsZQWAwyLLjymMVA7dw+ydMA2kvetPPyK9lKs1mrw0+SOkZ5sGvFBaO6kvqUvcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829626; c=relaxed/simple;
-	bh=HBe/+ZWdTjF0qOjlhHFoZKWHnqW/N9iTnw3bWF3qDh4=;
+	s=arc-20240116; t=1780829479; c=relaxed/simple;
+	bh=2/FKToOuhXR+pIIbytIcCyEKEQXlbap2WqDkltEmPS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8KOXkVOY778y1RF7pA669bwBMXS0SaXFO9lMDk0EbA30YSZVXF+ORJvTo9D7p/SRtLGOZEnUT3GyCk+Uxzl2l1Nq5MSVZaQgspaL4YfRRBAyqHUs7gIgTY+WX8Ww75GXw8txe1ucS2SIugtZ79bH52tXrEbzHLGLmOm4XDN2L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPgtzN46; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0681F00893;
-	Sun,  7 Jun 2026 10:53:44 +0000 (UTC)
+	 MIME-Version; b=KV/6DYjF4dyI7oRzkG7SephU5LPbX+Ul0uytrVIKqYy2mxxhK3zIkIa4xjf6abWS13llq4oLIdasPbM+0zrQuo5dwjA1NRHaXhI43M5TcDDqlIjDJX03hBZC0KIU68vQH5oPLnMsLTX6bxYKSagmfDFdKC7OYpOae4O5YkgoD4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7bW2NTt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693171F00893;
+	Sun,  7 Jun 2026 10:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829625;
-	bh=5ann2TPyq63pFmJoOJtsHuswi5y/ZGIOX/zOFp2cQ6w=;
+	s=korg; t=1780829478;
+	bh=H1AoWYX6YuhCY53a8bHmGXWTm11lmqb6Lrf7Q9Iz4i8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dPgtzN46anrl2zd/X5IqII0v/EVcpFPZ5zGnTRRLdej7cL9SDgqyJEiOOimjsDrsE
-	 Xqjd15ebX2wxIK1C6e63rh/91Zgc7IyD1I01o2s8GQQmRz220F28ZHsZSsnu0+Hllx
-	 WdleDzE6wfO17GHNXHNDRpfmAMef8eOSWdMVlKQo=
+	b=X7bW2NTtDr0aXDNlILLudGnow8T1mrizmMdhrOwTozccPKqZpULjElWhacTqJroJI
+	 yluSZXK/y62elPHljiR+9AckbWBrAKLfN14f3A5OJ9pXbze88/Ydb6yHhrE/+UiWtX
+	 BnGcGzneIOggbY2FBga3tAMonOaA5UvhVJc7/cBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Michael Bommarito <michael.bommarito@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
 	John Garry <john.g.garry@oracle.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 241/307] scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf
+Subject: [PATCH 6.18 251/315] scsi: scsi_transport_fc: Widen FPIN pname walker counter to u32
 Date: Sun,  7 Jun 2026 12:00:38 +0200
-Message-ID: <20260607095736.551184686@linuxfoundation.org>
+Message-ID: <20260607095736.777087838@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,236 +73,200 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lst.de,oracle.com];
+	TAGGED_FROM(0.00)[bounces-261688-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261731-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hch@lst.de,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,oracle.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B6B5650171
+X-Rspamd-Queue-Id: A3E3E6500E9
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit bf33e01f88388c43e285492a63e539df6ffed64c upstream.
+commit a9a39233ec1fc9f97ea1340a4d09bb7ec2be5153 upstream.
 
-iscsi_encode_text_output() concatenates "key=value\0" records into
-login->rsp_buf, an 8192-byte kzalloc(MAX_KEY_VALUE_PAIRS) buffer
-allocated in iscsit_alloc_login_setup_buffer(). The three sprintf() call
-sites in this function (lines 1398, 1411, 1424 in v7.1-rc2) never check
-the remaining buffer capacity:
+An adjacent Fibre Channel fabric actor that can deliver an FPIN ELS
+frame to an lpfc or qla2xxx Linux initiator can trigger a non-return in
+the generic FC transport. This is not a local userspace or IP network
+path; the attacker must be able to inject fabric traffic, for example as
+a compromised switch or fabric controller, or as a same-zone N_Port on a
+fabric that permits source spoofing.
 
-	*length += sprintf(output_buf, "%s=%s", er->key, er->value);
-	*length += 1;
-	output_buf = textbuf + *length;
+The Link-Integrity and Peer-Congestion FPIN walkers used a u8 loop
+counter against the 32-bit on-wire pname_count field, and did not bound
+pname_count by the descriptor body already validated by the TLV walker.
+A pname_count of 256 therefore wraps the counter and keeps the loop
+condition true indefinitely.
 
-The 8192-byte ceiling at iscsi_target_check_login_request() bounds the
-*input* Login PDU payload, but a single PDU can carry up to 2048 minimal
-four-byte "a=b\0" pairs, each unknown key expanding to a 16-byte
-"a=NotUnderstood\0" output record via iscsi_add_notunderstood_response().
-2048 * 16 = 32 KiB of output into an 8 KiB buffer, producing a ~24 KiB
-heap overrun in the kmalloc-8k slab.
+Factor the shared pname_list[] walk into one helper, widen the counter
+to u32, and clamp pname_count against the entries that fit in the
+descriptor body before iterating.
 
-The fix introduces a static iscsi_encode_text_record() helper that uses
-snprintf() with a per-call bounds check against the remaining buffer,
-and threads a u32 textbuf_size parameter through
-iscsi_encode_text_output(). Both call sites in
-iscsi_target_handle_csg_zero() (PHASE_SECURITY) and
-iscsi_target_handle_csg_one() (PHASE_OPERATIONAL) pass
-MAX_KEY_VALUE_PAIRS. On overflow the encoder logs the condition, calls
-iscsi_release_extra_responses() to drop queued records, and returns -1;
-both caller sites now emit ISCSI_STATUS_CLS_INITIATOR_ERR /
-ISCSI_LOGIN_STATUS_INIT_ERR via iscsit_tx_login_rsp() before returning,
-so the initiator sees an explicit failed-login response rather than a
-silent connection drop. (Prior to this patch only the PHASE_OPERATIONAL
-caller did that; the PHASE_SECURITY caller is converted to the same
-shape.)
-
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Fixes: 3dcfe0de5a97 ("scsi: fc: Parse FPIN packets and update statistics")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://patch.msgid.link/20260520133015.1018937-1-michael.bommarito@gmail.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target_nego.c       |    7 ++
- drivers/target/iscsi/iscsi_target_parameters.c |   62 +++++++++++++++++++------
- drivers/target/iscsi/iscsi_target_parameters.h |    2 
- 3 files changed, 55 insertions(+), 16 deletions(-)
+ drivers/scsi/scsi_transport_fc.c |   77 ++++++++++++++++++++-------------------
+ 1 file changed, 41 insertions(+), 36 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -899,10 +899,14 @@ static int iscsi_target_handle_csg_zero(
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
--	if (ret < 0)
-+	if (ret < 0) {
-+		iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_INITIATOR_ERR,
-+				ISCSI_LOGIN_STATUS_INIT_ERR);
- 		return -1;
-+	}
- 
- 	if (!iscsi_check_negotiated_keys(conn->param_list)) {
- 		bool auth_required = iscsi_conn_auth_required(conn);
-@@ -986,6 +990,7 @@ static int iscsi_target_handle_csg_one(s
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
- 	if (ret < 0) {
---- a/drivers/target/iscsi/iscsi_target_parameters.c
-+++ b/drivers/target/iscsi/iscsi_target_parameters.c
-@@ -1419,19 +1419,42 @@ free_buffer:
- 	return -1;
+--- a/drivers/scsi/scsi_transport_fc.c
++++ b/drivers/scsi/scsi_transport_fc.c
+@@ -735,6 +735,37 @@ fc_cn_stats_update(u16 event_type, struc
+ 	}
  }
  
-+/*
-+ * Append "key=value" plus a trailing NUL into @textbuf at *@length.
-+ * Returns 0 on success and advances *@length, or -EMSGSIZE if the
-+ * record (including the NUL) would not fit in the remaining buffer.
-+ */
-+static int iscsi_encode_text_record(char *textbuf, u32 *length,
-+				    u32 textbuf_size,
-+				    const char *key, const char *value)
++static void
++fc_fpin_pname_stats_update(struct Scsi_Host *shost,
++			   struct fc_rport *attach_rport, u16 event_type,
++			   u32 desc_len, u32 fixed_len, u32 pname_count,
++			   __be64 *pname_list,
++			   void (*stats_update)(u16 event_type,
++						struct fc_fpin_stats *stats))
 +{
-+	int n;
-+	u32 avail;
++	u32 i;
++	struct fc_rport *rport;
++	u64 wwpn;
 +
-+	if (*length >= textbuf_size)
-+		return -EMSGSIZE;
++	if (desc_len < fixed_len)
++		pname_count = 0;
++	else
++		pname_count = min(pname_count, (desc_len - fixed_len) /
++				   sizeof(pname_list[0]));
 +
-+	avail = textbuf_size - *length;
-+	n = snprintf(textbuf + *length, avail, "%s=%s", key, value);
-+	if (n < 0 || (u32)n + 1 > avail)
-+		return -EMSGSIZE;
-+
-+	*length += n + 1;
-+	return 0;
++	for (i = 0; i < pname_count; i++) {
++		wwpn = be64_to_cpu(pname_list[i]);
++		rport = fc_find_rport_by_wwpn(shost, wwpn);
++		if (rport &&
++		    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
++		     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
++			if (rport == attach_rport)
++				continue;
++			stats_update(event_type, &rport->fpin_stats);
++		}
++	}
 +}
 +
- int iscsi_encode_text_output(
- 	u8 phase,
- 	u8 sender,
- 	char *textbuf,
- 	u32 *length,
-+	u32 textbuf_size,
- 	struct iscsi_param_list *param_list,
- 	bool keys_workaround)
+ /*
+  * fc_fpin_li_stats_update - routine to update Link Integrity
+  * event statistics.
+@@ -745,13 +776,11 @@ fc_cn_stats_update(u16 event_type, struc
+ static void
+ fc_fpin_li_stats_update(struct Scsi_Host *shost, struct fc_tlv_desc *tlv)
  {
--	char *output_buf = NULL;
- 	struct iscsi_extra_response *er;
- 	struct iscsi_param *param;
--
--	output_buf = textbuf + *length;
-+	int ret;
+-	u8 i;
+ 	struct fc_rport *rport = NULL;
+ 	struct fc_rport *attach_rport = NULL;
+ 	struct fc_host_attrs *fc_host = shost_to_fc_host(shost);
+ 	struct fc_fn_li_desc *li_desc = (struct fc_fn_li_desc *)tlv;
+ 	u16 event_type = be16_to_cpu(li_desc->event_type);
+-	u64 wwpn;
  
- 	if (iscsi_enforce_integrity_rules(phase, param_list) < 0)
- 		return -1;
-@@ -1443,10 +1466,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_RESPONSE_SENT(param) &&
- 		    !IS_PSTATE_REPLY_OPTIONAL(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_RESPONSE_SENT(param);
- 			pr_debug("Sending key: %s=%s\n",
- 				param->name, param->value);
-@@ -1456,10 +1481,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_ACCEPTOR(param) &&
- 		    !IS_PSTATE_PROPOSER(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_PROPOSER(param);
- 			iscsi_check_proposer_for_optional_reply(param,
- 							        keys_workaround);
-@@ -1469,14 +1496,21 @@ int iscsi_encode_text_output(
+ 	rport = fc_find_rport_by_wwpn(shost,
+ 				      be64_to_cpu(li_desc->attached_wwpn));
+@@ -762,22 +791,11 @@ fc_fpin_li_stats_update(struct Scsi_Host
+ 		fc_li_stats_update(event_type, &attach_rport->fpin_stats);
  	}
  
- 	list_for_each_entry(er, &param_list->extra_response_list, er_list) {
--		*length += sprintf(output_buf, "%s=%s", er->key, er->value);
--		*length += 1;
--		output_buf = textbuf + *length;
-+		ret = iscsi_encode_text_record(textbuf, length, textbuf_size,
-+					       er->key, er->value);
-+		if (ret < 0)
-+			goto err_overflow;
- 		pr_debug("Sending key: %s=%s\n", er->key, er->value);
- 	}
- 	iscsi_release_extra_responses(param_list);
+-	if (be32_to_cpu(li_desc->pname_count) > 0) {
+-		for (i = 0;
+-		    i < be32_to_cpu(li_desc->pname_count);
+-		    i++) {
+-			wwpn = be64_to_cpu(li_desc->pname_list[i]);
+-			rport = fc_find_rport_by_wwpn(shost, wwpn);
+-			if (rport &&
+-			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
+-			    rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
+-				if (rport == attach_rport)
+-					continue;
+-				fc_li_stats_update(event_type,
+-						   &rport->fpin_stats);
+-			}
+-		}
+-	}
++	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
++				   be32_to_cpu(li_desc->desc_len),
++				   FC_TLV_DESC_LENGTH_FROM_SZ(*li_desc),
++				   be32_to_cpu(li_desc->pname_count),
++				   li_desc->pname_list, fc_li_stats_update);
  
- 	return 0;
-+
-+err_overflow:
-+	pr_err("iSCSI login response buffer (%u bytes) exhausted, dropping login.\n",
-+	       textbuf_size);
-+	iscsi_release_extra_responses(param_list);
-+	return -1;
+ 	if (fc_host->port_name == be64_to_cpu(li_desc->attached_wwpn))
+ 		fc_li_stats_update(event_type, &fc_host->fpin_stats);
+@@ -825,13 +843,11 @@ static void
+ fc_fpin_peer_congn_stats_update(struct Scsi_Host *shost,
+ 				struct fc_tlv_desc *tlv)
+ {
+-	u8 i;
+ 	struct fc_rport *rport = NULL;
+ 	struct fc_rport *attach_rport = NULL;
+ 	struct fc_fn_peer_congn_desc *pc_desc =
+ 	    (struct fc_fn_peer_congn_desc *)tlv;
+ 	u16 event_type = be16_to_cpu(pc_desc->event_type);
+-	u64 wwpn;
+ 
+ 	rport = fc_find_rport_by_wwpn(shost,
+ 				      be64_to_cpu(pc_desc->attached_wwpn));
+@@ -842,22 +858,11 @@ fc_fpin_peer_congn_stats_update(struct S
+ 		fc_cn_stats_update(event_type, &attach_rport->fpin_stats);
+ 	}
+ 
+-	if (be32_to_cpu(pc_desc->pname_count) > 0) {
+-		for (i = 0;
+-		    i < be32_to_cpu(pc_desc->pname_count);
+-		    i++) {
+-			wwpn = be64_to_cpu(pc_desc->pname_list[i]);
+-			rport = fc_find_rport_by_wwpn(shost, wwpn);
+-			if (rport &&
+-			    (rport->roles & FC_PORT_ROLE_FCP_TARGET ||
+-			     rport->roles & FC_PORT_ROLE_NVME_TARGET)) {
+-				if (rport == attach_rport)
+-					continue;
+-				fc_cn_stats_update(event_type,
+-						   &rport->fpin_stats);
+-			}
+-		}
+-	}
++	fc_fpin_pname_stats_update(shost, attach_rport, event_type,
++				   be32_to_cpu(pc_desc->desc_len),
++				   FC_TLV_DESC_LENGTH_FROM_SZ(*pc_desc),
++				   be32_to_cpu(pc_desc->pname_count),
++				   pc_desc->pname_list, fc_cn_stats_update);
  }
  
- int iscsi_check_negotiated_keys(struct iscsi_param_list *param_list)
---- a/drivers/target/iscsi/iscsi_target_parameters.h
-+++ b/drivers/target/iscsi/iscsi_target_parameters.h
-@@ -46,7 +46,7 @@ extern struct iscsi_param *iscsi_find_pa
- extern int iscsi_extract_key_value(char *, char **, char **);
- extern int iscsi_update_param_value(struct iscsi_param *, char *);
- extern int iscsi_decode_text_input(u8, u8, char *, u32, struct iscsit_conn *);
--extern int iscsi_encode_text_output(u8, u8, char *, u32 *,
-+extern int iscsi_encode_text_output(u8, u8, char *, u32 *, u32,
- 			struct iscsi_param_list *, bool);
- extern int iscsi_check_negotiated_keys(struct iscsi_param_list *);
- extern void iscsi_set_connection_parameters(struct iscsi_conn_ops *,
+ /*
 
 
 
