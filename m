@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zyY8D1tOJWqXGgIAu9opvQ
-	(envelope-from <stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:27 +0200
+	id w8HPLB1NJWogGgIAu9opvQ
+	(envelope-from <stable+bounces-261578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7116E650248
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4966500D3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sDWOEDfk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261612-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bnhpp54q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261578-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261578-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7226D301A73D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7536B300C020
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369402E7376;
-	Sun,  7 Jun 2026 10:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFFC3264F5;
+	Sun,  7 Jun 2026 10:44:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E84296BCC;
-	Sun,  7 Jun 2026 10:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EBB2FB97B;
+	Sun,  7 Jun 2026 10:44:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829216; cv=none; b=Phniw0j7YFNdmd4SLzw1ToOpd4KP+UDDU9hVeB3CGYuoA50Y6autGvYYbv+95bjZ9dv8qHpUuaD5vorjSVEutfB5pwmYbzV3z7Nb/F8zMl6iCh2umMb5yXsapiDSUnGUSbpOlSzTE+9mA5Gq4yjQ7hKMkGB51RYGdzKVTVGlOsc=
+	t=1780829084; cv=none; b=ddHvsMD4IBw/l/ycEwA+ndvKULvh72e95tYcFNr8KSNHE01sD6UAQvIaRppIwUsSqXCCIP97IJQgCVlcYCEH+HkmZ866kq0cJtYcrnH56XK4drNm+s0IxK4SrA8gAHR5Ax92pylS3/H2g5EtwjTOAX97wrYpVsTnUBs6w9HYq60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829216; c=relaxed/simple;
-	bh=qk0/Qc0bjqkRSQe4rZC3nONr5Kr6gEKRYqmvfXhwDeM=;
+	s=arc-20240116; t=1780829084; c=relaxed/simple;
+	bh=JlETVc5NfEd59IdwbpCUq2xjEuPhzSaKPGzcPcgBa6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMKXoVopI0RwbubJcl/fTVOjLU8Xsu6QNzACnSNA66hEv0DCxuqv6n/5RUoqqjNidp1iaeqDF5fAM3FjMiCN9iHU/NeC/futgs4AizHwUsz7OyNbkx07UyOLaISttilSj7IjoErq/jdjn3bs/ahf1DMRPRnrvnTxV/rFyBjThjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDWOEDfk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5592C1F00893;
-	Sun,  7 Jun 2026 10:46:54 +0000 (UTC)
+	 MIME-Version; b=bZn49Wqzmb7ua1emEX/BgN2SHqzz1fulKpQwREPhQbXR78cGeHwRnsRm0nK5tLE8g0o031DN1bumC+r69T1QEDHlTt/z1wNd2E2pZ+akw+WIiAzNu6gS9jPWIvVhTO7E37G6ftnIYb2tDEVIRcF7xH/X5i21D1G+nZ/MqkcfE4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnhpp54q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D264C1F00893;
+	Sun,  7 Jun 2026 10:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829214;
-	bh=88wAtQ4im6RvnYVgKe6LQMPK6qTmcqIjqsWLlfTLudc=;
+	s=korg; t=1780829083;
+	bh=qUsirmbA+WgwVVtrWXsBI4CsWiM6aHO8ryuivUdAKbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sDWOEDfklgCuX0DlZI2lvavZ2QeRHk6aqAM29vsV+jlVLjPeAZrN/bsF7Pa1Rzoil
-	 lZVuqQlEoU5DxAVhc5x/hfOKAERFjWJjRBGO56Q6IptfvwqmVItLL/MgVlNCMbA6bb
-	 i1b0dAopVuIKnVpMqFHrnB6/AG4mp5eUs9iBfze0=
+	b=bnhpp54qDUJOOS+aOMP+YorUPIbeHxctikyHN+7SiCGDlaXVtgg8Hjlm3KlP6aGLm
+	 JGgim0XbReV0fyBsPVkOqPc+GQY+ihyaT/4+0U8lV+HDh/ar5UUKgUpf0t69zfjdPu
+	 Jo3xxNgc5x+wPKFn3u18JmxW3X8pHKVYqIob8Gaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Burkels <sam@1a38.nl>,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 226/315] usb: storage: Add quirks for PNY Elite Portable SSD
+	stable <stable@kernel.org>,
+	Hang Cao <caohang@eswincomputing.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH 7.0 244/332] dt-bindings: usb: Fix EIC7700 USB resets issue
 Date: Sun,  7 Jun 2026 12:00:13 +0200
-Message-ID: <20260607095735.875496016@linuxfoundation.org>
+Message-ID: <20260607095737.004756508@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,12 +77,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261612-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261578-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:caohang@eswincomputing.com,m:conor.dooley@microchip.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,78 +98,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,synopsys.com:email,1a38.nl:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,eswincomputing.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7116E650248
+X-Rspamd-Queue-Id: 2B4966500D3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Burkels <sam@1a38.nl>
+From: Hang Cao <caohang@eswincomputing.com>
 
-commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
+commit f1ecb0e563595d4ba9a3b8e39ed52a3dc2d8e328 upstream.
 
-The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
-already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
-siblings, it uses a Phison-based USB-SATA bridge that exhibits
-firmware bugs when bound to the uas driver.
+The EIC7700 USB requires a USB PHY reset operation; otherwise, the USB
+will not work. The reason why the USB driver that was applied can work
+properly is that the USB PHY has already been reset in ESWIN's U-Boot.
 
-Without quirks, the device fails to complete READ CAPACITY commands
-when accessed over UAS on a SuperSpeed (USB 3) port. The device
-enumerates and reports as a SCSI direct-access device, but reports
-zero logical blocks and never finishes spin-up:
+However, the proper functioning of the USB driver should not be dependent
+on the bootloader. Therefore, it is necessary to incorporate the USB PHY
+reset signal into the DT bindings.
 
-    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
-    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
-    usb 2-3: Product: PNY ELITE PSSD
-    usb 2-3: Manufacturer: PNY
-    scsi host0: uas
-    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
-    sd 0:0:0:0: [sda] Spinning up disk...
-    [...10+ seconds of polling, no progress...]
-    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
+This patch does not introduce any backward incompatibility since the dts
+is not upstream yet. As array of reset operations are used in the driver,
+no modifications to the USB controller driver are needed.
 
-Tested each individual quirk to find the minimum that fixes this:
-  - US_FL_NO_ATA_1X alone: device hangs on spin-up
-  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
-  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
-
-With both quirks the device enumerates correctly while still using
-the uas driver, and delivers full UAS throughput (~281 MB/s
-sequential read on a USB 3.0 Gen 1 port).
-
-The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
-but this device additionally chokes on REPORT OPCODES under
-SuperSpeed.
-
-Signed-off-by: Sam Burkels <sam@1a38.nl>
-Acked-by: Oliver Neukum <oneukum@suse.com>
+Fixes: c640a4239db5 ("dt-bindings: usb: Add ESWIN EIC7700 USB controller")
 Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
+Signed-off-by: Hang Cao <caohang@eswincomputing.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://patch.msgid.link/20260415064238.1784-1-caohang@eswincomputing.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ Documentation/devicetree/bindings/usb/eswin,eic7700-usb.yaml |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_OPCODES),
+--- a/Documentation/devicetree/bindings/usb/eswin,eic7700-usb.yaml
++++ b/Documentation/devicetree/bindings/usb/eswin,eic7700-usb.yaml
+@@ -41,12 +41,13 @@ properties:
+       - const: usb_en
  
-+/* Reported-by: Sam Burkels <sam@1a38.nl> */
-+UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
-+		"PNY",
-+		"PNY ELITE PSSD",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
-+
- /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
- UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
- 		"PNY",
+   resets:
+-    maxItems: 2
++    maxItems: 3
+ 
+   reset-names:
+     items:
+       - const: vaux
+       - const: usb_rst
++      - const: usb_phy
+ 
+   eswin,hsp-sp-csr:
+     description:
+@@ -85,8 +86,8 @@ examples:
+         interrupt-parent = <&plic>;
+         interrupts = <85>;
+         interrupt-names = "peripheral";
+-        resets = <&reset 84>, <&hspcrg 2>;
+-        reset-names = "vaux", "usb_rst";
++        resets = <&reset 84>, <&hspcrg 2>, <&hspcrg 4>;
++        reset-names = "vaux", "usb_rst", "usb_phy";
+         dr_mode = "peripheral";
+         maximum-speed = "high-speed";
+         phy_type = "utmi";
 
 
 
