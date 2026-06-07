@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-261742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id N7fiMuVNJWptGgIAu9opvQ
-	(envelope-from <stable+bounces-261742-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:29 +0200
+	id 83dDJoVQJWp9GwIAu9opvQ
+	(envelope-from <stable+bounces-261791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC0E6501BC
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005306504B7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MpeUlTc3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261742-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261742-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2EPWFiR+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261791-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261791-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18F603004DC4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:54:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ED5B308FE7A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6959E2E3AF1;
-	Sun,  7 Jun 2026 10:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF96A330330;
+	Sun,  7 Jun 2026 10:57:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4E9296BCC;
-	Sun,  7 Jun 2026 10:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3F93242DF;
+	Sun,  7 Jun 2026 10:57:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829667; cv=none; b=h0jlRbhZWwhErsbRlnqFI5qt5oPOmhcxj2nri0scLktelgHMuT3XVP9D1mxx/h0G9AM9tVpDJ6JG2Sr6bjWSP4bAoMkpDvXaifqnlL8PXLd7QIE1OXAOY81QxNPQHy7IO3oRP1ayuV5bK5Tqf4kbWUP3huOdl7tr9mCDy34KCL8=
+	t=1780829854; cv=none; b=eUgbvxrPmUSpZAr/OTnJcmQ+7wdXrjhQnFurvS+27L3bkJgpkNFEUdI4VcN56lHA7oGnO8yDS8Y6WXpQRoFWrKfZMJmSvP70mGm42QIfPKnHhDFp+Iel47reVpvyyWfSqTJNToMzT8An74meE5GxXb6Js3NEnrPqdBcKO+A+wD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829667; c=relaxed/simple;
-	bh=RegwlsIXeh5dzYXliRPanurbA5k1dNoRvS+LnAbrsLQ=;
+	s=arc-20240116; t=1780829854; c=relaxed/simple;
+	bh=7wHWca228TnxAoZKMjXfhozB/cHIct3Oy1vHbxDYpnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRaFxIKQSMOXhGlauB18rN7rwnnczo0xo2Z0NJO91FeG7n46j9wFm44ksDoz08XiIVbVM755oiHY2AzeYJX6vQpjUArsIjEKe00J0j5w1btTC4F7pceX8Ljn2JCFtktdxSxR5Qw5Ub6HMjyAxRlSK7nrgIXf4saIPJtsBZ9gPRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpeUlTc3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934D71F00893;
-	Sun,  7 Jun 2026 10:54:25 +0000 (UTC)
+	 MIME-Version; b=QXtAabrndzKTRhXP8sc4m+K4hPVPMrw/o5AGDfCKY0AwGP+1Z6yaVJSEMynB4jfPiJ+fpwvnaXkRiOikrTXEJv8qBhG1hosnV03/OhexgstaZX07MPr0WGZ1XBfE1hQXUZ0JQJcHPMszVucQPAf5d8ukyraQWNNyy0Lfr/E8b7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EPWFiR+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B381F00893;
+	Sun,  7 Jun 2026 10:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829666;
-	bh=3E3WaD238lru0wqQholobNpE/VIF6oaklsGd7SeO4lM=;
+	s=korg; t=1780829853;
+	bh=unjCLbT/N5ER3i6oG7ZKKA88zvWxP7QWdT/scXzw9pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MpeUlTc3p6NQHWtBy2awigNvO5Np9S45EEHuNdUtEl7l+c+G36To+wBM+5uUIlk4q
-	 zd2iZo1kVZSqt0+k0TVIPH04mmAreKAeg5eelYGUEfXGh1PLpDbaWzczh4Lu6EzwWB
-	 pwUCmrtIKxliJT83DOHoWN5xdwZ+/hF6soYkhy5s=
+	b=2EPWFiR+asWfC7lSeGnde1msmjO3wcGrhsXZABCArYMF6o7d1Yj7fTUcBODms5ohw
+	 smqPEKIj+ZqVxNjGYXIO4UqTdwLOLnohM/TCH60GrDOF6FjOWa0Cu40+KdHHCWr4T8
+	 gcAH5JTCtndAPy4V+swAGtnFMPm0CfHZvmPQD4iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Francis <David.Francis@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 269/315] drm/amdkfd: Check for pdd drm file first in CRIU restore path
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.12 259/307] serial: zs: Fix bootconsole handover lockup
 Date: Sun,  7 Jun 2026 12:00:56 +0200
-Message-ID: <20260607095737.447330355@linuxfoundation.org>
+Message-ID: <20260607095737.206703474@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,87 +70,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261742-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:David.Francis@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-261791-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9DC0E6501BC
+X-Rspamd-Queue-Id: 005306504B7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Francis <David.Francis@amd.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 6842b6a4b72da9b2906ffc5ca9d846ace2c54c14 upstream.
+commit 6c05cf72e13314ce9b770b5951695dc5a2152920 upstream.
 
-CRIU restore ioctls are meant to be called by CRIU with no
-existing drm file. There's an error path
-for if the drm file unexpectedly exists. It was positioned so
-it was missing a fput(drm_file).
+Calling zs_reset() in the course of setting up the serial device causes
+line parameters to be reset and the transmitter disabled.  We've been
+lucky in that no message is usually produced to the kernel log between
+this call and the later call to uart_set_options() in the course of
+console setup done by zs_serial_console_init(), or the system would hang
+as the console output handler in the firmware tried to access a port the
+transmitter of which has been disabled and line parameters messed up.
 
-Do that check earlier, as soon as we have the pdd.
+This will change with the next change to the driver, so fix zs_reset()
+such that line parameters are set for 9600n8 console operation as with
+the system firmware and the transmitter re-enabled after reset.  This
+also means zs_pm() serves no purpose anymore, so drop it.
 
-Signed-off-by: David Francis <David.Francis@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2bab781dac78916c5cc8de76345a4102449267d7)
-Cc: stable@vger.kernel.org
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.23+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062308040.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/tty/serial/zs.c |   29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -2253,6 +2253,11 @@ static int criu_restore_devices(struct k
- 			ret = -EINVAL;
- 			goto exit;
- 		}
-+
-+		if (pdd->drm_file) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		pdd->user_gpu_id = device_buckets[i].user_gpu_id;
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -105,18 +105,24 @@ struct zs_parms {
  
- 		drm_file = fget(device_buckets[i].drm_fd);
-@@ -2262,11 +2267,6 @@ static int criu_restore_devices(struct k
- 			ret = -EINVAL;
- 			goto exit;
- 		}
+ static struct zs_scc zs_sccs[ZS_NUM_SCCS];
+ 
++/*
++ * Set parameters in WR5, WR12, WR13 such as not to interfere
++ * with the initial PROM-based console.  Otherwise any output
++ * produced before the console handover would cause the system
++ * firmware to hang (TxENAB) or produce rubbish (Tx8, B9600).
++ */
+ static u8 zs_init_regs[ZS_NUM_REGS] __initdata = {
+ 	0,				/* write 0 */
+ 	PAR_SPEC,			/* write 1 */
+ 	0,				/* write 2 */
+ 	0,				/* write 3 */
+ 	X16CLK | SB1,			/* write 4 */
+-	0,				/* write 5 */
++	Tx8 | TxENAB,			/* write 5 */
+ 	0, 0, 0,			/* write 6, 7, 8 */
+ 	MIE | DLC | NV,			/* write 9 */
+ 	NRZ,				/* write 10 */
+ 	TCBR | RCBR,			/* write 11 */
+-	0, 0,				/* BRG time constant, write 12 + 13 */
++	0x16, 0x00,			/* BRG time constant, write 12 + 13 */
+ 	BRSRC | BRENABL,		/* write 14 */
+ 	0,				/* write 15 */
+ };
+@@ -956,23 +962,6 @@ static void zs_set_termios(struct uart_p
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ }
+ 
+-/*
+- * Hack alert!
+- * Required solely so that the initial PROM-based console
+- * works undisturbed in parallel with this one.
+- */
+-static void zs_pm(struct uart_port *uport, unsigned int state,
+-		  unsigned int oldstate)
+-{
+-	struct zs_port *zport = to_zport(uport);
 -
--		if (pdd->drm_file) {
--			ret = -EINVAL;
--			goto exit;
--		}
+-	if (state < 3)
+-		zport->regs[5] |= TxENAB;
+-	else
+-		zport->regs[5] &= ~TxENAB;
+-	write_zsreg(zport, R5, zport->regs[5]);
+-}
+-
  
- 		/* create the vm using render nodes for kfd pdd */
- 		if (kfd_process_device_init_vm(pdd, drm_file)) {
+ static const char *zs_type(struct uart_port *uport)
+ {
+@@ -1055,7 +1044,6 @@ static const struct uart_ops zs_ops = {
+ 	.startup	= zs_startup,
+ 	.shutdown	= zs_shutdown,
+ 	.set_termios	= zs_set_termios,
+-	.pm		= zs_pm,
+ 	.type		= zs_type,
+ 	.release_port	= zs_release_port,
+ 	.request_port	= zs_request_port,
+@@ -1210,7 +1198,6 @@ static int __init zs_console_setup(struc
+ 		return ret;
+ 
+ 	zs_reset(zport);
+-	zs_pm(uport, 0, -1);
+ 
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
 
 
 
