@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-260992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260977-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mFBoJ8dDJWp2FQIAu9opvQ
-	(envelope-from <stable+bounces-260992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:19 +0200
+	id R72BDZNDJWpdFQIAu9opvQ
+	(envelope-from <stable+bounces-260977-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5D864F624
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A956F64F5F3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2dC3dHlP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260992-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260992-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qrImDkLl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260977-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260977-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCBF830427D6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CBEC43039C95
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7012E1EFC;
-	Sun,  7 Jun 2026 10:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B7B2F49FD;
+	Sun,  7 Jun 2026 10:07:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE881DE8AE;
-	Sun,  7 Jun 2026 10:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFDB234994;
+	Sun,  7 Jun 2026 10:07:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826894; cv=none; b=cRmroyYODyaEzHU+k9Fh8jCZ8A2jMaq/PVcRao28Jutfje1iuRrAmBLJtNKQ1kJEqtmxJvZq6JY9l6bwhMDdE8Vxs/HlflP+xonrwQxdD201iB5x58hBYHQ9LHATmbJpQMgYNGwfJMcyXKAQc6QvIQIVIH7cUI8vvxLSU9hpuWI=
+	t=1780826844; cv=none; b=SNgnfS0GqUoNAV3IMMS5FDYYwHGGnNblxwR9IXVQjAIiHTgkdOeWjD0b5At5geP7hyZlCC+o2nNxN8U7f1aKa8EiXiUubcEajd0SzPbvwfFdEtrtWX6Q5txOw1MPyNK9e9LTTP2VPDPhrHAyeC2utnVJYKTntuOzBRrW7KwpvTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826894; c=relaxed/simple;
-	bh=ggA9DPppB/FBL4lVBDFieMLMRgSqY3ozZLb6fEdQMfo=;
+	s=arc-20240116; t=1780826844; c=relaxed/simple;
+	bh=8Tl6UTu9SDVCnFNdfFH8C+TbN5I0DAd/2DAcrZxcTTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhJTUPlRBWP/IkI/c4A8jjVPth7leon0hhUw1zospgwlhWSshXuZD//FLUaeAkkV5gqO5x15CLVaqfG6V1B/25ypj1uLTnwB3kt+BellYkPCZ8CgxPOtIsKVcxQY9DdDedMXMQeRbq3Nv2ksTtUQF+eA8C2zub9FGxFlxKNvnmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dC3dHlP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271A31F00893;
-	Sun,  7 Jun 2026 10:08:12 +0000 (UTC)
+	 MIME-Version; b=iQrowuRHzUDHBoxpvJYqeU7eg8Tzw0hKmKh1vHXNJQMZlG7YZfdU/BjvuPJ19xXn0RxYuZKn1c0kQsRfMMQP9r5U5sxllWnHptaZjFOcwve+nZh50/zGbUB8ezfUv1oV14oLOuodWDFSA8q9OQlhyEE2qI1eEdlRxqtaAQO9G/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrImDkLl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B051F00893;
+	Sun,  7 Jun 2026 10:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826893;
-	bh=pRJ/T7nUeC80afqjn03JgBRdeZAXAsm6XJe4MqkcYN4=;
+	s=korg; t=1780826843;
+	bh=PVQ3qiq2Y19uSkZY/eLmqobk/8dl5DsuEmddqn+qawI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2dC3dHlPRrLP1BYqAYfYqYjyzc6AAw+OEgiKgW8eSe+TBB8Gq1S9SlGRv0JoaxkYJ
-	 dTaZOSFUd4XuUA1lTz2xg2JHjjmzprrgPiMu4M6Y81jDu7qhY1H0YLNOVY9knUgmUM
-	 n+UFYNEdPimlwD04vPLrUPiwr3+sylaoBUEDmCyI=
+	b=qrImDkLl42Zc7yTDMjczk/ULeBxPe65MrXIVT0OTA4UniEHOKuMZ2A3kYQH0i0EC0
+	 aeeYaDTv+7uCX3mjILWn7FVD1yGxLhfi6bCwHSd0b/hKM4nywykRP/KIvKjC1xdCFh
+	 /31VLihblKEfzuRkfpkfUiSpigiKN3Uk2g3UEyI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dhabaleshwar Das <dhabal123@gmail.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/307] net/sched: cls_fw: fix NULL dereference of "old" filters before change()
+Subject: [PATCH 6.18 014/315] accel/rocket: fix UAF via dangling GEM handle in create_bo
 Date: Sun,  7 Jun 2026 11:56:41 +0200
-Message-ID: <20260607095727.809370504@linuxfoundation.org>
+Message-ID: <20260607095728.019743749@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,156 +69,122 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260977-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dhabal123@gmail.com,m:tomeu@tomeuvizoso.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260992-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:dcaratti@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,tomeuvizoso.net,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,mojatatu.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,vger.kernel.org:from_smtp,bootlin.com:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,tomeuvizoso.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EA5D864F624
+X-Rspamd-Queue-Id: A956F64F5F3
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Dhabaleshwar Das <dhabal123@gmail.com>
 
-[ Upstream commit 65782b2db7321d5f97c16718c4c7f6c7205a56be ]
+[ Upstream commit f706e6a4ce75585af979aec3dcbdce68bc76306b ]
 
-Like pointed out by Sashiko [1], since commit ed76f5edccc9 ("net: sched:
-protect filter_chain list with filter_chain_lock mutex") TC filters are
-added to a shared block and published to datapath before their ->change()
-function is called. This is a problem for cls_fw: an invalid filter
-created with the "old" method can still classify some packets before it
-is destroyed by the validation logic added by Xiang.
-Therefore, insisting with repeated runs of the following script:
+rocket_ioctl_create_bo() inserts a GEM handle into the file's IDR via
+drm_gem_handle_create() early on, then performs several operations that
+can fail (sgt allocation, drm_mm insert, iommu_map). If any fail after
+the handle is live, the error path calls drm_gem_shmem_object_free()
+which kfree's the object without removing the handle from the IDR.
 
- # ip link add dev crash0 type dummy
- # ip link set dev crash0 up
- # mausezahn  crash0 -c 100000 -P 10 \
- > -A 4.3.2.1 -B 1.2.3.4 -t udp "dp=1234" -q &
- # sleep 1
- # tc qdisc add dev crash0 egress_block 1 clsact
- # tc filter add block 1 protocol ip prio 1 matchall \
- > action skbedit mark 65536 continue
- # tc filter add block 1 protocol ip prio 2 fw
- # ip link del dev crash0
+This leaves a dangling handle pointing to freed slab memory. Any
+subsequent ioctl using that handle (PREP_BO, FINI_BO, SUBMIT) calls
+drm_gem_object_lookup() and dereferences freed memory (UAF).
 
-can still make fw_classify() hit the WARN_ON() in [2]:
+Fix by moving drm_gem_handle_create() to after all fallible operations
+succeed, matching the pattern used by panfrost, lima, and etnaviv.
 
- WARNING: ./include/net/pkt_cls.h:88 at fw_classify+0x244/0x250 [cls_fw], CPU#18: mausezahn/1399
- Modules linked in: cls_fw(E) act_skbedit(E)
- CPU: 18 UID: 0 PID: 1399 Comm: mausezahn Tainted: G            E       7.0.0-rc6-virtme #17 PREEMPT(full)
- Tainted: [E]=UNSIGNED_MODULE
- Hardware name: Red Hat KVM, BIOS 1.16.3-2.el9 04/01/2014
- RIP: 0010:fw_classify+0x244/0x250 [cls_fw]
- Code: 5c 49 c7 45 00 00 00 00 00 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 5b b8 ff ff ff ff 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 90 <0f> 0b 90 eb a0 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90
- RSP: 0018:ffffd1b7026bf8a8 EFLAGS: 00010202
- RAX: ffff8c5ac9c60800 RBX: ffff8c5ac99322c0 RCX: 0000000000000004
- RDX: 0000000000000001 RSI: ffff8c5b74d7a000 RDI: ffff8c5ac8284f40
- RBP: ffffd1b7026bf8d0 R08: 0000000000000000 R09: ffffd1b7026bf9b0
- R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000010000
- R13: ffffd1b7026bf930 R14: ffff8c5ac8284f40 R15: 0000000000000000
- FS:  00007fca40c37740(0000) GS:ffff8c5b74d7a000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fca40e822a0 CR3: 0000000005ca0001 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  tcf_classify+0x17d/0x5c0
-  tc_run+0x9d/0x150
-  __dev_queue_xmit+0x2ab/0x14d0
-  ip_finish_output2+0x340/0x8f0
-  ip_output+0xa4/0x250
-  raw_sendmsg+0x147d/0x14b0
-  __sys_sendto+0x1cc/0x1f0
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x126/0xf80
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7fca40e822ba
- Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
- RSP: 002b:00007ffc248a42c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
- RAX: ffffffffffffffda RBX: 000055ef233289d0 RCX: 00007fca40e822ba
- RDX: 000000000000001e RSI: 000055ef23328c30 RDI: 0000000000000003
- RBP: 000055ef233289d0 R08: 00007ffc248a42d0 R09: 0000000000000010
- R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000001e
- R13: 00000000000186a0 R14: 0000000000000000 R15: 00007fca41043000
-  </TASK>
- irq event stamp: 1045778
- hardirqs last  enabled at (1045784): [<ffffffff864ec042>] __up_console_sem+0x52/0x60
- hardirqs last disabled at (1045789): [<ffffffff864ec027>] __up_console_sem+0x37/0x60
- softirqs last  enabled at (1045426): [<ffffffff874d48c7>] __alloc_skb+0x207/0x260
- softirqs last disabled at (1045434): [<ffffffff874fe8f8>] __dev_queue_xmit+0x78/0x14d0
+Also fix drm_mm_insert_node_generic() whose return value was silently
+overwritten by iommu_map_sgtable() on the next line. Add the missing
+error check.
 
-Then, because of the value in the packet's mark, dereference on 'q->handle'
-with NULL 'q' occurs:
+[tomeu: Move handle creation to the very end]
 
- BUG: kernel NULL  pointer dereference, address: 0000000000000038
- [...]
- RIP: 0010:fw_classify+0x1fe/0x250 [cls_fw]
- [...]
-
-Skip "old-style" classification on shared blocks, so that the NULL
-dereference is fixed and WARN_ON() is not hit anymore in the short
-lifetime of invalid cls_fw "old-style" filters.
-
-[1] https://sashiko.dev/#/patchset/20260331050217.504278-1-xmei5%40asu.edu
-[2] https://elixir.bootlin.com/linux/v7.0-rc6/source/include/net/pkt_cls.h#L86
-
-Fixes: faeea8bbf6e9 ("net/sched: cls_fw: fix NULL pointer dereference on shared blocks")
-Fixes: ed76f5edccc9 ("net: sched: protect filter_chain list with filter_chain_lock mutex")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/e39cbd3103a337f1e515d186fe697b4459d24757.1775661704.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 658ebeac3351 ("accel/rocket: Add IOCTL for BO creation")
+Reported-by: Dhabaleshwar Das <dhabal123@gmail.com>
+Signed-off-by: Dhabaleshwar Das <dhabal123@gmail.com>
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Link: https://patch.msgid.link/20260521165720.2113571-1-tomeu@tomeuvizoso.net
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_fw.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/accel/rocket/rocket_gem.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
-index 83a7372ea15c2a..fd9c6c2815a1c2 100644
---- a/net/sched/cls_fw.c
-+++ b/net/sched/cls_fw.c
-@@ -74,9 +74,13 @@ TC_INDIRECT_SCOPE int fw_classify(struct sk_buff *skb,
- 			}
- 		}
- 	} else {
--		struct Qdisc *q = tcf_block_q(tp->chain->block);
-+		struct Qdisc *q;
+diff --git a/drivers/accel/rocket/rocket_gem.c b/drivers/accel/rocket/rocket_gem.c
+index c3c86e1abd25a3..b1b24d60973e82 100644
+--- a/drivers/accel/rocket/rocket_gem.c
++++ b/drivers/accel/rocket/rocket_gem.c
+@@ -78,11 +78,6 @@ int rocket_ioctl_create_bo(struct drm_device *dev, void *data, struct drm_file *
+ 	rkt_obj->size = args->size;
+ 	rkt_obj->offset = 0;
  
- 		/* Old method: classify the packet using its skb mark. */
-+		if (tcf_block_shared(tp->chain->block))
-+			return -1;
+-	ret = drm_gem_handle_create(file, gem_obj, &args->handle);
+-	drm_gem_object_put(gem_obj);
+-	if (ret)
+-		goto err;
+-
+ 	sgt = drm_gem_shmem_get_pages_sgt(shmem_obj);
+ 	if (IS_ERR(sgt)) {
+ 		ret = PTR_ERR(sgt);
+@@ -94,6 +89,8 @@ int rocket_ioctl_create_bo(struct drm_device *dev, void *data, struct drm_file *
+ 					 rkt_obj->size, PAGE_SIZE,
+ 					 0, 0);
+ 	mutex_unlock(&rocket_priv->mm_lock);
++	if (ret)
++		goto err;
+ 
+ 	ret = iommu_map_sgtable(rocket_priv->domain->domain,
+ 				rkt_obj->mm.start,
+@@ -111,8 +108,18 @@ int rocket_ioctl_create_bo(struct drm_device *dev, void *data, struct drm_file *
+ 	args->offset = drm_vma_node_offset_addr(&gem_obj->vma_node);
+ 	args->dma_address = rkt_obj->mm.start;
+ 
++	ret = drm_gem_handle_create(file, gem_obj, &args->handle);
++	if (ret)
++		goto err_unmap;
 +
-+		q = tcf_block_q(tp->chain->block);
- 		if (id && (TC_H_MAJ(id) == 0 ||
- 			   !(TC_H_MAJ(id ^ q->handle)))) {
- 			res->classid = id;
++	drm_gem_object_put(gem_obj);
++
+ 	return 0;
+ 
++err_unmap:
++	iommu_unmap(rocket_priv->domain->domain,
++		    rkt_obj->mm.start, rkt_obj->size);
++
+ err_remove_node:
+ 	mutex_lock(&rocket_priv->mm_lock);
+ 	drm_mm_remove_node(&rkt_obj->mm);
 -- 
 2.53.0
 
