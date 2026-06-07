@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n05uJgZGJWqtFgIAu9opvQ
-	(envelope-from <stable+bounces-261205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:54 +0200
+	id 5P3RDt9FJWqOFgIAu9opvQ
+	(envelope-from <stable+bounces-261194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3072D64F8DD
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A595464F8A7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:20:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H13NLXlb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261205-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261205-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=w8LGyCcM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261194-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261194-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9F79D3003634
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B83793016D24
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A892EC54A;
-	Sun,  7 Jun 2026 10:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD712E3AF1;
+	Sun,  7 Jun 2026 10:20:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C60323392F;
-	Sun,  7 Jun 2026 10:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C8E4CB5B;
+	Sun,  7 Jun 2026 10:20:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827652; cv=none; b=XSL8lXEMxyi2IzgesvvIiDliVJb/vYESJFlTAS9rJoHm5CS4ImQHClSkBxu1fmaE+0dEdudVTdO255mnB1HQ5fcnc7iqvKd/CY6h4NrN7VSdQMAap3VlwJAntCW7xrgDbf9l52GgrCQba7TqLBxQ3zr9VKzpeqrOVU/wj0STsSI=
+	t=1780827611; cv=none; b=V3Ga55Wb6I+IlTpBNgmjXBwZ0nHBXsn5kva9uh+rJLGtQUeoWWk9qXz1IP3Ar8FgtwICfD3vt1AZNI7vDXOPdWKLQ3kmHbrj40mQK1XjB+F3qswafBcUtVTnsVN/JC5xyX37Zzv8rOHgaAs9tM1e7NmO3+wkXq3tgw+4Q5q+ovM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827652; c=relaxed/simple;
-	bh=L4XEuaVr4buyO5WShRF03ZGq0/N1pSwJ8CPB57F8bEs=;
+	s=arc-20240116; t=1780827611; c=relaxed/simple;
+	bh=+npXqDEyhgESx+Cs3cjkMbfP8LBXHajIqPcBjWDMwuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQgjJh3XmloMx9RXznj1UUIORaU+F3mt9j4FN8zW5oD3xzmfo0HvYuU3R5xhYyYY0w9lt0ZUn71fZ7I66Lbv3BK3o+ED/ATokwoULB+A6KbE9/XnakJ1J1YzBVTKNa1yaAOZEtkZT3JfPkMvkoGNv8wAhSz7Zs++R9Jrr6aTjkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H13NLXlb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AAB1F00893;
-	Sun,  7 Jun 2026 10:20:50 +0000 (UTC)
+	 MIME-Version; b=hMyYQvFanyMkyjhNi3NPeNC0WjfF/uv5/4lHNg7IYBWYXoyEw+lS/uqdZoMsUlV3gb6aFTKofJcDbymc0MilyaI/bO2Rf5SGp8/RkWxINpZSzG4wCEyDsCG+/goAuTRe1VvqpYHUshUXVK3EqOx/CxYwUktqCKP90eBdY3nrGfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8LGyCcM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD791F00893;
+	Sun,  7 Jun 2026 10:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827651;
-	bh=UAVg3Iq5hnTYyRD0Q4hjIL4hYI6gPMl1dwL0mLtbjWo=;
+	s=korg; t=1780827610;
+	bh=bAvvnH5zhgw+EBs/NWYSK2JoOPLk5miBwekqHPb+K9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H13NLXlbF3zln4r0NGJvzE3H0tqTWMiLv4xI5e3bLj59p81QMS009k0iy+oWsFFd7
-	 +I2xmZuHhVmGTKOenA6K/jWHkn0iBuxRmjPTZL5KDVehsFCn5XpLbTb4shM1T3/sfk
-	 NR/P7kduo31Prbs8mAlMVEsbPPza0ngZ1jP14q4U=
+	b=w8LGyCcMkd2TYu3DgbW74wwBRT77kpKgFh6VVV6cz2gbEBXDDZIivLSiPnOmG7D2U
+	 4VBr6zyp7q1ge98EOLPxDfZ+tXGghvWf3w4TJRMPgYul9DHbz1sLwPNYKY67UitFvm
+	 aSyFamu2+/5/7a1RatZR7Tcz2sDWYzOunWD4d9t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 090/315] sctp: fix race between sctp_wait_for_connect and peeloff
+Subject: [PATCH 7.0 108/332] net: pcs: pcs-mtk-lynxi: fix bpi-r3 serdes configuration
 Date: Sun,  7 Jun 2026 11:57:57 +0200
-Message-ID: <20260607095730.931617884@linuxfoundation.org>
+Message-ID: <20260607095732.087093999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +66,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261205-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,public-files.de,nxp.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261194-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:frank-w@public-files.de,m:vladimir.oltean@nxp.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3072D64F8DD
+X-Rspamd-Queue-Id: A595464F8A7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-[ Upstream commit f14fe6395a8b3d961a61e138ad7b36ba3626dd4e ]
+[ Upstream commit 422b5233b607476ac7176bfa2a101b9a103d7653 ]
 
-sctp_wait_for_connect() drops and re-acquires the socket lock while
-waiting for the association to reach ESTABLISHED state. During this
-window, another thread can peeloff the association to a new socket via
-getsockopt(SCTP_SOCKOPT_PEELOFF), changing asoc->base.sk. After
-re-acquiring the old socket lock, sctp_wait_for_connect() returns
-success without noticing the migration — the caller then accesses
-the association under the wrong lock in sctp_datamsg_from_user().
+Commit 8871389da151 introduces common pcs dts properties which writes
+rx=normal,tx=normal polarity to register SGMSYS_QPHY_WRAP_CTRL of switch.
+This is initialized with tx-bit set and so change inverts polarity
+compared to before.
 
-Add the same sk != asoc->base.sk check that sctp_wait_for_sndbuf()
-already has, returning an error if the association was migrated while
-we slept.
+It looks like mt7531 has tx polarity inverted in hardware and set tx-bit
+by default to restore the normal polarity.
 
-Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260527032411.60959-1-kipreyyy@gmail.com
+The MT7531 datasheet quite clearly states:
+Register 000050EC QPHY_WRAP_CTRL -- QPHY wrapper control
+Reset value: 0x00000501
+
+BIT 1 RX_BIT_POLARITY -- RX bit polarity control
+ 1'b0: normal
+ 1'b1: inverted
+
+BIT 0 TX_BIT_POLARITY -- TX bit polarity control (TX default inversed
+in MT7531)
+ 1'b0: normal
+ 1'b1: inverted
+
+Till this patch the register write was only called when mediatek,pnswap
+property was set which cannot be done for switch because the fw-node param
+was always NULL from switch driver in the mtk_pcs_lynxi_create call.
+
+Do not configure switch side like it's done before.
+
+Fixes: 8871389da151 ("net: pcs: pcs-mtk-lynxi: deprecate "mediatek,pnswap"")
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20260526153239.30194-1-linux@fw-web.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/pcs/pcs-mtk-lynxi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 2c5ad53984906c..c763eb3296b3ee 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -9350,6 +9350,8 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
- 		release_sock(sk);
- 		current_timeo = schedule_timeout(current_timeo);
- 		lock_sock(sk);
-+		if (sk != asoc->base.sk)
-+			goto do_error;
+diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+index c12f8087af9be5..a753bd88cbc223 100644
+--- a/drivers/net/pcs/pcs-mtk-lynxi.c
++++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+@@ -129,6 +129,9 @@ static int mtk_pcs_config_polarity(struct mtk_pcs_lynxi *mpcs,
+ 	unsigned int val = 0;
+ 	int ret;
  
- 		*timeo_p = current_timeo;
- 	}
++	if (!fwnode)
++		return 0;
++
+ 	if (fwnode_property_read_bool(fwnode, "mediatek,pnswap"))
+ 		default_pol = PHY_POL_INVERT;
+ 
 -- 
 2.53.0
 
