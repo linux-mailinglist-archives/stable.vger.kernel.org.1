@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nJt8Go5VJWqLHAIAu9opvQ
-	(envelope-from <stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:10 +0200
+	id Dp49JHBQJWp4GwIAu9opvQ
+	(envelope-from <stable+bounces-261884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70F56506FE
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499AD6504A4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ApMcfANS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261839-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JpY7C+BK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261884-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261884-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D31EB30A79CE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D0E3D3038A61
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B8136F428;
-	Sun,  7 Jun 2026 11:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE2C38888F;
+	Sun,  7 Jun 2026 11:03:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328E936F8E7;
-	Sun,  7 Jun 2026 11:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44EB36F428;
+	Sun,  7 Jun 2026 11:03:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830047; cv=none; b=dH7CrOyF7J93OoxQhHAblK6ROTrun/wUSO9r4GI5sWz2OHsr8pS70lCAp/BIzE5j3aCdqQAaBTSTLdG6fBNlmDksoF3XU69lK532fENpzkPY6li6iHg/TIYx+pGIQ282VvJTTT2nk9Tc1WjqST4VddIqty8HxSPjEmhDaBflNEA=
+	t=1780830231; cv=none; b=nHpJ0lQu4Zl/0pCW1C/JrXtNWyGb+V2IbNrRAXNxme7MYeqikbAgOBGyiKGCbahyluVKDn0zecVDutYJROvRYOvzVbbSyDCgHt3MxaaJ/oNmLDB2Reg5fr/jWfR3dqW6wFf7sEx6KBIe8febSO/4JeCBLPvtyMjAtaFLQZCkPHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830047; c=relaxed/simple;
-	bh=7Is6Ikp221plxNJ4kzFhEPMYYu8H0NRCWRvdXP2Dw0w=;
+	s=arc-20240116; t=1780830231; c=relaxed/simple;
+	bh=4fJMov6P+n7qkbOv43ZyxycYa4K9BTCt47UHlp7ILJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tBsdxSQV2r0pJ3iD1503yVMfuYXCnyi1WhGnI4ttz26OXy31zVVaI7cCDqX/3U0Px4uLBhsZaMZgwrLxb9G9xPqFt3nJ3sgoWv6OLn5hXFIFfZEY8iKlJcREMPLDgBHTedGNUOy9b7eUd+EK28cDBPEVJSFH6Xh3ratY2p26LLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApMcfANS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478D11F00893;
-	Sun,  7 Jun 2026 11:00:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m+/TcHdD04CwBEqgaH+DW4G2xV0TUE0vMGotmOBkAxjWijvWs1jEP/NgaDzBKAFMv1Pw+3u4xXo4q/nrt05sXUIzT6sdZXd+3DMcMN+pUmIK6Oo9LyHMm71NNlYaghAd8o+C7SyeTckAYe/WGwplva1plywGFE4fWHtfywc8V94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpY7C+BK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388751F00893;
+	Sun,  7 Jun 2026 11:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830046;
-	bh=/pjqmAq60cEp13N68N/Sjk8/DV1aNyVMY4Zyq9EZPSE=;
+	s=korg; t=1780830230;
+	bh=sq7AD/BfqRYzmBbksECHNbS3MBSTpi8OxjO249Hatuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ApMcfANSOaOP8YVKcuGkU1pcrZX5nDb7xJv0qKM1no7goiHdlaAJh4iQaZD3xk7TT
-	 0wLC8LrvnK77/1CuPng6WrnV7y5WrZGoogqS1wVwvz0ik3BNqNzBpKup4DMHcbEFb3
-	 peSzNQ101dA38roKSYRgWjhHuw06Ps6mQQ8f44Zc=
+	b=JpY7C+BKA3c82SA88lDJnHev8IhDJOjk+fK6Zd9lAcVjdzVcSGXeR9HMrm90VMsv0
+	 19mL7ZQR3RlNZMwYO7Vp6BEvh89yaVCRDn4ylTU16t86Muu5NWmw1wRIO3px0TYjLy
+	 7OKfsCnFjXvWaFdDaw4CYyhZM2Y7G5XxVYdG15A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 303/315] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
+Subject: [PATCH 6.12 293/307] ALSA: firewire-motu: Protect register DSP event queue positions
 Date: Sun,  7 Jun 2026 12:01:30 +0200
-Message-ID: <20260607095738.727629876@linuxfoundation.org>
+Message-ID: <20260607095738.503932730@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +66,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261839-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sakamocchi.jp,suse.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261884-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Thinh.Nguyen@synopsys.com,m:radhey.shyam.pandey@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:o-takashi@sakamocchi.jp,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,synopsys.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.de:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sakamocchi.jp:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E70F56506FE
+X-Rspamd-Queue-Id: 499AD6504A4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit c1a0ecbf32c4b397353204e2ec94c5bb9f3300ed ]
+[ Upstream commit 98fb1c1bb11e29eb609b7200a25e136e05aa4498 ]
 
-Fix error handling and resource cleanup i.e remove invalid
-phy_exit() after failed phy_init(), route failures through
-proper cleanup paths and return 0 explicitly on success.
+The register DSP event queue is updated under parser->lock, but
+snd_motu_register_dsp_message_parser_count_event() reads pull_pos and
+push_pos without the lock.
+snd_motu_register_dsp_message_parser_copy_event() also reads both queue
+positions before taking the lock.
 
-Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
+Protect these accesses with parser->lock as well. This keeps the hwdep
+poll/read path consistent with the producer side and with the cached
+meter/parameter accessors.
+
+Fixes: 634ec0b2906e ("ALSA: firewire-motu: notify event for parameter change in register DSP model")
 Cc: stable@vger.kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20260519115529.2980421-1-radhey.shyam.pandey@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20260521-alsa-firewire-motu-event-locking-v1-1-708e1c2b5e56@gmail.com
+[ converted copy_event() from manual spin_lock_irqsave/spin_unlock_irqrestore to guard(spinlock_irqsave) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ sound/firewire/motu/motu-register-dsp-message-parser.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -190,15 +190,13 @@ static int dwc3_xlnx_init_zynqmp(struct
- 	}
+--- a/sound/firewire/motu/motu-register-dsp-message-parser.c
++++ b/sound/firewire/motu/motu-register-dsp-message-parser.c
+@@ -393,6 +393,8 @@ unsigned int snd_motu_register_dsp_messa
+ {
+ 	struct msg_parser *parser = motu->message_parser;
  
- 	ret = phy_init(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
-+	if (ret < 0)
- 		goto err;
--	}
- 
- 	ret = reset_control_deassert(apbrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release APB reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	/* Set PIPE Power Present signal in FPD Power Present Register*/
-@@ -210,27 +208,25 @@ static int dwc3_xlnx_init_zynqmp(struct
- 	ret = reset_control_deassert(crst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release core reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = reset_control_deassert(hibrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release hibernation reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
- 
- 	ret = phy_power_on(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
--		goto err;
--	}
-+	if (ret < 0)
-+		goto err_phy_exit;
- 
- skip_usb3_phy:
- 	/* ulpi reset via gpio-modepin or gpio-framework driver */
- 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset_gpio)) {
--		return dev_err_probe(dev, PTR_ERR(reset_gpio),
--				     "Failed to request reset GPIO\n");
-+		ret = PTR_ERR(reset_gpio);
-+		goto err_phy_power_off;
- 	}
- 
- 	if (reset_gpio) {
-@@ -240,6 +236,13 @@ skip_usb3_phy:
- 	}
- 
- 	dwc3_xlnx_set_coherency(priv_data, XLNX_USB_TRAFFIC_ROUTE_CONFIG);
++	guard(spinlock_irqsave)(&parser->lock);
 +
-+	return 0;
-+
-+err_phy_power_off:
-+	phy_power_off(priv_data->usb3_phy);
-+err_phy_exit:
-+	phy_exit(priv_data->usb3_phy);
- err:
- 	return ret;
+ 	if (parser->pull_pos > parser->push_pos)
+ 		return EVENT_QUEUE_SIZE - parser->pull_pos + parser->push_pos;
+ 	else
+@@ -402,14 +404,14 @@ unsigned int snd_motu_register_dsp_messa
+ bool snd_motu_register_dsp_message_parser_copy_event(struct snd_motu *motu, u32 *event)
+ {
+ 	struct msg_parser *parser = motu->message_parser;
+-	unsigned int pos = parser->pull_pos;
+-	unsigned long flags;
++	unsigned int pos;
+ 
+-	if (pos == parser->push_pos)
+-		return false;
++	guard(spinlock_irqsave)(&parser->lock);
+ 
+-	spin_lock_irqsave(&parser->lock, flags);
++	if (parser->pull_pos == parser->push_pos)
++		return false;
+ 
++	pos = parser->pull_pos;
+ 	*event = parser->event_queue[pos];
+ 
+ 	++pos;
+@@ -417,7 +419,5 @@ bool snd_motu_register_dsp_message_parse
+ 		pos = 0;
+ 	parser->pull_pos = pos;
+ 
+-	spin_unlock_irqrestore(&parser->lock, flags);
+-
+ 	return true;
  }
 
 
