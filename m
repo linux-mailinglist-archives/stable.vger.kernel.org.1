@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aGobKghPJWrVGgIAu9opvQ
-	(envelope-from <stable+bounces-261653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:20 +0200
+	id s5OrA3NOJWqeGgIAu9opvQ
+	(envelope-from <stable+bounces-261615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9946650306
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77AAD65025E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2AnAWFLD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261653-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261653-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gUwBb43i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261615-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261615-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F9BF3039CAE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40979308B786
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E74308F38;
-	Sun,  7 Jun 2026 10:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205312DFF04;
+	Sun,  7 Jun 2026 10:47:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087C72DFF04;
-	Sun,  7 Jun 2026 10:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25EE2AF1D;
+	Sun,  7 Jun 2026 10:47:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829357; cv=none; b=bHEJLL+9SpdAMekvrJXmpKdwrwFRQYbviBqdBRb8sT/R5ZRfY+arfAbmEO3qvLzbbSLk9/roavS1Ug8vq9w7uaLTnDmOLkq1qILndEpOJsNQrWhqmbZenp5/CIpL0AT6D7CX6eq4wTrDHAuFYfmGNLCSHlDgONVTh3Hmo1Sl6Rw=
+	t=1780829225; cv=none; b=OG8uq7Ty8SeI4BtEi4MvzjkzmYQYvsDZKKvyiITg4nCGXk+Tb4yic/FEjXxSCbDYw/fOzYSb8J8IokCZOWZTJL9iNJser/ohpLMiPKnIu0YDcJjjTt++7xgOXDgO9YnZQ0HhPfYihyTRaaVeb/Q190CnRNhRCtCQkWvr6Kr6D3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829357; c=relaxed/simple;
-	bh=yJE7njoPQJuQHvq4neZaCHjeAq1otrXhm9PBEFxte58=;
+	s=arc-20240116; t=1780829225; c=relaxed/simple;
+	bh=x4cTBos7xsYOkM9HRQpWXMkB5CMsZavs6grS7MViIDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCPhtY2cTq92rfGh21SL61EtQ+84bSAlTQKI504cptRXbphd/FZ5Ki2y+LXQS3SYTTbZjeyJKQ6uJDgtdU0vC8ltYNUEH03AwLdn0tkBGglXY0OruuMs5zu3U0ucF1Hv7/xoFl/gCDpiRUkmbQ98fQZ69BbdsgoCZrqX9gPuEv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AnAWFLD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E3F1F00893;
-	Sun,  7 Jun 2026 10:49:15 +0000 (UTC)
+	 MIME-Version; b=jqv0XvgAjr+7P/VnIkHaicQpqXiOXHhQV/eU6G14peBJKvoRs2DP2cp2rspP4bz1gBbopNazxFs0v7Z6PeP4YEoqlrkiP0icuvYvUAGwbNstD54RafuHQpN6lMnp8inIDjqa98SruMSOIIcmEmSsBXPi7SGjA7AjQa+XcF6Vr4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUwBb43i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D39F1F00893;
+	Sun,  7 Jun 2026 10:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829356;
-	bh=ETcqZ0p9gI9zgFruqnxak/icFFFE/pUWrGPFezAIBpc=;
+	s=korg; t=1780829224;
+	bh=MItXLdYj2zGIMxRh6rZBGXRHw8lARWEV3hwAvwYNT94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2AnAWFLDoGyLgaFQefCOTSTRGjXhv5RA6hlGVJxGICZ2ly1AhQk+fz6llyHuoiYYQ
-	 h3y3T0yF0Cw/SWmcfFgwa++8wCg6i2iA3q6DFeXbf1R5zFheNb38nhSi2HKaG++ywE
-	 TblbIbTSx19y5Ui7aliGoYvoa8o380bJUFHsQFTg=
+	b=gUwBb43iKSB/s2EQKaQ7e4Y6tfFS5AssmIelXbVf6oTZcRpztACcg2/t5sh9thjR3
+	 jBtoL1udBKYZ6mvm3gV8Cqp8G591PgWvBT3NP8GwUE8TMlNzDPXEVR7EzLStjqGYVE
+	 1tYFHtNLW+Tx386RmEB2fucJaSnRU0V+f8g0GuWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stephen J. Fuhry" <fuhrysteve@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 217/307] USB: quirks: add NO_LPM for Lenovo ThinkPad USB-C Dock Gen2 hub controllers
+	stable <stable@kernel.org>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.18 227/315] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
 Date: Sun,  7 Jun 2026 12:00:14 +0200
-Message-ID: <20260607095735.689608494@linuxfoundation.org>
+Message-ID: <20260607095735.913392313@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-261615-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261653-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fuhrysteve@gmail.com,m:stable@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E9946650306
+X-Rspamd-Queue-Id: 77AAD65025E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen J. Fuhry <fuhrysteve@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 9ddb9c0deca48d2c2a22ebf4d2f35c925a520328 upstream.
+commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
 
-The Lenovo ThinkPad USB-C Dock Gen2 (17ef:a391, 17ef:a392) hub
-controllers exhibit link instability when USB Link Power Management
-is enabled, similar to the dock's Ethernet adapter (17ef:a387) which
-already carries USB_QUIRK_NO_LPM.
+This patch follows up Zheng Wang's 2023 report of a use-after-free in
+vudc_remove(). The original thread stalled on Shuah Khan's request for
+runtime testing of the unplug/unbind path. This patch supplies that
+testing and keeps Zheng's original fix shape.
 
-When the dock reconnects after a transient disconnect, the hub
-controllers enter LPM states between re-enumeration retries, causing
-repeated disconnect/reconnect cycles lasting up to two minutes.
-Disabling LPM for these devices restores stable enumeration.
+In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
+usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
+vudc_remove() can then free the containing struct vudc while the timer is
+still pending or executing.
 
-Signed-off-by: Stephen J. Fuhry <fuhrysteve@gmail.com>
+KASAN confirms the race on an unpatched x86_64 QEMU guest with
+CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
+that repeatedly writes a socket fd to usbip_sockfd, closes the socket
+pair, and unbinds/rebinds usbip-vudc.0:
+
+  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
+  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
+  Allocated by task 239:
+    vudc_probe+0x4d/0xaa0
+  Freed by task 239:
+    kfree+0x18f/0x520
+    device_release_driver_internal+0x388/0x540
+    unbind_store+0xd9/0x100
+
+This lands in the timer core rather than v_timer() itself because the
+embedded timer_list is being walked after its containing struct vudc has
+already been freed. The underlying lifetime bug is the same one Zheng
+reported.
+
+With v_stop_timer() called from vudc_remove() and the timer deleted
+synchronously, the same harness completed 5000 bind/unbind iterations
+with no KASAN report.
+
+Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
 Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260513171419.44849-1-fuhrysteve@gmail.com
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/usbip/vudc_dev.c      |    1 +
+ drivers/usb/usbip/vudc_transfer.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -511,6 +511,10 @@ static const struct usb_device_id usb_qu
- 	/* Lenovo ThinkPad USB-C Dock Gen2 Ethernet (RTL8153 GigE) */
- 	{ USB_DEVICE(0x17ef, 0xa387), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/usb/usbip/vudc_dev.c
++++ b/drivers/usb/usbip/vudc_dev.c
+@@ -632,6 +632,7 @@ void vudc_remove(struct platform_device
+ {
+ 	struct vudc *udc = platform_get_drvdata(pdev);
  
-+	/* Lenovo ThinkPad USB-C Dock Gen2 USB 3.1 and USB 2.0 hub controllers */
-+	{ USB_DEVICE(0x17ef, 0xa391), .driver_info = USB_QUIRK_NO_LPM },
-+	{ USB_DEVICE(0x17ef, 0xa392), .driver_info = USB_QUIRK_NO_LPM },
-+
- 	/* BUILDWIN Photo Frame */
- 	{ USB_DEVICE(0x1908, 0x1315), .driver_info =
- 			USB_QUIRK_HONOR_BNUMINTERFACES },
++	v_stop_timer(udc);
+ 	usb_del_gadget_udc(&udc->gadget);
+ 	cleanup_vudc_hw(udc);
+ 	kfree(udc);
+--- a/drivers/usb/usbip/vudc_transfer.c
++++ b/drivers/usb/usbip/vudc_transfer.c
+@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
+ {
+ 	struct transfer_timer *t = &udc->tr_timer;
+ 
+-	/* timer itself will take care of stopping */
++	/* Delete the timer synchronously before teardown frees udc. */
+ 	dev_dbg(&udc->pdev->dev, "timer stop");
++	timer_delete_sync(&t->timer);
+ 	t->state = VUDC_TR_STOPPED;
+ }
 
 
 
