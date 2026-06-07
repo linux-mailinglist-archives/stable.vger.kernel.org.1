@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1vWhId9HJWqnFwIAu9opvQ
-	(envelope-from <stable+bounces-261228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:47 +0200
+	id G7sTEsNGJWoXFwIAu9opvQ
+	(envelope-from <stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0205464FAE7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E3A64F9D0
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VAHZy9vA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261228-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261228-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yLBEuE5J;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261245-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4214A3035A80
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02FC43020863
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7276731E832;
-	Sun,  7 Jun 2026 10:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A693254BD;
+	Sun,  7 Jun 2026 10:23:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C69130F81A;
-	Sun,  7 Jun 2026 10:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F33264C2;
+	Sun,  7 Jun 2026 10:23:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827744; cv=none; b=diepwjDmziahU4J2B7JCll4R0UoW/9xpxcZsV5ccCxktRiGJLNkpDavH7Y47y2Ra5JZLCoGJeWuTxjZ7ud3c5XokCWiF3eHKgUaLOGc89/o2WWBlI73V6yjmoPVOSr0qDmFDgLJW2XbkN1msJVtNHOwXCzcdINGx7s74gYpTWaQ=
+	t=1780827809; cv=none; b=Z6a8YwmD0u4PMjTqCt2uRai20OFsW4v+mQgsRkDTAuMXNxci7cadesHhNbdOpUzd77AEhLLbJBv0Jhy5WbjF0K6jXugbeT854zaGVY+aKkjsUzyWK6xwxDQuFxDxuX63kM8EkeVyiGHlV6GoBioptPEAWXMlj8gqH0lqxhxwN6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827744; c=relaxed/simple;
-	bh=H98AvtxROZFnAwUWBebg4GlTBQqQNSBkhYPnxCp8gU8=;
+	s=arc-20240116; t=1780827809; c=relaxed/simple;
+	bh=qmYJsPCASWr3cinDHOwJLwnvCH6MCLHZT3wb4EnpT2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k58sSI2prVMhtJ674p8cPwUi/zOc9SGKJ7/M5iKgCQufZx0BVuMmY+NO1wpjtzRi4o5mahpB6p0uFTOJ+27fqW5/dlywh6RjzDcA6oyvsrlJ44GRj0sPkuO7yor4fflFvDYDffoQ8kZhVEk14t5ZH5LoHwEbaZNxX4N4DwJODIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAHZy9vA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10D1F00893;
-	Sun,  7 Jun 2026 10:22:22 +0000 (UTC)
+	 MIME-Version; b=ETI0Q0oydqINnIUo/oyDqikDhuJJEn0PSU2smo40tS0rEsaXJbgIwKGuNYcEQ3Y09By04CbybSrBDws4/6yaFhgrpnuPmZfe5OVv2T5S6weezNN+UnXVKRecCzH7lL/+F/0TFkMh0MeRTrSaM8Axn8hdbyOKJeK2Ob8q1/s2HM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLBEuE5J; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2081F00893;
+	Sun,  7 Jun 2026 10:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827743;
-	bh=8q+MTPKJouittlS7dDoH5P3QPD3punad2mfj1bJTdhE=;
+	s=korg; t=1780827806;
+	bh=XzN+f+c27bKXrqj4j8hN7QG2GHrmhZDQFgdS3xNVFBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VAHZy9vAbfH/1ZYAwxsDAPGG98aRBZtTxt4iHrRz5IVCRRVdZwY45xF41dhcVz7Ct
-	 IHkg3JePz6cUCkW0epVVPHxPwqgn/bWsiAB2j+/J2w23HEkJ9PlIlAV02sVbv7EXBS
-	 Xrj8/oB7CW8b+0TD8gMPKxplNaZ5Yy/0XIEByjiE=
+	b=yLBEuE5JmoBHmCxkQeOmz2xv019im7rtXG9xzWmOZA5uJZuVMqOxE53l51cq6SLdO
+	 coASAxKjXcChWFygtxcnSQdhzTjXG/paJgTbZkCpgzdbuzCJBGN1TGoXvQCOEf+MCL
+	 o3IAbSiHMnwkJMeK++PSIAdZ7mMNRwpz8V1EvueY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 097/315] smb: client: validate the whole DACL before rewriting it in cifsacl
-Date: Sun,  7 Jun 2026 11:58:04 +0200
-Message-ID: <20260607095731.200261524@linuxfoundation.org>
+Subject: [PATCH 6.12 088/307] Bluetooth: hci_sync: Set HCI_CMD_DRAIN_WORKQUEUE during device close
+Date: Sun,  7 Jun 2026 11:58:05 +0200
+Message-ID: <20260607095731.008616776@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,268 +67,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261245-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261228-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:halves@igalia.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0205464FAE7
+X-Rspamd-Queue-Id: A1E3A64F9D0
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-[ Upstream commit 0a8cf165566ba55a39fd0f4de172119dd646d39a ]
+[ Upstream commit 525daaea459fc215f432de1b8debbd9144bf97b0 ]
 
-build_sec_desc() and id_mode_to_cifs_acl() derive a DACL pointer from a
-server-supplied dacloffset and then use the incoming ACL to rebuild the
-chmod/chown security descriptor.
+Since hci_dev_close_sync() can now be called during the reset path, we
+should also set HCI_CMD_DRAIN_WORKQUEUE. This avoids queuing timeouts
+while the hdev workqueue is being drained.
 
-The original fix only checked that the struct smb_acl header fits before
-reading dacl_ptr->size or dacl_ptr->num_aces.  That avoids the immediate
-header-field OOB read, but the rewrite helpers still walk ACEs based on
-pdacl->num_aces with no structural validation of the incoming DACL body.
-
-A malicious server can return a truncated DACL that still contains a
-header, claims one or more ACEs, and then drive
-replace_sids_and_copy_aces() or set_chmod_dacl() past the validated
-extent while they compare or copy attacker-controlled ACEs.
-
-Factor the DACL structural checks into validate_dacl(), extend them to
-validate each ACE against the DACL bounds, and use the shared validator
-before the chmod/chown rebuild paths.  parse_dacl() reuses the same
-validator so the read-side parser and write-side rewrite paths agree on
-what constitutes a well-formed incoming DACL.
-
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 877afadad2dc ("Bluetooth: When HCI work queue is drained, only queue chained work")
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c | 116 +++++++++++++++++++++++++++++-----------
- 1 file changed, 85 insertions(+), 31 deletions(-)
+ net/bluetooth/hci_sync.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index e2948835587094..d17912beb28ec5 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -757,6 +757,77 @@ static void dump_ace(struct smb_ace *pace, char *end_of_acl)
- }
- #endif
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index fbcb3bbfef4fde..f6e133756bd9ba 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5223,6 +5223,12 @@ int hci_dev_close_sync(struct hci_dev *hdev)
  
-+static int validate_dacl(struct smb_acl *pdacl, char *end_of_acl)
-+{
-+	int i, ace_hdr_size, ace_size, min_ace_size;
-+	u16 dacl_size, num_aces;
-+	char *acl_base, *end_of_dacl;
-+	struct smb_ace *pace;
-+
-+	if (!pdacl)
-+		return 0;
-+
-+	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl)) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	dacl_size = le16_to_cpu(pdacl->size);
-+	if (dacl_size < sizeof(struct smb_acl) ||
-+	    end_of_acl < (char *)pdacl + dacl_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	num_aces = le16_to_cpu(pdacl->num_aces);
-+	if (!num_aces)
-+		return 0;
-+
-+	ace_hdr_size = offsetof(struct smb_ace, sid) +
-+		offsetof(struct smb_sid, sub_auth);
-+	min_ace_size = ace_hdr_size + sizeof(__le32);
-+	if (num_aces > (dacl_size - sizeof(struct smb_acl)) / min_ace_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	end_of_dacl = (char *)pdacl + dacl_size;
-+	acl_base = (char *)pdacl;
-+	ace_size = sizeof(struct smb_acl);
-+
-+	for (i = 0; i < num_aces; ++i) {
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		pace = (struct smb_ace *)(acl_base + ace_size);
-+		acl_base = (char *)pace;
-+
-+		if (end_of_dacl - acl_base < ace_hdr_size ||
-+		    pace->sid.num_subauth == 0 ||
-+		    pace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = ace_hdr_size + sizeof(__le32) * pace->sid.num_subauth;
-+		if (end_of_dacl - acl_base < ace_size ||
-+		    le16_to_cpu(pace->size) < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = le16_to_cpu(pace->size);
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		       struct smb_sid *pownersid, struct smb_sid *pgrpsid,
- 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
-@@ -764,7 +835,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	int i;
- 	u16 num_aces = 0;
- 	int acl_size;
--	char *acl_base;
-+	char *acl_base, *end_of_dacl;
- 	struct smb_ace **ppace;
+ 	bt_dev_dbg(hdev, "");
  
- 	/* BB need to add parm so we can store the SID BB */
-@@ -776,12 +847,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		return;
++	/* Set HCI_DRAIN_WORKQUEUE flag to prevent queuing work during
++	 * reset/close. See hci_cmd_work() and handle_cmd_cnt_and_timer().
++	 */
++	hci_dev_set_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
++	synchronize_rcu();
++
+ 	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
+ 		disable_delayed_work(&hdev->power_off);
+ 		disable_delayed_work(&hdev->ncmd_timer);
+@@ -5246,6 +5252,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+ 
+ 	if (!test_and_clear_bit(HCI_UP, &hdev->flags)) {
+ 		cancel_delayed_work_sync(&hdev->cmd_timer);
++		hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
+ 		return err;
  	}
  
--	/* validate that we do not go past end of acl */
--	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
--	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
--		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+	if (validate_dacl(pdacl, end_of_acl))
- 		return;
--	}
+@@ -5345,6 +5352,7 @@ int hci_dev_close_sync(struct hci_dev *hdev)
+ 	/* Clear flags */
+ 	hdev->flags &= BIT(HCI_RAW);
+ 	hci_dev_clear_volatile_flags(hdev);
++	hci_dev_clear_flag(hdev, HCI_CMD_DRAIN_WORKQUEUE);
  
- 	cifs_dbg(NOISY, "DACL revision %d size %d num aces %d\n",
- 		 le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
-@@ -792,6 +859,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	   user/group/other have no permissions */
- 	fattr->cf_mode &= ~(0777);
- 
-+	end_of_dacl = (char *)pdacl + le16_to_cpu(pdacl->size);
- 	acl_base = (char *)pdacl;
- 	acl_size = sizeof(struct smb_acl);
- 
-@@ -799,36 +867,16 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
- 
--		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
--				(offsetof(struct smb_ace, sid) +
--				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
--			return;
--
- 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
- 				      GFP_KERNEL);
- 		if (!ppace)
- 			return;
- 
- 		for (i = 0; i < num_aces; ++i) {
--			if (end_of_acl - acl_base < acl_size)
--				break;
--
- 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
--			acl_base = (char *)ppace[i];
--			acl_size = offsetof(struct smb_ace, sid) +
--				offsetof(struct smb_sid, sub_auth);
--
--			if (end_of_acl - acl_base < acl_size ||
--			    ppace[i]->sid.num_subauth == 0 ||
--			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
--			    (end_of_acl - acl_base <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
--			    (le16_to_cpu(ppace[i]->size) <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
--				break;
- 
- #ifdef CONFIG_CIFS_DEBUG2
--			dump_ace(ppace[i], end_of_acl);
-+			dump_ace(ppace[i], end_of_dacl);
- #endif
- 			if (mode_from_special_sid &&
- 			    ppace[i]->sid.num_subauth >= 3 &&
-@@ -871,6 +919,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 				(void *)ppace[i],
- 				sizeof(struct smb_ace)); */
- 
-+			acl_base = (char *)ppace[i];
- 			acl_size = le16_to_cpu(ppace[i]->size);
- 		}
- 
-@@ -1316,10 +1365,9 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 		}
- 
- 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
--		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
--			cifs_dbg(VFS, "Server returned illegal ACL size\n");
--			return -EINVAL;
--		}
-+		rc = validate_dacl(dacl_ptr, end_of_acl);
-+		if (rc)
-+			return rc;
- 	}
- 
- 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
-@@ -1698,6 +1746,12 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 			}
- 
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-+			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
-+			if (rc) {
-+				kfree(pntsd);
-+				cifs_put_tlink(tlink);
-+				return rc;
-+			}
- 			if (mode_from_sid)
- 				nsecdesclen +=
- 					le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
+ 	memset(hdev->eir, 0, sizeof(hdev->eir));
+ 	memset(hdev->dev_class, 0, sizeof(hdev->dev_class));
 -- 
 2.53.0
 
