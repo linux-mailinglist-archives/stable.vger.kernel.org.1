@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261491-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MZSVLnJIJWr/FwIAu9opvQ
-	(envelope-from <stable+bounces-261365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:14 +0200
+	id UvYvOwBLJWoqGQIAu9opvQ
+	(envelope-from <stable+bounces-261491-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5820464FBCA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EE464FEC4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:42:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uHzINwwt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261365-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261365-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PuhELuvp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261491-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261491-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7C96300399A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73001304C047
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D9E31E842;
-	Sun,  7 Jun 2026 10:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25313254A9;
+	Sun,  7 Jun 2026 10:39:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7402C1595;
-	Sun,  7 Jun 2026 10:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A023A212564;
+	Sun,  7 Jun 2026 10:39:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828270; cv=none; b=G0mNVHIogDPlBZprW0OlkGuhxpn5AGZj7pioz8mE07FHmH291Idsn1MYkYY1kaKMjzxeH9M/t6udpg+HJc0Sicam9LRGsJIuDhv6+w/Q7EeqV1D6DxviFeTh4Qrpoz0TWKHZR32nW9QhQXgEW9tmIipEygDNfDtcRFHFABGjsqU=
+	t=1780828759; cv=none; b=o3bOpiWNH4q/ElKif27UmIT+5A9WFW/KZO4D5aAii3nZY7jz5ha3XYyWWQntXpUFuA7jRI0f/0pNl5glYKPJ4txZGiwFaf19Ad/eMeQamF4/JREKQkEqN2MhVtA+tKMMdlZrRgHzvRu8V6VscF9PYpaHOBjWAfl5x4jI/qkj/3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828270; c=relaxed/simple;
-	bh=Ocfd8TAq3Gr4LFAuNzxM3nGJLlziq1kC5Thq3CAYGZI=;
+	s=arc-20240116; t=1780828759; c=relaxed/simple;
+	bh=F2PQ7SRML4egY9v1teQGMsaipWQ8lIC5M0guJ7Jmseg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmW/7sOhhz1xrlw+yVDHHQbw4ythDkTVrl1CYtaEYsaiM3wYY3myueHFWmpdu8jmNFFhiL6wMq1/ceYRLpD5Be+3kL1TRRxG6Yz7bPDMoiUpslu6UOe9d94wx8s+g6tW0CMDbxx8NsEn9Z/1SFEK3sGKQHLkxe+J58TDI/3kj5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHzINwwt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118251F00893;
-	Sun,  7 Jun 2026 10:31:08 +0000 (UTC)
+	 MIME-Version; b=AYJvRHWUi588uCK2F7SoDsAaegKMJvVLR+CpBMbxwEogWtYb1jwXsR46YsbAmTePGvcmrU5NH3b7x5oRlJ617KDSpCnrnN827dytjLixd9tnROtfBnLPdOyzvEgnvkSNE/bC562aSDD2TiX78BaZGyLHTKLbRfYnLBRxb1PMvSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuhELuvp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20751F00893;
+	Sun,  7 Jun 2026 10:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828269;
-	bh=KyE8BDJ5llr8LhONmtA+qJqbQ62+cWqfdiJplROhqPM=;
+	s=korg; t=1780828758;
+	bh=i2fQr/RuZBgGOlvHIrAsBb8Npkv1bG/lxiPWZRhzfs4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uHzINwwtWnyibEt14gLBSFCffMOhHa86vcpqNIzsvQ2aBjjeIV20WIk1UTD2WtLlu
-	 sa/IAwtVMsrHMPFnN8I1ZMLiQws7dtqFFw8sBprCRkNfOfbETJbDxUGzsHJpRi5cUH
-	 YYhWpECKFeVPjTO82wI5qVhbfu056AFklNYYDtVM=
+	b=PuhELuvp2TM2lfbzYPhyi8jAOIfVuFKHzdHDJv+wE5mKL5RjWrvcvF3oeBXehPMLP
+	 eZZeW7hlrQkD2vPwRhYRBbCL4npOtlldI7AS56FkUUWY+ao/20sEmLln7Lm3nhm7bc
+	 6sO4rtG2k7cm/oNM2raJ4QcFjeg/6tPzPD4HABvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 7.0 168/332] KVM: SEV: Use READ_ONCE() when reading entries/indices from PSC buffer
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Farhad Alemi <farhad.alemi@berkeley.edu>
+Subject: [PATCH 6.12 140/307] hpfs: fix a crash if hpfs_map_dnode_bitmap fails
 Date: Sun,  7 Jun 2026 11:58:57 +0200
-Message-ID: <20260607095734.236463960@linuxfoundation.org>
+Message-ID: <20260607095732.872941711@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261365-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261491-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mpatocka@redhat.com,m:farhad.alemi@berkeley.edu,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,80 +97,41 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,berkeley.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5820464FBCA
+X-Rspamd-Queue-Id: 41EE464FEC4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit c8cc238093ca6c99267032f6cfe78f59389f3157 upstream.
+commit 974820a59efde7c1a7e1260bcfe9bb81f833cc9f upstream.
 
-Use READ_ONCE() when reading entries/indices from the guest-accessible
-Page State Change buffer to defend against TOCTOU bugs.
+If hpfs_map_dnode_bitmap fails, the code would call hpfs_brelse4 on
+uninitialized quad buffer head, causing a crash.
 
-Don't bother with READ_ONCE()/WRITE_ONCE() for cases where KVM is writing
-(and not consuming the result!), as the guest isn't supposed to touch the
-buffer while it's being processed.  I.e. using READ_ONCE() is all about
-protecting against misbehaving guests.
-
-Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Farhad Alemi <farhad.alemi@berkeley.edu>
 Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-11-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/hpfs/alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3827,9 +3827,9 @@ static void __snp_complete_one_psc(struc
- 	 */
- 	for (idx = svm->sev_es.psc_idx; svm->sev_es.psc_inflight;
- 	     svm->sev_es.psc_inflight--, idx++) {
--		struct psc_entry *entry = &entries[idx];
-+		struct psc_entry entry = READ_ONCE(entries[idx]);
- 
--		entry->cur_page = entry->pagesize ? 512 : 1;
-+		entries[idx].cur_page = entry.pagesize ? 512 : 1;
+--- a/fs/hpfs/alloc.c
++++ b/fs/hpfs/alloc.c
+@@ -372,8 +372,8 @@ int hpfs_check_free_dnodes(struct super_
+ 				return 0;
+ 			}
+ 		}
++		hpfs_brelse4(&qbh);
  	}
- 
- 	hdr->cur_entry = idx;
-@@ -3892,8 +3892,8 @@ next_range:
- 	 * validation, so take care to only use validated copies of values used
- 	 * for things like array indexing.
- 	 */
--	idx_start = hdr->cur_entry;
--	idx_end = hdr->end_entry;
-+	idx_start = READ_ONCE(hdr->cur_entry);
-+	idx_end = READ_ONCE(hdr->end_entry);
- 
- 	if (idx_end >= max_nr_entries) {
- 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_HDR);
-@@ -3902,7 +3902,7 @@ next_range:
- 
- 	/* Find the start of the next range which needs processing. */
- 	for (idx = idx_start; idx <= idx_end; idx++, hdr->cur_entry++) {
--		entry_start = entries[idx];
-+		entry_start = READ_ONCE(entries[idx]);
- 
- 		gfn = entry_start.gfn;
- 		huge = entry_start.pagesize;
-@@ -3946,7 +3946,7 @@ next_range:
- 	 * KVM_HC_MAP_GPA_RANGE exit.
- 	 */
- 	while (++idx <= idx_end) {
--		struct psc_entry entry = entries[idx];
-+		struct psc_entry entry = READ_ONCE(entries[idx]);
- 
- 		if (entry.operation != entry_start.operation ||
- 		    entry.gfn != entry_start.gfn + npages ||
+-	hpfs_brelse4(&qbh);
+ 	i = 0;
+ 	if (hpfs_sb(s)->sb_c_bitmap != -1) {
+ 		bmp = hpfs_map_bitmap(s, b, &qbh, "chkdn1");
 
 
 
