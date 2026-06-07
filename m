@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wL6ACkdMJWqEGQIAu9opvQ
-	(envelope-from <stable+bounces-261536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:35 +0200
+	id j7PrJOpLJWprGQIAu9opvQ
+	(envelope-from <stable+bounces-261597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9955B64FFF7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9435064FF9E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O7No1s0a;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261536-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261536-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Knz46A+4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261597-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261597-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23BB63047BEF
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCC263003BED
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D34B3195FD;
-	Sun,  7 Jun 2026 10:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19A2D8378;
+	Sun,  7 Jun 2026 10:45:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366A770808;
-	Sun,  7 Jun 2026 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E05285CA4;
+	Sun,  7 Jun 2026 10:45:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828926; cv=none; b=duI+sev6/CCc4i5tpn6EabFegljzLbKA6uMjUuNTBy/1o2vleXCKiIYBGmTcU5R/SLT33mltd3YlFIU5PHPGCAWAur6vzrD4sSemoU5EbdKK/G8KBA35vcUrBn83TEQDRV4YDicy+4X0Mv7Ty9/SUd6w6+iOlHyfj89ZS8FjnjU=
+	t=1780829156; cv=none; b=PDrsWOAvRuTdMC1HyDeaTu4sKu+EDZ+Wq3fBh/A/B84UTrWXEyT351i+3hkn/QwHVD91b+hq0PBZdIQVZpRNeYN1kVOshI3qiZb2kLWDKiSRbCNWfVU0fYgPFl2rauImYFOVTIIvR3KzEK0lpFcTeMLFFpeBvM5VBTeVx5VBX8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828926; c=relaxed/simple;
-	bh=xVzMvuhEWTqBiUUi8kdeKkh4N2mIePWm7vfzoGMDuh0=;
+	s=arc-20240116; t=1780829156; c=relaxed/simple;
+	bh=0duQyAnh3xcIn2TzMie7OUNrHXsCs6OrUOOOrxH5M/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSFp0nLbVY9/QCpzPZPtMgeeos/VM+DeAzZfJtPoCEH/SClaZxkDXWkp1RRBX3vvNnB896p+oePNoUgOS2WnlFSXgT1gNCgvjHL9CwmfCJhNY/kde2LGf95WOqnpKzLeU7hm+Ttq9HTSRLvoCFaVIJsSIp2P9CSMvvvKkgzswMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7No1s0a; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2631F00893;
-	Sun,  7 Jun 2026 10:42:04 +0000 (UTC)
+	 MIME-Version; b=Q4abvS4UroyzBBM8DaO2JOxA+Nd5DRlUCMdC8B/IMuAobROiL+f87KPQaox7L6QW7Ye9LMZnJpi6bIbSLjmvF3/TbTpnr3NHpfd8IXg18Z+rM8ruysSZ3LOrQgpEhwQC/nF1yC8SBjXuTEBtRRFL+bQYNQcy0Kq/n9a4AGJ3fQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Knz46A+4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10781F00893;
+	Sun,  7 Jun 2026 10:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828925;
-	bh=kg+T1ppBFM8G/nJT5nXRnjtTFp9xfIWPzOziFQjzu08=;
+	s=korg; t=1780829155;
+	bh=xbuMxpdXEb+etWEHg2dpHiH2vm0LQHsQo9Zo/D2QilY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O7No1s0aUlK8O+eKECJ3x/fWQbECtvcRklZPvfe4CZbovSX4hz8FKpn9TO3testAF
-	 qt2a/RtTCknnCrhyNydOrqsXBfgmNCcJCMSios6uqfpPztBxRlMo3JVVC4hPNpZlmS
-	 J7+GX1y5r4AzACVEFkpmnQ9MjoeJdncdNeqoE7Mw=
+	b=Knz46A+41YplSmj8qyQ9tpEvCkz3Iw9YsoNjU2ArqBqpzMmJqbJg0AH0BQlHDePFL
+	 83SdM3BziX09/4qZEkDmhAaJOsB2GTHXHMGwK5LSTyL2QLnD3wmeaK3adyG3PkitVq
+	 NGDy1DR/B1nRts6mOCj+1BNUl6SwP9XGbjf6M+ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 7.0 227/332] xfrm: ah: use skb_to_full_sk in async output callbacks
-Date: Sun,  7 Jun 2026 11:59:56 +0200
-Message-ID: <20260607095736.396560006@linuxfoundation.org>
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 200/307] ALSA: scarlett2: Fix 2i2 Gen 4 direct monitor gain on firmware 2417
+Date: Sun,  7 Jun 2026 11:59:57 +0200
+Message-ID: <20260607095735.071255812@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +66,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261597-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261536-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:steffen.klassert@secunet.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:g@b4.vu,m:tiwai@suse.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9955B64FFF7
+X-Rspamd-Queue-Id: 9435064FF9E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit 79d8be262377f7112cfa3088dfc4142d5a2533f3 upstream.
+commit db37cf47b67e38ade40de5cd74a4d4d772ff1416 upstream.
 
-When AH output is offloaded to an asynchronous crypto provider
-(hardware accelerators such as AMD CCP, or a forced-async software
-shim used for testing), the digest completion fires
-ah_output_done() / ah6_output_done() on a workqueue.  The egress
-skb at that point may have been originated by a TCP listener
-sending a SYN-ACK, which sets skb->sk to a request_sock via
-skb_set_owner_edemux(); it may also have been originated by an
-inet_timewait_sock retransmit.  Neither is a full struct sock, and
-passing the raw skb->sk to xfrm_output_resume() then forwards a
-non-full socket through the rest of the xfrm output chain.
+Firmware 2417 for the Scarlett 4th Gen 2i2 moved the direct monitor
+gain parameter by 4 bytes, from offset 0x2a0 to 0x2a4, breaking the
+"Direct Monitor X Mix Y" controls.
 
-xfrm_output_resume() and its downstream consumers expect a full
-sk where they dereference at all.  The natural egress path
-through ah_output_done() does not crash today because the
-consumers that read past sock_common are either gated by
-sk_fullsock() or short-circuit on flags that are clear on a fresh
-request_sock; an exhaustive walk of the 50 most plausible
-consumers under sch_fq, dev_queue_xmit, netfilter, tc-egress and
-cgroup-egress BPF found no current unguarded deref.  The bug is
-still a real type confusion that future consumer changes could
-turn into a memory-corruption primitive.
+Special-case the offset in the get/set config helpers when the
+running firmware is 2417 or later.
 
-This is the same bug class fixed for ESP in commit 1620c88887b1
-("xfrm: Fix the usage of skb->sk").  Apply the analogous fix to
-AH: convert skb->sk to a full socket pointer (or NULL) via
-skb_to_full_sk() before handing it to xfrm_output_resume().
-
-The same async AH callbacks were touched recently for an
-independent ESN-related ICV layout bug in commit ec54093e6a8f
-("xfrm: ah: account for ESN high bits in async callbacks"); the
-sk type-confusion addressed here is orthogonal.  This patch is
-part of an ongoing audit of the AH callback paths; an ah_output
-ihl-validation hardening series is also currently under review on
-netdev.
-
-Reproduced under UML + KASAN + lockdep with a forced-async
-hmac(sha1) shim that registers at priority 9999 and wraps the
-sync in-tree hmac-sha1-lib.  With the shim loaded, ah_output_done
-runs on every SYN-ACK egress through a transport-mode AH SA and
-skb->sk arrives as a request_sock (TCP_NEW_SYN_RECV); after this
-patch, xfrm_output_resume() receives the listener (the result of
-sk_to_full_sk()) and consumer derefs land on full-sock fields as
-intended.
-
-Fixes: 9ab1265d5231 ("xfrm: Use actual socket sk instead of skb socket for xfrm_output_resume")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 4e809a299677 ("ALSA: scarlett2: Add support for Solo, 2i2, and 4i4 Gen 4")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://patch.msgid.link/ahIWTueUlWA5xiV+@m.b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ah4.c |    2 +-
- net/ipv6/ah6.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_scarlett2.c |   33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
---- a/net/ipv4/ah4.c
-+++ b/net/ipv4/ah4.c
-@@ -143,7 +143,7 @@ static void ah_output_done(void *data, i
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -2467,6 +2467,27 @@ static int scarlett2_has_config_item(
+ 	return !!private->config_set->items[config_item_num].offset;
+ }
+ 
++/* Return the configuration item's offset, applying any per-firmware
++ * overrides.
++ *
++ * Firmware 2417 for the 2i2 Gen 4 moved DIRECT_MONITOR_GAIN by 4
++ * bytes. Apply that shift here so that the rest of the driver can
++ * keep using the single config set. This override can be removed
++ * once the multi-config-set framework lands.
++ */
++static int scarlett2_config_item_offset(
++	struct scarlett2_data *private, int config_item_num)
++{
++	int offset = private->config_set->items[config_item_num].offset;
++
++	if (config_item_num == SCARLETT2_CONFIG_DIRECT_MONITOR_GAIN &&
++	    private->info == &s2i2_gen4_info &&
++	    private->firmware_version >= 2417)
++		offset = 0x2a4;
++
++	return offset;
++}
++
+ /* Send a USB message to get configuration parameters; result placed in *buf */
+ static int scarlett2_usb_get_config(
+ 	struct usb_mixer_interface *mixer,
+@@ -2476,6 +2497,7 @@ static int scarlett2_usb_get_config(
+ 	const struct scarlett2_config *config_item =
+ 		&private->config_set->items[config_item_num];
+ 	int size, err, i;
++	int item_offset;
+ 	u8 *buf_8;
+ 	u8 value;
+ 
+@@ -2485,13 +2507,15 @@ static int scarlett2_usb_get_config(
+ 	if (!config_item->offset)
+ 		return -EFAULT;
+ 
++	item_offset = scarlett2_config_item_offset(private, config_item_num);
++
+ 	/* Writes to the parameter buffer are always 1 byte */
+ 	size = config_item->size ? config_item->size : 8;
+ 
+ 	/* For byte-sized parameters, retrieve directly into buf */
+ 	if (size >= 8) {
+ 		size = size / 8 * count;
+-		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
++		err = scarlett2_usb_get(mixer, item_offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+ 		if (config_item->size == 16) {
+@@ -2509,7 +2533,7 @@ static int scarlett2_usb_get_config(
  	}
  
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
+ 	/* For bit-sized parameters, retrieve into value */
+-	err = scarlett2_usb_get(mixer, config_item->offset, &value, 1);
++	err = scarlett2_usb_get(mixer, item_offset, &value, 1);
+ 	if (err < 0)
+ 		return err;
  
- static int ah_output(struct xfrm_state *x, struct sk_buff *skb)
---- a/net/ipv6/ah6.c
-+++ b/net/ipv6/ah6.c
-@@ -337,7 +337,7 @@ static void ah6_output_done(void *data,
- 	ah6_restore_hdrs(top_iph, iph_ext, extlen);
+@@ -2659,7 +2683,8 @@ static int scarlett2_usb_set_config(
+ 	 */
+ 	if (config_item->size >= 8) {
+ 		size = config_item->size / 8;
+-		offset = config_item->offset + index * size;
++		offset = scarlett2_config_item_offset(private, config_item_num) +
++			 index * size;
  
- 	kfree(AH_SKB_CB(skb)->tmp);
--	xfrm_output_resume(skb->sk, skb, err);
-+	xfrm_output_resume(skb_to_full_sk(skb), skb, err);
- }
+ 	/* If updating a bit, retrieve the old value, set/clear the
+ 	 * bit as needed, and update value
+@@ -2668,7 +2693,7 @@ static int scarlett2_usb_set_config(
+ 		u8 tmp;
  
- static int ah6_output(struct xfrm_state *x, struct sk_buff *skb)
+ 		size = 1;
+-		offset = config_item->offset;
++		offset = scarlett2_config_item_offset(private, config_item_num);
+ 
+ 		err = scarlett2_usb_get(mixer, offset, &tmp, 1);
+ 		if (err < 0)
 
 
 
