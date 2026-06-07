@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-261026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F1bPDEpEJWq0FQIAu9opvQ
-	(envelope-from <stable+bounces-261026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:30 +0200
+	id +bzsA+1DJWqJFQIAu9opvQ
+	(envelope-from <stable+bounces-261055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8700064F6B1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5741A64F654
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=166ttxUS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261026-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261026-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jQQR+pPn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261055-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261055-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 62F0730378A7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 604E0300C821
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC142227B94;
-	Sun,  7 Jun 2026 10:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3624E2E2DDD;
+	Sun,  7 Jun 2026 10:11:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5BE4204E;
-	Sun,  7 Jun 2026 10:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E8D285CAE;
+	Sun,  7 Jun 2026 10:11:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827013; cv=none; b=qFoHVPv8cSzFDQ/uFP1JrQN3VjEkKat2ERqYqYMcNRq+ENNC+4cCfftKnr8edoq+rMCJJvmyNWTpsNXKEnytpkZNYvJYxnDgk3X4PpYJ9aYrZ5A2y1rytd7TvnGlUO3Xw/Jzd8zAmE/gW3oLQc7MrWZpvyDdgd7fUsuNFiL58qE=
+	t=1780827114; cv=none; b=FoyhXu0b2AtQCQUxvQWKLIGncBgUCjRy52lV0P49Ix2bYidJIjuUJiaum4bmXJT214xMMf7/4ztR7F4NmR0fmOxJ2fRYhBhHuf3tuHe0NVpDLnICmKNCnuqk/xsroftFD/9G0NZapLOxoQoHpekh8iu0V5nFQWBrhOSpuOkB5sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827013; c=relaxed/simple;
-	bh=Y9lgUfFcYfhOdsPv9X7Ccz1LIQykL64UeMd4Itq5aUw=;
+	s=arc-20240116; t=1780827114; c=relaxed/simple;
+	bh=1owdu1h61NXLODrrbs8zb0mY+XrxQPNrjWwRM7zv96k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKIw1VxBzlhld1vPbB9IANGV5qQ5uXE2wYZA+itRhrdx5+EiPwhPxAGytGcS4zJRgRooS9dq8eEMTXcUroNsj41P3XdoPC7VyIuRZ9uNsyRqeX2DeFwJHiDoZqLETI6vlFJMLIOOOLU9b8mVyPmLP8XvIewhIkx1uA4N4+PXYeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=166ttxUS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB171F00893;
-	Sun,  7 Jun 2026 10:10:11 +0000 (UTC)
+	 MIME-Version; b=K3arT6gJJaJz8srUMY0s4IRxjGTywXIBc+foeuPSxjSfbiV/7r0UNwhI8hMi7TSWdsb7xZAzT07/WUjlMZmNEogNeD5Gn+IK0nX0CttMEZwURNdbW+omQaGBysaz9z3GPvVqpB8TdGM8BIv8jUN7zu8EYbvfdmCVdKxJwS+PzYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQQR+pPn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7AF1F00893;
+	Sun,  7 Jun 2026 10:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827012;
-	bh=ohGih8nhtqNA6ik+Q5cl5DkHSaqcXGCQjnB+z9VeUCk=;
+	s=korg; t=1780827112;
+	bh=m6kLgBGPjv75PB+8odh7YIy+W44cP8xcVKxBelT/mOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=166ttxUSowU3KCZG8xdCPBTMWU5d8mX64rkaRjcj4uUjaV+/W1Jo1C2F62+q+0BVh
-	 OOvfxQKJFqrfd9uqgcHBYYcvFQGkzW1/4tObhfLtVxVbyUBIYQEmNqNaW1nTvFSiOj
-	 LAp27/HBvXAUViB88TlU8UrA64M3evAhv0DjMv/8=
+	b=jQQR+pPnGT1pMnq3iCyEYFrBSEDB4257+bKRXgFWF6jLNP+l8lqQtLrvZiW4HvS0m
+	 h85ys+pPWnmY+IdO3ll7cBdZEgu0zxK8w3SueK2ML7qYUoTc7newUI9sv16XWkaIrz
+	 nC/AxsK+C37gWy/dalKPJTtkasGO75+E9p2ceZD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luka Gejak <luka.gejak@linux.dev>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 032/315] net: hsr: fix potential OOB access in supervision frame handling
-Date: Sun,  7 Jun 2026 11:56:59 +0200
-Message-ID: <20260607095728.701541087@linuxfoundation.org>
+Subject: [PATCH 6.12 023/307] arm64: debug: remove debug exception registration infrastructure
+Date: Sun,  7 Jun 2026 11:57:00 +0200
+Message-ID: <20260607095728.481215878@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +74,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261026-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261055-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luka.gejak@linux.dev,m:fmancera@suse.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,57 +98,257 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,arm.com:email,linutronix.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8700064F6B1
+X-Rspamd-Queue-Id: 5741A64F654
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit f229426072fc865654a60978bb7fda790a051ff3 ]
+[ Upstream commit a8b8cce9d96d65dfe3d89abf02033151f8b7d670 ]
 
-Ensure the entire TLV header is linearized before access by adding
-sizeof(struct hsr_sup_tlv) to the pskb_may_pull() calls. Without this,
-a truncated frame could cause an out-of-bounds access.
+Now that debug exceptions are handled individually and without the need
+for dynamic registration, remove the unused registration infrastructure.
 
-Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260523130330.61880-1-luka.gejak@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This removes the external caller for `debug_exception_enter()` and
+`debug_exception_exit()`.
+Make them static again and remove them from the header.
+
+Remove `early_brk64()` as it has been made redundant by
+(arm64: debug: split brk64 exception entry) and is not used anymore.
+Note : in `early_brk64()` `bug_brk_handler()` is called unconditionally
+as a fall-through, but now `call_break_hook()` only calls it if the
+immediate matches.
+This does not change the behaviour in early boot, as if
+`bug_brk_handler()` was called on a non-BUG immediate it would return
+DBG_HOOK_ERROR anyway, which `call_break_hook()` will do if no immediate
+matches.
+
+Remove `trap_init()`, as it would be empty and a weak definition already
+exists in `init/main.c`.
+
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250707114109.35672-14-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/debug-monitors.h |  2 -
+ arch/arm64/include/asm/exception.h      |  6 ---
+ arch/arm64/include/asm/system_misc.h    |  4 --
+ arch/arm64/kernel/debug-monitors.c      |  3 --
+ arch/arm64/kernel/entry-common.c        |  4 +-
+ arch/arm64/kernel/traps.c               | 27 -------------
+ arch/arm64/mm/fault.c                   | 53 -------------------------
+ 7 files changed, 2 insertions(+), 97 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index aefc9b6936ba0c..299de290ddaa5c 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -84,7 +84,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/asm/debug-monitors.h
+index 24c7981abeb0b9..4f3901884c5d85 100644
+--- a/arch/arm64/include/asm/debug-monitors.h
++++ b/arch/arm64/include/asm/debug-monitors.h
+@@ -93,7 +93,5 @@ static inline bool try_step_suspended_breakpoints(struct pt_regs *regs)
  
- 	/* Get next tlv */
- 	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
--	if (!pskb_may_pull(skb, total_length))
-+	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
- 		return false;
- 	skb_pull(skb, total_length);
- 	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
-@@ -100,7 +100,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+ bool try_handle_aarch32_break(struct pt_regs *regs);
  
- 		/* make sure another tlv follows */
- 		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
--		if (!pskb_may_pull(skb, total_length))
-+		if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
- 			return false;
+-void debug_traps_init(void);
+-
+ #endif	/* __ASSEMBLY */
+ #endif	/* __ASM_DEBUG_MONITORS_H */
+diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
+index 9b05c6f487ccf1..50c5329ff2edae 100644
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -57,8 +57,6 @@ void do_el0_undef(struct pt_regs *regs, unsigned long esr);
+ void do_el1_undef(struct pt_regs *regs, unsigned long esr);
+ void do_el0_bti(struct pt_regs *regs);
+ void do_el1_bti(struct pt_regs *regs, unsigned long esr);
+-void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
+-			struct pt_regs *regs);
+ #ifdef CONFIG_HAVE_HW_BREAKPOINT
+ void do_breakpoint(unsigned long esr, struct pt_regs *regs);
+ void do_watchpoint(unsigned long addr, unsigned long esr,
+@@ -91,8 +89,4 @@ void do_serror(struct pt_regs *regs, unsigned long esr);
+ void do_signal(struct pt_regs *regs);
  
- 		/* get next tlv */
+ void __noreturn panic_bad_stack(struct pt_regs *regs, unsigned long esr, unsigned long far);
+-
+-void debug_exception_enter(struct pt_regs *regs);
+-void debug_exception_exit(struct pt_regs *regs);
+-
+ #endif	/* __ASM_EXCEPTION_H */
+diff --git a/arch/arm64/include/asm/system_misc.h b/arch/arm64/include/asm/system_misc.h
+index c343442567625d..344b1c1a4bbb69 100644
+--- a/arch/arm64/include/asm/system_misc.h
++++ b/arch/arm64/include/asm/system_misc.h
+@@ -25,10 +25,6 @@ void arm64_notify_die(const char *str, struct pt_regs *regs,
+ 		      int signo, int sicode, unsigned long far,
+ 		      unsigned long err);
+ 
+-void hook_debug_fault_code(int nr, int (*fn)(unsigned long, unsigned long,
+-					     struct pt_regs *),
+-			   int sig, int code, const char *name);
+-
+ struct mm_struct;
+ extern void __show_regs(struct pt_regs *);
+ 
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index ed03270fa34375..16390fd4ba5edd 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -316,9 +316,6 @@ bool try_handle_aarch32_break(struct pt_regs *regs)
+ }
+ NOKPROBE_SYMBOL(try_handle_aarch32_break);
+ 
+-void __init debug_traps_init(void)
+-{}
+-
+ /* Re-enable single step for syscall restarting. */
+ void user_rewind_single_step(struct task_struct *task)
+ {
+diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
+index 9a1ea5a6e6b72a..b98d6d1a1dfd63 100644
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -448,7 +448,7 @@ static __always_inline void fpsimd_syscall_exit(void)
+  * accidentally schedule in exception context and it will force a warning
+  * if we somehow manage to schedule by accident.
+  */
+-void debug_exception_enter(struct pt_regs *regs)
++static void debug_exception_enter(struct pt_regs *regs)
+ {
+ 	preempt_disable();
+ 
+@@ -457,7 +457,7 @@ void debug_exception_enter(struct pt_regs *regs)
+ }
+ NOKPROBE_SYMBOL(debug_exception_enter);
+ 
+-void debug_exception_exit(struct pt_regs *regs)
++static void debug_exception_exit(struct pt_regs *regs)
+ {
+ 	preempt_enable_no_resched();
+ }
+diff --git a/arch/arm64/kernel/traps.c b/arch/arm64/kernel/traps.c
+index 013159bc0882ee..e6e815ef03c777 100644
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -1091,30 +1091,3 @@ int ubsan_brk_handler(struct pt_regs *regs, unsigned long esr)
+ 	return DBG_HOOK_HANDLED;
+ }
+ #endif
+-
+-/*
+- * Initial handler for AArch64 BRK exceptions
+- * This handler only used until debug_traps_init().
+- */
+-int __init early_brk64(unsigned long addr, unsigned long esr,
+-		struct pt_regs *regs)
+-{
+-#ifdef CONFIG_CFI_CLANG
+-	if (esr_is_cfi_brk(esr))
+-		return cfi_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+-#endif
+-#ifdef CONFIG_KASAN_SW_TAGS
+-	if ((esr_brk_comment(esr) & ~KASAN_BRK_MASK) == KASAN_BRK_IMM)
+-		return kasan_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+-#endif
+-#ifdef CONFIG_UBSAN_TRAP
+-	if (esr_is_ubsan_brk(esr))
+-		return ubsan_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+-#endif
+-	return bug_brk_handler(regs, esr) != DBG_HOOK_HANDLED;
+-}
+-
+-void __init trap_init(void)
+-{
+-	debug_traps_init();
+-}
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 7c87d2b3b06eaa..9ee5a2d2b32151 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -53,18 +53,12 @@ struct fault_info {
+ };
+ 
+ static const struct fault_info fault_info[];
+-static struct fault_info debug_fault_info[];
+ 
+ static inline const struct fault_info *esr_to_fault_info(unsigned long esr)
+ {
+ 	return fault_info + (esr & ESR_ELx_FSC);
+ }
+ 
+-static inline const struct fault_info *esr_to_debug_fault_info(unsigned long esr)
+-{
+-	return debug_fault_info + DBG_ESR_EVT(esr);
+-}
+-
+ static void data_abort_decode(unsigned long esr)
+ {
+ 	unsigned long iss2 = ESR_ELx_ISS2(esr);
+@@ -911,53 +905,6 @@ void do_sp_pc_abort(unsigned long addr, unsigned long esr, struct pt_regs *regs)
+ }
+ NOKPROBE_SYMBOL(do_sp_pc_abort);
+ 
+-/*
+- * __refdata because early_brk64 is __init, but the reference to it is
+- * clobbered at arch_initcall time.
+- * See traps.c and debug-monitors.c:debug_traps_init().
+- */
+-static struct fault_info __refdata debug_fault_info[] = {
+-	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware breakpoint"	},
+-	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware single-step"	},
+-	{ do_bad,	SIGTRAP,	TRAP_HWBKPT,	"hardware watchpoint"	},
+-	{ do_bad,	SIGKILL,	SI_KERNEL,	"unknown 3"		},
+-	{ do_bad,	SIGTRAP,	TRAP_BRKPT,	"aarch32 BKPT"		},
+-	{ do_bad,	SIGKILL,	SI_KERNEL,	"aarch32 vector catch"	},
+-	{ early_brk64,	SIGTRAP,	TRAP_BRKPT,	"aarch64 BRK"		},
+-	{ do_bad,	SIGKILL,	SI_KERNEL,	"unknown 7"		},
+-};
+-
+-void __init hook_debug_fault_code(int nr,
+-				  int (*fn)(unsigned long, unsigned long, struct pt_regs *),
+-				  int sig, int code, const char *name)
+-{
+-	BUG_ON(nr < 0 || nr >= ARRAY_SIZE(debug_fault_info));
+-
+-	debug_fault_info[nr].fn		= fn;
+-	debug_fault_info[nr].sig	= sig;
+-	debug_fault_info[nr].code	= code;
+-	debug_fault_info[nr].name	= name;
+-}
+-
+-void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
+-			struct pt_regs *regs)
+-{
+-	const struct fault_info *inf = esr_to_debug_fault_info(esr);
+-	unsigned long pc = instruction_pointer(regs);
+-
+-	debug_exception_enter(regs);
+-
+-	if (user_mode(regs) && !is_ttbr0_addr(pc))
+-		arm64_apply_bp_hardening();
+-
+-	if (inf->fn(addr_if_watchpoint, esr, regs)) {
+-		arm64_notify_die(inf->name, regs, inf->sig, inf->code, pc, esr);
+-	}
+-
+-	debug_exception_exit(regs);
+-}
+-NOKPROBE_SYMBOL(do_debug_exception);
+-
+ /*
+  * Used during anonymous page fault handling.
+  */
 -- 
 2.53.0
 
