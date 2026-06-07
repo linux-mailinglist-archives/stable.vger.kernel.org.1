@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261817-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BuEhL1FSJWrVGwIAu9opvQ
-	(envelope-from <stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:21 +0200
+	id gTOPAYdVJWp5HAIAu9opvQ
+	(envelope-from <stable+bounces-261817-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6D96505E5
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8AF6506DF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Di7aaC2/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261873-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EA8a0LpH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261817-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261817-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A80893073944
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97C2C3093AB4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3112328255;
-	Sun,  7 Jun 2026 11:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDD532F764;
+	Sun,  7 Jun 2026 10:59:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB01E98E3;
-	Sun,  7 Jun 2026 11:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBDB12CDA5;
+	Sun,  7 Jun 2026 10:59:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830186; cv=none; b=WybDSJ9EDZ7B+ctScLj6p9izrAeFxed3jU8T2vAr7idCBLsMgT82FLHHWYE28WtWPSDEPEKT8WK6sK8bY87Ir6KuWcOm0ancoV2Jet289OMy7LbrDPuypuHFO9Pr+gJ6Aal5VXPAK89rf+TmVzHIz1VuwiYpsjWJxkP6J7pNrjg=
+	t=1780829951; cv=none; b=FFkrj8UBbALROmLSOsMDqkecnzmjXDOj78pukio/koe3AfZmWlqywqWgpdBoW95EHKOSpeWf6dA8l1utjcs4uqQ5pZ9HCba3Hn2LstbvwjnGIgpNk+iEjj7pipMAad5RgyEu3dNpdIiFVy9RJk7DjQwkNiKuqaBxGaUiV+Iljes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830186; c=relaxed/simple;
-	bh=fXO5wCTBmz6MY8qh9hKFR5gXuqW+IHyaildeEi30z9I=;
+	s=arc-20240116; t=1780829951; c=relaxed/simple;
+	bh=C+nPRrz0UPg0Q/6i++jw/LHlFznYYHcPpavCLG5exv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MRl6qtV911VDg3WY9u0BxBFHOyl1C2ChVKvbWN1kALqzN3uMj1QnuKA9H2eI9yr1j9sS4mQ5XHL/iSfuewgH/q5hpPA6gcTtNST0HRXQXpgePB7kGBp9D0Qm9esxsbJ3UZqO4bEEReUcWyqHw2PeM48VMKlrtg4oEXvP1KbK0cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di7aaC2/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CB61F00893;
-	Sun,  7 Jun 2026 11:03:04 +0000 (UTC)
+	 MIME-Version; b=Vx73YoDlkb5dZz3tTaQsjoDRfgyJBcpuLvmgNdYLtZCEsC06/jGqTFGbsg0oTAwwy0UF5CLDbrajBnmgvdeDusO2J6v6GiVhqx7/xvx4Ppdz1dtC9JQ+HXLejK7UPkIkwTqc9eho9G/CBAkY6shtWTSrRCLfd7f5EqzV93ECm9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA8a0LpH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F771F00893;
+	Sun,  7 Jun 2026 10:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830185;
-	bh=GKjaC6oe34q2dmdFJuWDnpsmezkeg/BNrgJL9YTuwtE=;
+	s=korg; t=1780829950;
+	bh=UNSlBAm/Tva0OOCKit8/kDD8nQfAMgN+gYElOtPJTY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Di7aaC2/eLZuNgE39709XQOeYntMXHOnEg5TNft9p3QdPVYIPoOaVbYcul1Nt7tdk
-	 7HdfPHC5wemwOOz8z3fXpQJgvCHKH7HRVhLmSXpksfN9Y1Yn4P/DZTC9k4E6VGIGsQ
-	 6H1l/a4ter74JYLn3n61aKQzU+sppNaRxIqHw2lM=
+	b=EA8a0LpHY7N9k3ZZ92yksz6Q3jz1GzRnnUhTSepZ0o56QecY2TO4cvO0DUnCcl7Ot
+	 sNYBfbBSVVIkRSuyf2R+GN1Q0Voe4pKe93s1Qgz1WF0+zNk48HV6SQSFBNNuRmMsUI
+	 auCfdrYFzxshBORCo2UcwlSndxRQMDD7qnUiM8Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	stable@kernel.org,
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 301/307] x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines
+Subject: [PATCH 7.0 329/332] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with pmbus_lock
 Date: Sun,  7 Jun 2026 12:01:38 +0200
-Message-ID: <20260607095738.807754934@linuxfoundation.org>
+Message-ID: <20260607095740.216151252@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,141 +66,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261873-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261817-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:bartosz.golaszewski@oss.qualcomm.com,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,goodmis.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,alien8.de:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nexthop.ai:email,roeck-us.net:email,qualcomm.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D6D96505E5
+X-Rspamd-Queue-Id: 5B8AF6506DF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit a17dc12bfed8868e6a86f3b45c16065a70641acb ]
+[ Upstream commit bab8c6fb5af8df7e753d196c1262cb78e92ca872 ]
 
-With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
-(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
-crashes on the first call into the traced function:
+adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
+adm1266_gpio_dbg_show() all issue PMBus reads against the device but
+none of them take pmbus_lock.  The pmbus_core framework holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked GPIO accessor can land between a PAGE
+write and the subsequent paged read in another thread and corrupt
+either side's view of the device state machine.
 
-  BUG: unable to handle page fault for address: ffff88817ae18880
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 4b53067 P4D 4b53067 PUD 0
-  Oops: Oops: 0002 [#1] SMP PTI
-  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
-  Call Trace:
-   <TASK>
-   ? find_held_lock
-   ? exc_page_fault
-   ? lock_release
-   ? __x64_sys_clock_nanosleep
-   ? lockdep_hardirqs_on_prepare
-   ? trace_hardirqs_on
-   __x64_sys_clock_nanosleep
-   do_syscall_64
-   ? exc_page_fault
-   ? call_depth_return_thunk
-   entry_SYSCALL_64_after_hwframe
-  ...
-  Kernel panic - not syncing: Fatal exception
+Take pmbus_lock at the top of each of the three accessors via the
+scope-based guard().  The lock is uncontended in the common case and
+adds only a single mutex round-trip per call.
 
-This small reproducer allows to easily trigger the crash:
-
-  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
-  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
-  # usleep 1
-
-Monitoring the crash under GDB points to the exact instruction in charge of
-incrementing the call depth:
-
-  sarq $5, %gs:__x86_call_depth(%rip)
-
-This instruction matches the one inserted by the ftrace_regs_caller from
-ftrace_64.S. This emitted code was likely working fine until the introduction
-of
-
-  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
-
-it has made the call depth accounting addressing relative to $rip, instead of
-being based on an absolute address.
-
-As this code exact location depends on where the trampoline lives in memory,
-the corresponding displacement needs to be adjusted at runtime to actually
-correctly find the per-cpu __x86_call_depth value, otherwise the targeted
-address is wrong, leading to the page fault seen above.
-
-Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
-instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
-as it is done for example by the x86 BPF JIT compiler through
-x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
-in ftrace_caller and ftrace_regs_caller.
-
-  [ bp: Massage. ]
-
-Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@kernel.org>
-Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/ftrace.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hwmon/pmbus/adm1266.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -371,6 +371,13 @@ create_trampoline(struct ftrace_ops *ops
- 	}
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -173,6 +173,8 @@ static int adm1266_gpio_get(struct gpio_
+ 	else
+ 		pmbus_cmd = ADM1266_PDIO_STATUS;
  
- 	/*
-+	 * Generated trampoline may contain rIP-relative addressing which
-+	 * displacement needs to be fixed.
-+	 */
-+	text_poke_apply_relocation(trampoline, trampoline, size,
-+				   (void *)start_offset, size);
++	guard(pmbus_lock)(data->client);
 +
-+	/*
- 	 * The address of the ftrace_ops that is used for this trampoline
- 	 * is stored at the end of the trampoline. This will be used to
- 	 * load the third parameter for the callback. Basically, that
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -195,6 +197,8 @@ static int adm1266_gpio_get_multiple(str
+ 	unsigned int gpio_nr;
+ 	int ret;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+ 	if (ret < 0)
+ 		return ret;
+@@ -236,6 +240,8 @@ static void adm1266_gpio_dbg_show(struct
+ 	int ret;
+ 	int i;
+ 
++	guard(pmbus_lock)(data->client);
++
+ 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
+ 		write_cmd = adm1266_gpio_mapping[i][1];
+ 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
 
 
 
