@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0uUCMmFKJWr9GAIAu9opvQ
-	(envelope-from <stable+bounces-261456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:29 +0200
+	id lWHuB25JJWqrGAIAu9opvQ
+	(envelope-from <stable+bounces-261408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5400864FE17
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:39:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF39E64FD4C
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gg+PNM0Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261456-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261456-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t6lRSrxf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261408-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261408-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4A02303FDE3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C1AF63029C0B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703FA325706;
-	Sun,  7 Jun 2026 10:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0416532AADE;
+	Sun,  7 Jun 2026 10:33:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA212D3A69;
-	Sun,  7 Jun 2026 10:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889E93112A5;
+	Sun,  7 Jun 2026 10:33:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828629; cv=none; b=sFatPPd2FyI9q7FcHm0KcnKXZFrLN/rdwgA0ek+snJkt+6wPlvLBJzSZuRRygBnIvAZ0+LXSor+S4K+eq7PihI01ikHJNhF6SB3eA+JlBIDEKFQMqAArE6h64VWleJqly7KwUcysluytr0eUBHSW7jE6km0HlYE/4y2p2v8Yp5E=
+	t=1780828436; cv=none; b=F+7JsMO3eLzMRFgFuAvx/x0SQcGVrhIxMfp+6W7PmAlRP7tzj4ZRnSIdVZmzVSMZ+VHm3XTAtbIWSY5Kn3Z/98vuIzriqSl5nkcqHVGzG6BuOvSgD0mL1xk2DiwZ/vlS7/UOpsPz9VCQsaJ6v5WvB7oD70Tm9MndltwB4Ms6fqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828629; c=relaxed/simple;
-	bh=cWtGVnlmTvOdBOk04rTITTEJaroS4ch33lirnj7Uizg=;
+	s=arc-20240116; t=1780828436; c=relaxed/simple;
+	bh=9OwcrnzmB7LwGl/UiFf6b1181BtUbbUiOoB07gkbwHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etRNmv7WE3p+oMytabZ7m5xV+wA+MTQbsvuVciI1FtD+ozmg9JF/4scvDQ6GFcfS26fHT9hGjG0p4uO/JWc7OXaAUiBgjADS/9dMwn3aLOT2qCOg+hIljR/0ExTROdB/5HD8E46ZOm5JukZqWY9HZJdwMNbCfCN8SqensGjtG6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg+PNM0Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C95F1F00893;
-	Sun,  7 Jun 2026 10:37:07 +0000 (UTC)
+	 MIME-Version; b=htZfgjVeK6qAsFKBGo41wENdRee5RK985HditmBnvHx8TfA7LVZbaxLszE5iumXVJq4cmJUz3HknB8d+2A9/y88zxSm2wZ+tHOXwsLuXcewBwCbRPrNiEQZezB64TYYPHvZ2vPcDKarCo/fo7v/RmLlcF75sey19z6h8upvpR/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6lRSrxf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21471F00893;
+	Sun,  7 Jun 2026 10:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828628;
-	bh=UvuouHEXy14jsogNoKCSEReW29hltSAQHzBGD398SP4=;
+	s=korg; t=1780828434;
+	bh=323a3HNq+EriP2YYgvGM01LMTnmsPwU+jqRW3VEkiv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gg+PNM0QtMyIM2NAivMCaZS22ydjoamvN6ctBlMStjsutIRDW3+/KGHCH7nBIVQTE
-	 nc7xg0vUTnGJ2Ql0hnndIXx5QsL/p0U6sleoIA2Ui777neB0gRZgR2/vAQTfSxZtDX
-	 VHvCg1k8BHDn27UijeA83WVD5HvJ5H1nA+XTSBjY=
+	b=t6lRSrxfBLBaLnWOR6q7hE7z64Aslroprts2Qt7pfaUyAudZybqWSZZ+5123g/KvI
+	 VDIIl/XDBd2VIoJzPR2guf852x9SqXcvyVMo5Vm83ve9/s1Bzmrdzpk625eCxijzxH
+	 dVEclS9v6XvwMOS8K9iuKpUPB3xrKJrQshG2Zbq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 153/307] KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 7.0 181/332] iio: dac: ad5686: fix powerdown control on dual-channel devices
 Date: Sun,  7 Jun 2026 11:59:10 +0200
-Message-ID: <20260607095733.341275256@linuxfoundation.org>
+Message-ID: <20260607095734.712752427@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261456-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen@kernel.org,m:seanjc@google.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,92 +98,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5400864FE17
+X-Rspamd-Queue-Id: BF39E64FD4C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-commit a9e18aa3263f356edae305e29830e5fe63d8597a upstream.
+commit 8aeaf25a85263a7a43357e16ad78ab969f6f8aeb upstream.
 
-Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
-(apparently) responsible for purging TLB entries when transitioning from
-xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
-with respect to (x2)AVIC, but empirical data strongly suggests hardware
-also does a whole lot of nothing.
+Fix powerdown control by using a proper bit shift for the powerdown mask
+values. During initialization, powerdown bits are initialized so that
+unused bits are set to 1 and the correct bit shift is used. Dual-channel
+devices use one-hot encoding in the address and that reflects on the
+position of the powerdown bits, which are not channel-index based
+for that case. Quad-channel devices also use one-hot encoding for the
+channel address but the result of log2(address) coincides with the channel
+index value. Mask as 0x3U is used rather than 0x3, because shift can reach
+value of 30 (last channel of a 16-channel device), which would mess with
+the sign bit. The issue was introduced when first adding support for
+dual-channel devices, which overlooked powerdown control differences.
 
-Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
-to the APIC base address getting incorrectly redirected to the virtual
-APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
-verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
-reasons unknown, the test only reliably fails with EFI builds).
-
-Fixes: 0ccf3e7cb95a ("KVM: SVM: Flush the "current" TLB when activating AVIC")
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-Cc: stable@vger.kernel.org
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://patch.msgid.link/20260515171536.1841645-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 7dc8faeab3e3 ("iio: dac: ad5686: add support for AD5338R")
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |   35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ drivers/iio/dac/ad5686.c |   40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -111,6 +111,35 @@ static void avic_activate_vmcb(struct vc
- 	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -25,26 +25,37 @@ static const char * const ad5686_powerdo
+ 	"three_state"
+ };
  
- 	/*
-+	 * Flush the TLB when enabling (x2)AVIC and when transitioning between
-+	 * xAVIC and x2AVIC, as the CPU may have inserted a TLB entry for the
-+	 * "wrong" mapping.
-+	 *
-+	 * KVM uses a per-VM "scratch" page to back the APIC memslot, because
-+	 * KVM also uses per-VM page tables *and* maintains the page table (NPT
-+	 * or shadow page) mappings for said memslot even if one or more vCPUs
-+	 * have their local APIC hardware-disabled or are in x2APIC mode, i.e.
-+	 * even if one or more vCPUs' APIC MMIO BAR is effectively disabled.
-+	 *
-+	 * If xAVIC is fully enabled, hardware ignores the physical address in
-+	 * KVM's page tables, i.e. in the leaf SPTE for the APIC memslot, and
-+	 * instead redirects the access to the AVIC backing page, i.e. to the
-+	 * vCPU's virtual APIC page.  If xAVIC is not enabled (APIC is either
-+	 * hardware-disabled or in x2APIC mode), then guest accesses will use
-+	 * the page table mapping verbatim, i.e. will access the per-VM scratch
-+	 * page, as normal memory.
-+	 *
-+	 * In both cases, the CPU is allowed to cache TLB entries for the APIC
-+	 * base GPA.  So, KVM needs to flush the TLB when enabling xAVIC, as
-+	 * accesses need to be redirected to the virtual APIC page, but the TLB
-+	 * may contain entries pointing at the scratch page.  KVM also needs to
-+	 * flush the TLB when enabling x2AVIC, as accesses need to go to the
-+	 * scratch page, but the TLB may contain entries tagged as xAVIC, i.e.
-+	 * entries pointing to the vCPU's virtual APIC page.
-+	 */
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
++static inline unsigned int ad5686_pd_mask_shift(const struct iio_chan_spec *chan)
++{
++	if (chan->channel == chan->address)
++		return chan->channel * 2;
 +
-+	/*
- 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
- 	 * accesses, while interrupt injection to a running vCPU can be
- 	 * achieved using AVIC doorbell.  KVM disables the APIC access page
-@@ -123,12 +152,6 @@ static void avic_activate_vmcb(struct vc
- 		/* Disabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, false);
- 	} else {
--		/*
--		 * Flush the TLB, the guest may have inserted a non-APIC
--		 * mapping into the TLB while AVIC was disabled.
--		 */
--		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
--
- 		/* Enabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, true);
- 	}
++	/* one-hot encoding is used in dual/quad channel devices */
++	return __ffs(chan->address) * 2;
++}
++
+ static int ad5686_get_powerdown_mode(struct iio_dev *indio_dev,
+ 				     const struct iio_chan_spec *chan)
+ {
++	unsigned int shift = ad5686_pd_mask_shift(chan);
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
+ 	guard(mutex)(&st->lock);
+ 
+-	return ((st->pwr_down_mode >> (chan->channel * 2)) & 0x3) - 1;
++	return ((st->pwr_down_mode >> shift) & 0x3U) - 1;
+ }
+ 
+ static int ad5686_set_powerdown_mode(struct iio_dev *indio_dev,
+ 				     const struct iio_chan_spec *chan,
+ 				     unsigned int mode)
+ {
++	unsigned int shift = ad5686_pd_mask_shift(chan);
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
+ 	guard(mutex)(&st->lock);
+ 
+-	st->pwr_down_mode &= ~(0x3 << (chan->channel * 2));
+-	st->pwr_down_mode |= ((mode + 1) << (chan->channel * 2));
++	st->pwr_down_mode &= ~(0x3U << shift);
++	st->pwr_down_mode |= (mode + 1) << shift;
+ 
+ 	return 0;
+ }
+@@ -59,12 +70,12 @@ static const struct iio_enum ad5686_powe
+ static ssize_t ad5686_read_dac_powerdown(struct iio_dev *indio_dev,
+ 		uintptr_t private, const struct iio_chan_spec *chan, char *buf)
+ {
++	unsigned int shift = ad5686_pd_mask_shift(chan);
+ 	struct ad5686_state *st = iio_priv(indio_dev);
+ 
+ 	guard(mutex)(&st->lock);
+ 
+-	return sysfs_emit(buf, "%d\n", !!(st->pwr_down_mask &
+-				       (0x3 << (chan->channel * 2))));
++	return sysfs_emit(buf, "%d\n", !!(st->pwr_down_mask & (0x3U << shift)));
+ }
+ 
+ static ssize_t ad5686_write_dac_powerdown(struct iio_dev *indio_dev,
+@@ -86,9 +97,9 @@ static ssize_t ad5686_write_dac_powerdow
+ 	guard(mutex)(&st->lock);
+ 
+ 	if (readin)
+-		st->pwr_down_mask |= (0x3 << (chan->channel * 2));
++		st->pwr_down_mask |= 0x3U << ad5686_pd_mask_shift(chan);
+ 	else
+-		st->pwr_down_mask &= ~(0x3 << (chan->channel * 2));
++		st->pwr_down_mask &= ~(0x3U << ad5686_pd_mask_shift(chan));
+ 
+ 	switch (st->chip_info->regmap_type) {
+ 	case AD5310_REGMAP:
+@@ -468,7 +479,7 @@ int ad5686_probe(struct device *dev,
+ {
+ 	struct ad5686_state *st;
+ 	struct iio_dev *indio_dev;
+-	unsigned int val, ref_bit_msk;
++	unsigned int val, ref_bit_msk, shift;
+ 	bool has_external_vref;
+ 	u8 cmd;
+ 	int ret, i;
+@@ -492,9 +503,18 @@ int ad5686_probe(struct device *dev,
+ 	has_external_vref = ret != -ENODEV;
+ 	st->vref_mv = has_external_vref ? ret / 1000 : st->chip_info->int_vref_mv;
+ 
++	/* Initialize masks to all ones provided the max shift (last channel) */
++	shift = ad5686_pd_mask_shift(&st->chip_info->channels[st->chip_info->num_channels - 1]);
++	st->pwr_down_mask = GENMASK(shift + 1, 0);
++	st->pwr_down_mode = GENMASK(shift + 1, 0);
++
+ 	/* Set all the power down mode for all channels to 1K pulldown */
+-	for (i = 0; i < st->chip_info->num_channels; i++)
+-		st->pwr_down_mode |= (0x01 << (i * 2));
++	for (i = 0; i < st->chip_info->num_channels; i++) {
++		shift = ad5686_pd_mask_shift(&st->chip_info->channels[i]);
++		st->pwr_down_mask &= ~(0x3U << shift); /* powered up state */
++		st->pwr_down_mode &= ~(0x3U << shift);
++		st->pwr_down_mode |= 0x01U << shift;
++	}
+ 
+ 	indio_dev->name = name;
+ 	indio_dev->info = &ad5686_info;
 
 
 
