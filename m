@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-260993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261025-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ErICHTlDJWo1FQIAu9opvQ
-	(envelope-from <stable+bounces-260993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:57 +0200
+	id AYfPDEdEJWqzFQIAu9opvQ
+	(envelope-from <stable+bounces-261025-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CBE64F595
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12BC64F6AE
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tmjHOfs0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260993-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260993-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WdIGc7+X;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261025-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261025-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6881300D150
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C39D9303743B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575A12E1EFC;
-	Sun,  7 Jun 2026 10:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CE92E1EFC;
+	Sun,  7 Jun 2026 10:10:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382EE1DE8AE;
-	Sun,  7 Jun 2026 10:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41FC4204E;
+	Sun,  7 Jun 2026 10:10:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826898; cv=none; b=kJB1lkVKTvfarimBJFS00JN68RpWwxlY6Tfz/RmCrgAD6k/LLCajLcrTOptaNQGCh+WDgPICm6rB63p1DXFqz+fbNLH3767MOpQ4ziUI7oUFJq454Bv9xgVVj2X5u8z9GEpm+yvfxrLYZbfTitZ14V0B2dGKxz6ov9gvXetncok=
+	t=1780827010; cv=none; b=YHxsSyBCNm5ZAbMbKggy1eP3JM7VL9XsrI7fhYd9A66wIIQ/6IDSiypWxcFbwtD6ISAyLchtfefUgD9qxilP4Y+r+VHQecI78vKlC66NcK5aWpYvtCPi13XNcJzl+SgQPlrNjdaW3pINM0tPyQBqnCHQh3UMmVN/e41h1hSvZs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826898; c=relaxed/simple;
-	bh=NbBApvIgM2sBGcXnE9c9e1M9OuL7ZRWXDDGmMGrSs9A=;
+	s=arc-20240116; t=1780827010; c=relaxed/simple;
+	bh=lYShQ24XEsndKmCLGqu+2p7LV6bbKjSyZP23grdlBS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rki2bNYGLXX2suihuFRvJr8+HnrJ9qVDnPnIra1R9l99bOGjK8/HYqCylXb2tN7kCYEX52f1EheTIj3LS7SEnsV0UmqDWcAh8AxVavqqYwMCFXB7bws1QRMvWm2XNQvgnXw5ZUnGiooWym1ExLLt/GgiqaFvIBkGnpdoVBuXrhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmjHOfs0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F94E1F00893;
-	Sun,  7 Jun 2026 10:08:16 +0000 (UTC)
+	 MIME-Version; b=qMdqyZAQBoADlLF+S5dAOAP8l9Jr4Ijm/bo032xKt82f2ezRNAUToKin0ybqdd9hmN7I7tq5HXGIOLwzDQJGVlMDupVkDOPTFB+A8HwuzWAhHOuU+GyxHRRoEPUNnA0mbbBbHl5YXaBCgvYwZtYlk46THBehDKS1KNkGr3pLEYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdIGc7+X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0131F00893;
+	Sun,  7 Jun 2026 10:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826897;
-	bh=wj+gpk04cvi96B3e5NrV0kYN1KXnQaWGn+X5xtd2nUU=;
+	s=korg; t=1780827008;
+	bh=NHWDb1ufnpeTKvMqADv4oS3ZJc03IjL3l3W9yotcJU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tmjHOfs0T3xLQ+320De9aYk76wfdp2gyfK5VJ9i20YmmVsDuSHJdc5f0aAGP2LJYK
-	 r9ln9dmw2a8z3Rd06zqNgcl6xf8BnLA++dsx0bfORn2q1KRzHeazktU+I3GIOo9flE
-	 80yPTC/zFGOnbV+3brjxBRU+xnRG4U1pmgkdEY3o=
+	b=WdIGc7+X7J7n6BWuutR3fkII0g4gDonPlhUGzCieLfWmyYYsRrneNvGPTMcdV9/1a
+	 w7nuJQ2cqgAq3nGEN6jlvtBXjL5kH8jHTB9FAIDsQuiKh+Yn8FXdh+l1i5LT4Bff/Q
+	 2me9kFLDKenq6qhf+CdUmjlCGY3yilzrZg6k+DJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 041/332] ethtool: rss: avoid modifying the RSS context response
-Date: Sun,  7 Jun 2026 11:56:50 +0200
-Message-ID: <20260607095729.624283502@linuxfoundation.org>
+Subject: [PATCH 6.12 014/307] arm64: debug: call step handlers statically
+Date: Sun,  7 Jun 2026 11:56:51 +0200
+Message-ID: <20260607095728.151344274@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +72,245 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260993-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261025-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 11CBE64F595
+X-Rspamd-Queue-Id: A12BC64F6AE
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 
-[ Upstream commit c75b6f6eaacd0b74b832414cc3b9289c3686e941 ]
+[ Upstream commit 403b48aad5b3e857b8c2576ce6a421f3d23dd6a6 ]
 
-Gemini says that we're modifying the RSS_CREATE response skb.
-I think it's right, the comment says that unicast() should
-unshare the skb but I'm not entirely sure what I meant there.
-netlink_trim() does a copy but only if skb is not well sized
-(it's at least 2x larger than necessary for the payload).
+Software stepping checks for the correct handler by iterating over a list
+of dynamically registered handlers and calling all of them until one
+handles the exception.
 
-Fixes: a166ab7816c5 ("ethtool: rss: support creating contexts via Netlink")
-Link: https://patch.msgid.link/20260522230647.1705600-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is the only generic way to handle software stepping handlers in arm64
+as the exception does not provide an immediate that could be checked,
+contrary to software breakpoints.
+
+However, the registration mechanism is not exported and has only
+two current users : the KGDB stepping handler, and the uprobe single step
+handler.
+Given that one comes from user mode and the other from kernel mode, call
+the appropriate one by checking the source EL of the exception.
+Add a stand-in that returns DBG_HOOK_ERROR when the configuration
+options are not enabled.
+
+Remove `arch_init_uprobes()` as it is not useful anymore and is
+specific to arm64.
+
+Unify the naming of the handler to XXX_single_step_handler(), making it
+clear they are related.
+
+Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
+Reviewed-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250707114109.35672-5-ada.coupriediaz@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/rss.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/kgdb.h      |  9 +++++++++
+ arch/arm64/include/asm/uprobes.h   |  9 +++++++++
+ arch/arm64/kernel/debug-monitors.c | 25 ++++++-------------------
+ arch/arm64/kernel/kgdb.c           | 17 +++--------------
+ arch/arm64/kernel/probes/uprobes.c | 15 +--------------
+ 5 files changed, 28 insertions(+), 47 deletions(-)
 
-diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
-index da5934cceb0757..926be5698ba4cc 100644
---- a/net/ethtool/rss.c
-+++ b/net/ethtool/rss.c
-@@ -974,11 +974,17 @@ ethnl_rss_create_validate(struct net_device *dev, struct genl_info *info)
+diff --git a/arch/arm64/include/asm/kgdb.h b/arch/arm64/include/asm/kgdb.h
+index 82a76b2102fb61..3184f5d1e3ae49 100644
+--- a/arch/arm64/include/asm/kgdb.h
++++ b/arch/arm64/include/asm/kgdb.h
+@@ -26,6 +26,15 @@ extern int kgdb_fault_expected;
+ 
+ int kgdb_brk_handler(struct pt_regs *regs, unsigned long esr);
+ int kgdb_compiled_brk_handler(struct pt_regs *regs, unsigned long esr);
++#ifdef CONFIG_KGDB
++int kgdb_single_step_handler(struct pt_regs *regs, unsigned long esr);
++#else
++static inline int kgdb_single_step_handler(struct pt_regs *regs,
++	unsigned long esr)
++{
++	return DBG_HOOK_ERROR;
++}
++#endif
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/arm64/include/asm/uprobes.h b/arch/arm64/include/asm/uprobes.h
+index 3659a79a9f325f..89bfb0213a500c 100644
+--- a/arch/arm64/include/asm/uprobes.h
++++ b/arch/arm64/include/asm/uprobes.h
+@@ -29,5 +29,14 @@ struct arch_uprobe {
+ };
+ 
+ int uprobe_brk_handler(struct pt_regs *regs, unsigned long esr);
++#ifdef CONFIG_UPROBES
++int uprobe_single_step_handler(struct pt_regs *regs, unsigned long esr);
++#else
++static inline int uprobe_single_step_handler(struct pt_regs *regs,
++	unsigned long esr)
++{
++	return DBG_HOOK_ERROR;
++}
++#endif
+ 
+ #endif
+diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
+index 5e892448030005..f929b107840de6 100644
+--- a/arch/arm64/kernel/debug-monitors.c
++++ b/arch/arm64/kernel/debug-monitors.c
+@@ -200,30 +200,17 @@ void unregister_kernel_step_hook(struct step_hook *hook)
  }
  
- static void
--ethnl_rss_create_send_ntf(struct sk_buff *rsp, struct net_device *dev)
-+ethnl_rss_create_send_ntf(const struct sk_buff *rsp, struct net_device *dev)
+ /*
+- * Call registered single step handlers
++ * Call single step handlers
+  * There is no Syndrome info to check for determining the handler.
+- * So we call all the registered handlers, until the right handler is
+- * found which returns zero.
++ * However, there is only one possible handler for user and kernel modes, so
++ * check and call the appropriate one.
+  */
+ static int call_step_hook(struct pt_regs *regs, unsigned long esr)
  {
--	struct nlmsghdr *nlh = (void *)rsp->data;
- 	struct genlmsghdr *genl_hdr;
-+	struct nlmsghdr *nlh;
-+	struct sk_buff *ntf;
-+
-+	ntf = skb_copy_expand(rsp, 0, 0, GFP_KERNEL);
-+	if (!ntf)
-+		return;
+-	struct step_hook *hook;
+-	struct list_head *list;
+-	int retval = DBG_HOOK_ERROR;
++	if (user_mode(regs))
++		return uprobe_single_step_handler(regs, esr);
  
-+	nlh = nlmsg_hdr(ntf);
- 	/* Convert the reply into a notification */
- 	nlh->nlmsg_pid = 0;
- 	nlh->nlmsg_seq = ethnl_bcast_seq_next();
-@@ -986,7 +992,7 @@ ethnl_rss_create_send_ntf(struct sk_buff *rsp, struct net_device *dev)
- 	genl_hdr = nlmsg_data(nlh);
- 	genl_hdr->cmd =	ETHTOOL_MSG_RSS_CREATE_NTF;
+-	list = user_mode(regs) ? &user_step_hook : &kernel_step_hook;
+-
+-	/*
+-	 * Since single-step exception disables interrupt, this function is
+-	 * entirely not preemptible, and we can use rcu list safely here.
+-	 */
+-	list_for_each_entry_rcu(hook, list, node)	{
+-		retval = hook->fn(regs, esr);
+-		if (retval == DBG_HOOK_HANDLED)
+-			break;
+-	}
+-
+-	return retval;
++	return kgdb_single_step_handler(regs, esr);
+ }
+ NOKPROBE_SYMBOL(call_step_hook);
  
--	ethnl_multicast(rsp, dev);
-+	ethnl_multicast(ntf, dev);
+diff --git a/arch/arm64/kernel/kgdb.c b/arch/arm64/kernel/kgdb.c
+index e3c9e6e11a318c..f8eaf6084c3d5a 100644
+--- a/arch/arm64/kernel/kgdb.c
++++ b/arch/arm64/kernel/kgdb.c
+@@ -250,7 +250,7 @@ int kgdb_compiled_brk_handler(struct pt_regs *regs, unsigned long esr)
+ }
+ NOKPROBE_SYMBOL(kgdb_compiled_brk_handler);
+ 
+-static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned long esr)
++int kgdb_single_step_handler(struct pt_regs *regs, unsigned long esr)
+ {
+ 	if (!kgdb_single_step)
+ 		return DBG_HOOK_ERROR;
+@@ -258,11 +258,7 @@ static int kgdb_step_brk_fn(struct pt_regs *regs, unsigned long esr)
+ 	kgdb_handle_exception(0, SIGTRAP, 0, regs);
+ 	return DBG_HOOK_HANDLED;
+ }
+-NOKPROBE_SYMBOL(kgdb_step_brk_fn);
+-
+-static struct step_hook kgdb_step_hook = {
+-	.fn		= kgdb_step_brk_fn
+-};
++NOKPROBE_SYMBOL(kgdb_single_step_handler);
+ 
+ static int __kgdb_notify(struct die_args *args, unsigned long cmd)
+ {
+@@ -301,13 +297,7 @@ static struct notifier_block kgdb_notifier = {
+  */
+ int kgdb_arch_init(void)
+ {
+-	int ret = register_die_notifier(&kgdb_notifier);
+-
+-	if (ret != 0)
+-		return ret;
+-
+-	register_kernel_step_hook(&kgdb_step_hook);
+-	return 0;
++	return register_die_notifier(&kgdb_notifier);
  }
  
- int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
-@@ -1094,12 +1100,8 @@ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info)
+ /*
+@@ -317,7 +307,6 @@ int kgdb_arch_init(void)
+  */
+ void kgdb_arch_exit(void)
+ {
+-	unregister_kernel_step_hook(&kgdb_step_hook);
+ 	unregister_die_notifier(&kgdb_notifier);
+ }
  
- 	genlmsg_end(rsp, hdr);
+diff --git a/arch/arm64/kernel/probes/uprobes.c b/arch/arm64/kernel/probes/uprobes.c
+index fc1bd19c827e6f..6ae4396577d4a6 100644
+--- a/arch/arm64/kernel/probes/uprobes.c
++++ b/arch/arm64/kernel/probes/uprobes.c
+@@ -174,7 +174,7 @@ int uprobe_brk_handler(struct pt_regs *regs,
+ 	return DBG_HOOK_ERROR;
+ }
  
--	/* Use the same skb for the response and the notification,
--	 * genlmsg_reply() will copy the skb if it has elevated user count.
--	 */
--	skb_get(rsp);
--	ret = genlmsg_reply(rsp, info);
- 	ethnl_rss_create_send_ntf(rsp, dev);
-+	ret = genlmsg_reply(rsp, info);
- 	rsp = NULL;
+-static int uprobe_single_step_handler(struct pt_regs *regs,
++int uprobe_single_step_handler(struct pt_regs *regs,
+ 				      unsigned long esr)
+ {
+ 	struct uprobe_task *utask = current->utask;
+@@ -186,16 +186,3 @@ static int uprobe_single_step_handler(struct pt_regs *regs,
+ 	return DBG_HOOK_ERROR;
+ }
  
- exit_unlock:
+-/* uprobe single step handler hook */
+-static struct step_hook uprobes_step_hook = {
+-	.fn = uprobe_single_step_handler,
+-};
+-
+-static int __init arch_init_uprobes(void)
+-{
+-	register_user_step_hook(&uprobes_step_hook);
+-
+-	return 0;
+-}
+-
+-device_initcall(arch_init_uprobes);
 -- 
 2.53.0
 
