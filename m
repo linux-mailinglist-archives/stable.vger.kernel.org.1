@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-261775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LFWHJglPJWrWGgIAu9opvQ
-	(envelope-from <stable+bounces-261775-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:21 +0200
+	id nWrnI3VOJWqgGgIAu9opvQ
+	(envelope-from <stable+bounces-261778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E5365030B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A831D650266
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="wB36/WNV";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261775-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261775-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ch32njoh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261778-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261778-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1ECEA301231F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD1CE3005144
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E7E331221;
-	Sun,  7 Jun 2026 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EDA3264F2;
+	Sun,  7 Jun 2026 10:56:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A127433372A;
-	Sun,  7 Jun 2026 10:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA43612CDA5;
+	Sun,  7 Jun 2026 10:56:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829800; cv=none; b=bkqtjxpKYjX5Q02IX0WtnUHSFgJ/hEtLiyEmcf9pfTKz++i/wMXoblpre8qqOmuuUew5DunqG71zJkLW1uvCMxx5gkuyLLKq85Mc083zOYpsMtXLtDoTTKrCzTa7brNoUc7Qn1BVDXHFPrf+HjRR98nWQ/vypsOD2YVAYhLT2bk=
+	t=1780829808; cv=none; b=c4ZhLcmtfmLhsBpAnxCEwtTHjYeEC8C8m2gEh7epap7N6E4k5Ts9/YXSSmm+KM0CrCNPkOCfJbmUhHumHi68Ziglfo2LDiU6tRtvPvOZg+q5Jz46qMhnoqLd7mKdNk3XR+4xyW/Pm7Epuse1bVNkTV61tbWw2ztHMsvugumr4LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829800; c=relaxed/simple;
-	bh=16iL4hKQ8WirjK9BYKbWrW6nBwJ59QtlnI29tacsdMQ=;
+	s=arc-20240116; t=1780829808; c=relaxed/simple;
+	bh=oQeiD1hj+nuP6YmhUq3OrhqA3fd5pzRS68bN2P9fysI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlRYkKPzZ9gFhQg5Do7IR57+SrDlK8PIan3fzfNHk9miuUZIZuWXTpOP2h7u8WOxIHN4DOYPqYwkWI2MzvhpNlyEhm6y4wqkS29C+Tft3c7Lofyg7NLNPMnDlha4b0LlhftlFSZqFb1kn9M2QaaqJzei0YMeam7rfBKJMS1cqDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wB36/WNV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734421F00893;
-	Sun,  7 Jun 2026 10:56:36 +0000 (UTC)
+	 MIME-Version; b=omcO8atYVYGSsJjxzn2y3bX/UWFSm6VMhNGSMCV6mww3f6Veqdw9xazb6KCihBAukVmC8A4cm00X9+A5vgeBtN6kjzyTZ/qI+dlKkLjQ4eVl/AhHzTY+fjYx3/zpTSb/hbHlM4lj5O9nYMD1veh/sJ+WkmKq6YplL9bla3XfTlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch32njoh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1641F00893;
+	Sun,  7 Jun 2026 10:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829797;
-	bh=Z5Z6PWR6qyixSQFlBjAQyxBQnA9rbbQ6+oQJHWMy4jk=;
+	s=korg; t=1780829807;
+	bh=wPXs25up35l1GbU7TRssbJu1GHdQ/6zdHXg3rzo+LsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wB36/WNVdHqQaRcKDsKT1oLxYq4i8ZX5jqXZ2AstNu/z+TK93qSEGmtFNRMs6thXM
-	 ioGSGzxRz3DYV9gfwLOdL5XugodiAXxwCBIxsS8LlFSaAspfwVo1O+fpKgcvWo3tQk
-	 8hx9NewZ/oyngUGV5RRT7rXI81MZHYgrrG3Qi1RE=
+	b=Ch32njohZuJJBu3Ygxr1HhaBaxMhNHv+3JpZYIpu1dNAW9f/JgfgOA8BUCfzLffVK
+	 CIpcbFl9hl8B3nahUc+1ELACoNmKK5SU+WHi7odz1I/ceIVE7x6Sh4x/+FkEFFMLXt
+	 yNeLgMHQgNoa9GGFlUZN5gj5uTEa0eRUywexHogI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
+	David Francis <David.Francis@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 254/307] drm/amdkfd: fix a vulnerability of integer overflow in kfd debugger
-Date: Sun,  7 Jun 2026 12:00:51 +0200
-Message-ID: <20260607095737.017968802@linuxfoundation.org>
+Subject: [PATCH 6.12 255/307] drm/amdkfd: Check for pdd drm file first in CRIU restore path
+Date: Sun,  7 Jun 2026 12:00:52 +0200
+Message-ID: <20260607095737.056882617@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261775-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261778-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jinhuieric.huang@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:David.Francis@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,52 +97,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 05E5365030B
+X-Rspamd-Queue-Id: A831D650266
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: David Francis <David.Francis@amd.com>
 
-commit 93f5534b35a05ef8a0109c1eefa800062fee810a upstream.
+commit 6842b6a4b72da9b2906ffc5ca9d846ace2c54c14 upstream.
 
-get_queue_ids() computes array_size = num_queues * sizeof(uint32_t),
-which could overflow on 32-bit size_t build. using array_size()
-instead, it saturates to SIZE_MAX on overflow.
+CRIU restore ioctls are meant to be called by CRIU with no
+existing drm file. There's an error path
+for if the drm file unexpectedly exists. It was positioned so
+it was missing a fput(drm_file).
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Do that check earlier, as soon as we have the pdd.
+
+Signed-off-by: David Francis <David.Francis@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2d57a0475f085c08b49312dfd8edcb461845f285)
+(cherry picked from commit 2bab781dac78916c5cc8de76345a4102449267d7)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -3194,12 +3194,14 @@ static void copy_context_work_handler (s
- 
- static uint32_t *get_queue_ids(uint32_t num_queues, uint32_t *usr_queue_id_array)
- {
--	size_t array_size = num_queues * sizeof(uint32_t);
--
- 	if (!usr_queue_id_array)
- 		return NULL;
- 
--	return memdup_user(usr_queue_id_array, array_size);
-+	if (num_queues > KFD_MAX_NUM_OF_QUEUES_PER_PROCESS)
-+		return ERR_PTR(-EINVAL);
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -2260,6 +2260,11 @@ static int criu_restore_devices(struct k
+ 			ret = -EINVAL;
+ 			goto exit;
+ 		}
 +
-+	return memdup_user(usr_queue_id_array,
-+			   array_size(num_queues, sizeof(uint32_t)));
- }
++		if (pdd->drm_file) {
++			ret = -EINVAL;
++			goto exit;
++		}
+ 		pdd->user_gpu_id = device_buckets[i].user_gpu_id;
  
- int resume_queues(struct kfd_process *p,
+ 		drm_file = fget(device_buckets[i].drm_fd);
+@@ -2269,11 +2274,6 @@ static int criu_restore_devices(struct k
+ 			ret = -EINVAL;
+ 			goto exit;
+ 		}
+-
+-		if (pdd->drm_file) {
+-			ret = -EINVAL;
+-			goto exit;
+-		}
+ 
+ 		/* create the vm using render nodes for kfd pdd */
+ 		if (kfd_process_device_init_vm(pdd, drm_file)) {
 
 
 
