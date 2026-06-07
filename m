@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-261227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lUSHAGJGJWrkFgIAu9opvQ
-	(envelope-from <stable+bounces-261227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:26 +0200
+	id HeBhFLpGJWoSFwIAu9opvQ
+	(envelope-from <stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1347B64F95D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDACA64F9C4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JqWfA4kd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261227-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261227-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="InytbgY/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261241-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 505303002F4C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E54A301DD8D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA78B2EC54A;
-	Sun,  7 Jun 2026 10:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5039E320A37;
+	Sun,  7 Jun 2026 10:23:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCBA24728F;
-	Sun,  7 Jun 2026 10:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA7131F993;
+	Sun,  7 Jun 2026 10:23:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827740; cv=none; b=WhWxShXz1Z/v5Lz6kYkB0VRrvsUSXZIXQr9yIPMQ8TF3EzBp4g8krgNRrNp9ijh4vK5aTE4FdPBKM0Tv7qoyxFA9Zbue2jczXodBJFb4JHG5f8WUbfWmdaM40hTY+JlsLI3dd9Bivpu35eUcU0EeiHxchD7fvgIu6pBMBtodbOY=
+	t=1780827793; cv=none; b=FRh5llikEdnBNh21Bh8qGAYwrxECQJRHriSxBbdKu7du3e8mkbdxhJQWB+xRDFgRZ3ZVAZ4AeRTy1oEd7A6ft/nn/i24+Z3cUD0E7KWW/npIKRAPgTi7UVhxwo9mRRUdZ82hT/o+0W2/mSDz6R2U7+qCiwp9+FrQ4XpXj60KZts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827740; c=relaxed/simple;
-	bh=rn1nUpqpzEkLyX6c778vYR4BD3RkqqaZ1XGMzGOECic=;
+	s=arc-20240116; t=1780827793; c=relaxed/simple;
+	bh=T2kZI8L5wiuspX/lOXXjYgIk4IXkYzTCWgeKhdFycxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n0Qfs5H1QF1vptEiCuWeb8b8rZFuYtyx+P2uPimbXJOy9hb45CjCBwZTGx4oojGwI8+unBKHmFEN5UQ+/4Z4YE3jtl9OYG3y3i6QyOF1HVuwrvGBJctZUkv9B8ECTzDZ+Rdf+M9ctPC9gRlB4OIbARf7SauMUzrLnvponWETlrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqWfA4kd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFAB1F00893;
-	Sun,  7 Jun 2026 10:22:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iGSKt7Uxx7S1BcdPUsT6KbJ4TLzRmtHuDCQkXmzITjxayq8bvxQqDpH6Slt/njeH8w5oq6tRRHmoScSVGpCehjy1RYOByxxeKBHfWKBT/QmmlNDNkaFep4pOxRmaGw/BdIk59PRUJn5cTwCr7gxVjxNotocWnnoYwSCubhA12Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=InytbgY/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5621F00893;
+	Sun,  7 Jun 2026 10:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827739;
-	bh=BfdNFXIj+bR6o63mFaVanLpQoWOgmEQwKSjhF2YSu40=;
+	s=korg; t=1780827792;
+	bh=+/CgDUKqf2FM99tH5OZUOJCDQKMQquN+tYmHqxKfV9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JqWfA4kd/UPtY9HcQ31RFIddrDN6HkDxuAiCsftFK8Jcu5caKeD6NLpBqkFueCZLe
-	 8U5ZMVlqJRl0s2esbWdtJ0E2sWQoiEGOFVrl83Nq3wwlOnUCu7sOR5qq/Rs5Vg6TU6
-	 4X6sa0HEyH8irWdbja/FeKZk4gUC32q+x9LFwVxs=
+	b=InytbgY/NknMjwg2k87lpES2XpHwi0gtJPyuEwEJ6Ny8GRIkdM9/Ugl7Bu6CpxlsT
+	 vmOp8rXzOjjHDw/H2eiMdPLec/qCDAkg5W0H+lKuO76VyNT9mPp+SQ/Eqbm0TEy15R
+	 cuRs93KDoaT9HNUXcstACOt8l+kZvE+LRIgsY2L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 7.0 118/332] iio: imu: st_lsm6dsx: fix stack leak in tagged FIFO buffer
-Date: Sun,  7 Jun 2026 11:58:07 +0200
-Message-ID: <20260607095732.444051517@linuxfoundation.org>
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 101/315] drm/i915/psr: Read Intel DPCD workaround register
+Date: Sun,  7 Jun 2026 11:58:08 +0200
+Message-ID: <20260607095731.356111500@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,85 +72,100 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261227-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261241-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,baylibre.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,ursulin.net:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1347B64F95D
+X-Rspamd-Queue-Id: BDACA64F9C4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit c9d8e9adaa63150ef7e833480b799d0bab83a276 upstream.
+commit f30bece421a4ae34359254e1dc2a187a42b6af9b upstream.
 
-The tagged FIFO path declares iio_buff on the stack with __aligned(8)
-but no initializer, but there is a hole in the structure, which will
-then leak to userspace as ST_LSM6DSX_SAMPLE_SIZE bytes (6) will be
-copied, but the space between that and the timestamp are not
-initialized.
+Read Intel DPCD workaround register and store it into
+intel_connector->dp.psr_caps. psr_caps was chosen as currently it contains
+only PSR workaround for PSR2 SDP on prior scanline implementation.
 
-Commit c14edb4d0bdc ("iio:imu:st_lsm6dsx Fix alignment and data leak
-issues") moved the untagged FIFO path to a kzalloc'd buffer in hw->scan,
-but for the tagged path it only added the alignment qualifier and not
-the initializer :(
-
-Fix this by just zero-initializing the structure on the stack.
-
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: Andy Shevchenko <andy@kernel.org>
-Fixes: c14edb4d0bdc ("iio:imu:st_lsm6dsx Fix alignment and data leak issues")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515095756.2799483-3-jouni.hogander@intel.com
+(cherry picked from commit c48ff24d0f4ab7ad696b2d35ad64ce7e049c668c)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_display_types.h | 1 +
+ drivers/gpu/drm/i915/display/intel_psr.c           | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -609,7 +609,7 @@ int st_lsm6dsx_read_tagged_fifo(struct s
- 	 * must be passed a buffer that is aligned to 8 bytes so
- 	 * as to allow insertion of a naturally aligned timestamp.
- 	 */
--	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);
-+	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8) = { };
- 	u8 tag;
- 	bool reset_ts = false;
- 	int i, err, read_len;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
+index 39dd7389f1a71a..197bdb6592a7f9 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1710,6 +1710,7 @@ struct intel_dp {
+ 	u8 lttpr_common_caps[DP_LTTPR_COMMON_CAP_SIZE];
+ 	u8 lttpr_phy_caps[DP_MAX_LTTPR_COUNT][DP_LTTPR_PHY_CAP_SIZE];
+ 	u8 pcon_dsc_dpcd[DP_PCON_DSC_ENCODER_CAP_SIZE];
++	u8 intel_wa_dpcd;
+ 	/* source rates */
+ 	int num_source_rates;
+ 	const int *source_rates;
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 1da20065ea7763..802a671b2afaaa 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -41,6 +41,7 @@
+ #include "intel_display_types.h"
+ #include "intel_dmc.h"
+ #include "intel_dp.h"
++#include "intel_dpcd.h"
+ #include "intel_dp_aux.h"
+ #include "intel_dsb.h"
+ #include "intel_frontbuffer.h"
+@@ -679,6 +680,12 @@ static void _psr_init_dpcd(struct intel_dp *intel_dp)
+ 		drm_dbg_kms(display->drm, "PSR2 %ssupported\n",
+ 			    intel_dp->psr.sink_psr2_support ? "" : "not ");
+ 	}
++
++	if (intel_dp->psr.sink_psr2_support)
++		drm_dp_dpcd_read(&intel_dp->aux,
++				 INTEL_DPCD_INTEL_WA_REGISTER_CAPS,
++				 &intel_dp->intel_wa_dpcd,
++				 sizeof(intel_dp->intel_wa_dpcd));
+ }
+ 
+ void intel_psr_init_dpcd(struct intel_dp *intel_dp)
+-- 
+2.53.0
+
 
 
 
