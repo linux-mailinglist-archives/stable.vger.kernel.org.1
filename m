@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JYBhLVZPJWocGwIAu9opvQ
-	(envelope-from <stable+bounces-261832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:38 +0200
+	id Pz66M6VQJWqFGwIAu9opvQ
+	(envelope-from <stable+bounces-261789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A895865037B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE4B6504DA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WsUqhSG8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261832-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261832-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kE2mHNOd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261789-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261789-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8AC763004D2C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4F3F308F351
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A5D370ADB;
-	Sun,  7 Jun 2026 11:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778E03264F2;
+	Sun,  7 Jun 2026 10:57:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC3036D506;
-	Sun,  7 Jun 2026 11:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388BF12CDA5;
+	Sun,  7 Jun 2026 10:57:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830021; cv=none; b=eklmvt2L9CjVySkNHkXXhtQSdYX/gTa/vsXePiU4PX8kRGI6Wen3wJqtzBhVhg35WH30nNkPqd+6Ij9ajUxOlMCqEvO1ZftRP/ZJ5laAgJYfLGb/8ZdOqtPqBl6KSq+wqPeFJkxuYL4oSwQGO2xIDHVUJkYbOXWvdKRRgX61dCE=
+	t=1780829847; cv=none; b=UhK8rLDo4MfDOyrYm5DJtmtZXouW2CjHNhMmxPdoX8i/xVPGKujg9Xv6BIaAwDJ3rPWfgtxZpGwASBgJxeVlP4BtbQwvE532Wy3dcJcq9SzJj7wd4JvnNy70YDE18P6qyVnLS7tCtg7MLzjJJJ3cjvLpGEXZpoHmgiMcWwDvYq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830021; c=relaxed/simple;
-	bh=9i9zGR8gqaEih7MWfq3WWqKIJtAJ/ZoD6zDXjSnURdY=;
+	s=arc-20240116; t=1780829847; c=relaxed/simple;
+	bh=8A7x4H/+QwHyuAj5o0K3Bg5q7GOmN3X5gM9+R5AoOlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okNzNXzNqaQ1xgZB7F9zLEzdUoziOWRpX/bdk8BMc6S3KUk/JhuKE7HS1pjiAsnyeCOBMJLCUwjh7kpNJ+pKPq5QEEpUGhwyhAgw2iaWoZjoqHagK6qI28KapgWUN30brdXfmtN9R+qvP4zqVxIAB4vz7siZw56wUP1nGzThVpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsUqhSG8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD771F00898;
-	Sun,  7 Jun 2026 11:00:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pqBkQZXNAnIURGstJV7Be7kog/Qn+AE3WRfO7uMOOeg4ludY6QUXqUEc2a/LGwLGP71GUD+cFpA2qwwRURXsEuWBQYm1vt0xELRNten2zaUAVGIOTSY3mA3H02tS44suzBxwHVgpWSTtCX8DCjwDEkkeHiaOTxcvhmuAN6ZseGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE2mHNOd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCC41F00893;
+	Sun,  7 Jun 2026 10:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830016;
-	bh=1MPD2OJMlQcNLM9pue61Y1lfz0HsRgvz0x5D5auRItU=;
+	s=korg; t=1780829845;
+	bh=654ym93HLh5FIJZlSLsxaLU5X9DEl6/2GWKKiTfa9HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WsUqhSG8BBvKxNULwOF/9nh4HMWrep1S+k9XwOSNH04FUDCUCoVr4TNGQugDrsNDg
-	 wQeQzODbwzF9gWgxT83ZEOSsRi7RoVGORDjIELS0udgDBgis7wz664wOrQflWtIXzx
-	 QmK7Q3AwvsEbyG83aDWobW2Dw+qjj79JpcE3xmfk=
+	b=kE2mHNOdhPa9ydv2krQyZtAuc34F6FrTsR3ZifsLRQKvHphSj1MpXnueOPErzXsGB
+	 7dsvlttSKoA+pgCuE+Yu/mb6+hqCgXlvHCTXP1sxsEEw8nyjFEt2cZWY2TYyWqWRjK
+	 KlMZ6qWg2ojlxzrfPaDkluA+fGZurfh4S7AaPRno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 273/307] ALSA: scarlett2: Return ENOSPC for out-of-bounds flash writes
+Subject: [PATCH 6.18 283/315] platform/x86/intel/vsec: Make driver_data info const
 Date: Sun,  7 Jun 2026 12:01:10 +0200
-Message-ID: <20260607095737.742924558@linuxfoundation.org>
+Message-ID: <20260607095737.978054232@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261832-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261789-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:g@b4.vu,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david.e.box@linux.intel.com,m:michael.j.ruhl@intel.com,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,b4.vu:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,msgid.link:url,suse.de:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A895865037B
+X-Rspamd-Queue-Id: 6BE4B6504DA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Geoffrey D. Bennett" <g@b4.vu>
+From: "David E. Box" <david.e.box@linux.intel.com>
 
-[ Upstream commit 74641bfcbf4e698b770b1b62a74e73934843e90e ]
+[ Upstream commit 9577c74c96f88d807d1ba005adbf5952e7127e55 ]
 
-When writing to flash, return ENOSPC instead of EINVAL if the requested
-write would exceed the size of the flash segment.
+Treat PCI id->driver_data (intel_vsec_platform_info) as read-only by making
+vsec_priv->info a const pointer and updating all function signatures to
+accept const intel_vsec_platform_info *.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/3a4af07b0329bed5ffb6994594e4f7bd202aad0f.1727971672.git.g@b4.vu
-Stable-dep-of: a69b677e47a8 ("ALSA: scarlett2: Allow flash writes ending at segment boundary")
+This improves const-correctness and clarifies that the platform info data
+from the driver_data table is not meant to be modified at runtime.
+
+No functional changes intended.
+
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Link: https://patch.msgid.link/20260313015202.3660072-3-david.e.box@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/vsec.c |   20 ++++++++++----------
+ include/linux/intel_vsec.h        |    4 ++--
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -9550,7 +9550,7 @@ static long scarlett2_hwdep_write(struct
- 		     SCARLETT2_FLASH_BLOCK_SIZE;
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -42,7 +42,7 @@ enum vsec_device_state {
+ };
  
- 	if (count < 0 || *offset < 0 || *offset + count >= flash_size)
--		return -EINVAL;
-+		return -ENOSPC;
+ struct vsec_priv {
+-	struct intel_vsec_platform_info *info;
++	const struct intel_vsec_platform_info *info;
+ 	struct device *suppliers[VSEC_FEATURE_COUNT];
+ 	struct oobmsm_plat_info plat_info;
+ 	enum vsec_device_state state[VSEC_FEATURE_COUNT];
+@@ -270,7 +270,7 @@ cleanup_aux:
+ EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, "INTEL_VSEC");
  
- 	if (!count)
- 		return 0;
+ static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *header,
+-			      struct intel_vsec_platform_info *info,
++			      const struct intel_vsec_platform_info *info,
+ 			      unsigned long cap_id, u64 base_addr)
+ {
+ 	struct intel_vsec_device __free(kfree) *intel_vsec_dev = NULL;
+@@ -406,7 +406,7 @@ static int get_cap_id(u32 header_id, uns
+ 
+ static int intel_vsec_register_device(struct pci_dev *pdev,
+ 				      struct intel_vsec_header *header,
+-				      struct intel_vsec_platform_info *info,
++				      const struct intel_vsec_platform_info *info,
+ 				      u64 base_addr)
+ {
+ 	const struct vsec_feature_dependency *consumer_deps;
+@@ -452,7 +452,7 @@ static int intel_vsec_register_device(st
+ }
+ 
+ static bool intel_vsec_walk_header(struct pci_dev *pdev,
+-				   struct intel_vsec_platform_info *info)
++				   const struct intel_vsec_platform_info *info)
+ {
+ 	struct intel_vsec_header **header = info->headers;
+ 	bool have_devices = false;
+@@ -468,7 +468,7 @@ static bool intel_vsec_walk_header(struc
+ }
+ 
+ static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
+-				  struct intel_vsec_platform_info *info)
++				  const struct intel_vsec_platform_info *info)
+ {
+ 	bool have_devices = false;
+ 	int pos = 0;
+@@ -519,7 +519,7 @@ static bool intel_vsec_walk_dvsec(struct
+ }
+ 
+ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
+-				 struct intel_vsec_platform_info *info)
++				 const struct intel_vsec_platform_info *info)
+ {
+ 	bool have_devices = false;
+ 	int pos = 0;
+@@ -565,7 +565,7 @@ static bool intel_vsec_walk_vsec(struct
+ }
+ 
+ int intel_vsec_register(struct pci_dev *pdev,
+-			 struct intel_vsec_platform_info *info)
++			const struct intel_vsec_platform_info *info)
+ {
+ 	if (!pdev || !info || !info->headers)
+ 		return -EINVAL;
+@@ -578,7 +578,7 @@ int intel_vsec_register(struct pci_dev *
+ EXPORT_SYMBOL_NS_GPL(intel_vsec_register, "INTEL_VSEC");
+ 
+ static bool intel_vsec_get_features(struct pci_dev *pdev,
+-				    struct intel_vsec_platform_info *info)
++				    const struct intel_vsec_platform_info *info)
+ {
+ 	bool found = false;
+ 
+@@ -622,7 +622,7 @@ static void intel_vsec_skip_missing_depe
+ 
+ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+-	struct intel_vsec_platform_info *info;
++	const struct intel_vsec_platform_info *info;
+ 	struct vsec_priv *priv;
+ 	int num_caps, ret;
+ 	int run_once = 0;
+@@ -633,7 +633,7 @@ static int intel_vsec_pci_probe(struct p
+ 		return ret;
+ 
+ 	pci_save_state(pdev);
+-	info = (struct intel_vsec_platform_info *)id->driver_data;
++	info = (const struct intel_vsec_platform_info *)id->driver_data;
+ 	if (!info)
+ 		return -EINVAL;
+ 
+--- a/include/linux/intel_vsec.h
++++ b/include/linux/intel_vsec.h
+@@ -199,13 +199,13 @@ static inline struct intel_vsec_device *
+ 
+ #if IS_ENABLED(CONFIG_INTEL_VSEC)
+ int intel_vsec_register(struct pci_dev *pdev,
+-			 struct intel_vsec_platform_info *info);
++			const struct intel_vsec_platform_info *info);
+ int intel_vsec_set_mapping(struct oobmsm_plat_info *plat_info,
+ 			   struct intel_vsec_device *vsec_dev);
+ struct oobmsm_plat_info *intel_vsec_get_mapping(struct pci_dev *pdev);
+ #else
+ static inline int intel_vsec_register(struct pci_dev *pdev,
+-				       struct intel_vsec_platform_info *info)
++				      const struct intel_vsec_platform_info *info)
+ {
+ 	return -ENODEV;
+ }
 
 
 
