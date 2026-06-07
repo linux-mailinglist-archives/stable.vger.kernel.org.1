@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J/z+NXVEJWrPFQIAu9opvQ
-	(envelope-from <stable+bounces-261039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:13 +0200
+	id tcOrDkNEJWqwFQIAu9opvQ
+	(envelope-from <stable+bounces-261024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3740A64F6EF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:14:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53C664F6A7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KQ+3kxNu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261039-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261039-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UGrnvg3X;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261024-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261024-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D24D303F7F8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3128830364F6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063F62E1EFC;
-	Sun,  7 Jun 2026 10:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38981DE8AE;
+	Sun,  7 Jun 2026 10:10:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB431E98E3;
-	Sun,  7 Jun 2026 10:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB501E98E3;
+	Sun,  7 Jun 2026 10:10:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827059; cv=none; b=LZ9M2itT52onldDPLAu/IBa1By00YKNNnyd0mBsIaV4NUkpSkn7eJSBYCbIfq7x8bgaSCw7ZHaJ7qAmlGggpWFrqFj7gZk/bWwSpaoOCVfs4Srl9+zMlsZR75nKYYb9No02fSKYyH9dn5GS8xianh7crVWb3tOvbkYpIYFSav6w=
+	t=1780827006; cv=none; b=pBNk3wMBkdQZ0kkpnZ9tB1fB4ap3f3hQZkWxGuGwAjQjPGVXgyzlzX0XXQACzk7cCpzWAHG17e/nysavhmXRI1Y9tgCrM4GMN88w2hNxdGyPyus+ZVIuxPQqm+2DG23gbalSOUxv6mcG0bd4mHpEjOYtY8IrBOabre4BDKtESag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827059; c=relaxed/simple;
-	bh=Pr1esZdm59llKUTkaNAAxQzUol4uGOsdEF0uhl1im3I=;
+	s=arc-20240116; t=1780827006; c=relaxed/simple;
+	bh=ootf0kiWqqXrGNUydNOKtdvCoXUUsiwJXng6VVKq4HA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htoQAsqofGezSNxb9WUEkDReP9nat7xM0/PRWz5sqph6OzXBFCwJYkjTZVdtFhVcDjbNTtJ2wo01MsjQxVX7Y6ypeQvFOUcbsV2ovDEdhixzSH3dPOoQAnIPY+dESDYqe4un+ymjMHeiReA9ws5OnHD+x4yXIvaaQwDWqckufco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQ+3kxNu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4821F00893;
-	Sun,  7 Jun 2026 10:10:57 +0000 (UTC)
+	 MIME-Version; b=aPvvZQ7EYBVEWfcN/2Diu3y3q7OVa7peQC9L1Rnpmux9FZqvwJSa+ASPb98wtxFpuBNcfbmp7M85sOPh8306/28icxeftKBt81NUPQrk/q4ADVuv2UXGfqsBb6I87p0Ybhe26YwSWDfQZYbYeaj04IC072aZVeUQ5oC11LAjr8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGrnvg3X; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090B61F00893;
+	Sun,  7 Jun 2026 10:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827058;
-	bh=yL3QCrwBVxjHgtqOg/rdL3ybs50lb0W5nZaYBniQIng=;
+	s=korg; t=1780827004;
+	bh=jzsQECDsEj2vbNyPaqL9D8j+SFr4YDOHQtNu2FC0/J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KQ+3kxNuFJuDEoWyjqQ3IP9wLjHiTioYbNP6f/QyY2n9YI9yX3MMd/AGwzPKwz7cP
-	 cPMT3ndqtLLkJnmoc/jsLc7DIF7K90bCe+tGycw1yXtZal8wpFEiNFryW/bumG1cnE
-	 3nPsmIjJ4G07LZNiRb2dUT0S7szamaIIHbXljw+g=
+	b=UGrnvg3XmBQk6IsjvxrkXrwXzaXd4nZi7XcmEwX/bAs2KFhDrfPgzar3Risb5hxaA
+	 BKdPQIAgX5n3F9XEl4sOjxVVBvUb8C/x0fS+/i7iF1dZnO40JxtBnAE752WqbD4WCf
+	 U+qYc9oaQw2KD2DKn7jBE+rg5sQa4Ww0Xmvw2BBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 036/315] net: team: fix NULL pointer dereference in team_xmit during mode change
+Subject: [PATCH 7.0 054/332] ethtool: cmis: validate start_cmd_payload_size from module
 Date: Sun,  7 Jun 2026 11:57:03 +0200
-Message-ID: <20260607095728.860267894@linuxfoundation.org>
+Message-ID: <20260607095730.111843024@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,184 +70,131 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,linux.dev,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261039-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:jiayuan.chen@linux.dev,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261024-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,asu.edu:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3740A64F6EF
+X-Rspamd-Queue-Id: C53C664F6A7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 25fe708bbc59289d3d1ea4b126fbc1b460a072a5 ]
+[ Upstream commit 12c2496a71f82f63617971ca9b730dffa05cf58b ]
 
-__team_change_mode() clears team->ops with memset() before restoring
-safe dummy handlers via team_adjust_ops(). A concurrent team_xmit()
-running under RCU on another CPU can read team->ops.transmit during
-this window and call a NULL function pointer, crashing the kernel.
+The CMIS firmware update code reads start_cmd_payload_size from
+the module's FW Management Features CDB reply and uses it directly
+as the byte count for memcpy. The destination buffer is 112 bytes
+(ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH - 8). So a malicious
+module (or corrupted response) can cause a OOB write later on in
+cmis_fw_update_start_download().
 
-The race requires a mode change (CAP_NET_ADMIN) concurrent with
-transmit on the team device.
+Let's error out. If modules that expect longer LPL writes actually
+exist we should revisit.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000000
- Oops: 0010 [#1] SMP KASAN NOPTI
- RIP: 0010:0x0
- Call Trace:
-  team_xmit (drivers/net/team/team_core.c:1853)
-  dev_hard_start_xmit (net/core/dev.c:3904)
-  __dev_queue_xmit (net/core/dev.c:4871)
-  packet_sendmsg (net/packet/af_packet.c:3109)
-  __sys_sendto (net/socket.c:2265)
+struct cmis_cdb_start_fw_download_pl's definition has to move,
+no change there.
 
-The original code assumed that no ports means no traffic, so mode
-changes could freely memset()/memcpy() the ops.  AF_PACKET with
-forced carrier breaks that assumption.
-
-Prevent the race instead of making it safe: replace memset()/memcpy()
-with per-field updates that never touch transmit or receive.  Those
-two handlers are managed solely by team_adjust_ops(), which already
-installs dummies when tx_en_port_count == 0 (always true during mode
-change since no ports are present).  WRITE_ONCE/READ_ONCE prevent
-store/load tearing on the handler pointers.
-
-synchronize_net() before exit_op() drains in-flight readers that may
-still reference old mode state from before port removal switched the
-handlers to dummies.
-
-Fixes: 3d249d4ca7d0 ("net: introduce ethernet teaming device")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260521081159.1491563-3-bestswngs@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c4f78134d45c ("ethtool: cmis_fw_update: add a layer for supporting firmware update using CDB")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-9-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team_core.c | 45 +++++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 13 deletions(-)
+ net/ethtool/cmis_fw_update.c | 36 ++++++++++++++++++++++--------------
+ 1 file changed, 22 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 11c8e6551dd357..ff4dcd6035cd10 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -535,21 +535,23 @@ static void team_adjust_ops(struct team *team)
+diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
+index df5f344209c47b..16190c97e1f78c 100644
+--- a/net/ethtool/cmis_fw_update.c
++++ b/net/ethtool/cmis_fw_update.c
+@@ -44,6 +44,20 @@ enum cmis_cdb_fw_write_mechanism {
+ 	CMIS_CDB_FW_WRITE_MECHANISM_BOTH	= 0x11,
+ };
  
- 	if (!team->en_port_count || !team_is_mode_set(team) ||
- 	    !team->mode->ops->transmit)
--		team->ops.transmit = team_dummy_transmit;
-+		WRITE_ONCE(team->ops.transmit, team_dummy_transmit);
- 	else
--		team->ops.transmit = team->mode->ops->transmit;
-+		WRITE_ONCE(team->ops.transmit, team->mode->ops->transmit);
- 
- 	if (!team->en_port_count || !team_is_mode_set(team) ||
- 	    !team->mode->ops->receive)
--		team->ops.receive = team_dummy_receive;
-+		WRITE_ONCE(team->ops.receive, team_dummy_receive);
- 	else
--		team->ops.receive = team->mode->ops->receive;
-+		WRITE_ONCE(team->ops.receive, team->mode->ops->receive);
++/* See section 9.7.2 "CMD 0101h: Start Firmware Download" in CMIS standard
++ * revision 5.2.
++ * struct cmis_cdb_start_fw_download_pl is a structured layout of the
++ * flat array, ethtool_cmis_cdb_request::payload.
++ */
++struct cmis_cdb_start_fw_download_pl {
++	__struct_group(cmis_cdb_start_fw_download_pl_h, head, /* no attrs */,
++			__be32	image_size;
++			__be32	resv1;
++	);
++	u8 vendor_data[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH -
++		sizeof(struct cmis_cdb_start_fw_download_pl_h)];
++};
++
+ static int
+ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 				   struct net_device *dev,
+@@ -86,6 +100,14 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	 */
+ 	cdb->read_write_len_ext = rpl->read_write_len_ext;
+ 	fw_mng->start_cmd_payload_size = rpl->start_cmd_payload_size;
++	if (fw_mng->start_cmd_payload_size >
++	    sizeof_field(struct cmis_cdb_start_fw_download_pl, vendor_data)) {
++		ethnl_module_fw_flash_ntf_err(dev, ntf_params,
++					      "Start cmd payload size exceeds max LPL payload",
++					      NULL);
++		return -EINVAL;
++	}
++
+ 	fw_mng->write_mechanism =
+ 		rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ?
+ 		CMIS_CDB_FW_WRITE_MECHANISM_LPL :
+@@ -97,20 +119,6 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ 	return 0;
  }
  
- /*
-- * We can benefit from the fact that it's ensured no port is present
-- * at the time of mode change. Therefore no packets are in fly so there's no
-- * need to set mode operations in any special way.
-+ * team_change_mode() ensures no ports are present during mode change,
-+ * but lockless readers can still reach team_xmit().  Avoid touching
-+ * transmit/receive -- they are already set to dummies by
-+ * team_adjust_ops() since no ports are enabled.  synchronize_net()
-+ * drains in-flight readers before destroying old mode state.
-  */
- static int __team_change_mode(struct team *team,
- 			      const struct team_mode *new_mode)
-@@ -558,9 +560,21 @@ static int __team_change_mode(struct team *team,
- 	if (team_is_mode_set(team)) {
- 		void (*exit_op)(struct team *team) = team->ops.exit;
- 
--		/* Clear ops area so no callback is called any longer */
--		memset(&team->ops, 0, sizeof(struct team_mode_ops));
--		team_adjust_ops(team);
-+		/* Clear cold-path ops used only under RTNL.  transmit and
-+		 * receive are already dummies (no ports) so leave them
-+		 * alone -- overwriting them is the source of the race.
-+		 */
-+		team->ops.init = NULL;
-+		team->ops.exit = NULL;
-+		team->ops.port_enter = NULL;
-+		team->ops.port_leave = NULL;
-+		team->ops.port_change_dev_addr = NULL;
-+		team->ops.port_tx_disabled = NULL;
-+
-+		/* Wait for in-flight readers before tearing down mode
-+		 * state they may reference.
-+		 */
-+		synchronize_net();
- 
- 		if (exit_op)
- 			exit_op(team);
-@@ -583,7 +597,12 @@ static int __team_change_mode(struct team *team,
- 	}
- 
- 	team->mode = new_mode;
--	memcpy(&team->ops, new_mode->ops, sizeof(struct team_mode_ops));
-+	team->ops.init = new_mode->ops->init;
-+	team->ops.exit = new_mode->ops->exit;
-+	team->ops.port_enter = new_mode->ops->port_enter;
-+	team->ops.port_leave = new_mode->ops->port_leave;
-+	team->ops.port_change_dev_addr = new_mode->ops->port_change_dev_addr;
-+	team->ops.port_tx_disabled = new_mode->ops->port_tx_disabled;
- 	team_adjust_ops(team);
- 
- 	return 0;
-@@ -744,7 +763,7 @@ static rx_handler_result_t team_handle_frame(struct sk_buff **pskb)
- 		/* allow exact match delivery for disabled ports */
- 		res = RX_HANDLER_EXACT;
- 	} else {
--		res = team->ops.receive(team, port, skb);
-+		res = READ_ONCE(team->ops.receive)(team, port, skb);
- 	}
- 	if (res == RX_HANDLER_ANOTHER) {
- 		struct team_pcpu_stats *pcpu_stats;
-@@ -1683,7 +1702,7 @@ static netdev_tx_t team_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	tx_success = team_queue_override_transmit(team, skb);
- 	if (!tx_success)
--		tx_success = team->ops.transmit(team, skb);
-+		tx_success = READ_ONCE(team->ops.transmit)(team, skb);
- 	if (tx_success) {
- 		struct team_pcpu_stats *pcpu_stats;
- 
+-/* See section 9.7.2 "CMD 0101h: Start Firmware Download" in CMIS standard
+- * revision 5.2.
+- * struct cmis_cdb_start_fw_download_pl is a structured layout of the
+- * flat array, ethtool_cmis_cdb_request::payload.
+- */
+-struct cmis_cdb_start_fw_download_pl {
+-	__struct_group(cmis_cdb_start_fw_download_pl_h, head, /* no attrs */,
+-			__be32	image_size;
+-			__be32	resv1;
+-	);
+-	u8 vendor_data[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH -
+-		sizeof(struct cmis_cdb_start_fw_download_pl_h)];
+-};
+-
+ static int
+ cmis_fw_update_start_download(struct ethtool_cmis_cdb *cdb,
+ 			      struct ethtool_cmis_fw_update_params *fw_update,
 -- 
 2.53.0
 
