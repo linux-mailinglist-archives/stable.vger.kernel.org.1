@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-261045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WXkmEMxEJWr2FQIAu9opvQ
-	(envelope-from <stable+bounces-261045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:40 +0200
+	id k8skKHhDJWpUFQIAu9opvQ
+	(envelope-from <stable+bounces-261021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEC364F72C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1B164F5DF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=acOsOkXI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261045-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261045-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t1s3P4d7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261021-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261021-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBCE230427FF
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:11:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1994F3002F41
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65BF2E2DDD;
-	Sun,  7 Jun 2026 10:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D6A30C157;
+	Sun,  7 Jun 2026 10:09:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533531E98E3;
-	Sun,  7 Jun 2026 10:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ADE1DE8AE;
+	Sun,  7 Jun 2026 10:09:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827080; cv=none; b=HZtvS0ZQf43AEf8sgDi6J5KHVIredlI/zOyKXpXrmKHsiUOBjypvXCPggcAQVXlvQHvDVE8SJShF0jhug/CG6N4cZjz7pHzh0CcGFeNn1DXnZ1uyQsIlfjb/eLKQCHLL0PpE70TIdYQy6d+6nDTQhsmPoPKENBKT+F1Qc5/kMuM=
+	t=1780826995; cv=none; b=q+TuwjMhjJ96ec1wxz/1e9xLBhxVqSM+Owa5IqNf3Ue6AHKibN1ZwLfehs8a++r9BEhsO+lZvz315jtbddetBgw3IKR3UYWxag3J5L8VePHhiBgDoLBoM7Ee+QXxW4mzDfiHdBX1jgOIeIO2Pr/1ONFKaqFwNt21O0PBgnep0Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827080; c=relaxed/simple;
-	bh=81vi1bICPZDhlLXfF8nMsoDGByFuzPvKR2V/UhBthKA=;
+	s=arc-20240116; t=1780826995; c=relaxed/simple;
+	bh=KLDIOBYyEletGh/hdXd9xJeh7Fpf+49PtKbPNMGqNqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IgpyHRQjdsLDAdZTpYD9IFh94G6eg9QPHJb8mVlx/P4SWxukqqpO0Ma8Q/+BnWd/VhEEF1iVwCTeAiqpHmGIsUKaQgKuf8PilgRgI2PGOO7g2Ts6I/61Aq7JZGWHDxHiVzZS4OkcW7i7BMG9gk3+X+dG4NFF3V8cSwJay5c7SR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acOsOkXI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F991F00893;
-	Sun,  7 Jun 2026 10:11:18 +0000 (UTC)
+	 MIME-Version; b=cBSxzCoRRtf4eZQvR4hmU0PdFqSq4RuWTKf0mHM7hfvu3xd6LT/AHDJJcDJM4PLEJtpPBzbhA7vXBxEyvw70pQIX1LMirkPxkknS76u1+qjVOaVSgnNvGWGWxvcNabN6Vc0Z1Do9hf0NwfppOI/r0FCqV6WEgHW6GhOOjZzQCKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1s3P4d7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0ECE1F00893;
+	Sun,  7 Jun 2026 10:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827079;
-	bh=3UiZ3xWeCfoy5Z+O9WgSwfhslvpgEotaT1avrDQRucE=;
+	s=korg; t=1780826994;
+	bh=XQ1dxS3wI9IsEbBWqwjybtXPGo7zszhBi1DVCcSS3i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=acOsOkXIsg0NSfJZD3XlDHFgLtTfLVku9OMZC2uMSLgey52jqSAOvkY+XcXpR0a9I
-	 o8IMC09qqfyB+BkpFEgmpovqfpPIB+OD9wVEIYs9/JrLwSOXac/7u7pqN4X3oI70X8
-	 UZ0bO3Ebn29rrdr+Rr74gPlpfkuLpS0utRDt3D2E=
+	b=t1s3P4d7N6WApvYYwMvY60//LHldwm9FxxYrtWUn+Ywkooe84VwV7a2v8YsMmrMxx
+	 9AYfNxt5Dbs2eYFdEVusLpRHRP52I5noDM30fCjLLs+wP9T+QV9cNHMbM6y0axeNEZ
+	 5yQ+9Qstf9x8on8jnhbEp7MqNbaFd/5fY+naALlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/307] arm64: debug: split hardware watchpoint exception entry
-Date: Sun,  7 Jun 2026 11:56:57 +0200
-Message-ID: <20260607095728.368664422@linuxfoundation.org>
+Subject: [PATCH 7.0 049/332] ethtool: module: avoid racy updates to dev->ethtool bitfield
+Date: Sun,  7 Jun 2026 11:56:58 +0200
+Message-ID: <20260607095729.924248162@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261045-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261021-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,206 +96,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8FEC364F72C
+X-Rspamd-Queue-Id: CD1B164F5DF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 413f0bba005dacf2484bb8ecce212fab9be79d81 ]
+[ Upstream commit 7a84b965ffc12030af63cd10a8f3a1123ff39b7a ]
 
-Currently all debug exceptions share common entry code and are routed
-to `do_debug_exception()`, which calls dynamically-registered
-handlers for each specific debug exception. This is unfortunate as
-different debug exceptions have different entry handling requirements,
-and it would be better to handle these distinct requirements earlier.
+When reviewing other changes Gemini points out that we currently
+update module_fw_flash_in_progress without holding any locks.
+Since module_fw_flash_in_progress is part of a bitfield this
+is not great, updates to other fields may be lost.
 
-Hardware watchpoints are the only debug exceptions that will write
-FAR_EL1, so we need to preserve it and pass it down.
-However, they cannot be used to maliciously train branch predictors, so
-we can omit calling `arm64_bp_hardening()`, nor do they need to handle
-the Cortex-A76 erratum #1463225, as it only applies to single stepping
-exceptions.
+We could use a bool and sprinkle some READ_ONCE/WRITE_ONCE here
+but seems like the issue is rather than the work is an unusual
+writer. The other writers already hold the right locks. So just
+very briefly take these locks when the work completes.
 
-As the hardware watchpoint handler only returns 0 and never triggers
-the call to `arm64_notify_die()`, we can call it directly from
-`entry-common.c`.
-Split the hardware watchpoint exception entry and adjust the behaviour
-to match the lack of needed mitigations.
+Note that nothing ever cancels the FW update work, so there's
+no concern with deadlocks vs cancel.
 
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250707114109.35672-11-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-4-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/exception.h |  4 ++++
- arch/arm64/kernel/entry-common.c   | 31 ++++++++++++++++++++++++++++++
- arch/arm64/kernel/hw_breakpoint.c  | 17 +++++-----------
- 3 files changed, 40 insertions(+), 12 deletions(-)
+ net/ethtool/module.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
-index 6d40efc28be401..594350e552e112 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -61,8 +61,12 @@ void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
- 			struct pt_regs *regs);
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
- void do_breakpoint(unsigned long esr, struct pt_regs *regs);
-+void do_watchpoint(unsigned long addr, unsigned long esr,
-+			struct pt_regs *regs);
- #else
- static inline void do_breakpoint(unsigned long esr, struct pt_regs *regs) {}
-+static inline void do_watchpoint(unsigned long addr, unsigned long esr,
-+			struct pt_regs *regs) {}
- #endif /* CONFIG_HAVE_HW_BREAKPOINT */
- void do_el0_softstep(unsigned long esr, struct pt_regs *regs);
- void do_el1_softstep(unsigned long esr, struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index c22cc4d0052d54..b90babcf2e2b10 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -535,6 +535,18 @@ static void noinstr el1_softstp(struct pt_regs *regs, unsigned long esr)
- 	arm64_exit_el1_dbg(regs);
- }
- 
-+static void noinstr el1_watchpt(struct pt_regs *regs, unsigned long esr)
-+{
-+	/* Watchpoints are the only debug exception to write FAR_EL1 */
-+	unsigned long far = read_sysreg(far_el1);
-+
-+	arm64_enter_el1_dbg(regs);
-+	debug_exception_enter(regs);
-+	do_watchpoint(far, esr, regs);
-+	debug_exception_exit(regs);
-+	arm64_exit_el1_dbg(regs);
-+}
-+
- static void noinstr el1_dbg(struct pt_regs *regs, unsigned long esr)
+diff --git a/net/ethtool/module.c b/net/ethtool/module.c
+index 594a49fdd7fd06..ce4ce514edca89 100644
+--- a/net/ethtool/module.c
++++ b/net/ethtool/module.c
+@@ -221,14 +221,22 @@ static void module_flash_fw_work_list_del(struct list_head *list)
+ static void module_flash_fw_work(struct work_struct *work)
  {
- 	unsigned long far = read_sysreg(far_el1);
-@@ -584,6 +596,8 @@ asmlinkage void noinstr el1h_64_sync_handler(struct pt_regs *regs)
- 		el1_softstp(regs, esr);
- 		break;
- 	case ESR_ELx_EC_WATCHPT_CUR:
-+		el1_watchpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_BRK64:
- 		el1_dbg(regs, esr);
- 		break;
-@@ -800,6 +814,19 @@ static void noinstr el0_softstp(struct pt_regs *regs, unsigned long esr)
- 	exit_to_user_mode(regs);
- }
+ 	struct ethtool_module_fw_flash *module_fw;
++	struct net_device *dev;
  
-+static void noinstr el0_watchpt(struct pt_regs *regs, unsigned long esr)
-+{
-+	/* Watchpoints are the only debug exception to write FAR_EL1 */
-+	unsigned long far = read_sysreg(far_el1);
+ 	module_fw = container_of(work, struct ethtool_module_fw_flash, work);
++	dev = module_fw->fw_update.dev;
+ 
+ 	ethtool_cmis_fw_update(&module_fw->fw_update);
+ 
+ 	module_flash_fw_work_list_del(&module_fw->list);
+-	module_fw->fw_update.dev->ethtool->module_fw_flash_in_progress = false;
+-	netdev_put(module_fw->fw_update.dev, &module_fw->dev_tracker);
 +
-+	enter_from_user_mode(regs);
-+	debug_exception_enter(regs);
-+	do_watchpoint(far, esr, regs);
-+	debug_exception_exit(regs);
-+	local_daif_restore(DAIF_PROCCTX);
-+	exit_to_user_mode(regs);
-+}
++	rtnl_lock();
++	netdev_lock_ops(dev);
++	dev->ethtool->module_fw_flash_in_progress = false;
++	netdev_unlock_ops(dev);
++	rtnl_unlock();
 +
- static void noinstr el0_dbg(struct pt_regs *regs, unsigned long esr)
- {
- 	/* Only watchpoints write FAR_EL1, otherwise its UNKNOWN */
-@@ -882,6 +909,8 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_regs *regs)
- 		el0_softstp(regs, esr);
- 		break;
- 	case ESR_ELx_EC_WATCHPT_LOW:
-+		el0_watchpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_BRK64:
- 		el0_dbg(regs, esr);
- 		break;
-@@ -1006,6 +1035,8 @@ asmlinkage void noinstr el0t_32_sync_handler(struct pt_regs *regs)
- 		el0_softstp(regs, esr);
- 		break;
- 	case ESR_ELx_EC_WATCHPT_LOW:
-+		el0_watchpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_BKPT32:
- 		el0_dbg(regs, esr);
- 		break;
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index 8a80e13347c88f..ab76b36dce820b 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -750,8 +750,7 @@ static int watchpoint_report(struct perf_event *wp, unsigned long addr,
- 	return step;
++	netdev_put(dev, &module_fw->dev_tracker);
+ 	release_firmware(module_fw->fw_update.fw);
+ 	kfree(module_fw);
  }
- 
--static int watchpoint_handler(unsigned long addr, unsigned long esr,
--			      struct pt_regs *regs)
-+void do_watchpoint(unsigned long addr, unsigned long esr, struct pt_regs *regs)
- {
- 	int i, step = 0, *kernel_step, access, closest_match = 0;
- 	u64 min_dist = -1, dist;
-@@ -806,7 +805,7 @@ static int watchpoint_handler(unsigned long addr, unsigned long esr,
- 	rcu_read_unlock();
- 
- 	if (!step)
--		return 0;
-+		return;
- 
- 	/*
- 	 * We always disable EL0 watchpoints because the kernel can
-@@ -819,7 +818,7 @@ static int watchpoint_handler(unsigned long addr, unsigned long esr,
- 
- 		/* If we're already stepping a breakpoint, just return. */
- 		if (debug_info->bps_disabled)
--			return 0;
-+			return;
- 
- 		if (test_thread_flag(TIF_SINGLESTEP))
- 			debug_info->suspended_step = 1;
-@@ -830,7 +829,7 @@ static int watchpoint_handler(unsigned long addr, unsigned long esr,
- 		kernel_step = this_cpu_ptr(&stepping_kernel_bp);
- 
- 		if (*kernel_step != ARM_KERNEL_STEP_NONE)
--			return 0;
-+			return;
- 
- 		if (kernel_active_single_step()) {
- 			*kernel_step = ARM_KERNEL_STEP_SUSPEND;
-@@ -839,10 +838,8 @@ static int watchpoint_handler(unsigned long addr, unsigned long esr,
- 			kernel_enable_single_step(regs);
- 		}
- 	}
--
--	return 0;
- }
--NOKPROBE_SYMBOL(watchpoint_handler);
-+NOKPROBE_SYMBOL(do_watchpoint);
- 
- /*
-  * Handle single-step exception.
-@@ -984,10 +981,6 @@ static int __init arch_hw_breakpoint_init(void)
- 	pr_info("found %d breakpoint and %d watchpoint registers.\n",
- 		core_num_brps, core_num_wrps);
- 
--	/* Register debug fault handlers. */
--	hook_debug_fault_code(DBG_ESR_EVT_HWWP, watchpoint_handler, SIGTRAP,
--			      TRAP_HWBKPT, "hw-watchpoint handler");
--
- 	/*
- 	 * Reset the breakpoint resources. We assume that a halting
- 	 * debugger will leave the world in a nice state for us.
 -- 
 2.53.0
 
