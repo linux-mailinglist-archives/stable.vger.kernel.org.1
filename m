@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9G0FMVZGJWrbFgIAu9opvQ
-	(envelope-from <stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:14 +0200
+	id V1giN3dHJWp9FwIAu9opvQ
+	(envelope-from <stable+bounces-261200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD3464F94D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE7364FAA3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BgDKTnp9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261211-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="td2+G2/D";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261200-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261200-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C765300FB68
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3B9B9301325F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2F92EC54A;
-	Sun,  7 Jun 2026 10:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B63130F81A;
+	Sun,  7 Jun 2026 10:20:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5254CB5B;
-	Sun,  7 Jun 2026 10:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9A22E3AF1;
+	Sun,  7 Jun 2026 10:20:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827677; cv=none; b=Uqneg/9jpZfO4vuiLWH1hHEWx+dbYTSsw4siCgWYMcdr6HNtsHqQHpCiqJg3NAuKP5JBQ20f4b4KzAo5JqGYkInciuf3JOZb8Dwxs+qkzMBdcCX1vO5Ao2jnkK4fZLLqTJrsxXXCNausdjnMcxfAy348GH482R2fX2V+CrkSGgc=
+	t=1780827634; cv=none; b=ASBZ3NBT+xARKxvcgzBFlVTBVKxh1ZfuuIds88iHf0/OJoGyuWfVGh2/e0bRfsX5ALaOfOlWmyjb+KSMj39yhT7Ex6MzC/r8bcALTyPZsxIK7raSwMab7Yw6JPVZX+JJjCJBipSM6tdt8aD2mZd6pPYO6Cbd6+G8u/7Iyl6hTI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827677; c=relaxed/simple;
-	bh=djqOYN+5jCdMIVrZ0oS/no05LQ332Dr0ZuYz0yTkuFQ=;
+	s=arc-20240116; t=1780827634; c=relaxed/simple;
+	bh=hfHIahQknxvoNgKWU0yHNjwlat6rsINFZpxq+WVplxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNJW0v5AKQQc5EJyF/vO3nyx/HV/3BCGiV/tuMQyEdYEwhMO1ymcnYh62MdxHOQBZx1m8zHjPKjorcE9WpVTfkQsw7+BxM3ZpyvNjFf6jNCpcseL1hrMcCVA8JaOagdV/zAlqGrxhE5zTcYLHQ93VF7TnfBQQyxTqM1a2GnJSuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgDKTnp9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853EB1F00893;
-	Sun,  7 Jun 2026 10:21:15 +0000 (UTC)
+	 MIME-Version; b=AXKoEh+jdEpDbviXn5LyqvMLTjemfxDOCiT/Z0gMxyOEMPmwfFJNZfJdDfOGCX8xfpgmMDTnRPXZMzLEIzLXWXuliqtqRDT7h6+Tl5rskoK7KeDvArnogpq+B90O8NyBybBjWDm0B0JIcjm788my1uB70LXOEH0F6ZTumeFfKNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=td2+G2/D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBBA1F00893;
+	Sun,  7 Jun 2026 10:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827676;
-	bh=zhQJ07F5/LyTAR+ZcIDxHUqE89GH8L9x+gQV3casGH8=;
+	s=korg; t=1780827633;
+	bh=NR9ZxvtbPQEmf9huFzxS1zhIJdc5IzErGXB473CW4Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BgDKTnp9g0sp6w+1GbaUK+GzM25B3rpSLb6/AuRGj3wprqwCCCCi0hRfJXX8fw9oQ
-	 pNNdU/dIrU6xWnaunPCjVXlGnUFQ0i8CstnGyqMh3xi4RStwgUfVKT78YOZalpwkop
-	 yvzho1vtGcVfeVzta2gSK0zTznXd4sfBD4AjKCsg=
+	b=td2+G2/D7Y89xPlOp5k6305OrfuAooFRbzmhXezDwFOGjRbMEIgYA23Se28WfkcKm
+	 RYbehq5bTcIGdoiyKXVcYhrcqXAb+pOb9o1bl8/z9pOrkmpkpI1z4KpQ72SQSJurpt
+	 OblUPff2iHHkMSuWYi18xUoQQ+V1X7h/xmR8Y1QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 092/315] ipv6: fix possible infinite loop in rt6_fill_node()
+Subject: [PATCH 7.0 110/332] ipv6: fix possible infinite loop in rt6_fill_node()
 Date: Sun,  7 Jun 2026 11:57:59 +0200
-Message-ID: <20260607095731.008528916@linuxfoundation.org>
+Message-ID: <20260607095732.158093455@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,14 +72,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261211-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261200-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,11 +99,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sashiko.dev:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sashiko.dev:url,linux.dev:email,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3AD3464F94D
+X-Rspamd-Queue-Id: 3AE7364FAA3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -134,10 +134,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 446f4de7d6a227..cf9546047b5749 100644
+index cb521700cee7ed..398e873072bbfb 100644
 --- a/net/ipv6/route.c
 +++ b/net/ipv6/route.c
-@@ -5892,6 +5892,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+@@ -5891,6 +5891,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
  
  				goto nla_put_failure;
  			}
