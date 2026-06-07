@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-261068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uZohM3BFJWpIFgIAu9opvQ
-	(envelope-from <stable+bounces-261068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:24 +0200
+	id PUF5LW5FJWpHFgIAu9opvQ
+	(envelope-from <stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCB064F7F7
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F3D64F7F2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XawexAGa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261068-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261068-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ign+1JqH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261167-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01E37301D6A4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2187730138BD
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FFE308F0A;
-	Sun,  7 Jun 2026 10:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7B52EC54A;
+	Sun,  7 Jun 2026 10:18:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4F41E98EF;
-	Sun,  7 Jun 2026 10:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924054071DA;
+	Sun,  7 Jun 2026 10:18:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827154; cv=none; b=Stxd190O4d6wPuLPFB/nWcAZ+mj5UZ29GANZTtCFMFob+f5Ie5OG6eFWLH9Yp85dQ0Gh8xuyvT8QODfwpKaHEIpiQs110Tx+3O5Ml1VUVCRn3AjrofgRMaSkxnp9eDNOI6JogE6sXxtgMRR2RQ22btg2VUpVVqCnfATfgBwOjmE=
+	t=1780827496; cv=none; b=GHQZiotr4pP8yRlNUgJK9gDa3+ohRHYu4y4K8IVpgN3opEyaaAgR/7P/tRn1Ne6JCL3+sDYAW7xl8wi5oKnZJvIIHV3llmTgug1qlQkFbSs7DOIbLJQ49rHYVljSUOWmPwzn0FfFqPydeyeE835/B446+2wQHIdiaVOkgGhDbbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827154; c=relaxed/simple;
-	bh=R0RZwEmeiepXxaGsoMQiXFw+UuYL1UzEXeC5FqQ0/ms=;
+	s=arc-20240116; t=1780827496; c=relaxed/simple;
+	bh=3RFtf7UWcMQq00+F8fVyyf/xUhkJ49i5HQqrixFbNjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjX/rastBI3uwv6w+Af/Zbb5Epf3EMTT1xKPqkzetyHtFV9OPWpbKCFOp1AHoP9UKfEaATfDqFDMVnmpiKtjsgRqT2xZBBtC83qxg7jg7t3w6alu9e1oaJ+0E9rWNu58Wg9isoe2SDR7KIGJc76breut2isawvBzPsg+jctVrOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XawexAGa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839641F00893;
-	Sun,  7 Jun 2026 10:12:32 +0000 (UTC)
+	 MIME-Version; b=dYvCxyAgTDSchvEXpGYjKuzn2IDX8vJG2041S/PRSqac0s4bBG63Qth2Zs9hfjHGFU9vZgb2tzt2yAXZCTcwwJ5230ejjtr8i4utTSt7GlpKlsSLHPGy1QUTE5nWa0pcxBvg00+4qKXiCVP4u83JD/Z3SWItgBBjsZrJ2+1rnhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ign+1JqH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A352D1F00893;
+	Sun,  7 Jun 2026 10:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827153;
-	bh=soYA2lGhCIzN4zQ8DDBJ+c+i+cVN1jHjcuWfAzRrJSI=;
+	s=korg; t=1780827495;
+	bh=7521GtjayYAUv5tCugkzKFtLlSKGJH1wlbZOAxcOYho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XawexAGaxiXhRsqjemlKxKnX2FBPP3NrHC12aOrxPMTknH5D1v5jZmZOvzqsU7Ost
-	 rTkpiYRHCuicMgiK0AABcwu77QqnCvz+YjeC+LGa4JGu2vSJqaIu0OcmCJFrR3JkAM
-	 Z/AhXXd0ZUt9KXl18u7++DgUxH3NJe/soNuZxyoU=
+	b=Ign+1JqHeIKyAgDrNmu9cbi8Wt6amLrHfPuOq9qXqLDrbThyA+zaGvqiBdeGc1iey
+	 YcjHqqBycFx5k8I+ykyKH1nW46/N0QSTxZ59tQUlkhzeGAOIgoLbT5gxAOD/pe+C5M
+	 aqtD30U10lDNQ1A0AEkGc28wFhslCqx05Y9RaZb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 067/332] bridge: Fix sleep in atomic context in sysfs path
+Subject: [PATCH 6.12 039/307] net/smc: Do not re-initialize smc hashtables
 Date: Sun,  7 Jun 2026 11:57:16 +0200
-Message-ID: <20260607095730.597778318@linuxfoundation.org>
+Message-ID: <20260607095729.129371020@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261068-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261167-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nikolay@nvidia.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pasic@linux.ibm.com,m:wintera@linux.ibm.com,m:mjambigi@linux.ibm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,167 +97,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FCB064F7F7
+X-Rspamd-Queue-Id: 66F3D64F7F2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 6d34594cc619d0d4b07d5afcad8b5984f3526dcf ]
+[ Upstream commit 9e4389b0038781f19f97895186ed941ff8ac1678 ]
 
-Since the start of the git history, brport_store() always acquired the
-bridge lock. Back then this decision made sense: The bridge lock
-protects the STP state of the bridge and its ports and at that time the
-function was only used by two STP related attributes (cost and
-priority).
+INIT_HLIST_HEAD(&smc_v*_hashinfo.ht) are called after smc_nl_init(),
+proto_register() and sock_register(). This can lead to smc_v*_hashinfo.ht
+being reset even though hash entries already exist and are being used,
+possibly resulting in a corrupted list.
 
-Nowadays, brport_store() processes a lot more attributes and most of
-them do not need the bridge lock:
+Remove unnecessary and dangerous re-initialisation of smc_v*_hashinfo.ht in
+smc_init(); it is implicitly initialised to zero anyhow. Add
+HLIST_HEAD_INIT to the definitions for clarity.
 
-* Bridge flags: Only require RTNL. Read locklessly by the data path.
-  Annotations can be added in net-next.
-
-* FDB port flushing: Only requires the FDB lock.
-
-* Multicast attributes: Only require the multicast lock.
-
-* Group forward mask: Only requires RTNL. Read locklessly by the data
-  path. Annotations can be added in net-next.
-
-* Backup port: Only requires RTNL. Read locklessly by the data path.
-
-This is a problem as the bridge calls dev_set_promiscuity() when certain
-bridge port flags change and this function can sleep since the commit
-cited below, resulting in a splat such as [1].
-
-Fix this by reducing the scope of the bridge lock and only take it when
-processing the two STP related attributes that require it. Remove the
-now stale comment from br_switchdev_set_port_flag(). The
-SWITCHDEV_F_DEFER flag can be removed in net-next.
-
-[1]
-BUG: sleeping function called from invalid context at net/core/dev_addr_lists.c:1262
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 372, name: bash
-preempt_count: 201, expected: 0
-RCU nest depth: 0, expected: 0
-5 locks held by bash/372:
-#0: ffff88810c51c3f0 (sb_writers#7){.+.+}-{0:0}, at: ksys_write (fs/read_write.c:740)
-#1: ffff888115ce9480 (&of->mutex){+.+.}-{4:4}, at: kernfs_fop_write_iter (fs/kernfs/file.c:343)
-#2: ffff88810b9fd330 (kn->active#37){.+.+}-{0:0}, at: kernfs_fop_write_iter (fs/kernfs/file.c:80 fs/kernfs/file.c:344)
-#3: ffffffffa59473a0 (rtnl_mutex){+.+.}-{4:4}, at: brport_store (net/bridge/br_sysfs_if.c:326)
-#4: ffff8881099d2d58 (&br->lock){+...}-{3:3}, at: brport_store (./include/linux/spinlock.h:348 net/bridge/br_sysfs_if.c:345)
-Preemption disabled at:
- 0x0
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-__might_resched.cold (kernel/sched/core.c:9163)
-netif_rx_mode_run (net/core/dev_addr_lists.c:1262)
-netif_rx_mode_sync (net/core/dev_addr_lists.c:1428)
-dev_set_promiscuity (net/core/dev_api.c:289)
-br_manage_promisc (net/bridge/br_if.c:135 net/bridge/br_if.c:172)
-br_port_flags_change (net/bridge/br_if.c:242 net/bridge/br_if.c:747)
-store_learning (net/bridge/br_sysfs_if.c:79 net/bridge/br_sysfs_if.c:235)
-brport_store (net/bridge/br_sysfs_if.c:346)
-kernfs_fop_write_iter (fs/kernfs/file.c:352)
-new_sync_write (fs/read_write.c:595)
-vfs_write (fs/read_write.c:688)
-ksys_write (fs/read_write.c:740)
-do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-
-Fixes: 78cd408356fe ("net: add missing instance lock to dev_set_promiscuity")
-Reviewed-by: Nikolay Aleksandrov <nikolay@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260526064818.272516-3-idosch@nvidia.com
+Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
+Suggested-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Link: https://patch.msgid.link/20260521145639.10317-1-wintera@linux.ibm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_switchdev.c |  1 -
- net/bridge/br_sysfs_if.c  | 30 ++++++++++++++++++++++--------
- 2 files changed, 22 insertions(+), 9 deletions(-)
+ net/smc/af_smc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index 4fac002922d22a..58257e9e9d30b6 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -99,7 +99,6 @@ int br_switchdev_set_port_flag(struct net_bridge_port *p,
- 	attr.u.brport_flags.val = flags;
- 	attr.u.brport_flags.mask = mask;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index c96abb1386be4b..6f3469ad54a165 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -187,10 +187,12 @@ static bool smc_hs_congested(const struct sock *sk)
  
--	/* We run from atomic context here */
- 	err = call_switchdev_notifiers(SWITCHDEV_PORT_ATTR_SET, p->dev,
- 				       &info.info, extack);
- 	err = notifier_to_errno(err);
-diff --git a/net/bridge/br_sysfs_if.c b/net/bridge/br_sysfs_if.c
-index 1f57c36a7fc097..d6df81fa0d13fe 100644
---- a/net/bridge/br_sysfs_if.c
-+++ b/net/bridge/br_sysfs_if.c
-@@ -86,16 +86,34 @@ static ssize_t show_path_cost(struct net_bridge_port *p, char *buf)
- 	return sysfs_emit(buf, "%d\n", p->path_cost);
- }
+ struct smc_hashinfo smc_v4_hashinfo = {
+ 	.lock = __RW_LOCK_UNLOCKED(smc_v4_hashinfo.lock),
++	.ht = HLIST_HEAD_INIT,
+ };
  
--static BRPORT_ATTR(path_cost, 0644,
--		   show_path_cost, br_stp_set_path_cost);
-+static int store_path_cost(struct net_bridge_port *p, unsigned long v)
-+{
-+	int ret;
-+
-+	spin_lock_bh(&p->br->lock);
-+	ret = br_stp_set_path_cost(p, v);
-+	spin_unlock_bh(&p->br->lock);
-+	return ret;
-+}
-+
-+static BRPORT_ATTR(path_cost, 0644, show_path_cost, store_path_cost);
+ struct smc_hashinfo smc_v6_hashinfo = {
+ 	.lock = __RW_LOCK_UNLOCKED(smc_v6_hashinfo.lock),
++	.ht = HLIST_HEAD_INIT,
+ };
  
- static ssize_t show_priority(struct net_bridge_port *p, char *buf)
- {
- 	return sysfs_emit(buf, "%d\n", p->priority);
- }
- 
--static BRPORT_ATTR(priority, 0644,
--			 show_priority, br_stp_set_port_priority);
-+static int store_priority(struct net_bridge_port *p, unsigned long v)
-+{
-+	int ret;
-+
-+	spin_lock_bh(&p->br->lock);
-+	ret = br_stp_set_port_priority(p, v);
-+	spin_unlock_bh(&p->br->lock);
-+	return ret;
-+}
-+
-+static BRPORT_ATTR(priority, 0644, show_priority, store_priority);
- 
- static ssize_t show_designated_root(struct net_bridge_port *p, char *buf)
- {
-@@ -334,17 +352,13 @@ static ssize_t brport_store(struct kobject *kobj,
- 			ret = -ENOMEM;
- 			goto out_unlock;
- 		}
--		spin_lock_bh(&p->br->lock);
- 		ret = brport_attr->store_raw(p, buf_copy);
--		spin_unlock_bh(&p->br->lock);
- 		kfree(buf_copy);
- 	} else if (brport_attr->store) {
- 		val = simple_strtoul(buf, &endp, 0);
- 		if (endp == buf)
- 			goto out_unlock;
--		spin_lock_bh(&p->br->lock);
- 		ret = brport_attr->store(p, val);
--		spin_unlock_bh(&p->br->lock);
+ int smc_hash_sk(struct sock *sk)
+@@ -3594,8 +3596,6 @@ static int __init smc_init(void)
+ 		pr_err("%s: sock_register fails with %d\n", __func__, rc);
+ 		goto out_proto6;
  	}
+-	INIT_HLIST_HEAD(&smc_v4_hashinfo.ht);
+-	INIT_HLIST_HEAD(&smc_v6_hashinfo.ht);
  
- 	if (!ret) {
+ 	rc = smc_ib_register_client();
+ 	if (rc) {
 -- 
 2.53.0
 
