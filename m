@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f/PZGBNOJWqAGgIAu9opvQ
-	(envelope-from <stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:15 +0200
+	id JkQoGoRPJWoqGwIAu9opvQ
+	(envelope-from <stable+bounces-261847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035CA650207
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:55:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCEF66503B3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="vOn/bDa1";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261753-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Lvb3x12a;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261847-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261847-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6EA5730054E5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A69D300B77C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1827A308F38;
-	Sun,  7 Jun 2026 10:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D346212564;
+	Sun,  7 Jun 2026 11:01:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3218287510;
-	Sun,  7 Jun 2026 10:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B1B282F30;
+	Sun,  7 Jun 2026 11:01:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829713; cv=none; b=oqcdmEaiEVNVskQyyBbpuhFI0hUMJblhyc+fMk42MnP0bnZyg9p2yJLYAa2iCHVBGdLFkvRMH/f8VFegzzyxkXWgroKNLgysYs06fNYSQMgM6FIBI7P7KKkkRXJ1DuzJqPvQMeokErJt9gA0YtayiRcJ36le7eH79EVrdVQte60=
+	t=1780830080; cv=none; b=R+H/cCKI4gYrpw01B3EHy38omIt/+6tNzw3LnBtovet0xYjSjUH8wlmvh+sL1MyQX3TXzUymE7+tPJe7R6TmnG1MM6Qvq8IIFX5afKqbdTBhpW9eLq3ONpWoKRBzO44vE7qc15Oe946nbQ+v+4WFrvpVQ69wsnrguWWmOeXHP+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829713; c=relaxed/simple;
-	bh=1aZpopYgdI7vGt0dVE3KMSdqbFDMTH1YOj2PlP9faeg=;
+	s=arc-20240116; t=1780830080; c=relaxed/simple;
+	bh=ZM3pYpttLHR/PT4SM51yf67t0300N0hKGBgz1tOQYrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FZkuEVyzsq7EIl8IcaecfwhaHBjJrEvuf331Dr3D8z3nsbz93PvTyZW72WEYMDza1Yqm9XTrUJbs9Tv+/Bh08TV+mRRCz+GxInGAHeCVDNJcMjA9xrFg5MFHqDbr+kuAXVccyW/3Ein+kmGfOYyDU+459gRymVlY2W2ruNZ0Si4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vOn/bDa1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45861F00893;
-	Sun,  7 Jun 2026 10:55:11 +0000 (UTC)
+	 MIME-Version; b=gu1SXA3XVGRsJgileJeI11LFqsLafpvMpCeZZkX7D9G/wjnFqTfPCphAYFE3ylmppXQJ1DrpkcEmV+WO54h0ljEMdy3vXkEDsgBnCikN3vu/8fdi1udDKNxQk4PcZwjQK1EZZFkLZIhY+LbEMuFqv22uit1XHR7WH/r8SIPaPSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lvb3x12a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5BC1F00893;
+	Sun,  7 Jun 2026 11:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829712;
-	bh=qIgGREfk34jAxaFVucJQ7q1eiYU2ZsOyeNsanXw1+Ko=;
+	s=korg; t=1780830078;
+	bh=/nnWR+oETA5cZ0fT56w4h6i/XnzOK1pXCt7eataVLvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vOn/bDa1cq348/RDLU7w0j4fdMgc+3tj+Z5shH9ltrEkcaXpxxIqM/JygUbvgOwqZ
-	 6dKzY3pO9aUZwV9Rh8Kvm4okN8Jxp+zm8zBeAlkApzcyVnFaurBs78bfeLOLr+pMhO
-	 ZPXLb8KtFEzb6BEoTC6mtZNxjtKWuKfRD90dLFIQ=
+	b=Lvb3x12a6CQRRTYcdpHdqih+x9PRToQ+fTqAy7Dfc0LhrrJgHsI1npHoLoDxYGWRB
+	 kPvjsVBONbNL6sq8oYUmYzsMv631sdskR/K+/JJ1kgHeCzqT93RQeN3PuPkJCd+3vl
+	 cEDNuwlDzVbsna92ZZcX5bZV/trL8L6rPF4iL3AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 307/332] drm/amdgpu: fix amdgpu_hmm_range_get_pages
-Date: Sun,  7 Jun 2026 12:01:16 +0200
-Message-ID: <20260607095739.359901296@linuxfoundation.org>
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 280/307] ice: fix VF queue configuration with low MTU values
+Date: Sun,  7 Jun 2026 12:01:17 +0200
+Message-ID: <20260607095738.013537932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +70,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:vitaly.prosyak@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261753-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261847-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jtornosm@redhat.com,m:jacob.e.keller@intel.com,m:michal.swiatkowski@linux.intel.com,m:pmenzel@molgen.mpg.de,m:rafal.romanowski@intel.com,m:anthony.l.nguyen@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp,mpg.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 035CA650207
+X-Rspamd-Queue-Id: DCEF66503B3
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit 962d684b5dc0741dcd93485d41b450de402d5592 upstream.
+[ Upstream commit 3ba4dd024d26372733d1c02e13e076c6016e3320 ]
 
-The notifier sequence must only be read once or otherwise we could work
-with invalid pages.
+The ice driver's VF queue configuration validation rejects
+databuffer_size values below 1024 bytes, which prevents VFs from
+using MTU values below 871 bytes.
 
-While at it also fix the coding style, e.g. drop the pre-initialized
-return value and use the common define for 2G range.
+The iavf driver calculates databuffer_size based on the MTU using:
+  databuffer_size = ALIGN(MTU + LIBETH_RX_LL_LEN, 128)
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Tested-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c08972f555945cda57b0adb72272a37910153390)
-Cc: stable@vger.kernel.org
+where LIBETH_RX_LL_LEN = 26 (ETH_HLEN + 2*VLAN_HLEN + ETH_FCS_LEN).
+
+For MTU values below 871:
+  MTU 870: 870 + 26 = 896, aligned to 128 = 896 (< 1024, rejected)
+  MTU 871: 871 + 26 = 897, aligned to 128 = 1024 (>= 1024, accepted)
+
+The 1024-byte minimum seems unnecessarily restrictive, because the hardware
+supports databuffer_size as low as 128 bytes (the alignment boundary),
+which should allow MTU values down to the standard minimum of 68 bytes.
+
+I haven't found the reason why the limit was configured in the commit
+9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message"), so
+with no more information and since it is working, change the minimum
+databuffer_size validation from 1024 to 128 bytes to allow standard low
+MTU values while still preventing invalid configurations.
+
+Fixes: 9c7dd7566d18 ("ice: add validation in OP_CONFIG_VSI_QUEUES VF message")
+cc: stable@vger.kernel.org
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260515182419.1597859-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ applied the change to ice_virtchnl.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
-@@ -51,8 +51,6 @@
- #include "amdgpu_amdkfd.h"
- #include "amdgpu_hmm.h"
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -1746,7 +1746,7 @@ static int ice_vc_cfg_qs_msg(struct ice_
  
--#define MAX_WALK_BYTE	(2UL << 30)
--
- /**
-  * amdgpu_hmm_invalidate_gfx - callback to notify about mm change
-  *
-@@ -171,11 +169,13 @@ int amdgpu_hmm_range_get_pages(struct mm
- 			       void *owner,
- 			       struct amdgpu_hmm_range *range)
- {
--	unsigned long end;
-+	const u64 max_bytes = SZ_2G;
-+
-+	struct hmm_range *hmm_range = &range->hmm_range;
- 	unsigned long timeout;
- 	unsigned long *pfns;
--	int r = 0;
--	struct hmm_range *hmm_range = &range->hmm_range;
-+	unsigned long end;
-+	int r;
- 
- 	pfns = kvmalloc_array(npages, sizeof(*pfns), GFP_KERNEL);
- 	if (unlikely(!pfns)) {
-@@ -192,8 +192,9 @@ int amdgpu_hmm_range_get_pages(struct mm
- 	end = start + npages * PAGE_SIZE;
- 	hmm_range->dev_private_owner = owner;
- 
-+	hmm_range->notifier_seq = mmu_interval_read_begin(notifier);
- 	do {
--		hmm_range->end = min(hmm_range->start + MAX_WALK_BYTE, end);
-+		hmm_range->end = min(hmm_range->start + max_bytes, end);
- 
- 		pr_debug("hmm range: start = 0x%lx, end = 0x%lx",
- 			hmm_range->start, hmm_range->end);
-@@ -201,7 +202,6 @@ int amdgpu_hmm_range_get_pages(struct mm
- 		timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
- 
- retry:
--		hmm_range->notifier_seq = mmu_interval_read_begin(notifier);
- 		r = hmm_range_fault(hmm_range);
- 		if (unlikely(r)) {
- 			if (r == -EBUSY && !time_after(jiffies, timeout))
-@@ -211,7 +211,7 @@ retry:
- 
- 		if (hmm_range->end == end)
- 			break;
--		hmm_range->hmm_pfns += MAX_WALK_BYTE >> PAGE_SHIFT;
-+		hmm_range->hmm_pfns += max_bytes >> PAGE_SHIFT;
- 		hmm_range->start = hmm_range->end;
- 	} while (hmm_range->end < end);
- 
+ 			if (qpi->rxq.databuffer_size != 0 &&
+ 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
+-			     qpi->rxq.databuffer_size < 1024))
++			     qpi->rxq.databuffer_size < 128))
+ 				goto error_param;
+ 			ring->rx_buf_len = qpi->rxq.databuffer_size;
+ 			if (qpi->rxq.max_pkt_size > max_frame_size ||
 
 
 
