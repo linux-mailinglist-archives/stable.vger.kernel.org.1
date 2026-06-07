@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9QAJISNDJWopFQIAu9opvQ
-	(envelope-from <stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:35 +0200
+	id PBCfEdxDJWqAFQIAu9opvQ
+	(envelope-from <stable+bounces-260998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3475564F575
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2E3E64F639
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wnagz0ZA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ct4oSH7z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260998-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260998-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C6C43015D1E
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28E91304650C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258552F7EFE;
-	Sun,  7 Jun 2026 10:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C43234994;
+	Sun,  7 Jun 2026 10:08:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBEC234994;
-	Sun,  7 Jun 2026 10:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231321DE8AE;
+	Sun,  7 Jun 2026 10:08:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826840; cv=none; b=Rs0wkDONZS16KsXMhrW6ATCQVZzVKhTDg5E40fLByBnKd9DKtJEXbIJNCavjhxHGigwZecKP6uvzABEr7BPHV4vQc5yGOSy4xVbbw2/+MY+FkuOECiz8QywaeOqqKJUnWLIGdIX+CCS52Ljhv6LlcMAn+qxKkipXPncHnqMa8ko=
+	t=1780826915; cv=none; b=kuKY8iRldJvF9efHhqt00IwvKkUbqtznCoZrr6audYDUIEHJlCFXykG7yFClvYYTeMzBlAYG6uao0PUAAMmcSyoNN39TWizJ58MM1g8gtbf+PiDQE7UNvRF1gL2XNNDpKdJejoIIxc/+NHarWJ3l60EzGh2h71Vj9SLdzcNDGyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826840; c=relaxed/simple;
-	bh=ZbbotknhWcylVXe8sNN7jpS1lkiwVUj2xG5xrTtJMFs=;
+	s=arc-20240116; t=1780826915; c=relaxed/simple;
+	bh=/LUKfYqnL0Cm/G2uLE2v60RgDlOpdKbrU6v3BskY4NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O8i4vsulkIsTgBegXKY6UFNwRP27PkFqv8vhFs51l5EbBcEn9sIGQAarUhQlARfjP9h3hryZCy0oa/gKDPUijRhvFJnQWMTCdlTVnNd6qwOQDwwTCNm1h9sDu2or+vDrjfscRxOEJ1k5NBkWO7jgrR50PfeUyqLQ1fU1/CY/fwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnagz0ZA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8781F00893;
-	Sun,  7 Jun 2026 10:07:19 +0000 (UTC)
+	 MIME-Version; b=F5DkWZqIH/UhRp4ZRuIc91+CKO39JSxzr6GFXy6Ff4ZZR73u6bhcj50UsCVHAZuLPINC1pqX+NHA/2xWjty5smY6uzk//zWXt7JRG0uxiESY1gUakav9VHL3X480Qhy/sXp+wJN62qhkG42Ktdolx0H9o3NWzfqoMSJwKspzbD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct4oSH7z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DCD1F00893;
+	Sun,  7 Jun 2026 10:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826839;
-	bh=Ty25WKT8XsLbvQ//0KlOqYSav23lSOz+L55OS3rJ/+A=;
+	s=korg; t=1780826914;
+	bh=Pp+SwRgmy/wuvZdSR9F+QrHFiGnkPv/vIWJgllDMKHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wnagz0ZAVmPAnmgRTwuEXwpNHS2DyOTzdTpC/hFHTflaZu9nyeIzqapSjQbcxRKt7
-	 Tv+Kf53TcbuIeVbLKLpWtB53+NdgRLSg/tdJ0u2rhPfyzIHVubmZhZu+N4GoyUaOQk
-	 ZWEcVezA69TAHw9seDCZ5XdgWH+OdmA3SY/y+fZI=
+	b=Ct4oSH7zK1nxJ/dAiSUOziFpB2NUIaxcFGpzperk/FpAS1bg5Ctcd6kFafm1foBOk
+	 KkFhMD++XUYidvNlEmPlJKPUP2l2M0vSK4gGjlgK/TEs2ljIe6/aJKV0DGBuuyrtqE
+	 kinqCwHJc+kwYcce7GYaaoV+HrCzS6EeuoriuvHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 034/332] ASoC: Intel: bytcht_es8316: Fix MCLK leak on init errors
+Subject: [PATCH 6.12 006/307] xfrm: move policy_bydst RCU sync from per-netns .exit to .pre_exit
 Date: Sun,  7 Jun 2026 11:56:43 +0200
-Message-ID: <20260607095729.348996909@linuxfoundation.org>
+Message-ID: <20260607095727.876486296@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,149 +65,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-260976-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260998-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3475564F575
+X-Rspamd-Queue-Id: B2E3E64F639
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Usama Arif <usama.arif@linux.dev>
 
-[ Upstream commit afb2a3a9d8369d18122a0d7cd294eba9a98259c6 ]
+[ Upstream commit 3e52417318473782012b236d0325bf7d2266a597 ]
 
-byt_cht_es8316_init() enables MCLK before configuring the codec sysclk
-and creating the headset jack. If either of those later steps fails, the
-function returns without disabling MCLK, leaving the clock enabled after
-card registration fails.
+The struct pernet_operations docstring in include/net/net_namespace.h
+explicitly warns against blocking RCU primitives in .exit handlers:
 
-Track whether this driver enabled MCLK and disable it on the init error
-paths. Add the matching DAI link exit callback so the same clock enable
-is also balanced when ASoC cleans up a successfully initialized link.
+    Exit methods using blocking RCU primitives, such as
+    synchronize_rcu(), should be implemented via exit_batch.
+    [...]
+    Please, avoid synchronize_rcu() at all, where it's possible.
 
-Fixes: a03bdaa565cb ("ASoC: Intel: add machine driver for BYT/CHT + ES8316")
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260519-asoc-bytcht-es8316-mclk-leak-v1-1-b4a11cdc2afd@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    Note that a combination of pre_exit() and exit() can
+    be used, since a synchronize_rcu() is guaranteed between
+    the calls.
+
+xfrm_policy_fini() violates this: it calls synchronize_rcu() before
+freeing the policy_bydst hash tables (so no RCU reader is mid-
+traversal at free time), but runs from xfrm_net_ops.exit -- once per
+namespace -- so a cleanup_net() of N namespaces pays N full RCU
+grace periods serially.
+
+Use the documented pre_exit/exit split. Move the policy flush (and
+the workqueue drains it depends on) into a new .pre_exit handler;
+xfrm_policy_fini() then runs in .exit and frees the hash tables
+after the synchronize_rcu_expedited() that cleanup_net() guarantees
+between the two phases. Providing O(1) RCU grace periods per batch
+instead of O(N).
+
+Observed on Linux 6.18 with a workload doing unshare(CLONE_NEWNET)
+at ~13/sec sustained: cleanup_net() and the netns_wq rescuer kthread
+both stuck in xfrm_policy_fini()'s synchronize_rcu(), >300k struct
+net accumulated in the cleanup queue, Percpu in /proc/meminfo climbed
+to 130+ GB on 256-CPU hosts, and memcg OOMs followed. setup_net and
+__put_net counts were balanced, ruling out a refcount leak.
+
+Fixes: 069daad4f2ae ("xfrm: Wait for RCU readers during policy netns exit")
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcht_es8316.c | 29 ++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ net/xfrm/xfrm_policy.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
-index 192e2a394ff3d0..ea387dc7427382 100644
---- a/sound/soc/intel/boards/bytcht_es8316.c
-+++ b/sound/soc/intel/boards/bytcht_es8316.c
-@@ -40,6 +40,7 @@ struct byt_cht_es8316_private {
- 	struct gpio_desc *speaker_en_gpio;
- 	struct device *codec_dev;
- 	bool speaker_en;
-+	bool mclk_enabled;
- };
- 
- enum {
-@@ -170,6 +171,15 @@ static struct snd_soc_jack_pin byt_cht_es8316_jack_pins[] = {
- 	},
- };
- 
-+static void byt_cht_es8316_disable_mclk(struct byt_cht_es8316_private *priv)
-+{
-+	if (!priv->mclk_enabled)
-+		return;
-+
-+	clk_disable_unprepare(priv->mclk);
-+	priv->mclk_enabled = false;
-+}
-+
- static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
- {
- 	struct snd_soc_component *codec = snd_soc_rtd_to_codec(runtime, 0)->component;
-@@ -227,12 +237,14 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
- 	ret = clk_prepare_enable(priv->mclk);
- 	if (ret)
- 		dev_err(card->dev, "unable to enable MCLK\n");
-+	else
-+		priv->mclk_enabled = true;
- 
- 	ret = snd_soc_dai_set_sysclk(snd_soc_rtd_to_codec(runtime, 0), 0, 19200000,
- 				     SND_SOC_CLOCK_IN);
- 	if (ret < 0) {
- 		dev_err(card->dev, "can't set codec clock %d\n", ret);
--		return ret;
-+		goto err_disable_mclk;
- 	}
- 
- 	ret = snd_soc_card_jack_new_pins(card, "Headset",
-@@ -241,13 +253,25 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
- 					 ARRAY_SIZE(byt_cht_es8316_jack_pins));
- 	if (ret) {
- 		dev_err(card->dev, "jack creation failed %d\n", ret);
--		return ret;
-+		goto err_disable_mclk;
- 	}
- 
- 	snd_jack_set_key(priv->jack.jack, SND_JACK_BTN_0, KEY_PLAYPAUSE);
- 	snd_soc_component_set_jack(codec, &priv->jack, NULL);
- 
- 	return 0;
-+
-+err_disable_mclk:
-+	byt_cht_es8316_disable_mclk(priv);
-+	return ret;
-+}
-+
-+static void byt_cht_es8316_exit(struct snd_soc_pcm_runtime *runtime)
-+{
-+	struct snd_soc_card *card = runtime->card;
-+	struct byt_cht_es8316_private *priv = snd_soc_card_get_drvdata(card);
-+
-+	byt_cht_es8316_disable_mclk(priv);
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index fca07f8e60749a..863e37d3d7f0f7 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4264,21 +4264,21 @@ static int __net_init xfrm_policy_init(struct net *net)
+ 	return -ENOMEM;
  }
  
- static int byt_cht_es8316_codec_fixup(struct snd_soc_pcm_runtime *rtd,
-@@ -353,6 +377,7 @@ static struct snd_soc_dai_link byt_cht_es8316_dais[] = {
- 						| SND_SOC_DAIFMT_CBC_CFC,
- 		.be_hw_params_fixup = byt_cht_es8316_codec_fixup,
- 		.init = byt_cht_es8316_init,
-+		.exit = byt_cht_es8316_exit,
- 		SND_SOC_DAILINK_REG(ssp2_port, ssp2_codec, platform),
- 	},
+-static void xfrm_policy_fini(struct net *net)
++static void __net_exit xfrm_net_pre_exit(struct net *net)
+ {
+-	struct xfrm_pol_inexact_bin *b, *t;
+-	unsigned int sz;
+-	int dir;
+-
+ 	disable_work_sync(&net->xfrm.policy_hthresh.work);
+-
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
+ #endif
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
++}
+ 
+-	synchronize_rcu();
++static void xfrm_policy_fini(struct net *net)
++{
++	struct xfrm_pol_inexact_bin *b, *t;
++	unsigned int sz;
++	int dir;
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.policy_all));
+ 
+@@ -4356,6 +4356,7 @@ static void __net_exit xfrm_net_exit(struct net *net)
+ 
+ static struct pernet_operations __net_initdata xfrm_net_ops = {
+ 	.init = xfrm_net_init,
++	.pre_exit = xfrm_net_pre_exit,
+ 	.exit = xfrm_net_exit,
  };
+ 
 -- 
 2.53.0
 
