@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0K/qAihJJWp5GAIAu9opvQ
-	(envelope-from <stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:16 +0200
+	id YEBEEQ9JJWppGAIAu9opvQ
+	(envelope-from <stable+bounces-261377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B426F64FCD0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03A664FCA1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rqi9V8nP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261412-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QqZm4+1f;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261377-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261377-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2F07F30041D1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8B1B302D1B4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FCB2D3A69;
-	Sun,  7 Jun 2026 10:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E53327BFA;
+	Sun,  7 Jun 2026 10:31:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4800912CDA5;
-	Sun,  7 Jun 2026 10:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1F51FE47B;
+	Sun,  7 Jun 2026 10:31:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828452; cv=none; b=g05ZXe0+v569gH5VkBtCxAqjiK/UBNAv4s4ZHXXiSkQDVdFSZ3YGvLIrpcBloB2iBAkqtX8W3gAfN+rFc/yYK6u9eiuefemjLQIWAQSHSiY2MFLaTA2GVv82ZaxlTKqm9SOP8+umlSyJ1qtw361jR7tjtcPn3fiVo4Qyvlm3OHQ=
+	t=1780828317; cv=none; b=T7HbXct/vIwtXcbMLWDu2R91ClAmLrSywfLa+foIbtHxMRMZD0GQb8CRHZjpps7xPy8yY4JjLC5nPf9+7s0E8EIXI/K7ojZKoJ0iDtq2yxuMFE5FIM25SfZ33h3aVwaCvx9d8kEbCUrCjKmVbc5nQFMqPfnXXz+rYEOvaXFVioE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828452; c=relaxed/simple;
-	bh=6OCilophEIHUpoRH48neu2mYotDRu+Qkn8q3tlei2K8=;
+	s=arc-20240116; t=1780828317; c=relaxed/simple;
+	bh=dLvr0BA6vzByhas1AN0BDV9T+YBWQFZsxI9cJdK7o5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifCrvrJdCZ2cy+FO3J3TFaFVaDo1KX330ZegA4f21q5tz5FCW4hxdmlNuLH0Q8cunaLMghq6MyO/jpEOkS6lFBlg5NGpAl3r9EZqK37eb0BMnhffPLyuco2V1dM3KJWBzg7bEcZL1HHo2T0eMsVJvB2GoteOcPLDjhOI8GJRS5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rqi9V8nP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232101F00893;
-	Sun,  7 Jun 2026 10:34:09 +0000 (UTC)
+	 MIME-Version; b=Qhc5iIuyD9T5OSKVWOvXPGO1dii5ZNDR4KfaVlfY5KcHPQdVcw8Yr8hmyWKCwbK/JO2fti/yQXiOITBl78wLL8+m7bcrMo1HWbIh4bz6AYzz3E4K156vB/eK428KGnz9W7ln69j1jE5GroVvFltOE1VeLeOsWAWlT9DyrZBJO8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqZm4+1f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E8B1F00893;
+	Sun,  7 Jun 2026 10:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828451;
-	bh=GbIB+PNazU5g8Fa4kph1LzNL5Wey/704joyZzd6LkgI=;
+	s=korg; t=1780828315;
+	bh=wq8DzQUz6J/cj5ImNa7eNLXZFzbqTMXgyJnD9ljlT+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rqi9V8nPKOgeQ7PBZGFyBUffn+eHV4V5xMpiCMU13fkWyCsCOJNtWd7lgKQ9OO65p
-	 V4AdoK2Gha+UbbSBFW8nQrKFW/jSV/q5uEYOOEbBC5DY1IcUW7mYuVBg6RTWu1ERKY
-	 ZXHazkUYmjKL1gsuVoCNThc/3RgrQ4hda5pdHeFs=
+	b=QqZm4+1fFjiuwQS058/fgJaMl0eCLhO8Re4w7IcwncWIGWH+jXsHwHEI7n5HI5SeQ
+	 3jEnsAgZwu5fr01zCGVzp6ZxMBLOOKPeuYznwcqXw1sL8OuPb7XaAKMytaZTTRF79F
+	 Gkpdf6UI6asBXx7BVXgwo6Yc/diRy0K9xchgV18o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 139/307] Bluetooth: btusb: Allow firmware re-download when version matches
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 149/315] KVM: SEV: Check PSC request indices against the actual size of the buffer
 Date: Sun,  7 Jun 2026 11:58:56 +0200
-Message-ID: <20260607095732.837928183@linuxfoundation.org>
+Message-ID: <20260607095733.079756614@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +70,104 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261412-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuai.zhang@oss.qualcomm.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261377-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,intel.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B426F64FCD0
+X-Rspamd-Queue-Id: C03A664FCA1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 82855073c1081732656734b74d7d1d5e4cfd0da7 upstream.
+commit 121d88de56bc5c0ba0ce2f6381af67f948a7e7c1 upstream.
 
-The Bluetooth host decides whether to download firmware by reading the
-controller firmware download completion flag and firmware version
-information.
+When processing Page State Change (PSC) requests, validate the PSC buffer
+against the effective size of the scratch area, which could be less than
+the maximum size if the guest provided a pointer that isn't exactly at the
+start of the GHCB shared buffer.
 
-If a USB error occurs during the firmware download process (for example
-due to a USB disconnect), the download is aborted immediately. An
-incomplete firmware transfer does not cause the controller to set the
-download completion flag, but the firmware version information may be
-updated at an early stage of the download process.
-
-In this case, after USB reconnection, the host attempts to re-download
-the firmware because the download completion flag is not set. However,
-since the controller reports the same firmware version as the target
-firmware, the download is skipped. This ultimately results in the
-firmware not being properly updated on the controller.
-
-This change removes the restriction that skips firmware download when
-the versions are equal. It covers scenarios where the USB connection
-can be disconnected at any time and ensures that firmware download can
-be retriggered after USB reconnection, allowing the Bluetooth firmware
-to be correctly and completely updated.
-
-Fixes: 3267c884cefa ("Bluetooth: btusb: Add support for QCA ROME chipset family")
+Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-10-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3430,7 +3430,13 @@ static int btusb_setup_qca_load_rampatch
- 		    "firmware rome 0x%x build 0x%x",
- 		    rver_rom, rver_patch, ver_rom, ver_patch);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3850,7 +3850,7 @@ static int snp_begin_psc(struct vcpu_svm
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct psc_hdr *hdr = &psc->hdr;
+ 	struct psc_entry entry_start;
+-	u16 idx, idx_start, idx_end;
++	u16 idx, idx_start, idx_end, max_nr_entries;
+ 	int npages;
+ 	bool huge;
+ 	u64 gfn;
+@@ -3860,6 +3860,19 @@ static int snp_begin_psc(struct vcpu_svm
+ 		return 1;
+ 	}
  
--	if (rver_rom != ver_rom || rver_patch <= ver_patch) {
-+	/* Allow rampatch when the patch version equals the firmware version.
-+	 * A firmware download may be aborted by a transient USB error (e.g.
-+	 * disconnect) after the controller updates version info but before
-+	 * completion.
-+	 * Allowing equal versions enables re-flashing during recovery.
++	/*
++	 * GHCB v2 requires the scratch area to reside within the GHCB itself,
++	 * and PSC requests are only supported for GHCB v2+.  Thus it should be
++	 * impossible to exceed the max PSC entry count (which is derived from
++	 * the size of the shared GHCB buffer).
 +	 */
-+	if (rver_rom != ver_rom || rver_patch < ver_patch) {
- 		bt_dev_err(hdev, "rampatch file version did not match with firmware");
- 		err = -EINVAL;
- 		goto done;
++	max_nr_entries = (sev_es->ghcb_sa_len - sizeof(struct psc_hdr)) /
++			 sizeof(struct psc_entry);
++	if (WARN_ON_ONCE(max_nr_entries > VMGEXIT_PSC_MAX_COUNT)) {
++		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
++		return 1;
++	}
++
+ next_range:
+ 	/* There should be no other PSCs in-flight at this point. */
+ 	if (WARN_ON_ONCE(svm->sev_es.psc_inflight)) {
+@@ -3875,7 +3888,7 @@ next_range:
+ 	idx_start = hdr->cur_entry;
+ 	idx_end = hdr->end_entry;
+ 
+-	if (idx_end >= VMGEXIT_PSC_MAX_COUNT) {
++	if (idx_end >= max_nr_entries) {
+ 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_INVALID_HDR);
+ 		return 1;
+ 	}
 
 
 
