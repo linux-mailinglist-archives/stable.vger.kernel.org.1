@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-261181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Jx1nEK1FJWpuFgIAu9opvQ
-	(envelope-from <stable+bounces-261181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:25 +0200
+	id 1evCDCpGJWrBFgIAu9opvQ
+	(envelope-from <stable+bounces-261206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A3064F852
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFCA64F90E
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u2PND4EB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261181-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261181-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qM8whi7s;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261206-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261206-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 798C1300382A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:19:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9CD023004CA3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC592DB7A3;
-	Sun,  7 Jun 2026 10:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F362AD00;
+	Sun,  7 Jun 2026 10:20:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103192AD00;
-	Sun,  7 Jun 2026 10:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AED4CB5B;
+	Sun,  7 Jun 2026 10:20:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827558; cv=none; b=ApnvbeBehh1wrr3FyXILnFRTd3RYpb0qHqZDgVQXre/A7864ZTVJs4UdaPPv0ISGQ/vZ9C+z9BbIfyfa+gic7FQUgK6DdUGKW6ViUOCXb2Wj7lbthGK9tPR04iJ9+DzYVgkGKPTIcTrSuc0LVAymX9wqcOIAiGFADh+NklkIQkQ=
+	t=1780827656; cv=none; b=DAsyINqZCpGzE2XOPqF5Ju9ZuU3aZkNlKOV+HtZE/lX/PbToLv1+mpgto30otLyAr9Rh2+fmqOd9UQKj2CNlHDoctvpNnNC1p86ltULsFHxikf7tPy00lL7R7ecULgzjGe/kLpdLqlDSLoMIPolSGJzk8adFwt91d030EXJ3Lac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827558; c=relaxed/simple;
-	bh=KAd1GatiZYh2kCsA8abcnQrVkYyVt4nSI1+X2Zx6eUc=;
+	s=arc-20240116; t=1780827656; c=relaxed/simple;
+	bh=37piqtn05+qk035/rS9KIyOxXNPWja4gkKSzGeK8s0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppEWpnBDxqul3slx7EAxVqZUTYedL4iQ12li2smASylKZ3vzgJM1NKESApQYvhCgfrpdCE9Lm67gZGmogzvVRHkRxSqew5DOaii1fC3T08mlD8X5ryy0d2vdiGwPasP4yPeRIx3VfxHsMAykgICg3Hwkf0TjcRz6UJRNrXdqc0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2PND4EB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BAD1F00893;
-	Sun,  7 Jun 2026 10:19:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fw8ne4LYuI3XTF/4tKMUjI7SjEL/KsWQd5ItSSujivoJYQVKxHbpTgNuadaR0rmKIOERdhY0f9fxNa7p4QEsgG69ObLliNCrtwhiLRrbrSHDAkkGT0CK8ZhC8IBOVgEUQPtxnwpDSC+w+f5WaaSWZcw0Tt2g0baqivaCRwEHb10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qM8whi7s; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D141F00893;
+	Sun,  7 Jun 2026 10:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827557;
-	bh=hJSBhU/AQ8n+2SxpVAwHdw+kZHv69QXCtHSYWWpq+yQ=;
+	s=korg; t=1780827655;
+	bh=1tInqotr0HA6lTP8l+/Un+kD+QmouETrC2EaSOEtOD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u2PND4EBFJVWrOhmEdFJR3ms2GnW+1aqmShmYDHxMobFQItvgTU5FRZhYWUy6hK+N
-	 dDTetXcJ7EsTvmdDVyB7MOI50VuiSeOXWTmx9eWUtaUzV30ovYienVA+DOoK/xjkdV
-	 TaNuX6kqVNDDajNxHnWu1lAz5c+99voW/YM+g5oE=
+	b=qM8whi7sth2uS+gDoZYg5mUyIJhBjKDtjqIq4nAAjitJWk8q9W3q4LOm+wabzFnoL
+	 HH/lx4tXgzmDnETjFFd9Us1DFyvqjqAfA9jXz6oJM7KbvNkRQcR4pc5xkoh3I8Ayx6
+	 vO019HEc2dl9lKY36WKqPBZPcoo9Hd+Fa6qAtIwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Scardovi <scardracs@disroot.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 104/332] gpio: rockchip: teardown bugs and resource leaks
+Subject: [PATCH 6.12 076/307] net/sched: act_mirred: add loop detection
 Date: Sun,  7 Jun 2026 11:57:53 +0200
-Message-ID: <20260607095731.949365810@linuxfoundation.org>
+Message-ID: <20260607095730.555094820@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +68,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261181-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261206-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:scardracs@disroot.org,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuniyu@google.com,m:toke@redhat.com,m:jhs@mojatatu.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 42A3064F852
+X-Rspamd-Queue-Id: 6DFCA64F90E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Scardovi <scardracs@disroot.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9500077678230e36d22bf16d2b9539c13e59a801 ]
+[ Upstream commit fe946a751d9b52b7c45ca34899723b314b79b249 ]
 
-Address several teardown issues and resource leaks in the driver's remove
-path and error handling:
+Commit 0f022d32c3ec ("net/sched: Fix mirred deadlock on device recursion")
+added code in the fast path, even when act_mirred is not used.
 
-1. Debounce clock reference leak: The debounce clock (bank->db_clk) is
-   obtained using of_clk_get() which increments the clock's reference
-   count, but clk_put() is never called. Register a devm action to
-   cleanly release it on unbind. Note that of_clk_get(..., 1) remains
-   necessary over devm_clk_get() because the DT binding does not define
-   clock-names, precluding name-based lookup.
+Prepare its revert by implementing loop detection in act_mirred.
 
-2. Unregistered chained IRQ handler: The chained IRQ handler is not
-   disconnected in remove(). If a stray interrupt fires after the driver
-   is removed, the kernel attempts to execute a stale handler, leading
-   to a panic. Fix this by clearing the handler in remove().
+Adds an array of device pointers in struct netdev_xmit.
 
-3. IRQ domain leak: The linear IRQ domain and its generic chips are
-   allocated manually during probe but never removed. Remove the IRQ
-   domain during driver teardown to free the associated generic chips
-   and mappings.
+tcf_mirred_is_act_redirect() can detect if the array
+already contains the target device.
 
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Assisted-by: Antigravity:gemini-3.5-flash
-Signed-off-by: Marco Scardovi <scardracs@disroot.org>
-Link: https://patch.msgid.link/20260526171050.12785-3-scardracs@disroot.org
-[Bartosz: don't emit an error message on devres allocation failure]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20251014171907.3554413-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e80ad525fc7e ("net/sched: act_mirred: Fix return code in early mirred redirect error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rockchip.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ include/linux/netdevice_xmit.h |  9 ++++-
+ net/sched/act_mirred.c         | 62 +++++++++++++---------------------
+ 2 files changed, 31 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index f910220141f712..1ef0ba956cfd8c 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -638,10 +638,17 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
- 	return ret;
- }
+diff --git a/include/linux/netdevice_xmit.h b/include/linux/netdevice_xmit.h
+index 848735b3a7c02d..59726e6cd2cc67 100644
+--- a/include/linux/netdevice_xmit.h
++++ b/include/linux/netdevice_xmit.h
+@@ -2,6 +2,12 @@
+ #ifndef _LINUX_NETDEVICE_XMIT_H
+ #define _LINUX_NETDEVICE_XMIT_H
  
-+static void rockchip_clk_put(void *data)
-+{
-+	struct clk *clk = data;
++#if IS_ENABLED(CONFIG_NET_ACT_MIRRED)
++#define MIRRED_NEST_LIMIT	4
++#endif
 +
-+	clk_put(clk);
-+}
++struct net_device;
 +
- static int rockchip_get_bank_data(struct rockchip_pin_bank *bank)
+ struct netdev_xmit {
+ 	u16 recursion;
+ 	u8  more;
+@@ -9,7 +15,8 @@ struct netdev_xmit {
+ 	u8  skip_txqueue;
+ #endif
+ #if IS_ENABLED(CONFIG_NET_ACT_MIRRED)
+-	u8 sched_mirred_nest;
++	u8			sched_mirred_nest;
++	struct net_device	*sched_mirred_dev[MIRRED_NEST_LIMIT];
+ #endif
+ };
+ 
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 18d9378a9c1134..35812b6808e0a8 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -29,31 +29,6 @@
+ static LIST_HEAD(mirred_list);
+ static DEFINE_SPINLOCK(mirred_list_lock);
+ 
+-#define MIRRED_NEST_LIMIT    4
+-
+-#ifndef CONFIG_PREEMPT_RT
+-static u8 tcf_mirred_nest_level_inc_return(void)
+-{
+-	return __this_cpu_inc_return(softnet_data.xmit.sched_mirred_nest);
+-}
+-
+-static void tcf_mirred_nest_level_dec(void)
+-{
+-	__this_cpu_dec(softnet_data.xmit.sched_mirred_nest);
+-}
+-
+-#else
+-static u8 tcf_mirred_nest_level_inc_return(void)
+-{
+-	return current->net_xmit.sched_mirred_nest++;
+-}
+-
+-static void tcf_mirred_nest_level_dec(void)
+-{
+-	current->net_xmit.sched_mirred_nest--;
+-}
+-#endif
+-
+ static bool tcf_mirred_is_act_redirect(int action)
  {
- 	struct resource res;
--	int id = 0;
-+	int id = 0, ret;
- 
- 	if (of_address_to_resource(bank->of_node, 0, &res)) {
- 		dev_err(bank->dev, "cannot find IO resource for bank\n");
-@@ -673,6 +680,11 @@ static int rockchip_get_bank_data(struct rockchip_pin_bank *bank)
- 			dev_err(bank->dev, "cannot find debounce clk\n");
- 			return -EINVAL;
- 		}
-+
-+		ret = devm_add_action_or_reset(bank->dev, rockchip_clk_put,
-+					       bank->db_clk);
-+		if (ret)
-+			return ret;
- 		break;
- 	case GPIO_TYPE_V1:
- 		bank->gpio_regs = &gpio_regs_v1;
-@@ -789,6 +801,9 @@ static void rockchip_gpio_remove(struct platform_device *pdev)
+ 	return action == TCA_EGRESS_REDIR || action == TCA_INGRESS_REDIR;
+@@ -439,44 +414,53 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
  {
- 	struct rockchip_pin_bank *bank = platform_get_drvdata(pdev);
+ 	struct tcf_mirred *m = to_mirred(a);
+ 	int retval = READ_ONCE(m->tcf_action);
+-	unsigned int nest_level;
++	struct netdev_xmit *xmit;
+ 	bool m_mac_header_xmit;
+ 	struct net_device *dev;
+-	int m_eaction;
++	int i, m_eaction;
+ 	u32 blockid;
  
-+	irq_set_chained_handler_and_data(bank->irq, NULL, NULL);
-+	if (bank->domain)
-+		irq_domain_remove(bank->domain);
- 	gpiochip_remove(&bank->gpio_chip);
+-	nest_level = tcf_mirred_nest_level_inc_return();
+-	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
++#ifdef CONFIG_PREEMPT_RT
++	xmit = &current->net_xmit;
++#else
++	xmit = this_cpu_ptr(&softnet_data.xmit);
++#endif
++	if (unlikely(xmit->sched_mirred_nest >= MIRRED_NEST_LIMIT)) {
+ 		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
+ 				     netdev_name(skb->dev));
+-		retval = TC_ACT_SHOT;
+-		goto dec_nest_level;
++		return TC_ACT_SHOT;
+ 	}
+ 
+ 	tcf_lastuse_update(&m->tcf_tm);
+ 	tcf_action_update_bstats(&m->common, skb);
+ 
+ 	blockid = READ_ONCE(m->tcfm_blockid);
+-	if (blockid) {
+-		retval = tcf_blockcast(skb, m, blockid, res, retval);
+-		goto dec_nest_level;
+-	}
++	if (blockid)
++		return tcf_blockcast(skb, m, blockid, res, retval);
+ 
+ 	dev = rcu_dereference_bh(m->tcfm_dev);
+ 	if (unlikely(!dev)) {
+ 		pr_notice_once("tc mirred: target device is gone\n");
+ 		tcf_action_inc_overlimit_qstats(&m->common);
+-		goto dec_nest_level;
++		return retval;
+ 	}
++	for (i = 0; i < xmit->sched_mirred_nest; i++) {
++		if (xmit->sched_mirred_dev[i] != dev)
++			continue;
++		pr_notice_once("tc mirred: loop on device %s\n",
++			       netdev_name(dev));
++		tcf_action_inc_overlimit_qstats(&m->common);
++		return retval;
++	}
++
++	xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
+ 
+ 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
+ 	m_eaction = READ_ONCE(m->tcfm_eaction);
+ 
+ 	retval = tcf_mirred_to_dev(skb, m, dev, m_mac_header_xmit, m_eaction,
+ 				   retval);
+-
+-dec_nest_level:
+-	tcf_mirred_nest_level_dec();
++	xmit->sched_mirred_nest--;
+ 
+ 	return retval;
  }
- 
 -- 
 2.53.0
 
