@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-261237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RvXuIw9IJWrIFwIAu9opvQ
-	(envelope-from <stable+bounces-261237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:35 +0200
+	id hccLAOxGJWotFwIAu9opvQ
+	(envelope-from <stable+bounces-261251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1276A64FB3F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9175C64FA00
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YDeZU4kr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261237-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YBlpA7A7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261251-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261251-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3A80303CA76
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F04E301B15E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DAD324B31;
-	Sun,  7 Jun 2026 10:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC05E4071FD;
+	Sun,  7 Jun 2026 10:23:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59313242A9;
-	Sun,  7 Jun 2026 10:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4D0327204;
+	Sun,  7 Jun 2026 10:23:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827779; cv=none; b=ZTWRTL27U9B5PLwkv26OrdX5I4rVN6w+hUtfW77JKGeDmHZDKLMXSrYOY6hfmsaz77i2Q2SKYAP4dNEq7D4qvnPvg7f0iMkGz/jB578dvzI1lTVwD7Cw6ZWlCU20McCzZL7kXTitI1ujEHhz8RnNjaoleeVcaDhMdFQ70aQZRK8=
+	t=1780827835; cv=none; b=BBYCWGbFfGiOhLAj5N6cBlA5NvaQoO9y/6+WHc+hNW3hAPeVBdr7pRAnhZM7USXp56z4REEu/l6UO/sKk/KIyzltLMFLZMKsS4tznSqESeA6XbgKX4xyq2DrHyPtI3w96pjmHt6wcdGLBKddNXiFSJqZRoGZzkgsEQpMHHeAPZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827779; c=relaxed/simple;
-	bh=MSuCzoAGGF6MG7K185ZZ7pccKNbfYX9IZGgst1sVXow=;
+	s=arc-20240116; t=1780827835; c=relaxed/simple;
+	bh=KbPjsHP8481LMbvM7BEoaPMU6KmV7EOLW+PD//I0hmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B57nrPBnHu4ncSb3R5+lDPBktB+dcgIqgJE+r1b3BpKWl61rsNYYw+cSL0rxXP0wsSkNXW+MlF+JnB429CIqtuY+ZR6rzoHYxxF+SyYJ9M+iJsNF8G4hR5PviLN2PsyyEbh9jO9VDk7UWl1PZLj98HCHmEqNcsHv9Jb6JKjzAiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDeZU4kr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1921F00893;
-	Sun,  7 Jun 2026 10:22:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eRsEF1XpO/lVIZEZRjAqkAXFyvanzx+Tk1XT3toTFZIHVzdHFGyFVH1Ff+mxyBLxgLP+DYjEwxbwlf9AoEwr3Hov1SMe/y/zK9nLtCa/ys1UpAe2FNz16D1QD/DJO3fPJAv7+WibuC3iZQohBYEX0/tnEJ9+86uWxPKXTO4mlGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBlpA7A7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3471F00893;
+	Sun,  7 Jun 2026 10:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827777;
-	bh=IaPWyOck4hRgNcEuM4gtZ9Cd3kXvFpKCDxLyAd1OBj4=;
+	s=korg; t=1780827833;
+	bh=+hNm0TFvhTWQEqQn2Yzhs5wBstx2mVlq5ztSpxFbtJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YDeZU4krpUxW7S8ukI9GbH3dwr7xcsVUQsx1cpA2cNBsDgYQIb+/VcRoZQeAk9DGn
-	 T9QtNB5Er2N2utxzgB842a6Xe87cyFeuVru+0V4cOCfOhHe7iRfrIdg9obVsaRHIdO
-	 HzsBxGCA5TmJDTZ4Cmv7XiI2Msfw2d4Q7K+zn9sY=
+	b=YBlpA7A7wYksEvVHVo+ZWuVpgR8Ii5G90BOPvkmpY8YuOBsn7sfAUbsOEhmm3/NYQ
+	 87IhEubrLCHDOHH1azyZK6Mxdj0ewtEVzrpu31m9oRFBcQ2BmdwagvlQlqb/iaqmm+
+	 JF1XSIiXMD9VD/xvj9OqjBKP0onAUugjUsq/ErU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 7.0 121/332] usb: typec: ucsi: ccg: reject firmware images without a : record header
-Date: Sun,  7 Jun 2026 11:58:10 +0200
-Message-ID: <20260607095732.554662922@linuxfoundation.org>
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 104/315] iio: imu: st_lsm6dsx: fix stack leak in tagged FIFO buffer
+Date: Sun,  7 Jun 2026 11:58:11 +0200
+Message-ID: <20260607095731.465292206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +68,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261237-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261251-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo@kernel.org,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,baylibre.com:email,vger.kernel.org:from_smtp,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1276A64FB3F
+X-Rspamd-Queue-Id: 9175C64FA00
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d7486952bf74e546ee3748fb14b2d07881fa6273 upstream.
+commit c9d8e9adaa63150ef7e833480b799d0bab83a276 upstream.
 
-do_flash() locates the first .cyacd record with
+The tagged FIFO path declares iio_buff on the stack with __aligned(8)
+but no initializer, but there is a hole in the structure, which will
+then leak to userspace as ST_LSM6DSX_SAMPLE_SIZE bytes (6) will be
+copied, but the space between that and the timestamp are not
+initialized.
 
-	p = strnchr(fw->data, fw->size, ':');
-	while (p < eof) {
-		s = strnchr(p + 1, eof - p - 1, ':');
-		...
-	}
+Commit c14edb4d0bdc ("iio:imu:st_lsm6dsx Fix alignment and data leak
+issues") moved the untagged FIFO path to a kzalloc'd buffer in hw->scan,
+but for the tagged path it only added the alignment qualifier and not
+the initializer :(
 
-If the firmware image contains no ':' byte,  strnchr() returns NULL.
-NULL compares less than the valid kernel pointer eof, so the loop body
-runs and strnchr() is called with p + 1 == (void *)1 and a length of
-roughly (unsigned long)eof, causing a wonderful crash.
+Fix this by just zero-initializing the structure on the stack.
 
-The not_signed_fw fallthrough earlier in do_flash() and the chip-state
-branches in ccg_fw_update_needed() allow an unsigned blob to reach this
-loop, so a root user who can place a crafted file under /lib/firmware
-and write the do_flash sysfs attribute can trigger the oops.
-
-Bail out with -EINVAL when the initial strnchr() returns NULL.
-
-Assisted-by: gkh_clanker_t1000
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>
+Cc: "Nuno Sá" <nuno.sa@analog.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Fixes: c14edb4d0bdc ("iio:imu:st_lsm6dsx Fix alignment and data leak issues")
 Cc: stable <stable@kernel.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026051405-posture-shrill-7884@gregkh
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -1243,6 +1243,11 @@ not_signed_fw:
- 	 *****************************************************************/
- 
- 	p = strnchr(fw->data, fw->size, ':');
-+	if (!p) {
-+		dev_err(dev, "Bad FW format: no ':' record header found\n");
-+		err = -EINVAL;
-+		goto release_mem;
-+	}
- 	while (p < eof) {
- 		s = strnchr(p + 1, eof - p - 1, ':');
- 
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -608,7 +608,7 @@ int st_lsm6dsx_read_tagged_fifo(struct s
+ 	 * must be passed a buffer that is aligned to 8 bytes so
+ 	 * as to allow insertion of a naturally aligned timestamp.
+ 	 */
+-	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);
++	u8 iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8) = { };
+ 	u8 tag;
+ 	bool reset_ts = false;
+ 	int i, err, read_len;
 
 
 
