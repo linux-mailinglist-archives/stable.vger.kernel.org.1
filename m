@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ff2HNChMJWp6GQIAu9opvQ
-	(envelope-from <stable+bounces-261529-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:04 +0200
+	id JMLrKVZNJWo6GgIAu9opvQ
+	(envelope-from <stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2810D64FFD1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BBF650113
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ny0F+fXV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261529-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261529-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TrzBhvRd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261594-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A400930459E3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4A9F3072579
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F372291C10;
-	Sun,  7 Jun 2026 10:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFEF2E7376;
+	Sun,  7 Jun 2026 10:45:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FF632B13F;
-	Sun,  7 Jun 2026 10:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4993B2D8378;
+	Sun,  7 Jun 2026 10:45:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828901; cv=none; b=oG2PWLuI3/MEeQZlzj+bjxH6Ct1b35otU5pkyWNYV0iPOECtpEdZXJmKupCwOgW7oqF5DQoAPQNdm1VyJtwArBnd5HWfq2KOyKwVVlmVjL/Z0RmCi799e7YU+d1dNzC/MkyUaEdxEsiEd4KFpZNLAheEnKtVQRVCbTAWVLuGP3Q=
+	t=1780829145; cv=none; b=mGNtAzjcVAfbpkUWaveEVmxPdLlF8XR4NE2lqlMeDZY1MphCUvjtvcBimzm5HiOXLfo2C7QkqiVo9uS+bqhHbCps8LJV+LHib/XBMLp93USpAUiShJ+OnwLBawD9wS/5DiYOlXzongMcfwBYQu69d+toTPeR1VwzJ2n6jkzjgxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828901; c=relaxed/simple;
-	bh=NV4Z2FkRplRetIIiuUyGL2+SyKNS/a/yg6FZREu5Ay8=;
+	s=arc-20240116; t=1780829145; c=relaxed/simple;
+	bh=KAucCjdqyNzAEMGn5Ai01fc0Gm9eWYQrBsxsT6o7lGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ewie/XbxO60hXNaSk6G7XbdjeN2qIbJx7hk8qNgh6172QU9uH3vuCA5mIhH1IF6blPLC4DDbhJp2ktqlEppqw2Hv+ZxSGXDePxGzGMkMhitpQ0AtI/J0G9Sv7qz05cwTACBB4sIsVhzvfcahYFxnmBPEPqTKSxhmsxY7P1v8FQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny0F+fXV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD5B1F00893;
-	Sun,  7 Jun 2026 10:41:38 +0000 (UTC)
+	 MIME-Version; b=WuKR/3VDUUqwtTMAUzIGgK9Fl63hYP3pbb62U4N+vPFWl/lTG8hdjpdxk15cuewmPXtz+BnFYEq/fV3VW3SPBy0efzU9U3Ehvj0chD7q7vz4Of4jaiVDEi+HQ1xq9dGKmCHQvnsv4gs56Pkky4GstirBOGo4BuC9YIZQ4riqpNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrzBhvRd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677621F00893;
+	Sun,  7 Jun 2026 10:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828899;
-	bh=qSJwksaOMMlGoxdDraIyVgWFoZwj0/vey+USpHqsJus=;
+	s=korg; t=1780829144;
+	bh=dco1Me2pkpA3XGv4lN3R+e4JR9E49p63U5HWKSnQMLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ny0F+fXV0dQaWMM6RQw3jbyF5eCOhjiq5XAnDIi/GjO7HyPOY4ne8c8zewY56Yfk1
-	 CAUEmwGHCZ+8pyMAybOHoJR6wyfN/xZTMt6SUJ7cVWsfnol7O2cvNe5v4NhaWOY5vF
-	 YJCO+hB4rN3g9e1C7BTRXwo1GAXyhQKL/QUf5Cu4=
+	b=TrzBhvRdVNF2WzCKHGN8jV3WGYjmHu8z8R4Wehp+O64sZfSoQe6noMpF2zPWr0pBx
+	 +rWpDeMmHRyEvMv3h+q4RaFoxjpEiIURXQ8DXpuzBLyJJLMcPv+MSea2uWjb2q5D21
+	 2g5u7ktPottsp/AiLN4jOMGEPCELyX6cBo81g7tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.18 200/315] xfrm: route MIGRATE notifications to callers netns
+	Qi Tang <tpluszz77@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 190/307] ipv6: validate extension header length before copying to cmsg
 Date: Sun,  7 Jun 2026 11:59:47 +0200
-Message-ID: <20260607095734.916732053@linuxfoundation.org>
+Message-ID: <20260607095734.702386096@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,192 +76,198 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261529-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261594-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tpluszz77@gmail.com,m:willemb@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,ntu.edu.sg:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2810D64FFD1
+X-Rspamd-Queue-Id: 12BBF650113
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Qi Tang <tpluszz77@gmail.com>
 
-commit 7e2a4f7ca0952820731ef7bdadfc9a9e9d3571b4 upstream.
+commit dd433671fef381fdaf7b530c631e6b782d66e224 upstream.
 
-xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
-in net/key/af_key.c both hardcode &init_net for the multicast that
-announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
+ip6_datagram_recv_specific_ctl() builds IPV6_{HOPOPTS,DSTOPTS,RTHDR}
+cmsgs (and their IPV6_2292* legacy counterparts) by trusting the
+on-wire hdrlen byte (ptr[1]) when computing the put_cmsg() length.
+The length was validated only at parse time (ipv6_parse_hopopts(),
+etc.).  An nftables payload-write expression can rewrite hdrlen after
+parsing and before the skb reaches recvmsg; the write itself is
+in-bounds but put_cmsg() then reads up to ((hdrlen+1) << 3) = 2040
+bytes from an 8-byte header.  nftables is reachable from an
+unprivileged user namespace, so this is an unprivileged
+slab-out-of-bounds read:
 
-XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
-rest of the xfrm/af_key netlink path was made netns-aware in 2008.
-The other 14 multicast paths in xfrm_user.c route their event using
-xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
-was missed.
+  BUG: KASAN: slab-out-of-bounds in put_cmsg+0x3ac/0x540
+   put_cmsg+0x3ac/0x540
+   udpv6_recvmsg+0xca0/0x1250
+   sock_recvmsg+0xdf/0x190
+   ____sys_recvmsg+0x1b1/0x620
 
-Two consequences of the init_net hardcoding:
+Add ipv6_get_exthdr_len() which validates that at least two bytes
+are accessible before reading the hdrlen field, then checks the
+computed length against skb_tail_pointer(skb), returning 0 on
+failure.  Extension headers are kept in the linear skb area by
+pskb_may_pull() during input, so skb_tail_pointer() is the correct
+bound.
 
-  1. The notification (selector, old/new endpoint addresses, and the
-     km_address) is delivered to listeners on init_net's
-     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
-     the issuing netns. An IKE daemon running in init_net therefore
-     receives migration notifications originating from any other
-     netns on the host.
+Use ipv6_get_exthdr_len() at all non-AH call sites: the five
+standalone cmsg blocks (HbH, 2292HbH, 2292DSTOPTS x2, 2292RTHDR)
+and the three standard cases in the extension-header walk loop
+(DSTOPTS, ROUTING, default).  AH retains an inline bounds check
+because its length formula differs ((ptr[1]+2)<<2).
 
-  2. An IKE daemon running inside a non-init netns and subscribed
-     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
-     notification of its own migration. IKEv2 MOBIKE / address-update
-     handling inside a netns is silently broken.
+The walk loop also gets a pre-read bounds check at the top to
+validate ptr before any case accesses ptr[0] or ptr[1].
 
-Thread struct net through km_migrate() and the xfrm_mgr.migrate
-function pointer, drop the &init_net override in xfrm_send_migrate()
-and pfkey_send_migrate(), and pass the caller's net (already in
-scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
-struct xfrm_mgr is in-tree only and not exported as a stable API,
-so the function-pointer signature change is internal.
+When the walk loop detects a corrupted header, return from the
+function instead of continuing to process later socket options.
 
-pfkey_broadcast() is already netns-aware via net_generic(net,
-pfkey_net_id) since the pernet conversion. The five other
-pfkey_broadcast() callers in af_key.c already pass xs_net(x),
-sock_net(sk) or a per-netns net, so this only removes the
-&init_net outlier.
-
-Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260523143245.2281415-1-tpluszz77@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xfrm.h     |    3 ++-
- net/key/af_key.c       |    6 +++---
- net/xfrm/xfrm_policy.c |    2 +-
- net/xfrm/xfrm_state.c  |    4 ++--
- net/xfrm/xfrm_user.c   |    5 ++---
- 5 files changed, 10 insertions(+), 10 deletions(-)
+ net/ipv6/datagram.c |   54 ++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 46 insertions(+), 8 deletions(-)
 
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -715,6 +715,7 @@ struct xfrm_mgr {
- 					   const struct xfrm_migrate *m,
- 					   int num_bundles,
- 					   const struct xfrm_kmaddress *k,
-+					   struct net *net,
- 					   const struct xfrm_encap_tmpl *encap);
- 	bool			(*is_alive)(const struct km_event *c);
- };
-@@ -1891,7 +1892,7 @@ int xfrm_sk_policy_insert(struct sock *s
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_bundles,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap);
- struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
- 						u32 if_id);
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -3564,7 +3564,7 @@ static int set_ipsecrequest(struct sk_bu
- #ifdef CONFIG_NET_KEY_MIGRATE
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -617,6 +617,18 @@ void ip6_datagram_recv_common_ctl(struct
+ 	}
+ }
+ 
++static u16 ipv6_get_exthdr_len(const struct sk_buff *skb, const u8 *ptr)
++{
++	u16 len;
++
++	if (ptr + 2 > skb_tail_pointer(skb))
++		return 0;
++
++	len = (ptr[1] + 1) << 3;
++
++	return (len <= skb_tail_pointer(skb) - ptr) ? len : 0;
++}
++
+ void ip6_datagram_recv_specific_ctl(struct sock *sk, struct msghdr *msg,
+ 				    struct sk_buff *skb)
  {
- 	int i;
-@@ -3669,7 +3669,7 @@ static int pfkey_send_migrate(const stru
+@@ -643,7 +655,10 @@ void ip6_datagram_recv_specific_ctl(stru
+ 	/* HbH is allowed only once */
+ 	if (np->rxopt.bits.hopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
+ 		u8 *ptr = nh + sizeof(struct ipv6hdr);
+-		put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, len, ptr);
  	}
  
- 	/* broadcast migrate message to sockets */
--	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
-+	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
+ 	if (opt->lastopt &&
+@@ -664,26 +679,37 @@ void ip6_datagram_recv_specific_ctl(stru
+ 			unsigned int len;
+ 			u8 *ptr = nh + off;
  
- 	return 0;
++			if (ptr + 2 > skb_tail_pointer(skb))
++				return;
++
+ 			switch (nexthdr) {
+ 			case IPPROTO_DSTOPTS:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				if (np->rxopt.bits.dstopts)
+ 					put_cmsg(msg, SOL_IPV6, IPV6_DSTOPTS, len, ptr);
+ 				break;
+ 			case IPPROTO_ROUTING:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				if (np->rxopt.bits.srcrt)
+ 					put_cmsg(msg, SOL_IPV6, IPV6_RTHDR, len, ptr);
+ 				break;
+ 			case IPPROTO_AH:
+ 				nexthdr = ptr[0];
+ 				len = (ptr[1] + 2) << 2;
++				if (ptr + len > skb_tail_pointer(skb))
++					return;
+ 				break;
+ 			default:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				break;
+ 			}
  
-@@ -3680,7 +3680,7 @@ err:
- #else
- static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			      const struct xfrm_migrate *m, int num_bundles,
--			      const struct xfrm_kmaddress *k,
-+			      const struct xfrm_kmaddress *k, struct net *net,
- 			      const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4704,7 +4704,7 @@ int xfrm_migrate(const struct xfrm_selec
+@@ -705,19 +731,31 @@ void ip6_datagram_recv_specific_ctl(stru
  	}
- 
- 	/* Stage 5 - announce */
--	km_migrate(sel, dir, type, m, num_migrate, k, encap);
-+	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
- 
- 	xfrm_pol_put(pol);
- 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -2836,7 +2836,7 @@ EXPORT_SYMBOL(km_policy_expired);
- #ifdef CONFIG_XFRM_MIGRATE
- int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 	       const struct xfrm_migrate *m, int num_migrate,
--	       const struct xfrm_kmaddress *k,
-+	       const struct xfrm_kmaddress *k, struct net *net,
- 	       const struct xfrm_encap_tmpl *encap)
- {
- 	int err = -EINVAL;
-@@ -2847,7 +2847,7 @@ int km_migrate(const struct xfrm_selecto
- 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
- 		if (km->migrate) {
- 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
--					  encap);
-+					  net, encap);
- 			if (!ret)
- 				err = ret;
- 		}
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3262,10 +3262,9 @@ out_cancel:
- 
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
--	struct net *net = &init_net;
- 	struct sk_buff *skb;
- 	int err;
- 
-@@ -3283,7 +3282,7 @@ static int xfrm_send_migrate(const struc
- #else
- static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
- 			     const struct xfrm_migrate *m, int num_migrate,
--			     const struct xfrm_kmaddress *k,
-+			     const struct xfrm_kmaddress *k, struct net *net,
- 			     const struct xfrm_encap_tmpl *encap)
- {
- 	return -ENOPROTOOPT;
+ 	if (np->rxopt.bits.ohopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
+ 		u8 *ptr = nh + sizeof(struct ipv6hdr);
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.odstopts && opt->dst0) {
+ 		u8 *ptr = nh + opt->dst0;
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.osrcrt && opt->srcrt) {
+ 		struct ipv6_rt_hdr *rthdr = (struct ipv6_rt_hdr *)(nh + opt->srcrt);
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, (rthdr->hdrlen+1) << 3, rthdr);
++		u16 len = ipv6_get_exthdr_len(skb, (u8 *)rthdr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, len, rthdr);
+ 	}
+ 	if (np->rxopt.bits.odstopts && opt->dst1) {
+ 		u8 *ptr = nh + opt->dst1;
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.rxorigdstaddr) {
+ 		struct sockaddr_in6 sin6;
 
 
 
