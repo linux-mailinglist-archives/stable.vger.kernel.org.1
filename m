@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BXh0DH1OJWqjGgIAu9opvQ
-	(envelope-from <stable+bounces-261781-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:01 +0200
+	id V1v0GrFPJWo9GwIAu9opvQ
+	(envelope-from <stable+bounces-261732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98A9650271
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A9D6503E2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NgdYRqqd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261781-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261781-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V8KzW955;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261732-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261732-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 458643004D23
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:57:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CBF5306446D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C5C325706;
-	Sun,  7 Jun 2026 10:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D292EBB9E;
+	Sun,  7 Jun 2026 10:53:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E0C12CDA5;
-	Sun,  7 Jun 2026 10:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2AF4204E;
+	Sun,  7 Jun 2026 10:53:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829819; cv=none; b=ZguwhpWkdvmUlFZj1stkZTeVnEesP90P8qsAwsCBf/MCEWaTrOwTYeJYZhnwAM9hnvmaMB565c9shTpaBhd5bLXs8pg9+wpdE0infLnX1506fQbf1S4LCslBfkO3zNUbIqZMxrguxa18aZIbjY1QdXrrniXKZNjVi2vsmYRIIh0=
+	t=1780829629; cv=none; b=L8CZtPwhRiXA+Lao9PNo2ZzCMyvHxMsmqsiSuNDARkHUWIkih45CS6G8iF/n3r2N0TI16g0HgsQqZGCkgoKKDfKk8MvluzoZLjWFporm4DACJVQ0vZpClI1wAcj/xBLas+Yx5hwbYy8RHvbmP715ZVl6jwUxwne3Jo381d9KSYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829819; c=relaxed/simple;
-	bh=2QClxc/yndcg+9eQrGm84UC3eryGi/chh3MGEfK7RKE=;
+	s=arc-20240116; t=1780829629; c=relaxed/simple;
+	bh=6G8oJIqHFO4PuVpUerMPLtD65S04+LklHMdoTEpdqdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORW/8Aa8Fy+uing0jA6ubpliJ3oc/serX3ZuVP2LcAI847N2A983d5BaT5/Qw3w+jZ/cDW7bQnhzOA3N8UkUHR9Q73LIynPMRISbVZ9n91Zxyk6qlB8wKEiUxip/+zuwUfK6mJDRCLoOPeEjvCdWEcUX4tskiTWKOvvMbFV5TRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgdYRqqd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3AA1F00893;
-	Sun,  7 Jun 2026 10:56:56 +0000 (UTC)
+	 MIME-Version; b=pwqiXJ+z2EoF4QUQYgSTHBHQYAU4g2A8tx9VAtifmCiJHuamcdAm9WUgXh4Qp3EMENpNcuJytvA4lR8rndI1ZvXPLFRzcrDJkw6Tz7+McWQZ7P5j2eaZJriavuOC27FrV98JYi98eRjWkeGdR8L1DFYJM+IB+uP9Ul6VHXpcKhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8KzW955; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 222E41F00893;
+	Sun,  7 Jun 2026 10:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829818;
-	bh=8TliwwyjX/P7+9QtvYdXmgcH3I54CvQ4ltvcwDsSLv4=;
+	s=korg; t=1780829628;
+	bh=M/jM9OguR2Xwsr0ufC951yJpCcZW0006LNIFEyxzHmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NgdYRqqdPwK9xdrcbQ8w3fj9wC9DUh8UheJyUKoX/8IQZHHq381swvJPCGeM50cun
-	 PAo4j5Qu/Ef37bu82UuC4IPdSvp93ZKOd8ABZW6313yK+VJcA6kAvZgSbMdUTdvvlq
-	 p2asGKdvO6k9YBxI0UVMVr01q4k64uwVkw9CobQU=
+	b=V8KzW955leULVTBlJTA8atXS8i4Bl6ONtpQG8G3P44vG78HRbn1QM6h5XgHshRQEa
+	 bGTQM9hX4wwxS+OpTfGtHkhAhPEztMeYQ9STRFG1X6exZDDnbe4U/rTtpBpv9zQjQE
+	 unVM+dymq3Y3isDntvnVYJ0VYQjM+AoTT37hoU2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 6.12 256/307] serial: dz: Fix bootconsole message clobbering at chip reset
+	stable <stable@kernel.org>,
+	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.18 266/315] serial: fsl_lpuart: fix rx buffer and DMA map leaks in start_rx_dma
 Date: Sun,  7 Jun 2026 12:00:53 +0200
-Message-ID: <20260607095737.093155872@linuxfoundation.org>
+Message-ID: <20260607095737.342060621@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +72,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261781-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261732-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:shitalkumar.gandhi@cambiumnetworks.com,m:Frank.Li@nxp.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cambiumnetworks.com:email,msgid.link:url,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C98A9650271
+X-Rspamd-Queue-Id: B6A9D6503E2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
 
-commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
+commit 9a9254c4a2a3ca2b3da16d173f3b0dd01f397ff6 upstream.
 
-In the DZ interface as implemented by the DC7085 gate array the serial
-transmitters are double buffered, meaning that at the time a transmitter
-is ready to accept the next character there is one in the transmit shift
-register still being sent to the line.  Issuing a master clear at this
-time causes this character to be lost, so wait an extra amount of time
-sufficient for the transmit shift register to drain at 9600bps, which is
-the baud rate setting used by the firmware console.
+lpuart_start_rx_dma() allocates sport->rx_ring.buf with kzalloc() and
+then maps a scatterlist via dma_map_sg().  On three subsequent error
+paths the function returns directly without releasing those resources:
 
-Mind the specified 1.4us TRDY recovery time in the course and continue
-using iob() as the completion barrier, since the platforms involved use
-a write buffer that can delay and combine writes, and reorder them with
-respect to reads regardless of the MMIO locations accessed and we still
-lack a platform-independent handler for that.
+  - when dma_map_sg() returns 0 (-EINVAL):
+      ring->buf is leaked.
+  - when dmaengine_slave_config() fails:
+      ring->buf and the DMA mapping are leaked.
+  - when dmaengine_prep_dma_cyclic() returns NULL:
+      ring->buf and the DMA mapping are leaked.
 
-When called from dz_serial_console_init() this is too early for fsleep()
-to work and even before lpj has been calculated and therefore the delay
-is actually not sufficient for the transmitter to drain and is merely a
-placeholder now.  This will be addressed in a follow-up change.
+The sole cleanup path, lpuart_dma_rx_free(), is only reached when
+lpuart_dma_rx_use is set, and the caller lpuart_rx_dma_startup() clears
+that flag on failure of lpuart_start_rx_dma().  So these resources are
+permanently leaked on every failure in this function.  Repeated port
+open/close or termios changes under error conditions will slowly consume
+memory and leave stale streaming DMA mappings behind.
 
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Fix it by introducing two error labels that unmap the scatterlist and
+free the ring buffer as appropriate.  While here, replace the misleading
+-EFAULT (bad userspace pointer) returned when dmaengine_prep_dma_cyclic()
+fails with the more accurate -ENOMEM, matching how other dmaengine users
+in the tree treat this failure.
+
+No functional change on the success path.
+
+Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/tty/serial/fsl_lpuart.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -542,10 +542,31 @@ static int dz_encode_baud_rate(unsigned
- static void dz_reset(struct dz_port *dport)
- {
- 	struct dz_mux *mux = dport->mux;
-+	unsigned short tcr;
-+	int loops = 10000;
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1379,7 +1379,8 @@ static inline int lpuart_start_rx_dma(st
  
- 	if (mux->initialised)
- 		return;
+ 	if (!nent) {
+ 		dev_err(sport->port.dev, "DMA Rx mapping error\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_free_buf;
+ 	}
  
-+	tcr = dz_in(dport, DZ_TCR);
+ 	dma_rx_sconfig.src_addr = lpuart_dma_datareg_addr(sport);
+@@ -1391,7 +1392,7 @@ static inline int lpuart_start_rx_dma(st
+ 	if (ret < 0) {
+ 		dev_err(sport->port.dev,
+ 				"DMA Rx slave config failed, err = %d\n", ret);
+-		return ret;
++		goto err_unmap_sg;
+ 	}
+ 
+ 	sport->dma_rx_desc = dmaengine_prep_dma_cyclic(chan,
+@@ -1402,7 +1403,8 @@ static inline int lpuart_start_rx_dma(st
+ 				 DMA_PREP_INTERRUPT);
+ 	if (!sport->dma_rx_desc) {
+ 		dev_err(sport->port.dev, "Cannot prepare cyclic DMA\n");
+-		return -EFAULT;
++		ret = -ENOMEM;
++		goto err_unmap_sg;
+ 	}
+ 
+ 	sport->dma_rx_desc->callback = lpuart_dma_rx_complete;
+@@ -1426,6 +1428,13 @@ static inline int lpuart_start_rx_dma(st
+ 	}
+ 
+ 	return 0;
 +
-+	/* Do not disturb any ongoing transmissions.  */
-+	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
-+		unsigned short csr, mask;
-+
-+		mask = tcr;
-+		while ((mask & DZ_LNENB) && loops--) {
-+			csr = dz_in(dport, DZ_CSR);
-+			if (!(csr & DZ_TRDY))
-+				continue;
-+			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
-+			dz_out(dport, DZ_TCR, mask);
-+			iob();
-+			udelay(2);		/* 1.4us TRDY recovery.  */
-+		}
-+		udelay(1200);			/* Transmitter drain.  */
-+	}
-+
- 	dz_out(dport, DZ_CSR, DZ_CLR);
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
++err_unmap_sg:
++	dma_unmap_sg(chan->device->dev, &sport->rx_sgl, 1, DMA_FROM_DEVICE);
++err_free_buf:
++	kfree(ring->buf);
++	ring->buf = NULL;
++	return ret;
+ }
+ 
+ static void lpuart_dma_rx_free(struct uart_port *port)
 
 
 
