@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uEKKAfdEJWoKFgIAu9opvQ
-	(envelope-from <stable+bounces-261135-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:23 +0200
+	id meX2ARRGJWq0FgIAu9opvQ
+	(envelope-from <stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAF264F750
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502B964F8EC
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dP2p06Zh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261135-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261135-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lSbEaaQn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 248183003615
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA814304C7EB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A772DB7A3;
-	Sun,  7 Jun 2026 10:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BEC308F0A;
+	Sun,  7 Jun 2026 10:14:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BC24071DA;
-	Sun,  7 Jun 2026 10:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8567817B418;
+	Sun,  7 Jun 2026 10:14:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827379; cv=none; b=brAfIKGrx3zGvPG1eQhHIkqUVfVdQJM9LoqP0zRSh9MPrnRsIjKywxFdgwZTHDUCB4nYcKimRlwLwZ73IS37ZutWcp0BNckkerL2LsM2J/PhhC/UVK9lLrvwGc4/gHw+0EnOgkOL9Sy08MXALfXiEmDzxvplbkZ2yvDauL7hygk=
+	t=1780827268; cv=none; b=ejhYqVAbvC7SsZLxy2liwBdyFNNQiR7INcTT8lvZe8DDBqUwVvNxEcPaJ1VcMvSwu/RxnuXnAnBYghVXkVlQbv4UynnxKnSRv2qoVTL7t4r01Xiaa4b6DdmKsdq6phTkSHDwHgjrOo1NUKdVXdvBa2eK6UIRbhPB4PGjZd5rlUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827379; c=relaxed/simple;
-	bh=vER7IxFvcDIaQc52pHcghVfe2nHO3FMljuvl6MaC4IY=;
+	s=arc-20240116; t=1780827268; c=relaxed/simple;
+	bh=0ReXDm08IddqtbQ4jctDWilMK8J7ev1Wg95lwA+1Jpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+6tJiXUZy2U8f0mpbCgftDh0I+InnNpLQRZ/dSD+J6th0rPDNpRlg+IyIkW9T8KcL2zXhpBP7T4xPwxYQpSE9Xlyyj6kfgKIfZTkBd7QXbobKLoUsOBq+GVF1WPDpUGQIHVY9EelKlaOVpwtSQpfi6+01tb1oekLeIkwHGAIcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP2p06Zh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6351F00893;
-	Sun,  7 Jun 2026 10:16:17 +0000 (UTC)
+	 MIME-Version; b=ubi3GfAlSN96VA1SsIvGtizHbByj/+wv4dym143I3rLy1ADnXIsRJCOkFaHdLz/8G2AN03EonaT/DUamLSckobw88bMwCxAPQK3T5e7IAvEgSaC0tCjKV0QZGzqQoPwE4qAOkRvJ1jDd9ZZBn2BRgXM0ARdZMo0gXO/yAAWWg+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSbEaaQn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4E41F00893;
+	Sun,  7 Jun 2026 10:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827378;
-	bh=vzbGFkamduSPaXp5XIBhSmapCtSZeawq5o4wT0NZY4c=;
+	s=korg; t=1780827267;
+	bh=tXw4uIjlmH+tJsPM3cR1op41dY1UtI6aFUJ6+PdU3xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dP2p06ZhEdrjFsbDmfnKQR3x/4LURSEkVNOL23G+q5pLIqxK6eKXUTwvYLh3lYQpo
-	 gHIfoaEa1ZFUVRhSPYnZXksq+KNsToN8dR+PZqHj/GJIP2/fidD+vTKjJeJShUPGsz
-	 Pso9RcJrA16a9TAcgTQ6zOEWvcKlvQNU+4YGtsmU=
+	b=lSbEaaQn5/Z2MCv4CMivjYMNrruQiWlYkx39k3ixRWlAYoePYWX/f+mFfI0fNxSqc
+	 H/Fj6ZaP8kKxcfHdaHe/pyMYN4K/mJcxVzNllRyiB0Wz1nMg4Cr4egalAOJ1Pj497S
+	 Up+hBNoYzTAlnNncrV80WwwJKVLBcnB1sMZxQ95g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Danielle Ratson <danieller@nvidia.com>,
+	Rahul Chandelkar <rc@rexion.ai>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/307] ethtool: module: avoid leaking a netdev ref on module flash errors
+Subject: [PATCH 7.0 078/332] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
 Date: Sun,  7 Jun 2026 11:57:27 +0200
-Message-ID: <20260607095729.553902630@linuxfoundation.org>
+Message-ID: <20260607095731.006470135@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +69,97 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261135-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261102-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rc@rexion.ai,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,bootlin.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,rexion.ai:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABAF264F750
+X-Rspamd-Queue-Id: 502B964F8EC
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Rahul Chandelkar <rc@rexion.ai>
 
-[ Upstream commit fb7f511d62692661846c47f199e0afe25c2982db ]
+[ Upstream commit 9d5e7a46a9f6d8f503b41bfefef70659845f1679 ]
 
-module_flash_fw_schedule() is missing undo for setting
-the "in_progress" flag and taking the netdev reference.
-Delay taking these, the device can't disappear while
-we are holding rtnl_lock.
+ipv6_rpl_srh_decompress() computes:
 
-Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-3-kuba@kernel.org
+    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
+
+hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
+truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
+
+    (128 * 16) >> 3 = 256, truncated to 0 as __u8
+
+The caller in ipv6_rpl_srh_rcv() then places the compressed header
+at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
+but the decompressed region occupies buf[0..2055] (8-byte header
+plus 128 full addresses). The compressed header overlaps the
+decompressed data, and ipv6_rpl_srh_compress() writes into this
+overlap, corrupting the routing header of the forwarded packet.
+
+The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
+prevents n+1 from overflowing unsigned char (the segments_left
+field), but does not prevent the computed hdrlen from overflowing
+__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
+fit.
+
+Tighten the bound to (n + 1) > 127. This caps n at 126, giving
+hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
+header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
+past the decompressed region (buf[0..2039]). No overlap. 127
+segments is well beyond any realistic RPL deployment.
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
+Link: https://patch.msgid.link/20260525154031.2290876-1-rc@rexion.ai
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/module.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ipv6/exthdrs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-index 6988e07bdcd6d4..76d13ef4ba0427 100644
---- a/net/ethtool/module.c
-+++ b/net/ethtool/module.c
-@@ -318,8 +318,6 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
- 	if (err < 0)
- 		goto err_release_firmware;
- 
--	dev->ethtool->module_fw_flash_in_progress = true;
--	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
- 	fw_update->dev = dev;
- 	fw_update->ntf_params.portid = info->snd_portid;
- 	fw_update->ntf_params.seq = info->snd_seq;
-@@ -334,6 +332,9 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
- 	if (err < 0)
- 		goto err_release_firmware;
- 
-+	dev->ethtool->module_fw_flash_in_progress = true;
-+	netdev_hold(dev, &module_fw->dev_tracker, GFP_KERNEL);
-+
- 	schedule_work(&module_fw->work);
- 
- 	return 0;
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index cf90f933ca1ada..3757317e8151e0 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -544,7 +544,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	 * unsigned char which is segments_left field. Should not be
+ 	 * higher than that.
+ 	 */
+-	if (r || (n + 1) > 255) {
++	if (r || (n + 1) > 127) {
+ 		kfree_skb(skb);
+ 		return -1;
+ 	}
 -- 
 2.53.0
 
