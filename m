@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-261184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qUKlObRFJWpzFgIAu9opvQ
-	(envelope-from <stable+bounces-261184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:32 +0200
+	id 7JJmOhlGJWq4FgIAu9opvQ
+	(envelope-from <stable+bounces-261209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFC964F85D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB9F64F8F6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0KFvjVZI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261184-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261184-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YUplrpnt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261209-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261209-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECF0030143F6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:19:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17C1B3003824
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962602EC54A;
-	Sun,  7 Jun 2026 10:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84B32ECEB9;
+	Sun,  7 Jun 2026 10:21:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538224071DA;
-	Sun,  7 Jun 2026 10:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642654CB5B;
+	Sun,  7 Jun 2026 10:21:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827570; cv=none; b=bUmsnUnOZVfIhy/ooubJqj0z0VBMc7aQ40VmFIe8xvybrwy/6ly0BdZAF9EKjuve2MPKSkKOpM8hL+e1PUs+Nlow6/lz8ZH/V405lR3mTZVZf5nQmK62UYLXpbn18IM6bMJ06Qg93+gMH529ybQlsuUHF2KLMRgwabp1AgQbi9I=
+	t=1780827669; cv=none; b=HJlDaRskmAdjWFS6kcjUZdYM4tdPW4dK4K5YIQOKpiPbwLQZg+dPc+IhAvoUdyeUobxYBPzRhrOq9Rz3S5tmv+Gd3KGHpo55i1kw5hJz5XAFT7m4/kwHGUJYRfosSDxva7Gft4RlcAupfOmD8DDzgthuT8sfawQxxJBYuG/MHmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827570; c=relaxed/simple;
-	bh=nxmhnkrFCi3U/6zHjdxSgnbxVETAIMsbFnTIYpFesyQ=;
+	s=arc-20240116; t=1780827669; c=relaxed/simple;
+	bh=TjrvFXsBhLj5o6SZhTj3ljS8q6GyLoPTJGk9b7Y62Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cY2shL6LomRGyHXXM0T0iglh435rvVxEmoEBsgop9fIj8LqZ+MZlx3E3aq2EklQJqm8blCGvHBe0b4i52HMrzIpHzpmk47SJGc0p6y0dTJro+Wg2z0ni3bI+HFk/glf/xRnceA0q5wFJeP7YiOH8maBIAz5s09LSvQoJr2G6VCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KFvjVZI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D481F00893;
-	Sun,  7 Jun 2026 10:19:28 +0000 (UTC)
+	 MIME-Version; b=iNp8JVEv2c/rQKdlzjSQrM4hyRiLLdHD++Htp7ZeBXhQw6sIr2blnJUxbu3LKuVx+l8dcMGeg0QtZsDsn2bIjxU5sqU00ItzHqaSZHeO48Q2O5r2v3W7kOBxtWtBE8SHZmiq9zO4pazuqv8AGaMyRwXFLJwupoSJx84neT26LkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUplrpnt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4591F00893;
+	Sun,  7 Jun 2026 10:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827569;
-	bh=9l+sAzLVZB5Ak9UKSVvcdELRkiQWBpuJBFZZ0IaD/5c=;
+	s=korg; t=1780827668;
+	bh=Lw8/kaSg+hLHEoDkLeJno+9bmmRmBj5TrtVjmM5NLy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0KFvjVZIKOUd4A8KF1XC0ypDFTrJd1y73s2jdYhOPpYuKnJNX3WH0lWruObW3mIIO
-	 RAV8CKg6TVxWrBmdEhWy0bmevPkEkRbY5wm8YXM93+82nQdXdzjv+ZYmJcZAWKGjbL
-	 IB6fZeeHvi6UzU6TrW1HYKGGkmB6q93gvg7MNkg4=
+	b=YUplrpntLzbgEdVzx3XuYIuruShuYhkWSXfqAM3GvT+gDHuKDQ02puT3U7+yuF/F4
+	 sJh9AfpDjS0iOFZZPwDp4FFpHR539WD9UF1YZKNlU/016+MLhxSL8bRjm1+LmH3mvM
+	 uQ60lAsJsNbq8H3RR/hUo0FSTGbGKVbCIdxg+fW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 105/332] net: mana: Add NULL guards in teardown path to prevent panic on attach failure
+Subject: [PATCH 6.12 077/307] net: Introduce skb tc depth field to track packet loops
 Date: Sun,  7 Jun 2026 11:57:54 +0200
-Message-ID: <20260607095731.984259421@linuxfoundation.org>
+Message-ID: <20260607095730.594975098@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261184-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261209-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:haiyangz@microsoft.com,m:dipayanroy@linux.microsoft.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,153 +99,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,networkplumber.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,mojatatu.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8DFC964F85D
+X-Rspamd-Queue-Id: 9BB9F64F8F6
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 17bfe0a8c014ee1d542ad352cd6a0a505361664a ]
+[ Upstream commit 98b34f3e8c3492cfc89ff943c9d92b4d52863d1d ]
 
-When queue allocation fails partway through, the error cleanup frees
-and NULLs apc->tx_qp and apc->rxqs. Multiple teardown paths such as
-mana_remove(), mana_change_mtu() recovery, and internal error handling
-in mana_alloc_queues() can subsequently call into functions that
-dereference these pointers without NULL checks:
+Add a 2-bit per-skb tc depth field to track packet loops across the stack.
 
-- mana_chn_setxdp() dereferences apc->rxqs[0], causing a NULL pointer
-  dereference panic (CR2: 0000000000000000 at mana_chn_setxdp+0x26).
-- mana_destroy_vport() iterates apc->rxqs without a NULL check.
-- mana_fence_rqs() iterates apc->rxqs without a NULL check.
-- mana_dealloc_queues() iterates apc->tx_qp without a NULL check.
+The previous per-CPU loop counters like MIRRED_NEST_LIMIT
+assume a single call stack and lose state in two cases:
+1) When a packet is queued and reprocessed later (e.g., egress->ingress
+   via backlog), the per-cpu state is gone by the time it is dequeued.
+2) With XPS/RPS a packet may arrive on one CPU and be processed on
+   another.
 
-Add NULL guards for apc->rxqs in mana_fence_rqs(),
-mana_destroy_vport(), and before the mana_chn_setxdp() call. Add a
-NULL guard for apc->tx_qp in mana_dealloc_queues() to skip TX queue
-draining when TX queues were never allocated or already freed.
+A per-skb field solves both by travelling with the packet itself.
 
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Link: https://patch.msgid.link/20260525081129.1230035-2-dipayanroy@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The field fits in existing padding, using 2 bits that were previously a
+hole:
+
+pahole before(-) and after (+) diff looks like:
+   __u8       slow_gro:1;           /*   132: 3  1 */
+   __u8       csum_not_inet:1;      /*   132: 4  1 */
+   __u8       unreadable:1;         /*   132: 5  1 */
+ + __u8       tc_depth:2;           /*   132: 6  1 */
+
+ - /* XXX 2 bits hole, try to pack */
+   /* XXX 1 byte hole, try to pack */
+
+   __u16      tc_index;             /*   134     2 */
+
+There used to be a ttl field which was removed as part of tc_verd in commit
+aec745e2c520 ("net-tc: remove unused tc_verd fields").  It was already
+unused by that time, due to remove earlier in commit c19ae86a510c ("tc: remove
+unused redirect ttl").
+
+The first user of this field is netem, which increments tc_depth on
+duplicated packets before re-enqueueing them at the root qdisc.  On
+re-entry, netem skips duplication for any skb with tc_depth already set,
+bounding recursion to a single level regardless of tree topology.
+
+The other user is mirred which increments it on each pass
+and limits to depth to MIRRED_DEFER_LIMIT (3).
+
+The new field was called ttl in earlier versions of this patch
+but renamed to tc_depth to avoid confusion with IP ttl.
+
+Note (looking at you Sashiko! Dont ignore me and continue bringing this up):
+1. Since both mirred and netem utilize the same 2-bit tc_depth field it is
+   possible when netem and mirred are used together that netem qdisc to skip
+   the duplication step. This is a known trade-off, as a 2-bit field cannot
+   independently track both features' recursion depths and it is not considered
+   sane to have a setup that addresses both features on at the same time.
+
+2. skb_scrub_packet does not clear tc_depth. This means a packet's loop history
+  is preserved even across namespaces. While this might be restrictive for
+  some topologies, it is also design intent to provide robustness against loops
+  across namespaces.
+
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-2-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: e80ad525fc7e ("net/sched: act_mirred: Fix return code in early mirred redirect error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 70 +++++++++++--------
- 1 file changed, 41 insertions(+), 29 deletions(-)
+ include/linux/skbuff.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 14d6f68eaa6958..3ddbf3b9a76501 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1713,6 +1713,9 @@ static void mana_fence_rqs(struct mana_port_context *apc)
- 	struct mana_rxq *rxq;
- 	int err;
- 
-+	if (!apc->rxqs)
-+		return;
-+
- 	for (rxq_idx = 0; rxq_idx < apc->num_queues; rxq_idx++) {
- 		rxq = apc->rxqs[rxq_idx];
- 		err = mana_fence_rq(apc, rxq);
-@@ -2821,13 +2824,16 @@ static void mana_destroy_vport(struct mana_port_context *apc)
- 	struct mana_rxq *rxq;
- 	u32 rxq_idx;
- 
--	for (rxq_idx = 0; rxq_idx < apc->num_queues; rxq_idx++) {
--		rxq = apc->rxqs[rxq_idx];
--		if (!rxq)
--			continue;
-+	if (apc->rxqs) {
- 
--		mana_destroy_rxq(apc, rxq, true);
--		apc->rxqs[rxq_idx] = NULL;
-+		for (rxq_idx = 0; rxq_idx < apc->num_queues; rxq_idx++) {
-+			rxq = apc->rxqs[rxq_idx];
-+			if (!rxq)
-+				continue;
-+
-+			mana_destroy_rxq(apc, rxq, true);
-+			apc->rxqs[rxq_idx] = NULL;
-+		}
- 	}
- 
- 	mana_destroy_txq(apc);
-@@ -3232,7 +3238,8 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	if (apc->port_is_up)
- 		return -EINVAL;
- 
--	mana_chn_setxdp(apc, NULL);
-+	if (apc->rxqs)
-+		mana_chn_setxdp(apc, NULL);
- 
- 	if (gd->gdma_context->is_pf && !apc->ac->bm_hostmode)
- 		mana_pf_deregister_filter(apc);
-@@ -3250,33 +3257,38 @@ static int mana_dealloc_queues(struct net_device *ndev)
- 	 * number of queues.
- 	 */
- 
--	for (i = 0; i < apc->num_queues; i++) {
--		txq = &apc->tx_qp[i].txq;
--		tsleep = 1000;
--		while (atomic_read(&txq->pending_sends) > 0 &&
--		       time_before(jiffies, timeout)) {
--			usleep_range(tsleep, tsleep + 1000);
--			tsleep <<= 1;
--		}
--		if (atomic_read(&txq->pending_sends)) {
--			err = pcie_flr(to_pci_dev(gd->gdma_context->dev));
--			if (err) {
--				netdev_err(ndev, "flr failed %d with %d pkts pending in txq %u\n",
--					   err, atomic_read(&txq->pending_sends),
--					   txq->gdma_txq_id);
-+	if (apc->tx_qp) {
-+		for (i = 0; i < apc->num_queues; i++) {
-+			txq = &apc->tx_qp[i].txq;
-+			tsleep = 1000;
-+			while (atomic_read(&txq->pending_sends) > 0 &&
-+			       time_before(jiffies, timeout)) {
-+				usleep_range(tsleep, tsleep + 1000);
-+				tsleep <<= 1;
-+			}
-+			if (atomic_read(&txq->pending_sends)) {
-+				err =
-+				    pcie_flr(to_pci_dev(gd->gdma_context->dev));
-+				if (err) {
-+					netdev_err(ndev, "flr failed %d with %d pkts pending in txq %u\n",
-+						   err,
-+					    atomic_read(&txq->pending_sends),
-+					    txq->gdma_txq_id);
-+				}
-+				break;
- 			}
--			break;
- 		}
--	}
- 
--	for (i = 0; i < apc->num_queues; i++) {
--		txq = &apc->tx_qp[i].txq;
--		while ((skb = skb_dequeue(&txq->pending_skbs))) {
--			mana_unmap_skb(skb, apc);
--			dev_kfree_skb_any(skb);
-+		for (i = 0; i < apc->num_queues; i++) {
-+			txq = &apc->tx_qp[i].txq;
-+			while ((skb = skb_dequeue(&txq->pending_skbs))) {
-+				mana_unmap_skb(skb, apc);
-+				dev_kfree_skb_any(skb);
-+			}
-+			atomic_set(&txq->pending_sends, 0);
- 		}
--		atomic_set(&txq->pending_sends, 0);
- 	}
-+
- 	/* We're 100% sure the queues can no longer be woken up, because
- 	 * we're sure now mana_poll_tx_cq() can't be running.
- 	 */
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 4344724a978212..107a8c3ff07fa2 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -802,6 +802,7 @@ enum skb_tstamp_type {
+  *	@_sk_redir: socket redirection information for skmsg
+  *	@_nfct: Associated connection, if any (with nfctinfo bits)
+  *	@skb_iif: ifindex of device we arrived on
++ *	@tc_depth: counter for packet duplication
+  *	@tc_index: Traffic control index
+  *	@hash: the packet hash
+  *	@queue_mapping: Queue mapping for multiqueue devices
+@@ -1011,6 +1012,7 @@ struct sk_buff {
+ 	__u8			csum_not_inet:1;
+ #endif
+ 	__u8			unreadable:1;
++	__u8			tc_depth:2;
+ #if defined(CONFIG_NET_SCHED) || defined(CONFIG_NET_XGRESS)
+ 	__u16			tc_index;	/* traffic control index */
+ #endif
 -- 
 2.53.0
 
