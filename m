@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261843-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Sw5tMzxSJWrKGwIAu9opvQ
-	(envelope-from <stable+bounces-261867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200
+	id 98h+F4tVJWp8HAIAu9opvQ
+	(envelope-from <stable+bounces-261843-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4826505C4
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68E76506E7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NfXulBwO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261867-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261867-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qon4Ksq4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261843-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261843-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB409306B3B5
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0B57305FB17
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB41329E7E;
-	Sun,  7 Jun 2026 11:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59A838BF7F;
+	Sun,  7 Jun 2026 11:01:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E03524F;
-	Sun,  7 Jun 2026 11:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7263938AC80;
+	Sun,  7 Jun 2026 11:01:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830160; cv=none; b=KQWEeZqdV9MsRopIZDLLOQ3LCNL7V4f+UbHNaiyrs6VvA6+XQhu+vTQmz4P1XzzsE0G5qpbRByo2553ccDgbygmH2+01Re8k6VAA8WqQOZXZOpDMy6LNNNk8nNHbYEm8j8oUBN6xpra/BchswYLwOmTxl1mM/AktgqfrQmT0nng=
+	t=1780830064; cv=none; b=s+cdneluzfNCVMcb0fpgtaVlG1Ob3ARgntLxTkIIx5+tJbwdL3j8qbgpqwzb/5Eesj3+NoeQnaqy8wJlj1BvG81+k+sH2qmI3fDxjCvDxKUtjUE+fRSUbaS0rHSZbGcdmaunlgv95mgxxYr9dBuIqCl1cPxZbMM9GCvNTXGML60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830160; c=relaxed/simple;
-	bh=Fk7h1y1u+5E0RZrOZs0Na4VchIJW8X0s3/IbPu/cD7g=;
+	s=arc-20240116; t=1780830064; c=relaxed/simple;
+	bh=ITe2SNnReF31xAXX75oU2a9J88/X936oHwKR04dgXbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nI18oERgC8ZCrKUcdxVnWbbIexzXgCQ7hdGe4bLMMrpiiggpM6O80u62NBCkn07qHA3f5MBwkWJzMjwhq1OJ04kzw7vXXBeSNK6dx18F91mBwAF2Z/RKjHBllgVxZ9r+uRhH8VfQhrShjlH7jwuM+DTj+vyiy5tArD15Kuf2C84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfXulBwO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0321F00893;
-	Sun,  7 Jun 2026 11:02:38 +0000 (UTC)
+	 MIME-Version; b=YFFe7+KUMG+TJGq23cidmjP2oa1BeahYeilF2NvwAmZImyw0VWJGoljvlhA/DdzUU/4Je/I7R7hNcgA0G3FpKzOKJOKlGdrY5OjiS/y9tentEfAut9m9XekVZA6+mQZgT9d+jDh5XcmUyWBzBQg5pARyuq6F3RSb3Qu/KzyqXRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qon4Ksq4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A1C1F00893;
+	Sun,  7 Jun 2026 11:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830159;
-	bh=ZtR8H50f5BzBufwQd8VFx1xnAFuEUNj/NkkXklb1GDQ=;
+	s=korg; t=1780830061;
+	bh=0RTAH7pRs94CRdh6HxaaAwDnuDJKSWe7Bh7cJXa7Dls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NfXulBwOGUl4YY3IuWZXyMTyXbna1LxrSdxcGroLyI+7oA9r3QRmDo6rvPZvr30eJ
-	 kuvlUChsodXmpmnjM4wbaSxI+FsHojKqNJGDH/Ne0rGhrhy9y70JQRikuJ5V9kun2K
-	 4f1Av989aDF5HyZUi8LlIf1yHt43BAun26J0o3U4=
+	b=qon4Ksq4KwUbugnbfjcuwl8xPpJH5gKXfhfKrNaruwpAZUNaHsSAv6Mqe0gRA4/XF
+	 Q+FEZVMUFD3azkeqr2S/vFj7FCr9bFhn43ZSqlSL8bd0+JdsT9tziXINzEMgB0DFl/
+	 muIxpE6V/a46lO/6fOFtRGrXIRa8aPTl2b3KLYOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 288/315] serdev: Provide a bustype shutdown function
+Subject: [PATCH 6.12 278/307] selftests: mptcp: drop nanoseconds width specifier
 Date: Sun,  7 Jun 2026 12:01:15 +0200
-Message-ID: <20260607095738.172324104@linuxfoundation.org>
+Message-ID: <20260607095737.939780373@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +65,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261843-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@baylibre.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261867-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2B4826505C4
+X-Rspamd-Queue-Id: D68E76506E7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 6d71c62b13c33ea858ab298fe20beaec5736edc7 ]
+[ Upstream commit 01ff78e4b3d98689184c52d97f9575dfbdc3b10f ]
 
-To prepare serdev driver to migrate away from struct device_driver::shutdown
-(and then eventually remove that callback) create a serdev driver shutdown
-callback and migration code to keep the existing behaviour. Note this
-introduces a warning for each driver at register time that isn't converted
-yet to that callback.
+Using the format specifier +%s%3N with GNU date is honoured, and only
+prints 3 digits of the nanoseconds portion of the seconds since epoch,
+which corresponds to the milliseconds.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/ab518883e3ed0976a19cb5b5b5faf42bd3a655b7.1765526117.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 375ba7484132 ("Bluetooth: hci_qca: Convert timeout from jiffies to ms")
+The uutils implementation of date currently does not honour this, and
+always prints all 9 digits. This is a known issue [1], but can be worked
+around by adapting this test to use nanoseconds instead of microseconds,
+and then divide it by 1e6.
+
+This fix is similar to what has been done on systemd side [2], and it is
+needed to run the selftests on Ubuntu 26.04, containing uutils 0.8.0.
+
+Note that the Fixes tag is there even if this patch doesn't fix an issue
+in the kernel selftests, but it is useful for those using uutils 0.8.0.
+
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Link: https://github.com/uutils/coreutils/issues/11658 [1]
+Link: https://github.com/systemd/systemd/pull/41627 [2]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-6-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ kept `timeout ${timeout_test}` wrapper in do_transfer() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serdev/core.c |   21 +++++++++++++++++++++
- include/linux/serdev.h    |    1 +
- 2 files changed, 22 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    6 +++---
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   10 +++++-----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serdev/core.c
-+++ b/drivers/tty/serdev/core.c
-@@ -414,11 +414,21 @@ static void serdev_drv_remove(struct dev
- 		sdrv->remove(to_serdev_device(dev));
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -412,7 +412,7 @@ do_transfer()
+ 	mptcp_lib_wait_local_port_listen "${listener_ns}" "${port}"
+ 
+ 	local start
+-	start=$(date +%s%3N)
++	start=$(date +%s%N)
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${connector_ns} \
+ 			./mptcp_connect -t ${timeout_poll} -p $port -s ${cl_proto} \
+@@ -425,7 +425,7 @@ do_transfer()
+ 	local rets=$?
+ 
+ 	local stop
+-	stop=$(date +%s%3N)
++	stop=$(date +%s%N)
+ 
+ 	if $capture; then
+ 		sleep 1
+@@ -441,7 +441,7 @@ do_transfer()
+ 	fi
+ 
+ 	local duration
+-	duration=$((stop-start))
++	duration=$(((stop-start) / 1000000))
+ 	printf "(duration %05sms) " "${duration}"
+ 	if [ ${rets} -ne 0 ] || [ ${retc} -ne 0 ]; then
+ 		mptcp_lib_pr_fail "client exit code $retc, server $rets"
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -29,7 +29,7 @@ declare -rx MPTCP_LIB_AF_INET6=10
+ MPTCP_LIB_SUBTESTS=()
+ MPTCP_LIB_SUBTESTS_DUPLICATED=0
+ MPTCP_LIB_SUBTEST_FLAKY=0
+-MPTCP_LIB_SUBTESTS_LAST_TS_MS=
++MPTCP_LIB_SUBTESTS_LAST_TS_NS=
+ MPTCP_LIB_TEST_COUNTER=0
+ MPTCP_LIB_TEST_FORMAT="%02u %-50s"
+ MPTCP_LIB_IP_MPTCP=0
+@@ -207,7 +207,7 @@ mptcp_lib_kversion_ge() {
  }
  
-+static void serdev_drv_shutdown(struct device *dev)
-+{
-+	const struct serdev_device_driver *sdrv =
-+		to_serdev_device_driver(dev->driver);
-+
-+	if (dev->driver && sdrv->shutdown)
-+		sdrv->shutdown(to_serdev_device(dev));
-+}
-+
- static const struct bus_type serdev_bus_type = {
- 	.name		= "serial",
- 	.match		= serdev_device_match,
- 	.probe		= serdev_drv_probe,
- 	.remove		= serdev_drv_remove,
-+	.shutdown	= serdev_drv_shutdown,
- };
- 
- /**
-@@ -814,6 +824,14 @@ void serdev_controller_remove(struct ser
+ mptcp_lib_subtests_last_ts_reset() {
+-	MPTCP_LIB_SUBTESTS_LAST_TS_MS="$(date +%s%3N)"
++	MPTCP_LIB_SUBTESTS_LAST_TS_NS="$(date +%s%N)"
  }
- EXPORT_SYMBOL_GPL(serdev_controller_remove);
+ mptcp_lib_subtests_last_ts_reset
  
-+static void serdev_legacy_shutdown(struct serdev_device *serdev)
-+{
-+	struct device *dev = &serdev->dev;
-+	struct device_driver *driver = dev->driver;
-+
-+	driver->shutdown(dev);
-+}
-+
- /**
-  * __serdev_device_driver_register() - Register client driver with serdev core
-  * @sdrv:	client driver to be associated with client-device.
-@@ -830,6 +848,9 @@ int __serdev_device_driver_register(stru
- 	/* force drivers to async probe so I/O is possible in probe */
-         sdrv->driver.probe_type = PROBE_PREFER_ASYNCHRONOUS;
+@@ -226,7 +226,7 @@ __mptcp_lib_result_check_duplicated() {
+ __mptcp_lib_result_add() {
+ 	local result="${1}"
+ 	local time="time="
+-	local ts_prev_ms
++	local ts_prev_ns
+ 	shift
  
-+	if (!sdrv->shutdown && sdrv->driver.shutdown)
-+		sdrv->shutdown = serdev_legacy_shutdown;
-+
- 	return driver_register(&sdrv->driver);
+ 	local id=$((${#MPTCP_LIB_SUBTESTS[@]} + 1))
+@@ -236,9 +236,9 @@ __mptcp_lib_result_add() {
+ 	# not to add two '#'
+ 	[[ "${*}" != *"#"* ]] && time="# ${time}"
+ 
+-	ts_prev_ms="${MPTCP_LIB_SUBTESTS_LAST_TS_MS}"
++	ts_prev_ns="${MPTCP_LIB_SUBTESTS_LAST_TS_NS}"
+ 	mptcp_lib_subtests_last_ts_reset
+-	time+="$((MPTCP_LIB_SUBTESTS_LAST_TS_MS - ts_prev_ms))ms"
++	time+="$(((MPTCP_LIB_SUBTESTS_LAST_TS_NS - ts_prev_ns) / 1000000))ms"
+ 
+ 	MPTCP_LIB_SUBTESTS+=("${result} ${id} - ${KSFT_TEST}: ${*} ${time}")
  }
- EXPORT_SYMBOL_GPL(__serdev_device_driver_register);
---- a/include/linux/serdev.h
-+++ b/include/linux/serdev.h
-@@ -65,6 +65,7 @@ struct serdev_device_driver {
- 	struct device_driver driver;
- 	int	(*probe)(struct serdev_device *);
- 	void	(*remove)(struct serdev_device *);
-+	void	(*shutdown)(struct serdev_device *);
- };
- 
- static inline struct serdev_device_driver *to_serdev_device_driver(struct device_driver *d)
 
 
 
