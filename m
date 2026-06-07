@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ev9ZNlFJJWqWGAIAu9opvQ
-	(envelope-from <stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:57 +0200
+	id bt0nBTBKJWr1GAIAu9opvQ
+	(envelope-from <stable+bounces-261479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C8664FD1B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E41D64FDF6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MF4do9HQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261422-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bem741A4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261479-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261479-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E10B230041D0
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D9023004C2B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291FD3112A5;
-	Sun,  7 Jun 2026 10:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D5E31E849;
+	Sun,  7 Jun 2026 10:38:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097AB2D3A69;
-	Sun,  7 Jun 2026 10:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509AF212564;
+	Sun,  7 Jun 2026 10:38:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828495; cv=none; b=nrI6BTLY48oNDs84J8KDNG4yXMgfIIzbdL0DGJ7uU3z0AgAGtWS2FYQjAQi85NaD01F1vJGW9Sn/7V9PH4XWMRwIeHf5ONXhgTtR1Ayir4c0FxMDw/sR7A398ichxE5rtIVk/VYUYlv85j03b9YZlgclvW02iQ3rcHdfsBRiT9A=
+	t=1780828714; cv=none; b=KXGUi1QX5Sp2yQ7e2N+xOacJSC+z/QWFCopEcH4O1mSqeMxjGLE3D0ChKuZ8sHL8s8bhSwiFUrgyVaPas8MM42za64j0yi1yNO9Xy161W1ylje3EhY5rT2BlNCX53LxAR1APYRMf4sLWAXQNGTDOv06JyhNJVw33UzyK5YWz+PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828495; c=relaxed/simple;
-	bh=B/UQ0d0hRhcMWJKn7ycCxwvoMkkuJYFnDxekHRYgeP4=;
+	s=arc-20240116; t=1780828714; c=relaxed/simple;
+	bh=HFHaWuVvv/COKMsttcHp56B0kdUGjthrpABjJ6vIjCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhwNKiI0mb+BrOOCjbEx3Jcwydd1B/DQh+WfvuloF35j3TVWzgnxhDS8KBHDDHJg5878fhom4WZgT5kMrM4N2AgA30Rhz11/YcJVCYTtVmbZKUkmMZ06hB9pcm9Rct9ZgKKhlLeqhoUxsyYiWtqO8WSiOckd2QsXEfHS5H5j8mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF4do9HQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC261F00893;
-	Sun,  7 Jun 2026 10:34:53 +0000 (UTC)
+	 MIME-Version; b=DmKsTu2Blyu/3MIJcuDPiabf9YT4uyOPCR5G/ohg+doS8LQDP1SasOhThW1Fn3QTSqt4j4tuajskm7LWiiafjEK6dzGEpPn3DKPOFu99oCYvUBs+5csimqqqEIY4HcFBP3c/TVRPRj9c2Y/CsBci2+KLDJ0jFkIk6gH/WcK1yaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bem741A4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C871F00893;
+	Sun,  7 Jun 2026 10:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828493;
-	bh=xQyShybSuHSL9Q0otalrKJn3Jrj82YrpX77oDAD5TIg=;
+	s=korg; t=1780828713;
+	bh=Oq2kgl1xvLOm46xHvphg3/a8ByX816oZVZG4HObyfUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MF4do9HQ/jaeSY21m83BWnD+eJBLClToqBAHwTI2y4mO7GAtIJtUkoDuBv7KlapKo
-	 5vF1QxpO3Ha1SDIxquV2Ujubh5JjHPyPgqcMXW5va7PMsCU61GZmKBmKwcmNNSKmyJ
-	 cFZ9lU69oIkoCsqCEVtQEvQctY2A0YvClwTktK6A=
+	b=bem741A4U+nTi8JfHt1WvV8t7QlkyFVdT8E293Klt4CTn+t18P2Ha/145IpaXq2jM
+	 zFccbocVWWXU9cw1agR/AjWCGMu0qslsMQ89QxFmb9INmdqQ+G8wgen57gJtcZhUeX
+	 rFAFDERtY6GTR+VOAibWudqL7vhoZXnRLXwuDUzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 7.0 188/332] iio: gyro: itg3200: fix i2c read into the wrong stack location
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 160/307] KVM: SEV: Dont explicitly pass PSC buffer to snp_begin_psc()
 Date: Sun,  7 Jun 2026 11:59:17 +0200
-Message-ID: <20260607095734.971529590@linuxfoundation.org>
+Message-ID: <20260607095733.600155715@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +70,108 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261422-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261479-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 71C8664FD1B
+X-Rspamd-Queue-Id: 9E41D64FDF6
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
+commit ebe4b2dc9cfbfb2d8f665667c4d08f4c6c9bec05 upstream.
 
-itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
-fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
-parameter (a pointer), `&buf' is the address of the local pointer
-slot on the stack of itg3200_read_all_channels(), not the address
-of the caller's scan buffer. The (char *) cast hides the type
-mismatch.
+Stop explicitly passing the PSC buffer to snp_begin_psc(): it *must*
+be the scratch area.  This will allow fixing a variety of bugs without
+further complicating the code.
 
-i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
-= 8 bytes into the parameter's stack slot, which is discarded when
-the function returns. The caller's scan buffer in
-itg3200_trigger_handler() is never written to, so
-iio_push_to_buffers_with_timestamp() pushes uninitialised stack
-contents to userspace via /dev/iio:deviceX every scan -- both a
-functional bug (no actual gyroscope or temperature data is
-delivered through the triggered buffer) and an information leak.
+No functional change intended.
 
-The non-buffered read_raw() path is unaffected: it goes through
-itg3200_read_reg_s16() which uses `&out' on a local s16 value,
-where that is correct.
-
-Drop the spurious `&' so the i2c read writes into the caller's
-buffer.
-
-Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-9-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/itg3200_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/gyro/itg3200_buffer.c
-+++ b/drivers/iio/gyro/itg3200_buffer.c
-@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
- 			.addr = i2c->addr,
- 			.flags = i2c->flags | I2C_M_RD,
- 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
--			.buf = (char *)&buf,
-+			.buf = (char *)buf,
- 		},
- 	};
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3675,7 +3675,7 @@ struct psc_buffer {
+ 	struct psc_entry entries[];
+ } __packed;
  
+-static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc);
++static int snp_begin_psc(struct vcpu_svm *svm);
+ 
+ static void snp_complete_psc(struct vcpu_svm *svm, u64 psc_ret)
+ {
+@@ -3710,7 +3710,6 @@ static void __snp_complete_one_psc(struc
+ static int snp_complete_one_psc(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+-	struct psc_buffer *psc = svm->sev_es.ghcb_sa;
+ 
+ 	if (vcpu->run->hypercall.ret) {
+ 		snp_complete_psc(svm, VMGEXIT_PSC_ERROR_GENERIC);
+@@ -3720,11 +3719,13 @@ static int snp_complete_one_psc(struct k
+ 	__snp_complete_one_psc(svm);
+ 
+ 	/* Handle the next range (if any). */
+-	return snp_begin_psc(svm, psc);
++	return snp_begin_psc(svm);
+ }
+ 
+-static int snp_begin_psc(struct vcpu_svm *svm, struct psc_buffer *psc)
++static int snp_begin_psc(struct vcpu_svm *svm)
+ {
++	struct vcpu_sev_es_state *sev_es = &svm->sev_es;
++	struct psc_buffer *psc = sev_es->ghcb_sa;
+ 	struct psc_entry *entries = psc->entries;
+ 	struct kvm_vcpu *vcpu = &svm->vcpu;
+ 	struct psc_hdr *hdr = &psc->hdr;
+@@ -4414,7 +4415,7 @@ int sev_handle_vmgexit(struct kvm_vcpu *
+ 		if (ret)
+ 			break;
+ 
+-		ret = snp_begin_psc(svm, svm->sev_es.ghcb_sa);
++		ret = snp_begin_psc(svm);
+ 		break;
+ 	case SVM_VMGEXIT_AP_CREATION:
+ 		ret = sev_snp_ap_creation(svm);
 
 
 
