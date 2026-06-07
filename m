@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-260972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xbtJOIBDJWpZFQIAu9opvQ
-	(envelope-from <stable+bounces-260972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:08 +0200
+	id 1ySJM9dCJWoIFQIAu9opvQ
+	(envelope-from <stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2864F5EA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D415264F556
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0ErPeEPu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260972-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260972-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0p8nsbm6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-260974-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A049E3036D7E
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DE903002D30
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB202F49FD;
-	Sun,  7 Jun 2026 10:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A872F7EFE;
+	Sun,  7 Jun 2026 10:07:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC1578C9C;
-	Sun,  7 Jun 2026 10:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D107234994;
+	Sun,  7 Jun 2026 10:07:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826827; cv=none; b=fy2vBVel6CiT5EVaJr5cUMlRXHLafqeq1rluK3I3ZFGAuzS49jnb8tK1gjaVPxksS2VGoRj2pEn1TcLwcaJhiRGwPgzhJmbGVjYaFQjPuFrpiOFySwKwDBGptng7ydRqRi1F6T4DQ60LHpSqDDVVVSDV9h0bJH5x8cEbDtoYGas=
+	t=1780826834; cv=none; b=a/9T0TikLaoGfg9y4LuSFZbMnYufn6ujTVSSvRtsDwIMWrXRvwYJxw+NbD2cLyAcoNCj6P6bY/ZwwL0OH+FTMsC7AEaT6S9Vw9tI2C7tm1RAfqP31n/kC/qRQsQJCQSBWy/Aitp9mIrGK9VmOx4+QclgK6GlXzss1Syhz1g2xzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826827; c=relaxed/simple;
-	bh=CHf0luEhe3zFXSHWQH2ezubJfr9pH2wwHGNYYB8pVHQ=;
+	s=arc-20240116; t=1780826834; c=relaxed/simple;
+	bh=KCeP6r4WcKOYd0Orv8+Zs2ax3pvSCEEZBcuOEQGfh3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZPWf/ZtnHJRwT+jJ3vPQR2VL2Guo3SwHrUIyk/m8EjkTPgxhyejYju2rNl0w+2XBvkzxg29SVLamJ6iZ3GGG7jwNdql/RK9fwkmIhBap9gQgu0lWrLsjVWgBaNm4edU0E97gwKZD29a6h08PnwKIurDYx5BQoVBYBuxNeJQ5HnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ErPeEPu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEC71F00893;
-	Sun,  7 Jun 2026 10:07:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KQOAZ2xENc/e1weOQD+hZ6yMWkl16pUOp6GNz47oTgermOibiQd2GUqC7qJXaQDyTMI91pn2NywiGyB+tgFmPvdJ3hzqrvhmTWCga4AYL/Ct7Z6+nhJ3Tkxm4dpyCFyA00JpPVtSEJmIKWsj5Wpma3afpoVbMV6KFnzEDkGsr0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p8nsbm6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F251F00893;
+	Sun,  7 Jun 2026 10:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826826;
-	bh=2JSSuqcVl3JDMbWPX3Lv87ytmweoCexQF//US5sqRuA=;
+	s=korg; t=1780826833;
+	bh=WpaUjSySEJqcVpIYaX1c4bukNrWW8ixaa3GAdX05Ays=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0ErPeEPuwJS8tEs5W0mwabMNPnJmdgU7e+nsFLSfgjttgB4Y/je7N6ZRW88izzeY0
-	 2ofJrkTSM1e6Xs9l28aH2zZxX6Wqrz9YLmuUUhEZhu1BP4s83fXtVQ7fvA52i6tXDi
-	 yTo4k5sEq6jGz1VCZJg0UiJC21t1ZglmrVJdXd+k=
+	b=0p8nsbm6CC+UQdgyFq2kZlZ9/eibjNYJ49iR9EJgbQ5V5gMdcX4FXzz4DLLaAP4uM
+	 ENOQOezEdZLD8geGj1K0RTQWn7HbOZym52nFjGwF5ldppNlmLD6PzBcj4cSafIhVkx
+	 8q0v4+/i5Z2BQYskk0fVmaMoLyGXxGOJOEXR2+kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,
 	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 032/332] ALSA: hda: cs35l56: Fix system name string leaks
-Date: Sun,  7 Jun 2026 11:56:41 +0200
-Message-ID: <20260607095729.271206086@linuxfoundation.org>
+Subject: [PATCH 7.0 033/332] ALSA: pcm: oss: Fix setup list UAF on proc write error
+Date: Sun,  7 Jun 2026 11:56:42 +0200
+Message-ID: <20260607095729.310033227@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -69,40 +69,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,opensource.cirrus.com,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-260972-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260974-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:rf@opensource.cirrus.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,8e498074a794999eb41c];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3BC2864F5EA
+X-Rspamd-Queue-Id: D415264F556
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -110,85 +111,77 @@ X-Rspamd-Queue-Id: 3BC2864F5EA
 
 From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit a0d9e8df2ebca290c2efff70abc05426e5a476b0 ]
+[ Upstream commit 4cc54bdd54b337e77115be5b55577d1c58608eae ]
 
-cs35l56_hda_read_acpi() gets an allocated ACPI _SUB string from
-acpi_get_subsystem_id(). On success, that string is used to create the
-firmware system name.
+snd_pcm_oss_proc_write() links a newly allocated setup entry into the
+OSS setup list before duplicating the task name. If the task-name
+allocation fails, the error path frees the already linked entry and
+leaves setup_list pointing at freed memory.
 
-Several error paths after the _SUB lookup can return without releasing
-the allocated string. This includes speaker ID lookup errors other than
--ENOENT, and errors after a firmware system name has been allocated.
+A later OSS device open can then walk the stale list entry in
+snd_pcm_oss_look_for_setup() and dereference freed memory.
 
-Use scoped cleanup for the temporary _SUB string and make
-cs35l56->system_name device-managed. This releases the temporary _SUB
-string on every error path and lets devres release the firmware system
-name on probe failure and device removal.
+Allocate the task name and initialize the setup entry before publishing
+the entry on setup_list. Also fetch the initial proc read iterator only
+after taking setup_mutex, so all setup_list traversal follows the same
+list lifetime rules.
 
-Fixes: 6f03b446cbae ("ALSA: hda: cs35l56: Add support for speaker id")
-Fixes: 40b1c2f9b299 ("ALSA: hda/cs35l56: Workaround bad dev-index on Lenovo Yoga Book 9i GenX")
+Reported-by: syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a1062b7.170a0220.35b2b7.0003.GAE@google.com
+Closes: https://syzkaller.appspot.com/bug?extid=8e498074a794999eb41c
+Fixes: 060d77b9c04a ("[ALSA] Fix / clean up PCM-OSS setup hooks")
 Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260522-alsa-pcm-oss-setup-uaf-v1-1-40bdcc4d17e8@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260522-alsa-cs35l56-system-name-leak-v4-1-a6154dd09cd9@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/cs35l56_hda.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ sound/core/oss/pcm_oss.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l56_hda.c b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-index cdbc576569efee..a0ea08eb96a93f 100644
---- a/sound/hda/codecs/side-codecs/cs35l56_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l56_hda.c
-@@ -1025,7 +1025,7 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 	u32 values[HDA_MAX_COMPONENTS];
- 	char hid_string[8];
- 	struct acpi_device *adev;
--	const char *property, *sub;
-+	const char *property;
- 	int i, ret;
- 
- 	/*
-@@ -1047,7 +1047,8 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 	/* Initialize things that could be overwritten by a fixup */
- 	cs35l56->index = -1;
- 
--	sub = acpi_get_subsystem_id(ACPI_HANDLE(cs35l56->base.dev));
-+	const char *sub __free(kfree) = acpi_get_subsystem_id(ACPI_HANDLE(cs35l56->base.dev));
+diff --git a/sound/core/oss/pcm_oss.c b/sound/core/oss/pcm_oss.c
+index 6af26ec2ecfd59..b1b4c7d017beea 100644
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -2968,8 +2968,10 @@ static void snd_pcm_oss_proc_read(struct snd_info_entry *entry,
+ 				  struct snd_info_buffer *buffer)
+ {
+ 	struct snd_pcm_str *pstr = entry->private_data;
+-	struct snd_pcm_oss_setup *setup = pstr->oss.setup_list;
++	struct snd_pcm_oss_setup *setup;
 +
- 	ret = cs35l56_hda_apply_platform_fixups(cs35l56, sub, &id);
- 	if (ret)
- 		return ret;
-@@ -1095,15 +1096,16 @@ static int cs35l56_hda_read_acpi(struct cs35l56_hda *cs35l56, int hid, int id)
- 		ret = cirrus_scodec_get_speaker_id(cs35l56->base.dev, cs35l56->index,
- 						   cs35l56->num_amps, -1);
- 		if (ret == -ENOENT) {
--			cs35l56->system_name = sub;
-+			cs35l56->system_name = devm_kstrdup(cs35l56->base.dev, sub, GFP_KERNEL);
- 		} else if (ret >= 0) {
--			cs35l56->system_name = kasprintf(GFP_KERNEL, "%s-spkid%d", sub, ret);
--			kfree(sub);
--			if (!cs35l56->system_name)
--				return -ENOMEM;
-+			cs35l56->system_name = devm_kasprintf(cs35l56->base.dev, GFP_KERNEL,
-+							      "%s-spkid%d", sub, ret);
- 		} else {
- 			return ret;
+ 	guard(mutex)(&pstr->oss.setup_mutex);
++	setup = pstr->oss.setup_list;
+ 	while (setup) {
+ 		snd_iprintf(buffer, "%s %u %u%s%s%s%s%s%s\n",
+ 			    setup->task_name,
+@@ -3054,6 +3056,13 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
+ 				buffer->error = -ENOMEM;
+ 				return;
+ 			}
++			template.task_name = kstrdup(task_name, GFP_KERNEL);
++			if (!template.task_name) {
++				kfree(setup);
++				buffer->error = -ENOMEM;
++				return;
++			}
++			*setup = template;
+ 			if (pstr->oss.setup_list == NULL)
+ 				pstr->oss.setup_list = setup;
+ 			else {
+@@ -3061,12 +3070,7 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
+ 				     setup1->next; setup1 = setup1->next);
+ 				setup1->next = setup;
+ 			}
+-			template.task_name = kstrdup(task_name, GFP_KERNEL);
+-			if (! template.task_name) {
+-				kfree(setup);
+-				buffer->error = -ENOMEM;
+-				return;
+-			}
++			continue;
  		}
-+
-+		if (!cs35l56->system_name)
-+			return -ENOMEM;
+ 		*setup = template;
  	}
- 
- 	cs35l56->base.reset_gpio = devm_gpiod_get_index_optional(cs35l56->base.dev,
-@@ -1254,7 +1256,6 @@ void cs35l56_hda_remove(struct device *dev)
- 
- 	cs_dsp_remove(&cs35l56->cs_dsp);
- 
--	kfree(cs35l56->system_name);
- 	pm_runtime_put_noidle(cs35l56->base.dev);
- 
- 	gpiod_set_value_cansleep(cs35l56->base.reset_gpio, 0);
 -- 
 2.53.0
 
