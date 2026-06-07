@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-261872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 63VNME1SJWrRGwIAu9opvQ
-	(envelope-from <stable+bounces-261872-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:17 +0200
+	id Wrj+HPZOJWrPGgIAu9opvQ
+	(envelope-from <stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE2F6505E1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063E26502EF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:59:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I4AWXzDd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261872-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261872-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BnrFDTeN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261814-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 086453072547
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 79B7D3004F27
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A1D3382C8;
-	Sun,  7 Jun 2026 11:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208232F764;
+	Sun,  7 Jun 2026 10:58:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454F31E98E3;
-	Sun,  7 Jun 2026 11:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED0E12CDA5;
+	Sun,  7 Jun 2026 10:58:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830182; cv=none; b=U6PQ5DQ7R+vd80V60XcVr6Q+tj1UsNR6r7VYw5lYnSP1vfMS4u26NAcNO9GlHFwBFd3MqcmfB8k2PDeTofPLh387dxOjZJZRAAUZkKVfVvsj6gFyGltcSY89DSUYFAGZdLqYXH55HRykIMnoxb3qez/BsvGBmelkNyGVBLmk2CU=
+	t=1780829939; cv=none; b=qT+JhwVwcG1BPrpO1oBWnYtkgNarWGSpwHgJRjiv23is9N9yW21/FKr3nKchRlj+a+KIbw3ysahdBtueTRtANglllJC/TcLUUFxwqI2s/s9snp8AAeyw8121IXiTWuOnuvE7QtE46dtXLF4jBgBR/47A7Qa761LeNCSajlGz4E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830182; c=relaxed/simple;
-	bh=b66/nYfEmOX04rx9NX13omDhHTiy1gvHd4Du4Ym6eTY=;
+	s=arc-20240116; t=1780829939; c=relaxed/simple;
+	bh=3SOKXIaBQno+5AaSAjhDpPTO0v9c60Ff3NdKwL6zYrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3tV5L1oeCGTz+2rpV0bRFjfPGDoVD94ZlY5h7PCepbBRrKlUP81oTreHBG+i9pnIlU+2CmM7AXF8DK0FVxv8tDZUgK/+q4ZGvqi8b13GjnywTzgpARzpDUVxq7ji/TypsCb7I+Loaabvku1a4b7ApHQEKzer12y/mrw7LEBCco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4AWXzDd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CDE1F00893;
-	Sun,  7 Jun 2026 11:03:00 +0000 (UTC)
+	 MIME-Version; b=PKdTSFF7lYmKZuM9Urq9OdP9/IXgob2JX9n+2R8kR0otZ7OdlgXtDfW2pxoPfcFyzHtI8Jsoa65lfprgumPmwyS0HsiLJVul5p9wg7qFWiVIfVbl8mw+Gnh2T22pBsGOW6wkrSKazLByOlM+2RQCvyi7jQjOqMi87shI41kHci4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnrFDTeN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49CF1F00893;
+	Sun,  7 Jun 2026 10:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830181;
-	bh=kNy4m1J2oPTG3DoEet0zfuy4qmrNCWahuJuYllr6Flk=;
+	s=korg; t=1780829938;
+	bh=/GSDwjDsuQnekFrkVZadFZWEsGU2enI/OuUHlyNImzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I4AWXzDdl/BGZFU1wuIQn4TFaxVU5nskyHXAKDDtyntcFgwkMmDuV97k7CSv8SyYW
-	 1IINSr1UkMgBi7taVFVFdo7nXmkj0ZvsMGeE0ndxy+0oijh8VHGpMxUjDKGJEBdMHw
-	 6IPfmWOMQ/zVmxkUMuouq8C+6zrdb1f6PBHx1xDg=
+	b=BnrFDTeNWPHlklClXucl+WArk2X/I0SW9NoIi61wUrC2+zUDvC0TGBsGQuWvpO54Q
+	 wLZoW0p5q0al06Mqk62xRTOB3+olzkGnR7Gm+roMR+QTIWJXg6OHOFtY9cMG2RPXSs
+	 ttdf+auhNr/oTwrmHM7KcoJFgOQrnnF43205JWPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 300/307] x86/alternatives: Rename apply_relocation() to text_poke_apply_relocation()
+Subject: [PATCH 7.0 328/332] hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock
 Date: Sun,  7 Jun 2026 12:01:37 +0200
-Message-ID: <20260607095738.765216287@linuxfoundation.org>
+Message-ID: <20260607095740.179479064@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,133 +69,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261872-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261814-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mingo@kernel.org,m:jgross@suse.com,m:hpa@zytor.com,m:torvalds@linux-foundation.org,m:peterz@infradead.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,infradead.org:email,zytor.com:email,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[roeck-us.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,nexthop.ai:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2EE2F6505E1
+X-Rspamd-Queue-Id: 063E26502EF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit 023f42dd59203be8ad2fc0574af32d3b4ad041ec ]
+[ Upstream commit 4e4af55aaca7f6d7673d5f9889ad0529db86a048 ]
 
-Join the text_poke_*() API namespace.
+adm1266_state_read() backs the sequencer_state debugfs entry and
+issues an i2c_smbus_read_word_data(client, ADM1266_READ_STATE)
+against the device without taking pmbus_lock.  pmbus_core holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked debugfs reader can land between a PAGE
+write and the subsequent paged read in another thread.  READ_STATE
+itself is not paged, so it cannot corrupt PAGE in flight, but the
+same defensive serialisation that applies to the GPIO accessors
+applies here: any direct device access from outside pmbus_core
+should be ordered with respect to pmbus_core's own.
 
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: "H . Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250411054105.2341982-52-mingo@kernel.org
-Stable-dep-of: a17dc12bfed8 ("x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines")
+Take pmbus_lock at the top of adm1266_state_read() via the
+scope-based guard().
+
+Fixes: ed1ff457e187 ("hwmon: (pmbus/adm1266) add debugfs for states")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-8-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/text-patching.h |    2 +-
- arch/x86/kernel/alternative.c        |    6 +++---
- arch/x86/kernel/callthunks.c         |    6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/hwmon/pmbus/adm1266.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -15,7 +15,7 @@
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -328,6 +328,7 @@ static int adm1266_state_read(struct seq
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	int ret;
  
- extern void text_poke_early(void *addr, const void *opcode, size_t len);
- 
--extern void apply_relocation(u8 *buf, const u8 * const instr, size_t instrlen, u8 *repl, size_t repl_len);
-+extern void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t instrlen, u8 *repl, size_t repl_len);
- 
- /*
-  * Clear and restore the kernel write-protection flag on the local CPU.
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -502,7 +502,7 @@ static void __apply_relocation(u8 *buf,
- 	}
- }
- 
--void apply_relocation(u8 *buf, const u8 * const instr, size_t instrlen, u8 *repl, size_t repl_len)
-+void text_poke_apply_relocation(u8 *buf, const u8 * const instr, size_t instrlen, u8 *repl, size_t repl_len)
- {
- 	__apply_relocation(buf, instr, instrlen, repl, repl_len);
- 	optimize_nops(instr, buf, instrlen);
-@@ -658,7 +658,7 @@ void __init_or_module noinline apply_alt
- 		for (; insn_buff_sz < a->instrlen; insn_buff_sz++)
- 			insn_buff[insn_buff_sz] = 0x90;
- 
--		apply_relocation(insn_buff, instr, a->instrlen, replacement, a->replacementlen);
-+		text_poke_apply_relocation(insn_buff, instr, a->instrlen, replacement, a->replacementlen);
- 
- 		DUMP_BYTES(ALT, instr, a->instrlen, "%px:   old_insn: ", instr);
- 		DUMP_BYTES(ALT, replacement, a->replacementlen, "%px:   rpl_insn: ", replacement);
-@@ -1865,7 +1865,7 @@ __visible noinline void __init __alt_rel
- static noinline void __init alt_reloc_selftest(void)
- {
- 	/*
--	 * Tests apply_relocation().
-+	 * Tests text_poke_apply_relocation().
- 	 *
- 	 * This has a relative immediate (CALL) in a place other than the first
- 	 * instruction and additionally on x86_64 we get a RIP-relative LEA:
---- a/arch/x86/kernel/callthunks.c
-+++ b/arch/x86/kernel/callthunks.c
-@@ -180,7 +180,7 @@ static void *patch_dest(void *dest, bool
- 	u8 *pad = dest - tsize;
- 
- 	memcpy(insn_buff, skl_call_thunk_template, tsize);
--	apply_relocation(insn_buff, pad, tsize, skl_call_thunk_template, tsize);
-+	text_poke_apply_relocation(insn_buff, pad, tsize, skl_call_thunk_template, tsize);
- 
- 	/* Already patched? */
- 	if (!bcmp(pad, insn_buff, tsize))
-@@ -302,7 +302,7 @@ static bool is_callthunk(void *addr)
- 	pad = (void *)(dest - tmpl_size);
- 
- 	memcpy(insn_buff, skl_call_thunk_template, tmpl_size);
--	apply_relocation(insn_buff, pad, tmpl_size, skl_call_thunk_template, tmpl_size);
-+	text_poke_apply_relocation(insn_buff, pad, tmpl_size, skl_call_thunk_template, tmpl_size);
- 
- 	return !bcmp(pad, insn_buff, tmpl_size);
- }
-@@ -320,7 +320,7 @@ int x86_call_depth_emit_accounting(u8 **
- 		return 0;
- 
- 	memcpy(insn_buff, skl_call_thunk_template, tmpl_size);
--	apply_relocation(insn_buff, ip, tmpl_size, skl_call_thunk_template, tmpl_size);
-+	text_poke_apply_relocation(insn_buff, ip, tmpl_size, skl_call_thunk_template, tmpl_size);
- 
- 	memcpy(*pprog, insn_buff, tmpl_size);
- 	*pprog += tmpl_size;
++	guard(pmbus_lock)(client);
+ 	ret = i2c_smbus_read_word_data(client, ADM1266_READ_STATE);
+ 	if (ret < 0)
+ 		return ret;
 
 
 
