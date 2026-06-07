@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M3wxGkFJJWqPGAIAu9opvQ
-	(envelope-from <stable+bounces-261391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:41 +0200
+	id qf0ZH2tJJWqqGAIAu9opvQ
+	(envelope-from <stable+bounces-261407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017DD64FD03
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:34:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C48A64FD49
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uMicAgFz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261391-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261391-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Jy+aUTz6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261407-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261407-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF5763035170
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:32:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A43EE3028F5C
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A5D327BFA;
-	Sun,  7 Jun 2026 10:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDEC26ED5D;
+	Sun,  7 Jun 2026 10:33:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3611E2D3A69;
-	Sun,  7 Jun 2026 10:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92350257855;
+	Sun,  7 Jun 2026 10:33:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828370; cv=none; b=aKLcmVUCfvZS4HhjCqusYiVlO44sDPV/NA+mPeLgcu3eZgXMhll/nMRGoUIsv8ddVHqdPm2/UbB/lY8vtpJb5CX5vqgJa9JrFXTodeV21pv6wNVQVd00OjqmCxi/jh6Bt6MbTgQvPb/gs5n5nW+fCNQ+w+X5h0rroSmADSNPYxs=
+	t=1780828431; cv=none; b=pHrKxOxPxmSwydOWQT7m/Xsvw8MDMnaeHvdYr5VH8bNOakJWVE8WiS8ObNSrrLja7wakhpFlM5aLqJ9FimiPuVhxBXoCjarCZ1FLF9uEWAED4YDbKjwU1Uj/sKRBo9kZOtakEY55WMmfgxL8R12hrtzWL6dVx2E+bdMsjPr6EdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828370; c=relaxed/simple;
-	bh=FLqooaj9o8FuoaLhN/8voNTwn03SDOhMYMqJ7dkN9do=;
+	s=arc-20240116; t=1780828431; c=relaxed/simple;
+	bh=C57uckOobXnrXuBTRvVjuqPdkV8OrwebG0HyfFOkRjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDgRXVlOEK/3XwTDtzW3pvevrl4OF7faJpr6AGr5oayJeooFYmkNNFPQfC4dcSKld28FcrYt6RfTZZRbjLd1B+QGsVn2MQdoEJEwqlGD2Ec1Wm0g6L0uoy4ygypcWSQlWHnanp6X6oO4yv2OoMrscIPP8dTecmFduj8CpBeoJDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMicAgFz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570F61F00893;
-	Sun,  7 Jun 2026 10:32:48 +0000 (UTC)
+	 MIME-Version; b=CBLALB5IVtiRLOTDNLprOqZUKrGdYrBE1QahejNJYoSXEbcIIE+cLCLAwymIdauyLV+ouifkwkv6Vdfse7Bn0f29IcNsA3XYyzoNmjU84+yJ49Z5yarBGP0e7zzTwiB/FV4WxoCVyKR20QgTOFYo2WTHOnw8cbRyGDsIvvpJvG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jy+aUTz6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C281F00893;
+	Sun,  7 Jun 2026 10:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828369;
-	bh=Wpyi8dOq5UNCUiUay+9cbhfqdFBfW58ReJHCzDJuIe8=;
+	s=korg; t=1780828430;
+	bh=Di/2+4vIGzdRtOcaV2hxGNZxxwDIwhj7PdL21MmMTZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uMicAgFzTM4gag1+dvgj/90Qp7XciU5PI99zTYJxk4NQQhfOLginr8f4//VX33ADH
-	 osxrqrfmduxsykdX6aA2UNZKWCx5oWituPdMZ2nWpovub5cDRF/43yzfsUKL3T+oug
-	 BVbdEmAXrFqvfcUR+9MBpez/UaoB/mNtvLYfhamA=
+	b=Jy+aUTz65gOp9Zb2+ejuYVpcGiyvIaHNDRLjnbHTRNYneRR08nfrLKwmXxAS22h8N
+	 My8Q2OJ3Ea64coqXM916mVrkvPL6cW0OXUo/kPYz+tWrtFL2FC3bfLTr26HbsioN2E
+	 jyh/XKJVsWNjETG9DFcR/dvh3aF4Y7xTbwryLfwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kim Seer Paller <kimseer.paller@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 7.0 176/332] iio: dac: ad3530r: Fix AD3531/AD3531R powerdown mode strings
+Subject: [PATCH 6.18 158/315] iio: dac: ad5686: fix input raw value check
 Date: Sun,  7 Jun 2026 11:59:05 +0200
-Message-ID: <20260607095734.528306289@linuxfoundation.org>
+Message-ID: <20260607095733.398615994@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,159 +70,73 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261391-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kimseer.paller@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261407-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 017DD64FD03
+X-Rspamd-Queue-Id: 1C48A64FD49
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kim Seer Paller <kimseer.paller@analog.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-commit ebd250c2581ec46c64c73fdfa918c9a7f757505e upstream.
+commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
 
-The AD3531/AD3531R has different output operating modes from the
-AD3530/AD3530R. According to the AD3531/AD3531R datasheet, the
-powerdown modes are:
-  01: 500 Ohm output impedance
-  10: 3.85 kOhm output impedance
-  11: 16 kOhm output impedance
+Fix range check for input raw value, which is off by one, i.e., for a
+10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
+passes the previous check, allowing an out-of-range write. The issue
+exists since the ad5686 driver was first introduced.
 
-The driver currently uses the AD3530R modes (1k, 7.7k, 32k) for all
-variants, which is incorrect for AD3531/AD3531R.
-
-Add AD3531R-specific powerdown mode strings and assign them to the
-AD3531/AD3531R chip variants.
-
-Fixes: 93583174a3df ("iio: dac: ad3530r: Add driver for AD3530R and AD3531R")
-Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3530r.c |   54 ++++++++++++++++++++++++++++++++++------------
- 1 file changed, 40 insertions(+), 14 deletions(-)
+ drivers/iio/dac/ad5686.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad3530r.c
-+++ b/drivers/iio/dac/ad3530r.c
-@@ -105,6 +105,12 @@ static const char * const ad3530r_powerd
- 	"32kohm_to_gnd",
- };
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
  
-+static const char * const ad3531r_powerdown_modes[] = {
-+	"500ohm_to_gnd",
-+	"3.85kohm_to_gnd",
-+	"16kohm_to_gnd",
-+};
-+
- static int ad3530r_get_powerdown_mode(struct iio_dev *indio_dev,
- 				      const struct iio_chan_spec *chan)
- {
-@@ -133,6 +139,13 @@ static const struct iio_enum ad3530r_pow
- 	.set = ad3530r_set_powerdown_mode,
- };
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		if (val > (1 << chan->scan_type.realbits) || val < 0)
++		if (val >= (1 << chan->scan_type.realbits) || val < 0)
+ 			return -EINVAL;
  
-+static const struct iio_enum ad3531r_powerdown_mode_enum = {
-+	.items = ad3531r_powerdown_modes,
-+	.num_items = ARRAY_SIZE(ad3531r_powerdown_modes),
-+	.get = ad3530r_get_powerdown_mode,
-+	.set = ad3530r_set_powerdown_mode,
-+};
-+
- static ssize_t ad3530r_get_dac_powerdown(struct iio_dev *indio_dev,
- 					 uintptr_t private,
- 					 const struct iio_chan_spec *chan,
-@@ -276,7 +289,20 @@ static const struct iio_chan_spec_ext_in
- 	{ }
- };
- 
--#define AD3530R_CHAN(_chan)					\
-+static const struct iio_chan_spec_ext_info ad3531r_ext_info[] = {
-+	{
-+		.name = "powerdown",
-+		.shared = IIO_SEPARATE,
-+		.read = ad3530r_get_dac_powerdown,
-+		.write = ad3530r_set_dac_powerdown,
-+	},
-+	IIO_ENUM("powerdown_mode", IIO_SEPARATE, &ad3531r_powerdown_mode_enum),
-+	IIO_ENUM_AVAILABLE("powerdown_mode", IIO_SHARED_BY_TYPE,
-+			   &ad3531r_powerdown_mode_enum),
-+	{ }
-+};
-+
-+#define AD3530R_CHAN(_chan, _ext_info)				\
- {								\
- 	.type = IIO_VOLTAGE,					\
- 	.indexed = 1,						\
-@@ -284,25 +310,25 @@ static const struct iio_chan_spec_ext_in
- 	.output = 1,						\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
- 			      BIT(IIO_CHAN_INFO_SCALE),		\
--	.ext_info = ad3530r_ext_info,				\
-+	.ext_info = _ext_info,					\
- }
- 
- static const struct iio_chan_spec ad3530r_channels[] = {
--	AD3530R_CHAN(0),
--	AD3530R_CHAN(1),
--	AD3530R_CHAN(2),
--	AD3530R_CHAN(3),
--	AD3530R_CHAN(4),
--	AD3530R_CHAN(5),
--	AD3530R_CHAN(6),
--	AD3530R_CHAN(7),
-+	AD3530R_CHAN(0, ad3530r_ext_info),
-+	AD3530R_CHAN(1, ad3530r_ext_info),
-+	AD3530R_CHAN(2, ad3530r_ext_info),
-+	AD3530R_CHAN(3, ad3530r_ext_info),
-+	AD3530R_CHAN(4, ad3530r_ext_info),
-+	AD3530R_CHAN(5, ad3530r_ext_info),
-+	AD3530R_CHAN(6, ad3530r_ext_info),
-+	AD3530R_CHAN(7, ad3530r_ext_info),
- };
- 
- static const struct iio_chan_spec ad3531r_channels[] = {
--	AD3530R_CHAN(0),
--	AD3530R_CHAN(1),
--	AD3530R_CHAN(2),
--	AD3530R_CHAN(3),
-+	AD3530R_CHAN(0, ad3531r_ext_info),
-+	AD3530R_CHAN(1, ad3531r_ext_info),
-+	AD3530R_CHAN(2, ad3531r_ext_info),
-+	AD3530R_CHAN(3, ad3531r_ext_info),
- };
- 
- static const struct ad3530r_chip_info ad3530_chip = {
+ 		mutex_lock(&st->lock);
 
 
 
