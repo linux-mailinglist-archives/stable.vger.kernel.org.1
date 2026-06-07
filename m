@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261162-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AAieL/tGJWo7FwIAu9opvQ
-	(envelope-from <stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:59 +0200
+	id GwkwN19FJWo6FgIAu9opvQ
+	(envelope-from <stable+bounces-261162-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEBD64FA25
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C4B64F7CA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GEnr6Tc+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261257-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eJ73uNpM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261162-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261162-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CF4A301F15C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 86480301AA99
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8624D324B2C;
-	Sun,  7 Jun 2026 10:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647BA31E838;
+	Sun,  7 Jun 2026 10:17:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DCB320A37;
-	Sun,  7 Jun 2026 10:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE5E30148C;
+	Sun,  7 Jun 2026 10:17:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827860; cv=none; b=T43+ZpNYznBmAk095s9YN1Tv0hHGWr9W2IkLZgjO70TI3OUi9ZX7GKGlosy9jrU+O0NhKU+bIonIHgGwuW2ONKgmw+sA0a34C3SOHuAg0gfnDXKystAEzj+bnKTuYrtWNsgQKyXsT2RgWa356Xee8krkX9MwrLOa+NOE6v5ySoI=
+	t=1780827472; cv=none; b=bRaSq9ExlKiwlskDlOgcBgYyVnzFkGVtc9FJw+bHJs8TdG/kmenxGSa7K4gmMzO1V9Z2ssRkngO4PQ4udN1iz2tD0yKKBJ9j94wW4hck+Su6yrLLPqXxHWrDI8xmsm4oMqi2itIoVJvhc7iH5TSaOZ39Lx2G/kzWYfb0tyKY8YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827860; c=relaxed/simple;
-	bh=mMN4UeIrKwGZUiszDDN1TQoVRawo7zb86Xwj9bkdlbQ=;
+	s=arc-20240116; t=1780827472; c=relaxed/simple;
+	bh=YYcWbp1rpT0aFuAMNlJZAgpbpQAUJLJovVlitJh6qAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8MsvwWpbANS5EOXjEEJtLLOohcpq5BUsp/Bz+793H0bMVj+RD+XBnDbQPga7iCnAGT/L6hYxIrJnthIcePIp8aTqJ/jGbl07LXHuh/QcmeErEmHL/XvhTsBzVHnmFrQpBg8aeX3jV3na+v2a7+Z9GG8/pIk4gM2G+TqROo/aMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEnr6Tc+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA921F00893;
-	Sun,  7 Jun 2026 10:24:17 +0000 (UTC)
+	 MIME-Version; b=ojJWY7PhXBiupgTtL0lKNshAtlufWt5sks9HvIvREjlaPpXOcac1TE1b/v1973nwxkYPB4pQvbwaU8EOZQGgae2fGTcjlp2AwV61YpC4z2fP7UK6sh+ohCFfEXS9eaI2Wfvlb1zBPoPjyg4D7MO5lN03xUR3W7JMBXJJ8kO6Jcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJ73uNpM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0201F0089B;
+	Sun,  7 Jun 2026 10:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827859;
-	bh=l2QEb1GPtgs4AYs+KbjyziJtUt6ECD2aK7fV7Aas9CE=;
+	s=korg; t=1780827471;
+	bh=L0iuhq9C578NeD1E+SMxxTFnWgRsTD5LgB2zMQqsRDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GEnr6Tc+v71ekK5O9LAqrCWzGkzw/AGiY+MUhkk0YQd+dezFMCt50Sm3BR4hOTfyM
-	 Ll6r+e1QBZTdVtzzE/43Naitqz2sHThteQhYybGEkzVRK9c7GANOkIka0go1NVyH/U
-	 XD5SpoWEMhst49ZhS+fEcLu2jqMaMnOTSJBS3jNk=
+	b=eJ73uNpMYj7iUOqJf7UluM1EIgGv78nsIXYkJ//kQE0Gv0UCcBURT69E8JDX5EOXG
+	 IkBlrIp61+X4IVr3DN7o2nj+A8PX4E0ZSyDd92WcO/gbMIESJcRP2ZBmn80zQ/lqFj
+	 dagaF2YgjGgcyW5qxU5VZk+9yCDME34ohBOOF0mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/307] ethtool: pse-pd: fix missing ethnl_ops_complete()
+Subject: [PATCH 7.0 096/332] dpll: zl3073x: use __dpll_device_change_ntf() and remove change_work
 Date: Sun,  7 Jun 2026 11:57:45 +0200
-Message-ID: <20260607095730.254935443@linuxfoundation.org>
+Message-ID: <20260607095731.675621521@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261257-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261162-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ivecera@redhat.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,65 +98,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4BEBD64FA25
+X-Rspamd-Queue-Id: 87C4B64F7CA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit ab5bf428fb6bd361163c7247b92750d1d24ca2ed ]
+[ Upstream commit d733f519f6443540f8359461a34e3b0042099bbe ]
 
-pse_prepare_data() is missing ethnl_ops_complete() if
-ethnl_req_get_phydev() returned an error. Move getting
-phydev up so that we don't have to worry about this
-(similar order to linkstate_prepare_data()).
+The change_work was introduced to send device change notifications
+from DPLL device callbacks without deadlocking on dpll_lock, since
+the callbacks are already invoked under that lock. Now that
+__dpll_device_change_ntf() is exported for callers that already
+hold dpll_lock, use it directly and remove the change_work
+infrastructure entirely.
 
-Note that phydev may still be NULL (this is checked in
-pse_get_pse_attributes()), the goal isn't really to avoid
-the _begin() / _complete() calls, only to simplify the error
-handling.
+This eliminates a race condition where change_work could be
+re-scheduled after cancel_work_sync() during device teardown,
+potentially causing the handler to dereference a freed or NULL
+dpll_dev pointer.
 
-While at it propagate the original error. Why this code
-overrides the error with -ENODEV but !phydev generates
--EOPNOTSUPP is unclear to me...
-
-Fixes: 31748765bed3 ("net: ethtool: pse-pd: Target the command to the requested PHY")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260526153533.2779187-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9363b4837659 ("dpll: zl3073x: Allow to configure phase offset averaging factor")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Link: https://patch.msgid.link/20260526074525.1451008-3-ivecera@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/pse-pd.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/dpll/zl3073x/dpll.c | 26 +++++++++-----------------
+ drivers/dpll/zl3073x/dpll.h |  2 --
+ 2 files changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/net/ethtool/pse-pd.c b/net/ethtool/pse-pd.c
-index 71843de832cca7..01517c53113def 100644
---- a/net/ethtool/pse-pd.c
-+++ b/net/ethtool/pse-pd.c
-@@ -60,14 +60,14 @@ static int pse_prepare_data(const struct ethnl_req_info *req_base,
- 	struct phy_device *phydev;
- 	int ret;
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index c201c974a7f9a4..70c91948c7da8d 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -1193,15 +1193,6 @@ zl3073x_dpll_phase_offset_avg_factor_get(const struct dpll_device *dpll,
+ 	return 0;
+ }
  
--	ret = ethnl_ops_begin(dev);
--	if (ret < 0)
--		return ret;
+-static void
+-zl3073x_dpll_change_work(struct work_struct *work)
+-{
+-	struct zl3073x_dpll *zldpll;
 -
- 	phydev = ethnl_req_get_phydev(req_base, tb, ETHTOOL_A_PSE_HEADER,
- 				      info->extack);
- 	if (IS_ERR(phydev))
--		return -ENODEV;
-+		return PTR_ERR(phydev);
+-	zldpll = container_of(work, struct zl3073x_dpll, change_work);
+-	dpll_device_change_ntf(zldpll->dpll_dev);
+-}
+-
+ static int
+ zl3073x_dpll_phase_offset_avg_factor_set(const struct dpll_device *dpll,
+ 					 void *dpll_priv, u32 factor,
+@@ -1227,8 +1218,10 @@ zl3073x_dpll_phase_offset_avg_factor_set(const struct dpll_device *dpll,
+ 	 * we have to send a notification for other DPLL devices.
+ 	 */
+ 	list_for_each_entry(item, &zldpll->dev->dplls, list) {
+-		if (item != zldpll)
+-			schedule_work(&item->change_work);
++		struct dpll_device *dpll_dev = READ_ONCE(item->dpll_dev);
 +
-+	ret = ethnl_ops_begin(dev);
-+	if (ret < 0)
-+		return ret;
++		if (item != zldpll && dpll_dev)
++			__dpll_device_change_ntf(dpll_dev);
+ 	}
  
- 	ret = pse_get_pse_attributes(phydev, info->extack, data);
+ 	return 0;
+@@ -1724,13 +1717,13 @@ zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
+ static void
+ zl3073x_dpll_device_unregister(struct zl3073x_dpll *zldpll)
+ {
+-	WARN(!zldpll->dpll_dev, "DPLL device is not registered\n");
++	struct dpll_device *dpll_dev = READ_ONCE(zldpll->dpll_dev);
  
+-	cancel_work_sync(&zldpll->change_work);
++	WARN(!dpll_dev, "DPLL device is not registered\n");
+ 
+-	dpll_device_unregister(zldpll->dpll_dev, &zldpll->ops, zldpll);
+-	dpll_device_put(zldpll->dpll_dev, &zldpll->tracker);
+-	zldpll->dpll_dev = NULL;
++	WRITE_ONCE(zldpll->dpll_dev, NULL);
++	dpll_device_unregister(dpll_dev, &zldpll->ops, zldpll);
++	dpll_device_put(dpll_dev, &zldpll->tracker);
+ }
+ 
+ /**
+@@ -1976,7 +1969,6 @@ zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch)
+ 	zldpll->dev = zldev;
+ 	zldpll->id = ch;
+ 	INIT_LIST_HEAD(&zldpll->pins);
+-	INIT_WORK(&zldpll->change_work, zl3073x_dpll_change_work);
+ 
+ 	return zldpll;
+ }
+diff --git a/drivers/dpll/zl3073x/dpll.h b/drivers/dpll/zl3073x/dpll.h
+index 278a24f357c9bd..241253212f7d57 100644
+--- a/drivers/dpll/zl3073x/dpll.h
++++ b/drivers/dpll/zl3073x/dpll.h
+@@ -22,7 +22,6 @@
+  * @tracker: tracking object for the acquired reference
+  * @lock_status: last saved DPLL lock status
+  * @pins: list of pins
+- * @change_work: device change notification work
+  */
+ struct zl3073x_dpll {
+ 	struct list_head		list;
+@@ -37,7 +36,6 @@ struct zl3073x_dpll {
+ 	dpll_tracker			tracker;
+ 	enum dpll_lock_status		lock_status;
+ 	struct list_head		pins;
+-	struct work_struct		change_work;
+ };
+ 
+ struct zl3073x_dpll *zl3073x_dpll_alloc(struct zl3073x_dev *zldev, u8 ch);
 -- 
 2.53.0
 
