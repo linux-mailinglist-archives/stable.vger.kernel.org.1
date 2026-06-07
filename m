@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Bm8PB+VHJWqsFwIAu9opvQ
-	(envelope-from <stable+bounces-261229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:53 +0200
+	id ejFaGnFGJWrtFgIAu9opvQ
+	(envelope-from <stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6475D64FAF6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12F364F976
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zSHqXWJF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261229-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261229-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wzMQVjR9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAE093036744
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F205D301B920
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FFA31E832;
-	Sun,  7 Jun 2026 10:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2503631E85C;
+	Sun,  7 Jun 2026 10:21:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F273148A8;
-	Sun,  7 Jun 2026 10:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CEA4CB5B;
+	Sun,  7 Jun 2026 10:21:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827748; cv=none; b=k73c9sKEOwNCiSuEYOk6122dxQpZGt4Tdxbx6GddIh+q22W4dLBKdnJFCsdqcbAoDtEoQiJVxUNP4G2my2EeZJocoGsfUeN66I+i8XAOwR4XPR5OjHZ6BDcIHFHXoWIm/Z718jrpTd9KmALOE8/tLzbzdyStKq68f7PNfo/zk8s=
+	t=1780827693; cv=none; b=pMOyXfCspGF8d0F9ruXGySiMx/Hngd2bpzHsnUhNRDbq6TJuixG+39/dUpf/IOgsZwk22Y2FQKDIkCVAHCtFDMD7T+D1JE0Y+V2DMnEnyrOj0Cf0xDl0gYtFGTNE9cP4dGOiYcr29LY5MrBk7Xi4tlMit7ctGuMkAmJ2vd38qTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827748; c=relaxed/simple;
-	bh=V+xexobf7HRZ4ATChQbSzCfikaO2WN/HpDjG1qlM0+E=;
+	s=arc-20240116; t=1780827693; c=relaxed/simple;
+	bh=7UPAp1ZwCY4yFSn40kAOeeeCrifOXFMSzPC5LazaUCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXwB3pqD9HhiVridC4dMidjHpfjUKRe+6WnhloZDevERxL2jFfmxX884X/fFxXnPihq8DvIq+YYJMI53EidkEeOm5bIrd5NTbRw6bdq62SBC/o5jgkZ5GYOVzahLU710u/br3SP0t/0a5TIYBWLMtldr3umyAZnYign83LOmFWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSHqXWJF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC18A1F00893;
-	Sun,  7 Jun 2026 10:22:25 +0000 (UTC)
+	 MIME-Version; b=rStOSo2FHXbbayFX2mYMBMD8tENLlDZXI8tEZYs8USl7xXAMRvWn/Wyvyg2f92RMcaLmKgePz+QuP6YMCeRHsEzUEQMntdzimdAe3bXyoWXhFFmc5hwRDaRcfesNMJhNDoHSFj3ni7xHWf8b3pNjYnHOZxeamM9kPfJ0gS8XfgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzMQVjR9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428121F00893;
+	Sun,  7 Jun 2026 10:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827746;
-	bh=AU+m2P2QhMIMoM67Ootoiyd/CR3J6KohfuA0pszryfs=;
+	s=korg; t=1780827692;
+	bh=DRWUhWPLsiUKtFqQVIH54EwqN8WAFl/hPTUoc3a84bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zSHqXWJFItXL4Rt+4Xey8JCtLtanlFe3/+L4lBrOk49mOxTYzY9bf196HoLw1pryS
-	 ROcf2Qoj3inybfNFMtPlR0Kf2jfGGij/hCG7jr0CbzqaLfuamqOI+BNj0v+iLDRoU1
-	 y5OtgPa/AvJgOcA4G5NiVrZiGKaTXOOEEKnX2AjY=
+	b=wzMQVjR9r4fBhIRXqkJriwT8H8dAcNazBpIAuUjD/u2EKKaC0/X0vp3dUltZLhoeg
+	 uFG+dxK6SmfV9cuUrqy8ubPmvvUtQkQmm3aGG26wsUzSn7z0DmPVk2yNU63DYnx+AX
+	 bzdG71kcSd6akGbPjSp72i2pPS27V4/XB0ZDB+yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/307] remove pointless includes of <linux/fdtable.h>
+Subject: [PATCH 6.18 093/315] ipv6: fix possible infinite loop in fib6_select_path()
 Date: Sun,  7 Jun 2026 11:58:00 +0200
-Message-ID: <20260607095730.821106213@linuxfoundation.org>
+Message-ID: <20260607095731.045147676@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,263 +70,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261229-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:brauner@kernel.org,m:viro@zeniv.linux.org.uk,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261215-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux.org.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linux.dev:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6475D64FAF6
+X-Rspamd-Queue-Id: F12F364F976
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit be5498cac2ddb112c5bd7433d5e834a1a2493427 ]
+[ Upstream commit 9c7da87c2dc860bb17ca1ece942495d28b1ce3b9 ]
 
-some of those used to be needed, some had been cargo-culted for
-no reason...
+Found while auditing the same pattern Sashiko reported in
+rt6_fill_node() [1]. Apply the same fix as
+commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Stable-dep-of: ea5fe6a73ca5 ("net/handshake: Drain pending requests at net namespace exit")
+Writers holding tb6_lock can list_del_rcu(&first->fib6_siblings)
+without waiting for RCU readers; first->fib6_siblings.next then
+still points into the old ring and this softirq-side walker never
+reaches &first->fib6_siblings as its terminator. fib6_purge_rt()
+always WRITE_ONCE()s first->fib6_nsiblings to 0 before
+list_del_rcu(), so an inside-loop check is a reliable detach signal.
+
+[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
+
+Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260527053133.180695-2-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fcntl.c                         | 1 -
- fs/file_table.c                    | 1 -
- fs/notify/fanotify/fanotify.c      | 1 -
- fs/notify/fanotify/fanotify_user.c | 1 -
- fs/overlayfs/copy_up.c             | 1 -
- fs/proc/base.c                     | 1 -
- io_uring/io_uring.c                | 1 -
- kernel/bpf/bpf_inode_storage.c     | 1 -
- kernel/bpf/bpf_task_storage.c      | 1 -
- kernel/bpf/token.c                 | 1 -
- kernel/exit.c                      | 1 -
- kernel/module/dups.c               | 1 -
- kernel/module/kmod.c               | 1 -
- kernel/umh.c                       | 1 -
- net/handshake/request.c            | 1 -
- security/apparmor/domain.c         | 1 -
- 16 files changed, 16 deletions(-)
+ net/ipv6/route.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/fcntl.c b/fs/fcntl.c
-index 3d89de31066ae0..a7947a615db6b4 100644
---- a/fs/fcntl.c
-+++ b/fs/fcntl.c
-@@ -12,7 +12,6 @@
- #include <linux/fs.h>
- #include <linux/filelock.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/capability.h>
- #include <linux/dnotify.h>
- #include <linux/slab.h>
-diff --git a/fs/file_table.c b/fs/file_table.c
-index f7661a70874640..2a08bc93b0b9c1 100644
---- a/fs/file_table.c
-+++ b/fs/file_table.c
-@@ -9,7 +9,6 @@
- #include <linux/string.h>
- #include <linux/slab.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/fs.h>
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index bb00e1e1683838..4d86a05258b970 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/fanotify.h>
--#include <linux/fdtable.h>
- #include <linux/fsnotify_backend.h>
- #include <linux/init.h>
- #include <linux/jiffies.h>
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 93c1619cdad659..b89ad128bf09cf 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/fanotify.h>
- #include <linux/fcntl.h>
--#include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/anon_inodes.h>
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 57f635d050eb5a..75e804bc152ccf 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -16,7 +16,6 @@
- #include <linux/sched/signal.h>
- #include <linux/cred.h>
- #include <linux/namei.h>
--#include <linux/fdtable.h>
- #include <linux/ratelimit.h>
- #include <linux/exportfs.h>
- #include "overlayfs.h"
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index d060af34a6e837..704cf6a0612ede 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -58,7 +58,6 @@
- #include <linux/init.h>
- #include <linux/capability.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/generic-radix-tree.h>
- #include <linux/string.h>
- #include <linux/seq_file.h>
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index eef59b9eccfab1..e515aeafa87813 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -51,7 +51,6 @@
- #include <linux/sched/signal.h>
- #include <linux/fs.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/mm.h>
- #include <linux/mman.h>
- #include <linux/percpu.h>
-diff --git a/kernel/bpf/bpf_inode_storage.c b/kernel/bpf/bpf_inode_storage.c
-index 29da6d3838f678..e16e79f8cd6dc3 100644
---- a/kernel/bpf/bpf_inode_storage.c
-+++ b/kernel/bpf/bpf_inode_storage.c
-@@ -16,7 +16,6 @@
- #include <uapi/linux/btf.h>
- #include <linux/bpf_lsm.h>
- #include <linux/btf_ids.h>
--#include <linux/fdtable.h>
- #include <linux/rcupdate_trace.h>
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index cf9546047b5749..f89220929c4e24 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -481,6 +481,9 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		const struct fib6_nh *nh = sibling->fib6_nh;
+ 		int nh_upper_bound;
  
- DEFINE_BPF_STORAGE_CACHE(inode_cache);
-diff --git a/kernel/bpf/bpf_task_storage.c b/kernel/bpf/bpf_task_storage.c
-index adf6dfe0ba68a4..1eb9852a9f8ebb 100644
---- a/kernel/bpf/bpf_task_storage.c
-+++ b/kernel/bpf/bpf_task_storage.c
-@@ -16,7 +16,6 @@
- #include <linux/filter.h>
- #include <uapi/linux/btf.h>
- #include <linux/btf_ids.h>
--#include <linux/fdtable.h>
- #include <linux/rcupdate_trace.h>
- 
- DEFINE_BPF_STORAGE_CACHE(task_cache);
-diff --git a/kernel/bpf/token.c b/kernel/bpf/token.c
-index dcbec1a0dfb33f..26057aa1350398 100644
---- a/kernel/bpf/token.c
-+++ b/kernel/bpf/token.c
-@@ -1,6 +1,5 @@
- #include <linux/bpf.h>
- #include <linux/vmalloc.h>
--#include <linux/fdtable.h>
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/kernel.h>
-diff --git a/kernel/exit.c b/kernel/exit.c
-index b91124b2d334ee..e798078f958c89 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -25,7 +25,6 @@
- #include <linux/acct.h>
- #include <linux/tsacct_kern.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/freezer.h>
- #include <linux/binfmts.h>
- #include <linux/nsproxy.h>
-diff --git a/kernel/module/dups.c b/kernel/module/dups.c
-index 9a92f2f8c9d382..bd2149fbe11738 100644
---- a/kernel/module/dups.c
-+++ b/kernel/module/dups.c
-@@ -18,7 +18,6 @@
- #include <linux/completion.h>
- #include <linux/cred.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/workqueue.h>
- #include <linux/security.h>
- #include <linux/mount.h>
-diff --git a/kernel/module/kmod.c b/kernel/module/kmod.c
-index 0800d989169219..25f25381251281 100644
---- a/kernel/module/kmod.c
-+++ b/kernel/module/kmod.c
-@@ -15,7 +15,6 @@
- #include <linux/completion.h>
- #include <linux/cred.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/workqueue.h>
- #include <linux/security.h>
- #include <linux/mount.h>
-diff --git a/kernel/umh.c b/kernel/umh.c
-index ff1f13a27d29fd..be923427077731 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -13,7 +13,6 @@
- #include <linux/completion.h>
- #include <linux/cred.h>
- #include <linux/file.h>
--#include <linux/fdtable.h>
- #include <linux/fs_struct.h>
- #include <linux/workqueue.h>
- #include <linux/security.h>
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 2f58d74f16554b..62efb7e32730ea 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -13,7 +13,6 @@
- #include <linux/module.h>
- #include <linux/skbuff.h>
- #include <linux/inet.h>
--#include <linux/fdtable.h>
- #include <linux/rhashtable.h>
- 
- #include <net/sock.h>
-diff --git a/security/apparmor/domain.c b/security/apparmor/domain.c
-index cccd61cca509ce..fbfb1d48dc88f2 100644
---- a/security/apparmor/domain.c
-+++ b/security/apparmor/domain.c
-@@ -9,7 +9,6 @@
-  */
- 
- #include <linux/errno.h>
--#include <linux/fdtable.h>
- #include <linux/fs.h>
- #include <linux/file.h>
- #include <linux/mount.h>
++		if (!READ_ONCE(first->fib6_nsiblings))
++			break;
++
+ 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
+ 		if (hash > nh_upper_bound)
+ 			continue;
 -- 
 2.53.0
 
