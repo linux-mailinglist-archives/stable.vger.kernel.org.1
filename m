@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id clYCIaBJJWq8GAIAu9opvQ
-	(envelope-from <stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:16 +0200
+	id VHF1Gp9KJWoJGQIAu9opvQ
+	(envelope-from <stable+bounces-261469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCA264FD72
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D920864FE4A
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rh3ovM9Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=StmJvIAm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261469-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261469-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDDF530151ED
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC9DC300B9D0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AE23112A5;
-	Sun,  7 Jun 2026 10:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B14328610;
+	Sun,  7 Jun 2026 10:37:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A869257855;
-	Sun,  7 Jun 2026 10:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AB2D3A69;
+	Sun,  7 Jun 2026 10:37:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828491; cv=none; b=WiITw/xrPBC7cI7Paw1nLUmjvZy4JaOR5PcsIKPM3g7Yky+a0oE53Qa0FSyBhd3xiM01uqTcdkJ/5/4SAumV16s1R5EwzZZ1lhDfXudPjNyb/zGDDYMS4WUIKsXtDbbXaSFoL5hOhPODGnfPVkSMq0gTiD8oPK/4UqIDSt2K6Zg=
+	t=1780828677; cv=none; b=mUr6IrluaTs2g2K0PoCWG0u5P9FqXq/EsVyoUqPkGoIabQtwcUWb/2JBAq2oMTf0bDkVM+j4ZIv0GLTJExF077ARNSBKdgoDFmbAEW8A/Laklie+G4j5f2YHfSERpKVf8D2tytjedITWOKVMcqcszgBbj8QlOrFwtmeT0L3WBpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828491; c=relaxed/simple;
-	bh=3MDJpL8LPAsucxdLhf5yVasN3vYZQyQ1bxlPCcVGlDw=;
+	s=arc-20240116; t=1780828677; c=relaxed/simple;
+	bh=lnR2Er16dLD48nWN8Z6JVHajE9ARMLwGRaTbtsiMIaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L+X5fQA/EgrTc3KrD8LClw5UCeU0EY9xi20qiOWF1jX2iYSZ+Qf7hNIJ+R3wrABGgAUpamfiK01AY9hYrzdyUlGLeRetPJqGWLfJv1oSgWIEcTBCHqwz7V0Clehh3PJqYsRVqQ2TadgbGXvPCAzklowOQSGbJQ+MEyW0Z3biwfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh3ovM9Y; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F631F00893;
-	Sun,  7 Jun 2026 10:34:49 +0000 (UTC)
+	 MIME-Version; b=aWn6ip0zbSpsD+/G2M7rN7VHAWpe3RXcuWQmQ9aJILKgXeNBczydtSwD5UDxctlDCvA9VDdlQpIRZ13ELOPewAMl9cpkxFdyUtUG8VVkuHc9vdjBbYEQBHRM4Bio5trJFU1uY44ZbKqk2EvPzqP9xZJyPO2dqtKNYdTxTXK4ydc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=StmJvIAm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E021F00893;
+	Sun,  7 Jun 2026 10:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828490;
-	bh=dY/+8KXdy3SItk5CkEwI4dDnE+J9n8xiAMDXLaay14w=;
+	s=korg; t=1780828675;
+	bh=9NlnAAUqb6auwE63TrPwCGLw4Lm1Ek7hQQ+ky9wAgas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Rh3ovM9YnNEHN/+TCVkvo8uFeFFtB+6b37zngGQSioDhOfFrzEPL4YYSGmKqnEYp6
-	 6dYXhylO0qqSeMLpEdrRpIiSrVJXT56z0oXDItBn7wUDqx5B8oV7GfoqFDz2unHDyY
-	 Qr3p41ymb2dA8vIiltlgg5PMbqpb9KosNRoI0P0c=
+	b=StmJvIAmyi+A6peCS1yc54DrqCnyxpxXZ8zhSG7cXV7Brd3ueUpCflUYO+B78TLKs
+	 lBAncj0dRIzL2s8mmbebeOQdKsFDbVsJbXS0d35Z0bmwCCyeaFoorG9zNTgkNWlWd5
+	 ldr4El2n/XLlD5GFf0ixSkhF6AjqiQ0ZkixgpLAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.18 167/315] iio: temperature: tsys01: fix broken PROM checksum validation
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 157/307] KVM: SEV: Compute the correct max length of the in-GHCB scratch area
 Date: Sun,  7 Jun 2026 11:59:14 +0200
-Message-ID: <20260607095733.729496804@linuxfoundation.org>
+Message-ID: <20260607095733.489207116@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,83 +68,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261421-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261469-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CDCA264FD72
+X-Rspamd-Queue-Id: D920864FE4A
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 4701e471c16866e7aa8f5e6a3a6b0d31e097e2c9 upstream.
+commit 5867d7e202e09f037cefe77f7af4413c7c0fa088 upstream.
 
-The current implementation of tsys01_crc_valid() incorrectly sums the
-first word (n_prom[0]) repeatedly instead of iterating over the 8 words
-retrieved from the PROM. This leads to a checksum mismatch and probe
-failure on hardware.
+When setting the length of the GHCB scratch area, and the area is in the
+GHCB shared buffer, set the effective length of the scratch area to the max
+possible size given the start of the guest-provided pointer, and the end of
+the shared buffer.
 
-According to the TSYS01 datasheet, the PROM consists of 8 words. A valid
-check must iterate through all 8 words to verify the integrity of the
-calibration data. The current driver only checks the first word 8 times.
+The code was "fine" when first introduced, as KVM doesn't consult the
+length of the buffer when emulating MMIO, because the passed in @len always
+specifies the *max* size required.  But for PSC requests, the incoming @len
+is just the minimum length (to process the header), and KVM needs to know
+the full size of the scratch area to avoid buffer overflows (spoiler alert).
 
-Note: This fix was identified during a code audit and is based on
-datasheet specifications. It has not been tested on real hardware.
+Opportunistically rename @len => @min_len to better reflect its role.
 
-Fixes: 43e53407f680 ("Add tsys01 meas-spec driver support")
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 9b54e248d264 ("KVM: SEV: Add support to handle Page State Change VMGEXIT")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-7-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/temperature/tsys01.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/temperature/tsys01.c
-+++ b/drivers/iio/temperature/tsys01.c
-@@ -119,7 +119,7 @@ static bool tsys01_crc_valid(u16 *n_prom
- 	u8 sum = 0;
- 
- 	for (cnt = 0; cnt < TSYS01_PROM_WORDS_NB; cnt++)
--		sum += ((n_prom[0] >> 8) + (n_prom[0] & 0xFF));
-+		sum += ((n_prom[cnt] >> 8) + (n_prom[cnt] & 0xFF));
- 
- 	return (sum == 0);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3502,7 +3502,7 @@ void pre_sev_run(struct vcpu_svm *svm, i
  }
+ 
+ #define GHCB_SCRATCH_AREA_LIMIT		(16ULL * PAGE_SIZE)
+-static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 len)
++static int setup_vmgexit_scratch(struct vcpu_svm *svm, bool sync, u64 min_len)
+ {
+ 	struct vmcb_control_area *control = &svm->vmcb->control;
+ 	u64 ghcb_scratch_beg, ghcb_scratch_end;
+@@ -3518,10 +3518,10 @@ static int setup_vmgexit_scratch(struct
+ 		goto e_scratch;
+ 	}
+ 
+-	scratch_gpa_end = scratch_gpa_beg + len;
++	scratch_gpa_end = scratch_gpa_beg + min_len;
+ 	if (scratch_gpa_end < scratch_gpa_beg) {
+ 		pr_err("vmgexit: scratch length (%#llx) not valid for scratch address (%#llx)\n",
+-		       len, scratch_gpa_beg);
++		       min_len, scratch_gpa_beg);
+ 		goto e_scratch;
+ 	}
+ 
+@@ -3545,6 +3545,8 @@ static int setup_vmgexit_scratch(struct
+ 
+ 		scratch_va = (void *)svm->sev_es.ghcb;
+ 		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
++
++		svm->sev_es.ghcb_sa_len = ghcb_scratch_end - scratch_gpa_beg;
+ 	} else {
+ 		/* GHCB v2 requires the scratch area to be within the GHCB. */
+ 		if (to_kvm_sev_info(svm->vcpu.kvm)->ghcb_version >= 2)
+@@ -3554,16 +3556,16 @@ static int setup_vmgexit_scratch(struct
+ 		 * The guest memory must be read into a kernel buffer, so
+ 		 * limit the size
+ 		 */
+-		if (len > GHCB_SCRATCH_AREA_LIMIT) {
++		if (min_len > GHCB_SCRATCH_AREA_LIMIT) {
+ 			pr_err("vmgexit: scratch area exceeds KVM limits (%#llx requested, %#llx limit)\n",
+-			       len, GHCB_SCRATCH_AREA_LIMIT);
++			       min_len, GHCB_SCRATCH_AREA_LIMIT);
+ 			goto e_scratch;
+ 		}
+-		scratch_va = kvzalloc(len, GFP_KERNEL_ACCOUNT);
++		scratch_va = kvzalloc(min_len, GFP_KERNEL_ACCOUNT);
+ 		if (!scratch_va)
+ 			return -ENOMEM;
+ 
+-		if (kvm_read_guest(svm->vcpu.kvm, scratch_gpa_beg, scratch_va, len)) {
++		if (kvm_read_guest(svm->vcpu.kvm, scratch_gpa_beg, scratch_va, min_len)) {
+ 			/* Unable to copy scratch area from guest */
+ 			pr_err("vmgexit: kvm_read_guest for scratch area failed\n");
+ 
+@@ -3579,11 +3581,10 @@ static int setup_vmgexit_scratch(struct
+ 		 */
+ 		svm->sev_es.ghcb_sa_sync = sync;
+ 		svm->sev_es.ghcb_sa_free = true;
++		svm->sev_es.ghcb_sa_len = min_len;
+ 	}
+ 
+ 	svm->sev_es.ghcb_sa = scratch_va;
+-	svm->sev_es.ghcb_sa_len = len;
+-
+ 	return 0;
+ 
+ e_scratch:
 
 
 
