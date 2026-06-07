@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fFATK4xVJWp9HAIAu9opvQ
-	(envelope-from <stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:08 +0200
+	id SZe7FTRQJWpnGwIAu9opvQ
+	(envelope-from <stable+bounces-261769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367496506EA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:27:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C43650474
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zhFJSVBv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261813-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UJM3EJEM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261769-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261769-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C297B3092F38
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C3AF3084473
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D22B32F764;
-	Sun,  7 Jun 2026 10:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D93330330;
+	Sun,  7 Jun 2026 10:56:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B9C12CDA5;
-	Sun,  7 Jun 2026 10:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90963242DF;
+	Sun,  7 Jun 2026 10:56:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829933; cv=none; b=q05y9BO2kLnmhxxOenpiaN2wc7RvAIBFAtMqZ2vNdO1Cv6mR0XlW7Jxt8uN5uwf4N0LxA9O2oxBho2TpK/rGSvBFXBIcWgYKDhD2dFTRXi2VhhJCmf7T7Nt38sFEaKIK/AuBcECFTJ8lJ8aCN61/HyfZ2Rt4tCzmVoe6E3oXQkM=
+	t=1780829773; cv=none; b=POGnMMd/VXoYBpblCsexaUOP5hRv29rRRnOYPknpJy+BLl5IWz70OgVT+5aGWtSJmGXTvbvhilmXCGI7TwxB+n0DNEkqloOAT99DVrw//OQ1lEH+SKNQIODvW0mBfSz3EuGA9QgJdkCvDwfbEkQEfmSH/fgjd+xDHIm/WuIk64E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829933; c=relaxed/simple;
-	bh=yhsMyMzMgzsRtR6pRa3hAF5k7wxAxXBTReuPiLle9zE=;
+	s=arc-20240116; t=1780829773; c=relaxed/simple;
+	bh=8BfKpx9nkw/QG1sTu/iuB2HJ1Px/ODeeVHFlXbIWqf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h8cOjQr+rajgNuEpRirvdhilTPACrzxmSy++zztSdhHldmRBKYdMUdBI1nUDJ2tipylfU0NvALP7XzvC5LAfk2rZ4X8Srkm5RyBxf0hcblJlcxV7QRWG24AGIh6vQUOeetGiyBEQ0iq7QfqKwH+Gxgu52YENdF1TgVRfOJmP1/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhFJSVBv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC701F00893;
-	Sun,  7 Jun 2026 10:58:50 +0000 (UTC)
+	 MIME-Version; b=jlSfkiZU/VkGBrs4AHRlA+6v8sTl8LcWKF332mA8ry3nF9lm42iujUu5Uy0gzRuj0rz0spdQ3tYCnrTUds4eGeayXoUgr2//Mnh65mEsHcJjaakkOs5Wd/TKKVKyq//Hn4SbOoOmdn4+dILia0dMryQlS6pPNAJ04M8kmC5HQ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJM3EJEM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6111F00893;
+	Sun,  7 Jun 2026 10:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829931;
-	bh=fuvvDGZtqZ3+DfXN6LkrH8S+6bfc7XjPBF72vlypw2A=;
+	s=korg; t=1780829772;
+	bh=dQ1ABQeivri6BRWs88tv/WdAm/oInkcgO9tcXoqdJB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zhFJSVBvGqcsqGNSyaS1lfIjoExJ5vI+A/l/pgpnRg2pLclxNzk6U5aJT+2HljYC0
-	 bH64mx8TeJZx+Q7aC7Dsl2pkMi8CC1ThN9kutgvCG2TaZ9NGkEW6FqIWccHUerQWNa
-	 cXhObtcItuWh8/2z7HJY4pk7AegG0/fkK6DB7wqw=
+	b=UJM3EJEM/OzqrP/APhfusVPres9AXHjnC0egYoeERMsgzHUphV9r/6zy6u5S5lZYM
+	 lwThxLSgTddiVMWkV9Rmoj4oeGJgWNG/0F7TCQ2UwoN7YQVn1Y/O6NaiEgZxvq6gPX
+	 WbSAMuf1h3PjdBVAusS2RTZskiLICyiMA5nw62/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Nogikh <nogikh@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 267/307] x86/kexec: Disable KCOV instrumentation after load_segments()
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.18 277/315] serial: zs: Switch to using channel reset
 Date: Sun,  7 Jun 2026 12:01:04 +0200
-Message-ID: <20260607095737.512582084@linuxfoundation.org>
+Message-ID: <20260607095737.754232419@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,129 +67,127 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261813-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:nogikh@google.com,m:bp@alien8.de,m:dvyukov@google.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-261769-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,alien8.de:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[orcam.me.uk:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 367496506EA
+X-Rspamd-Queue-Id: B3C43650474
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 917e3ad3321e75ca0223d5ccf26ceda116aa51e1 ]
+commit 8572955630f30948837088aa98bcbe0532d1ceac upstream.
 
-The load_segments() function changes segment registers, invalidating GS base
-(which KCOV relies on for per-cpu data). When CONFIG_KCOV is enabled, any
-subsequent instrumented C code call (e.g. native_gdt_invalidate()) begins
-crashing the kernel in an endless loop.
+Switch the driver to using the channel reset rather than hardware reset,
+simplifying handling by removing an interference between channels that
+causes the other channel to become uninitialised afterwards.
 
-To reproduce the problem, it's sufficient to do kexec on a KCOV-instrumented
-kernel:
+There is little difference between the two kinds of reset in terms of
+register settings that result, and we initialise the whole register set
+right away anyway.  However this prevents a hang from happening should
+the console output handler in the firmware try to access the other port
+whose transmitter has been disabled and line parameters messed up.
 
-  $ kexec -l /boot/otherKernel
-  $ kexec -e
+For example this will happen if the keyboard port (port A) is chosen for
+the system console, unusually but not insanely for a headless system, as
+the port is wired to a standard DA-15 connector and an adapter can be
+easily made.  Or with the next change in place this would happen for the
+regular console port (port B), since the keyboard port (port A) will be
+initialised first.
 
-The real-world context for this problem is enabling crash dump collection in
-syzkaller. For this, the tool loads a panic kernel before fuzzing and then
-calls makedumpfile after the panic. This workflow requires both CONFIG_KEXEC
-and CONFIG_KCOV to be enabled simultaneously.
+Just remove the unnecessary complication then, a channel reset is good
+enough.  We still need the initialisation marker, now per channel rather
+than per SCC, as for the console port zs_reset() will be called twice:
+once early on via zs_serial_console_init() for the console setup only,
+and then again via zs_config_port() as the port is associated with a TTY
+device.
 
-Adding safeguards directly to the KCOV fast-path (__sanitizer_cov_trace_pc())
-is also undesirable as it would introduce an extra performance overhead.
-
-Disabling instrumentation for the individual functions would be too fragile,
-so disable KCOV instrumentation for the entire machine_kexec_64.c and
-physaddr.c. If coverage-guided fuzzing ever needs these components in the
-future, other approaches should be considered.
-
-The problem is not relevant for 32 bit kernels as CONFIG_KCOV is not supported
-there.
-
-  [ bp: Space out comment for better readability. ]
-
-Fixes: 0d345996e4cb ("x86/kernel: increase kcov coverage under arch/x86/kernel folder")
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260325154825.551191-1-nogikh@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.23+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062323430.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/Makefile | 14 ++++++++++++++
- arch/x86/mm/Makefile     |  2 ++
- 2 files changed, 16 insertions(+)
+ drivers/tty/serial/zs.c |    7 ++++---
+ drivers/tty/serial/zs.h |    2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index f42c0903ef86d4..5f58b5a38cac17 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -44,6 +44,20 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
- KCOV_INSTRUMENT_unwind_frame.o				:= n
- KCOV_INSTRUMENT_unwind_guess.o				:= n
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -832,21 +832,22 @@ static void zs_shutdown(struct uart_port
  
-+# Disable KCOV to prevent crashes during kexec: load_segments() invalidates
-+# the GS base, which KCOV relies on for per-CPU data.
-+#
-+# As KCOV and KEXEC compatibility should be preserved (e.g. syzkaller is
-+# using it to collect crash dumps during kernel fuzzing), disabling
-+# KCOV for KEXEC kernels is not an option. Selectively disabling KCOV
-+# instrumentation for individual affected functions can be fragile, while
-+# adding more checks to KCOV would slow it down.
-+#
-+# As a compromise solution, disable KCOV instrumentation for the whole
-+# source code file. If its coverage is ever needed, other approaches
-+# should be considered.
-+KCOV_INSTRUMENT_machine_kexec_64.o			:= n
-+
- CFLAGS_head32.o := -fno-stack-protector
- CFLAGS_head64.o := -fno-stack-protector
- CFLAGS_irq.o := -I $(src)/../include/asm/trace
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 690fbf48e8538b..60a53baa042793 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -5,6 +5,8 @@ KCOV_INSTRUMENT_mem_encrypt.o		:= n
- KCOV_INSTRUMENT_mem_encrypt_amd.o	:= n
- KCOV_INSTRUMENT_mem_encrypt_identity.o	:= n
- KCOV_INSTRUMENT_pgprot.o		:= n
-+# See the "Disable KCOV" comment in arch/x86/kernel/Makefile.
-+KCOV_INSTRUMENT_physaddr.o		:= n
+ static void zs_reset(struct zs_port *zport)
+ {
++	struct zs_port *zport_a = &zport->scc->zport[ZS_CHAN_A];
+ 	struct zs_scc *scc = zport->scc;
+ 	int irq;
+ 	unsigned long flags;
  
- KASAN_SANITIZE_mem_encrypt.o		:= n
- KASAN_SANITIZE_mem_encrypt_amd.o	:= n
--- 
-2.53.0
-
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 	irq = !irqs_disabled_flags(flags);
+-	if (!scc->initialised) {
++	if (!zport->initialised) {
+ 		/* Reset the pointer first, just in case...  */
+ 		read_zsreg(zport, R0);
+ 		/* And let the current transmission finish.  */
+ 		zs_line_drain(zport, irq);
+-		write_zsreg(zport, R9, FHWRES);
++		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
+ 		udelay(10);
+ 		write_zsreg(zport, R9, 0);
+-		scc->initialised = 1;
++		zport->initialised = 1;
+ 	}
+ 	load_zsregs(zport, zport->regs, irq);
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+--- a/drivers/tty/serial/zs.h
++++ b/drivers/tty/serial/zs.h
+@@ -22,6 +22,7 @@
+ struct zs_port {
+ 	struct zs_scc	*scc;			/* Containing SCC.  */
+ 	struct uart_port port;			/* Underlying UART.  */
++	int		initialised;		/* For the console port.  */
+ 
+ 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
+ 
+@@ -41,7 +42,6 @@ struct zs_scc {
+ 	struct zs_port	zport[2];
+ 	spinlock_t	zlock;
+ 	atomic_t	irq_guard;
+-	int		initialised;
+ };
+ 
+ #endif /* __KERNEL__ */
 
 
 
