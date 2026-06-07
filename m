@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aoTDHsRPJWpEGwIAu9opvQ
-	(envelope-from <stable+bounces-261736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:28 +0200
+	id u4pAEn9VJWpxHAIAu9opvQ
+	(envelope-from <stable+bounces-261834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F26503FC
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94D76506C7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:26:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tMyBxGcH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261736-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261736-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hIcNmFPh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261834-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261834-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECD7530686D1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:54:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FFD830A3B73
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FF32E3AF1;
-	Sun,  7 Jun 2026 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCC0314D15;
+	Sun,  7 Jun 2026 11:00:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2924204E;
-	Sun,  7 Jun 2026 10:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A736F8E7;
+	Sun,  7 Jun 2026 11:00:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829647; cv=none; b=LjwJJd2qmMvEM6tfcc+60xe40UfQLhgFma8Z69t3zo+/qWCN8uS7IlvyDfddqvU/0OlSGTn+gaDZdnWayZMTSjcXq/8lB+S1q8e0GcvEV942t1FLGnAUV5f6aw7Dn6j+sewjNEOhbeLIhY0KEH9SycQ8qwc131WOXmh/NAhpUC4=
+	t=1780830026; cv=none; b=kxRAqjUvzrbpqGB8IroUOsrhh54hdZIwn/CREoq7XI2cP8LkYx75Tz/xwFsqeQxJqGgaYTwsxZCAtRt6c3ayAe/x+oQBpZS/HZn9KTv9KjMUyzLp5ct2vQQNWg/DM7/voblAH/pOqJYFKcsLCZ9eeXrAnk8OY8FgaQjR7LmEXP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829647; c=relaxed/simple;
-	bh=kIqFeGJ6KiqyEKMmdb2Qjhx8klSQUemJKLfgJwKI0sQ=;
+	s=arc-20240116; t=1780830026; c=relaxed/simple;
+	bh=tPq2G3I5eYEGW40QX+ImwzuQqpoambKP8tQbY1pZDX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgoH5uKpEr0tFxi52JIkMhULpfZkled0P6o7WaBjCjYxppJrJfncRTO4ApO3Q+9260QGS2V2qveWM2Th2mcPuhiMkwxKNtAyqofyNR7A+ve5t8VdKICajoRLJGJBEA6tAUy/+bC8IgCj53hbursg9/gF9u1eIg83JgscJjxdXXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMyBxGcH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973051F00893;
-	Sun,  7 Jun 2026 10:54:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dargv2Giavk/anNcI1Fw9xaDmgSZt7UP/ZOZjdGLmNu6h3UsSCITvAch9cFWaFh7zce450fgI2HcoeL7+GlzWdon/rzAsZPOXN2ziiNKS/bnq9fVaH2e9YoMIYayPHi+aZRThHR+J64E/p8VwO1FMBF40xosLbsOex4b5xyx6JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIcNmFPh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA121F00893;
+	Sun,  7 Jun 2026 11:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829646;
-	bh=0SFZLCzptxjtGx981jIs9nElWvMdpz4OwszSSXl2b00=;
+	s=korg; t=1780830024;
+	bh=VZ17EeCGbz8lVxwj1guxWqAv4zZi+9n4I2EIqmfRO8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tMyBxGcH1RgIohcfPXSPjesnSgxVHguOn0JfIGhao//4xk8bOBs8ZfwO4CNq8Qa5d
-	 dHk7TyVWjooDumDvsE8s+FyBvE5DxxZp+zvDmV/Jrm37Oz0ZdyS0KA/trm5fi7uwVa
-	 q7+wZ09YvY4PiWbSZS9OSKPdHrGD42v37dx+kJ0g=
+	b=hIcNmFPhwkvRrIpoNdyYsN7oSBPkYRG6A5yoQBvLStYrNgyi+4qGEisDQEkbmIPVh
+	 bGz2wyBUcN+r6DiC7i+plBvalqkPsIHoVeMmzr4aA6vJ3IFwziMt8JyJoVkU+pl9iX
+	 GwVrhYjZRi0+zomipQ6x0QraLRWeWnAO5Q174KS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 302/332] drm/amdkfd: fix NULL pointer bug in svm_range_set_attr
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 274/307] ALSA: scarlett2: Allow flash writes ending at segment boundary
 Date: Sun,  7 Jun 2026 12:01:11 +0200
-Message-ID: <20260607095739.153683606@linuxfoundation.org>
+Message-ID: <20260607095737.778682524@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261834-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jinhuieric.huang@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0A3F26503FC
+X-Rspamd-Queue-Id: C94D76506C7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Huang <jinhuieric.huang@amd.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit e984d61d92e702096058f0f828f4b2b8563b88ce upstream.
+[ Upstream commit a69b677e47a80319ce148d61cc29a2b57006e78d ]
 
-The process_info could be NULL if user doesn't call kfd_ioctl_acquire_vm
-before calling kfd_ioctl_svm.
+scarlett2_hwdep_write() rejects writes when offset + count is greater than
+or equal to the selected flash segment size. That incorrectly treats a
+write ending exactly at the end of the segment as out of space, although
+the last byte written is still within the segment.
 
-Signed-off-by: Eric Huang <jinhuieric.huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 83a26c812e0529eb040d31a76f73e33e637243d4)
+Split invalid argument checks from the segment-space check, keep
+zero-length writes as no-ops, and compare count against the remaining
+segment size. This permits exact-end writes and avoids relying on
+offset + count before deciding whether the request is in bounds.
+
+Fixes: 1abfbd3c9527 ("ALSA: scarlett2: Add support for uploading new firmware")
 Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-alsa-scarlett2-flash-write-boundary-v1-1-b550480e92da@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/mixer_scarlett2.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -3718,6 +3718,9 @@ svm_range_set_attr(struct kfd_process *p
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -9549,12 +9549,15 @@ static long scarlett2_hwdep_write(struct
+ 	flash_size = private->flash_segment_blocks[segment_id] *
+ 		     SCARLETT2_FLASH_BLOCK_SIZE;
  
- 	svms = &p->svms;
- 
-+	if (!process_info)
+-	if (count < 0 || *offset < 0 || *offset + count >= flash_size)
+-		return -ENOSPC;
++	if (count < 0 || *offset < 0)
 +		return -EINVAL;
-+
- 	mutex_lock(&process_info->lock);
  
- 	svm_range_list_lock_and_flush_work(svms, mm);
+ 	if (!count)
+ 		return 0;
+ 
++	if (*offset >= flash_size || count > flash_size - *offset)
++		return -ENOSPC;
++
+ 	/* Limit the *req size to SCARLETT2_FLASH_RW_MAX */
+ 	if (count > max_data_size)
+ 		count = max_data_size;
 
 
 
