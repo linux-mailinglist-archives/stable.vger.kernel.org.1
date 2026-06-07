@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 03u/JhBKJWrmGAIAu9opvQ
-	(envelope-from <stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:08 +0200
+	id iqNLK9NKJWoZGQIAu9opvQ
+	(envelope-from <stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B4B964FDD5
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:38:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A6864FE89
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OkWT9LtR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261466-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gbZnYJGH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 564EA300767F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:37:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 468913046516
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4A0328255;
-	Sun,  7 Jun 2026 10:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D4832A3C9;
+	Sun,  7 Jun 2026 10:38:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8306B3254A9;
-	Sun,  7 Jun 2026 10:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B672D3A69;
+	Sun,  7 Jun 2026 10:38:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828665; cv=none; b=c0ZcuJrZtv8HWHFlowlcxpsnTJ7VWzNIEyRpKaRWhAnXzwbJe0w6JQdTq+2Jj2QFBSQ+T2XtTG/yu/RgUz7Wk1fkHU2gS5+phVEDspX3jGx5kGvRQh1g70lkYtkHqBcZe++nk9AHi1hab0FsN/btsZBD01sR9SWNVTcd+Vg7FLM=
+	t=1780828720; cv=none; b=Bn7mzGCFpGGhzgnx68B7sOPj3ldTwFr0l/xpFztpAkQ0uJ4w10Ej/1JKbm692TB10AM43a8THiRBN8oXVMeE0WdhEmoKCIUFgWDJ49wjS4BORbWJf+6X267UkHsMUqeGOMExv3xiXbOMJjSQ/osL+RrB++jGVB2KzuAo17Lr+E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828665; c=relaxed/simple;
-	bh=jBhQt/o3ctMPY/7Z1FBxKhuabeXlyM5XQc9tlpkSLNU=;
+	s=arc-20240116; t=1780828720; c=relaxed/simple;
+	bh=+rEs2CPjIVdFBy/fjiFBqRxy/O8A5lqRkerZaAun0Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s88BWABULFaa1vCPw1qXLwb2ChDDywb38KnU0iCaQbWM8X4HEu5bln46NUwzH2SoFBpnj9ZUjdYHMVaKNiRd2tUA6gNCDRf13iOFz5yv7es7jqx23AJ3MigJo0t7LsAJb8cR9jM5IKaifbe0t5MBtHkOKIUivO7gFZvNBxX+x/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkWT9LtR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B5F1F00893;
-	Sun,  7 Jun 2026 10:37:43 +0000 (UTC)
+	 MIME-Version; b=tEfHj1VdD2TnYWt4lS2biV9gsHDTCyXfrxkJ0quRUAoe9PBrp+wpAFan/Ec2oCgThMAt5R7DJErzTgFNqGfmpPSJ2DMBwcKyQcUWjSotr2LIHvlZSDjASd20yvg9j/YixKeekW1g0AFWtv86o+u22KyHt1wNzZNqJ8vU+7OQtzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbZnYJGH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B2D1F00893;
+	Sun,  7 Jun 2026 10:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828664;
-	bh=peshYLbFyqUgd2ouW9mMDohPFF10+jsYQGq0cImIXZ0=;
+	s=korg; t=1780828719;
+	bh=xJi/thO8sFrfG4hedfP28zeXRlCIBQsnajSTwQwmssY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OkWT9LtR3HHDkP5KUqTnojhX+kK0FBQw1MFPYJqR1oGe+r/U9D6k345uDXjv7RDnr
-	 yDr3ZA+8l1ZpADoq/53WCev8m6IkwqtWZRsdGJrwBkC/Vv/5W6M1xBooe4MPk3ITsx
-	 D95fN3VVlfbJRMMhCbDQwZPeoOVHl1Gpw6UQ+KY4=
+	b=gbZnYJGHQiXV4ZNH1D+7Iv+N/aIscw/nthci2zL7Jzi4gFJi9qpYhpinIiHlm68vV
+	 8aaX0LdVqujcyasXgXn8C2y/MC0EjSnJtpVBvx8PM7yWdeDF4h4Fx4csDoTFd+gZrt
+	 Jh4Ncjz4T6M+3lhoQZqMgOv1WToACajDHdhqQt+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 156/307] KVM: SEV: WARN if KVM attempts to setup scratch area with min_len==0
-Date: Sun,  7 Jun 2026 11:59:13 +0200
-Message-ID: <20260607095733.452454191@linuxfoundation.org>
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 7.0 185/332] iio: adc: nxp-sar-adc: fix division by zero in write_raw
+Date: Sun,  7 Jun 2026 11:59:14 +0200
+Message-ID: <20260607095734.862092427@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +69,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261466-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261481-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0B4B964FDD5
+X-Rspamd-Queue-Id: 20A6864FE89
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit f185e05dce6f170f83c4ba602e969b1c3c7a22e6 upstream.
+commit a9aba21a539c668a66b58eeb08ad3909e5a54c2a upstream.
 
-Now that all paths in KVM properly validate the length needed for the
-scratch area, and are guaranteed to pass in a non-zero length, WARN if KVM
-attempts to configured the scratch area with min_len==0 to guard against
-future bugs.
+Add a validation check for the sampling frequency value before using it
+as a divisor. A user writing zero or a negative value to the
+sampling_frequency sysfs attribute triggers a division by zero in the
+kernel.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-8-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Also prevent unsigned integer underflow when the computed cycle count is
+smaller than NXP_SAR_ADC_CONV_TIME, which would wrap the u32 inpsamp to
+a huge value.
+
+Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/nxp-sar-adc.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -3509,6 +3509,9 @@ static int setup_vmgexit_scratch(struct
- 	u64 scratch_gpa_beg, scratch_gpa_end;
- 	void *scratch_va;
+--- a/drivers/iio/adc/nxp-sar-adc.c
++++ b/drivers/iio/adc/nxp-sar-adc.c
+@@ -559,6 +559,9 @@ static int nxp_sar_adc_write_raw(struct
  
-+	if (WARN_ON_ONCE(!min_len))
-+		goto e_scratch;
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
++		if (val <= 0)
++			return -EINVAL;
 +
- 	scratch_gpa_beg = svm->sev_es.sw_scratch;
- 	if (!scratch_gpa_beg) {
- 		pr_err("vmgexit: scratch gpa not provided\n");
+ 		/*
+ 		 * Configures the sample period duration in terms of the SAR
+ 		 * controller clock. The minimum acceptable value is 8.
+@@ -567,7 +570,11 @@ static int nxp_sar_adc_write_raw(struct
+ 		 * sampling timing which gives us the number of cycles expected.
+ 		 * The value is 8-bit wide, consequently the max value is 0xFF.
+ 		 */
+-		inpsamp = clk_get_rate(info->clk) / val - NXP_SAR_ADC_CONV_TIME;
++		inpsamp = clk_get_rate(info->clk) / val;
++		if (inpsamp < NXP_SAR_ADC_CONV_TIME)
++			return -EINVAL;
++
++		inpsamp -= NXP_SAR_ADC_CONV_TIME;
+ 		nxp_sar_adc_conversion_timing_set(info, inpsamp);
+ 		return 0;
+ 
 
 
 
