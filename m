@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x14ZNgBFJWoPFgIAu9opvQ
-	(envelope-from <stable+bounces-261137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:32 +0200
+	id SBFHIoVGJWr7FgIAu9opvQ
+	(envelope-from <stable+bounces-261132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16CD64F75D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1549A64F996
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EN1bp/oJ";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261137-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261137-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MSFSY5JO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261132-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261132-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC86C3002F5D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AFBC3078378
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFEB23392F;
-	Sun,  7 Jun 2026 10:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0A023392F;
+	Sun,  7 Jun 2026 10:16:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3D84071DA;
-	Sun,  7 Jun 2026 10:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A0E2AD00;
+	Sun,  7 Jun 2026 10:16:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827387; cv=none; b=Wg9unpMK2oLBLyJi85rGYkCnVcrxqAc0+fDKY/NuDpmNhpuiZmrGTRhcMYYj6U7r1nYNoR/h4KgT0Rinknu8Eghh1EbldhAzSWjvaaFSTJLLCifJB38fiZ1GIemRLkh+5nhOB16fDXp6H/+8fJacmmPN1uO8NC7JsfX/dDPMDps=
+	t=1780827369; cv=none; b=FP923J/otkaYKx2SJv5Exvr6jALeQRVKm+ZT/8y5mEJD3uAZ2J4yS7v6rzloOm1BEgTLOZJdyj0w/MGY8uN3lPYWkcBJbed40RDH1kUXC8lHe/J0Bgscb4gvSgW97OKEAQlCtUMz4cIFai5sQti8yT3My7Hjk/FRJCc77sZl+dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827387; c=relaxed/simple;
-	bh=ovhEUdmEJVY5BlzHSbm6qPTKsg734PwbxqKBnE45k8k=;
+	s=arc-20240116; t=1780827369; c=relaxed/simple;
+	bh=vQYZ6E8+QBB/WuUBxc8FnJ7p0HfGG8TaMlFaIHavgGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq4WzwrVcKPGWJOH43bmknB3I3NAOL0oO+BKs2U3q++HMk4AEywtUx9s7+CRwmfrNGk45RL7ZCgNpfYMa+gb05yiucCmvKEf+tOqc8hzdRDrfzLw+Dt3RBDtnACxG3D8VSdw9pr8Us/o1UZKCkVtXLNyF/bWF8agBiPC8/fdK4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EN1bp/oJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9691F00893;
-	Sun,  7 Jun 2026 10:16:25 +0000 (UTC)
+	 MIME-Version; b=QAV2fL7FwlpmNW5cAFao3DWEVhXzFkR2aeIx4VmtXpa8cyos6frPLrW/MzgN740Z+zhc9xIoKaDoKtUxvsq8zuozmJDmRiV2liLGiB94mkHmVq1fyMEafWgUd/8qUT2ynmNbjILDKg4HZz/4hu7tnRiB+U5wnVNao2E85TLuA70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSFSY5JO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FC61F00893;
+	Sun,  7 Jun 2026 10:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827385;
-	bh=BtD0iyF50W/7tLqwgXND36AzneOV9KShpOHkjpiYtqA=;
+	s=korg; t=1780827368;
+	bh=oY411OjsxxUELtRMfZJJJd94dEEV4TALC+hNjUJH/nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EN1bp/oJWqQZk6dIsNkc3s05dPmSdmJUB3R33Nz2Jnw+GvoHwwV8K/6Ml79YYYnHB
-	 +w1rLXZ4YpC2EQxQwZBLsHsXRncE52wQXgZDt79+8X04Q4mXbE29yJ88ZPD2F2N1r6
-	 hgxoIkJTBfvObpBlBIWLQvu9hXMVUB6N8AAW0yBc=
+	b=MSFSY5JOGAwx3g+rGTUDDX/6+x/8P6TAqQP2xVLSEOk1dj4tSSRCFyI805yi+sFAk
+	 Rg3838FuWuVBfv6PCyLx/RKX0Q5Xi8Ngg8nVSP/IKIvbEalA7cMuExLY/4ZEfuqOyv
+	 WXfeq9+XvXeTZfOZ98d3iwZUoReFTVHIzBT9pxQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 069/315] ethtool: tsinfo: fix uninitialized stats on the by-PHC path
+Subject: [PATCH 7.0 087/332] net/handshake: Use spin_lock_bh for hn_lock
 Date: Sun,  7 Jun 2026 11:57:36 +0200
-Message-ID: <20260607095730.146499175@linuxfoundation.org>
+Message-ID: <20260607095731.342058596@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,110 +70,173 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261137-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maxime.chevallier@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261132-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D16CD64F75D
+X-Rspamd-Queue-Id: 1549A64F996
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1de405699c62c3a9544bcdcfb9eff8a01cfc7582 ]
+[ Upstream commit cc993e0927ec8bd98ea33377ada03295fcda0f24 ]
 
-tsinfo_prepare_data() has two code paths: a "by-PHC" path for
-user-specified hardware timestamping providers, and the old path.
-Commit 89e281ebff72 ("ethtool: init tsinfo stats if requested") added
-ethtool_stats_init() to mark stat slots as ETHTOOL_STAT_NOT_SET before
-the driver callback populates them, but placed the call inside the
-old-path block.
+nvmet_tcp_state_change(), a socket callback that runs in BH context,
+can reach handshake_req_cancel() via nvmet_tcp_schedule_release_queue()
+and tls_handshake_cancel().  handshake_req_cancel() acquires
+hn->hn_lock with plain spin_lock().  If a process-context thread on
+the same CPU holds hn->hn_lock when a softirq invokes the cancel path,
+the lock attempt deadlocks.  This is the only caller that invokes
+tls_handshake_cancel() from BH context; every other consumer calls it
+from process context.
 
-When commit b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to
-support several hwtstamp by net topology") added the by-PHC early
-return, it landed above the stats initialization. On that path
-the stats array retains the zero-fill from ethnl_init_reply_data()'s
-zalloc. This leads to the reply including a stats nest with four
-zero-valued attributes that should have been absent.
+Deferring the cancel to process context in the NVMe target is not
+straightforward: nvmet_tcp_schedule_release_queue() must call
+tls_handshake_cancel() atomically with its state transition to
+DISCONNECTING.  If the cancel were deferred, the handshake completion
+callback could fire in the window before the cancel runs, observe the
+unexpected state, and return without dropping its kref on the queue.
+Reworking that interlock is considerably more invasive than hardening
+the handshake lock.  Convert all hn->hn_lock acquisitions from
+spin_lock/spin_unlock to spin_lock_bh/spin_unlock_bh so the lock is
+never taken with softirqs enabled.
 
-Reject GET requests for stats with HWTSTAMP_PROVIDER or dump.
-
-Fixes: b9e3f7dc9ed9 ("net: ethtool: tsinfo: Enhance tsinfo to support several hwtstamp by net topology")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20260526153533.2779187-7-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-1-66c616906ead@oracle.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/tsinfo.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/handshake/netlink.c |  4 ++--
+ net/handshake/request.c | 14 +++++++-------
+ net/handshake/tlshd.c   |  2 ++
+ 3 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/net/ethtool/tsinfo.c b/net/ethtool/tsinfo.c
-index 8c654caa6805a5..fcc28fca526d82 100644
---- a/net/ethtool/tsinfo.c
-+++ b/net/ethtool/tsinfo.c
-@@ -81,6 +81,11 @@ tsinfo_parse_request(struct ethnl_req_info *req_base, struct nlattr **tb,
- 	if (!tb[ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER])
- 		return 0;
+diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
+index b989456fc4c5ff..97114ec8027a5a 100644
+--- a/net/handshake/netlink.c
++++ b/net/handshake/netlink.c
+@@ -202,10 +202,10 @@ static void __net_exit handshake_net_exit(struct net *net)
+ 	 * accepted and are in progress will be destroyed when
+ 	 * the socket is closed.
+ 	 */
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	set_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags);
+ 	list_splice_init(&requests, &hn->hn_requests);
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
  
-+	if (req_base->flags & ETHTOOL_FLAG_STATS) {
-+		NL_SET_ERR_MSG(extack, "can't query statistics for a provider");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	return ts_parse_hwtst_provider(tb[ETHTOOL_A_TSINFO_HWTSTAMP_PROVIDER],
- 				       &req->hwprov_desc, extack, &mod);
+ 	while (!list_empty(&requests)) {
+ 		req = list_first_entry(&requests, struct handshake_req, hr_list);
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 2829adbeb149b0..5d4a17f902d201 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -167,12 +167,12 @@ static bool remove_pending(struct handshake_net *hn, struct handshake_req *req)
+ {
+ 	bool ret = false;
+ 
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	if (!list_empty(&req->hr_list)) {
+ 		__remove_pending_locked(hn, req);
+ 		ret = true;
+ 	}
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	return ret;
  }
-@@ -521,6 +526,12 @@ int ethnl_tsinfo_start(struct netlink_callback *cb)
- 	if (ret < 0)
- 		goto free_reply_data;
+@@ -182,7 +182,7 @@ struct handshake_req *handshake_req_next(struct handshake_net *hn, int class)
+ 	struct handshake_req *req, *pos;
  
-+	if (req_info->base.flags & ETHTOOL_FLAG_STATS) {
-+		NL_SET_ERR_MSG(cb->extack, "stats not supported in dump");
-+		ret = -EOPNOTSUPP;
-+		goto err_dev_put;
-+	}
-+
- 	ctx->req_info = req_info;
- 	ctx->reply_data = reply_data;
- 	ctx->pos_ifindex = 0;
-@@ -530,6 +541,8 @@ int ethnl_tsinfo_start(struct netlink_callback *cb)
+ 	req = NULL;
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	list_for_each_entry(pos, &hn->hn_requests, hr_list) {
+ 		if (pos->hr_proto->hp_handler_class != class)
+ 			continue;
+@@ -190,7 +190,7 @@ struct handshake_req *handshake_req_next(struct handshake_net *hn, int class)
+ 		req = pos;
+ 		break;
+ 	}
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
  
+ 	return req;
+ }
+@@ -249,7 +249,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 	if (READ_ONCE(hn->hn_pending) >= hn->hn_pending_max)
+ 		goto out_err;
+ 
+-	spin_lock(&hn->hn_lock);
++	spin_lock_bh(&hn->hn_lock);
+ 	ret = -EOPNOTSUPP;
+ 	if (test_bit(HANDSHAKE_F_NET_DRAINING, &hn->hn_flags))
+ 		goto out_unlock;
+@@ -258,7 +258,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 		goto out_unlock;
+ 	if (!__add_pending_locked(hn, req))
+ 		goto out_unlock;
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ 
+ 	ret = handshake_genl_notify(net, req->hr_proto, flags);
+ 	if (ret) {
+@@ -274,7 +274,7 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
  	return 0;
  
-+err_dev_put:
-+	ethnl_parse_header_dev_put(&req_info->base);
- free_reply_data:
- 	kfree(reply_data);
- free_req_info:
+ out_unlock:
+-	spin_unlock(&hn->hn_lock);
++	spin_unlock_bh(&hn->hn_lock);
+ out_err:
+ 	/* Restore original destructor so socket teardown still runs on failure */
+ 	req->hr_sk->sk_destruct = req->hr_odestruct;
+diff --git a/net/handshake/tlshd.c b/net/handshake/tlshd.c
+index 8f9532a15f43f9..af294c6cc71731 100644
+--- a/net/handshake/tlshd.c
++++ b/net/handshake/tlshd.c
+@@ -425,6 +425,8 @@ EXPORT_SYMBOL(tls_server_hello_psk);
+  * Request cancellation races with request completion. To determine
+  * who won, callers examine the return value from this function.
+  *
++ * Context: May be called from process or softirq context.
++ *
+  * Return values:
+  *   %true - Uncompleted handshake request was canceled
+  *   %false - Handshake request already completed or not found
 -- 
 2.53.0
 
