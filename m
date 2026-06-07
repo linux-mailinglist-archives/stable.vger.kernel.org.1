@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-261038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uPQTH7JDJWpqFQIAu9opvQ
-	(envelope-from <stable+bounces-261038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:58 +0200
+	id rZT/EGlFJWpBFgIAu9opvQ
+	(envelope-from <stable+bounces-261066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3F764F60B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A257F64F7E7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:18:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eFFLTZoo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261038-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261038-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="cJwnK3/Q";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261066-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261066-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00F70300CFD7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E98063016EEA
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6406B2E1EFC;
-	Sun,  7 Jun 2026 10:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C23308F0A;
+	Sun,  7 Jun 2026 10:12:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244451E98E3;
-	Sun,  7 Jun 2026 10:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C20B1E98EF;
+	Sun,  7 Jun 2026 10:12:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827056; cv=none; b=JxIPxQbxT74i49ZsnFKRxq5OITaJFsWCY+2rE2XHnPYMo+rAnXyu3zraU2NMdCHlPTO0CiSRW7/CcHoRbrqUIF2MuIyjnZGb92crT+AdLuHNWWprbBno5n/Fz//6qRLVK+8p63dfl26qSc3w3COgrB2GhJBN0rmNxmlcV5mGaZM=
+	t=1780827147; cv=none; b=Rihzfq773W8hJYD+WxttYCPOkPG8Xzr92bJEpXW1x0jnZQXeA28M7KoDWM1hChki6MrQpefLJkTq/WdLGZqFaFJ15bY0nbsBTj3B89BL+ydFGjSFRX2VJtORzW8bHruzYvxTvAwfxdqoT+nxBz3aEm1dKGM4TIiqdzdSdp9hUkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827056; c=relaxed/simple;
-	bh=zN5ab4z29SielyLSOOiATkl+6GUA0ThmWS0K4RG4v4c=;
+	s=arc-20240116; t=1780827147; c=relaxed/simple;
+	bh=WcauQXdlMtOoji67+3EccowflYAYYcljPP2z2UjqyLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooITE3HZvN99Hi5laA1aSj1ueH3+5SVXZfps6a5Hq9a+ILg2EV/Z0ZvI92PFNHYcbtACLKGiFjOcDDOVs0kaopSyzVaVHY0XG1G//IYA3FkryXhOnsvoq3cqsxKWIdCGF6dYY597fwARIPND+RlSlo0S4K64CqXG0tfa7Dy6npw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFFLTZoo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3218A1F00893;
-	Sun,  7 Jun 2026 10:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rjyvR7bws4HxG9o3i+vFzIolpaZrcztlM0EgTnZjVTs3EeflH2Y9UTYL+/06C+FysGWB7kWFgc8bK7cNturQfdYs4nbwZ9qXeWxh6QlkRWu8BUGKCJabuU+f9Z7Up0XUuITttXh3bv25MmVa5004YKoRuM2bPrXUQEDljLjf4K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJwnK3/Q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AE71F00893;
+	Sun,  7 Jun 2026 10:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827054;
-	bh=V+92NPoZxn7MCK30YIw3+0a1QMWijYOWhjZsuPEo0oY=;
+	s=korg; t=1780827146;
+	bh=l1sBlPPyPamQ+xfcUWCukIxHBuekhRWUIIH+qwVtRvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eFFLTZoojESQaNkYC6B9O/gcJ+vvvR7UZ2ffbovvzK0VUKyaDUrMLeV6qAt2uri3M
-	 bhcC6hZgNMrXzMGTWhGTATsF/76Fx4qQvmIBO3o93Xd88rCpbYT5Bki1BHmE/pvX6S
-	 BFdHxCVUz+8INerXi7zO/w7KvqaD38xbwfVyoILg=
+	b=cJwnK3/QS7u5V5TIdbkJbK2Wm7G+GAl5XiSL0QrhtYu5DqWPhnd4iuzefV52WcgLv
+	 LnIxv0Q+9+vm2VOeQB7CDG+BGDGH/UulaFmh5KOc2AOZrUL4GbHMV+5ivAeGD3G6W7
+	 y0I0uKnyxQsfdPlJiZeNKD0Vy4N8H9usTXmOcI9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/307] arm64: debug: refactor reinstall_suspended_bps()
-Date: Sun,  7 Jun 2026 11:56:55 +0200
-Message-ID: <20260607095728.293000057@linuxfoundation.org>
+Subject: [PATCH 6.18 029/315] ALSA: pcm: oss: Fix setup list UAF on proc write error
+Date: Sun,  7 Jun 2026 11:56:56 +0200
+Message-ID: <20260607095728.581749465@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,184 +66,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261038-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:anshuman.khandual@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261066-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,suse.de,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com,m:cassiogabrielcontato@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,8e498074a794999eb41c];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linutronix.de:email,arm.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EA3F764F60B
+X-Rspamd-Queue-Id: A257F64F7E7
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 80691d35523de3292b64c2ffa444aab3d55e51ba ]
+[ Upstream commit 4cc54bdd54b337e77115be5b55577d1c58608eae ]
 
-`reinstall_suspended_bps()` plays a key part in the stepping process
-when we have hardware breakpoints and watchpoints enabled.
-It checks if we need to step one, will re-enable it if it has
-been handled and will return whether or not we need to proceed with
-a single-step.
+snd_pcm_oss_proc_write() links a newly allocated setup entry into the
+OSS setup list before duplicating the task name. If the task-name
+allocation fails, the error path frees the already linked entry and
+leaves setup_list pointing at freed memory.
 
-However, the current naming and return values make it harder to understand
-the logic and goal of the function.
+A later OSS device open can then walk the stale list entry in
+snd_pcm_oss_look_for_setup() and dereference freed memory.
 
-Rename it `try_step_suspended_breakpoints()` and change the return value
-to a boolean, aligning it with similar functions used in
-`do_el0_undef()` like `try_emulate_mrs()`, and making its behaviour
-more obvious.
+Allocate the task name and initialize the setup entry before publishing
+the entry on setup_list. Also fetch the initial proc read iterator only
+after taking setup_mutex, so all setup_list traversal follows the same
+list lifetime rules.
 
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250707114109.35672-9-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Reported-by: syzbot+8e498074a794999eb41c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a1062b7.170a0220.35b2b7.0003.GAE@google.com
+Closes: https://syzkaller.appspot.com/bug?extid=8e498074a794999eb41c
+Fixes: 060d77b9c04a ("[ALSA] Fix / clean up PCM-OSS setup hooks")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260522-alsa-pcm-oss-setup-uaf-v1-1-40bdcc4d17e8@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/debug-monitors.h |  6 +++---
- arch/arm64/kernel/debug-monitors.c      |  2 +-
- arch/arm64/kernel/hw_breakpoint.c       | 25 ++++++++++++-------------
- 3 files changed, 16 insertions(+), 17 deletions(-)
+ sound/core/oss/pcm_oss.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/debug-monitors.h b/arch/arm64/include/asm/debug-monitors.h
-index 5319da0f0ca4ea..24c7981abeb0b9 100644
---- a/arch/arm64/include/asm/debug-monitors.h
-+++ b/arch/arm64/include/asm/debug-monitors.h
-@@ -83,11 +83,11 @@ int kernel_active_single_step(void);
- void kernel_rewind_single_step(struct pt_regs *regs);
- 
- #ifdef CONFIG_HAVE_HW_BREAKPOINT
--int reinstall_suspended_bps(struct pt_regs *regs);
-+bool try_step_suspended_breakpoints(struct pt_regs *regs);
- #else
--static inline int reinstall_suspended_bps(struct pt_regs *regs)
-+static inline bool try_step_suspended_breakpoints(struct pt_regs *regs)
+diff --git a/sound/core/oss/pcm_oss.c b/sound/core/oss/pcm_oss.c
+index 9b5a3def8d2ce9..59d5153d111329 100644
+--- a/sound/core/oss/pcm_oss.c
++++ b/sound/core/oss/pcm_oss.c
+@@ -2965,8 +2965,10 @@ static void snd_pcm_oss_proc_read(struct snd_info_entry *entry,
+ 				  struct snd_info_buffer *buffer)
  {
--	return -ENODEV;
-+	return false;
- }
- #endif
- 
-diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
-index a28482e25c4c31..b95a135ef10a99 100644
---- a/arch/arm64/kernel/debug-monitors.c
-+++ b/arch/arm64/kernel/debug-monitors.c
-@@ -195,7 +195,7 @@ static int single_step_handler(unsigned long unused, unsigned long esr,
- 	 * If we are stepping a pending breakpoint, call the hw_breakpoint
- 	 * handler first.
- 	 */
--	if (!reinstall_suspended_bps(regs))
-+	if (try_step_suspended_breakpoints(regs))
- 		return 0;
- 
- 	if (call_step_hook(regs, esr) == DBG_HOOK_HANDLED)
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index d7eede5d869c2b..309ae24d454805 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -847,36 +847,35 @@ NOKPROBE_SYMBOL(watchpoint_handler);
- /*
-  * Handle single-step exception.
-  */
--int reinstall_suspended_bps(struct pt_regs *regs)
-+bool try_step_suspended_breakpoints(struct pt_regs *regs)
- {
- 	struct debug_info *debug_info = &current->thread.debug;
--	int handled_exception = 0, *kernel_step;
--
--	kernel_step = this_cpu_ptr(&stepping_kernel_bp);
-+	int *kernel_step = this_cpu_ptr(&stepping_kernel_bp);
-+	bool handled_exception = false;
- 
- 	/*
- 	 * Called from single-step exception handler.
--	 * Return 0 if execution can resume, 1 if a SIGTRAP should be
--	 * reported.
-+	 * Return true if we stepped a breakpoint and can resume execution,
-+	 * false if we need to handle a single-step.
- 	 */
- 	if (user_mode(regs)) {
- 		if (debug_info->bps_disabled) {
- 			debug_info->bps_disabled = 0;
- 			toggle_bp_registers(AARCH64_DBG_REG_BCR, DBG_ACTIVE_EL0, 1);
--			handled_exception = 1;
-+			handled_exception = true;
- 		}
- 
- 		if (debug_info->wps_disabled) {
- 			debug_info->wps_disabled = 0;
- 			toggle_bp_registers(AARCH64_DBG_REG_WCR, DBG_ACTIVE_EL0, 1);
--			handled_exception = 1;
-+			handled_exception = true;
- 		}
- 
- 		if (handled_exception) {
- 			if (debug_info->suspended_step) {
- 				debug_info->suspended_step = 0;
- 				/* Allow exception handling to fall-through. */
--				handled_exception = 0;
-+				handled_exception = false;
- 			} else {
- 				user_disable_single_step(current);
+ 	struct snd_pcm_str *pstr = entry->private_data;
+-	struct snd_pcm_oss_setup *setup = pstr->oss.setup_list;
++	struct snd_pcm_oss_setup *setup;
++
+ 	guard(mutex)(&pstr->oss.setup_mutex);
++	setup = pstr->oss.setup_list;
+ 	while (setup) {
+ 		snd_iprintf(buffer, "%s %u %u%s%s%s%s%s%s\n",
+ 			    setup->task_name,
+@@ -3051,6 +3053,13 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
+ 				buffer->error = -ENOMEM;
+ 				return;
  			}
-@@ -890,17 +889,17 @@ int reinstall_suspended_bps(struct pt_regs *regs)
- 
- 		if (*kernel_step != ARM_KERNEL_STEP_SUSPEND) {
- 			kernel_disable_single_step();
--			handled_exception = 1;
-+			handled_exception = true;
- 		} else {
--			handled_exception = 0;
-+			handled_exception = false;
++			template.task_name = kstrdup(task_name, GFP_KERNEL);
++			if (!template.task_name) {
++				kfree(setup);
++				buffer->error = -ENOMEM;
++				return;
++			}
++			*setup = template;
+ 			if (pstr->oss.setup_list == NULL)
+ 				pstr->oss.setup_list = setup;
+ 			else {
+@@ -3058,12 +3067,7 @@ static void snd_pcm_oss_proc_write(struct snd_info_entry *entry,
+ 				     setup1->next; setup1 = setup1->next);
+ 				setup1->next = setup;
+ 			}
+-			template.task_name = kstrdup(task_name, GFP_KERNEL);
+-			if (! template.task_name) {
+-				kfree(setup);
+-				buffer->error = -ENOMEM;
+-				return;
+-			}
++			continue;
  		}
- 
- 		*kernel_step = ARM_KERNEL_STEP_NONE;
+ 		*setup = template;
  	}
- 
--	return !handled_exception;
-+	return handled_exception;
- }
--NOKPROBE_SYMBOL(reinstall_suspended_bps);
-+NOKPROBE_SYMBOL(try_step_suspended_breakpoints);
- 
- /*
-  * Context-switcher for restoring suspended breakpoints.
 -- 
 2.53.0
 
