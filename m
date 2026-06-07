@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261344-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9izAASpIJWraFwIAu9opvQ
-	(envelope-from <stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:02 +0200
+	id xhaiDX1IJWoFGAIAu9opvQ
+	(envelope-from <stable+bounces-261344-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1EF64FB67
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:30:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A644264FBD2
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lpPbYtm8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261341-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NPqRUw1x;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261344-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261344-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5CA413004698
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:29:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B14F2301233E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E8C2EEE76;
-	Sun,  7 Jun 2026 10:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D383290A5;
+	Sun,  7 Jun 2026 10:29:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300DA4071E3;
-	Sun,  7 Jun 2026 10:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8797A327BFA;
+	Sun,  7 Jun 2026 10:29:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828178; cv=none; b=Y1NeOc7HqFkUkNRo6Idbo8tCtmtUpHSv7JMH/SQaQapZW1ocZFVnCU9HaDOW7HQVuJdayB71aJwp15RkVD2Uz0ryPMt98iyUvGNwAJtm/Esik5pibThhA6w7jze5nye4ZzgFgPZbfVBTN7GQZNHeO74LEdsoh141GlhHTPSo2mE=
+	t=1780828191; cv=none; b=P7dsvPb7CZSQOUpjjwcTpFoWcKf+t3bkisH9dniwe9rhKWwa0iltg2GT4STgGWXpjaHj2vN9miiYRh0+GsO0ozs1y78pc/x1dPGydYOgGU0I2wCgBjoDaj74PcpjKvsM0ZnxIBmvbsgnkVLGe/V8ZIKZ5gLH7niBgdvrKfD+ZoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828178; c=relaxed/simple;
-	bh=OyqxCUvIM7lqLKg6h0iChMLbaR7O78h7yYopTG1PfGg=;
+	s=arc-20240116; t=1780828191; c=relaxed/simple;
+	bh=OanaVxfX0pQzM5V/O74QXp8lugHT3aTjizSUaMWgv80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAJ1+/+X9BDGufCRN5HRXfB3BEeXtB3NU9bS8O4Rq4OJF4sblvIrO1rlrCEsdPnXbP/F7BLdMhMwhwVaMaoJonhDsGAZ0f512cBBO/OBScmeCovSS6Dtn6g0EOWQ926N6cnKnFn9tTRFwxDDwcG0xM81H4qTGAdjYk/JbmE7DHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpPbYtm8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B86E1F00893;
-	Sun,  7 Jun 2026 10:29:36 +0000 (UTC)
+	 MIME-Version; b=F3rza+ILDV9ENiJf1mzKgNe2/+WAsSJq3PTexXjjpv9mxtZ8LI6xJ2D/y1S9pnvaAOpAjYV3T6Y8GFYGkTFqIVA4Sb88+SeaqjLCUk8unJVd0UsgC54Tat2d9V6c3UXaoOcYGphYXFb7/Qp3KOPPzFcM/31qOW119aWEa3s5H2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPqRUw1x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE581F00893;
+	Sun,  7 Jun 2026 10:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828177;
-	bh=hx7AwKF8bQTtZq1lKzzKum8xu0Kl2CV5YXIWpOzeAGg=;
+	s=korg; t=1780828188;
+	bh=xYiIEgsoxVeIwSNFQe15UTMLOXnQxzJsyrneQQkdFsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lpPbYtm85ZI0vuhnMkxcKJ0j73PCzoAsEgmZnJYQS9/hdOmj0arjTFzSAIWRp3R0n
-	 7UZ1mELktC6BjWjINNmV2SKozTK6WQYzmOYo5BZtl0kAeTUjqXZ8ACrUnsKL8+hTXK
-	 UiKxEk+pAjdrvaaBSIWg6zO8h7ucUhZopKGuJBBk=
+	b=NPqRUw1xywaN1x0eBNjPJ1lDS1oCNDl+TPhgD32hLu81ydHv1x0oLHCyCveEOAPtF
+	 pyBK/0CQc0dMQQAmrdETOnKGPy+T1TeB6Y9RGXE1QMR31qj4GLA90BQtjxNbWTmNPm
+	 NCsdgYWTQ7++itKekRYqHCusUQVRTr1vp0NUiQ6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Stevens <stevensd@google.com>,
-	Matthew Maurer <mmaurer@google.com>,
 	stable <stable@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.18 138/315] rust_binder: Avoid holding lock when dropping delivered_death
-Date: Sun,  7 Jun 2026 11:58:45 +0200
-Message-ID: <20260607095732.674036613@linuxfoundation.org>
+Subject: [PATCH 6.18 139/315] rust_binder: avoid calling pending_oneway_finished() on TF_UPDATE_TXN
+Date: Sun,  7 Jun 2026 11:58:46 +0200
+Message-ID: <20260607095732.711186097@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -71,90 +69,124 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261341-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261344-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stevensd@google.com,m:mmaurer@google.com,m:stable@kernel.org,m:aliceryhl@google.com,m:cmllamas@google.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:aliceryhl@google.com,m:cmllamas@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C1EF64FB67
+X-Rspamd-Queue-Id: A644264FBD2
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit f6d8fea9e3953151a4adb4f603503dc3dc9c69da upstream.
+commit 4c19719eb8b8df08c5bec7c499f73ddaea6f09fc upstream.
 
-In 6c37bebd8c926, we switched to looping over the list and dropping each
-individual node, ostensibly without the lock held in the loop body.
+When an outdated transaction is removed from `oneway_todo` due to
+`TF_UPDATE_TXN`, its `Allocation` is dropped. The current implementation
+of `Allocation::drop` calls `pending_oneway_finished()`, assuming the
+transaction was executed. This leads to premature execution of the next
+queued one-way transaction.
 
-If the kernel were using Rust Edition 2024, the comment would be
-accurate, and the lock would not be held across the drop. However, the
-kernel is currently using 2021, so tail expression lifetime extension
-results in the lock being held across the drop. Explicitly binding the
-expression result to a variable makes the lockguard no longer part of a
-tail expression, causing the lock to be dropped before entering the loop
-body.
+Fix this by taking the `oneway_node` from the `Allocation` of the
+outdated transaction before it is dropped. This prevents
+`Allocation::drop` from signaling completion.
 
-This was detected via `CONFIG_PROVE_LOCKING` identifying an invalid wait
-context at the drop site.
+We do not call `take_oneway_node()` from `Transaction::cancel` because
+it's actually correct to call `pending_oneway_finished()` on cancel if
+the transaction did not come from `oneway_todo`. This ensures that if
+`BINDER_THREAD_EXIT` is invoked and cancels a oneway transaction, then
+the next transaction is taken from `oneway_todo`.
 
-Reported-by: David Stevens <stevensd@google.com>
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
+This bug does not lead to any issues in the kernel, but may lead to
+Binder delivering transactions to userspace earlier than userspace
+expected to receive them.
+
 Cc: stable <stable@kernel.org>
-Fixes: 6c37bebd8c92 ("rust_binder: avoid mem::take on delivered_deaths")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Assisted-by: Antigravity:gemini
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 Acked-by: Carlos Llamas <cmllamas@google.com>
-Link: https://patch.msgid.link/20260403-lockhold-v1-1-c332b56cd8ae@google.com
+Link: https://patch.msgid.link/20260414-tf-update-txn-fix-v1-1-d2b83303acc9@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder/process.rs |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/android/binder/allocation.rs  |    8 ++++++++
+ drivers/android/binder/transaction.rs |   11 ++++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -1366,7 +1366,12 @@ impl Process {
-         // Clear delivered_deaths list.
-         //
-         // Scope ensures that MutexGuard is dropped while executing the body.
--        while let Some(delivered_death) = { self.inner.lock().delivered_deaths.pop_front() } {
-+        while let Some(delivered_death) = {
-+            // Explicitly bind to avoid tail expression lifetime extension of the lockguard
-+            // Can be removed when the kernel moves to edition 2024
-+            let maybe_death = self.inner.lock().delivered_deaths.pop_front();
-+            maybe_death
-+        } {
-             drop(delivered_death);
-         }
+--- a/drivers/android/binder/allocation.rs
++++ b/drivers/android/binder/allocation.rs
+@@ -160,6 +160,14 @@ impl Allocation {
+         self.get_or_init_info().target_node = Some(target_node);
+     }
  
++    pub(crate) fn take_oneway_node(&mut self) -> Option<DArc<Node>> {
++        if let Some(info) = self.allocation_info.as_mut() {
++            info.oneway_node.take()
++        } else {
++            None
++        }
++    }
++
+     /// Reserve enough space to push at least `num_fds` fds.
+     pub(crate) fn info_add_fd_reserve(&mut self, num_fds: usize) -> Result {
+         self.get_or_init_info()
+--- a/drivers/android/binder/transaction.rs
++++ b/drivers/android/binder/transaction.rs
+@@ -239,7 +239,8 @@ impl Transaction {
+     /// Not used for replies.
+     pub(crate) fn submit(self: DLArc<Self>) -> BinderResult {
+         // Defined before `process_inner` so that the destructor runs after releasing the lock.
+-        let mut _t_outdated;
++        let _t_outdated;
++        let _oneway_node;
+ 
+         let oneway = self.flags & TF_ONE_WAY != 0;
+         let process = self.to.clone();
+@@ -255,6 +256,14 @@ impl Transaction {
+                         if let Some(t_outdated) =
+                             target_node.take_outdated_transaction(&self, &mut process_inner)
+                         {
++                            let mut alloc_guard = t_outdated.allocation.lock();
++                            if let Some(alloc) = (*alloc_guard).as_mut() {
++                                // Take the oneway node to prevent `Allocation::drop` from calling
++                                // `pending_oneway_finished()`, which would be incorrect as this
++                                // transaction is not being submitted.
++                                _oneway_node = alloc.take_oneway_node();
++                            }
++                            drop(alloc_guard);
+                             // Save the transaction to be dropped after locks are released.
+                             _t_outdated = t_outdated;
+                         }
 
 
 
