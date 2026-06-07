@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xpf9LXxJJWqxGAIAu9opvQ
-	(envelope-from <stable+bounces-261413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:40 +0200
+	id yNZHAgxJJWpkGAIAu9opvQ
+	(envelope-from <stable+bounces-261376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3201E64FD5C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DFA64FC99
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:33:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DS/vIuoR";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261413-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261413-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ArLABt+Z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261376-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261376-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7ED59301EC66
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5DD4A3028F72
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A0F2D3A69;
-	Sun,  7 Jun 2026 10:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E1B31E842;
+	Sun,  7 Jun 2026 10:31:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD590257855;
-	Sun,  7 Jun 2026 10:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12F62D3A69;
+	Sun,  7 Jun 2026 10:31:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828461; cv=none; b=tNRWNIAQ+RjwBG92j+hdbHtHHl9mOf59NxTJuL1gzrcYQOj70OdgsfEQju1mcwVznFhOmv0aXY1+KhppI0L8wqrrMCQQDOH+8eiG5rw+AoACCyLmDG3ndjftTgf9eRiq5mEUV/IdM4gBn6p7lJmzfBp9zsY3o0xXLnRLSFXhkqc=
+	t=1780828312; cv=none; b=ZWL0L93t9emvdLJUFOWWHbD2mKFwBhjc5ujASnPtX5d190PtXT6rmlJasGpgdfJf89q9TBFdJIGNQhJ0hkzZZ2ZED6CGDZmC6Iy2OQxxW1b2+KaEUOi8nOEVX38X3LWl/QNwWIwVzFUDbwm7ZtBQbRqwRl3zmB/GA4Z2ISWwIbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828461; c=relaxed/simple;
-	bh=pZ8y7PiBTLiM2jDG/yfTp6Knecl2+ZBZp3h1Vxdr1rE=;
+	s=arc-20240116; t=1780828312; c=relaxed/simple;
+	bh=7IFVO1+oV+PEuUddPC3Q+Jnn6xIzGlIO4ESAiWTHxkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dF7JsKkruCv4uzmGrN5vYjcRS3fGW72t1vmhRTMtGCAeSHz4XYptNbsWBdkWARCHlFhVwyYKhYO+zQSNyvY+tq91EhKs5YvqlhyRW9/W0XHKqHq/KB26rCmTbeIjAYT/maay8PF0Y6upksp9mzwEKz7oSbLDX1T867IMMI+Ot6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS/vIuoR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1393A1F00893;
-	Sun,  7 Jun 2026 10:34:19 +0000 (UTC)
+	 MIME-Version; b=NGgtduuLwTXColqs90Ljt+D17zuxsl1GchPMQYsbTXEs2d81P5ClifVFBuOLooDjdXRW8ZIP2I0ueZbc3AT1moAwa8GtJSB9mBychmkD5O0T6HOuvEc9hloFEHnVjP019hQGvsCG7s02BK1bUSMh61ZX8UFqNZXYUzAiedRM0R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArLABt+Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FCF1F00893;
+	Sun,  7 Jun 2026 10:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828460;
-	bh=j7SDc8Rx+Mv1sHgZT1afRD/84N4pW8R1Z+Hllh44XNI=;
+	s=korg; t=1780828311;
+	bh=bZ6SgO30G2c1vkT9HSwk41HpgMZ3qK6z4Vgt//JVTxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DS/vIuoRQAdB4CvM4jh3eRrUIigauOc43sJ/cKcyZX5QvHtWaF3Wu1yp26InDSNQG
-	 TL4DXpEbtCFgisZX+jiNXeiv3qf+kmwAEzoNvvSeI2XV3pe0UnKAqoiSeggc23Fdov
-	 jFcL3rPgurxcCM5wglIylbgM5R80BpnBYp6gtwyo=
+	b=ArLABt+ZQ6YJVbmdcLs/YSvwuplvwMYnelgPCE3qt3j4z06L6PrxCRR9luu22+/CG
+	 YmWnB5CUJqtwkrxvU0mBVhG8BV1tFcA5Ax3HVLNlRTr6ta8Oc9ZJjcppuZl2VyGKGA
+	 cuAHyMvur5g2YmGTxXJQ16VMp4VlbqokJzmsg9lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	stable <stable@kernel.org>,
-	Ben Hutchings <benh@debian.org>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 6.18 137/315] parport: Fix race between port and client registration
-Date: Sun,  7 Jun 2026 11:58:44 +0200
-Message-ID: <20260607095732.638885358@linuxfoundation.org>
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.12 128/307] usb: typec: tcpm: validate VDO count in Discover Identity ACK handlers
+Date: Sun,  7 Jun 2026 11:58:45 +0200
+Message-ID: <20260607095732.459516122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,141 +76,86 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261413-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:benh@debian.org,m:sudipm.mukherjee@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heikki.krogerus@linux.intel.com,m:stable@kernel.org,m:badhri@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3201E64FD5C
+X-Rspamd-Queue-Id: 81DFA64FC99
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit ef15ccbb3e8640a723c42ad90eaf81d66ae02017 upstream.
+commit 8fbc349e8383125dd2d8de1c1e926279d398ab17 upstream.
 
-The parport subsystem registers port devices before they are fully
-initialised, resulting in a race condition where client drivers such
-as lp can attach to ports that are not completely initialised or even
-being torn down.
+Properly validate the count passed from a device when calling
+svdm_consume_identity() or svdm_consume_identity_sop_prime() as the
+device-controlled value could index off of the static arrays, which
+could leak data.
 
-When the port and client drivers are built as modules and loaded
-around the same time during boot, this occasionally results in a
-crash.  I was able to make this happen reliably in a VM with a
-PC-style parallel port by patching parport_pc to fail probing:
-
-> --- a/drivers/parport/parport_pc.c
-> +++ b/drivers/parport/parport_pc.c
-> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsigned long int base,
->  	if (!p)
->  		goto out3;
->
-> -	base_res = request_region(base, 3, p->name);
-> +	base_res = NULL;
->  	if (!base_res)
->  		goto out4;
->
-
-and then running:
-
-    while true; do
-        modprobe lp & modprobe parport_pc
-	wait
-	rmmod lp parport_pc
-    done
-
-for a few seconds.
-
-In the long term I think port registration should be changed to put
-the call to device_add() inside parport_announce_port(), but since the
-latter currently cannot fail this will require changing all port
-drivers.
-
-For now, add a flag to indicate whether a port has been "announced"
-and only try to attach client drivers to ports when the flag is set.
-
-Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
-Closes: https://bugs.debian.org/1130365
-Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de/
+Assisted-by: gkh_clanker_t1000
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://patch.msgid.link/afo6uBv68GDevbMD@decadent.org.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://patch.msgid.link/2026051350-plated-salute-0efe@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/share.c |   11 +++++++++--
- include/linux/parport.h |    1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/parport/share.c
-+++ b/drivers/parport/share.c
-@@ -214,10 +214,14 @@ static void get_lowlevel_driver(void)
- static int port_check(struct device *dev, void *dev_drv)
- {
- 	struct parport_driver *drv = dev_drv;
-+	struct parport *port;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1639,6 +1639,9 @@ static void svdm_consume_identity(struct
+ 	u32 vdo = p[VDO_INDEX_IDH];
+ 	u32 product = p[VDO_INDEX_PRODUCT];
  
- 	/* only send ports, do not send other devices connected to bus */
--	if (is_parport(dev))
--		drv->match_port(to_parport_dev(dev));
-+	if (is_parport(dev)) {
-+		port = to_parport_dev(dev);
-+		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
-+			drv->match_port(port);
-+	}
- 	return 0;
- }
- 
-@@ -532,6 +536,7 @@ void parport_announce_port(struct parpor
- 		if (slave)
- 			attach_driver_chain(slave);
- 	}
-+	set_bit(PARPORT_ANNOUNCED, &port->devflags);
- 	mutex_unlock(&registration_lock);
- }
- EXPORT_SYMBOL(parport_announce_port);
-@@ -561,6 +566,8 @@ void parport_remove_port(struct parport
- 
- 	mutex_lock(&registration_lock);
- 
-+	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
++	if (cnt <= VDO_INDEX_PRODUCT)
++		return;
 +
- 	/* Spread the word. */
- 	detach_driver_chain(port);
+ 	memset(&port->mode_data, 0, sizeof(port->mode_data));
  
---- a/include/linux/parport.h
-+++ b/include/linux/parport.h
-@@ -240,6 +240,7 @@ struct parport {
+ 	port->partner_ident.id_header = vdo;
+@@ -1659,6 +1662,9 @@ static void svdm_consume_identity_sop_pr
+ 	u32 product = p[VDO_INDEX_PRODUCT];
+ 	int svdm_version;
  
- 	unsigned long devflags;
- #define PARPORT_DEVPROC_REGISTERED	0
-+#define PARPORT_ANNOUNCED		1
- 	struct pardevice *proc_device;	/* Currently register proc device */
- 
- 	struct list_head full_list;
++	if (cnt <= VDO_INDEX_CABLE_1)
++		return;
++
+ 	/*
+ 	 * Attempt to consume identity only if cable currently is not set
+ 	 */
+@@ -1682,7 +1688,7 @@ static void svdm_consume_identity_sop_pr
+ 	switch (port->negotiated_rev_prime) {
+ 	case PD_REV30:
+ 		port->cable_desc.pd_revision = 0x0300;
+-		if (port->cable_desc.active)
++		if (port->cable_desc.active && cnt > VDO_INDEX_CABLE_2)
+ 			port->cable_ident.vdo[1] = p[VDO_INDEX_CABLE_2];
+ 		break;
+ 	case PD_REV20:
 
 
 
