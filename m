@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-261837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0OMyMXVPJWomGwIAu9opvQ
-	(envelope-from <stable+bounces-261837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:09 +0200
+	id 8iRjG0tQJWpsGwIAu9opvQ
+	(envelope-from <stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BFD6503A1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7450C650489
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:04:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CPXu3DB+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261837-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261837-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XQ0ox8NN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261883-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 16E4930054D0
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:00:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 979323009E11
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F30B385519;
-	Sun,  7 Jun 2026 11:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0995F38BF97;
+	Sun,  7 Jun 2026 11:03:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71A370ADB;
-	Sun,  7 Jun 2026 11:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DD6328255;
+	Sun,  7 Jun 2026 11:03:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830038; cv=none; b=WVmXQkr/tsFhTRS4fEIp4C5b/qXKL0jw5DjIaGhLWAz7+NGn0xvH1qjYf//6F9u5hctbRhb0bMeFp5rOzR+c/s/Uxc3xjjT8bpGIMIA8fJ65xDZ5Hsqk7uQ6SGvHSc1rTDdbXAfkogANb3cSbxBaox8nIrcFZSGqe7NWwa2jCyI=
+	t=1780830227; cv=none; b=Qa146jW8vlezrGTYyK63dLfqaCN/++fzlt3S3QtBb73uyS8vlkAYcozTrbA9eZN7ZMysbA/xZJ3nptUKG+tNCY53aHZ4+LRDMYS5gtjIU0OSfva9wV97GToKEU/P01zj9BW5CUhdICK3TrWtM66WX/D3GkbLuYRixWe4wa6aHsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830038; c=relaxed/simple;
-	bh=5aivG5OH2v+mhdIRI5wQOThr6p87w9obrXYueBQpAHw=;
+	s=arc-20240116; t=1780830227; c=relaxed/simple;
+	bh=ULb6PU7gaSLsYCpU3CSauHwnOq1Hq5xeBylDsol4/TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zi5VS4gqvtKiLP3rc8XdiZyRgobpgketbwLSGwouQunIJ/iOsEyrgiIguT9va8OPtlMjcou2i+wjod5rQLW7vwmQnYfJA78oXRkDeGDKEMFybrLDtjg4khSkDxse74ZJFDiWka+IVfRHSjuV15nafu4n2kypABABMeGSa8A7HvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPXu3DB+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9961F00898;
-	Sun,  7 Jun 2026 11:00:36 +0000 (UTC)
+	 MIME-Version; b=FiyTjRf8uKfVzLwhn5v2JCKuYVgSUxJfEMdxehiRztINiNA2XutonnUbVsiRFrxjzy6EqLN8HAcapdh9IXXfTWSDE1me8hQaHpn5CQ5tdwJKJZCsdMp7LgyrztyZ28EfMXJNmhU6/6v8E53RXy6Ww7TBrgQOsFQNJ7u3TjKlpNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQ0ox8NN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF481F00893;
+	Sun,  7 Jun 2026 11:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830037;
-	bh=W/OmaiYTUX0lCNcz+1b2eMc86qNXGZoNFzl/YcyWiTQ=;
+	s=korg; t=1780830226;
+	bh=iqqY82abSEKji7Rl4x6mJFuJeS5TRk8OivVoRst/2hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CPXu3DB+tKrTVGAWCpjCiEDniuOd2yg/tVeN7mbPTxrjcfjuOZXy7tpjfqBCgXQh2
-	 B49gnAgxfFJYJA9yhrmSbAWiIRHyizEDgFZqsr7LtrGEcteObOyq12eXcY4vRCxkv/
-	 IwtrPHJ9tg2eYCc3cvefa07BbhGxmqUpkuW99KTk=
+	b=XQ0ox8NNuO7H9SgzaBk5nneKU6MIhui6J2mORKXaRc++kCNO1V3cVnM1dTMiaIIhh
+	 x9YBv676p2DfF3xndROBQhiVmhNyj2mZSwdRPftRUcwFc45ChDhXVMtb98NEervlg5
+	 CgxM3bJrk/IHqtqXTyu8P6qHsjna/JOKxudIjPTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shaomin Chen <eeesssooo020@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 302/315] xfrm: iptfs: reset runtime state when cloning SAs
+Subject: [PATCH 6.12 292/307] iio: dac: ad5686: fix ref bit initialization for single-channel parts
 Date: Sun,  7 Jun 2026 12:01:29 +0200
-Message-ID: <20260607095738.693895072@linuxfoundation.org>
+Message-ID: <20260607095738.467410142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,132 +71,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261837-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eeesssooo020@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261883-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,secunet.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66BFD6503A1
+X-Rspamd-Queue-Id: 7450C650489
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaomin Chen <eeesssooo020@gmail.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit 7f83d174073234839aea176f265e517e0d50a1d2 ]
+[ Upstream commit ecae2ae606d493cf11457946436335bd0e726663 ]
 
-iptfs_clone_state() clones the IPTFS mode data with kmemdup(). This
-copies runtime objects which must not be shared with the original SA,
-including the embedded sk_buff_head, hrtimers, spinlock, and in-flight
-reassembly/reorder state.
+The reference bit position was ignored when writing the register at the
+probe() function (!!val was used). When such bit is 1, internal voltage
+reference is disabled so that an external one can be used. For
+multi-channel devices, bit 0 of the Internal Reference Setup command
+behaves the same way, so AD5686_REF_BIT_MSK is created. The issue exists
+since support for single-channel devices were first introduced.
 
-If xfrm_state_migrate() fails after clone_state() but before the later
-init_state() call has reinitialized those fields, the cloned state can be
-destroyed by xfrm_state_gc_task() with list and timer state copied from the
-original SA. With queued packets this lets the clone splice and free skbs
-owned by the original IPTFS queue, leading to use-after-free and
-double-free reports in iptfs_destroy_state() and skb release paths.
-
-Reinitialize the clone's runtime state before publishing it through
-x->mode_data. Because clone_state() now publishes a destroyable mode_data
-object before init_state(), take the mode callback module reference there.
-Avoid taking it again from __iptfs_init_state() for the same object.
-
-Fixes: 0e4fbf013fa5 ("xfrm: iptfs: add user packet (tunnel ingress) handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaomin Chen <eeesssooo020@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: be1b24d24541 ("iio:dac:ad5686: Add AD5691R/AD5692R/AD5693/AD5693R support")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+[ adapted `has_external_vref` to the in-tree equivalent `voltage_uv` variable in the `val =` computation ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_iptfs.c |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ drivers/iio/dac/ad5686.c |    6 +++---
+ drivers/iio/dac/ad5686.h |    1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -2650,7 +2650,8 @@ static void __iptfs_init_state(struct xf
- 	x->props.enc_hdr_len = sizeof(struct ip_iptfs_hdr);
- 
- 	/* Always keep a module reference when x->mode_data is set */
--	__module_get(x->mode_cbs->owner);
-+	if (x->mode_data != xtfs)
-+		__module_get(x->mode_cbs->owner);
- 
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
-@@ -2658,22 +2659,40 @@ static void __iptfs_init_state(struct xf
- 
- static int iptfs_clone_state(struct xfrm_state *x, struct xfrm_state *orig)
- {
-+	struct skb_wseq *w_saved = NULL;
- 	struct xfrm_iptfs_data *xtfs;
- 
- 	xtfs = kmemdup(orig->mode_data, sizeof(*xtfs), GFP_KERNEL);
- 	if (!xtfs)
- 		return -ENOMEM;
- 
--	xtfs->ra_newskb = NULL;
- 	if (xtfs->cfg.reorder_win_size) {
--		xtfs->w_saved = kcalloc(xtfs->cfg.reorder_win_size,
--					sizeof(*xtfs->w_saved), GFP_KERNEL);
--		if (!xtfs->w_saved) {
-+		w_saved = kcalloc(xtfs->cfg.reorder_win_size,
-+				  sizeof(*w_saved), GFP_KERNEL);
-+		if (!w_saved) {
- 			kfree_sensitive(xtfs);
- 			return -ENOMEM;
- 		}
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -528,7 +528,7 @@ int ad5686_probe(struct device *dev,
+ 		break;
+ 	case AD5686_REGMAP:
+ 		cmd = AD5686_CMD_INTERNAL_REFER_SETUP;
+-		ref_bit_msk = 0;
++		ref_bit_msk = AD5686_REF_BIT_MSK;
+ 		break;
+ 	case AD5693_REGMAP:
+ 		cmd = AD5686_CMD_CONTROL_REG;
+@@ -540,9 +540,9 @@ int ad5686_probe(struct device *dev,
+ 		goto error_disable_reg;
  	}
-+	xtfs->w_saved = w_saved;
  
-+	__skb_queue_head_init(&xtfs->queue);
-+	xtfs->queue_size = 0;
-+	hrtimer_setup(&xtfs->iptfs_timer, iptfs_delay_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
-+
-+	spin_lock_init(&xtfs->drop_lock);
-+	hrtimer_setup(&xtfs->drop_timer, iptfs_drop_timer, CLOCK_MONOTONIC,
-+		      IPTFS_HRTIMER_MODE);
-+
-+	xtfs->w_seq_set = false;
-+	xtfs->w_wantseq = 0;
-+	xtfs->w_savedlen = 0;
-+	xtfs->ra_newskb = NULL;
-+	xtfs->ra_wantseq = 0;
-+	xtfs->ra_runtlen = 0;
-+
-+	__module_get(x->mode_cbs->owner);
- 	x->mode_data = xtfs;
- 	xtfs->x = x;
+-	val = (voltage_uv | ref_bit_msk);
++	val = voltage_uv ? ref_bit_msk : 0;
  
+-	ret = st->write(st, cmd, 0, !!val);
++	ret = st->write(st, cmd, 0, val);
+ 	if (ret)
+ 		goto error_disable_reg;
+ 
+--- a/drivers/iio/dac/ad5686.h
++++ b/drivers/iio/dac/ad5686.h
+@@ -46,6 +46,7 @@
+ 
+ #define AD5310_REF_BIT_MSK			BIT(8)
+ #define AD5683_REF_BIT_MSK			BIT(12)
++#define AD5686_REF_BIT_MSK			BIT(0)
+ #define AD5693_REF_BIT_MSK			BIT(12)
+ 
+ /**
 
 
 
