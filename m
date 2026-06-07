@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261243-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F9TDIyBHJWpKFwIAu9opvQ
-	(envelope-from <stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:36 +0200
+	id ACjAOZtGJWoJFwIAu9opvQ
+	(envelope-from <stable+bounces-261243-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDD764FA43
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABCF64F9AB
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rFlhwyDD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RQfUUInr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261243-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4080D301D4C3
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1987300288F
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F713246F4;
-	Sun,  7 Jun 2026 10:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44893264DA;
+	Sun,  7 Jun 2026 10:23:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F09F202C46;
-	Sun,  7 Jun 2026 10:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2513254BD;
+	Sun,  7 Jun 2026 10:23:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827903; cv=none; b=Y5SJ11zLkQzu/p7KLYMAoKNDVtUa0kWe9VCSlNpM/vRG06rhY2J59XU339EHGiOvFe/QiXpFwYPpj+G7ljMA6wesfskFyw63jAmCjoEBN+36Jy1OzPBbLwhbxAg8gHfI8pdW2F5ek93s018M005tNSdOaorhp/ooh+TcNCCTnpo=
+	t=1780827801; cv=none; b=B5W8kUebkwNRIT3M+3+veBuLuFKu4ZwbP6Bke682veojiiKNy6dTCI1dIj7O9fdG/0vLcWLte53afoy/H/HzjkIH+tVGj34NyXiYGoyF3WXQIU5BYPvHN5uJsbvE43+yidnAP0U5lKw9NSyJSbK4RGwmUe0wqE318OhFeM80uHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827903; c=relaxed/simple;
-	bh=Am5UBK2CQu5ZT542leWi6OrGFk3VUMXfI18cqs/obeY=;
+	s=arc-20240116; t=1780827801; c=relaxed/simple;
+	bh=hP3J1RTzi3BIZUd84juND0iUd2xMxw/ig/y9S+wgzZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YU3fJSsaKs/YSRmwtI0Ivxf71CehMq87Letahis/KfSq6XTRNJfleKfUcKK/VybpwWRncD2kpNJFf09tZIMI7KfPYT7PGX0NQQxakvM7T2SXuUwBdIHY8IhLvn6c0kZbaOpgb08TkrGXa6oXixf63k5HTwLMgjYBkCKSmX/6hfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFlhwyDD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742571F00893;
-	Sun,  7 Jun 2026 10:25:01 +0000 (UTC)
+	 MIME-Version; b=dt48YwF/7qSvWkJcAju3XeTkspOboprUb1Gfe4pUUjdhqFztAoOO3z1uG9E4ddmPKazspkYcbQlAjd/mteBlfdDvq97q7B8kWB1i8o0HlkrgWK0Hdfh04nul0i9yxcSVyw3/KUWOcH1Tk46hYouCxTdgGApkOHLfrRu9ALjPaL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQfUUInr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AE11F00893;
+	Sun,  7 Jun 2026 10:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827902;
-	bh=whQezt9hv9Y3QhNMblSAfrV2yl/wA4twFGd7HPIX3cw=;
+	s=korg; t=1780827799;
+	bh=B0WhsoYV16B7/y0XwgPy8Y8DDoovg5TYkfybaWP1BFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rFlhwyDDCjspcNufnOslkhMDqRVt8ejUK3cg19101n/i7NaAePkaXjaeEEhn6kFFH
-	 pBGUJcya0M2dDUzFzqXSTrPgdLAHcIGUFQQxvZ+2N/FU0hgtHgUNd66sqC/YjxUQof
-	 VpEwSP8xtKkTFok0Umh73x/AdxfGrrGJ4AgkBS80=
+	b=RQfUUInrzMRkrof3uFCT/RwSK+TlMrBsWmoW5Ry3vdHx0rXupMBQaE1jqWHDV99pI
+	 Lk5nYRHrqSQ9xKC7OpgBc5XrTgcdVLS8kD2nzMIZsreFRIJEt5ImKnAtUOH8Av4tp/
+	 sVSsNnN/63jv/f07qQTgscNPpcj43qldki5+mjvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/307] net: skbuff: fix pskb_carve leaking zcopy pages
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 123/332] usb: typec: tcpm: bound altmode_desc[] per iteration in svdm_consume_modes()
 Date: Sun,  7 Jun 2026 11:58:12 +0200
-Message-ID: <20260607095731.267087615@linuxfoundation.org>
+Message-ID: <20260607095732.628057166@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +67,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261268-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemdebruijn.kernel@gmail.com,m:asml.silence@gmail.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,m:willemdebruijnkernel@gmail.com,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-261243-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:badhri@google.com,m:heikki.krogerus@linux.intel.com,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3EDD764FA43
+X-Rspamd-Queue-Id: 8ABCF64F9AB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit ff6e798c2eac3ebd0501ad7e796f583fab928de8 ]
+commit 3389c149c68c3fea61910ad5d34f7bf3bff44e32 upstream.
 
-When SKBFL_MANAGED_FRAG_REFS is set, frag pages are not refcounted but
-their lifetime is controlled by the attached ubuf_info. To make a copy
-of the skb_shared_info, we either should clear the flag and reference
-the frags, or keep the flag and have frags unreferenced.
+svdm_consume_modes() checks pmdata->altmodes against the array size once
+before the loop over the count, but forgot to check the bound at every
+point in the loop.
 
-pskb_carve_inside_header() and pskb_carve_inside_nonlinear() don't
-follow the rule and thus can leak page references. Let's clear
-SKBFL_MANAGED_FRAG_REFS from the original skb to fix it. It's the
-simplest way to address it, but there are more performant ways to do
-that if it ever becomes a problem.
+In the well-behaved SVDM discovery flow this is harmless because each of
+at most SVID_DISCOVERY_MAX SVIDs contributes at most MODE_DISCOVERY_MAX
+modes, exactly filling altmode_desc[ALTMODE_DISCOVERY_MAX].  But the
+CMDT_RSP_ACK handler in tcpm_pd_svdm() does not correlate an incoming
+ACK with any request the port actually sent.  Once port->partner is set,
+an unsolicited Discover Modes ACK is consumed unconditionally.  A broken
+or malicious port partner can therefore drive altmodes to
+ALTMODE_DISCOVERY_MAX - 1 via the normal flow, and then send one extra
+Discover Modes ACK with seven VDOs.  Because the pre-loop check passes,
+the loop could then writes up to five entries past altmode_desc[].  For
+mode_data_prime the next field in struct tcpm_port is the
+partner_altmode[] pointer array, which then receives partner-chosen
+SVID/VDO bytes.
 
-Link: https://lore.kernel.org/all/20260523085809.26331-1-nvminh232@clc.fitus.edu.vn/
-Fixes: 753f1ca4e1e50 ("net: introduce managed frags infrastructure")
-Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the bound check inside the loop so the array can never be indexed
+past ALTMODE_DISCOVERY_MAX regardless of how many VDOs the partner
+supplies or how the function was reached.
+
+Assisted-by: gkh_clanker_t1000
+Cc: Badhri Jagan Sridharan <badhri@google.com>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/2026051351-reshuffle-skillful-90af@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 8c9f026182a6f0..c8653ed1991ae0 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6689,6 +6689,11 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
- 	skb_copy_from_linear_data_offset(skb, off, data, new_hlen);
- 	skb->len -= off;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1845,23 +1845,19 @@ static void svdm_consume_modes(struct tc
+ 	switch (rx_sop_type) {
+ 	case TCPC_TX_SOP_PRIME:
+ 		pmdata = &port->mode_data_prime;
+-		if (pmdata->altmodes >= ARRAY_SIZE(port->plug_prime_altmode)) {
+-			/* Already logged in svdm_consume_svids() */
+-			return;
+-		}
+ 		break;
+ 	case TCPC_TX_SOP:
+ 		pmdata = &port->mode_data;
+-		if (pmdata->altmodes >= ARRAY_SIZE(port->partner_altmode)) {
+-			/* Already logged in svdm_consume_svids() */
+-			return;
+-		}
+ 		break;
+ 	default:
+ 		return;
+ 	}
  
-+	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
-+	 * while refcounting frags below.
-+	 */
-+	skb_zcopy_downgrade_managed(skb);
-+
- 	memcpy((struct skb_shared_info *)(data + size),
- 	       skb_shinfo(skb),
- 	       offsetof(struct skb_shared_info,
-@@ -6801,6 +6806,11 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
- 		return -ENOMEM;
- 	size = SKB_WITH_OVERHEAD(size);
+ 	for (i = 1; i < cnt; i++) {
++		if (pmdata->altmodes >= ALTMODE_DISCOVERY_MAX) {
++			/* Already logged in svdm_consume_svids() */
++			return;
++		}
+ 		paltmode = &pmdata->altmode_desc[pmdata->altmodes];
+ 		memset(paltmode, 0, sizeof(*paltmode));
  
-+	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
-+	 * while refcounting frags below.
-+	 */
-+	skb_zcopy_downgrade_managed(skb);
-+
- 	memcpy((struct skb_shared_info *)(data + size),
- 	       skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
- 	if (skb_orphan_frags(skb, gfp_mask)) {
--- 
-2.53.0
-
 
 
 
