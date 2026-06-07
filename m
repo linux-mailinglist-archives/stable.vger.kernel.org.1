@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8R7CLa5HJWqPFwIAu9opvQ
-	(envelope-from <stable+bounces-261313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:58 +0200
+	id Zmi7KvBHJWq0FwIAu9opvQ
+	(envelope-from <stable+bounces-261332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD3664FABD
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6E564FB0D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iZvseiZL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261313-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261313-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LmD8xS3U;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261332-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261332-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 04CEF3001CE2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B92193003D1E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6EE3264F3;
-	Sun,  7 Jun 2026 10:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC00F328255;
+	Sun,  7 Jun 2026 10:29:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228A61C5F27;
-	Sun,  7 Jun 2026 10:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B324071E3;
+	Sun,  7 Jun 2026 10:29:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828072; cv=none; b=Z2g1dSeU8IRxhKEU1j4Am1lQcRtLt6YPzqVwPWRq9zwZnmbYCm5/NPZzAm2C4li4zNxE6jnBWKrVt4TV1PDZUQ/gmJimubxmNGCTncFIckhn+xIHhe8DBtbMybnVGlN/66yyITc3ocUSPg9G94/to/JXRIrW5IZs7/bFuxVEUEA=
+	t=1780828142; cv=none; b=RIzy2Kpz4ChDKvQidHn4CJCE9/DEbllQZXegj3KmE2PDv+CqWdT23/oulI1EznaR5VUaD+FCFaFTECizv0t9R/4v15Md/fQLFvOEcvtyuFUl2DAYsBN1EZ21TXM9/XpIhoVuNc7K4sYJxGvZ3oY3NoiMdHhkpBjgQhLMcQ3c7tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828072; c=relaxed/simple;
-	bh=rhfuJJg5mfwMJ0HVC+CVumi9dFF8XXdmsRSQrPBoucU=;
+	s=arc-20240116; t=1780828142; c=relaxed/simple;
+	bh=oWpgT3B17oPoywMMLmI74vheTEadGUNKTlidEjJmVbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecHZ6dp/KBJwnEB7OHqs2KGXQ6Xv5HgRDgsrLErZd4A6Ul1beUwOJ0muzOVwmUJKiCWdL3FJi836ljsR4eHkRWpRVWY3h3TrL3XNLgqs47xuODMDeaaeUG+Z9zFpzlUeyx2HTUeHJm7IDJYaCBCX47FhCZiFncoQ9zkHw4ceuVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZvseiZL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A7B1F00893;
-	Sun,  7 Jun 2026 10:27:50 +0000 (UTC)
+	 MIME-Version; b=Mz9QWp1RhxmacLLuRHiYQdMfR8CKtXJHNU6KEltUJmoX8WBNyk25yEEQ1o279DNkJbzzJZXkMYaDYhCPjs1BMtr+uw1aQqqMn/gcUPDmFv37y2nQ8r5/0uvr1KkAzQASR5ZCTdCLwsFPdPfeb68irtPN0HqC89YAXdLQTzlu2wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmD8xS3U; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A3F1F00893;
+	Sun,  7 Jun 2026 10:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828071;
-	bh=OifL4WFcOrC0SGVV04qoVQ6iGxC9hMXJECfBVSNk7fY=;
+	s=korg; t=1780828141;
+	bh=uYH3VprZpAOsXgAVd4LqGbdI8TXYnadBaNi3hXVr6Rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iZvseiZLj4p7hz3exgUjLn+3RIu8Z/MM15SdoyC3BX5jkOVbI/7yaMlcaLibN65pw
-	 W0FrikxgWM8PU6Dx1zjNb82lOs3LhxR/9PdacJHUNvc4kARBF3Gej8fCQx57Asvrm7
-	 EoJRe5qFomVub/kGrIK374n2o0o86o5wOREqIJgs=
+	b=LmD8xS3UHL6XY+v7CIlADIymAfm6kD9dAMPdc6rIAGc7NmrrofNjDjaVsYbUTVrhr
+	 zZc1zPFx4YSFNkkv+buWeXkfJ+KIid46um7XHDEDdC1m1L1Rp4ZGsc1DAewCt/nU3P
+	 M1ECJJbivfU1lrFti47pOMh7do6VfyhTik1J6s/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Muhammad Bilal <meatuni001@gmail.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 149/332] Bluetooth: ISO: fix UAF in iso_recv_frame
+Subject: [PATCH 6.18 131/315] Bluetooth: ISO: fix UAF in iso_recv_frame
 Date: Sun,  7 Jun 2026 11:58:38 +0200
-Message-ID: <20260607095733.566973006@linuxfoundation.org>
+Message-ID: <20260607095732.427360429@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261313-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261332-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,11 +98,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DAD3664FABD
+X-Rspamd-Queue-Id: 4C6E564FB0D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -131,7 +131,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/bluetooth/iso.c
 +++ b/net/bluetooth/iso.c
-@@ -572,7 +572,7 @@ static void iso_recv_frame(struct iso_co
+@@ -571,7 +571,7 @@ static void iso_recv_frame(struct iso_co
  	struct sock *sk;
  
  	iso_conn_lock(conn);
@@ -140,7 +140,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	iso_conn_unlock(conn);
  
  	if (!sk)
-@@ -581,11 +581,15 @@ static void iso_recv_frame(struct iso_co
+@@ -580,11 +580,15 @@ static void iso_recv_frame(struct iso_co
  	BT_DBG("sk %p len %d", sk, skb->len);
  
  	if (sk->sk_state != BT_CONNECTED)
