@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-261556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id icEKGqdMJWqsGQIAu9opvQ
-	(envelope-from <stable+bounces-261556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:11 +0200
+	id b+Z2GnBOJWqdGgIAu9opvQ
+	(envelope-from <stable+bounces-261613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B9065006F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52B6650259
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:56:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tNcJEBuw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261556-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261556-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zKKp7Q+Z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261613-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261613-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C89E304EBB6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACAE23089E57
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E1131E850;
-	Sun,  7 Jun 2026 10:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F052DFF04;
+	Sun,  7 Jun 2026 10:46:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28261E98EF;
-	Sun,  7 Jun 2026 10:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50799296BCC;
+	Sun,  7 Jun 2026 10:46:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829001; cv=none; b=kz2c9Sf1Ipetzubr0ofzoruPzl/iXtC9shKXh0Whu99ndyFo00shC6pA8A5ThFzZsA4yv3LJ9n2OxQBPZef+CpUbHeoGVvqx9qO6DuPh6o8eSwYjQF0Bx7uWTH2zOGYvx19inZ2zERu74aj2GLWXHkfCY84UQmWjsnf9jU5/YV8=
+	t=1780829219; cv=none; b=FvF6MCxGMU4gN3g9oekAwQ7xq1OdmacmVeHQdFucorb33hgXa85PV0AkRv3P5oVbxMVP//MS1uRMGfWWv05MYqbMPpUeolwq59LALHAEmQVxnqKverHFKMNU59+ifteqwdOuoKn0u+mtl6w8S+9ZV40KpNPsIamS2/IT8fbDXLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829001; c=relaxed/simple;
-	bh=hd7IMPv6Sacz5h7+/GpaMDk5V4M35okDHdvqrKkq4nM=;
+	s=arc-20240116; t=1780829219; c=relaxed/simple;
+	bh=qkKZP1BErSepaU5JmEyvzM9VpPABHH0gADfs5Rg/TZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzM0e5DMH2pOuci9Lxs+FjsxKy7UhZZRlclUm25M6qzc7Vq00SFUa8a62Q2OMEW58NahMOWgCUTpU0HLTTpkAacutFcp9gs5mPDDpMxVol/15E4vtiVpfoAE92MnvZVgIcgzpHSwaMncSk0DgwEK3Rdvyk6YTz8oi31j8H87YD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNcJEBuw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3236A1F00893;
-	Sun,  7 Jun 2026 10:43:19 +0000 (UTC)
+	 MIME-Version; b=SbPx8SInD254sUuUDkza25m/EfnztVDY/qHLrgEQB/RRqJb9JieClPByP4Qk6pndcYfpnLpbqbuuiFDhbxRmAEScmd76iPn76ryLyRl37oS2MLyv7iiEccIVjXIHINnE12j2xx6x4YgdVsM8HeIRDx5tdwmH1rEnGZcz2J45YM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKKp7Q+Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BFD1F00893;
+	Sun,  7 Jun 2026 10:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829000;
-	bh=jwDCZCg5CCqdldXG4uwzsQbfKqdTu53eLXs4fPZvu24=;
+	s=korg; t=1780829218;
+	bh=XJJuf0ZWm+3TyhguEOEci2uxApaggbLqZ3gOXKUnaiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tNcJEBuwmMANY0a/P+72iqiIIYU+o3vSCqOa38QC+oHwbltpnpDMzKHf4VYRHqR8W
-	 3ZMUMp2H3S3c2n1Ke9PPR/mnYGWdhHScFXVwiVlTM9fVlzrOMnH99skKDBWutqUhPE
-	 CrIe8mUC1q1/W5ii1YrHppDWRfrk0+cAvAcZ2VRY=
+	b=zKKp7Q+ZE6dxuoSLUsdIjwshnZH44u2cB5yM/JSuNnnP8ba3gPARoFrY8Tgu8AFaJ
+	 Y1ploqgr0boYXo0HnkNJLt/LH6L/9yjV5UgaFLbxAH2ilkPelo/ddsMdugRILQD8Am
+	 5Pf4jGx7EEgcueaZVWu1u51jgmSC7TDHoyC2tiGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <malin89@huawei.com>,
-	Chenyuan Mi <michenyuan@huawei.com>,
-	Jingguo Tan <tanjingguo@huawei.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 7.0 233/332] xfrm: esp: restore combined single-frag length gate
+	Qbeliw Tanaka <q.tanaka@gmx.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 205/307] Input: xpad - add "Nova 2 Lite" from GameSir
 Date: Sun,  7 Jun 2026 12:00:02 +0200
-Message-ID: <20260607095736.612695227@linuxfoundation.org>
+Message-ID: <20260607095735.253884191@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261556-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261613-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:q.tanaka@gmx.com,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,secunet.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,queasysnail.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,gmx.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B6B9065006F
+X-Rspamd-Queue-Id: D52B6650259
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingguo Tan <tanjingguo@huawei.com>
+From: Qbeliw Tanaka <q.tanaka@gmx.com>
 
-commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
+commit 1f6ac0f8441c48c4cc250141e1da8486c13512ba upstream.
 
-The ESP out-of-place fast path appends the trailer in esp_output_head()
-before esp_output_tail() allocates the destination page frag. The
-head-side gate currently checks skb->data_len and tailen separately, but
-the tail code allocates a single destination frag from the combined
-post-trailer skb->data_len.
+Add support for the gamepad "Nova 2 Lite" from GameSir, compatible with
+the Xbox 360 gamepad.
 
-Reject the page-frag fast path when the combined aligned length exceeds a
-page. Otherwise skb_page_frag_refill() may fall back to a single page while
-the destination sg still spans the combined skb->data_len.
-
-Restore this combined-length page gate for both IPv4 and IPv6.
-
-Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
+Signed-off-by: Qbeliw Tanaka <q.tanaka@gmx.com>
+Link: https://patch.msgid.link/20260429.162040.930225048583399359.q.tanaka@gmx.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Lin Ma <malin89@huawei.com>
-Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
-Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/esp4.c |    4 ++--
- net/ipv6/esp6.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -419,8 +419,8 @@ int esp_output_head(struct xfrm_state *x
- 			return err;
- 	}
- 
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -448,8 +448,8 @@ int esp6_output_head(struct xfrm_state *
- 			return err;
- 	}
- 
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -415,6 +415,7 @@ static const struct xpad_device {
+ 	{ 0x3285, 0x0662, "Nacon Revolution5 Pro", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
+ 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
++	{ 0x3537, 0x100f, "GameSir Nova 2 Lite", 0, XTYPE_XBOX360 },
+ 	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
+ 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
+ 	{ 0x413d, 0x2104, "Black Shark Green Ghost Gamepad", 0, XTYPE_XBOX360 },
 
 
 
