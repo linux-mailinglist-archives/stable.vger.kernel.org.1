@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261291-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C5mOJSZHJWpMFwIAu9opvQ
-	(envelope-from <stable+bounces-261270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:42 +0200
+	id i5j7CoVIJWoLGAIAu9opvQ
+	(envelope-from <stable+bounces-261291-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA4864FA4B
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A0E64FBE1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1NKUH3pa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261270-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261270-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sl8EdRnm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261291-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261291-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCB7F30073E7
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D80D53044216
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE313254A9;
-	Sun,  7 Jun 2026 10:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE0C3264CE;
+	Sun,  7 Jun 2026 10:26:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F900202C46;
-	Sun,  7 Jun 2026 10:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C4713DBA0;
+	Sun,  7 Jun 2026 10:26:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827910; cv=none; b=dVEsVJA/jY2DyIlrAjKiB0axAe3ykHvzyyVEmj+sDUJ50s7A8uobrJd9HqjOGvF19KzNj0O6rlZ0cwIP3nWlTVBptWuYyeO2qduxgk9PQ2w1/kXo2apl50Qw30LLkSVFKm9/UCmc6J9IZcaCghI7i9vHdoozUoIXBcXTVOPghn8=
+	t=1780827990; cv=none; b=l0rb6Zr7V/nQbHlYayZYWXSeAF5K5ufhE6c056lBPWH5qJ+kflQ18aGS85LOKy1JdC3pPhzczDO5ev1NV19Me0MbHhiSBT74LzE1nvj3siI5vBaPEbBECkD+jMLh5w35lCcgp57UDjmHj+lyifzWrDDGaOtKQ3dtgSjyCSEDe5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827910; c=relaxed/simple;
-	bh=LeHhIHcwZnqje1NpehLAN8w5D5rrQ+E37LFDgjUJtaQ=;
+	s=arc-20240116; t=1780827990; c=relaxed/simple;
+	bh=fp4/Xr2L0BLg2tBddG1LZE/gzsw6Si0kSGRQln3hAXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n3Wym5HUYMRKVh3fC0hVUTJ+AMxOPEFTNwvd0HZ9bXLNCf6ca+bZBJ1LcCveiv2DykpySNAdGx1ZvX9ht0/W2ZPM71bokJD1KVrfPldT7yCO5wizbECoUeeNhj26wG5M3HZUQee9j41rRV8DOVPwZfQaG5rBFI9Khg/9X6JGeNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NKUH3pa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97591F00893;
-	Sun,  7 Jun 2026 10:25:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tTimpjokLEB/bOjcX8EcajAjwm05PCtwQyLr+5crorFUyhjT6qsuwaQTLlqpmhVCAQs1glcPnfPCikpfm8o7F71S+UjJz96oQizGNa5rxmV0+rVtMzcKl5HdJcaAqbw8kZzRtiaHAvsr2mS2AXavqXA6dhtNlySQEFpVNvmNZug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sl8EdRnm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5414A1F00893;
+	Sun,  7 Jun 2026 10:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827909;
-	bh=ljSiUK1/fKXUnSSXpj1e85oOc9nHwjlrbZiexA0hr1A=;
+	s=korg; t=1780827989;
+	bh=oCdEzQQga40GqjgLKljtqW0Hkg6f+LDtX1tizGcqMSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1NKUH3paGCBoraoUy6Cwd7ADm366Uuk15x5/us5+PG675AAPPO8U9eNnR1Q0L7TDo
-	 j8DkRKwAC+Pd7GOGHTMXimo9Rm9JtyKGjngKX2jE/FcHaYo0clSacJwlId6R6jPrcm
-	 OvxT8EwBoTBswcmr0UMz0YmYR6WvDZksccaVC0o8=
+	b=sl8EdRnmWwN8hVEZ8c6RXl7u6K6WnrDh6QiWXGsHFdZ6OrsUDTgoY4TQTNMfPSjDK
+	 sfN3qbXpWO15sy8Qm3ZeUfkyjsIWH+f/ITbUahRwAZPQbsTlUx4eDZmPZP0t6pMc7C
+	 myBxw8HRZpKupP8E61ke6oBwRRQ6Lnjk1fNS07gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 7.0 129/332] USB: serial: safe_serial: fix memory corruption with small endpoint
-Date: Sun,  7 Jun 2026 11:58:18 +0200
-Message-ID: <20260607095732.843110755@linuxfoundation.org>
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 102/307] batman-adv: iv: recover OGM scheduling after forward packet error
+Date: Sun,  7 Jun 2026 11:58:19 +0200
+Message-ID: <20260607095731.532736881@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +65,269 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261270-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261291-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,narfation.org:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FA4864FA4B
+X-Rspamd-Queue-Id: 74A0E64FBE1
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 438061ed1ad85e6743e2dce826671772d81089ec upstream.
+commit aa3153bd139a6c48667dcd02608d3b2c80bff02c upstream.
 
-Make sure that the bulk-out buffer size is at least eight bytes to avoid
-user-controlled slab corruption in "safe" mode should a malicious device
-report a smaller size.
+When batadv_iv_ogm_schedule_buff() fails to allocate and queue a forward
+packet for OGM transmission, the work item that drives periodic OGM
+scheduling is never re-armed. This silently halts transmission of the
+node's own OGMs on the affected interface — only OGMs from other peers
+continue to be aggregated and forwarded.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by tracking whether batadv_iv_ogm_queue_add() (and transitively
+batadv_iv_ogm_aggregate_new()) successfully scheduled a forward packet.
+When scheduling fails, batadv_iv_ogm_schedule_buff() falls back to queuing
+a dedicated recovery work item (reschedule_work) that fires after one
+originator interval and calls batadv_iv_ogm_schedule() again.
+
+Cc: stable@kernel.org
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/safe_serial.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/batman-adv/bat_iv_ogm.c | 76 +++++++++++++++++++++++++++----------
+ net/batman-adv/types.h      |  3 ++
+ 2 files changed, 60 insertions(+), 19 deletions(-)
 
---- a/drivers/usb/serial/safe_serial.c
-+++ b/drivers/usb/serial/safe_serial.c
-@@ -259,6 +259,7 @@ static int safe_prepare_write_buffer(str
- static int safe_startup(struct usb_serial *serial)
- {
- 	struct usb_interface_descriptor	*desc;
-+	int bulk_out_size;
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 42b687c1a76807..b37c9fb178ae50 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -223,6 +223,8 @@ static void batadv_iv_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
+ 	hard_iface->bat_iv.ogm_buff = NULL;
  
- 	if (serial->dev->descriptor.bDeviceClass != CDC_DEVICE_CLASS)
- 		return -ENODEV;
-@@ -279,6 +280,16 @@ static int safe_startup(struct usb_seria
- 	default:
- 		return -EINVAL;
- 	}
+ 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
 +
-+	/*
-+	 * The bulk-out buffer needs to be large enough for the two-byte
-+	 * trailer in safe mode, but assume anything smaller than eight bytes
-+	 * is broken.
-+	 */
-+	bulk_out_size = serial->port[0]->bulk_out_size;
-+	if (bulk_out_size > 0 && bulk_out_size < 8)
-+		return -EINVAL;
-+
- 	return 0;
++	cancel_delayed_work_sync(&hard_iface->bat_iv.reschedule_work);
  }
  
+ static void batadv_iv_ogm_iface_update_mac(struct batadv_hard_iface *hard_iface)
+@@ -527,8 +529,10 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
+  * @if_incoming: interface where the packet was received
+  * @if_outgoing: interface for which the retransmission should be considered
+  * @own_packet: true if it is a self-generated ogm
++ *
++ * Return: whether forward packet was scheduled
+  */
+-static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
++static bool batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 					int packet_len, unsigned long send_time,
+ 					bool direct_link,
+ 					struct batadv_hard_iface *if_incoming,
+@@ -552,13 +556,13 @@ static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 
+ 	skb = netdev_alloc_skb_ip_align(NULL, skb_size);
+ 	if (!skb)
+-		return;
++		return false;
+ 
+ 	forw_packet_aggr = batadv_forw_packet_alloc(if_incoming, if_outgoing,
+ 						    queue_left, bat_priv, skb);
+ 	if (!forw_packet_aggr) {
+ 		kfree_skb(skb);
+-		return;
++		return false;
+ 	}
+ 
+ 	forw_packet_aggr->skb->priority = TC_PRIO_CONTROL;
+@@ -580,6 +584,8 @@ static void batadv_iv_ogm_aggregate_new(const unsigned char *packet_buff,
+ 			  batadv_iv_send_outstanding_bat_ogm_packet);
+ 
+ 	batadv_forw_packet_ogmv1_queue(bat_priv, forw_packet_aggr, send_time);
++
++	return true;
+ }
+ 
+ /* aggregate a new packet into the existing ogm packet */
+@@ -609,8 +615,10 @@ static void batadv_iv_ogm_aggregate(struct batadv_forw_packet *forw_packet_aggr,
+  * @if_outgoing: interface for which the retransmission should be considered
+  * @own_packet: true if it is a self-generated ogm
+  * @send_time: timestamp (jiffies) when the packet is to be sent
++ *
++ * Return: whether forward packet was scheduled
+  */
+-static void batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
++static bool batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 				    unsigned char *packet_buff,
+ 				    int packet_len,
+ 				    struct batadv_hard_iface *if_incoming,
+@@ -662,14 +670,16 @@ static void batadv_iv_ogm_queue_add(struct batadv_priv *bat_priv,
+ 		if (!own_packet && atomic_read(&bat_priv->aggregated_ogms))
+ 			send_time += max_aggregation_jiffies;
+ 
+-		batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
+-					    send_time, direct_link,
+-					    if_incoming, if_outgoing,
+-					    own_packet);
++		return batadv_iv_ogm_aggregate_new(packet_buff, packet_len,
++						   send_time, direct_link,
++						   if_incoming, if_outgoing,
++						   own_packet);
+ 	} else {
+ 		batadv_iv_ogm_aggregate(forw_packet_aggr, packet_buff,
+ 					packet_len, direct_link);
+ 		spin_unlock_bh(&bat_priv->forw_bat_list_lock);
++
++		return true;
+ 	}
+ }
+ 
+@@ -781,6 +791,8 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 	u32 seqno;
+ 	u16 tvlv_len = 0;
+ 	unsigned long send_time;
++	bool reschedule = false;
++	bool scheduled;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
+@@ -809,11 +821,8 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 						       ogm_buff_len,
+ 						       BATADV_OGM_HLEN);
+ 		if (ret < 0) {
+-			/* OGMs must be queued even when the buffer allocation for
+-			 * TVLVs failed. just fall back to the non-TVLV version
+-			 */
+-			ret = 0;
+-			*ogm_buff_len = BATADV_OGM_HLEN;
++			reschedule = true;
++			goto out;
+ 		}
+ 
+ 		tvlv_len = ret;
+@@ -835,8 +844,11 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		/* OGMs from secondary interfaces are only scheduled on their
+ 		 * respective interfaces.
+ 		 */
+-		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
+-					hard_iface, hard_iface, 1, send_time);
++		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff, *ogm_buff_len,
++						    hard_iface, hard_iface, 1, send_time);
++		if (!scheduled)
++			reschedule = true;
++
+ 		goto out;
+ 	}
+ 
+@@ -851,15 +863,28 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		if (!kref_get_unless_zero(&tmp_hard_iface->refcount))
+ 			continue;
+ 
+-		batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
+-					*ogm_buff_len, hard_iface,
+-					tmp_hard_iface, 1, send_time);
+-
++		scheduled = batadv_iv_ogm_queue_add(bat_priv, *ogm_buff,
++						    *ogm_buff_len, hard_iface,
++						    tmp_hard_iface, 1, send_time);
+ 		batadv_hardif_put(tmp_hard_iface);
++
++		if (!scheduled && tmp_hard_iface == hard_iface)
++			reschedule = true;
+ 	}
+ 	rcu_read_unlock();
+ 
+ out:
++	if (reschedule) {
++		/* there was a failure scheduling the own forward packet.
++		 * as result, the batadv_iv_send_outstanding_bat_ogm_packet()
++		 * work item is no longer scheduled. it is therefore necessary
++		 * to reschedule it manually
++		 */
++		queue_delayed_work(batadv_event_workqueue,
++				   &hard_iface->bat_iv.reschedule_work,
++				   msecs_to_jiffies(atomic_read(&bat_priv->orig_interval)));
++	}
++
+ 	batadv_hardif_put(primary_if);
+ }
+ 
+@@ -874,6 +899,17 @@ static void batadv_iv_ogm_schedule(struct batadv_hard_iface *hard_iface)
+ 	mutex_unlock(&hard_iface->bat_iv.ogm_buff_mutex);
+ }
+ 
++static void batadv_iv_ogm_reschedule(struct work_struct *work)
++{
++	struct delayed_work *delayed_work = to_delayed_work(work);
++	struct batadv_hard_iface *hard_iface;
++
++	hard_iface = container_of(delayed_work,
++				  struct batadv_hard_iface,
++				  bat_iv.reschedule_work);
++	batadv_iv_ogm_schedule(hard_iface);
++}
++
+ /**
+  * batadv_iv_orig_ifinfo_sum() - Get bcast_own sum for originator over interface
+  * @orig_node: originator which reproadcasted the OGMs directly
+@@ -2277,6 +2313,8 @@ batadv_iv_ogm_neigh_is_sob(struct batadv_neigh_node *neigh1,
+ 
+ static void batadv_iv_iface_enabled(struct batadv_hard_iface *hard_iface)
+ {
++	INIT_DELAYED_WORK(&hard_iface->bat_iv.reschedule_work, batadv_iv_ogm_reschedule);
++
+ 	/* begin scheduling originator messages on that interface */
+ 	batadv_iv_ogm_schedule(hard_iface);
+ }
+diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
+index fe774ec8b80b75..0ccd55b251fa26 100644
+--- a/net/batman-adv/types.h
++++ b/net/batman-adv/types.h
+@@ -83,6 +83,9 @@ struct batadv_hard_iface_bat_iv {
+ 	/** @ogm_seqno: OGM sequence number - used to identify each OGM */
+ 	atomic_t ogm_seqno;
+ 
++	/** @reschedule_work: recover OGM schedule after schedule error */
++	struct delayed_work reschedule_work;
++
+ 	/** @ogm_buff_mutex: lock protecting ogm_buff and ogm_buff_len */
+ 	struct mutex ogm_buff_mutex;
+ };
+-- 
+2.53.0
+
 
 
 
