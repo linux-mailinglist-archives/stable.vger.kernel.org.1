@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-261015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rpIyAmFDJWpIFQIAu9opvQ
-	(envelope-from <stable+bounces-261015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:37 +0200
+	id wezQE7VDJWprFQIAu9opvQ
+	(envelope-from <stable+bounces-260987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB16764F5C1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFF664F610
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sEufEN4W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261015-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261015-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fnyAprKj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260987-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-260987-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBAD1300A4ED
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67580303FDC6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BA32E1EFC;
-	Sun,  7 Jun 2026 10:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF262E1EFC;
+	Sun,  7 Jun 2026 10:07:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38091DE8AE;
-	Sun,  7 Jun 2026 10:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F61D1DE8AE;
+	Sun,  7 Jun 2026 10:07:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826974; cv=none; b=sTGZLEmwR4n1Ws6AsXxoZL1X8Ng+fbrFXyBemIsJqEFjPCe18yNBbfANi/XkgXK5H59WTKwPIuBOhFjXxgrZazkeTBPqSvOJNO0/HmDHxPVL4qkiD7Dvq+nyYb7xVatfgxGTLpeaz2Wrj2ZBStkf2IYrHejtWeWOptkSJ4NiRyI=
+	t=1780826877; cv=none; b=PV8X7lW0HKOfIUSoilpzRtSKbp20siY92TMO0VPX2t0/HvFX7eFtEFqkYx139YWXEUi9C/IOZlK9JiwhpTPVhIoffNoA+SZWvVukh0YzYR1YyAqgQ3fuinmVCdarCRTtRWpNVhi7QkBbP44F/6hEw8X5QkTiYCYJRi1YhNcnkRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826974; c=relaxed/simple;
-	bh=wFXhYxzBWJI86gwiAKUYFE5Et48Qho5yVeeChHaZEkk=;
+	s=arc-20240116; t=1780826877; c=relaxed/simple;
+	bh=CEfQIfB4iyFNVofTlm3HxkxrXBgI/AVyftcKEDNlVJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nP3tcBVx5CFa+8+Rp0YY2dMkDcEMfONc5P1umqdd8eSP79PiWTXLLiZW2IhRrEKn/d89BAmYD4+xOQUlVyHJu8bwaNKrn2y/V/SfF/HvKH9dMy301lylllbJdSGz5y4owu1yZe8H8Q/8++OzuE0qS7q8UHwZN8gBxUHb52vSyJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEufEN4W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483D21F00893;
-	Sun,  7 Jun 2026 10:09:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FBpMiz2BcENv3TMbzQ0ZRiuSISEWcfyNDGe1ONsmxYWroU8tL6a+EcgJlaRBj9r91Kuo70/E0xn//ZkUIqQmljB0oTiCSfy7WUcRQrC8hccN481nZNCnIpGokPkf157K6LXEN9PNQ+9phpuMPmXWOpIt+FRvVE29yAMy2XXxZgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnyAprKj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD93C1F00893;
+	Sun,  7 Jun 2026 10:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826973;
-	bh=8w1Eo1SuDxehnGg2d8Ov2CpW6ed5O7b1PS1ftqeM4Lk=;
+	s=korg; t=1780826876;
+	bh=GMsTytIjE82+TTChcMTiWnwgLQKDGKoEIJI+eox1Vzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sEufEN4W67pGZCdH9RNqAl3JcNI4Doob4g5vvlW2xCiAMFF0Qs+6Wr/Xs9OdojlaV
-	 M5emtuS7Z1w9bn8zB2AzSY8iDZVWz5B3HDH+C+1bkjk40RYYXUmiSoZqs7VkKOCjTA
-	 yiev14mBp4emrAYTHBC3OHAkOVTC28YTFoav/3xk=
+	b=fnyAprKjZOHhtDUnX6YqD3fMXzHI7SWg3DoEoRD5eGgqCk2UCGWuba6bL4IuGw2ij
+	 hwoG7Bx5a4lfHTvkZIurRVj7GQ2EPGkg4ZGVcYllZy3Kg89kVdzatdVChh1WuQt6YO
+	 lyFvXDwpoArtq2qYBC1X3rmvoQUoW7H1DE2ygJDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/307] arm64: debug: clean up single_step_handler logic
+Subject: [PATCH 7.0 039/332] drm/i915/aux: use polling when irqs are unavailable
 Date: Sun,  7 Jun 2026 11:56:48 +0200
-Message-ID: <20260607095728.047675023@linuxfoundation.org>
+Message-ID: <20260607095729.548600140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +66,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261015-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-260987-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:anshuman.khandual@arm.com,m:mark.rutland@arm.com,m:will@kernel.org,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ville.syrjala@linux.intel.com,m:michal.grzelak@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:email,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,ursulin.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AB16764F5C1
+X-Rspamd-Queue-Id: 9DFF664F610
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Michał Grzelak <michal.grzelak@intel.com>
 
-[ Upstream commit ad8b22648b7d0bc6f84230508436b1aafc2e2516 ]
+[ Upstream commit 202e77cf2e839e1adc804433322dc5c9ee511c9f ]
 
-Remove the unnecessary boolean which always checks if the handler was found
-and return early instead.
+PTL with physically disconnected display was observed to have 40s longer
+execution time when testing xe_fault_injection@xe_guc_mmio_send_recv.
+The issue has not been seen when reverting commit 40a9f77a28fa ("Revert
+"drm/i915/dp: change aux_ctl reg read to polling read"").
 
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20250707114109.35672-2-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Apparently the configuration suffers from not having AUX enabled when
+using interrupts. One probable cause can be xe enabling interrupts too
+late: interrupts need memory allocations which currently can't be done
+before the display FB takeover is done.
+
+As for now, use polling for AUX in case interrupts are unavailable.
+
+Fixes: 40a9f77a28fa ("Revert "drm/i915/dp: change aux_ctl reg read to polling read"")
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patch.msgid.link/20260416163744.288107-1-michal.grzelak@intel.com
+(cherry picked from commit 05e0550b65cd1604bd515fbc65f522bce4c10a87)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/debug-monitors.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp_aux.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/debug-monitors.c b/arch/arm64/kernel/debug-monitors.c
-index 024a7b245056a8..b7a2155bca42b1 100644
---- a/arch/arm64/kernel/debug-monitors.c
-+++ b/arch/arm64/kernel/debug-monitors.c
-@@ -241,8 +241,6 @@ static void send_user_sigtrap(int si_code)
- static int single_step_handler(unsigned long unused, unsigned long esr,
- 			       struct pt_regs *regs)
- {
--	bool handler_found = false;
--
- 	/*
- 	 * If we are stepping a pending breakpoint, call the hw_breakpoint
- 	 * handler first.
-@@ -250,10 +248,10 @@ static int single_step_handler(unsigned long unused, unsigned long esr,
- 	if (!reinstall_suspended_bps(regs))
- 		return 0;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+index b20ec3e589fadc..9c9b6410366d5c 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+@@ -12,6 +12,7 @@
+ #include "intel_dp.h"
+ #include "intel_dp_aux.h"
+ #include "intel_dp_aux_regs.h"
++#include "intel_parent.h"
+ #include "intel_pps.h"
+ #include "intel_quirks.h"
+ #include "intel_tc.h"
+@@ -60,18 +61,29 @@ intel_dp_aux_wait_done(struct intel_dp *intel_dp)
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 	i915_reg_t ch_ctl = intel_dp->aux_ch_ctl_reg(intel_dp);
+ 	const unsigned int timeout_ms = 10;
++	bool done = true;
+ 	u32 status;
+-	bool done;
++	int ret;
  
--	if (!handler_found && call_step_hook(regs, esr) == DBG_HOOK_HANDLED)
--		handler_found = true;
-+	if (call_step_hook(regs, esr) == DBG_HOOK_HANDLED)
-+		return 0;
- 
--	if (!handler_found && user_mode(regs)) {
-+	if (user_mode(regs)) {
- 		send_user_sigtrap(TRAP_TRACE);
- 
- 		/*
-@@ -263,7 +261,7 @@ static int single_step_handler(unsigned long unused, unsigned long esr,
- 		 * to the active-not-pending state).
- 		 */
- 		user_rewind_single_step(current);
--	} else if (!handler_found) {
++	if (intel_parent_irq_enabled(display)) {
+ #define C (((status = intel_de_read_notrace(display, ch_ctl)) & DP_AUX_CH_CTL_SEND_BUSY) == 0)
+-	done = wait_event_timeout(display->gmbus.wait_queue, C,
+-				  msecs_to_jiffies_timeout(timeout_ms));
++		done = wait_event_timeout(display->gmbus.wait_queue, C,
++					  msecs_to_jiffies_timeout(timeout_ms));
++
++#undef C
 +	} else {
- 		pr_warn("Unexpected kernel single-step exception at EL1\n");
- 		/*
- 		 * Re-enable stepping since we know that we will be
++		ret = intel_de_wait_ms(display, ch_ctl,
++				       DP_AUX_CH_CTL_SEND_BUSY, 0,
++				       timeout_ms, &status);
++
++		if (ret == -ETIMEDOUT)
++			done = false;
++	}
+ 
+ 	if (!done)
+ 		drm_err(display->drm,
+ 			"%s: did not complete or timeout within %ums (status 0x%08x)\n",
+ 			intel_dp->aux.name, timeout_ms, status);
+-#undef C
+ 
+ 	return status;
+ }
 -- 
 2.53.0
 
