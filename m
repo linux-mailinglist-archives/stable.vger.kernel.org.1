@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ULtrMzxSJWrLGwIAu9opvQ
-	(envelope-from <stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200
+	id pbh1Au5OJWrNGgIAu9opvQ
+	(envelope-from <stable+bounces-261812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414166505C5
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:13:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E20E6502E7
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:58:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OFEpcdld;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261866-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wnQFgVAJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261812-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261812-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0681C30B14BE
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57AF33004D98
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA603290C3;
-	Sun,  7 Jun 2026 11:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD5E32F764;
+	Sun,  7 Jun 2026 10:58:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CBA1E98E3;
-	Sun,  7 Jun 2026 11:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF4B12CDA5;
+	Sun,  7 Jun 2026 10:58:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830156; cv=none; b=uSp/HCRWX/j8+B+Z74MGK6vEVu7yiRVEMTSm4GPvQ+j3vCrAIN0bf65E5QeG7WZTuVWrV1K68Ml3Ps3Vz2pr09q0KFZQCdCyRQlkQw+52RGbUVpH0XfMdWxU5E2NQb3voEIlXVTGcevXit/q9wybUqRwNdA2LI6p/hRjunwWUus=
+	t=1780829929; cv=none; b=fd968Qbri45NMPWWw8y8uVoK/dNn42Fhke3caPO7n4VHWFhyFWLpn3seYSHxIDw8nUZEZ4UVpxBb37nljaw4yxBvaZdI5x113pcwkWZDNFvYiFMWXM8Hhv5d6SapMJO4kQ/Wh0zbQ+T61crS4bbXGNj2rDRM1vRqDQ45Cb0Q208=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830156; c=relaxed/simple;
-	bh=yQudyhAqKS02hrdiBIwqFxJTKpxNcHbioWc9T/mKbpU=;
+	s=arc-20240116; t=1780829929; c=relaxed/simple;
+	bh=zE9dlm83pib44OjBCTdDJFlEfMcY5EPCL3lJFgSJWXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxPvUn0DhpGQz0xURwRLzU49Ds4u2hTB/s6pqZ9bLfm+qA0SvVENott8Qhj9TDGPWsb+EiBpVJgymvd1LveK+2kBIQDDX4wgUmvmL6FVHFanN3PC67+CaGrUOIljCs++pij3qF/T3k1A7QOtFjeDvWYbkMKCXjO0iLLh/emvRS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFEpcdld; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A050E1F00893;
-	Sun,  7 Jun 2026 11:02:34 +0000 (UTC)
+	 MIME-Version; b=OkvhmFiMYR4U2RExutMwJxxERqopL19ZcZfCukzis7hQyg9gVA0oSVfhiB/X29GNoPeIr/V5u3z/3zJS/ah1WacR+KHnJmwpML8mC/JMxDNlzEdd/CerarupWL8IlTNkE23dWH7pb1eRUSERrpFoOh/0CBTWgssqHgmF2Ue4Roc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnQFgVAJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AD61F00893;
+	Sun,  7 Jun 2026 10:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830155;
-	bh=KY7WZoqpnOXRm4oC2twvWevNb8qM86xpBeo2elnNG9Q=;
+	s=korg; t=1780829928;
+	bh=0OUjMCi510MtCiqAF2CXL6pOdhBU2plYyUvgX9s7gVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OFEpcdld6IHRbbWfEZdJtCDeGz9k6StY6JCN86h6nmY964040syi9aiRxKE5HY/qd
-	 K2E9a/XeF/Kd/aVi/XoeWMEhaK35P3e+mNnXrZW1O0ks/XsfSAt+LDqMGE7Inj8Dbz
-	 3hSuOQfscTq0whEBgNhxDgkrtVXLEuO3SY2B+uMo=
+	b=wnQFgVAJmKYrN6uoNbX2smFKdwazlFo/MUfWSKxQjAs9X2QK2VmJ2v77CNDmwBFkh
+	 e85D9KtO9HzHG3vAxczUvfAXb7HZqBvnmWIzk6vbaNFT6xGhUiqQ2P2MZbDqcgkab7
+	 bVkDNfRpxlw6OgtRNnB++nh3vfaU1YkAT5arYvPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurav Sachidanand <sauravsc@amazon.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 326/332] i2c: tegra: make tegra_i2c_mutex_unlock() return void
-Date: Sun,  7 Jun 2026 12:01:35 +0200
-Message-ID: <20260607095740.107078591@linuxfoundation.org>
+Subject: [PATCH 7.0 327/332] hwmon: (pmbus) Add support for guarded PMBus lock
+Date: Sun,  7 Jun 2026 12:01:36 +0200
+Message-ID: <20260607095740.144188894@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -71,113 +69,102 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261866-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261812-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sauravsc@amazon.com,m:jonathanh@nvidia.com,m:treding@nvidia.com,m:andi.shyti@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:psanman@juniper.net,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,nvidia.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,roeck-us.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 414166505C5
+X-Rspamd-Queue-Id: 1E20E6502E7
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurav Sachidanand <sauravsc@amazon.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 30792d12842901f5276f466a960962d5bfa15cc8 ]
+[ Upstream commit 1814f4d3ff358277a5b6957e7f133c2812dc80ec ]
 
-tegra_i2c_mutex_unlock() returning an error that overwrites the transfer
-result causes silent loss of I2C transfer errors. If the transfer failed
-but the unlock succeeded, the error was lost and the function incorrectly
-reported success.
+Add support for guard(pmbus_lock)() and scoped_guard(pmbus_lock)()
+to be able to simplify the PMBus code.
 
-Rather than propagating the unlock error (which is not actionable by the
-caller - the I2C message may have been sent regardless), convert the
-function to return void and WARN on the unexpected condition. If the
-unlock fails, subsequent lock attempts will fail anyway, making the error
-visible on the next transfer.
+Also introduce pmbus_lock() as pre-requisite for supporting
+guard().
 
-Fixes: 6077cfd716fb ("i2c: tegra: Add support for SW mutex register")
-Signed-off-by: Saurav Sachidanand <sauravsc@amazon.com>
-Cc: <stable@vger.kernel.org> # v7.0+
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260507221145.62183-3-sauravsc@amazon.com
+Reviewed-by: Sanman Pradhan <psanman@juniper.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 4e4af55aaca7 ("hwmon: (pmbus/adm1266) serialize sequencer_state debugfs read with pmbus_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/hwmon/pmbus/pmbus.h      |    5 +++++
+ drivers/hwmon/pmbus/pmbus_core.c |    8 ++++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -445,25 +445,22 @@ static int tegra_i2c_mutex_lock(struct t
- 	return ret;
- }
+--- a/drivers/hwmon/pmbus/pmbus.h
++++ b/drivers/hwmon/pmbus/pmbus.h
+@@ -10,6 +10,7 @@
+ #define PMBUS_H
  
--static int tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
-+static void tegra_i2c_mutex_unlock(struct tegra_i2c_dev *i2c_dev)
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/regulator/driver.h>
+ 
+ /*
+@@ -563,7 +564,11 @@ int pmbus_get_fan_rate_device(struct i2c
+ int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
+ 			      enum pmbus_fan_mode mode);
+ int pmbus_lock_interruptible(struct i2c_client *client);
++void pmbus_lock(struct i2c_client *client);
+ void pmbus_unlock(struct i2c_client *client);
++
++DEFINE_GUARD(pmbus_lock, struct i2c_client *, pmbus_lock(_T), pmbus_unlock(_T))
++
+ int pmbus_update_fan(struct i2c_client *client, int page, int id,
+ 		     u8 config, u8 mask, u16 command);
+ struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client);
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -3871,6 +3871,14 @@ struct dentry *pmbus_get_debugfs_dir(str
+ }
+ EXPORT_SYMBOL_NS_GPL(pmbus_get_debugfs_dir, "PMBUS");
+ 
++void pmbus_lock(struct i2c_client *client)
++{
++	struct pmbus_data *data = i2c_get_clientdata(client);
++
++	mutex_lock(&data->update_lock);
++}
++EXPORT_SYMBOL_NS_GPL(pmbus_lock, "PMBUS");
++
+ int pmbus_lock_interruptible(struct i2c_client *client)
  {
- 	unsigned int reg = tegra_i2c_reg_addr(i2c_dev, I2C_SW_MUTEX);
- 	u32 val, id;
- 
- 	if (!i2c_dev->hw->has_mutex)
--		return 0;
-+		return;
- 
- 	val = readl(i2c_dev->base + reg);
- 
- 	id = FIELD_GET(I2C_SW_MUTEX_GRANT, val);
--	if (id && id != I2C_SW_MUTEX_ID_CCPLEX) {
--		dev_warn(i2c_dev->dev, "unable to unlock mutex, mutex is owned by: %u\n", id);
--		return -EPERM;
--	}
-+	if (WARN(id && id != I2C_SW_MUTEX_ID_CCPLEX,
-+		 "unable to unlock mutex, mutex is owned by: %u\n", id))
-+		return;
- 
- 	writel(0, i2c_dev->base + reg);
--
--	return 0;
- }
- 
- static void tegra_i2c_mask_irq(struct tegra_i2c_dev *i2c_dev, u32 mask)
-@@ -1556,7 +1553,7 @@ static int tegra_i2c_xfer(struct i2c_ada
- 			break;
- 	}
- 
--	ret = tegra_i2c_mutex_unlock(i2c_dev);
-+	tegra_i2c_mutex_unlock(i2c_dev);
- 	pm_runtime_put(i2c_dev->dev);
- 
- 	return ret ?: i;
+ 	struct pmbus_data *data = i2c_get_clientdata(client);
 
 
 
