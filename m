@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261484-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kpj9FrdKJWoOGQIAu9opvQ
-	(envelope-from <stable+bounces-261475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:55 +0200
+	id lreQDuRKJWogGQIAu9opvQ
+	(envelope-from <stable+bounces-261484-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C0F64FE60
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B2964FEA4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="JHzyiP/h";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261475-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261475-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jiA4lN7b;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261484-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261484-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB9CE303D32D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CD67301A93D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379213264F5;
-	Sun,  7 Jun 2026 10:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F317831E849;
+	Sun,  7 Jun 2026 10:38:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4BC2D3A69;
-	Sun,  7 Jun 2026 10:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34693195FD;
+	Sun,  7 Jun 2026 10:38:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828699; cv=none; b=U0HBwDGoc5Au8b2U55oCz94TgiXCR0LQA7SFmALdcC8ggc6CLXu8QcKAQDzbUY35Mp7t+kcc/2ogc73ZURKltYLe/LiVtx+z8iek9dDNr9otBIGZK7AOCD53hOlfMuvQ/YrJLk0OgTE2F0+0T6pp1ZbZJtVO/UBQlRxAIKND8QI=
+	t=1780828732; cv=none; b=MtReBSgr8X3h2/OcXa+g07QX/NpNTosRur7LEo3XybORfEwxW4eWTAJcLioaBXYYjk6Mlz85zbVYI7w+Ak7zRGcvIPs0ZeBHxlKuxIEIFcgpd3E776TRlvy2rMm6Rk9huYhUipSEoesckppz8f9Rtqo29FqG4bg8r8/GKuNY+Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828699; c=relaxed/simple;
-	bh=4XewEGjVAQIgaxyCz4ktmc69/WChgSitI/t2q+4lOkE=;
+	s=arc-20240116; t=1780828732; c=relaxed/simple;
+	bh=1CO4siLUEg3P2uFyf0VJIEnOVLgVEHrcvT5pNocHyqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdwPtPwq3GKnJ9niXVVIihncP0kdF4BvE1Ntrz+948xuFnASNgYoynDIjq17BxQ1ywedH+hPlj2XTAAKwqZeMt3gQLub3qdgwH1qlz5YMm+HUBTwvHgRygHDTnqurbTcF9myJOl7mIoXba15Jc7Qza1N6LwvLqmvoS0/Yg/1f7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHzyiP/h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EC61F00893;
-	Sun,  7 Jun 2026 10:38:17 +0000 (UTC)
+	 MIME-Version; b=F4LRVwpMIkQC+hqeAN/dNmGGJRcyWEhAXBOZSuwZvAzf1c75eWvMkG5p9pK49Vu6J2vrWx7R5GfrHI1DPhoxipOdL1TIP0xVB3CZXPsXF3ij8qK0YhC14IEudZX8XPtUYgxNGycPIieHUcTjaA3XrIaQ8f001ir1HThc+lNdd+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jiA4lN7b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6B51F00893;
+	Sun,  7 Jun 2026 10:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828698;
-	bh=Qau/mJtFr2HZBMX1oABx2OdkGFSJFS4JmZ5pdSlHSiM=;
+	s=korg; t=1780828731;
+	bh=vkND0//e2cPumWGeKISX5K0jme8gezpVAMzNl3R8d5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JHzyiP/hv8MIlEDIEratL3Kia/KrkKCx14tvm+ksKlVEuvDu9Bl0HaIhBQHIVtq0f
-	 h84vG8w8I+lBWeuHWH2AsN3WfixrvbB2qaQEQnpmI5+iN0KlTlIGH1HhPd6Lt+iB96
-	 CKGjTf/8SRjItU/nGwzLe/WJRMrTvGivzATUvC3k=
+	b=jiA4lN7blf6HXzJ7ygpiVxMwygr3/BFJEdmSy1o4NfDND6N5Yw49vIzv4rP649xFi
+	 ZTkCrZ4RBpsc5qHvk23sv26PHF2y0t/TaT6+MHZ4Is0o7A5Zlg6VNiiKV2KbPkNHlt
+	 ZFouLxLp3BZAV/PEKP8p8N2COUl0+0wv0gploRm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <error27@gmail.com>
-Subject: [PATCH 7.0 204/332] usb: dwc2: Fix use after free in debug code
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 186/315] macsec: fix replay protection at XPN lower-PN wrap
 Date: Sun,  7 Jun 2026 11:59:33 +0200
-Message-ID: <20260607095735.555439836@linuxfoundation.org>
+Message-ID: <20260607095734.412116941@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261475-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:error27@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261484-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danisjiang@gmail.com,m:moonafterrain@outlook.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -94,59 +95,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D0C0F64FE60
+X-Rspamd-Queue-Id: D1B2964FEA4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 9ea06a3fbf9f16e0d98c52cb3b99642be15ec281 upstream.
+commit e68842b3356471ba56c882209f324613dac47f64 upstream.
 
-We're not allowed to dereference "urb" after calling
-usb_hcd_giveback_urb() so save the urb->status ahead of time.
+In macsec_post_decrypt(), when pn is U32_MAX, pn + 1 overflows u32 to 0
+and the first branch never fires. If next_pn_halves.lower is also in the
+upper half, pn_same_half(pn, lower) is true and the XPN else-if does not
+fire either, leaving next_pn_halves unchanged. An attacker that captures
+the legitimate frame carrying pn == 0xFFFFFFFF on an XPN association
+can then replay it indefinitely, since lowest_pn never rises above
+the captured pn and macsec_decrypt() reconstructs the same IV.
 
-Fixes: 7359d482eb4d ("staging: HCD files for the DWC2 driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Link: https://patch.msgid.link/ag1NwBpqT4IEQcdJ@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Extend the XPN else-if to also fire when pn + 1 wraps to 0, so receipt
+of pn == U32_MAX advances next_pn_halves to (upper + 1, 0).
+
+Fixes: a21ecf0e0338 ("macsec: Support XPN frame handling - IEEE 802.1AEbw")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78813FD49E58F253B989F197AF012@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/macsec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -4804,6 +4804,7 @@ static int _dwc2_hcd_urb_dequeue(struct
- 	struct dwc2_hsotg *hsotg = dwc2_hcd_to_hsotg(hcd);
- 	int rc;
- 	unsigned long flags;
-+	int urb_status;
- 
- 	dev_dbg(hsotg->dev, "DWC OTG HCD URB Dequeue\n");
- 	dwc2_dump_urb_info(hcd, urb, "urb_dequeue");
-@@ -4828,11 +4829,12 @@ static int _dwc2_hcd_urb_dequeue(struct
- 
- 	/* Higher layer software sets URB status */
- 	spin_unlock(&hsotg->lock);
-+	urb_status = urb->status;
- 	usb_hcd_giveback_urb(hcd, urb, status);
- 	spin_lock(&hsotg->lock);
- 
- 	dev_dbg(hsotg->dev, "Called usb_hcd_giveback_urb()\n");
--	dev_dbg(hsotg->dev, "  urb->status = %d\n", urb->status);
-+	dev_dbg(hsotg->dev, "  urb->status = %d\n", urb_status);
- out:
- 	spin_unlock_irqrestore(&hsotg->lock, flags);
- 
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -804,7 +804,8 @@ static bool macsec_post_decrypt(struct s
+ 		if (pn + 1 > rx_sa->next_pn_halves.lower) {
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		} else if (secy->xpn &&
+-			   !pn_same_half(pn, rx_sa->next_pn_halves.lower)) {
++			   (pn + 1 == 0 ||
++			    !pn_same_half(pn, rx_sa->next_pn_halves.lower))) {
+ 			rx_sa->next_pn_halves.upper++;
+ 			rx_sa->next_pn_halves.lower = pn + 1;
+ 		}
 
 
 
