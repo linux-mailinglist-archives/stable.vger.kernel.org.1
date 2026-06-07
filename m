@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-260975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hmJmHYxDJWpcFQIAu9opvQ
-	(envelope-from <stable+bounces-260975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:20 +0200
+	id bbiyCndDJWpTFQIAu9opvQ
+	(envelope-from <stable+bounces-260970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:59 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C398064F5F0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 688F064F5DA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:09:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XBRmraY3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260975-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260975-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GIvNLVF4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260970-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260970-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1BAAF3038506
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 611323034DD0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416742F49FD;
-	Sun,  7 Jun 2026 10:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F62234994;
+	Sun,  7 Jun 2026 10:07:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ECF234994;
-	Sun,  7 Jun 2026 10:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B178C9C;
+	Sun,  7 Jun 2026 10:06:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826838; cv=none; b=UInm3gRFbWGmO5yatJ/WzsG6EjB6/IACOpdQ8UJ5UsynQmSQs0RdD8+GKz3ecfu77T15ICM/uPvMD41OHFHeLR0lsigxyZGvQKIRMkYjZTbbPXHOIfyoafI+I+9aYO/c6P5GnrdGj9ZIPJOCC9JP0+SAqMTCw+Vu8vscX6FKv2w=
+	t=1780826820; cv=none; b=oqhO6n0tyfx/jEaEhhTuSW/KJXj4bT4egqwY33orBhTy1G0w53C6G8VsBlMsuluupmyQ62u74WvyNOHG9ExiMvXcIDmclh9TCORbie8sH8xGf6iXQXKIB1RLLi5d4xZpsxjr+ZzsmHvxFZSgutmo0ZRIJQ65Pu9KanBJgjiCbxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826838; c=relaxed/simple;
-	bh=BWHDKKcp9yikAAUTfDlYUauAitMTmlZAkXu65+RNDvU=;
+	s=arc-20240116; t=1780826820; c=relaxed/simple;
+	bh=9Py7EQOfkwb9v50wL5CdrjP2XMYmmnJmfYxp8UdmvPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KC7VDNNSrj4MGGEWkl1BoApPfduLEK/rQkaNoSvMELh7f4d5QAQAWozft48B5iTSJk40Cfz24e3KvZDMBDOEC6QoEqHrUuR2XKhEkiiprdQSSBDwUNgOd4BozBCPLGiNmnx3OYIJwciJUDZwWS9Cf55GfaywUDxKs608lnzGxec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBRmraY3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90061F00893;
-	Sun,  7 Jun 2026 10:07:15 +0000 (UTC)
+	 MIME-Version; b=Y9qm7refq01osbEftSkdDjoVADoUFGxclKS+Fq9QpRhUCXa4JnD4KEFwh4GMAJZjtipjH8zyvlZqfwnsobeliV2vTVaor1FrqaUz788TLWFV0/ZzlJj8TT60ZbcLdptLFaPVCGhXOM6AO74vnRLb+6cGX+0ppNEaW0ybK7F/UHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIvNLVF4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F5F1F00893;
+	Sun,  7 Jun 2026 10:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826836;
-	bh=s1yRAzqh3C4CZ4Suhr3PepImh//VWdqQDcfGGVP+tkg=;
+	s=korg; t=1780826819;
+	bh=h/cBhtStUNQgj5+7WTr7TxQF+2JlHz0DrQO9Bb9O/2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XBRmraY3jchWxg/8IuicKTV7/+jCGo0dHXreCwKQwzkuQSJozo35KxfiXGTI29gxu
-	 hZJ53ZImA+xrLeXQ0p8Lf6jGfo3YI8SOG0dZ/l99CgFgjHwmrnLU7J3w0yFFlsPwIY
-	 mDNQ3cRnz9hFXGy4tpgX0CClwXLH6vkajXR7eyUQ=
+	b=GIvNLVF454nPte+nYxx2uPnV8vCzYvn40dxvyeU8k0lbh2g8K49lhnhHvG2E2gfZj
+	 wbfv8Ywxe7owkEKlTSiz6UjEVUXCVDxPAKcua1sIK25MoCnAKWtOZe9/AimnQZRVFW
+	 ZiJ5ZW2ps+QGtvagBKO95MbWS8iUxLF2pS6sXRHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Schmaus <florian.schmaus@codasip.com>,
-	Martin Kaiser <martin@kaiser.cx>,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 013/315] kunit: fix use-after-free in debugfs when using kunit.filter
+Subject: [PATCH 7.0 031/332] ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table()
 Date: Sun,  7 Jun 2026 11:56:40 +0200
-Message-ID: <20260607095727.984960558@linuxfoundation.org>
+Message-ID: <20260607095729.233931935@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,147 +71,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260975-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,linux.dev,kernel.org];
+	TAGGED_FROM(0.00)[bounces-260970-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.schmaus@codasip.com,m:martin@kaiser.cx,m:david@davidgow.net,m:skhan@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:edumazet@google.com,m:xiyou.wangcong@gmail.com,m:kerneljasonxing@gmail.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,codasip.com:email,kaiser.cx:email,davidgow.net:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C398064F5F0
+X-Rspamd-Queue-Id: 688F064F5DA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Schmaus <florian.schmaus@codasip.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fb6988b83b4cafe8db63999c1ddff1b7c66d2ff5 ]
+[ Upstream commit 87a1e0fe7776da7ab411be332b4be58ac8840d10 ]
 
-When the kernel is booted with a kunit filter (e.g.,
-kunit.filter="speed!=slow"), the kunit executor dynamically allocates
-copies of the filtered test suites using kmalloc/kmemdup.
+ipv4_sysctl_exit_net() is currently freeing net->ipv4.sysctl_local_reserved_ports
+too soon.
 
-During the initial boot execution, kunit_debugfs_create_suite() creates
-debugfs files (such as /sys/kernel/debug/kunit/<suite>/run) and
-permanently stores a pointer to the dynamically allocated suite in the
-inode's i_private field.
+Only after unregister_net_sysctl_table() we can be sure no threads can possibly
+use the sysctls, including /proc/sys/net/ipv4/ip_local_reserved_ports.
 
-Previously, the executor freed this dynamically allocated suite_set
-immediately after executing the boot-time tests. Because the debugfs
-nodes were not destroyed, any subsequent interaction with the debugfs
-`run` file from userspace triggered a use-after-free (UAF). On systems
-with architectural capabilities, like CHERI RISC-V, this resulted in
-an immediate fatal hardware exception due to the invalidation of the
-capability tags on the reclaimed memory. On other architectures, it
-resulted in silent memory corruption.
-
-Fix this UAF by properly coupling the lifetime of the filtered suite
-memory allocation to the lifetime of the kunit subsystem and its
-associated VFS nodes. Ownership of the boot-time suite_set is now
-transferred to a global tracker ('kunit_boot_suites'), and the memory
-is cleanly released in kunit_exit() during module teardown.
-
-Link: https://lore.kernel.org/r/20260507084854.233984-1-florian.schmaus@codasip.com
-Fixes: e2219db280e3 ("kunit: add debugfs /sys/kernel/debug/kunit/<suite>/results display")
-Signed-off-by: Florian Schmaus <florian.schmaus@codasip.com>
-Reviewed-by: Martin Kaiser <martin@kaiser.cx>
-Reviewed-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 122ff243f5f1 ("ipv4: make ip_local_reserved_ports per netns")
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260521122147.3584624-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/kunit/test.h |  1 +
- lib/kunit/executor.c | 19 ++++++++++++++++---
- lib/kunit/test.c     |  1 +
- 3 files changed, 18 insertions(+), 3 deletions(-)
+ net/ipv4/sysctl_net_ipv4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/kunit/test.h b/include/kunit/test.h
-index 5ec5182b5e5751..aedffe2f2d49de 100644
---- a/include/kunit/test.h
-+++ b/include/kunit/test.h
-@@ -613,6 +613,7 @@ unsigned long kunit_vm_mmap(struct kunit *test, struct file *file,
- 			    unsigned long offset);
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 5654cc9c8a0b9e..e47df4d706a9cd 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -1698,10 +1698,10 @@ static __net_exit void ipv4_sysctl_exit_net(struct net *net)
+ {
+ 	const struct ctl_table *table;
  
- void kunit_cleanup(struct kunit *test);
-+void kunit_free_boot_suites(void);
- 
- void __printf(2, 3) kunit_log_append(struct string_stream *log, const char *fmt, ...);
- 
-diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-index 0061d4c7e35170..9abaed8275845f 100644
---- a/lib/kunit/executor.c
-+++ b/lib/kunit/executor.c
-@@ -15,6 +15,16 @@ extern struct kunit_suite * const __kunit_suites_end[];
- extern struct kunit_suite * const __kunit_init_suites_start[];
- extern struct kunit_suite * const __kunit_init_suites_end[];
- 
-+static struct kunit_suite_set kunit_boot_suites;
-+
-+void kunit_free_boot_suites(void)
-+{
-+	if (kunit_boot_suites.start) {
-+		kunit_free_suite_set(kunit_boot_suites);
-+		kunit_boot_suites = (struct kunit_suite_set){ NULL, NULL };
-+	}
-+}
-+
- static char *action_param;
- 
- module_param_named(action, action_param, charp, 0400);
-@@ -409,9 +419,12 @@ int kunit_run_all_tests(void)
- 		pr_err("kunit executor: unknown action '%s'\n", action_param);
- 
- free_out:
--	if (filter_glob_param || filter_param)
--		kunit_free_suite_set(suite_set);
--	else if (init_num_suites > 0)
-+	if (filter_glob_param || filter_param) {
-+		if (err)
-+			kunit_free_suite_set(suite_set);
-+		else
-+			kunit_boot_suites = suite_set;
-+	} else if (init_num_suites > 0)
- 		/* Don't use kunit_free_suite_set because suites aren't individually allocated */
- 		kfree(suite_set.start);
- 
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 62eb529824c657..f0e1e02a98d8b3 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -1056,6 +1056,7 @@ static void __exit kunit_exit(void)
- 	kunit_bus_shutdown();
- 
- 	kunit_debugfs_cleanup();
-+	kunit_free_boot_suites();
+-	kfree(net->ipv4.sysctl_local_reserved_ports);
+ 	table = net->ipv4.ipv4_hdr->ctl_table_arg;
+ 	unregister_net_sysctl_table(net->ipv4.ipv4_hdr);
+ 	kfree(table);
++	kfree(net->ipv4.sysctl_local_reserved_ports);
  }
- module_exit(kunit_exit);
  
+ static __net_initdata struct pernet_operations ipv4_sysctl_ops = {
 -- 
 2.53.0
 
