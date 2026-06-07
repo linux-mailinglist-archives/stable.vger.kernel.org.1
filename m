@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wyojKGZNJWo+GgIAu9opvQ
-	(envelope-from <stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:22 +0200
+	id cX7hCUNPJWoTGwIAu9opvQ
+	(envelope-from <stable+bounces-261669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01012650124
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 525D0650368
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:00:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XCI53C2V;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261598-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="jXe0/otj";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261669-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261669-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71F653075404
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 058B430964B3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAC62E7376;
-	Sun,  7 Jun 2026 10:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093B82EBB9E;
+	Sun,  7 Jun 2026 10:50:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DA14071FD;
-	Sun,  7 Jun 2026 10:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6072D8378;
+	Sun,  7 Jun 2026 10:50:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829160; cv=none; b=EZjbLBDQ8xvCYFrueFMPviMkDxFqifLmaO41+CjtoMTaHYkyd9aMjSYRQadDhKhflZ5S/YGucGkgPI7SMjKqwzV7r4u8Gfo4sE7eflnjjekO4IkfRs2r7gHj3kUkkVtZT8rYofw4DUHnAdB+hXE21JpRuvTSZnnIQABI/Ax8Mgw=
+	t=1780829414; cv=none; b=PsE7y4/QA6RRaKsKvmojMq6wTUGDal/iDZGh9Tbl2XrhUamykXZ+20jFcK5i1ZUTyY57SuxQ+RIMXFLGDhiZlfwu9M9j8qVEVpw/0xjzgYKlMwnG+kS6/oKiV8QeY12/9W5QWBxLOgVt/jQ7XCZypI9Loo8G96g5lFpcCG2o9J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829160; c=relaxed/simple;
-	bh=glsFfIJCT06sinpzsfuoJ2ow107Q3cKI7no9lqHzMiU=;
+	s=arc-20240116; t=1780829414; c=relaxed/simple;
+	bh=Ndsuer3yJC2H6Rm3XSiJVk5BCYZtN1JlgtB3E47f9yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZIlsGq7YD8EMyGwaaHryPTLmhXNXYEHxJbq49jGTQF6741ba7j1EM9bWFXp5E+Xfq+EHVUYex4RzxlXFZtZR12WK/a2D1SUMYWWooqQuN3VsQNMHI12UILpFHFy2Q9VmaUVSMSN2LYbmnvJ3uYvUtojj4wLlSG4aDYRbyCHH37w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCI53C2V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B657E1F00893;
-	Sun,  7 Jun 2026 10:45:58 +0000 (UTC)
+	 MIME-Version; b=m4d9sEZnrBd2CVX1lJK3cMkke4YBFzsqmtNKixqbsThgnr3TDFyTWSkebbfcdmXmY5QpvtqIzJ/iYKYwU8eruGM8xWxNVTOixJmUWL0rAlrqzcTSDg9dSZ+DRECX62Jdpx9Cwanw8FnL6XIqHDLnJiBxTQd+PtuTEk5qw/ZmwLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXe0/otj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B371F00893;
+	Sun,  7 Jun 2026 10:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829159;
-	bh=zLL3QisGb6SatQnAydsiPNdZxI+xgpOJwK8mZnAGSBA=;
+	s=korg; t=1780829413;
+	bh=wJEV1yIOLq/14U1Gqs02mVQk46R4l+h/XRMjLwrNjfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XCI53C2VLzWTZY7DBxCfwF8WzsLuO8IAd3SuITtNiIw6R3pKf9/eKaPkByR+f6krD
-	 BAjrwzgoA4uBiM+6jGPhTfiSahKYCfQqSGzBl+66tzCgRxBZAxRQE9eEku7MyYw8GW
-	 b+aj291ndK4hrVt6chJcsZBlW0NoR8yfaG2lm5Xs=
+	b=jXe0/otjs8uaGaz8X5L33S+4rsxw+J1TQOENi85X+9Lw7MgfiT4wSyPxRWFGtQRMf
+	 oB2fHlLvIBaFQ10YIl+9hM+eNgL3VFIpYCmGebeQ8+rJip+xLQEqETXDk3nav2Q0/4
+	 u55ZQ8L7xj8ZjbPc+ptPfVxzE1Sio5qqd6/66iR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH 7.0 250/332] uio: uio_pci_generic_sva: fix double free of devm_kzalloc() memory
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	RD Babiera <rdbabiera@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>
+Subject: [PATCH 6.12 222/307] usb: typec: tcpm: improve handling of DISCOVER_MODES failures
 Date: Sun,  7 Jun 2026 12:00:19 +0200
-Message-ID: <20260607095737.227949051@linuxfoundation.org>
+Message-ID: <20260607095735.864030243@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,106 +71,223 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261598-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lgs201920130244@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-261669-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,m:sebastian.reichel@collabora.com,m:rdbabiera@google.com,m:badhri@google.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01012650124
+X-Rspamd-Queue-Id: 525D0650368
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
 
-commit f74c8696f14149d5e43cc28b015326a759c48f00 upstream.
+commit c06e6cd488194e37ed4dc29d1488d1ffb760de60 upstream.
 
-uio_pci_sva allocates struct uio_pci_sva_dev with devm_kzalloc() in
-probe(), but then calls kfree(udev) both on the probe() error path
-(label out_free) and again in remove().
+UGREEN USB-C Multifunction Adapter Model CM512 (AKA "Revodok 107")
+exposes two SVIDs: 0xff01 (DP Alt Mode) and 0x1d5c. The DISCOVER_MODES
+step succeeds for 0xff01 and gets a NAK for 0x1d5c. Currently this
+results in DP Alt Mode not being registered either, since the modes
+are only registered once all of them have been discovered. The NAK
+results in the processing being stopped and thus no Alt modes being
+registered.
 
-Because devm_kzalloc() allocations are devres-managed and are freed
-automatically when the device is detached (including after a failing
-probe() and during driver unbind), the explicit kfree() can lead to a
-double free.
+Improve the situation by handling the NAK gracefully and continue
+processing the other modes.
 
-If probe() fails after devm_kzalloc(), the error path frees udev and
-devres cleanup will free it again when the core unwinds the partially
-bound device. On normal driver removal, remove() frees udev and devres
-will free it again when the device is detached.
+Before this change, the TCPM log ends like this:
 
-This issue was identified by a static analysis tool I developed and
-confirmed by manual review. Fix by removing the manual kfree() calls
-and dropping the now-unused label.
+(more log entries before this)
+[    5.028287] AMS DISCOVER_SVIDS finished
+[    5.028291] cc:=4
+[    5.040040] SVID 1: 0xff01
+[    5.040054] SVID 2: 0x1d5c
+[    5.040082] AMS DISCOVER_MODES start
+[    5.040096] PD TX, header: 0x1b6f
+[    5.050946] PD TX complete, status: 0
+[    5.059609] PD RX, header: 0x264f [1]
+[    5.059626] Rx VDM cmd 0xff018043 type 1 cmd 3 len 2
+[    5.059640] AMS DISCOVER_MODES finished
+[    5.059644] cc:=4
+[    5.069994]  Alternate mode 0: SVID 0xff01, VDO 1: 0x000c0045
+[    5.070029] AMS DISCOVER_MODES start
+[    5.070043] PD TX, header: 0x1d6f
+[    5.081139] PD TX complete, status: 0
+[    5.087498] PD RX, header: 0x184f [1]
+[    5.087515] Rx VDM cmd 0x1d5c8083 type 2 cmd 3 len 1
+[    5.087529] AMS DISCOVER_MODES finished
+[    5.087534] cc:=4
+(no further log entries after this point)
 
-Fixes: 3397c3cd859a2 ("uio: Add SVA support for PCI devices via uio_pci_generic_sva.c")
+After this patch the TCPM log looks exactly the same, but then
+continues like this:
+
+[    5.100222] Skip SVID 0x1d5c (failed to discover mode)
+[    5.101699] AMS DFP_TO_UFP_ENTER_MODE start
+(log goes on as the system initializes DP AltMode)
+
 Cc: stable <stable@kernel.org>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Link: https://patch.msgid.link/20260505150256.614071-1-lgs201920130244@gmail.com
+Fixes: 41d9d75344d9 ("usb: typec: tcpm: add discover svids and discover modes support for sop'")
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reviewed-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Link: https://patch.msgid.link/20260429-tcpm-discover-modes-nak-fix-v4-1-75945d0ed30f@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_pci_generic_sva.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |   97 ++++++++++++++++++++++++++----------------
+ 1 file changed, 61 insertions(+), 36 deletions(-)
 
---- a/drivers/uio/uio_pci_generic_sva.c
-+++ b/drivers/uio/uio_pci_generic_sva.c
-@@ -129,15 +129,13 @@ static int probe(struct pci_dev *pdev, c
- 	ret = devm_uio_register_device(&pdev->dev, &udev->info);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register uio device\n");
--		goto out_free;
-+		goto out_disable;
- 	}
- 
- 	pci_set_drvdata(pdev, udev);
- 
- 	return 0;
- 
--out_free:
--	kfree(udev);
- out_disable:
- 	pci_disable_device(pdev);
- 
-@@ -146,11 +144,8 @@ out_disable:
- 
- static void remove(struct pci_dev *pdev)
- {
--	struct uio_pci_sva_dev *udev = pci_get_drvdata(pdev);
--
- 	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
--	kfree(udev);
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1933,6 +1933,55 @@ static bool tcpm_cable_vdm_supported(str
+ 	       tcpm_can_communicate_sop_prime(port);
  }
  
- static ssize_t pasid_show(struct device *dev,
++static int tcpm_handle_discover_mode(struct tcpm_port *port, u32 *response,
++				     enum tcpm_transmit_type rx_sop_type,
++				     enum tcpm_transmit_type *response_tx_sop_type)
++{
++	struct typec_port *typec = port->typec_port;
++	struct pd_mode_data *modep;
++
++	if (rx_sop_type == TCPC_TX_SOP) {
++		modep = &port->mode_data;
++		modep->svid_index++;
++
++		if (modep->svid_index < modep->nsvids) {
++			u16 svid = modep->svids[modep->svid_index];
++			*response_tx_sop_type = TCPC_TX_SOP;
++			response[0] = VDO(svid, 1,
++					  typec_get_negotiated_svdm_version(typec),
++					  CMD_DISCOVER_MODES);
++			return 1;
++		}
++
++		if (tcpm_cable_vdm_supported(port)) {
++			*response_tx_sop_type = TCPC_TX_SOP_PRIME;
++			response[0] = VDO(USB_SID_PD, 1,
++					  typec_get_cable_svdm_version(typec),
++					  CMD_DISCOVER_SVID);
++			return 1;
++		}
++
++		tcpm_register_partner_altmodes(port);
++	} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
++		modep = &port->mode_data_prime;
++		modep->svid_index++;
++
++		if (modep->svid_index < modep->nsvids) {
++			u16 svid = modep->svids[modep->svid_index];
++			*response_tx_sop_type = TCPC_TX_SOP_PRIME;
++			response[0] = VDO(svid, 1,
++					  typec_get_cable_svdm_version(typec),
++					  CMD_DISCOVER_MODES);
++			return 1;
++		}
++
++		tcpm_register_plug_altmodes(port);
++		tcpm_register_partner_altmodes(port);
++	}
++
++	return 0;
++}
++
+ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
+ 			const u32 *p, int cnt, u32 *response,
+ 			enum adev_actions *adev_action,
+@@ -2190,41 +2239,11 @@ static int tcpm_pd_svdm(struct tcpm_port
+ 			}
+ 			break;
+ 		case CMD_DISCOVER_MODES:
+-			if (rx_sop_type == TCPC_TX_SOP) {
+-				/* 6.4.4.3.3 */
+-				svdm_consume_modes(port, p, cnt, rx_sop_type);
+-				modep->svid_index++;
+-				if (modep->svid_index < modep->nsvids) {
+-					u16 svid = modep->svids[modep->svid_index];
+-					*response_tx_sop_type = TCPC_TX_SOP;
+-					response[0] = VDO(svid, 1, svdm_version,
+-							  CMD_DISCOVER_MODES);
+-					rlen = 1;
+-				} else if (tcpm_cable_vdm_supported(port)) {
+-					*response_tx_sop_type = TCPC_TX_SOP_PRIME;
+-					response[0] = VDO(USB_SID_PD, 1,
+-							  typec_get_cable_svdm_version(typec),
+-							  CMD_DISCOVER_SVID);
+-					rlen = 1;
+-				} else {
+-					tcpm_register_partner_altmodes(port);
+-				}
+-			} else if (rx_sop_type == TCPC_TX_SOP_PRIME) {
+-				/* 6.4.4.3.3 */
+-				svdm_consume_modes(port, p, cnt, rx_sop_type);
+-				modep_prime->svid_index++;
+-				if (modep_prime->svid_index < modep_prime->nsvids) {
+-					u16 svid = modep_prime->svids[modep_prime->svid_index];
+-					*response_tx_sop_type = TCPC_TX_SOP_PRIME;
+-					response[0] = VDO(svid, 1,
+-							  typec_get_cable_svdm_version(typec),
+-							  CMD_DISCOVER_MODES);
+-					rlen = 1;
+-				} else {
+-					tcpm_register_plug_altmodes(port);
+-					tcpm_register_partner_altmodes(port);
+-				}
+-			}
++			/* 6.4.4.3.3 */
++			svdm_consume_modes(port, p, cnt, rx_sop_type);
++			rlen = tcpm_handle_discover_mode(port, response,
++							 rx_sop_type,
++							 response_tx_sop_type);
+ 			break;
+ 		case CMD_ENTER_MODE:
+ 			*response_tx_sop_type = rx_sop_type;
+@@ -2267,9 +2286,15 @@ static int tcpm_pd_svdm(struct tcpm_port
+ 		switch (cmd) {
+ 		case CMD_DISCOVER_IDENT:
+ 		case CMD_DISCOVER_SVID:
+-		case CMD_DISCOVER_MODES:
+ 		case VDO_CMD_VENDOR(0) ... VDO_CMD_VENDOR(15):
+ 			break;
++		case CMD_DISCOVER_MODES:
++			tcpm_log(port, "Skip SVID 0x%04x (failed to discover mode)",
++				 PD_VDO_SVID_SVID0(p[0]));
++			rlen = tcpm_handle_discover_mode(port, response,
++							 rx_sop_type,
++							 response_tx_sop_type);
++			break;
+ 		case CMD_ENTER_MODE:
+ 			/* Back to USB Operation */
+ 			*adev_action = ADEV_NOTIFY_USB_AND_QUEUE_VDM;
 
 
 
