@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id i0HpAtdNJWpiGgIAu9opvQ
-	(envelope-from <stable+bounces-261704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:15 +0200
+	id OTz0MMlMJWrcGQIAu9opvQ
+	(envelope-from <stable+bounces-261660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7539565019A
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C512650095
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yXGdn4uq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261704-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261704-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ANsedkTH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261660-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261660-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D59ED3035F1C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB8243004D2A
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8017031E83A;
-	Sun,  7 Jun 2026 10:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8832EBB9E;
+	Sun,  7 Jun 2026 10:49:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D6C4071DD;
-	Sun,  7 Jun 2026 10:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBC52E7390;
+	Sun,  7 Jun 2026 10:49:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829534; cv=none; b=Rc6/ueQ104onMgaMMRhBPs5k7bouconyJL0sDfrjKxJnb188wfLfYisOm4WXsAnmV5jAGKZ7RRL1RG+EM3QvqdtAfQxhvt9vIA0nBdtP1TMI71U986FCBV4jZGQeOxRKtxproLWPCLRfU7nPUsWbb+UG6S+36A2KapcsGwKlGPs=
+	t=1780829383; cv=none; b=XldHWjo+K4L4yN5JvbBTHjRDl8c2osaXzD4AkMe91pA6gjTI3ftauAo+UydNVpc8dWh8LP0Devz4eSpD1HUifG8CBrwtyVzXTsPFvKPc4AnTfdHk8oIE1FI4ugti1Y7WdoofhoLroLjGzK9W3vQl221sbvxWFe6nmT9Uw50eB1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829534; c=relaxed/simple;
-	bh=gV9BkKgnOm725nnG8gnzQ2ejLbrbqjJ7bI4c49hchHE=;
+	s=arc-20240116; t=1780829383; c=relaxed/simple;
+	bh=QTqthjTLXLnyhvfiSifj9snNfnZ6azXR5MkssYXam28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUhX4sUQG1cjQVeR3MtJFAsxP5hs+chBEzZ5vLiA8GWLh3gTccyDc44bepEDfOYHng4VXnX5YXDpEQ6tgJ71HmULrmD0rOIUxDsvYcr+3r+l+/qL3OphZUIoUqeP1rFvZ7578hDV7WPO14fcqm9JWnpNcxijbtzgTSRDYUNk9Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXGdn4uq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC751F00893;
-	Sun,  7 Jun 2026 10:52:12 +0000 (UTC)
+	 MIME-Version; b=hzVgxAwlWPAwTydADCC2COXkWmiuRnsNmoNOW/qpCjqADD7e8t0IosLzTLC5KNNhFk3ezRHUVdmrfBcnQiz7UBy9nuUPJvHRR1S5bShKvBzK9HtvFyt43XFK3zGGnzTbXK+QOsReaa5WVHFhjc6PqwZg9ZvoPeQz+ucHnO/TOlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANsedkTH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E951F00893;
+	Sun,  7 Jun 2026 10:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829533;
-	bh=MIuhBrQMy+KWLHdowb63rOaSvcq8k2b597my768HPic=;
+	s=korg; t=1780829382;
+	bh=/X9Jcpv26XutaUb7YNbfndMZ9IbQABy93oXkhVb7qbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yXGdn4uqZ3Ab7gbOEz7RKwrhUtcLuLIVIX1Gzv+bkPfgzirRSrX6AKexmkL5lgOw8
-	 xGMNSumYQOVIEReXjsEuO3+j3k48Wu+e8hPQ8lcfD1ehgGIz5G766MgkarIDGvQKvE
-	 OPGTZ8MQH1TMGgz9Bya3jzuudTqR8yCSxWpJnMbI=
+	b=ANsedkTHPI8MU1ILD/15bZFpCrk2X8oxFRB1VDhq6smFM9RFlZT9T1zrtHbrm4vFS
+	 WYhmuwf78VIjRY1pYYYhBamtmJefWbVbp/brHMy5re+GCgBQFvnbIW40A72Mzy/+p9
+	 lpQAjxIcIDvavINakwUNSnq8UxxcPhgFWvVlmmD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Berkant Koc <me@berkoc.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: [PATCH 6.18 256/315] drm/hyperv: validate VMBus packet size in receive callback
+	stable <stable@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 7.0 274/332] usb: gadget: net2280: Fix double free in probe error path
 Date: Sun,  7 Jun 2026 12:00:43 +0200
-Message-ID: <20260607095736.960024915@linuxfoundation.org>
+Message-ID: <20260607095738.112142154@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261704-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261660-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lgs201920130244@gmail.com,m:stern@rowland.harvard.edu,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,rowland.harvard.edu];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,194 +99,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:email,berkoc.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,harvard.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7539565019A
+X-Rspamd-Queue-Id: 7C512650095
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berkant Koc <me@berkoc.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit 7f87763f47a3c22fb50265a00619ef10f2394b18 upstream.
+commit c8547c74988e0b5f4cbb1b895e2a57aae084f070 upstream.
 
-hyperv_receive_sub() reads msg->vid_hdr.type and dispatches into one
-of four message-type branches without knowing how many bytes the host
-wrote into hv->recv_buf. The completion path then runs
-memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE), so the consumer that
-wakes on wait_for_completion_timeout() can read up to 16 KiB of
-residue from a prior message as if it were the response payload.
+usb_initialize_gadget() installs gadget_release() as the release
+callback for the embedded gadget device.  The struct net2280 instance is
+therefore released through gadget_release() when the gadget device's last
+reference is dropped.
 
-Pass bytes_recvd into hyperv_receive_sub() and reject any packet that
-does not cover the pipe + synthvid header. A single switch on
-msg->vid_hdr.type then computes the type-specific payload size: the
-three completion-driving types (SYNTHVID_VERSION_RESPONSE,
-SYNTHVID_RESOLUTION_RESPONSE, SYNTHVID_VRAM_LOCATION_ACK) fall through
-to a shared exit that requires that size before memcpy/complete, while
-SYNTHVID_FEATURE_CHANGE validates its own payload and returns before
-reading is_dirt_needed. Unknown types are dropped.
+The probe error path calls net2280_remove(), which tears down the
+partially initialized device and drops the gadget reference with
+usb_put_gadget().  Calling kfree(dev) afterwards can free the same object
+again.
 
-SYNTHVID_RESOLUTION_RESPONSE is variable length: the host fills
-resolution_count entries, not the full SYNTHVID_MAX_RESOLUTION_COUNT
-array. Validate the fixed prefix first so resolution_count can be
-read, bound it against the array, then require only the count-sized
-array, so the shorter responses the host actually sends are accepted.
+Drop the explicit kfree() and let the gadget device release callback
+handle the final free.  This issue was found by a static analysis tool
+I am developing.
 
-Only run the sub-handler when vmbus_recvpacket() returned success. The
-memcpy length is bytes_recvd, which is bounded by VMBUS_MAX_PACKET_SIZE
-only on a successful receive; on -ENOBUFS vmbus_recvpacket() instead
-reports the required length, which can exceed hv->recv_buf, so copying
-bytes_recvd would read and write past the 16 KiB buffers. Gating on the
-success return keeps the copy bounded. The nonzero-return path is itself
-a malformed-message case and is now logged rather than silently skipped;
-channel recovery is not attempted.
-
-Rejected packets are reported via drm_err_ratelimited() rather than
-silently dropped, matching the CoCo-hardened pattern in
-hv_kvp_onchannelcallback().
-
-Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
-Cc: stable@vger.kernel.org # 5.14+
-Signed-off-by: Berkant Koc <me@berkoc.com>
-Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Link: https://patch.msgid.link/8200dbc199c7a9b75ac7e8af6c748d2189b5ebd5.1779542874.git.me@berkoc.com
+Fixes: f770fbec4165 ("USB: UDC: net2280: Fix memory leaks")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260427153651.337846-1-lgs201920130244@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  100 ++++++++++++++++++++++++++----
- 1 file changed, 87 insertions(+), 13 deletions(-)
+ drivers/usb/gadget/udc/net2280.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
-@@ -425,30 +425,92 @@ static int hyperv_get_supported_resoluti
+--- a/drivers/usb/gadget/udc/net2280.c
++++ b/drivers/usb/gadget/udc/net2280.c
+@@ -3790,10 +3790,8 @@ static int net2280_probe(struct pci_dev
  	return 0;
- }
  
--static void hyperv_receive_sub(struct hv_device *hdev)
-+static void hyperv_receive_sub(struct hv_device *hdev, u32 bytes_recvd)
- {
- 	struct hyperv_drm_device *hv = hv_get_drvdata(hdev);
- 	struct synthvid_msg *msg;
-+	size_t hdr_size;
-+	size_t need;
- 
- 	if (!hv)
- 		return;
- 
--	msg = (struct synthvid_msg *)hv->recv_buf;
--
--	/* Complete the wait event */
--	if (msg->vid_hdr.type == SYNTHVID_VERSION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_RESOLUTION_RESPONSE ||
--	    msg->vid_hdr.type == SYNTHVID_VRAM_LOCATION_ACK) {
--		memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE);
--		complete(&hv->wait);
-+	hdr_size = sizeof(struct pipe_msg_hdr) +
-+		   sizeof(struct synthvid_msg_hdr);
-+	if (bytes_recvd < hdr_size) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for header: %u\n",
-+				    bytes_recvd);
- 		return;
- 	}
- 
--	if (msg->vid_hdr.type == SYNTHVID_FEATURE_CHANGE) {
-+	msg = (struct synthvid_msg *)hv->recv_buf;
-+	need = hdr_size;
-+
-+	switch (msg->vid_hdr.type) {
-+	case SYNTHVID_VERSION_RESPONSE:
-+		need += sizeof(struct synthvid_version_resp);
-+		break;
-+	case SYNTHVID_RESOLUTION_RESPONSE:
-+		/*
-+		 * The resolution response is variable length: the host
-+		 * fills resolution_count entries, not the full
-+		 * SYNTHVID_MAX_RESOLUTION_COUNT array. Require the fixed
-+		 * prefix first so resolution_count can be read, then
-+		 * demand exactly the count-sized array.
-+		 */
-+		need += offsetof(struct synthvid_supported_resolution_resp,
-+				 supported_resolution);
-+		if (bytes_recvd < need)
-+			break;
-+		if (msg->resolution_resp.resolution_count >
-+		    SYNTHVID_MAX_RESOLUTION_COUNT) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid resolution count too large: %u\n",
-+					    msg->resolution_resp.resolution_count);
-+			return;
-+		}
-+		need += msg->resolution_resp.resolution_count *
-+			sizeof(struct hvd_screen_info);
-+		break;
-+	case SYNTHVID_VRAM_LOCATION_ACK:
-+		need += sizeof(struct synthvid_vram_location_ack);
-+		break;
-+	case SYNTHVID_FEATURE_CHANGE:
-+		/*
-+		 * Not a completion-driving message: validate its own payload
-+		 * and consume it here rather than falling through to the
-+		 * memcpy/complete shared by the wait-event responses.
-+		 */
-+		if (bytes_recvd < need +
-+		    sizeof(struct synthvid_feature_change)) {
-+			drm_err_ratelimited(&hv->dev,
-+					    "synthvid feature change packet too small: %u\n",
-+					    bytes_recvd);
-+			return;
-+		}
- 		hv->dirt_needed = msg->feature_chg.is_dirt_needed;
- 		if (hv->dirt_needed)
- 			hyperv_hide_hw_ptr(hv->hdev);
-+		return;
-+	default:
-+		return;
-+	}
-+
-+	/*
-+	 * Shared completion path for the wait-event responses
-+	 * (VERSION_RESPONSE, RESOLUTION_RESPONSE, VRAM_LOCATION_ACK):
-+	 * require the type-specific payload before handing the buffer to
-+	 * the waiter.
-+	 */
-+	if (bytes_recvd < need) {
-+		drm_err_ratelimited(&hv->dev,
-+				    "synthvid packet too small for type %u: %u < %zu\n",
-+				    msg->vid_hdr.type, bytes_recvd, need);
-+		return;
- 	}
-+	memcpy(hv->init_buf, msg, bytes_recvd);
-+	complete(&hv->wait);
- }
- 
- static void hyperv_receive(void *ctx)
-@@ -469,9 +531,21 @@ static void hyperv_receive(void *ctx)
- 		ret = vmbus_recvpacket(hdev->channel, recv_buf,
- 				       VMBUS_MAX_PACKET_SIZE,
- 				       &bytes_recvd, &req_id);
--		if (bytes_recvd > 0 &&
--		    recv_buf->pipe_hdr.type == PIPE_MSG_DATA)
--			hyperv_receive_sub(hdev);
-+		if (ret) {
-+			/*
-+			 * A nonzero return (e.g. -ENOBUFS for an oversized
-+			 * packet) is itself a malformed message: bytes_recvd
-+			 * then reports the required length rather than a copied
-+			 * payload, so it must not be forwarded to the
-+			 * sub-handler. Channel recovery is not attempted.
-+			 */
-+			drm_err_ratelimited(&hv->dev,
-+					    "vmbus_recvpacket failed: %d (need %u)\n",
-+					    ret, bytes_recvd);
-+		} else if (bytes_recvd > 0 &&
-+			   recv_buf->pipe_hdr.type == PIPE_MSG_DATA) {
-+			hyperv_receive_sub(hdev, bytes_recvd);
-+		}
- 	} while (bytes_recvd > 0 && ret == 0);
+ done:
+-	if (dev) {
++	if (dev)
+ 		net2280_remove(pdev);
+-		kfree(dev);
+-	}
+ 	return retval;
  }
  
 
