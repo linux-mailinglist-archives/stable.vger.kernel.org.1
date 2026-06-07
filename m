@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WevvJ/JNJWp0GgIAu9opvQ
-	(envelope-from <stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:42 +0200
+	id XFfxEJ9UJWo2HAIAu9opvQ
+	(envelope-from <stable+bounces-261801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A506501D6
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8950650653
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:23:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tbGDcWOB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261713-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cpu2h2mK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261801-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261801-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D80A303B596
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:52:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71E9230995E3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98860308F38;
-	Sun,  7 Jun 2026 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290313264F2;
+	Sun,  7 Jun 2026 10:58:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2E32E3AF1;
-	Sun,  7 Jun 2026 10:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E33312CDA5;
+	Sun,  7 Jun 2026 10:58:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829564; cv=none; b=a3uxjIiwGzf0xOHMhUqksCeZcVINkcqj7Rkp+a9j1AkeRgTdcO/i/skIjK8yBjIB1Ge1+WwWbocYUMAjKlUC+8x2QoykSvCEx0XiVI+dsSP2gYUc0bg6wBde+eETYT0yPYnYNtm+p0ZSFFVE9zJsyPi0/EIRTgUCn7K6r8HejMc=
+	t=1780829889; cv=none; b=TLK6IPqcFR3ajM/RDE9+3anaD2+vwo65SKDDeZiSj2H5uZKRCEimUScWUiZfktArKsTb7jU+ipPlkeLbKu9NIRv1NfT36rPFY42RhSF1MVK84sQaJysr8hiXx5xEewGDZ8wLUbVM1voX6uRK/qIpucpPHMyyeC1i4vauBDfRexY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829564; c=relaxed/simple;
-	bh=iBn8xnGReTDV8PX3SnIiyWBMktcynjWHfJicdjrzqQM=;
+	s=arc-20240116; t=1780829889; c=relaxed/simple;
+	bh=Qmblrcb2bwwv4lRfnOeNeKmPMXYlzl5ewlluWfNgs74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pBLSQLCdfkeUot05TsUFP41esn+KA4IVWlN8ihwzeDx3cgV9R0r+TEQVchHMFAnWT0mB/TuwHdOjIU6H08zi1D41PCKX3vNv7qIUslAuozKQuI7IxTAY34OSRuxQd5RYbqWDumubYN6SlUQO5ICvECkkhuXGF9GF7ALxP5w+/S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbGDcWOB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CC31F00893;
-	Sun,  7 Jun 2026 10:52:42 +0000 (UTC)
+	 MIME-Version; b=T/GGoGy0CpXq8ju76gKkqXF6QlJT9yWOuunRLB1BXcBCACQ3GNkjHirMraKO+TS/fbkujjeZFPMu+LhlPlMFrsXIm6+EKYruThkzV4x02JKT6f+rO+UAce9js5ieF+QEmjtXUKC84RkHxSYdvMoKAIHfmrPdTCUaeCHzpV0lzeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpu2h2mK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B511F00893;
+	Sun,  7 Jun 2026 10:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829563;
-	bh=O3Xw0hgBE1FJ7Y9b7cqcTRC2xkbaWYIFtPeDB33nC1U=;
+	s=korg; t=1780829887;
+	bh=EdDTL58b9rVff4RzFSvngndDZcQFNPS7M8MuO4rkBP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tbGDcWOB29ajg041zsqT12ZOf6uBQfsufEPp4qHNXmmlfaXK54NnFY9/O0gQXBTYE
-	 jK10oUrnwbEBtopFo0xAwTUm6ZiV75gxJVEmFIP1Y0pkrtSCt1an4VMyg1GSS1kc1/
-	 qh4oxVOKvb2LkwA1GBX3wHisBgNRczXY3rBW69Bo=
+	b=cpu2h2mK/wZ5G+WBmAeWw+G0neAv5WdyYqcD7dIqz1AoluKLTdkgQ6f2AoxE3EPex
+	 elZKBx+uR1CeXYAmkr0Xi2L7hh2bO5cAUVat1TD5BNhWaEGf+Y7AYc5oYQ+HsMk9aq
+	 miqfy9wuDkZZaJqtpmHbsCQpmU7Q5txIK4BiJapw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 7.0 290/332] drm/gem: fix race between change_handle and handle_delete
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 262/307] USB: serial: cypress_m8: fix memory corruption with small endpoint
 Date: Sun,  7 Jun 2026 12:00:59 +0200
-Message-ID: <20260607095738.700475098@linuxfoundation.org>
+Message-ID: <20260607095737.326262384@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,83 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261801-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261713-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:airlied@redhat.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44A506501D6
+X-Rspamd-Queue-Id: C8950650653
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 7164d78559b0ff29931a366a840a9e5dd53d4b7c upstream.
+commit e1a9d791fd66ab2431b9e6f6f835823809869047 upstream.
 
-drm_gem_change_handle_ioctl leaves the old handle live in the IDR
-during the window between spin_unlock(table_lock) and the final
-spin_lock(table_lock). A concurrent drm_gem_handle_delete on the old
-handle succeeds in this window, decrements handle_count to 0, and frees
-the GEM object while the new handle's IDR entry still references it.
+Make sure that the interrupt-out endpoint max packet size is at least
+eight bytes to avoid user-controlled slab corruption or NULL-pointer
+dereference should a malicious device report a smaller size.
 
-NULL the old handle's IDR entry before dropping table_lock so that any
-concurrent GEM_CLOSE on the old handle sees NULL and returns -EINVAL.
-Restore the old entry on the prime-bookkeeping error path.
-
-Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/20260526085313.26791-1-kipreyyy@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
+Cc: stable@vger.kernel.org	# 2.6.26
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+[ johan: adjust context for 6.18 ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_gem.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/cypress_m8.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -1047,6 +1047,7 @@ int drm_gem_change_handle_ioctl(struct d
- 	       goto out_unlock;
-        }
+diff --git a/drivers/usb/serial/cypress_m8.c b/drivers/usb/serial/cypress_m8.c
+index eb47f35aab0ced..905f6a560e0455 100644
+--- a/drivers/usb/serial/cypress_m8.c
++++ b/drivers/usb/serial/cypress_m8.c
+@@ -445,6 +445,14 @@ static int cypress_generic_port_probe(struct usb_serial_port *port)
+ 		return -ENODEV;
+ 	}
  
-+	idr_replace(&file_priv->object_idr, NULL, args->handle);
- 	spin_unlock(&file_priv->table_lock);
- 
- 	if (obj->dma_buf) {
-@@ -1055,6 +1056,7 @@ int drm_gem_change_handle_ioctl(struct d
- 		if (ret < 0) {
- 			spin_lock(&file_priv->table_lock);
- 			idr_remove(&file_priv->object_idr, handle);
-+			idr_replace(&file_priv->object_idr, obj, args->handle);
- 			spin_unlock(&file_priv->table_lock);
- 			goto out_unlock;
- 		}
++	/*
++	 * The buffer must be large enough for the one or two-byte header (and
++	 * following data), but assume anything smaller than eight bytes is
++	 * broken.
++	 */
++	if (port->interrupt_out_size < 8)
++		return -EINVAL;
++
+ 	priv = kzalloc(sizeof(struct cypress_private), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+-- 
+2.53.0
+
 
 
 
