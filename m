@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-261208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8et+HJVHJWqHFwIAu9opvQ
-	(envelope-from <stable+bounces-261208-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:33 +0200
+	id p3XWB4pGJWr8FgIAu9opvQ
+	(envelope-from <stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C0C64FAB1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0864F999
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M9aBWi2M;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261208-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261208-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BPYIZgri;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261222-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D9C53027B48
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CF5F301F795
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2463C4071DD;
-	Sun,  7 Jun 2026 10:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20C52EC54A;
+	Sun,  7 Jun 2026 10:22:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1E72AD00;
-	Sun,  7 Jun 2026 10:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2CB2E7368;
+	Sun,  7 Jun 2026 10:22:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827664; cv=none; b=qSC/VLQKfnNw7c/Azg5+MFWoHL6EjH+AcDPmrHMcnNuR6h2F/g7MRzKS8OhlDNUKZakXpXh8PqraU9LE98m41+iHhmTwwxUXMYuRYDlPGIwJk3SK2grvQJ+il+lABkpBntIC8Er4OcUzSe9Eq4ux9332ZWGhgVqP0RQUgfIgQkM=
+	t=1780827721; cv=none; b=BedbM+vTOYogJ4zzCfMuiMqrNGzeIcaMYbMrlqGhCsnTwJlD1oCH7mGnJCmBazerYc5ZYs2WrX8iRdNgcmXNr0ZQsbFbkZsDLv6gHqWBHswB/DeYQy9RMbmTQxXTdP739/qkR+0QMbFWvm8qwOaU8glP44lY6EEISm0XXmCf9hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827664; c=relaxed/simple;
-	bh=7YCfFfuMTb3u7scUHEzhpzGHqx5UntI6DuSp0G9NsrA=;
+	s=arc-20240116; t=1780827721; c=relaxed/simple;
+	bh=TAfEUHQ0Xf0JaEyeR7kxQl2x2ZiTVWmulnz+gqYQVbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8ChrYhvLbXHpZ5Fn533t6ddhZOPA/Km1OqHWM17njfH8TRSYZKVgDCK+Lx7oPQCUzTs+BKVs0YXB9fvUZfLXRU1lzapnjn17pXcdV58Rndu6mfNODg0nWhmDPMvIagk3kaAedl4T/JA926wXEDEh3SrMlWiq6E7NRwGr3Ymohs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9aBWi2M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDB31F00893;
-	Sun,  7 Jun 2026 10:21:02 +0000 (UTC)
+	 MIME-Version; b=ZNUsE2MdQri30JYFVOMv0pzvbNm//KOxj/g+6bWGyBRkZQaYR0rSoEsXPAxgoK3qmbMkNo7XJXZMAfSi2CJtqdkFbXOvkEaxAZUxRz5BGwcyoZjZRZ1V6l2ttTmtOxO6LlXNhVrjeGle2BcFZ5xczWqfEznfpUiIbZS6esZpvv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPYIZgri; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3E01F00893;
+	Sun,  7 Jun 2026 10:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827663;
-	bh=Dcl76FPUl9Ku84DXnoZqG2fAgrqYyxFqSwncaDR0eeU=;
+	s=korg; t=1780827720;
+	bh=h1gES4LvaVSt4TcsBysO7iAn2a4972wy2Yorz2xH4IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M9aBWi2Muu2gUw1UDfmDGrGu8G3meNJWybihxurkunC3exNcxkbgFRcQKejWsFkYL
-	 V8jPCHWtnYXvkIjrEKTpXx2t4AsLYIvY4BsQbSZz7Mp/ckosQs3JeJpbmldmbRRiMo
-	 HZ8EoSqOqIiMXfTn1oGvF1A1F2ZctezQJlFcSZ3k=
+	b=BPYIZgriguK4HFbTVzBI1dYuw8VkvBguy6yFU6U4Ll/G/080bIsMATfjC6xUei5Oi
+	 dYl2sOU+RFTyXxHqUw4CH5AINoBVhY+7c+VwktRJL9lzbEJNxKQUqHdb4HAJ4lsZNV
+	 w0EW/KH9VfNSQS20/V+XJH/clrUOv7BlKZ1HQOIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <malin89@huawei.com>,
-	Rongzhen Cui <cuirongzhen@huawei.com>,
-	Jingguo Tan <tanjingguo@huawei.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 091/315] vsock/virtio: bind uarg before filling zerocopy skb
+Subject: [PATCH 6.12 081/307] nvme-tcp: store negative errno in queue->tls_err
 Date: Sun,  7 Jun 2026 11:57:58 +0200
-Message-ID: <20260607095730.969886994@linuxfoundation.org>
+Message-ID: <20260607095730.748831594@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261208-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261222-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:cuirongzhen@huawei.com,m:tanjingguo@huawei.com,m:avkrasnov@salutedevices.com,m:mst@redhat.com,m:sgarzare@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:alistair.francis@wdc.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,98 +97,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,salutedevices.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wdc.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1C0C64FAB1
+X-Rspamd-Queue-Id: 7FD0864F999
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingguo Tan <tanjingguo@huawei.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1e584c304cfb94a759417130b1fc6d30b30c4cce ]
+[ Upstream commit 9015985b5eb1a90eb86caf5bce1dfcf1aa38f8ad ]
 
-virtio_transport_send_pkt_info() allocates or reuses the zerocopy uarg
-before entering the send loop, but virtio_transport_alloc_skb() still
-fills the skb before it inherits that uarg. When fixed-buffer vectored
-zerocopy hits MAX_SKB_FRAGS, io_sg_from_iter() may partially attach
-managed frags and return -EMSGSIZE. The rollback path call kfree_skb()
-to free an skb that carries SKBFL_MANAGED_FRAG_REFS but no uarg, so
-skb_release_data() falls through to ordinary frag unref.
+nvme_tcp_tls_done() assigns queue->tls_err in three branches.  The
+ENOKEY lookup failure and the EOPNOTSUPP initializer both store
+negative errnos.  The third branch, reached when the handshake
+layer reports a non-zero status, stores -status.
 
-Pass the uarg into virtio_transport_alloc_skb() and bind it immediately
-before virtio_transport_fill_skb(). This keeps control or no-payload skbs
-untouched while ensuring success and rollback share one lifetime rule.
+The handshake layer delivers status to the consumer callback as a
+negative errno; the other in-tree consumers --
+xs_tls_handshake_done() and the nvmet target callback -- treat
+their status argument that way.  The extra negation in
+nvme_tcp_tls_done() flips the sign, leaving tls_err as a positive
+value (for instance, +EIO), which nvme_tcp_start_tls() then
+returns to its caller.
 
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Signed-off-by: Lin Ma <malin89@huawei.com>
-Signed-off-by: Rongzhen Cui <cuirongzhen@huawei.com>
-Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260527023301.1075581-1-malin89@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Drop the extra negation so queue->tls_err uniformly carries a
+negative errno on failure.
+
+Fixes: be8e82caa685 ("nvme-tcp: enable TLS handshake upcall")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-2-66c616906ead@oracle.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/nvme/host/tcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 1e07d3b1a0e800..c925b5c5b35a57 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -207,6 +207,7 @@ static u16 virtio_transport_get_type(struct sock *sk)
- static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *info,
- 						  size_t payload_len,
- 						  bool zcopy,
-+						  struct ubuf_info *uarg,
- 						  u32 src_cid,
- 						  u32 src_port,
- 						  u32 dst_cid,
-@@ -247,6 +248,12 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
- 	if (info->msg && payload_len > 0) {
- 		int err;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 77df3432dfb78e..31406438e3ff2d 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1719,7 +1719,7 @@ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
+ 		qid, pskid, status);
  
-+		/* Bind the zerocopy lifetime before filling frags so error
-+		 * rollback frees managed fixed-buffer pages through
-+		 * the uarg-aware path.
-+		 */
-+		skb_zcopy_set(skb, uarg, NULL);
-+
- 		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
- 		if (err)
- 			goto out;
-@@ -366,6 +373,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		skb_len = min(max_skb_len, rest_len);
+ 	if (status) {
+-		queue->tls_err = -status;
++		queue->tls_err = status;
+ 		goto out_complete;
+ 	}
  
- 		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
-+						 uarg,
- 						 src_cid, src_port,
- 						 dst_cid, dst_port);
- 		if (!skb) {
-@@ -373,8 +381,6 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 			break;
- 		}
- 
--		skb_zcopy_set(skb, uarg, NULL);
--
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
- 		ret = t_ops->send_pkt(skb);
-@@ -1161,7 +1167,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
- 	if (!t)
- 		return -ENOTCONN;
- 
--	reply = virtio_transport_alloc_skb(&info, 0, false,
-+	reply = virtio_transport_alloc_skb(&info, 0, false, NULL,
- 					   le64_to_cpu(hdr->dst_cid),
- 					   le32_to_cpu(hdr->dst_port),
- 					   le64_to_cpu(hdr->src_cid),
 -- 
 2.53.0
 
