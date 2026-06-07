@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-261224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IllhK5JGJWoAFwIAu9opvQ
-	(envelope-from <stable+bounces-261224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:14 +0200
+	id GL/cHnRHJWp8FwIAu9opvQ
+	(envelope-from <stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB6A64F9A2
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CE564FA9F
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Grgx2Aqz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261224-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261224-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sWbSrVb3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77FC43020ECD
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 486453011C4B
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3B22EC54A;
-	Sun,  7 Jun 2026 10:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD34D2ECEB9;
+	Sun,  7 Jun 2026 10:20:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005F14071CE;
-	Sun,  7 Jun 2026 10:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D28C2EB87F;
+	Sun,  7 Jun 2026 10:20:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827728; cv=none; b=PQfwF5k/lVAVPEIgxwKRiZ3K/jGUDPRpT5qHWr/BghBShawvZkQwdcukw00iXb0aTrJdLs0cEr9dOejUyEAX2VppQLe3KA7tgzli3M/fENO+/28DJq+0IGbqe9SfyW/NUG/gkKPRZFHk0Vrenawchb7R9scwxPn61FnGQ5XF/tY=
+	t=1780827630; cv=none; b=iaz+4cjcz8CdEqQ+yMdxWJ29WC4YwhHL5z7NGcYtV4OzPlRN0HklFI//4uFh+fi7l2IzOTrkmtwFCUz0DQ0qsuJtsqReh1V6hdwRexQRxaDDrl52Era6wTV+liFYRi6+5lojPfPxMse6LSRqSlzoBrn9AiT+qhWXTqTHNh39e3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827728; c=relaxed/simple;
-	bh=he2VtMMgWDa6gMhv5Sz94+wuHOwKYx5mdDrzgWxDYgo=;
+	s=arc-20240116; t=1780827630; c=relaxed/simple;
+	bh=mFiFUUhrdTUfVzD6H0mr3IGkVg8uHo6t88ZzTCqdj+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oovysYtjyVdWX8ficle4Jw7e11dgLaX9YHUEtgmlbwGdU34wz1Vgo9JTTMEpdEdpCwhWmqmDiaM8FBzS9s6VYZbssBGlOkMLgr70rGVVOXy15eolTmga6zV0Wmp7hle4OU4Vigojn3lV+A1Ft8mY05OepB40cyyt4+bqEal3pMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Grgx2Aqz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBFF1F00893;
-	Sun,  7 Jun 2026 10:22:06 +0000 (UTC)
+	 MIME-Version; b=DitjmaFzdiOCwxMdqctYP7qMNuuWMqzESz9N0cuVA3tRd3+eZkGF3QHg/ISIjYZLL0EoqhjXyxvnkNDXCgW6olrM/kKvRO506fpfVaBiDamppPide5/NRuJFmRyxRJfBp1qIZ1DQxaMr5QKI9t9C1gL+YGBPInuc9mVdHuDUNUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWbSrVb3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A31F00893;
+	Sun,  7 Jun 2026 10:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827727;
-	bh=qWNEnJUsQbQmgFVbr54+bOPd26MsDY+P3neezdvQaiI=;
+	s=korg; t=1780827629;
+	bh=QFdFqSJKhqzo83ll3291rcxA0rwKDKkf0yHd4oev+pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Grgx2AqzzY/UkiPC/oGs3FGIEMD+lu/eHZx+9B/ajDPN/O882hoBofmBeFrJktRRT
-	 GktZy0ouybDRNDKLyznHjhgEXR8Ssm8ZPSQc3LaLtVH7vo7qCHFpc8Eef9gNvlinDo
-	 HxlU+NRssbR5cPlArE6kjOetxun9o7Qb3c0FFoqI=
+	b=sWbSrVb3ywGdidSPSG9Me1hE8i/8+/h2p3GRPc6OzBoG/9xbAJJtsb1lfM3x6s61i
+	 oDOeQ002lOtGpkZhdedjX9GYs5Ie+2UGdm5nlEHecdIHpYzEd4jJOkZOoGUoWPAZ3U
+	 fme7GUhtjFS9DX8LVbaN9VT3/Ul70UNEP/OJu6QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 102/332] gpio: virtuser: Fix uninitialized data bug in gpio_virtuser_direction_do_write()
+Subject: [PATCH 6.12 074/307] net/sched: fix packet loop on netem when duplicate is on
 Date: Sun,  7 Jun 2026 11:57:51 +0200
-Message-ID: <20260607095731.880491623@linuxfoundation.org>
+Message-ID: <20260607095730.481390690@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +73,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261224-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:error27@gmail.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261199-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@willsroot.io,m:savy@syst3mfailure.io,m:victor@mojatatu.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,willsroot.io:email,msgid.link:url,mojatatu.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,syst3mfailure.io:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FB6A64F9A2
+X-Rspamd-Queue-Id: E6CE564FA9F
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <error27@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 8a122b5e72cc0043705f0d524bcd15f0c0b3ec15 ]
+[ Upstream commit 9552b11e3edabc97cfcd9f29103d5afbce7ae183 ]
 
-If *ppos is non-zero (user-space write split over multiple calls to
-write()) then simple_write_to_buffer() won't initialize the start of the
-buffer. Really, non-zero values for *ppos aren't going to work at all.
-Check for that and return -EINVAL at the start of the function.
+When netem duplicates a packet it re-enqueues the copy at the root qdisc.
+If another netem sits in the tree the copy can be duplicated
+again, recursing until the stack or memory is exhausted.
 
-Fixes: 91581c4b3f29 ("gpio: virtuser: new virtual testing driver for the GPIO API")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
-Link: https://patch.msgid.link/ahP3BJWWy-m_qI0X@stanley.mountain
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+The original duplication guard temporarily zeroed q->duplicate around
+the re-enqueue, but that does not cover all cases because it is
+per-qdisc state shared across all concurrent enqueue paths
+and is not safe without additional locking.
+
+Use the skb tc_depth field introduced in an earlier patch:
+ - increment it on the duplicate before re-enqueue
+ - skip duplication for any skb whose tc_depth is already non-zero.
+
+This marks the packet itself rather than mutating qdisc state,
+therefore it is safe regardless of tree topology or concurrency.
+
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Closes: https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: William Liu <will@willsroot.io>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-5-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-virtuser.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_netem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-virtuser.c b/drivers/gpio/gpio-virtuser.c
-index 955b5efc283ef5..c6f16cb02bf6b8 100644
---- a/drivers/gpio/gpio-virtuser.c
-+++ b/drivers/gpio/gpio-virtuser.c
-@@ -399,7 +399,7 @@ static ssize_t gpio_virtuser_direction_do_write(struct file *file,
- 	char buf[32], *trimmed;
- 	int ret, dir, val = 0;
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 1fdebf2ab7ee46..136b7d81296eff 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -459,7 +459,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	skb->prev = NULL;
  
--	if (count >= sizeof(buf))
-+	if (*ppos != 0 || count >= sizeof(buf))
- 		return -EINVAL;
+ 	/* Random duplication */
+-	if (q->duplicate && q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
++	if (q->duplicate && skb->tc_depth == 0 &&
++	    q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
+ 		++count;
  
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
-@@ -624,7 +624,7 @@ static ssize_t gpio_virtuser_consumer_write(struct file *file,
- 	char buf[GPIO_VIRTUSER_NAME_BUF_LEN + 2];
- 	int ret;
+ 	/* Drop packet? */
+@@ -538,11 +539,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	 */
+ 	if (skb2) {
+ 		struct Qdisc *rootq = qdisc_root_bh(sch);
+-		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
  
--	if (count >= sizeof(buf))
-+	if (*ppos != 0 || count >= sizeof(buf))
- 		return -EINVAL;
+-		q->duplicate = 0;
++		skb2->tc_depth++; /* prevent duplicating a dup... */
+ 		rootq->enqueue(skb2, rootq, to_free);
+-		q->duplicate = dupsave;
+ 		skb2 = NULL;
+ 	}
  
- 	ret = simple_write_to_buffer(buf, GPIO_VIRTUSER_NAME_BUF_LEN, ppos,
 -- 
 2.53.0
 
