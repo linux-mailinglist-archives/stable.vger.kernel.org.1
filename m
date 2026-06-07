@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BNdVOXFGJWruFgIAu9opvQ
-	(envelope-from <stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:41 +0200
+	id 9I3LEg9GJWqyFgIAu9opvQ
+	(envelope-from <stable+bounces-261207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18B264F979
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D765664F8E4
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QsijH+84;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zsdzHPYn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261207-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261207-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EC4593002327
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 430893003635
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2857C31E832;
-	Sun,  7 Jun 2026 10:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6736F30148C;
+	Sun,  7 Jun 2026 10:21:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA052E7179;
-	Sun,  7 Jun 2026 10:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422A42AD00;
+	Sun,  7 Jun 2026 10:20:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827759; cv=none; b=neH2vPdxLjBIyH45YeSY7Z3mcBSI7okTUO3n1hdVp6LhhlnSRqr+F26jRAHjFJJbr3ukSfIdfcz3xWm/NryTe0ah2wTgFatKa4pgm3qPA8b3xFQC9g45YzrnDn3fMQYslBo6Tbhoub7sVp9BhwiRgeGVbiyJHse2eMrvhFsiUCY=
+	t=1780827660; cv=none; b=ucFSBv1aAO6dzpvDlKkG9F4fChlrp/4Brfbh2/rcA00302SZp+26UcjIS5HkBicCd7IbxDz2jPZ3xeZoid5O9lm+dXQvx/zi5PNntEdmkHZyhdggQEKN8+DrSWWjZKnyFh9/2JZJbGwKXsCFFKA+wBUcNoaVqgzlqc5bdMa5A44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827759; c=relaxed/simple;
-	bh=zvZ6abs4polxA6kjZPBqLExiMutUiIJmVXgRdXoNUpw=;
+	s=arc-20240116; t=1780827660; c=relaxed/simple;
+	bh=GQfoZVCq8o5nUC1rbyE2cOMXBKvRKvHx41K/9Y3yzGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5+xIScmB/UUikSG05QCeZnPTj+tJdAi4HkdXnwjr+ZMDdrKlEABMy7xYjMzXqFMZPlvj6W0NrSDRbs1oTA9Cr1NaeNuM4zyyoBekLikpIcQkg7wdEPtqmiND5cdrVLE755A0aMg6T6GYmu1UvQVQCrAX/1zfAKmhVeJok7kHpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsijH+84; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6991F00893;
-	Sun,  7 Jun 2026 10:22:36 +0000 (UTC)
+	 MIME-Version; b=OHgGyZdlycJOdgTkR/bMoh9SrY8g1oqGddzwjn6TTO6nWeO2sNS5kQwEvDPHuHlv7oJKWxcnIRYWlTDYq5Bzn9FbfriZVJqOsvsFWNzdTrk2kni9zqNH1O6EnyD5IxltKM4O0qI5UMWgJHnMDloA5GkKA1bVLAUc4wmNBPoC7jQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsdzHPYn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906521F00893;
+	Sun,  7 Jun 2026 10:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827757;
-	bh=0FVvtd+TUCebiS+mKR9GpDKYkWnFrJRQg9N9msnEqHM=;
+	s=korg; t=1780827659;
+	bh=/Y9O9t691YeoJYDgrJpsmtZz8HQt17BwQtxl4qjwiGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QsijH+84ntpPZNa1hRHfPcHtIo1U9eduv22xj9s/pHyK9nAjA3Qur/SclmuSrevX3
-	 9diIm7DE/0C+0WXxSSSS45rei/iWQf13Tqbt6XT4XJgdTwCUkPoUXBYIcqo5kezn6N
-	 iwX4V70fK2JHKaM6fx1gXaUIgbSQUoYXvg+Nt50M=
+	b=zsdzHPYnNBhhP66iMS7DF8URC+bCzYCFxzp9H2RL/mgYjg9BMcupaHXA4NvOg7yVL
+	 XFG9zZIlKC8IBgH/Z9anKjqYuOmA/qC2tmnRrmNY9aAeP8M5Sn9FehRcPhZEtQxBws
+	 JtMt3A3Kc+EaVolnePA2QRSHTyk2r3kBDqsEwgM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/307] net/handshake: Take a long-lived file reference at submit
+Subject: [PATCH 7.0 112/332] net: skbuff: fix pskb_carve leaking zcopy pages
 Date: Sun,  7 Jun 2026 11:58:01 +0200
-Message-ID: <20260607095730.856693208@linuxfoundation.org>
+Message-ID: <20260607095732.227474620@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,224 +70,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261232-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261207-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemdebruijn.kernel@gmail.com,m:asml.silence@gmail.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,m:willemdebruijnkernel@gmail.com,m:asmlsilence@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A18B264F979
+X-Rspamd-Queue-Id: D765664F8E4
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 09dba37eee70d0596e26645015f1aa95a9848e9d ]
+[ Upstream commit ff6e798c2eac3ebd0501ad7e796f583fab928de8 ]
 
-handshake_nl_accept_doit() needs the file pointer backing
-req->hr_sk->sk_socket to survive the window between
-handshake_req_next() and the subsequent FD_PREPARE() and get_file().
-The submit-side sock_hold() does not provide that.  sk_refcnt keeps
-struct sock alive, but struct socket is owned by sock->file: when
-the consumer fputs the last file reference, sock_release() tears
-the socket down regardless of any sock_hold.
+When SKBFL_MANAGED_FRAG_REFS is set, frag pages are not refcounted but
+their lifetime is controlled by the attached ubuf_info. To make a copy
+of the skb_shared_info, we either should clear the flag and reference
+the frags, or keep the flag and have frags unreferenced.
 
-Add an hr_file pointer to struct handshake_req and acquire an
-explicit reference on sock->file during handshake_req_submit().
-handshake_complete() and handshake_req_cancel() release the
-reference on the completion-bit-winning path.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() don't
+follow the rule and thus can leak page references. Let's clear
+SKBFL_MANAGED_FRAG_REFS from the original skb to fix it. It's the
+simplest way to address it, but there are more performant ways to do
+that if it ever becomes a problem.
 
-The submit error path must also release the file reference, but
-after rhashtable insertion a concurrent handshake_req_cancel() can
-discover the request and race the error path.  Gate the error-path
-cleanup -- sk_destruct restoration, fput, and request destruction
--- with test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED), the same
-serialization handshake_complete() and handshake_req_cancel()
-already use.  When cancel has already claimed ownership, the submit
-error path returns without touching the request; socket teardown
-handles final destruction.
-
-The accept-side dereferences are not yet retargeted; that change
-comes in the next patch.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-4-66c616906ead@oracle.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: ea5fe6a73ca5 ("net/handshake: Drain pending requests at net namespace exit")
+Link: https://lore.kernel.org/all/20260523085809.26331-1-nvminh232@clc.fitus.edu.vn/
+Fixes: 753f1ca4e1e50 ("net: introduce managed frags infrastructure")
+Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/handshake/handshake.h |  2 ++
- net/handshake/netlink.c   |  6 ------
- net/handshake/request.c   | 42 ++++++++++++++++++++++++++++++++-------
- 3 files changed, 37 insertions(+), 13 deletions(-)
+ net/core/skbuff.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
-index 2289b0e274f40a..da61cadd1ad3e7 100644
---- a/net/handshake/handshake.h
-+++ b/net/handshake/handshake.h
-@@ -24,6 +24,7 @@ enum hn_flags_bits {
- 	HANDSHAKE_F_NET_DRAINING,
- };
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 13af6f35428d52..95ef64fad657d3 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6847,6 +6847,11 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 	skb_copy_from_linear_data_offset(skb, off, data, new_hlen);
+ 	skb->len -= off;
  
-+struct file;
- struct handshake_proto;
- 
- /* One handshake request */
-@@ -32,6 +33,7 @@ struct handshake_req {
- 	struct rhash_head		hr_rhash;
- 	unsigned long			hr_flags;
- 	const struct handshake_proto	*hr_proto;
-+	struct file			*hr_file;
- 	struct sock			*hr_sk;
- 	void				(*hr_odestruct)(struct sock *sk);
- 
-diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
-index d8211e0ba75c69..86a12c9125d403 100644
---- a/net/handshake/netlink.c
-+++ b/net/handshake/netlink.c
-@@ -211,12 +211,6 @@ static void __net_exit handshake_net_exit(struct net *net)
- 	while (!list_empty(&requests)) {
- 		req = list_first_entry(&requests, struct handshake_req, hr_list);
- 		list_del(&req->hr_list);
--
--		/*
--		 * Requests on this list have not yet been
--		 * accepted, so they do not have an fd to put.
--		 */
--
- 		handshake_complete(req, -ETIMEDOUT, NULL);
- 	}
- }
-diff --git a/net/handshake/request.c b/net/handshake/request.c
-index 62efb7e32730ea..35bc6290e12033 100644
---- a/net/handshake/request.c
-+++ b/net/handshake/request.c
-@@ -13,6 +13,7 @@
- #include <linux/module.h>
- #include <linux/skbuff.h>
- #include <linux/inet.h>
-+#include <linux/file.h>
- #include <linux/rhashtable.h>
- 
- #include <net/sock.h>
-@@ -215,9 +216,16 @@ EXPORT_SYMBOL_IF_KUNIT(handshake_req_next);
-  * A zero return value from handshake_req_submit() means that
-  * exactly one subsequent completion callback is guaranteed.
-  *
-- * A negative return value from handshake_req_submit() means that
-- * no completion callback will be done and that @req has been
-- * destroyed.
-+ * A negative return value from handshake_req_submit() guarantees that
-+ * no completion callback will occur and that @req is no longer owned by
-+ * the caller. If cancellation wins the completion race after the request
-+ * has been published, final destruction is deferred until socket teardown.
-+ *
-+ * The caller must hold a reference on @sock->file for the duration
-+ * of this call. Once the request is published to the accept side, a
-+ * concurrent completion or cancellation may release the request's pin on
-+ * @sock->file; the caller's reference is what keeps @sock->sk valid until
-+ * handshake_req_submit() returns.
-  */
- int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- 			 gfp_t flags)
-@@ -236,6 +244,14 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- 		kfree(req);
- 		return -EINVAL;
- 	}
-+
-+	/*
-+	 * Pin sock->file for the lifetime of the request so the
-+	 * accept side does not race a consumer that releases the
-+	 * socket while a handshake is pending.
++	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
++	 * while refcounting frags below.
 +	 */
-+	req->hr_file = get_file(sock->file);
++	skb_zcopy_downgrade_managed(skb);
 +
- 	req->hr_odestruct = req->hr_sk->sk_destruct;
- 	req->hr_sk->sk_destruct = handshake_sk_destruct;
+ 	memcpy((struct skb_shared_info *)(data + size),
+ 	       skb_shinfo(skb),
+ 	       offsetof(struct skb_shared_info,
+@@ -6958,6 +6963,11 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+ 		return -ENOMEM;
+ 	size = SKB_WITH_OVERHEAD(size);
  
-@@ -267,7 +283,11 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- 			goto out_err;
- 	}
- 
--	/* Prevent socket release while a handshake request is pending */
-+	/*
-+	 * Pin struct sock so sk_destruct does not run until the
-+	 * handshake completion path releases it; struct socket is
-+	 * held separately via hr_file above.
++	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
++	 * while refcounting frags below.
 +	 */
- 	sock_hold(req->hr_sk);
- 
- 	trace_handshake_submit(net, req, req->hr_sk);
-@@ -276,10 +296,13 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
- out_unlock:
- 	spin_unlock_bh(&hn->hn_lock);
- out_err:
--	/* Restore original destructor so socket teardown still runs on failure */
--	req->hr_sk->sk_destruct = req->hr_odestruct;
- 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
--	handshake_req_destroy(req);
-+	if (!test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
-+		/* Restore original destructor so socket teardown still runs. */
-+		req->hr_sk->sk_destruct = req->hr_odestruct;
-+		fput(req->hr_file);
-+		handshake_req_destroy(req);
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL(handshake_req_submit);
-@@ -291,11 +314,15 @@ void handshake_complete(struct handshake_req *req, int status,
- 	struct net *net = sock_net(sk);
- 
- 	if (!test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
-+		struct file *file = req->hr_file;
++	skb_zcopy_downgrade_managed(skb);
 +
- 		trace_handshake_complete(net, req, sk, status);
- 		req->hr_proto->hp_done(req, status, info);
- 
- 		/* Handshake request is no longer pending */
- 		sock_put(sk);
-+
-+		fput(file);
- 	}
- }
- EXPORT_SYMBOL_IF_KUNIT(handshake_complete);
-@@ -344,6 +371,7 @@ bool handshake_req_cancel(struct sock *sk)
- 
- 	/* Handshake request is no longer pending */
- 	sock_put(sk);
-+	fput(req->hr_file);
- 	return true;
- }
- EXPORT_SYMBOL(handshake_req_cancel);
+ 	memcpy((struct skb_shared_info *)(data + size),
+ 	       skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
+ 	if (skb_orphan_frags(skb, gfp_mask)) {
 -- 
 2.53.0
 
