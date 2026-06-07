@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-260995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bYm3KDpDJWo2FQIAu9opvQ
-	(envelope-from <stable+bounces-260995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:58 +0200
+	id 9QAJISNDJWopFQIAu9opvQ
+	(envelope-from <stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2705B64F598
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3475564F575
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:08:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=atETCDbq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260995-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260995-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wnagz0ZA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260976-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F163B300E3D6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C6C43015D1E
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A6A308F0A;
-	Sun,  7 Jun 2026 10:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258552F7EFE;
+	Sun,  7 Jun 2026 10:07:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F045B1DE8AE;
-	Sun,  7 Jun 2026 10:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBEC234994;
+	Sun,  7 Jun 2026 10:07:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826905; cv=none; b=XrW9OxiGiGNc/ulthpk0OjD2/XE10zb2ZWHbefjeZMP760h72YhdaDEpViXkRjAtKb+RdS1DOm0R6Pi3CslyN7a8LEGEaDyPoJ9h5xhSY4pUnC7kC4m81eYD1CVFSxeNuzoC6DUCrABEzo1eqm+A7lP7L645MXIrYZWTWiNCV6E=
+	t=1780826840; cv=none; b=Rs0wkDONZS16KsXMhrW6ATCQVZzVKhTDg5E40fLByBnKd9DKtJEXbIJNCavjhxHGigwZecKP6uvzABEr7BPHV4vQc5yGOSy4xVbbw2/+MY+FkuOECiz8QywaeOqqKJUnWLIGdIX+CCS52Ljhv6LlcMAn+qxKkipXPncHnqMa8ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826905; c=relaxed/simple;
-	bh=7+zrtTTn2/iy642pGY42/TYCkJfnOPJIvwQO3Z5jYuk=;
+	s=arc-20240116; t=1780826840; c=relaxed/simple;
+	bh=ZbbotknhWcylVXe8sNN7jpS1lkiwVUj2xG5xrTtJMFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0EGhSbDnlOH57CpL7c/zbndJDOdeLHv3D3BMcBO7TlwOfjvL2RimPudyOELo5D36i6qo3s2iBi+n1pRq0WsDpDfa9aCP+5tjlxqUOeSZ5pH4NgSqb2/vo8HA4DosbbcTLo75AovnsXD1zQc/Ow24VV6iGaq54vGqlzygI4el6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atETCDbq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497F51F00893;
-	Sun,  7 Jun 2026 10:08:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O8i4vsulkIsTgBegXKY6UFNwRP27PkFqv8vhFs51l5EbBcEn9sIGQAarUhQlARfjP9h3hryZCy0oa/gKDPUijRhvFJnQWMTCdlTVnNd6qwOQDwwTCNm1h9sDu2or+vDrjfscRxOEJ1k5NBkWO7jgrR50PfeUyqLQ1fU1/CY/fwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnagz0ZA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8781F00893;
+	Sun,  7 Jun 2026 10:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826903;
-	bh=eosu3afRcl15bSR87uhlC3IdEHdi1D7DHa30bmR9+gg=;
+	s=korg; t=1780826839;
+	bh=Ty25WKT8XsLbvQ//0KlOqYSav23lSOz+L55OS3rJ/+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=atETCDbqvfN6TgBfEEXSS5js1p8wcN3OZd0OGpCqlPiGu1XkniAwNA4B542i1cSnO
-	 xtfNdjmT1op4b0UFYF2sVjkNvGd3Wjx9u6Ax2/7DHUWnNimyI5F5J2lDWk2gSMMaqh
-	 zdwV09EpqtHyuuxLUj/evo3jAJaTxlgwekb5R4NI=
+	b=wnagz0ZAVmPAnmgRTwuEXwpNHS2DyOTzdTpC/hFHTflaZu9nyeIzqapSjQbcxRKt7
+	 Tv+Kf53TcbuIeVbLKLpWtB53+NdgRLSg/tdJ0u2rhPfyzIHVubmZhZu+N4GoyUaOQk
+	 ZWEcVezA69TAHw9seDCZ5XdgWH+OdmA3SY/y+fZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/307] net: mctp: ensure our nlmsg responses are initialised
-Date: Sun,  7 Jun 2026 11:56:42 +0200
-Message-ID: <20260607095727.843003200@linuxfoundation.org>
+Subject: [PATCH 7.0 034/332] ASoC: Intel: bytcht_es8316: Fix MCLK leak on init errors
+Date: Sun,  7 Jun 2026 11:56:43 +0200
+Message-ID: <20260607095729.348996909@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,113 +65,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-260976-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-260995-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:horms@kernel.org,m:kuba@kernel.org,m:1468888505@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,codeconstruct.com.au,kernel.org,139.com];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,codeconstruct.com.au:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2705B64F598
+X-Rspamd-Queue-Id: 3475564F575
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit a6a9bc544b675d8b5180f2718ec985ad267b5cbf ]
+[ Upstream commit afb2a3a9d8369d18122a0d7cd294eba9a98259c6 ]
 
-Syed Faraz Abrar (@farazsth98) from Zellic, and Pumpkin (@u1f383) from
-DEVCORE Research Team working with Trend Micro Zero Day Initiative
-report that a RTM_GETNEIGH will return uninitalised data in the pad
-bytes of the ndmsg data.
+byt_cht_es8316_init() enables MCLK before configuring the codec sysclk
+and creating the headset jack. If either of those later steps fails, the
+function returns without disabling MCLK, leaving the clock enabled after
+card registration fails.
 
-Ensure we're initialising the netlink data to zero, in the link, addr
-and neigh response messages.
+Track whether this driver enabled MCLK and disable it on the init error
+paths. Add the matching DAI link exit callback so the same clock enable
+is also balanced when ASoC cleans up a successfully initialized link.
 
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260209-dev-mctp-nlmsg-v1-1-f1e30c346a43@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: a03bdaa565cb ("ASoC: Intel: add machine driver for BYT/CHT + ES8316")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260519-asoc-bytcht-es8316-mclk-leak-v1-1-b4a11cdc2afd@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/device.c | 1 +
- net/mctp/neigh.c  | 1 +
- net/mctp/route.c  | 1 +
- 3 files changed, 3 insertions(+)
+ sound/soc/intel/boards/bytcht_es8316.c | 29 ++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 8d1386601bbe06..67576cb2728ece 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -70,6 +70,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb,
- 		return -EMSGSIZE;
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index 192e2a394ff3d0..ea387dc7427382 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -40,6 +40,7 @@ struct byt_cht_es8316_private {
+ 	struct gpio_desc *speaker_en_gpio;
+ 	struct device *codec_dev;
+ 	bool speaker_en;
++	bool mclk_enabled;
+ };
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ifa_family = AF_MCTP;
- 	hdr->ifa_prefixlen = 0;
- 	hdr->ifa_flags = 0;
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index 590f642413e4ef..c0151a69d2b7c2 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -218,6 +218,7 @@ static int mctp_fill_neigh(struct sk_buff *skb, u32 portid, u32 seq, int event,
- 		return -EMSGSIZE;
+ enum {
+@@ -170,6 +171,15 @@ static struct snd_soc_jack_pin byt_cht_es8316_jack_pins[] = {
+ 	},
+ };
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ndm_family = AF_MCTP;
- 	hdr->ndm_ifindex = dev->ifindex;
- 	hdr->ndm_state = 0; // TODO other state bits?
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index ccba2abbbbfbcc..35a0681123a33f 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1405,6 +1405,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 		return -EMSGSIZE;
++static void byt_cht_es8316_disable_mclk(struct byt_cht_es8316_private *priv)
++{
++	if (!priv->mclk_enabled)
++		return;
++
++	clk_disable_unprepare(priv->mclk);
++	priv->mclk_enabled = false;
++}
++
+ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ {
+ 	struct snd_soc_component *codec = snd_soc_rtd_to_codec(runtime, 0)->component;
+@@ -227,12 +237,14 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ 	ret = clk_prepare_enable(priv->mclk);
+ 	if (ret)
+ 		dev_err(card->dev, "unable to enable MCLK\n");
++	else
++		priv->mclk_enabled = true;
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->rtm_family = AF_MCTP;
+ 	ret = snd_soc_dai_set_sysclk(snd_soc_rtd_to_codec(runtime, 0), 0, 19200000,
+ 				     SND_SOC_CLOCK_IN);
+ 	if (ret < 0) {
+ 		dev_err(card->dev, "can't set codec clock %d\n", ret);
+-		return ret;
++		goto err_disable_mclk;
+ 	}
  
- 	/* we use the _len fields as a number of EIDs, rather than
+ 	ret = snd_soc_card_jack_new_pins(card, "Headset",
+@@ -241,13 +253,25 @@ static int byt_cht_es8316_init(struct snd_soc_pcm_runtime *runtime)
+ 					 ARRAY_SIZE(byt_cht_es8316_jack_pins));
+ 	if (ret) {
+ 		dev_err(card->dev, "jack creation failed %d\n", ret);
+-		return ret;
++		goto err_disable_mclk;
+ 	}
+ 
+ 	snd_jack_set_key(priv->jack.jack, SND_JACK_BTN_0, KEY_PLAYPAUSE);
+ 	snd_soc_component_set_jack(codec, &priv->jack, NULL);
+ 
+ 	return 0;
++
++err_disable_mclk:
++	byt_cht_es8316_disable_mclk(priv);
++	return ret;
++}
++
++static void byt_cht_es8316_exit(struct snd_soc_pcm_runtime *runtime)
++{
++	struct snd_soc_card *card = runtime->card;
++	struct byt_cht_es8316_private *priv = snd_soc_card_get_drvdata(card);
++
++	byt_cht_es8316_disable_mclk(priv);
+ }
+ 
+ static int byt_cht_es8316_codec_fixup(struct snd_soc_pcm_runtime *rtd,
+@@ -353,6 +377,7 @@ static struct snd_soc_dai_link byt_cht_es8316_dais[] = {
+ 						| SND_SOC_DAIFMT_CBC_CFC,
+ 		.be_hw_params_fixup = byt_cht_es8316_codec_fixup,
+ 		.init = byt_cht_es8316_init,
++		.exit = byt_cht_es8316_exit,
+ 		SND_SOC_DAILINK_REG(ssp2_port, ssp2_codec, platform),
+ 	},
+ };
 -- 
 2.53.0
 
