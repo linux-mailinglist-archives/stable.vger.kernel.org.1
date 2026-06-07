@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261586-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id F/tIMn5OJWqlGgIAu9opvQ
-	(envelope-from <stable+bounces-261620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:02 +0200
+	id vKzFAj5NJWo0GgIAu9opvQ
+	(envelope-from <stable+bounces-261586-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACA9650279
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:57:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C1526500FA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cC1frqIQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261620-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261620-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d4JkChic;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261586-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261586-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDD09308F374
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:47:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF5F7306CC56
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41652E7376;
-	Sun,  7 Jun 2026 10:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97AC31E83A;
+	Sun,  7 Jun 2026 10:45:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3AB1A6822;
-	Sun,  7 Jun 2026 10:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BD5A59;
+	Sun,  7 Jun 2026 10:45:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829242; cv=none; b=cOwbE+SIDLClrxm9xcmGMg2ogPbcsZy2hQrpDn+ESeQmTouEKYSrFmXg4zVzjqCrkM5V+ooOh1wWPoDuL+Bao/3AQirW2x/QChXjJ19Cn+DH9HsPEvkYgIQq5GBC1VGZMVjxsCbi+HgPb53wM9yMCjzjyhA3eO0hvIjAjyf4x04=
+	t=1780829114; cv=none; b=e/G3bi7lUTGRYccYQwYqJ8BNge/nC56wofEpAQqlQUJtfPmpH4/0lj6ubuzoy64/XrfmF7+mK0kxeYNO1U49fYuoSHA68DWJkWTCOu4VnNXGhXCioaNtud0PjVwzFN4Z0x7b58Vdqkd9KtwEIiSJFTChiEzctNU65++vD6yHALs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829242; c=relaxed/simple;
-	bh=FoBGVQBVSsmw+xq6it1qLZ/nGMalEzI+dvsVqXB4iMU=;
+	s=arc-20240116; t=1780829114; c=relaxed/simple;
+	bh=Hr8HIK4tlFx2OYVp4fkAm/iuW9Njc3/N3BsyGQVbVNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhxadHC2w/v72JQlQSzibCx4wjfbtEzC4mdjfEeI/6jQsMagEF0V9jSTZTl3tWKCbENna4d4YRziQXOvbktHSmr/dYRFt9Ayggf/l9jyR7ZPCh9X4lOim2l2ijAgjxGgR04yTo4znoMcaFTlrRRpyxx6mpB1DXBLAAAcDLzfUNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC1frqIQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2781F00893;
-	Sun,  7 Jun 2026 10:47:20 +0000 (UTC)
+	 MIME-Version; b=fhrCDlLQtJB1kPWjEMFQA2cGYjHMToJ++ZATWZC1/XiGFvAgd9BwTzLKwyH0+yYQuinPXFr44Mbk2uweyV/zBCv1g8F0QHliHf1Chz+rGeIVp7ybkwgOlWGZg0GoOjh9za3Ad/728Cw+OeFShJe75Ui5tcmTTcumS9jsUI5Kg68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4JkChic; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E1E1F00893;
+	Sun,  7 Jun 2026 10:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829241;
-	bh=9dv+kTqfWoILL5kVULuEZgjPjXdi1z7hnIz6H21y+G4=;
+	s=korg; t=1780829113;
+	bh=uSPGb8bCgyPbzO13W4mY4EYPx/isG09+1coiYHoFcJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cC1frqIQgemYOUqZK/g761xksi6xRyMvXTg3DAPFIU66Xs2/1NhFzZD6tvKShUtTs
-	 mx7ObNDhNHFmeNqErw8Q34hXdPQ/NOmO6/hhaSDhPBbw1qwH6qavnGmzSgXx1dToB1
-	 jlSL4FQxA/w/qMNbyka1wPfk76HBxirxK3tlshDg=
+	b=d4JkChicSU3X1SRpqG1Ks9h/5UUlHOkEOJ/1odwtgqHGa2b3ARTxp4I6oo1XxrvvL
+	 4DXUXweRBCx5NAG/IF1r7dPbZOqiOqYY1JWbhFCWKS7hqnB7iiKXvEz9cofVp9iTSD
+	 MEq3tjGWOB2jteaYXY51c5ABvaKfmUzErd4s2LLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ali Ganiyev <ali.qaniyev@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 207/307] ksmbd: OOB read regression in smb_check_perm_dacl() ACE-walk loops
-Date: Sun,  7 Jun 2026 12:00:04 +0200
-Message-ID: <20260607095735.323953990@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.18 218/315] comedi: comedi_test: Fix limiting of convert_arg in waveform_ai_cmdtest()
+Date: Sun,  7 Jun 2026 12:00:05 +0200
+Message-ID: <20260607095735.583551579@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,103 +66,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261586-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261620-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ali.qaniyev@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:aliqaniyev@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,mev.co.uk:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4ACA9650279
+X-Rspamd-Queue-Id: 8C1526500FA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ali Ganiyev <ali.qaniyev@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit 0e60dafe97eca61721f3db456f97d97a80c6c8ae upstream.
+commit 8a3bee801d420be8a7a0bae4a26547b353b8fe22 upstream.
 
-Commit d07b26f39246 ("ksmbd: require minimum ACE size in
-smb_check_perm_dacl()") introduced a transposed bounds check:
+The function checks and possibly modifies the description of an
+asynchronous command to be run on the analog input subdevice of a comedi
+device attached to the "comedi_test" driver, returning 0 if no
+modifications were required, or a positive value that indicates which
+step of the checking process it failed on.  Step 4 fixes up various
+argument values for various trigger sources.
 
-    if (offsetof(struct smb_ace, sid) + aces_size < CIFS_SID_BASE_SIZE)
+There are two bugs in the fixing up of the `convert_arg` value to keep
+the `scan_begin_arg` value within the range of `unsigned int` when
+`scan_begin_src` and `convert_src` both have the value `TRIG_TIMER`,
+which indicates that the corresponding `_arg` values hold a time period
+in nanoseconds.  The code also uses `scan_end_arg` which hold the number
+of "conversions" within each "scan".  The goal is to end up with the
+scan period being less than or equal to the convert period multiplied by
+the number of conversions per scan.  It intends to do that by clamping
+the `convert_arg` value to a maximum value of `UINT_MAX / scan_end_arg`
+rounded down to a multiple of 1000 (`NSEC_PER_USEC`).
 
-Since offsetof(..sid) is 8 and CIFS_SID_BASE_SIZE is 8, this evaluates
-to `aces_size < 0`. Because `aces_size` is always non-negative, this
-check becomes dead code and never breaks the loop.
+(The rounding from nanoseconds to microseconds is because the driver is
+modelling a device that uses a 1 MHz clock for timing.  This is partly
+because that is a more typical timing base for real hardware devices
+driven by comedi, and partly because the driver used to use `struct
+timeval` internally.)
 
-Worse, that commit removed the old 4-byte guard, meaning the loop now
-reads `ace->size` (offset 2) even when `aces_size` is 0-3 bytes. This
-re-opens a 2-byte heap out-of-bounds (OOB) read past the pntsd allocation
-during subsequent SMB2_CREATE operations.
+The first bug is that the code checks if `scan_begin_arg == TRIG_TIMER`
+when it should be checking if `scan_begin_src == TRIG_TIMER`.  The
+bugged check will always fail because if `scan_begin_src == TRIG_TIMER`,
+then `scan_begin_arg` will be at least 1000 (`NSEC_PER_USEC`), otherwise
+`scan_begin_src == TRIG_FOLLOW` and `scan_begin_arg` will be 0.  (N.B
+`TRIG_TIMER` is defined as `0x10`.)  The second bug is that is rounding
+the maximum value down to a multiple of 1000000000 (`NSEC_PER_SEC`)
+instead of 1000 (`NSEC_PER_USEC`), however this bug is not reached due
+to the first bug.  This patch fixes both bugs.
 
-Fix this by properly transposing the comparison to require at least
-16 bytes (8-byte offset + 8-byte SID base), matching the correct form
-used in smb_inherit_dacl().
-
-Fixes: d07b26f39246 ("ksmbd: require minimum ACE size in smb_check_perm_dacl()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ali Ganiyev <ali.qaniyev@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
+Fixes: 5afdcad2f818 ("staging: comedi: comedi_test: limit maximum convert_arg")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260422144637.27692-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/comedi/drivers/comedi_test.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1446,8 +1446,8 @@ int smb_check_perm_dacl(struct ksmbd_con
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, sid) +
--			    aces_size < CIFS_SID_BASE_SIZE)
-+			if (aces_size < offsetof(struct smb_ace, sid) +
-+			    CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
- 			if (ace_size > aces_size ||
-@@ -1470,8 +1470,8 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, sid) +
--		    aces_size < CIFS_SID_BASE_SIZE)
-+		if (aces_size < offsetof(struct smb_ace, sid) +
-+		    CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
- 		if (ace_size > aces_size ||
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -325,10 +325,10 @@ static int waveform_ai_cmdtest(struct co
+ 		arg = min(arg,
+ 			  rounddown(UINT_MAX, (unsigned int)NSEC_PER_USEC));
+ 		arg = NSEC_PER_USEC * DIV_ROUND_CLOSEST(arg, NSEC_PER_USEC);
+-		if (cmd->scan_begin_arg == TRIG_TIMER) {
++		if (cmd->scan_begin_src == TRIG_TIMER) {
+ 			/* limit convert_arg to keep scan_begin_arg in range */
+ 			limit = UINT_MAX / cmd->scan_end_arg;
+-			limit = rounddown(limit, (unsigned int)NSEC_PER_SEC);
++			limit = rounddown(limit, (unsigned int)NSEC_PER_USEC);
+ 			arg = min(arg, limit);
+ 		}
+ 		err |= comedi_check_trigger_arg_is(&cmd->convert_arg, arg);
 
 
 
