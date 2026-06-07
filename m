@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-261304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s418I8pIJWo3GAIAu9opvQ
-	(envelope-from <stable+bounces-261304-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:42 +0200
+	id 1WfDFyNIJWrUFwIAu9opvQ
+	(envelope-from <stable+bounces-261326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E415564FC2E
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:32:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC88364FB5D
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RioDZUM2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261304-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261304-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kZ3vXKfE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261326-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261326-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EDE0301C890
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1740E3029610
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1543324B31;
-	Sun,  7 Jun 2026 10:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862B531E832;
+	Sun,  7 Jun 2026 10:28:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DEB13DBA0;
-	Sun,  7 Jun 2026 10:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FF94071FE;
+	Sun,  7 Jun 2026 10:28:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828037; cv=none; b=dGNka7SKsSMnxfEmFMt63sGhQI2X2upvC8KULNyi8y4EOm7JHgjyghkjRgjxvhsQv0O+sS7J6dUUuFggSHA7EBAwe0pVjqZm8yPFNLGJg3ESx9EQ0rR0MfyfMbwuXR6erppMmPBLpybdwDLPxvWlIxjKqGrnMOCPe56ij7OuIRw=
+	t=1780828121; cv=none; b=XA9T2T2TgOffjHGDKILvEtUAdTCXEJIMHlUQ0ITnf6iseYpQeUJoZV/pmPeZUK5aNGjZY+fJGfHneX0kzQyE0fayRoyA4ym2mfJVLEakVHggFYYZnH22jzrv+dyZ/KV0RKYRyoWipcFqds4OAKoa5Onr6U0XLGnNisLzQVgrZMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828037; c=relaxed/simple;
-	bh=5VQ90IS7+seK/qLkTmXPd2outVTrjL6LkUSZZue3/nE=;
+	s=arc-20240116; t=1780828121; c=relaxed/simple;
+	bh=ai8KPyyQgP/W6Znx3KgECmTqwdWSFqwuayhTKculkN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RliwAhhhXlR8PUKbiu/hheu5ToRjmBRrVKt1xh9BBo2G5XksJCw5rgV931ZJOGUShkezbCRwPUYWwqOh0uTRwWNCXdgMhnhYhEUxzTClHTna4bSv/n7VdwT6XKxo0bzy9tHL8a851D5o/BZ0pG1O7UvnpXrRwLEHZXpk+1qhuNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RioDZUM2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EBB1F00893;
-	Sun,  7 Jun 2026 10:27:15 +0000 (UTC)
+	 MIME-Version; b=NRdg53CkOzxmUQKOnx4kLfLfZdgl4B87R9/k0TlTYCpXZWlYiqCArhyVR39A7yXByWWw732M52cwSuM4HciGMGOGP6Im2e+EXsHSY4GTyKUVi7TKRqK3ZrEH09EXl9yrZx3sD48uuZbxqjtd4UqFWNI7LWJB0ZMHTEVxK+I5YdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZ3vXKfE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09AD1F00893;
+	Sun,  7 Jun 2026 10:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828036;
-	bh=MMTD3b8S7jQkyTensj+AGnbcsXvUUO3GE+Xsk8iU02U=;
+	s=korg; t=1780828120;
+	bh=zbQokqNHQ3SUb1KLTdXSc/00oiwgYxlhgfgV3HOnDxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RioDZUM2IJq6odvLkb3B1Ni/oY618VbclsZZhBT07vG1H2ZcR3RfJtMxisRmDhlqf
-	 ykHaN0whdhMxEsdBlqL+lQAe7n+k94bUzW4jOG+szC5xQT2f55Yn3qiNcoVN3D6SSY
-	 IMKr+gh1LBrmJ/W/DmfEF3F8zomdlbQVWUZNwtZw=
+	b=kZ3vXKfEKA+5x6wdVwFVeS8KCHBJERsL+ddtmlIoUh96Fs7Ky38j0RYs6SWeQr8fk
+	 11XDbo8lPHfq2QmDGKnzrvltkhqho39w4BULi0smeecO/eGTiGvi+cTamSaSYbrSvr
+	 uiZGsFC6o9W4kt/9S1eTLxgPBCV2tnE9SgMbSlCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Siwei Zhang <oss@fourdim.xyz>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 146/332] Bluetooth: L2CAP: use chan timer to close channels in cleanup_listen()
-Date: Sun,  7 Jun 2026 11:58:35 +0200
-Message-ID: <20260607095733.458616287@linuxfoundation.org>
+Subject: [PATCH 6.18 129/315] Bluetooth: L2CAP: fix chan ref leak in l2cap_chan_timeout() on !conn
+Date: Sun,  7 Jun 2026 11:58:36 +0200
+Message-ID: <20260607095732.362658421@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,105 +70,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261304-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261326-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fourdim.xyz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,fourdim.xyz:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E415564FC2E
+X-Rspamd-Queue-Id: BC88364FB5D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Siwei Zhang <oss@fourdim.xyz>
 
-commit 8c8e620467a7b51562dbcefbd1f09f288d7d710d upstream.
+commit 9dbd84990394c51f5cee1e8871bb5ff8af5ed939 upstream.
 
-l2cap_chan_close() removes the channel from conn->chan_l, which
-must be done under conn->lock.  cleanup_listen() runs under the
-parent sk_lock, so acquiring conn->lock would invert the
-established conn->lock -> chan->lock -> sk_lock order.
+__set_chan_timer() takes a l2cap_chan reference via l2cap_chan_hold()
+before scheduling the delayed work.  The normal path in
+l2cap_chan_timeout() drops this reference with l2cap_chan_put() at the
+end, but the early return when chan->conn is NULL skips the put,
+leaking the reference.
 
-Instead of calling l2cap_chan_close() directly, schedule
-l2cap_chan_timeout with delay 0 to close the channel
-asynchronously.  The timeout handler already acquires conn->lock
-and chan->lock in the correct order.
+Add the missing l2cap_chan_put() before the early return.
 
-The timer is only armed when chan->conn is still set: if it is
-already NULL, l2cap_conn_del() has already processed this channel
-(l2cap_chan_del + l2cap_sock_teardown_cb + l2cap_sock_close_cb),
-so there is nothing left to do.  If l2cap_conn_del() races in
-after the timer is armed, __clear_chan_timer() inside
-l2cap_chan_del() cancels it; if the timer has already fired, the
-handler returns harmlessly because chan->conn was cleared.
-
-Fixes: 3df91ea20e74 ("Bluetooth: Revert to mutexes from RCU list")
-Cc: <stable@vger.kernel.org> # 0b58004: Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
+Fixes: adf0398cee86 ("Bluetooth: l2cap: fix null-ptr-deref in l2cap_chan_timeout")
+Cc: stable@vger.kernel.org
 Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ net/bluetooth/l2cap_core.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1499,6 +1499,10 @@ static void l2cap_sock_cleanup_listen(st
- 	 * pin it (hold_unless_zero() additionally skips a chan already past
- 	 * its last reference).  We then drop the sk lock before taking
- 	 * chan->lock, so sk and chan locks are never held together.
-+	 *
-+	 * Since we cannot call l2cap_chan_close() without conn->lock,
-+	 * schedule l2cap_chan_timeout to close the channel; it already
-+	 * acquires conn->lock -> chan->lock in the correct order.
- 	 */
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
- 		struct l2cap_chan *chan;
-@@ -1516,14 +1520,12 @@ static void l2cap_sock_cleanup_listen(st
- 		       state_to_string(chan->state));
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -411,8 +411,10 @@ static void l2cap_chan_timeout(struct wo
  
- 		l2cap_chan_lock(chan);
--		__clear_chan_timer(chan);
--		l2cap_chan_close(chan, ECONNRESET);
--		/* l2cap_conn_del() may already have killed this socket
--		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
--		 * double sock_put()/l2cap_chan_put().
-+		/* Since we cannot call l2cap_chan_close() without
-+		 * conn->lock, schedule its timer to trigger the close
-+		 * and cleanup of this channel.
- 		 */
--		if (!sock_flag(sk, SOCK_DEAD))
--			l2cap_sock_kill(sk);
-+		if (chan->conn)
-+			__set_chan_timer(chan, 0);
- 		l2cap_chan_unlock(chan);
+ 	BT_DBG("chan %p state %s", chan, state_to_string(chan->state));
  
- 		l2cap_chan_put(chan);
+-	if (!conn)
++	if (!conn) {
++		l2cap_chan_put(chan);
+ 		return;
++	}
+ 
+ 	mutex_lock(&conn->lock);
+ 	/* __set_chan_timer() calls l2cap_chan_hold(chan) while scheduling
 
 
 
