@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3eveOUJGJWrOFgIAu9opvQ
-	(envelope-from <stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:54 +0200
+	id /WprJRVFJWoXFgIAu9opvQ
+	(envelope-from <stable+bounces-261144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C07464F92C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104AD64F775
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:16:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d49sloNL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261113-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UqMqqPT8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261144-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261144-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57EB03052467
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFECA30128D0
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA8B31E838;
-	Sun,  7 Jun 2026 10:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91E12DB7A3;
+	Sun,  7 Jun 2026 10:16:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9645224D6;
-	Sun,  7 Jun 2026 10:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C449A2AD00;
+	Sun,  7 Jun 2026 10:16:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827304; cv=none; b=LL3a/kL2t7tqc3v6cdINQl+bDsWm3UMjyvhB36VcuIkLLMn7rG0wmooVXsTOS6roqjywNhJ52RuXspsjwayBL5O+fzIz7VarSUYqpJjfyTIeOaFNVwNQ00S5Y75B4sm+O86D4cC05Kllfser3NaeDviLzm5YyXQuk1HP2/Mb07Q=
+	t=1780827410; cv=none; b=SQLwkXS+ZQ+4qy+eOSwlZMn5sefM5vts9ge2KIGzdcbvHhVe9B1REM1/Bof2LcRsLM5u7D8kMlALerczFFemuTSzQyjIj2mySjxwCEe7icsxthzj+nrpg37AfhLcrebjk6rOvwTZudPYMfI/1EebRPUzceUdHSnfuVnwBc5Ly88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827304; c=relaxed/simple;
-	bh=VNoHrLCtGV5bvX/6jaAQHDITF7Xkqji3X/Jd7QiBBZw=;
+	s=arc-20240116; t=1780827410; c=relaxed/simple;
+	bh=WwCEJ8x7tWMI6fDwUUjdtrSFYhYqgOH8yMIt0ncNSK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obGk0+gG/xP+exlj4GPMW3/7hHShAgvvbbY7B8wsmNCuK2IDwPnfu2gCCRsf5zwVuymLNb/CVq80N38b5gJS0Ecm7YRycHppRYwgdPkJB7XbMjMbXPuX84sRRIOz6ztLHbxDH4L4ektMOZKiYSIkAlsIYBCXNoud8wwu6HSS0nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d49sloNL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049D41F00893;
-	Sun,  7 Jun 2026 10:15:02 +0000 (UTC)
+	 MIME-Version; b=NU3TiHQvBd8zTE+XCG60JU9Yolh64uAPOs+QgPaKJktDBOc5bqB7gbfRjoGb83nxWH4FTF5QAqlaCpgVmESQCfX4K96keZxzzZflrfhP6r4GIE6dDEZEIKpVPeIeaveFXAJivf3IzObWVWfZPWS9a9qBLwnzRU+t/S6nUF/qBXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqMqqPT8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC231F00893;
+	Sun,  7 Jun 2026 10:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827303;
-	bh=s3OPy2QVvKq1/cp9JAso6gio41IDkLV60eNcqYo8j80=;
+	s=korg; t=1780827409;
+	bh=Jq+BmpWYD/hAikipeathwnNTJpRjAItpO43kFmdx5SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d49sloNLyL2L8r3a+jdAZOuPikkfTm7SSx3r+HcBYf5gvky7p9xYYcmNAZYi7mOzT
-	 ahjjKIVbB9cNlGKdR9yEIqI7LPnsOKzPvWGWBBbJ8LtRRChcjwzWKW4rQ5Nd6LeSU5
-	 lyPvEYahp0jyApC8/dCclkMIIgfm6qdX9J3++vGk=
+	b=UqMqqPT8l7ecS8gmENFTJPq4rmG88mLKSIpvzaFhoBoliixbW21MP6uFeIim0/HS7
+	 +T0ZBxpGtofPCaYTEeSeKKc5zSrko5oSnH8W8PUo5kB31ut2Gfvvu6wvcXar6oZ5cf
+	 3peSo5KEM82R0x6WJNGZ3yePBc8eSboIYIidGbAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 081/332] net: Introduce skb tc depth field to track packet loops
+Subject: [PATCH 6.12 053/307] ethtool: cmis: require exact CDB reply length
 Date: Sun,  7 Jun 2026 11:57:30 +0200
-Message-ID: <20260607095731.119198498@linuxfoundation.org>
+Message-ID: <20260607095729.670354372@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,130 +69,105 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261113-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261144-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,networkplumber.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5C07464F92C
+X-Rspamd-Queue-Id: 104AD64F775
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 98b34f3e8c3492cfc89ff943c9d92b4d52863d1d ]
+[ Upstream commit 6c3f999a9d1338c6c89a9ff4549eafe72bc2e7b1 ]
 
-Add a 2-bit per-skb tc depth field to track packet loops across the stack.
+Malicious SFP module could respond with rpl_len longer than
+what cmis_cdb_process_reply() expected, leading to OOB writes.
+Malicious HW is a bit theoretical but some modules may just
+be buggy and/or the reads may occasionally get corrupted,
+so let's protect the kernel.
 
-The previous per-CPU loop counters like MIRRED_NEST_LIMIT
-assume a single call stack and lose state in two cases:
-1) When a packet is queued and reprocessed later (e.g., egress->ingress
-   via backlog), the per-cpu state is gone by the time it is dequeued.
-2) With XPS/RPS a packet may arrive on one CPU and be processed on
-   another.
+The existing check protects from short replies. We need to
+protect from long ones, too. All callers that pass a non-zero
+rpl_exp_len cast the reply payload to a fixed-layout struct
+and read fields at fixed offsets, with no version negotiation
+or short-reply handling:
 
-A per-skb field solves both by travelling with the packet itself.
+  - cmis_cdb_validate_password()
+  - cmis_cdb_module_features_get()
+  - cmis_fw_update_fw_mng_features_get()
 
-The field fits in existing padding, using 2 bits that were previously a
-hole:
+so let's assume that responses longer than expected do not
+have to be handled gracefully here. Add a warning message
+to make the debug easier in case my understanding is wrong...
 
-pahole before(-) and after (+) diff looks like:
-   __u8       slow_gro:1;           /*   132: 3  1 */
-   __u8       csum_not_inet:1;      /*   132: 4  1 */
-   __u8       unreadable:1;         /*   132: 5  1 */
- + __u8       tc_depth:2;           /*   132: 6  1 */
+Note that page_data->length (argument of kmalloc) comes from
+last arg to ethtool_cmis_page_init() which is rpl_exp_len.
 
- - /* XXX 2 bits hole, try to pack */
-   /* XXX 1 byte hole, try to pack */
+Note2 that AIs also like to point out overflows in args->req.payload
+itself (which is a fixed-size 120 B buffer, on the stack),
+but callers should be reading structs defined by the standard,
+so protecting from requests for more data than max seem like
+defensive programming.
 
-   __u16      tc_index;             /*   134     2 */
-
-There used to be a ttl field which was removed as part of tc_verd in commit
-aec745e2c520 ("net-tc: remove unused tc_verd fields").  It was already
-unused by that time, due to remove earlier in commit c19ae86a510c ("tc: remove
-unused redirect ttl").
-
-The first user of this field is netem, which increments tc_depth on
-duplicated packets before re-enqueueing them at the root qdisc.  On
-re-entry, netem skips duplication for any skb with tc_depth already set,
-bounding recursion to a single level regardless of tree topology.
-
-The other user is mirred which increments it on each pass
-and limits to depth to MIRRED_DEFER_LIMIT (3).
-
-The new field was called ttl in earlier versions of this patch
-but renamed to tc_depth to avoid confusion with IP ttl.
-
-Note (looking at you Sashiko! Dont ignore me and continue bringing this up):
-1. Since both mirred and netem utilize the same 2-bit tc_depth field it is
-   possible when netem and mirred are used together that netem qdisc to skip
-   the duplication step. This is a known trade-off, as a 2-bit field cannot
-   independently track both features' recursion depths and it is not considered
-   sane to have a setup that addresses both features on at the same time.
-
-2. skb_scrub_packet does not clear tc_depth. This means a packet's loop history
-  is preserved even across namespaces. While this might be restrictive for
-  some topologies, it is also design intent to provide robustness against loops
-  across namespaces.
-
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-2-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: db875221ab08 ("net/sched: Fix ethx:ingress -> ethy:egress -> ethx:ingress mirred loop")
+Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
+Reviewed-by: Danielle Ratson <danieller@nvidia.com>
+Link: https://patch.msgid.link/20260522231312.1710836-7-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skbuff.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ethtool/cmis_cdb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 2f278ce376b7ed..a58ff8903e536e 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -821,6 +821,7 @@ enum skb_tstamp_type {
-  *	@_sk_redir: socket redirection information for skmsg
-  *	@_nfct: Associated connection, if any (with nfctinfo bits)
-  *	@skb_iif: ifindex of device we arrived on
-+ *	@tc_depth: counter for packet duplication
-  *	@tc_index: Traffic control index
-  *	@hash: the packet hash
-  *	@queue_mapping: Queue mapping for multiqueue devices
-@@ -1030,6 +1031,7 @@ struct sk_buff {
- 	__u8			csum_not_inet:1;
- #endif
- 	__u8			unreadable:1;
-+	__u8			tc_depth:2;
- #if defined(CONFIG_NET_SCHED) || defined(CONFIG_NET_XGRESS)
- 	__u16			tc_index;	/* traffic control index */
- #endif
+diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
+index 8bf99295bfbe96..690002366d965a 100644
+--- a/net/ethtool/cmis_cdb.c
++++ b/net/ethtool/cmis_cdb.c
+@@ -508,8 +508,13 @@ static int cmis_cdb_process_reply(struct net_device *dev,
+ 	}
+ 
+ 	rpl = (struct ethtool_cmis_cdb_rpl *)page_data->data;
+-	if ((args->rpl_exp_len > rpl->hdr.rpl_len + rpl_hdr_len) ||
+-	    !rpl->hdr.rpl_chk_code) {
++	if (rpl->hdr.rpl_len != args->rpl_exp_len) {
++		netdev_warn(dev, "CDB reply length mismatch, expected %u got %u\n",
++			    args->rpl_exp_len, rpl->hdr.rpl_len);
++		err = -EIO;
++		goto out;
++	}
++	if (!rpl->hdr.rpl_chk_code) {
+ 		err = -EIO;
+ 		goto out;
+ 	}
 -- 
 2.53.0
 
