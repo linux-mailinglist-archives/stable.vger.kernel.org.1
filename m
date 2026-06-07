@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jaZWH49GJWr/FgIAu9opvQ
-	(envelope-from <stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:11 +0200
+	id pKKkAM9HJWqgFwIAu9opvQ
+	(envelope-from <stable+bounces-261225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131C064F99F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:23:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ECE64FAD6
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rLMbutw6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261239-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1Vbvmxkx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261225-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261225-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85A543001FFC
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:23:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9DF9302F9A2
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D9D31F993;
-	Sun,  7 Jun 2026 10:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F418F30C157;
+	Sun,  7 Jun 2026 10:22:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E3B32470F;
-	Sun,  7 Jun 2026 10:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD61724728F;
+	Sun,  7 Jun 2026 10:22:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827787; cv=none; b=dFrmWU3xy3MXqRT28TsDLfKqfDWXOofc+K711fKAr/dxcXtoKEk8ZzF3NUtVNCl/tI5IKI71sm+abTPorb6YbF3WA6/1vU/mOeo71gq3MsxPEOSsPIjTm+ryVkCRYMDHXURQNO7zDihQM2lw/1Ik5l3Ta3h5ce6fTnzqMKouRwU=
+	t=1780827732; cv=none; b=D051FTuakOepSN7WliA3q6yu6cm4SOoLAvXQbekYnXaCzKMrBi58Xut0v7pFBIUCZqidrhwxlU7VXJweyojFnXv4XfJVsPu36aGUT5weVVWHOF+D/corfhIVqHaDXwCdm6qCM4OiIu+gIeWiIv7NxRzLV7OnHfuSw31bRRLPEpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827787; c=relaxed/simple;
-	bh=ym3YRZqSVlKh/YOe9r9CSovfD43GxTCotNRDa6aWLMs=;
+	s=arc-20240116; t=1780827732; c=relaxed/simple;
+	bh=lsuqo1zlKAA2I+PDMCVIwT3p7G44WLC7BmtZTONakUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBGOlRsoyYUcJalCZ293bmqIN7/OXnzJq5y+WaPjG7w1DqyDZaozqjodkMJY/PnDTuMTFEHWzVjKIrcQfKy4GMQTz1hAM5NdiBD0rUVnFGDO5bB4/ZJ9kRymljcvPTjpMMeGNrPwerg/4Aa7b2XTtFVxC0kSqcLaozt5r5mu2gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLMbutw6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDD01F00893;
-	Sun,  7 Jun 2026 10:23:03 +0000 (UTC)
+	 MIME-Version; b=SsHmwvZtVHRWqo19xaWQgGmobEo6tQAlAOfUgusPuL2pFX5xFWQgKXMgJH4oTwEcGSh5iZOGyyJvu49h+g3LpsxUgNszxVi6+FiftUCFwNpmI4xtu0OVOUOWzGE8jgeQ0JLfakZnJig0n1Yh13LExUwgBVUJ2fce/EFmMDpCxw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Vbvmxkx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCBA1F00893;
+	Sun,  7 Jun 2026 10:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827785;
-	bh=8iFKAsEzFB5NJtLn4Kial7embpMziybK0VCBcJuyUZY=;
+	s=korg; t=1780827731;
+	bh=Sa1KO7j2cw2xeFie/h2FGXTi/7C4jvLZxzC/EiCUqS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rLMbutw6B2uO0pSap7laYNq5mZkJOK+73BRydfwCBcTuSz9X4PLQwKF2mWu4aBXi2
-	 oe1GSaACpvT0R+ONg83M7P+J4I3GkN2VsBQ2+STD4hKMX8ua7ai+2xmkKr2DbpW37Y
-	 KASHUn28K3YjRLbR0pAsFImPFta92FbydVN63pGY=
+	b=1Vbvmxkxtc+rtwTj/R6PgdJgrrdNDBprx2mD7/vzIaPCvQZim8dc01LOlGFIuBJUp
+	 /GsDqwiV4uOa9RU2N3HV7zS9JuID/BxYrOnEV0gf5E6ZbJy+jt4c8Z8W15Yj1olBsy
+	 q/3Ng31jMcNcTHn7rV68p2NzDccIu0du92UMSqFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/307] Bluetooth: l2cap: clear chan->ident on ECRED reconfiguration success
+Subject: [PATCH 6.18 096/315] media: rc: ttusbir: fix inverted error logic
 Date: Sun,  7 Jun 2026 11:58:03 +0200
-Message-ID: <20260607095730.932447808@linuxfoundation.org>
+Message-ID: <20260607095731.161756142@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +68,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261239-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261225-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oneukum@suse.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:sashal@kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mess.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 131C064F99F
+X-Rspamd-Queue-Id: 47ECE64FAD6
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 00e1950716c6ed67d74777b2db286b0fa23b4be9 ]
+[ Upstream commit 646ebdd3105809d84ed04aa9e92e47e89cc44502 ]
 
-l2cap_ecred_reconf_rsp() returns early on success without clearing
-chan->ident. Every other L2CAP response handler (l2cap_ecred_conn_rsp,
-l2cap_le_connect_rsp, l2cap_config_rsp) clears chan->ident after a
-successful transaction to prevent the channel from matching subsequent
-responses with the recycled ident value.
+We have to report ENOMEM if no buffer is allocated.
+Typo dropped a "!". Restore it.
 
-A remote attacker that completed a reconfiguration as the peer can
-replay a failure response with the stale ident, causing the kernel to
-match and destroy the already-established channel via
-l2cap_chan_del(chan, ECONNRESET).
-
-Clear chan->ident for all matching channels on success, and harden the
-failure path by using l2cap_chan_hold_unless_zero() consistent with
-other L2CAP handlers (l2cap_le_command_rej, __l2cap_get_chan_by_ident).
-
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 50acaad3d202 ("media: rc: ttusbir: respect DMA coherency rules")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/rc/ttusbir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index b24e4d8130ddb1..9de5d545966d60 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5392,14 +5392,20 @@ static inline int l2cap_ecred_reconf_rsp(struct l2cap_conn *conn,
- 
- 	BT_DBG("result 0x%4.4x", result);
- 
--	if (!result)
-+	if (!result) {
-+		list_for_each_entry(chan, &conn->chan_l, list) {
-+			if (chan->ident == cmd->ident)
-+				chan->ident = 0;
-+		}
- 		return 0;
-+	}
- 
- 	list_for_each_entry_safe(chan, tmp, &conn->chan_l, list) {
- 		if (chan->ident != cmd->ident)
- 			continue;
- 
--		l2cap_chan_hold(chan);
-+		if (!l2cap_chan_hold_unless_zero(chan))
-+			continue;
- 		l2cap_chan_lock(chan);
- 
- 		l2cap_chan_del(chan, ECONNRESET);
+diff --git a/drivers/media/rc/ttusbir.c b/drivers/media/rc/ttusbir.c
+index a670d4b008cb0d..3452b5aefd2848 100644
+--- a/drivers/media/rc/ttusbir.c
++++ b/drivers/media/rc/ttusbir.c
+@@ -191,7 +191,7 @@ static int ttusbir_probe(struct usb_interface *intf,
+ 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
+ 	buffer = kzalloc(5, GFP_KERNEL);
+ 	rc = rc_allocate_device(RC_DRIVER_IR_RAW);
+-	if (!tt || !rc || buffer) {
++	if (!tt || !rc || !buffer) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
 -- 
 2.53.0
 
