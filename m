@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-261569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6nfTAnxLJWpZGQIAu9opvQ
-	(envelope-from <stable+bounces-261569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:12 +0200
+	id 5MCxAulKJWohGQIAu9opvQ
+	(envelope-from <stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EE864FF56
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7867464FEA9
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E0EKS+At;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261569-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261569-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pAO7I6ql;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261485-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C19A30039B8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:44:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2378301ECE4
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050E31E850;
-	Sun,  7 Jun 2026 10:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004731E849;
+	Sun,  7 Jun 2026 10:38:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8272FB97B;
-	Sun,  7 Jun 2026 10:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AE9212564;
+	Sun,  7 Jun 2026 10:38:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829049; cv=none; b=npthu+lJXEEhtZsHilEAKsxNkbvzStN+m832e8lL6BNAMKFKu3i0HsIDIqt7n8GWUEzpqxcTWYPRZNw9GkP+VmPgYQiDHLGBU0FPk1wWUYiaj6Fx+1EfskuWErIyCBAO3GF8ygU6iojMmWr/blanMfqG99Jp6kY6pKgsWRSxYdQ=
+	t=1780828737; cv=none; b=dOU1WEEnojYT2AjkiySQq1T34yIBObQnXg2PSmnEOVxpu4cMvmSUOOZysNt+7I0W+W+2kwIJIpeLpoLwMzbAPmjgqlX2tpcbS1CRFX5eVL1B28dU6Zp02p09jFnqljTCGHD7OYeDrkiqPkbjdntKpG0Juwr8GdrqmXnLixlnp9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829049; c=relaxed/simple;
-	bh=53ns/gK0JbzIsm5v6I8YanQ2afqDPl3zYilUW5GxJNc=;
+	s=arc-20240116; t=1780828737; c=relaxed/simple;
+	bh=Yl/UG+k1sIO57gZLLc4SyuwD+BFo2iKo5OEEl2YJUxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnYHMbL7IWlw0iXwKN18LlHtGf7J59R1phJarXlhGlLc7IHlNAil3TbQ98z2Al0OQU76R0lV9TPo77LRooBiWkJWLM05bbNc5S3Zr9JME32n2AHLgEpUVIPIOJIizh5jqQqAHd1PNDWR8Wywk/F47R82vRWdAcWVLBUGyDTjMmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0EKS+At; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C8C1F00893;
-	Sun,  7 Jun 2026 10:44:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SYiEXrmN1Ij4kVeDEsKdlazb9Btg2imepBtY/bG3EFHGF1ecTZxaYpbVbe7r2/TzGL1Ya8RNY3eCZeiqbwmyunruiw9gEeBzaAYJ2vQ9xOSW9gp25D6yPGJSmbbMYzw2qu2vHX3NY6YNhP+98KKFyQnuVwwEU5qkiLUQ9HZVAq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAO7I6ql; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFD11F00893;
+	Sun,  7 Jun 2026 10:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829048;
-	bh=JIp5Bqn0FVC3onfH9C3lSNJL9k3f8r6YAJjrU9CJOO8=;
+	s=korg; t=1780828735;
+	bh=ekKPsQrXp4D1ymMixNC+0EPm2HC+C70C14h16qePIIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E0EKS+At4HNen5TuD7mKxlkEnfNILEyjRxmAr7qF3IbOl+gfhMBOGziuajnZ3BCaw
-	 2Z9IDrA8e2XXWgNHeDYymr7lqBfnZrDpL5TGixIx9oxWr8EY3ZHmSapT4yp6Z/5D9h
-	 gdeEcW7ez84u3G5MpoIYcuTRVlEupg4CfuiuL2vk=
+	b=pAO7I6qlv20k48TSJ91QVltLomDUlAwjBWxcnzaVJV8WoKirS86wAe8AYsnXFjMX+
+	 J2Lav7ytv3kQ8bxNBtC47BYpdYHcoFfolpNTw0f+vIrjvY0YoufyWTa9A5h3dSuTBf
+	 wRCutkbMJ7V2g9eicNZ5ASWWqPAjyzJv4PPnKb+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Luxing Yin <tr0jan@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 189/315] ipv6: exthdrs: refresh nh after handling HAO option
+	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	stable@kernel.org
+Subject: [PATCH 7.0 207/332] x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines
 Date: Sun,  7 Jun 2026 11:59:36 +0200
-Message-ID: <20260607095734.518289025@linuxfoundation.org>
+Message-ID: <20260607095735.670989228@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,92 +67,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-261485-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261569-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:tr0jan@lzu.edu.cn,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,goodmis.org:email,alien8.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,bootlin.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 90EE864FF56
+X-Rspamd-Queue-Id: 7867464FEA9
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
-commit f7b52afe3592eae66e160586b45a3f2242972c63 upstream.
+commit a17dc12bfed8868e6a86f3b45c16065a70641acb upstream.
 
-ip6_parse_tlv() caches skb_network_header(skb) in nh while walking
-IPv6 TLVs.
+With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
+(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
+crashes on the first call into the traced function:
 
-ipv6_dest_hao() may call pskb_expand_head() for a cloned skb, which can
-move the skb head and invalidate the cached network header pointer.
-Refresh nh after ipv6_dest_hao() returns so any trailing padding or TLVs
-are parsed from the current skb head.
+  BUG: unable to handle page fault for address: ffff88817ae18880
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 4b53067 P4D 4b53067 PUD 0
+  Oops: Oops: 0002 [#1] SMP PTI
+  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
+  Call Trace:
+   <TASK>
+   ? find_held_lock
+   ? exc_page_fault
+   ? lock_release
+   ? __x64_sys_clock_nanosleep
+   ? lockdep_hardirqs_on_prepare
+   ? trace_hardirqs_on
+   __x64_sys_clock_nanosleep
+   do_syscall_64
+   ? exc_page_fault
+   ? call_depth_return_thunk
+   entry_SYSCALL_64_after_hwframe
+  ...
+  Kernel panic - not syncing: Fatal exception
 
-This matches the existing pattern used in ip6_parse_tlv() after helpers
-that can modify skb header storage.
+This small reproducer allows to easily trigger the crash:
 
-Fixes: a831f5bbc89a ("[IPV6] MIP6: Add inbound interface of home address option.")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Co-developed-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Luxing Yin <tr0jan@lzu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/7aba1debc2196189172499e5769802b026f8caf8.1779247873.git.zcliangcn@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
+  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
+  # usleep 1
+
+Monitoring the crash under GDB points to the exact instruction in charge of
+incrementing the call depth:
+
+  sarq $5, %gs:__x86_call_depth(%rip)
+
+This instruction matches the one inserted by the ftrace_regs_caller from
+ftrace_64.S. This emitted code was likely working fine until the introduction
+of
+
+  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
+
+it has made the call depth accounting addressing relative to $rip, instead of
+being based on an absolute address.
+
+As this code exact location depends on where the trampoline lives in memory,
+the corresponding displacement needs to be adjusted at runtime to actually
+correctly find the per-cpu __x86_call_depth value, otherwise the targeted
+address is wrong, leading to the page fault seen above.
+
+Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
+instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
+as it is done for example by the x86 BPF JIT compiler through
+x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
+in ftrace_caller and ftrace_regs_caller.
+
+  [ bp: Massage. ]
+
+Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/ftrace.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -203,6 +203,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
- 				case IPV6_TLV_HAO:
- 					if (!ipv6_dest_hao(skb, off))
- 						return false;
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -376,6 +376,13 @@ create_trampoline(struct ftrace_ops *ops
+ 	}
+ 
+ 	/*
++	 * Generated trampoline may contain rIP-relative addressing which
++	 * displacement needs to be fixed.
++	 */
++	text_poke_apply_relocation(trampoline, trampoline, size,
++				   (void *)start_offset, size);
 +
-+					nh = skb_network_header(skb);
- 					break;
- #endif
- 				default:
++	/*
+ 	 * The address of the ftrace_ops that is used for this trampoline
+ 	 * is stored at the end of the trampoline. This will be used to
+ 	 * load the third parameter for the callback. Basically, that
 
 
 
