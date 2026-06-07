@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hbOsFPRMJWoOGgIAu9opvQ
-	(envelope-from <stable+bounces-261672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:28 +0200
+	id fTKrIh5NJWohGgIAu9opvQ
+	(envelope-from <stable+bounces-261685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28D56500BE
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:50:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C7E6500D9
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:51:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EKFKtARq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261672-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261672-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hJ2wNJGG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261685-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261685-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 730983010B8F
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:50:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B07163004D24
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBF33195FD;
-	Sun,  7 Jun 2026 10:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBAD1A6822;
+	Sun,  7 Jun 2026 10:51:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942022D8378;
-	Sun,  7 Jun 2026 10:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B33730C343;
+	Sun,  7 Jun 2026 10:51:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829424; cv=none; b=H//JbH5JNI9DWbVi5nYz/T2cXrMFgLSeFOMyjwsX4zDueeaRByLV+zcFAzviVVBekw3dWc51720MdLEwAv7E6b4mTPETjreQgvDzpzdYggT1Ctoewk8NXlqEgFKALqNoh2hQ4/NJjyI4liY46ILLcNKbOn7+/hzXVvl6LZLfIew=
+	t=1780829468; cv=none; b=aA3d6HKMrt5Z07QMatYYXVJnVBGh3iD7XVS25jxUDnQjCvByMfVFNuV6+J8kRKHDyz/Ex3l9jbMeUrO6ofDwHIx9nfn88AWRItJ0/OnOe4/D1KFtMDKbVdXYxmMj0Kv6bs8G/8jIKpjmqq5NO9W7kgxyXLIkGFIep6hRzJPZ8MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829424; c=relaxed/simple;
-	bh=TDf8tzBGnnIweGkhs7ETrVJOBbxSAf4a4k8M2yOBKJI=;
+	s=arc-20240116; t=1780829468; c=relaxed/simple;
+	bh=mcCeiu5b0KwDFDrMCSjp+BeLb2lYo/UufcPADyzPCyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f97DIMve61+yP5q8exM/Yb3C6Lsw/dNmtK1xybZQncwyAa4CwMn+V0jv3DPxrPzKA99R5UPyrvOANFNkteABQ1LZDyPY5A5XyWhIdEjr2NeVyIUMT94Io6znW1noB/osYQPkUR0UupNXr9Ypta+++biFDFmmjESu2UJXfPanHXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKFKtARq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66241F00893;
-	Sun,  7 Jun 2026 10:50:22 +0000 (UTC)
+	 MIME-Version; b=mmFc4a8Wh2OFe2V/YP+5luUQBp43BEZxsjtRybBvUV8/KOWvYa3Af6i8b3jv+qKEJrIvd9AvPx+cTy8Gguud3LmmOu69xvbJzemeNKJuZCxKIV7/Ci+hHe5RI1jBMOCqvngQZs91GsrQTTZO8tcN+2FF7QVpfx1xIOYpwvopblE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ2wNJGG; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57FF1F00893;
+	Sun,  7 Jun 2026 10:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829423;
-	bh=W3CzqiQQf+whqrV3FL4+82K0tOeafw+w2Z6zBeTA7WA=;
+	s=korg; t=1780829467;
+	bh=n2yhPqwkvycmp+MkL9fxUElSS5zZPSi+eY4teCSDbeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EKFKtARq01EEhDelf10dxDVK0jlMe2hNGW0V3SFRaU407CrDOL+fgOlE5k3I3wCXj
-	 PWalt7QaAMfVCWr/IZWUWiUh/NsO+pEst8hlltHfpa9ld4TRjVGqB6dy3tmjA+hsjq
-	 d/LhLDkDv8ixi/ABuUefu/oyrLuiIFoKpHL+yVqQ=
+	b=hJ2wNJGGFO+IGUQUr0IiNWF81Pm0N2hFGmtEt54rbeLBf0UNfmatKoseMd/cHr/Z7
+	 Gtdm5iBMr/4BEpnjsQWzcARwl75OzHxNDU7h42jr7BiIH9oPmytAgTLLSG7BYH8T8x
+	 Nuxif2IHZUrYAfI049FEG/UGFyfPhuJ5B1W49ycQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 7.0 268/332] USB: serial: digi_acceleport: fix memory corruption with small endpoints
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.18 250/315] scsi: fcoe: Reject FIP descriptors with zero fip_dlen in CVL walker
 Date: Sun,  7 Jun 2026 12:00:37 +0200
-Message-ID: <20260607095737.881804429@linuxfoundation.org>
+Message-ID: <20260607095736.742227472@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +67,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261672-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261685-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:hare@kernel.org,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B28D56500BE
+X-Rspamd-Queue-Id: 45C7E6500D9
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 upstream.
+commit 9eed1bd59937e6828b00d2f2dfef631d964f3636 upstream.
 
-Add the missing bulk-out buffer size sanity checks to avoid
-out-of-bounds memory accesses or slab corruption should a malicious
-device report smaller buffers than expected.
+drivers/scsi/fcoe/fcoe_ctlr.c::fcoe_ctlr_recv_clr_vlink() advanced the
+descriptor cursor by an attacker-supplied fip_dlen without ever
+requiring dlen >= sizeof(struct fip_desc) in the default branch.  The
+named descriptor cases (FIP_DT_MAC, FIP_DT_NAME, FIP_DT_VN_ID) checked
+their per-type minimum lengths, but a FIP_DT_NON_CRITICAL descriptor
+(fip_dtype >= 128, which the standard requires receivers to silently
+ignore) skipped that check entirely.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+An unauthenticated L2 peer on the FCoE control VLAN could hang
+fcoe_ctlr_recv_work on an fcoe, qedf, or bnx2fc initiator indefinitely
+by emitting one FIP CVL frame whose single descriptor had fip_dtype ==
+FIP_DT_NON_CRITICAL and fip_dlen == 0: the cursor advanced zero bytes
+per iteration and the loop condition rlen >= sizeof(*desc) stayed true
+forever, blocking every subsequent FIP frame on that controller.
+
+Tighten the outer dlen guard to also reject dlen < sizeof(struct
+fip_desc), so a malformed descriptor whose length cannot even cover the
+descriptor header is rejected before the switch.  This is the same
+lower-bound the named cases already apply and is the minimum scope that
+closes the loop.
+
+Fixes: 97c8389d54b9 ("[SCSI] fcoe, libfcoe: Add support for FIP. FCoE discovery and keep-alive.")
 Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Reviewed-by: Hannes Reinecke <hare@kernel.org>
+Link: https://patch.msgid.link/20260518144307.2820961-1-michael.bommarito@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/digi_acceleport.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/scsi/fcoe/fcoe_ctlr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/digi_acceleport.c
-+++ b/drivers/usb/serial/digi_acceleport.c
-@@ -1229,15 +1229,34 @@ static int digi_port_init(struct usb_ser
- static int digi_startup(struct usb_serial *serial)
- {
- 	struct digi_serial *serial_priv;
-+	int oob_port_num;
- 	int ret;
-+	int i;
-+
-+	/*
-+	 * The port bulk-out buffers must be large enough for header and
-+	 * buffered data.
-+	 */
-+	for (i = 0; i < serial->type->num_ports; i++) {
-+		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
-+			return -EINVAL;
-+	}
-+
-+	/*
-+	 * The OOB port bulk-out buffer must be large enough for the two
-+	 * commands in digi_set_modem_signals().
-+	 */
-+	oob_port_num = serial->type->num_ports;
-+	if (serial->port[oob_port_num]->bulk_out_size < 8)
-+		return -EINVAL;
+--- a/drivers/scsi/fcoe/fcoe_ctlr.c
++++ b/drivers/scsi/fcoe/fcoe_ctlr.c
+@@ -1386,7 +1386,7 @@ static void fcoe_ctlr_recv_clr_vlink(str
  
- 	serial_priv = kzalloc_obj(*serial_priv);
- 	if (!serial_priv)
- 		return -ENOMEM;
- 
- 	spin_lock_init(&serial_priv->ds_serial_lock);
--	serial_priv->ds_oob_port_num = serial->type->num_ports;
--	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
-+	serial_priv->ds_oob_port_num = oob_port_num;
-+	serial_priv->ds_oob_port = serial->port[oob_port_num];
- 
- 	ret = digi_port_init(serial_priv->ds_oob_port,
- 						serial_priv->ds_oob_port_num);
+ 	while (rlen >= sizeof(*desc)) {
+ 		dlen = desc->fip_dlen * FIP_BPW;
+-		if (dlen > rlen)
++		if (dlen < sizeof(*desc) || dlen > rlen)
+ 			goto err;
+ 		/* Drop CVL if there are duplicate critical descriptors */
+ 		if ((desc->fip_dtype < 32) &&
 
 
 
