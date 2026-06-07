@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-261887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VqS3FpJQJWp/GwIAu9opvQ
-	(envelope-from <stable+bounces-261887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:54 +0200
+	id rtbeIoJPJWopGwIAu9opvQ
+	(envelope-from <stable+bounces-261846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C4E6504BF
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:05:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A726503AF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:01:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Pkkgc2SF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261887-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261887-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tMBDwXYi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261846-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261846-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB29C303F721
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:04:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 50BF5300E5F9
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3860038888F;
-	Sun,  7 Jun 2026 11:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DE238AC85;
+	Sun,  7 Jun 2026 11:01:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C0838A73C;
-	Sun,  7 Jun 2026 11:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAB738C42F;
+	Sun,  7 Jun 2026 11:01:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830242; cv=none; b=GvQvqnde/a+WaIQHPklqz6LVtUMDsvSTsgV9LmnsTisLqNaZWAW/wLkrX/EJNv5m5vhkpERo3xSg307qcrAbjWq0yMxFQ+WJbcohU5zNXaBgpjRSC1FomEiDBp9RFN9FehKT8Hky1sd0jzAlzV2N2Dd0ZCyfXqr2NHFBSPAdhKA=
+	t=1780830077; cv=none; b=Uc7bOEDxIF07CYUHvlV7DhBmfVIf7WcsoiRU9DOIFsyAol04gPOduB75x/6ONGOkkCZkWtu0RqfVUUB5z17CQeR/DuCZo94ImaZKtiafxH/Xz1xT9fV30lvcP2YF24Y6jH5/gpRqNfPEyCIEdzb1ndO3q190FeaIY0xLt19nH/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830242; c=relaxed/simple;
-	bh=8B9YCnOJUWTMlZM8In1MqpJmHQ3aPNjQ8kXLkqvp7ts=;
+	s=arc-20240116; t=1780830077; c=relaxed/simple;
+	bh=WZFh+OlSyc2w3bCVNJIHHj68wtcvkmY5Z/ZAVURhc5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kndaWCozSIG0l5bn3mG9rb4oe5PsCNstqxE6a0E5f+ovnkeu3Z5jd5YCV7/1mb1xAJ4Dtjvz02yCxnXfeqhUTyBbrU55C0OhCWAXHRdHIX0EA5d4Ko1g/seDJFhvYAeODxSDbuZaXcgNFw9y3wcGNoUuMVSROD1Fn74kBBFTzMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pkkgc2SF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445D71F00893;
-	Sun,  7 Jun 2026 11:04:00 +0000 (UTC)
+	 MIME-Version; b=Ih82+oKFEE77XW+MjbU7xGIljnJ5qPSWWbDlL8EsKLpinW0kwTNp/5FZ8z6kyGAFMml4yiyUo/eROn1tfteYqVJDwfoHu6azx9BZx6p9rcBwnEYzuY64FT4Cy4wKQMVhcuYikpQKVFSBwtzN56hHk7ayMUp6qUwbFuPhAN6SGn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMBDwXYi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7ED1F00898;
+	Sun,  7 Jun 2026 11:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830240;
-	bh=VdWPqy7ebjkh65d0WGJq7Zk4MpJngARs9YUKXKjOz6Q=;
+	s=korg; t=1780830074;
+	bh=g/5yHgika8yrEts1iVG0Ma2Yo6D8mFL9Sl4iQbrnmNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pkkgc2SFssNABWY6XGuitArWomuyoIYVTKQG/E7GaPJ+0sSK4R4MqNiFevz9VcT5s
-	 ZMphX/yZPTGvAT5YJQ4STcoMjgDX9Sy9vMbyfZRCUTyYYiNEq1Aj00enKqaNVUrHRP
-	 NYagkDlbRYbupkYJgO3Fe6uTxOPCN+9gb7uoAGKo=
+	b=tMBDwXYiZq7XuZFbm+cEy6DU/dILhwjUWiHnRZW76DxOTozbug1eJZT8fTgwpZS1X
+	 WdMCjdUrW+9AjnyFiEptFXrRso+qdfFrij/9tAFeLtBPCYMwNnuyEdtcfIH5NpolKa
+	 IQVGCjYU4lGPEnG0BPYW6lQtx7jZef2EHGaSXRls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 6.12 296/307] usb: typec: ucsi: Check if power role change actually happened before handling
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 306/315] USB: serial: mct_u232: fix memory corruption with small endpoint
 Date: Sun,  7 Jun 2026 12:01:33 +0200
-Message-ID: <20260607095738.611620998@linuxfoundation.org>
+Message-ID: <20260607095738.847250526@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,103 +67,114 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261887-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-261846-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,chromium.org:url,chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qtmlabs.xyz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C4C4E6504BF
+X-Rspamd-Queue-Id: 08A726503AF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
+commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+The driver overrides the maximum transfer size for a specific device
+which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
 
-Fix this by checking if the power role change actually happened before
-handling it.
+Make sure to never increase the maximum transfer size to prevent slab
+corruption should a malicious device report a smaller endpoint max
+packet size than expected.
 
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/serial/mct_u232.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1201,7 +1201,7 @@ static void ucsi_handle_connector_change
- 	struct ucsi_connector *con = container_of(work, struct ucsi_connector,
- 						  work);
- 	struct ucsi *ucsi = con->ucsi;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	u64 command;
- 	int ret;
+--- a/drivers/usb/serial/mct_u232.c
++++ b/drivers/usb/serial/mct_u232.c
+@@ -378,6 +378,7 @@ static int mct_u232_port_probe(struct us
+ {
+ 	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv;
++	u16 pid;
  
-@@ -1211,6 +1211,8 @@ static void ucsi_handle_connector_change
- 		dev_err_once(ucsi->dev, "%s entered without EVENT_PENDING\n",
- 			     __func__);
+ 	/* check first to simplify error handling */
+ 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
+@@ -385,6 +386,16 @@ static int mct_u232_port_probe(struct us
+ 		return -ENODEV;
+ 	}
  
-+	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
++	/*
++	 * Compensate for a hardware bug: although the Sitecom U232-P25
++	 * device reports a maximum output packet size of 32 bytes,
++	 * it seems to be able to accept only 16 bytes (and that's what
++	 * SniffUSB says too...)
++	 */
++	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
++	if (pid == MCT_U232_SITECOM_PID)
++		port->bulk_out_size = min(16, port->bulk_out_size);
 +
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -410,7 +421,6 @@ static void mct_u232_port_remove(struct
  
- 	ret = ucsi_send_command_common(ucsi, command, &con->status,
-@@ -1229,7 +1231,7 @@ static void ucsi_handle_connector_change
+ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ {
+-	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
+ 	int retval = 0;
+ 	unsigned int control_state;
+@@ -418,15 +428,6 @@ static int  mct_u232_open(struct tty_str
+ 	unsigned char last_lcr;
+ 	unsigned char last_msr;
  
- 	role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
- 
--	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 		ucsi_port_psy_changed(con);
- 
+-	/* Compensate for a hardware bug: although the Sitecom U232-P25
+-	 * device reports a maximum output packet size of 32 bytes,
+-	 * it seems to be able to accept only 16 bytes (and that's what
+-	 * SniffUSB says too...)
+-	 */
+-	if (le16_to_cpu(serial->dev->descriptor.idProduct)
+-						== MCT_U232_SITECOM_PID)
+-		port->bulk_out_size = 16;
+-
+ 	/* Do a defined restart: the normal serial device seems to
+ 	 * always turn on DTR and RTS here, so do the same. I'm not
+ 	 * sure if this is really necessary. But it should not harm
 
 
 
