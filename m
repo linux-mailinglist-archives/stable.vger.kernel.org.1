@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-261035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ecGcLmdEJWrKFQIAu9opvQ
-	(envelope-from <stable+bounces-261035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:59 +0200
+	id WYUtDvxDJWqOFQIAu9opvQ
+	(envelope-from <stable+bounces-261006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC8A64F6E1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:13:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F0BA64F662
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:12:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAWJgtWE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261035-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261035-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bRadBnsf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261006-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261006-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6654D303CFA4
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:10:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A47D3011859
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0971E98E3;
-	Sun,  7 Jun 2026 10:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10DB2E7F0A;
+	Sun,  7 Jun 2026 10:09:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BAA227B94;
-	Sun,  7 Jun 2026 10:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976081DE8AE;
+	Sun,  7 Jun 2026 10:09:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827044; cv=none; b=uVvbPQ85jw1VP24T/PvhkEAiXL26hst+2NKpWP0fsIWsdZPdq8xI7hTJZyJaAUJYMWL5LDaZRB7lGtLWkQm4jtImAGqJQoWGz4lHFNxjUiqQABBelZVPSpIItvKylY/xdkORy16GKVwWFY4l7A5G5whYaj9T1h+Aet91G4lG3ts=
+	t=1780826942; cv=none; b=PQ/5d4fQmX/VCNpAJXN7cS1WCqOa2FDzLxS+CD4mlZs+9kDeMjOpf4lsAKj2J03nnAWdWfAl2qAXwvQz/w46dM1UY8f7vxFJ1JDejOpuhUG31Cdhhz/J6QICJUeHf/gxW5aLMValuKWGppqF3E7JaQLdGbJnhGzLUGrHDSdmV1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827044; c=relaxed/simple;
-	bh=hoEmlAOY++vUipiBFeNSRg71Tqu1UnXsltHB/3RwPo4=;
+	s=arc-20240116; t=1780826942; c=relaxed/simple;
+	bh=Ind8MhTW+TGqIOaeMZgNxPfAzVLZp6Z3Ym85qTkZ2cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haARdz7FY8EXOlj76Myp+uDRf3x+pfUEPOB4dl+Bv7QNWXSDX3Bik2nSYJSQktC1Sc51KfskKhLyHom8z7mtQMMxBbuQfsxkgm5XcRw/nM7+OQiaEam5N8tsk5Ou0/Ok+bLLwAoOM63W8NQ/JeIXnjPn9ShC/XeQ984s4b+EDXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAWJgtWE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757A11F00893;
-	Sun,  7 Jun 2026 10:10:42 +0000 (UTC)
+	 MIME-Version; b=KMuSmS40aHA8hbZOGMjNqXuN57oLehJkSBwK9Gob7LpXhdBd3yYGLy92wp1SLu5CHsHBwQPiMQwQ/naaAuh5CjGUlynEgudXswOwHC5YA2c3TAHasoFFCU/Zc0I1Q0LuYy203pa9g5ot9gjdrK8wz2Wr51vjP4JFEIHKsCI4pdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRadBnsf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E001F00893;
+	Sun,  7 Jun 2026 10:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827043;
-	bh=n5U2Wqca8d/z4bwB50Hk3c8BarVdVxDeOz5AL7QjARk=;
+	s=korg; t=1780826941;
+	bh=Hz6byYveUDddX37RTTGXX/wLH3j8fDB0aEz9xaKphd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IAWJgtWEvxXkNx6p0ML8lcrHPKUqwmZVyeoE5UU7WMubYcv5VmHaWyu5l5tT1TmMo
-	 nNQQyGL2vKeiNiZXN+1fJeWwm4NiYjWFPAca0cjy1k9rujUSoEW/5uQL3jMCMLpT/c
-	 kGbWK7UVbr+rp5nXAd7/PK4XjPon3f/u37ZP66a4=
+	b=bRadBnsf81MY+qZtVkTkbVwsjObfEWqPFu8SJOuzNtzSNwlW3X1STWd2q6iVbaaCy
+	 /M0yvHpO8BigRD4EQVcBWyicpXvux8rmQXba94U5lwawbIC9PNFvPaQzv03qR94LMr
+	 5Z7+1V32EbB3/6HuRqKknJeqx9tum++KJ32cucOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ada Couprie Diaz <ada.coupriediaz@arm.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/307] arm64: debug: split hardware breakpoint exception entry
+Subject: [PATCH 7.0 045/332] ethtool: rss: fix hkey leak when indir_size is 0
 Date: Sun,  7 Jun 2026 11:56:54 +0200
-Message-ID: <20260607095728.258926872@linuxfoundation.org>
+Message-ID: <20260607095729.772204677@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,243 +68,81 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261035-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261006-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ada.coupriediaz@arm.com,m:lgoncalv@redhat.com,m:will@kernel.org,m:mark.rutland@arm.com,m:bigeasy@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2CC8A64F6E1
+X-Rspamd-Queue-Id: 7F0BA64F662
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 43e2ae77fcab8a01101a2e5da528b5222b338e5f ]
+[ Upstream commit 78ccf1a70c6378e1f5073a8c2209b5129067b925 ]
 
-Currently all debug exceptions share common entry code and are routed
-to `do_debug_exception()`, which calls dynamically-registered
-handlers for each specific debug exception. This is unfortunate as
-different debug exceptions have different entry handling requirements,
-and it would be better to handle these distinct requirements earlier.
+rss_get_data_alloc() allocates a single buffer that backs both the
+indirection table and the hash key, but only assigned data->indir_table
+when indir_size was nonzero. The expectation was that no driver
+implements RSS without supporting indirection table but apparently
+enic does just that (it's the only such in-tree driver).
+enic has get_rxfh_key_size but no get_rxfh_indir_size.
+data->indir_table stays as NULL, hkey gets set but rss_get_data_free()
+kfree(data->indir_table) is a nop and the allocation leaks.
 
-Hardware breakpoints exceptions are generated by the hardware after user
-configuration. As such, they can be exploited when training branch
-predictors outside of the userspace VA range: they still need to call
-`arm64_apply_bp_hardening()` if needed to mitigate against this attack.
+Always store the allocation base in data->indir_table so the free path
+is unambiguous. No caller treats indir_table as a sentinel; everything
+keys off indir_size.
 
-However, they do not need to handle the Cortex-A76 erratum #1463225 as
-it only applies to single stepping exceptions.
-It does not set an address in FAR_EL1 either, only the hardware
-watchpoint does.
-
-As the hardware breakpoint handler only returns 0 and never triggers
-the call to `arm64_notify_die()`, we can call it directly from
-`entry-common.c`.
-Split the hardware breakpoint exception entry, adjust
-the function signature, and handling of the Cortex-A76 erratum to fit
-the behaviour of the exception.
-
-Move the call to `arm64_apply_bp_hardening()` to `entry-common.c` so that
-we can do it as early as possible, and only for the exceptions coming
-from EL0, where it is needed.
-This is safe to do as it is `noinstr`, as are all the functions it
-may call. `el0_ia()` and `el0_pc()` already call it this way.
-
-Signed-off-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250707114109.35672-8-ada.coupriediaz@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Fixes: 7112a04664bf ("ethtool: add netlink based get rss support")
+Link: https://patch.msgid.link/20260522230647.1705600-6-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/exception.h |  5 +++++
- arch/arm64/kernel/entry-common.c   | 28 ++++++++++++++++++++++++++++
- arch/arm64/kernel/hw_breakpoint.c  | 16 ++++++----------
- 3 files changed, 39 insertions(+), 10 deletions(-)
+ net/ethtool/rss.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
-index b1d6a65f6d2256..94f46e96515160 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -59,6 +59,11 @@ void do_el0_bti(struct pt_regs *regs);
- void do_el1_bti(struct pt_regs *regs, unsigned long esr);
- void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
- 			struct pt_regs *regs);
-+#ifdef CONFIG_HAVE_HW_BREAKPOINT
-+void do_breakpoint(unsigned long esr, struct pt_regs *regs);
-+#else
-+static inline void do_breakpoint(unsigned long esr, struct pt_regs *regs) {}
-+#endif /* CONFIG_HAVE_HW_BREAKPOINT */
- void do_fpsimd_acc(unsigned long esr, struct pt_regs *regs);
- void do_sve_acc(unsigned long esr, struct pt_regs *regs);
- void do_sme_acc(unsigned long esr, struct pt_regs *regs);
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index 2e04e04aaf2ad6..af0d7575dcfd92 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -508,6 +508,15 @@ static void noinstr el1_bti(struct pt_regs *regs, unsigned long esr)
- 	exit_to_kernel_mode(regs);
- }
+diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
+index 5416aec13b7fe7..f745ddec6fbab8 100644
+--- a/net/ethtool/rss.c
++++ b/net/ethtool/rss.c
+@@ -132,8 +132,7 @@ rss_get_data_alloc(struct net_device *dev, struct rss_reply_data *data)
+ 	if (!rss_config)
+ 		return -ENOMEM;
  
-+static void noinstr el1_breakpt(struct pt_regs *regs, unsigned long esr)
-+{
-+	arm64_enter_el1_dbg(regs);
-+	debug_exception_enter(regs);
-+	do_breakpoint(esr, regs);
-+	debug_exception_exit(regs);
-+	arm64_exit_el1_dbg(regs);
-+}
-+
- static void noinstr el1_dbg(struct pt_regs *regs, unsigned long esr)
- {
- 	unsigned long far = read_sysreg(far_el1);
-@@ -551,6 +560,8 @@ asmlinkage void noinstr el1h_64_sync_handler(struct pt_regs *regs)
- 		el1_bti(regs, esr);
- 		break;
- 	case ESR_ELx_EC_BREAKPT_CUR:
-+		el1_breakpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_SOFTSTP_CUR:
- 	case ESR_ELx_EC_WATCHPT_CUR:
- 	case ESR_ELx_EC_BRK64:
-@@ -737,6 +748,19 @@ static void noinstr el0_inv(struct pt_regs *regs, unsigned long esr)
- 	exit_to_user_mode(regs);
- }
- 
-+static void noinstr el0_breakpt(struct pt_regs *regs, unsigned long esr)
-+{
-+	if (!is_ttbr0_addr(regs->pc))
-+		arm64_apply_bp_hardening();
-+
-+	enter_from_user_mode(regs);
-+	debug_exception_enter(regs);
-+	do_breakpoint(esr, regs);
-+	debug_exception_exit(regs);
-+	local_daif_restore(DAIF_PROCCTX);
-+	exit_to_user_mode(regs);
-+}
-+
- static void noinstr el0_dbg(struct pt_regs *regs, unsigned long esr)
- {
- 	/* Only watchpoints write FAR_EL1, otherwise its UNKNOWN */
-@@ -813,6 +837,8 @@ asmlinkage void noinstr el0t_64_sync_handler(struct pt_regs *regs)
- 		el0_mops(regs, esr);
- 		break;
- 	case ESR_ELx_EC_BREAKPT_LOW:
-+		el0_breakpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_SOFTSTP_LOW:
- 	case ESR_ELx_EC_WATCHPT_LOW:
- 	case ESR_ELx_EC_BRK64:
-@@ -933,6 +959,8 @@ asmlinkage void noinstr el0t_32_sync_handler(struct pt_regs *regs)
- 		el0_cp15(regs, esr);
- 		break;
- 	case ESR_ELx_EC_BREAKPT_LOW:
-+		el0_breakpt(regs, esr);
-+		break;
- 	case ESR_ELx_EC_SOFTSTP_LOW:
- 	case ESR_ELx_EC_WATCHPT_LOW:
- 	case ESR_ELx_EC_BKPT32:
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index 722ac45f9f7b16..d7eede5d869c2b 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -22,6 +22,7 @@
- #include <asm/current.h>
- #include <asm/debug-monitors.h>
- #include <asm/esr.h>
-+#include <asm/exception.h>
- #include <asm/hw_breakpoint.h>
- #include <asm/traps.h>
- #include <asm/cputype.h>
-@@ -618,8 +619,7 @@ NOKPROBE_SYMBOL(toggle_bp_registers);
- /*
-  * Debug exception handlers.
-  */
--static int breakpoint_handler(unsigned long unused, unsigned long esr,
--			      struct pt_regs *regs)
-+void do_breakpoint(unsigned long esr, struct pt_regs *regs)
- {
- 	int i, step = 0, *kernel_step;
- 	u32 ctrl_reg;
-@@ -662,7 +662,7 @@ static int breakpoint_handler(unsigned long unused, unsigned long esr,
- 	}
- 
- 	if (!step)
--		return 0;
-+		return;
- 
- 	if (user_mode(regs)) {
- 		debug_info->bps_disabled = 1;
-@@ -670,7 +670,7 @@ static int breakpoint_handler(unsigned long unused, unsigned long esr,
- 
- 		/* If we're already stepping a watchpoint, just return. */
- 		if (debug_info->wps_disabled)
--			return 0;
-+			return;
- 
- 		if (test_thread_flag(TIF_SINGLESTEP))
- 			debug_info->suspended_step = 1;
-@@ -681,7 +681,7 @@ static int breakpoint_handler(unsigned long unused, unsigned long esr,
- 		kernel_step = this_cpu_ptr(&stepping_kernel_bp);
- 
- 		if (*kernel_step != ARM_KERNEL_STEP_NONE)
--			return 0;
-+			return;
- 
- 		if (kernel_active_single_step()) {
- 			*kernel_step = ARM_KERNEL_STEP_SUSPEND;
-@@ -690,10 +690,8 @@ static int breakpoint_handler(unsigned long unused, unsigned long esr,
- 			kernel_enable_single_step(regs);
- 		}
- 	}
--
--	return 0;
- }
--NOKPROBE_SYMBOL(breakpoint_handler);
-+NOKPROBE_SYMBOL(do_breakpoint);
- 
- /*
-  * Arm64 hardware does not always report a watchpoint hit address that matches
-@@ -988,8 +986,6 @@ static int __init arch_hw_breakpoint_init(void)
- 		core_num_brps, core_num_wrps);
- 
- 	/* Register debug fault handlers. */
--	hook_debug_fault_code(DBG_ESR_EVT_HWBP, breakpoint_handler, SIGTRAP,
--			      TRAP_HWBKPT, "hw-breakpoint handler");
- 	hook_debug_fault_code(DBG_ESR_EVT_HWWP, watchpoint_handler, SIGTRAP,
- 			      TRAP_HWBKPT, "hw-watchpoint handler");
+-	if (data->indir_size)
+-		data->indir_table = (u32 *)rss_config;
++	data->indir_table = (u32 *)rss_config;
+ 	if (data->hkey_size)
+ 		data->hkey = rss_config + indir_bytes;
  
 -- 
 2.53.0
