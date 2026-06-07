@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-260988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WQpeCblDJWpsFQIAu9opvQ
-	(envelope-from <stable+bounces-260988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:05 +0200
+	id iaVsIqdDJWpmFQIAu9opvQ
+	(envelope-from <stable+bounces-260983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303EA64F613
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE2B64F603
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:10:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Wd5wXffe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260988-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260988-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="X/RnS9Ag";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260983-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260983-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7E83303FFF1
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:08:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CCF4303D722
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DD62E1EFC;
-	Sun,  7 Jun 2026 10:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDA52E3709;
+	Sun,  7 Jun 2026 10:07:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1224E1DE8AE;
-	Sun,  7 Jun 2026 10:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160151DE8AE;
+	Sun,  7 Jun 2026 10:07:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826881; cv=none; b=pFrsm9kJC9SAEhMStOcFlxi006iXYJ3RNBnkxKh1iK1nxlDJb7lDerWZQx3zGWbPJbY53O3d7otRkSHS2slh6g5/CA6xkDuaHs1bPEqq+6qxzQTMFWDYLdU/ffCwfqn6tHc1PHp8Dj+B/o8sCwLnw0ZXD/AO74qHA+ioromxM8U=
+	t=1780826864; cv=none; b=nDW4Y1HuMJHG98hj56yFg7ygp6gwrg7sgvByp14al9wtOpdZdFiwU/dfEPkzC4yDmGNJ89Tt9tjZcWuoBKN6+y+KqRSCXPyGHxbI30EvS33YbjdJmzk6aD8d1ZqMQUvsGs8TfszIGKN0wyU4ISzJUyE+XRYJ7tmSsvGum38rBq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826881; c=relaxed/simple;
-	bh=+5QWb+5UNoU03K/uMv2SfFukKZeJ0/zLT4CIAuHBI28=;
+	s=arc-20240116; t=1780826864; c=relaxed/simple;
+	bh=GjYXSkvmA530Y3oRjNhbM9moi/Co+rRlLe6GOFWBTJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5F8D51QVqbFZgRQNmXVnqTT6oHHvjLQJ0D1zdbU0NrKr8dmGS5xt97ngGzW2SH1GiBFY9I1zh4MCi4VU4Th9MU3/LZEOTnu2AzqdDsHgLrZjHqpLAFO/7lp9atWOkX7uNtxs4KSd7gEEhKtWnutUCeG4NePpunZGaJc8KoAesw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wd5wXffe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174481F00893;
-	Sun,  7 Jun 2026 10:07:58 +0000 (UTC)
+	 MIME-Version; b=fJW1TQfnPCJ9akKRpBwuBkeC6pWoi8kx6Q+AsDfI7KiZgtNS5oFPfzsm3M9GC0czBB/ZI4wU5Zg6VGnaGk/PirM8PZhIsrPZImhvWKiipgetCzokTBDEXhGy2d1cOjUIfV22tSLYuENgmL0PydBxKV3dRv9v97lf0Fn5VY/BkIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/RnS9Ag; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFBE1F00893;
+	Sun,  7 Jun 2026 10:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826879;
-	bh=FPwJMT0DlaD9j41lfY+bhEVMmNbQ4z4idHXfk7UNIuc=;
+	s=korg; t=1780826863;
+	bh=X8JU7I5Kf+f9+SqTNF5VCig/gJ0Ca9vBa0uNAzMCMW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wd5wXffejPjIr0GelCltCHWFE9yFNIP+B1EJt5FPUVS+UNxiwWKHAAmrYETe5Nghn
-	 s/QOc1YckxGPycxN2c1DUF3lUE1fSFXFqgTy0GtxHm8nFKEezfWwjZbMvC8BqnWZqt
-	 HVgNCkkyigtrxDu5448Dm1Xuf4k4y8HwXlwmFQK8=
+	b=X/RnS9AgRBNBMJyqrRwqNwzfvEWW0XNjV9PtZATzPUN+reHv9PAB1cGJq2x4v2M0i
+	 0ghJ46hfHQYXZlUjDOkok3wByH/hEbOWpEPdAHAZJ+7fzeYQt5aWUGwUnYYHSAW+ZZ
+	 41oWyAJWcls5XrJoCD/PfixzHOLk8hdF93t8qw9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Sowden <jeremy@azazel.net>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Dan Carpenter <error27@gmail.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/315] netfilter: nf_tables: fix dst corruption in same register operation
+Subject: [PATCH 7.0 037/332] accel/ivpu: prevent uninitialized data bug in debugfs
 Date: Sun,  7 Jun 2026 11:56:46 +0200
-Message-ID: <20260607095728.200523499@linuxfoundation.org>
+Message-ID: <20260607095729.469763305@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,176 +69,76 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-260983-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:error27@gmail.com,m:karol.wachowski@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-260988-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jeremy@azazel.net,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[azazel.net:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 303EA64F613
+X-Rspamd-Queue-Id: DEE2B64F603
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit 18014147d3ee7831dce53fe65d7fc8d428b02552 ]
+[ Upstream commit 44e151be23deb788d9f6124de93823faf6e04e99 ]
 
-For lshift and rshift, the shift operations are performed in a loop over
-32-bit words. The loop calculates the shifted value and write it to dst,
-and then immediately reads from src to calculate the carry for the next
-iteration. Because src and dst could point to the same memory location,
-the carry is incorrectly calculated using the newly modified dst value
-instead of the original src value.
+The simple_write_to_buffer() will only initialize data starting from
+the *pos offset so if it's non-zero then the first part of the buffer
+uninitialized.  Really, if *pos is non-zero then this code won't work
+so just check for that at the start of the function.
 
-Adding a temporary local variable to cache the original value before
-writing to dst and using it for the carry calculation solves the
-problem. In addition, partial overlap is rejected from control plane for
-all kind of operations including byteorder. This was tested with the
-following bytecode:
-
-table test_table ip flags 0 use 1 handle 1
-ip test_table test_chain use 3 type filter hook input prio 0 policy accept packets 0 bytes 0 flags 1
-ip test_table test_chain 2
-  [ immediate reg 1 0x44332211 0x88776655 ]
-  [ bitwise reg 1 = ( reg 1 << 0x08000000 ) ]
-  [ cmp eq reg 1 0x66443322 0x00887766 ]
-  [ counter pkts 0 bytes 0 ]
-ip test_table test_chain 4 3
-  [ immediate reg 1 0x44332211 0x88776655 ]
-  [ bitwise reg 1 = ( reg 1 << 0x08000000 ) ]
-  [ cmp eq reg 1 0x55443322 0x00887766 ]
-  [ counter pkts 21794 bytes 1917798 ]
-
-Fixes: 567d746b55bc ("netfilter: bitwise: add support for shifts.")
-Acked-by: Jeremy Sowden <jeremy@azazel.net>
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 320323d2e545 ("accel/ivpu: Add debugfs interface for setting HWS priority bands")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://patch.msgid.link/ahP24m6Mii9EDL7Q@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  7 +++++++
- net/netfilter/nft_bitwise.c       | 18 ++++++++++++++----
- net/netfilter/nft_byteorder.c     | 13 ++++++++++---
- 3 files changed, 31 insertions(+), 7 deletions(-)
+ drivers/accel/ivpu/ivpu_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 4dc080f7f27c65..b35e8c02fadcd5 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -188,6 +188,13 @@ static inline u64 nft_reg_load64(const u32 *sreg)
- 	return get_unaligned((u64 *)sreg);
- }
+diff --git a/drivers/accel/ivpu/ivpu_debugfs.c b/drivers/accel/ivpu/ivpu_debugfs.c
+index a09f54fc430206..e93883914bc274 100644
+--- a/drivers/accel/ivpu/ivpu_debugfs.c
++++ b/drivers/accel/ivpu/ivpu_debugfs.c
+@@ -440,7 +440,7 @@ priority_bands_fops_write(struct file *file, const char __user *user_buf, size_t
+ 	u32 band;
+ 	int ret;
  
-+static inline bool nft_reg_overlap(u8 src, u8 dst, u32 len)
-+{
-+	unsigned int n = DIV_ROUND_UP(len, sizeof(u32));
-+
-+	return src != dst && src < dst + n && dst < src + n;
-+}
-+
- static inline void nft_data_copy(u32 *dst, const struct nft_data *src,
- 				 unsigned int len)
- {
-diff --git a/net/netfilter/nft_bitwise.c b/net/netfilter/nft_bitwise.c
-index af990c600745be..1afb36fb5994db 100644
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -43,8 +43,10 @@ static void nft_bitwise_eval_lshift(u32 *dst, const u32 *src,
- 	u32 carry = 0;
+-	if (size >= sizeof(buf))
++	if (*pos != 0 || size >= sizeof(buf))
+ 		return -EINVAL;
  
- 	for (i = DIV_ROUND_UP(priv->len, sizeof(u32)); i > 0; i--) {
--		dst[i - 1] = (src[i - 1] << shift) | carry;
--		carry = src[i - 1] >> (BITS_PER_TYPE(u32) - shift);
-+		u32 tmp_src = src[i - 1];
-+
-+		dst[i - 1] = (tmp_src << shift) | carry;
-+		carry = tmp_src >> (BITS_PER_TYPE(u32) - shift);
- 	}
- }
- 
-@@ -56,8 +58,10 @@ static void nft_bitwise_eval_rshift(u32 *dst, const u32 *src,
- 	u32 carry = 0;
- 
- 	for (i = 0; i < DIV_ROUND_UP(priv->len, sizeof(u32)); i++) {
--		dst[i] = carry | (src[i] >> shift);
--		carry = src[i] << (BITS_PER_TYPE(u32) - shift);
-+		u32 tmp_src = src[i];
-+
-+		dst[i] = carry | (tmp_src >> shift);
-+		carry = tmp_src << (BITS_PER_TYPE(u32) - shift);
- 	}
- }
- 
-@@ -235,6 +239,9 @@ static int nft_bitwise_init_bool(const struct nft_ctx *ctx,
- 					      &priv->sreg2, priv->len);
- 		if (err < 0)
- 			return err;
-+
-+		if (nft_reg_overlap(priv->sreg2, priv->dreg, priv->len))
-+			return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -265,6 +272,9 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
-+	if (nft_reg_overlap(priv->sreg, priv->dreg, priv->len))
-+		return -EINVAL;
-+
- 	if (tb[NFTA_BITWISE_OP]) {
- 		priv->op = ntohl(nla_get_be32(tb[NFTA_BITWISE_OP]));
- 		switch (priv->op) {
-diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
-index af9206a3afd181..5e7a7841b789b0 100644
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -144,9 +144,16 @@ static int nft_byteorder_init(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
--	return nft_parse_register_store(ctx, tb[NFTA_BYTEORDER_DREG],
--					&priv->dreg, NULL, NFT_DATA_VALUE,
--					priv->len);
-+	err = nft_parse_register_store(ctx, tb[NFTA_BYTEORDER_DREG],
-+				       &priv->dreg, NULL, NFT_DATA_VALUE,
-+				       priv->len);
-+	if (err < 0)
-+		return err;
-+
-+	if (nft_reg_overlap(priv->sreg, priv->dreg, priv->len))
-+		return -EINVAL;
-+
-+	return 0;
- }
- 
- static int nft_byteorder_dump(struct sk_buff *skb,
+ 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, pos, user_buf, size);
 -- 
 2.53.0
 
