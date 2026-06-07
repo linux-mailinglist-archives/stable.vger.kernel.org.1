@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /4N7FTdFJWonFgIAu9opvQ
-	(envelope-from <stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:27 +0200
+	id 70+lA8lEJWr1FQIAu9opvQ
+	(envelope-from <stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E637964F7A0
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A243664F727
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:15:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f+7GAgJR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261154-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=maYCse1n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261122-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 60BD8300360A
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:17:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E58CB3003344
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B772E1F0E;
-	Sun,  7 Jun 2026 10:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3CB2AD00;
+	Sun,  7 Jun 2026 10:15:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9364071DA;
-	Sun,  7 Jun 2026 10:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E05A2ECEB9;
+	Sun,  7 Jun 2026 10:15:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827445; cv=none; b=VQFmB95/CJtcGEEC2FYaDMbpZKvniYiIzfCxG+U2gB0HWk+vIU4wZpxaY3pDjWpNoo9PmVspIv4HhDQjpHtGPx2Wal4R8EiTdHefa1iEMB5nqtjRNFOZKHKmgspIfdsvNl4z6K9J2XfJjuMcOLSthOvvxQmxwOmQchdWLeM6ea0=
+	t=1780827334; cv=none; b=oEFCN+FMAChDAvfJKZ9FrnQvhRYS6pUdNvrh6D/0303CK9Agt21ucLOX6GR0S4Ni9h83IsLZaY32vwn02g3W1SskTWbMLeh51xyVUu6iroLX1X9+1d+uVbj6oXri5UlzORS4TcF2fye/do6Lr0po0V18uYblGLOGsUZwor4uWtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827445; c=relaxed/simple;
-	bh=8Vo8V+GAWNAoCobwzEMN3VJuAHZqVoZQPu4vGkVc5VM=;
+	s=arc-20240116; t=1780827334; c=relaxed/simple;
+	bh=2pzLPyyNZ7zk5g0gi3Hr6Aa6AUOglc5dIJqNDNnIUk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwlN6aYRCjAFyssAcxGxUw38wvsqH/BguiisBA0/hkeXS821DErkQdkaKjembjLmoPbF6mTooEvhdfY+3wY7oyCGSsLURadAbzDVp9PcbLszZhVRqdnYuR7xLmhMJhhGe15obJIqwDtkvyZND0u0uX3fWBtyTg7+E0UnpK7ycG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+7GAgJR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366761F00893;
-	Sun,  7 Jun 2026 10:17:23 +0000 (UTC)
+	 MIME-Version; b=OffTqGG5WPtzH4Yj1AG9aIIGPr91vzQ9dvLzcWSQFKXiyP4zfbjc8aEBLI7rQ3XgV+iwdYXOUysKdTxmMCQnXRyO0x/EnSrIQalbA5uioMukSs0Gp2YgrA1ub2yAEKM2Qm/2W7kS3LLIJd6n7+/1vpYQ+SlJR33NKws+hc/n/xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maYCse1n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBF31F00893;
+	Sun,  7 Jun 2026 10:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827443;
-	bh=z+jXFP4jy21DeC9fSOc+l8PY6+f4TiJXMwlu2S7z008=;
+	s=korg; t=1780827333;
+	bh=UF+7b/0S/3uEu5HdVrbmygy+FFHaDnXLpBe1t3Pwb1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f+7GAgJRTASFZq/6ZLfy/8osNb9PVS2N8h/38bYpn5+hghyj9nlHgO4ZhOPUF7ICg
-	 Ma/jV4f52iGAbyRcw2n32WE0ShXexsEN+0XGcdHjhiNuTOe1tFt278kiZbu2XGwxxx
-	 XJgerDWBuoGXU+KynWCP7he0wlKe/KejMWz7hCFk=
+	b=maYCse1nZfTigse10T7NjwmQZjQEn4bZrGs9rHx1HwP1KWNYbcVJiXTQ7Hwhl+OGF
+	 VuZNNAJ6lt0PAAQQIgWDLdtytP505P94fOnT3sz28SfRhCLFYVR4lIgGSZHq8Cmhgm
+	 AlA/D2XFiB8t9/VwmiDanp9jpnILRX2tjKzt8QhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sashiko <sashiko-bot@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/307] net: ethtool: Add support for writing firmware blocks using EPL payload
+Subject: [PATCH 7.0 084/332] net/sched: act_mirred: Fix return code in early mirred redirect error paths
 Date: Sun,  7 Jun 2026 11:57:33 +0200
-Message-ID: <20260607095729.789170031@linuxfoundation.org>
+Message-ID: <20260607095731.230784677@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261154-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261122-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:petrm@nvidia.com,m:horms@kernel.org,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:victor@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,331 +96,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,davemloft.net:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,sashiko.dev:url,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E637964F7A0
+X-Rspamd-Queue-Id: A243664F727
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 9a3b0d078bd825613c0821bf7bf5a2e1d8d60057 ]
+[ Upstream commit e80ad525fc7e8c933ad78478c5dda286cfd55c60 ]
 
-In the CMIS specification for pluggable modules, LPL (Local Payload) and
-EPL (Extended Payload) are two types of data payloads used for managing
-various functions and features of the module.
+Since retval is set as TC_ACT_STOLEN in the mirred redirect case, returning
+retval in cases where redirect failed will make the callers not register
+the skb as being dropped.
 
-EPL payloads are used for more complex and extensive management
-functions that require a larger amount of data, so writing firmware
-blocks using EPL is much more efficient.
+Fix this by returning TC_ACT_SHOT instead in such scenarios.
 
-Currently, only LPL payload is supported for writing firmware blocks to
-the module.
-
-Add support for writing firmware block using EPL payload, both to
-support modules that supports only EPL write mechanism, and to optimize
-the flashing process of modules that support LPL and EPL.
-
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 12c2496a71f8 ("ethtool: cmis: validate start_cmd_payload_size from module")
+Fixes: 16085e48cb48 ("net/sched: act_mirred: Create function tcf_mirred_to_dev and improve readability")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260413082027.2244884-1-hxzene%40gmail.com
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-8-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/cmis.h           |  4 ++
- net/ethtool/cmis_cdb.c       | 66 ++++++++++++++++++++++++--
- net/ethtool/cmis_fw_update.c | 91 ++++++++++++++++++++++++++++++++----
- 3 files changed, 148 insertions(+), 13 deletions(-)
+ net/sched/act_mirred.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/net/ethtool/cmis.h b/net/ethtool/cmis.h
-index e11e47b3f2fc8f..1ab96bdd2c6f92 100644
---- a/net/ethtool/cmis.h
-+++ b/net/ethtool/cmis.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index dbe4a4ff3e08b8..553342c55cf7c6 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -372,7 +372,8 @@ static int tcf_blockcast_redir(struct sk_buff *skb, struct tcf_mirred *m,
+ 					 dev_is_mac_header_xmit(dev_prev),
+ 					 m_eaction, retval);
  
- #define ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH		120
-+#define ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH		2048
- #define ETHTOOL_CMIS_CDB_CMD_PAGE			0x9F
- #define ETHTOOL_CMIS_CDB_PAGE_I2C_ADDR			0x50
- 
-@@ -23,6 +24,7 @@ enum ethtool_cmis_cdb_cmd_id {
- 	ETHTOOL_CMIS_CDB_CMD_FW_MANAGMENT_FEATURES	= 0x0041,
- 	ETHTOOL_CMIS_CDB_CMD_START_FW_DOWNLOAD		= 0x0101,
- 	ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_LPL		= 0x0103,
-+	ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_EPL		= 0x0104,
- 	ETHTOOL_CMIS_CDB_CMD_COMPLETE_FW_DOWNLOAD	= 0x0107,
- 	ETHTOOL_CMIS_CDB_CMD_RUN_FW_IMAGE		= 0x0109,
- 	ETHTOOL_CMIS_CDB_CMD_COMMIT_FW_IMAGE		= 0x010A,
-@@ -38,6 +40,7 @@ enum ethtool_cmis_cdb_cmd_id {
-  * @resv1: Added to match the CMIS standard request continuity.
-  * @resv2: Added to match the CMIS standard request continuity.
-  * @payload: Payload for the CDB commands.
-+ * @epl: Extended payload for the CDB commands.
-  */
- struct ethtool_cmis_cdb_request {
- 	__be16 id;
-@@ -49,6 +52,7 @@ struct ethtool_cmis_cdb_request {
- 		u8 resv2;
- 		u8 payload[ETHTOOL_CMIS_CDB_LPL_MAX_PL_LENGTH];
- 	);
-+	u8 *epl;	/* Everything above this field checksummed. */
- };
- 
- #define CDB_F_COMPLETION_VALID		BIT(0)
-diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
-index 31142e239cf6b2..606d88df31f235 100644
---- a/net/ethtool/cmis_cdb.c
-+++ b/net/ethtool/cmis_cdb.c
-@@ -33,12 +33,19 @@ void ethtool_cmis_cdb_compose_args(struct ethtool_cmis_cdb_cmd_args *args,
- {
- 	args->req.id = cpu_to_be16(cmd);
- 	args->req.lpl_len = lpl_len;
--	if (lpl)
-+	if (lpl) {
- 		memcpy(args->req.payload, lpl, args->req.lpl_len);
-+		args->read_write_len_ext =
-+			ethtool_cmis_get_max_lpl_size(read_write_len_ext);
-+	}
-+	if (epl) {
-+		args->req.epl_len = cpu_to_be16(epl_len);
-+		args->req.epl = epl;
-+		args->read_write_len_ext =
-+			ethtool_cmis_get_max_epl_size(read_write_len_ext);
-+	}
- 
- 	args->max_duration = max_duration;
--	args->read_write_len_ext =
--		ethtool_cmis_get_max_lpl_size(read_write_len_ext);
- 	args->msleep_pre_rpl = msleep_pre_rpl;
- 	args->rpl_exp_len = rpl_exp_len;
- 	args->flags = flags;
-@@ -561,6 +568,49 @@ __ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
- 	return err;
+-	return retval;
++	/* If the packet wasn't redirected, we have to register as a drop */
++	return TC_ACT_SHOT;
  }
  
-+#define CMIS_CDB_EPL_PAGE_START			0xA0
-+#define CMIS_CDB_EPL_PAGE_END			0xAF
-+#define CMIS_CDB_EPL_FW_BLOCK_OFFSET_START	128
-+#define CMIS_CDB_EPL_FW_BLOCK_OFFSET_END	255
-+
-+static int
-+ethtool_cmis_cdb_execute_epl_cmd(struct net_device *dev,
-+				 struct ethtool_cmis_cdb_cmd_args *args,
-+				 struct ethtool_module_eeprom *page_data)
-+{
-+	u16 epl_len = be16_to_cpu(args->req.epl_len);
-+	u32 bytes_written = 0;
-+	u8 page;
-+	int err;
-+
-+	for (page = CMIS_CDB_EPL_PAGE_START;
-+	     page <= CMIS_CDB_EPL_PAGE_END && bytes_written < epl_len; page++) {
-+		u16 offset = CMIS_CDB_EPL_FW_BLOCK_OFFSET_START;
-+
-+		while (offset <= CMIS_CDB_EPL_FW_BLOCK_OFFSET_END &&
-+		       bytes_written < epl_len) {
-+			u32 bytes_left = epl_len - bytes_written;
-+			u16 space_left, bytes_to_write;
-+
-+			space_left = CMIS_CDB_EPL_FW_BLOCK_OFFSET_END - offset + 1;
-+			bytes_to_write = min_t(u16, bytes_left,
-+					       min_t(u16, space_left,
-+						     args->read_write_len_ext));
-+
-+			err = __ethtool_cmis_cdb_execute_cmd(dev, page_data,
-+							     page, offset,
-+							     bytes_to_write,
-+							     args->req.epl + bytes_written);
-+			if (err < 0)
-+				return err;
-+
-+			offset += bytes_to_write;
-+			bytes_written += bytes_to_write;
-+		}
-+	}
-+	return 0;
-+}
-+
- static u8 cmis_cdb_calc_checksum(const void *data, size_t size)
- {
- 	const u8 *bytes = (const u8 *)data;
-@@ -582,7 +632,9 @@ int ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
- 	int err;
- 
- 	args->req.chk_code =
--		cmis_cdb_calc_checksum(&args->req, sizeof(args->req));
-+		cmis_cdb_calc_checksum(&args->req,
-+				       offsetof(struct ethtool_cmis_cdb_request,
-+						epl));
- 
- 	if (args->req.lpl_len > args->read_write_len_ext) {
- 		args->err_msg = "LPL length is longer than CDB read write length extension allows";
-@@ -604,6 +656,12 @@ int ethtool_cmis_cdb_execute_cmd(struct net_device *dev,
- 	if (err < 0)
- 		return err;
- 
-+	if (args->req.epl_len) {
-+		err = ethtool_cmis_cdb_execute_epl_cmd(dev, args, &page_data);
-+		if (err < 0)
-+			return err;
-+	}
-+
- 	offset = CMIS_CDB_CMD_ID_OFFSET +
- 		offsetof(struct ethtool_cmis_cdb_request, id);
- 	err = __ethtool_cmis_cdb_execute_cmd(dev, &page_data,
-diff --git a/net/ethtool/cmis_fw_update.c b/net/ethtool/cmis_fw_update.c
-index a514127985d44e..48aef6220f0094 100644
---- a/net/ethtool/cmis_fw_update.c
-+++ b/net/ethtool/cmis_fw_update.c
-@@ -9,6 +9,7 @@
- 
- struct cmis_fw_update_fw_mng_features {
- 	u8	start_cmd_payload_size;
-+	u8	write_mechanism;
- 	u16	max_duration_start;
- 	u16	max_duration_write;
- 	u16	max_duration_complete;
-@@ -36,7 +37,9 @@ struct cmis_cdb_fw_mng_features_rpl {
- };
- 
- enum cmis_cdb_fw_write_mechanism {
-+	CMIS_CDB_FW_WRITE_MECHANISM_NONE	= 0x00,
- 	CMIS_CDB_FW_WRITE_MECHANISM_LPL		= 0x01,
-+	CMIS_CDB_FW_WRITE_MECHANISM_EPL		= 0x10,
- 	CMIS_CDB_FW_WRITE_MECHANISM_BOTH	= 0x11,
- };
- 
-@@ -68,10 +71,9 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
+ static int tcf_blockcast_mirror(struct sk_buff *skb, struct tcf_mirred *m,
+@@ -410,7 +411,7 @@ static int tcf_blockcast(struct sk_buff *skb, struct tcf_mirred *m,
+ 	block = tcf_block_lookup(dev_net(skb->dev), blockid);
+ 	if (!block || xa_empty(&block->ports)) {
+ 		tcf_action_inc_overlimit_qstats(&m->common);
+-		return retval;
++		return is_redirect ? TC_ACT_SHOT : retval;
  	}
  
- 	rpl = (struct cmis_cdb_fw_mng_features_rpl *)args.req.payload;
--	if (!(rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ||
--	      rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_BOTH)) {
-+	if (rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_NONE) {
- 		ethnl_module_fw_flash_ntf_err(dev, ntf_params,
--					      "Write LPL is not supported",
-+					      "CDB write mechanism is not supported",
- 					      NULL);
- 		return  -EOPNOTSUPP;
- 	}
-@@ -83,6 +85,10 @@ cmis_fw_update_fw_mng_features_get(struct ethtool_cmis_cdb *cdb,
- 	 */
- 	cdb->read_write_len_ext = rpl->read_write_len_ext;
- 	fw_mng->start_cmd_payload_size = rpl->start_cmd_payload_size;
-+	fw_mng->write_mechanism =
-+		rpl->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL ?
-+		CMIS_CDB_FW_WRITE_MECHANISM_LPL :
-+		CMIS_CDB_FW_WRITE_MECHANISM_EPL;
- 	fw_mng->max_duration_start = be16_to_cpu(rpl->max_duration_start);
- 	fw_mng->max_duration_write = be16_to_cpu(rpl->max_duration_write);
- 	fw_mng->max_duration_complete = be16_to_cpu(rpl->max_duration_complete);
-@@ -149,9 +155,9 @@ struct cmis_cdb_write_fw_block_lpl_pl {
- };
- 
- static int
--cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
--			   struct ethtool_cmis_fw_update_params *fw_update,
--			   struct cmis_fw_update_fw_mng_features *fw_mng)
-+cmis_fw_update_write_image_lpl(struct ethtool_cmis_cdb *cdb,
-+			       struct ethtool_cmis_fw_update_params *fw_update,
-+			       struct cmis_fw_update_fw_mng_features *fw_mng)
+ 	if (is_redirect)
+@@ -428,8 +429,8 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
  {
- 	u8 start = fw_mng->start_cmd_payload_size;
- 	u32 offset, max_block_size, max_lpl_len;
-@@ -202,6 +208,67 @@ cmis_fw_update_write_image(struct ethtool_cmis_cdb *cdb,
- 	return 0;
+ 	struct tcf_mirred *m = to_mirred(a);
+ 	int retval = READ_ONCE(m->tcf_action);
++	bool m_mac_header_xmit, is_redirect;
+ 	struct netdev_xmit *xmit;
+-	bool m_mac_header_xmit;
+ 	struct net_device *dev;
+ 	bool want_ingress;
+ 	int i, m_eaction;
+@@ -462,11 +463,13 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
+ 		return retval;
+ 	}
+ 
++	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
++
+ 	dev = rcu_dereference_bh(m->tcfm_dev);
+ 	if (unlikely(!dev)) {
+ 		pr_notice_once("tc mirred: target device is gone\n");
+ 		tcf_action_inc_overlimit_qstats(&m->common);
+-		return retval;
++		goto err_out;
+ 	}
+ 
+ 	if (!want_ingress) {
+@@ -476,7 +479,7 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
+ 			pr_notice_once("tc mirred: loop on device %s\n",
+ 				       netdev_name(dev));
+ 			tcf_action_inc_overlimit_qstats(&m->common);
+-			return retval;
++			goto err_out;
+ 		}
+ 		xmit->sched_mirred_dev[xmit->sched_mirred_nest++] = dev;
+ 	}
+@@ -489,6 +492,11 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
+ 		xmit->sched_mirred_nest--;
+ 
+ 	return retval;
++
++err_out:
++	if (is_redirect)
++		retval = TC_ACT_SHOT;
++	return retval;
  }
  
-+struct cmis_cdb_write_fw_block_epl_pl {
-+	u8 fw_block[ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH];
-+};
-+
-+static int
-+cmis_fw_update_write_image_epl(struct ethtool_cmis_cdb *cdb,
-+			       struct ethtool_cmis_fw_update_params *fw_update,
-+			       struct cmis_fw_update_fw_mng_features *fw_mng)
-+{
-+	u8 start = fw_mng->start_cmd_payload_size;
-+	u32 image_size = fw_update->fw->size;
-+	u32 offset, lpl_len;
-+	int err;
-+
-+	lpl_len = sizeof_field(struct cmis_cdb_write_fw_block_lpl_pl,
-+			       block_address);
-+
-+	for (offset = start; offset < image_size;
-+	     offset += ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH) {
-+		struct cmis_cdb_write_fw_block_lpl_pl lpl = {
-+			.block_address = cpu_to_be32(offset - start),
-+		};
-+		struct cmis_cdb_write_fw_block_epl_pl *epl;
-+		struct ethtool_cmis_cdb_cmd_args args = {};
-+		u32 epl_len;
-+
-+		ethnl_module_fw_flash_ntf_in_progress(fw_update->dev,
-+						      &fw_update->ntf_params,
-+						      offset - start,
-+						      image_size);
-+
-+		epl_len = min_t(u32, ETHTOOL_CMIS_CDB_EPL_MAX_PL_LENGTH,
-+				image_size - offset);
-+		epl = kmalloc_array(epl_len, sizeof(u8), GFP_KERNEL);
-+		if (!epl)
-+			return -ENOMEM;
-+
-+		memcpy(epl->fw_block, &fw_update->fw->data[offset], epl_len);
-+
-+		ethtool_cmis_cdb_compose_args(&args,
-+					      ETHTOOL_CMIS_CDB_CMD_WRITE_FW_BLOCK_EPL,
-+					      (u8 *)&lpl, lpl_len, (u8 *)epl,
-+					      epl_len,
-+					      fw_mng->max_duration_write,
-+					      cdb->read_write_len_ext, 1, 0,
-+					      CDB_F_COMPLETION_VALID | CDB_F_STATUS_VALID);
-+
-+		err = ethtool_cmis_cdb_execute_cmd(fw_update->dev, &args);
-+		kfree(epl);
-+		if (err < 0) {
-+			ethnl_module_fw_flash_ntf_err(fw_update->dev,
-+						      &fw_update->ntf_params,
-+						      "Write FW block EPL command failed",
-+						      args.err_msg);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int
- cmis_fw_update_complete_download(struct ethtool_cmis_cdb *cdb,
- 				 struct net_device *dev,
-@@ -238,9 +305,15 @@ cmis_fw_update_download_image(struct ethtool_cmis_cdb *cdb,
- 	if (err < 0)
- 		return err;
- 
--	err = cmis_fw_update_write_image(cdb, fw_update, fw_mng);
--	if (err < 0)
--		return err;
-+	if (fw_mng->write_mechanism == CMIS_CDB_FW_WRITE_MECHANISM_LPL) {
-+		err = cmis_fw_update_write_image_lpl(cdb, fw_update, fw_mng);
-+		if (err < 0)
-+			return err;
-+	} else {
-+		err = cmis_fw_update_write_image_epl(cdb, fw_update, fw_mng);
-+		if (err < 0)
-+			return err;
-+	}
- 
- 	err = cmis_fw_update_complete_download(cdb, fw_update->dev, fw_mng,
- 					       &fw_update->ntf_params);
+ static void tcf_stats_update(struct tc_action *a, u64 bytes, u64 packets,
 -- 
 2.53.0
 
