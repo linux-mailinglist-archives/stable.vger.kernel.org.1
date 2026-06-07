@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-261512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aSa6LFZLJWpEGQIAu9opvQ
-	(envelope-from <stable+bounces-261512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:34 +0200
+	id YxmNBolMJWqdGQIAu9opvQ
+	(envelope-from <stable+bounces-261549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488D364FF28
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97810650045
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:48:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SkJCiwlP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261512-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261512-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iqJPtYJW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261549-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261549-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5704303A8E6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:40:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0744304DCB6
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C45A32A3C9;
-	Sun,  7 Jun 2026 10:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D7631F9AC;
+	Sun,  7 Jun 2026 10:42:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFD63195FD;
-	Sun,  7 Jun 2026 10:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224271E98EF;
+	Sun,  7 Jun 2026 10:42:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828836; cv=none; b=hH6fheEtJ/huPhcWQiKDaUddRI5uCClB8jQGh3JTf0zq4KlFVSOoDiaVJeLm2066ZYUvrgCEVCnpcXQNp3lq2+9+DzJ49ykjg5mmIcO/jFHZhatJVrAQu8lr9+pR0B3AwFGGlb0SBhbACPAQ0+bTnbQ0GlN3YWBTwZyECNWX9kE=
+	t=1780828976; cv=none; b=UYHtsGDCyk4xo5dtQmm8y11mRvTKQcRrmwD8FOPYe5VDTXTOvidOKmKFXG2E3+7SfGv3He2dq1pcA7eFiv5/CeDL+6zECeJmu2Ou3YWm3U0PeQbi0b++dINcNRevTqwReWMtP9zrddvCoifargvjZmWV/YWcueYhrh04+w4sWVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828836; c=relaxed/simple;
-	bh=t9jippoU550E8rjpGxXKcft1YDaP7HqzO231UuknUR4=;
+	s=arc-20240116; t=1780828976; c=relaxed/simple;
+	bh=4So37Lu8TvELnBfRT0vh4rRYb1QofDqkou7yEnaNUbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nO+0qG9PeeiDpXgHVpoda+DcU7QQ/g6pD6DOLcICChGdih/7WTNy4Qye+lecPIeK++DGmU0jKYCVOZDNH4DRUi8E8vW6OwNh9go1QVs9l/aZJkBMTXUTRDawxZlOb5E/zMnbdTvFnMMKoB+xmbwzk6qW1TIOmszKCym2JCixses=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkJCiwlP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253C71F00893;
-	Sun,  7 Jun 2026 10:40:34 +0000 (UTC)
+	 MIME-Version; b=UADSSchUlJriOzNu7Kr80uZpOA13H5l5nDDI/Y87etVVNijj1dxcnRzQD0SACd7Ajfs/TW160OIrKUW1B2jemVhIZFmPHtukA/6Mebd+Sj/tO8NQZp/cE5ynDl74ga4xLsr6GhvjzQq2Z0UjLBUX1r2qqGEfS/xrrIwh8WAvWlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqJPtYJW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCC61F00893;
+	Sun,  7 Jun 2026 10:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828835;
-	bh=pSp6qhXD3kQiT0zQ6YEWiptWT3ZRi/OUTQ7K9AXjJyk=;
+	s=korg; t=1780828975;
+	bh=1eOOg4I7Ot1rawndqkmpOzPoGlGqEGZ1EHfCL5c8BF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SkJCiwlPbjF+VBa9xxF0RXF3AerRHEYpAMocYTNoMykFX4algHPOJYrsf1F1wlFzm
-	 NTQov47BDt0jFBqa6/Qk0fudSW9o3t6GjWroHG3zr08GavSd+5tR93hQm7czRTe4RA
-	 8ujgavWsjb7oo1uawUoa8v7snfvzOtgHbqrKPZwM=
+	b=iqJPtYJW+3ZhQNC2Kp0hr7jsSF6YTba4a8fj4Pco3+YqQIjPJ8elWtgZUZov0BMzI
+	 zgi0MlKpdunCcpQuUMCqT6oDocrOZc1ZeMq59AAU5MJg4Gzj/djxNFo69WdPAVCrLG
+	 YPNkr4MtTQNYAZqu2RVt2sP+S+S9HZvzn2jYztEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 195/315] net: skbuff: fix missing zerocopy reference in pskb_carve helpers
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 213/332] octeontx2-af: validate body pcifunc in rvu_mbox_handler_rep_event_notify
 Date: Sun,  7 Jun 2026 11:59:42 +0200
-Message-ID: <20260607095734.732953179@linuxfoundation.org>
+Message-ID: <20260607095735.886416817@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,15 +79,15 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261512-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261549-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:kuba@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,redhat.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -102,95 +101,93 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 488D364FF28
+X-Rspamd-Queue-Id: 97810650045
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minh Nguyen <minhnguyen.080505@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 98d0912e9f841e5529a5b89a972805f34cb1c69d upstream.
+commit 2156a29aecfffa2eb7c558255690084efbe9f3b0 upstream.
 
-pskb_carve_inside_header() and pskb_carve_inside_nonlinear() both copy
-the old skb_shared_info header into a new buffer via memcpy(), which
-includes the destructor_arg pointer (uarg) for MSG_ZEROCOPY skbs.
-Neither function calls net_zcopy_get() for the new shinfo, creating an
-unaccounted holder: every skb_shared_info with destructor_arg set will
-call skb_zcopy_clear() once when freed, but the corresponding
-net_zcopy_get() was never called for the new copy. Repeated calls
-drive uarg->refcnt to zero prematurely, freeing ubuf_info_msgzc while
-TX skbs still hold live destructor_arg pointers.
+rvu_mbox_handler_rep_event_notify() in drivers/net/ethernet/marvell/
+octeontx2/af/rvu_rep.c queues a sender-controlled REP_EVENT_NOTIFY
+request body verbatim, and rvu_rep_up_notify() then forwards
+event->pcifunc (the nested body field, distinct from the
+AF-normalised header pcifunc) into rvu_get_pfvf(), rvu_get_pf() and
+the AF->PF mailbox device index without any bounds check.
 
-KASAN reports use-after-free on a freed ubuf_info_msgzc:
+A VF attached to a PF that has been put into switchdev
+representor mode reaches this path: the VF mailbox handler
+otx2_pfvf_mbox_handler() forwards every message id including
+MBOX_MSG_REP_EVENT_NOTIFY to AF without an allowlist, and the AF
+dispatcher rewrites only msg->pcifunc, leaving struct
+rep_event::pcifunc attacker-controlled.  The sibling
+rvu_mbox_handler_esw_cfg() refuses requests whose header pcifunc
+is not rvu->rep_pcifunc; this handler has no equivalent gate.
 
-  BUG: KASAN: slab-use-after-free in skb_release_data+0x77b/0x810
-  Read of size 8 at addr ffff88801574d3e8 by task poc/220
+An out-of-range body pcifunc selects an &rvu->pf[]/&rvu->hwvf[]
+element past the allocated array and, for RVU_EVENT_MAC_ADDR_CHANGE,
+turns into a six-byte attacker-chosen OOB ether_addr_copy() target
+inside the queued worker; KASAN reports a slab-out-of-bounds write
+in rvu_rep_wq_handler.
 
-  Call Trace:
-   skb_release_data+0x77b/0x810
-   kfree_skb_list_reason+0x13e/0x610
-   skb_release_data+0x4cd/0x810
-   sk_skb_reason_drop+0xf3/0x340
-   skb_queue_purge_reason+0x282/0x440
-   rds_tcp_inc_free+0x1e/0x30
-   rds_recvmsg+0x354/0x1780
-   __sys_recvmsg+0xdf/0x180
+Reject malformed requests at the handler entry by gating on
+is_pf_func_valid(), which is already the canonical PF/VF range check
+in this driver; expose it via rvu.h so callers in rvu_rep.c can use
+it instead of open-coding the same range arithmetic.
 
-  Allocated by task 219:
-   msg_zerocopy_realloc+0x157/0x7b0
-   tcp_sendmsg_locked+0x2892/0x3ba0
-
-  Freed by task 219:
-   ip_recv_error+0x74a/0xb10
-   tcp_recvmsg+0x475/0x530
-
-The skb consuming the late access still referenced the same uarg via
-shinfo->destructor_arg copied by pskb_carve_inside_nonlinear() without
-a refcount bump. This has been verified to be reliably exploitable: a
-working proof-of-concept achieves full root privilege escalation from
-an unprivileged local user on a default kernel configuration.
-
-The fix follows the pattern of pskb_expand_head() which has the same
-memcpy/cloned structure. For pskb_carve_inside_header(), net_zcopy_get()
-is placed after skb_orphan_frags() succeeds, so the orphan error path
-needs no cleanup. For pskb_carve_inside_nonlinear(), net_zcopy_get() is
-placed after all failure points and just before skb_release_data(), so
-no error path needs cleanup at all -- matching pskb_expand_head() more
-closely and avoiding the need for a balancing net_zcopy_put().
-
-Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
+Fixes: b8fea84a0468 ("octeontx2-pf: Add support to sync link state between representor and VFs")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-sonnet-4-6
-Signed-off-by: Minh Nguyen <minhnguyen.080505@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260526041240.329462-1-minhnguyen.080505@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://patch.msgid.link/20260520154157.1439319-1-michael.bommarito@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c     |    2 +-
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.h     |    1 +
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c |    8 ++++++++
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6787,6 +6787,8 @@ static int pskb_carve_inside_header(stru
- 			skb_kfree_head(data, size);
- 			return -ENOMEM;
- 		}
-+		if (skb_zcopy(skb))
-+			net_zcopy_get(skb_zcopy(skb));
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
- 			skb_frag_ref(skb, i);
- 		if (skb_has_frag_list(skb))
-@@ -6935,6 +6937,8 @@ static int pskb_carve_inside_nonlinear(s
- 		skb_kfree_head(data, size);
- 		return -ENOMEM;
- 	}
-+	if (skb_zcopy(skb))
-+		net_zcopy_get(skb_zcopy(skb));
- 	skb_release_data(skb, SKB_CONSUMED);
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -435,7 +435,7 @@ struct rvu_pfvf *rvu_get_pfvf(struct rvu
+ 		return &rvu->pf[rvu_get_pf(rvu->pdev, pcifunc)];
+ }
  
- 	skb->head = data;
+-static bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc)
++bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc)
+ {
+ 	int pf, vf, nvfs;
+ 	u64 cfg;
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -910,6 +910,7 @@ u16 rvu_get_rsrc_mapcount(struct rvu_pfv
+ struct rvu_pfvf *rvu_get_pfvf(struct rvu *rvu, int pcifunc);
+ void rvu_get_pf_numvfs(struct rvu *rvu, int pf, int *numvfs, int *hwvf);
+ bool is_block_implemented(struct rvu_hwinfo *hw, int blkaddr);
++bool is_pf_func_valid(struct rvu *rvu, u16 pcifunc);
+ bool is_pffunc_map_valid(struct rvu *rvu, u16 pcifunc, int blktype);
+ int rvu_get_lf(struct rvu *rvu, struct rvu_block *block, u16 pcifunc, u16 slot);
+ int rvu_lf_reset(struct rvu *rvu, struct rvu_block *block, int lf);
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -97,6 +97,14 @@ int rvu_mbox_handler_rep_event_notify(st
+ {
+ 	struct rep_evtq_ent *qentry;
+ 
++	/* The mailbox dispatcher normalises only the header pcifunc; the
++	 * nested struct rep_event::pcifunc body field is sender-controlled
++	 * and is later used by rvu_rep_up_notify() to index rvu->pf[] /
++	 * rvu->hwvf[].  Reject out-of-range body selectors before queueing.
++	 */
++	if (!is_pf_func_valid(rvu, req->pcifunc))
++		return -EINVAL;
++
+ 	qentry = kmalloc_obj(*qentry, GFP_ATOMIC);
+ 	if (!qentry)
+ 		return -ENOMEM;
 
 
 
