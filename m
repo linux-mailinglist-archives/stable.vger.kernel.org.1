@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iqNLK9NKJWoZGQIAu9opvQ
-	(envelope-from <stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:23 +0200
+	id clYCIaBJJWq8GAIAu9opvQ
+	(envelope-from <stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A6864FE89
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCA264FD72
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:36:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gbZnYJGH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261481-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rh3ovM9Y;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261421-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 468913046516
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDDF530151ED
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D4832A3C9;
-	Sun,  7 Jun 2026 10:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34AE23112A5;
+	Sun,  7 Jun 2026 10:34:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B672D3A69;
-	Sun,  7 Jun 2026 10:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A869257855;
+	Sun,  7 Jun 2026 10:34:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828720; cv=none; b=Bn7mzGCFpGGhzgnx68B7sOPj3ldTwFr0l/xpFztpAkQ0uJ4w10Ej/1JKbm692TB10AM43a8THiRBN8oXVMeE0WdhEmoKCIUFgWDJ49wjS4BORbWJf+6X267UkHsMUqeGOMExv3xiXbOMJjSQ/osL+RrB++jGVB2KzuAo17Lr+E8=
+	t=1780828491; cv=none; b=WiITw/xrPBC7cI7Paw1nLUmjvZy4JaOR5PcsIKPM3g7Yky+a0oE53Qa0FSyBhd3xiM01uqTcdkJ/5/4SAumV16s1R5EwzZZ1lhDfXudPjNyb/zGDDYMS4WUIKsXtDbbXaSFoL5hOhPODGnfPVkSMq0gTiD8oPK/4UqIDSt2K6Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828720; c=relaxed/simple;
-	bh=+rEs2CPjIVdFBy/fjiFBqRxy/O8A5lqRkerZaAun0Dc=;
+	s=arc-20240116; t=1780828491; c=relaxed/simple;
+	bh=3MDJpL8LPAsucxdLhf5yVasN3vYZQyQ1bxlPCcVGlDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEfHj1VdD2TnYWt4lS2biV9gsHDTCyXfrxkJ0quRUAoe9PBrp+wpAFan/Ec2oCgThMAt5R7DJErzTgFNqGfmpPSJ2DMBwcKyQcUWjSotr2LIHvlZSDjASd20yvg9j/YixKeekW1g0AFWtv86o+u22KyHt1wNzZNqJ8vU+7OQtzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbZnYJGH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B2D1F00893;
-	Sun,  7 Jun 2026 10:38:38 +0000 (UTC)
+	 MIME-Version; b=L+X5fQA/EgrTc3KrD8LClw5UCeU0EY9xi20qiOWF1jX2iYSZ+Qf7hNIJ+R3wrABGgAUpamfiK01AY9hYrzdyUlGLeRetPJqGWLfJv1oSgWIEcTBCHqwz7V0Clehh3PJqYsRVqQ2TadgbGXvPCAzklowOQSGbJQ+MEyW0Z3biwfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh3ovM9Y; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F631F00893;
+	Sun,  7 Jun 2026 10:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828719;
-	bh=xJi/thO8sFrfG4hedfP28zeXRlCIBQsnajSTwQwmssY=;
+	s=korg; t=1780828490;
+	bh=dY/+8KXdy3SItk5CkEwI4dDnE+J9n8xiAMDXLaay14w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gbZnYJGHQiXV4ZNH1D+7Iv+N/aIscw/nthci2zL7Jzi4gFJi9qpYhpinIiHlm68vV
-	 8aaX0LdVqujcyasXgXn8C2y/MC0EjSnJtpVBvx8PM7yWdeDF4h4Fx4csDoTFd+gZrt
-	 Jh4Ncjz4T6M+3lhoQZqMgOv1WToACajDHdhqQt+A=
+	b=Rh3ovM9YnNEHN/+TCVkvo8uFeFFtB+6b37zngGQSioDhOfFrzEPL4YYSGmKqnEYp6
+	 6dYXhylO0qqSeMLpEdrRpIiSrVJXT56z0oXDItBn7wUDqx5B8oV7GfoqFDz2unHDyY
+	 Qr3p41ymb2dA8vIiltlgg5PMbqpb9KosNRoI0P0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Salah Triki <salah.triki@gmail.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 7.0 185/332] iio: adc: nxp-sar-adc: fix division by zero in write_raw
+Subject: [PATCH 6.18 167/315] iio: temperature: tsys01: fix broken PROM checksum validation
 Date: Sun,  7 Jun 2026 11:59:14 +0200
-Message-ID: <20260607095734.862092427@linuxfoundation.org>
+Message-ID: <20260607095733.729496804@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,83 +77,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261481-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261421-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 20A6864FE89
+X-Rspamd-Queue-Id: CDCA264FD72
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit a9aba21a539c668a66b58eeb08ad3909e5a54c2a upstream.
+commit 4701e471c16866e7aa8f5e6a3a6b0d31e097e2c9 upstream.
 
-Add a validation check for the sampling frequency value before using it
-as a divisor. A user writing zero or a negative value to the
-sampling_frequency sysfs attribute triggers a division by zero in the
-kernel.
+The current implementation of tsys01_crc_valid() incorrectly sums the
+first word (n_prom[0]) repeatedly instead of iterating over the 8 words
+retrieved from the PROM. This leads to a checksum mismatch and probe
+failure on hardware.
 
-Also prevent unsigned integer underflow when the computed cycle count is
-smaller than NXP_SAR_ADC_CONV_TIME, which would wrap the u32 inpsamp to
-a huge value.
+According to the TSYS01 datasheet, the PROM consists of 8 words. A valid
+check must iterate through all 8 words to verify the integrity of the
+calibration data. The current driver only checks the first word 8 times.
 
-Fixes: 4434072a893e ("iio: adc: Add the NXP SAR ADC support for the s32g2/3 platforms")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Note: This fix was identified during a code audit and is based on
+datasheet specifications. It has not been tested on real hardware.
+
+Fixes: 43e53407f680 ("Add tsys01 meas-spec driver support")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/nxp-sar-adc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/iio/temperature/tsys01.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/nxp-sar-adc.c
-+++ b/drivers/iio/adc/nxp-sar-adc.c
-@@ -559,6 +559,9 @@ static int nxp_sar_adc_write_raw(struct
+--- a/drivers/iio/temperature/tsys01.c
++++ b/drivers/iio/temperature/tsys01.c
+@@ -119,7 +119,7 @@ static bool tsys01_crc_valid(u16 *n_prom
+ 	u8 sum = 0;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (val <= 0)
-+			return -EINVAL;
-+
- 		/*
- 		 * Configures the sample period duration in terms of the SAR
- 		 * controller clock. The minimum acceptable value is 8.
-@@ -567,7 +570,11 @@ static int nxp_sar_adc_write_raw(struct
- 		 * sampling timing which gives us the number of cycles expected.
- 		 * The value is 8-bit wide, consequently the max value is 0xFF.
- 		 */
--		inpsamp = clk_get_rate(info->clk) / val - NXP_SAR_ADC_CONV_TIME;
-+		inpsamp = clk_get_rate(info->clk) / val;
-+		if (inpsamp < NXP_SAR_ADC_CONV_TIME)
-+			return -EINVAL;
-+
-+		inpsamp -= NXP_SAR_ADC_CONV_TIME;
- 		nxp_sar_adc_conversion_timing_set(info, inpsamp);
- 		return 0;
+ 	for (cnt = 0; cnt < TSYS01_PROM_WORDS_NB; cnt++)
+-		sum += ((n_prom[0] >> 8) + (n_prom[0] & 0xFF));
++		sum += ((n_prom[cnt] >> 8) + (n_prom[cnt] & 0xFF));
  
+ 	return (sum == 0);
+ }
 
 
 
