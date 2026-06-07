@@ -1,70 +1,62 @@
-Return-Path: <stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J0+nMKdHJWqMFwIAu9opvQ
-	(envelope-from <stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:51 +0200
+	id dP66IsBQJWqOGwIAu9opvQ
+	(envelope-from <stable+bounces-261889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D29D64FABA
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ADF6504F3
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:06:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yK48AjLH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wPkax0N6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261889-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261889-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DBB0D30028AB
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8A14D301A288
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0233264C8;
-	Sun,  7 Jun 2026 10:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5A3380FCF;
+	Sun,  7 Jun 2026 11:05:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096591C5F27;
-	Sun,  7 Jun 2026 10:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5839231F983;
+	Sun,  7 Jun 2026 11:05:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828068; cv=none; b=GrJkvtkhdEUyveVgh9g+ko4FEnwuAS6vmwS/GzWL92O7uQlvZeEGnsQzuk9PyKrY/+FrLbgkpj1qTv76fzYukelcdQe/2rE9Qsl1AVxan1esJ1484SjP2RcQCCe6lVtLu06+RM3Zee8Pv02s2Xpa0/B5INC14lJnUGYxW8YBDtM=
+	t=1780830318; cv=none; b=MH/U4Hxyp72/CgBxu4jblItbDUf6NHSQHOIkZmZ9mKsjErsMPD3tuqcWH3d9sZiv6blpp4B5yXhWefMyXUyP5sO+hSOD6/5J2bwfWWmjG+pglNN0aS6ANfYWUHYWQ1fsM9GbnnMWedYmsc7xZB4H8hGmPIDNq4xtpjQsY68FtoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828068; c=relaxed/simple;
-	bh=B3q5u0dRVFsDxUIW4XFGWCURrvBfNsgjQ6+4BYdfcOM=;
+	s=arc-20240116; t=1780830318; c=relaxed/simple;
+	bh=tGN9jErpyu4eqrZVRHVVwSCKf3e1r75yZWitWRsyA08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTfDM8VmkY1OQYAmJogxRPVYUWadMoP9osCVr+cWU3egcwkM4EuVdbPMDfso3l98b/i/qN5PWMSOavtmdv/4oJZtHm0jDzwloOCtZBlDHyVOZZ+45WSsZn+wDdvAsCTwwrinkgPIZ7x9qYnv8DCmqON9yShJDC3tPntW4DjIFAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK48AjLH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9FD1F00893;
-	Sun,  7 Jun 2026 10:27:45 +0000 (UTC)
+	 MIME-Version; b=oItviSW2ChHLTdJ2bsQFt8kkj4HdFYEegt1RX9/YZq737q7dAyekVB4wG3BTbW6qxdH2tB27qCjBtv4+NhS0z3cHrrLWW9VyZYz0MtsEmP2ED3q/a2VhzCPQZoke8rYF8Yx9sCvizUf6B19IC0BZ1AhrZNrlH8PqKJdr0VEJQOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPkax0N6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962A51F00893;
+	Sun,  7 Jun 2026 11:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828066;
-	bh=GFV3nffR8RkHWvzKozNGBSCCVDePm/nKTxCbIqCNV2s=;
+	s=korg; t=1780830317;
+	bh=J/bl6mj8MhbolVih/VymREDsRZSAQDRFhrd6bkuKPRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yK48AjLHxctKCFRb4itL299MIV3lDHgPFVKzsleqLeep++45Q3XVOjbl0Dix6R67Q
-	 cwyChq8Pgy5wrCq/VE+RLDD7zV0AuDxhtj0ymObXyIP7pPta0/emRYJNPsb70+FZ+x
-	 H0QBsErLo4z/sZ5ELU+TFvM0jVJmrg6aP5RinY00=
+	b=wPkax0N6tat4xHLWrK/X0WAtUGLZD3Vl2EQLl4ofBjEkIBfrOGty6b4iIuc/f2TFd
+	 ne6sYDbQA9HMriRJgTBYrXgZAln6L6ObBkgNj7WLbunp/MZS55k8nRV5aO3h7YrLph
+	 gLyATm7i0QhzFo9LERK5aHkqJPBZ2TMcNMP8epBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 125/315] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
-Date: Sun,  7 Jun 2026 11:58:32 +0200
-Message-ID: <20260607095732.216354352@linuxfoundation.org>
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/307] HID: core: introduce hid_safe_input_report()
+Date: Sun,  7 Jun 2026 11:58:33 +0200
+Message-ID: <20260607095732.028333248@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,110 +70,187 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261312-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dev.jain@arm.com,m:baohua@kernel.org,m:david@kernel.org,m:ljs@kernel.org,m:anshuman.khandual@arm.com,m:harry@kernel.org,m:jannh@google.com,m:liam@infradead.org,m:riel@surriel.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261889-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bentiss@kernel.org,m:jkosina@suse.com,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,infradead.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D29D64FABA
+X-Rspamd-Queue-Id: 05ADF6504F3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-commit 3f8968e9cbf95d5d87d32218906cab0b9b9eddbe upstream.
+[ Upstream commit 206342541fc887ae919774a43942dc883161fece ]
 
-Initialize nr_pages to 1 at the start of each loop iteration, like
-folio_referenced_one() does.
+hid_input_report() is used in too many places to have a commit that
+doesn't cross subsystem borders. Instead of changing the API, introduce
+a new one when things matters in the transport layers:
+- usbhid
+- i2chid
 
-Without this, nr_pages computed by a previous folio_unmap_pte_batch() call
-can be reused on a later iteration that does not run
-folio_unmap_pte_batch() again.
+This effectively revert to the old behavior for those two transport
+layers.
 
-mmap a 64K large folio with MAP_ANONYMOUS | MAP_DROPPABLE, then call
-madvise(MADV_FREE), then make the last page device-exclusive via
-HMM_DMIRROR_EXCLUSIVE.
-
-Trigger node reclaim through sysfs.  Now, in try_to_unmap_one(), we will
-first clear the first 15 out of 16 entries mapping the lazyfree folio.
-This will set nr_pages to 15.  In the next pvmw walk, this nr_pages gets
-reused on a device-exclusive pte, thus potentially corrupting folio
-refcount/mapcount.
-
-At the moment, I have a userspace program which can make the kernel spit
-out a trace, but the blow up is in folio_referenced_one(), because there
-are existing bugs in the interaction between device-private and rmap
-(which too I am investigating).  I did a one liner kernel change to avoid
-going into folio_referenced_one(), and the kernel blows up at
-folio_remove_rmap_ptes in try_to_unmap_one which is what I wanted.
-
-Note that the bug is there not since file folio batching but lazyfree
-folio batching, since device-exclusive only works for anonymous folios.
-
-Userspace visible effect is simply kernel crashing somewhere due to
-refcount/mapcount corruption.
-
-Link: https://lore.kernel.org/20260518063656.3721056-1-dev.jain@arm.com
-Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Barry Song <baohua@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Harry Yoo <harry@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+(cherry picked from commit 301338b8edadc67a42b1c86add975091e66768d9)
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/rmap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-core.c             | 25 +++++++++++++++++++++++++
+ drivers/hid/i2c-hid/i2c-hid-core.c |  7 ++++---
+ drivers/hid/usbhid/hid-core.c      | 11 ++++++-----
+ include/linux/hid.h                |  2 ++
+ 4 files changed, 37 insertions(+), 8 deletions(-)
 
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1918,6 +1918,8 @@ static bool try_to_unmap_one(struct foli
- 	mmu_notifier_invalidate_range_start(&range);
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index ceff91722c3c83..d9ea99cdb68e06 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2146,6 +2146,7 @@ static int __hid_input_report(struct hid_device *hid, enum hid_report_type type,
+  * @interrupt: distinguish between interrupt and control transfers
+  *
+  * This is data entry for lower layers.
++ * Legacy, please use hid_safe_input_report() instead.
+  */
+ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
+ 		     int interrupt)
+@@ -2156,6 +2157,30 @@ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data
+ }
+ EXPORT_SYMBOL_GPL(hid_input_report);
  
- 	while (page_vma_mapped_walk(&pvmw)) {
-+		nr_pages = 1;
++/**
++ * hid_safe_input_report - report data from lower layer (usb, bt...)
++ *
++ * @hid: hid device
++ * @type: HID report type (HID_*_REPORT)
++ * @data: report contents
++ * @bufsize: allocated size of the data buffer
++ * @size: useful size of data parameter
++ * @interrupt: distinguish between interrupt and control transfers
++ *
++ * This is data entry for lower layers.
++ * Please use this function instead of the non safe version because we provide
++ * here the size of the buffer, allowing hid-core to make smarter decisions
++ * regarding the incoming buffer.
++ */
++int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
++			  size_t bufsize, u32 size, int interrupt)
++{
++	return __hid_input_report(hid, type, data, bufsize, size, interrupt, 0,
++				  false, /* from_bpf */
++				  false /* lock_already_taken */);
++}
++EXPORT_SYMBOL_GPL(hid_safe_input_report);
 +
- 		/*
- 		 * If the folio is in an mlock()d vma, we must not swap it out.
- 		 */
+ bool hid_match_one_id(const struct hid_device *hdev,
+ 		      const struct hid_device_id *id)
+ {
+diff --git a/drivers/hid/i2c-hid/i2c-hid-core.c b/drivers/hid/i2c-hid/i2c-hid-core.c
+index cf8ae0df0cda95..8ce0535fc42d60 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-core.c
++++ b/drivers/hid/i2c-hid/i2c-hid-core.c
+@@ -568,9 +568,10 @@ static void i2c_hid_get_input(struct i2c_hid *ihid)
+ 		if (ihid->hid->group != HID_GROUP_RMI)
+ 			pm_wakeup_event(&ihid->client->dev, 0);
+ 
+-		hid_input_report(ihid->hid, HID_INPUT_REPORT,
+-				ihid->inbuf + sizeof(__le16),
+-				ret_size - sizeof(__le16), 1);
++		hid_safe_input_report(ihid->hid, HID_INPUT_REPORT,
++				      ihid->inbuf + sizeof(__le16),
++				      ihid->bufsize - sizeof(__le16),
++				      ret_size - sizeof(__le16), 1);
+ 	}
+ 
+ 	return;
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index f14b46ce00cb67..336ad7cf3d484e 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -283,9 +283,9 @@ static void hid_irq_in(struct urb *urb)
+ 			break;
+ 		usbhid_mark_busy(usbhid);
+ 		if (!test_bit(HID_RESUME_RUNNING, &usbhid->iofl)) {
+-			hid_input_report(urb->context, HID_INPUT_REPORT,
+-					 urb->transfer_buffer,
+-					 urb->actual_length, 1);
++			hid_safe_input_report(urb->context, HID_INPUT_REPORT,
++					      urb->transfer_buffer, urb->transfer_buffer_length,
++					      urb->actual_length, 1);
+ 			/*
+ 			 * autosuspend refused while keys are pressed
+ 			 * because most keyboards don't wake up when
+@@ -482,9 +482,10 @@ static void hid_ctrl(struct urb *urb)
+ 	switch (status) {
+ 	case 0:			/* success */
+ 		if (usbhid->ctrl[usbhid->ctrltail].dir == USB_DIR_IN)
+-			hid_input_report(urb->context,
++			hid_safe_input_report(urb->context,
+ 				usbhid->ctrl[usbhid->ctrltail].report->type,
+-				urb->transfer_buffer, urb->actual_length, 0);
++				urb->transfer_buffer, urb->transfer_buffer_length,
++				urb->actual_length, 0);
+ 		break;
+ 	case -ESHUTDOWN:	/* unplug */
+ 		unplug = 1;
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index fdd401e4ebde3d..7d05b1edacd80c 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -949,6 +949,8 @@ struct hid_field *hid_find_field(struct hid_device *hdev, unsigned int report_ty
+ int hid_set_field(struct hid_field *, unsigned, __s32);
+ int hid_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data, u32 size,
+ 		     int interrupt);
++int hid_safe_input_report(struct hid_device *hid, enum hid_report_type type, u8 *data,
++			  size_t bufsize, u32 size, int interrupt);
+ struct hid_field *hidinput_get_led_field(struct hid_device *hid);
+ unsigned int hidinput_count_leds(struct hid_device *hid);
+ __s32 hidinput_calc_abs_res(const struct hid_field *field, __u16 code);
+-- 
+2.53.0
+
+
+
+pu, ZCR_EL2, p->regval);
+ 
+-	vq = SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
+-	vq = min(vq, vcpu_sve_max_vq(vcpu));
+-	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
+ 	return true;
+ }
+ 
 
 
 
