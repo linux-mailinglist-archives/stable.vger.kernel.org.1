@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-261294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XDW9CuZHJWqtFwIAu9opvQ
-	(envelope-from <stable+bounces-261294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:54 +0200
+	id J0+nMKdHJWqMFwIAu9opvQ
+	(envelope-from <stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9FD64FAFB
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D29D64FABA
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dhdHSdTw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261294-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261294-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yK48AjLH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-261312-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B277F301E7C8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBB0D30028AB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA2C31E832;
-	Sun,  7 Jun 2026 10:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0233264C8;
+	Sun,  7 Jun 2026 10:27:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E26324B31;
-	Sun,  7 Jun 2026 10:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096591C5F27;
+	Sun,  7 Jun 2026 10:27:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828001; cv=none; b=mXl0u32HlXY6+utvr1cozSo+LPNKOmrnTYI8OtDtk259Hoz81KvZipH5BjYlvJAeoI+MdGMyOn/UIUTXTciC94N9yW/JDD15LC7MNDc7ytTwU7nBq6V9HuosjsPRmVU7f2VibPMl0tl1WtGOhS/xqKMcSwZw8fyYi23SXHiovxA=
+	t=1780828068; cv=none; b=GrJkvtkhdEUyveVgh9g+ko4FEnwuAS6vmwS/GzWL92O7uQlvZeEGnsQzuk9PyKrY/+FrLbgkpj1qTv76fzYukelcdQe/2rE9Qsl1AVxan1esJ1484SjP2RcQCCe6lVtLu06+RM3Zee8Pv02s2Xpa0/B5INC14lJnUGYxW8YBDtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828001; c=relaxed/simple;
-	bh=YWoMHUhNGDNMl+pxdLyGMdd6VdJiAhU8wt7JOcyC43Q=;
+	s=arc-20240116; t=1780828068; c=relaxed/simple;
+	bh=B3q5u0dRVFsDxUIW4XFGWCURrvBfNsgjQ6+4BYdfcOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXbYb9djDBWrqORqsMeB+8N+0Xl6wYqkhWOmO5M/AlI2aqmuTfLDygymGqxA8S0Fye5cLxY6fAvk7O3H5Q4QL2HogjspMTrsp304v0ufQFqd9M8DPElGzbtendxO9H+8JdE49yu+FTtcYLJV+M09c5Sf9pCt9tIiva3akeU32pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhdHSdTw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E11F00893;
-	Sun,  7 Jun 2026 10:26:38 +0000 (UTC)
+	 MIME-Version; b=UTfDM8VmkY1OQYAmJogxRPVYUWadMoP9osCVr+cWU3egcwkM4EuVdbPMDfso3l98b/i/qN5PWMSOavtmdv/4oJZtHm0jDzwloOCtZBlDHyVOZZ+45WSsZn+wDdvAsCTwwrinkgPIZ7x9qYnv8DCmqON9yShJDC3tPntW4DjIFAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK48AjLH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9FD1F00893;
+	Sun,  7 Jun 2026 10:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828000;
-	bh=rxCD/uVHb4elnyIdZGnHoB5ctAXVsiif2uXoPXlwHrU=;
+	s=korg; t=1780828066;
+	bh=GFV3nffR8RkHWvzKozNGBSCCVDePm/nKTxCbIqCNV2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dhdHSdTwn/frk+NU9++4UnLhyW4ba4w9EGytTalL9YD6AyvjJz+iZRFrENIZu570J
-	 VFYf9Kf6EUovK3brZ9r9/POAdQiVNdKisUz1We0EfuITWOXg7z5o3ooWKxT4Q2IuOL
-	 +cT0yfZxjg6zpmzYJowVzLDQpCYCkBYTT/tBYju4=
+	b=yK48AjLHxctKCFRb4itL299MIV3lDHgPFVKzsleqLeep++45Q3XVOjbl0Dix6R67Q
+	 cwyChq8Pgy5wrCq/VE+RLDD7zV0AuDxhtj0ymObXyIP7pPta0/emRYJNPsb70+FZ+x
+	 H0QBsErLo4z/sZ5ELU+TFvM0jVJmrg6aP5RinY00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -59,12 +59,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ryan Roberts <ryan.roberts@arm.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 143/332] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
+Subject: [PATCH 6.18 125/315] mm/rmap: initialize nr_pages to 1 at loop start in try_to_unmap_one
 Date: Sun,  7 Jun 2026 11:58:32 +0200
-Message-ID: <20260607095733.350530273@linuxfoundation.org>
+Message-ID: <20260607095732.216354352@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,12 +81,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261294-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -95,7 +95,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -107,11 +107,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,arm.com:email,surriel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,infradead.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE9FD64FAFB
+X-Rspamd-Queue-Id: 6D29D64FABA
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -173,7 +173,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -2024,6 +2024,8 @@ static bool try_to_unmap_one(struct foli
+@@ -1918,6 +1918,8 @@ static bool try_to_unmap_one(struct foli
  	mmu_notifier_invalidate_range_start(&range);
  
  	while (page_vma_mapped_walk(&pvmw)) {
