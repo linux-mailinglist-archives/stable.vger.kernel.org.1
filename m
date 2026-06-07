@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id meX2ARRGJWq0FgIAu9opvQ
-	(envelope-from <stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:08 +0200
+	id qZs3JihGJWrAFgIAu9opvQ
+	(envelope-from <stable+bounces-261107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502B964F8EC
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1865464F90A
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lSbEaaQn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261102-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Lpeyu/26";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261107-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261107-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA814304C7EB
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 882EA304EA02
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BEC308F0A;
-	Sun,  7 Jun 2026 10:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECD830C157;
+	Sun,  7 Jun 2026 10:14:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8567817B418;
-	Sun,  7 Jun 2026 10:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F0A1E98EF;
+	Sun,  7 Jun 2026 10:14:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827268; cv=none; b=ejhYqVAbvC7SsZLxy2liwBdyFNNQiR7INcTT8lvZe8DDBqUwVvNxEcPaJ1VcMvSwu/RxnuXnAnBYghVXkVlQbv4UynnxKnSRv2qoVTL7t4r01Xiaa4b6DdmKsdq6phTkSHDwHgjrOo1NUKdVXdvBa2eK6UIRbhPB4PGjZd5rlUY=
+	t=1780827284; cv=none; b=cp8S7MfhkNY+AAYkr2WCt1cSDhdPIb5Iii4OgZXJA160JmTCUPfGCL++HE6ZQtzKkI/8s8Olom7qLmk/k23fJKraY+69hIYwkRWck22USrbem203NBPboOsOBwK+bixqaUaR75cXn3EqhYoo53xHD7GoY5e+fsLxzsMX7nsvqSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827268; c=relaxed/simple;
-	bh=0ReXDm08IddqtbQ4jctDWilMK8J7ev1Wg95lwA+1Jpk=;
+	s=arc-20240116; t=1780827284; c=relaxed/simple;
+	bh=ZheYC2cqenjdT6AlVb/Sl5uxvcZaYOzri71bfGlz/gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ubi3GfAlSN96VA1SsIvGtizHbByj/+wv4dym143I3rLy1ADnXIsRJCOkFaHdLz/8G2AN03EonaT/DUamLSckobw88bMwCxAPQK3T5e7IAvEgSaC0tCjKV0QZGzqQoPwE4qAOkRvJ1jDd9ZZBn2BRgXM0ARdZMo0gXO/yAAWWg+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSbEaaQn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4E41F00893;
-	Sun,  7 Jun 2026 10:14:26 +0000 (UTC)
+	 MIME-Version; b=fmXpSTO/PHJr0UKLURj6m6Rf7YHOa0zGkAMKBo3TthTS57RxcJxL75TL1awuOKvCs41URrkWoMy47h5mStYe8gDENcIJ/MX8HQYw8CyzIranXyPIDXheXw9r9nLgWEdnC3sAyVgmAcPkBjaWQvIf1RvUgLxMGw6vegYFVbpCN2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lpeyu/26; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CDF1F00893;
+	Sun,  7 Jun 2026 10:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827267;
-	bh=tXw4uIjlmH+tJsPM3cR1op41dY1UtI6aFUJ6+PdU3xk=;
+	s=korg; t=1780827283;
+	bh=5RpjwFUkejDmua+55GAPhkLIjLlXzgSpPU1HmmUF+LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lSbEaaQn5/Z2MCv4CMivjYMNrruQiWlYkx39k3ixRWlAYoePYWX/f+mFfI0fNxSqc
-	 H/Fj6ZaP8kKxcfHdaHe/pyMYN4K/mJcxVzNllRyiB0Wz1nMg4Cr4egalAOJ1Pj497S
-	 Up+hBNoYzTAlnNncrV80WwwJKVLBcnB1sMZxQ95g=
+	b=Lpeyu/26pvapNhGItnhB2JVAaDe0cksIO7IabgnsKx5REhHkEAFO+SAK0Yb5zVwS3
+	 Iwb33R0PYxUsXocYUmZkPPFING7z7LO2IrtH+dhW9GTIy/O+GKO4uhUNiuTC1r90Iv
+	 P3aRNVTgphrjS25qJ6W8SstFRTbmlBV1uFaJXYRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Chandelkar <rc@rexion.ai>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhao Dongdong <zhaodongdong@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 078/332] ipv6: rpl: fix hdrlen overflow in ipv6_rpl_srh_decompress()
+Subject: [PATCH 6.18 060/315] Bluetooth: 6lowpan: check skb_clone() return value in send_mcast_pkt()
 Date: Sun,  7 Jun 2026 11:57:27 +0200
-Message-ID: <20260607095731.006470135@linuxfoundation.org>
+Message-ID: <20260607095729.811079310@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261102-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261107-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rc@rexion.ai,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaodongdong@kylinos.cn,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,68 +98,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,rexion.ai:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 502B964F8EC
+X-Rspamd-Queue-Id: 1865464F90A
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Chandelkar <rc@rexion.ai>
+From: Zhao Dongdong <zhaodongdong@kylinos.cn>
 
-[ Upstream commit 9d5e7a46a9f6d8f503b41bfefef70659845f1679 ]
+[ Upstream commit 3c40d381ce04f9575a5d8b542898183c3b4b38dc ]
 
-ipv6_rpl_srh_decompress() computes:
+The skb_clone() function can return NULL if memory allocation fails.
+send_mcast_pkt() calls skb_clone() without checking the return value, which
+can lead to a NULL pointer dereference in send_pkt() when it dereferences
+skb->data.
+Add a NULL check after skb_clone() and skip the peer if the clone fails.
 
-    outhdr->hdrlen = (((n + 1) * sizeof(struct in6_addr)) >> 3);
-
-hdrlen is __u8. For n >= 127 the result exceeds 255 and silently
-truncates. With n=127 (cmpri=15, cmpre=15, pad=0, hdrlen=16):
-
-    (128 * 16) >> 3 = 256, truncated to 0 as __u8
-
-The caller in ipv6_rpl_srh_rcv() then places the compressed header
-at buf + ((ohdr->hdrlen + 1) << 3). With hdrlen=0 this is buf + 8,
-but the decompressed region occupies buf[0..2055] (8-byte header
-plus 128 full addresses). The compressed header overlaps the
-decompressed data, and ipv6_rpl_srh_compress() writes into this
-overlap, corrupting the routing header of the forwarded packet.
-
-The existing guard at exthdrs.c:546 checks (n + 1) > 255, which
-prevents n+1 from overflowing unsigned char (the segments_left
-field), but does not prevent the computed hdrlen from overflowing
-__u8. n=127 passes because 128 <= 255, yet hdrlen=256 does not
-fit.
-
-Tighten the bound to (n + 1) > 127. This caps n at 126, giving
-hdrlen = (127 * 16) >> 3 = 254, which fits in __u8. The compressed
-header then lands at buf + ((254 + 1) << 3) = buf + 2040, exactly
-past the decompressed region (buf[0..2039]). No overlap. 127
-segments is well beyond any realistic RPL deployment.
-
-Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-Signed-off-by: Rahul Chandelkar <rc@rexion.ai>
-Link: https://patch.msgid.link/20260525154031.2290876-1-rc@rexion.ai
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 18722c247023 ("Bluetooth: Enable 6LoWPAN support for BT LE devices")
+Signed-off-by: Zhao Dongdong <zhaodongdong@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/6lowpan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index cf90f933ca1ada..3757317e8151e0 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -544,7 +544,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
- 	 * unsigned char which is segments_left field. Should not be
- 	 * higher than that.
- 	 */
--	if (r || (n + 1) > 255) {
-+	if (r || (n + 1) > 127) {
- 		kfree_skb(skb);
- 		return -1;
- 	}
+diff --git a/net/bluetooth/6lowpan.c b/net/bluetooth/6lowpan.c
+index 2c21ae8abadc22..038f01600eebab 100644
+--- a/net/bluetooth/6lowpan.c
++++ b/net/bluetooth/6lowpan.c
+@@ -486,6 +486,8 @@ static int send_mcast_pkt(struct sk_buff *skb, struct net_device *netdev)
+ 			int ret;
+ 
+ 			local_skb = skb_clone(skb, GFP_ATOMIC);
++			if (!local_skb)
++				continue;
+ 
+ 			BT_DBG("xmit %s to %pMR type %u IP %pI6c chan %p",
+ 			       netdev->name,
 -- 
 2.53.0
 
