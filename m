@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5ECQJt9RJWqwGwIAu9opvQ
-	(envelope-from <stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:27 +0200
+	id aNPFNcdPJWpFGwIAu9opvQ
+	(envelope-from <stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE1365057E
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:11:27 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482216503FF
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 13:02:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="0q/V58eB";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261855-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L5uiyxTI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261857-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5753930ADFF0
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:01:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43352301BEDB
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 11:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7157E3164A1;
-	Sun,  7 Jun 2026 11:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7158131ED80;
+	Sun,  7 Jun 2026 11:02:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3A53382C8;
-	Sun,  7 Jun 2026 11:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8CC224D6;
+	Sun,  7 Jun 2026 11:01:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780830112; cv=none; b=FxbsQRMt7uc+/Br6Yq6ucOhgNPoY5TdGASN6fcI+yyzprhQ108Li2fkMh+z3z7IQn+vioBWjvDZfwW2fVl+pnPW5CNvnt6m7alCwWsGZ/ggFplkf52OI1wkP50m5BiPxgGgLJiUc2h1cYS/guuxMXxJS6z9mtGFHZQjdkgmpGnI=
+	t=1780830120; cv=none; b=uF6kD/m4K2J87BN0YQEaH8waY3wu4V3gDnhVVEAwMmwNOgI0Dwpo9sIYOkTgIn7irk/AJEl3Rf3R/xT444jfSy1w/rxkR53d+LzWQoxz0CZJjV5eB05TyGijeZDKU+t0IGFRoosiqI7z9Yni4LoMVg0k9i4hyCFKnD/DBy9EF0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780830112; c=relaxed/simple;
-	bh=qoTgSQhVhsQYZuFlGiwEqnB2C5Wuihrx08J+DNDqZ6Y=;
+	s=arc-20240116; t=1780830120; c=relaxed/simple;
+	bh=Jlv0QWXDQ/08qgsYEYc1lyYazB40MHM/jJsfBuBYcew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O/0iaE8Ecv8C9y/3c2C1oje4nIdfLOf0dKgMe+rhOA2sYnd+Aegcd+yRa3j58mFJo3EomJUIhaaLy0fAPbSKRc0OwaOHSYMZ8iYPsgfniHfGLJCH8Lt5HzVBOAT8Wn+c8QBzBNYInmgkHkaXTXvZQpbGHnNuyicxyFDmnYLY0zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0q/V58eB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F7D1F00893;
-	Sun,  7 Jun 2026 11:01:49 +0000 (UTC)
+	 MIME-Version; b=iq7oY5WsJ2Pg89e3q5EV2JrQju5kuCw62vMVnDWAqexGorft7BPih4IYSBmTtz0Q6zP4e98cZJU3/Rn3BJVz5ObBd871HASjEpkqzNQTE0JbHdhCqvjhWzoiU1F3u3PY95bvky16dPPFt4Bxvpa7cNLoMRNpBRyl1AbSNOJVX+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5uiyxTI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EED21F00893;
+	Sun,  7 Jun 2026 11:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780830110;
-	bh=5IafX1g93oduRvZAJzmDGoKvJgU79IMqWWI9H7LmWRI=;
+	s=korg; t=1780830119;
+	bh=PrET5f2WenRvJV667oiH1mczoWBsPO1x8CSllXbQCD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0q/V58eBF2N/GjjGaSQVaz9//S9Lzb3YyNFUoR4haZKjfzGu/8qx+TK2Em6r2dCNw
-	 Bzw/B2/+sAM20JSYWBjFtNhzWhWHXMNxc3xFUIcsCerfuzEn8SfCqHTg114Pr6kYKI
-	 DNPoXDdblQFK3NNcRIJcyi44j4x26v3sWbjxVXZs=
+	b=L5uiyxTIx8LnS31FrCGvRtJQz/Eo31w85PCQ59xcikG4KYqT768CKfuUsm8YKqsss
+	 yyrz1ZIEScCVYHsEPs5osrdyeWENjcL/TFBHaixgQLThaHPq/05gF1k+fhZcLzLSWC
+	 GEsBwlFAySi5nmZmZvhoYyA6Jw77MxzgZkvAgzZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Wang <wangqing7171@gmail.com>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Robert Marko <robert.marko@sartura.hr>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 310/315] mm/slub: hold cpus_read_lock around flush_rcu_sheaves_on_cache()
-Date: Sun,  7 Jun 2026 12:01:37 +0200
-Message-ID: <20260607095739.003476876@linuxfoundation.org>
+Subject: [PATCH 6.18 311/315] net: phy: micrel: fix LAN8814 QSGMII soft reset
+Date: Sun,  7 Jun 2026 12:01:38 +0200
+Message-ID: <20260607095739.044948139@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -72,109 +72,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261857-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261855-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wangqing7171@gmail.com,m:vbabka@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:robert.marko@sartura.hr,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0FE1365057E
+X-Rspamd-Queue-Id: 482216503FF
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qing Wang <wangqing7171@gmail.com>
+From: Robert Marko <robert.marko@sartura.hr>
 
-[ Upstream commit 67ea9d353d0ba12bdbc9183ff568dead9e949b80 ]
+[ Upstream commit e027c218c482c6a0ae1948129ccda3b0a2033368 ]
 
-flush_rcu_sheaves_on_cache() calls queue_work_on() in a
-for_each_online_cpu() loop, which requires the cpu to stay online.
-But cpus_read_lock() is not held in kvfree_rcu_barrier_on_cache() and the
-set of "online cpus" is subject to change.
+LAN8814 QSGMII soft reset was moved into the probe function to avoid
+triggering it for each of 4 PHY-s in the package.
 
-There are two paths that call flush_rcu_sheaves_on_cache():
+However, that broke QSGMII link between the MAC and PHY on most LAN8814
+PHY-s, specificaly for us on the Microchip LAN969x switch.
+Reading the QSGMII status registers it was visible that lanes were only
+partially synced.
 
-  // has cpus_read_lock()
-  flush_all_rcu_sheaves()
-    -> flush_rcu_sheaves_on_cache()
+It looks like the reset timing is crucial, so lets move the reset back
+into the .config_init function but guard it with phy_package_init_once()
+to avoid it being triggered on each of 4 PHY-s in the package.
+Change the probe function to use phy_package_probe_once() for coma and PtP
+setup.
 
-  // no cpus_read_lock()
-  kvfree_rcu_barrier_on_cache()
-    -> flush_rcu_sheaves_on_cache()
-
-Fix this by holding cpus_read_lock() in kvfree_rcu_barrier_on_cache().
-
-Why not move cpus_read_lock() from flush_all_rcu_sheaves() into
-flush_rcu_sheaves_on_cache()? The reason is it would introduce a new lock
-order (slab_mutex -> cpu_hotplug_lock). The reverse order
-(cpu_hotplug_lock -> slab_mutex) is established by
-
-- cpuhp_setup_state_nocalls(..., slub_cpu_setup, ...)
-- kmem_cache_destroy()
-
-The two orders together would form an AB-BA deadlock.
-
-Finally, add lockdep_assert_cpus_held() in flush_rcu_sheaves_on_cache()
-to catch the same problem in the future.
-
-Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qing Wang <wangqing7171@gmail.com>
-Link: https://patch.msgid.link/20260512035035.762317-1-wangqing7171@gmail.com
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Fixes: 96a9178a29a6 ("net: phy: micrel: lan8814 fix reset of the QSGMII interface")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Link: https://patch.msgid.link/20260428134138.1741253-1-robert.marko@sartura.hr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slab_common.c |    2 ++
- mm/slub.c        |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/phy/micrel.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -2135,7 +2135,9 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
- void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index bc19880107ae42..e6f00aa9a99010 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4389,6 +4389,13 @@ static int lan8814_config_init(struct phy_device *phydev)
  {
- 	if (s->cpu_sheaves) {
-+		cpus_read_lock();
- 		flush_rcu_sheaves_on_cache(s);
-+		cpus_read_unlock();
- 		rcu_barrier();
- 	}
+ 	struct kszphy_priv *lan8814 = phydev->priv;
  
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4203,6 +4203,7 @@ void flush_rcu_sheaves_on_cache(struct k
- 	struct slub_flush_work *sfw;
- 	unsigned int cpu;
++	if (phy_package_init_once(phydev))
++		/* Reset the PHY */
++		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
++				       LAN8814_QSGMII_SOFT_RESET,
++				       LAN8814_QSGMII_SOFT_RESET_BIT,
++				       LAN8814_QSGMII_SOFT_RESET_BIT);
++
+ 	/* Disable ANEG with QSGMII PCS Host side */
+ 	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
+@@ -4473,13 +4480,7 @@ static int lan8814_probe(struct phy_device *phydev)
+ 	devm_phy_package_join(&phydev->mdio.dev, phydev,
+ 			      addr, sizeof(struct lan8814_shared_priv));
  
-+	lockdep_assert_cpus_held();
- 	mutex_lock(&flush_lock);
- 
- 	for_each_online_cpu(cpu) {
+-	if (phy_package_init_once(phydev)) {
+-		/* Reset the PHY */
+-		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
+-				       LAN8814_QSGMII_SOFT_RESET,
+-				       LAN8814_QSGMII_SOFT_RESET_BIT,
+-				       LAN8814_QSGMII_SOFT_RESET_BIT);
+-
++	if (phy_package_probe_once(phydev)) {
+ 		err = lan8814_release_coma_mode(phydev);
+ 		if (err)
+ 			return err;
+-- 
+2.53.0
+
 
 
 
