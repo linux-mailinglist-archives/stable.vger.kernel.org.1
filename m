@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /h46Ef9GJWo8FwIAu9opvQ
-	(envelope-from <stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:03 +0200
+	id Bo2aGDFGJWrFFgIAu9opvQ
+	(envelope-from <stable+bounces-261109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904B764FA2A
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61A064F916
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:21:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MnKzEHjo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261141-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yYMWSbyC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261109-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261109-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA2430480FA
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:16:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5D960304FA72
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4F323392F;
-	Sun,  7 Jun 2026 10:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB030DD2A;
+	Sun,  7 Jun 2026 10:14:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8964071DA;
-	Sun,  7 Jun 2026 10:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8388617B418;
+	Sun,  7 Jun 2026 10:14:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827400; cv=none; b=icka3RHLSIC9BvmbrmNg6YUzF+KNBFcsSeM0kciHil/r3d+25YqU+MZS9LE6B5JUqWMLCp1OGM7erOr48sEdjrXmTejhew54jbOAsZzQLdv0QH7sSmsyd8aIleHL2qjMNs5y1fKmuFSoJMmrMOK8ysPb+8ToYaelDaMJ+Cwk8uo=
+	t=1780827291; cv=none; b=r9plO/EfaHN8Fnt9FUdcu8Dmq/5NHzg2nTDNsvBMfRtFER854fOIYKvFCOC4XAHbDhrKUK0Zu3FnWX4U2bnZFy9wtr++54wKDdYfTrTfkYrnBLOIiF5lN1OluhmgqIUO3yR9fvVM1EwxC/6axMhVAK8ftXkKFJnOtQw1AjsyJ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827400; c=relaxed/simple;
-	bh=6cqMWrKn459iVCmRlk6cynPWt5HKVopIoaW99SsgCg0=;
+	s=arc-20240116; t=1780827291; c=relaxed/simple;
+	bh=2bcFumZSIjiw9DLOgrepSNgSCNYTgFWDDq6vNt1ClSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3ei4cmr/Y/+luwki77Ah/0snGKP3ut0bX2daBT1PcqKxQA17DqzjsklFLV19OpymjfiodqZVlyajDMh2Xk9Q+Wn25HeqICyk1K/BCXAzg/v7ZFoNuUSZxOUTsNnLjXB+xaHFtJ9O2i8CJQwj4NvxmpkcxZKMOvxSqBEsUA1lhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnKzEHjo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FE31F00893;
-	Sun,  7 Jun 2026 10:16:38 +0000 (UTC)
+	 MIME-Version; b=s7+eE3FM86n51VPLSyl1+c21VfftoVmOZy+mC+QuqHlEVp4Sh60xQ+y0xbzh4jV0F9kFj6yufKu/QKyQqIeaTV0Zgwwu5ZeDqdTfyJ5MqlPC/fzRRF8ZFxD347cxDzMrSdU0ZNSxv8Ntx309uGs6joPVlOJgKUb63M+OaKiZHxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYMWSbyC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DD11F00893;
+	Sun,  7 Jun 2026 10:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827399;
-	bh=/ocu62ECjItGzf94llBQVZiz28roKPVM9pl/l+H8Pv4=;
+	s=korg; t=1780827290;
+	bh=QC7ZCjuL+/jK3FWLHgZw9cNKhb4HSVySB0FryRPRURM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MnKzEHjoQYY+aEYDTXehBHN6FFcoWZB5Dqba9eL56GdJZG25Uti9YhM4+5Fj2rKjX
-	 zBA+l0aNFPm4CmmQcYkx6HzihUGQqqu51YQgETTM3U0gaULSNkEUABIfirQWpQH7Mx
-	 sJrOigDKCMTt+U3dHuQWsidvBxOZY42xy4uz9FGA=
+	b=yYMWSbyCm/fYo2NoaOvdGwcv4BkBhVKScJqPIc4YDqY+Z3A1FW0IZkqkLD1PTCM/d
+	 Luvuctmy/sjX9Tho16s6GSjNthzoUNLmMdQnWStNGhsQXQUsBRujreYwee16zOd3BK
+	 Kh+8k5avwjxwk1vKIFW8fT866LB54dKzcoRTe2TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danielle Ratson <danieller@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	William Liu <will@willsroot.io>,
+	Savino Dicanosa <savy@syst3mfailure.io>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 052/307] ethtool: module: fix cleanup if socket used for flashing multiple devices
+Subject: [PATCH 7.0 080/332] net/sched: fix packet loop on netem when duplicate is on
 Date: Sun,  7 Jun 2026 11:57:29 +0200
-Message-ID: <20260607095729.632104259@linuxfoundation.org>
+Message-ID: <20260607095731.081949281@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,139 +73,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261141-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:danieller@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261109-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@willsroot.io,m:savy@syst3mfailure.io,m:victor@mojatatu.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,networkplumber.org:email,mojatatu.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,willsroot.io:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 904B764FA2A
+X-Rspamd-Queue-Id: D61A064F916
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 760d04ebad5c4304f22c0d2251c9623b87a117c8 ]
+[ Upstream commit 9552b11e3edabc97cfcd9f29103d5afbce7ae183 ]
 
-When a single Netlink socket issues MODULE_FW_FLASH_ACT against multiple
-devices, ethnl_sock_priv_set() overwrites sk_priv->dev on each call,
-retaining only the last one. The socket priv is used on socket close,
-to walk the global work list and mark the uncompleted flashing work
-as "orphaned". Otherwise if another socket reuses the PID it will
-unexpectedly receive the flashing notifications.
+When netem duplicates a packet it re-enqueues the copy at the root qdisc.
+If another netem sits in the tree the copy can be duplicated
+again, recursing until the stack or memory is exhausted.
 
-Don't record the device, record net pointer instead. The purpose of
-the dev is to scope the work to a netns, anyway. If we store netns
-the overrides are safe/a nop since all flashed devices must be in
-the same netns as the socket.
+The original duplication guard temporarily zeroed q->duplicate around
+the re-enqueue, but that does not cover all cases because it is
+per-qdisc state shared across all concurrent enqueue paths
+and is not safe without additional locking.
 
-Fixes: 32b4c8b53ee7 ("ethtool: Add ability to flash transceiver modules' firmware")
-Reviewed-by: Danielle Ratson <danieller@nvidia.com>
-Link: https://patch.msgid.link/20260522231312.1710836-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use the skb tc_depth field introduced in an earlier patch:
+ - increment it on the duplicate before re-enqueue
+ - skip duplication for any skb whose tc_depth is already non-zero.
+
+This marks the packet itself rather than mutating qdisc state,
+therefore it is safe regardless of tree topology or concurrency.
+
+Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
+Reported-by: William Liu <will@willsroot.io>
+Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
+Closes: https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: William Liu <will@willsroot.io>
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-5-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/module.c  | 9 ++++-----
- net/ethtool/netlink.c | 4 ++--
- net/ethtool/netlink.h | 4 ++--
- 3 files changed, 8 insertions(+), 9 deletions(-)
+ net/sched/sch_netem.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/ethtool/module.c b/net/ethtool/module.c
-index ab1e8a83acd0b1..5a08c320b4660d 100644
---- a/net/ethtool/module.c
-+++ b/net/ethtool/module.c
-@@ -282,11 +282,9 @@ void ethnl_module_fw_flash_sock_destroy(struct ethnl_sock_priv *sk_priv)
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index d97acd2f392346..17a79fe2f0911d 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -461,7 +461,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	skb->prev = NULL;
  
- 	spin_lock(&module_fw_flash_work_list_lock);
- 	list_for_each_entry(work, &module_fw_flash_work_list, list) {
--		if (work->fw_update.dev == sk_priv->dev &&
--		    work->fw_update.ntf_params.portid == sk_priv->portid) {
-+		if (work->fw_update.ntf_params.portid == sk_priv->portid &&
-+		    dev_net(work->fw_update.dev) == sk_priv->net)
- 			work->fw_update.ntf_params.closed_sock = true;
--			break;
--		}
+ 	/* Random duplication */
+-	if (q->duplicate && q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
++	if (q->duplicate && skb->tc_depth == 0 &&
++	    q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
+ 		++count;
+ 
+ 	/* Drop packet? */
+@@ -540,11 +541,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	 */
+ 	if (skb2) {
+ 		struct Qdisc *rootq = qdisc_root_bh(sch);
+-		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
+ 
+-		q->duplicate = 0;
++		skb2->tc_depth++; /* prevent duplicating a dup... */
+ 		rootq->enqueue(skb2, rootq, to_free);
+-		q->duplicate = dupsave;
+ 		skb2 = NULL;
  	}
- 	spin_unlock(&module_fw_flash_work_list_lock);
- }
-@@ -323,7 +321,8 @@ module_flash_fw_schedule(struct net_device *dev, const char *file_name,
- 	fw_update->ntf_params.seq = info->snd_seq;
- 	fw_update->ntf_params.closed_sock = false;
  
--	err = ethnl_sock_priv_set(skb, dev, fw_update->ntf_params.portid,
-+	err = ethnl_sock_priv_set(skb, dev_net(dev),
-+				  fw_update->ntf_params.portid,
- 				  ETHTOOL_SOCK_TYPE_MODULE_FW_FLASH);
- 	if (err < 0)
- 		goto err_release_firmware;
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index a52be67139d0ac..409b4109940b7c 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -50,7 +50,7 @@ const struct nla_policy ethnl_header_policy_phy_stats[] = {
- 	[ETHTOOL_A_HEADER_PHY_INDEX]		= NLA_POLICY_MIN(NLA_U32, 1),
- };
- 
--int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
-+int ethnl_sock_priv_set(struct sk_buff *skb, struct net *net, u32 portid,
- 			enum ethnl_sock_type type)
- {
- 	struct ethnl_sock_priv *sk_priv;
-@@ -59,7 +59,7 @@ int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
- 	if (IS_ERR(sk_priv))
- 		return PTR_ERR(sk_priv);
- 
--	sk_priv->dev = dev;
-+	sk_priv->net = net;
- 	sk_priv->portid = portid;
- 	sk_priv->type = type;
- 
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 5e176938d6d228..11843bd10bcade 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -315,12 +315,12 @@ enum ethnl_sock_type {
- };
- 
- struct ethnl_sock_priv {
--	struct net_device *dev;
-+	struct net *net;
- 	u32 portid;
- 	enum ethnl_sock_type type;
- };
- 
--int ethnl_sock_priv_set(struct sk_buff *skb, struct net_device *dev, u32 portid,
-+int ethnl_sock_priv_set(struct sk_buff *skb, struct net *net, u32 portid,
- 			enum ethnl_sock_type type);
- 
- /**
 -- 
 2.53.0
 
