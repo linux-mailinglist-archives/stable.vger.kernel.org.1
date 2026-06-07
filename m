@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Nq2mC+FHJWqoFwIAu9opvQ
-	(envelope-from <stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:49 +0200
+	id 3FhBLoFIJWoHGAIAu9opvQ
+	(envelope-from <stable+bounces-261366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC9B64FAEE
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA28264FBDC
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:31:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sgn6MQyo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261327-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0I9LtI3G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261366-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261366-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 10FC230028A6
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:28:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E71D83001A42
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C592F8E97;
-	Sun,  7 Jun 2026 10:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FF4329391;
+	Sun,  7 Jun 2026 10:31:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293B023F417;
-	Sun,  7 Jun 2026 10:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A6B2D3A69;
+	Sun,  7 Jun 2026 10:31:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828125; cv=none; b=Cg9l77CLcs4d4PeyhpIvbABZiWX+2TEfyxS1B2ja10zKL/lUQSVLaw7Tuv1heldpfEZoQCYmVEuNOu0vqdAxal5hmu9x3+u2Of242gIsfn+j5VqXtV2dXMv7DD2nf7TmCkX7//jV/KaDTmMtc1D0/n0zCFqmfuVYZpKd5fAg2GE=
+	t=1780828274; cv=none; b=GfZzDW5V0QPD8j6UhS+9k1p3L2fgwCCWbolTa4baISte+W9PgG49j2JGiAEDMhUtUHcNnu7oSf6LFkXuCsM0jC+bGcUEza1NRdfoC0L83Ng3A4o9rhnYaz4G7/Ewu9m7EXs/r9fGUyyUt6pucL3XvhfKlPre0R0bR40Db9AnRdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828125; c=relaxed/simple;
-	bh=28HUnPofX8lU7jOzOk8mXMZR9D8MS2w5OvJwIKcwesA=;
+	s=arc-20240116; t=1780828274; c=relaxed/simple;
+	bh=xIKoVwr3Di9/By7Z9iQUhGja/P/AmL9kldtJfb941Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Il9puBgXLE/MPKqCt+Bi8MfYvyYrlc72UHvV1Lgm6DRPaSioHZGP3MdFrNHf+SktM6Gs3OavVsSEekZAoGVeBFP65ejdn1WVjFn++mqfMx5KO6jCW9wCZpjYe0Np1GL0R46eDkyuLpuz2KOPYbpckQgpEkdBP7+y0ijtuUfrPKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sgn6MQyo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8E81F00893;
-	Sun,  7 Jun 2026 10:28:43 +0000 (UTC)
+	 MIME-Version; b=qmCZPCT/JvhQurSNgxaNnEbHCDtL2Lb/x8goqv6rw2AmC3M/OLbScm86mCKN/frhfvKWB58w3bZ40UabJkLKHL4ozh0Bj03nhjP4vUiYcXAXzj16GJlZIK9xYQ38UocPmVe+JqUR4pmkkyWx+EiZknqkKbSwsSYaloRqvOS3ZSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I9LtI3G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4BD1F00893;
+	Sun,  7 Jun 2026 10:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828124;
-	bh=c56ob4hjnD8leO2diGdXNzvPoHtkrBWsiveMuYtkbUU=;
+	s=korg; t=1780828273;
+	bh=KCT9grxKy3BAXqvlTqBcmXwm8s8vcZaZ1tsBTF0NWIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sgn6MQyob2eybsYP98WtSIDIrDlacKHGXFi9vOCqNSqyGSP/wZbkf/vxBbgjxhO7e
-	 c3a3IyZORaO3WuzEZ0uZDa76WOzjD4egAcKHtCs62AxqdvXlkzOoTY6+cyJ/p+IuBt
-	 YzcSfY50m8NUQGk/oVYJOHTImbjXGAAjBjI1+zmw=
+	b=0I9LtI3GKEzVH8qGgsTJC1hGV6aMapwo+EgJkn2DQACU3+j56rEv4G/2MXat5glNK
+	 4ZuKltuvLEBcqnImwmfUDzNOQ47OBPTNQMn5QAMhPUr72iBsllDuOVnNd1PivMtrDX
+	 81Y6IHxAursThTVO1IwAAF0Rtxlhm2hKaZtHlRtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doruk Tan Ozturk <doruk@0sec.ai>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 7.0 153/332] Bluetooth: hci_sync: fix UAF in hci_le_create_cis_sync
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/307] batman-adv: tt: prevent TVLV entry number overflow
 Date: Sun,  7 Jun 2026 11:58:42 +0200
-Message-ID: <20260607095733.705076382@linuxfoundation.org>
+Message-ID: <20260607095732.348045111@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261327-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261366-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:doruk@0sec.ai,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,85 +98,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BBC9B64FAEE
+X-Rspamd-Queue-Id: DA28264FBDC
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doruk Tan Ozturk <doruk@0sec.ai>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit bfea6091e0fffb270c20e74384b660910277eb6c upstream.
+commit 99d9958fa10fb684b2a8e2c48a8d704122721420 upstream.
 
-hci_le_create_cis_sync() dereferences conn->conn_timeout after releasing
-both rcu_read_lock() and hci_dev_lock(hdev).  The conn pointer was
-obtained from an RCU-protected iteration over hdev->conn_hash.list and
-is not valid once these locks are dropped.  A concurrent disconnect can
-free the hci_conn between the unlock and the dereference, causing a
-use-after-free read.
+The helpers to prepare the buffers for the local and global TT based
+replies are trying to sum up all TT entries which can be found for each
+VLAN. In theory, this sum can be too big for an u16 and therefore overflow.
+A too small buffer would then be allocated for the TVLV.
 
-The cancellation mechanism in hci_conn_del() cannot prevent this because
-hci_le_create_cis_pending() queues hci_create_cis_sync with data=NULL:
+The too small buffer will be handled gracefully by
+batadv_tt_tvlv_generate() and is not causing a buffer overflow - just a
+truncated reply. But this overflow shouldn't have happened in the first and
+the too small buffer should never have been allocated when an overflow was
+detected.
 
-    hci_cmd_sync_queue(hdev, hci_create_cis_sync, NULL, NULL);
-
-While hci_conn_del() dequeues with data=conn:
-
-    hci_cmd_sync_dequeue(hdev, NULL, conn, NULL);
-
-Since NULL != conn, the lookup in _hci_cmd_sync_lookup_entry() never
-matches, and the pending work item is not cancelled.
-
-Fix this by saving conn->conn_timeout into a local variable while the
-locks are still held, so the stale conn pointer is never dereferenced
-after unlock.
-
-This is the same class of bug as the one fixed by commit 035c25007c9e
-("Bluetooth: hci_sync: Fix UAF on le_read_features_complete") which
-addressed the identical pattern in a different function.
-
-This vulnerability was identified using 0sec.ai, an open-source
-automated security auditing platform (https://github.com/0sec-labs).
-
-Fixes: c09b80be6ffc ("Bluetooth: hci_conn: Fix not waiting for HCI_EVT_LE_CIS_ESTABLISHED")
-Cc: stable@vger.kernel.org
-Reported-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Signed-off-by: Doruk Tan Ozturk <doruk@0sec.ai>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@kernel.org
+Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/batman-adv/translation-table.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6711,6 +6711,7 @@ int hci_le_create_cis_sync(struct hci_de
- 	DEFINE_FLEX(struct hci_cp_le_create_cis, cmd, cis, num_cis, 0x1f);
- 	size_t aux_num_cis = 0;
- 	struct hci_conn *conn;
-+	u16 timeout = 0;
- 	u8 cig = BT_ISO_QOS_CIG_UNSET;
+diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+index 4045ddefc29b47..7041cd69e20070 100644
+--- a/net/batman-adv/translation-table.c
++++ b/net/batman-adv/translation-table.c
+@@ -850,11 +850,18 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	u16 total_entries = 0;
+ 	u8 *tt_change_ptr;
+ 	int vlan_entries;
++	u16 sum_entries;
  
- 	/* The spec allows only one pending LE Create CIS command at a time. If
-@@ -6781,6 +6782,7 @@ int hci_le_create_cis_sync(struct hci_de
- 		set_bit(HCI_CONN_CREATE_CIS, &conn->flags);
- 		cis->acl_handle = cpu_to_le16(conn->parent->handle);
- 		cis->cis_handle = cpu_to_le16(conn->handle);
-+		timeout = conn->conn_timeout;
- 		aux_num_cis++;
+ 	spin_lock_bh(&orig_node->vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			*tt_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
  
- 		if (aux_num_cis >= cmd->num_cis)
-@@ -6800,7 +6802,7 @@ done:
- 	return __hci_cmd_sync_status_sk(hdev, HCI_OP_LE_CREATE_CIS,
- 					struct_size(cmd, cis, cmd->num_cis),
- 					cmd, HCI_EVT_LE_CIS_ESTABLISHED,
--					conn->conn_timeout, NULL);
-+					timeout, NULL);
- }
+@@ -941,15 +948,22 @@ batadv_tt_prepare_tvlv_local_data(struct batadv_priv *bat_priv,
+ 	struct batadv_softif_vlan *vlan;
+ 	size_t change_offset;
+ 	u16 num_vlan = 0;
+-	u16 vlan_entries = 0;
+ 	u16 total_entries = 0;
+ 	u16 tvlv_len;
+ 	u8 *tt_change_ptr;
++	int vlan_entries;
++	u16 sum_entries;
  
- int hci_le_remove_cig_sync(struct hci_dev *hdev, u8 handle)
+ 	spin_lock_bh(&bat_priv->softif_vlan_list_lock);
+ 	hlist_for_each_entry(vlan, &bat_priv->softif_vlan_list, list) {
+ 		vlan_entries = atomic_read(&vlan->tt.num_entries);
+-		total_entries += vlan_entries;
++
++		if (check_add_overflow(vlan_entries, total_entries, &sum_entries)) {
++			tvlv_len = 0;
++			goto out;
++		}
++
++		total_entries = sum_entries;
+ 		num_vlan++;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
