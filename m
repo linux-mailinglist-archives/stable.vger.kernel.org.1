@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-261272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 14w7CiNIJWrTFwIAu9opvQ
-	(envelope-from <stable+bounces-261272-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:55 +0200
+	id 60DKNV5HJWp0FwIAu9opvQ
+	(envelope-from <stable+bounces-261292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 977B164FB5C
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:29:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B6B64FA97
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="O/WRBVT4";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261272-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261272-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vZ19HJOh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261292-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261292-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 331EA3007363
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 242263001F83
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DAF3254A9;
-	Sun,  7 Jun 2026 10:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E76C3264C2;
+	Sun,  7 Jun 2026 10:26:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9C92D8378;
-	Sun,  7 Jun 2026 10:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7611C5F27;
+	Sun,  7 Jun 2026 10:26:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827918; cv=none; b=hFO1q3JyRO3uyOviUUnkzXKxhkBpHhQQwHFCGJknw3gU0rlxl4g0kYRHFtVP9RcyFIopZg4sHshT54566hXVHXZrbcXCJG2bJFt7O8QQz1tuQDwMRUAcl+pFuUOWuboU+ubDpPVMkL1CxXHO/BwYatvjTO6Fwdu+XY9p4/6PXP0=
+	t=1780827993; cv=none; b=UJtVDDbtRTgqszCQRw54yeXqzq/2yR52QHdGAlc0Bp7sdMM8CAbqKOl2Lua6EumYFlUsiZQttr2OGPxCz+jYwe0yedGG4v2Zo5adg8On2f0y1I9nbBp3FhnycprByXrIVGU8RjZ7sZn2/Ghp60qcfVEYecCqAUU3e8/qAbFdn7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827918; c=relaxed/simple;
-	bh=eMT5nf4HoFlAaO/6WFMrNxR/fyCM2ZtyJhWBHesHb4I=;
+	s=arc-20240116; t=1780827993; c=relaxed/simple;
+	bh=3axEpx2MmhcVEZFpLa/XpRYjtFxpgAHj5xych7E/muw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0WmVG291E4zivE/AD3w9G8kByx8ybI70lNSgC1PvDHHhbjZBrEttpM7gJWZioquanesZZbubRLyg/0jpwzxFY64KaZArIcNUu/9hW98OJeMxT07ekogwyj5QMPSnK9WyWsNH+eY0xnyT+M3I4ehhher9irWasBWX+Mq7AiwNrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/WRBVT4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686691F00893;
-	Sun,  7 Jun 2026 10:25:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QXgPCljynnAaewkF1AUZG4GDCqKw5B27YI7jV+1gK+jFeLqDEpsklemIJU2Zn5TbIuuSp6kM69TibtCW+tfJvtg5Thb2BWIiIxpBsTalANMqK2u2doLHocHsHUanNZI9WDebM1po9PNsbRlc9rC6O9+fzMdf3JRHEtXtfdIp0h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZ19HJOh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2E41F00893;
+	Sun,  7 Jun 2026 10:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827917;
-	bh=01FM/Vxw/X1FFEyM5u1rMXFPnVgswHj7YCHXGtcT/gs=;
+	s=korg; t=1780827992;
+	bh=1DhUpT3n9jLA1L7sJG8TvAG9gRI3sUHjeBjU8ojYP8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O/WRBVT41OErr3CXH7Be0eQYO7ozvcHql/rjwVv7n/uk6R0nJb+j7T1jO3bYFqfQc
-	 5c4xJDjVUrJDCVahzljPJQ/1PprXzG45W1UbYtEo1GDiG2973ZvDt85DIi68Fq/0GK
-	 u6RzHCAknJJPJh4JMo7SgxstGOYaTZW6pxDM4xAM=
+	b=vZ19HJOhnJ2ump+k8NNyD49vsn+hM8tQo5IEcsLK6PsCix3/QT2aKq4u+9Ql/hxki
+	 Lwo4XZmrbHGsOVn8V1NsUO2hEXLZZ2AcYSwC4XCUWrpT9l4ccTHDv5lrexy+TTz6DS
+	 tvN/fVwgJ8TtIrVZS8cbrdhvzWWr8ohk9H0DuVvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	David Wang <00107082@163.com>,
-	Ian Klatzco <iklatzco@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/307] perf: Fix dangling cgroup pointer in cpuctx
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 106/315] iio: pressure: bmp280: fix stack leak in bmp580 trigger handler
 Date: Sun,  7 Jun 2026 11:58:13 +0200
-Message-ID: <20260607095731.302394407@linuxfoundation.org>
+Message-ID: <20260607095731.540239441@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +67,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,infradead.org,163.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-261272-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261292-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yeoreum.yun@arm.com,m:peterz@infradead.org,m:00107082@163.com,m:iklatzco@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:stable@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,infradead.org:email,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 977B164FB5C
+X-Rspamd-Queue-Id: E9B6B64FA97
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 3b7a34aebbdf2a4b7295205bf0c654294283ec82 ]
+commit 387c86b582e0782ab332e7bfcd4e6e3f93922961 upstream.
 
-Commit a3c3c6667("perf/core: Fix child_total_time_enabled accounting
-bug at task exit") moves the event->state update to before
-list_del_event(). This makes the event->state test in list_del_event()
-always false; never calling perf_cgroup_event_disable().
+bmp580_trigger_handler() declares its scan buffer on the stack without
+an initializer and then memcpy()s 3 bytes of 24-bit sensor data into
+each 4-byte __le32 field.  The high byte of comp_temp and comp_press is
+left uninitialized, and the channel storagebits is 32, so two bytes of
+stack are pushed to userspace per scan.
 
-As a result, cpuctx->cgrp won't be cleared properly; causing havoc.
+This is a regression from when the buffer lived in the private data, the
+move to a stack-local struct dropped the implicit zeroing.
+bme280_trigger_handler() was fixed up to handle this bug, but this
+driver was not fixed because there was no padding hole, but rather a
+short-fill issue.
 
-Fixes: a3c3c6667("perf/core: Fix child_total_time_enabled accounting bug at task exit")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: David Wang <00107082@163.com>
-Link: https://lore.kernel.org/all/aD2TspKH%2F7yvfYoO@e129823.arm.com/
-Signed-off-by: Ian Klatzco <iklatzco@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this all by just zero-initializing the structure on the stack.
+
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>
+Cc: "Nuno Sá" <nuno.sa@analog.com>
+Cc: Andy Shevchenko <andy@kernel.org>
+Fixes: 872c8014e05e ("iio: pressure: bmp280: drop sensor_data array")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6fce2bac6dae52..9099c0cc933be2 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2096,18 +2096,6 @@ list_del_event(struct perf_event *event, struct perf_event_context *ctx)
- 	if (event->group_leader == event)
- 		del_event_from_groups(event, ctx);
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index d983ce9c0b99..9b489766e457 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -2616,7 +2616,7 @@ static irqreturn_t bmp580_trigger_handler(int irq, void *p)
+ 		__le32 comp_temp;
+ 		__le32 comp_press;
+ 		aligned_s64 timestamp;
+-	} buffer;
++	} buffer = { };
+ 	int ret;
  
--	/*
--	 * If event was in error state, then keep it
--	 * that way, otherwise bogus counts will be
--	 * returned on read(). The only way to get out
--	 * of error state is by explicit re-enabling
--	 * of the event
--	 */
--	if (event->state > PERF_EVENT_STATE_OFF) {
--		perf_cgroup_event_disable(event, ctx);
--		perf_event_set_state(event, PERF_EVENT_STATE_OFF);
--	}
--
- 	ctx->generation++;
- 	event->pmu_ctx->nr_events--;
- }
-@@ -2457,6 +2445,10 @@ __perf_remove_from_context(struct perf_event *event,
- 		state = PERF_EVENT_STATE_DEAD;
- 	}
- 	event_sched_out(event, ctx);
-+
-+	if (event->state > PERF_EVENT_STATE_OFF)
-+		perf_cgroup_event_disable(event, ctx);
-+
- 	perf_event_set_state(event, min(event->state, state));
- 	if (flags & DETACH_GROUP)
- 		perf_group_detach(event);
+ 	guard(mutex)(&data->lock);
 -- 
-2.53.0
+2.54.0
 
 
 
