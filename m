@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-261520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BOrpLMpKJWoUGQIAu9opvQ
-	(envelope-from <stable+bounces-261520-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:14 +0200
+	id GgEEGexLJWpsGQIAu9opvQ
+	(envelope-from <stable+bounces-261523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D9164FE74
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:41:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDFB64FFA1
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:46:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RbG1LeLL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261520-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261520-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tYAxaqx8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261523-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261523-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B53413002F6C
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4F9300DDF3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C50329371;
-	Sun,  7 Jun 2026 10:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D165326D44;
+	Sun,  7 Jun 2026 10:41:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A7A2C1595;
-	Sun,  7 Jun 2026 10:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343D73195FD;
+	Sun,  7 Jun 2026 10:41:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828866; cv=none; b=rIwuSUvKdFUgmon4CDWBeUscQ+MtiH0o0lQNcj4XOmKxLo5lsYIsRCOxuBrlGcgWe6UeHzvBRud2Rlj7gh8PQs9WgOolunlAEEOrrf45+GIEDSqG8KUUiQP592j3jsPTiwUIbgkVhtLHndnXV/cRmilSz+uBuhXtnP0ScXKmJ7I=
+	t=1780828879; cv=none; b=tJVf5IS2RwJGQ6JHHvPaojbjhfIv+o9fO89E0WKIBFyJEMRvO5cwUi4rM0764HxSkz1qOGdBaRKHW1SAcTu+T5Gtpdxabr8QnjjTcMDuIQF60ZF7m0agQ4q0DN15X9F3FihzAkEf9gmqFLzsGRBR+CSdgIRpkXWH+xLpMX5t7TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828866; c=relaxed/simple;
-	bh=wNKP5r20I0XB040/gtGaGwgQKCW1+05I3Phgj74b/f0=;
+	s=arc-20240116; t=1780828879; c=relaxed/simple;
+	bh=j4UZf524aFy7cagWkLd5GePpq5rT4Ty0TIbxKdrVCB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6ruEzapN3SVijW37HFzeheFNAvGvnkDak6n/nge3D6VjFFS5V7nMc4w65upLztBnUlyJVNrZ4a5oAMxebrKT6lhAu6l7b4Kt7qvLExnM43PiS0au6Q6VSyc3QhTfCzIIdmFFOcqUFcBQjpyg3brw1VS70bwe9mQVFWt+/Db7rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbG1LeLL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA49C1F00893;
-	Sun,  7 Jun 2026 10:41:04 +0000 (UTC)
+	 MIME-Version; b=lSihmRuY427ZjaSaoE3INszf2E1v4bx4BQTddJ9ludWFbNL/2UiR6I0rvDcVXd/yFQ4U6+M6sL4Hq34cMcbyseO8jfSZ3rx+iW8Ll6UTT+LFFaDyp2raNeVZGbYSgGP4uGbma0SQFpZpGrCmLF3zK699ARw3iDRHixVv+mNgpGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYAxaqx8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0472B1F00893;
+	Sun,  7 Jun 2026 10:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828865;
-	bh=nG82PfiZxAk1miNElcAiBLRggT8fYOurlPxIUGzSKxU=;
+	s=korg; t=1780828877;
+	bh=9Eofvq9IJZWEoVN/X7P5iWoPqZkzPrURaW5cqEvNmo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RbG1LeLLP2/ahga0JYZIpz1VCexdHx5pq48WMV83AhNOaa58Hhnuvdx/Hv7bZUtoh
-	 YQNq1VKp7Iqm/vDrQeo761uS894nosYBFQAP6J7wtzcYY0m5LaHJ6baXzRk0mR+Sow
-	 Nh1gUFcbFmIt9pLxvOsBJsEqfqZuOdDKZnptxebE=
+	b=tYAxaqx8Bf3ZsaWotsZYVTLyF4fqCYGgWFOI9vCwcSnBW3oSd6836aBbtjz0gfOXy
+	 hxuBolhJVI3iO/DvXIczxAh/QzHCBPK1lh9HxWmf7DHF3fGDr+fEyuIe1yXo8tKTuX
+	 J173POlvR//ZSspzJ2OtkFrMTs00IMV55dc9MZr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Lee Jones <lee@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 7.0 222/332] HID: wacom: Fix OOB write in wacom_hid_set_device_mode()
-Date: Sun,  7 Jun 2026 11:59:51 +0200
-Message-ID: <20260607095736.212310960@linuxfoundation.org>
+	Will Deacon <will@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	linux-kbuild@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 7.0 223/332] iommu, debugobjects: avoid gcc-16.1 section mismatch warnings
+Date: Sun,  7 Jun 2026 11:59:52 +0200
+Message-ID: <20260607095736.250640622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -69,119 +73,164 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261520-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ping.cheng@wacom.com,m:lee@kernel.org,m:bentiss@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261523-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:tglx@kernel.org,m:akpm@linux-foundation.org,m:ojeda@kernel.org,m:linux-kbuild@vger.kernel.org,m:arnd@arndb.de,m:joerg.roedel@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,wacom.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linux-foundation.org:email,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,arndb.de:email,gnu.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A7D9164FE74
+X-Rspamd-Queue-Id: AFDFB64FFA1
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit c0a8899e02ddebd51e2589835182c239c2e224ae upstream.
+commit 4c9ad387aa2d6785299722e54224d34764edaeb3 upstream.
 
-wacom_hid_set_device_mode() currently assumes that the HID_DG_INPUTMODE
-usage is always located in the first field (field[0]) of the feature report.
-However, a device can specify HID_DG_INPUTMODE in a different field.
+gcc-16 has gained some more advanced inter-procedual optimization
+techniques that enable it to inline the dummy_tlb_add_page() and
+dummy_tlb_flush() function pointers into a specialized version of
+__arm_v7s_unmap:
 
-If HID_DG_INPUTMODE is in a field other than the first one and the first
-field has a report_count smaller than the usage_index of HID_DG_INPUTMODE,
-this leads to an out-of-bounds write to r->field[0]->value.
+WARNING: modpost: vmlinux: section mismatch in reference: __arm_v7s_unmap+0x2cc (section: .text) -> dummy_tlb_add_page (section: .init.text)
+ERROR: modpost: Section mismatches detected.
 
-Fix this by storing the field index of HID_DG_INPUTMODE in 'struct
-hid_data' during feature mapping.  In wacom_hid_set_device_mode(), use
-this stored field index to access the correct field and add bounds
-checks to ensure both the field index and the value index are within
-valid ranges before writing.
+>From what I can tell, the transformation is correct, as this is only
+called when __arm_v7s_unmap() is called from arm_v7s_do_selftests(),
+which is also __init. Since __arm_v7s_unmap() however is not __init,
+gcc cannot inline the inner function calls directly.
 
+In debug_objects_selftest(), the same thing happens. Both the
+caller and the leaf function are __init, but the IPA pulls
+it into a non-init one:
+
+WARNING: modpost: vmlinux: section mismatch in reference: lookup_object_or_alloc+0x7c (section: .text.lookup_object_or_alloc) -> is_static_object (section: .init.text)
+
+Marking the affected functions as not "__init" would reliably avoid this
+issue but is not a good solution because it removes an otherwise correct
+annotation. I tried marking the functions as 'noinline', but that ended
+up not covering all the affected configurations.
+
+With some more experimenting, I found that marking these functions as
+__attribute__((noipa)) is both logical and reliable.
+
+In order to keep the syntax readable, add a custom macro for this in
+include/linux/compiler_attributes.h next to other related macros and
+use it to annotate both files.
+
+Link: https://lore.kernel.org/all/abRB6g-48ZX6Yl2r@willie-the-truck/
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: linux-kbuild@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 5ae6e89f7409 ("HID: wacom: implement the finger part of the HID generic handling")
-Tested-by: Ping Cheng <ping.cheng@wacom.com>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Thomas Gleixner <tglx@kernel.org>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c |   13 ++++++++++---
- drivers/hid/wacom_wac.h |    1 +
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/iommu/io-pgtable-arm-v7s.c  |   18 ++++++++++++------
+ include/linux/compiler_attributes.h |   11 +++++++++++
+ lib/debugobjects.c                  |    2 +-
+ 3 files changed, 24 insertions(+), 7 deletions(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -356,6 +356,7 @@ static void wacom_feature_mapping(struct
+--- a/drivers/iommu/io-pgtable-arm-v7s.c
++++ b/drivers/iommu/io-pgtable-arm-v7s.c
+@@ -777,21 +777,27 @@ struct io_pgtable_init_fns io_pgtable_ar
  
- 		hid_data->inputmode = field->report->id;
- 		hid_data->inputmode_index = usage->usage_index;
-+		hid_data->inputmode_field_index = field->index;
- 		break;
+ static struct io_pgtable_cfg *cfg_cookie __initdata;
  
- 	case HID_UP_DIGITIZER:
-@@ -571,9 +572,14 @@ static int wacom_hid_set_device_mode(str
- 
- 	re = &(hdev->report_enum[HID_FEATURE_REPORT]);
- 	r = re->report_id_hash[hid_data->inputmode];
--	if (r) {
--		r->field[0]->value[hid_data->inputmode_index] = 2;
--		hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
-+	if (r && hid_data->inputmode_field_index >= 0 &&
-+	    hid_data->inputmode_field_index < r->maxfield) {
-+		struct hid_field *field = r->field[hid_data->inputmode_field_index];
-+
-+		if (field && hid_data->inputmode_index < field->report_count) {
-+			field->value[hid_data->inputmode_index] = 2;
-+			hid_hw_request(hdev, r, HID_REQ_SET_REPORT);
-+		}
- 	}
- 	return 0;
+-static void __init dummy_tlb_flush_all(void *cookie)
++/*
++ * __noipa prevents gcc from turning indirect iommu_flush_ops calls
++ * into direct calls from a specialized __arm_v7s_unmap() that triggers
++ * a build time section mismatch assertion.
++ */
++static __noipa void __init dummy_tlb_flush_all(void *cookie)
+ {
+ 	WARN_ON(cookie != cfg_cookie);
  }
-@@ -2846,6 +2852,7 @@ static int wacom_probe(struct hid_device
- 		return -ENODEV;
  
- 	wacom_wac->hid_data.inputmode = -1;
-+	wacom_wac->hid_data.inputmode_field_index = -1;
- 	wacom_wac->mode_report = -1;
+-static void __init dummy_tlb_flush(unsigned long iova, size_t size,
+-				   size_t granule, void *cookie)
++static __noipa void __init dummy_tlb_flush(unsigned long iova, size_t size,
++					   size_t granule, void *cookie)
+ {
+ 	WARN_ON(cookie != cfg_cookie);
+ 	WARN_ON(!(size & cfg_cookie->pgsize_bitmap));
+ }
  
- 	if (hid_is_usb(hdev)) {
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -295,6 +295,7 @@ struct wacom_shared {
- struct hid_data {
- 	__s16 inputmode;	/* InputMode HID feature, -1 if non-existent */
- 	__s16 inputmode_index;	/* InputMode HID feature index in the report */
-+	__s16 inputmode_field_index; /* InputMode HID feature field index in the report */
- 	bool sense_state;
- 	bool inrange_state;
- 	bool eraser;
+-static void __init dummy_tlb_add_page(struct iommu_iotlb_gather *gather,
+-				      unsigned long iova, size_t granule,
+-				      void *cookie)
++static __noipa void __init dummy_tlb_add_page(struct iommu_iotlb_gather *gather,
++					      unsigned long iova,
++					      size_t granule,
++					      void *cookie)
+ {
+ 	dummy_tlb_flush(iova, granule, granule, cookie);
+ }
+--- a/include/linux/compiler_attributes.h
++++ b/include/linux/compiler_attributes.h
+@@ -397,6 +397,17 @@
+ #endif
+ 
+ /*
++ * Optional: not supported by clang
++ *
++ *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Attributes.html#index-noipa
++ */
++#if __has_attribute(noipa)
++# define __noipa __attribute__((noipa))
++#else
++# define __noipa
++#endif
++
++/*
+  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-weak-function-attribute
+  *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-weak-variable-attribute
+  */
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -1212,7 +1212,7 @@ struct self_test {
+ 
+ static __initconst const struct debug_obj_descr descr_type_test;
+ 
+-static bool __init is_static_object(void *addr)
++static __noipa bool __init is_static_object(void *addr)
+ {
+ 	struct self_test *obj = addr;
+ 
 
 
 
