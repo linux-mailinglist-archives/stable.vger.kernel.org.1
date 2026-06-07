@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-260941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SEmSCF5CJWrVFAIAu9opvQ
-	(envelope-from <stable+bounces-260941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:05:18 +0200
+	id RznaOtRCJWoHFQIAu9opvQ
+	(envelope-from <stable+bounces-260953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8244264F510
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:05:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574CF64F553
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:07:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vzUPVyqi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-260941-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-260941-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wgtdH0qn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-260953-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-260953-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B8CA301FD62
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:04:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2904301549D
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267C92EEE7D;
-	Sun,  7 Jun 2026 10:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA78234994;
+	Sun,  7 Jun 2026 10:06:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0882234994;
-	Sun,  7 Jun 2026 10:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E0E4071C7;
+	Sun,  7 Jun 2026 10:06:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780826643; cv=none; b=JAoBKvFgh1Wd7t/7r9+tXrKCMzex2wlLalOg6gSRkJb/J50rDPLmmdb7foEZk6Wri6v1hvOEo3nB6LfMkVqD0jHxZ7+WTMTnjOZnN4YMIxsxzts/ESETM4+Ziu3UBq0tX7zhxC6Rm/lMy8GcLG4ztNbfrx30wAlsRT2iZ+n4vWc=
+	t=1780826764; cv=none; b=RkWUXPzKugfz7iQnlurOYkuuNoUjDpaNw+bgG0ETddMpuECYN7cBvVT38h1Yuv6bJSnE48ZcVYElMAL0rzdVHbdwZ4FwnjHxsSRWVA3k+1QiCzw2vwq6G5Q0s4lhJnqWG2iZAsdeqok7Gim1+JSYjM+CdaEHGH+4SicqzVQRzxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780826643; c=relaxed/simple;
-	bh=4kXpNk/DFbyuSNyApzc66zsChVbOhIpQqaZYZN+PMeg=;
+	s=arc-20240116; t=1780826764; c=relaxed/simple;
+	bh=tGXiHqzo+PuYwmz1fQcDxobajShNGSzxToqfJvqoc7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfSqDSyp8eVjhcLLhxJ1DMc5o7we+cKuVi3uUFAn49Vd5axWjvi65tDoUnqTTr1SkfOIIbHJBuSWGLEXeaSICAs3vXAv0TJc0YcOdmsIcfmJorm5puArBLWGZKUhOtPEXqua5wm6BVYAAjNysXmNM/yTTBhWR8AcXkRFqdPv94s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzUPVyqi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97271F00893;
-	Sun,  7 Jun 2026 10:04:01 +0000 (UTC)
+	 MIME-Version; b=qnh2l6QhKCgzVpAjI4l/tCP0x+TpFp5ovY0YSHZaujAjqS2aMKmu0WPiqVhOda4/5UrwEahCc5/BRSvqkRFO0eHOES3gFTiR9kbizUnzS4VuMmSF504DdmH1wtolOzCgfBGIS6Fb0pv0LLGOSkYajQKtopyIG0200eSQY8J1flU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgtdH0qn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7851F00893;
+	Sun,  7 Jun 2026 10:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780826642;
-	bh=ky132I7IigGdKO/n9EdFekTHcfVMVTqpShJLl2wZnM8=;
+	s=korg; t=1780826763;
+	bh=1oWdRxoniFYsF2RRMJBZ+ugWhO6Sa4JIWmWEkGTMbIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vzUPVyqimdD8h5WMDoyH8XVyMmJl9OKeuW8okhaBxY0NB/2KeUjbBtoAxXuBbaluw
-	 bLD+GtXZ7co03nZbq1n42iKZa2TZR8f2EmS3ef6UXKoVkwTS0mKe4X3ncdzgK2M/87
-	 qvTUAFR8Sd9GsnC7gABnYIDUaaTlzwUgfpGsi9S4=
+	b=wgtdH0qna9MuV/AJhT/vhk8Y+RjDjnIajhBRElzhz0R9axKTKkq/bHJKes5hUkdy/
+	 pKaTkkKQQhAIDrfEQVbUxyEMZ9o/TC+hGo1czKbyUKMmwLq66G57Lz7L/EWaN7wT80
+	 i0ijnlMwBESMOZvlDjCnnctLhCYEJQ2vJLEnFrJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 003/315] net: mctp: ensure our nlmsg responses are initialised
+Subject: [PATCH 7.0 021/332] tun: free page on short-frame rejection in tun_xdp_one()
 Date: Sun,  7 Jun 2026 11:56:30 +0200
-Message-ID: <20260607095727.643928318@linuxfoundation.org>
+Message-ID: <20260607095728.843619549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +70,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-260941-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:horms@kernel.org,m:kuba@kernel.org,m:1468888505@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,codeconstruct.com.au,kernel.org,139.com];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-260953-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:from_smtp,codeconstruct.com.au:email]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,asu.edu:email,oracle.com:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8244264F510
+X-Rspamd-Queue-Id: 574CF64F553
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit a6a9bc544b675d8b5180f2718ec985ad267b5cbf ]
+[ Upstream commit f4feb1e20058e407cb00f45aff47f5b7e19a6bbf ]
 
-Syed Faraz Abrar (@farazsth98) from Zellic, and Pumpkin (@u1f383) from
-DEVCORE Research Team working with Trend Micro Zero Day Initiative
-report that a RTM_GETNEIGH will return uninitalised data in the pad
-bytes of the ndmsg data.
+tun_xdp_one() returns -EINVAL on a frame shorter than ETH_HLEN without
+freeing the page that vhost_net_build_xdp() allocated for it.
+tun_sendmsg() discards that -EINVAL and still returns total_len, so
+vhost_tx_batch() takes the success path and never frees the page; each
+short frame in a batch leaks one page-frag chunk.
 
-Ensure we're initialising the netlink data to zero, in the link, addr
-and neigh response messages.
+A local process that can open /dev/net/tun and /dev/vhost-net can hit
+this path: it attaches a tun/tap device as the vhost-net backend and
+feeds TX descriptors whose length minus the virtio-net header is below
+ETH_HLEN. Each kick leaks the page-frag chunks for that batch, and a
+tight submission loop exhausts host memory and triggers an OOM panic.
+Free the page before returning -EINVAL, matching the XDP-program error
+path in the same function.
 
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260209-dev-mctp-nlmsg-v1-1-f1e30c346a43@codeconstruct.com.au
+Fixes: 049584807f1d ("tun: add missing verification for short frame")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260520160020.375349-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/device.c | 1 +
- net/mctp/neigh.c  | 1 +
- net/mctp/route.c  | 1 +
- 3 files changed, 3 insertions(+)
+ drivers/net/tun.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 4d404edd7446e1..04c5570bacff69 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -70,6 +70,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb,
- 		return -EMSGSIZE;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index c492fda6fc15a7..8154d18a2a235a 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -2392,8 +2392,10 @@ static int tun_xdp_one(struct tun_struct *tun,
+ 	bool skb_xdp = false;
+ 	struct page *page;
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ifa_family = AF_MCTP;
- 	hdr->ifa_prefixlen = 0;
- 	hdr->ifa_flags = 0;
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index 05b899f22d902b..fc85f0e6930143 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -218,6 +218,7 @@ static int mctp_fill_neigh(struct sk_buff *skb, u32 portid, u32 seq, int event,
- 		return -EMSGSIZE;
+-	if (unlikely(datasize < ETH_HLEN))
++	if (unlikely(datasize < ETH_HLEN)) {
++		put_page(virt_to_head_page(xdp->data));
+ 		return -EINVAL;
++	}
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ndm_family = AF_MCTP;
- 	hdr->ndm_ifindex = dev->ifindex;
- 	hdr->ndm_state = 0; // TODO other state bits?
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index d4fdaac8037aba..eb817f1eb5c8eb 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1650,6 +1650,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 		return -EMSGSIZE;
- 
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->rtm_family = AF_MCTP;
- 
- 	/* we use the _len fields as a number of EIDs, rather than
+ 	xdp_prog = rcu_dereference(tun->xdp_prog);
+ 	if (xdp_prog) {
 -- 
 2.53.0
 
