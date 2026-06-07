@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-261281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261271-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HPRFOMpHJWqdFwIAu9opvQ
-	(envelope-from <stable+bounces-261281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:26 +0200
+	id VeLYGilHJWpQFwIAu9opvQ
+	(envelope-from <stable+bounces-261271-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B15F64FAD3
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BEFD64FA53
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bXiX6fcR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261281-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261281-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S42SCVIz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261271-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261271-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D939300D727
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFFA9301D305
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92E3246F4;
-	Sun,  7 Jun 2026 10:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AD83254BD;
+	Sun,  7 Jun 2026 10:25:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802433254BD;
-	Sun,  7 Jun 2026 10:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B5C2D8378;
+	Sun,  7 Jun 2026 10:25:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827951; cv=none; b=EAhscRTtrcJ7y6cwdAuMgaY+8pd/8oqRo/z1GLuwTnpsoYsZENdHAVJD31kEusYsSy+ka6I4Ibbfmo/WWTp8zLvWCYRhvIcTbxWwGWvC4Rk3d0DtK7lOhRTVLOTxWV358XdW7hFvX1veBNptG/USkPFBc4r+uGpfurad6edNeQU=
+	t=1780827914; cv=none; b=otrDNlGnUhYjQYR7pLT3/eVHFQRYceKq9994Ha1LOpljrkb/CU7Xqrq4mcYqJ/IBHvKlCqC7HJgN497Xy/5G8VAlHwAsngRb3WTdI9/mzuL4ARirDCkkso2c2mTVlitDMnZbsjV8sgzOVAOA3Hx0TFcGXAL7cZR/8DuoC7u0Lx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827951; c=relaxed/simple;
-	bh=oSD/gwpNsqk7r9yxPSOo9CAN7XvRIKq/rUbMWFq3x8Q=;
+	s=arc-20240116; t=1780827914; c=relaxed/simple;
+	bh=HKUObmvtZGdmTn2388qJL08WcD4edHdqIaxgVBd6CNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReTx3pWAh0taOlUNBMa+J8TR2OIqomNPeNbiRQi5HYOrblagGs+PnZxSgHs6+UY0oOVWshtm4C4BeBjJJuOX/ZYrigKyqpRKM7YE/4k1xM1ckGyBazBczYHNeJss1gjNdeHdyK0n1pUMRe3jjy5y4GBSEGPoQdZh6kjJTZX+0OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXiX6fcR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971011F00893;
-	Sun,  7 Jun 2026 10:25:49 +0000 (UTC)
+	 MIME-Version; b=sAF5BUypYgSmh6A1Z9ROtZwHHN+zZfjnDnfbqnUJT3TAOhlk/Rxn/i7W281Na9l1dqTEJfRhcbH7ML/Fyuw4hPPkAePqi55a1vWmcrGsDzERA/UAwiSVbUGqoBOboJxThqx7NLeh4RO8jCOsNoQWCuK9LjwajbWTROD8Uxz3cLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S42SCVIz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376FC1F00893;
+	Sun,  7 Jun 2026 10:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827950;
-	bh=pYPqPPXbETWcAT0PAvDXizT31zfJ+eR9+vtQ+srUHjQ=;
+	s=korg; t=1780827912;
+	bh=NwwPnmqXeU1h0ximJoNIwSBr3HmtpzbOjwLs6fx5sNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bXiX6fcRIVxpJwvjesNdXvHx3OYEXmAeMtcma9Cs9I1bKjOEPc/zsoXEvf7zfDD0+
-	 0dnJK3eravjvWBLCLIvH1OSItwrQlEXAiuK+M0WgQljBY19JSj/DFqrusLEVBPr2Sq
-	 tlIy4HDXGeaeyVvnGcmj/TxYhsD42O2HusXyB9CQ=
+	b=S42SCVIzVXMAXgco6v0DrBmpz+hHoTo16CW4flUc6mvUWdNCid3/bdLC0PT6i4+ki
+	 j4c4LvpGY+o4MxhabLvxvGAKS1/RxOeCZChDs3t6/rGB3KA7/7Djy2l2bU4rbOl1Pk
+	 Jb7GhNOyAP/liEKkW01dIy524cDTZJ2CeIIOE5JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+11f0e4f957c7c3bf3d51@syzkaller.appspotmail.com,
-	Henri A <contact@henrialfonso.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 130/332] media: rc: igorplugusb: fix control request setup packet
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.18 112/315] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
 Date: Sun,  7 Jun 2026 11:58:19 +0200
-Message-ID: <20260607095732.878861598@linuxfoundation.org>
+Message-ID: <20260607095731.754738560@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-References: <20260607095728.031258202@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -78,81 +75,110 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261281-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261271-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+11f0e4f957c7c3bf3d51@syzkaller.appspotmail.com,m:contact@henrialfonso.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,11f0e4f957c7c3bf3d51,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,henrialfonso.com:email,appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mess.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B15F64FAD3
+X-Rspamd-Queue-Id: 0BEFD64FA53
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henri A <contact@henrialfonso.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 171022c7d594c133a45f92357a2a91475edabe20 upstream.
+commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
 
-Commit eac69475b01f ("media: rc: igorplugusb: heed coherency
-rules") changed the control request storage from an embedded struct to
-an allocated pointer so it can obey DMA coherency rules.
+wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
+struct pd_message with
 
-However, the driver still passes &ir->request to usb_fill_control_urb().
-That points the URB setup packet at the pointer field itself rather than
-at the allocated struct usb_ctrlrequest.
+	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
+		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
 
-USB core then interprets pointer bytes as the setup packet. This can
-produce an invalid bRequestType and trigger the control direction warning
-reported by syzbot:
+which has two problems:
 
-  usb 2-1: BOGUS control dir, pipe 80003580 doesn't match bRequestType 0
+USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
+is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
+The byte count latched in RXINFO is the number of bytes the port partner
+put on the wire, so a malicious partner that transmits a 31-byte frame
+can drive the loop one byte past the destination if the WCOVE BMC
+receiver does not enforce the PD object-count limit in hardware. The
+existing FIXME flagged this as unverified.
 
-Pass ir->request itself as the setup packet.
+Independently, regmap_read() takes an unsigned int * and stores a full
+unsigned int at the destination. Passing the byte pointer msg + i means
+each iteration writes four bytes; the high three are zero (val_bits is
+8) and are normally overwritten by the next iteration, but the final
+iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
+already writes three zero bytes past msg, which sits on the IRQ thread's
+stack in wcove_typec_irq().
 
-Fixes: eac69475b01f ("media: rc: igorplugusb: heed coherency rules")
-Reported-by: syzbot+11f0e4f957c7c3bf3d51@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=11f0e4f957c7c3bf3d51
-Tested-by: syzbot+11f0e4f957c7c3bf3d51@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Henri A <contact@henrialfonso.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Clamp the loop to sizeof(struct pd_message) and read each register into
+a local before storing only its low byte, so the copy can never exceed
+the destination regardless of what RXINFO reports.
+
+Assisted-by: gkh_clanker_t1000
+Cc: stable <stable@kernel.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/igorplugusb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/media/rc/igorplugusb.c
-+++ b/drivers/media/rc/igorplugusb.c
-@@ -184,7 +184,7 @@ static int igorplugusb_probe(struct usb_
- 	if (!ir->buf_in)
- 		goto fail;
- 	usb_fill_control_urb(ir->urb, udev,
--		usb_rcvctrlpipe(udev, 0), (uint8_t *)&ir->request,
-+		usb_rcvctrlpipe(udev, 0), (uint8_t *)ir->request,
- 		ir->buf_in, MAX_PACKET, igorplugusb_callback, ir);
+--- a/drivers/usb/typec/tcpm/wcove.c
++++ b/drivers/usb/typec/tcpm/wcove.c
+@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
+ 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
+ }
  
- 	usb_make_path(udev, ir->phys, sizeof(ir->phys));
+-static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
++static int wcove_read_rx_buffer(struct wcove_typec *wcove,
++				struct pd_message *msg)
+ {
+-	unsigned int info;
++	unsigned int info, val, len;
++	u8 *buf = (u8 *)msg;
+ 	int ret;
+ 	int i;
+ 
+@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
+ 	if (ret)
+ 		return ret;
+ 
+-	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
++	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
+ 
+-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
+-		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
++	for (i = 0; i < len; i++) {
++		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
+ 		if (ret)
+ 			return ret;
++		buf[i] = val;
+ 	}
+ 
+ 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
 
 
 
