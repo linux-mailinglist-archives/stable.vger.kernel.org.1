@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-261265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9tYgIfhGJWo6FwIAu9opvQ
-	(envelope-from <stable+bounces-261265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:56 +0200
+	id F9TDIyBHJWpKFwIAu9opvQ
+	(envelope-from <stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD5464FA22
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:24:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDD764FA43
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:25:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JKxSFSWu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261265-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261265-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rFlhwyDD;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261268-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7438D30011B8
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:24:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4080D301D4C3
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C63E320A37;
-	Sun,  7 Jun 2026 10:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F713246F4;
+	Sun,  7 Jun 2026 10:25:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789DA3246F4;
-	Sun,  7 Jun 2026 10:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F09F202C46;
+	Sun,  7 Jun 2026 10:25:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827891; cv=none; b=BoIhaI4t8TNQ/i6X6/7uWarYZW/T/cXuHzVhtUamKU9CiEw8Bclk4/bGf2+lmgVuMAPYkUNQnkKlkG8kpf1BeITL51neSfiFx4EMleVPoNWvUsO4yKr5HwMTD7xEcq89IjlYdMheM4UIuTHIQANeZKBlLlAqnUR3tTCIs/RPT80=
+	t=1780827903; cv=none; b=Y5SJ11zLkQzu/p7KLYMAoKNDVtUa0kWe9VCSlNpM/vRG06rhY2J59XU339EHGiOvFe/QiXpFwYPpj+G7ljMA6wesfskFyw63jAmCjoEBN+36Jy1OzPBbLwhbxAg8gHfI8pdW2F5ek93s018M005tNSdOaorhp/ooh+TcNCCTnpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827891; c=relaxed/simple;
-	bh=ppMY94VneGK9Quu0avX+cqnXCEsvdUVd0S4uIoGvclI=;
+	s=arc-20240116; t=1780827903; c=relaxed/simple;
+	bh=Am5UBK2CQu5ZT542leWi6OrGFk3VUMXfI18cqs/obeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7F+Sxzqi7Lo4m5C8z+6daPl2AFLIOTku7nRVAyHbcUFVld3nmXTxoQ7uOZUr8VmgwSfczUcYezgzlv0roY/M+buOkbLad23QoglYMCVqmEtvG+S/Re1tFTQvme1Gz/KHqoX1OT4a+FbtpquekgqGHwk+ALA9dkLLfbmu5BElM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKxSFSWu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1F61F00893;
-	Sun,  7 Jun 2026 10:24:49 +0000 (UTC)
+	 MIME-Version; b=YU3fJSsaKs/YSRmwtI0Ivxf71CehMq87Letahis/KfSq6XTRNJfleKfUcKK/VybpwWRncD2kpNJFf09tZIMI7KfPYT7PGX0NQQxakvM7T2SXuUwBdIHY8IhLvn6c0kZbaOpgb08TkrGXa6oXixf63k5HTwLMgjYBkCKSmX/6hfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFlhwyDD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742571F00893;
+	Sun,  7 Jun 2026 10:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827890;
-	bh=FZ6p11xcZEcM4QKstxewKi3nx7emuLdH638H8Vno+lQ=;
+	s=korg; t=1780827902;
+	bh=whQezt9hv9Y3QhNMblSAfrV2yl/wA4twFGd7HPIX3cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JKxSFSWuNgem3GaJWOc44qAKq1YoFXtLJNakfLsGkS/G+Hwc0FWdVYAo0H1rmlrb5
-	 OkYxhPBCuWb/ZhbThvDcNoojOwOgrpMt9tnDl20tyElJE+I17EoKwf3MthLuQiZOPq
-	 5dddLmBoIPGOZnejHwU19qZqWVl1U1/IAjgOJ6fc=
+	b=rFlhwyDDCjspcNufnOslkhMDqRVt8ejUK3cg19101n/i7NaAePkaXjaeEEhn6kFFH
+	 pBGUJcya0M2dDUzFzqXSTrPgdLAHcIGUFQQxvZ+2N/FU0hgtHgUNd66sqC/YjxUQof
+	 VpEwSP8xtKkTFok0Umh73x/AdxfGrrGJ4AgkBS80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/307] ipv6: fix possible infinite loop in fib6_select_path()
-Date: Sun,  7 Jun 2026 11:58:11 +0200
-Message-ID: <20260607095731.230785865@linuxfoundation.org>
+Subject: [PATCH 6.12 095/307] net: skbuff: fix pskb_carve leaking zcopy pages
+Date: Sun,  7 Jun 2026 11:58:12 +0200
+Message-ID: <20260607095731.267087615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
 References: <20260607095727.647295505@linuxfoundation.org>
@@ -68,86 +70,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261265-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-261268-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:minhnguyen.080505@gmail.com,m:willemdebruijn.kernel@gmail.com,m:asml.silence@gmail.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,m:minhnguyen080505@gmail.com,m:willemdebruijnkernel@gmail.com,m:asmlsilence@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.dev:email,msgid.link:url,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7AD5464FA22
+X-Rspamd-Queue-Id: 3EDD764FA43
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 9c7da87c2dc860bb17ca1ece942495d28b1ce3b9 ]
+[ Upstream commit ff6e798c2eac3ebd0501ad7e796f583fab928de8 ]
 
-Found while auditing the same pattern Sashiko reported in
-rt6_fill_node() [1]. Apply the same fix as
-commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
+When SKBFL_MANAGED_FRAG_REFS is set, frag pages are not refcounted but
+their lifetime is controlled by the attached ubuf_info. To make a copy
+of the skb_shared_info, we either should clear the flag and reference
+the frags, or keep the flag and have frags unreferenced.
 
-Writers holding tb6_lock can list_del_rcu(&first->fib6_siblings)
-without waiting for RCU readers; first->fib6_siblings.next then
-still points into the old ring and this softirq-side walker never
-reaches &first->fib6_siblings as its terminator. fib6_purge_rt()
-always WRITE_ONCE()s first->fib6_nsiblings to 0 before
-list_del_rcu(), so an inside-loop check is a reliable detach signal.
+pskb_carve_inside_header() and pskb_carve_inside_nonlinear() don't
+follow the rule and thus can leak page references. Let's clear
+SKBFL_MANAGED_FRAG_REFS from the original skb to fix it. It's the
+simplest way to address it, but there are more performant ways to do
+that if it ever becomes a problem.
 
-[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
-
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260527053133.180695-2-jiayuan.chen@linux.dev
+Link: https://lore.kernel.org/all/20260523085809.26331-1-nvminh232@clc.fitus.edu.vn/
+Fixes: 753f1ca4e1e50 ("net: introduce managed frags infrastructure")
+Reported-by: Minh Nguyen <minhnguyen.080505@gmail.com>
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/1e2086aa69217d7f9c8da3d38f5be7160f1b4cd1.1779993185.git.asml.silence@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/skbuff.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index c73218fd82c615..9e7470e8154429 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -482,6 +482,9 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		const struct fib6_nh *nh = sibling->fib6_nh;
- 		int nh_upper_bound;
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 8c9f026182a6f0..c8653ed1991ae0 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6689,6 +6689,11 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+ 	skb_copy_from_linear_data_offset(skb, off, data, new_hlen);
+ 	skb->len -= off;
  
-+		if (!READ_ONCE(first->fib6_nsiblings))
-+			break;
++	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
++	 * while refcounting frags below.
++	 */
++	skb_zcopy_downgrade_managed(skb);
 +
- 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
- 		if (hash > nh_upper_bound)
- 			continue;
+ 	memcpy((struct skb_shared_info *)(data + size),
+ 	       skb_shinfo(skb),
+ 	       offsetof(struct skb_shared_info,
+@@ -6801,6 +6806,11 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+ 		return -ENOMEM;
+ 	size = SKB_WITH_OVERHEAD(size);
+ 
++	/* Remove SKBFL_MANAGED_FRAG_REFS instead of trying to honour it
++	 * while refcounting frags below.
++	 */
++	skb_zcopy_downgrade_managed(skb);
++
+ 	memcpy((struct skb_shared_info *)(data + size),
+ 	       skb_shinfo(skb), offsetof(struct skb_shared_info, frags[0]));
+ 	if (skb_orphan_frags(skb, gfp_mask)) {
 -- 
 2.53.0
 
