@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GL/cHnRHJWp8FwIAu9opvQ
-	(envelope-from <stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:27:00 +0200
+	id U1LZAbtFJWp2FgIAu9opvQ
+	(envelope-from <stable+bounces-261185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CE564FA9F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:26:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8465D64F86B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:19:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sWbSrVb3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261199-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VoiHqIGr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261185-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261185-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 486453011C4B
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:20:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 660393013A77
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD34D2ECEB9;
-	Sun,  7 Jun 2026 10:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973302EB87F;
+	Sun,  7 Jun 2026 10:19:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D28C2EB87F;
-	Sun,  7 Jun 2026 10:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8C44CB5B;
+	Sun,  7 Jun 2026 10:19:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827630; cv=none; b=iaz+4cjcz8CdEqQ+yMdxWJ29WC4YwhHL5z7NGcYtV4OzPlRN0HklFI//4uFh+fi7l2IzOTrkmtwFCUz0DQ0qsuJtsqReh1V6hdwRexQRxaDDrl52Era6wTV+liFYRi6+5lojPfPxMse6LSRqSlzoBrn9AiT+qhWXTqTHNh39e3Y=
+	t=1780827574; cv=none; b=VuaSRmaUD9IKoSHUPWAALB/vvjzG3EeFnYNtmZPpiDY20z9yKp5XX5SgrCBJ6cLru94JAF7y+puCaDzX/hYlaj/uwTmzXCJOb8Iczia/C6oo5dXhSgeHiTc5wSi4G347LOE1ygRg/CeeXHWPhQ4GXRLpIEmx/4dtwaurRF4m+ZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827630; c=relaxed/simple;
-	bh=mFiFUUhrdTUfVzD6H0mr3IGkVg8uHo6t88ZzTCqdj+U=;
+	s=arc-20240116; t=1780827574; c=relaxed/simple;
+	bh=BMqV3H0T7xw6jBJ1CY1u6KNxvZdR8lQS+FmNL5ThFsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DitjmaFzdiOCwxMdqctYP7qMNuuWMqzESz9N0cuVA3tRd3+eZkGF3QHg/ISIjYZLL0EoqhjXyxvnkNDXCgW6olrM/kKvRO506fpfVaBiDamppPide5/NRuJFmRyxRJfBp1qIZ1DQxaMr5QKI9t9C1gL+YGBPInuc9mVdHuDUNUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWbSrVb3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A31F00893;
-	Sun,  7 Jun 2026 10:20:28 +0000 (UTC)
+	 MIME-Version; b=VAiBeVnAtu6gZET3ZiAygeBxcTr0NioOjRmJ5txDRi1lztgJLbso5F6ZR6NXylDZpPEeFTCg9WFRR5RtAXOQrZ97cGQWxRYkmXYeFaJ6oozyTCQ73yWxqV54tA6A++AyfLi3VKgM6OJa8gH77Y/n4sPxAh8kRVMxJ2n5PiNBf5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoiHqIGr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D56C1F00893;
+	Sun,  7 Jun 2026 10:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827629;
-	bh=QFdFqSJKhqzo83ll3291rcxA0rwKDKkf0yHd4oev+pU=;
+	s=korg; t=1780827573;
+	bh=oMK4hNN/7LoXW1PSk+e/PZtlQKoCVCsdGjc4N8p1ptc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sWbSrVb3ywGdidSPSG9Me1hE8i/8+/h2p3GRPc6OzBoG/9xbAJJtsb1lfM3x6s61i
-	 oDOeQ002lOtGpkZhdedjX9GYs5Ie+2UGdm5nlEHecdIHpYzEd4jJOkZOoGUoWPAZ3U
-	 fme7GUhtjFS9DX8LVbaN9VT3/Ul70UNEP/OJu6QE=
+	b=VoiHqIGrZeIRlmuXf/9J5akr7X0bMc9x/5T0DKVmF1AmHliy30uLakI9IczAoBvPh
+	 +vCLZXeGEoSr7ZN7ONVkkReI5KMO1JWblf6GVAoFxOzSd7APadl+wdRLhz552dhjgY
+	 S4U9chs+P6LipdaT5SKy9z6M3JA/PeDWyzesRWY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Liu <will@willsroot.io>,
-	Savino Dicanosa <savy@syst3mfailure.io>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/307] net/sched: fix packet loop on netem when duplicate is on
+Subject: [PATCH 6.18 084/315] gpio: adnp: fix flow control regression caused by scoped_guard()
 Date: Sun,  7 Jun 2026 11:57:51 +0200
-Message-ID: <20260607095730.481390690@linuxfoundation.org>
+Message-ID: <20260607095730.706093481@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
+References: <20260607095727.528828913@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261199-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261185-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@willsroot.io,m:savy@syst3mfailure.io,m:victor@mojatatu.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dlechner@baylibre.com,m:linusw@kernel.org,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,80 +96,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[networkplumber.org:email,willsroot.io:email,msgid.link:url,mojatatu.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,syst3mfailure.io:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,vger.kernel.org:from_smtp,baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E6CE564FA9F
+X-Rspamd-Queue-Id: 8465D64F86B
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 9552b11e3edabc97cfcd9f29103d5afbce7ae183 ]
+[ Upstream commit a5c627d90809b793fc053849b3a00609db305776 ]
 
-When netem duplicates a packet it re-enqueues the copy at the root qdisc.
-If another netem sits in the tree the copy can be duplicated
-again, recursing until the stack or memory is exhausted.
+scoped_guard() is implemented as a for loop. Using it to protect code
+using the continue statement changes the flow as we now only break out
+of the hidden loop inside scoped_guard(), not the original for loop. Use
+a regular code block instead.
 
-The original duplication guard temporarily zeroed q->duplicate around
-the re-enqueue, but that does not cover all cases because it is
-per-qdisc state shared across all concurrent enqueue paths
-and is not safe without additional locking.
-
-Use the skb tc_depth field introduced in an earlier patch:
- - increment it on the duplicate before re-enqueue
- - skip duplication for any skb whose tc_depth is already non-zero.
-
-This marks the packet itself rather than mutating qdisc state,
-therefore it is safe regardless of tree topology or concurrency.
-
-Fixes: 0afb51e72855 ("[PKT_SCHED]: netem: reinsert for duplication")
-Reported-by: William Liu <will@willsroot.io>
-Reported-by: Savino Dicanosa <savy@syst3mfailure.io>
-Closes: https://lore.kernel.org/netdev/8DuRWwfqjoRDLDmBMlIfbrsZg9Gx50DHJc1ilxsEBNe2D6NMoigR_eIRIG0LOjMc3r10nUUZtArXx4oZBIdUfZQrwjcQhdinnMis_0G7VEk=@willsroot.io/
-Co-developed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: William Liu <will@willsroot.io>
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-5-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c7fe19ed3973 ("gpio: adnp: use lock guards for the I2C lock")
+Reported-by: David Lechner <dlechner@baylibre.com>
+Closes: https://lore.kernel.org/all/cde2abb2-4cc8-4fc9-b34a-0c5d2b95779f@baylibre.com/
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260522073527.9812-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_netem.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-adnp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 1fdebf2ab7ee46..136b7d81296eff 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -459,7 +459,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	skb->prev = NULL;
+diff --git a/drivers/gpio/gpio-adnp.c b/drivers/gpio/gpio-adnp.c
+index e5ac2d2110137f..fe5bcaa90496aa 100644
+--- a/drivers/gpio/gpio-adnp.c
++++ b/drivers/gpio/gpio-adnp.c
+@@ -237,7 +237,9 @@ static irqreturn_t adnp_irq(int irq, void *data)
+ 		unsigned long pending;
+ 		int err;
  
- 	/* Random duplication */
--	if (q->duplicate && q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
-+	if (q->duplicate && skb->tc_depth == 0 &&
-+	    q->duplicate >= get_crandom(&q->dup_cor, &q->prng))
- 		++count;
- 
- 	/* Drop packet? */
-@@ -538,11 +539,9 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	 */
- 	if (skb2) {
- 		struct Qdisc *rootq = qdisc_root_bh(sch);
--		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
- 
--		q->duplicate = 0;
-+		skb2->tc_depth++; /* prevent duplicating a dup... */
- 		rootq->enqueue(skb2, rootq, to_free);
--		q->duplicate = dupsave;
- 		skb2 = NULL;
- 	}
- 
+-		scoped_guard(mutex, &adnp->i2c_lock) {
++		{
++			guard(mutex)(&adnp->i2c_lock);
++
+ 			err = adnp_read(adnp, GPIO_PLR(adnp) + i, &level);
+ 			if (err < 0)
+ 				continue;
 -- 
 2.53.0
 
