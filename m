@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ejFaGnFGJWrtFgIAu9opvQ
-	(envelope-from <stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org>)
+	id BNdVOXFGJWruFgIAu9opvQ
+	(envelope-from <stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12F364F976
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18B264F979
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:22:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wzMQVjR9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261215-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QsijH+84;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261232-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F205D301B920
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:21:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC4593002327
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2503631E85C;
-	Sun,  7 Jun 2026 10:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2857C31E832;
+	Sun,  7 Jun 2026 10:22:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CEA4CB5B;
-	Sun,  7 Jun 2026 10:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA052E7179;
+	Sun,  7 Jun 2026 10:22:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780827693; cv=none; b=pMOyXfCspGF8d0F9ruXGySiMx/Hngd2bpzHsnUhNRDbq6TJuixG+39/dUpf/IOgsZwk22Y2FQKDIkCVAHCtFDMD7T+D1JE0Y+V2DMnEnyrOj0Cf0xDl0gYtFGTNE9cP4dGOiYcr29LY5MrBk7Xi4tlMit7ctGuMkAmJ2vd38qTI=
+	t=1780827759; cv=none; b=neH2vPdxLjBIyH45YeSY7Z3mcBSI7okTUO3n1hdVp6LhhlnSRqr+F26jRAHjFJJbr3ukSfIdfcz3xWm/NryTe0ah2wTgFatKa4pgm3qPA8b3xFQC9g45YzrnDn3fMQYslBo6Tbhoub7sVp9BhwiRgeGVbiyJHse2eMrvhFsiUCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780827693; c=relaxed/simple;
-	bh=7UPAp1ZwCY4yFSn40kAOeeeCrifOXFMSzPC5LazaUCQ=;
+	s=arc-20240116; t=1780827759; c=relaxed/simple;
+	bh=zvZ6abs4polxA6kjZPBqLExiMutUiIJmVXgRdXoNUpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rStOSo2FHXbbayFX2mYMBMD8tENLlDZXI8tEZYs8USl7xXAMRvWn/Wyvyg2f92RMcaLmKgePz+QuP6YMCeRHsEzUEQMntdzimdAe3bXyoWXhFFmc5hwRDaRcfesNMJhNDoHSFj3ni7xHWf8b3pNjYnHOZxeamM9kPfJ0gS8XfgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzMQVjR9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428121F00893;
-	Sun,  7 Jun 2026 10:21:32 +0000 (UTC)
+	 MIME-Version; b=X5+xIScmB/UUikSG05QCeZnPTj+tJdAi4HkdXnwjr+ZMDdrKlEABMy7xYjMzXqFMZPlvj6W0NrSDRbs1oTA9Cr1NaeNuM4zyyoBekLikpIcQkg7wdEPtqmiND5cdrVLE755A0aMg6T6GYmu1UvQVQCrAX/1zfAKmhVeJok7kHpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsijH+84; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6991F00893;
+	Sun,  7 Jun 2026 10:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780827692;
-	bh=DRWUhWPLsiUKtFqQVIH54EwqN8WAFl/hPTUoc3a84bQ=;
+	s=korg; t=1780827757;
+	bh=0FVvtd+TUCebiS+mKR9GpDKYkWnFrJRQg9N9msnEqHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wzMQVjR9r4fBhIRXqkJriwT8H8dAcNazBpIAuUjD/u2EKKaC0/X0vp3dUltZLhoeg
-	 uFG+dxK6SmfV9cuUrqy8ubPmvvUtQkQmm3aGG26wsUzSn7z0DmPVk2yNU63DYnx+AX
-	 bzdG71kcSd6akGbPjSp72i2pPS27V4/XB0ZDB+yo=
+	b=QsijH+84ntpPZNa1hRHfPcHtIo1U9eduv22xj9s/pHyK9nAjA3Qur/SclmuSrevX3
+	 9diIm7DE/0C+0WXxSSSS45rei/iWQf13Tqbt6XT4XJgdTwCUkPoUXBYIcqo5kezn6N
+	 iwX4V70fK2JHKaM6fx1gXaUIgbSQUoYXvg+Nt50M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/315] ipv6: fix possible infinite loop in fib6_select_path()
-Date: Sun,  7 Jun 2026 11:58:00 +0200
-Message-ID: <20260607095731.045147676@linuxfoundation.org>
+Subject: [PATCH 6.12 084/307] net/handshake: Take a long-lived file reference at submit
+Date: Sun,  7 Jun 2026 11:58:01 +0200
+Message-ID: <20260607095730.856693208@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
-References: <20260607095727.528828913@linuxfoundation.org>
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+References: <20260607095727.647295505@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +69,222 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-261215-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261232-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:email,sashiko.dev:url,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,linux.dev:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,oracle.com:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F12F364F976
+X-Rspamd-Queue-Id: A18B264F979
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 9c7da87c2dc860bb17ca1ece942495d28b1ce3b9 ]
+[ Upstream commit 09dba37eee70d0596e26645015f1aa95a9848e9d ]
 
-Found while auditing the same pattern Sashiko reported in
-rt6_fill_node() [1]. Apply the same fix as
-commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
+handshake_nl_accept_doit() needs the file pointer backing
+req->hr_sk->sk_socket to survive the window between
+handshake_req_next() and the subsequent FD_PREPARE() and get_file().
+The submit-side sock_hold() does not provide that.  sk_refcnt keeps
+struct sock alive, but struct socket is owned by sock->file: when
+the consumer fputs the last file reference, sock_release() tears
+the socket down regardless of any sock_hold.
 
-Writers holding tb6_lock can list_del_rcu(&first->fib6_siblings)
-without waiting for RCU readers; first->fib6_siblings.next then
-still points into the old ring and this softirq-side walker never
-reaches &first->fib6_siblings as its terminator. fib6_purge_rt()
-always WRITE_ONCE()s first->fib6_nsiblings to 0 before
-list_del_rcu(), so an inside-loop check is a reliable detach signal.
+Add an hr_file pointer to struct handshake_req and acquire an
+explicit reference on sock->file during handshake_req_submit().
+handshake_complete() and handshake_req_cancel() release the
+reference on the completion-bit-winning path.
 
-[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
+The submit error path must also release the file reference, but
+after rhashtable insertion a concurrent handshake_req_cancel() can
+discover the request and race the error path.  Gate the error-path
+cleanup -- sk_destruct restoration, fput, and request destruction
+-- with test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED), the same
+serialization handshake_complete() and handshake_req_cancel()
+already use.  When cancel has already claimed ownership, the submit
+error path returns without touching the request; socket teardown
+handles final destruction.
 
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260527053133.180695-2-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The accept-side dereferences are not yet retargeted; that change
+comes in the next patch.
+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20260525-handshake-file-pin-v3-4-66c616906ead@oracle.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: ea5fe6a73ca5 ("net/handshake: Drain pending requests at net namespace exit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/handshake/handshake.h |  2 ++
+ net/handshake/netlink.c   |  6 ------
+ net/handshake/request.c   | 42 ++++++++++++++++++++++++++++++++-------
+ 3 files changed, 37 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index cf9546047b5749..f89220929c4e24 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -481,6 +481,9 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
- 		const struct fib6_nh *nh = sibling->fib6_nh;
- 		int nh_upper_bound;
+diff --git a/net/handshake/handshake.h b/net/handshake/handshake.h
+index 2289b0e274f40a..da61cadd1ad3e7 100644
+--- a/net/handshake/handshake.h
++++ b/net/handshake/handshake.h
+@@ -24,6 +24,7 @@ enum hn_flags_bits {
+ 	HANDSHAKE_F_NET_DRAINING,
+ };
  
-+		if (!READ_ONCE(first->fib6_nsiblings))
-+			break;
++struct file;
+ struct handshake_proto;
+ 
+ /* One handshake request */
+@@ -32,6 +33,7 @@ struct handshake_req {
+ 	struct rhash_head		hr_rhash;
+ 	unsigned long			hr_flags;
+ 	const struct handshake_proto	*hr_proto;
++	struct file			*hr_file;
+ 	struct sock			*hr_sk;
+ 	void				(*hr_odestruct)(struct sock *sk);
+ 
+diff --git a/net/handshake/netlink.c b/net/handshake/netlink.c
+index d8211e0ba75c69..86a12c9125d403 100644
+--- a/net/handshake/netlink.c
++++ b/net/handshake/netlink.c
+@@ -211,12 +211,6 @@ static void __net_exit handshake_net_exit(struct net *net)
+ 	while (!list_empty(&requests)) {
+ 		req = list_first_entry(&requests, struct handshake_req, hr_list);
+ 		list_del(&req->hr_list);
+-
+-		/*
+-		 * Requests on this list have not yet been
+-		 * accepted, so they do not have an fd to put.
+-		 */
+-
+ 		handshake_complete(req, -ETIMEDOUT, NULL);
+ 	}
+ }
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index 62efb7e32730ea..35bc6290e12033 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <linux/skbuff.h>
+ #include <linux/inet.h>
++#include <linux/file.h>
+ #include <linux/rhashtable.h>
+ 
+ #include <net/sock.h>
+@@ -215,9 +216,16 @@ EXPORT_SYMBOL_IF_KUNIT(handshake_req_next);
+  * A zero return value from handshake_req_submit() means that
+  * exactly one subsequent completion callback is guaranteed.
+  *
+- * A negative return value from handshake_req_submit() means that
+- * no completion callback will be done and that @req has been
+- * destroyed.
++ * A negative return value from handshake_req_submit() guarantees that
++ * no completion callback will occur and that @req is no longer owned by
++ * the caller. If cancellation wins the completion race after the request
++ * has been published, final destruction is deferred until socket teardown.
++ *
++ * The caller must hold a reference on @sock->file for the duration
++ * of this call. Once the request is published to the accept side, a
++ * concurrent completion or cancellation may release the request's pin on
++ * @sock->file; the caller's reference is what keeps @sock->sk valid until
++ * handshake_req_submit() returns.
+  */
+ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 			 gfp_t flags)
+@@ -236,6 +244,14 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 		kfree(req);
+ 		return -EINVAL;
+ 	}
 +
- 		nh_upper_bound = atomic_read(&nh->fib_nh_upper_bound);
- 		if (hash > nh_upper_bound)
- 			continue;
++	/*
++	 * Pin sock->file for the lifetime of the request so the
++	 * accept side does not race a consumer that releases the
++	 * socket while a handshake is pending.
++	 */
++	req->hr_file = get_file(sock->file);
++
+ 	req->hr_odestruct = req->hr_sk->sk_destruct;
+ 	req->hr_sk->sk_destruct = handshake_sk_destruct;
+ 
+@@ -267,7 +283,11 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ 			goto out_err;
+ 	}
+ 
+-	/* Prevent socket release while a handshake request is pending */
++	/*
++	 * Pin struct sock so sk_destruct does not run until the
++	 * handshake completion path releases it; struct socket is
++	 * held separately via hr_file above.
++	 */
+ 	sock_hold(req->hr_sk);
+ 
+ 	trace_handshake_submit(net, req, req->hr_sk);
+@@ -276,10 +296,13 @@ int handshake_req_submit(struct socket *sock, struct handshake_req *req,
+ out_unlock:
+ 	spin_unlock_bh(&hn->hn_lock);
+ out_err:
+-	/* Restore original destructor so socket teardown still runs on failure */
+-	req->hr_sk->sk_destruct = req->hr_odestruct;
+ 	trace_handshake_submit_err(net, req, req->hr_sk, ret);
+-	handshake_req_destroy(req);
++	if (!test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
++		/* Restore original destructor so socket teardown still runs. */
++		req->hr_sk->sk_destruct = req->hr_odestruct;
++		fput(req->hr_file);
++		handshake_req_destroy(req);
++	}
+ 	return ret;
+ }
+ EXPORT_SYMBOL(handshake_req_submit);
+@@ -291,11 +314,15 @@ void handshake_complete(struct handshake_req *req, int status,
+ 	struct net *net = sock_net(sk);
+ 
+ 	if (!test_and_set_bit(HANDSHAKE_F_REQ_COMPLETED, &req->hr_flags)) {
++		struct file *file = req->hr_file;
++
+ 		trace_handshake_complete(net, req, sk, status);
+ 		req->hr_proto->hp_done(req, status, info);
+ 
+ 		/* Handshake request is no longer pending */
+ 		sock_put(sk);
++
++		fput(file);
+ 	}
+ }
+ EXPORT_SYMBOL_IF_KUNIT(handshake_complete);
+@@ -344,6 +371,7 @@ bool handshake_req_cancel(struct sock *sk)
+ 
+ 	/* Handshake request is no longer pending */
+ 	sock_put(sk);
++	fput(req->hr_file);
+ 	return true;
+ }
+ EXPORT_SYMBOL(handshake_req_cancel);
 -- 
 2.53.0
 
