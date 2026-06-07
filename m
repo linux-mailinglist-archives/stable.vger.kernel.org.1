@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C6+HDHFLJWpTGQIAu9opvQ
-	(envelope-from <stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:01 +0200
+	id T/oICKVMJWqqGQIAu9opvQ
+	(envelope-from <stable+bounces-261649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A063E64FF4D
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:44:00 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12377650066
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PCdRSWwI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-261566-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qr1U58vB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261649-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261649-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A940B301726D
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:43:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30D0F30046AC
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077D32FB97B;
-	Sun,  7 Jun 2026 10:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8F12EBB9E;
+	Sun,  7 Jun 2026 10:49:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95D83195FD;
-	Sun,  7 Jun 2026 10:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A5A2DFF04;
+	Sun,  7 Jun 2026 10:49:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829038; cv=none; b=Ss1Y+JstYtHi+mrPRV/3p8z0AvmlDoXgXmXUxdNTs174s7lmN7rpEeNu2YsNFgYDR9EnhEmGuA0GWSM23/4ecD1GX5F7zuSF/ztNFKNm9wEE0ro1W/IgE9SaU1NSrycSi0YNz9cBnYy0uYRHeDgNIUzKe39KZMZyduYbKYoYsKI=
+	t=1780829344; cv=none; b=TvIL0iJd50gS8fYjzAHruZ1PfPYxLC2ujXiYDH731BsqvttQp0YqKVUlemPxccCwafKiJVAskJ4ksjXc9kJEWK92SpJl425JnrTq4wa120TypeT4Wtk0a79yl5ym3PrvCMc0L8PeV2dd8d4gXjpCq0X0vegPTsfQKXpe7cBwKkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829038; c=relaxed/simple;
-	bh=NW3kqRGak1NHU9Hj5Z40zPC86HoHyz8pPu04Q1laexY=;
+	s=arc-20240116; t=1780829344; c=relaxed/simple;
+	bh=Qo11P9MIVJ0CCvnt98hlv1mDcBhdMAsyBsUkvTOba3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pWWVznXGsdVwFLVHQt/LnVWA8GQ79VeiCuHH/hgoUOeLw/KndfWaSR9qgJ6qQWY+frP5j9qGYvLsYttvEEqRtEhH/9jabwT5CsuOxBlExDa/4O9RHNrD10UOwIExy0uDSmlYLFw7qbqnN5UUnHXt76Wg6rrwdfTRHvq9AXrgpD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCdRSWwI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA6A1F00893;
-	Sun,  7 Jun 2026 10:43:56 +0000 (UTC)
+	 MIME-Version; b=logv9RDj06fV0Kv7k9iN48MdIVpxSMw9N2Z+/crlcjKJMQyjeFcMSlv1cxuV3bB9JXvTWE7EL1oz7RYaj4at96gcGmFVyUkkBrRen97wrqHzRIT1A5PgXNfjzwrOlQwTkt6X/2lyw3CILr2KW/2uli54kL99aTPmN471w5KJb7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr1U58vB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D391F00893;
+	Sun,  7 Jun 2026 10:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829037;
-	bh=NtsaQ4lShnpTqNRzktyNF7+P5JCO0rvdvskIbgObqJE=;
+	s=korg; t=1780829343;
+	bh=TMPdvlV5btR6fJ0eY9V9SMpVYumptgAUOJ9GhCEGJ8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PCdRSWwIccsSb1SXy1x5lygF1e6sMpbFJHQ/nX5joW7P8rLSHuWEB/5BQPcDFfkpx
-	 QVwCYeUNK3aSORfdNgVlyOSOlQDgg7qPYd/9pyuB/UiJKH2BEUQUWRn8lINXIjeSzz
-	 1SeaOag4DzUpFaATuqGbRihbwlEtW50Q+EM8njYA=
+	b=qr1U58vBFOGZ2ZTaIHB4lS3VI5l36VxnQm/xOpk1tyBlxJt/NyyuEQSiSSk+3eU93
+	 RnzEciRdQMKV2Prd8IQDkKeu0yHla2hAKPdE9rXxJc7kfUQgYNtFNQKphpVOuXTWAC
+	 xPYNMJCRfaymZ/hZqCFrVFsSMisTUSOE7Mi3Pec4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com,
-	David Carlier <devnexen@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: [PATCH 7.0 236/332] dma-buf: fix UAF in dma_buf_fd() tracepoint
-Date: Sun,  7 Jun 2026 12:00:05 +0200
-Message-ID: <20260607095736.719419406@linuxfoundation.org>
+	Qbeliw Tanaka <q.tanaka@gmx.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 7.0 237/332] Input: xpad - add "Nova 2 Lite" from GameSir
+Date: Sun,  7 Jun 2026 12:00:06 +0200
+Message-ID: <20260607095736.758650230@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
 References: <20260607095728.031258202@linuxfoundation.org>
@@ -66,100 +64,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261566-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,amd.com,linaro.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com,m:devnexen@gmail.com,m:christian.koenig@amd.com,m:sumit.semwal@linaro.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261649-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:q.tanaka@gmx.com,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable,7f4987d0afb97dd090cb];
-	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,amd.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,gmx.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A063E64FF4D
+X-Rspamd-Queue-Id: 12377650066
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Qbeliw Tanaka <q.tanaka@gmx.com>
 
-commit ead6680f354f83966c796fc7f9463a3171789616 upstream.
+commit 1f6ac0f8441c48c4cc250141e1da8486c13512ba upstream.
 
-Once FD_ADD() returns, the fd is live in the file descriptor table
-and a thread sharing that table can close() it before DMA_BUF_TRACE()
-runs. The close drops the last reference, __fput() frees the dma_buf,
-and the tracepoint then dereferences dmabuf to take dmabuf->name_lock
--- slab-use-after-free.
+Add support for the gamepad "Nova 2 Lite" from GameSir, compatible with
+the Xbox 360 gamepad.
 
-Split FD_ADD() back into get_unused_fd_flags() + fd_install() and
-emit the tracepoint between them. While the fdtable slot is reserved
-with a NULL file pointer, a racing close() returns -EBADF without
-entering __fput(), so the dma_buf stays alive across the trace. Same
-approach as commit 2d76319c4cbb ("dma-buf: fix UAF in dma_buf_put()
-tracepoint").
-
-This undoes the FD_ADD() conversion done in commit 34dfce523c90
-("dma: convert dma_buf_fd() to FD_ADD()"); FD_ADD() has no place to
-hook the tracepoint safely.
-
-Reported-by: syzbot+7f4987d0afb97dd090cb@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f4987d0afb97dd090cb
-Fixes: 281a22631423 ("dma-buf: add some tracepoints to debug.")
-Cc: stable@vger.kernel.org # 7.0.x
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-Link: https://patch.msgid.link/20260523181446.69525-1-devnexen@gmail.com
+Signed-off-by: Qbeliw Tanaka <q.tanaka@gmx.com>
+Link: https://patch.msgid.link/20260429.162040.930225048583399359.q.tanaka@gmx.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-buf.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -792,9 +792,13 @@ int dma_buf_fd(struct dma_buf *dmabuf, i
- 	if (!dmabuf || !dmabuf->file)
- 		return -EINVAL;
- 
--	fd = FD_ADD(flags, dmabuf->file);
-+	fd = get_unused_fd_flags(flags);
-+	if (fd < 0)
-+		return fd;
-+
- 	DMA_BUF_TRACE(trace_dma_buf_fd, dmabuf, fd);
- 
-+	fd_install(fd, dmabuf->file);
- 	return fd;
- }
- EXPORT_SYMBOL_NS_GPL(dma_buf_fd, "DMA_BUF");
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -425,6 +425,7 @@ static const struct xpad_device {
+ 	{ 0x3285, 0x0662, "Nacon Revolution5 Pro", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
+ 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
++	{ 0x3537, 0x100f, "GameSir Nova 2 Lite", 0, XTYPE_XBOX360 },
+ 	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
+ 	{ 0x3651, 0x1000, "CRKD SG", 0, XTYPE_XBOX360 },
+ 	{ 0x366c, 0x0005, "ByoWave Proteus Controller", MAP_SHARE_BUTTON, XTYPE_XBOXONE, FLAG_DELAY_INIT },
 
 
 
