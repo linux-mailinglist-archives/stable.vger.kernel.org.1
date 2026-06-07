@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-261471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ad06FqhKJWoKGQIAu9opvQ
-	(envelope-from <stable+bounces-261471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:40 +0200
+	id 37amLLNKJWoNGQIAu9opvQ
+	(envelope-from <stable+bounces-261474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A763264FE4F
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C1264FE5B
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:40:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UAbmeAxB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261471-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261471-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cxZAwxlk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261474-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261474-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2027303A925
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F53A303CA47
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48ECE325706;
-	Sun,  7 Jun 2026 10:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37BE325706;
+	Sun,  7 Jun 2026 10:38:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A71D2D3A69;
-	Sun,  7 Jun 2026 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942322D3A69;
+	Sun,  7 Jun 2026 10:38:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780828684; cv=none; b=o19mdtGca4R32JdYMmAf+Tf0zxwbS+pO0M2wDRWKscy7mGIMrw43q8sU0nDKiSOOhyRoi+G/Iv+Und+xHq0yhntm4xlSxftss5OSYDKIO6eCcDlNfRG8Vfcpsh6LZjVcy/FbA75UAOaZbYqCUQPTmiDnru4uIDpNiO26AejSfQg=
+	t=1780828695; cv=none; b=rPYkDCgH2t1k6/j/5Gwln1PxbtAzEt+3ugjCk4lmxuNByYcid/VJfzCB/WvPUSn/+46znfOj+aiJAPgWXHmXoh4y9+vm7rK+nYrH7W3iQPZvBICf4UXHYLSSE9s2hfl/0aB5aQstH0x1VtKh1vhlv4X609JZzjl7kaAqM6xw5gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780828684; c=relaxed/simple;
-	bh=1TPdF/rgRar5azxM06sSMBWRGIb3mCpQx0LNHdmVgKA=;
+	s=arc-20240116; t=1780828695; c=relaxed/simple;
+	bh=JY0y9uMrmDoJlu2lUhwqYpLFU5wlBLDRpP/H56L167A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jch8YIxKcUAY+vOLkvMx/KTnfw/9rIBoCu43+X0adR2/X5V797J/uqnfxvpA/PCa/73ESSD+tEP6VzUkM93yfe4o4IzOLhvaDcca8X4VrTgzEq8jAHB4Ja3GdsWiJZOmdBh2QCJlerMqde5iX/dwoAd6WuMtOamoj6c723sjX1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAbmeAxB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799451F00893;
-	Sun,  7 Jun 2026 10:38:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bIokVxWwc3YXvuX6ttIj6B/jN5Eb/S70DnzaXtEuyK43cO4fQqP0eJumqOA4Vxj3aiKpG+hRzkRY1KMid9AKidUZaVZNW993mFDfRYHftw02vO4qoFce0+sa03omD6U7wyMtf7XFA1i8SUiwKVc9GoXqaI/Fu9jQHRbqQbz2eis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxZAwxlk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5171F00893;
+	Sun,  7 Jun 2026 10:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780828683;
-	bh=4JEcr28DtA5g8Tzy/QIoWZ1N5OB7q7fmfkBYDvQvD2A=;
+	s=korg; t=1780828694;
+	bh=Fg9pUg+l87cnvCS6feVCpZQovh8+elwCm/aqDJSohlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UAbmeAxB3xRc4KyX86KUiF3AcqzPDfx2egS/G7cfEACOdFR2UQCtcZta9p8RB1yLt
-	 /Okn+53HajK8KRMx2Nt/WkNEbs/eqM+n1eUe5PgUx1csv7WJpHYjYYHh365Kst9Ekj
-	 wd26Tp6AUUsJcoSX1VlSk48BpuSyxa6gOQYgCEV8=
+	b=cxZAwxlki5Go5KBy3hiyjxFcVjt4cbunGcG5BWCJqVtYLNdxSC0mUO6XPX1U5nd/g
+	 +e59XGgw9WicePBHYhUMca2f2iEhPkciO5vDCPbMgDXfUNRUUQUpiXub9Nz4YZiIx+
+	 2YPTbJAT+FBl+UxMljP3SHsMvmxFoDnPVE2jIKEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sashiko <sashiko-bot@kernel.org>,
-	Chaitanya Sabnis <chaitanya.msabnis@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.18 182/315] i2c: davinci: fix division by zero on missing clock-frequency
-Date: Sun,  7 Jun 2026 11:59:29 +0200
-Message-ID: <20260607095734.268111488@linuxfoundation.org>
+	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	stable@kernel.org
+Subject: [PATCH 6.18 183/315] x86/ftrace: Relocate %rip-relative percpu refs in dynamic trampolines
+Date: Sun,  7 Jun 2026 11:59:30 +0200
+Message-ID: <20260607095734.304750433@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260607095727.528828913@linuxfoundation.org>
 References: <20260607095727.528828913@linuxfoundation.org>
@@ -66,91 +67,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,oss.qualcomm.com];
-	TAGGED_FROM(0.00)[bounces-261471-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261474-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:chaitanya.msabnis@gmail.com,m:bartosz.golaszewski@oss.qualcomm.com,m:andi.shyti@kernel.org,m:chaitanyamsabnis@gmail.com,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alexis.lothore@bootlin.com,m:bp@alien8.de,m:peterz@infradead.org,m:rostedt@goodmis.org,m:stable@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,alien8.de:email,goodmis.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,msgid.link:url,infradead.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A763264FE4F
+X-Rspamd-Queue-Id: 32C1264FE5B
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Sabnis <chaitanya.msabnis@gmail.com>
+From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
-commit 030675aa54cf757769b3db65642433d626b3ed7c upstream.
+commit a17dc12bfed8868e6a86f3b45c16065a70641acb upstream.
 
-When the 'clock-frequency' property is missing from the device tree,
-the driver falls back to DAVINCI_I2C_DEFAULT_BUS_FREQ. However, this
-macro was defined in kHz (100), whereas the device tree property is
-expected in Hz.
+With CONFIG_CALL_DEPTH_TRACKING enabled on an x86 retbleed-affected platform
+(eg: Skylake), with retbleed=stuff, registering a dynamic ftrace trampoline
+crashes on the first call into the traced function:
 
-The probe function divided the fallback value by 1000, causing
-integer truncation that resulted in dev->bus_freq = 0. This triggered
-a deterministic division-by-zero kernel panic when calculating clock
-dividers later in the probe sequence.
+  BUG: unable to handle page fault for address: ffff88817ae18880
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0002) - not-present page
+  PGD 4b53067 P4D 4b53067 PUD 0
+  Oops: Oops: 0002 [#1] SMP PTI
+  CPU: 3 UID: 0 PID: 187 Comm: usleep Not tainted 7.0.10 #243 PREEMPT(full)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+  Code: 24 78 00 00 00 00 48 89 ea 48 89 54 24 20 48 8b b4 24 b8 00 00 00 48 8b bc 24 b0 00 00 00 48 89 bc 24 80 00 00 00 48 83 ef 05 <65> 48 c1 3d 1f a8 b6 02 05 48 8b 15 f6 00 00 00 4c 89 3c 24 4c 89
+  Call Trace:
+   <TASK>
+   ? find_held_lock
+   ? exc_page_fault
+   ? lock_release
+   ? __x64_sys_clock_nanosleep
+   ? lockdep_hardirqs_on_prepare
+   ? trace_hardirqs_on
+   __x64_sys_clock_nanosleep
+   do_syscall_64
+   ? exc_page_fault
+   ? call_depth_return_thunk
+   entry_SYSCALL_64_after_hwframe
+  ...
+  Kernel panic - not syncing: Fatal exception
 
-Fix this by redefining DAVINCI_I2C_DEFAULT_BUS_FREQ in Hz (100000)
-to match the expected device tree property unit, allowing the existing
-division logic to work correctly for both cases.
+This small reproducer allows to easily trigger the crash:
 
-Fixes: b04ce6385979 ("i2c: davinci: kill platform data")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/20260514044726.57297C2BCB7@smtp.kernel.org/
-Signed-off-by: Chaitanya Sabnis <chaitanya.msabnis@gmail.com>
-Cc: <stable@vger.kernel.org> # v6.14+
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260526102240.4949-1-chaitanya.msabnis@gmail.com
+  # echo 'p __x64_sys_clock_nanosleep' > /sys/kernel/tracing/kprobe_events
+  # echo 1 > /sys/kernel/tracing/events/kprobes/p___x64_sys_clock_nanosleep_0/enable
+  # usleep 1
+
+Monitoring the crash under GDB points to the exact instruction in charge of
+incrementing the call depth:
+
+  sarq $5, %gs:__x86_call_depth(%rip)
+
+This instruction matches the one inserted by the ftrace_regs_caller from
+ftrace_64.S. This emitted code was likely working fine until the introduction
+of
+
+  59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()"):
+
+it has made the call depth accounting addressing relative to $rip, instead of
+being based on an absolute address.
+
+As this code exact location depends on where the trampoline lives in memory,
+the corresponding displacement needs to be adjusted at runtime to actually
+correctly find the per-cpu __x86_call_depth value, otherwise the targeted
+address is wrong, leading to the page fault seen above.
+
+Fix the %rip-relative displacement of the copied CALL_DEPTH_ACCOUNT
+instruction (from ftrace_regs_caller) by calling text_poke_apply_relocation(),
+as it is done for example by the x86 BPF JIT compiler through
+x86_call_depth_emit_accounting(). This corrects both CALL_DEPTH_ACCOUNT slots,
+in ftrace_caller and ftrace_regs_caller.
+
+  [ bp: Massage. ]
+
+Fixes: 59bec00ace28 ("x86/percpu: Introduce %rip-relative addressing to PER_CPU_VAR()")
+Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@kernel.org>
+Link: https://patch.msgid.link/20260527-fix_call_depth_in_trampoline-v1-1-1c1abc8ae310@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-davinci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/ftrace.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/i2c/busses/i2c-davinci.c
-+++ b/drivers/i2c/busses/i2c-davinci.c
-@@ -117,7 +117,7 @@
- /* timeout for pm runtime autosuspend */
- #define DAVINCI_I2C_PM_TIMEOUT	1000	/* ms */
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -371,6 +371,13 @@ create_trampoline(struct ftrace_ops *ops
+ 	}
  
--#define DAVINCI_I2C_DEFAULT_BUS_FREQ	100
-+#define DAVINCI_I2C_DEFAULT_BUS_FREQ	100000
- 
- struct davinci_i2c_dev {
- 	struct device           *dev;
+ 	/*
++	 * Generated trampoline may contain rIP-relative addressing which
++	 * displacement needs to be fixed.
++	 */
++	text_poke_apply_relocation(trampoline, trampoline, size,
++				   (void *)start_offset, size);
++
++	/*
+ 	 * The address of the ftrace_ops that is used for this trampoline
+ 	 * is stored at the end of the trampoline. This will be used to
+ 	 * load the third parameter for the callback. Basically, that
 
 
 
