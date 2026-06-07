@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-261744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f8q+AvFNJWpzGgIAu9opvQ
-	(envelope-from <stable+bounces-261744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:41 +0200
+	id jGTgFL9MJWq3GQIAu9opvQ
+	(envelope-from <stable+bounces-261657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985666501D1
-	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1416650087
+	for <lists+stable@lfdr.de>; Sun, 07 Jun 2026 12:49:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UVEKDd4I;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261744-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261744-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=s0+V4ChJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261657-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261657-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18E723004DC2
-	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:54:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D2133004924
+	for <lists+stable@lfdr.de>; Sun,  7 Jun 2026 10:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3702EBB9E;
-	Sun,  7 Jun 2026 10:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A993B2EBB9E;
+	Sun,  7 Jun 2026 10:49:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7820296BCC;
-	Sun,  7 Jun 2026 10:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7AA2D8378;
+	Sun,  7 Jun 2026 10:49:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780829678; cv=none; b=ZNXPOehkrdR1rolWJcwm9dHjdwIlpwUYLSlNe8ZZOCHcLVMsXa1vYIVBYMUOnnwvB4jSblG2cIh84L/mQ0BQLpXYcJBvWNzMJaHOeEiY9LJIhd3t8ZlvvnWpZnYX4VHRQE/CezcqhkBxifA/VaQDl09kOXyqpIZbWv8+gRcs2FQ=
+	t=1780829372; cv=none; b=Gu09HamsO+kb3i20nrbVFWaFYPX2bkJ4QuepL9VqCTqqu3t2IaDnOja/RmrmwvacRzFV1krV29eIm8ewBazQffFxWfd3XEaUXLow3p9t6+F5CeT0zTcSVf53rMNR7ZSsiQcjQ6E1WD9V6vL8qXLcN7C5Y+HLFh/OpMV10cBpLt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780829678; c=relaxed/simple;
-	bh=XO9It/54DHlm7p8HsGfB9t1XreBRL4nUEjeVASET/fQ=;
+	s=arc-20240116; t=1780829372; c=relaxed/simple;
+	bh=CpSrGqFn0BDdQNRp8rvoK4TVF5f9V6Lhsbx1NX9T6+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O+l6yAqqgMY1nMB4YYeErRRcgk54rscWtdSyNyuVcp3tKixeNEIOvaOr94nmmTg+noboC2bScr1f+bkkiRkxnlnoK4nGD/s3+UaJhXy7PhNuSfYxfNVoEcZDG5jtp053FPyuoSRN2S5EvRSAOXKe69PYMzgSbX2RPJ/5GlQteJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVEKDd4I; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1341F00893;
-	Sun,  7 Jun 2026 10:54:35 +0000 (UTC)
+	 MIME-Version; b=iRB85Ta/GftEAd8FEscYrIrzGprCjdWz+498fKyWiFxINa54KWsRVI3TbEw2IFk0Mi8E+B03sxRglEWf8PtA9TzV+lAxKG/nOSems16VOvihWKPEyVWpXTtJ8KICRdBF1vTV3FHltHJj9nbIE7Cvg3TSR4XykKk3aIg7gvrtvU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0+V4ChJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27581F00893;
+	Sun,  7 Jun 2026 10:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780829676;
-	bh=ZQgwrQkx1pqFctXzad/1ubPUtkJo6kDfan85gD/vWoE=;
+	s=korg; t=1780829371;
+	bh=PLMSSXBHpLnKO0ncEQ0SMjm1+8PLN2tcqo4jljUBM6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UVEKDd4IN/dkvnNONvO0N9U69laIVXGTGYPnOHWM6Uhoxe0hqnUjb9WB5nQrhfdme
-	 C7ogMaATrYadv+AjdZAVk9u5wGzROMoObDl5xI25IxRrgcCtRVt0elbArwIhIlLVoo
-	 qNVtKFnhmyHv7eVLCIKfsQRRTfbyhRcZssRSRLl0=
+	b=s0+V4ChJyRLLK1kNU3+W/mpxqO7knHNEFN8TqPEW55hk10uAxTxBXIV9xsBAIdVKw
+	 YUkuNFB+UBBgRapS9Dw1EqJ3YtMWGVucB9YVGaMFkhtLU34MILnjM8b4Ee9URHlLSG
+	 ehBvFPCUZYbmrGXoPoYMCQMb/peQgDPQHeNdZBp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.12 245/307] drm/i915: Fix potential UAF in TTM object purge
+	stable <stable@kernel.org>,
+	Kai Aizen <kai.aizen.dev@gmail.com>
+Subject: [PATCH 7.0 273/332] usb: gadget: uvc: hold opts->lock across XU walks in uvc_function_bind
 Date: Sun,  7 Jun 2026 12:00:42 +0200
-Message-ID: <20260607095736.698866025@linuxfoundation.org>
+Message-ID: <20260607095738.072302244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
-References: <20260607095727.647295505@linuxfoundation.org>
+In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
+References: <20260607095728.031258202@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,191 +64,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-261744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janusz.krzysztofik@linux.intel.com,m:matthew.auld@intel.com,m:thomas.hellstrom@linux.intel.com,m:sebastian.brzezinka@intel.com,m:christian.koenig@amd.com,m:andi.shyti@linux.intel.com,m:tursulin@ursulin.net,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261657-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:kai.aizen.dev@gmail.com,m:kaiaizendev@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,ursulin.net:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,decode_stacktrace.sh:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,linuxfoundation.org:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 985666501D1
+X-Rspamd-Queue-Id: E1416650087
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Kai Aizen <kai.aizen.dev@gmail.com>
 
-commit 5c4063c87a619e4df954c179d24628636f5db15f upstream.
+commit 68aa70648b625fa684bc0b71bbfd905f4943ca20 upstream.
 
-TLDR: The bo->ttm object might be changed by calling ttm_bo_validate(),
-      move casting it to an i915_tt object later to actually get the right
-      pointer.
+uvc_function_bind() walks &opts->extension_units twice without holding
+opts->lock:
 
-A user reported hitting the following bug under heavy use on DG2:
+  - directly, for the iExtension string-descriptor fixup loop;
+  - indirectly, four times via uvc_copy_descriptors() (once per speed),
+    where the helper iterates uvc->desc.extension_units (which aliases
+    &opts->extension_units) to size and emit XU descriptors.
 
-[26620.095550] Oops: general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 1 SMP NOPTI
-[26620.095556] CPU: 2 UID: 0 PID: 631 Comm: Xorg Not tainted 6.18.8 #1 PREEMPT(lazy)
-[26620.095558] Hardware name: ASRock B850M Steel Legend WiFi/B850M Steel Legend WiFi, BIOS 3.50 09/18/2025
-[26620.095559] RIP: 0010:i915_ttm_purge+0x84/0x100 [i915]
-[26620.095604] Code: 00 00 00 48 8d 54 24 10 48 89 e6 48 89 fb e8 83 aa ae ff 85 c0 75 6f 48 83 bb a8 01 00 00 00 74 2c 48 8b 45 78 48 85 c0 74 23 <48> 8b 78 20 48 c7 c2 ff ff ff ff 31 f6 e8 7a 73 e3 e0 48 8b 7d 78
-[26620.095605] RSP: 0018:ffffc90005fd7430 EFLAGS: 00010282
-[26620.095607] RAX: a56b6b6b6b6b6b6b RBX: ffff8881f46c3dc0 RCX: 0000000000000000
-[26620.095608] RDX: 0000000000000000 RSI: 0000000000000246 RDI: 00000000ffffffff
-[26620.095609] RBP: ffff888289610f00 R08: 0000000000000001 R09: ffff88823b022000
-[26620.095609] R10: ffff888103029b28 R11: ffff8881fc7f3800 R12: ffff88810b6150d0
-[26620.095609] R13: ffff888289610f00 R14: 0000000000000000 R15: ffff8881f46c3dc0
-[26620.095610] FS: 00007f1004d86900(0000) GS:ffff88901c858000(0000) knlGS:0000000000000000
-[26620.095611] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[26620.095611] CR2: 00007f0fdf489000 CR3: 000000035b0c1000 CR4: 0000000000750ef0
-[26620.095612] PKRU: 55555554
-[26620.095612] Call Trace:
-[26620.095615] <TASK>
-[26620.095615] i915_ttm_move+0x2b9/0x420 [i915]
-[26620.095642] ? ttm_tt_init+0x65/0x80 [ttm]
-[26620.095644] ? i915_ttm_tt_create+0xc6/0x150 [i915]
-[26620.095667] ttm_bo_handle_move_mem+0xb6/0x160 [ttm]
-[26620.095669] ttm_bo_evict+0x100/0x150 [ttm]
-[26620.095671] ? preempt_count_add+0x64/0xa0
-[26620.095673] ? _raw_spin_lock+0xe/0x30
-[26620.095675] ? _raw_spin_unlock+0xd/0x30
-[26620.095675] ? i915_gem_object_evictable+0xb7/0xd0 [i915]
-[26620.095704] ttm_bo_evict_cb+0x6e/0xd0 [ttm]
-[26620.095705] ttm_lru_walk_for_evict+0xa6/0x200 [ttm]
-[26620.095708] ttm_bo_alloc_resource+0x185/0x4f0 [ttm]
-[26620.095709] ? init_object+0x62/0xd0
-[26620.095712] ttm_bo_validate+0x7a/0x180 [ttm]
-[26620.095713] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095714] __i915_ttm_get_pages+0xb0/0x170 [i915]
-[26620.095737] i915_ttm_get_pages+0x9f/0x150 [i915]
-[26620.095759] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095786] ? alloc_debug_processing+0xd0/0x100
-[26620.095787] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095788] ? i915_vma_instance+0xa0/0x4e0 [i915]
-[26620.095822] __i915_gem_object_get_pages+0x2f/0x40 [i915]
-[26620.095848] i915_vma_pin_ww+0x706/0x980 [i915]
-[26620.095875] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095904] eb_validate_vmas+0x170/0xa00 [i915]
-[26620.095930] i915_gem_do_execbuffer+0x1201/0x2b40 [i915]
-[26620.095953] ? alloc_debug_processing+0xd0/0x100
-[26620.095954] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095955] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.095977] ? __wake_up_sync_key+0x32/0x50
-[26620.095979] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.096001] ? __slab_alloc.isra.0+0x67/0xc0
-[26620.096003] i915_gem_execbuffer2_ioctl+0x11a/0x240 [i915]
+The configfs side (uvcg_extension_make / uvcg_extension_drop, in
+drivers/usb/gadget/function/uvc_configfs.c) takes opts->lock around its
+list_add_tail / list_del operations.  A privileged userspace process
+that holds the configfs subtree open and writes the gadget UDC name
+to bind the function while concurrently rmdir()'ing an extensions
+subdir can race uvcg_extension_drop() against the bind-time list walks
+and dereference a freed struct uvcg_extension.
 
-Results from decode_stacktrace.sh pointed to dereference of a file pointer
-field of a i915 TTM page vector container associated with an object being
-purged on eviction.  That path is taken when the object is marked as no
-longer needed.
+Hold opts->lock from the start of the XU string-descriptor fixup
+through the last uvc_copy_descriptors() call, releasing on the
+descriptor-error path via a new error_unlock label that drops the
+lock before falling through to the existing error label.  This
+matches the locking discipline of the configfs callbacks and removes
+the only remaining unsynchronised reader of the XU list during bind.
 
-Code analysis revealed a possibility of the i915 TTM page vector container
-being replaced with a new instance inside a function that purges content
-of the object, should it be still busy.  That function is called,
-indirectly via a more general function that changes the object's placement
-and caching policy, before the problematic dereference, but still after
-a pointer to the container is captured, rendering the pointer no longer
-valid.
+Reachability: only privileged processes that can mount configfs and
+write to gadget UDC files can trigger the race, so this is a
+correctness fix rather than a security boundary.
 
-Fix the issue by capturing the pointer to the container only after its
-potential replacement.
-
-v2: Move the container_of() inside the if block (Sebastian),
-  - a simplified version of the commit description that explains briefly
-    why the change is necessary (Christian).
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/14882
-Fixes: 7ae034590ceae ("drm/i915/ttm: add tt shmem backend")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.17+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20260508122612.469227-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 4462966a93eb185849b7f174f0d0de53476d00a4)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Fixes: 0525210c9840 ("usb: gadget: uvc: Allow definition of XUs in configfs")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kai Aizen <kai.aizen.dev@gmail.com>
+Link: https://patch.msgid.link/20260430175643.67120-1-kai.aizen.dev@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ drivers/usb/gadget/function/f_uvc.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -416,8 +416,6 @@ void i915_ttm_free_cached_io_rsgt(struct
- int i915_ttm_purge(struct drm_i915_gem_object *obj)
- {
- 	struct ttm_buffer_object *bo = i915_gem_to_ttm(obj);
--	struct i915_ttm_tt *i915_tt =
--		container_of(bo->ttm, typeof(*i915_tt), ttm);
- 	struct ttm_operation_ctx ctx = {
- 		.interruptible = true,
- 		.no_wait_gpu = false,
-@@ -432,16 +430,22 @@ int i915_ttm_purge(struct drm_i915_gem_o
- 	if (ret)
- 		return ret;
+--- a/drivers/usb/gadget/function/f_uvc.c
++++ b/drivers/usb/gadget/function/f_uvc.c
+@@ -769,6 +769,16 @@ uvc_function_bind(struct usb_configurati
+ 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
  
--	if (bo->ttm && i915_tt->filp) {
--		/*
--		 * The below fput(which eventually calls shmem_truncate) might
--		 * be delayed by worker, so when directly called to purge the
--		 * pages(like by the shrinker) we should try to be more
--		 * aggressive and release the pages immediately.
--		 */
--		shmem_truncate_range(file_inode(i915_tt->filp),
--				     0, (loff_t)-1);
--		fput(fetch_and_zero(&i915_tt->filp));
-+	if (bo->ttm) {
-+		struct i915_ttm_tt *i915_tt =
-+			container_of(bo->ttm, typeof(*i915_tt), ttm);
+ 	/*
++	 * Hold opts->lock across both the XU string-descriptor fixup below and
++	 * the descriptor-copy block further down.  Without this, configfs
++	 * uvcg_extension_drop() (which takes opts->lock) can race with the
++	 * list_for_each_entry() walks here and inside uvc_copy_descriptors(),
++	 * leading to a UAF on a freed struct uvcg_extension.  See
++	 * drivers/usb/gadget/function/uvc_configfs.c::uvcg_extension_drop().
++	 */
++	mutex_lock(&opts->lock);
 +
-+		if (i915_tt->filp) {
-+			/*
-+			 * The below fput(which eventually calls shmem_truncate)
-+			 * might be delayed by worker, so when directly called
-+			 * to purge the pages(like by the shrinker) we should
-+			 * try to be more aggressive and release the pages
-+			 * immediately.
-+			 */
-+			shmem_truncate_range(file_inode(i915_tt->filp),
-+					     0, (loff_t)-1);
-+			fput(fetch_and_zero(&i915_tt->filp));
-+		}
++	/*
+ 	 * XUs can have an arbitrary string descriptor describing them. If they
+ 	 * have one pick up the ID.
+ 	 */
+@@ -785,7 +795,7 @@ uvc_function_bind(struct usb_configurati
+ 				 ARRAY_SIZE(uvc_en_us_strings));
+ 	if (IS_ERR(us)) {
+ 		ret = PTR_ERR(us);
+-		goto error;
++		goto error_unlock;
  	}
  
- 	obj->write_domain = 0;
+ 	uvc_iad.iFunction = opts->iad_index ? cdev->usb_strings[opts->iad_index].id :
+@@ -799,14 +809,14 @@ uvc_function_bind(struct usb_configurati
+ 
+ 	/* Allocate interface IDs. */
+ 	if ((ret = usb_interface_id(c, f)) < 0)
+-		goto error;
++		goto error_unlock;
+ 	uvc_iad.bFirstInterface = ret;
+ 	uvc_control_intf.bInterfaceNumber = ret;
+ 	uvc->control_intf = ret;
+ 	opts->control_interface = ret;
+ 
+ 	if ((ret = usb_interface_id(c, f)) < 0)
+-		goto error;
++		goto error_unlock;
+ 	uvc_streaming_intf_alt0.bInterfaceNumber = ret;
+ 	uvc_streaming_intf_alt1.bInterfaceNumber = ret;
+ 	uvc->streaming_intf = ret;
+@@ -817,30 +827,32 @@ uvc_function_bind(struct usb_configurati
+ 	if (IS_ERR(f->fs_descriptors)) {
+ 		ret = PTR_ERR(f->fs_descriptors);
+ 		f->fs_descriptors = NULL;
+-		goto error;
++		goto error_unlock;
+ 	}
+ 
+ 	f->hs_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_HIGH);
+ 	if (IS_ERR(f->hs_descriptors)) {
+ 		ret = PTR_ERR(f->hs_descriptors);
+ 		f->hs_descriptors = NULL;
+-		goto error;
++		goto error_unlock;
+ 	}
+ 
+ 	f->ss_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER);
+ 	if (IS_ERR(f->ss_descriptors)) {
+ 		ret = PTR_ERR(f->ss_descriptors);
+ 		f->ss_descriptors = NULL;
+-		goto error;
++		goto error_unlock;
+ 	}
+ 
+ 	f->ssp_descriptors = uvc_copy_descriptors(uvc, USB_SPEED_SUPER_PLUS);
+ 	if (IS_ERR(f->ssp_descriptors)) {
+ 		ret = PTR_ERR(f->ssp_descriptors);
+ 		f->ssp_descriptors = NULL;
+-		goto error;
++		goto error_unlock;
+ 	}
+ 
++	mutex_unlock(&opts->lock);
++
+ 	/* Preallocate control endpoint request. */
+ 	uvc->control_req = usb_ep_alloc_request(cdev->gadget->ep0, GFP_KERNEL);
+ 	uvc->control_buf = kmalloc(UVC_MAX_REQUEST_SIZE, GFP_KERNEL);
+@@ -872,6 +884,8 @@ uvc_function_bind(struct usb_configurati
+ 
+ 	return 0;
+ 
++error_unlock:
++	mutex_unlock(&opts->lock);
+ v4l2_error:
+ 	v4l2_device_unregister(&uvc->v4l2_dev);
+ error:
 
 
 
