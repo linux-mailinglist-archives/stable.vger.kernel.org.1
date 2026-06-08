@@ -1,143 +1,236 @@
-Return-Path: <stable+bounces-262060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bxtIOj7oJmqHmwIAu9opvQ
-	(envelope-from <stable+bounces-262060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:05:18 +0200
+	id PcKxCivuJmrwnQIAu9opvQ
+	(envelope-from <stable+bounces-262061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:30:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845DF6587A9
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:05:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB9D658B99
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:30:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262060-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262060-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=siderolabs.com header.s=google header.b=C33eqlew;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262061-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262061-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=siderolabs.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 85D1730B9C97
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:46:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C4F193038543
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E48E3D092F;
-	Mon,  8 Jun 2026 15:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EB731ED83;
+	Mon,  8 Jun 2026 15:58:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FCC3CE4AC;
-	Mon,  8 Jun 2026 15:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A898312832
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 15:58:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780933340; cv=none; b=F2paAZX0UkEp3xVLWLNZ60t2piV+DfjlnIFoWWFcKbx2RYNJrCobzsEQ/oaMrm1d4GdmRiZuee2jJ68TQjV5PFrPag14hJboQlj1zA919CHGgogmYsLSGG+jB4oIOCPHsJy1/Vddw7W2vDZfxHFa8ZkXNd119iX3c9r4UGLb7iE=
+	t=1780934316; cv=none; b=QCjzBWLvseowdKXfk+lOrssX7zR7M/AlmXeYqnZawqhc0ivsNdVYUrm4Ni4knUnUkeWH3w28cNPPBG05tOIqGyu5irfI3Q2zQu91FWacMDTP2tU0k0FiVUdmC1oLWOJSbew7W8RDl12jLcIstfc6/+jPZ5fVjDMNQPGZA+tx9Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780933340; c=relaxed/simple;
-	bh=62Njt5KzYm3OVzRtskaHyGKueMl1GRrNXaps6gJzcqs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IXQzvlgKyOm8WSKaY3gvMbW6NjOaSxNm0HOtP68f+XuQpb5SOnJOBM5/Xp3XGH4TUgIBFbwVzo6hCcWeO9xJHQySEuyny8eFFwjt5jpd2g59w0mnq/ahSP55wDVjbNS5oIl/1EaiOBBNRNbvcRL9BjrztkscVAYVtbQXvklawPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowABnCtPX4iZqYLXnAA--.15591S2;
-	Mon, 08 Jun 2026 23:42:16 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: jgg@ziepe.ca,
-	leon@kernel.org
-Cc: fw@strlen.de,
-	kees@kernel.org,
-	linux-rdma@vger.kernel.org,
+	s=arc-20240116; t=1780934316; c=relaxed/simple;
+	bh=i6amtdiEHPXUj9pH4Qhp9Dvs2DHJ+EAAspzzWRZUZf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tGmXKa2OLkBaafAjbCtCK572ajlI0MdIKwkmHW1Mj1l8iJJ2zieLD6GIOCn6+zywKJqwp75Gk7ZYazZ45LJdbpijP4ATvuFyRwe8Ehz9w6j/Q6iHFjvIZIDcY9xhSw9orAJDkLAz0r34sDQCJiSvXRyydm/N2PcmjfRVJGmyW/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=siderolabs.com; spf=pass smtp.mailfrom=siderolabs.com; dkim=pass (2048-bit key) header.d=siderolabs.com header.i=@siderolabs.com header.b=C33eqlew; arc=none smtp.client-ip=209.85.221.53
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-45eea68dd6fso2311698f8f.2
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 08:58:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=siderolabs.com; s=google; t=1780934313; x=1781539113; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hiaq02sgTN+eg9Ui+NZIWW5xOwd5YS8q5QwBFbVzNCM=;
+        b=C33eqlewvifflGkiJRmC2+kv/S9aaF0HIbdJxZumfIdAcTB+zbPOjOPvZ2sDyFJzVx
+         idOJZxnFDEtizbg5DxMt71MJHqFgpuOAYEfvSWSuCXzc85LbRshLnIdcJhydnFQ/FLL2
+         AHTmENFCiYV4A3Y49Rn07hSMDRFzzKXkZRK7MEGzDlJecmUyeltwIgeHgJovHLgFQRIB
+         yun4LzKdZ1iZbTBiYYpHkZTekwAWpe219yGMXbCpidxky2Vl9z9Op3V7ywKA5sd9DKVT
+         1rjWpRCBuAaDBbPpbfHlVvTCzAUFodlalDCGHzzzEzqwiZdxmqsHf3ocxLYwtWn/ItE1
+         cmew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780934313; x=1781539113;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hiaq02sgTN+eg9Ui+NZIWW5xOwd5YS8q5QwBFbVzNCM=;
+        b=iSQLtyeXazYBDneVvZLayrXTxH6S0ZCLj1FSwYr9IQl7YsnBp0lqmf7L2uFtwtHkRD
+         c3P5GgMgq6uNcIjPuGnvXvdv5xaBVZaxEQR6arrUYSk8jfsyGmegF98vX/iisyxIsd4H
+         mvWHEYOvc0TfsfvAijIKsZ9NcFg2fb1s/6KtLjuv2zDWOiRi7v7fokLFKSsYU4JuYeOC
+         3I46VderIqnl5GDBTxpEfeWnatAUu/cqhoV8yyWd3s1DuS5DTbEGKV+2zd2uBgMbILvo
+         4sEVTPPkq8O6iitcOQBkDmoeKEpLzNoaGsxZD1YzRP6TRl0OozxwGDk4UE7KLXZ0OjIE
+         iQnw==
+X-Forwarded-Encrypted: i=1; AFNElJ9rx9uI7ZzpHhdZQO3mxMELLU50YuVWs4El2wDNBui/YlSI8fUi4QiNF7c9czZa/w6ojNXDF8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGwN5+NUeAl5vWtxYx4F2qdEwczASXa9agT8tXftDprgPCXE+r
+	syWC/JuR7q0qG/bG37rdWU4b4Ev4dBg0vrbcD99gNMkiU1qKZyheDBkAtOAG8wqAdfpeqjBPWFZ
+	tFEGlxOU=
+X-Gm-Gg: Acq92OFreNtKe5So/PjHcCJAgW5THpFdeAuZW/mJN9gtchbZeSpMeZAT0TToX0w64B6
+	dKxHwb797IZ68SUnfqyd6zf4//XEUBRucLmvoHF8V0tAquugSLueecOwyFtKAfiIr6l2Yqf4Drc
+	7VAVpQHGzrrzXc1/hfJhqvQ/gPozBt8NG2zBlKTlouEEr/MPMl32HDG5d9o94ADUVm5ssadIYHT
+	QS9hHsLGR4daV860fJIWKw4VAlas7jBsPXDzX5J7jkNsxQOnLvzt6MLlA4MT+EZinqsvgeoGIW5
+	RBkp83kgkrj04WD2Iaj+Umk0GEBLphZ2+DBC5rnjG93O2/91qtEdnn1Kjit0VSV4knDEtBtWszw
+	dO6oiWvPFOX7DAbKjZg52CVmuiaaTBNcQ51KA93lBnwMC7eOKa2OKK8AsVCp1UBGXQ/NHa1QtRN
+	+XxQfmaq0wUejCiGSWzAZorpnNJQo36eZNA845XO+Pa591z0s=
+X-Received: by 2002:a05:600c:3153:b0:490:b8c0:d46a with SMTP id 5b1f17b1804b1-490c2604790mr273388415e9.22.1780934312914;
+        Mon, 08 Jun 2026 08:58:32 -0700 (PDT)
+Received: from smirabuild ([2a0b:6204:2bf7:46ff:214:5616:96d9:612])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3cc140sm484355775e9.9.2026.06.08.08.58.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 08:58:32 -0700 (PDT)
+From: Andrey Smirnov <andrey.smirnov@siderolabs.com>
+To: pasha.tatashin@soleen.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	linux-riscv@lists.infradead.org,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com,
+	Andrey Smirnov <andrey.smirnov@siderolabs.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Andrei Vagin <avagin@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] RDMA/iwpm: fix kref bypass in iwpm_add_and_query_mapping() error path
-Date: Mon,  8 Jun 2026 15:42:08 +0000
-Message-Id: <20260608154208.158175-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH] mm/page_table_check: do not track special (PFN-mapped) PTEs
+Date: Mon,  8 Jun 2026 19:57:58 +0400
+Message-ID: <20260608155758.1220420-1-andrey.smirnov@siderolabs.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABnCtPX4iZqYLXnAA--.15591S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF48KF4rAw47AFW7ZrW7XFb_yoW8Jw15pr
-	45Aay2kr15Wa1fAa18uF9YvF18X397A3srGa4UKw17JrnIqws2y3WDCa4jvFsxAr1kGFsx
-	Xrs7CF4qgF9ruF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUowIDDU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoMA2om2bMXSgABs5
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[siderolabs.com,none];
+	R_DKIM_ALLOW(-0.20)[siderolabs.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:fw@strlen.de,m:kees@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kvack.org,vger.kernel.org,lists.infradead.org,kernel.org,dabbelt.com,eecs.berkeley.edu,ghiti.fr,syzkaller.appspotmail.com,siderolabs.com,linutronix.de,gmail.com,arm.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262060-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:pasha.tatashin@soleen.com,m:akpm@linux-foundation.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:linux-riscv@lists.infradead.org,m:pjw@kernel.org,m:palmer@dabbelt.com,m:aou@eecs.berkeley.edu,m:alex@ghiti.fr,m:syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com,m:andrey.smirnov@siderolabs.com,m:tglx@linutronix.de,m:thomas.weissschuh@linutronix.de,m:avagin@gmail.com,m:luto@kernel.org,m:vincenzo.frascino@arm.com,m:stable@vger.kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262061-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[andrey.smirnov@siderolabs.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrey.smirnov@siderolabs.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[siderolabs.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
+	TAGGED_RCPT(0.00)[stable,2b5fe617654be3d8848b];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 845DF6587A9
+X-Rspamd-Queue-Id: BAB9D658B99
 
-iwpm_get_nlmsg_request() returns with kref_init() + kref_get()
-(refcount=2). iwpm_add_and_query_mapping() calls
-iwpm_free_nlmsg_request() directly on the error path instead of
-using kref_put(), freeing the object while the refcount is still
-non-zero. The success path correctly uses kref_put() via
-iwpm_wait_complete_req().
+The vDSO data store ("[vvar]") special mapping is created as a VM_PFNMAP
+mapping and its pages are installed into userspace with vmf_insert_pfn(),
+which produces special PTEs (pte_special()). On x86 and arm64 (and riscv)
+pte_user_accessible_page() only tests the PRESENT/USER bits and does not
+exclude special PTEs, so page_table_check accounts these PFN mappings in
+the per-page anon/file map counters even though they are not rmap-managed
+pages (vm_normal_page() returns NULL for them).
 
-Replace the direct iwpm_free_nlmsg_request() call with
-kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request).
+Most of these data pages live in the kernel image and are never freed, so
+the stray accounting is invisible. The time-namespace VVAR page is the
+exception: it is a real alloc_page() page that is released with
+__free_page() in free_time_ns() when the last task of a time namespace
+exits. Across the map / unmap / vdso_join_timens() zap transitions the
+special-PTE accounting is not balanced for this page, so a non-zero
+file_map_count survives to the free path and trips:
 
-Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+  kernel BUG at mm/page_table_check.c:143!
+  __page_table_check_zero+0xfb/0x130
+  __free_frozen_pages+0x52f/0x650
+  free_time_ns+0x85/0xc0
+  free_nsproxy+0x7f/0x130
+  do_exit+0x313/0xa60
+  do_group_exit+0x77/0x90
+
+This is reliably reproducible on x86_64 and arm64 under heavy container/CI
+churn that rapidly creates and destroys time namespaces (CLONE_NEWTIME via
+runc / docker-init / tini), and was independently reported by syzbot on
+riscv. It only manifests when CONFIG_PAGE_TABLE_CHECK is active.
+
+Special PTEs have no struct-page rmap semantics and must never have been
+tracked by page table check. Skip them in both the set and clear paths so
+the counters stay balanced (always zero) for PFN-mapped pages, regardless
+of how the architecture defines pte_user_accessible_page(). pte_special()
+is available generically (it is a no-op returning false on architectures
+without ARCH_HAS_PTE_SPECIAL), so this is a single, arch-independent fix.
+
+Note that the v7.0 generic vDSO datastore rework in commit 05988dba1179
+("vdso/datastore: Allocate data pages dynamically") incidentally avoids
+the problem by switching the mapping to VM_MIXEDMAP + vmf_insert_page()
+with balanced struct-page accounting. This patch fixes the still-affected
+VM_PFNMAP path used by 6.18.y and earlier, and additionally makes
+page_table_check robust against any future PFN-mapped user pages.
+
+Fixes: df4e817b7108 ("mm: page table check")
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Reported-by: syzbot+2b5fe617654be3d8848b@syzkaller.appspotmail.com
+Closes: https://github.com/siderolabs/talos/issues/13496
 Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Andrey Smirnov <andrey.smirnov@siderolabs.com>
 ---
- drivers/infiniband/core/iwpm_msg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_table_check.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
-index 854c974d6586..bac3d1f321ab 100644
---- a/drivers/infiniband/core/iwpm_msg.c
-+++ b/drivers/infiniband/core/iwpm_msg.c
-@@ -296,7 +296,7 @@ int iwpm_add_and_query_mapping(struct iwpm_sa_data *pm_msg, u8 nl_client)
- query_mapping_error_nowarn:
- 	dev_kfree_skb(skb);
- 	if (nlmsg_request)
--		iwpm_free_nlmsg_request(&nlmsg_request->kref);
-+		kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request);
- 	return ret;
- }
+diff --git a/mm/page_table_check.c b/mm/page_table_check.c
+index 4eeca782b888..ee492d5389b9 100644
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -150,9 +150,16 @@ void __page_table_check_pte_clear(struct mm_struct *mm, pte_t pte)
+ 	if (&init_mm == mm)
+ 		return;
  
+-	if (pte_user_accessible_page(pte)) {
++	/*
++	 * PFN-mapped (special) PTEs - e.g. the vDSO/time-namespace "[vvar]"
++	 * mapping installed via vmf_insert_pfn() - are not rmap-managed and
++	 * must not be tracked here. Tracking them can leave a non-zero map
++	 * count on a struct page that is later freed (the time namespace VVAR
++	 * page in free_time_ns()), tripping the BUG_ON() in
++	 * __page_table_check_zero().
++	 */
++	if (pte_user_accessible_page(pte) && !pte_special(pte))
+ 		page_table_check_clear(pte_pfn(pte), PAGE_SIZE >> PAGE_SHIFT);
+-	}
+ }
+ EXPORT_SYMBOL(__page_table_check_pte_clear);
+ 
+@@ -205,7 +212,7 @@ void __page_table_check_ptes_set(struct mm_struct *mm, pte_t *ptep, pte_t pte,
+ 
+ 	for (i = 0; i < nr; i++)
+ 		__page_table_check_pte_clear(mm, ptep_get(ptep + i));
+-	if (pte_user_accessible_page(pte))
++	if (pte_user_accessible_page(pte) && !pte_special(pte))
+ 		page_table_check_set(pte_pfn(pte), nr, pte_write(pte));
+ }
+ EXPORT_SYMBOL(__page_table_check_ptes_set);
 -- 
-2.34.1
+2.53.0
 
 
