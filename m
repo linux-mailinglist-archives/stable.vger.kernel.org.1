@@ -1,61 +1,76 @@
-Return-Path: <stable+bounces-262063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262062-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gTN1CgPrJmp1nAIAu9opvQ
-	(envelope-from <stable+bounces-262063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:17:07 +0200
+	id BtbAA2f6JmpqpAIAu9opvQ
+	(envelope-from <stable+bounces-262062-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:22:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7721465897B
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:17:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02FC6592F8
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:22:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pvrWezwv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262063-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262063-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e93lJ4K7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262062-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262062-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D513530C3347
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 16:03:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70DB030ACA14
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 16:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3387330B11;
-	Mon,  8 Jun 2026 16:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC79330B11;
+	Mon,  8 Jun 2026 16:03:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD2C325494;
-	Mon,  8 Jun 2026 16:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C93832B11F
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 16:03:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934607; cv=none; b=A7spjVrUrrin33aU+qxF0EFxLGDYe68CJrNg2b9Syk5K7F9SzQJwhBUO1qgFsVPDQnKm4OLVJtnfb8GzuWmNKT6nuIsSE7ENs7IBGrTpTgozbHDin7GDUs2hI1cOfPOCv9yF4n3CZVAg2eyItoRd7LadZKdZwTUm5CtFrjpFw1U=
+	t=1780934590; cv=none; b=oxGYS26HlDsuJmwqlSOg6UVqz8XTXmDs8UufkTE34E8oLoU7pzKH3eeoaqqLaA6TE0+hqYgL0wuLRyt8IjqVyjEWLFpXnpePuyHN93gaDBZ7EjFDUTKlo5DXqIIe42vRpfnGJIamrZaKCP6w1olLPUw5XPJgWoHOUcGtOYZIZ+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934607; c=relaxed/simple;
-	bh=8JLxiqgcD0YOvqhERnCcIUPOLSB3aFpHvIB2bHIUDJk=;
+	s=arc-20240116; t=1780934590; c=relaxed/simple;
+	bh=3OEYPQ0LuldlA4kK0ltSgEasEnp1AHL6R+Hk8t53mTc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sblwVnmJHu63T2wYyiXjbJwUI8xJNwkhm5Th/BHt/07dYpd+OrNhoamfIgL9JSBigH53kwMPQchZHmcper/S3zLxsE+fl7NTGyfg7wrISI7J84zl0iMgprm1le9C20bNKQG+2mSVCx1DI7NVnK79IokYos3nJSC0Z8an4HlQnZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvrWezwv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB851F00893;
-	Mon,  8 Jun 2026 16:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780934606;
-	bh=Vr9jVMS80gOp2YTnFHoD1vcCtZ8qIuWVlrvbBgC3Ci8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=pvrWezwvYZ6hp0ECtEE5aeudgIuBWvTtR3DEjZ/exd6Ny/IYpkFUKUZNB8jB9Qcm1
-	 K5KP4gCcHFAQjKTd6me/OpF6XyfASogHwAY6JQkNkRLAvviutcLcpfF4maGlVm+mXY
-	 YJGQvZ98XbCPGqWZ3mgLUpwjPB3WUxVUNEXjG3fM=
-Date: Mon, 8 Jun 2026 18:02:27 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <linux@leemhuis.info>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Hannes Reinecke <hare@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>, Justin Forbes <jforbes@redhat.com>
-Subject: Re: [PATCH 7.0 089/332] net/handshake: Pass negative errno through
- handshake_complete()
-Message-ID: <2026060807-egging-prune-a3ae@gregkh>
-References: <20260607095728.031258202@linuxfoundation.org>
- <20260607095731.416875228@linuxfoundation.org>
- <3fe6ad12-30e4-4a57-8167-268ffdb4488a@leemhuis.info>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VEhW2actEG8mRCdhYD9OJzgnJI0OX3T0OYc3o8Ctgk4M8v51fam1Z/SMbw8fzVROb1ChVOVWk6OyeK370ginRN5oiCgVmxjIx4FAWqySM/fe+++LWv993Opch4BgFCAm7jRbpq4GY6K/wapEaWowvVKqDMQz+OoArgv7J1fcJN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e93lJ4K7; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780934588;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EDh9iLkNa5MgatT3zv9wGFe3hH6UdmFTOJoPoHnhCQY=;
+	b=e93lJ4K7EgKIYltpS5jNGVYJivkX6260ElFTZVRIfymZTG6/IsAwKmy6c69A39kgFFDr1O
+	s5/55xPuMFJfjUg10O/2/mV7ULuiEG3mPLpatZb5xEkR0BI3nuFYC0dWpbcFUHT+Y+0h0V
+	PSUdXqsJrprls2lquzE4q5HSyOfLIlw=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-qfFibvlWP7e46SMOpHdpkg-1; Mon,
+ 08 Jun 2026 12:03:05 -0400
+X-MC-Unique: qfFibvlWP7e46SMOpHdpkg-1
+X-Mimecast-MFC-AGG-ID: qfFibvlWP7e46SMOpHdpkg_1780934583
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4A2C71800605;
+	Mon,  8 Jun 2026 16:03:03 +0000 (UTC)
+Received: from bfoster (unknown [10.22.80.93])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 85CE11955BE0;
+	Mon,  8 Jun 2026 16:03:01 +0000 (UTC)
+Date: Mon, 8 Jun 2026 12:02:59 -0400
+From: Brian Foster <bfoster@redhat.com>
+To: Gregg Leventhal <gleventhal@janestreet.com>
+Cc: hch@infradead.org, djwong@kernel.org,
+	Eric Hagberg <ehagberg@janestreet.com>, linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, io-uring@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Subject: Re: [BUG] iomap/io_uring: O_APPEND async buffered write silently
+ re-appends a data chunk (corruption) on XFS, 6.1.y/6.12.y
+Message-ID: <aibns0xP6IVVNWh3@bfoster>
+References: <CAFN_u7FrgM4Dzie2jjkLwWV8P0dvUG_Wwy3Q9B3-2HnnWiDu8w@mail.gmail.com>
+ <aiLxe-9Sub8cI3Py@bfoster>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,77 +79,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3fe6ad12-30e4-4a57-8167-268ffdb4488a@leemhuis.info>
+In-Reply-To: <aiLxe-9Sub8cI3Py@bfoster>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262063-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262062-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:linux@leemhuis.info,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:chuck.lever@oracle.com,m:hare@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,m:jforbes@redhat.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gleventhal@janestreet.com,m:hch@infradead.org,m:djwong@kernel.org,m:ehagberg@janestreet.com,m:linux-xfs@vger.kernel.org,m:linux-fsdevel@vger.kernel.org,m:io-uring@vger.kernel.org,m:axboe@kernel.dk,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER(0.00)[bfoster@redhat.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[bfoster@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,oracle.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7721465897B
+X-Rspamd-Queue-Id: E02FC6592F8
 
-On Mon, Jun 08, 2026 at 04:37:09PM +0200, Thorsten Leemhuis wrote:
-> On 6/7/26 11:57, Greg Kroah-Hartman wrote:
-> > 7.0-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Chuck Lever <chuck.lever@oracle.com>
-> > 
-> > [ Upstream commit 6b22d433aa13f68e3cd9534ca9a5f4277bfa01c2 ]
-> > 
-> > handshake_complete() declares status as unsigned int and
-> > tls_handshake_done() negates that value (-status) before handing
-> > it to the TLS consumer. Consumers match on negative errno
-> > constants -- xs_tls_handshake_done() has
+On Fri, Jun 05, 2026 at 11:55:39AM -0400, Brian Foster wrote:
+...
 > 
-> This causes a error for me when building ynl. See below for the build
-> log. The problem can be avoided by reverting this patch from the
-> stable-rc queue or by cherry-picking fbf5df34a4dbcd ("tools: ynl: add
-> scope qualifier for definitions") [v7.1-rc4].
+> One thing I might try here is to see if just deferring append writes to
+> !NOWAIT context avoids this problem because I wonder how sane that sort
+> of retry situation really is. I'm not quite sure what the expectations
+> are in that sort of case. Is that something that's easy to test? Of
+> course that wouldn't prevent this issue if other applications have this
+> same write pattern.
 > 
-> I'd suggest doing the later, as I last week had a quite similar error
-> when building ynl during the 7.0.11-rc1 phase:
-> https://lore.kernel.org/all/d66f5c95-ebc0-4c53-9852-f73c790363f7@leemhuis.info/
+> Another potential option for a stable only fix might be tweak the iomap
+> code to not update i_size for append (&& nowait?) writes until an
+> iter->pos update is imminent, but I think we'd need to be careful there
+> due to the pagecache_isize_extended() call. I think that's more for
+> non-append cases, but I'd have to take a closer look. Maybe we could
+> also replace that iov_iter revert with a hardcoded advance of the iomap
+> iter and emulate the same behavior as newer kernels. That seems
+> cleanest actually, but again needs some thought and testing...
 > 
-> Back then Sasha went for dropping the problematic change ("net: shaper:
-> reject handle IDs exceeding internal bit-width") from the 6.18.y and
-> 7.0.y queues. But given that this is the second time within a week the
-> missing patch seems to cause trouble I suspect it might not be the last.
 
-I've queued this up now, but it didn't apply to 6.12.y, can someone
-provide a working backport for there?
+The above is harder than I initially thought because iomap_iter()
+expects the iter->pos to reflect the original position. This gets into
+some of the dependency patches in the associated rework series.
 
-thanks,
+Another idea that came to mind is to try and just replace the -EAGAIN
+return sequence from the low level iterator with a flag that triggers
+-EAGAIN from the next iter advance. The idea here is to allow the write
+to return partial completion (i.e. so no iov_iter revert) without having
+to return an error from the lowest level in the stack. I had claude come
+up with a quick patch [1] for reference/experimentation.
 
-greg k-h
+This is based on v6.12 stable and compile tested only. It needs more
+review and testing in general but might be worth throwing your
+reproducer at if you can..?
+
+Brian
+
+[1]
+
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 0178292c1864..956700441f6a 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1037,10 +1037,9 @@ static loff_t iomap_write_iter(struct iomap_iter *iter, struct iov_iter *i)
+ 		}
+ 	} while (iov_iter_count(i) && length);
+ 
+-	if (status == -EAGAIN) {
+-		iov_iter_revert(i, total_written);
+-		return -EAGAIN;
+-	}
++	if (status == -EAGAIN)
++		iter->iomap.flags |= IOMAP_F_ASYNC_RETRY;
++
+ 	return total_written ? total_written : status;
+ }
+ 
+diff --git a/fs/iomap/iter.c b/fs/iomap/iter.c
+index 79a0614eaab7..6021b09ddc2f 100644
+--- a/fs/iomap/iter.c
++++ b/fs/iomap/iter.c
+@@ -22,6 +22,7 @@
+ static inline int iomap_iter_advance(struct iomap_iter *iter)
+ {
+ 	bool stale = iter->iomap.flags & IOMAP_F_STALE;
++	bool async_retry = iter->iomap.flags & IOMAP_F_ASYNC_RETRY;
+ 
+ 	/* handle the previous iteration (if any) */
+ 	if (iter->iomap.length) {
+@@ -35,6 +36,8 @@ static inline int iomap_iter_advance(struct iomap_iter *iter)
+ 		iter->len -= iter->processed;
+ 		if (!iter->len)
+ 			return 0;
++		if (async_retry)
++			return -EAGAIN;
+ 	}
+ 
+ 	/* clear the state for the next iteration */
+diff --git a/include/linux/iomap.h b/include/linux/iomap.h
+index d204dcd35063..8d60073a255d 100644
+--- a/include/linux/iomap.h
++++ b/include/linux/iomap.h
+@@ -74,9 +74,14 @@ struct vm_fault;
+  * IOMAP_F_STALE indicates that the iomap is not valid any longer and the file
+  * range it covers needs to be remapped by the high level before the operation
+  * can proceed.
++ *
++ * IOMAP_F_ASYNC_RETRY indicates that a buffered write made partial progress
++ * but needs to return -EAGAIN to trigger an async retry. The iter has already
++ * been advanced to reflect the partial progress.
+  */
+ #define IOMAP_F_SIZE_CHANGED	(1U << 8)
+ #define IOMAP_F_STALE		(1U << 9)
++#define IOMAP_F_ASYNC_RETRY	(1U << 10)
+ 
+ /*
+  * Flags from 0x1000 up are for file system specific usage:
+
 
