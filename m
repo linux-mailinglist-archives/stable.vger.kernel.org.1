@@ -1,224 +1,170 @@
-Return-Path: <stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tWpHNQ6SJmqMYwIAu9opvQ
-	(envelope-from <stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:57:34 +0200
+	id s/IvImKWJmrCZAIAu9opvQ
+	(envelope-from <stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:16:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41554654C7B
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:57:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DF0654F01
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:16:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mojatatu.com header.s=google header.b="i4CYwU/n";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=H9D8IhW4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ACD23026C25
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 09:55:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C6663069F8E
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155193B7B8E;
-	Mon,  8 Jun 2026 09:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FC13BE630;
+	Mon,  8 Jun 2026 09:57:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C153B7763
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 09:55:34 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912535; cv=pass; b=XbnFxN3UcvjpjVyr+e3GBc91faSfydoy0v9gTeGH374THgx8SjcpI4OUT5r2K/RMUbqOiz+l/i2Qz0eGPDmZHzuxElUKt3uWvLNNUuIjfyGurrg/I42rcelJll1ks7VTjWa/Llz0qXNSfItu3uSCrLb27+gEnI7poI3PFQxAlKY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912535; c=relaxed/simple;
-	bh=nEe6Hp2P+fr54/g8RIpCfyjhQRc1tqxdIbRPosUg3Nc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BjV/v8X3Xl8lKMP0xK7IAb5qmUhDmrihCd9YfUrCySzJGbju3mZ+sxh8azPe8dlfzauX5bBlB/GqEOXuBkHhSl0Cn9O8BIIFznVJfb213KeoTRKQIJK0smXxGrn4/tGKQkfgDRGcl9p/km0kjS8SYNTo9UlQlrY8k+MzLmLwkbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=i4CYwU/n; arc=pass smtp.client-ip=209.85.210.169
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8419ab3a297so1679388b3a.2
-        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 02:55:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1780912534; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CaFhfHNwYsLAc6ukcpgo9NxFyet5qWbISav5vJdrDjcssZxOenn/U9y5MUJjeMlQu6
-         vFSoFg0rk0q22wGp0u8SVoir6ODTyrr5ygknjcpyqUTJF+5Wf76mIFz5qLYMAofu90Vc
-         g7wUF3wjZO6eZtH+ehU3yug51v8hR76vLjVFwD+rYTLmAVFHSkAyUk82BGjRBt2ExSY5
-         UTkokMv3CabTpHoAK3l6mJ65g2F0DUV0k1dgwKgLVOtDrRmJ3lH/hl4qRUgUK07f0Ocp
-         J11R/WiKsjv33c4F3C8uxAFCYP7Xdzbsbeb/omFweW6NPk7CQaXxCm6egkjHdSA4OV/z
-         95NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        fh=ljrwdog4K7gaj8ZlbEcb7Pj+vdmwls/qQqF1sQ0eWQU=;
-        b=N+dYTMPCiVPVvUZTTRSjPwkKhQPEviM/C2G1Hx/LxMFv/wuWYq0JIuLYx0sTZa4cbC
-         n4c0NHs/1FZOaFFdHfxk9bX36bwWMYtUNlhdEXuT3YhYTq6jC0eMR/qqxuXh6/lcjoA/
-         lvfbqdKohWZMxp4TAvhlfkpwkfkbmp9cLpous9ihn/zoSLLPQVIhFVZkoZ6shnR+J68C
-         MAGnfaLpBdaZtdYHK1o9Ri6DMCPzete4vRjXICSsNea7nWbi+4tbQn+mMfBw/bKRVc3t
-         AQRyIl+qE2vnsW28iynJyE7TwIfG9YnkuLoZZhuH1RxG2kaG4l+kALd4KQlVFHE50akJ
-         POsA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1780912534; x=1781517334; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        b=i4CYwU/nzgEz2DJ9RMUlC/aTqIq3h769lyqC2PXduc3Cf/mrHk1dF8SVEKi27tzraO
-         WQeGWeCP2mtuQpohwOE0QevDyJzDwyh917iNpTWt7FrdMKkVhAdqF43tkNdYIYCPfAjL
-         e+z6nda8VPORPYu6KTs5nQa18dbaM5YXXsaus=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780912534; x=1781517334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
-        b=V7OIrC2Cr8c1Qi2p2H5mh3VvrXglX+PdEMGGqEcd86YpPn5xeBkB/vpFkh/3YSBdKX
-         ZGiG/Dd8tp/tPbHCI0t2gnMZ8NuDZPeSFuWRRGcSGpz7wmHWpKRZw7vDYHB38sgjNGu5
-         Rdr5LD4Rmbnh9g1ZX7BXkpOVReGngBq6W+Ls/oJu63DbhQy+2LTW+sjn9vKdgENeEH5d
-         cZ9nSE8jNa6Azw42MeMlwWqZ+zGHYDUnzNLV4FRFF5bay8phyvjqNsdvpi7KSFOGH9V5
-         E40JtMirZ0U/0R2LQlmxHFYIrZCzHOdaOBii7c+1YJYXEax4dEL1T7KIJ7hon+/SK43h
-         h2Iw==
-X-Forwarded-Encrypted: i=1; AFNElJ/p3quz6aE3v4fhLTxcqarcqtDB96/D37jJXreKWgc+G51mQSJEvMellFK2eA+/tOz3LcxRnx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb0VR6xcG2Up27ZJ9guRH0OkFQ+8tVHltibnUd+GVdPujy3Bto
-	2b8WauUpusmIjGs0qbYr8Y1Xp/qhrFd7u8JMGzhygYiY8B72xDtGVJ3Sja2ayMRhDuphOiXlNWn
-	uJkQj2fOgBliwbfins5uL5D2Qc+uhGWwtu3ZZuCZG
-X-Gm-Gg: Acq92OEUxB5H7t+cm4V5ZpqZijQ/m9Dx4ev0+UwZqpH/mQRKw93yvnZ392eFlQeW+bo
-	l8l345j77QT9FRcXy1Cu8PHhSwtZp07mGtTaDCYnQqQ1/o64ty8rsszmCwsWDFzmJtBzahftW3m
-	72uE6tFRDHqp9SS3OIHdCk8JX/ddGHnx51RbcBzm1aleT2W7XAZOeT031VBDZeHSQGB1SM9FMKP
-	TLAlYVXKR7rXHnjAaw46EV6QegtARxg7wFyLcivcAwWghpEbAGL//0myovnbkl9vh7dJzNkpl6N
-	StNqcuAi/Ynjx7RYVeT3Nqsh0hwa2Q==
-X-Received: by 2002:a05:6a00:2d0d:b0:842:5711:9a2f with SMTP id
- d2e1a72fcca58-842b0fb2273mr14704387b3a.36.1780912533858; Mon, 08 Jun 2026
- 02:55:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A983AA1B6;
+	Mon,  8 Jun 2026 09:57:18 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780912642; cv=none; b=k4+Ihh1xVqbH4GOGBWZhWusT4SWwyYC8bPcYmm0fHR/i/26F8JdL7zP8O/cfcLsw08r8AXzPEUD9VwqsJy3HG6tlIl54hxzq+XPctzAtdIE/3JCNXn4dlBVpbEzxl3CVQPhYGwI098JNWZZZRtEZhMrJCCyN8rMbTTYLs6FDWtA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780912642; c=relaxed/simple;
+	bh=ngMAaFyO11vI37AhZlJcXNHtXsNDnTTugPJQE0HoGfQ=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Tp6Ssyak8/ef6ilNp4wyPvXr1CYbtzCiPCeq59iG8hXWRDyC1dArYbKZ6Ut76EWPnsNGhxOWqw7xEVwmW4KTTy8hIxvUdwyg5ZvolChaLPpm8jjrSO1dtJ/ZjP7ux3kC1+AB8Ptb0DDFVA2vhyoW4sooqwc0z9lPUJ0NTOL+pBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=H9D8IhW4; arc=none smtp.client-ip=203.205.221.240
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1780912636;
+	bh=Yj/4+3DzEU4TvSvmleeAUG1+meO3Aqt864cXNzMpXo0=;
+	h=From:To:Cc:Subject:Date;
+	b=H9D8IhW4FTBytKxkA4hUrnenQwJlr1vmCyjKH6Vz453D4TAOA61hCgp9lJHV+ksbn
+	 FLSuOVTW9gIzB/K1LocoRIPSbEZuoYXJpy/K6SvC0UPigN7nAJ5kgA3cgAptFqYJ8n
+	 irC9lUys76mLNspbjDXXDNAS7xBIwe0VCeeSCRuk=
+Received: from China-team ([47.95.114.252])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id E3938A47; Mon, 08 Jun 2026 17:56:57 +0800
+X-QQ-mid: xmsmtpt1780912617tnmdy7k4f
+Message-ID: <tencent_42D87A0C871AE6AF019BF6AB46F003577205@qq.com>
+X-QQ-XMAILINFO: N6nW3/TXfx9UpWZgwurumrxrG9NWkN3r1kOy2nd/BGyreG5PDGXim1atH0XBly
+	 tY9kNk8+dOh9FchWx9CFUWbW1ros/Jtdx3N8QaPJ9xkg8yhjPhBaX4sH811dTaSzafz5tAITHSh3
+	 rflyQsBqCL3UygzevhJnEcJEQmvFBmk68dz8cPNv/YFGtwIlwa0Z0NaVLKbyuYFQ0clSuduJo+DT
+	 v4UZM9uulQgoJDEqvppQmX5zl3Rr/ecqn8BRQk3PN+8256rpfn7k/+FvFejjYrO6IEDZ4zgY4eEz
+	 NW6du84Qyl0nKgNFAS7T9VlKJ+gJtdw7C0/f7aA18LEWBSLBllz/JC0XCv7te5B28Q/bRz1SbSui
+	 p1BIKla77nsDvHGGUNp5PgncWY5wMx4nWZxywXTn5p/RsAVl5e9xMVO5lxLxcNEb9qqehEpL17w+
+	 7TpTR99MtwsUMc8OuFwUqem60n23aWywJAm+lZQhfnDF1mQusxWpDB+BoJRoTYERMVohBRtZ9dql
+	 gYiVgNAjQB+CMWr6+DM0nDdS2sX4zcPaVrmlF1dq0camF11s3mRaAz7AaObr1eq0Ker6SX71+wCl
+	 K7baeuO+yxl6m4fKcSE/0yhw7k4DIr8ScsGrgVNC+kwfXWdDQ7FO7KUeFX1fUGb+I5jK4I5ATUHV
+	 1a1XyynJfJCK5bKL1+F1IiQVfjLquH36vKri5Q07fpM1yNipR012lrRfDg+2GDG6uLskL76ZD3RN
+	 d2A96srP8VPMaH5a6XqwZFKWmh1OyZc+uSuyfHXiv7Ap0vzowFwR407qaI8Ggcmw74vhQhiiHVoX
+	 H7meczsUucCHH2XlYns+mfxq3hOJd2Wbt+3IB2Sj61UizFyHomLNTxelot7kMBNJudHyp6CLllH6
+	 TRAjZ/OvKQahBeFAh0rT2v/lFE7mdxPViQA5HqCL8RdeM6FwGdGQgoaUIu88xhoP7oY0i+2F3f6b
+	 q4HEk3RsIVWs5ZaaVJhkPPgjz5KVZFT1jaHBQUBu1PR1x/Yt/u4IU8BPw2CWZCkyFWoSboyKJS3P
+	 +uC+OHK9iz3bU622rfRQRBVBDsm8+ah1nCsD/NHYrnv9efWraHTGq3JOxwBMU8iJIkGt7zkQ==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 6.6.y] Bluetooth: hci_conn: fix potential UAF in set_cig_params_sync
+Date: Mon,  8 Jun 2026 17:56:55 +0800
+X-OQ-MSGID: <20260608095656.97896-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260607095727.647295505@linuxfoundation.org> <20260607173214.92693-1-ojeda@kernel.org>
-In-Reply-To: <20260607173214.92693-1-ojeda@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 8 Jun 2026 05:55:22 -0400
-X-Gm-Features: AVVi8Ce0VqPP4wrmrfgQDErKpRLi3Z7rbl8b4dCcmWnRvhi1OSTpE0ZX-2GG1EY
-Message-ID: <CAM0EoMkszTXv82To=KnEYTgzQSmEdRW9XrAMVtJsUaDn=Akf6A@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/307] 6.12.93-rc1 review
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: gregkh@linuxfoundation.org, achill@achill.org, akpm@linux-foundation.org, 
-	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com, 
-	hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org, 
-	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, 
-	sr@sladewatkins.com, stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
-	torvalds@linux-foundation.org, "Kito Xu (veritas501)" <hxzene@gmail.com>, 
-	Victor Nogueira <victor@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_DKIM_ALLOW(-0.20)[mojatatu.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:ojeda@kernel.org,m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:hxzene@gmail.com,m:victor@mojatatu.com,m:pabeni@redhat.com,m:jiri@resnulli.us,m:netdev@vger.kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-261999-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	DMARC_NA(0.00)[mojatatu.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mojatatu.com:+];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,mojatatu.com,redhat.com,resnulli.us];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262001-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:pav@iki.fi,m:luiz.von.dentz@intel.com,m:alvalan9@foxmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,iki.fi,intel.com,foxmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mojatatu.com:dkim,mojatatu.com:from_mime,mojatatu.com:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[foxmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,iki.fi:email,foxmail.com:dkim,foxmail.com:from_mime,foxmail.com:email,qq.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 41554654C7B
+X-Rspamd-Queue-Id: 96DF0654F01
 
-Hi Miguel,
+From: Pauli Virtanen <pav@iki.fi>
 
-Thanks for reporting this.
+[ Upstream commit a2639a7f0f5bf7d73f337f8f077c19415c62ed2c ]
 
-On Sun, Jun 7, 2026 at 1:32=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> On Sun, 07 Jun 2026 11:56:37 +0200 Greg Kroah-Hartman <gregkh@linuxfounda=
-tion.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.12.93 release.
-> > There are 307 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Tue, 09 Jun 2026 09:56:47 +0000.
-> > Anything received after that time might be too late.
->
-> Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-> for loongarch64:
->
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
->
-> arm32 also builds fine.
->
-> On arm64, I am seeing:
->
->     net/sched/act_mirred.c:451:43: warning: variable 'm_eaction' is unini=
-tialized when used here [-Wuninitialized]
->       451 |         is_redirect =3D tcf_mirred_is_act_redirect(m_eaction)=
-;
->           |                                                  ^~~~~~~~~
->     net/sched/act_mirred.c:429:18: note: initialize the variable 'm_eacti=
-on' to silence this warning
->       429 |         int i, m_eaction;
->           |                         ^
->           |                          =3D 0
->
-> due to commit a01fbdecc3a2 ("net/sched: act_mirred: Fix return code in
-> early mirred redirect error paths") here.
->
-> And that one seems to be missing at least the assignment to the variable
-> that happened in commit a005fa5d7502 ("net/sched: act_mirred: Fix
-> blockcast recursion bypass leading to stack overflow").
->
+hci_conn lookup and field access must be covered by hdev lock in
+set_cig_params_sync, otherwise it's possible it is freed concurrently.
 
-Unless i am looking at the wrong code version, in the current code i
-see m_eaction is always initialized before being used.
-m_eaction =3D READ_ONCE(m->tcfm_eaction);
-Probably a compiler false positive?
-As per suggestion emmited, initializing m_eaction to 0 should help.
-Not sure what the process is.
-Perhaps, Miguel you want to send the fix? commit should say "appease
-compiler ..."
+Take hdev lock to prevent hci_conn from being deleted or modified
+concurrently.  Just RCU lock is not suitable here, as we also want to
+avoid "tearing" in the configuration.
 
-cheers,
-jamal
+Fixes: a091289218202 ("Bluetooth: hci_conn: Fix hci_le_set_cig_params")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Minor context conflict resolved. ]
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ net/bluetooth/hci_conn.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index f51c530a3c45..ab86cc4a5e3f 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1734,9 +1734,13 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+ 	struct iso_cig_params pdu;
+ 	u8 cis_id;
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
+-	if (!conn)
++	if (!conn) {
++		hci_dev_unlock(hdev);
+ 		return 0;
++	}
+ 
+ 	memset(&pdu, 0, sizeof(pdu));
+ 
+@@ -1776,6 +1780,8 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
+ 		cis->p_rtn  = qos->ucast.in.rtn;
+ 	}
+ 
++	hci_dev_unlock(hdev);
++
+ 	if (!pdu.cp.num_cis)
+ 		return 0;
+ 
+-- 
+2.43.0
 
-> I hope this helps!
->
-> Cc: Kito Xu (veritas501) <hxzene@gmail.com>
-> Cc: Victor Nogueira <victor@mojatatu.com>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Jamal Hadi Salim <jhs@mojatatu.com>
-> Cc: Jiri Pirko <jiri@resnulli.us>
-> Cc: netdev@vger.kernel.org
->
-> Cheers,
-> Miguel
 
