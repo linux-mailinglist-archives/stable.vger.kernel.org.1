@@ -1,171 +1,237 @@
-Return-Path: <stable+bounces-262015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262016-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IZ/PIqalJmoKagIAu9opvQ
-	(envelope-from <stable+bounces-262015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:21:10 +0200
+	id Dz3YIOulJmocagIAu9opvQ
+	(envelope-from <stable+bounces-262016-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:22:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6A7655A00
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:21:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25225655A20
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:22:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Jorx3MWa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262015-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262015-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqaLzd0Z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262016-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262016-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75C973006205
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 11:14:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A90530A713C
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 11:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74122346FA4;
-	Mon,  8 Jun 2026 11:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6BD3537C7;
+	Mon,  8 Jun 2026 11:15:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03327346FB5
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 11:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D393546F9
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 11:15:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780917289; cv=none; b=DAw1iIFEAAnmEE3Jge8Vj2KqqYTENpLq6UMiaKTHq15kzHG0d3FbtxiNDWNvmfwbng8WFG6veI43IfE4/+Ys1Xhd1uxlLw+fP9MY5v9J+vWKRD9Kq48ULsYDipxFFpYQSbGwAonbQ2jqnrXNkPBW3aIIJOXAIxTYMnn2KdMiUmI=
+	t=1780917336; cv=none; b=ZyHjiaQfBMLmeM0+JYrEm4Dklf5S08sGOo1MgExco/lCcQn+DMcKbdAtyxLJQiRYDiqWEZSoI4EMoneqJQ416SvxJOlJKWXitt4hDFPOJeOLp17sWHf8XB3xlgLEvPNs68Kc9f6FfnKSmEw7MxfalNNbTVXmKEjkb/VeDHn8/G4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780917289; c=relaxed/simple;
-	bh=JCnhFBbhjyM9ZrSTljHLt/ThXEo19Bb1KFb5dj2QrHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TPwePi61Il15sRU7ClJ/0WmlV7A/W2hRi6vaeqM4rMvW0Ch0/9Swf0eEHCquAPCqD+ztg0IOmOypXzeHckrX4DDlLJ8BLrgakNqx+NnsUAR10JQbcvdpCIU2WUjYnmErqWmDN7IkUFwoZYeRt4ZqOT2SMqSvjkKEayV1tVYenmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jorx3MWa; arc=none smtp.client-ip=209.85.208.49
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-691c5776f95so1071349a12.3
-        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 04:14:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780917286; x=1781522086; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AlrDLQ7/+KQQkyc0QSWiYFjNtmvk7yv1uaLVnyP4as8=;
-        b=Jorx3MWarcDiA8SkiIcE5Yi0woDCegYd+FvI70eqqrnVxnSKyWkXZcymA9T6Ml9nGD
-         ZRsIJNVQbIeQcOYax6CnCTY/V/+xJ1QeKavpfd8OltmjPdU6dCzWEv+IK86cNpcJWdTo
-         vRBSHSMhE+1vnOc/hP4xhSWUY3IKCPLkvJxXR9aty9KgxoyLYYPh4Ippmj1fx8AOws3J
-         4uqh76G1KmFCuvDgAoI4K9IqzXDOweiDtrZBYsF7ym9Lx031Zzygq+zwtEEbpVMY3Vet
-         Vq8finXCQYofFBO0MNaH5GVVuUaynLzekFXLdhWhmDDqfoCzVXFZ9/oVsNz9zq14nkZ9
-         bOhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780917286; x=1781522086;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AlrDLQ7/+KQQkyc0QSWiYFjNtmvk7yv1uaLVnyP4as8=;
-        b=kZF4IAr6jBoVNaAipzVnccq0We9moI3+oyCDmOufMA1i7KzJc+/25MyJR8LLzhotW/
-         Pc7tyFipezPlZw+S22qFTIyevxtwAr/PnwwZP9yS0m7YKM6uC2hA0/KRRtIVVnLGT4NT
-         rrn5swH9xpI6jXTQM1IpMmXl1u8dU8TQsjWVNarFLwnddRKb+mjaaqz5y8nRfl9/1tFL
-         h44EXPuTfRo0Wsk16vs8mfQ8EI9h7+aGJO5ceAV5XXFbxVi8HE1J5BnNw27/cAFTGFWz
-         rh8ECjUxgQTcT3gsepZTtOP/BjO3pzC9+WSsiLVkJs1v+0RSNbCpq2tHjD3gsi1GB20p
-         04TQ==
-X-Forwarded-Encrypted: i=1; AFNElJ98cDkFytg7szzptGJQnIIMjaN3CEa33dHj0jfZXNogsatmmWudXlEN0i7iHQx9MJw9Cav4T/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySu5saL+9btW2dm6+dz9MwKmCyv7el/9Gw8D7SVEyA6DA754wr
-	QyUhVQCTbq/REmYNde0dCbT40kljIn4sPBKF9630n+oeyPSEPRop9n1d
-X-Gm-Gg: Acq92OELEbS3qGYaxlvbchQpXW+tjJG2rv3IKx7LvZdwCz1qxnfLdyIrsu19GCM74rW
-	rvqodF1jmat/PbGpIdQ4PUMIlJ5JRclQEObfQ0Xv2V96S9FV0daHS9EXMvsC/oG57iGLkKrFRzl
-	Aw92pQnw0IM0wszW2RUpM/20yfQMKgVSBdZF95MT0plrCntyCoweXiW39IvTGNNmxTZ1/CFcU4W
-	wzAxlTIPBvi127ZsSMJDbg5ER9E8cjOG55Lb6d+bpxl1B51g+eK/1P/VCAxcc9sjzdJCceyaFGs
-	HPOoqVxwLiHg7FACQqv0p1Bt/V23OjJ4mn6t/x+cWq470jCQAueTb9k9jGy1RyArmDchBXBctac
-	JIcu4uXYNUSxw4NjRAhXOlr3XJ2kRBF/0Ws0MkkTRtnni6ZjYAAVAjjMi3u/4UoIIex+a9DDKpS
-	zVmOvqfaGXuGEig30Y4yXZg3c4ombg9O4gNLVrIvJ8d27tGLLtcJswKHolppADufMMQiGnhEBX1
-	LkRk3B6w6okpQYbE8KoUg==
-X-Received: by 2002:a05:6402:2808:b0:68b:f026:f382 with SMTP id 4fb4d7f45d1cf-68fa4c00509mr7207707a12.2.1780917286260;
-        Mon, 08 Jun 2026 04:14:46 -0700 (PDT)
-Received: from [192.168.0.105] (88-187-52-200.subs.proxad.net. [88.187.52.200])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e650287d9sm7167414a12.12.2026.06.08.04.14.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 04:14:45 -0700 (PDT)
-Message-ID: <6faf06f5-541d-483d-a7d9-090fb0299154@gmail.com>
-Date: Mon, 8 Jun 2026 04:14:47 -0700
+	s=arc-20240116; t=1780917336; c=relaxed/simple;
+	bh=6C4vf6/4eJnFLgUknBfwGqxMCeXJz13ApUu8OTMzxvQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=apFCR50tNgP7IOigy/YPJEUGfxOcgejmwpqO/K8rq98tkFU64IoxH95N+lvHNQCrV52z0d+Pb8k0zlJbx11K4WafzgR1/PufTN8EpL1m5uBtjk4nR8Y+XI+OAeJcmAhAN0i1xsQm/ijCD+8+IEwWCCrYUPlKdsqlGJxcKnC/Ox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqaLzd0Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1735A1F00893
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 11:15:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780917335;
+	bh=2w12NF8MfSTYvghNfM3bvkVu+GohbriHOUO2f+1dcZ8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=EqaLzd0Zd4u8SHlwTnQb4ZMHI2Ur+cYmTebdKBdsA4wMRxsI/i2PsgyHG7ZbxICwY
+	 Njld5GEA8KwVdSLWLkjG5/I9Iy3z/eb1ABiZJWtsVrfzxDvhl+IaXzAGT2YJxg/5BS
+	 eqrV6LGqT+NnpLp7CCkzDu8PfcJhR7ko6UOu0UKxARruH+/offIyFlXT774M7pUmnO
+	 iN0U0dzIli/oVlVxKBWa2DHxKKd7wM+OH0MLY5zt4+1z0vM4wna1WXxBIgBgB+OhXE
+	 z3FGEv2JYYkz8UqExxlmLaychEMqo0kpXzPUgBk4A4T2qyOx2VHpcYVhAvXwL+4UCu
+	 ccZ589zCuoGvw==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso6365726a12.2
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 04:15:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+/riloFTAPQmliXAVimLlsvjfctFzLqnaT1R3lSQg/N+auDnDPV+ZZOHlANj4pa4YRZsv1m/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt2fLTdypUkb+nwIVKkg9cTg3iw0pcpziEC3X4LXtIkvmMe6wT
+	G9o+niTcegs2ZinfvqrU++t96asPc5znpmTfTUY2vK/sem4Ci7Qcm+9n2XKHiCxGMr6EJ95wAVo
+	jVOe9MrQEd1tQX6tPmve72R/StpNDqDg=
+X-Received: by 2002:a17:907:c08c:b0:bd5:151d:2d31 with SMTP id
+ a640c23a62f3a-bf3715535d5mr721174966b.13.1780917333782; Mon, 08 Jun 2026
+ 04:15:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 000/332] 7.0.12-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260607095728.031258202@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260607095728.031258202@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <e0be9c192cf8896a7f02ae23880f8e4921102129.1780912039.git.wqu@suse.com>
+In-Reply-To: <e0be9c192cf8896a7f02ae23880f8e4921102129.1780912039.git.wqu@suse.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Mon, 8 Jun 2026 12:14:56 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H4SXDUCsKrLK27GwT0itbSd_aozt5A2TvVR5e34gZD51w@mail.gmail.com>
+X-Gm-Features: AVVi8CdrzbCXYbSxRa2KRM4SpGf04e7oxa9jCLUj3H2I0hv9RRxIgLg_BCyjLJs
+Message-ID: <CAL3q7H4SXDUCsKrLK27GwT0itbSd_aozt5A2TvVR5e34gZD51w@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: do not overwrite NODATASUM flag when removing
+ NODATACOW flag
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262015-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262016-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:wqu@suse.com,m:linux-btrfs@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,mail.gmail.com:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C6A7655A00
+X-Rspamd-Queue-Id: 25225655A20
 
+On Mon, Jun 8, 2026 at 10:49=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
+>
+> [TEST FAILURE]
+> The test case generic/628 will fail if MOUNT_OPTIONS is set to "-o
+> nodatasum":
+>
+>  FSTYP         -- btrfs
+>  PLATFORM      -- Linux/x86_64 btrfs-vm 7.1.0-rc4-custom+ #383 SMP PREEMP=
+T_DYNAMIC Sat May 30 07:35:42 ACST 2026
+>  MKFS_OPTIONS  -- -O bgt -K /dev/mapper/test-scratch1
+>  MOUNT_OPTIONS -- -o nodatasum /dev/mapper/test-scratch1 /mnt/scratch
+>
+>  generic/628  1s ... - output mismatch (see /home/adam/xfstests/results//=
+generic/628.out.bad)
+>     --- tests/generic/628.out   2022-05-11 11:25:30.816666664 +0930
+>     +++ /home/adam/xfstests/results//generic/628.out.bad        2026-06-0=
+8 18:56:49.878542927 +0930
+>     @@ -8,8 +8,9 @@
+>      310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/a
+>      310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/d
+>      test reflink flag not set iflag
+>     +XFS_IOC_CLONE: Invalid argument
+>      310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/a
+>     -310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/b
+>     +d41d8cd98f00b204e9800998ecf8427e  SCRATCH_MNT/b
+>     ...
+>
+> [CAUSE]
+> The direct cause is that after "chattr +S", the btrfs inode will lost its
 
+will lost -> will lose
 
-On 6/7/2026 2:56 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.12 release.
-> There are 332 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 09 Jun 2026 09:56:44 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.12-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> NODATASUM flag inherited from the mount option. E.g:
+>
+>  # mkfs.btrfs -f $dev
+>  # mount $dev $mnt -o nodatasum
+>  # touch $mnt/foobar
+>  # sync
+>  # btrfs ins dump-tree -t 5 $dev | grep "(257 INODE_ITEM 0) itemoff" -A 3
+>         item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+>                 generation 9 transid 9 size 0 nbytes 0
+>                 block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+>                 sequence 1 flags 0x1(NODATASUM)
+>                                      ^^^^^^^^^ Proper NODATASUM flag
+>
+>  # chattr +S $mnt/foobar
+>  # sync
+>  # btrfs ins dump-tree -t 5 $dev | grep "(257 INODE_ITEM 0) itemoff" -A 3
+>         item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
+>                 generation 9 transid 10 size 0 nbytes 0
+>                 block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
+>                 sequence 2 flags 0x20(SYNC)
+>                                       ^^^^ Only the new SYNC flag
+>
+> This makes the inode to drop the old NODATASUM flag, meanwhile the new
+> reflink destination will still inherit the NODATASUM flag.
+> The mismatching NODATASUM flags will cause the reflink to fail.
+>
+> The root cause is that, inside btrfs_fileattr_set() if no FS_NOCOW_FL is
+> set, we remove both NODATASUM and NODATACOW flag.
+>
+> However we should not touch NODATASUM flag, as data COW doesn't require
+> checksum.
+> Only NODATACOW implies NODATASUM, but DATACOW doesn't imply DATASUM.
+>
+> [FIX]
+> Do not remove NODATASUM flag when FS_NOCOW_FL is not set.
+>
+> However this will introduce a problem related to "chattr +C" then
+> "chattr -C" on zero sized files.
+>
+> Previously such operations will revert to inode flags 0, but now it will
+> revert to inode flags NODATASUM.
+> This is due to the fact that we have no way to change NODATASUM flag but
+> only through mount options.
+>
+> I know this is not ideal, but at least "chattr +S" removing unrelated
+> flags looks more serious and more like a bug.
+>
+> So here I'm fine to slightly change the behavior of "chattr -C".
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I'm not sure what's best here or how common this use case is and I
+wonder how it might affect users.
+I agree it's better to not remove the nodatasum flag, the only concern
+is if it affects existing user workflows.
+I can only guess it's very rare.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+>
+> Fixes: 7e97b8daf634 ("btrfs: allow setting NOCOW for a zero sized file vi=
+a ioctl")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+>  fs/btrfs/ioctl.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+> index d4981d2a42d7..74849a4208b5 100644
+> --- a/fs/btrfs/ioctl.c
+> +++ b/fs/btrfs/ioctl.c
+> @@ -336,8 +336,7 @@ int btrfs_fileattr_set(struct mnt_idmap *idmap,
+>                  */
+>                 if (S_ISREG(inode->vfs_inode.i_mode)) {
+>                         if (inode->vfs_inode.i_size =3D=3D 0)
+> -                               inode_flags &=3D ~(BTRFS_INODE_NODATACOW =
+|
+> -                                                BTRFS_INODE_NODATASUM);
+> +                               inode_flags &=3D ~BTRFS_INODE_NODATACOW;
+>                 } else {
+>                         inode_flags &=3D ~BTRFS_INODE_NODATACOW;
+>                 }
 
+This can now be simplified:
+
+if (!S_ISREG(inode->vfs_inode.i_mode) || inode->vfs_inode.i_size =3D=3D 0)
+    inode_flags &=3D ~BTRFS_INODE_NODATACOW;
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+
+Thanks.
+
+> --
+> 2.54.0
+>
+>
 
