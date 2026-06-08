@@ -1,219 +1,204 @@
-Return-Path: <stable+bounces-262048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xJKuNjXjJmq4mQIAu9opvQ
-	(envelope-from <stable+bounces-262048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:43:49 +0200
+	id OQYQJh3jJmqzmQIAu9opvQ
+	(envelope-from <stable+bounces-262051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:43:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D17D6583F1
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:43:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB446583E0
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:43:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=minyard.net header.s=google header.b=CnYJjjDp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262048-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262048-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=minyard.net;
+	dkim=pass header.d=openvpn.net header.s=google header.b=dw4yIfJh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262051-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262051-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=openvpn.net;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74BC53275F4C
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:26:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0743531280C9
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B944C6EE4;
-	Mon,  8 Jun 2026 14:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8356D37DEAA;
+	Mon,  8 Jun 2026 15:07:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A89408616
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 14:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40D330305
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 15:07:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780930715; cv=none; b=id2FBFZGf0EydYLn1ASNRMg8I3LyG0wW/kOmLf/stlMz3JauBBdr7vMwc1UP4G2BLOb6PKrhdVFCDY1nc4dpD6ZpJRaBjU5To9z85JRPhBz93xmst6akkDXdJRwV3UZdbNkvFauf9zxgjh9OGM2gR0XZAKDgkUmbbjXh09xW7Kg=
+	t=1780931279; cv=none; b=bQYspAoughWqUzpkuYeopn3SHzVG7HjDJN4omSizVx9VqMU76pCWbxjosb36ZEqcbJmyKkpfet3IFTCo/sjOjzZnDTLmVIWtqOtogzQiXs9UcP+pQqd25wCuRAZ1IxXvSTndmaIhHfeR7S8NXyP2+7PiTnUqe9J20voCV8w/pM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780930715; c=relaxed/simple;
-	bh=Ld/wS7rp+k+60ju85h/avqZuJos61qGFsY6Lm2elJ4I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hwZeUpRVLLa8HzuQuQ7sOlca+Npl5Hk5j5T/OmHbMbxwN+DszS7FNx/BKeMPhqiq1nBgq0HC6/n4jk5tEJPv2/82M3VEstmfWqGTCyZEsyubtDHxfpbA0euNWZHEuxWixt/MDQndc08iFcBk9zfbefYEvcSC3BTzuITzPESkryk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=CnYJjjDp; arc=none smtp.client-ip=209.85.167.177
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-48657fc84a3so3847735b6e.3
-        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 07:58:26 -0700 (PDT)
+	s=arc-20240116; t=1780931279; c=relaxed/simple;
+	bh=GVeaFmDl3Zv2NMxAhA6o3DrDcWESPgBn6yuhNtSkhDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CDUb/Sgm9RgklUb2ny3b7plBydMoh2ShpXALPRb7FCffwTozk8tP+GS6eV8d1ShasrdIHLszZqEp2yNOTe9r/jTeoJi4n0ClnDH1hxikC2vrqoYo9G7bkrRvoxQUSDaEBHwSXunCmuC9Ar4vEVVsj9s9N5jYNvEm1VrOvTUJHlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=dw4yIfJh; arc=none smtp.client-ip=209.85.128.42
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-490b8a97b11so49152485e9.0
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 08:07:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1780930706; x=1781535506; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=openvpn.net; s=google; t=1780931276; x=1781536076; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ynytDHRd76bMUHNmTQQewW2EWsRcgHarOHL+9T2G+3M=;
-        b=CnYJjjDpeQ3/8AcSkDLdtwDnCEbOcKNUdtexOde7xaKwKMtNE3141sEOIn3QqhOoHi
-         om3Fa7yWB0jLTXNJ6zjV/nwyWmGjz9U87xfCDE4g09bvBbRr6DK/RETSP43eOx9JKcnK
-         E3aYCP02LwKxkXFhkv3SyLYf009J3q2m71+QQ4yhyLF+G5ZpcBn5MeNU3LqJtYqUB+DA
-         WIi95NPNR4wXSyI2WzGwr+3WN/10qgj4olw5sLKXipYQhD2CPyrZt/+VgIZgUO3eXn7H
-         9ekePteF1oAB4Cy1BznUk2r4dCeTEIFACBKA+an5Ty3SLUvqHeWxQfKcK0movjlG7MLj
-         Bizw==
+        bh=mJCy09ESTxEx8Ki/esNqRYV/Y8EcyDPn5yaJERV6vkI=;
+        b=dw4yIfJhnAfXw5XRCcd5+1zSfTSDJb4oC9IuZWz6PbfiZjVD1XVGxkprEtJD7PbJrD
+         fNaWFH/fTF1JdmDNRdcoAXSsNz504eJvXxYSJISRNrv7ME1WmMIlFEii++LrAyKrv12M
+         deuyf+SLspdLil90DBmAx0CusP66V8hzg3tP/igegHZ7nWLC9BO7IJZwvAc1Vw1q8YWP
+         /YFcxXkyIuLeaNumtxiXeLYVJVSuDYL11dCM5j/FeQNNMUKxfqmgQo91OJ2DZ595bY2V
+         zcOuVW30AYK6pJ8XvQpwNVxM+KNgAp9XjFeFY1r0voY7H6CcQoRmByHihFMMQ8MiWvZj
+         /S1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780930706; x=1781535506;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1780931276; x=1781536076;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ynytDHRd76bMUHNmTQQewW2EWsRcgHarOHL+9T2G+3M=;
-        b=ps12tS61zhPkuPTtkozZHsz/4DwLe1elnZkZ3kxIksEwULpxYzyfSyRR8zMwMHVNG4
-         a0J17Z+NbpT1EXcbvqrxRgNNKFlb3lgt9wYbgrLiSxfRG7eRdJatwTP1i/QcyP2pyr42
-         9SqQNAaED2X3AxDJoW0mro4pvgJ/PLDns85gq2UgIedPHZgAlxr0snpwqKoncq4XR9n/
-         yWNReA8w2Q1jhOmi7EhK+G1JACGMqJQ4X90UaxI4Z3d9mgrwVQN8Xtnu1M3x2Mb7YjEy
-         ZQMyGooRw5Lx691at2tpaf3EmcSv9iaAkQDSdqx5noaHU/9/eMf4I9QaWzkO221VoSjg
-         U6wA==
-X-Forwarded-Encrypted: i=1; AFNElJ+MHByl3yH5uPudJ179JC2pvCKBPWaNf4zHF7ozHnL1xwk3E/rV+Ig5+5X3xZMTQZJdp2MNsoM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnLy9Xf196C3dyQWNeQ8niNPQKk8PBFExu+lSp1ob6gDFC3R5G
-	NJVx/r0KmTqBxy1HjIYp/1YO/ShenD48mK4qtMSSEtEAPQDSHBdzF+FLEN/YaEFOWb0=
-X-Gm-Gg: Acq92OE/v+QQ9CD2qEpNeKjsY+kdDpq+5xDFBk+Ue0IGmFQrKroBQMCXxXCQknUtFpe
-	pRdCH5kv4wNILj4qO6GKhQJXGnwgxyZ6WnxxDLRIdlOAYJQWSlq1wYDyPKMFbNRXuQsIwyk9VSd
-	4M/LvVX2UM/TL7Nr/efQxVbuVk13zovT2Fmal7MpKnBRKsxObcS3rCz2djF/cBbk+0schT1Em0b
-	xNNyZfBbxmQjOT2OREHFtMApd4h06I3xMa1Ky66yjiEnLHqidWNdHDl5uNZtQ9PLB7HC5qiQWiS
-	9tMdbQ8y8oblhSluKixiUcDTvHMXt1kuVO8QM9oFIgyUE+kgH2JkHTxXFugWPha3DfcTMbc4NnX
-	WEwEcrF46TBEIrvrRl7q2CQKq7k2lQ+kxVHX3R6GkUbc/67LuavabNr9+p6ZErEs1HCm504E48P
-	id2qPS75eV2uNColHBItPQiUAiCXLNjuCu0NZPUcfheVUxjKN8IwPp2Th7BXMjzsi+ZfpLa+RgY
-	H0rRPvgFu4/oVOkBuSo1AZutnk=
-X-Received: by 2002:a05:6808:4f0d:b0:479:db65:8dbc with SMTP id 5614622812f47-4868df59fd2mr10212483b6e.30.1780930705722;
-        Mon, 08 Jun 2026 07:58:25 -0700 (PDT)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:cbbe:5d8b:b4d0:52d4])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4865b745773sm14464153b6e.6.2026.06.08.07.58.24
+        bh=mJCy09ESTxEx8Ki/esNqRYV/Y8EcyDPn5yaJERV6vkI=;
+        b=qtj0+f+hrDVZSawuKlD4cjviv/yxGJMUgYtNLWtJzXWk0LUpBlXg09q2c3SU/JPCAS
+         l5qiGKCkyu3AvhQHg+ltBFLNcRn3ErnMN62vjJ7JCVMzIAH6aiifdonMpEq3zp6k1EQr
+         aIh5gt8Z+Et9VbjKB4tedJzad/Iq/GhWWsLIHA2McAldv5qP9ObqhddADLtr6wyRrUn1
+         zgIJfP+j7xGP8PZy8vYbU7Gv2arEZX2dGqYxNo8jcKKrsmYuglD5XHilGMl5MonLXmvw
+         P5AciQWNpJJu5gNXlLyIdjG/Gw81iIFfy5boi6955NEJ0G7k979ykrXA8M7exClomBSw
+         Xtzg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Vp+YLVyFUF0VI9xffAW95pHPdvlMU+i8JxgL/DvICVb0/HAPuUgv0A66tJXpXKGB7beAzF18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHbIJgPtGXrmmifiEGvb32JzHvCWu6Mp3GwjHyVQ7fk+5Z+XuF
+	+jYNudGu0s52Isvfqj1IpgfDuI1G/XzrkpLs17veb2t5rzOsxEY6e65InNuB+aGDmQQeapBlSaN
+	UElkxVlGDWbB8NbPM02mwBxJhLPik9eIO+gImnuQ9ogwYDdqd07qtq79UFfwPziS99Yw=
+X-Gm-Gg: Acq92OG7f5paZ0hNsD94ZT1QsvUqWolHeCyyfJWY2jkcEBPx3TIrtQc6cXqIjoqA5yE
+	MyrUV1sjU3sGws8UCKTmu44kuhDQm8PjAdFL5njvEUTZiG/DrE8jAq6HIiKtBplVU+l7xzc58Ar
+	TZRP8NSyFV1RFYMqKUAMvn1xsFHxvRDR1Teu+qPe6EwNYr+DgjKnC9FhFTxodXNP2Xc5S+99ywf
+	Hw63oohAV+sXt8N3+cOV0SQK9+bsKDy819228etpWJzwIhYli1iuJN6ZA1/WN9Z9q4F8Acr6l7l
+	4nx8QEQAGkYQKm3HqdWtewesrHe/IEy2te4N4KqPMgLz4enLHKmVVl4/sB8wnsiPTOTs8QC7EDN
+	4tMN+pzX4MU/xgh93zXt+sW/Qwv12r4b1dQNzHp8qTpk5uU0Rwa1Uqd4vIz52sBOr90CgHPq1vG
+	MjRqBgUP2xbf5l7PODTeHnmr1dHgzoRXtlCFVW6DIe6q4p+EfrUFYI9KoD+A==
+X-Received: by 2002:a05:600c:3ba4:b0:490:bad9:de43 with SMTP id 5b1f17b1804b1-490c2525dacmr289221285e9.0.1780931276284;
+        Mon, 08 Jun 2026 08:07:56 -0700 (PDT)
+Received: from inifinity.homelan.mandelbit.com ([2001:67c:2fbc:1:7e36:aaf2:5280:7b3e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc39def5sm390659705e9.5.2026.06.08.08.07.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 07:58:24 -0700 (PDT)
-Date: Mon, 8 Jun 2026 09:58:19 -0500
-From: Corey Minyard <corey@minyard.net>
-To: Rui Qi <qirui.001@bytedance.com>
-Cc: Corey Minyard <minyard@acm.org>,
-	openipmi-developer@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v2] ipmi: Fix rcu_read_unlock to srcu_read_unlock in
- handle_read_event_rsp
-Message-ID: <aibYi72tthY8VX8V@mail.minyard.net>
-Reply-To: corey@minyard.net
-References: <20260525063235.990101-1-qirui.001@bytedance.com>
- <20260608112000.1-qirui.001@bytedance.com>
+        Mon, 08 Jun 2026 08:07:55 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: Pavitra Jha <jhapavitra98@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	stable@vger.kernel.org,
+	Antonio Quartulli <antonio@openvpn.net>
+Subject: [PATCH net 2/6] ovpn: fix peer refcount leak in TCP error paths
+Date: Mon,  8 Jun 2026 17:07:33 +0200
+Message-ID: <20260608150741.3320919-3-antonio@openvpn.net>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260608150741.3320919-1-antonio@openvpn.net>
+References: <20260608150741.3320919-1-antonio@openvpn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608112000.1-qirui.001@bytedance.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[openvpn.net,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[openvpn.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262048-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,minyard.net:dkim,minyard.net:email,minyard.net:replyto,minyard.net:from_mime,bytedance.com:email];
-	FORGED_RECIPIENTS(0.00)[m:qirui.001@bytedance.com,m:minyard@acm.org,m:openipmi-developer@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,queasysnail.net,mandelbit.com,kernel.org,redhat.com,lunn.ch,davemloft.net,google.com,vger.kernel.org,openvpn.net];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[corey@minyard.net,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262051-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[antonio@openvpn.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:jhapavitra98@gmail.com,m:sd@queasysnail.net,m:ralf@mandelbit.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:stable@vger.kernel.org,m:antonio@openvpn.net,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[openvpn.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[antonio@openvpn.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[corey@minyard.net]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,openvpn.net:dkim,openvpn.net:email,openvpn.net:mid,openvpn.net:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3D17D6583F1
+X-Rspamd-Queue-Id: 0EB446583E0
 
-On Mon, Jun 08, 2026 at 11:27:54AM +0800, Rui Qi wrote:
-> Hi Corey,
-> 
-> I'm following up on this patch which was originally submitted on
-> March 25 and resubmitted as v2 on May 25. I haven't received any
-> feedback so far, so I wanted to bring it back to your attention.
-> 
-> To recap, this is a one-line fix for handle_read_event_rsp() where
-> rcu_read_unlock() is incorrectly called instead of srcu_read_unlock()
-> on the error path, leaving the SRCU read-side lock held.
-> 
-> This patch is specifically targeted at stable branches (v6.12 and
-> earlier) that still carry the original SRCU-based locking. In
-> mainline, commit 3be997d5a64a ("ipmi:msghandler: Remove srcu from
-> the ipmi user structure") has already restructured this function to
-> use a mutex, effectively eliminating the bug. However, that commit
-> is part of a larger SRCU removal series that is not suitable for
-> stable backport.
-> 
-> Since the affected code no longer exists in mainline or your
-> for-next tree, this patch cannot follow the usual path of being
-> applied there first and then cherry-picked by stable. Could you
-> please review and provide an Acked-by so the stable team can pick
-> it up directly?
+From: Pavitra Jha <jhapavitra98@gmail.com>
 
-I can give an:
+When either the TCP RX or TX error path calls ovpn_peer_hold() followed
+by schedule_work(&peer->tcp.defer_del_work), and the work item is already
+pending from the other path, schedule_work() returns false and the work
+runs only once. Since ovpn_tcp_peer_del_work() calls ovpn_peer_put()
+exactly once, the extra reference taken by the losing path is never
+dropped, leaking the peer object.
 
-Acked-by: Corey Minyard <corey@minyard.net>
+The race window:
 
-on this, as it is obviously correct.  However, it might be better to
-backport the changes removing SRCU.  Using SRCU here was a mistake to
-begin with.  But that might be too big a change.
+  CPU0 (strparser/RX error):       CPU1 (tcp_tx_work/TX error):
+  ovpn_peer_hold()   <- refcnt+1   ovpn_peer_hold()   <- refcnt+2
+  schedule_work()    <- queued      schedule_work()    <- NO-OP
+                                    (work already pending)
+  ovpn_tcp_peer_del_work runs:
+    ovpn_peer_del()
+    ovpn_peer_put()  <- refcnt+1
+                                   <- peer never freed
 
--corey
+Fix by checking the return value of schedule_work() in both paths and
+calling ovpn_peer_put() to drop the extra reference if the work was
+already pending. ovpn_peer_hold() is kept unconditional in the TX path
+as it cannot fail at that point.
 
-> 
-> No changes since v2. The patch is reproduced below for convenience.
-> 
-> From: Rui Qi <qirui.001@bytedance.com>
-> Subject: [PATCH v2] ipmi: Fix rcu_read_unlock to srcu_read_unlock in
->  handle_read_event_rsp
-> 
-> Fix a bug where rcu_read_unlock() was used instead of srcu_read_unlock()
-> in handle_read_event_rsp() when ipmi_alloc_recv_msg() fails.
-> 
-> This mismatch leads to an SRCU read-side critical section imbalance: the
-> entry uses srcu_read_lock(&intf->users_srcu) but the error path
-> incorrectly calls rcu_read_unlock(), which is a no-op for SRCU and
-> leaves the SRCU lock held.
-> 
-> The offending code was restructured in mainline by commit 3be997d5a64a
-> ("ipmi:msghandler: Remove srcu from the ipmi user structure"), which
-> replaced the SRCU locking with a mutex in this function, effectively
-> eliminating the mismatch. However, that commit is part of a larger
-> SRCU removal series that is not suitable for stable backport. This
-> minimal fix addresses the SRCU imbalance for 6.12 and earlier stable
-> branches that still carry the original locking scheme.
-> 
-> Fixes: e86ee2d44b44 ("ipmi: Rework locking and shutdown for hot remove")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rui Qi <qirui.001@bytedance.com>
-> 
->  drivers/char/ipmi/ipmi_msghandler.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-> index 188722ec0337..41ae4dac4eeb 100644
-> --- a/drivers/char/ipmi/ipmi_msghandler.c
-> +++ b/drivers/char/ipmi/ipmi_msghandler.c
-> @@ -4395,7 +4395,7 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
-> 
->  		recv_msg = ipmi_alloc_recv_msg(user);
->  		if (IS_ERR(recv_msg)) {
-> -			rcu_read_unlock();
-> +			srcu_read_unlock(&intf->users_srcu, index);
->  			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
->  						 link) {
->  				list_del(&recv_msg->link);
+Fixes: a6a5e87b3ee4 ("ovpn: avoid sleep in atomic context in TCP RX error path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavitra Jha <jhapavitra98@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+---
+ drivers/net/ovpn/tcp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ovpn/tcp.c b/drivers/net/ovpn/tcp.c
+index 433bd07a4f1b..0af14055c39a 100644
+--- a/drivers/net/ovpn/tcp.c
++++ b/drivers/net/ovpn/tcp.c
+@@ -151,7 +151,8 @@ static void ovpn_tcp_rcv(struct strparser *strp, struct sk_buff *skb)
+ 	/* take reference for deferred peer deletion. should never fail */
+ 	if (WARN_ON(!ovpn_peer_hold(peer)))
+ 		goto err_nopeer;
+-	schedule_work(&peer->tcp.defer_del_work);
++	if (!schedule_work(&peer->tcp.defer_del_work))
++		ovpn_peer_put(peer);
+ 	ovpn_dev_dstats_rx_dropped(peer->ovpn->dev);
+ err_nopeer:
+ 	kfree_skb(skb);
+@@ -283,7 +284,8 @@ static void ovpn_tcp_send_sock(struct ovpn_peer *peer, struct sock *sk)
+ 			 * stream therefore we abort the connection
+ 			 */
+ 			ovpn_peer_hold(peer);
+-			schedule_work(&peer->tcp.defer_del_work);
++			if (!schedule_work(&peer->tcp.defer_del_work))
++				ovpn_peer_put(peer);
+ 
+ 			/* we bail out immediately and keep tx_in_progress set
+ 			 * to true. This way we prevent more TX attempts
+-- 
+2.53.0
+
 
