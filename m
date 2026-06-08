@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zilbBa1VJmoNVAIAu9opvQ
-	(envelope-from <stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:39:57 +0200
+	id JfVSFiBkJmobVwIAu9opvQ
+	(envelope-from <stable+bounces-261963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 08:41:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673A9652DB9
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A14FC65331D
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 08:41:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sina.cn header.s=201208 header.b="HqJp8Ut/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=sina.cn;
+	dkim=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261963-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261963-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FE2C302C0D0
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 05:37:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FF19304C94A
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 06:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09959374722;
-	Mon,  8 Jun 2026 05:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D731E822;
+	Mon,  8 Jun 2026 06:38:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail115-80.sinamail.sina.com.cn (mail115-80.sinamail.sina.com.cn [218.30.115.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150D7234994
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 05:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF692DAFB0;
+	Mon,  8 Jun 2026 06:38:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780897073; cv=none; b=LzQ3riCpyC3aJd8I6W+zwtouyuYu92UbfDkchuS9tvHWG9RRCllI6zMKJ+SU1LOKsaVWakWjsDrNjF2d6kPywhkcdELfgNUpGGhnN9MHTQPiorQe5iLLYYjXnGVslD8t58aflWt6zBDD9HVlQmvX1P1KLLPMOAEtIhYxiub8TpE=
+	t=1780900724; cv=none; b=knK/pZ7d+KtIf9GLVjClaY5HFlJSbWeRzCDkCu4tyF/2HReOj4X4Xc5/IbMZkMoxLb9XLAPiMV5VQr/VzGAYgurX9Hd+hw0nns9/kIRKu8DmvtKK74ktllJWsgHO9C/pQLNDFX5495G/u+qMFQMDfYAqkco+7kBHRZhjoeh+nSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780897073; c=relaxed/simple;
-	bh=15SLlNMVfPl3yks/gJWGtv/PuIggPGqTOPfpqDCjG0g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s5eQUYKC8jnKNdLEqjR0PQpxFbE6BFj/g/V3iVSFpUSapWRFSzT7PwKM1VpgA8r5ypjszhmfBFm/wgIENCQYQI6RDfOVQqj9ojpfvZPZG8QI+jKjxhBlo/AECD9YxcwnVDNrSc9ukth9UxEY9OUprS1aP+c+WNU6Ioy21GyUZl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=HqJp8Ut/; arc=none smtp.client-ip=218.30.115.80
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1780897069;
-	bh=gSy2xj2CNZv6TxCh5crV+eeqhefPzVhGr7m/yw+g0b0=;
-	h=From:Subject:Date:Message-Id;
-	b=HqJp8Ut/m7LI9tphSyJPAuWtTmFCWoV/5PiBv5FSVG8UkDYdntb9vaGG0w3I12Id6
-	 jWlcqLaPjXQM00+p4ZWjOdZsO28QmDtnURMeYFhhbNecDVZb0LCQQ7K5/F/fhUlsuy
-	 LjPU0IejkhVT2D/jZGWQq3fjQjTcJzTXNx6NQbg0=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.23) with ESMTP
-	id 6A2655010000729E; Mon, 8 Jun 2026 13:37:08 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-X-SMAIL-MID: 6619948913038
-X-SMAIL-UIID: CDB44C8845D94557BA03438C9E95BF2F-20260608-133708-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	khtsai@google.com
-Cc: patches@lists.linux.dev,
+	s=arc-20240116; t=1780900724; c=relaxed/simple;
+	bh=akshtcTLq/rNAOKhSpb1ELNWikn5FWvaaWnKweixmI0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H0gQnahu2m6GYy1jL7duw3Tiuy7XksEtSsoH+gaZWfiARPBCx3HJ24sIHdnfoaBPV0PkgGV+lQn5XiViNqxe3Df8/kcGKETIgE6cYb2Rebv6VUanDnVv2X0lPrqguAG85ejW8b5bPT6LOSTw1Y+9CAqXK9OeKp44qrCd0RGv8as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAB3HNVpYyZqNQDgAA--.1048S2;
+	Mon, 08 Jun 2026 14:38:33 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
-	sashal@kernel.org,
-	raubcameo@gmail.com,
-	andrzej.p@samsung.com,
-	balbi@ti.com,
-	kyungmin.park@samsung.com,
-	linux-usb@vger.kernel.org
-Subject: [PATCH 6.1.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
-Date: Mon,  8 Jun 2026 13:37:05 +0800
-Message-Id: <20260608053705.2797309-1-jianqkang@sina.cn>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe: fix refcount leak in xe_range_fence_insert()
+Date: Mon,  8 Jun 2026 06:15:40 +0000
+Message-Id: <20260608061540.121355-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,253 +58,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAB3HNVpYyZqNQDgAA--.1048S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kr17Jr4kAF1xXr4rCFWDXFb_yoW8Gw15pw
+	4rCr4UCr9xXa9Fvw17CF4YqFyjka1agrWkKr1vk39xX3y5JFy8Xr98Aa9YgF4UArs2vF13
+	CrnFyw1UW34qyF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
+	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4
+	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
+	MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
+	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
+	6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
+	BIdaVFxhVjvjDU0xZFpf9x0JUG_M-UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoMA2omIvDleAAAsB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,gmail.com,samsung.com,ti.com];
-	TAGGED_FROM(0.00)[bounces-261956-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:khtsai@google.com,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:sashal@kernel.org,m:raubcameo@gmail.com,m:andrzej.p@samsung.com,m:balbi@ti.com,m:kyungmin.park@samsung.com,m:linux-usb@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:matthew.brost@intel.com,m:thomas.hellstrom@linux.intel.com,m:rodrigo.vivi@intel.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:intel-xe@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261963-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[intel.com,linux.intel.com,gmail.com,ffwll.ch];
 	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FREEMAIL_FROM(0.00)[sina.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:from_mime,iscas.ac.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 673A9652DB9
+X-Rspamd-Queue-Id: A14FC65331D
 
-From: Kuen-Han Tsai <khtsai@google.com>
+xe_range_fence_insert() acquires a reference on fence via
+dma_fence_get() and stores it in rfence->fence.  It then calls
+dma_fence_add_callback() and handles two cases: when the callback
+is successfully registered (err == 0) the fence is transferred to
+the tree for later cleanup; when the fence is already signaled
+(err == -ENOENT) it manually drops the extra reference with
+dma_fence_put(fence).
 
-[ Upstream commit ec35c1969650e7cb6c8a91020e568ed46e3551b0 ]
+However, dma_fence_add_callback() can fail with other errors
+(e.g. -EINVAL) and in that case the code falls through to the free:
+label without releasing the acquired reference, leaking it.
 
-The network device outlived its parent gadget device during
-disconnection, resulting in dangling sysfs links and null pointer
-dereference problems.
+Fix the leak by adding an else branch that calls dma_fence_put()
+before jumping to free: for any error other than -ENOENT.
 
-A prior attempt to solve this by removing SET_NETDEV_DEV entirely [1]
-was reverted due to power management ordering concerns and a NO-CARRIER
-regression.
-
-A subsequent attempt to defer net_device allocation to bind [2] broke
-1:1 mapping between function instance and network device, making it
-impossible for configfs to report the resolved interface name. This
-results in a regression where the DHCP server fails on pmOS.
-
-Use device_move to reparent the net_device between the gadget device and
-/sys/devices/virtual/ across bind/unbind cycles. This preserves the
-network interface across USB reconnection, allowing the DHCP server to
-retain their binding.
-
-Introduce gether_attach_gadget()/gether_detach_gadget() helpers and use
-__free(detach_gadget) macro to undo attachment on bind failure. The
-bind_count ensures device_move executes only on the first bind.
-
-[1] https://lore.kernel.org/lkml/f2a4f9847617a0929d62025748384092e5f35cce.camel@crapouillou.net/
-[2] https://lore.kernel.org/linux-usb/795ea759-7eaf-4f78-81f4-01ffbf2d7961@ixit.cz/
-
-Fixes: 40d133d7f542 ("usb: gadget: f_ncm: convert to new function interface with backward compatibility")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
-Link: https://patch.msgid.link/20260309-f-ncm-revert-v2-7-ea2afbc7d9b2@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Use no_free_ptr() since retain_and_null_ptr() is unavailable in Linux 6.6. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Cc: stable@vger.kernel.org
+Fixes: 845f64bdbfc9 ("drm/xe: Introduce a range-fence utility")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/usb/gadget/function/f_ncm.c   | 35 ++++++++++++++++++---------
- drivers/usb/gadget/function/u_ether.c | 22 +++++++++++++++++
- drivers/usb/gadget/function/u_ether.h | 26 ++++++++++++++++++++
- drivers/usb/gadget/function/u_ncm.h   |  2 +-
- 4 files changed, 73 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/xe/xe_range_fence.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index addd016ffbb3..5e240cafbe9e 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1440,6 +1440,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct f_ncm_opts	*ncm_opts;
- 
- 	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
-+	struct net_device		*net __free(detach_gadget) = NULL;
- 	struct usb_request		*request __free(free_usb_request) = NULL;
- 
- 	if (!can_support_ecm(cdev->gadget))
-@@ -1453,16 +1454,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 			return -ENOMEM;
+diff --git a/drivers/gpu/drm/xe/xe_range_fence.c b/drivers/gpu/drm/xe/xe_range_fence.c
+index 372378e89e98..3d8fa194a7b0 100644
+--- a/drivers/gpu/drm/xe/xe_range_fence.c
++++ b/drivers/gpu/drm/xe/xe_range_fence.c
+@@ -77,6 +77,8 @@ int xe_range_fence_insert(struct xe_range_fence_tree *tree,
+ 	} else if (err == 0) {
+ 		xe_range_fence_tree_insert(rfence, &tree->root);
+ 		return 0;
++	} else {
++		dma_fence_put(fence);
  	}
  
--	mutex_lock(&ncm_opts->lock);
--	gether_set_gadget(ncm_opts->net, cdev->gadget);
--	if (!ncm_opts->bound)
--		status = gether_register_netdev(ncm_opts->net);
--	mutex_unlock(&ncm_opts->lock);
--
--	if (status)
--		return status;
--
--	ncm_opts->bound = true;
-+	scoped_guard(mutex, &ncm_opts->lock)
-+		if (ncm_opts->bind_count == 0) {
-+			if (!device_is_registered(&ncm_opts->net->dev)) {
-+				gether_set_gadget(ncm_opts->net, cdev->gadget);
-+				status = gether_register_netdev(ncm_opts->net);
-+			} else
-+				status = gether_attach_gadget(ncm_opts->net, cdev->gadget);
-+
-+			if (status)
-+				return status;
-+			net = ncm_opts->net;
-+		}
- 
- 	ncm_string_defs[1].s = ncm->ethaddr;
- 
-@@ -1562,6 +1565,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
-         ncm->notify_req = no_free_ptr(request);
- 
-+	ncm_opts->bind_count++;
-+	no_free_ptr(net);
-+
- 	DBG(cdev, "CDC Network: %s speed IN/%s OUT/%s NOTIFY/%s\n",
- 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
- 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
-@@ -1610,7 +1616,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
- 	struct f_ncm_opts *opts;
- 
- 	opts = container_of(f, struct f_ncm_opts, func_inst);
--	if (opts->bound)
-+	if (device_is_registered(&opts->net->dev))
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-@@ -1672,9 +1678,12 @@ static void ncm_free(struct usb_function *f)
- static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- {
- 	struct f_ncm *ncm = func_to_ncm(f);
-+	struct f_ncm_opts *ncm_opts;
- 
- 	DBG(c->cdev, "ncm unbind\n");
- 
-+	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
- 	hrtimer_cancel(&ncm->task_timer);
- 
- 	kfree(f->os_desc_table);
-@@ -1690,6 +1699,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
- 
- 	kfree(ncm->notify_req->buf);
- 	usb_ep_free_request(ncm->notify, ncm->notify_req);
-+
-+	ncm_opts->bind_count--;
-+	if (ncm_opts->bind_count == 0)
-+		gether_detach_gadget(ncm_opts->net);
- }
- 
- static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index e84178bffe78..e972de236be5 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -910,6 +910,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
- }
- EXPORT_SYMBOL_GPL(gether_set_gadget);
- 
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g)
-+{
-+	int ret;
-+
-+	ret = device_move(&net->dev, &g->dev, DPM_ORDER_DEV_AFTER_PARENT);
-+	if (ret)
-+		return ret;
-+
-+	gether_set_gadget(net, g);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(gether_attach_gadget);
-+
-+void gether_detach_gadget(struct net_device *net)
-+{
-+	struct eth_dev *dev = netdev_priv(net);
-+
-+	device_move(&net->dev, NULL, DPM_ORDER_NONE);
-+	dev->gadget = NULL;
-+}
-+EXPORT_SYMBOL_GPL(gether_detach_gadget);
-+
- int gether_set_dev_addr(struct net_device *net, const char *dev_addr)
- {
- 	struct eth_dev *dev;
-diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
-index 40144546d1b0..3e12d60053c1 100644
---- a/drivers/usb/gadget/function/u_ether.h
-+++ b/drivers/usb/gadget/function/u_ether.h
-@@ -149,6 +149,32 @@ static inline struct net_device *gether_setup_default(void)
-  */
- void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
- 
-+/**
-+ * gether_attach_gadget - Reparent net_device to the gadget device.
-+ * @net: The network device to reparent.
-+ * @g: The target USB gadget device to parent to.
-+ *
-+ * This function moves the network device to be a child of the USB gadget
-+ * device in the device hierarchy. This is typically done when the function
-+ * is bound to a configuration.
-+ *
-+ * Returns 0 on success, or a negative error code on failure.
-+ */
-+int gether_attach_gadget(struct net_device *net, struct usb_gadget *g);
-+
-+/**
-+ * gether_detach_gadget - Detach net_device from its gadget parent.
-+ * @net: The network device to detach.
-+ *
-+ * This function moves the network device to be a child of the virtual
-+ * devices parent, effectively detaching it from the USB gadget device
-+ * hierarchy. This is typically done when the function is unbound
-+ * from a configuration but the instance is not yet freed.
-+ */
-+void gether_detach_gadget(struct net_device *net);
-+
-+DEFINE_FREE(detach_gadget, struct net_device *, if (_T) gether_detach_gadget(_T))
-+
- /**
-  * gether_set_dev_addr - initialize an ethernet-over-usb link with eth address
-  * @net: device representing this link
-diff --git a/drivers/usb/gadget/function/u_ncm.h b/drivers/usb/gadget/function/u_ncm.h
-index 5408854d8407..297e5087872f 100644
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -18,7 +18,7 @@
- struct f_ncm_opts {
- 	struct usb_function_instance	func_inst;
- 	struct net_device		*net;
--	bool				bound;
-+	int				bind_count;
- 
- 	struct config_group		*ncm_interf_group;
- 	struct usb_os_desc		ncm_os_desc;
+ free:
 -- 
 2.34.1
 
