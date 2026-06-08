@@ -1,168 +1,173 @@
-Return-Path: <stable+bounces-262039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262040-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id h/CCIwDHJmqnkQIAu9opvQ
-	(envelope-from <stable+bounces-262039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 15:43:28 +0200
+	id rIyYFXXHJmrTkQIAu9opvQ
+	(envelope-from <stable+bounces-262040-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 15:45:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFBB656BF8
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 15:43:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9425656C3F
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 15:45:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=bGsOeQ2n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262039-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262039-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=bootlin.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oWvkEbe0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262040-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262040-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DCC253010638
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 13:43:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 745F5304C4D6
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91213B47EB;
-	Mon,  8 Jun 2026 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363B43B6BF9;
+	Mon,  8 Jun 2026 13:43:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E6B38B124;
-	Mon,  8 Jun 2026 13:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEDE3B0AD4
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 13:43:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780926179; cv=none; b=O5yPFhTixz3v5bouaNNjZEC2mE5A5BLCUrrHg2B20yd6XdRHr5xn2nkGQ9rKwXJeVUM/VQ65mifphsliOGj1lJBLeQyy7+I6K4Hj+luf3zVOmFoR4qzYWScuSwucbxRAXIvaonG6oqyFAJvxVnrL590kDr5VGeoEfpnReAW68r0=
+	t=1780926187; cv=none; b=MnNu4N/XduUslzkpV/F1yCiBBZLZ+881I+D/osLJ3yA8nygXsd+X5jVSBWEQkkM8jiDIrnHjTzaeYavtMvEVmYBeZFAe1sqzTz2fubJKOa9cT6ioBTmZnPrDbdkx1d8KnU55CfvkHM7cRn8wyxERWj9ocDYpDl/V4JDHTsG1NnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780926179; c=relaxed/simple;
-	bh=TDwjrHs5aXhi2j3b6lHo1/HopmgZovmra0sPxvyMZWc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=clA0LUpdTvrBnsIRLAJWvzfrPWb7UsnvP1eTW953GPd/FBB7nal4ZXP6KLbPYxRgizzZgDAeK+nJ8ODhVLMeOJ7Sw2x4lzpYsuC7s4yqb86yWGYSSWD6RbtAZ2LqYR9y+HK3vxqUa/KQc0CvSUYAGe96Rk7xGVJaCfOdA4/+sEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bGsOeQ2n; arc=none smtp.client-ip=185.246.84.56
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C7E991A37D2;
-	Mon,  8 Jun 2026 13:42:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 95D285FFB7;
-	Mon,  8 Jun 2026 13:42:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DF304106A2956;
-	Mon,  8 Jun 2026 15:42:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780926173; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=xjUlG70lR8Ty3SgbCmz2G1wN4Uaq3vikNmN1H1aZ9FI=;
-	b=bGsOeQ2nniZ/EXYY2QwhqyyC8nvJusZ8b3u1rSQO9FAlF8wbGsPnbGXdDmlEtDwA0o+2li
-	mWBHycT94cuvnVyR5ugZQWLeWpmup0n1UeO186TErdgDcjZGByaa6R8bsmkR5T9LcsL4Xe
-	811Ks6k96nK7IKIGo7vY/yKgoae1C6GL3tR2Jmr5+gsNVdO0XmYwjHZWf8Xpu1hrGtvVEE
-	4b92vNKmJaI9Nf3ZhRYPKQNWZH6lsBe1bNEQPmp00bka+ZIlvWljpFyVI/H8gE0h1mg4jo
-	7x9VgHxzA3wCQ+AFW5q2TwG8/T6v9m/wM82RFbdF0OJ4qMTQI4BMq0QDnDWK9Q==
-From: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-Date: Mon, 08 Jun 2026 15:42:44 +0200
-Subject: [PATCH v3 2/2] nvmem: layouts: Make the fixed-layout driver
- optional
+	s=arc-20240116; t=1780926187; c=relaxed/simple;
+	bh=p8POFC0Q1WkRp8Ka1VTVl3OVHKoj5phUJkevGRLYJGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YEzMxSIVulmHbplVuq23gQlimXWrk1YtB6I8nvKaxD5SF+htM/jn0H5s/CGqvwoWKJGfF5G0amfAc7U7Vn0gATMpNNEHXNzclhI+ByHNrDLWwjtrG0FQfnJQDeBte3rx/HBhR5x0tt6iz4sErH4c6rpawXdOpEv8f3hGNj522d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oWvkEbe0; arc=none smtp.client-ip=209.85.215.170
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c858014845aso1721961a12.1
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 06:43:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780926183; x=1781530983; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QHzbcFreo9ZiUMP3qqPWdb9beXmFTCbf1XOZjKPDsxI=;
+        b=oWvkEbe0NjSqMj9HHlkSQbZUUE+yrDDJ7U1stiLtfy7mMIErSEfyIvpg4KOJQ2s3vW
+         asEJ0bVY/nv9FprR0hJf3m1W3/C8cW6NxUYayyoNYoA7Y6lLUdWQqTNHB1AgV7BYMnoj
+         x0PxEQhPYgqv0dfzuh1wt8sThyCTCgU0WMYyWjqDhHH0sP3itcf/ZhSj6NXduoeiY1rA
+         aYewVyD5V36qVYg0Z2R9DA7lc4Ydrb4mRuMafNdd7DGknZwDHJ8R5wdKeC4t+Ci4KQQb
+         BO7scbH9f0ecdjx0EZfkugQSpihNjcJm33CTlzWOh3/VKY2+W/vx32JgvVfXTQgkkSys
+         jsMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780926183; x=1781530983;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QHzbcFreo9ZiUMP3qqPWdb9beXmFTCbf1XOZjKPDsxI=;
+        b=XrDpuUDoTBP+MswIXdWiDBCXx++GxODbjTf09HOXUJaOiPNNOGBljjHy4mA8mJDksv
+         LMxWybpJAdmCEqhHvRWVRh8muwx9NlRDTv16JbJrKzLG8DWtIXerrPzwnjwHkvId9YOt
+         LRufodCFRWlrE2PTxvXJzO75WZABpVbwYrVOhQfJE+zAgDMX9rcMnpF8p84XAVO5SeYY
+         2XEz/heWR/+ozk19xzod/xL+XVnrB1PcNdhdGQw0wWm0PN6pGboyLTaSU4//MoWnh3wU
+         l3xUmqnnRMbRe1eKuSRDVx20UlOUO7KdfgbvvZ/8zgp3cg/gJ7IU+bXSizCiUWnHYkTy
+         SVBA==
+X-Forwarded-Encrypted: i=1; AFNElJ/cABaWu5thQOu9hm8olSFpCi1rw1ebTTEkArPbssDSb3K/Wm65HhlhmBTkDzkqymeiFfupwcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwHV5GiYo7sQYg7vDfAM5jp7LFhW6yhygBp676EgmzOPAjRq0d
+	iWHy9SLKV4jbIxvEe07pC4PWZMnis5lK29vDVaHEyY5b72gIWqOxpgmx
+X-Gm-Gg: Acq92OFkogqxR3bysEqyiz23YvBafwvRWzcgoUdixdleP4vsstI2XUbxQ4StSWzCUw0
+	aJbryOmpaydBkAGW0XxRVA4bjvibsVIMVADthVtcgN2mPEcoxuUE3OKiDD44Xn9mZwX+rRiy4RA
+	2RTtEaW9Ie19P/ABG5mlXP+As5jQ/pMZvVQtGc3rYzZ4wMbb8KzYHRm0LIvXmLoQtWHl4/wqj16
+	Xp1bY4EQ8g91nKNApYpkCfAPlfXG+QNs1XuG8NzMbWDkBbjhAnjlIwjyGQA2qRLuXo8p5QeeFOH
+	09ZtTfFPuTfMiQwrgSOcWOO+uY8j7Jd/o8yjh+XZyy9JrDhmbIM8K8Ncj/BAYTNKJEroXjgrIOo
+	E78lEHyDFyMjEQ5nHr4tgpL/M7e0lMlBJv0G8NBeUMw7JbWPylChOaBhMc7nGcEoHLPUpKenHg2
+	9EWBxno7YPzKzvwrWEoOH2pYt0VAqvP47yvp/8AWiNFyqGozjQRtaHIsW2NQoYh/xXNdtdWBB4W
+	DL3awimxDHibhJljHg0uWfwRB4pYf4=
+X-Received: by 2002:a05:6a20:3ca7:b0:3a2:e089:ae4c with SMTP id adf61e73a8af0-3b4d39f5912mr12893900637.5.1780926182745;
+        Mon, 08 Jun 2026 06:43:02 -0700 (PDT)
+Received: from archlinux ([2405:201:1b:225f:72b8:b88f:97ce:a863])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85deeb2bdesm15664248a12.0.2026.06.08.06.43.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 06:43:02 -0700 (PDT)
+From: Krishna Chomal <krishna.chomal108@gmail.com>
+To: ilpo.jarvinen@linux.intel.com,
+	hansg@kernel.org
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krishna Chomal <krishna.chomal108@gmail.com>,
+	=?UTF-8?q?Ahmet=20=C3=96zt=C3=BCrk?= <sivasli-ahmet@gmx.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] platform/x86: hp-wmi: Add support for Omen 16-ap0xxx (8E35)
+Date: Mon,  8 Jun 2026 19:12:55 +0530
+Message-ID: <20260608134255.36280-1-krishna.chomal108@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260608-mathieu-nvmem-fixed-layout-v3-2-12ddc69f4c51@bootlin.com>
-References: <20260608-mathieu-nvmem-fixed-layout-v3-0-12ddc69f4c51@bootlin.com>
-In-Reply-To: <20260608-mathieu-nvmem-fixed-layout-v3-0-12ddc69f4c51@bootlin.com>
-To: Srinivas Kandagatla <srini@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, 
- =?utf-8?q?Gr=C3=A9gory_Clement?= <gregory.clement@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780926170; l=1524;
- i=mathieu.dubois-briand@bootlin.com; s=20241219; h=from:subject:message-id;
- bh=TDwjrHs5aXhi2j3b6lHo1/HopmgZovmra0sPxvyMZWc=;
- b=unER2OmtydQokTz4kD8wUbxn9ugpBdiwKG3lnVGJlC4IEqddO1C645jw1aluVfcwbdsiSm8xE
- ap8f4E5bsWsCNif/djScEnanHDsrz6FxAgWt4nutpaWSZUseydfJdB7
-X-Developer-Key: i=mathieu.dubois-briand@bootlin.com; a=ed25519;
- pk=1PVTmzPXfKvDwcPUzG0aqdGoKZJA3b9s+3DqRlm0Lww=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262039-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:srini@kernel.org,m:gregkh@linuxfoundation.org,m:miquel.raynal@bootlin.com,m:gregory.clement@bootlin.com,m:thomas.petazzoni@bootlin.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:mathieu.dubois-briand@bootlin.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[mathieu.dubois-briand@bootlin.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,gmx.de];
+	TAGGED_FROM(0.00)[bounces-262040-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ilpo.jarvinen@linux.intel.com,m:hansg@kernel.org,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:krishna.chomal108@gmail.com,m:sivasli-ahmet@gmx.de,m:stable@vger.kernel.org,m:krishnachomal108@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mathieu.dubois-briand@bootlin.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[krishnachomal108@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[krishnachomal108@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gmx.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4CFBB656BF8
+X-Rspamd-Queue-Id: B9425656C3F
 
-The fixed-layout support is now managed by a separate driver, so we can
-make this support optional. This aligns with the approach taken for
-other layout drivers.
+The HP Omen 16-ap0xxx (board ID: 8E35) has the same WMI interface as
+other Victus S boards, but requires quirks for correctly switching
+thermal profile.
 
-Signed-off-by: Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>
+Add the DMI board name to victus_s_thermal_profile_boards[] table and
+map it to omen_v1_legacy_thermal_params.
+
+Testing on board 8E35 confirmed that platform profile is registered
+successfully and fan RPMs are readable and controllable.
+
+Tested-by: Ahmet Öztürk <sivasli-ahmet@gmx.de>
+Reported-by: Ahmet Öztürk <sivasli-ahmet@gmx.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221523
+Cc: stable@vger.kernel.org # v6.18+
+Signed-off-by: Krishna Chomal <krishna.chomal108@gmail.com>
 ---
- drivers/nvmem/layouts/Kconfig  | 9 +++++++++
- drivers/nvmem/layouts/Makefile | 2 +-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/platform/x86/hp/hp-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvmem/layouts/Kconfig b/drivers/nvmem/layouts/Kconfig
-index 5e586dfebe47..973d3147f109 100644
---- a/drivers/nvmem/layouts/Kconfig
-+++ b/drivers/nvmem/layouts/Kconfig
-@@ -8,6 +8,15 @@ if NVMEM_LAYOUTS
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index f27d82258aa3..e94df6ca39b4 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -265,6 +265,10 @@ static const struct dmi_system_id victus_s_thermal_profile_boards[] __initconst
+ 		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8D87") },
+ 		.driver_data = (void *)&omen_v1_no_ec_thermal_params,
+ 	},
++	{
++		.matches = { DMI_MATCH(DMI_BOARD_NAME, "8E35") },
++		.driver_data = (void *)&omen_v1_legacy_thermal_params,
++	},
+ 	{},
+ };
  
- menu "Layout Types"
- 
-+config NVMEM_LAYOUT_FIXED_LAYOUT
-+	tristate "Fixed layout support"
-+	default y
-+	help
-+	  Say Y here to enable support for NVMEM fixed layout, which provides a
-+	  way to describe memory cells with fixed offsets and sizes.
-+
-+	  If unsure, say Y.
-+
- config NVMEM_LAYOUT_SL28_VPD
- 	tristate "Kontron sl28 VPD layout support"
- 	select CRC8
-diff --git a/drivers/nvmem/layouts/Makefile b/drivers/nvmem/layouts/Makefile
-index dd6c6c70b1a9..9da790a9dde9 100644
---- a/drivers/nvmem/layouts/Makefile
-+++ b/drivers/nvmem/layouts/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for nvmem layouts.
- #
- 
--obj-$(CONFIG_NVMEM_LAYOUTS) += fixed-layout.o
-+obj-$(CONFIG_NVMEM_LAYOUT_FIXED_LAYOUT) += fixed-layout.o
- obj-$(CONFIG_NVMEM_LAYOUT_SL28_VPD) += sl28vpd.o
- obj-$(CONFIG_NVMEM_LAYOUT_ONIE_TLV) += onie-tlv.o
- obj-$(CONFIG_NVMEM_LAYOUT_U_BOOT_ENV) += u-boot-env.o
-
 -- 
-2.47.3
+2.54.0
 
 
