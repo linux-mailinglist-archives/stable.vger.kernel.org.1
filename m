@@ -1,78 +1,73 @@
-Return-Path: <stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s/IvImKWJmrCZAIAu9opvQ
-	(envelope-from <stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:16:02 +0200
+	id +vpYBYaUJmonZAIAu9opvQ
+	(envelope-from <stable+bounces-262002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:08:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DF0654F01
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:16:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1138654DB9
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:08:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=H9D8IhW4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262001-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=foxmail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=Cj6UgT0u;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262002-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262002-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=uniontech.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C6663069F8E
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:03:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A8E253031C8C
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FC13BE630;
-	Mon,  8 Jun 2026 09:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5C43BADBC;
+	Mon,  8 Jun 2026 10:02:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-240.mail.qq.com (out203-205-221-240.mail.qq.com [203.205.221.240])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A983AA1B6;
-	Mon,  8 Jun 2026 09:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB3B2E7F0A;
+	Mon,  8 Jun 2026 10:02:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912642; cv=none; b=k4+Ihh1xVqbH4GOGBWZhWusT4SWwyYC8bPcYmm0fHR/i/26F8JdL7zP8O/cfcLsw08r8AXzPEUD9VwqsJy3HG6tlIl54hxzq+XPctzAtdIE/3JCNXn4dlBVpbEzxl3CVQPhYGwI098JNWZZZRtEZhMrJCCyN8rMbTTYLs6FDWtA=
+	t=1780912952; cv=none; b=GlPCa3oAthUhkfv3l8S++HxPww1LVSXUq6jO5+cuywO1MAem0C4escPsjQ7Gi3dn4IoXBBgk1HUjFyvWD8lqn5WCEGGbam0ibegYUaPd6sJ1J2E3K7p+Av4ZcD1V5e0cHzpYhxn3wnw02agg2eEFDDAssLVngVrY50XE51NkZWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912642; c=relaxed/simple;
-	bh=ngMAaFyO11vI37AhZlJcXNHtXsNDnTTugPJQE0HoGfQ=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Tp6Ssyak8/ef6ilNp4wyPvXr1CYbtzCiPCeq59iG8hXWRDyC1dArYbKZ6Ut76EWPnsNGhxOWqw7xEVwmW4KTTy8hIxvUdwyg5ZvolChaLPpm8jjrSO1dtJ/ZjP7ux3kC1+AB8Ptb0DDFVA2vhyoW4sooqwc0z9lPUJ0NTOL+pBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=H9D8IhW4; arc=none smtp.client-ip=203.205.221.240
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1780912636;
-	bh=Yj/4+3DzEU4TvSvmleeAUG1+meO3Aqt864cXNzMpXo0=;
-	h=From:To:Cc:Subject:Date;
-	b=H9D8IhW4FTBytKxkA4hUrnenQwJlr1vmCyjKH6Vz453D4TAOA61hCgp9lJHV+ksbn
-	 FLSuOVTW9gIzB/K1LocoRIPSbEZuoYXJpy/K6SvC0UPigN7nAJ5kgA3cgAptFqYJ8n
-	 irC9lUys76mLNspbjDXXDNAS7xBIwe0VCeeSCRuk=
-Received: from China-team ([47.95.114.252])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id E3938A47; Mon, 08 Jun 2026 17:56:57 +0800
-X-QQ-mid: xmsmtpt1780912617tnmdy7k4f
-Message-ID: <tencent_42D87A0C871AE6AF019BF6AB46F003577205@qq.com>
-X-QQ-XMAILINFO: N6nW3/TXfx9UpWZgwurumrxrG9NWkN3r1kOy2nd/BGyreG5PDGXim1atH0XBly
-	 tY9kNk8+dOh9FchWx9CFUWbW1ros/Jtdx3N8QaPJ9xkg8yhjPhBaX4sH811dTaSzafz5tAITHSh3
-	 rflyQsBqCL3UygzevhJnEcJEQmvFBmk68dz8cPNv/YFGtwIlwa0Z0NaVLKbyuYFQ0clSuduJo+DT
-	 v4UZM9uulQgoJDEqvppQmX5zl3Rr/ecqn8BRQk3PN+8256rpfn7k/+FvFejjYrO6IEDZ4zgY4eEz
-	 NW6du84Qyl0nKgNFAS7T9VlKJ+gJtdw7C0/f7aA18LEWBSLBllz/JC0XCv7te5B28Q/bRz1SbSui
-	 p1BIKla77nsDvHGGUNp5PgncWY5wMx4nWZxywXTn5p/RsAVl5e9xMVO5lxLxcNEb9qqehEpL17w+
-	 7TpTR99MtwsUMc8OuFwUqem60n23aWywJAm+lZQhfnDF1mQusxWpDB+BoJRoTYERMVohBRtZ9dql
-	 gYiVgNAjQB+CMWr6+DM0nDdS2sX4zcPaVrmlF1dq0camF11s3mRaAz7AaObr1eq0Ker6SX71+wCl
-	 K7baeuO+yxl6m4fKcSE/0yhw7k4DIr8ScsGrgVNC+kwfXWdDQ7FO7KUeFX1fUGb+I5jK4I5ATUHV
-	 1a1XyynJfJCK5bKL1+F1IiQVfjLquH36vKri5Q07fpM1yNipR012lrRfDg+2GDG6uLskL76ZD3RN
-	 d2A96srP8VPMaH5a6XqwZFKWmh1OyZc+uSuyfHXiv7Ap0vzowFwR407qaI8Ggcmw74vhQhiiHVoX
-	 H7meczsUucCHH2XlYns+mfxq3hOJd2Wbt+3IB2Sj61UizFyHomLNTxelot7kMBNJudHyp6CLllH6
-	 TRAjZ/OvKQahBeFAh0rT2v/lFE7mdxPViQA5HqCL8RdeM6FwGdGQgoaUIu88xhoP7oY0i+2F3f6b
-	 q4HEk3RsIVWs5ZaaVJhkPPgjz5KVZFT1jaHBQUBu1PR1x/Yt/u4IU8BPw2CWZCkyFWoSboyKJS3P
-	 +uC+OHK9iz3bU622rfRQRBVBDsm8+ah1nCsD/NHYrnv9efWraHTGq3JOxwBMU8iJIkGt7zkQ==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: Alva Lan <alvalan9@foxmail.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
+	s=arc-20240116; t=1780912952; c=relaxed/simple;
+	bh=pdGFzKrUBk946S/n5bevKh1Q1UI/o0CEXK2FVjN3ZPU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VKDAWlXbfNagkj54yl+YKJ2CCqxOLZuSN6bIKiP5qoJhEwI4tef7odWzncQJ1lSVFPlQWqi0dGRTBBFvVHAGHOef2qzOfPORT7LjGgQ7pJnIamvy7I5M9nPmNSVvdyeekSJxZoHpGHbuv4LAvowBgbGWv1tesCewqQ2DTQaRjS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=Cj6UgT0u; arc=none smtp.client-ip=18.132.163.193
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1780912874;
+	bh=xjnPQf7GAoyFUyGY5zxvgjv4eM33qSIDMbKW2dSfDqo=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=Cj6UgT0up/7NZ2IOzesleYJhlJ1X3Cu6q2AI5LsYpwSZnNnajV2G0OZe6nFfTjMxg
+	 XiRZKBtNQI1oD22oATXNi2T83SCgzTPw9MVd1ehki6rsRGsoGr71fZlXbgSd7LJRvf
+	 Z8g69AAHiardvDCT20kVck1C4abozYNW/KiK8vbw=
+X-QQ-mid: zesmtpgz3t1780912854tae9d0c57
+X-QQ-Originating-IP: 4E4RYRX91c4laM26UrRIuLa53EZJzKOeKvUr8D6DNiU=
+Received: from localhost.localdomain ( [1.202.39.170])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 08 Jun 2026 18:00:45 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 280074594800750850
+EX-QQ-RecipientCnt: 11
+From: ZhaoJinming <zhaojinming@uniontech.com>
+To: Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Oded Gabbay <ogabbay@kernel.org>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	ZhaoJinming <zhaojinming@uniontech.com>,
 	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6.y] Bluetooth: hci_conn: fix potential UAF in set_cig_params_sync
-Date: Mon,  8 Jun 2026 17:56:55 +0800
-X-OQ-MSGID: <20260608095656.97896-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] accel/rocket: Fix fence leak, runtime PM leak and WARN in rocket_job_run() error paths
+Date: Mon,  8 Jun 2026 18:00:40 +0800
+Message-Id: <20260608100040.985526-1-zhaojinming@uniontech.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20260608085043.688141F00893@smtp.kernel.org>
+References: <20260608085043.688141F00893@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,91 +75,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: M0qzrJwwKu7j73n+BV2qAyDzZMdEDff17lz0uFmcxVqRR1ZZmNLV8wPh
+	+/pLOGOdFES5xY/Kbj8kDaZlD5WJqByR1vcZZHNp7MW/sgOZbjuoaZTeUskKNjA+LQH4n7q
+	AMI0ddFZiCYikit98QLv44NqnRUaOpKNFjbUr6qGYmMmKWm5zfA2g5C6l/syFF01Os/rok9
+	nL34xp25mDYep+XXURSCb2QZAPyS5em02/XXgGfZicjUgxxFyS15D6Hw/1nscklPwZpE81/
+	rYibbwhm3NUbdpRAyjNJl3rHCurRD1812SkCwh4SgQZnYFuNssXZuUmwVUdws2qrtYDpnWt
+	RtruDtivMyVp8hXGuq4mBdsDJFBWi/cr7g60nN7Yo0hBfi3locTQhEjqJHWhORvei0IxfVl
+	LjoLeRvaZ2D5jpR1X+/TLJJgccyXZ6zs0mzyjj4wcgbDU4uSIhxthuNxzLwNuGgnISC0E/d
+	ijZfAYNG4fGEDfHShFGDQV1jPl/MkfrJtG3PCEKaArjB7zQmXV6/rwlYeVMd9xNKD88eGja
+	GqZ+iaPR9rSMM4YodGJUMCPAE4h/Exy9X0QSWfns2opg9JZZOK9HXc0Atlzv1Qnwck3bsoD
+	Epj4g2XeVYtBHnbUrAoJBYBAQHIXZaqVY1YoNyLnjQGQm9utQ3ilJ9A/Q5yeZXy70y+yPyg
+	uoJAiFKJCHvCbo/P2QzNlRnai0RZbKml8EJ0xADqkGKWyuwj0jeCNurZT3r2hF6cwyI3WZx
+	nAG4Z0IS3jUDhHAsggHcDLyZieM8jLDcSSUNo6hxSXCJKN0R1Jn39wc2OvjHmUN0iarxbFc
+	DS2XtJuRsfyAe0Bd2vr04nt8EnBdY9AdH5/qpc7pkYtBiuJCRfj8Iq1yHdt71h+6za1J8Xx
+	lBp9xjzFyseixmzuqFNzJ59y4vZCMTUuiBMhIVxf0nQ7WhHGXV9xBzXTDixgu+V/+xoHhtx
+	9/9xWV5lec2koLZJXkfhP1Tsv0WtEeVAcKGAmTR/Egq69PDTUdYgFByj5qpXTvk86CI6qRn
+	w9rikvQqpJcIKgi5DyBqQbEJxkw/t73XThlDDkuQ==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262001-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:pav@iki.fi,m:luiz.von.dentz@intel.com,m:alvalan9@foxmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,iki.fi,intel.com,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-262002-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:tomeu@tomeuvizoso.net,m:ogabbay@kernel.org,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jeff.hugo@oss.qualcomm.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:linux-media@vger.kernel.org,m:linaro-mm-sig@lists.linaro.org,m:zhaojinming@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[foxmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[foxmail.com:+];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,iki.fi:email,foxmail.com:dkim,foxmail.com:from_mime,foxmail.com:email,qq.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96DF0654F01
+X-Rspamd-Queue-Id: E1138654DB9
 
-From: Pauli Virtanen <pav@iki.fi>
+Three issues exist in the error paths of rocket_job_run():
 
-[ Upstream commit a2639a7f0f5bf7d73f337f8f077c19415c62ed2c ]
+1) dma_fence reference leak: After creating a fence and taking an extra
+   reference for job->done_fence via dma_fence_get(), the error paths
+   return without releasing the extra reference held by job->done_fence.
+   The leaked reference prevents the fence from being freed, causing
+   resource accumulation on repeated failures.
 
-hci_conn lookup and field access must be covered by hdev lock in
-set_cig_params_sync, otherwise it's possible it is freed concurrently.
+2) pm_runtime_get_sync() usage counter leak: pm_runtime_get_sync()
+   increments the runtime PM usage counter before attempting to resume
+   the device. If the resume fails and returns an error, the usage
+   counter remains incremented. The original error path does not call
+   pm_runtime_put_noidle() to balance it. Repeated failures will
+   permanently prevent the NPU from entering suspend.
 
-Take hdev lock to prevent hci_conn from being deleted or modified
-concurrently.  Just RCU lock is not suitable here, as we also want to
-avoid "tearing" in the configuration.
+3) Unsignaled fence returned on failure: The error paths return a valid
+   but unsignaled dma_fence to the DRM scheduler. Since the hardware
+   was never submitted, the fence is never signaled. When the scheduler
+   eventually drops its reference, dma_fence_release() detects the
+   unsignaled fence and triggers:
+     WARN(1, "Fence ... released with pending signals!")
+   and forcibly signals it with -EDEADLK.
 
-Fixes: a091289218202 ("Bluetooth: hci_conn: Fix hci_le_set_cig_params")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Minor context conflict resolved. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fix all three issues by:
+
+- Replace pm_runtime_get_sync() with pm_runtime_resume_and_get(), which
+  automatically decrements the usage counter on failure, eliminating
+  the need for a manual pm_runtime_put_noidle() call and avoiding the
+  usage counter leak. The pm_runtime_get_sync() documentation itself
+  recommends pm_runtime_resume_and_get() as the preferred alternative
+  when the return value is checked by the caller.
+
+- Release both fence references (job->done_fence and the local fence)
+  before returning ERR_PTR(ret) so the DRM scheduler cleanly aborts
+  the job without triggering the unsignaled fence WARN.
+
+- Add pm_runtime_put() on the iommu_attach_group error path to release
+  the runtime PM reference that was successfully acquired.
+
+Cc: stable@vger.kernel.org
+Fixes: 0810d5ad88a1 ("accel/rocket: Add job submission IOCTL")
+Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
 ---
- net/bluetooth/hci_conn.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/accel/rocket/rocket_job.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index f51c530a3c45..ab86cc4a5e3f 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1734,9 +1734,13 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 	struct iso_cig_params pdu;
- 	u8 cis_id;
+diff --git a/drivers/accel/rocket/rocket_job.c b/drivers/accel/rocket/rocket_job.c
+index ac51bff39833..e8a073e22ac2 100644
+--- a/drivers/accel/rocket/rocket_job.c
++++ b/drivers/accel/rocket/rocket_job.c
+@@ -310,13 +310,22 @@ static struct dma_fence *rocket_job_run(struct drm_sched_job *sched_job)
+ 		dma_fence_put(job->done_fence);
+ 	job->done_fence = dma_fence_get(fence);
  
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_cig(hdev, cig_id);
--	if (!conn)
-+	if (!conn) {
-+		hci_dev_unlock(hdev);
- 		return 0;
+-	ret = pm_runtime_get_sync(core->dev);
+-	if (ret < 0)
+-		return fence;
++	ret = pm_runtime_resume_and_get(core->dev);
++	if (ret < 0) {
++		dma_fence_put(job->done_fence);
++		job->done_fence = NULL;
++		dma_fence_put(fence);
++		return ERR_PTR(ret);
 +	}
  
- 	memset(&pdu, 0, sizeof(pdu));
+ 	ret = iommu_attach_group(job->domain->domain, core->iommu_group);
+-	if (ret < 0)
+-		return fence;
++	if (ret < 0) {
++		pm_runtime_put(core->dev);
++		dma_fence_put(job->done_fence);
++		job->done_fence = NULL;
++		dma_fence_put(fence);
++		return ERR_PTR(ret);
++	}
  
-@@ -1776,6 +1780,8 @@ static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- 		cis->p_rtn  = qos->ucast.in.rtn;
- 	}
- 
-+	hci_dev_unlock(hdev);
-+
- 	if (!pdu.cp.num_cis)
- 		return 0;
- 
+ 	scoped_guard(mutex, &core->job_lock) {
+ 		core->in_flight_job = job;
 -- 
-2.43.0
+2.20.1
 
 
