@@ -1,142 +1,140 @@
-Return-Path: <stable+bounces-262010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9x7eIxmhJmrAaAIAu9opvQ
-	(envelope-from <stable+bounces-262010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:01:45 +0200
+	id ZIbyI2ihJmraaAIAu9opvQ
+	(envelope-from <stable+bounces-262011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:03:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CE165571A
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:01:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1150655762
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 13:03:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262010-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262010-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DGtuydwv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262011-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262011-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8AFA3160DA4
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:30:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10FD830F3C1F
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39953BCD00;
-	Mon,  8 Jun 2026 10:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A4D3AFCE6;
+	Mon,  8 Jun 2026 10:33:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB3C3BB12F;
-	Mon,  8 Jun 2026 10:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775383A7D73;
+	Mon,  8 Jun 2026 10:32:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780914614; cv=none; b=fjG3cT71wTOpOFsZ0ONNY+McHGTypA3jrS2d2Ec5lZ6t5aAVBPL9IxVpgPJWgpwh1Zmluq5XrywRQMkcB0wCJ+qP5HH2ewUD502uzkIiSPU5BDwZmooajS9W5bw/8ueDzAbeMVX3Y3qfwwWFXvnl4ySgsseNZwq7eTM0FYpr68c=
+	t=1780914780; cv=none; b=dDzuD3pEFqqP9Yy/E2ZgkNd9DT4XYrlXFUcjdj6oWhsck+dZTLMEPUIzoB8QAWgAYUKPXGFgmV6mwVdwMNB9CnQjcvv1uryMLMEhIYPp1io3qrNZrnkN1B0qbgV2Kux26dEQG0v3Ewu1x9zB7mPAXMXjG6DIFLSjekr8zapK+ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780914614; c=relaxed/simple;
-	bh=44CzTcwldjEHT7AlGFPeHrLvDMTApNCyxxJ4uoYC2P4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TppHhqrgqJhpuLVdq2pu0PWZOyztAUPxtep+GkblYUQ2Qs6TGSE+8J4SmQsIkXFm1tQxj40r2+Ytz5fuYLITXvOvbPWSrXW3N+4+6f+WJIy2ytOHtx/dZW+ncsWVMyGz5su50EVXk3sRm8gyYYlBw/1ll+mCyUX9dRDqe4dcPBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowABnus2wmSZqcdayEg--.38019S2;
-	Mon, 08 Jun 2026 18:30:08 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] RDMA/iwpm: fix kref bypass in iwpm_register_pid() error path
-Date: Mon,  8 Jun 2026 10:30:01 +0000
-Message-Id: <20260608103001.142648-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780914780; c=relaxed/simple;
+	bh=ucsg0y+vPwq8t29TzyjveuC8ZlV9NyOnmMvknbjahTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=unGnrxaJ0YqT5zDpNOvrWsdfeDrs3w8VqCJnp9E9pd+bERau4FHTAXfW/fnriuZd8dRu+MWU+VrpM2CHUuTiytnlCDrtUWCgtEAV6GdVzTtDGVQhN88p7OT5Pk4/UkZtwkYybezd8qdKVxOMDTK5VqTUVa8IUJSgreid6o82sks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DGtuydwv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944981F00893;
+	Mon,  8 Jun 2026 10:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780914779;
+	bh=VrgTX6maMXqQRQypmSw+j2+O4a8NeO8G77HvRI4t32Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DGtuydwvDZAb+N5ZktMkc3Xhzt+vVuaNGoVeYSDc+WzEvES33AHrUixW5MsfzSYbt
+	 guhA1OfI5cBsvaUJbAqvvS46T63vjThPjX2VfjWKRtnPxfBdKYKkf70396kEc5pSXA
+	 xtVNuF/Yf7JWop+FBx8yzxHfhfgsG9BT1qROEwQCyHOU+plIQIrgzXjq2wZIttiv8t
+	 tdlrkHA5Czw3Wr1VEdZoVxUDtZoKgAiHnsqDxjGu/kTqBWZZpI40cfyUlONCmHfw7y
+	 nnjy19VwdA7uptTtcKFfeqA+dRn5m3PKpVk6PC7A2LJFaZLi/l+cZ7HFXfwNrh8TKS
+	 Zvh5c3ApvEi8w==
+Date: Mon, 8 Jun 2026 11:32:53 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/307] 6.12.93-rc1 review
+Message-ID: <a6279a93-5d07-4f82-8049-9309de8fee0d@sirena.org.uk>
+References: <20260607095727.647295505@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABnus2wmSZqcdayEg--.38019S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur4Utw48Kr4DAF4kXrWxtFb_yoW8Gr47pr
-	W5Ga12krn5Wa1fAa1kWF90vF1rXws7XwnrGa4DKw17JrnxX3yIy3W7Ca4UXFs7Ar1kJwnx
-	WrsruF4qgF17XaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5uc_DU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwMA2omaa0jsQADsc
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dM0toQ9JXTHWE8gW"
+Content-Disposition: inline
+In-Reply-To: <20260607095727.647295505@linuxfoundation.org>
+X-Cookie: We've upped our standards, so up yours!
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262010-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262011-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:rwarsow@gmx.de,m:conor@kernel.org,m:hargar@microsoft.com,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:mid,iscas.ac.cn:from_mime,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D2CE165571A
+X-Rspamd-Queue-Id: E1150655762
 
-iwpm_get_nlmsg_request() returns a request with kref_init() +
-kref_get() (refcount=2, one for the caller and one for the
-iwpm_nlmsg_req_list). On the error path, iwpm_register_pid()
-calls iwpm_free_nlmsg_request() directly instead of using
-kref_put(), bypassing the kref mechanism and freeing the object
-while the refcount is still non-zero.
 
-Replace the direct iwpm_free_nlmsg_request() call with
-kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request).
+--dM0toQ9JXTHWE8gW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Cc: stable@vger.kernel.org
-Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/infiniband/core/iwpm_msg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Sun, Jun 07, 2026 at 11:56:37AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.93 release.
+> There are 307 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
-index 4625abd29ac0..672b0c33a6de 100644
---- a/drivers/infiniband/core/iwpm_msg.c
-+++ b/drivers/infiniband/core/iwpm_msg.c
-@@ -122,7 +122,7 @@ int iwpm_register_pid(struct iwpm_dev_data *pm_msg, u8 nl_client)
- 	pr_info("%s: %s (client = %u)\n", __func__, err_str, nl_client);
- 	dev_kfree_skb(skb);
- 	if (nlmsg_request)
--		iwpm_free_nlmsg_request(&nlmsg_request->kref);
-+		kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request);
- 	return ret;
- }
- 
--- 
-2.34.1
+Tested-by: Mark Brown <broonie@kernel.org>
 
+--dM0toQ9JXTHWE8gW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmommlQACgkQJNaLcl1U
+h9DHigf9FzMOyfAsTo7ZvRwSI56WikxRKJv0gqpYs9lJ49bUu0Ql0ZBhJDfF3zBi
+Ngn9izGW4jqXQGXvNPxDh2uzmHzjxT3NCjgWJRh1TZI5v7hjhVMpN6uMVzlDlSIW
+3/LX4d0/5tiVKDOPmklTDTGPtydx9D3QyRdJZbzdvSJTOXw8HSCdgH5MN8jXSqls
+6Lwenj+zY65FNjQDn32NWCpL2jT/BKsxkkhJlYmhxhzBSViqBREWA+Dsbd2EV7e6
+912AiU6jCoF9hhmv6b9tABnRf4mhzbZt/nV3L7nKAR7Q/QKk1AoYqER9BGYNI9jD
+8qbpskT9akSQehNZ3ONiXNzaFxsv4A==
+=Ft6G
+-----END PGP SIGNATURE-----
+
+--dM0toQ9JXTHWE8gW--
 
