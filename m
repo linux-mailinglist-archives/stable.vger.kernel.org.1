@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-261957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MRdIJTRWJmotVAIAu9opvQ
-	(envelope-from <stable+bounces-261957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:42:12 +0200
+	id zilbBa1VJmoNVAIAu9opvQ
+	(envelope-from <stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CD3652E13
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:42:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 673A9652DB9
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 07:39:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sina.cn header.s=201208 header.b=x4fl1Tie;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261957-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261957-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=sina.cn header.s=201208 header.b="HqJp8Ut/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261956-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=sina.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 976793043450
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 05:39:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FE2C302C0D0
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 05:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1822337999D;
-	Mon,  8 Jun 2026 05:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09959374722;
+	Mon,  8 Jun 2026 05:37:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp134-25.sina.com.cn (smtp134-25.sina.com.cn [180.149.134.25])
+Received: from mail115-80.sinamail.sina.com.cn (mail115-80.sinamail.sina.com.cn [218.30.115.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03537379C2B
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 05:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150D7234994
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 05:37:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780897154; cv=none; b=SiubJFeBYIO3WN/sBgu1WvYTNggaEivRr58vMENXI9kVHbcJkeCYyZ+lubAuA1dfpTVGJQiWtMbuyihwM6EWdJ6YgnOliPhm8Ckd06h5ylZal8gXNSUl9fX7ZouQRwF9/EreLbKfjxcxvePEFzhxljyVGUKYfHdjcetDI44qDUo=
+	t=1780897073; cv=none; b=LzQ3riCpyC3aJd8I6W+zwtouyuYu92UbfDkchuS9tvHWG9RRCllI6zMKJ+SU1LOKsaVWakWjsDrNjF2d6kPywhkcdELfgNUpGGhnN9MHTQPiorQe5iLLYYjXnGVslD8t58aflWt6zBDD9HVlQmvX1P1KLLPMOAEtIhYxiub8TpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780897154; c=relaxed/simple;
-	bh=oRXY+9puep12Lxn5B5r/Surj8DWqdhMPbsYkJQOnAIM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bS4OR+yRn5MV9JZlrozvvC7vxwSlJJtzXWrV5kwkP/ydjVFZwZKkMcBT9rQMe78lSe1nphH+ygYQ0ZMUrhuoe6bcZ3A/cZLEyNx8J+NUIwyNVPEZ9TOSl1SfOYfjVawyyxOKfSEslJmDjseIs3f0rg66V1j/sqQ+t0W9KejT3rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=x4fl1Tie; arc=none smtp.client-ip=180.149.134.25
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1780897149;
-	bh=951BUsMtl8tl26sb644WYR3IJacuLYWSqxD6MFhzn4w=;
+	s=arc-20240116; t=1780897073; c=relaxed/simple;
+	bh=15SLlNMVfPl3yks/gJWGtv/PuIggPGqTOPfpqDCjG0g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s5eQUYKC8jnKNdLEqjR0PQpxFbE6BFj/g/V3iVSFpUSapWRFSzT7PwKM1VpgA8r5ypjszhmfBFm/wgIENCQYQI6RDfOVQqj9ojpfvZPZG8QI+jKjxhBlo/AECD9YxcwnVDNrSc9ukth9UxEY9OUprS1aP+c+WNU6Ioy21GyUZl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=HqJp8Ut/; arc=none smtp.client-ip=218.30.115.80
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1780897069;
+	bh=gSy2xj2CNZv6TxCh5crV+eeqhefPzVhGr7m/yw+g0b0=;
 	h=From:Subject:Date:Message-Id;
-	b=x4fl1TieIVGTIlrgv6ZUkJB0KXN59ksgXXdosu8SZV4vxw1CDgx2L069e/8XkBXBL
-	 Ee19UYCrLMf6k4YbCVdXP2ujYGwAivslXdwA9+GNaY57PqihaDP1eHoatqvWQoZFmy
-	 SEBxZh3g1rTt+pCibz1fBfAkd0Scs9iK18IcskTw=
+	b=HqJp8Ut/m7LI9tphSyJPAuWtTmFCWoV/5PiBv5FSVG8UkDYdntb9vaGG0w3I12Id6
+	 jWlcqLaPjXQM00+p4ZWjOdZsO28QmDtnURMeYFhhbNecDVZb0LCQQ7K5/F/fhUlsuy
+	 LjPU0IejkhVT2D/jZGWQq3fjQjTcJzTXNx6NQbg0=
 X-SMAIL-HELO: NTT-kernel-dev
 Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.21) with ESMTP
-	id 6A2654E400001F9A; Mon, 8 Jun 2026 13:36:40 +0800 (CST)
+	by sina.cn (10.185.250.23) with ESMTP
+	id 6A2655010000729E; Mon, 8 Jun 2026 13:37:08 +0800 (CST)
 X-Sender: jianqkang@sina.cn
 X-Auth-ID: jianqkang@sina.cn
-X-SMAIL-MID: 1008913408272
-X-SMAIL-UIID: 31246025A2D949A0A9AEF0B92BD13DBC-20260608-133640-1
+X-SMAIL-MID: 6619948913038
+X-SMAIL-UIID: CDB44C8845D94557BA03438C9E95BF2F-20260608-133708-1
 From: Jianqiang kang <jianqkang@sina.cn>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -59,9 +59,9 @@ Cc: patches@lists.linux.dev,
 	balbi@ti.com,
 	kyungmin.park@samsung.com,
 	linux-usb@vger.kernel.org
-Subject: [PATCH 6.6.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
-Date: Mon,  8 Jun 2026 13:36:36 +0800
-Message-Id: <20260608053636.2797024-1-jianqkang@sina.cn>
+Subject: [PATCH 6.1.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
+Date: Mon,  8 Jun 2026 13:37:05 +0800
+Message-Id: <20260608053705.2797309-1-jianqkang@sina.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,20 +77,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,kernel.org,gmail.com,samsung.com,ti.com];
-	TAGGED_FROM(0.00)[bounces-261957-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261956-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:khtsai@google.com,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:sashal@kernel.org,m:raubcameo@gmail.com,m:andrzej.p@samsung.com,m:balbi@ti.com,m:kyungmin.park@samsung.com,m:linux-usb@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -103,9 +103,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sina.cn:mid,sina.cn:dkim,sina.cn:from_mime,sina.cn:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E6CD3652E13
+X-Rspamd-Queue-Id: 673A9652DB9
 
 From: Kuen-Han Tsai <khtsai@google.com>
 
@@ -151,10 +151,10 @@ Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
  4 files changed, 73 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 9e9601f12b88..d8ab1adec63e 100644
+index addd016ffbb3..5e240cafbe9e 100644
 --- a/drivers/usb/gadget/function/f_ncm.c
 +++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1425,6 +1425,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+@@ -1440,6 +1440,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
  	struct f_ncm_opts	*ncm_opts;
  
  	struct usb_os_desc_table	*os_desc_table __free(kfree) = NULL;
@@ -162,7 +162,7 @@ index 9e9601f12b88..d8ab1adec63e 100644
  	struct usb_request		*request __free(free_usb_request) = NULL;
  
  	if (!can_support_ecm(cdev->gadget))
-@@ -1438,16 +1439,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+@@ -1453,16 +1454,18 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
  			return -ENOMEM;
  	}
  
@@ -191,17 +191,17 @@ index 9e9601f12b88..d8ab1adec63e 100644
  
  	ncm_string_defs[1].s = ncm->ethaddr;
  
-@@ -1547,6 +1550,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+@@ -1562,6 +1565,9 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
  	}
- 	ncm->notify_req = no_free_ptr(request);
+         ncm->notify_req = no_free_ptr(request);
  
 +	ncm_opts->bind_count++;
 +	no_free_ptr(net);
 +
- 	DBG(cdev, "CDC Network: IN/%s OUT/%s NOTIFY/%s\n",
- 			ncm->port.in_ep->name, ncm->port.out_ep->name,
- 			ncm->notify->name);
-@@ -1593,7 +1599,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
+ 	DBG(cdev, "CDC Network: %s speed IN/%s OUT/%s NOTIFY/%s\n",
+ 			gadget_is_superspeed(c->cdev->gadget) ? "super" :
+ 			gadget_is_dualspeed(c->cdev->gadget) ? "dual" : "full",
+@@ -1610,7 +1616,7 @@ static void ncm_free_inst(struct usb_function_instance *f)
  	struct f_ncm_opts *opts;
  
  	opts = container_of(f, struct f_ncm_opts, func_inst);
@@ -210,7 +210,7 @@ index 9e9601f12b88..d8ab1adec63e 100644
  		gether_cleanup(netdev_priv(opts->net));
  	else
  		free_netdev(opts->net);
-@@ -1655,9 +1661,12 @@ static void ncm_free(struct usb_function *f)
+@@ -1672,9 +1678,12 @@ static void ncm_free(struct usb_function *f)
  static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
  {
  	struct f_ncm *ncm = func_to_ncm(f);
@@ -223,7 +223,7 @@ index 9e9601f12b88..d8ab1adec63e 100644
  	hrtimer_cancel(&ncm->task_timer);
  
  	kfree(f->os_desc_table);
-@@ -1673,6 +1682,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
+@@ -1690,6 +1699,10 @@ static void ncm_unbind(struct usb_configuration *c, struct usb_function *f)
  
  	kfree(ncm->notify_req->buf);
  	usb_ep_free_request(ncm->notify, ncm->notify_req);
@@ -235,10 +235,10 @@ index 9e9601f12b88..d8ab1adec63e 100644
  
  static struct usb_function *ncm_alloc(struct usb_function_instance *fi)
 diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index 62e2018d0357..49ff3fc62f74 100644
+index e84178bffe78..e972de236be5 100644
 --- a/drivers/usb/gadget/function/u_ether.c
 +++ b/drivers/usb/gadget/function/u_ether.c
-@@ -896,6 +896,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
+@@ -910,6 +910,28 @@ void gether_set_gadget(struct net_device *net, struct usb_gadget *g)
  }
  EXPORT_SYMBOL_GPL(gether_set_gadget);
  
@@ -268,10 +268,10 @@ index 62e2018d0357..49ff3fc62f74 100644
  {
  	struct eth_dev *dev;
 diff --git a/drivers/usb/gadget/function/u_ether.h b/drivers/usb/gadget/function/u_ether.h
-index 34be220cef77..c85a1cf3c115 100644
+index 40144546d1b0..3e12d60053c1 100644
 --- a/drivers/usb/gadget/function/u_ether.h
 +++ b/drivers/usb/gadget/function/u_ether.h
-@@ -150,6 +150,32 @@ static inline struct net_device *gether_setup_default(void)
+@@ -149,6 +149,32 @@ static inline struct net_device *gether_setup_default(void)
   */
  void gether_set_gadget(struct net_device *net, struct usb_gadget *g);
  
