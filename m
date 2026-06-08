@@ -1,213 +1,256 @@
-Return-Path: <stable+bounces-262081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id h9ZvDvz5JmpMpAIAu9opvQ
-	(envelope-from <stable+bounces-262081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:21:00 +0200
+	id quZ+Gfb8JmoTpQIAu9opvQ
+	(envelope-from <stable+bounces-262083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:33:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08526592B8
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:20:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D2365948A
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 19:33:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=o8xGqwy+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262081-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262081-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=intel.com header.s=Intel header.b=dSXiodLH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262083-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262083-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EB541302EE9E
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 17:20:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A0B73010737
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 17:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69BB3D47CF;
-	Mon,  8 Jun 2026 17:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08503C417F;
+	Mon,  8 Jun 2026 17:26:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523053D5671;
-	Mon,  8 Jun 2026 17:20:18 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780939219; cv=none; b=XBg91ULU8f9Sl5pNg4hiENzr1b05g7vxRkqPVBc5Zy1T62uCrkBYMIFkwCzlIG30w1T0aJFrEFHD5ouBJ9uzo1IKOxQz4YWCBr4/43XQEe9rkei25VmOqwrtTv1WHGUP+i8fDT2tj7JkiaVnP04qBbzNMPl7l3axB0PLK4H8fVk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780939219; c=relaxed/simple;
-	bh=CTdsnjvENitaKcBHbnJI+lMPMsxDw/NS89qtmmj3m50=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OO7BGHbp0FIi1sGWjqNvZ/fPIwBoc+AZwtBQgzLgsDL0FkiJNtfxcVYjmZVLfK5MQNDw115rNeXdjPyybpQqsqwGI9r0eB/nfEheOW6W3A0dBsTBqPvrttlh8Njs6tuYli0zUsL9gNnelFnY8NnlnY2KbmQwtTrmVjnJs3yCFfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=o8xGqwy+; arc=none smtp.client-ip=148.163.158.5
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658E4dCk3934488;
-	Mon, 8 Jun 2026 17:20:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ZLEwJOF00jQW0ElHk
-	J3+PTGcXToawy4Upyvmscf5aL4=; b=o8xGqwy+/EUsnjXsFJ6XDpij55G13Z/iT
-	CfYumlLMKg24EgdOuJA9+0tvzMwWx3D1ybUklT3eH/GBYd+HZGKYcNJAKnE8uOnc
-	FNU3R41cSYOXR6rlf6yxu6cLrTPis0lxy9SoiUBqM92LU3LDdUzZnQeLzIBAk4bj
-	ka1FiHH5Bd4YL5LQtvYT5yac1vK7H4QwYJlsgnnSC6k5KQ6dY62mDv1gOFssEW3m
-	BsA/LSB9TINWBxZOL6DwqMjof6LpsO9mxN0xmCT1/xewdvpfWPYkm4GceZuDdIFI
-	7h9Oj88PSFJBjdq10i6eXNWXEjz9+6U8BYUFt5/ifv0CJWZypwdRw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb6sraf7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 17:20:15 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 658H4dQ2003185;
-	Mon, 8 Jun 2026 17:20:14 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en0jy63vt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jun 2026 17:20:14 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 658HKCLV13828662
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Jun 2026 17:20:13 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A57C658054;
-	Mon,  8 Jun 2026 17:20:12 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BA605803F;
-	Mon,  8 Jun 2026 17:20:11 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.12.78.81])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 Jun 2026 17:20:11 +0000 (GMT)
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: oelghoul@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
-        farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org,
-        stable@vger.kernel.org
-Subject: [PATCH v3 1/4] s390/pci: Hold fmb_lock when enabling or disabling PCI devices
-Date: Mon,  8 Jun 2026 13:18:47 -0400
-Message-ID: <20260608171850.62829-2-oelghoul@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260608171850.62829-1-oelghoul@linux.ibm.com>
-References: <20260608171850.62829-1-oelghoul@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9758837DEAB;
+	Mon,  8 Jun 2026 17:26:15 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780939577; cv=fail; b=rCJihz2BeS3mwIofaxBEwksybIbshVYUHSrDl8XJqXy2myX3LRUpux9PAfWmmBamuqvegnGyPw9cpO1PmxXAsppDnMgH9+Aoe1XlJqQ4EKkfXDxI5AUcPh64FW+P0TECo4sUGbcjIFZob11J024w6rnHKXrYDu0Ilm+9yfz6iNw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780939577; c=relaxed/simple;
+	bh=u+q8E8dSqkChZYbTGPo4s2ZmYXueojbCAK+xzrnZf2Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UfFq28HIJCEVNP6uWTH3TQzmnq4G4CdEfFBjQrjjeund2wZncaBb6nBPWj8Lz8AaiNeIfvKNnxnMjew9WWOQxoPkYod7W7Pd0kWkR0NFiyMUMmHIhibeTOLmRgAgqIOGVZda18ItaqJ+5wmJ4TkvFupgLQBgjB6TvG4NERy8w10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dSXiodLH; arc=fail smtp.client-ip=198.175.65.10
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1780939575; x=1812475575;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=u+q8E8dSqkChZYbTGPo4s2ZmYXueojbCAK+xzrnZf2Q=;
+  b=dSXiodLHv3OUYa5DpXQ0+HADMsxD3Q/WoMQPR0iOqmvyi0MMkYhbGV6u
+   kCQLOwq4dfyLGqmlKQ4mu27SPHUpabUpapRSTBZFqOQQvNmz6OAStJKWH
+   AjAhj7G33jFxo8u+0gxa8k8DWWOa2UOJRI9vl0ccCJC/eQtyyuw8yUj2x
+   HUeaEDWaoNcHxKtQQ8u+Id6V+oHQyeo+XENHwGV9+fADhduDymBq4ehZH
+   rnPlDIwUxVGpWYF168wk0NCRoOCJBz58En75GZ1oAg5J7Ib7BizzgJnOw
+   lganEBkd8RduuQzr5TmJW4WkyvwN1LUwcwM1rRuv6yY+N8OdfFi8cGjmU
+   w==;
+X-CSE-ConnectionGUID: AvC6PjiuR92Tk4VrFjvGUQ==
+X-CSE-MsgGUID: v/9/wOhCTyaVyb5eACKEAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11811"; a="99099673"
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
+   d="scan'208";a="99099673"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 10:26:15 -0700
+X-CSE-ConnectionGUID: oY2nz4NBS5yv8lYGAOejrQ==
+X-CSE-MsgGUID: EzsV5MI8Tl2xOeuFhWUuvQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,194,1774335600"; 
+   d="scan'208";a="250523394"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2026 10:23:11 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 8 Jun 2026 10:23:10 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 8 Jun 2026 10:23:10 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.66) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 8 Jun 2026 10:23:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lZDpL+NQRffGXi8AIwhcPMw1nKgknUNw+tJiBhBu2LLU7HO9k3g5pDlPPfiXt6vvq6ltvUG1RcypqLWmwaCK9v235LoCCM5mXZ/r7b/P4LOeR/mZa3usulCuiQOynqT3DgYGFbh8GAjipPCnhO4Ro6HtEMbPg+ODKD6LQ+u/n48ptgee0/xrhVOqWcA7Jss0APb6wcHH9gEMu8Y7BnkZaJWXrlfDE6yUwex3hVC9UbqL0H1riwGnT/lvtqMFR9ppJ+R4cJSanlpe7791lGcg7Sqae5Ga8bRh7pqucvMD+OThJqJrccu7Wx8bA9hoP0Qkt6/s+lsk+/C1lPjPkvIWmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u+q8E8dSqkChZYbTGPo4s2ZmYXueojbCAK+xzrnZf2Q=;
+ b=eXMc0trzg1cE14m11De0mk+5E9VxD8Q5iTcP+BpXVzUmAfznw8N+xu+sMM6Cm+bndw8wt7FWjKSS1FVZN81TQB1lWFb5CV7J5dNW3lhk4/bnVjL2jxgS9OwmyIh9MnJQy6IeNYJp5eDeOcyzAFLKXcnL9DC6UPlYGq3JI/LB8R2wgHHdvGZ4etNGA0x0jP0VtIyBit1xeIrtOjJt+3RmMeszdHgqPoBIBQhkyjSM4sTR4ituAJZVlhBiw/Z2gSkXO7aAQeAR0rWiX2Iw7u380qSDD6BJiuAzj56RCxGd3pWXUayL1hCYxhEJYZWcUglAbOYX4sD3C0VbPNLWXCaFcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6297.namprd11.prod.outlook.com (2603:10b6:a03:458::8)
+ by PH0PR11MB5190.namprd11.prod.outlook.com (2603:10b6:510:3c::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 17:23:06 +0000
+Received: from SJ1PR11MB6297.namprd11.prod.outlook.com
+ ([fe80::6f05:5b37:2440:556e]) by SJ1PR11MB6297.namprd11.prod.outlook.com
+ ([fe80::6f05:5b37:2440:556e%5]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 17:23:05 +0000
+From: "Salin, Samuel" <samuel.salin@intel.com>
+To: "Korba, Przemyslaw" <przemyslaw.korba@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Ilichev, Konstantin"
+	<konstantin.ilichev@intel.com>, "Lobakin, Aleksander"
+	<aleksander.lobakin@intel.com>, "Korba, Przemyslaw"
+	<przemyslaw.korba@intel.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net] idpf: add padding to PTP
+ virtchnl structures
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net] idpf: add padding to PTP
+ virtchnl structures
+Thread-Index: AQHc7CJoRPuqaFisdUObcti//luNKLY0/oDw
+Date: Mon, 8 Jun 2026 17:23:05 +0000
+Message-ID: <SJ1PR11MB6297F99ED7581F11CE048F049B1C2@SJ1PR11MB6297.namprd11.prod.outlook.com>
+References: <20260525083835.481974-1-przemyslaw.korba@intel.com>
+In-Reply-To: <20260525083835.481974-1-przemyslaw.korba@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6297:EE_|PH0PR11MB5190:EE_
+x-ms-office365-filtering-correlation-id: 2f25d335-bba6-4c69-6391-08dec5829a42
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700021|11063799006|56012099006|18002099003|22082099003;
+x-microsoft-antispam-message-info: SzbXE6b4mlKpBxBAfsFDIQVFT0qCoKf25m+VHDgZkRnXXafmprKdnvSurJTTPE7QmcVbeiQ7NJQdIIdg1EKqezG0ozgwjqm2y7DUygJF2rnofS/AAR9NuEuZ3d6RsNH8o5bTUCwnt7ghI377E1bE3RMLOOpDJ9EFlvbBgIAOKx3NwJHK44lXNIIbvS39ro6gp1fdYY5dtyt0iRSe2rc3mQFybulBYXHYHmqyjDIY6+XBR50rFqIDEVaKe/LbKyfrXmdoxwsSEYwcEwEbxJTU5KvSyoRIS/Pgy6XqWRkdK1kwDAMrqs5Xf/s1aS+KfjyoVxK2LkKHbQAliRs0yY51l6FfYe+PVOkDgt0RvEgQ5L+mOn1cnhtibnJRsJZqe3A/VLD8vE+P7WXKB4TDpw3oY/hde0FffWPkuFU6kJYSXbtn3dZ2JGe9qm5cO0n2wS0QcNklog3cupq4PADqdfKee0MeTmpdw3vBeLAFOKCEYc1jDEdxM7WgXazjP0lJy6pav4LbIpfMVx5wPu9iMBgmq1FLbHYmYfkEPVUf+Lfh0BfVEY577i5NUIYjwFTRzOwCX2lZLekTJJK+EeAcjK1DAWIQQUh5DlTSD+llygECRgTg/33n5m+JXBt8pL1s/ye6vfVLFhzx9/wx4N7ftXfRiC3yTXRkvswlk/nn2eKSIb0vz41/fcyFUjaOiglk2Z5QTa8llRmaItxAu8XRP2ND8x73wurXrcddkrpmLTR7YWwgy+F9azaKgUKNdMI0JdSi
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6297.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700021)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7X6X33kXkpE880rRu1iy1WRMmWs8HBbBEa6AL70nuRTF18DmbBKVBkA8+jyj?=
+ =?us-ascii?Q?dQKGZW16WbIpRHxR2Mtck/n3RuweOv+e7nszhFQ8puNgTFnqsNbm3chd5SBT?=
+ =?us-ascii?Q?5u6OdlRiGCc852Y3Cj0cLIdtuSVpNRYKkzdo8QbKQl6slv+PWNteuxp65gp9?=
+ =?us-ascii?Q?Cfjv7YFzicQKAQGDejVM6mYETmDEiWEAc93V3oD/KsuYbc9g4fyssrhDB8Mk?=
+ =?us-ascii?Q?qmdgY3s+iTAkhAWO4ixPKD5k44e6mQnte3qxbk4le0RbcNEReOG926BGBzqe?=
+ =?us-ascii?Q?0iUhazNepSFTia9HWyHSJeCxNVtXwrkN9DJA4uJ7MSAU3moI5utERSZjILzN?=
+ =?us-ascii?Q?tnhyu3Ffy9K8gIHS4dqpm5RRByBZ/BbYdSD/khfAgnjUgQIWBDpTxBeX3MQm?=
+ =?us-ascii?Q?P4Jijnzd7kuVSXkzNnH/eVCMXHi9tMrpEcFZOMc5haYlmhJ7MbpYhIb77YkR?=
+ =?us-ascii?Q?SwvZXrhrnl4UnpBfV9xgFqUUZ8rRA2OLa6ewOrp2skCfqwTwDYvb62kJYDwX?=
+ =?us-ascii?Q?1h89StA1POYW80IwX0S1gIHkK7fDEdgCARji8KPpC7P5dBqiFQIIZcbmYa4V?=
+ =?us-ascii?Q?fb+DHoUptkHhpxV2EWXyuYWJIGcc6OJNeI6s2WFpcciX2Ng7dQl/aWh0Meuq?=
+ =?us-ascii?Q?E7ekjd+JCEmOncObfiX0vRftBXE+DIA+DH71BlGQE4EZnBxEHvvlrOyJT2Wv?=
+ =?us-ascii?Q?gq58Z6SJx7hpJ4GveLSzJB4FlOLA6pgEB2JCJZqiZghuCRw5Y5rAsGJhPZ/v?=
+ =?us-ascii?Q?XMj0T1mFO6O/itv41Ag/r1zxEcQe/plsnTJYl6+bkN6TZu+qHhhknyS4L35Z?=
+ =?us-ascii?Q?uUpRhvq1Cv+KdYZVOrbKrrMlcigBXSyD+WBzfBxLLO7ooWiwUAzTD158XcPL?=
+ =?us-ascii?Q?fU87M6C8N+uvTbJRz1tcsDaAIj5vzZA6mVI24yOpRfvsgIXYUGtfJ/c6OCEq?=
+ =?us-ascii?Q?Sgi67qIvyFoodKRGnlSTap4Jfr1+5q3JzyBkXZnD49aiBqwzMy7b+YE0rfaW?=
+ =?us-ascii?Q?dsC+fBYqOshcUxHmRXNgclKkKCYBLcm7uEUSzIG1W9PSydCk2P1IL7WEZ0TF?=
+ =?us-ascii?Q?gIoc4RDaZBIEfM4m8EPCv+7nq2Fv5orjZepKEI7M0oXSEUOcvJ6XiEBNMlw0?=
+ =?us-ascii?Q?/nyqgdQiVsVJQcbmQyWMt3M9bVTru/GtIcnJ/Dl1Ib+QKpL00WwOF5ya/N/x?=
+ =?us-ascii?Q?bWnM3SQxy1Ttc5uIeEvBRKzFJpd1i2U1D31gpexCHhU9NFyQOJoFGvTnoKc6?=
+ =?us-ascii?Q?5c1gHNRh4gaI5qp/wn1WKTnC95KJH6PV0XuaVi3YXH5HFybTA7zZ2f1vOS+1?=
+ =?us-ascii?Q?GHs/m6ns8V7u9Mh62bhP3+RFEezsAhEgnHsBGclInPNxQTkD1hhpMrubYcgT?=
+ =?us-ascii?Q?UUE5bpymWDWuhjugqGYojNfLoMclJbhJV4EoGtBhpaSRJ+icgnOnmVgBFZjs?=
+ =?us-ascii?Q?LvEhTfdGxCxrNgpJXDVbYqT9qPtEsRunzMmLdwCA/Vg8R9Kx7uMRdyc5vwEW?=
+ =?us-ascii?Q?ettH+G+fA9Wvc04iogr6puibzkW7PZXbcZC94re3XIXT8emBBYnXoHb2MBIT?=
+ =?us-ascii?Q?/bhKGHjq0+1hzXecjw6RarJ76GuZZLT8ASFq1+o/28MzBtVBVQWD2qG5SFPA?=
+ =?us-ascii?Q?2pIWMSc2RVVVwjpVk6Q8WtS2+N17jhcPjSMiGULpljG2KhhHJ1cgp0psRplU?=
+ =?us-ascii?Q?F5cFu/C807wpeUCZCYFEqm4UYarg96vipwioSZrjjaSyg3vO?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Yjwj9d0ywR1IPjad2QdJBu9vfgUxeeC5
-X-Proofpoint-GUID: Yjwj9d0ywR1IPjad2QdJBu9vfgUxeeC5
-X-Authority-Analysis: v=2.4 cv=ZbEt8MVA c=1 sm=1 tr=0 ts=6a26f9cf cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=5NbLduwtq9nBFWGw9KEA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA4MDE2MiBTYWx0ZWRfX6/BSqNpemuvW
- ph+qiwRZy9ffCyCt37x9+UPXBcJLiOU5kvMDutqFNd89FWTzzA6C1HYkoH3zVwJ/K8Vh/7f1/J0
- Ac1bUakamuPYnla+uHBl8+l1YLeIjqWj69dQr/RHNgThWqD9hsWmIDqERJO4/jQG8HBRzN/SNFK
- wOwNhdIVNMW+MwtF4zsRJ5TOOCFSPXGZL7O1QGVPLPXUeET5joUR2/vOsrhBpsco1nzs7CJIHR3
- 7MfWQ9OuzZ9Q9vr/d0uCenmMzHkJA0CcrVd+yhpwISwzw5GC5BLa3pYvrslcCkeLz0s6saCbKdD
- rQDSRUVWHmJTzQuZRarb2absb1S7emzCEjsTRVJx3kRR0J1V6PC1UTkfnVUCxtvnwYCEqXvW9Ek
- CqHCE8mPxCbGYmDpdqOH9o6nK/UIvX6U7hnAZZbUMC5rF4oeofO2Tw/xVtw890lvou96EPiMzw+
- Lm2OIMPw+epjOeINQLA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-08_04,2026-06-05_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
- clxscore=1011 adultscore=0 spamscore=0 priorityscore=1501 bulkscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605210000
- definitions=main-2606080162
+X-Exchange-RoutingPolicyChecked: BsAoq/P0UkdjZG5uNIPolXnL6AEBdv7VilpLyk64f34wZq9VJv6owKlbplNCW3sz3v/AtM5LKX4d6xnVbLGGcIiAU4/oTOecp7FCUHKI3EfRCV0nDrJnPyrU5zYIAMppIxKiasbEbIm6TMiaJuLFHF9XrnPuEUVxnonVnljUfYXqt1ILr4kwdtibJqLxeaWVU8+jsmuex8Tl9N/Tmw60/c9kNWmGapXTo/C2mX2HFVjSNEiu3588UJn4r/bBOLZi9iOJ9af/oIbWtJ/Bb5nvLKcaxop615Q1KrWQLx0IJNF4R/WFXfk4ZUXT+ITof/ACmG8ZhTdcSunvLU4gtWRXnQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6297.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f25d335-bba6-4c69-6391-08dec5829a42
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Jun 2026 17:23:05.7525
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: O/G7TAAEPErn7kblsdOcUrkO96rgHQZAQki0O5Asi72Ae4LUV9gdMRz0+Y/V263yJRdoB1LNMO/ErAVeew3yAg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5190
+X-OriginatorOrg: intel.com
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262081-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-s390@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:oelghoul@linux.ibm.com,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:agordeev@linux.ibm.com,m:borntraeger@linux.ibm.com,m:svens@linux.ibm.com,m:schnelle@linux.ibm.com,m:mjrosato@linux.ibm.com,m:alifm@linux.ibm.com,m:farman@linux.ibm.com,m:gbayer@linux.ibm.com,m:alex@shazbot.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262083-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:przemyslaw.korba@intel.com,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:konstantin.ilichev@intel.com,m:aleksander.lobakin@intel.com,m:stable@vger.kernel.org,m:aleksandr.loktionov@intel.com,s:lists@lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,osuosl.org:email,SJ1PR11MB6297.namprd11.prod.outlook.com:mid];
+	FORGED_SENDER(0.00)[samuel.salin@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[oelghoul@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[samuel.salin@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	RCVD_COUNT_SEVEN(0.00)[10]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D08526592B8
+X-Rspamd-Queue-Id: 67D2365948A
 
-Ensure that fmb_lock is held by pcibios_enable_device() and
-pcibios_disable_device() when calling zpci_fmb_enable_device() or
-zpci_fmb_disable_device(), respectively. Additionally, assert that the
-fmb_lock is held within the latter two functions to prevent future race
-conditions regarding new callers.
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
 
-Fixes: af0a8a8453f7 ("s390/pci: implement pcibios_add_device")
-Fixes: 944239c59e93 ("s390/pci: implement pcibios_release_device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
----
- arch/s390/pci/pci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 39bd2adfc240..2910d4038d39 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -173,6 +173,8 @@ int zpci_fmb_enable_device(struct zpci_dev *zdev)
- 	unsigned long flags;
- 	u8 cc, status;
- 
-+	lockdep_assert_held(&zdev->fmb_lock);
-+
- 	if (zdev->fmb || sizeof(*zdev->fmb) < zdev->fmb_length)
- 		return -EINVAL;
- 
-@@ -211,6 +213,8 @@ int zpci_fmb_disable_device(struct zpci_dev *zdev)
- 	struct zpci_fib fib = {0};
- 	u8 cc, status;
- 
-+	lockdep_assert_held(&zdev->fmb_lock);
-+
- 	if (!zdev->fmb)
- 		return -EINVAL;
- 
-@@ -639,7 +643,9 @@ int pcibios_enable_device(struct pci_dev *pdev, int mask)
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 
- 	zpci_debug_init_device(zdev, dev_name(&pdev->dev));
-+	mutex_lock(&zdev->fmb_lock);
- 	zpci_fmb_enable_device(zdev);
-+	mutex_unlock(&zdev->fmb_lock);
- 
- 	return pci_enable_resources(pdev, mask);
- }
-@@ -648,7 +654,9 @@ void pcibios_disable_device(struct pci_dev *pdev)
- {
- 	struct zpci_dev *zdev = to_zpci(pdev);
- 
-+	mutex_lock(&zdev->fmb_lock);
- 	zpci_fmb_disable_device(zdev);
-+	mutex_unlock(&zdev->fmb_lock);
- 	zpci_debug_exit_device(zdev);
- }
- 
--- 
-2.54.0
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Przemyslaw Korba
+> Sent: Monday, May 25, 2026 1:38 AM
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Ilichev, Konstantin
+> <konstantin.ilichev@intel.com>; Lobakin, Aleksander
+> <aleksander.lobakin@intel.com>; Korba, Przemyslaw
+> <przemyslaw.korba@intel.com>; stable@vger.kernel.org; Loktionov, Aleksand=
+r
+> <aleksandr.loktionov@intel.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-net] idpf: add padding to PTP virtc=
+hnl
+> structures
+>=20
+> Add padding to virtchnl2 PTP structures to match the Control Plane expect=
+ed
+> message sizes:
+> * virtchnl2_ptp_get_dev_clk_time: 8 -> 16 bytes
+> * virtchnl2_ptp_set_dev_clk_time: 8 -> 16 bytes
+> * virtchnl2_ptp_get_cross_time: 16 -> 24 bytes
+>=20
+> The FW expects the above sizes and PTP negotiation fails due to the misma=
+tch.
+> Previously neither the FW nor the driver checked message/reply sizes stri=
+ctly,
+> so the problem appeared only after recent validation improvements.
+>=20
+> reproduction steps:
+> ptp4l -i <pf> -m
+> Observe: failed to open /dev/ptp0: Permission denied
+>=20
+> Fixes: bf27283ba594 ("virtchnl: add PTP virtchnl definitions")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+> ---
+> 2.47.3
 
 
