@@ -1,150 +1,168 @@
-Return-Path: <stable+bounces-261990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261991-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dBEYGdyFJmopYAIAu9opvQ
-	(envelope-from <stable+bounces-261990-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:05:32 +0200
+	id /3CrDqyGJmqDYAIAu9opvQ
+	(envelope-from <stable+bounces-261991-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:09:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC7A6545DC
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4C5654673
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:08:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261990-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261990-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B+bk9HSk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261991-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261991-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66B773055834
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 08:56:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E334E307D7E5
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 08:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457AD3B3887;
-	Mon,  8 Jun 2026 08:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514C53B19D4;
+	Mon,  8 Jun 2026 08:59:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68BA3B2FD9;
-	Mon,  8 Jun 2026 08:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2413923BD17;
+	Mon,  8 Jun 2026 08:59:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780909001; cv=none; b=IhlSe/UTJoE7PWtIFsNPKYcE/LnmByvJrtGD9uZjV20kFgSFjObL66+YgvpJxF63RFXTLQDhBXstVH0IkMUtaCYN+rRBM4HnLL9oKmiNUIdGypyw+/hnkwHv/IrexcDJPycVayP+z+6VjMJgBW5PXhwSCqB0i/Qsua6KA9Np9bs=
+	t=1780909184; cv=none; b=IYgDaFPfgskHcdcHAz5enNo5hH+Gj7JYiJ3YMQ5KHvnoGpwAw6UaEOe1KXTCaaJOsNTrqj8ZEIQ9oD5Q0uCpnR1yrcaunzIDaX2GgAfLagP7A00uTK5Z3z0grBUiOJ4G254IneyZvp16OQsxF+wrwxDOiXF/mIl8nsjLc9G/MBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780909001; c=relaxed/simple;
-	bh=V8YyLbC29J+xHZiuI3J0B1RohcgYzmcTezj17IaNcw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Mu2acgBT6VYxOVoNvUty92GoEM4vCVc9WxCXwPg9LhoT/TNdloU2urZBew84YEJXllsSreagkqKFzQ6Y+htQsKnpkJtlTs5SgRgZYr3GC8Z6SQJPWNmKrBSGVxA7MJFuxEvhDhve2DG+k5CqlQUtX2eeWnDuODdXH3S/CQX1luM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowACHLtfAgyZqgdbhAA--.5522S2;
-	Mon, 08 Jun 2026 16:56:33 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] RDMA/core: fix refcount leak in __ib_alloc_pd()
-Date: Mon,  8 Jun 2026 08:56:25 +0000
-Message-Id: <20260608085625.138331-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780909184; c=relaxed/simple;
+	bh=UDnNOgELOg+d8YJcd8U2TlhiVcqvlK/B5E7kR0OSrso=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i4c1PXejM+3Cjt9SH7zoUMpI6yLxjoK04Kj3GtIZi+auknHjMrLOztVsAioN/pFJjbnKuct/Usk/UN6KvwOUJ7FkNFpuezh6j9wCglg8Io751qlZmeE2SoBYQwz5HJPVXJgONDoX/0WNd5kWj1Rh8XXAFM3r2ZOI4NG+whutMiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+bk9HSk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA59A1F00893;
+	Mon,  8 Jun 2026 08:59:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780909182;
+	bh=Ympagf+YvhYAdU58KVoJVvihm7UEe/AhvGWgbs0wsCc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=B+bk9HSkNUYZ4qOq33wDzWO0GqZ6/y7kD3VyRq3Sx9kpcvXGktAbGY+ahW3mWWIy3
+	 kRCDyqCel9dx0SnCMpGjnKQi1eebFZVMGzYYZ3M490s3ZPulRpTlVNWcYKHoz+7e1D
+	 o4fJKk8BBlVfLJt3vx60+55TVKB05/oOpSpd4Avo+wcdWnTdkLO2er7/omr8RGDyvg
+	 69SXgJ6wXXi+pkLZmL1ynEFRN7mlrHh3tcqw2rLUr31gst6BF2JF+xzWt5fyk08rT3
+	 e3SVmqeaOXXc72WMzG5QsvAeAvvb/caZZD5QbBJM9wb+ogQyj/cosUxXfnlwqkHk+V
+	 anhgBPIG3onfw==
+Date: Mon, 8 Jun 2026 09:59:38 +0100
+From: Lee Jones <lee@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: David Rheinsberg <david@readahead.eu>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>, kernel-team@android.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	"open list:UHID USERSPACE HID IO DRIVER" <linux-input@vger.kernel.org>
+Subject: Re: [PATCH] HID: uhid: convert to hid_safe_input_report()
+Message-ID: <20260608085938.GH4151951@google.com>
+References: <20260606181552.3095967-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACHLtfAgyZqgdbhAA--.5522S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr15ZF47tFy3Xry3ZrWkWFg_yoW8Xr4Upr
-	Z8J342yrWDCF4fCw4Uta4UAFWFkayrArW5W39akwnIvFn8ursayr95Ja4agr4kAr9rGr4I
-	vrs0yr43KF4xCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
-	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
-	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
-	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
-	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
-	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbYFAJ
-	UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwMA2omaa0jsQABse
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260606181552.3095967-1-cmllamas@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_RHS_MATCH_TO(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-261990-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261991-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:cmllamas@google.com,m:david@readahead.eu,m:jikos@kernel.org,m:bentiss@kernel.org,m:kernel-team@android.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-input@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:from_mime,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AEC7A6545DC
+X-Rspamd-Queue-Id: 8F4C5654673
 
-The error handling in __ib_alloc_pd() has a refcount leak.  When
-get_dma_mr() fails it calls ib_dealloc_pd() which invokes
-ib_dealloc_pd_user().  If the driver's dealloc_pd operation returns
-an error, ib_dealloc_pd_user() returns early and skips both
-rdma_restrack_del() and kfree(pd).  This leaves the resource tracking
-kref held and the pd memory unfreed.  Because ib_dealloc_pd() has a
-void return, __ib_alloc_pd() cannot detect the failure, so the leak
-persists.
+On Sat, 06 Jun 2026, Carlos Llamas wrote:
 
-Fix it by always calling rdma_restrack_del() and kfree(pd) in
-ib_dealloc_pd_user(), even when the driver callback fails.  This
-ensures the software state is cleaned up regardless of the hardware
-operation result.
+> Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> bogus memset()"), added a check in hid_report_raw_event() to reject
+> reports if the received data size is smaller than expected. This was
+> intended to prevent OOB errors by no longer allowing zeroing-out of
+> shorter reports due to the lack of buffer size information.
+> 
+> However, this leads to regressions in hid_report_raw_event(), where
+> shorter than expected reports are rejected, even though their buffers
+> are sufficiently large to be zero-padded.
+> 
+> To solve this issue, Benjamin introduced a safer alternative in commit
+> 206342541fc8 ("HID: core: introduce hid_safe_input_report()"), which
+> forwards the buffer size and allows hid_report_raw_event() to safely
+> zero-pad the data.
+> 
+> Convert uhid to use hid_safe_input_report() and pass UHID_DATA_MAX as
+> the buffer size. This prevents the reported regressions [1], allowing
+> hid core to zero-pad the shorter reports safely as expected.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
+> Closes: https://lore.kernel.org/all/ahsh0UtTX6e0ZeHa@google.com/ [1]
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 91a7c58fce06 ("RDMA: Restore ability to fail on PD deallocate")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/infiniband/core/verbs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Reviewed-by: Lee Jones <lee@kernel.org>
 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index bac87de9cc67..6437ede11908 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -398,8 +398,11 @@ int ib_dealloc_pd_user(struct ib_pd *pd, struct ib_udata *udata)
- 	}
- 
- 	ret = pd->device->ops.dealloc_pd(pd, udata);
--	if (ret)
-+	if (ret) {
-+		rdma_restrack_del(&pd->res);
-+		kfree(pd);
- 		return ret;
-+	}
- 
- 	rdma_restrack_del(&pd->res);
- 	kfree(pd);
+> ---
+>  drivers/hid/uhid.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/hid/uhid.c b/drivers/hid/uhid.c
+> index 524b53a3c87b..37b60c3aaf66 100644
+> --- a/drivers/hid/uhid.c
+> +++ b/drivers/hid/uhid.c
+> @@ -595,8 +595,8 @@ static int uhid_dev_input(struct uhid_device *uhid, struct uhid_event *ev)
+>  	if (!READ_ONCE(uhid->running))
+>  		return -EINVAL;
+>  
+> -	hid_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input.data,
+> -			 min_t(size_t, ev->u.input.size, UHID_DATA_MAX), 0);
+> +	hid_safe_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input.data, UHID_DATA_MAX,
+> +			      min_t(size_t, ev->u.input.size, UHID_DATA_MAX), 0);
+>  
+>  	return 0;
+>  }
+> @@ -606,8 +606,8 @@ static int uhid_dev_input2(struct uhid_device *uhid, struct uhid_event *ev)
+>  	if (!READ_ONCE(uhid->running))
+>  		return -EINVAL;
+>  
+> -	hid_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input2.data,
+> -			 min_t(size_t, ev->u.input2.size, UHID_DATA_MAX), 0);
+> +	hid_safe_input_report(uhid->hid, HID_INPUT_REPORT, ev->u.input2.data, UHID_DATA_MAX,
+> +			      min_t(size_t, ev->u.input2.size, UHID_DATA_MAX), 0);
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.54.0.1032.g2f8565e1d1-goog
+> 
+
 -- 
-2.34.1
-
+Lee Jones
 
