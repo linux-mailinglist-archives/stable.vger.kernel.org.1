@@ -1,68 +1,54 @@
-Return-Path: <stable+bounces-262053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0IGZAbHkJmoumgIAu9opvQ
-	(envelope-from <stable+bounces-262053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:50:09 +0200
+	id 4VBkBQ3nJmpPmwIAu9opvQ
+	(envelope-from <stable+bounces-262054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:00:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496C265855C
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 17:50:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E180658710
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:00:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=collabora.com header.s=mail header.b=C6o7QfAA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262053-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262053-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=collabora.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262054-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262054-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B21F036F4DBE
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:33:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3BDA3260894
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52F23E6390;
-	Mon,  8 Jun 2026 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D1D3EFFD7;
+	Mon,  8 Jun 2026 15:18:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC943CFF6F;
-	Mon,  8 Jun 2026 15:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DED331A7E;
+	Mon,  8 Jun 2026 15:18:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780931457; cv=none; b=osbT9pZ5e9q9Hjs92qTCCZlX2rG4tsQGiDCllZelypb6utI09WmJx8rp4XOnne8BxzU5z0pE+5j2MK22pJ2iypR11UFwyx80O4YoSBdmdHe7/ylh7tWqcgt84wHAekFR7v1jHVC2C4tGdwczoN0XF3UuhM8LRY/K6kbb6DIFA5I=
+	t=1780931885; cv=none; b=K830kltDBGL/9k1bxNoTWLBg2LfHCcT6X0Qnd7CjBtiuevlsHlG0XHxfh0VT4qXOrGgLlyQs5qBXzpLL/gt8DMrjnUfZcxN6rGEOVsVd2N6+LdDNC7yhRGi2P/4Wpjl5wEitFBk5c05aNBR5cMWzPP2+2ZLSY97ehYvlllT1ej0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780931457; c=relaxed/simple;
-	bh=Yxkset3JUnaRKoM/mrn1HFFVhAOtEWIzYVfs1dJhIzE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YyIfhvB+fIh9uSp667bJnOzjXutlMofhaNrdrN3eAJSPLAtdHzx7/snYeZsGcjhhvIPDQf7hpKn/ggRJYxd89vKwTrgpfDbXGR/h63tbFDBn42WpksNaF/4/UWx2EqcRQt/7aZ4Tba5zV0/0Rp4/QbsI1z41UQZJi0hZ5bRsC0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=C6o7QfAA; arc=none smtp.client-ip=148.251.105.195
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1780931454;
-	bh=Yxkset3JUnaRKoM/mrn1HFFVhAOtEWIzYVfs1dJhIzE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=C6o7QfAAeDis4ucsR1DAtnR3GCEGmPpdiHs2RfPpEaj7Aul9TwJuuWsUcTjO6+VQF
-	 cXDTi4wAHXj30ZjrTBsJR/pb6UyDc44FyRO0VRoaIfx+GjGlb9XRPIabRKympBFr2v
-	 ltWl3dZWK+LIQpUiFcEomrq+E4MQ8ik+vY076cmX03gS2IMIJSCEbSW5sRjZ7QC3y+
-	 KORnCsLXHzPVOFF60jDZELzDFpPYZHyOYBBqzp/BwcPW3w+IPlIQyAUSc+U5UP40bq
-	 +CPRi/AImp/DlZIIdqVinXD+ewCDQ0qPuH3Sp9AnE0xJ/5OkqtCPbY6GqOCq7FAGVI
-	 gzbn8cEoLVgfg==
-Received: from IcarusMOD.eternityproject.eu (unknown [100.64.1.21])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4967517E00C2;
-	Mon,  8 Jun 2026 17:10:54 +0200 (CEST)
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-To: sboyd@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	saravanak@kernel.org,
+	s=arc-20240116; t=1780931885; c=relaxed/simple;
+	bh=K9p27pNdwqddgm00diVh8tCYJvpYfRuwYufY8MF0TRs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eEmzaLpYxQu8ipw4PElShk2tmFNsnI9eyOHOqcX//Uyuih+k6iwSdXxrsO4kY+htw36slcdguBc4NWTQnJ2WUDMdJLL2k18lkWzbr/7SUYb5lggPmAArVW2nQ2e+RfxLzRSTbY+o4UvertTdw9poYxtVw1Q3ErVaTpXCzEYgTzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-01 (Coremail) with SMTP id qwCowAD3mtMn3SZqqUDnAA--.3777S2;
+	Mon, 08 Jun 2026 23:17:59 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: jgg@ziepe.ca,
+	leon@kernel.org
+Cc: fw@strlen.de,
+	kees@kernel.org,
+	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel@collabora.com,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	stable@vger.kernel.org,
-	Sashiko Bot <sashiko-bot@kernel.org>
-Subject: [PATCH] spmi: Fix potential use-after-free by grabbing of_node reference
-Date: Mon,  8 Jun 2026 17:10:45 +0200
-Message-ID: <20260608151045.60069-1-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.54.0
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] RDMA/iwpm: fix kref bypass in iwpm_add_mapping() error path
+Date: Mon,  8 Jun 2026 15:17:51 +0000
+Message-Id: <20260608151751.151532-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,95 +56,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAD3mtMn3SZqqUDnAA--.3777S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrtF4DCr1ftr47uFWkAFy8Grg_yoW8Jr4rpr
+	W5Aa12kr15Wa1Sya18WF90vF1xX397Xa9rGa4UKw17ArnxXws2y3Z8Ca4UXFs7Ar1kKrsx
+	WrsrCF4qgFy2qF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUowIDDU
+	UUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsMA2om2m4IIAAAsT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
-	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262053-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[angelogioacchino.delregno@collabora.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sboyd@kernel.org,m:gregkh@linuxfoundation.org,m:saravanak@kernel.org,m:linux-kernel@vger.kernel.org,m:kernel@collabora.com,m:angelogioacchino.delregno@collabora.com,m:stable@vger.kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[collabora.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:fw@strlen.de,m:kees@kernel.org,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262054-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[angelogioacchino.delregno@collabora.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,collabora.com:dkim,collabora.com:email,collabora.com:mid,collabora.com:from_mime,sashiko.dev:url]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 496C265855C
+X-Rspamd-Queue-Id: 8E180658710
 
-As noticed by Sashiko during a review run of an unrelated patch,
-in of_spmi_register_devices(), for_each_available_child_of_node()
-is used to loop through children, and to also assign a node to a
-newly created SPMI child device.
+iwpm_get_nlmsg_request() returns with kref_init() + kref_get()
+(refcount=2). iwpm_add_mapping() calls iwpm_free_nlmsg_request()
+directly on the error path instead of using kref_put(), bypassing
+the kref mechanism and freeing the object with a non-zero refcount.
 
-Problem is that the refcount is dropped at every iteration so, in
-the specific case of DT overlays, a use-after-free may occur when
-an overlay is dynamically unloaded!
+Replace the direct iwpm_free_nlmsg_request() call with
+kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request).
 
-To resolve this, increase the of_node refcount when assigning (in
-function of_spmi_register_devices) and release the reference in
-spmi_device_remove().
-
-Fixes: bc32bbd04011 ("spmi: Set fwnode for spmi devices")
 Cc: stable@vger.kernel.org
-Reported-by: Sashiko Bot <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260608100949.36309-1-angelogioacchino.delregno@collabora.com?part=2
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 30dc5e63d6a5 ("RDMA/core: Add support for iWARP Port Mapper user space service")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/spmi/spmi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/iwpm_msg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spmi/spmi.c b/drivers/spmi/spmi.c
-index 05915176f21e..b4f30e7e9372 100644
---- a/drivers/spmi/spmi.c
-+++ b/drivers/spmi/spmi.c
-@@ -97,6 +97,9 @@ EXPORT_SYMBOL_GPL(spmi_device_add);
-  */
- void spmi_device_remove(struct spmi_device *sdev)
- {
-+	if (IS_ENABLED(CONFIG_OF))
-+		of_node_put(sdev->dev.of_node);
-+
- 	device_unregister(&sdev->dev);
+diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/iwpm_msg.c
+index 672b0c33a6de..854c974d6586 100644
+--- a/drivers/infiniband/core/iwpm_msg.c
++++ b/drivers/infiniband/core/iwpm_msg.c
+@@ -207,7 +207,7 @@ int iwpm_add_mapping(struct iwpm_sa_data *pm_msg, u8 nl_client)
+ add_mapping_error_nowarn:
+ 	dev_kfree_skb(skb);
+ 	if (nlmsg_request)
+-		iwpm_free_nlmsg_request(&nlmsg_request->kref);
++		kref_put(&nlmsg_request->kref, iwpm_free_nlmsg_request);
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(spmi_device_remove);
-@@ -592,13 +595,14 @@ static void of_spmi_register_devices(struct spmi_controller *ctrl)
- 		if (!sdev)
- 			continue;
  
--		device_set_node(&sdev->dev, of_fwnode_handle(node));
-+		device_set_node(&sdev->dev, of_fwnode_handle(of_node_get(node)));
- 		sdev->usid = (u8)reg[0];
- 
- 		err = spmi_device_add(sdev);
- 		if (err) {
- 			dev_err(&sdev->dev,
- 				"failure adding device. status %pe\n", ERR_PTR(err));
-+			of_node_put(node);
- 			spmi_device_put(sdev);
- 		}
- 	}
 -- 
-2.54.0
+2.34.1
 
 
