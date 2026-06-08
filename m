@@ -1,76 +1,60 @@
-Return-Path: <stable+bounces-261998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PQYMFmOQJmo4YwIAu9opvQ
-	(envelope-from <stable+bounces-261998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:50:27 +0200
+	id Fe9EDiKWJmqiZAIAu9opvQ
+	(envelope-from <stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:14:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6657654BEE
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:50:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3FA654ECD
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:14:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=vEe6Gobk;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=vEe6Gobk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261998-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261998-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=AecYL2CS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 426A0300CC38
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 09:47:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FC1530B32B4
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20243B52F8;
-	Mon,  8 Jun 2026 09:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDA13E00B0;
+	Mon,  8 Jun 2026 09:56:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5C43101D8
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 09:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409843D5642;
+	Mon,  8 Jun 2026 09:55:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912071; cv=none; b=PqLC/l5XVX2s/3ibd4FypZZ7SoWEP7bt/tPccqAKCwlDmJvFQ6KA1FQM+1i7chyAF4vJI1JSljahEfiaG1UERSS4WXaOshjqrI0VgUafKeeObJeLemrxDsjZHEx3s5J1neRzuSJueIHRU3CSd4e7jFX/BfQYx4XZXRQ7X6LR3i4=
+	t=1780912564; cv=none; b=pTUkgaoALl3YCPdyFClz9gjZGLfXflhBUL+WoxmMD4Cd7z59zlAN5+ZgJocJrysLeT3HmTTyD4kBToFadwzf8uYMOEfWlLzpi8p9dPhQqCJyYCCDVcEtW4JUKk5tdPECB+gF88F5Omenr++uE68HYFrriHe6pg2JlFYnw/alEG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912071; c=relaxed/simple;
-	bh=OqFQNVq3mGgw9H6HLnSpey7gP/UjiiTXB8dvfyiyheE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KwtWXPevxXOSPnkSaFI9SVy5sRz2mpolV+ajjwdpOFLui2S4jB+fpU7/K7TWJoXW4jIX15JsLSZBD91vGB7ITZ/CuyTpfJWrqiVnNstsz8nyY1aIDGwpOTwsEYQ3obD6t5dWqOt99rF6XefwQNdqWP4VsDZ+GsSIeF1A2WEhW54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=vEe6Gobk; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=vEe6Gobk; arc=none smtp.client-ip=195.135.223.131
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9D91C75B97;
-	Mon,  8 Jun 2026 09:47:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1780912068; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=618cYawuFXVDbk3rEh3uFMPq+ZlK7cJ5wS5VV9i6mTY=;
-	b=vEe6GobkYZm9xd65HtEd3ihea8A1Dankt9XtwucCSS2cCpcVN57ia0rPdoLh0Oodzn1sZQ
-	S1sFUTwDuOMm0J5Lu1ca5RMAn4olfLQ1rTH2Pn4ng0ljLYZvlceLDl/Po/LFHxdb0eibtE
-	OZn+B5PCNh9rrfA2R8ODH2+iP3T4ZIw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1780912068; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=618cYawuFXVDbk3rEh3uFMPq+ZlK7cJ5wS5VV9i6mTY=;
-	b=vEe6GobkYZm9xd65HtEd3ihea8A1Dankt9XtwucCSS2cCpcVN57ia0rPdoLh0Oodzn1sZQ
-	S1sFUTwDuOMm0J5Lu1ca5RMAn4olfLQ1rTH2Pn4ng0ljLYZvlceLDl/Po/LFHxdb0eibtE
-	OZn+B5PCNh9rrfA2R8ODH2+iP3T4ZIw=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A269779A9;
-	Mon,  8 Jun 2026 09:47:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pegvA8OPJmrHGQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Mon, 08 Jun 2026 09:47:47 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: do not overwrite NODATASUM flag when removing NODATACOW flag
-Date: Mon,  8 Jun 2026 19:17:24 +0930
-Message-ID: <e0be9c192cf8896a7f02ae23880f8e4921102129.1780912039.git.wqu@suse.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1780912564; c=relaxed/simple;
+	bh=eMgZiBOsnR3wR7NDtJ6EOYmABtOASjamlUAo08G14os=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKxOSUIO6HbiY87OAH36EVB9e3nej+YFk0lGjQhlgSF/BkNvDmU5xMbhfsjITD5Z99ZsemkSDXBk6rHJE37qZCrLaO5jV52ueTFce6lPDZ/NladKsUzvJZg+irGaKs4qBgdtXbQOtjPhadqk7E68raVkLEF7rnguAdLjE6Jb4WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=AecYL2CS; arc=none smtp.client-ip=220.197.31.3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=30
+	97WF1F3hjJ4ahSFgOI68/cOQpi7YtvaeCdDcz9ua8=; b=AecYL2CSDlIYOXPmpL
+	q4iSM/rC/ckZhd6UPopwVlht3l1IY9kjXWymmNRpSxWFmcUIa4c68jVkrgHKHSTu
+	rq6h5vSYslAc1zwXbMpjupu2eIMKTlq3wIklrfnNSCQ1JrDjdXz3lyh51PGIm0pK
+	Zy+nlNdOBs5tUvIjWFPqRu5hU=
+Received: from China-163-team (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDnY4iTkSZqkkwDCQ--.63974S2;
+	Mon, 08 Jun 2026 17:55:34 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.1.y] dmaengine: idxd: Fix not releasing workqueue on .release()
+Date: Mon,  8 Jun 2026 17:55:10 +0800
+Message-ID: <20260608095510.97742-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,140 +62,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Spam-Score: -2.80
+X-CM-TRANSID:_____wDnY4iTkSZqkkwDCQ--.63974S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7WF1DGF17JF1rCrW5KFyDKFg_yoW5JrW8pr
+	47JFW5W34xJr9xK3W7XF18Wry5Ga1Sy3yfurWxWw15uFW5Za4UX34ftFWj93s8JrZ5WF4a
+	qF90q3s5XF48KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEWE_ZUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7BetdmomkZeaawAA3b
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	TAGGED_FROM(0.00)[bounces-261998-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,kernel.org,163.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:linux-btrfs@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262000-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[jetlan9@163.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vinicius.gomes@intel.com,m:dave.jiang@intel.com,m:vkoul@kernel.org,m:jetlan9@163.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6657654BEE
+X-Rspamd-Queue-Id: 3B3FA654ECD
 
-[TEST FAILURE]
-The test case generic/628 will fail if MOUNT_OPTIONS is set to "-o
-nodatasum":
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
- FSTYP         -- btrfs
- PLATFORM      -- Linux/x86_64 btrfs-vm 7.1.0-rc4-custom+ #383 SMP PREEMPT_DYNAMIC Sat May 30 07:35:42 ACST 2026
- MKFS_OPTIONS  -- -O bgt -K /dev/mapper/test-scratch1
- MOUNT_OPTIONS -- -o nodatasum /dev/mapper/test-scratch1 /mnt/scratch
+[ Upstream commit 3d33de353b1ff9023d5ec73b9becf80ea87af695 ]
 
- generic/628  1s ... - output mismatch (see /home/adam/xfstests/results//generic/628.out.bad)
-    --- tests/generic/628.out	2022-05-11 11:25:30.816666664 +0930
-    +++ /home/adam/xfstests/results//generic/628.out.bad	2026-06-08 18:56:49.878542927 +0930
-    @@ -8,8 +8,9 @@
-     310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/a
-     310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/d
-     test reflink flag not set iflag
-    +XFS_IOC_CLONE: Invalid argument
-     310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/a
-    -310f146ce52077fcd3308dcbe7632bb2  SCRATCH_MNT/b
-    +d41d8cd98f00b204e9800998ecf8427e  SCRATCH_MNT/b
-    ...
+The workqueue associated with an DSA/IAA device is not released when
+the object is freed.
 
-[CAUSE]
-The direct cause is that after "chattr +S", the btrfs inode will lost its
-NODATASUM flag inherited from the mount option. E.g:
-
- # mkfs.btrfs -f $dev
- # mount $dev $mnt -o nodatasum
- # touch $mnt/foobar
- # sync
- # btrfs ins dump-tree -t 5 $dev | grep "(257 INODE_ITEM 0) itemoff" -A 3
-	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
-		generation 9 transid 9 size 0 nbytes 0
-		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x1(NODATASUM)
-		                     ^^^^^^^^^ Proper NODATASUM flag
-
- # chattr +S $mnt/foobar
- # sync
- # btrfs ins dump-tree -t 5 $dev | grep "(257 INODE_ITEM 0) itemoff" -A 3
- 	item 4 key (257 INODE_ITEM 0) itemoff 15879 itemsize 160
-		generation 9 transid 10 size 0 nbytes 0
-		block group 0 mode 100644 links 1 uid 0 gid 0 rdev 0
-		sequence 2 flags 0x20(SYNC)
-		                      ^^^^ Only the new SYNC flag
-
-This makes the inode to drop the old NODATASUM flag, meanwhile the new
-reflink destination will still inherit the NODATASUM flag.
-The mismatching NODATASUM flags will cause the reflink to fail.
-
-The root cause is that, inside btrfs_fileattr_set() if no FS_NOCOW_FL is
-set, we remove both NODATASUM and NODATACOW flag.
-
-However we should not touch NODATASUM flag, as data COW doesn't require
-checksum.
-Only NODATACOW implies NODATASUM, but DATACOW doesn't imply DATASUM.
-
-[FIX]
-Do not remove NODATASUM flag when FS_NOCOW_FL is not set.
-
-However this will introduce a problem related to "chattr +C" then
-"chattr -C" on zero sized files.
-
-Previously such operations will revert to inode flags 0, but now it will
-revert to inode flags NODATASUM.
-This is due to the fact that we have no way to change NODATASUM flag but
-only through mount options.
-
-I know this is not ideal, but at least "chattr +S" removing unrelated
-flags looks more serious and more like a bug.
-
-So here I'm fine to slightly change the behavior of "chattr -C".
-
-Fixes: 7e97b8daf634 ("btrfs: allow setting NOCOW for a zero sized file via ioctl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Fixes: 47c16ac27d4c ("dmaengine: idxd: fix idxd conf_dev 'struct device' lifetime")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-7-7ed70658a9d1@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ Remove destroy_workqueue(idxd->wq) from the function idxd_remove() to
+avoid the workqueue is released twice. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 ---
- fs/btrfs/ioctl.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+On 6.1.x, destroy_workqueue(idxd->wq) is still called directly in
+idxd_remove(). Applying the upstream patch as-is would cause a double
+destroy:
+once in idxd_remove() and again in idxd_conf_device_release() when
+put_device() triggers the release callback.
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index d4981d2a42d7..74849a4208b5 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -336,8 +336,7 @@ int btrfs_fileattr_set(struct mnt_idmap *idmap,
- 		 */
- 		if (S_ISREG(inode->vfs_inode.i_mode)) {
- 			if (inode->vfs_inode.i_size == 0)
--				inode_flags &= ~(BTRFS_INODE_NODATACOW |
--						 BTRFS_INODE_NODATASUM);
-+				inode_flags &= ~BTRFS_INODE_NODATACOW;
- 		} else {
- 			inode_flags &= ~BTRFS_INODE_NODATACOW;
- 		}
+Resolution: In addition to adding destroy_workqueue(idxd->wq) to
+idxd_conf_device_release(), the call was removed from idxd_remove().
+This is safe because idxd_remove() ends with
+put_device(idxd_confdev(idxd)) which drops the last reference and
+triggers idxd_conf_device_release(), where the workqueue is now destroyed.
+
+---
+ drivers/dma/idxd/init.c  | 1 -
+ drivers/dma/idxd/sysfs.c | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 6059ffc08eac..2880a0b0f5e6 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -813,7 +813,6 @@ static void idxd_remove(struct pci_dev *pdev)
+ 	if (device_user_pasid_enabled(idxd))
+ 		iommu_dev_disable_feature(&pdev->dev, IOMMU_DEV_FEAT_SVA);
+ 	pci_disable_device(pdev);
+-	destroy_workqueue(idxd->wq);
+ 	perfmon_pmu_remove(idxd);
+ 	put_device(idxd_confdev(idxd));
+ }
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index 0689464c4816..ea222e1654ab 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1663,6 +1663,7 @@ static void idxd_conf_device_release(struct device *dev)
+ {
+ 	struct idxd_device *idxd = confdev_to_idxd(dev);
+ 
++	destroy_workqueue(idxd->wq);
+ 	kfree(idxd->groups);
+ 	bitmap_free(idxd->wq_enable_map);
+ 	kfree(idxd->wqs);
 -- 
-2.54.0
+2.43.0
 
 
