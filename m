@@ -1,207 +1,170 @@
-Return-Path: <stable+bounces-261953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XFCWEiNCJmopUAIAu9opvQ
-	(envelope-from <stable+bounces-261953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 06:16:35 +0200
+	id wROZLl5HJmpbUQIAu9opvQ
+	(envelope-from <stable+bounces-261954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 06:38:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C16652901
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 06:16:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136C36529E1
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 06:38:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261953-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261953-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=radxa.com (policy=none);
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=theori.io header.s=google header.b=at13je63;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261954-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261954-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 430433012E94
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 04:16:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF0353010C11
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 04:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B02C34EEF7;
-	Mon,  8 Jun 2026 04:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5158434A79D;
+	Mon,  8 Jun 2026 04:38:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6B675809;
-	Mon,  8 Jun 2026 04:16:03 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780892175; cv=none; b=n+TEJP6zkx5XSlDj/0VzIH+KdzPcK8n0NcD3yEEoff2NzPcGWe+v4Dwurl1Iu9p0rA/mNzbV+cPfRjWYI2kkrRSVhmVnVXp+cM1Ozoz/PHtCmpg6JBUFasTIEqpTPXAGqb1fEL9ts9gcdj6PpBU6JEEBDReZITQK4n+frvm2t1c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780892175; c=relaxed/simple;
-	bh=YmBFGh6OqqdfCwFRHu4pem9rD5jhpqP1ykVz6uTzM7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dSexgIWC9coTRrnIJNosoV8JqjZaXZntFXRv8hB46i9ky01Wul+FJ2JJQipJDce8pS5qgQikINCX7QftTdZpfwHBBj1gD1s+UVeHnEhqr2wV1AuiAeDTI0phgOPdfVSsQYXtK/qwIND2rBd/XH/3csOVDiqVcDXAxbgjYXWR8Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=radxa.com; spf=pass smtp.mailfrom=radxa.com; arc=none smtp.client-ip=54.243.244.52
-X-QQ-mid: zesmtpgz1t1780892129t68dedcff
-X-QQ-Originating-IP: kLOHYzZH5ZNN56hgnufq3vuFP2j+0x+tfhxzFbkzXkk=
-Received: from [127.0.0.1] ( [116.234.26.110])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 08 Jun 2026 12:15:26 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10463631921484763401
-Message-ID: <519CAAC5BE344EB7+e6d7f90a-e481-468c-a987-dac3c69d7362@radxa.com>
-Date: Mon, 8 Jun 2026 12:17:57 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B228532BF5A
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 04:38:50 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780893532; cv=pass; b=PFVjS/s4v/huw6UQySgmowj5fHUclHR8UgQoJ4NEPm0wCaa3xA5D77ayP/1NgmAWAtjdUW9Fc80PlLZFDwKDApctDzd8M/3x+DKf4jQAzjAuaM6EhyZm3tmkOuLRVqc4ySnEflKeClslcE2G/g7Cpl2wsk9epkm+FHveEX1W8/w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780893532; c=relaxed/simple;
+	bh=MZy7yI2wj7sUs7TLGOXKJKT3vQxPgbX49v1A1fysaTQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=gLFZegYntvWgMGWYgzQ9bNKEIRqCHKngLW5en6QmKGbKodmDYWvW28VjaNXvkyhK9J+l1Ri64uVOjujsNISOExHxxsO7wFxktQMXy3wv0XC+rIvc+iDtOMXpLI95+NUjiaqgoBWrK3UW9phhO2/bC2uGSpdX15TQiElGWILqIgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=theori.io; spf=pass smtp.mailfrom=theori.io; dkim=pass (1024-bit key) header.d=theori.io header.i=@theori.io header.b=at13je63; arc=pass smtp.client-ip=209.85.221.45
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-45fd45e596cso1761860f8f.1
+        for <stable@vger.kernel.org>; Sun, 07 Jun 2026 21:38:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780893529; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cYtyQHC4BPDYqRyIlTrYzilHrZs9MN+GGEJ7A77Luv3ORMx6uN3YOFBZ+400o9QLo8
+         ZxHGJpWZiob6SoOMBTUiOIr4t4o6NoO8YCLjH72a9wFz/UVRCP5KP1HK45G2aRgIJDJv
+         ZVFqirqTGf/J0QbpCJGr1q6WQx/u4vn59OZrJ73YngrfGcN0J0W+qtz3Ap4vzk7Q6Vkl
+         TAFoW0wQJVfXAX2yYPjNbrNtnye336a87W5+hBhNU+bVLT1z/JBpSbOSwj8nCyzBATee
+         XPXA/jtkVYr0qKvS1w9EAUCqi2uemDgdyGNMY6E8Tabp3U6620J1Yj7KlpUGM0rdzE/J
+         NiJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=QQP/aPYxeZGsiZGNoWInSta83wgtFTiCz64TEWtNGuM=;
+        fh=RvEWwL4CdzthXqFPrJY1v5EhszSUJtREhzms1oh7XMQ=;
+        b=ERtyvtKICMBRBqj1vwhRmKTrcqGBMABC6ldqffEMrXZ0T7tw8AR2Ow5iK1VfSrpXzP
+         7D1jDwFa0lamvd+htsfxAIf7SOFBNl0Es79fwAFjclazN4HeZ5TTzLjV2Yg3prESVU/e
+         zXhZrzV6+MqMacTmX/sjkjBO4em1Cs+vvx04tBIiFNbuiInRD++SZ2tCaS+UGeDbP4Hq
+         OrL3sgiF3U47gw01Pyb6m0Fzs0URO4iVa4mwYqx5iEDHwldt8JfVESSI3Y4/u+GakWPC
+         7m67sua9RDqZHhErWIoGcVkkL5xDwMru0/B0dYck6tP1gjpjPA8i45BfRVk8A3ZCGNQ4
+         3M5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=theori.io; s=google; t=1780893529; x=1781498329; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QQP/aPYxeZGsiZGNoWInSta83wgtFTiCz64TEWtNGuM=;
+        b=at13je63Gl1jJU46sTF/aIcB7+EUqXQ49S9HU4HuI44lQIH/fmYXOyPLb6JRlh3ka6
+         tC7YI4Z8XXdHKjrSGg2eZc7l8KWHIvtNM+7GBgUfFFr0pBjn17NFx6y4/7xWMMrmoIjI
+         y0XS+a4j5fgK7GrrctPyJdH07TnEu6GceHXBU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780893529; x=1781498329;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QQP/aPYxeZGsiZGNoWInSta83wgtFTiCz64TEWtNGuM=;
+        b=Asvh949LkOyOum0Lm1ZEuC99T2OkC0UUZTTtUxyj1BbsQnwTxFS4QLHva+WHGZHjpE
+         W2pnrSybIRjUwNDQarsXy+IquY9JF1iXHOKqYqJmFxpqcydFt/0F4IPysN6EmjalLC6e
+         8xe1xvvdkh3QZGY9Fr+zk1Tny3DPTiZnE7lV6mscyL3tQ0N1JAehyTw2mrtMX4E8HAVH
+         iem5gtCOenjX0Rm9rr7/PLH56hIistRlRoHflzf69Bvsd8GoCeRliDN6YK8z+Xg9bFa2
+         mVPpK7w1D8tQcj9k70dB9ZZVuCrdJwPfjwLibOtGEAAaN6yQ0QoSb/OLAjkO0Dta4A4K
+         T63Q==
+X-Gm-Message-State: AOJu0YzJTQcnCRoY0bcrNRpFlPGE64A9XuFYmez3enQ6hYLeJklv1SVd
+	26lyCl7CqEbVodWceX3eRrr7TyXhylllfDb9lD1fMmWljk89KjmEQc7woJ89ScSUqEkNXSPgO2M
+	Pb41hiozhHYDahCgRvqTk0/7ZTOwojy8GrGUZfIdDRvnnwmro7YISa2SCBg==
+X-Gm-Gg: Acq92OGPrZA6G/dpeCil1S9C7krYnivLH4DhgBvBUHcCo1lsYY2A9fxZ1lyTcOj0RQK
+	kimg2uAkPCfHEIPrtVvLZZsNVlRarniv+fWTgINueWZfLU2NNxSCjQAasgpLNLHIvJB23Ok+S1u
+	wV3gxO+nF4qZ5Katb0x4MVjr1HYJz1o7NGs0cFmb3y1hGG54JLGOoy9X/nFRIHP3mgHQPQ8AExh
+	iagcXZ0AscAY/wR5NDl0BcWG4zY248SqCpUzTmraYM91fGHHeR3vOFJ/aMlyqULW5N+SM7uidEI
+	RatHxqhp+5XcVUNXw7Ff7doBhhwF7Zcl/PQa4WL91k2xR3glGQ==
+X-Received: by 2002:a05:6000:a91:b0:460:1755:160e with SMTP id
+ ffacd0b85a97d-46030757dd4mr15461369f8f.33.1780893529059; Sun, 07 Jun 2026
+ 21:38:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: hamoa: Reserve low IOVA range for
- Iris
-To: Val Packett <val@packett.cool>,
- Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
- Daniel J Blueman <daniel@quora.org>,
- Vikash Garodia <quic_vgarodia@quicinc.com>
-Cc: Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
- Abhinav Kumar <abhinav.kumar@linux.dev>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Bryan O'Donoghue <bod@kernel.org>
-References: <20260601041336.9497-1-daniel@quora.org>
- <ecavEnqJTDXvfFykc9uJb5No7ioighpjrCdw2CFZ4c8Izr5DxpTs-606Bg7K0RtHTaOqksWivHxWQLzMBP6qow==@protonmail.internalid>
- <20260601041336.9497-2-daniel@quora.org>
- <ec7c564e-745a-4998-af9a-e9632fe063f7@kernel.org>
- <CAMVG2ssnyH=KUKrdfnUOtPYU7p17inyzcYWcKhT4EAZxDzDjfg@mail.gmail.com>
- <cb37e7cc-4fb0-4c24-8f89-f6f9eb08a107@oss.qualcomm.com>
- <ff3748ef-cf75-42b3-850c-b8742a814920@packett.cool>
-Content-Language: en-US
-From: Xilin Wu <sophon@radxa.com>
-In-Reply-To: <ff3748ef-cf75-42b3-850c-b8742a814920@packett.cool>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:radxa.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: Nr7EfX/rtCyrTbSevDAI1CO8hHmQl9GEJOhwPbF8ZUIVxVzI/AEwS3KY
-	AOqm12IB7uCHq4deXkPA1XGidSo52ZXKC38uqkw6EKhGMTVaH53s2wd9ubuGf/n45NbhwoY
-	dYqljM2E+Br/+ANw1HS0D8HvEMdc8xl54eb7AN2wIEOT8nhhCOrgk8dSv3afOmU8hdBjKpb
-	wXT7vWRzYyjDyElWk5pHkVkcotW2rleZKiZpBAa2A1UodI5/GwtQE8nKf8Bp+wmG7QVuZOd
-	U2reKjYFas4BMn77nK5G1ZplpzhT1JP/i0VmDXvKDldnE8Osjuo+mP0a0+Di72ofNZVmTgc
-	NsLBh3HPFDeoGG+TE+y26cxzv7TkthlhH4u7xzwpinev45lpbnDw1omGA7twIx8QBcRg6WV
-	lHNqCcSUf70RZ5caG3YGKrIOC9cKepq6ryOq1kgl8Okyclxw4xt4SGiJOAQvSbjIWw+f7tq
-	JXCLxwvSRyNgR+gltXFS+W3+nXvTku7cVEI23mhbBmRGmOr9gKiGFphevfUBTtvSbA606R9
-	WnshaN5xylTXCdz6J1GiNm1koK91Bq+AYHqCThUe5sHoJqTN+QFm1e5TDaQSkFD3nxKEiWz
-	GYCENhBPlAan6h99oAX2h7JtMc2iycBZFeh9Q1zIsdZemIcZinya1IOMGfRBcBdxujd3GaL
-	2JiU18g6Pna/YXqZQyk7W6mqtQZxwOdSLVaWcq88H7OWf8tX+KTvaIikyABNsJG6OwaB2fi
-	MPtvaTt7ZZVnIlUpB9qw7Msu4rgBqkvWRxhMJsKW7muVsv7QeZAZj3aD1B9+l9IQ0Hus3xQ
-	nGfvudTK6Yx6SgkildU2ksTzc8sb5DDXeemzN6OVxA5BoGfn7qjc/S51vnk/+aylsIlKcZ2
-	USRCHb+wNuz8pXqBK95Oy/cs0AniMVV8vaOLszfHUR9qCZ9gZvEb7mAMxEO1Dzp6AlgA353
-	E/jc70VE/Z03xNSMyjDca5j9NtafMZOH9dTIA45LIQI1kknqYn3Rrfd8OGjyLJ4MY4178Eh
-	eZTLI3sWH5Bumoco42wU141RTWDzjI+JtxD42te1/eeO6PPpRzOABiCzR2tMco+9WuoU1HA
-	WFDyY0iTqI4oAd7POIKfhw=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+From: Taeyang Lee <0wn@theori.io>
+Date: Mon, 8 Jun 2026 13:38:11 +0900
+X-Gm-Features: AVVi8CesXCFQGpxqn-hazduOTZ03XNUK1nIXJGQb3wlZYFkDNzEL63N7sGsaLPc
+Message-ID: <CAH-2Xv+d-xVfqEN1NRpKbGmDFX3JdVzLBF1MXWubhzhbisaoUg@mail.gmail.com>
+Subject: [stable] Please apply 18fc650ccd7f: bpf: Free reuseport cBPF prog
+ after RCU grace period
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[theori.io:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[radxa.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:val@packett.cool,m:vikash.garodia@oss.qualcomm.com,m:daniel@quora.org,m:quic_vgarodia@quicinc.com,m:dikshita.agarwal@oss.qualcomm.com,m:abhinav.kumar@linux.dev,m:andersson@kernel.org,m:konradybcio@kernel.org,m:mchehab@kernel.org,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-media@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:bod@kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORGED_SENDER(0.00)[sophon@radxa.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[theori.io];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-261954-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-261953-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	FORGED_SENDER(0.00)[0wn@theori.io,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[theori.io:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sophon@radxa.com,stable@vger.kernel.org];
-	FORGED_MUA_MAILLIST(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[0wn@theori.io,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:from_smtp]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4C16652901
+X-Rspamd-Queue-Id: 136C36529E1
 
-On 6/8/2026 11:48 AM, Val Packett wrote:
-> 
-> On 6/4/26 3:38 AM, Vikash Garodia wrote:
->>
->>
->> On 6/2/2026 9:05 PM, Daniel J Blueman wrote:
->>> On Tue, 2 Jun 2026 at 18:27, Bryan O'Donoghue <bod@kernel.org> wrote:
->>>>
->>>> On 01/06/2026 05:13, Daniel J Blueman wrote:
->>>>> On X1-family hamoa platforms, Iris DMA below IOVA 0x25800000 (600MB)
->>>>> triggers unhandled SMMU page faults
->>>>
->>>> How do we know that is a correct address - does it come from qcom
->>>> documentation or trial and error ?
->>>
->>> @Vikash, beyond your comment I linked in the patch [1] kindly cite a
->>> source for the different stream-ID <600MB behaviour, and share
->>> specifics, eg if silicon, firmware, or driver and constraint, defect
->>> or otherwise, so I can include a definitive description.
->>>
->>> Also good to know if my workaround is good for long-term, or on the
->>> other hand handling streams <600MB is important/useful.
->>>
->>
->> Thanks Daniel for raising this patch. Did you also try the memory fix 
->> i mentioned in the bug [1] discussion ?
->>
->> Coming to 600MB, this have been the VPU hardware restriction all the 
->> while since venus days, and since address could not go deeper all the 
->> way lower than 600MB, the issue never popped up earlier.
->>
->> Consider the memory layout split as below (Iris device range is capped 
->> to 0xe0000000)
->>
->> |-----600MB-----|-----(0xe0000000 - 600MB)-----|----IO reg--|
->>
->> 0-600MB range, VPU hardware would reserve this to generate different 
->> stream-IDs primarily for internal (non-pixel) buffers.
->>
->> 0-600 --> VPU would generate *secure* stream ID for non-pixel buffers
->> 601 - 0xe0000000 --> VPU would generate non-secure stream ID for non- 
->> pixel buffers.
->>
->> When many concurrent sessions were tried, non-pixel buffers were 
->> mapped into 0-600MB range, and VPU generated secure ID for those. 
->> Since those were not associated with the iommus configured for iris 
->> node, it led to USF (un-identified stream fault) and device would crash.
-> 
-> Umm.. is anything *actually* preventing us from adding the "secure" SID 
-> to the iommu node?
-> 
-> I just saw a patch for sc8280xp that did just add an "extra" SID for iris:
-> 
-> https://github.com/strongtz/linux-radxa-qcom/commit/ 
-> e92850f792498c3a72d72d667503a29bf6bb0a31
-> 
-> and I'm wondering if that's about the same exact issue.. (Adding sophon@ 
-> to Cc: here)
-> 
+Hi Linux kernel stable team,
 
-I'm not sure if we're having the same issue. Without adding that SID on 
-sc8280xp (HFI Gen2 FW), it fails to decode anything and crashes 
-instantly. From the trustzone log inside the crashdump, I can see that 
-the buffer isn't actually in the 0-600MB range.
+Please apply the following upstream commit to the supported stable trees:
+
+18fc650ccd7fe3376eca89203668cfb8268f60df
+("bpf: Free reuseport cBPF prog after RCU grace period.")
+
+It fixes an issue introduced by:
+
+538950a1b752 ("soreuseport: setsockopt SO_ATTACH_REUSEPORT_[CE]BPF")
+
+which appears to have been introduced in v4.5, so all currently supported
+stable trees seem to be affected.
+
+I checked that the upstream commit cherry-picks cleanly onto the following
+stable branches:
+
+linux-7.0.y
+linux-6.18.y
+linux-6.12.y
+linux-6.6.y
+linux-6.1.y
+linux-5.15.y
+linux-5.10.y
+
+Thanks,
 
 -- 
-Best regards,
-Xilin Wu <sophon@radxa.com>
+___
+
+Taeyang Lee, Security Researcher
+Theori, Inc. / Xint Code
+Website. www.theori.io / xint.io
+Email. 0wn@theori.io
 
