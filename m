@@ -1,382 +1,381 @@
-Return-Path: <stable+bounces-262129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ISrwHAxDJ2pXuAIAu9opvQ
-	(envelope-from <stable+bounces-262129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 00:32:44 +0200
+	id 3sNjG3JGJ2r5uAIAu9opvQ
+	(envelope-from <stable+bounces-262132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 00:47:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A4C65AFB3
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 00:32:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6AA65B105
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 00:47:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="Uj/lzta8";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262129-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262129-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=NoVENXOn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262132-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262132-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFE233021E57
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 22:28:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5EAD30DAEDB
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 22:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DD03B3886;
-	Mon,  8 Jun 2026 22:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938943BA239;
+	Mon,  8 Jun 2026 22:41:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011010.outbound.protection.outlook.com [40.107.208.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9EF39A805
-	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 22:28:05 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780957688; cv=none; b=QrP0brG/PZ3B87ULuDN20n8w9B4ElLvpo7E5HBf8saURRSULgLzJHpcrf34BNSJ+oDJ5Gb1J2tcUjolp1sMLn5r9n314lPskbCiolCL6K30Fz5r9W15I0fdpfv3borZgcUVJGR3FOAOdKZnWUZy450pB7uZLeeWtql8/dywBW1k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780957688; c=relaxed/simple;
-	bh=9SAh3sGkuqDMMnaEBl9TqptHGF2EyXs3AZnH8hyku1E=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZjqnQ3oS1w4Gbx5Vo5elgKzX28r6s/tSmpq9MITNGjx0vQ9oMrydejaPDLvK3+dEyif3Gyr7KK5WN82NXeAa8IFtPbNFeKU5cxalYpWfaOnXpxqIKHsofW2/J8Xk5LSdZ+OJd32YckhNemSOyBwaoW6VdguJVNetPwcbJysSMaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uj/lzta8; arc=none smtp.client-ip=209.85.128.177
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-7e8b45dfb3dso59728877b3.3
-        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 15:28:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780957684; x=1781562484; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UZL8W7BE2iY515e29P29VDPBVZJwc1IA4Fj5Frdt1uY=;
-        b=Uj/lzta8mgObQAWImwmCveVMVHfN7te8EQX/0aUhNXRemMXXaIc/zjH7pwrpwbRlaQ
-         grA/N+4YS3P2D6fQ/ITgT76SL8e6gQJrGavqJe7ys9sfMCYeVyog/hbcPncTQY8t47Ip
-         xXeFx2SRgMPJwgza/wDF+Hrx4aeuJ73Cf0uySYpOCBfe7PPvcPmEdpyWsI0OJPEL5jbd
-         Aqgrq/vPXml69t343Gbhnea9uVZdp9bxrdmMOQ3h26Qne7fxcO+EtzrDQsonO4sgbgS2
-         Yn5P3tgsUdVLNG3rLghdYY5Ofgghwxvv9K01AeTzaAmQ58Sym0Mtv4EPZd9yBesBlDyF
-         xCUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780957684; x=1781562484;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UZL8W7BE2iY515e29P29VDPBVZJwc1IA4Fj5Frdt1uY=;
-        b=HjSzuwrQXlTOYTf8hHXTCN3j1PHh2HnEZFhfumRyodZfQNC57/PoA/rzPdw5oHIETZ
-         THlfChl4YoDjS9QJRQaBA060XWhMD45TK7gKbfGFS6PRQ2kM/aWGTrxllGN0/GKy94U6
-         hCYVNQDKmlkPl3bBblHjcYWKry/jM9UMSpj8q5TEqTIGkNQbS5r+uhqkW1JPp16gJSfQ
-         1+dUDJHZLQJIF6PUOAWscgEMt8Xs37WNwlqtlkMJeumdpqPllPnJvDfdWDXOKHhISDLC
-         HHdYrtjIgFf6S5g2ypg8qK58iXRdDAW+RykmHZkswcnLCvNlcCB/w8JWgBYKNvpjkf1Z
-         Hq5A==
-X-Forwarded-Encrypted: i=1; AFNElJ/TYsXB7PEDummfWTUxRJs567B69YJDdGan63Ue0lcfaCl12zLxBD8a1DLoz8Y6phNtdMSqOlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYbjlMG5aFLirEffFQhk3ruEl+uJMZHMrKiPpmeusBofEX4pNY
-	+hnhi/chaiDkJuZ+VV5TXOU9Y9G5mzrHstFnD2QwXEgKW2dIDHMy4e7R
-X-Gm-Gg: Acq92OHR3ns416rY4VO1G/toOKTAyRXu/cOnqfihQWR0wz5UbrmUdS8jzmdOnAcXEmM
-	vTD2kSfnXhWLU3OwwU/nydOzXWSehhLqwsua2vzgeXOWcvE+odAQzq1QFUDnkpy5IIhqILhnrMw
-	311KpW0hlO8DViL3Lzu2GrGEC3msLhtlYYylYkCviYtZKcIFACMtAj+QxyK3/cb+/1i0E9dcFmo
-	vUvgv8t/6m7M8Fh6NjkaDdSPWdQ9+ZTi448DOGXEzNbQoZvCPtu0pHvPMpQe20D2oxDWM7maIzi
-	SHHfxhOOBXRXlrDdprOwC2NpN6TpR9yvn1brVR/ADbkdUx0g4qgQThJ4qcKjslRNkXvlYkIUJnR
-	Z4Xvz3AwYIGOQ1Ii61iCXjQQuN+2DjqKe7iYmzHup/rcqYe5r3Q/z47zoyJDdahWaKeo7HNVTlY
-	6wjqXMCdWg9F2AFVeODK9aOMwCqUMd
-X-Received: by 2002:a05:690c:e1cd:10b0:7ef:d039:a32e with SMTP id 00721157ae682-7efd039acfcmr68170177b3.34.1780957684465;
-        Mon, 08 Jun 2026 15:28:04 -0700 (PDT)
-Received: from localhost ([50.221.107.122])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7ea23b91689sm88209077b3.40.2026.06.08.15.28.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jun 2026 15:28:03 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-Date: Mon, 8 Jun 2026 18:28:03 -0400
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>,
-	Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: mana: Optimize irq affinity for low vcpu
- configs
-Message-ID: <aidB82s7A0Roh2dD@yury>
-References: <20260601102749.1768304-1-shradhagupta@linux.microsoft.com>
- <10988db9-8a8d-4ad0-917e-317dd4b20253@intel.com>
- <aiEBdsP7NTBd0+ah@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C401A3B83E8;
+	Mon,  8 Jun 2026 22:41:03 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780958465; cv=fail; b=GK7oi36xQibFl/VCCRPycEyjCUUoKQUpO1Z5ChlOHl0dB+eaeKr+2jXGCrK31nH2qpJ8p8SFD+T4AMF5O89KW6d1kBEyPTpMlIyaqp7xKFvih8PecLOwdKKQzKjz5Ty2/RwWAnhg1iLju6tcYV279jIzgP/T/vD/ICQbUWyET7U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780958465; c=relaxed/simple;
+	bh=Uvm2KDZv4Q6uTWecgmkVrhq/+1Ma9Wb28C8leOUF4nU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BRldpPVinFaru46WsD6xbQ9gzDfd/bDdOQlwaOgOigeplVAN1FPrIbH8yO1CCzHTx/StPAvc/7QMBzNHtT6me8j4mG0wraFxXE42O7jAG9YENIwvbbk24Lv0rGZEkDv5Oa/5Jf8DXTsf21cOZglGEuHyO4kZ4Roqjyp8TWxaP8M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NoVENXOn; arc=fail smtp.client-ip=40.107.208.10
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cfTZCiBOxGlyU0K9kFFhXHRiNKA1k/buhCT1r3UEBdnS8UhqTPiwW2VnxJFc7G5XY91pl98JoE/qb2fAU58ubWNxgwMWOSg5w1CMu8Qkt79u2Vg4qRk6XoZJU2o6tbfNWS0nyy0BjBcR3L4I2dlWH5g5Nt4R7MuICfytfCnrUd87F/FQAczwUAhPrCxsi7YJaYHMYepPxUhGbwjb4McEF+1gRMiNj62U/7CJMcWfNiJXHFCL1nIVxo9cez41Xtfm/rnwgPTYV9jBFffTWEAzvyq7cjxkWGJzSmnJdD8iiaiwPZ4HdaT+phFyJsrompf/dNoyl9C7gQlPSVk+h7aZbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7Xs4d0Wc1WTzE90RF7Uoip55b4wcpmV+NaQwnGW6Byc=;
+ b=qmXnPG4FSi8US612S6Os7DT4Fct9gA38p7ieslylHt6OjX4VFE4yvLisQXpc6MtUBbCdLYIO0JDmAUaiS06KW4Fp4OXHfxInXMe144LhmEIvB+OMrR0SM1eJCQ5amoiUD51maOJwr+c189ZvgXfeOqP6jCibya9OZtYFYjJnFYtgay7yVUoMoSxg0ItbSReSfmHdhM76FFTWxVeMtAkiJ7xpXSih10L1Yt1hJKnNfDL082Z1bLsR1HKxx5S/PQBoMkxDhSFTKp56JHt5djd9lUzuuepQbywVDUlCP0x7ygrvdLPsVHVqGuW5vdfdKLbUNaOrJaB5EqMcU8g5gpOpEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=stgolabs.net smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7Xs4d0Wc1WTzE90RF7Uoip55b4wcpmV+NaQwnGW6Byc=;
+ b=NoVENXOnQQmS4pdqMNtU215RSqKi/FXqra/aNQ+Gar+ZK9k6Y3DM5pkYVgr8+IQq86KZ2mRZIM4kgWdfQZfdkqjyJCIYhIMwxu5rnpIKdjReK7v5yN0hGEMP3kSi71CEvNwo7z4VN6lUHax29fOJA991Ac+PmTrdvc3/vpP2XC0=
+Received: from SA0PR12CA0028.namprd12.prod.outlook.com (2603:10b6:806:6f::33)
+ by SA1PR12MB6845.namprd12.prod.outlook.com (2603:10b6:806:25c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Mon, 8 Jun 2026
+ 22:40:57 +0000
+Received: from SN1PEPF000397B2.namprd05.prod.outlook.com
+ (2603:10b6:806:6f:cafe::19) by SA0PR12CA0028.outlook.office365.com
+ (2603:10b6:806:6f::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.13 via Frontend Transport; Mon, 8
+ Jun 2026 22:40:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF000397B2.mail.protection.outlook.com (10.167.248.56) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Mon, 8 Jun 2026 22:40:57 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
+ 2026 17:40:56 -0500
+Received: from ethanolx7ea3host.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 8 Jun
+ 2026 15:35:39 -0700
+From: Terry Bowman <terry.bowman@amd.com>
+To: <dave@stgolabs.net>, <jic23@kernel.org>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <djbw@kernel.org>, <ming.li@zohomail.com>,
+	<rrichter@amd.com>, <Benjamin.Cheatham@amd.com>
+CC: <Smita.KoralahalliChannabasappa@amd.com>, <stable@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<PradeepVineshReddy.Kodamati@amd.com>
+Subject: [PATCH v2] cxl/port: Fix missing port lock in cxl_dport_remove()
+Date: Mon, 8 Jun 2026 17:35:33 -0500
+Message-ID: <20260608223533.583278-1-terry.bowman@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aiEBdsP7NTBd0+ah@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B2:EE_|SA1PR12MB6845:EE_
+X-MS-Office365-Filtering-Correlation-Id: ccfb115c-2a55-432b-83fe-08dec5af01c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700016|82310400026|1800799024|11063799006|56012099006|6133799003|18002099003|921020|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	jERXGp7nLLjuPee3BKV0wjyUsgqpB4FGTquBTK1sbiLKdKyRuF4tw/Gha46DZx/EdO+weOxhJ/8ROfoKrRMB4XNzRKw8xFXDAj5UlGjsBkMFCcms8fMsPgpVHrc7EP8kMLqHVNLYhXGzYQfG1uDjVELK5qWgnL0evnlhuZCYR25SEA53OwQZNeI2ADvXq59gtAkHratzjZ4zLeGy1RUlRzw9YMCgpYRd+O0TDdQmW1xNrZDfow35STK+pmphIqpzaRc627xu0DdzZx5h2y9A7KJrgCS+V4jR28GeJYsAD15r9yEb66UriDjP7DU8fUyEgxKVIR0o9ouINtGLpWMvwVdYq1eeTqo2fm5pVajJhfBvZ1+TGrN9zsvC0Oa5gy6DfbsXOCkVxtxG13EFFX6FDXX1fvXeSqsCmHYZ2vLblRz15cRHIGi4Qb8G+Vbu5PJ+dMllnd3zdVCFMzv2tC3ZKwp+QinE4T85mcqcCU34P2hafL6W3FuOskegu7Nl0P3dVw+FssRPFixM+v+f6BT5BYyI74Grg53LFy9edeJnXOkDx6W8dIjhAF9+j2eJvgMSrHxQo9gieHXBmbOPSHLcxfXskSwnfU4Kjg04r4VqA65DWCq6EurG4z0o19FEtGbW5Bg1oGGUTlCemEOVFJiWmYePwAd7huydqQXenl46dhSN59WIjHe1qAn3wheqdj1kG5PcBNu2fZcVTveh4RTVHeqte1VD2ck54QUa4iN2CP4AS5joWcUlm2516SnoDum/w9TwH0QSKtg0VBv7+s55LTLU/oMjs3o8Dw7k9xAazRc=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700016)(82310400026)(1800799024)(11063799006)(56012099006)(6133799003)(18002099003)(921020)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Hsd4wJ7n9wEBOWuRXuOUqnJZYLrhxAw233MxhCu00vPUO1r2VYHZHI2VYYAq9LxYTC/EpdccgWpX5ZnnNsx8D6x/wvcDomh8IMTM2qhHZBp2zrLNzcSOVPoxHusa4GZtKTVD/tV1HejF0J11WPNZCXuNp/+sTgkzSOsu3fSothqwPVgC/Jzk7JzY68Z3o5k6CRvNjFAR6kAsdYSHo9+FrqjV97AL25U3kUCJgdgIfPosaRlQTPl+ijufzdCxBxi0AGa0n4BuXNwgx6e62l+vFZdl00uGq6YDXVyAMRUXtRF4ui1nXb+p61Vf0U6uh5PcENj67URmsA4bypEhMpCrWGheB9E49ScQFk/xrlBNYA5KDfkgVx/14siscsFsmnc5UNWIMkTnCPb5qWAdDtCt+nTr92ikKIvAiTC7kjDlToB7HZFAoTtG3bSC/EOJqBjA
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 22:40:57.2300
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ccfb115c-2a55-432b-83fe-08dec5af01c2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397B2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6845
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262129-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[yurynorov@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:shradhagupta@linux.microsoft.com,m:jacob.e.keller@intel.com,m:decui@microsoft.com,m:wei.liu@kernel.org,m:haiyangz@microsoft.com,m:kys@microsoft.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:kotaranov@microsoft.com,m:horms@kernel.org,m:ernis@linux.microsoft.com,m:dipayanroy@linux.microsoft.com,m:shirazsaleem@microsoft.com,m:mhklinux@outlook.com,m:longli@microsoft.com,m:yury.norov@gmail.com,m:linux-hyperv@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:paulros@microsoft.com,m:shradhagupta@microsoft.com,m:ssengar@microsoft.com,m:stable@vger.kernel.org,m:andrew@lunn.ch,m:yurynorov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[26];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yurynorov@gmail.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dave@stgolabs.net,m:jic23@kernel.org,m:dave.jiang@intel.com,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:ira.weiny@intel.com,m:djbw@kernel.org,m:ming.li@zohomail.com,m:rrichter@amd.com,m:Benjamin.Cheatham@amd.com,m:Smita.KoralahalliChannabasappa@amd.com,m:stable@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:PradeepVineshReddy.Kodamati@amd.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262132-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[terry.bowman@amd.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,yury:mid]
+	RCPT_COUNT_TWELVE(0.00)[15];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[terry.bowman@amd.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[amd.com:+];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6A4C65AFB3
+X-Rspamd-Queue-Id: DD6AA65B105
 
-On Wed, Jun 03, 2026 at 09:39:18PM -0700, Shradha Gupta wrote:
-> On Wed, Jun 03, 2026 at 02:49:24PM -0700, Jacob Keller wrote:
-> > On 6/1/2026 3:27 AM, Shradha Gupta wrote:
-> > > In mana driver, the number of IRQs allocated is capped by the
-> > > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> > > than the vcpu count, we want to utilize all the vCPUs, irrespective of
-> > > their NUMA/core bindings.
-> > > 
-> > > This is important, especially in the envs where number of vCPUs are so
-> > > few that the softIRQ handling overhead on two IRQs on the same vCPU is
-> > > much more than their overheads if they were spread across sibling vCPUs.
-> > > 
-> > > This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> > > IRQs are assigned at a later stage compared to static allocation, other
-> > > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> > > weights become imbalanced, causing multiple MANA IRQs to land on the
-> > > same vCPU, while some vCPUs have none.
-> > > 
-> > > In such cases when many parallel TCP connections are tested, the
-> > > throughput drops significantly.
-> > > 
-> > > Test envs:
-> > > =======================================================
-> > > Case 1: without this patch
-> > > =======================================================
-> > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > 
-> > > 	TYPE		effective vCPU aff
-> > > =======================================================
-> > > IRQ0:	HWC		0
-> > > IRQ1:	mana_q1		0
-> > > IRQ2:	mana_q2		2
-> > > IRQ3:	mana_q3		0
-> > > IRQ4:	mana_q4		3
-> > > 
-> > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > vCPU		0	1	2	3
-> > > =======================================================
-> > > pass 1:		38.85	0.03	24.89	24.65
-> > > pass 2:		39.15	0.03	24.57	25.28
-> > > pass 3:		40.36	0.03	23.20	23.17
-> > > 
-> > > =======================================================
-> > > Case 2: with this patch
-> > > =======================================================
-> > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > 
-> > >         TYPE            effective vCPU aff
-> > > =======================================================
-> > > IRQ0:   HWC             0
-> > > IRQ1:   mana_q1         0
-> > > IRQ2:   mana_q2         1
-> > > IRQ3:   mana_q3         2
-> > > IRQ4:   mana_q4         3
-> > > 
-> > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > vCPU            0       1       2       3
-> > > =======================================================
-> > > pass 1:         15.42	15.85	14.99	14.51
-> > > pass 2:         15.53	15.94	15.81	15.93
-> > > pass 3:         16.41	16.35	16.40	16.36
-> > > 
-> > > =======================================================
-> > > Throughput Impact(in Gbps, same env)
-> > > =======================================================
-> > > TCP conn	with patch	w/o patch
-> > > 20480		15.65		7.73
-> > > 10240		15.63		8.93
-> > > 8192		15.64		9.69
-> > > 6144		15.64		13.16
-> > > 4096		15.69		15.75
-> > > 2048		15.69		15.83
-> > > 1024		15.71		15.28
-> > > 
-> > > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> > > Cc: stable@vger.kernel.org
-> > > Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > > Reviewed-by: Simon Horman <horms@kernel.org>
-> > > ---
-> > > Changes in v3
-> > >  * Optimize the comments in mana_gd_setup_dyn_irqs()
-> > >  * add more details in the dev_dbg for extra IRQs 
-> > > ---
-> > > Changes in v2
-> > >  * Removed the unused skip_first_cpu variable
-> > >  * fixed exit condition in irq_setup_linear() with len == 0
-> > >  * changed return type of irq_setup_linear() as it will always be 0
-> > >  * removed the unnecessary rcu_read_lock() in irq_setup_linear()
-> > >  * added appropriate comments to indicate expected behaviour when
-> > >    IRQs are more than or equal to num_online_cpus()
-> > > ---
-> > >  .../net/ethernet/microsoft/mana/gdma_main.c   | 60 ++++++++++++++++---
-> > >  1 file changed, 53 insertions(+), 7 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > index 712a0881d720..00a28b3ca0a6 100644
-> > > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > @@ -197,6 +197,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
-> > >  	} else {
-> > >  		/* If dynamic allocation is enabled we have already allocated
-> > >  		 * hwc msi
-> > > +		 * Also, we make sure in this case the following is always true
-> > > +		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
-> > >  		 */
-> > >  		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
-> > >  	}
-> > > @@ -1717,11 +1719,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +/* should be called with cpus_read_lock() held */
-> > > +static void irq_setup_linear(unsigned int *irqs, unsigned int len)
-> > > +{
-> > > +	int cpu;
-> > > +
-> > > +	for_each_online_cpu(cpu) {
-> > > +		if (len == 0)
-> > > +			break;
-> > > +
-> > > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> > > +		len--;
-> > > +	}
-> > > +}
-> > 
-> > I would find all of this a bit easier to follow if irq_setup_linear()
-> > and irq_setup() had a mana prefix so it was more obvious these are
-> > specific to the driver. Of course irq_setup is pre-existing, and its not
-> > my driver so do as you will :)
-> > 
-> > > +
-> > >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > >  {
-> > >  	struct gdma_context *gc = pci_get_drvdata(pdev);
-> > >  	struct gdma_irq_context *gic;
-> > > -	bool skip_first_cpu = false;
-> > >  	int *irqs, irq, err, i;
-> > >  
-> > >  	irqs = kmalloc_objs(int, nvec);
-> > > @@ -1729,6 +1744,8 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > >  		return -ENOMEM;
-> > >  
-> > >  	/*
-> > > +	 * In this function, num_msix_usable = HWC IRQ + Queue IRQ.
-> > > +	 * nvec is only Queue IRQ (HWC already setup).
-> > >  	 * While processing the next pci irq vector, we start with index 1,
-> > >  	 * as IRQ vector at index 0 is already processed for HWC.
-> > >  	 * However, the population of irqs array starts with index 0, to be
-> > > @@ -1767,13 +1784,42 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
-> > >  	 */
-> > >  	cpus_read_lock();
-> > > -	if (gc->num_msix_usable <= num_online_cpus())
-> > > -		skip_first_cpu = true;
-> > > +	if (gc->num_msix_usable <= num_online_cpus()) {
-> > > +		err = irq_setup(irqs, nvec, gc->numa_node, true);
-> > > +		if (err) {
-> > > +			cpus_read_unlock();
-> > > +			goto free_irq;
-> > > +		}
-> > > +	} else {
-> > > +		/*
-> > > +		 * When num_msix_usable are more than num_online_cpus, our
-> > > +		 * queue IRQs should be equal to num of online vCPUs.
-> > > +		 * We try to make sure queue IRQs spread across all vCPUs.
-> > > +		 * In such a case NUMA or CPU core affinity does not matter.
-> > > +		 * Note: in this case the total mana IRQ should always be
-> > > +		 * num_online_cpus + 1. The first HWC IRQ is already handled
-> > > +		 * in HWC setup calls
-> > > +		 * However, if CPUs went offline since num_msix_usable was
-> > > +		 * computed, queue IRQs will be more than num_online_cpus().
-> > > +		 * In such cases remaining extra IRQs will retain their default
-> > > +		 * affinity.
-> > > +		 */
-> > > +		int first_unassigned = num_online_cpus();
-> > > +		if (nvec > first_unassigned) {
-> > > +			char buf[32];
-> > > +
-> > > +			if (first_unassigned == nvec - 1)
-> > > +				snprintf(buf, sizeof(buf), "%d",
-> > > +					 first_unassigned);
-> > > +			else
-> > > +				snprintf(buf, sizeof(buf), "%d-%d",
-> > > +					 first_unassigned, nvec - 1);
-> > > +
-> > > +			dev_dbg(&pdev->dev,
-> > > +				"MANA IRQ indices #%s will retain the default CPU affinity\n", buf);
-> > > +		}
-> > >  
-> > > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> > > -	if (err) {
-> > > -		cpus_read_unlock();
-> > > -		goto free_irq;
-> > > +		irq_setup_linear(irqs, nvec);
-> > 
-> > irq_setup() doesn't have a driver prefix, but is actually a static
-> > function in gdma_main.c, so its implementation is specific to this
-> > driver despite its name.
-> > 
-> > So if I understand this change correctly, if the number of usable MSI-X
-> > vectors is smaller than the number of CPUs, you contineu to use the
-> > current irq_setup logic.. otherwise you switch to the simpler "linear"
-> > logic.
-> > 
-> > I guess this means the logic and heuristic used in irq_setup() breaks
-> > down when the number of vectors is large and number of vCPU is small?
-> > 
-> > Makes sense.
-> > 
-> 
-> Hi Jacob,
-> 
-> Yes, that's the right understanding. 
-> Regarding the function names, let me take that up in a seperate patch to
-> add prefixes to all such functions.
+xa_erase() in cxl_dport_remove() runs without the port device lock,
+creating a race with any caller that does xa_load() on port->dports
+and then dereferences the returned dport pointer. A concurrent
+cxl_dport_remove() can erase and free the dport between the xa_load()
+and the caller acquiring the port lock, causing a use-after-free.
 
-I agree. Now that you've got more than one setup method, short
-'irq_setup' looks confusing, if not misleading. You need some name
-that distinguished numa-based and plain linear method.
+For non-root ports the port lock is already held by the caller on two
+paths:
 
-Thanks,
-Yury
+1. Driver unbind: devres_release_all() is called from
+   __device_release_driver() which holds port->dev.mutex.
+
+2. Dynamic endpoint removal: cxl_detach_ep() takes the port lock
+   before calling del_dports() -> del_dport() -> devres_release_group(),
+   which synchronously runs cxl_dport_remove().
+
+Use cond_cxl_root_lock/unlock(), which only acquires the port lock when
+the port is a root port and the lock is therefore not already held.
+This matches the pattern used in __devm_cxl_add_dport() for the same
+reason.
+
+The write-side fix to cxl_dport_remove() is necessary but not
+sufficient. Callers that obtain a dport pointer via cxl_mem_find_port()
+use a lockless xa_load() and must not dereference that pointer until a
+lock that excludes free_dport()/kfree() is held.
+
+For root ports, dport_to_host() returns uport_dev, so all three devres
+actions (free_dport, cxl_dport_remove, cxl_dport_unlink) are registered
+on uport_dev. __device_release_driver() holds uport_dev->mutex for the
+full teardown sequence including kfree(dport). Holding uport_dev->mutex
+on the read side therefore excludes concurrent dport freeing.
+
+Fix rcd_pcie_cap_emit() by passing NULL to cxl_mem_find_port() to avoid
+capturing a lockless dport pointer, then re-fetching dport inside the
+uport_dev guard via cxl_find_dport_by_dev(). The previous guard on
+root->dev was wrong: cxl_dport_remove() releases root->dev before
+free_dport() runs, so root->dev does not protect against concurrent
+kfree(dport).
+
+Fix cxl_mem_probe() similarly: pass NULL to cxl_mem_find_port(), then
+re-fetch dport inside scoped_guard(device, &parent_port->dev) for the
+VH path, and re-fetch again inside scoped_guard(device, uport_dev) for
+the RCH path. This closes both the TOCTOU window between the lockless
+xa_load() and the guard acquisition, and the window between the two
+sequential guards in the RCH path where a concurrent surprise removal
+could free dport before devm_cxl_add_endpoint() dereferences it.
+
+Reported-by: Sashiko
+Fixes: 391785859e7e ("cxl/port: Move dport tracking to an xarray")
+Link: https://lore.kernel.org/linux-cxl/20260505173029.2718246-1-terry.bowman@amd.com/
+Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+---
+ drivers/cxl/core/port.c | 10 +++++++
+ drivers/cxl/mem.c       | 65 +++++++++++++++++++++++++++++++----------
+ drivers/cxl/pci.c       | 17 +++++++----
+ 3 files changed, 72 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index c5aacd7054f1..0b8f144596e8 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1092,8 +1092,18 @@ static void cxl_dport_remove(void *data)
+ 	struct cxl_dport *dport = data;
+ 	struct cxl_port *port = dport->port;
+ 
++	/*
++	 * For non-root ports the port lock is already held by the caller
++	 * via devres_release_all() during driver unbind, which holds
++	 * port->dev.mutex throughout.  Acquiring it again unconditionally
++	 * would deadlock.  Use cond_cxl_root_lock() which only acquires
++	 * when the port is a root port and the lock is therefore not yet
++	 * held.
++	 */
++	cond_cxl_root_lock(port);
+ 	port->nr_dports--;
+ 	xa_erase(&port->dports, (unsigned long) dport->dport_dev);
++	cond_cxl_root_unlock(port);
+ 	put_device(dport->dport_dev);
+ }
+ 
+diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
+index fcffe24dcb42..345b56f215ff 100644
+--- a/drivers/cxl/mem.c
++++ b/drivers/cxl/mem.c
+@@ -70,9 +70,9 @@ static int cxl_mem_probe(struct device *dev)
+ 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+ 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+ 	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+-	struct device *endpoint_parent;
+ 	struct cxl_dport *dport;
+ 	struct dentry *dentry;
++	bool rch = false;
+ 	int rc;
+ 
+ 	if (!cxlds->media_ready)
+@@ -107,8 +107,7 @@ static int cxl_mem_probe(struct device *dev)
+ 	if (rc)
+ 		return rc;
+ 
+-	struct cxl_port *parent_port __free(put_cxl_port) =
+-		cxl_mem_find_port(cxlmd, &dport);
++	struct cxl_port *parent_port __free(put_cxl_port) = cxl_mem_find_port(cxlmd, NULL);
+ 	if (!parent_port) {
+ 		dev_err(dev, "CXL port topology not found\n");
+ 		return -ENXIO;
+@@ -123,21 +122,57 @@ static int cxl_mem_probe(struct device *dev)
+ 		}
+ 	}
+ 
+-	if (dport->rch)
+-		endpoint_parent = parent_port->uport_dev;
+-	else
+-		endpoint_parent = &parent_port->dev;
+-
+-	scoped_guard(device, endpoint_parent) {
+-		if (!endpoint_parent->driver) {
+-			dev_err(dev, "CXL port topology %s not enabled\n",
+-				dev_name(endpoint_parent));
++	scoped_guard(device, &parent_port->dev) {
++		/*
++		 * Re-fetch dport under the port lock to close the TOCTOU
++		 * window between cxl_mem_find_port()'s lockless xa_load() and
++		 * this guard acquisition.  A concurrent surprise removal can
++		 * free the dport in that window.
++		 */
++		dport = cxl_find_dport_by_dev(parent_port, cxlmd->dev.parent->parent);
++		if (!dport) {
++			dev_err(dev, "CXL port topology %s not found\n",
++				dev_name(&parent_port->dev));
+ 			return -ENXIO;
+ 		}
++		rch = dport->rch;
++
++		if (!rch) {
++			if (!parent_port->dev.driver) {
++				dev_err(dev, "CXL port topology %s not enabled\n",
++					dev_name(&parent_port->dev));
++				return -ENXIO;
++			}
++			rc = devm_cxl_add_endpoint(&parent_port->dev, cxlmd, dport);
++			if (rc)
++				return rc;
++		}
++	}
+ 
+-		rc = devm_cxl_add_endpoint(endpoint_parent, cxlmd, dport);
+-		if (rc)
+-			return rc;
++	if (rch) {
++		struct device *uport_dev = parent_port->uport_dev;
++
++		scoped_guard(device, uport_dev) {
++			if (!uport_dev->driver) {
++				dev_err(dev, "CXL port topology %s not enabled\n",
++					dev_name(uport_dev));
++				return -ENXIO;
++			}
++			/*
++			 * Re-fetch dport under uport_dev lock.  uport_dev->mutex
++			 * is held for the full devres teardown sequence including
++			 * free_dport()/kfree(), so this excludes concurrent
++			 * hotplug removal through the entire dereference.
++			 */
++			dport = cxl_find_dport_by_dev(parent_port, cxlmd->dev.parent->parent);
++			if (!dport) {
++				dev_err(dev, "CXL RCH dport not found\n");
++				return -ENXIO;
++			}
++			rc = devm_cxl_add_endpoint(uport_dev, cxlmd, dport);
++			if (rc)
++				return rc;
++		}
+ 	}
+ 
+ 	if (cxlmd->attach) {
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index bace662dc988..710a62a66429 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -708,10 +708,10 @@ static ssize_t rcd_pcie_cap_emit(struct device *dev, u16 offset, char *buf, size
+ {
+ 	struct cxl_dev_state *cxlds = dev_get_drvdata(dev);
+ 	struct cxl_memdev *cxlmd = cxlds->cxlmd;
+-	struct device *root_dev;
+ 	struct cxl_dport *dport;
++	struct device *root_dev;
+ 	struct cxl_port *root __free(put_cxl_port) =
+-		cxl_mem_find_port(cxlmd, &dport);
++		cxl_mem_find_port(cxlmd, NULL);
+ 
+ 	if (!root)
+ 		return -ENXIO;
+@@ -720,13 +720,20 @@ static ssize_t rcd_pcie_cap_emit(struct device *dev, u16 offset, char *buf, size
+ 	if (!root_dev)
+ 		return -ENXIO;
+ 
+-	if (!dport->regs.rcd_pcie_cap)
+-		return -ENXIO;
+-
+ 	guard(device)(root_dev);
+ 	if (!root_dev->driver)
+ 		return -ENXIO;
+ 
++	/*
++	 * Fetch dport under uport_dev lock to protect against concurrent
++	 * hotplug removal. uport_dev->mutex is held for the entire devres
++	 * teardown sequence including free_dport(), so holding it here
++	 * excludes concurrent kfree(dport).
++	 */
++	dport = cxl_find_dport_by_dev(root, cxlmd->dev.parent->parent);
++	if (!dport || !dport->regs.rcd_pcie_cap)
++		return -ENXIO;
++
+ 	switch (width) {
+ 	case 2:
+ 		return sysfs_emit(buf, "%#x\n",
+-- 
+2.34.1
+
 
