@@ -1,156 +1,233 @@
-Return-Path: <stable+bounces-262113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /I13MbQdJ2qAsAIAu9opvQ
-	(envelope-from <stable+bounces-262113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 21:53:24 +0200
+	id 1OabEhgcJ2olsAIAu9opvQ
+	(envelope-from <stable+bounces-262109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 21:46:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5866B65A2CE
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 21:53:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2F365A240
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 21:46:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p88VSrN4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262113-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262113-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=google.com header.s=20251104 header.b=UINqabH2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262109-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262109-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 889EC304045A
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 19:48:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D574B3026595
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 19:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152023E717D;
-	Mon,  8 Jun 2026 19:48:38 +0000 (UTC)
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776513E5EC3;
+	Mon,  8 Jun 2026 19:43:27 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43CA3E1D1B
-	for <Stable@vger.kernel.org>; Mon,  8 Jun 2026 19:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D903387363
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 19:43:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780948117; cv=none; b=QCUzW1kJ36fPPwMw43+azdeNYYibKmKyrcSkuRxgz8hRldVTSGRHL7HGNJTML+hkSUbhT0T4puxH1oAZjvySRCSYZuMxsqw4r/M54t/qItnJeFU0+dX9bdFJtNszcfGAZSgwtFo5++WkUJ9CdHum8l3wwpDaVYkSgJmLhRzzBa4=
+	t=1780947807; cv=none; b=i+xeJ6E8jjN/NTVquuxco/lIqa0kMRBoXI8ijGhAPN/3oIrWWDTagROkqs1P613nU2P2XziaGdEe3uvS0xnq6aAsux0LNdkWjLC4q0WU1LuZIUGqb9Cs7H7Pa1E8dyv88FXqZRxN3v/7wMXPUSayFKfq6K3Jc4MOydmTJ402gzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780948117; c=relaxed/simple;
-	bh=juX4Yl9k+TZUqIuZpkbMBRPd7OhlkWVjnGomziN0g+E=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=LQ2D8Kq9jQ1src8YD3WGb5umHQPNwFKM0yLM8GiTJFHDeWFlN676LM6BCTBLWAg++x6QBLuQ4oc+qVSLhbYmopvtNAPPgUJK7z23GnALyOTHeKTM6SI5FqaYd99U0LZtDqcJ1slULBwim8+MoF7VBV5ZURcgE00Qj5VWDGHScbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p88VSrN4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97241F00893;
-	Mon,  8 Jun 2026 19:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1780948116;
-	bh=x6KMKl5v5Q9o4O5yEwua/Hp70jB7vixjdWNYmuMzxpw=;
-	h=Subject:To:From:Date;
-	b=p88VSrN4QjMU5eufxjh5j3lfji5+p8JijG0bH3SoVOSBJinQAeHI5KZ6YjLEkLtEQ
-	 d6cJgrIZoljk3z1BWvN7uxjg7TzDN+qv6kBQ4nQo/FSkXNXlf0NNfU23vAxc0lnQty
-	 8DDtq63mHbpXQTw0Dq+FZ0oDLUzEFsN6FEeHyecI=
-Subject: patch "iio: temperature: ltc2983: Fix reinit_completion() called after" added to char-misc-testing
-To: liviu.stan@analog.com,Stable@vger.kernel.org,jic23@kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 08 Jun 2026 21:31:07 +0200
-Message-ID: <2026060807-desolate-rebalance-2ed8@gregkh>
+	s=arc-20240116; t=1780947807; c=relaxed/simple;
+	bh=gJ6qO82cunFkHH/YI0cpZWB+99vzwtO076qzoKQb8zA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=m4ipUXhT8a9th1gG0fWd7Mmyqo9M5BvGSBqqRe2D62FFgVErb+LF+K1nHTaMFFoui917NtWvHChHb8hgfkziD62xMPT5pbIwuRLZlSL2jYlTegKNQf5GFrSoP9O/TpQFZmVVR6wBQi7vch2jPEoN/PmEmkrr8VNjWRi7AUpjZHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--xuehaohu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UINqabH2; arc=none smtp.client-ip=209.85.160.202
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-517c65e497eso7381911cf.2
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 12:43:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1780947804; x=1781552604; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=v1WPgK4XhrSsWKxtc0VlcZjNH1lHogrTgrVmSMDXRnU=;
+        b=UINqabH2uO+66H5EoeRt+plG6DMjsyTLma14AVhprh1pyA297JvCWI6zIVAYwRqp5s
+         mqt5sVB92TzNwynHeLDSVfso6RLK8+1xtlXIwUbvGhPycf2Ji/KpXSlr4GPs9azZnGdj
+         pDMX8TwNgK/1FlRUEQa49mT2cIkU/a8RxgxYqTMq99IWEyw9JB8g6g04xs/LomfbzdXj
+         I6wW7NIAPLAPcRRwypRphYAvH7XcWeJ9TWiE+zpP5Ulweo0Erhl3Fln8nidCZbAVo02o
+         CGXEOtWQvAVyW8xSZfLNfsU+zDyG7ivFKZ4+pxoh8R3WqzGrT5LQcLccqmI5VGnYqA9b
+         MeBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780947804; x=1781552604;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v1WPgK4XhrSsWKxtc0VlcZjNH1lHogrTgrVmSMDXRnU=;
+        b=g0HNh2Dz2Xi1peA7Qzpe9tiI71q2pf0p4lXTVlWpgjVdn8VRoCnmJ91R3r4WhAZpPG
+         +qHN3fxF4iarEgbnxOTDoRVMLhH9XL3t30X9V0fFkKITBdQuEJzkYF5CqxB3ufC0sdOT
+         N26uSHZiOZFc0N+kH6VrVabXD/+RqulyBIEVK29/FuYGLlpADG3xQr24O78umklKm/hE
+         zJOK9GYBOsZ+E2Q0WFwVf4p826JZtyRLbuPzziczy2fr3/R7rIHXZtGJjvvv2S8ko7TL
+         tInSD3noZFcO2wt1ZLYSG0z7MFtG/8h2NOzr8DySX0dMr6fVFZOnU0MJdQHlSUaLpj0c
+         yRew==
+X-Forwarded-Encrypted: i=1; AFNElJ8s835+Km2K/9l0mJWK73wIQ6gb3HeK+NHG7Af40yjmZZlSc67KrpWcapfh7hZwOEUVqhDQGBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKmTllFJF4DRKuv20zj8xEgZgBlDNs/sKyRUgjys0zoBnbWQpv
+	NY/QRbhUL1wD+IKwNHjQplIHTgZ4rdiRIVB+cUvkiyT4vb5FHEWwN6CO1/zrxKYUZ7AyILHrBvM
+	KW9IGLXv0zgVk
+X-Received: from qtss4-n2.prod.google.com ([2002:a05:622a:a9c4:20b0:517:85d0:ad3a])
+ (user=xuehaohu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5cd1:0:b0:516:df62:bde3 with SMTP id d75a77b69052e-51795c47f23mr242075611cf.54.1780947803937;
+ Mon, 08 Jun 2026 12:43:23 -0700 (PDT)
+Date: Mon,  8 Jun 2026 19:43:21 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
+Message-ID: <20260608194321.150838-1-xuehaohu@google.com>
+Subject: [PATCH v6] dma-buf: Fix silent overflow for phys vec to sgt
+From: David Hu <xuehaohu@google.com>
+To: Sumit Semwal <sumit.semwal@linaro.org>, 
+	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Nicolin Chen <nicolinc@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev, jmoroni@google.com, 
+	praan@google.com, David Hu <xuehaohu@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_RECIPIENTS(0.00)[m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jgg@ziepe.ca,m:nicolinc@nvidia.com,m:leon@kernel.org,m:kevin.tian@intel.com,m:ankita@nvidia.com,m:alex@shazbot.org,m:linux-media@vger.kernel.org,m:dri-devel@lists.freedesktop.org,m:linaro-mm-sig@lists.linaro.org,m:linux-kernel@vger.kernel.org,m:iommu@lists.linux.dev,m:jmoroni@google.com,m:praan@google.com,m:xuehaohu@google.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262113-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:liviu.stan@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262109-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xuehaohu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5866B65A2CE
+X-Rspamd-Queue-Id: 9A2F365A240
 
+In case MMIO size is bigger than 4G and peer2peer DMA goes
+through host bridge, we trigger a code path that assigns the
+total linked IOVA (which is greater than 4G) to mapped_len.
 
-This is a note to let you know that I've just added the patch titled
+Previously, `mapped_len` was declared as 32-bit `unsigned int`.
+When accumulating `size_t` lengths, this leads to a silent wrap-around.
+This truncation causes truncated lengths to be passed to functions
+like `fill_sg_entry()`.
 
-    iio: temperature: ltc2983: Fix reinit_completion() called after
+Fix this by changing `mapped_len` to `size_t` (64-bit). While
+at it, fix similar potential overflow issues in `calc_sg_nents`
+by using `check_add_overflow()` for `nents` and using
+`unsigned int` for the loop iterator in `fill_sg_entry` to match.
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
-
-If you have any questions about this process, please let me know.
-
-
-From 5cb9fdb446bfc3ae0524496f53fb68e67051701b Mon Sep 17 00:00:00 2001
-From: Liviu Stan <liviu.stan@analog.com>
-Date: Mon, 25 May 2026 19:39:29 +0300
-Subject: iio: temperature: ltc2983: Fix reinit_completion() called after
- conversion start
-
-reinit_completion() was called after regmap_write() initiated the hardware
-conversion, creating a race window where the interrupt could fire and call
-complete() before reinit_completion() reset the completion.
-
-Move reinit_completion() before the regmap_write() to close the race.
-ltc2983_eeprom_cmd() already does it in the correct order.
-
-Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
-Signed-off-by: Liviu Stan <liviu.stan@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Fixes: 3aa31a8bb11e ("dma-buf: provide phys_vec to scatter-gather mapping routine")
+Cc: stable@vger.kernel.org
+Cc: iommu@lists.linux.dev
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: David Hu <xuehaohu@google.com>
 ---
- drivers/iio/temperature/ltc2983.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Changes in v6:
+ - Used `check_add_overflow()` in `calc_sg_nents()` for safer
+   accumulation (Leon).
+ - Dropped explicit `!nents` check and added a comment noting that
+   `sg_alloc_table` handles `nents == 0` (Leon).
+ - Collected Reviewed-by from Kevin Tian.
 
-diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
-index 1f835e326b93..2bc5cd46a72f 100644
---- a/drivers/iio/temperature/ltc2983.c
-+++ b/drivers/iio/temperature/ltc2983.c
-@@ -1177,12 +1177,11 @@ static int ltc2983_chan_read(struct ltc2983_data *st,
- 	start_conversion |= LTC2983_STATUS_CHAN_SEL(sensor->chan);
- 	dev_dbg(&st->spi->dev, "Start conversion on chan:%d, status:%02X\n",
- 		sensor->chan, start_conversion);
-+	reinit_completion(&st->completion);
- 	/* start conversion */
- 	ret = regmap_write(st->regmap, LTC2983_STATUS_REG, start_conversion);
+Changes in v5:
+ - Removed WARN_ON_ONCE from calc_sg_nents() to avoid log noise (Jason).
+ - Added explicit check for `!nents` in dma_buf_phys_vec_to_sgt() to
+   cleanly return -EINVAL on overflow (Jason).
+
+Changes in v4:
+ - Added WARN_ON_ONCE() to the nents overflow check to prevent silent
+   failures (Claude Bot).
+
+Changes in v3:
+ - Removed leftover sentence fragment from the commit message.
+ - Kept `nents = 0` initialization (previously stated as removed in the
+   v2 changelog) as it is strictly required for the `+=` accumulation
+   loop in `calc_sg_nents()`.
+
+Changes in v2:
+ - Fixed 'IVOA' -> 'IOVA' typo and expanded commit message (Claude Bot).
+ - Added Reverse Xmas tree formatting (Pranjal).
+ - Folded in extra bounds checking for calc_sg_nents() (Pranjal).
+ - Folded in type consistency fix for fill_sg_entry() (Pranjal).
+ - Collected Reviewed-by from Pranjal Shrivastava.
+
+ drivers/dma-buf/dma-buf-mapping.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/dma-buf/dma-buf-mapping.c b/drivers/dma-buf/dma-buf-mapping.c
+index 794acff2546a..67a8ff52fb8f 100644
+--- a/drivers/dma-buf/dma-buf-mapping.c
++++ b/drivers/dma-buf/dma-buf-mapping.c
+@@ -5,12 +5,13 @@
+  */
+ #include <linux/dma-buf-mapping.h>
+ #include <linux/dma-resv.h>
++#include <linux/overflow.h>
+ 
+ static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
+ 					 dma_addr_t addr)
+ {
+ 	unsigned int len, nents;
+-	int i;
++	unsigned int i;
+ 
+ 	nents = DIV_ROUND_UP(length, UINT_MAX);
+ 	for (i = 0; i < nents; i++) {
+@@ -40,8 +41,11 @@ static unsigned int calc_sg_nents(struct dma_iova_state *state,
+ 	size_t i;
+ 
+ 	if (!state || !dma_use_iova(state)) {
+-		for (i = 0; i < nr_ranges; i++)
+-			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
++		for (i = 0; i < nr_ranges; i++) {
++			unsigned int added = DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
++			if (check_add_overflow(nents, added, &nents))
++				return 0;
++		}
+ 	} else {
+ 		/*
+ 		 * In IOVA case, there is only one SG entry which spans
+@@ -95,9 +99,10 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
+ 					 size_t nr_ranges, size_t size,
+ 					 enum dma_data_direction dir)
+ {
+-	unsigned int nents, mapped_len = 0;
+ 	struct dma_buf_dma *dma;
+ 	struct scatterlist *sgl;
++	size_t mapped_len = 0;
++	unsigned int nents;
+ 	dma_addr_t addr;
+ 	size_t i;
+ 	int ret;
+@@ -133,6 +138,8 @@ struct sg_table *dma_buf_phys_vec_to_sgt(struct dma_buf_attachment *attach,
+ 	}
+ 
+ 	nents = calc_sg_nents(dma->state, phys_vec, nr_ranges, size);
++
++	/* sg_alloc_table will cleanly fail and return -EINVAL if nents == 0 */
+ 	ret = sg_alloc_table(&dma->sgt, nents, GFP_KERNEL | __GFP_ZERO);
  	if (ret)
- 		return ret;
--
--	reinit_completion(&st->completion);
- 	/*
- 	 * wait for conversion to complete.
- 	 * 300 ms should be more than enough to complete the conversion.
+ 		goto err_free_state;
 -- 
-2.54.0
-
+2.54.0.1064.gd145956f57-goog
 
 
