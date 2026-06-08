@@ -1,148 +1,170 @@
-Return-Path: <stable+bounces-261949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oBZoOMk2JmoWTgIAu9opvQ
-	(envelope-from <stable+bounces-261949-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 05:28:09 +0200
+	id 8UWJHN42JmoXTgIAu9opvQ
+	(envelope-from <stable+bounces-261950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 05:28:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C996526E9
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 05:28:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0616526ED
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 05:28:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-261949-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-261949-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=U0hOQ4p7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261950-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-261950-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C70E300F52F
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 03:28:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7FB0C3001863
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 03:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2150C32B104;
-	Mon,  8 Jun 2026 03:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D39131F988;
+	Mon,  8 Jun 2026 03:28:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627D12E8B67;
-	Mon,  8 Jun 2026 03:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A832EBBA1
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 03:28:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780889282; cv=none; b=NuyMaxSlrECgsgStmgp7rcsHos+TwRdqmE2SBJP+KEpL+H+mYICFmFdOt1kft66HQMVkzz5kEYSQNVchosRj5FJ38VOXMgDaf86a3LlLIDMJGQF5qlQ307WzUkbUTSsJBaZdmv3lKd0M8oBMv1YsEnPByt9p+rUrR3Lmm3qyjmI=
+	t=1780889302; cv=none; b=Qgdix5suc1c/Z/x6lahsI16IQxtQQk6fjgAkG93fP2QfUrexC74j/0UppphL1n+eqN85CtFBvLRA0Aw3jOwP3Bk+JU6H+ezpohPHnGjBEtyAp4SaoaqTZl4E62D9K+fRENuzZ65SpVofSrBUJLAWAw89ZrymgeP+Z1ubEXSocqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780889282; c=relaxed/simple;
-	bh=HJ8VdU4FxC85edYh0TTG/I7UeomzKrqp2I7xaawfr60=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sqM0yOwO7LGLxGH1/8KyCW1uqy1FiZ6FZeVHP5iZ1FKi3lUhTXiUVS5RE1v7sNtQhNoX+Yq3tjExY644yML6kov6GHYm5MFWBuWvC6vIP6wnWmrXN68nBEOquj2JVIJEm7JMygMf/Vt2/PP7jE9uj9dhxR9g/f3YZ+mm6WtLbkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowADX5s2zNiZqE5H+Ew--.21668S2;
-	Mon, 08 Jun 2026 11:27:47 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: zack.rusin@broadcom.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: bcm-kernel-feedback-list@broadcom.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: fix ttm_base_object refcount leak in vmw_buffer_prime_to_surface_base()
-Date: Mon,  8 Jun 2026 03:27:39 +0000
-Message-Id: <20260608032739.111055-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780889302; c=relaxed/simple;
+	bh=3p21nhULlOFap4CtEJAN7xI98sP0bCHb96zjeXMO1QA=;
+	h=Date:In-Reply-To:From:Message-Id:Mime-Version:Content-Type:Cc:
+	 Subject:To:References; b=odJEBSlrPDHXtVdpMBVUmf737HoSKeiRFKWv7l3WunuoSJUDOxs+X0DKAk51ihGQRmOX7dFEAgc7dpRoIhGjOUm7CvZZrGGoQj9i+2jWKVrErS0bce9iQniHgyEkLeeRHeDd2QyV0xIgtDHr/aezK22PUpZ50ePQVXCATIJUstY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=U0hOQ4p7; arc=none smtp.client-ip=209.127.230.113
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1780889289; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=BnFRpGMvMTrAbPzGLBDo0aZKDmaAWW1kmVRIz1TflEw=;
+ b=U0hOQ4p7IR8Xds0jMGNhepJFq5476BiqnlGgQbtDlwybLaJOkApC/Bwzv4m5Cydjn8n8i7
+ o9ywhTOnxuaZfz4gj1CPZukcBwsag6FAn+1sy1qg+YbTyx9eerOcpKfT2Rkgr6iBPnQIyx
+ YzdQRCyx4dT/kPj0Nsa8TWxCEy1BlVJit7/f3c7tBtIIhJg4KPUQjUYXxFCJ5eQq3cm40V
+ /Ei6SgznzSlqI5ytTYQ2eNC6BAtdSgJsRxkepvRCT688IGMqsLtAvJRw2ixCIFRpeI9QOU
+ 9Ed8dbbWHlJu9EkZQ1omn/5paqT16uMdMJpb80hj6PHu2+JCvRO7WKKHYvcKfA==
+Date: Mon,  8 Jun 2026 11:27:54 +0800
+X-Original-From: Rui Qi <qirui.001@bytedance.com>
+In-Reply-To: <20260525063235.990101-1-qirui.001@bytedance.com>
+From: "Rui Qi" <qirui.001@bytedance.com>
+Message-Id: <20260608112000.1-qirui.001@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADX5s2zNiZqE5H+Ew--.21668S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrKw4DuryfJFWxuF15Ww17ZFb_yoW8Jr4rpr
-	43KrW3KryfAFWIqF9Ikan5XF1Yg3Wq9FyS9FZY9wnxZr1fAr9xuw45Aa9xKr42krn7Jr45
-	JrykAw47uF1UCr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VU11rW7UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkMA2omIvBVYwAAsp
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Cc: "Rui Qi" <qirui.001@bytedance.com>, 
+	<openipmi-developer@lists.sourceforge.net>, 
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
+	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2] ipmi: Fix rcu_read_unlock to srcu_read_unlock in handle_read_event_rsp
+X-Lms-Return-Path: <lba+26a2636c7+557759+vger.kernel.org+qirui.001@bytedance.com>
+To: "Corey Minyard" <minyard@acm.org>
+References: <20260525063235.990101-1-qirui.001@bytedance.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[bytedance.com:s=2212171451];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:qirui.001@bytedance.com,m:openipmi-developer@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:minyard@acm.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:zack.rusin@broadcom.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:bcm-kernel-feedback-list@broadcom.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-261949-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[broadcom.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_DKIM_NA(0.00)[];
+	FORGED_SENDER(0.00)[qirui.001@bytedance.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-261950-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[qirui.001@bytedance.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bytedance.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:mid,bytedance.com:dkim,bytedance.com:from_mime,bytedance.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39C996526E9
+X-Rspamd-Queue-Id: 6B0616526ED
 
-vmw_lookup_user_surface_for_buffer() returns a pointer with a
-temporary reference taken via kref_get_unless_zero(). The other
-two callers (vmw_lookup_surface_for_buffer and
-vmw_lookup_surface_handle_for_buffer) correctly release it with
-ttm_base_object_unref(). vmw_buffer_prime_to_surface_base() does
-not, leaking the reference on both the success and
-ttm_ref_object_add() failure paths.
+Hi Corey,
 
-Add the missing ttm_base_object_unref() before vmw_user_bo_unref()
-at the out label.
+I'm following up on this patch which was originally submitted on
+March 25 and resubmitted as v2 on May 25. I haven't received any
+feedback so far, so I wanted to bring it back to your attention.
 
+To recap, this is a one-line fix for handle_read_event_rsp() where
+rcu_read_unlock() is incorrectly called instead of srcu_read_unlock()
+on the error path, leaving the SRCU read-side lock held.
+
+This patch is specifically targeted at stable branches (v6.12 and
+earlier) that still carry the original SRCU-based locking. In
+mainline, commit 3be997d5a64a ("ipmi:msghandler: Remove srcu from
+the ipmi user structure") has already restructured this function to
+use a mutex, effectively eliminating the bug. However, that commit
+is part of a larger SRCU removal series that is not suitable for
+stable backport.
+
+Since the affected code no longer exists in mainline or your
+for-next tree, this patch cannot follow the usual path of being
+applied there first and then cherry-picked by stable. Could you
+please review and provide an Acked-by so the stable team can pick
+it up directly?
+
+No changes since v2. The patch is reproduced below for convenience.
+
+From: Rui Qi <qirui.001@bytedance.com>
+Subject: [PATCH v2] ipmi: Fix rcu_read_unlock to srcu_read_unlock in
+ handle_read_event_rsp
+
+Fix a bug where rcu_read_unlock() was used instead of srcu_read_unlock()
+in handle_read_event_rsp() when ipmi_alloc_recv_msg() fails.
+
+This mismatch leads to an SRCU read-side critical section imbalance: the
+entry uses srcu_read_lock(&intf->users_srcu) but the error path
+incorrectly calls rcu_read_unlock(), which is a no-op for SRCU and
+leaves the SRCU lock held.
+
+The offending code was restructured in mainline by commit 3be997d5a64a
+("ipmi:msghandler: Remove srcu from the ipmi user structure"), which
+replaced the SRCU locking with a mutex in this function, effectively
+eliminating the mismatch. However, that commit is part of a larger
+SRCU removal series that is not suitable for stable backport. This
+minimal fix addresses the SRCU imbalance for 6.12 and earlier stable
+branches that still carry the original locking scheme.
+
+Fixes: e86ee2d44b44 ("ipmi: Rework locking and shutdown for hot remove")
 Cc: stable@vger.kernel.org
-Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: Rui Qi <qirui.001@bytedance.com>
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-index b2d3927b5567..9e63846fd663 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -972,6 +972,7 @@ static int vmw_buffer_prime_to_surface_base(struct vmw_private *dev_priv,
- 
- 	*base_p = base;
- out:
-+	ttm_base_object_unref(&base);
- 	vmw_user_bo_unref(&bo);
- 
- 	return ret;
--- 
-2.34.1
+ drivers/char/ipmi/ipmi_msghandler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 188722ec0337..41ae4dac4eeb 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -4395,7 +4395,7 @@ static int handle_read_event_rsp(struct ipmi_smi *intf,
+
+ 		recv_msg = ipmi_alloc_recv_msg(user);
+ 		if (IS_ERR(recv_msg)) {
+-			rcu_read_unlock();
++			srcu_read_unlock(&intf->users_srcu, index);
+ 			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
+ 						 link) {
+ 				list_del(&recv_msg->link);
 
