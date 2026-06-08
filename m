@@ -1,179 +1,208 @@
-Return-Path: <stable+bounces-262064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gaCCExrrJmqFnAIAu9opvQ
-	(envelope-from <stable+bounces-262064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:17:30 +0200
+	id fvWjHqDrJmqwnAIAu9opvQ
+	(envelope-from <stable+bounces-262065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:19:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F202F6589AB
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F3A6589F9
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:19:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=queasysnail.net header.s=fm2 header.b="M FUxWWs";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=dRYelcvQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262064-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262064-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=V4UxEjMc;
+	dkim=pass header.d=redhat.com header.s=google header.b=lbviphp0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262065-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262065-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2C78A310B9C6
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 16:03:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE131305B9A1
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 16:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B953A2E03EA;
-	Mon,  8 Jun 2026 16:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E2234165B;
+	Mon,  8 Jun 2026 16:12:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5F4332EA7;
-	Mon,  8 Jun 2026 16:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD8933F5AE
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 16:12:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780934631; cv=none; b=ef8T/sQtWikmrMqzpB6Z0AcU7uHY0NuTUmu0IPRdlg2iB5dtVhDAvBjov+QqQr6t/0qMW0/UREso/0K7xxP9CUPthgQToHoY/dDeUbsL7DwLO9+TZZJB7RzoljvUDwu1GaVGL636KG3KF6yceM5bFt6jnyMyp2o0EqsU5Fe1C44=
+	t=1780935158; cv=none; b=GMD9IRSDNBk6I9XtAk1KNvLB3gaTM+znIGjSzVYTGBHvN3z1thACteeWMGLwVikxS3RtC2ATqavEIcTbMywwCDHtrJHSOIOGKkHxXU2fz+XDnsgQL1PtdILPzjYiWAoOlXgIHiDsccposn5ZHJb32oFEzX3Wbzre6oChQ3pCYHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780934631; c=relaxed/simple;
-	bh=aCdiaS58bUQL7UzePzNnvYQIC4XpFG8cK0MyqOyoThk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VqDI7xSfXSerTXtX7qGH+1ftIP6E+L0xoIHsQloeCWykpzHnlKozw25s6igWLkXh94BIj9pQwNJlrDCeov2Bof8Hpd9hwiCtwWkkKJJ903uH0WR3KP8oLDyz3U213fgirdNMi1giVaLYCxR3cn/Z3Ge/j7EYQX+x3PBUzgydDZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=MFUxWWsa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dRYelcvQ; arc=none smtp.client-ip=202.12.124.158
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id C11477A00C2;
-	Mon,  8 Jun 2026 12:03:46 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 08 Jun 2026 12:03:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1780934626; x=
-	1781021026; bh=zRsyJ98tISk+ATAEz4XJUroqoFu+sTEph+r90M7pkMQ=; b=M
-	FUxWWsapxmAIkodmv5sxGWvRMBAYCE/MzQ18g7k/cV0iFFIw7eETOLLJjaX0xNWW
-	g4ttF8Wg1ymOmeF/BHzyYJXx06rL0CTGmW0gdRESmWmOcdGSs8a0UJiWI0h+4MaV
-	g0DfTWNT7c+QqAhIP3G7aQ1Epa/XKq/FyFwGIkYMNOG48Dwxn1eV5emHr6mz8v7i
-	He9erul3fTcCThBX6QZKi6DDh9hkzuSY6soytT7NBsrkqIzJWTJnaNC8qea6Kn2l
-	vGqrs2cM+EgJGFliRLPR+bG0Vkfypf2r05sDpINJS7dcnzw6rV+UG5MaBIPQ7/Q8
-	xP/ZjZoO3SX01qUc8YhXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1780934626; x=1781021026; bh=zRsyJ98tISk+ATAEz4XJUroqoFu+sTEph+r
-	90M7pkMQ=; b=dRYelcvQwQzo2hGhgIFZlsHDoTOxbHSR3cLgLLOoKTM2X8HoBgl
-	TbndtHpHH8fE2Mz6gfva1AVb8nATlIPC/K+cT7CMasnkeVZYw4em3megL8zVRLC+
-	v9Awzt06ZK6eaahLTdN1xYEkDsFS4NZ2j2fgbOEW3vDWqmWRcs9PE00hszWyK3EJ
-	uTyBwKMs/GFGz5a5QnA+Ny8RLc5dgQDoUjSQhhUgcEoTvC02qbbQ501fdNO9r3Pd
-	HK0a6dVjDsAPuW5KY6lrEd+C+k3Ip1U+pJ1MNReSzo6uObt1hF4Z5OnW8t7z3HeU
-	EeW5rB1J0OivA+C+3aXj9SFw90qRpcmE54A==
-X-ME-Sender: <xms:4ecmaqofTAipvZ771gHudUl1oDmmmeuHooC3W4rzjm9mgmiz0VonHQ>
-    <xme:4ecmaqN0QryWmr4xkeDYWETiWm-vBDubA7RNQXLg6uod505eeFg4WLebi98x7VYs2
-    KfgSm85u2ycQo_GWlSjlnGkqmBHhOY8Bzk0L1CQ7MluzFOjQjjpBA>
-X-ME-Received: <xmr:4ecmauex5AN7TjKrBY-nI4UJwui1lo6jtkWHxW_zU5swDzTRTnWOhtw5IJKFR1KeAPn2NZjQ_ulwuQfEkCPM_Q0>
-X-ME-Proxy-Cause: dmFkZTEJiTZtvJ9ShH977Sp0pLa2KXTz8geBKwqEjOwfs1HT95RnTXnpfB2e0UrDPHqxOw
-    gJagGpYftydsSYAXc3/4LsGnpDiMhbMHLIDw34IdjYyZJMPi30S/lHorwaPy++tNt2jIqy
-    NspRvWuMUl4QG2QbPpe+V2/R3rgk64UEXOzKAAkzZeS90QbBgIw4cOgCYoM9YpdhHOyyal
-    66LNTuu8f9C87eEbeY4fMAFIr+CijbfO3VggQZMrWqWQZi+gZstFvB+Gev2py/MQJ2w858
-    kydruTmmi4QM7roIkOAax14wn4ggct6s7qcS4oJl3g1no7liM91wULWI2Dm1VdBzvTcPbm
-    h0qVp5g9xPGSlgXEnI2W2JqijSMe2NJh9N1iRZqp37HuqgtBSoKC+d9iZ29OsfvMsr5yzt
-    cb7NMNt8hcOByE/F+lp0YFZlURIy70RVvWJCalKMqdM2R7r0S+KnsBO1kQ7OtCDEXgcmVM
-    qPK5xdnJ2+QUA034VyFOt+P+rO1eQ/I8SeLHl5WiFB+i9oSnGtlATjhEk12q0aYCjUOqnk
-    D9cTnQgsjEN2GAO3Y0/oW6MZFzK9954DI+MfNCpC2aXSaUXXYAEDT93kYbYBdUJrxZirU7
-    tpn7qFwU2YQ9YU6qWKpqzLHTrXG6sZ5yQKMjp4qjW2VOJQdN9HKw37/kg7rQ
-X-ME-Proxy: <xmx:4ecmagUbKJ7-KNBSfEedX_qMP-UVLF86SzNvTEb_GnLHF2b786Z96A>
-    <xmx:4ecmavAMj2fvl7aF_FBQTUoSvORfEorKV7ZLwpA-qpuOVrSdctTVwA>
-    <xmx:4ecmar6gMv2Ic-FeQW1gmkt6FA7jdj4dzMrOW5zqIUtyQXDKwXpKEg>
-    <xmx:4ecmam1GEbsFS93YclIP8xe_zQ6Wo7SbCfMiZdNm-tQFW_yQfQ_5Yw>
-    <xmx:4ucmahgT7ABmLKCiUfTS0E62hOt4TK5S2Ms7XKZlZ2C1Bbo_htCqRwdl>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Jun 2026 12:03:44 -0400 (EDT)
-Date: Mon, 8 Jun 2026 18:03:42 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Zijing Yin <yzjaurora@gmail.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: af_key: initialize alg_key_len for IPComp
- states
-Message-ID: <aibn3tkGc3Iz1r5n@krikkit>
-References: <20260608144453.3553219-1-yzjaurora@gmail.com>
+	s=arc-20240116; t=1780935158; c=relaxed/simple;
+	bh=QK2d+EFkM2Jtcy3rK4m4tmFaP/iY5rpk9MkUsFv20kI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pPFReDzTUf+hPYx8041HA9YZ/i4wPDoK2mQH1xmmt20Q7Eb11iNRoO6EjDOCctEjl8ienqgHplMSUrqcDK0cpcYV/xdZ007wiJG4zKZIgNX5VRsmUbkqLwdhVNoVkkeflSsBBFFE9RBrXwxCaAiUlOqZABnSewKE2hz/80IDRHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V4UxEjMc; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lbviphp0; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1780935156;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+	b=V4UxEjMc97H+RXp87pmpFqk8qKkp+P9+0rM1A7LulrmKTiHUJ2UenjSVfaO+wRY0nKzhs6
+	H+kv8yPTL7JNl4OJzXW4kFeyJYbQzRdE3odn921bLAv3Cc+jodw3UO2oy4x1B9YgiJb0cI
+	SaqiWzBVsFBKoFmi6NALunSYpZnikME=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-2Zxtd5AaNi-s3THc4-ughA-1; Mon, 08 Jun 2026 12:12:33 -0400
+X-MC-Unique: 2Zxtd5AaNi-s3THc4-ughA-1
+X-Mimecast-MFC-AGG-ID: 2Zxtd5AaNi-s3THc4-ughA_1780935152
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45ef9f0af71so3412598f8f.1
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 09:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1780935152; x=1781539952; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+        b=lbviphp0DoQPv1e9fNAnYoWbVCHmRe7sDFD+y+Ebf8iRu6jMg+aen/qafuxZItmm+N
+         qqhPU8cb/G21NUM8e1Itzz3sQ0H3qwS2C61GiwQmAApXZx8UdJ1AS9tPpvYTTmygRXVo
+         B0AOmRu3hYzgY48UJxzOwU0bqfUbixbV5ETE4T/mkiLFJVyPz9x3JNeCszzznqrk0PtS
+         8B8NAFbaoMlzcnEmnT+F/22XJXRtE5DIjC3quijKCKJy2Xh752kQWK6036oJ46Irn+uX
+         SuBUxioFI5nufxHHDFJSYDG3sgRTLANXyfLvtWLqv+YhrL89g7H1luCAQCzLh2Aj9zsZ
+         97hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780935152; x=1781539952;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Vd3ZUm0dCzJ/8uu5rCwpPdtB8pbC5Kh3pUk3hRwNB0=;
+        b=mT6kys1uZeTWo9tPs9whU5pgI6ViqdOgxwwV2d29XtpNmbYj7mN8K7Op/op/BAh5VX
+         BVo7f8qlTFr7hXq/ZZ5nxfvZc71CG6lrtFCVwNyIby7XuJ/uZkPfgd7PM1ZXxtaSOzUZ
+         hEFX+cIieRu7Zi8Qn+Od2dLkjY3BuUMy6yB6surISaC8Pdtb9GDurV5KlhuyWazR5/jY
+         Y2ivxoGPSXPGaP8vqXQrI+dRCgUcZDzTrm2AIwxN53x04hgPLjtIdEwJbg1Knc269Jty
+         +kB84x7E1LcIVyFrzCZqWqbdM1/97ZOG3lVMVFLPdtlm1CkUX1PMG+QqZtNd2nUcmCLq
+         D2/A==
+X-Forwarded-Encrypted: i=1; AFNElJ9ZJo5WPRmqdrzXWgFrhqr73wD0+vNRXMw7joMVkpxMRgCAjlfS3t8hRyQB9XumSsLSnJaQaGg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu/H1ZMXlot+yJsUGM1V1kYxNgOuz/ALP3uMGR6rPw/6GpxjiM
+	/ZRCw5khzRGJUIl58+0Utkm03YmAtuUvAV6hOq3tukoXGMwieuGHqRBrddyaGxc+WRaLyA5tos5
+	PNLI4ZbzNAHqQBRWGmdDkTy5sNonggMUkcD1X7UtUlEu0toFTPgEz7lW0xQ==
+X-Gm-Gg: Acq92OGvkvoKjiHJPFAmFiH34ENABxwNzS+B95TNHmESJR7mt2I2Yi0m9PJSZo9lvYX
+	3nywcasA1yoIp7J4XXaEkFX20imaNHHuWMhN4/Ul+G2FcDSNK6cVSkpn98QZbEEtssnNFI3+rzQ
+	8GXg0VtAgTucR1oEJPeeZNh65NlPLG0/QlEp+VSiueK31Ye1S6PdwyC43LWM07IF6Ct4in+Jjdr
+	MkQAAupyS+LxfaU2wugw8xaFkOX88jKKaneBKhx/Y3K+HSUfFtBMQQXB7CVW/iPxSRHmszNph8P
+	uANYoOWXJ1xesc769FQlKN4bLalj8PvIT9BvyXXPJ3fku58QdsBP69dTUH/ST7r0oDyipI2/txL
+	3UiI9Em3M3Ypojh9hqz3Apo85
+X-Received: by 2002:a05:6000:4802:b0:45e:f3b2:1228 with SMTP id ffacd0b85a97d-46032b611d3mr24384796f8f.3.1780935152110;
+        Mon, 08 Jun 2026 09:12:32 -0700 (PDT)
+X-Received: by 2002:a05:6000:4802:b0:45e:f3b2:1228 with SMTP id ffacd0b85a97d-46032b611d3mr24384745f8f.3.1780935151643;
+        Mon, 08 Jun 2026 09:12:31 -0700 (PDT)
+Received: from fedora ([91.219.240.20])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dc577sm54249702f8f.3.2026.06.08.09.12.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 09:12:31 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Hyunwoo Kim <imv4bel@gmail.com>, seanjc@google.com, pbonzini@redhat.com,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com
+Cc: kvm@vger.kernel.org, stable@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH] KVM: x86: hyper-v: Bound the bank index in
+ hv_is_vp_in_sparse_set()
+In-Reply-To: <aiQyZIJtO-2Aj_xN@v4bel>
+References: <aiQyZIJtO-2Aj_xN@v4bel>
+Date: Mon, 08 Jun 2026 18:12:30 +0200
+Message-ID: <87o6hlhuz5.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260608144453.3553219-1-yzjaurora@gmail.com>
+Content-Type: text/plain
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[queasysnail.net:s=fm2,messagingengine.com:s=fm1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:steffen.klassert@secunet.com,m:yzjaurora@gmail.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:idosch@nvidia.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[queasysnail.net];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[secunet.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-262065-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262064-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FORGED_SENDER(0.00)[vkuznets@redhat.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:imv4bel@gmail.com,m:seanjc@google.com,m:pbonzini@redhat.com,m:tglx@kernel.org,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,google.com,redhat.com,kernel.org,alien8.de,linux.intel.com,zytor.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[queasysnail.net:+,messagingengine.com:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sd@queasysnail.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vkuznets@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,krikkit:mid,messagingengine.com:dkim,vger.kernel.org:from_smtp,queasysnail.net:dkim,queasysnail.net:email,queasysnail.net:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F202F6589AB
+X-Rspamd-Queue-Id: E8F3A6589F9
 
-note: fixes for IPsec should go to the "ipsec" tree, not net
+Hyunwoo Kim <imv4bel@gmail.com> writes:
 
-2026-06-08, 07:44:41 -0700, Zijing Yin wrote:
-> pfkey_msg2xfrm_state() handles the IPComp (SADB_X_SATYPE_IPCOMP) case by
-> allocating x->calg and copying only the algorithm name:
-> 
-> 	x->calg = kmalloc_obj(*x->calg);
-> 	if (!x->calg) {
-> 		err = -ENOMEM;
-> 		goto out;
-> 	}
-> 	strcpy(x->calg->alg_name, a->name);
-> 	x->props.calgo = sa->sadb_sa_encrypt;
-> 
-> Unlike the authentication (x->aalg) and encryption (x->ealg) branches of
-> the same function, the compression branch never initializes
-> calg->alg_key_len.  IPComp carries no key and the allocation only
-> reserves sizeof(struct xfrm_algo) (i.e. no room for a key), so the field
-> is left containing uninitialized slab data.
-> 
-> calg->alg_key_len is later used as a length by xfrm_algo_clone() when an
-> IPComp state is cloned during XFRM_MSG_MIGRATE:
+> hv_is_vp_in_sparse_set() uses valid_bit_nr, i.e. vp_id divided by
+> HV_VCPUS_PER_SPARSE_BANK, as the test_bit() index into
+> valid_bank_mask. valid_bank_mask is a single u64 and a sparse vCPU
+> set holds at most HV_MAX_SPARSE_VCPU_BANKS banks, so valid_bit_nr
+> must be less than HV_MAX_SPARSE_VCPU_BANKS.
+>
+> The caller in kvm_hv_send_ipi_to_many() passes kvm_hv_get_vpindex(),
+> which is below KVM_MAX_VCPUS and therefore always within that bound.
+> The L2 direct flush branch in kvm_hv_flush_tlb(), however, passes
+> hv_v->nested.vp_id, copied verbatim from the enlightened VMCS
+> without any bounds check, so valid_bit_nr can reach
+> HV_MAX_SPARSE_VCPU_BANKS or more and test_bit() then reads beyond
+> valid_bank_mask.
+>
+> Return false before the test_bit() when valid_bit_nr is not below
+> HV_MAX_SPARSE_VCPU_BANKS, since such a VP cannot be present in the
+> set.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: c58a318f6090 ("KVM: x86: hyper-v: L2 TLB flush")
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> ---
+>  arch/x86/kvm/hyperv.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
+> index 4438ecac9a89..d8782cb7ba02 100644
+> --- a/arch/x86/kvm/hyperv.c
+> +++ b/arch/x86/kvm/hyperv.c
+> @@ -1839,6 +1839,10 @@ static bool hv_is_vp_in_sparse_set(u32 vp_id, u64 valid_bank_mask, u64 sparse_ba
+>  	int valid_bit_nr = vp_id / HV_VCPUS_PER_SPARSE_BANK;
+>  	unsigned long sbank;
+>  
+> +	/* A bank index beyond the mask can't be set, the VP isn't in the set. */
+> +	if (valid_bit_nr >= HV_MAX_SPARSE_VCPU_BANKS)
+> +		return false;
+> +
+>  	if (!test_bit(valid_bit_nr, (unsigned long *)&valid_bank_mask))
+>  		return false;
 
-The patch looks correct, but do we want to start fixing random bugs in
-code that we're trying to get rid of and that nobody actually uses?
+I think the concern is valid, so
 
-If we do, then:
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+
+what I'm not sure about if we should also deliberately crash the VM
+which does such a hypercall. This way it would be easier to find buggy
+L1s but given that they are most likely Windows, we need to do some
+tests to see if this is not actually happening today (e.g. Hyper-V usign
+VP_ID or '-1' for something). Let's have this as a future TODO item.
 
 -- 
-Sabrina
+Vitaly
+
 
