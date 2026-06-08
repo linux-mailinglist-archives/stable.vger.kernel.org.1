@@ -1,168 +1,224 @@
-Return-Path: <stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Fe9EDiKWJmqiZAIAu9opvQ
-	(envelope-from <stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:14:58 +0200
+	id tWpHNQ6SJmqMYwIAu9opvQ
+	(envelope-from <stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:57:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3FA654ECD
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 12:14:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41554654C7B
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 11:57:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=163.com header.s=s110527 header.b=AecYL2CS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262000-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=163.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=mojatatu.com header.s=google header.b="i4CYwU/n";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-261999-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1FC1530B32B4
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 10:02:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ACD23026C25
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 09:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDA13E00B0;
-	Mon,  8 Jun 2026 09:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155193B7B8E;
+	Mon,  8 Jun 2026 09:55:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409843D5642;
-	Mon,  8 Jun 2026 09:55:59 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780912564; cv=none; b=pTUkgaoALl3YCPdyFClz9gjZGLfXflhBUL+WoxmMD4Cd7z59zlAN5+ZgJocJrysLeT3HmTTyD4kBToFadwzf8uYMOEfWlLzpi8p9dPhQqCJyYCCDVcEtW4JUKk5tdPECB+gF88F5Omenr++uE68HYFrriHe6pg2JlFYnw/alEG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780912564; c=relaxed/simple;
-	bh=eMgZiBOsnR3wR7NDtJ6EOYmABtOASjamlUAo08G14os=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKxOSUIO6HbiY87OAH36EVB9e3nej+YFk0lGjQhlgSF/BkNvDmU5xMbhfsjITD5Z99ZsemkSDXBk6rHJE37qZCrLaO5jV52ueTFce6lPDZ/NladKsUzvJZg+irGaKs4qBgdtXbQOtjPhadqk7E68raVkLEF7rnguAdLjE6Jb4WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=AecYL2CS; arc=none smtp.client-ip=220.197.31.3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=30
-	97WF1F3hjJ4ahSFgOI68/cOQpi7YtvaeCdDcz9ua8=; b=AecYL2CSDlIYOXPmpL
-	q4iSM/rC/ckZhd6UPopwVlht3l1IY9kjXWymmNRpSxWFmcUIa4c68jVkrgHKHSTu
-	rq6h5vSYslAc1zwXbMpjupu2eIMKTlq3wIklrfnNSCQ1JrDjdXz3lyh51PGIm0pK
-	Zy+nlNdOBs5tUvIjWFPqRu5hU=
-Received: from China-163-team (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wDnY4iTkSZqkkwDCQ--.63974S2;
-	Mon, 08 Jun 2026 17:55:34 +0800 (CST)
-From: Wenshan Lan <jetlan9@163.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.1.y] dmaengine: idxd: Fix not releasing workqueue on .release()
-Date: Mon,  8 Jun 2026 17:55:10 +0800
-Message-ID: <20260608095510.97742-1-jetlan9@163.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C153B7763
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 09:55:34 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780912535; cv=pass; b=XbnFxN3UcvjpjVyr+e3GBc91faSfydoy0v9gTeGH374THgx8SjcpI4OUT5r2K/RMUbqOiz+l/i2Qz0eGPDmZHzuxElUKt3uWvLNNUuIjfyGurrg/I42rcelJll1ks7VTjWa/Llz0qXNSfItu3uSCrLb27+gEnI7poI3PFQxAlKY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780912535; c=relaxed/simple;
+	bh=nEe6Hp2P+fr54/g8RIpCfyjhQRc1tqxdIbRPosUg3Nc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BjV/v8X3Xl8lKMP0xK7IAb5qmUhDmrihCd9YfUrCySzJGbju3mZ+sxh8azPe8dlfzauX5bBlB/GqEOXuBkHhSl0Cn9O8BIIFznVJfb213KeoTRKQIJK0smXxGrn4/tGKQkfgDRGcl9p/km0kjS8SYNTo9UlQlrY8k+MzLmLwkbs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=i4CYwU/n; arc=pass smtp.client-ip=209.85.210.169
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8419ab3a297so1679388b3a.2
+        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 02:55:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780912534; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CaFhfHNwYsLAc6ukcpgo9NxFyet5qWbISav5vJdrDjcssZxOenn/U9y5MUJjeMlQu6
+         vFSoFg0rk0q22wGp0u8SVoir6ODTyrr5ygknjcpyqUTJF+5Wf76mIFz5qLYMAofu90Vc
+         g7wUF3wjZO6eZtH+ehU3yug51v8hR76vLjVFwD+rYTLmAVFHSkAyUk82BGjRBt2ExSY5
+         UTkokMv3CabTpHoAK3l6mJ65g2F0DUV0k1dgwKgLVOtDrRmJ3lH/hl4qRUgUK07f0Ocp
+         J11R/WiKsjv33c4F3C8uxAFCYP7Xdzbsbeb/omFweW6NPk7CQaXxCm6egkjHdSA4OV/z
+         95NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
+        fh=ljrwdog4K7gaj8ZlbEcb7Pj+vdmwls/qQqF1sQ0eWQU=;
+        b=N+dYTMPCiVPVvUZTTRSjPwkKhQPEviM/C2G1Hx/LxMFv/wuWYq0JIuLYx0sTZa4cbC
+         n4c0NHs/1FZOaFFdHfxk9bX36bwWMYtUNlhdEXuT3YhYTq6jC0eMR/qqxuXh6/lcjoA/
+         lvfbqdKohWZMxp4TAvhlfkpwkfkbmp9cLpous9ihn/zoSLLPQVIhFVZkoZ6shnR+J68C
+         MAGnfaLpBdaZtdYHK1o9Ri6DMCPzete4vRjXICSsNea7nWbi+4tbQn+mMfBw/bKRVc3t
+         AQRyIl+qE2vnsW28iynJyE7TwIfG9YnkuLoZZhuH1RxG2kaG4l+kALd4KQlVFHE50akJ
+         POsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1780912534; x=1781517334; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
+        b=i4CYwU/nzgEz2DJ9RMUlC/aTqIq3h769lyqC2PXduc3Cf/mrHk1dF8SVEKi27tzraO
+         WQeGWeCP2mtuQpohwOE0QevDyJzDwyh917iNpTWt7FrdMKkVhAdqF43tkNdYIYCPfAjL
+         e+z6nda8VPORPYu6KTs5nQa18dbaM5YXXsaus=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780912534; x=1781517334;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YhR32XRkG8GtOPOWI9COuVD7tE9ztEbEqFhQoZ5bTrU=;
+        b=V7OIrC2Cr8c1Qi2p2H5mh3VvrXglX+PdEMGGqEcd86YpPn5xeBkB/vpFkh/3YSBdKX
+         ZGiG/Dd8tp/tPbHCI0t2gnMZ8NuDZPeSFuWRRGcSGpz7wmHWpKRZw7vDYHB38sgjNGu5
+         Rdr5LD4Rmbnh9g1ZX7BXkpOVReGngBq6W+Ls/oJu63DbhQy+2LTW+sjn9vKdgENeEH5d
+         cZ9nSE8jNa6Azw42MeMlwWqZ+zGHYDUnzNLV4FRFF5bay8phyvjqNsdvpi7KSFOGH9V5
+         E40JtMirZ0U/0R2LQlmxHFYIrZCzHOdaOBii7c+1YJYXEax4dEL1T7KIJ7hon+/SK43h
+         h2Iw==
+X-Forwarded-Encrypted: i=1; AFNElJ/p3quz6aE3v4fhLTxcqarcqtDB96/D37jJXreKWgc+G51mQSJEvMellFK2eA+/tOz3LcxRnx4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb0VR6xcG2Up27ZJ9guRH0OkFQ+8tVHltibnUd+GVdPujy3Bto
+	2b8WauUpusmIjGs0qbYr8Y1Xp/qhrFd7u8JMGzhygYiY8B72xDtGVJ3Sja2ayMRhDuphOiXlNWn
+	uJkQj2fOgBliwbfins5uL5D2Qc+uhGWwtu3ZZuCZG
+X-Gm-Gg: Acq92OEUxB5H7t+cm4V5ZpqZijQ/m9Dx4ev0+UwZqpH/mQRKw93yvnZ392eFlQeW+bo
+	l8l345j77QT9FRcXy1Cu8PHhSwtZp07mGtTaDCYnQqQ1/o64ty8rsszmCwsWDFzmJtBzahftW3m
+	72uE6tFRDHqp9SS3OIHdCk8JX/ddGHnx51RbcBzm1aleT2W7XAZOeT031VBDZeHSQGB1SM9FMKP
+	TLAlYVXKR7rXHnjAaw46EV6QegtARxg7wFyLcivcAwWghpEbAGL//0myovnbkl9vh7dJzNkpl6N
+	StNqcuAi/Ynjx7RYVeT3Nqsh0hwa2Q==
+X-Received: by 2002:a05:6a00:2d0d:b0:842:5711:9a2f with SMTP id
+ d2e1a72fcca58-842b0fb2273mr14704387b3a.36.1780912533858; Mon, 08 Jun 2026
+ 02:55:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnY4iTkSZqkkwDCQ--.63974S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WF1DGF17JF1rCrW5KFyDKFg_yoW5JrW8pr
-	47JFW5W34xJr9xK3W7XF18Wry5Ga1Sy3yfurWxWw15uFW5Za4UX34ftFWj93s8JrZ5WF4a
-	qF90q3s5XF48KFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEWE_ZUUUUU=
-X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7BetdmomkZeaawAA3b
+References: <20260607095727.647295505@linuxfoundation.org> <20260607173214.92693-1-ojeda@kernel.org>
+In-Reply-To: <20260607173214.92693-1-ojeda@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Mon, 8 Jun 2026 05:55:22 -0400
+X-Gm-Features: AVVi8Ce0VqPP4wrmrfgQDErKpRLi3Z7rbl8b4dCcmWnRvhi1OSTpE0ZX-2GG1EY
+Message-ID: <CAM0EoMkszTXv82To=KnEYTgzQSmEdRW9XrAMVtJsUaDn=Akf6A@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/307] 6.12.93-rc1 review
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: gregkh@linuxfoundation.org, achill@achill.org, akpm@linux-foundation.org, 
+	broonie@kernel.org, conor@kernel.org, f.fainelli@gmail.com, 
+	hargar@microsoft.com, jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
+	linux@roeck-us.net, lkft-triage@lists.linaro.org, patches@kernelci.org, 
+	patches@lists.linux.dev, pavel@nabladev.com, rwarsow@gmx.de, shuah@kernel.org, 
+	sr@sladewatkins.com, stable@vger.kernel.org, sudipm.mukherjee@gmail.com, 
+	torvalds@linux-foundation.org, "Kito Xu (veritas501)" <hxzene@gmail.com>, 
+	Victor Nogueira <victor@mojatatu.com>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[mojatatu.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,kernel.org,163.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262000-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:ojeda@kernel.org,m:gregkh@linuxfoundation.org,m:achill@achill.org,m:akpm@linux-foundation.org,m:broonie@kernel.org,m:conor@kernel.org,m:f.fainelli@gmail.com,m:hargar@microsoft.com,m:jonathanh@nvidia.com,m:linux-kernel@vger.kernel.org,m:linux@roeck-us.net,m:lkft-triage@lists.linaro.org,m:patches@kernelci.org,m:patches@lists.linux.dev,m:pavel@nabladev.com,m:rwarsow@gmx.de,m:shuah@kernel.org,m:sr@sladewatkins.com,m:stable@vger.kernel.org,m:sudipm.mukherjee@gmail.com,m:torvalds@linux-foundation.org,m:hxzene@gmail.com,m:victor@mojatatu.com,m:pabeni@redhat.com,m:jiri@resnulli.us,m:netdev@vger.kernel.org,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-261999-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[26];
+	DMARC_NA(0.00)[mojatatu.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vinicius.gomes@intel.com,m:dave.jiang@intel.com,m:vkoul@kernel.org,m:jetlan9@163.com,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jetlan9@163.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	DKIM_TRACE(0.00)[mojatatu.com:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,mojatatu.com,redhat.com,resnulli.us];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:from_smtp,msgid.link:url,intel.com:email]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mojatatu.com:dkim,mojatatu.com:from_mime,mojatatu.com:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3B3FA654ECD
+X-Rspamd-Queue-Id: 41554654C7B
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Hi Miguel,
 
-[ Upstream commit 3d33de353b1ff9023d5ec73b9becf80ea87af695 ]
+Thanks for reporting this.
 
-The workqueue associated with an DSA/IAA device is not released when
-the object is freed.
+On Sun, Jun 7, 2026 at 1:32=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> On Sun, 07 Jun 2026 11:56:37 +0200 Greg Kroah-Hartman <gregkh@linuxfounda=
+tion.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.12.93 release.
+> > There are 307 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Tue, 09 Jun 2026 09:56:47 +0000.
+> > Anything received after that time might be too late.
+>
+> Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+> for loongarch64:
+>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> arm32 also builds fine.
+>
+> On arm64, I am seeing:
+>
+>     net/sched/act_mirred.c:451:43: warning: variable 'm_eaction' is unini=
+tialized when used here [-Wuninitialized]
+>       451 |         is_redirect =3D tcf_mirred_is_act_redirect(m_eaction)=
+;
+>           |                                                  ^~~~~~~~~
+>     net/sched/act_mirred.c:429:18: note: initialize the variable 'm_eacti=
+on' to silence this warning
+>       429 |         int i, m_eaction;
+>           |                         ^
+>           |                          =3D 0
+>
+> due to commit a01fbdecc3a2 ("net/sched: act_mirred: Fix return code in
+> early mirred redirect error paths") here.
+>
+> And that one seems to be missing at least the assignment to the variable
+> that happened in commit a005fa5d7502 ("net/sched: act_mirred: Fix
+> blockcast recursion bypass leading to stack overflow").
+>
 
-Fixes: 47c16ac27d4c ("dmaengine: idxd: fix idxd conf_dev 'struct device' lifetime")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-7-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Remove destroy_workqueue(idxd->wq) from the function idxd_remove() to
-avoid the workqueue is released twice. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
----
-On 6.1.x, destroy_workqueue(idxd->wq) is still called directly in
-idxd_remove(). Applying the upstream patch as-is would cause a double
-destroy:
-once in idxd_remove() and again in idxd_conf_device_release() when
-put_device() triggers the release callback.
+Unless i am looking at the wrong code version, in the current code i
+see m_eaction is always initialized before being used.
+m_eaction =3D READ_ONCE(m->tcfm_eaction);
+Probably a compiler false positive?
+As per suggestion emmited, initializing m_eaction to 0 should help.
+Not sure what the process is.
+Perhaps, Miguel you want to send the fix? commit should say "appease
+compiler ..."
 
-Resolution: In addition to adding destroy_workqueue(idxd->wq) to
-idxd_conf_device_release(), the call was removed from idxd_remove().
-This is safe because idxd_remove() ends with
-put_device(idxd_confdev(idxd)) which drops the last reference and
-triggers idxd_conf_device_release(), where the workqueue is now destroyed.
+cheers,
+jamal
 
----
- drivers/dma/idxd/init.c  | 1 -
- drivers/dma/idxd/sysfs.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index 6059ffc08eac..2880a0b0f5e6 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -813,7 +813,6 @@ static void idxd_remove(struct pci_dev *pdev)
- 	if (device_user_pasid_enabled(idxd))
- 		iommu_dev_disable_feature(&pdev->dev, IOMMU_DEV_FEAT_SVA);
- 	pci_disable_device(pdev);
--	destroy_workqueue(idxd->wq);
- 	perfmon_pmu_remove(idxd);
- 	put_device(idxd_confdev(idxd));
- }
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index 0689464c4816..ea222e1654ab 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1663,6 +1663,7 @@ static void idxd_conf_device_release(struct device *dev)
- {
- 	struct idxd_device *idxd = confdev_to_idxd(dev);
- 
-+	destroy_workqueue(idxd->wq);
- 	kfree(idxd->groups);
- 	bitmap_free(idxd->wq_enable_map);
- 	kfree(idxd->wqs);
--- 
-2.43.0
-
+> I hope this helps!
+>
+> Cc: Kito Xu (veritas501) <hxzene@gmail.com>
+> Cc: Victor Nogueira <victor@mojatatu.com>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+> Cc: Jiri Pirko <jiri@resnulli.us>
+> Cc: netdev@vger.kernel.org
+>
+> Cheers,
+> Miguel
 
