@@ -1,173 +1,194 @@
-Return-Path: <stable+bounces-262058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262059-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XnXDHGLsJmr9nAIAu9opvQ
-	(envelope-from <stable+bounces-262058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:22:58 +0200
+	id dxDFDh/uJmrfnQIAu9opvQ
+	(envelope-from <stable+bounces-262059-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:30:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6959E658A8C
-	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:22:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F3B5658B94
+	for <lists+stable@lfdr.de>; Mon, 08 Jun 2026 18:30:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ASw9aDWd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262058-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262058-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=oheAatLP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262059-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=bootlin.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AB78432671A2
-	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:44:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0FD093275972
+	for <lists+stable@lfdr.de>; Mon,  8 Jun 2026 15:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FBA3BB12E;
-	Mon,  8 Jun 2026 15:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A391532FA3C;
+	Mon,  8 Jun 2026 15:41:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D50223EAAD;
-	Mon,  8 Jun 2026 15:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7B26ED3C
+	for <stable@vger.kernel.org>; Mon,  8 Jun 2026 15:41:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780933191; cv=none; b=Sl8uXm0/xyUskWbWDRD3bp4d56N3HpWUP70YrIcIibn4J6ERoRQl+dYBJzhKl8U4gIeKGbseoz173AnKINd9rTXdQRrhRUxZWbNVf8StVJpGy6BGBeVO61RL1aDxXmQpzJm/0wgVkajGQswFISuk5hcj+MDBFe5rghPq4axsOno=
+	t=1780933287; cv=none; b=qqyZcKqaKMzduPJdoC0WtH5HdRyIrcxc/JuSevKsSfNrWt5A1+ko4jXsyyaumKKB2kiuzxdz6UawX6JWGiRMls8Fg3gUd8+ONs1LGobPy+5Zj+Indag/nonzkGKyKCKiffTM9hvZzIYwnr5oj42hqgEefjkoZ9hU/fYWFt7VcVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780933191; c=relaxed/simple;
-	bh=RUgZeGhk3mrRGKLYq0a/yy5JNCEBELDVcua38Q5Kkds=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=CC3QtwPVfHrO/ZkcU5LatvsFBDkKVp0BRMFG8LdoQHwV/3UgdqTtHkXolrloegm6CoRBng+AUsZv1BQkIO8JRZv20u0aRKCivV2e9Dh0gQuI7srPh5BWnJkHv0Uxni95MiQFCGGYBeT/Yc3ms0VCY1OABrOFp8Z7ysmJCgzhbZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASw9aDWd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 5FC471F00893;
-	Mon,  8 Jun 2026 15:39:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780933189;
-	bh=N3oy4xmq4C4ND1356+b9YpxpOAFUgRGxgZuuCWGlALs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=ASw9aDWdRcO7+VnSW2ORQGoUq5sR68vKzzC5eSwoopKcdBsNabRop9c+64TT3Q8q1
-	 OZCkT82Xu3lHjUeb11mlsrsVw/S45chKYAyMTNAUji+8Avn2GqonWR3Sdt9keDJ9K3
-	 Rp0phRCU8VvKmlicMoRxl//sXnhu7b5+p/bD8/F2m/nbRZIRLOPxtHG86//XU8uEBv
-	 oBf1QOqvaL4iOZWjBEpnxN48WixHqyPmOeujDfNFZPGzT+snWhA7HvTTN2EI1eSAbS
-	 eJ4DEznL5qblmRj9QvlrobqcL8e2eADX0spcyGJpnwwD3I9K2Nmb4P0g8f8+9PXLib
-	 ve9A0Eri3Z+Yg==
-Date: Mon, 8 Jun 2026 10:39:48 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Aditya Gupta <adityag@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	sashiko-bot@kernel.org, linux-pci@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] ppc/pnv: Add null checks for OpenCapi PHBs
-Message-ID: <20260608153948.GA36499@bhelgaas>
+	s=arc-20240116; t=1780933287; c=relaxed/simple;
+	bh=2zzvKccfSmrDmMfysd8h/sLvDfpNw2Iet07BeHZ172Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iYy0FMUC21B4rkLCTLQ1DmVKmLHG+y89rxoBTr5KD5MNyGPOZ0Mhs/8AG7zpx/5ZFpJ8TyWihPityS3kWnDhM/WpzOluIU+erbrL+N6u9FRfsOdHcLimPRbI+3RLwiWOz0FpMSDmm5MB3e6L0Cky6D71KDYrRg7ldjCSN3zh9pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oheAatLP; arc=none smtp.client-ip=185.246.85.4
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E3ABC4E40B93;
+	Mon,  8 Jun 2026 15:41:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id AB9BD5FFB7;
+	Mon,  8 Jun 2026 15:41:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ED002106A2737;
+	Mon,  8 Jun 2026 17:41:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780933281; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=yGOnMqKJMw/ydQNQDFBMggWDghRXv4f0XxOD1sItqDU=;
+	b=oheAatLPbXPnsFhCVuN0kS9KdyeOpnw+JH0MvQdS289veqEd9jXAQAhjsK4aW14GPiDr8q
+	jlL+JiVVjDkQV4AsGR5Cmz2zg2JSPjnyE5zeI5ncskmvIx6aQ658N5+7hm+rOEYrrMisVJ
+	wjefiv6Q9Y3FQzftbL4KUJ1crv0YAB2nLvaKeRywrSBiC+ntn/KGAvB22D5+WoL+oQFspC
+	WjTV7KUmc0nIbuYISnn6Bz6ebR5DOdJzDXD6K3ftCCuIrMdBTxj3wVNus9r5eHshNv25EZ
+	ZBV6CiDX7+FUnHaYVF6xGfh+D3uXErjVMilYsR7ZZ7VOEX4sLXr4M6J98xvtIw==
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Paul Kocialkowski <paulk@sys-base.io>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/logicvc: Avoid use-after-free with devm_kzalloc()
+Date: Mon, 08 Jun 2026 17:41:11 +0200
+Message-ID: <5Q6YIC1WTqOFVMFErYGBEQ@bootlin.com>
+In-Reply-To: <20260601-ultra-wapiti-of-imagination-ba59e8@houat>
+References:
+ <20260601-logicvc-uaf-v1-1-8c9ca5b3429c@bootlin.com>
+ <20260601-ultra-wapiti-of-imagination-ba59e8@houat>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527180816.2749186-2-adityag@linux.ibm.com>
+Content-Type: multipart/signed; boundary="nextPartuGU-zTcuSqG5rLu8I8MPMg";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+X-Last-TLS-Session-Version: TLSv1.3
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:adityag@linux.ibm.com,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:tpearson@raptorengineering.com,m:bhelgaas@google.com,m:sanastasio@raptorengineering.com,m:sashiko-bot@kernel.org,m:linux-pci@vger.kernel.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262059-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[sys-base.io,linux.intel.com,suse.de,gmail.com,ffwll.ch,bootlin.com,lists.freedesktop.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262058-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,raptorengineering.com,google.com,kernel.org,ellerman.id.au,gmail.com];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:mripard@kernel.org,m:paulk@sys-base.io,m:maarten.lankhorst@linux.intel.com,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:thomas.petazzoni@bootlin.com,m:paul.kocialkowski@bootlin.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[romain.gantois@bootlin.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bhelgaas:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[romain.gantois@bootlin.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6959E658A8C
+X-Rspamd-Queue-Id: 3F3B5658B94
 
-On Wed, May 27, 2026 at 11:38:14PM +0530, Aditya Gupta wrote:
-> For opencapi phb direct slots, the .pdev for php_slots will be NULL
-> 
-> Various sections of the code in pnv_php can do a null dereference and
-> crash the kernel.
-> 
-> Originally, the issue was hit during boot:
-> 
->     [    1.568588] PowerPC PowerNV PCI Hotplug Driver version: 0.1
->     [    1.569722] BUG: Kernel NULL pointer dereference at 0x00000074
->     [    1.569811] Faulting instruction address: 0xc000000000b75fd0
->     [    1.569890] Oops: Kernel access of bad area, sig: 11 [#1]
->     [    1.569963] LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=2048 NUMA PowerNV
->     ...
->     [    1.571492] NIP [c000000000b75fd0] pnv_php_get_adapter_state+0x60/0x154
->     [    1.571604] LR [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154
->     [    1.571690] Call Trace:
->     [    1.571725] [c000c0000688f990] [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154 (unreliable)
->     [    1.571783] [c000c0000688fa20] [c000000000b78bd0] pnv_php_enable+0x94/0x378
->     [    1.571951] [c000c0000688fac0] [c000000000b7912c] pnv_php_register_one.isra.0+0x11c/0x1e0
+--nextPartuGU-zTcuSqG5rLu8I8MPMg
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Maxime Ripard <mripard@kernel.org>
+Subject: Re: [PATCH] drm/logicvc: Avoid use-after-free with devm_kzalloc()
+Date: Mon, 08 Jun 2026 17:41:11 +0200
+Message-ID: <5Q6YIC1WTqOFVMFErYGBEQ@bootlin.com>
+In-Reply-To: <20260601-ultra-wapiti-of-imagination-ba59e8@houat>
+MIME-Version: 1.0
 
-Drop timestamps since they don't add useful information.
+Hi Maxime,
 
-Indent quoted material by two spaces to reduce wrapping.
+On Monday, 1 June 2026 09:11:21 CEST Maxime Ripard wrote:
+> Hi,
+> 
+> On Mon, Jun 01, 2026 at 08:52:44AM +0200, Romain Gantois wrote:
+> > The logicvc driver calls drm_universal_plane_init(),
+> > drm_crtc_init_with_planes(), and drm_encoder_alloc(). These functions
+> > should not be called with structs allocated with devm_kzalloc(), as this
+> > can lead to use-after-free bugs. In fact, a use-after-free caused by this
+> > has been observed on a v6.6 kernel.
+> > 
+> > Use DRM-managed allocations instead for panel, CRTC and encoder objects.
+> > 
+> > Found using KASAN.
+> > 
+> > Fixes: efeeaefe9be56 ("drm: Add support for the LogiCVC display
+> > controller") Cc: stable@vger.kernel.org
+> > Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+> 
+> You're only partially fixing the issue. You also need to protect any
+> device resource (register mapping, clocks, etc) are no longer accessed
+> after the device has been removed, and this is typically done using
+> drm_dev_enter/exit.
 
-Run "git log --oneline drivers/pci/hotplug/pnv_php.c" and "git log
---oneline drivers/pci/hotplug/" and match subject line style.
+Sorry there's something which I don't quite understand: is this a new issue 
+which is specifically introduced by my changes in this series, or a different 
+issue in this driver which isn't handled by my series?
 
-> This occurs for hotplug slots on root buses where bus->self == NULL,
-> such as OpenCAPI PHB direct slots. An added debug print (not part of
-> this patch) confirmed it was opencapi:
+IIUC all I'm doing here is just letting the drmm code handle cleaning up the 
+plane, crtc, etc. objects instead of doing it "by hand" with devm_kzalloc. Why 
+does this make it necessary to add additional protection of driver resources?
 
-Style "OpenCAPI" and "PHB" consistently in commit log and subject.
+Thanks,
 
->     [    1.617227] pnv_php: slot 'OPENCAPI-0009' has NULL pdev (bus 0009:00, parent=NO (root bus))
->     [    1.617308] pnv_php: slot 'OPENCAPI-0009' dn->full_name='pciex@603a000000000', compatible='ibm,power10-pau-opencapi-pciex'
-> 
-> This only required null check in 'pnv_php_get_adapter_state', which
-> caused the kernel to boot.
-> 
-> Even with 'pnv_php_get_adapter_state' null check, there are more
-> possible null dereferences pointed by sashiko, including cases where
-> userspace crashes the kernel, such as:
-> 
->     $ cat /sys/bus/pci/slots/*/attention
->     ...
->     [  557.036295] Kernel attempted to read user page (6e) - exploit attempt? (uid: 0)
->     [  557.036354] BUG: Kernel NULL pointer dereference on read at 0x0000006e
->     [  557.036383] Faulting instruction address: 0xc000000000a83334
->     [  557.036413] Oops: Kernel access of bad area, sig: 11 [#1]
->     [  557.036449] LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=2048 NUMA PowerNV
->     ...
->     [  557.037749] [c000000046707a20] [c000000046707b90] 0xc000000046707b90 (unreliable)
->     [  557.037795] [c000000046707a70] [0000000000000001] 0x1
->     [  557.037850] [c000000046707ab0] [c000000000acb00c] attention_read_file+0x54/0xa8
->     [  557.037910] [c000000046707b30] [c000000000abfbfc] pci_slot_attr_show+0x3c/0x58
->     [  557.037977] [c000000046707b50] [c0000000008181ec] sysfs_kf_seq_show+0xd4/0x204
->     [  557.038022] [c000000046707be0] [c000000000815004] kernfs_seq_show+0x44/0x58
-> 
-> Add null checks to prevent the null dereferences.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 80f9fc236279 ("PCI: pnv_php: Work around switches with broken presence detection")
-> Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--nextPartuGU-zTcuSqG5rLu8I8MPMg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAmom4pcACgkQKCYAIARz
+eA7+eg/+O47Ty0diNzEC4oWVcVq/SUIL6d6Q8Jdi2zabL+pt8Og8dN76aryWrUgM
+vMkF1SkR+F24DI6cilixpB2JcYFY/4hJy760QrPKWFNeTbW8C0Z6z+bqUTdjKCFE
+Zu7aqrsHVakLpJlshCSgQ1lvftxP+uK2XQa+3b/FOdfm3uiQKacfNdVWwxqbgy3B
+ck8Kw+rGI7ynqS9XmQ2vbcKlvfG1LgVKyessDWXNRsPX7dDbg+KC99epmKQQkuT/
+SIx64W9z4q90cCpjJ4EAHOWrFTex9MNYU99xMjvSacSsYZuXLVUw27CdV9N6EAw6
+6Waszf///OZ+c6B3Mhr/uB9gqg9h8E0kci5E2kaHVCDl3PnyquJVnbV8wwnKvKsB
+GmSWyF1urLDJCIaRmQxs/gA67bEZvZ51wRMuUCTnVkYShGeVTpf5xUdASFQGILsY
+5y6XKRl2kOavJVXEB+MlA7GCc8k53xj3BBiAuvUp5YYooOzjSaqMIbzTIOREDCC1
+/m7ENYPUnWCHh0z6dgPRR17S6UiLKyNzY0NIVv91JIMGlyOODNbQFTt7TS1Z8HO1
+f4121ntjOMukWX2kbJ882R8gGVgma8iDo45ft30BsFm9gm9wHEZsSCkkVi/xOnNM
+cBTcldtZmhsX1Ealzr+r8xt0Ofq9rgdCkx1syIGUag7pTovNEvw=
+=QlMw
+-----END PGP SIGNATURE-----
+
+--nextPartuGU-zTcuSqG5rLu8I8MPMg--
+
+
+
 
