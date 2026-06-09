@@ -1,226 +1,168 @@
-Return-Path: <stable+bounces-262162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CWcOAo5tJ2ojwgIAu9opvQ
-	(envelope-from <stable+bounces-262162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 03:34:06 +0200
+	id yrtmNsZvJ2q1wgIAu9opvQ
+	(envelope-from <stable+bounces-262164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 03:43:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B2865BA6E
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 03:34:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D44C65BB94
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 03:43:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GXHK18xP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262162-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262162-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="q1BzmG/s";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262164-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262164-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E038C3018C15
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 01:30:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CCA130EC305
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 01:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B663101B6;
-	Tue,  9 Jun 2026 01:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA5F34E762;
+	Tue,  9 Jun 2026 01:39:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0D83115A5;
-	Tue,  9 Jun 2026 01:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80CB30E0FB;
+	Tue,  9 Jun 2026 01:39:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780968646; cv=none; b=eJS/+BA4qh2yr8K2nnw8gLAAJIB+b9qmAUmWhTHCoKIMu0/xftDeaS0BcLNbAxE05irSPpLKwT8sc/PKCLh7AiKX7lJtBQmscATLtQGDXVa30MNbRZMfDsbwu9IC7/xkWRcax/6jRIQXf9pViIajeWIU+gCJKlUSCMqUZxUT/Qg=
+	t=1780969174; cv=none; b=ICmN9jignwETrnKTFIhLnSs9aKKdAmcH3GRpNC0dljQ/Sh9U+Edp4U4Wqrcel9KdREOmBXZWJWvHrlkoDYaCS3Ah8wz+mQ4OJPyixeM+mWDSpDxAXIIwrIKJNiAQfdHhqTvU46HLuBsm78Z7sx7nTCJXz4IatFM/8I6cGftBIEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780968646; c=relaxed/simple;
-	bh=wbBkMfNzgrpdw/AQgcjPP5Qj1kkdSNWHGzysULcHpco=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Gu0wcr+SHwSXpH9o9WJe5R+qwfqUOVi5xeJ2EFg99bayP1Db6qqhDYSFaVF6SWkGJVyXOVLoQF6YI29Yqa9LioQX4YUlbLZc7tqqFED273UHvW9AMn5MlaJKACZImS5txCeu/qEWpPa1gB7IOjy9Uq+U1uxryz38ThjzQruoW0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=GXHK18xP; arc=none smtp.client-ip=113.46.200.222
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=PE7SL/rp0gOOvRnYwk24N7Jwk/rjpDxGlneTY/S2ePs=;
-	b=GXHK18xPIo6UAyvaNbYue7chNh+G1m83OPO29zHBSk24lYO/83w3wP9wpyOVwyx8Q5YzjHNUR
-	5eYTruuQOt8dZP8Ls3oh1Z2eHBi1qaLwiPSoRQEGAq8iJKmIETZZEHdV+AZTQfUAReDL8Gi6mK1
-	hINfKXA0QtOWZBwdkDjAWdo=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gZB3q23nrzLlW4;
-	Tue,  9 Jun 2026 09:22:47 +0800 (CST)
-Received: from dggpemf100012.china.huawei.com (unknown [7.185.36.196])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5215B40562;
-	Tue,  9 Jun 2026 09:30:40 +0800 (CST)
-Received: from [10.174.176.103] (10.174.176.103) by
- dggpemf100012.china.huawei.com (7.185.36.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 9 Jun 2026 09:30:39 +0800
-Subject: Re: [PATCH bpf] bpf: Validate BTF repeated field counts before
- expansion
-To: Eduard Zingerman <eddyz87@gmail.com>, Paul Moses <p@1g4.org>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>
-CC: <martin.lau@linux.dev>, <ast@kernel.org>, <daniel@iogearbox.net>,
-	<andrii@kernel.org>, <bpf@vger.kernel.org>, <song@kernel.org>,
-	<yonghong.song@linux.dev>, <jolsa@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20260605234301.1109063-1-p@1g4.org>
- <DJ2OZSCSEVEI.3APUCE7ML9X4Q@gmail.com>
- <E0xEdilT0Z6figMeDAyw03ex29iX0RfOAUXuh4aTJxUrKHK2Bg5N8lKCHNvQoQQ1UzndFFqDJ_zmAMYHLqSgSfF1menSW7C9VKDSBhYrTT0=@1g4.org>
- <DJ2RQ5NHDCZT.2R218ZSS80NQ4@gmail.com>
- <0_PQcsqBnb7dqgu9UPK6jIQvePSosttml5p2ZDoXAzy2AseVjvBu3ihswwZPWr5bZkOUCdH6HUvw3MRKJEwVYJAkT3j5gdNBHZp8l7_cP6Y=@1g4.org>
- <d7ccd692ea8c6009785ad141e6ae4bbc68347517.camel@gmail.com>
-From: Hou Tao <houtao1@huawei.com>
-Message-ID: <83321d7b-516c-f4a0-65ea-6fd224ba3110@huawei.com>
-Date: Tue, 9 Jun 2026 09:30:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	s=arc-20240116; t=1780969174; c=relaxed/simple;
+	bh=jPr3bw3y4iOnV0cMOk+Zu/DAivUcOCD3d5Rq9Z1qq9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rBShmzT1/t4TDbOAr0WXAzYB/4Y5rv+j1/2YC1wvXEfesoHjNvqGox4t4CjoHQEl0xLmKk+IXzPXEtfbru4YJw0Q4ICsCbDJPJZSAiF1hS13lumNeDd+Q3Zc16ts3KFvgvhxmo4L+RF3R18VRoTGVvdGmKnfGGTkYckc0UgMl+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=q1BzmG/s; arc=none smtp.client-ip=205.220.177.32
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658HSUaI1690093;
+	Tue, 9 Jun 2026 01:39:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=IvJ/OP8BmyxjZ/E+K1UO316wfhfyls0xhc+riDZgKZM=; b=
+	q1BzmG/st85ypKL6ajTypY4rltK0CM+THtgZVSVn5p0fxDOiYwNtF+JWKjEZMohB
+	oIqx8AQZHZWasHWjozVKpRcGnlLh2JBOurFx/XRD1vTcO7hmfCXwJDVN2BN8HLjy
+	/Zhfq+5QQgImejly4ieOs6OXcg+YfLxGbv/Gmqe9znaZzoOGkggc6ejk/m3l+bOL
+	ubw9ZZS7Fvd5MEHFDk0CQNY3YWHOFe9CNJy/L//UASe+FB3GP3q9XnGwKcDrSFT8
+	OHbz1W/3bP1Xo9ACaj2fOGQaZ7EASCu41LBbmzJBqIhdmbITPD6JFJa7nF17TLVd
+	a/NXfK2LToge4yNS6wB70A==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4emab4kh1g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Jun 2026 01:39:11 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6591caME028076;
+	Tue, 9 Jun 2026 01:39:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ema0pges4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Jun 2026 01:39:10 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 6591d6Ar030153;
+	Tue, 9 Jun 2026 01:39:09 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4ema0pgepy-8;
+	Tue, 09 Jun 2026 01:39:09 +0000 (GMT)
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: James.Bottomley@HansenPartnership.com,
+        "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, hch@lst.de, dlemoal@kernel.org,
+        robin.murphy@arm.com, john.g.garry@oracle.com, axboe@kernel.dk,
+        m.szyprowski@samsung.com, ahuang12@lenovo.com, ionut_n2001@yahoo.com,
+        sunlightlinux@gmail.com
+Subject: Re: [PATCH v8 0/1] scsi: sas: fix mkfs.xfs failure due to bogus optimal_io_size
+Date: Mon,  8 Jun 2026 21:39:01 -0400
+Message-ID: <178094912072.1810714.9115795923804476782.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260519135238.373784-1-ionut.nechita@windriver.com>
+References: <20260519135238.373784-1-ionut.nechita@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <d7ccd692ea8c6009785ad141e6ae4bbc68347517.camel@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100012.china.huawei.com (7.185.36.196)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_06,2026-06-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 malwarescore=0 mlxlogscore=372
+ adultscore=0 suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2605130000 definitions=main-2606090013
+X-Authority-Analysis: v=2.4 cv=cL/QdFeN c=1 sm=1 tr=0 ts=6a276ebf b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=VwQbUJbxAAAA:8
+ a=t7CeM3EgAAAA:8 a=EwlQa_qvEpErnvP18DcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=FdTzh2GWekK77mhwV6Dw:22 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
+ cc=ntf awl=host:13723
+X-Proofpoint-GUID: qHGR5GtSfRdE37XMffGVzBXrewjRwIt1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDAxMyBTYWx0ZWRfXxhTicKgkslf1
+ KOzBJppRa40qbTjnWcE/BDQnXhn4hkV1e4cuOpCmxr/RLME/GeSuYBSR4cRBydl3OOIgKMW+Ny9
+ 00M/R1dplfYYCsNM2vna3DLJEWnXtuinT1rONOBOK27aj6XE+4uVrPJBBrRmBVJP2Un185As1x3
+ Y2PA2HXvenw+X6cN4Q3xVUOwb0TC+GiUpj3ZCjr3M1uUBLYvjyNvAxy5jXYslxC1qKn8HJfjw9C
+ kor3AL3mdQH5xN5yVoIQCJR+0W5bA1eXaeTmdN/Qw1p3tSZFYteQqr9b+lV67hagU+/7hiYJcjM
+ PxmnAbCywlaKHpEjXg6Qx/Y8jbQEfmBD3k00IMZ41pvpYmkEaS4QvV2YlpTXjwu8qXladxaGjO7
+ vzGgI1PU5PgfZ1HP4SigBrt57Ap3vxYkC8fPW+cXNOHTbo/tSV4QXiscSLnmV7HV3ZasrgJ8BcR
+ 0wSegLjCHdtMhC7WNZKKI3CNMc9NE/BIwLRQcCgQ=
+X-Proofpoint-ORIG-GUID: qHGR5GtSfRdE37XMffGVzBXrewjRwIt1
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-262164-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:eddyz87@gmail.com,m:p@1g4.org,m:memxor@gmail.com,m:martin.lau@linux.dev,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:bpf@vger.kernel.org,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,1g4.org];
+	FORGED_RECIPIENTS(0.00)[m:James.Bottomley@HansenPartnership.com,m:ionut.nechita@windriver.com,m:martin.petersen@oracle.com,m:linux-scsi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hch@lst.de,m:dlemoal@kernel.org,m:robin.murphy@arm.com,m:john.g.garry@oracle.com,m:axboe@kernel.dk,m:m.szyprowski@samsung.com,m:ahuang12@lenovo.com,m:ionut_n2001@yahoo.com,m:sunlightlinux@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[houtao1@huawei.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262162-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,kernel.org,arm.com,kernel.dk,samsung.com,lenovo.com,yahoo.com,gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,windriver.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,oracle.com:dkim,oracle.com:mid,oracle.com:from_mime];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[houtao1@huawei.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[huawei.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:mid,huawei.com:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 72B2865BA6E
+X-Rspamd-Queue-Id: 4D44C65BB94
 
-Hi,
+On Tue, 19 May 2026 16:52:32 +0300, Ionut Nechita (Wind River) wrote:
 
-On 6/9/2026 3:59 AM, Eduard Zingerman wrote:
-> On Sun, 2026-06-07 at 17:53 +0000, Paul Moses wrote:
->
+> From: Ionut Nechita <ionut.nechita@windriver.com>
+> 
+> v8 (per Christoph Hellwig's review of v7):
+>   - Removed the dma_dev->dma_mask guard — dma_opt_mapping_size() and
+>     dma_max_mapping_size() both return SIZE_MAX when no DMA ops are
+>     present, so the opt >= max early-return already covers this case.
+>   - Added inline comments explaining each conditional in the helper.
+> 
 > [...]
->
-> The repro is legit.
-> Here is a somewhat minimized version as a selftest:
->
->     diff --git a/tools/testing/selftests/bpf/prog_tests/btf.c b/tools/testing/selftests/bpf/prog_tests/btf.c
->     index a9de328a8697..212ca4472a89 100644
->     --- a/tools/testing/selftests/bpf/prog_tests/btf.c
->     +++ b/tools/testing/selftests/bpf/prog_tests/btf.c
->     @@ -4258,6 +4258,44 @@ static struct btf_raw_test raw_tests[] = {
->             .max_entries = 1,
->      },
->     
->     +{
->     +#define N 0x1999999aU
->     +       .descr = "repeat fields overflow",
->     +       .raw_types = {
->     +               /* int */                                               /* [1] */
->     +               BTF_TYPE_INT_ENC(0, BTF_INT_SIGNED, 0, 32, 4),
->     +               /* struct target {} */                                  /* [2] */
->     +               BTF_TYPE_ENC(NAME_TBD, BTF_INFO_ENC(BTF_KIND_STRUCT, 0, 0), 1),
->     +               /* type_tag "kptr_untrusted" -> target */               /* [3] */
->     +               BTF_TYPE_TAG_ENC(NAME_TBD, 2),
->     +               /* target * (kptr) */                                   /* [4] */
->     +               BTF_PTR_ENC(3),
->     +               /* struct outer { target *kp; elem items[N]; } */       /* [5] */
->     +               BTF_TYPE_ENC(NAME_TBD, BTF_INFO_ENC(BTF_KIND_STRUCT, 0, 2), (N * 8u + 8u)),
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* kp           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 6, 64),        /* items        */
->     +               /* elem[N] */                                   /* [6] */
->     +               BTF_TYPE_ARRAY_ENC(7, 1, N),
->     +               /* struct elem { target *f0..f9; } */                   /* [7] */
->     +               BTF_TYPE_ENC(NAME_TBD, BTF_INFO_ENC(BTF_KIND_STRUCT, 0, 10), 8),
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f0           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f1           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f2           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f3           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f4           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f5           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f6           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f7           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f8           */
->     +               BTF_MEMBER_ENC(NAME_TBD, 4, 0),         /* f9           */
->     +               BTF_END_RAW,
->     +       },
->     +       BTF_STR_SEC("\0target\0kptr_untrusted\0outer\0kp\0items\0elem"
->     +                   "\0f0\0f1\0f2\0f3\0f4\0f5\0f6\0f7\0f8\0f9"),
->     +       .btf_load_err = true,
->     +#undef N
->     +},
->     +
->      }; /* struct btf_raw_test raw_tests[] */
->     
->      static const char *get_next_str(const char *start, const char *end)
->
-> However, as far as I understand the repro hits an overflow only
-> because `BTF_TYPE_ENC(NAME_TBD, BTF_INFO_ENC(BTF_KIND_STRUCT, 0, 10), 8)`
-> lies about `struct elem` size. It is specified as 8, while in reality it is 80.
 
-No exactly. Every field in the struct elem has the same offset (0), so
-the size of struct elem is correct, but the field definition of struct
-elem is incorrect.
-> The size of 80 would make `struct outer` unrepresentable in BTF,
-> because (N * 80 + 8) exceeds u32 range, and that's what btf_type->size uses.
-> Given that btf_repeat_fields() only traverses structs/arrays but not unions,
-> I suspect that overflow won't happen in `field_cnt * (repeat_cnt + 1)`
-> if proper size checks were implemented in btf_struct_check_meta() / btf_struct_resolve().
-> Even more, If I change "kptr_untrusted" to "kptr_untrusted11" to avoid fields parsing,
-> the kernel accepts the bogus BTF.
+Applied to 7.2/scsi-queue, thanks!
 
-btf_struct_check_meta has checked the validity of field offset. However
-it seems the checking is loose:
+[1/1] scsi: sas: skip opt_sectors when DMA reports no real optimization hint
+      https://git.kernel.org/mkp/scsi/c/be8fcd4a8217
 
-                /*
-                 * ">" instead of ">=" because the last member could be
-                 * "char a[0];"
-                 */
-                if (last_offset > offset) {
-                        btf_verifier_log_member(env, t, member,
-                                                "Invalid member
-bits_offset");
-                        return -EINVAL;
-                }
-
-For struct elem, all fields have the offset 0, so the offset checking is
-passed. From the code snippet above, it seems BTF tries to support the
-following struct definition below, is it OK to only support the last
-zero-sized field in struct definition ?
-
-struct elem {
-    int a;
-    char b[0];
-    int c;
-    char d[0];
-}
-
-
->
-> Paul, could you please investigate why is this happening?
-> .
-
+-- 
+Martin K. Petersen
 
