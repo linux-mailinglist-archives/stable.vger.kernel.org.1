@@ -1,147 +1,238 @@
-Return-Path: <stable+bounces-262387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VI8vDzCcKGoeGwMAu9opvQ
-	(envelope-from <stable+bounces-262387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:05:20 +0200
+	id IhJILwaOKGrYGAMAu9opvQ
+	(envelope-from <stable+bounces-262383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 00:04:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6142664B37
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:05:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2842C6646BB
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 00:04:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=exrzL2BL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262387-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HIGW38mZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262383-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262383-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D6CCB302409A
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 23:05:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2B9430A122C
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 21:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456353F4109;
-	Tue,  9 Jun 2026 23:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EAA331EA6;
+	Tue,  9 Jun 2026 21:59:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C89F3EF664;
-	Tue,  9 Jun 2026 23:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776A403B1E
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 21:59:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781046312; cv=none; b=X0guE0awU0/3M2icRXx5VykhwlNRvqTXN/e+x4Z1G2mN62wQfB48AvRO3XeP6ddi+75nyC1IisT5EpqIlEPVdYoRzv3sEPsJ1HXGHvnGxifimOq90U6d6JVqTSsaChioeirEXXC/EMqwvVcVu0vcL87yOJjRuuF2bTFuPXvjmpA=
+	t=1781042347; cv=none; b=bkT5p3E3RhEx4/YZsZzhgPXSMIM5QB2PEs8X7QOzo8nT+dnanRUo3LkrqMsXKecL5puhZw4/nWhW7cWrsNFI+tlVOI6fnkFlSct59Np4Op42hCEmvg7OTuRea71PNrUDYaLIDRIb+jGJgC4zQYCVRWas27qmDbXEVywO35zYTSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781046312; c=relaxed/simple;
-	bh=WBSEWc9Ub9ajTgf+r05KEz8QdxvxLsBmicHP1AmhPEY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=LvJ9OEiAJfNrDrauI6OmvKKkH+GRId+sZ/+w8EyieTcqpDmwCo1tR/eCuw1zB2WOGwtf6i6QtUAcwudaRX5jZR86V3+S/pqUVjvmdnPUzaCBikHFEPxlejvW6n5mWQMtcM1RuGcMF7vQzSXqH4AN0iJblmxsdPObbaIZLVJd9Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exrzL2BL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F731F00893;
-	Tue,  9 Jun 2026 23:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781046310;
-	bh=0A6mqkysPmaX8VnA4nZH5iJqCKSPfw6NYqzHjo2z4l8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=exrzL2BLzNrEhXFOGd3+3fZKc8CTLay4372REMPSGK0XpwcJ6j824jbmCKChMuSp3
-	 3q3K33Ey1D1+dP8mFBOzjA9W3aViAOYcxOpPPrfNUiKDuR9IlaSFnqkIaYNnxjyEBk
-	 zwPS7vqz2v8I+5z+zSxKbqap8wFN/dq9k1kY2KVgHw4pA4jNqhhx8XeAgjrt3EyoGF
-	 PKtsIGNaJnFJmiqQ3IrTOuwGf4wf73Bb1dEaQIv9fr7ySHLvybkayLBmk9PHooepDe
-	 VjDe9j9d0OVa5hKGkAG1eHjmf5Rf2hKsh7wMhz5xC8IARORlvcMSg4HBSbTJpv20Ca
-	 WqNPBNEm8yNPg==
-From: Mark Brown <broonie@kernel.org>
-To: Jonathan Marek <jonathan@marek.ca>, 
- Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260609-fix-spi-fragmentation-bit-logic-v2-1-e18efc255563@oss.qualcomm.com>
-References: <20260609-fix-spi-fragmentation-bit-logic-v2-1-e18efc255563@oss.qualcomm.com>
-Subject: Re: [PATCH v2] spi: qcom-geni: Fix cs_change handling on the last
- transfer
-Message-Id: <178104125260.34323.1551253876744290838.b4-ty@b4>
-Date: Tue, 09 Jun 2026 22:40:52 +0100
+	s=arc-20240116; t=1781042347; c=relaxed/simple;
+	bh=eFSvU/ePFL1qszgpJvxpUkKC7kFse+8pNxPpiZngZJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUOteJD7Bx0hOUWfhyZa5hhfaIaBo0yDJs44AiS0aC1VY8SYf/jHyfGYXGgkP2wFrMM22CD680FeFugE1ekQ55bpyANKrgjJwzuY80m2inePx0txlkbM/49Rw9SI6vK44jmXuPnoAuAfCyNH3YNanoaX3kANU/djq1kYJnu9Xj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HIGW38mZ; arc=none smtp.client-ip=205.220.177.32
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 659KBld1082250;
+	Tue, 9 Jun 2026 21:58:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=0dpCCn9mcTkGjTYBcnWgTdxab+zrJ
+	LAL9dzaq5dBZ78=; b=HIGW38mZGM5/DlKptDzfbSd/pnf1l7135rWnkg/IP9zed
+	eKJn2bh0utuDjmx7gbP34f8k0+uvaY5HcFZLytK+VKKANKkXKYUMRqoy8xvxUUwr
+	zTan1Qc5gJAOPe/YKJ7RxYHcsXdgM4v8/nlYpwNQjVt0EWtu8hOM/KS9BsCJ9hoy
+	poZOq6lz9azzR0bovz3lnOFxqt5EBZoNES4M+fEfZ/As59vesB178x+fJW+3V41K
+	VcHeoLe4tnquyo9Jg7LKpUhC+PogBex5btvN+PQlHopKCbd73J6bxxHQ0UKItnEP
+	T8/qrdIzkoIOtH72Ude8s5Ajdy0k4gl76xFnc5ncw==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4emb5swdhn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Jun 2026 21:58:47 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 659LriEh027679;
+	Tue, 9 Jun 2026 21:58:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ema0qqgjn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 09 Jun 2026 21:58:46 +0000 (GMT)
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 659LrtLG029331;
+	Tue, 9 Jun 2026 21:58:46 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4ema0qqghu-1;
+	Tue, 09 Jun 2026 21:58:46 +0000 (GMT)
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org
+Cc: sashal@kernel.org, chenste@linux.microsoft.com, sherry.yang@oracle.com,
+        ebiederm@xmission.com, tusharsu@linux.microsoft.com,
+        zohar@linux.ibm.com, roberto.sassu@huawei.com,
+        dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com
+Subject: [PATCH 6.12.y 0/2] ima: kexec: fix kexec_file_load panic with IMA_KEXEC
+Date: Tue,  9 Jun 2026 14:58:42 -0700
+Message-ID: <20260609215844.1835378-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
- h=from:subject:message-id; bh=WBSEWc9Ub9ajTgf+r05KEz8QdxvxLsBmicHP1AmhPEY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKJwjvMAfUU3inP2j43gKV+hOuWYknfX6TOIcU
- toXBbdspG+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaiicIwAKCRAk1otyXVSH
- 0IIaB/0ad8ndK3FL8LouctO4mx5Pb7fLl0cs5ONe2t8kwVCtwM34ap7J6OqZ/AwJ5+q7WobZR7y
- 5bYPMfdTKAnI4qfIcUz7/PaBPY5nl6QpsSYW0oBt59W8Yp254ALkJqniizOL+3p0nY2uITaTObC
- lAcvGmpZ2eUfqIHXZL2H+dOO2/fglV8TQtObvs+pWEsA//36Cd82RDZUQEOG+taoEkUUQbfvh3O
- bW9m1cGTgGldnH/8+zZssi1DJvLLQjhjrayu3YBz7q13rrV6+kQLSBVGm+XmMDI4SatCFxgsfDX
- KgqPdl+PVFZBfqSprENVl4onfu51cLzz2P8sbAF8wPCV8BWZ
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-09_04,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
+ mlxlogscore=999 lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2605130000 definitions=main-2606090206
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDIwNiBTYWx0ZWRfXx5lPL+ClYmXm
+ lbn+NZ7up7B2ADl0agbREyqWpkk0dCDGckr5zFqxSrkDpMGdp/rHng0JIrhshtiOQI0MUU/WnRt
+ Lijx9xb+rhofiOQF+8srLc6Mdk/5mGZeType/hOgeoIxostHR3vwWfVzzsv180f9Orib0/JiUl5
+ 7cerZ2tXf7eQpGuo2L/329h33Hh8gHulLP/P7WntKsenSbbSr8AkhhbYnN5LogEb+0HTzg5UF6H
+ Wbn7Oj+Cf+Ts8llCXvo1ySyxYJkiLhMb3sAkmMejuq7wRswN0vLT9986QRaOEAf9OadPmVg9n8j
+ GFIEinQ/Xn+HVeSBsgCpWbwahlv4DCzM92lWs18IHX6K6AN4d6Hk7hfDxqRg9rMPi4yE3yptH8S
+ Toaf6q513dv/Ro73psmxivigm4mnP0xcpbHJlLMgcdpMapbzLkc8QbIXTqWGGhNstQFhwd1dcRF
+ FxBwtrB06ZNPl8hgtCmpjdy9NNzZzDX7+XRNk+kw=
+X-Authority-Analysis: v=2.4 cv=XeC5Co55 c=1 sm=1 tr=0 ts=6a288c97 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=3I1J8UUJPc9JN9BFgKH3:22 a=Z3cD_0Fe9WOAt5BZow0A:9 a=5yU3S35YU4bGjq-dph-N:22
+ a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12313
+X-Proofpoint-ORIG-GUID: tI_pKZzXXNXa56nMAmjYzwTnpdFhSJyU
+X-Proofpoint-GUID: tI_pKZzXXNXa56nMAmjYzwTnpdFhSJyU
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-6.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER(0.00)[sherry.yang@oracle.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262383-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jonathan@marek.ca,m:viken.dadhaniya@oss.qualcomm.com,m:linux-arm-msm@vger.kernel.org,m:linux-spi@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linux.microsoft.com,oracle.com,xmission.com,linux.ibm.com,huawei.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[sherry.yang@oracle.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:chenste@linux.microsoft.com,m:sherry.yang@oracle.com,m:ebiederm@xmission.com,m:tusharsu@linux.microsoft.com,m:zohar@linux.ibm.com,m:roberto.sassu@huawei.com,m:dmitry.kasatkin@gmail.com,m:eric.snowberg@oracle.com,m:dmitrykasatkin@gmail.com,s:lists@lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262387-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[oracle.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ALIAS_RESOLVED(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B6142664B37
+X-Rspamd-Queue-Id: 2842C6646BB
 
-On Tue, 09 Jun 2026 14:13:09 +0530, Viken Dadhaniya wrote:
-> spi: qcom-geni: Fix cs_change handling on the last transfer
+Hi Stable Maintainers,
 
-Applied to
+This series backports two upstream IMA/kexec commits to linux-6.12.y:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+  9ee8888a80fe ("ima: kexec: skip IMA segment validation after kexec soft reboot")
+  9f0ec4b16f2b ("ima: kexec: move IMA log copy from kexec load to execute")
 
-Thanks!
+linux-6.12.y already contains the surrounding IMA kexec backports, including
+the buffer reuse change:
 
-[1/1] spi: qcom-geni: Fix cs_change handling on the last transfer
-      https://git.kernel.org/broonie/spi/c/5ac5ec84734f
+  d0a00ce470e3 ("ima: verify if the segment size has changed")
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+but it is missing the commit that moves the measurement list copy from
+kexec load time to kexec execute time.  With CONFIG_IMA_KEXEC=y and
+CONFIG_KEXEC_FILE=y, this leaves the static IMA seq_file buffer with the
+old load-time ownership model.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+With repeated file-based kexec loads, for example
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+  kexec -l /boot/vmlinuz-$(uname -r) \
+    --initrd=/boot/initramfs-$(uname -r).img --reuse-cmdline
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+We hit kernel panic
+
+[   64.411644] BUG: unable to handle page fault for address: ff5f3d77a44d9018
+[   64.423320] Call Trace:
+[   64.423516]  <TASK>
+[   64.423684]  ima_measurements_show+0xb2/0x250
+[   64.424015]  ima_dump_measurement_list.constprop.0.isra.0+0x81/0x15e
+[   64.424475]  ima_add_kexec_buffer+0x160/0x1f2
+[   64.424809]  kimage_file_alloc_init+0x1af/0x3df
+[   64.425143]  __do_sys_kexec_file_load+0xc4/0x2bc
+[   64.425483]  do_syscall_64+0x90/0x1c0
+[   64.425768]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.426121]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.426473]  ? syscall_exit_work+0x103/0x130
+[   64.426794]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.427142]  ? arch_exit_to_user_mode_prepare.isra.0+0x1e/0xf0
+[   64.427562]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.427911]  ? syscall_exit_to_user_mode+0x36/0x190
+[   64.428263]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.428616]  ? do_syscall_64+0xb6/0x1c0
+[   64.428894]  ? inode_security+0x22/0x60
+[   64.429179]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.429519]  ? mutex_lock+0x12/0x40
+[   64.429783]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.430405]  ? seq_read_iter+0x1fc/0x433
+[   64.430931]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.431513]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.432167]  ? vfs_read+0x252/0x370
+[   64.432676]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.433249]  ? syscall_exit_work+0x103/0x130
+[   64.433791]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.434362]  ? arch_exit_to_user_mode_prepare.isra.0+0x1e/0xf0
+[   64.435010]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.435579]  ? syscall_exit_to_user_mode+0x36/0x190
+[   64.436149]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.436718]  ? do_syscall_64+0xb6/0x1c0
+[   64.437222]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.437801]  ? syscall_exit_work+0x103/0x130
+[   64.438337]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.438899]  ? arch_exit_to_user_mode_prepare.isra.0+0x1e/0xf0
+[   64.439545]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.440099]  ? syscall_exit_to_user_mode+0x36/0x190
+[   64.440656]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.441202]  ? do_syscall_64+0xb6/0x1c0
+[   64.441680]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   64.442221]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   64.442792] RIP: 0033:0x7f2cef50887d
+[   64.443249] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 6b 15 0f 00 f7 d8 64 89 01 48
+[   64.444968] RSP: 002b:00007ffdb22657b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000140
+[   64.445715] RAX: ffffffffffffffda RBX: 0000000000000080 RCX: 00007f2cef50887d
+[   64.446432] RDX: 00000000000001de RSI: 0000000000000005 RDI: 0000000000000003
+[   64.447153] RBP: 0000000000000003 R08: 0000000000000000 R09: 00000005b2265b28
+[   64.447870] R10: 0000561563d37dc0 R11: 0000000000000246 R12: 0000000000000000
+[   64.448589] R13: 00007ffdb2265b28 R14: 00007f2cee241010 R15: 00007ffdb22662a7
+[   64.449313]  </TASK>
+
+After backporting these two patches and tested with CONFIG_IMA_KEXEC=y
+and CONFIG_KEXEC_FILE=y, the panic is no longer reproducible.
 
 Thanks,
-Mark
+Sherry
+
+Steven Chen (2):
+  ima: kexec: skip IMA segment validation after kexec soft reboot
+  ima: kexec: move IMA log copy from kexec load to execute
+
+ include/linux/kexec.h              |  3 ++
+ kernel/kexec_file.c                | 33 ++++++++++++++++++++-
+ security/integrity/ima/ima_kexec.c | 46 +++++++++++++++++++++---------
+ 3 files changed, 67 insertions(+), 15 deletions(-)
+
+-- 
+2.50.1
 
 
