@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-262250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P3gnIoPtJ2ro5QIAu9opvQ
-	(envelope-from <stable+bounces-262250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 12:40:03 +0200
+	id X+QMEFbvJ2o15wIAu9opvQ
+	(envelope-from <stable+bounces-262251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 12:47:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A5565F0C6
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 12:40:02 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3584065F1AE
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 12:47:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kSk9sgj1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262250-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262250-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Khnoe147;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262251-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262251-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2CFEB3054045
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 10:32:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C441B303D6DD
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 10:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4938D414;
-	Tue,  9 Jun 2026 10:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A823CEBA6;
+	Tue,  9 Jun 2026 10:33:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40FF2C15BB
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 10:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E65F3B0AF1
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 10:33:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781001123; cv=none; b=TxYvC4KdjzLKxA5UhdH8FGftJ+HuqbqlnE69Obk9xjcPFZqbvZUFF+iviM6mKgVbwwcidHe6xDTqx0BzEuuIzVlPZONWHcGrshttvGIW/tlR9TN4cahas46BiSSNgETh/uzGQ79pqdoWp0jquaEfjSXnIAUHnNLHjX94QZ+va34=
+	t=1781001192; cv=none; b=YO6QkVYyxoxs8lCOubyjMJtwo34MDtJTCvkOVcmOs2GWs+uLIs0/KYdvTh0mi55bgquwCuYN4tLwkm9+0lQQ4BuvHtZpmINjFf2AaeykYR5jKgnYfCFPivMhFf69wHIp78bl5EkaUm2i8EDB4G562470ldSRoX0dDPUIQH74Zds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781001123; c=relaxed/simple;
-	bh=kvLTDnHk5jHdDccBC4DF1a8gIAhewOmhZMFYdCmFCjw=;
+	s=arc-20240116; t=1781001192; c=relaxed/simple;
+	bh=bn7oIGM5WxSI5ofyndPPyOE+qIU/0xfC29JtM6/CGqM=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EAnC9MT9oM2leiWe3pHSEBj5XOln9suvhvdD/3YAF41kGowp9rv6lVAgmkEdqk3AMIcpCvlBbTt0KIdJLLQ9xshzovVXHW0Ymu2rzbI43eVVPAGaDgxwVjdFhOvSUUyV5VRd5XRc1/jnkda2/y1ebesVofsgG7ELVi8qX4zwkU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSk9sgj1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDEA1F00893;
-	Tue,  9 Jun 2026 10:32:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XQRblI7/WuViLMNQjuvhAMDWrxJkGiZJvw3P5PuFGam4QpT2p7HyAe0hyVRDDKJPWpkAZ2FtbGLfztYjX7yxAvGTYIduBcTZQLwbM5f811sQ3DykrIiCTpv+AR5n4cXv/ysWBzh9C4PVQ8NHqyEAvXYwlSlH11NSf5xeZLUJ2Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Khnoe147; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C181F00893;
+	Tue,  9 Jun 2026 10:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781001122;
-	bh=3bi2l8ntRklXacewtAmub2WWWkpvoyqi+I4rfwge7cc=;
+	s=k20260515; t=1781001191;
+	bh=GCr+BQtcuv0PUY38wT2Vl3W44PF5qRVqOiKASBMliCU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kSk9sgj19xO3h6AKOAC/wO56W34Io5hqzXo70eZ6frJN9BY9yZqE8zEESoBJ6zPPI
-	 2ScTgU5DnWxlN5n+jNBEbW7KVSfV1SeTfwcivvynqLv/cV3XFFjNITTftjoi+TP452
-	 lSVG62wtE17WfQsu0Eakio1gKYOYq0tOnA4Aly/2ogFMwVnVFKZbN1rPwKlpf+4YzW
-	 puF7sZVImZeMP42cx3X9yjtQ2tj5WdWB+Z8mjMLQo9Ytek5m8l424+GOHp/RmZFhUf
-	 rKP/cmYkJrT1k0PZhSRehJRWeDB0jvqHCcYibR8f2dg+eV0fObd8WSMXhCiMpvf322
-	 gl2z1GFZcNsrA==
+	b=Khnoe147OidzmOpbREMeM2YeZTvuv+yMBJoRDRGG8XyM6vI7liMo9aFslGlPhri/9
+	 82ksQFsa+hJbOvgn8P8D3jvE0w5t8rv7UmWDmuUiou+tI3bHvDCIWdUKdoxsMsoEKb
+	 nFYuWRpEAcxYc+kSSaZX210uwUxZfdkV2+399mn0OYnGbboI3by39of0Y0YPO2BKW2
+	 N/EYgoSYdo6FPBa7nkMlFVQMQ0ykKJpP8EWmy7DiEaTrArKWddXhABvYL5zPhaHI/2
+	 KmKed+6VrnWuDtinlXoDf1PgMuoSH6yhnkStK+1Zg2WErGwXxUESdpmbdQd6FJ27pI
+	 svHjlPbQMtX1g==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wWtkW-0000000Arpv-2Tpd;
-	Tue, 09 Jun 2026 10:32:00 +0000
-Date: Tue, 09 Jun 2026 11:32:00 +0100
-Message-ID: <86h5nct36n.wl-maz@kernel.org>
+	id 1wWtld-0000000Arr2-1xQN;
+	Tue, 09 Jun 2026 10:33:09 +0000
+Date: Tue, 09 Jun 2026 11:33:09 +0100
+Message-ID: <86fr2wt34q.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Hyunwoo Kim <imv4bel@gmail.com>
 Cc: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
 	oupton@kernel.org
-Subject: Re: [PATCH 6.18.y] KVM: arm64: Take the SRCU lock for page table walks in fault injection and AT emulation
-In-Reply-To: <aifhWIyS3A0Bdmnv@v4bel>
-References: <aifhWIyS3A0Bdmnv@v4bel>
+Subject: Re: [PATCH 6.12.y] KVM: arm64: Take the SRCU lock for page table walks in fault injection and AT emulation
+In-Reply-To: <aifnUC7gmeniiYPv@v4bel>
+References: <aifnUC7gmeniiYPv@v4bel>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -82,14 +82,14 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262250-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262251-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:imv4bel@gmail.com,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:oupton@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -106,13 +106,13 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4A5565F0C6
+X-Rspamd-Queue-Id: 3584065F1AE
 
-On Tue, 09 Jun 2026 10:48:08 +0100,
+On Tue, 09 Jun 2026 11:13:36 +0100,
 Hyunwoo Kim <imv4bel@gmail.com> wrote:
 > 
 > [ Upstream commit f2ca45b50d4216c9cc7ffabf50d9ad1932209251 ]
@@ -132,43 +132,18 @@ Hyunwoo Kim <imv4bel@gmail.com> wrote:
 > Reviewed-by: Oliver Upton <oupton@kernel.org>
 > Link: https://patch.msgid.link/aiAZfdeyanIvP8SD@v4bel
 > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> [ Hyunwoo Kim: __kvm_at_s12() still returns void in 6.18.y, so the
->   surrounding context differs from upstream (return; instead of
->   return ret;); the added scoped_guard() is unchanged. ]
+> [ Hyunwoo Kim: __kvm_at_s12() returns void in 6.12.y, so the context
+>   differs from upstream (return; instead of return ret;). The
+>   __kvm_find_s1_desc_level() hunk (Fixes: 50f77dc87f13) is dropped, as
+>   that function is v6.18+ and absent here; only the __kvm_at_s12() /
+>   kvm_walk_nested_s2() change (Fixes: be04cebf3e78) applies. ]
 > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> ---
->  arch/arm64/kvm/at.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/at.c b/arch/arm64/kvm/at.c
-> index be26d5aa668c..e6de6aac6ede 100644
-> --- a/arch/arm64/kvm/at.c
-> +++ b/arch/arm64/kvm/at.c
-> @@ -1528,7 +1528,8 @@ void __kvm_at_s12(struct kvm_vcpu *vcpu, u32 op, u64 vaddr)
->  	/* Do the stage-2 translation */
->  	ipa = (par & GENMASK_ULL(47, 12)) | (vaddr & GENMASK_ULL(11, 0));
->  	out.esr = 0;
-> -	ret = kvm_walk_nested_s2(vcpu, ipa, &out);
-> +	scoped_guard(srcu, &vcpu->kvm->srcu)
-> +		ret = kvm_walk_nested_s2(vcpu, ipa, &out);
->  	if (ret < 0)
->  		return;
->  
-> @@ -1623,7 +1624,8 @@ int __kvm_find_s1_desc_level(struct kvm_vcpu *vcpu, u64 va, u64 ipa, int *level)
->  	}
->  
->  	/* Walk the guest's PT, looking for a match along the way */
-> -	ret = walk_s1(vcpu, &wi, &wr, va);
-> +	scoped_guard(srcu, &vcpu->kvm->srcu)
-> +		ret = walk_s1(vcpu, &wi, &wr, va);
->  	switch (ret) {
->  	case -EINTR:
->  		/* We interrupted the walk on a match, return the level */
 
-Thanks for going the extra mile and doing the backport, much
-appreciated.
+I don't think this is necessary. 6.12 doesn't actually have NV support
+(it was enabled only from userspace in 6.17), therefore the ATS12
+emulation isn't reachable.
 
-Acked-by: Marc Zyngier <maz@kernel.org>
+Thanks,
 
 	M.
 
