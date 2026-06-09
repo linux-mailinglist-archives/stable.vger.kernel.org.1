@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-262349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XBwYJ8xGKGr0BQMAu9opvQ
-	(envelope-from <stable+bounces-262349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:01:00 +0200
+	id iG1lAn1GKGrXBQMAu9opvQ
+	(envelope-from <stable+bounces-262345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:59:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117DC662B76
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:01:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF39662B36
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:59:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=astralinux.ru header.s=mail header.b=srHLXrYH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262349-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=mawrAYlY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262345-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262345-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0C703025A61
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:53:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A441C310BF1D
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C84492526;
-	Tue,  9 Jun 2026 16:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0644968EB;
+	Tue,  9 Jun 2026 16:47:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41743FDC08;
-	Tue,  9 Jun 2026 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEEF257452;
+	Tue,  9 Jun 2026 16:46:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781023989; cv=none; b=hx/s0WmrvslnqIJAhwQYtJ53PkOSFb2TMOGgqApamhuCCwBL9p44oMYSQ3Df0+xS6SsYuZG+cEIasDdBYqNv4gGBGZeWv7fIYjN2Md6NQ63PVbyAozLEg1DzKtQxm/4DgmXlLSQjqv2h6mR64pLdf5z0lbBHos9JAhvO4XxFIAE=
+	t=1781023624; cv=none; b=XhNKjqy9cMoA9IFjxgtLGE1qBWJuyOprEK++bBnfU2gHK/D7zIfePmDusDlbwIKZKR5vUh0KhAlBicW65YRZYRWMvowN5e5pvmIbDWwpO6ODE9Irkfll//Kb9PiKMB8ZmA7bHMWVsEHi9FMjcWvnbb5JWRgkKwS9H/ifqG1gm0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781023989; c=relaxed/simple;
-	bh=BH0tbCa5Sr32v6IXmHJMQWbzPnYCnnKWwTUPw2KRafE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mBdC8Vz+HMRIoUxxdi7+3/gioIQIY8SWMJ565WZzmAT0EdovQwj7Coro9xFB3wColdB6u4u+MuC+Ep1L0sL1jSxnLIXZBMiaSXYqim0SI+7Nebv27FkQpOeS1Z6Ig+/FQYpFpQMNJqI8TcPP10DK1niMf8Q7+a4IKvXHlEZCXbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=srHLXrYH; arc=none smtp.client-ip=37.230.196.243
+	s=arc-20240116; t=1781023624; c=relaxed/simple;
+	bh=zd7otinO4B9I8rd1gNUK39hV2DeIxTjVexvphjc+8jg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uZW3WFwqMBswGdLxbgS29BEoxu5OO0QhNwsQ+Iz/E5vKVpmpKHZkJlpmqD3kw/XGBxHy1QwVG2NK5sCYDdEvu0Bke8/743QViV3eeWATsT4G9w70bWxo7FLrN9+NGmkPTH71mZA+cr/0q9IK5SVxY+K5iljRwSkFvwkDMZhBeIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=mawrAYlY; arc=none smtp.client-ip=93.188.205.243
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1781023495;
-	bh=BH0tbCa5Sr32v6IXmHJMQWbzPnYCnnKWwTUPw2KRafE=;
+	s=mail; t=1781023610;
+	bh=zd7otinO4B9I8rd1gNUK39hV2DeIxTjVexvphjc+8jg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=srHLXrYH+ePEflcWpPIf+grp6oDBIiQIDabQec1h95E9Ah53i8cu3lCijmlrlvsu8
-	 QDFsMr1i6haEvqarIMGpb7vlyCYM4Yg2IC6xZc5dmbYVZXfva+l9+MMa2T1lYEWMSn
-	 63+ijmneLfN93KduMDPjfq+lIdpcAxsLhK7TeNRllmq0rU2HCtTK4saZ//5sKg6kPx
-	 qFWdc4JngFFGaNEmzSCJdYPH6tZXl//mvNnedgxDWJ84/nVhfURBLNkGzPmSR4d5g7
-	 kEH01KZJzKZs5sm5Wi6nN0w78MPlSBAHDHLIsN/+6ut/QnJ9FL6asTzpOLpwDfII/a
-	 arF7ctetaJxHg==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id E7D27251E9;
-	Tue,  9 Jun 2026 19:44:55 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
+	b=mawrAYlYRNEWbSOfUXrmjK+PzLRhAhuvHm6pom2O1XkfJm+1h8GTDfcAJ0CEFQAP2
+	 gVrQT/zb28wkQ3zR/HyctRiUtYzOuyxupPlXugjsJzcFX81A+ioqiYzy+9JMTegLMa
+	 30C2vax74SYMRMj3TqErLY2BhjLW5JZ3+nfGu2Ebtu2DD2RE0mXHmx9O8DDYsyGMvD
+	 JvTExdF/qnNPHDnA4kPhWN930rkIWDyrRyTc7rlT/4SIZyBkZrjzMswd6gCva2k2V2
+	 JEIHNJJFzii/2FVHlEs/f7ZTKOVGaEX6hpeburj5EZDNfTFQETGLnkC3LNz4vCHSEj
+	 l5VS8JNYf9y1Q==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 551681FA44;
+	Tue,  9 Jun 2026 19:46:50 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.5])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Tue,  9 Jun 2026 19:44:53 +0300 (MSK)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Tue,  9 Jun 2026 19:46:47 +0300 (MSK)
 Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.18.49])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gZZWn24XXzZcxS;
-	Tue, 09 Jun 2026 19:44:53 +0300 (MSK)
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gZZYz1JwYz2xd5;
+	Tue, 09 Jun 2026 19:46:47 +0300 (MSK)
 From: Alexey Panov <apanov@astralinux.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Alexey Panov <apanov@astralinux.ru>,
-	"Theodore Ts'o" <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	linux-ext4@vger.kernel.org,
+	Oliver Neukum <oneukum@suse.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kimball Murray <kmurray@f5.com>,
+	Soohoon Lee <Soohoon.Lee@f5.com>,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	lvc-project@linuxtesting.org,
-	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10/5.15] ext4: validate p_idx bounds in ext4_ext_correct_indexes
-Date: Tue,  9 Jun 2026 19:44:30 +0300
-Message-Id: <20260609164430.29988-1-apanov@astralinux.ru>
+	Zqiang <qiang.zhang@linux.dev>
+Subject: [PATCH 5.10] usbnet: Fix using smp_processor_id() in preemptible code warnings
+Date: Tue,  9 Jun 2026 19:46:44 +0300
+Message-Id: <20260609164644.31375-1-apanov@astralinux.ru>
 X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,7 +86,7 @@ Content-Transfer-Encoding: 8bit
 X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/09 15:41:00
 X-KSMG-AntiSpam-Auth: dkim=none
 X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;patch.msgid.link:7.1.1;new-mail.astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;syzkaller.appspot.com:7.1.1,5.0.1, FromAlignment: s
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {date_rfc_vio_soft_silent}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;127.0.0.199:7.1.2;new-mail.astralinux.ru:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1, FromAlignment: s
 X-KSMG-AntiSpam-Interceptor-Info: scan successful
 X-KSMG-AntiSpam-Lua-Profiles: 203763 [Jun 09 2026]
 X-KSMG-AntiSpam-Method: none
@@ -106,21 +106,20 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
 	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[apanov@astralinux.ru,stable@vger.kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[astralinux.ru,mit.edu,dilger.ca,vger.kernel.org,linux.alibaba.com,suse.cz,linux.ibm.com,gmail.com,huawei.com,linuxtesting.org,syzkaller.appspotmail.com,outlook.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-262349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262345-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:apanov@astralinux.ru,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:libaokun@linux.alibaba.com,m:jack@suse.cz,m:ojaswin@linux.ibm.com,m:ritesh.list@gmail.com,m:yi.zhang@huawei.com,m:lvc-project@linuxtesting.org,m:syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,m:tejas.bharambe@outlook.com,m:stable@kernel.org,m:riteshlist@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[apanov@astralinux.ru,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:apanov@astralinux.ru,m:oneukum@suse.com,m:davem@davemloft.net,m:kuba@kernel.org,m:kmurray@f5.com,m:Soohoon.Lee@f5.com,m:netdev@vger.kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:andrew+netdev@lunn.ch,m:edumazet@google.com,m:pabeni@redhat.com,m:lvc-project@linuxtesting.org,m:qiang.zhang@linux.dev,m:andrew@lunn.ch,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[apanov@astralinux.ru,stable@vger.kernel.org];
@@ -128,81 +127,86 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DKIM_TRACE(0.00)[astralinux.ru:+];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,outlook.com:email,astralinux.ru:dkim,astralinux.ru:email,astralinux.ru:mid,astralinux.ru:from_mime,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,astralinux.ru:dkim,astralinux.ru:email,astralinux.ru:mid,astralinux.ru:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 117DC662B76
+X-Rspamd-Queue-Id: ABF39662B36
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 2acb5c12ebd860f30e4faf67e6cc8c44ddfe5fe8 upstream.
+commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 upstream.
 
-ext4_ext_correct_indexes() walks up the extent tree correcting
-index entries when the first extent in a leaf is modified. Before
-accessing path[k].p_idx->ei_block, there is no validation that
-p_idx falls within the valid range of index entries for that
-level.
+Syzbot reported the following warning:
 
-If the on-disk extent header contains a corrupted or crafted
-eh_entries value, p_idx can point past the end of the allocated
-buffer, causing a slab-out-of-bounds read.
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fix this by validating path[k].p_idx against EXT_LAST_INDEX() at
-both access sites: before the while loop and inside it. Return
--EFSCORRUPTED if the index pointer is out of range, consistent
-with how other bounds violations are handled in the ext4 extent
-tree code.
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
 
-Reported-by: syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=04c4e65cab786a2e5b7e
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Link: https://patch.msgid.link/JH0PR06MB66326016F9B6AD24097D232B897CA@JH0PR06MB6632.apcprd06.prod.outlook.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Alexey: Adapt goto clean to break because the clean error path is not
-  present in linux-5.10.y and linux-5.15.y. ]
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Alexey: Keep tasklet_schedule() because commit 2c04d279e857 ("net: usb:
+  Convert tasklet API to new bottom half workqueue mechanism") is not present
+  in linux-5.10.y. ]
 Signed-off-by: Alexey Panov <apanov@astralinux.ru>
 ---
-Backport fix for CVE-2026-31449
- fs/ext4/extents.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Backport fix for CVE-2025-40164
+ drivers/net/usb/usbnet.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 80b7783c65b4..e6dbb2dfb331 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1736,6 +1736,13 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 	err = ext4_ext_get_access(handle, inode, path + k);
- 	if (err)
- 		return err;
-+	if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+		EXT4_ERROR_INODE(inode,
-+				 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+				 k, path[k].p_idx,
-+				 EXT_LAST_INDEX(path[k].p_hdr));
-+		return -EFSCORRUPTED;
-+	}
- 	path[k].p_idx->ei_block = border;
- 	err = ext4_ext_dirty(handle, inode, path + k);
- 	if (err)
-@@ -1748,6 +1755,14 @@ static int ext4_ext_correct_indexes(handle_t *handle, struct inode *inode,
- 		err = ext4_ext_get_access(handle, inode, path + k);
- 		if (err)
- 			break;
-+		if (unlikely(path[k].p_idx > EXT_LAST_INDEX(path[k].p_hdr))) {
-+			EXT4_ERROR_INODE(inode,
-+					 "path[%d].p_idx %p > EXT_LAST_INDEX %p",
-+					 k, path[k].p_idx,
-+					 EXT_LAST_INDEX(path[k].p_hdr));
-+			err = -EFSCORRUPTED;
-+			break;
-+		}
- 		path[k].p_idx->ei_block = border;
- 		err = ext4_ext_dirty(handle, inode, path + k);
- 		if (err)
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 4a83228a2db5..4b34544d88aa 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -684,6 +684,7 @@ void usbnet_resume_rx(struct usbnet *dev)
+ 	struct sk_buff *skb;
+ 	int num = 0;
+ 
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -692,6 +693,7 @@ void usbnet_resume_rx(struct usbnet *dev)
+ 	}
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 -- 
 2.47.3
 
