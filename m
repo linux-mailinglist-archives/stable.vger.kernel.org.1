@@ -1,340 +1,166 @@
-Return-Path: <stable+bounces-262358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m0DcHFlOKGqwBwMAu9opvQ
-	(envelope-from <stable+bounces-262358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:33:13 +0200
+	id Y0PNLwGdKGpLGwMAu9opvQ
+	(envelope-from <stable+bounces-262388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:08:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149B6662FC9
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:33:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEA4664BB0
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:08:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mdWy9Fd7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262358-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262358-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MoogQM0g;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262388-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262388-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D7F93018D56
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 17:33:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B947A310E601
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 23:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482B442B753;
-	Tue,  9 Jun 2026 17:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7BC3F076C;
+	Tue,  9 Jun 2026 23:06:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D3B347BA7;
-	Tue,  9 Jun 2026 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491793EDABA;
+	Tue,  9 Jun 2026 23:06:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781026390; cv=none; b=l8TFem8oKfAhWo2teDtcT0qqvIcEOqvu95iYAEJqKHMhfJV+yE3OKXeT9hcT8RJoy/SIZVANF8DIz2q1ogWhrB1Mxp0wF4Qk+N2A4F0CqSeiUjggnX4G2tTPyIOGeKSv80HT9l6yBm6i9M0KsK6gGq0EXgna8blHyeOhihBo4jE=
+	t=1781046381; cv=none; b=aT5cL5vRNH0y6zwbV2XvZD0jpc15fYjj04WfAjcpLQ5Ybd6bvLJcWcdcSH3ReuvUERTQhsO3nczxEd+YqFEoXToQyHg++8euFcX2FK11OKHXyifLz/QWCtVHZSA5s+hg/VRAsSV08gHH19hLc7luJ+O3zT3nwrP78RnXBuIWkJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781026390; c=relaxed/simple;
-	bh=bz5FL3gacye4tkbSvtGK3gA0W4lfd8x2bxnnAQfS2C0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anBHvrIUKW5v7+r7/PDDAqkp0tTELBeEjk+Fwo4HYJpc2DwDg5eQtzSC/APtse1icH5NmZcRgJCY/tjJmCkNeIYo9nhbWPZu+b74VH/m5TDJCKAgvrhARl1OuJvODsjmc2pVgw6EmIFECWks86TxfvyL86CkROXw51U9519Fh8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mdWy9Fd7; arc=none smtp.client-ip=192.198.163.17
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781026388; x=1812562388;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bz5FL3gacye4tkbSvtGK3gA0W4lfd8x2bxnnAQfS2C0=;
-  b=mdWy9Fd7su+9HXytbR480QnfkvdwYkhcS7+AmfIC48mwQEDHe0rICiQH
-   ScXLa9FSqJIXjgoR2fHtVNUgA/tYilQ+9s/j0Q881uWljiF1B9BLmOAzA
-   5qVXWCWTB7ZcDgOZb2MIx+XzmK0S8b27/Y29ID+C1I1DQb+xKYbsMFltz
-   74UFSBdv9ZkTW3SUntmy9KUTrLN8ycOALoouWaUXC70bMHQjt8T+Usyzq
-   AIDBL9StMLeXUQXMueM0tHgK/3RvZPCm2NMsXNACoClTmfRpnLTx8wqoE
-   gjXfP0/6nbOBcRZ33Hshvk2Mc7YaN0Q94qnk1yJlAHJbHV7d9Yy7vaxQo
-   Q==;
-X-CSE-ConnectionGUID: X4/9QbphScWaIEhLT2GBig==
-X-CSE-MsgGUID: vVS+4KYXQPuqojg8O9R2Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81650169"
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="81650169"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 10:33:07 -0700
-X-CSE-ConnectionGUID: SVkBX4sTT+KZpozeyaZ1YQ==
-X-CSE-MsgGUID: P0lMJ4wCRX+G9f7ktE9xSw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="245782937"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.206]) ([10.125.109.206])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 10:33:06 -0700
-Message-ID: <4418ce71-7236-44b3-ba53-a047cc55eb75@intel.com>
-Date: Tue, 9 Jun 2026 10:33:05 -0700
+	s=arc-20240116; t=1781046381; c=relaxed/simple;
+	bh=4uZIHwZ1FummxHeb3vPJSqClgqSIXab7kKj02Zdv9iA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RS1oQrhRtGEHF+cRYBLCIsQ4/20r3kYlPVuN4q94/zscC20JnwRSdLUSrd/AJs/xQJZ2RipPCHoCqDmvJu3qLcGHL60oLOJcoj/03SEzZpzqgdpLLnRi7MGnukpF8EPfFfVQwoU+VlDK78oJ/EOX29Sr1PmqD+X+K8+xdjIOF+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MoogQM0g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893E01F00893;
+	Tue,  9 Jun 2026 23:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781046380;
+	bh=AtTkIPwhiUBqdh/egoEcrg9UpG8OOuSwuXDOFVx9VHw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=MoogQM0gxY2wwwz9o7v7ySh2THpZJiwwdzXXV5No3MFdJEpnIEgZ2NFr4yX+V5w3D
+	 aZjmgKnHLnzqe+ptqjQ+HfmWZ5Y+D52cgYE4lg+k4vUTh+t5TfkSoKvrlaXI3AD4az
+	 vReCPAq0brNwk00ppsFdeUutzbBLz5LWFtt98zIZhUiey3LxojWfgIh7vCTcBB84F2
+	 463EAScA4wjm4oKtbzquumal4UGzF25bEMD/J0SmP4hTnAxL+s97bzm7ZXu/v6+Lb/
+	 8MmhifTRH5hd/l/GcoKNceKxQvgYNjhCB9UqE2xwfPDnqZKLJLROJMCtsckC3LxQMz
+	 l7Z1wWKgSqt3w==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: linux-sound@vger.kernel.org, kai.vehmanen@linux.intel.com, 
+ yung-chuan.liao@linux.intel.com, pierre-louis.bossart@linux.dev, 
+ liam.r.girdwood@intel.com, stable@vger.kernel.org
+In-Reply-To: <20260609083458.31193-1-peter.ujfalusi@linux.intel.com>
+References: <20260609083458.31193-1-peter.ujfalusi@linux.intel.com>
+Subject: Re: [PATCH 0/6] ASoC: SOF: ipc3/ipc4-control: harden kcontrol
+ payload handling
+Message-Id: <178102687840.34323.18334716238703776280.b4-ty@b4>
+Date: Tue, 09 Jun 2026 18:41:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cxl: Fix CXL_HEADERLOG_SIZE to match RAS Capability size
-To: Terry Bowman <terry.bowman@amd.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jic23@kernel.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <djb@kernel.org>, PradeepVineshReddy.Kodamati@amd.com,
- Benjamin.Cheatham@amd.com, rrichter@amd.com
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>,
- Shiju Jose <shiju.jose@huawei.com>,
- Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
- Li Ming <ming.li@zohomail.com>, Tony Luck <tony.luck@intel.com>,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260605180610.2249458-1-terry.bowman@amd.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260605180610.2249458-1-terry.bowman@amd.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2027; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4uZIHwZ1FummxHeb3vPJSqClgqSIXab7kKj02Zdv9iA=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKJxoPVtdGVWZxVP9/UUzdp4+ggn0T4s7w7jLT
+ 4x0nHI8FDWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaiicaAAKCRAk1otyXVSH
+ 0MTtB/9fE9Q9UYOEbIQgvE20zuQnFqlSRpnCL+mCFzwcul3rZ43sSYgG7qIWdGPprifsHGYieZ0
+ tBr8rIB4Yf3Xa8YfHD1nBUYuRi6hGIGoWDmVJfRNtFSDqGAWHu0Dzgyh6ki7IQfbM2OQ/1xaOFm
+ /45hGLJqtIg/Fnzas0tPneHCIaw0g0OEC7Zkcey7qmv6bQfmRAdjpdZbKEPsynXxb/KxMHULlvs
+ 9iEEy7wTwSWwdYehvnlchXqmsPGNP+K4qlAIEZx4W8sp9vHbS+QSUpl3U4XDKZQBIfobY4rK8+U
+ hOWb064N6hnkqwAsp93VM327GpK1JpZ5F1Ck97bkeVsDG6me
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:lgirdwood@gmail.com,m:peter.ujfalusi@linux.intel.com,m:linux-sound@vger.kernel.org,m:kai.vehmanen@linux.intel.com,m:yung-chuan.liao@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:liam.r.girdwood@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com];
+	FORGED_SENDER(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:terry.bowman@amd.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:ira.weiny@intel.com,m:djb@kernel.org,m:PradeepVineshReddy.Kodamati@amd.com,m:Benjamin.Cheatham@amd.com,m:rrichter@amd.com,m:sathyanarayanan.kuppuswamy@linux.intel.com,m:fabio.m.de.francesco@linux.intel.com,m:shiju.jose@huawei.com,m:Smita.KoralahalliChannabasappa@amd.com,m:ming.li@zohomail.com,m:tony.luck@intel.com,m:linux-cxl@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262358-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-262388-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,amd.com:email,intel.com:dkim,intel.com:mid,intel.com:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 149B6662FC9
+X-Rspamd-Queue-Id: 3EEA4664BB0
 
-
-
-On 6/5/26 11:06 AM, Terry Bowman wrote:
-> The CXL r4.0 8.2.4.17.7 RAS Capability Structure has total length 0x58
-> bytes (CXL_RAS_CAPABILITY_LENGTH); the Header Log occupies the trailing
-> 64 bytes at offset 0x18.  CXL_HEADERLOG_SIZE was defined as SZ_512,
-> eight times the actual on-device size.
+On Tue, 09 Jun 2026 11:34:52 +0300, Peter Ujfalusi wrote:
+> ASoC: SOF: ipc3/ipc4-control: harden kcontrol payload handling
 > 
-> header_log_copy() reads CXL_HEADERLOG_SIZE_U32 (128) dwords from the
-> RAS capability iomap, overrunning the 88-byte mapping by 448 bytes.
-> The cxl_aer_uncorrectable_error trace event memcpy()s CXL_HEADERLOG_SIZE
-> (512) bytes from its source.  For the CPER caller the source is
-> struct cxl_ras_capability_regs::header_log[16] (64 bytes) embedded in a
-> stack-local cxl_cper_prot_err_work_data, so the memcpy reads 448 bytes
-> of kernel stack into the trace event ring buffer where userspace can
-> read it via tracefs.
+> Hi,
 > 
-> Set CXL_HEADERLOG_SIZE to 64 and derive CXL_HEADERLOG_SIZE_U32 from it,
-> bringing all iomap readers into agreement on 16 dwords.  Userspace tools
-> such as rasdaemon have grown a dependency on the buggy 512-byte (128 u32)
-> header_log layout in the cxl_aer_uncorrectable_error trace event.  Add
-> CXL_HEADERLOG_TRACE_SIZE_U32 = 128 and use it for the trace event
-> __array and its memcpy to preserve that ABI.  Both callers now pass a
-> zero-filled u32[CXL_HEADERLOG_TRACE_SIZE_U32] staging buffer with only
-> the first CXL_HEADERLOG_SIZE_U32 (16) entries populated from hardware;
-> the remaining 112 u32s are zero-padded, keeping the 512-byte trace ring
-> buffer layout intact.
+> This series hardens SOF kcontrol data paths for both IPC3 and IPC4 by
+> fixing size-handling bugs in put/get/update flows and tightening bounds
+> checks around firmware/user-provided payload lengths.
 > 
-> Fixes: 36f257e3b0ba ("acpi/ghes, cxl/pci: Process CXL CPER Protocol Errors")
-> Fixes: 2905cb5236cb ("cxl/pci: Add (hopeful) error handling support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko
-> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
+> [...]
 
-Applied to cxl/next with change suggested from Richard.
+Applied to
 
-c268f949e219f9e179558e836f457f6c5fbec416
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.2
 
-> ---
->  drivers/cxl/core/ras.c   | 27 ++++++++++++++++++++-------
->  drivers/cxl/core/trace.h | 24 ++++++++++++++++--------
->  drivers/cxl/cxl.h        | 14 ++++++++++++--
->  3 files changed, 48 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/cxl/core/ras.c b/drivers/cxl/core/ras.c
-> index 006c6ffc2f56..99fb00949c2f 100644
-> --- a/drivers/cxl/core/ras.c
-> +++ b/drivers/cxl/core/ras.c
-> @@ -8,6 +8,10 @@
->  #include <cxlpci.h>
->  #include "trace.h"
->  
-> +/* Check that UCE header definition is maintained to keep ABI intact  */
-> +static_assert(CXL_HEADERLOG_TRACE_SIZE_U32 == 128,
-> +	      "rasdaemon ABI requires exactly 128 u32s");
-> +
->  static void cxl_cper_trace_corr_port_prot_err(struct pci_dev *pdev,
->  					      struct cxl_ras_capability_regs ras_cap)
->  {
-> @@ -19,6 +23,7 @@ static void cxl_cper_trace_corr_port_prot_err(struct pci_dev *pdev,
->  static void cxl_cper_trace_uncorr_port_prot_err(struct pci_dev *pdev,
->  						struct cxl_ras_capability_regs ras_cap)
->  {
-> +	u32 hl[CXL_HEADERLOG_TRACE_SIZE_U32] = {};
->  	u32 status = ras_cap.uncor_status & ~ras_cap.uncor_mask;
->  	u32 fe;
->  
-> @@ -28,8 +33,8 @@ static void cxl_cper_trace_uncorr_port_prot_err(struct pci_dev *pdev,
->  	else
->  		fe = status;
->  
-> -	trace_cxl_port_aer_uncorrectable_error(&pdev->dev, status, fe,
-> -					       ras_cap.header_log);
-> +	memcpy(hl, ras_cap.header_log, CXL_HEADERLOG_SIZE);
-> +	trace_cxl_port_aer_uncorrectable_error(&pdev->dev, status, fe, hl);
->  }
->  
->  static void cxl_cper_trace_corr_prot_err(struct cxl_memdev *cxlmd,
-> @@ -44,6 +49,7 @@ static void
->  cxl_cper_trace_uncorr_prot_err(struct cxl_memdev *cxlmd,
->  			       struct cxl_ras_capability_regs ras_cap)
->  {
-> +	u32 hl[CXL_HEADERLOG_TRACE_SIZE_U32] = {};
->  	u32 status = ras_cap.uncor_status & ~ras_cap.uncor_mask;
->  	u32 fe;
->  
-> @@ -53,8 +59,15 @@ cxl_cper_trace_uncorr_prot_err(struct cxl_memdev *cxlmd,
->  	else
->  		fe = status;
->  
-> -	trace_cxl_aer_uncorrectable_error(cxlmd, status, fe,
-> -					  ras_cap.header_log);
-> +	/*
-> +	 * ras_cap.header_log[] holds CXL_HEADERLOG_SIZE_U32 (16) hardware
-> +	 * dwords.  Copy them into the front of a zero-filled
-> +	 * CXL_HEADERLOG_TRACE_SIZE_U32 (128) u32 staging buffer so the trace
-> +	 * event memcpy sees a full 512-byte source and the userspace ABI
-> +	 * (rasdaemon) is preserved.
-> +	 */
-> +	memcpy(hl, ras_cap.header_log, CXL_HEADERLOG_SIZE);
-> +	trace_cxl_aer_uncorrectable_error(cxlmd, status, fe, hl);
->  }
->  
->  static int match_memdev_by_parent(struct device *dev, const void *uport)
-> @@ -204,12 +217,12 @@ static void header_log_copy(void __iomem *ras_base, u32 *log)
->  {
->  	void __iomem *addr;
->  	u32 *log_addr;
-> -	int i, log_u32_size = CXL_HEADERLOG_SIZE / sizeof(u32);
-> +	int i;
->  
->  	addr = ras_base + CXL_RAS_HEADER_LOG_OFFSET;
->  	log_addr = log;
->  
-> -	for (i = 0; i < log_u32_size; i++) {
-> +	for (i = 0; i < CXL_HEADERLOG_SIZE_U32; i++) {
->  		*log_addr = readl(addr);
->  		log_addr++;
->  		addr += sizeof(u32);
-> @@ -222,7 +235,7 @@ static void header_log_copy(void __iomem *ras_base, u32 *log)
->   */
->  bool cxl_handle_ras(struct device *dev, void __iomem *ras_base)
->  {
-> -	u32 hl[CXL_HEADERLOG_SIZE_U32];
-> +	u32 hl[CXL_HEADERLOG_TRACE_SIZE_U32] = {};
->  	void __iomem *addr;
->  	u32 status;
->  	u32 fe;
-> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
-> index a972e4ef1936..d37876096dd7 100644
-> --- a/drivers/cxl/core/trace.h
-> +++ b/drivers/cxl/core/trace.h
-> @@ -56,7 +56,7 @@ TRACE_EVENT(cxl_port_aer_uncorrectable_error,
->  		__string(host, dev_name(dev->parent))
->  		__field(u32, status)
->  		__field(u32, first_error)
-> -		__array(u32, header_log, CXL_HEADERLOG_SIZE_U32)
-> +		__array(u32, header_log, CXL_HEADERLOG_TRACE_SIZE_U32)
->  	),
->  	TP_fast_assign(
->  		__assign_str(device);
-> @@ -64,10 +64,14 @@ TRACE_EVENT(cxl_port_aer_uncorrectable_error,
->  		__entry->status = status;
->  		__entry->first_error = fe;
->  		/*
-> -		 * Embed the 512B headerlog data for user app retrieval and
-> -		 * parsing, but no need to print this in the trace buffer.
-> +		 * Embed headerlog data for user app retrieval and parsing,
-> +		 * but no need to print in the trace buffer. Only
-> +		 * CXL_HEADERLOG_SIZE_U32 (16) dwords are hardware data;
-> +		 * the remaining entries preserve the 512-byte ABI layout
-> +		 * rasdaemon depends on and are zero-filled by the caller.
->  		 */
-> -		memcpy(__entry->header_log, hl, CXL_HEADERLOG_SIZE);
-> +		memcpy(__entry->header_log, hl,
-> +			CXL_HEADERLOG_TRACE_SIZE_U32 * sizeof(u32));
->  	),
->  	TP_printk("device=%s host=%s status: '%s' first_error: '%s'",
->  		  __get_str(device), __get_str(host),
-> @@ -85,7 +89,7 @@ TRACE_EVENT(cxl_aer_uncorrectable_error,
->  		__field(u64, serial)
->  		__field(u32, status)
->  		__field(u32, first_error)
-> -		__array(u32, header_log, CXL_HEADERLOG_SIZE_U32)
-> +		__array(u32, header_log, CXL_HEADERLOG_TRACE_SIZE_U32)
->  	),
->  	TP_fast_assign(
->  		__assign_str(memdev);
-> @@ -94,10 +98,14 @@ TRACE_EVENT(cxl_aer_uncorrectable_error,
->  		__entry->status = status;
->  		__entry->first_error = fe;
->  		/*
-> -		 * Embed the 512B headerlog data for user app retrieval and
-> -		 * parsing, but no need to print this in the trace buffer.
-> +		 * Embed headerlog data for user app retrieval and parsing,
-> +		 * but no need to print in the trace buffer. Only
-> +		 * CXL_HEADERLOG_SIZE_U32 (16) dwords are hardware data;
-> +		 * the remaining entries preserve the 512-byte ABI layout
-> +		 * rasdaemon depends on and are zero-filled by the caller.
->  		 */
-> -		memcpy(__entry->header_log, hl, CXL_HEADERLOG_SIZE);
-> +		memcpy(__entry->header_log, hl,
-> +			CXL_HEADERLOG_TRACE_SIZE_U32 * sizeof(u32));
->  	),
->  	TP_printk("memdev=%s host=%s serial=%lld: status: '%s' first_error: '%s'",
->  		  __get_str(memdev), __get_str(host), __entry->serial,
-> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-> index 9b947286eb9b..906fb480dad5 100644
-> --- a/drivers/cxl/cxl.h
-> +++ b/drivers/cxl/cxl.h
-> @@ -148,8 +148,18 @@ static inline int ways_to_eiw(unsigned int ways, u8 *eiw)
->  #define CXL_RAS_CAP_CONTROL_FE_MASK GENMASK(5, 0)
->  #define CXL_RAS_HEADER_LOG_OFFSET 0x18
->  #define CXL_RAS_CAPABILITY_LENGTH 0x58
-> -#define CXL_HEADERLOG_SIZE SZ_512
-> -#define CXL_HEADERLOG_SIZE_U32 SZ_512 / sizeof(u32)
-> +#define CXL_HEADERLOG_SIZE 64
-> +#define CXL_HEADERLOG_SIZE_U32 (CXL_HEADERLOG_SIZE / sizeof(u32))
-> +
-> +/*
-> + * The RAS UCE trace event header array was originally sized at SZ_512/sizeof(u32)
-> + * = 128 u32s due to a bug. Userspace tools (rasdaemon) have grown a dependency
-> + * on that 512-byte layout. Keep the trace array at 128 u32s to preserve the
-> + * ABI; only CXL_HEADERLOG_SIZE_U32 (16) dwords are valid hardware data, the
-> + * remainder are zero-filled.
-> + */
-> +#define CXL_HEADERLOG_TRACE_SIZE SZ_512
-> +#define CXL_HEADERLOG_TRACE_SIZE_U32 (CXL_HEADERLOG_TRACE_SIZE / sizeof(u32))
->  
->  /* CXL 2.0 8.2.8.1 Device Capabilities Array Register */
->  #define CXLDEV_CAP_ARRAY_OFFSET 0x0
+Thanks!
+
+[1/6] ASoC: SOF: ipc4-control: Fix TOCTOU in sof_ipc4_bytes_put
+      https://git.kernel.org/broonie/sound/c/3ad673e7139c
+[2/6] ASoC: SOF: ipc4-control: Validate notification payload size
+      https://git.kernel.org/broonie/sound/c/5bdfeccb7fbf
+[3/6] ASoC: SOF: ipc3-control: Use overflow checks in control_update size calc
+      https://git.kernel.org/broonie/sound/c/8791977d7289
+[4/6] ASoC: SOF: ipc3-control: Validate size in snd_sof_update_control
+      https://git.kernel.org/broonie/sound/c/390aa4c9339b
+[5/6] ASoC: SOF: ipc3-control: Fix TOCTOU in bytes_put and bytes_get
+      https://git.kernel.org/broonie/sound/c/1f97760417b5
+[6/6] ASoC: SOF: ipc3-control: Fix heap overflow in bytes_ext put/get
+      https://git.kernel.org/broonie/sound/c/fd46668d5389
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
