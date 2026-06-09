@@ -1,200 +1,183 @@
-Return-Path: <stable+bounces-262278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id A48QBgoCKGqg7AIAu9opvQ
-	(envelope-from <stable+bounces-262278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:07:38 +0200
+	id RvowNhoFKGqn7QIAu9opvQ
+	(envelope-from <stable+bounces-262280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:20:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D06F65FDAD
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:07:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CC265FFCE
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:20:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gibson.sh header.s=20260228 header.b=lrBF5a+T;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262278-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262278-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=chromium.org header.s=google header.b=JL1FGsMX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262280-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262280-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=chromium.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D3A13011E82
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 12:07:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 846393071C46
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 12:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FDC40E8F0;
-	Tue,  9 Jun 2026 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA8D40F8C3;
+	Tue,  9 Jun 2026 12:13:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42af.mail.infomaniak.ch (smtp-42af.mail.infomaniak.ch [84.16.66.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D0F31197C
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 12:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D46F403E9D
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 12:13:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781006850; cv=none; b=iz3bi77AmpeBKebcv+rXzveCetUxZqKrW1x3GOM6R9zTmXKrpzXedB3K/hheBewnBvg/mzEXdk+oa3OZHTk9OibX0LV3F8d4NPvl5u7GWWMz+jR/FG3413luuKeV9/Ku5v254UYghrtVzQ/6zAvssgVI7uEhW6ztf6TKgI5OFXs=
+	t=1781007230; cv=none; b=Nd1/R3gZVZJkxFHxb6CnWCqHxtn3Lr+M3/FzENSQ20cgrrzjkzLTzlfpk2J6bMkReJyPt/JGT0JacE1fzPDqUXvM0hvyG7MAx4D89YnjRfJI/KAkeVO0LaJXe5eRNhF+Kxn6k7sJU/kjvWXWuPi/DYTBtniZaD2ywW54ePlyQlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781006850; c=relaxed/simple;
-	bh=tiRjr/pdfVRRlc25RE64J4c1WFk+pBce+gPeSbAprzw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dXO3FhgrGXnflINMw1fUXEABMP94gFDN9qQYaLDZPo4t+Q5NSKvQIXfkbyhqVvBb1msavP94ej7YSbfuP2qzEckDRTRX6ME5Op6c7n0ftvP/jJ3M3sIye8x/pkLLE/YFDTBHl79L9VDGA1mY1nKmkeYxjb1wwNhGBiPUjfx9/wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh; spf=pass smtp.mailfrom=gibson.sh; dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b=lrBF5a+T; arc=none smtp.client-ip=84.16.66.175
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gZSMd6lLBz25k;
-	Tue,  9 Jun 2026 14:07:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gibson.sh;
-	s=20260228; t=1781006845;
-	bh=/A8CBVe4YNr9ebWgTbpqBt1LFrM9ZwtwHeyvgtrwjKk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lrBF5a+TzGZYcJDQsgnYFOwmSsy2CivDT3hcAcBwcfDvFgtmcwk47a2cqMvJJMMdD
-	 IuZRrWaOBVDqzEg+tUALqMTW2WxvRme4j22MoX3G9zYS41UJ7g/iGC5qwSC0MM3YVa
-	 CroDW1OIpAs6NtH6NuzryU3phTiVecMkAaljd158L5eRMcjs3WbRTGoK4WmH0S67Sf
-	 kNKGvqzLmK4XRX+9LDBWjDmAZM11oPW9rdD6gguN0quqsv8p2TYeDxaGa1NaZx5Jx3
-	 016p6QlRYBexGFBoBdHZ5ESirw78MJDC5r4BWG09W+7FanROKUn6roaF4g6aQsc7qe
-	 lhkdEtIf6/TcQ==
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gZSMc3B8lznLh;
-	Tue,  9 Jun 2026 14:07:24 +0200 (CEST)
-Message-ID: <6b6ce9ce-5bda-4924-b2d2-933736cfad9c@gibson.sh>
-Date: Tue, 9 Jun 2026 14:07:23 +0200
+	s=arc-20240116; t=1781007230; c=relaxed/simple;
+	bh=CCCknRMucJa27YIj8zqKWb5yyna/lo4aYM4LXTZtUlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fJ/w/mS1eQrSycX6tFPbb7GdINOYRbInNZofUNQ6uhDytjm1gQrNPMnK5R2uHJnQdqccDNYYXsm49idAeB/u0VtDXBkfAE1f7n211PrWJ2096JceQ8NWAnQiDc1RD7vxNo3n3xpC8B9kWiTYLAt6M/pq5zH/P0K7TTTZ1KuYBCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=JL1FGsMX; arc=none smtp.client-ip=209.85.214.173
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c0c20f0c0aso41174385ad.0
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 05:13:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1781007227; x=1781612027; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=md0oLfExsjhQ5s9zgCStyVmZOOcuKHtb2pCgbVaO+NY=;
+        b=JL1FGsMXbbC75moFt8w37Q32pVINddMCRpvyJsCB8g1TT6E5te3yOa+fXdYm8AigYj
+         7mEyyd7qDiCUS3NXB+YgEWF6jcvLaAJUjn6+CEIH6C2gfKXzZ1ChQqu7/NBAju9VrjUK
+         rOCRNqjt9cOSHXwh8SDAsFlBwAG3TN+XRCjUE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781007227; x=1781612027;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=md0oLfExsjhQ5s9zgCStyVmZOOcuKHtb2pCgbVaO+NY=;
+        b=HQr2uwH61nAv/pBm7mbEydF7+STItKZmLWgc5Zgn08RYWynkk64mlZKm4n4o1/uzbz
+         I/HTALJoXEvpBVO8fhek1sA3xlGMSgx8NRr7IeBuxenvyYIwaKaQzFVHT1MtJYmTwyS/
+         eGW7rA1L1v9wAJDyL5KpHptdQQZqL5aRZMlSmXaW0jn1Nl2QxSQWlvjDrMdMIbev6cHC
+         as6wWgj8NfbODgj7YrXWHwAJrOiKbd2vFcE88UjcvRTIcll3WXL76SlClJcp4L70vBWj
+         AAOOfD4WNSIdHhQyPsG/HTRExvQTmgRB23OPrpaJe3/c5d9XOxzrqRMfkD6nMkea3gmv
+         KvUw==
+X-Forwarded-Encrypted: i=1; AFNElJ8s6mb+Yb1Is0qxKxa/4Gt0SgAeUHMniVEZz33lgJi4jd6JtFsu2uLEFlthHYxKOib7YnPOiv8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoF+wMYtn/UPsHctO6ZccRT8L4BTw2qll2yez9ikvwk+ZbTEEy
+	cTmZ/V8KUQPfIpPCZdh9oQJhGf/1WEmptKv4A7NNEnCn+m7mOUGE4v5flT+/gPNZ4Q==
+X-Gm-Gg: Acq92OE/fY6sJhnOSrAvL9oJ62ILH0vGHTuUvgerQKnCyEhVLRNUC3jJvvDcCVTiM+f
+	RruIndkft6j1cTH+ogJWzAhBW7nOhyeCPgjG8HYfH0L15WTLIY4QoHr5q/SE2z8ab8QvajdcOOE
+	4YPh9Zqj3uA3QdD38kcRlbKKxJ74TGBTcF/oO5WwWDVT8gnDV5ZburkDRMMpGDdeT8PyBwe+aAC
+	ujCfnHHHoeeONKbAtOXP2WD7jbsv9nmwe9jGzRmNRsu02HBGrjBXSo+5346hcVKBQ0lroZf79H7
+	5mxqN07ZNBnK/N5uwoCetFJzvMKf7mr0FgvJCCwpj3uXsqcLs93at3QdfLC3kY0+0OUM1puI5zm
+	NBZpe5FT6X/2vFTAL6mRvNphCr5p5vPJ8LhMvzF1qblcFnoqyb30PrfSukrm5XmpOLT/OMk9RRL
+	0LuVkFTC/OKz3Qm98vGVqt9i6yDtcQ967ynFwFr5nqROWcee2NAswZqi8ct/b8n308GY4v87aoz
+	9iReV9xnrK1oEO/ogcpMRid
+X-Received: by 2002:a17:903:fad:b0:2b2:ebed:7af5 with SMTP id d9443c01a7336-2c1e7b13addmr221626095ad.13.1781007227564;
+        Tue, 09 Jun 2026 05:13:47 -0700 (PDT)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:62ce:f303:81a5:1cce])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f6d37esm279998175ad.9.2026.06.09.05.13.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 05:13:45 -0700 (PDT)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Mark-yw Chen <mark-yw.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>
+Cc: Tomasz Figa <tfiga@chromium.org>,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: btmtksdio: fix infinite loop in btmtksdio_txrx_work()
+Date: Tue,  9 Jun 2026 21:10:06 +0900
+Message-ID: <20260609121329.1262170-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.54.0.1064.gd145956f57-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/4] platform/x86/amd/pmc: Delay suspend for some
- Lenovo Laptops
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
- Hans de Goede <hansg@kernel.org>, platform-driver-x86@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Mario Limonciello <superm1@kernel.org>,
- Sindre Henriksen <sindrehenriksen93@gmail.com>,
- Hans de Goede <johannes.goede@oss.qualcomm.com>, stable@vger.kernel.org
-References: <20260609105756.2813669-1-daniel@gibson.sh>
- <20260609105756.2813669-3-daniel@gibson.sh>
- <2fbb4d9d-7ad5-d4e7-b510-d7c75f399d97@linux.intel.com>
-Content-Language: de-DE, en-GB
-From: Daniel Gibson <daniel@gibson.sh>
-In-Reply-To: <2fbb4d9d-7ad5-d4e7-b510-d7c75f399d97@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gibson.sh:s=20260228];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[gibson.sh];
-	FREEMAIL_CC(0.00)[amd.com,kernel.org,vger.kernel.org,gmail.com,oss.qualcomm.com];
-	DKIM_TRACE(0.00)[gibson.sh:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262278-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:ilpo.jarvinen@linux.intel.com,m:Shyam-sundar.S-k@amd.com,m:hansg@kernel.org,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:superm1@kernel.org,m:sindrehenriksen93@gmail.com,m:johannes.goede@oss.qualcomm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262280-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com,mediatek.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:mark-yw.chen@mediatek.com,m:sean.wang@mediatek.com,m:tfiga@chromium.org,m:linux-bluetooth@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:senozhatsky@chromium.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[senozhatsky@chromium.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9D06F65FDAD
+X-Rspamd-Queue-Id: 71CC265FFCE
 
-On 09.06.26 13:46, Ilpo Järvinen wrote:
-> On Tue, 9 Jun 2026, Daniel Gibson wrote:
-> 
->> Some IdeaPad Slim 3 devices and similar with AMD CPUs have a
->> nonfunctional keyboard and lid switch after s2idle.
->>
->> It helps to delay suspend by 2.5 seconds so the EC has some time
->> to do whatever it needs to get done before suspend - unfortunately
->> at least on my 16ABR8 waking it with a timer (wakealarm) still
->> triggers the issue, but at least normal resume via keypress or
->> lid works fine. On the 14ARP10 wakealarm has been reported to also
->> work fine with this patch.
->>
->> This issue has been reported for many different devices, this patch
->> has been tested with the Zen3-based IdeaPad Slim 3 16ABR8 (82XR)
->> and the Zen3+-based IdeaPad Slim 3 14ARP10 (83K6) and IdeaPad Slim 3
->> 15ARP10 (83MM).
->>
->> Reported-by: Sindre Henriksen <sindrehenriksen93@gmail.com>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221383
->> Tested-by: Sindre Henriksen <sindrehenriksen93@gmail.com>
->> Suggested-by: Mario Limonciello (AMD) <superm1@kernel.org>
->> Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
->> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
->> Signed-off-by: Daniel Gibson <daniel@gibson.sh>
->> Cc: stable@vger.kernel.org
->> ---
->>  drivers/platform/x86/amd/pmc/pmc-quirks.c | 39 +++++++++++++++++++++++
->>  drivers/platform/x86/amd/pmc/pmc.c        | 24 +++++++++++++-
->>  drivers/platform/x86/amd/pmc/pmc.h        |  1 +
->>  3 files changed, 63 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
->> index 24506e342943..74ddf1d8289a 100644
->> --- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
->> +++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
->> @@ -18,6 +18,7 @@
->>  struct quirk_entry {
->>  	u32 s2idle_bug_mmio;
->>  	bool spurious_8042;
->> +	bool need_suspend_delay;
->>  };
->>  
->>  static struct quirk_entry quirk_s2idle_bug = {
->> @@ -33,6 +34,10 @@ static struct quirk_entry quirk_s2idle_spurious_8042 = {
->>  	.spurious_8042 = true,
->>  };
->>  
->> +static struct quirk_entry quirk_s2idle_need_suspend_delay = {
->> +	.need_suspend_delay = true,
->> +};
->> +
->>  static const struct dmi_system_id fwbug_list[] = {
->>  	{
->>  		.ident = "L14 Gen2 AMD",
->> @@ -203,6 +208,35 @@ static const struct dmi_system_id fwbug_list[] = {
->>  			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
->>  		}
->>  	},
->> +	/* https://bugzilla.kernel.org/show_bug.cgi?id=221383 */
->> +	{
->> +		.ident = "Zen3-based IdeaPad Slim and similar",
->> +		.driver_data = &quirk_s2idle_need_suspend_delay,
-> 
-> Hi,
-> 
-> One more question.
-> 
-> Sashiko noted, that amd_pmc_quirks_init() can overwrite 
-> disable_8042_wakeup from the AMD_CPU_ID_CZN check when .driver_data 
-> provides quirks. Is it okay in this case to not have .spurious_8042?
-> 
+Every once in a while we see a hung btmtksdio_flush() task:
 
-Good question.
-So far I haven't had complaints that sounded like they'd be related to
-this quirk not being active.
+ INFO: task kworker/u17:0:189 blocked for more than 122 seconds.
+ __cancel_work_timer+0x3f4/0x460
+ cancel_work_sync+0x1c/0x2c
+ btmtksdio_flush+0x2c/0x40
+ hci_dev_open_sync+0x10c4/0x2190
+ [..]
 
-(The only report about things not working as expected on detected
-devices was something about "ACPI event storms" after resume:
-https://github.com/DanielGibson/amd_pmc-ideapad/issues/3 - but no one
-else with similar devices could reproduce that, so no idea what's going
-on there, and it doesn't sound like that IRQ1 issue)
+It all boils down to incorrect time_is_before_jiffies() usage in
+btmtksdio_txrx_work().  The btmtksdio_txrx_work() loop is expected
+to be terminated if running for longer than 5*HZ.  However the
+timeout check is twisted:  time_is_before_jiffies(old_jiffies + 5*HZ)
+evaluates to true when old_jiffies + 5*HZ is in the past i.e. when a
+timeout has occurred.  Using OR with time_is_before_jiffies(txrx_timeout)
+means that:
+- before the 5-second timeout: the condition is `int_status || false`,
+  so it loops as long as there are pending interrupts.
+- after the 5-second timeout: the condition becomes `int_status || true`,
+  which is always true.
 
-I can test if explicitly enabling .spurious_8042 in
-quirk_s2idle_need_suspend_delay breaks anything on my device, if you
-think that enabling it by default makes more sense?
+When the loop becomes infinite btmtksdio_txrx_work() loop never
+terminates and never releases the SDIO host.
+
+Fix loop termination condition to actually enforce a 5*HZ timeout.
+
+Fixes: 26270bc189ea4 ("Bluetooth: btmtksdio: move interrupt service to work")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/bluetooth/btmtksdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
+index 5b0fab7b89b5..c6f80c419e90 100644
+--- a/drivers/bluetooth/btmtksdio.c
++++ b/drivers/bluetooth/btmtksdio.c
+@@ -620,7 +620,7 @@ static void btmtksdio_txrx_work(struct work_struct *work)
+ 			if (btmtksdio_rx_packet(bdev, rx_size) < 0)
+ 				bdev->hdev->stat.err_rx++;
+ 		}
+-	} while (int_status || time_is_before_jiffies(txrx_timeout));
++	} while (int_status && time_is_after_jiffies(txrx_timeout));
+ 
+ 	/* Enable interrupt */
+ 	if (bdev->func->irq_handler)
+-- 
+2.54.0.1064.gd145956f57-goog
+
 
