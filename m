@@ -1,259 +1,163 @@
-Return-Path: <stable+bounces-262259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qTbRIfbyJ2qZ6AIAu9opvQ
-	(envelope-from <stable+bounces-262259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 13:03:18 +0200
+	id 1mtJGX3zJ2rW6AIAu9opvQ
+	(envelope-from <stable+bounces-262265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 13:05:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840C765F3C1
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 13:03:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF0065F46F
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 13:05:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cgrpAIId;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262259-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262259-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=gibson.sh header.s=20260228 header.b=SEvnMshB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262265-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262265-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D4FF43018F49
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 10:53:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5483430B667E
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 10:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C07D3FA5F3;
-	Tue,  9 Jun 2026 10:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B995C4028C4;
+	Tue,  9 Jun 2026 10:58:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-190b.mail.infomaniak.ch (smtp-190b.mail.infomaniak.ch [185.125.25.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EA83F9F5C
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 10:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6263FDBEC
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 10:58:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781002398; cv=none; b=dvb80o24f8PwaAD79Bsco9TUUCvcYAT2DKsadFp6k0B2Jz0gWd0lKA//Ec6+VuJIa4tNMmb8OIY+RxZidQt31XaRnaIF3g3GjzlwdxUEDX2VAmoh0B/xAm10eSU0HxyRTcKwC4m7eRH4ALzC2l4fucMFefBcwfVrcupa47UGDus=
+	t=1781002705; cv=none; b=jY9KufZiaatjnOG2Gm9+mV6Q1SB10yKbkFrqjTQ9/n5pULYPtRZELRpTNWJErZkHWeGEU8KoCTxIdVTcbZfZJZo5l7k877ngQV3P7c2ptEad3NRGRh8oExW+LNCuRc5resmDND/VEoeMFXt6jpTnmFUHxCEFJArBlkeV2ycFBCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781002398; c=relaxed/simple;
-	bh=z8/bjZsp3am85zxrUEQLRTItYorQtqnU2+9GLSyWZZE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ocq0vW0FsQ1GMErjzlWZzKd4rnz+UfdAxEO8gr5KaJdTKZOIJDpINeDoUc+ea4La62Ai55TLAba4wkkrsOdWSJAOBGk/6d+cSX/ek6NvAHmPgEcTOhM9lhV1tSDRmCthA/Hn8X9NV42YLLe1A4qQY2qhGdjOVltGYCnUzBcxxYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cgrpAIId; arc=none smtp.client-ip=209.85.128.74
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490a767c7dcso43274195e9.2
-        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 03:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781002395; x=1781607195; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QPFU6x+RKCIxPBY9TzbtGFpklCJgi8N62FETGtUCWJQ=;
-        b=cgrpAIIdXcd9Y2VKUFXr8VVIy5yO2leSCVVpSwrDJIcV2DGaZOW373sOh7IJdUCYKZ
-         peXMVsU8/luJOf9kIYIn/jk0M6uIbj9TCUeFZs9kOOYPN1c/DYoxECDX600NrI8iTvSa
-         fE48sW8/DZynLp5RFX/QLP5LpWX70jptOg6/NnhQCLbAwsI+Z0J0WeBeENG+5AkVkA0e
-         pHwj9vI39nar/swqx9HEPbOLMEjskbfnBZ7pSF57GqhwL7+7iuHaY8EuWBl4AQO5dVG0
-         Ij2B1sXXL2nLUjr+TgqahVkC+REHE57Z3uAddpb77DvotMAYK+SThY9RU15qrSifL1VR
-         oZMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781002395; x=1781607195;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QPFU6x+RKCIxPBY9TzbtGFpklCJgi8N62FETGtUCWJQ=;
-        b=kc8EmJXtBeh1HPuB6H239L3C43Cd7ai+JvSrIbz5eTq04w5NG4v2atOX/uO9oHAI9i
-         6tHFNGLeEPtei6b4klUFs21mMOYyoIlPmtv8dmd6ikPTT5RWMpsPnMfKbcv7Ig28Acf9
-         dNSX+5CKunQ9Jrv8+zwJkmfsdPpo52QewbhQr+M06a59bpAlrSYt4ndibIK0eU/eaUQp
-         v1orMWbLhSCxiTi5KBu8fPnhZ+/i4EJfOoGMjwYWijOZ+XK8qIO/H2G+yosMsOsRHhOD
-         aLYr3PXmUnPC0gLIxRsmv6BesvKiRSyT3DI6PZ4giXT2Q3vEEk+ABWoMfd09DksWkqGf
-         qhPQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+yTHSgVbH1i9oQMgA8wgN+4D6vCdeoGNBEY3+11ge66n8Ll8WYeWtt8yrpDBbh5h3tT0UPn8Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxqHONkJRQPAPk9NyAiDejFSm0s9Hxw35AX02GaXxqtXcLenmo
-	h6Gl88C8JQprik/9X/J11SPwAd8m1gdwSO7aubuZv6uoUW0tpwajY5rQUxsMDPOFpEh8QyUiIkJ
-	R7AWpT1L5Rv/1GhwXXw==
-X-Received: from wmbgv3.prod.google.com ([2002:a05:600c:80c3:b0:490:ad90:c234])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3e83:b0:490:af90:f9c2 with SMTP id 5b1f17b1804b1-490c25b224dmr319816185e9.12.1781002395222;
- Tue, 09 Jun 2026 03:53:15 -0700 (PDT)
-Date: Tue, 09 Jun 2026 10:53:03 +0000
+	s=arc-20240116; t=1781002705; c=relaxed/simple;
+	bh=iEjA2MjKSCB7UYuBfpm7ZoN6u/xw2LXb42wJfvgR3/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gRSeX2Qlk+GC689cYDNhOUIck8NcUAo2FhaWHK+G3kstxrrv0GCoI8VYAa7jDrt2MFrHmEqxjDNOqHbXH6rB68I3bMVvNG4CxH9nKLaCVNckMo6gKr6fgIVca1Kzwc5ZgIqK7R2rTHJeskHRd9GlfGKnyinfyvbZ4laaeXZLoS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh; spf=pass smtp.mailfrom=gibson.sh; dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b=SEvnMshB; arc=none smtp.client-ip=185.125.25.11
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gZQqr0t9rzNRr
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 12:58:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gibson.sh;
+	s=20260228; t=1781002695;
+	bh=Mx0oPR9bcP29fTc5WI0tJYSbBL/td4L1Mh46SbEbR5Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SEvnMshBF8N0sLT+Dg8/4BeOT3C/sPk70JDw1y9AZqyjzc5qhRHFZPQVWmU9/HStx
+	 meIuv4o8K1c3tOK9TmfH4xqaC3CZV83/Enyo8/uYUHBigkLgid0C/ApCQ1okMNm8qI
+	 j/TRP7DeneIEH3eh2O5T3WOt4hlfRWAZfJPmslvWexQ9pIDnJyhYcNoP8UXIlYNG59
+	 9DcatxErNJbQh6FhnBjKQ0+Eadh3072MIconC3rp5KMy/b41Qa5y0CqMt+T3XsO+yW
+	 nwjpuQSY8Pk1+XOmDYFVifnBxasRRq9B8SH5SsplCfDoE2Il5cjPT0nJDb4J+CNrh6
+	 hLxjtO/G8+dfA==
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gZQqq4q87zHdc
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 12:58:15 +0200 (CEST)
+Received: from unknown by spiderdemon.horst.lan (DragonFly Mail Agent v0.13);
+	Tue, 09 Jun 2026 12:58:14 +0200
+From: Daniel Gibson <daniel@gibson.sh>
+To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mario Limonciello <superm1@kernel.org>
+Cc: Daniel Gibson <daniel@gibson.sh>,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/4] platform/x86/amd/pmc: Check for intermediate wakeup in function
+Date: Tue,  9 Jun 2026 12:57:53 +0200
+Message-ID: <20260609105756.2813669-2-daniel@gibson.sh>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260609105756.2813669-1-daniel@gibson.sh>
+References: <20260609105756.2813669-1-daniel@gibson.sh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAI7wJ2oC/02Nyw6CMBQFf4XctdeUh+XxK4YFlFPtghZbJEbCv
- 9uAJi5nFjMrBXiDQE2yksdignE2QnpKSN07ewObITJlIpNCipo9RreAtQfeYGd/wroBnAuUmda
- yLyQoJiYPbV57/toe7PF4xst8SOq7AFZuHM3cJEt5TtkrSf/35ruuuDd2gN9PsRs4TMZy3gkoc alqUeTNklG7bR/vuWnd1QAAAA==
-X-Change-Id: 20260609-remove-freeze-on-remove-node-30e72ff6b46e
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5429; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=z8/bjZsp3am85zxrUEQLRTItYorQtqnU2+9GLSyWZZE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBqJ/CVAmZoDnNNbp9NJ3e4+K8fwkBtEpzbyvdWc
- MZ9RCCtkW2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaifwlQAKCRAEWL7uWMY5
- RpdtD/46XB+90vkSBbCyQNJL9JF7qujkTCaCNzUmrjOSc+XAunFZ06tUZ1n3cZaixhKNTjD7sxu
- gEO7STLx7O+znwTgXKj+KjdLVYp2largjG0vsmIGRH6Mg+Ow+Iv3io5Bc2i6FHs8yhAKIKh2H9L
- ibXQGjqc3xaoeHQ8t1LxH1Z36w3R03lXVJi1hGz9Qiqb/PtoJmRiy3lH2vbS94hKBfwJYWOZLSo
- vZ5Odu+SobNSwc7cep+2AfgVfosLKoVrlOE8qjIjLDxUJfxbl4a55YWnBG7yyDU+cngAi2gRMA6
- FVps8PRh7LWHXsoAu4dUcjHec/XGuoyp0vtIfz+MyrydXACf14whmdE7vH48+3fgOrX45vTDGnn
- b3bD3OlS3FpG+A1BfHh+Xj2i2OyqJPwYqHhbrWHGaX1nk9zCFQ2JbvtKxqi5sUGLR16nfCNcN/A
- qzFfCBmplD+mbnKYtP8uVPV0aqBZdfbLuAFnhVPE3YZPZfVCoS5jVOR+qPidpc+2jyBrXVMwmud
- 0DRCpXJKXLIrBYI2yoWeybpV4q0LdzDChUmR3OIEViXaAGeJ67vPBeAH3eCMGMTLF4JmZwOLKbS
- eJy0ysvwm7he/ufLK7VKI+glXVMS0clSZ8zcrthPzf3HLWX8l40ayhdLhwBSwL1GT0QFUzeNEBd KCYWZ5aTKfzPEPg==
-X-Mailer: b4 0.14.3
-Message-ID: <20260609-remove-freeze-on-remove-node-v1-1-f67f3b9bfeb8@google.com>
-Subject: [PATCH] rust_binder: clear freeze listener on node removal
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gibson.sh:s=20260228];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262259-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:cmllamas@google.com,m:ojeda@kernel.org,m:boqun@kernel.org,m:gary@garyguo.net,m:bjorn3_gh@protonmail.com,m:lossin@kernel.org,m:a.hindborg@kernel.org,m:aliceryhl@google.com,m:tmgross@umich.edu,m:dakr@kernel.org,m:rust-for-linux@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	TAGGED_FROM(0.00)[bounces-262265-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:Shyam-sundar.S-k@amd.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:superm1@kernel.org,m:daniel@gibson.sh,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[gibson.sh];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gibson.sh:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,gibson.sh:dkim,gibson.sh:email,gibson.sh:mid,gibson.sh:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 840C765F3C1
+X-Rspamd-Queue-Id: 3BF0065F46F
 
-Generally userspace is supposed to explicitly clear freeze listeners
-before they drop the refcount on the node ref to zero, but there's
-nothing forcing that. Currently, in this scenario the freeze listener
-remains in the freeze_listeners rbtree and in the remote node's freeze
-listener list, even though the ref for which the listener is registered
-is gone. This could potentially lead to a memory leak due to a refcount
-cycle. Thus, remove the freeze listener in this scenario.
+Refactor code introduced by commit 9f5595d5f03f ("pmc: Require at
+least 2.5 seconds between HW sleep cycles") to allow adding different
+conditions for that delay in an upcoming change.
 
+Signed-off-by: Daniel Gibson <daniel@gibson.sh>
 Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-This series is based on top of:
-https://lore.kernel.org/all/20260609-binder-noderefs-spin-v2-0-eafde2ff376c@google.com/
----
- drivers/android/binder/freeze.rs  | 11 +++++++++--
- drivers/android/binder/node.rs    |  6 ++++--
- drivers/android/binder/process.rs | 13 +++++++++++--
- 3 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/android/binder/freeze.rs b/drivers/android/binder/freeze.rs
-index 20041689e98d..1b49e63723b5 100644
---- a/drivers/android/binder/freeze.rs
-+++ b/drivers/android/binder/freeze.rs
-@@ -154,10 +154,17 @@ fn debug_print(&self, m: &SeqFile, prefix: &str, _tprefix: &str) -> Result<()> {
+diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+index cae3fcafd4d7..2b9e5730170a 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -598,6 +598,19 @@ static int amd_pmc_verify_czn_rtc(struct amd_pmc_dev *pdev, u32 *arg)
+ 	return rc;
  }
  
- impl FreezeListener {
--    pub(crate) fn on_process_exit(&self, proc: &Arc<Process>) {
-+    /// Called when this freeze listener is cleared abnormally.
-+    ///
-+    /// This occurs either because the process exited or because the process dropped its last
-+    /// refcount on the node ref without explicitly removing the freeze listener first.
-+    ///
-+    /// The returned `KVVec` is just a value that should be dropped outside of the lock.
-+    pub(crate) fn on_process_cleanup(&self, proc: &Process) -> KVVec<Arc<Process>> {
-         if !self.is_clearing {
--            self.node.remove_freeze_listener(proc);
-+            return self.node.remove_freeze_listener(proc);
-         }
-+        KVVec::new()
-     }
- }
- 
-diff --git a/drivers/android/binder/node.rs b/drivers/android/binder/node.rs
-index fb27674a8c94..79f660071bd6 100644
---- a/drivers/android/binder/node.rs
-+++ b/drivers/android/binder/node.rs
-@@ -687,11 +687,13 @@ pub(crate) fn resize_for_add_freeze_listener(
-         Ok(())
-     }
- 
--    pub(crate) fn remove_freeze_listener(&self, p: &Arc<Process>) -> KVVec<Arc<Process>> {
-+    pub(crate) fn remove_freeze_listener(&self, p: &Process) -> KVVec<Arc<Process>> {
-         let mut guard = self.owner.inner.lock();
-         let inner = self.inner.access_mut(&mut guard);
-         let len = inner.freeze_list.len();
--        inner.freeze_list.retain(|proc| !Arc::ptr_eq(proc, p));
-+        inner
-+            .freeze_list
-+            .retain(|proc| !core::ptr::eq::<Process>(&**proc, p));
-         if len == inner.freeze_list.len() {
-             pr_warn!(
-                 "Could not remove freeze listener for {}\n",
-diff --git a/drivers/android/binder/process.rs b/drivers/android/binder/process.rs
-index 82c34a93660e..5802fbbaacd3 100644
---- a/drivers/android/binder/process.rs
-+++ b/drivers/android/binder/process.rs
-@@ -950,6 +950,8 @@ pub(crate) fn update_ref(
-         // increment references on itself.
-         let _to_free_by_handle;
-         let _to_free_by_node;
-+        let _to_free_freeze_listener;
-+        let _to_free_freeze_listener_cleanup;
-         let mut refs = self.node_refs.lock();
-         if let Some(info) = refs.by_handle.get_mut(&handle) {
-             if info.node_ref().update(inc, strong) {
-@@ -965,8 +967,15 @@ pub(crate) fn update_ref(
- 
-                 // SAFETY: We are removing the `NodeRefInfo` from the right node.
-                 unsafe { info.node_ref2().node.remove_node_info(info) };
--
-                 let id = info.node_ref().node.global_id();
++static bool amd_pmc_intermediate_wakeup_need_delay(struct amd_pmc_dev *pdev)
++{
++	/*
++	 * Starting a new HW sleep cycle right after waking from one
++	 * can cause electrical problems triggering the over voltage protection.
++	 * That is avoided by delaying the next suspend a bit, see also
++	 * https://lore.kernel.org/all/20250414162446.3853194-1-superm1@kernel.org/
++	 */
++	struct smu_metrics table;
 +
-+                if let Some(freeze) = *info.freeze() {
-+                    if let Some(fl) = refs.freeze_listeners.remove(&freeze) {
-+                        _to_free_freeze_listener_cleanup = fl.on_process_cleanup(&self);
-+                        _to_free_freeze_listener = fl;
-+                    }
-+                }
++	return get_metrics_table(pdev, &table) == 0 && table.s0i3_last_entry_status;
++}
 +
-                 _to_free_by_handle = refs.by_handle.remove_node(&handle);
-                 _to_free_by_node = refs.by_node.remove_node(&id);
-                 refs.handle_is_present.release_id(handle as usize);
-@@ -1391,7 +1400,7 @@ fn deferred_release(self: Arc<Self>) {
-         // Clean up freeze listeners.
-         let freeze_listeners = take(&mut self.node_refs.lock().freeze_listeners);
-         for listener in freeze_listeners.values() {
--            listener.on_process_exit(&self);
-+            listener.on_process_cleanup(&self);
-         }
-         drop(freeze_listeners);
+ static void amd_pmc_s2idle_prepare(void)
+ {
+ 	struct amd_pmc_dev *pdev = &pmc;
+@@ -632,11 +645,9 @@ static void amd_pmc_s2idle_prepare(void)
+ static void amd_pmc_s2idle_check(void)
+ {
+ 	struct amd_pmc_dev *pdev = &pmc;
+-	struct smu_metrics table;
+ 	int rc;
  
-
----
-base-commit: 3bc831df9ee16fceee851872315161377ca1417d
-change-id: 20260609-remove-freeze-on-remove-node-30e72ff6b46e
-prerequisite-change-id:20260608-binder-noderefs-spin-3a0ec0589043:v2
-prerequisite-patch-id: 3a1c4f545b2281e2e91ea0af7fe6c71f5ae0c08e
-prerequisite-patch-id: e1ae5f73b329080c0fcea1d2509c085e105f67c3
-prerequisite-patch-id: 63f2092c6fd9dd54b7adf93be8d5670d8490f401
-prerequisite-patch-id: 5811aeb4ca435a1d4d0bb347d4de9f3b2d91f814
-prerequisite-patch-id: 556e45c697f9888c8446245bbcf478422991fddf
-prerequisite-patch-id: f567ba2263108b12871013309ae7c482d500eeae
-
-Best regards,
+-	/* Avoid triggering OVP */
+-	if (!get_metrics_table(pdev, &table) && table.s0i3_last_entry_status)
++	if (amd_pmc_intermediate_wakeup_need_delay(pdev))
+ 		msleep(2500);
+ 
+ 	/* Dump the IdleMask before we add to the STB */
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.48.1
 
 
