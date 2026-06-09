@@ -1,133 +1,175 @@
-Return-Path: <stable+bounces-262212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2kV+CNDOJ2p+2gIAu9opvQ
-	(envelope-from <stable+bounces-262212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:29:04 +0200
+	id 9W+nAfTPJ2rZ2gIAu9opvQ
+	(envelope-from <stable+bounces-262214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:33:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184F965DC86
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:29:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BCF65DD33
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:33:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dOGtJdAF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262212-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262212-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fCWAgMYA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262214-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262214-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 658D93020ACB
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 08:16:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4555830C1575
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 08:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342CD3ECBEA;
-	Tue,  9 Jun 2026 08:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0B73EF0A6;
+	Tue,  9 Jun 2026 08:18:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F6E3EDACB;
-	Tue,  9 Jun 2026 08:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155523EE1E4
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 08:18:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780992973; cv=none; b=UPRSmxTQLFBmlj2pGqW6ieymlsoRoW0CKz7a+e7vJg0DYEk8b9fK+HNBmqxYdiERNTVYC0ohQRkqSneVusRqGGSUSjJmgHzHMYkP/IMdI/K23uoV42z4dauERL/twR/Eyge793UrAs89olbY7oT1c9bPxrfthg7b7O4R2h0apCQ=
+	t=1780993138; cv=none; b=CMSgUZCfPJhIwoNdjKAvytReoTu4DZ2Nci9AGBvNUpEBlJWa7ESf4811HMQqAeuoKpGFnxLhuxEgfkXP6d24NAXRbpoZCwswOirJJi0zJ9LAEXMgi1CRygFi5u88Ql9ABbgsNHSH5bgIsIeMRhPBXl9yhPgrFmhQVPSyY8e9xdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780992973; c=relaxed/simple;
-	bh=qmLAknJDi9ljkQLvRZ4VV6nTEnsTGPu0rWLa0vqgDJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=op6suroC8QJiGWjutGjoR3bSq2zEAh+vxHf3fFefvefOdc3wPGs+FqssOC3AV3iXQBUIZAJ//u7s02fqj9pVjdyn9Ufun53hinJLKi0B/MSdaVlUzG6QT7viyKzQP/BCKxA/gE7TegRs7NzL6Nu3qz7801yGe0RJzCodjLWn658=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOGtJdAF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B8F1F00893;
-	Tue,  9 Jun 2026 08:16:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780992971;
-	bh=Pwx2gnjzoEu6wS23A8/5F0BeRt4mUzsviwvSFFA+naA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dOGtJdAFu05vzTyBNYkhG2GJPMKtw828JD36nf94w2GGCiM54FlLj92vY85ZhQWzP
-	 IBGz6JOH74vtZ5Uuso2BrhmwZMZBhG0qbsFR7kdOII1mkcOL0OHzckvaCzqUsfx3MU
-	 1K0MugCOw9vD3D41NUdcQzPB3LU2qxGV0VQh4dxHfVyEXl7+Qu+em9GBxjDK840RTl
-	 Qk60eJI2nutYACIIyKpPbTI9yZVdz48EjF+KASGrJej24cnDZixytf2UFE5K9DSiMy
-	 77OAeX0T+sg7/7+3Hh5LX+9Z2/wQSCQF0zjq+up8njry9PhtLfx1eXqs6widOSyHM2
-	 znZiNvsg7kVyg==
-Date: Tue, 9 Jun 2026 10:16:08 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: "Carlos Song (OSS)" <carlos.song@oss.nxp.com>
-Cc: aisheng.dong@nxp.com, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, carlos.song@nxp.com, 
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] i2c: imx-lpi2c: fix resource leaks switching to
- devm_dma_request_chan()
-Message-ID: <aifLtWlPdLr7EEnj@zenone.zhora.eu>
-References: <20260520093323.2882070-1-carlos.song@oss.nxp.com>
+	s=arc-20240116; t=1780993138; c=relaxed/simple;
+	bh=4/7xqhlg7fsTO36c9sQAAogQIKyQWEKJcViI8s2wyAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oovoCdFwtywrATnxvOvFs3/Zt/tlJ1MwbMt9Fk+HKdqjLVctsmba4gLeGchZEg3wGuYRhPCv/zi0t4d/A4ewB30vwEQS1EtAUo/l1FTxAh8+ofqCPiHzOcqKbmfwSq1SkukNC4egcevYUGnpPB0OLJTKk013OYSNpLakF6jDXD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCWAgMYA; arc=none smtp.client-ip=209.85.128.54
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4905529b933so56457095e9.0
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 01:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780993134; x=1781597934; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kFTsAOv1hKm4xZTbT6xMW++1uFPeFFAKMUDBgYxH4Gw=;
+        b=fCWAgMYAHN34l9Rl+XsZ/nkXSUllqS4gZv72NoebKTQvjWqSZfo1n1qMdlOdR4ihdu
+         r0iJmuhP0wvhweAvLWgeZYLf8iUZLhrguyIyX7FSrLSR6jyzyA+QMNJ/AsWde2KyUsHL
+         B4A8HEHTooo7hm7byJIymUkcztukBc+V95hiyfeikxces6i6vAKXP8agnXPdB1a7hhVB
+         6hGKHA7RDBK2l9sN1rxPxOrikaXMi/l+t4Oj9TIjSbu9s/KoHPLN7wcsh3bbKT972sEr
+         nJAm+yfCpoTfxAxtBveTK7/3UMYAUc/VmzW6wjRy2SQ0eUq55aeF9UkwGDiMX+7tZ/ti
+         Rt9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780993134; x=1781597934;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kFTsAOv1hKm4xZTbT6xMW++1uFPeFFAKMUDBgYxH4Gw=;
+        b=FcGZmL6VPEenOy+ntOBbiuUoX30t+wSLfWC3LiGwbcqVll0GzJeu3Xe61wWEHKXj61
+         CwPKaZlfLWVzKaG1FRnPA2LZRxQZobeUf3F6GcPco1d+E7DcIHl56t6J4B8aL3SZnNif
+         G+G35JUVusV3J7QlbqHqhmgDiapjSKUsWN3wScrid7Ouj8QKvwINFJD5TVYX3Np+FEIr
+         dydtf4erUT0Evh+dyIflZv2xaKUoVAM5vezGSzufuLD0/J0QoxVfOz8twkq3VyWJXY8x
+         /ZG2ANdKtO8vT+Cb7+jVj+B+/L51HtiLb/XBWwXvaPdUrZRtaK3S8Vkg945E8MHuB5Xl
+         kKbA==
+X-Gm-Message-State: AOJu0YxIM5nNFPVtZBbKNiNGEErDquCSq1a9qOfKY9tiZvSlPkFYAgES
+	47ROkH2VqPBfdbsc5gX3KXtqwCJXJHiYyE2+A/PRp7Ute1cBEquuqHbv
+X-Gm-Gg: Acq92OEuNHZgku6phMHL/0PZ9aB9+35tqF68qRjV0UZleHwCLo9QSgSXNTRQ3w1yLlR
+	cseHNXAk09tedJV6BkRc0/vR7uYdIlMtvZSuh6YWD452mFCo3XxQchSIdjgg36AYQ2q8KkHDfCw
+	f7f1L62ZaPxBwWfcxGpZv4czWfzU/voeka1UBAwyGdSE72AWzBeZJhbDpXUTXUJonh0SW1ZL6Tx
+	WodwIcjzWWXHZ3PbvzalvxZ9gJbOSTjglO3CZJFetNIy+usuk1/yTiM/dlj0kvYQG8eT1yzeTq1
+	MpS9qQtJdy/2fOUkCWFwziygNyOhUMkmGUACVGLOWvkC8fhLj9GTgCIeuhldeNOOHR+1gmG1b4m
+	MqLYNwcJJkyHFmulro87aA13nfeoin8NdQOeApN3H+JOA4Mt5cOrnVrAraKEjP20wwteyIgFj4A
+	0SNvl5x8jlYgSKmXDCuaBzCFGbXKonXJfrFrG9Iy1MPVR+BOWt2uIhQ7WGYQbpZ5UYds6V17Yxs
+	yIr2nHt3w21YvHJcARuBlzWc05h
+X-Received: by 2002:a05:600c:34cb:b0:48e:6db3:ff3a with SMTP id 5b1f17b1804b1-490c25b09a2mr318781815e9.16.1780993134354;
+        Tue, 09 Jun 2026 01:18:54 -0700 (PDT)
+Received: from thinkpad-l14-ju.lan (ip092042140082.rev.nessus.at. [92.42.140.82])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d60a7csm43053615e9.2.2026.06.09.01.18.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 01:18:53 -0700 (PDT)
+From: Jakob Unterwurzacher <jakobunt@gmail.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Cc: stable@vger.kernel.org,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] arm64: dts: rockchip: fix emmc reset polarity on px30-cobra
+Date: Tue,  9 Jun 2026 10:17:25 +0200
+Message-ID: <20260609081728.30616-2-jakobunt@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520093323.2882070-1-carlos.song@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262212-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:carlos.song@oss.nxp.com,m:aisheng.dong@nxp.com,m:Frank.Li@nxp.com,m:s.hauer@pengutronix.de,m:kernel@pengutronix.de,m:festevam@gmail.com,m:carlos.song@nxp.com,m:linux-i2c@vger.kernel.org,m:imx@lists.linux.dev,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262214-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:heiko@sntech.de,m:jakob.unterwurzacher@cherry.de,m:quentin.schulz@cherry.de,m:stable@vger.kernel.org,m:heiko.stuebner@cherry.de,m:devicetree@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[jakobunt@gmail.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[]
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jakobunt@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,dt];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 184F965DC86
+X-Rspamd-Queue-Id: 93BCF65DD33
 
-Hi Carlos,
+From: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
 
-On Wed, May 20, 2026 at 05:33:23PM +0800, Carlos Song (OSS) wrote:
-> From: Carlos Song <carlos.song@nxp.com>
-> 
-> The LPI2C driver requests DMA channels using dma_request_chan(), but
-> never releases them in lpi2c_imx_remove(), resulting in DMA channel
-> leaks every time the driver is unloaded.
-> 
-> Additionally, when lpi2c_dma_init() successfully requests the TX DMA
-> channel but fails to request the RX DMA channel, the probe falls back
-> to PIO mode and completes successfully. Since probe succeeds, the devres
-> framework will not trigger any cleanup, leaving the TX DMA channel and
-> the memory allocated for the dma structure held for the lifetime of the
-> device even though DMA is never used.
-> 
-> Switch to devm_dma_request_chan() to let the device core manage DMA
-> channel lifetime automatically. Wrap all allocations within a devres
-> group so that devres_release_group() can release all partially acquired
-> resources when DMA init fails and probe continues in PIO mode.
-> 
-> Fixes: a09c8b3f9047 ("i2c: imx-lpi2c: add eDMA mode support for LPI2C")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Technically, the reset signal is active low - it's called RST_n after all.
 
-merged to i2c/i2c-host-fixes.
+But it is ignored completely unless RST_n_FUNCTION=1 (byte 162 in extcsd)
+is set in the emmc. It is 0 per default.
 
-Thanks,
-Andi
+For emmcs that have RST_n_FUNCTION=1 we failed like this:
+
+	[    3.074480] mmc1: Failed to initialize a non-removable card
+
+With this change they work normally.
+
+Cc: stable@vger.kernel.org
+Fixes: bb510ddc9d3e ("arm64: dts: rockchip: add px30-cobra base dtsi and board variants")
+Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
+---
+v2: Add correct "From: " line
+
+ arch/arm64/boot/dts/rockchip/px30-cobra.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/rockchip/px30-cobra.dtsi b/arch/arm64/boot/dts/rockchip/px30-cobra.dtsi
+index b7e669d8ba4d..90751b04f95c 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-cobra.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-cobra.dtsi
+@@ -35,7 +35,7 @@ emmc_pwrseq: emmc-pwrseq {
+ 		compatible = "mmc-pwrseq-emmc";
+ 		pinctrl-0 = <&emmc_reset>;
+ 		pinctrl-names = "default";
+-		reset-gpios = <&gpio1 RK_PB3 GPIO_ACTIVE_HIGH>;
++		reset-gpios = <&gpio1 RK_PB3 GPIO_ACTIVE_LOW>;
+ 	};
+ 
+ 	gpio-leds {
+-- 
+2.47.3
+
 
