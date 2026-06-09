@@ -1,57 +1,88 @@
-Return-Path: <stable+bounces-262230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jeSkNK/WJ2qj3AIAu9opvQ
-	(envelope-from <stable+bounces-262230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 11:02:39 +0200
+	id KjbcGwDVJ2pN3AIAu9opvQ
+	(envelope-from <stable+bounces-262231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:55:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC4C65E112
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 11:02:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CE965E013
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:55:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262230-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262230-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=p6HYJalz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262231-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262231-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B4E62309804C
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 08:47:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AB84303B4C8
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 08:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48C03DDDC4;
-	Tue,  9 Jun 2026 08:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114433DFC9B;
+	Tue,  9 Jun 2026 08:50:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944323CF21B;
-	Tue,  9 Jun 2026 08:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F1537F730;
+	Tue,  9 Jun 2026 08:50:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780994871; cv=none; b=PHbRw16En1UFH+a+RsutGrwp7BKxvDRTnjkwb/52Z8h1mkp1qxe5zysUI2GEtaFNN5rUYPtOfzZt0BO+WGeOUJjRk5XRjhpOzWY9607YJayN9oJkdzV99g4geeFzEu1rXOSfmqDefxhgA3aC1dEqJmkAZPGiIxrM4NPfCpmCsQY=
+	t=1780995011; cv=none; b=cjaQkIRje39n2u7ds4H08uQp5WmyCnBtGOj3r7ROsZOW+Lw1cUMcNNlzqWkAPCD3jXtQvdHTfcnljT7jVFJQowfArjfUgp8FqYQhqonzon4xJ80bpA93igw1tPOjBy62JcZR75+/V+lNB0b7TzKZF5ULwYCwafeU4AIEGXRjDy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780994871; c=relaxed/simple;
-	bh=LG+aoINgJAC7Y/fvo/TMBUo1dY7QqneuDuaM8unT4cc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=osucQNyg0XWXORzRRxR+X2cOv6PrPdeAL9ucCJWTGlG/O+uZX3gsI3XEKo7aurND/8ps8uNGLKY6gbJMfkwps1hXgFTBUEAE33HxDdARk+V7VIB9YHXdDnSi7pSRt0imMvg4zNI8QZKuAhAc9Acv1cGB3JOLVnXZtguxj1KBLkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAB3zhEp0ydqLCTPEg--.48075S2;
-	Tue, 09 Jun 2026 16:47:37 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: idosch@nvidia.com,
-	petrm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mlxsw: fix refcount leak in mlxsw_sp_vrs_lpm_tree_replace()
-Date: Tue,  9 Jun 2026 08:47:30 +0000
-Message-Id: <20260609084730.215732-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1780995011; c=relaxed/simple;
+	bh=ch6wgGiX+rD6eN6sGcu//35HJaHz2kUy5eNIIWaf1aM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ommI3oq3EppPJchZyWiC4z8VqFhQpqBm6MY6f8li4Pk80+pRhcfWgVO90SxIyweevzcFprN4QzEyS3o8uGDXPhk8J9B493Os4UTK6mIGQHVgQKkc/jJiLmtXAL5BG71D+QawgbucEh28rmW1jMeFktMWpYAWkIDwM75JrfBLU5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=p6HYJalz; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658LZ8PA3263305;
+	Tue, 9 Jun 2026 08:49:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=D7wYBVlzvA7bduDTdxaKO+5K9D780blvGci+nmL2Y
+	FY=; b=p6HYJalzSwFKKUd9yOtu2Ckvu664hDa9V7m22OGMh/VbUOiKzPInzwXwc
+	0v2ugpji+JND6JEVRa3x0mKUODazNfXRrM2fi3NamXT69aOy/tU1sdV70nHQl+NO
+	xDEWjW3Wlqb6WCUWC1dq6iAuYIjFKQQTerFONQw/27+mwBhaKkkf5bDxXygpieaJ
+	rpM47Oc60sFCoYVtFCTWwXLndljVi7neYb0hDBTSn+ylhbnTv3XtOm/4BXw+jGDw
+	Oq148nyIJJMwaLW4HtKBEZ8Ic3ah9sV38Zkkotz77FXAtk9BU0tnsOea+LACth7n
+	NA2PJa7sJXlE3Z44jeIT41CtLvEjw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em8yhuar2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 08:49:47 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6598ngcb011741;
+	Tue, 9 Jun 2026 08:49:47 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvq1bxt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 08:49:46 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6598nhKk35914194
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jun 2026 08:49:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6993620043;
+	Tue,  9 Jun 2026 08:49:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EE3D620040;
+	Tue,  9 Jun 2026 08:49:40 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.bl1-in.ibm.com (unknown [9.123.10.203])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  9 Jun 2026 08:49:40 +0000 (GMT)
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-pci@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Timothy Pearson <tpearson@raptorengineering.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Shawn Anastasio <sanastasio@raptorengineering.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        stable@vger.kernel.org
+Subject: [PATCH v3] PCI: pnv_php: Add null checks for OpenCAPI PHBs
+Date: Tue,  9 Jun 2026 14:19:03 +0530
+Message-ID: <20260609084903.1352581-1-adityag@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,96 +90,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3zhEp0ydqLCTPEg--.48075S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrykuF4rJw4UAry7Kry8Zrb_yoW8Ar4kpa
-	1xtryj9rnrtr1Sqw4DJa97Xr9xuwnFqa1UurZakw4fZr1vyrWfAryjvFyUZw1UKr48JrWF
-	vF13Z3s5Aas3AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9F14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26F4UJVW0owAm72CE4IkC6x0Yz7v_Jr
-	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
-	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-	Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-	x4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
-	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-	JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbbAw3UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRANA2onp3SzmAAAsi
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDA3OSBTYWx0ZWRfX8yXq33AH5/9x
+ CCyBcLBcKpBfxCFP40BviSdutCZsOLQJ+aIo/D949ydu94I6ZeDUycPzob0u1SwAE6S1OkXZ83c
+ L5foYyLqL5pQer4saNW/FUF/XS4mbx3ujGsvrZk83mHFIcxdwcYr7EUPuX+0YMWH/SLNzSBBrBF
+ 3tYHzN7ziJEjvKa3w4oWOIDY/Obb1bUvhcxhqWfEXZ3CkioBUQ8yQCjY7wrwE44K5R1EGoLsA4a
+ XXVvcJ/6vk+GlkcVoSDdofL0wu0GC5ruqb5YlAblGo1aCAhcN5Uzvbhox0eZa9XgxAj7uBCoPYt
+ Fe/hAjE9jwicvkHEDcgMt95shtLSGj3/jZkHULtqHVYikswf0dSecFPGk1+jadRGjeLXV0K8gcs
+ /tTOaZYE+4vMKV7q2Jq0Y4g9iZN+WrfTbc9ichpNjZW7B4LgyeR8tDv5zz2Yld4jIf9hAPFEHjh
+ seSTr0q1N6h6kUwQ7Uw==
+X-Authority-Analysis: v=2.4 cv=HvFG3UTS c=1 sm=1 tr=0 ts=6a27d3ac cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=2CTBcJULQSvMIThFTPkA:9
+X-Proofpoint-ORIG-GUID: 8P9qn4Odz_P1EpWE5lpFtesQ6i3QH-it
+X-Proofpoint-GUID: Tb46MgE-W5F1gSsm5wRxl_p9wYpho6Zb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-09_02,2026-06-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090079
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262230-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-262231-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,ellerman.id.au,gmail.com,vger.kernel.org];
+	FORGED_SENDER(0.00)[adityag@linux.ibm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:linux-pci@vger.kernel.org,m:maddy@linux.ibm.com,m:tpearson@raptorengineering.com,m:bhelgaas@google.com,m:sanastasio@raptorengineering.com,m:helgaas@kernel.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:idosch@nvidia.com,m:petrm@nvidia.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adityag@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6FC4C65E112
+X-Rspamd-Queue-Id: 03CE965E013
 
-When mlxsw_sp_vrs_lpm_tree_replace() fails after replacing some VRs,
-the error rollback loop does not correctly revert the preceding
-replacements. The loop decrements the index but fails to update the
-vr pointer, which still points to the VR that caused the failure. As
-a result, the condition and the rollback call always operate on the
-same VR, potentially calling mlxsw_sp_vr_lpm_tree_replace() multiple
-times on it while never rolling back the earlier VRs. Those VRs
-continue to hold a reference to new_tree acquired via
-mlxsw_sp_lpm_tree_hold(), leaking the reference count of new_tree.
+For OpenCAPI phb direct slots, the .pdev for php_slots will be NULL
 
-Fix by reinitializing vr inside the error loop with the updated index:
+Various sections of the code in pnv_php can do a null dereference and
+crash the kernel.
 
-	vr = &mlxsw_sp->router->vrs[i];
+Originally, the issue was hit during boot:
 
-so that the loop correctly iterates over all VRs that were actually
-replaced.
+  PowerPC PowerNV PCI Hotplug Driver version: 0.1
+  BUG: Kernel NULL pointer dereference at 0x00000074
+  Faulting instruction address: 0xc000000000b75fd0
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=2048 NUMA PowerNV
+  ...
+  NIP [c000000000b75fd0] pnv_php_get_adapter_state+0x60/0x154
+  LR [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154
+  Call Trace:
+  [c000c0000688f990] [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154 (unreliable)
+  [c000c0000688fa20] [c000000000b78bd0] pnv_php_enable+0x94/0x378
+  [c000c0000688fac0] [c000000000b7912c] pnv_php_register_one.isra.0+0x11c/0x1e0
+
+This occurs for hotplug slots on root buses where bus->self == NULL,
+such as OpenCAPI PHB direct slots. An added debug print (not part of
+this patch) confirmed it was OpenCAPI:
+
+  pnv_php: slot 'OPENCAPI-0009' has NULL pdev (bus 0009:00, parent=NO (root bus))
+  pnv_php: slot 'OPENCAPI-0009' dn->full_name='pciex@603a000000000', compatible='ibm,power10-pau-opencapi-pciex'
+
+This only required null check in 'pnv_php_get_adapter_state', which
+caused the kernel to boot.
+
+Even with 'pnv_php_get_adapter_state' null check, there are more
+possible null dereferences pointed by sashiko, including cases where
+userspace crashes the kernel, such as:
+
+  $ cat /sys/bus/pci/slots/*/attention
+  ...
+  Kernel attempted to read user page (6e) - exploit attempt? (uid: 0)
+  BUG: Kernel NULL pointer dereference on read at 0x0000006e
+  Faulting instruction address: 0xc000000000a83334
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=2048 NUMA PowerNV
+  ...
+  [c000000046707a20] [c000000046707b90] 0xc000000046707b90 (unreliable)
+  [c000000046707a70] [0000000000000001] 0x1
+  [c000000046707ab0] [c000000000acb00c] attention_read_file+0x54/0xa8
+  [c000000046707b30] [c000000000abfbfc] pci_slot_attr_show+0x3c/0x58
+  [c000000046707b50] [c0000000008181ec] sysfs_kf_seq_show+0xd4/0x204
+  [c000000046707be0] [c000000000815004] kernfs_seq_show+0x44/0x58
+
+Add null checks to prevent the null dereferences.
 
 Cc: stable@vger.kernel.org
-Fixes: fc922bb0dd94 ("mlxsw: spectrum_router: Use one LPM tree for all virtual routers")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 1 +
- 1 file changed, 1 insertion(+)
+Fixes: 80f9fc236279 ("PCI: pnv_php: Work around switches with broken presence detection")
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 7bd87d0547d8..3d6fdbab05e0 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -1018,6 +1018,7 @@ static int mlxsw_sp_vrs_lpm_tree_replace(struct mlxsw_sp *mlxsw_sp,
+---
+Changelog:
+v3:
++ split the patch from v2 series, as it's independent
++ incorporate reviews from bjorn to improve the description
+
+v2:
++ sashiko pointed out various pre-existing null pointer derefs, which
+  can give access to userspace to crash the kernel, fix them
+---
+---
+ drivers/pci/hotplug/pnv_php.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index ff92a5c301b8..d0f5e8ad1f71 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -47,6 +47,9 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 	struct pci_dev *pdev = php_slot->pdev;
+ 	u16 ctrl;
  
- err_tree_replace:
- 	for (i--; i >= 0; i--) {
-+		vr = &mlxsw_sp->router->vrs[i];
- 		if (!mlxsw_sp_vr_lpm_tree_should_replace(vr, proto, new_id))
- 			continue;
- 		mlxsw_sp_vr_lpm_tree_replace(mlxsw_sp,
++	if (!pdev)
++		return;
++
+ 	if (php_slot->irq > 0) {
+ 		pcie_capability_read_word(pdev, PCI_EXP_SLTCTL, &ctrl);
+ 		ctrl &= ~(PCI_EXP_SLTCTL_HPIE |
+@@ -414,7 +417,8 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
+ 	 */
+ 	ret = pnv_pci_get_presence_state(php_slot->id, &presence);
+ 	if (ret >= 0) {
+-		if (pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
++		if (php_slot->pdev &&
++			pci_pcie_type(php_slot->pdev) == PCI_EXP_TYPE_DOWNSTREAM &&
+ 			presence == OPAL_PCI_SLOT_EMPTY) {
+ 			/*
+ 			 * Similar to pciehp_hpc, check whether the Link Active
+@@ -442,6 +446,11 @@ static int pnv_php_get_raw_indicator_status(struct hotplug_slot *slot, u8 *state
+ 	struct pci_dev *bridge = php_slot->pdev;
+ 	u16 status;
+ 
++	if (!bridge) {
++		*state = 0;
++		return 0;
++	}
++
+ 	pcie_capability_read_word(bridge, PCI_EXP_SLTCTL, &status);
+ 	*state = (status & (PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC)) >> 6;
+ 	return 0;
+@@ -514,11 +523,13 @@ static int pnv_php_activate_slot(struct pnv_php_slot *php_slot,
+ 			 * fence / freeze.
+ 			 */
+ 			SLOT_WARN(php_slot, "Try %d...\n", i + 1);
+-			pci_set_pcie_reset_state(php_slot->pdev,
+-						 pcie_warm_reset);
+-			msleep(250);
+-			pci_set_pcie_reset_state(php_slot->pdev,
+-						 pcie_deassert_reset);
++			if (php_slot->pdev) {
++				pci_set_pcie_reset_state(php_slot->pdev,
++							 pcie_warm_reset);
++				msleep(250);
++				pci_set_pcie_reset_state(php_slot->pdev,
++							 pcie_deassert_reset);
++			}
+ 
+ 			ret = pnv_php_set_slot_power_state(
+ 				slot, OPAL_PCI_SLOT_POWER_ON);
+@@ -911,6 +922,9 @@ pnv_php_detect_clear_suprise_removal_freeze(struct pnv_php_slot *php_slot)
+ 	struct eeh_pe *pe;
+ 	int i, rc;
+ 
++	if (!pdev)
++		return;
++
+ 	/*
+ 	 * When a device is surprise removed from a downstream bridge slot,
+ 	 * the upstream bridge port can still end up frozen due to related EEH
+@@ -1093,6 +1107,9 @@ static void pnv_php_enable_irq(struct pnv_php_slot *php_slot)
+ 	struct pci_dev *pdev = php_slot->pdev;
+ 	int irq, ret;
+ 
++	if (!pdev)
++		return;
++
+ 	/*
+ 	 * The MSI/MSIx interrupt might have been occupied by other
+ 	 * drivers. Don't populate the surprise hotplug capability
 -- 
-2.34.1
+2.54.0
 
 
