@@ -1,398 +1,163 @@
-Return-Path: <stable+bounces-262321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2QdYAus8KGosAwMAu9opvQ
-	(envelope-from <stable+bounces-262321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:18:51 +0200
+	id bwFgIak+KGqxAwMAu9opvQ
+	(envelope-from <stable+bounces-262323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:26:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7246066244C
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:18:50 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CCF66257B
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:26:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b="M7dP1E/d";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262321-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262321-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=fRf1g0MG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262323-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262323-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B56ED30816D9
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BDB7330D5C1D
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF1236680C;
-	Tue,  9 Jun 2026 16:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9260D3B2FFC;
+	Tue,  9 Jun 2026 16:16:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDE8348C62;
-	Tue,  9 Jun 2026 16:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447BB3AEF2D;
+	Tue,  9 Jun 2026 16:16:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781021007; cv=none; b=AwFKGXsBlU6YGVCRcJbPHbCYtAYQr3OJSPbRL1yDVKLK//+cAuWE+Bzqdd0wDbWkKoQSsyLKkWzGTqp9LNnkouXunWmeWiM7ecw5WR2jtDiRVGrYGP7dCSDUUDfCWbjh3UFKvbLO8f0a/w7y/mG/CDei4+h2H4fUgRD2qeBS+Mo=
+	t=1781021818; cv=none; b=nsZWE5+xgbhkvGd0GoWLzotn2XZk9zzYf8Vwt/a7j94l+APEAW73uT6m4BlZ+QN83Oqwu9ZSBdU4fw0KGWQ0DJ5EaEeDxZcd2OUDZUkBeek1mxI5sow4lSFzfgV2hAzoAHWZeNYpPF4fvVATmQKpsp6cyShl76aHzn3qtaovPSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781021007; c=relaxed/simple;
-	bh=5IuwQtfXtA0KtCEm1Ja9ZmmwjOicS0jkKfQuSYPRk80=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jh52HDA7sqMf35WimI5EgqfH7939TxjDeBsTIbqEQ+7MxTRmKWoIjxb/+r6E8WFHhrCpyeyS7h0anntGfNUcMWItTZhjztXD7mmEcL8m5p3HiqNxrexVSrRtZKICpROha7sVm/WB+EabSnoKtMCqujrP6CDQDRqDj7jb5Rww2n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M7dP1E/d; arc=none smtp.client-ip=192.198.163.19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781021005; x=1812557005;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5IuwQtfXtA0KtCEm1Ja9ZmmwjOicS0jkKfQuSYPRk80=;
-  b=M7dP1E/d+DG6ezPcJqL999o7IH+HhcX1iE5Up00juxnYlm5WTRVy6uHc
-   OsLYH1P9AtPUtkXL273RDMN0tOrl32zHYMmAMsteJkXrPTPdVN2li1ubP
-   UPNlsPVM8wkts2BUuyTCwtxwb+4SHL1k4mZhg6IxqklcS2EFL8Bksw0bq
-   fBksmXQV3klK9n2zzwPfNdaYhfUA6vM1eYZT+VwaEk2yEJHMcWgKQi6oZ
-   mfsU2dBI+DtvFZsU7CMPmRnRXrVJOlwOq41UdO5ePpnoEQKYSPDkAd07u
-   ZxrWsaHLykKGPy8f8e5bqNfCA6j4nqM1vOsqjsu4fWZVA+CBIPmPyWBKm
-   Q==;
-X-CSE-ConnectionGUID: wz7o9nn6SWK4khDmLgjEAw==
-X-CSE-MsgGUID: p6GSkxr5RQSI21YSMG2X/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="80807870"
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="80807870"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 09:03:25 -0700
-X-CSE-ConnectionGUID: 95wVR3UBSCSrGg5jZi2bIQ==
-X-CSE-MsgGUID: 5AHaJ7d2TimmDG162EHV+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="249823938"
-Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.206]) ([10.125.109.206])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 09:03:22 -0700
-Message-ID: <d9888ab0-c91d-4d29-84b4-51c0b56a4305@intel.com>
-Date: Tue, 9 Jun 2026 09:03:21 -0700
+	s=arc-20240116; t=1781021818; c=relaxed/simple;
+	bh=6okSZjKqF+i1RGCX3SAyQbIDklKN09eQ/YPEKOHDZzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QU/L/K0v33OJUDSG5Eqqkqlz75+9aeROGPctRX6zyQmp2HP8vFGnL99o++ywIBc/wmdtILrPFSYJ8PRGvCUgcIDLqrDOEgloBXsIOkltsxy5TXIuoA0mp2O/8rxz4YhCNTdGAz7jM6QmYq3kNe83GWqo22J9kNWVlGm1E5RMABg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fRf1g0MG; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6595sE003405561;
+	Tue, 9 Jun 2026 16:16:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ARfgU5+Cl7CmZl1n2MVqzW77vefOU9NSMwI9jvfeE
+	zI=; b=fRf1g0MG28IgIK0okwY2saw6/BrTzfRwUX1Owdtu0eOUynnZu68UrYd9P
+	v4AkY7+tm7acngDzrSXvLXiqvU3/VlSv2cgkAxfRKzNM/Ic8sP7GZ7JOCpONad+Z
+	tDliCzuykDtRaiAl6X1fAY3o5LDU20HQOAFqO7pdJbnJBJjeFO5GXsrFIiUELbGN
+	CSzrIciLrN/QjI5FYe1/4ojENtB0Jdt8npuVaqsT7jBM+LmUJdTA9mfN6gFBfO12
+	Hn0Uvi0qFRQUTUzI3gUOrhfqpgT/QfrBwkoukDEga4PkvPlS4bt3wYDKlwyng4tW
+	CSPVLxS6vOhrNxNGttUFquivxnTwQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qn3ke-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 16:16:55 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 659G4hhF018493;
+	Tue, 9 Jun 2026 16:16:54 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en0jyahuy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 16:16:54 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 659GGmf452494792
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jun 2026 16:16:48 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8642B20040;
+	Tue,  9 Jun 2026 16:16:48 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 33D762004B;
+	Tue,  9 Jun 2026 16:16:47 +0000 (GMT)
+Received: from p-imbrenda.ibmuc.com (unknown [9.111.28.58])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  9 Jun 2026 16:16:47 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: [PATCH v1 0/3] KVM: s390: A few misc gmap fixes.
+Date: Tue,  9 Jun 2026 18:16:43 +0200
+Message-ID: <20260609161646.695361-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] cxl/port: Fix missing port lock in cxl_dport_remove()
-To: "Bowman, Terry" <terry.bowman@amd.com>, Richard Cheng <icheng@nvidia.com>
-Cc: dave@stgolabs.net, jic23@kernel.org, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, djbw@kernel.org,
- ming.li@zohomail.com, rrichter@amd.com, Benjamin.Cheatham@amd.com,
- Smita.KoralahalliChannabasappa@amd.com, stable@vger.kernel.org,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- PradeepVineshReddy.Kodamati@amd.com
-References: <20260608223533.583278-1-terry.bowman@amd.com>
- <be149ddc-702b-46c2-b6a7-d9195aee0eee@intel.com>
- <aifBp346jcVZ6sgi@MWDK4CY14F> <2e24ba30-83df-490f-8a1f-5b80d832cb3b@amd.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <2e24ba30-83df-490f-8a1f-5b80d832cb3b@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a283c77 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=EM6bAlJCgMabOG_lu0wA:9
+X-Proofpoint-GUID: W55ydxbAYWStSpr1ZXe-6Ct1GkruP9GE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDE1MyBTYWx0ZWRfX6B60FX+bXmnz
+ h/0Hk0udS38FUJVAiJlMW5UW0SZ0CUXNdihAFNe5t9j3QbfkrYEVbsWG/c8fedwtFxBhuOEID98
+ ICUIiN0KLOw72rl0MVswD3QwIHTbCZQzwh0rbdLSm/NHkBGx5RO2L2O4S1XYINBoKdKLoZFSMqI
+ D7OpdWCJWGr86hZNJzZkuG3Bqlg9SmGCt7lPBg1Ty048eqbdEVf0oKFqSvztYRlrtAI47x8xhRJ
+ AODVbAwCcj4w7h2I0nLrjf8ciLWXe/GrEqBSJPQYs31yiPNi+faqOEASGWACkEhijMcepLDEVI9
+ kFGy002fl1Ofo3M9tL3gicb0VMIFMONELAgwjbdC/5yKodCV1/b4gnUgtPPPs+rA9Cl11U4AdWN
+ POxmCOjpWq2w2GAlyK4WH/+QmDD/IGxv5k9JOGag06cErvfa4iUBd+hoBvAi9mLcbgmK4K7MB5/
+ qNEHlcsUvSVgBbEgWbQ==
+X-Proofpoint-ORIG-GUID: W55ydxbAYWStSpr1ZXe-6Ct1GkruP9GE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-09_03,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 clxscore=1011 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090153
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-262323-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[imbrenda@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:borntraeger@de.ibm.com,m:frankja@linux.ibm.com,m:david@kernel.org,m:seiden@linux.ibm.com,m:nrb@linux.ibm.com,m:schlameuss@linux.ibm.com,m:gra@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[imbrenda@linux.ibm.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:terry.bowman@amd.com,m:icheng@nvidia.com,m:dave@stgolabs.net,m:jic23@kernel.org,m:alison.schofield@intel.com,m:vishal.l.verma@intel.com,m:ira.weiny@intel.com,m:djbw@kernel.org,m:ming.li@zohomail.com,m:rrichter@amd.com,m:Benjamin.Cheatham@amd.com,m:Smita.KoralahalliChannabasappa@amd.com,m:stable@vger.kernel.org,m:linux-cxl@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:PradeepVineshReddy.Kodamati@amd.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262321-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dave.jiang@intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ALIAS_RESOLVED(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime,vger.kernel.org:from_smtp];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim,intel.com:mid,intel.com:from_mime]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7246066244C
+X-Rspamd-Queue-Id: 23CCF66257B
 
+A few more minor gmap fixes.
 
+Claudio Imbrenda (3):
+  KVM: s390: Silence potential warnings in _gmap_crstep_xchg_atomic()
+  KVM: s390: Fix unlikely race in try_get_locked_pte()
+  KVM: s390: vsie: Use mmu cache to allocate rmap
 
-On 6/9/26 8:12 AM, Bowman, Terry wrote:
-> On 6/9/2026 2:40 AM, Richard Cheng wrote:
->> On Mon, Jun 08, 2026 at 05:35:23PM +0800, Dave Jiang wrote:
->>>
->>>
->>> On 6/8/26 3:35 PM, Terry Bowman wrote:
->>>> xa_erase() in cxl_dport_remove() runs without the port device lock,
->>>> creating a race with any caller that does xa_load() on port->dports
->>>> and then dereferences the returned dport pointer. A concurrent
->>>> cxl_dport_remove() can erase and free the dport between the xa_load()
->>>> and the caller acquiring the port lock, causing a use-after-free.
->>>>
->>>> For non-root ports the port lock is already held by the caller on two
->>>> paths:
->>>>
->>>> 1. Driver unbind: devres_release_all() is called from
->>>>    __device_release_driver() which holds port->dev.mutex.
->>>>
->>>> 2. Dynamic endpoint removal: cxl_detach_ep() takes the port lock
->>>>    before calling del_dports() -> del_dport() -> devres_release_group(),
->>>>    which synchronously runs cxl_dport_remove().
->>>>
->>>> Use cond_cxl_root_lock/unlock(), which only acquires the port lock when
->>>> the port is a root port and the lock is therefore not already held.
->>>> This matches the pattern used in __devm_cxl_add_dport() for the same
->>>> reason.
->>>>
->>>> The write-side fix to cxl_dport_remove() is necessary but not
->>>> sufficient. Callers that obtain a dport pointer via cxl_mem_find_port()
->>>> use a lockless xa_load() and must not dereference that pointer until a
->>>> lock that excludes free_dport()/kfree() is held.
->>>>
->>
->> Hi Terry,
->>
->> I think the mechanism is right, cond_cxl_root_lock() in cxl_dport_remove()
->> is a no-op for non-root ports and a real qcquire only for root dports, so
->> no deadlock.
->>
->> But this only cover the 2 cxl_mem_find_port() callers. The sibling
->> cxl_pci_find_port() has similar lockless xa_load() plus deref, and those
->> callers aren't fied.
->>
->> Could you either extend the same fix in this series?
->> I'm happy to send a follow-up for other readers if that's easier for you.
->>
-> 
-> Youre right there are other callsites requiring similar changes. You're follow-up 
-> would helpful. It will allow me to return to the error handling series.
-> Thanks.
+ arch/s390/kvm/gaccess.c     | 16 ++++++++--------
+ arch/s390/kvm/gmap.c        |  7 ++++---
+ arch/s390/kvm/gmap.h        |  9 +++++++--
+ arch/s390/mm/gmap_helpers.c |  6 +++---
+ 4 files changed, 22 insertions(+), 16 deletions(-)
 
-Richard,
-Do you mind just bundle Terry's fix with your series and we can apply it all together? Thanks!
-
-DJ
-
-> 
->>>> For root ports, dport_to_host() returns uport_dev, so all three devres
->>>> actions (free_dport, cxl_dport_remove, cxl_dport_unlink) are registered
->>>> on uport_dev. __device_release_driver() holds uport_dev->mutex for the
->>>> full teardown sequence including kfree(dport). Holding uport_dev->mutex
->>>> on the read side therefore excludes concurrent dport freeing.
->>>>
->>>> Fix rcd_pcie_cap_emit() by passing NULL to cxl_mem_find_port() to avoid
->>>> capturing a lockless dport pointer, then re-fetching dport inside the
->>>> uport_dev guard via cxl_find_dport_by_dev(). The previous guard on
->>>> root->dev was wrong: cxl_dport_remove() releases root->dev before
->>>> free_dport() runs, so root->dev does not protect against concurrent
->>>> kfree(dport).
->>>>
->>>> Fix cxl_mem_probe() similarly: pass NULL to cxl_mem_find_port(), then
->>>> re-fetch dport inside scoped_guard(device, &parent_port->dev) for the
->>>> VH path, and re-fetch again inside scoped_guard(device, uport_dev) for
->>>> the RCH path. This closes both the TOCTOU window between the lockless
->>>> xa_load() and the guard acquisition, and the window between the two
->>>> sequential guards in the RCH path where a concurrent surprise removal
->>>> could free dport before devm_cxl_add_endpoint() dereferences it.
->>>>
->>>> Reported-by: Sashiko
->>>> Fixes: 391785859e7e ("cxl/port: Move dport tracking to an xarray")
->>>> Link: https://lore.kernel.org/linux-cxl/20260505173029.2718246-1-terry.bowman@amd.com/
->>>> Signed-off-by: Terry Bowman <terry.bowman@amd.com>
->>>> Reviewed-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
->>>> ---
->>>>  drivers/cxl/core/port.c | 10 +++++++
->>>>  drivers/cxl/mem.c       | 65 +++++++++++++++++++++++++++++++----------
->>>>  drivers/cxl/pci.c       | 17 +++++++----
->>>>  3 files changed, 72 insertions(+), 20 deletions(-)
->>>>
->>>> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
->>>> index c5aacd7054f1..0b8f144596e8 100644
->>>> --- a/drivers/cxl/core/port.c
->>>> +++ b/drivers/cxl/core/port.c
->>>> @@ -1092,8 +1092,18 @@ static void cxl_dport_remove(void *data)
->>>>  	struct cxl_dport *dport = data;
->>>>  	struct cxl_port *port = dport->port;
->>>>  
->>>> +	/*
->>>> +	 * For non-root ports the port lock is already held by the caller
->>>> +	 * via devres_release_all() during driver unbind, which holds
->>>> +	 * port->dev.mutex throughout.  Acquiring it again unconditionally
->>>> +	 * would deadlock.  Use cond_cxl_root_lock() which only acquires
->>>> +	 * when the port is a root port and the lock is therefore not yet
->>>> +	 * held.
->>>> +	 */
->>>> +	cond_cxl_root_lock(port);
->>>>  	port->nr_dports--;
->>>>  	xa_erase(&port->dports, (unsigned long) dport->dport_dev);
->>>> +	cond_cxl_root_unlock(port);
->>
->> In the comment above, maybe worth adding some contents about this is
->> also what makes the RCH reads safe. It's no obvious for me.
->>
->> Best regards,
->> Richard Cheng.
->>
-> 
-> For RCH/RCD case, the cond_cxl_root_lock() only synchronizes accesses to the 
-> xarray. The RP in the RCH/RCD context is a SW construct. We need to hold the 
-> port->uport_dev->mutex to prevent kfree().
-> 
-> - Terry
-> 
-> 
->>>>  	put_device(dport->dport_dev);
->>>>  }
->>>>  
->>>> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
->>>> index fcffe24dcb42..345b56f215ff 100644
->>>> --- a/drivers/cxl/mem.c
->>>> +++ b/drivers/cxl/mem.c
->>>> @@ -70,9 +70,9 @@ static int cxl_mem_probe(struct device *dev)
->>>>  	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
->>>>  	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
->>>>  	struct cxl_dev_state *cxlds = cxlmd->cxlds;
->>>> -	struct device *endpoint_parent;
->>>>  	struct cxl_dport *dport;
->>>>  	struct dentry *dentry;
->>>> +	bool rch = false;
->>>>  	int rc;
->>>>  
->>>>  	if (!cxlds->media_ready)
->>>> @@ -107,8 +107,7 @@ static int cxl_mem_probe(struct device *dev)
->>>>  	if (rc)
->>>>  		return rc;
->>>>  
->>>> -	struct cxl_port *parent_port __free(put_cxl_port) =
->>>> -		cxl_mem_find_port(cxlmd, &dport);
->>>> +	struct cxl_port *parent_port __free(put_cxl_port) = cxl_mem_find_port(cxlmd, NULL);
->>>>  	if (!parent_port) {
->>>>  		dev_err(dev, "CXL port topology not found\n");
->>>>  		return -ENXIO;
->>>> @@ -123,21 +122,57 @@ static int cxl_mem_probe(struct device *dev)
->>>>  		}
->>>>  	}
->>>>  
->>>> -	if (dport->rch)
->>>> -		endpoint_parent = parent_port->uport_dev;
->>>> -	else
->>>> -		endpoint_parent = &parent_port->dev;
->>>> -
->>>> -	scoped_guard(device, endpoint_parent) {
->>>> -		if (!endpoint_parent->driver) {
->>>> -			dev_err(dev, "CXL port topology %s not enabled\n",
->>>> -				dev_name(endpoint_parent));
->>>> +	scoped_guard(device, &parent_port->dev) {
->>>> +		/*
->>>> +		 * Re-fetch dport under the port lock to close the TOCTOU
->>>> +		 * window between cxl_mem_find_port()'s lockless xa_load() and
->>>> +		 * this guard acquisition.  A concurrent surprise removal can
->>>> +		 * free the dport in that window.
->>>> +		 */
->>>> +		dport = cxl_find_dport_by_dev(parent_port, cxlmd->dev.parent->parent);
->>>> +		if (!dport) {
->>>> +			dev_err(dev, "CXL port topology %s not found\n",
->>>> +				dev_name(&parent_port->dev));
->>>>  			return -ENXIO;
->>>>  		}
->>>> +		rch = dport->rch;
->>>> +
->>>> +		if (!rch) {
->>>> +			if (!parent_port->dev.driver) {
->>>> +				dev_err(dev, "CXL port topology %s not enabled\n",
->>>> +					dev_name(&parent_port->dev));
->>>> +				return -ENXIO;
->>>> +			}
->>>> +			rc = devm_cxl_add_endpoint(&parent_port->dev, cxlmd, dport);
->>>> +			if (rc)
->>>> +				return rc;
->>>> +		}
->>>> +	}
->>>>  
->>>> -		rc = devm_cxl_add_endpoint(endpoint_parent, cxlmd, dport);
->>>> -		if (rc)
->>>> -			return rc;
->>>> +	if (rch) {
->>>> +		struct device *uport_dev = parent_port->uport_dev;
->>>> +
->>>> +		scoped_guard(device, uport_dev) {
->>>> +			if (!uport_dev->driver) {
->>>> +				dev_err(dev, "CXL port topology %s not enabled\n",
->>>> +					dev_name(uport_dev));
->>>> +				return -ENXIO;
->>>> +			}
->>>> +			/*
->>>> +			 * Re-fetch dport under uport_dev lock.  uport_dev->mutex
->>>> +			 * is held for the full devres teardown sequence including
->>>> +			 * free_dport()/kfree(), so this excludes concurrent
->>>> +			 * hotplug removal through the entire dereference.
->>>> +			 */
->>>> +			dport = cxl_find_dport_by_dev(parent_port, cxlmd->dev.parent->parent);
->>>> +			if (!dport) {
->>>> +				dev_err(dev, "CXL RCH dport not found\n");
->>>> +				return -ENXIO;
->>>> +			}
->>>> +			rc = devm_cxl_add_endpoint(uport_dev, cxlmd, dport);
->>>> +			if (rc)
->>>> +				return rc;
->>>> +		}
->>>
->>> Still reviewing the patch, but thoughts on moving the two new big blocks to a helper function?
->>>
->>> DJ
->>>
->>>>  	}
->>>>  
->>>>  	if (cxlmd->attach) {
->>>> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
->>>> index bace662dc988..710a62a66429 100644
->>>> --- a/drivers/cxl/pci.c
->>>> +++ b/drivers/cxl/pci.c
->>>> @@ -708,10 +708,10 @@ static ssize_t rcd_pcie_cap_emit(struct device *dev, u16 offset, char *buf, size
->>>>  {
->>>>  	struct cxl_dev_state *cxlds = dev_get_drvdata(dev);
->>>>  	struct cxl_memdev *cxlmd = cxlds->cxlmd;
->>>> -	struct device *root_dev;
->>>>  	struct cxl_dport *dport;
->>>> +	struct device *root_dev;
->>>>  	struct cxl_port *root __free(put_cxl_port) =
->>>> -		cxl_mem_find_port(cxlmd, &dport);
->>>> +		cxl_mem_find_port(cxlmd, NULL);
->>>>  
->>>>  	if (!root)
->>>>  		return -ENXIO;
->>>> @@ -720,13 +720,20 @@ static ssize_t rcd_pcie_cap_emit(struct device *dev, u16 offset, char *buf, size
->>>>  	if (!root_dev)
->>>>  		return -ENXIO;
->>>>  
->>>> -	if (!dport->regs.rcd_pcie_cap)
->>>> -		return -ENXIO;
->>>> -
->>>>  	guard(device)(root_dev);
->>>>  	if (!root_dev->driver)
->>>>  		return -ENXIO;
->>>>  
->>>> +	/*
->>>> +	 * Fetch dport under uport_dev lock to protect against concurrent
->>>> +	 * hotplug removal. uport_dev->mutex is held for the entire devres
->>>> +	 * teardown sequence including free_dport(), so holding it here
->>>> +	 * excludes concurrent kfree(dport).
->>>> +	 */
->>>> +	dport = cxl_find_dport_by_dev(root, cxlmd->dev.parent->parent);
->>>> +	if (!dport || !dport->regs.rcd_pcie_cap)
->>>> +		return -ENXIO;
->>>> +
->>>>  	switch (width) {
->>>>  	case 2:
->>>>  		return sysfs_emit(buf, "%#x\n",
->>>
->>>
-> 
+-- 
+2.54.0
 
 
