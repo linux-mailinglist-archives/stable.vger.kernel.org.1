@@ -1,205 +1,182 @@
-Return-Path: <stable+bounces-262232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2nTYLGLVJ2pY3AIAu9opvQ
-	(envelope-from <stable+bounces-262232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:57:06 +0200
+	id dEo5M3PYJ2r43AIAu9opvQ
+	(envelope-from <stable+bounces-262234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 11:10:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6EE65E038
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 10:57:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E1B65E1F1
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 11:10:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=O+6FtgrJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262232-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262232-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=AD7+HCMt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262234-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262234-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5DB5E307EE54
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 08:52:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FEC630A3F44
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 09:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB209367B68;
-	Tue,  9 Jun 2026 08:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C3B3F0A98;
+	Tue,  9 Jun 2026 09:02:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831973DA5C3;
-	Tue,  9 Jun 2026 08:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC372E091E;
+	Tue,  9 Jun 2026 09:02:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780995147; cv=none; b=LMJ596RMoP6CaAY1s0lFKzDOYqmZmPtgik+ky0uAxTbSO2j2KVsVjg+4HnB2mvCgi2J7Uv4clz/gR9C2lpotxyLrYmSaWxGK8nTATb9JDTpUzy5FOI8c3TuM/FfUoQHHA28xcq+eEfF2dFrWrlLbE0Q25QvifNahmp4tYubWXPs=
+	t=1780995769; cv=none; b=kLDuuWmapMcqAujoHovQHDe528HZCnXwD7PT2kPpWMAEhgkltGH2TaSLiOLKGTEY3gg9ONUHnnWW+3BnJ/ykc8ty/IARdkyisnjkdW0gCObfsWXSWg8Pzh5bd9hGVlV76IIR6eDGMuskF2Tx5HkAxJ/sP6BT7SrL4/2XuqH9y7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780995147; c=relaxed/simple;
-	bh=KJt6AiKz3lTthjldVA2FFE/SycqHxrWFvr9Ty+edf1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VLeByHgCExdX/5TYakqNhmfAZHOoMY4k+yDOA0RqXOnqj9iI19YtpMHkcDKGMsLE+h8rH4kRAINR781G8/BdDNr71woU82JKM1T5PzeQXFTMcJDxkSRfq1BGQ+j9JOqBlbUxtp9Fnx5uB1TtdRvcWmbj7vh2U4XDk8N2R/DBiWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=O+6FtgrJ; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658N9jpR2451177;
-	Tue, 9 Jun 2026 08:52:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hzQkxt
-	LiQbdGFSPIIPPk/CiCMxvTXLlsB5s/Ud+eU1c=; b=O+6FtgrJ5O/BQorDeShVu2
-	1aclM9gJgpmB7UWGT7xk+pt+le+PdN99ZtH5BeXQrJdRGX/RxlBBLehHIY7dp3xW
-	bcqubr7QPF3nWjNSK0epyGhoLvrXplGfF4etGk5QlHsrA/XuUIaKYLjLZlMB3Bt5
-	k7tBQUapNPuPTgnWFkGsb0zWvTZP/j0l0Z+E8NcUDheSx/3nyto7vGdI32KOKnZH
-	NyIcTp4rXjb2YUf53Yu6E6+JNdczLiykz3XfIKcujWe6uqAkqsgOA9xCBak07C0I
-	tSSio5kCVEakVudKmMV2a3QNec7rGKCvAF1NlSaV2wOebpM2BdISm3Z6T1C3LjXg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qk8tn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 08:52:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6598nd0H006203;
-	Tue, 9 Jun 2026 08:52:08 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4en0jy8xu6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jun 2026 08:52:08 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6598q4fp35717512
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Jun 2026 08:52:04 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84C0C20049;
-	Tue,  9 Jun 2026 08:52:04 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 406EE20040;
-	Tue,  9 Jun 2026 08:52:01 +0000 (GMT)
-Received: from [9.123.10.203] (unknown [9.123.10.203])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  9 Jun 2026 08:52:00 +0000 (GMT)
-Message-ID: <f6766e0b-2c69-42cd-b628-76eb3a770852@linux.ibm.com>
-Date: Tue, 9 Jun 2026 14:21:59 +0530
+	s=arc-20240116; t=1780995769; c=relaxed/simple;
+	bh=UmkP/nL3r38JTITNDMoUIrL43Ud/mv8TE/EbWihEuGU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pOOJdmGslESn9OSvm1R3n/VhoS3gXQ8dc6FZIO9KyBhm2WbkNSo2oO/nA13MiS+WxL5osGA7Tp/gvOD2Of6VoIDZNMwXkJvTyDmRxBGlmGccuHSnMxzGfp2QOy/FjoB7SFkcjV9H0609k1aKudGlTk3nuUyIewSHqn6OAkust6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=AD7+HCMt; arc=none smtp.client-ip=45.254.49.197
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 41a876c6e;
+	Tue, 9 Jun 2026 16:57:26 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: ttabi@nvidia.com
+Cc: dakr@kernel.org,
+	dawei.feng@seu.edu.cn,
+	dri-devel@lists.freedesktop.org,
+	jianhao.xu@seu.edu.cn,
+	linux-kernel@vger.kernel.org,
+	lyude@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	namcao@linutronix.de,
+	nouveau@lists.freedesktop.org,
+	simona@ffwll.ch,
+	stable@vger.kernel.org,
+	zilin@seu.edu.cn
+Subject: Re: [PATCH] nouveau/firmware: fix memory leak on BL load failure
+Date: Tue,  9 Jun 2026 16:57:29 +0800
+Message-Id: <20260609085729.3786763-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <0045b3583272df0b82f146fd96dee13d03377b4a.camel@nvidia.com>
+References: <0045b3583272df0b82f146fd96dee13d03377b4a.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] ppc/pnv: Add null checks for OpenCapi PHBs
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Timothy Pearson <tpearson@raptorengineering.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Shawn Anastasio <sanastasio@raptorengineering.com>,
-        sashiko-bot@kernel.org, linux-pci@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        stable@vger.kernel.org
-References: <20260608153948.GA36499@bhelgaas>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <20260608153948.GA36499@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a27d43a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=jDEF8yXcYhEeGhTqFzAA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: uy5uA-4LAkQXosgRLeYKG9__XiD3wO41
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDA3OSBTYWx0ZWRfX1LnRsX/NslW6
- 10Kx6AfRwuDC7yqNSV+PtaezZSUOJDVDq6q3XnXnzbRlJRjpCtT1oklrDK7q+VkLgMaKH/HX1Tk
- sMxdgQi3xva78lBGS65KWRSTw2S6Fd5lInhoYTGOOzyPAsxwXD45x4qiM6Z+CaUAoup/Yl5kgFO
- PPEyoQaMcSgn+LDoqb6OxTi6dBbzzaMy4mx4LUFNNeY9XkI3issRge1Wd4NF9gUdP5HWdtS8oW/
- 5/2/qPQq67is8P7wW0AgUKPOncjeXYW64q+Be8cFrMgYeStTk6VYNod/tAyQUqRq6qW6O7J08KB
- fpbt0rn3Y+vu4duyRQc2nD6ppmvz92i7kPjiipGMS+EzX041vQw00sgXaUB0b7ywyIgTFyPpkju
- TqGxWethQMS3UEjpwL6yo9YYTh+pTT27uZunERfXhZ2Xg91zVHY8fajLwTfP6TAIRXwPFZNsHwU
- 3TeaMPSXZI3DsLHaPqg==
-X-Proofpoint-ORIG-GUID: l1yAjDp3acC5UYb8nk8EW-AoTRozIh-V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-09_02,2026-06-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 bulkscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090079
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eab99d60503a2kunmd4cb5e84127d3d
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaGEtCVk4YSklJSh9MHh1JGlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=AD7+HCMty0xT7ukJ2iVq24XZZtBk3S/QiDWX6gpGVFjcPKiO7RmZE7dzKCP/i1ObA/sHrur+vKJnntauTebn7UK4kaZhgSBnpvDaCOC3pG1hOrsw5Ok03Ux6gPVAd2HoLcW8JJIC4/n1uvVMkY4LrxLMkFVDeukP++uXZW+UT0U=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=PWKiJfHLAuY51AfkQhZeCWOGsOm5BCLCBnZ0+m/OIxk=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262232-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:helgaas@kernel.org,m:linux-kernel@vger.kernel.org,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:tpearson@raptorengineering.com,m:bhelgaas@google.com,m:sanastasio@raptorengineering.com,m:sashiko-bot@kernel.org,m:linux-pci@vger.kernel.org,m:mpe@ellerman.id.au,m:npiggin@gmail.com,m:chleroy@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[adityag@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,raptorengineering.com,google.com,kernel.org,ellerman.id.au,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262234-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:ttabi@nvidia.com,m:dakr@kernel.org,m:dawei.feng@seu.edu.cn,m:dri-devel@lists.freedesktop.org,m:jianhao.xu@seu.edu.cn,m:linux-kernel@vger.kernel.org,m:lyude@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:namcao@linutronix.de,m:nouveau@lists.freedesktop.org,m:simona@ffwll.ch,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adityag@linux.ibm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4E6EE65E038
+X-Rspamd-Queue-Id: 97E1B65E1F1
 
-On 08/06/26 21:09, Bjorn Helgaas wrote:
+Hi, Timur,
 
-> On Wed, May 27, 2026 at 11:38:14PM +0530, Aditya Gupta wrote:
->> For opencapi phb direct slots, the .pdev for php_slots will be NULL
->>
->> Various sections of the code in pnv_php can do a null dereference and
->> crash the kernel.
->>
->> Originally, the issue was hit during boot:
->>
->>      [    1.568588] PowerPC PowerNV PCI Hotplug Driver version: 0.1
->>      [    1.569722] BUG: Kernel NULL pointer dereference at 0x00000074
->>      [    1.569811] Faulting instruction address: 0xc000000000b75fd0
->>      [    1.569890] Oops: Kernel access of bad area, sig: 11 [#1]
->>      [    1.569963] LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=2048 NUMA PowerNV
->>      ...
->>      [    1.571492] NIP [c000000000b75fd0] pnv_php_get_adapter_state+0x60/0x154
->>      [    1.571604] LR [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154
->>      [    1.571690] Call Trace:
->>      [    1.571725] [c000c0000688f990] [c000000000b75fbc] pnv_php_get_adapter_state+0x4c/0x154 (unreliable)
->>      [    1.571783] [c000c0000688fa20] [c000000000b78bd0] pnv_php_enable+0x94/0x378
->>      [    1.571951] [c000c0000688fac0] [c000000000b7912c] pnv_php_register_one.isra.0+0x11c/0x1e0
-> Drop timestamps since they don't add useful information.
+On Fri, Jun 05, 2026 at 06:22:41PM +0000, Timur Tabi wrote:
+> Ah yes, you're right.
 >
-> Indent quoted material by two spaces to reduce wrapping.
+> So now I think a better fix might be to have two different `blob`
+> variables, so that there is no longer any confusion. Because right now,
+> the nvkm_firmware_put() call at the end of the function releases a
+> different `blob` depending on whether `bl` is NULL or not.
 >
-> Run "git log --oneline drivers/pci/hotplug/pnv_php.c" and "git log
-> --oneline drivers/pci/hotplug/" and match subject line style.
+> What do you think about this:
 >
->> This occurs for hotplug slots on root buses where bus->self == NULL,
->> such as OpenCAPI PHB direct slots. An added debug print (not part of
->> this patch) confirmed it was opencapi:
-> Style "OpenCAPI" and "PHB" consistently in commit log and subject.
+>     nvkm_firmware_put(blob);
+>     if (bl) {
+>             const struct firmware *blob_bl;
+>
+>             ret = nvkm_firmware_load_name(subdev, bl, "", ver, &blob_bl);
+>             if (ret)
+>                     goto done;
+>             ...
+>             nvkm_firmware_put(blob_bl);
+>             if (!fw->boot)
+>                     ret = -ENOMEM;
+>     } else {
+>             fw->boot_addr = fw->nmem_base;
+>     }
+>
+> done:
+>     if (ret)
+>             nvkm_falcon_fw_dtor(fw);
+>
+>     return ret;
 
-Thanks for the review Bjorn, fixed the description and have sent the 
-patch again as v3.
+Yes, using a separate pointer `blob_bl` for the bootloader firmware is a
+cleaner approach. 
 
-In v3, I have sent the patch #1 independently for rc, and will send the 
-rework patches (patches #2 and #3) separately, since I have to do extra 
-fixes for pre-existing issues pointed by sashiko.
+However, we must keep the final nvkm_firmware_put(blob) under the done
+label. Moving it earlier would cause memory leaks in prior error paths
+like nvkm_falcon_fw_ctor(), which jump directly to done. 
 
-Thanks,
-- Aditya G
+A safer approach is to manage blob_bl locally inside the if (bl) block,
+while leaving the original blob cleanup at the end. 
 
+What do you think about this:
 
+        if (bl) {
+                const struct firmware *blob_bl;
+
+                ret = nvkm_firmware_load_name(subdev, bl, "", ver, &blob_bl);
+                if (ret)
+                        goto done;
+
+                ...
+                nvkm_firmware_put(blob_bl);
+                if (!fw->boot)
+                        ret = -ENOMEM;
+        } else {
+                fw->boot_addr = fw->nmem_base;
+        }
+
+done:
+        if (ret)
+                nvkm_falcon_fw_dtor(fw);
+
+        nvkm_firmware_put(blob);
+        return ret;
+
+Regards,
+Dawei
 
