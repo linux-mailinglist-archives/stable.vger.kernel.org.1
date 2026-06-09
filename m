@@ -1,213 +1,120 @@
-Return-Path: <stable+bounces-262168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ph76OjuCJ2qSyQIAu9opvQ
-	(envelope-from <stable+bounces-262168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:02:19 +0200
+	id iresLMKEJ2rqyQIAu9opvQ
+	(envelope-from <stable+bounces-262169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:13:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9D065BF4D
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:02:19 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C5665BFF1
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:13:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m3XTeKCs;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262168-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262168-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=163.com header.s=s110527 header.b=Upsn0Izl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262169-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262169-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=163.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52F42301D945
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 03:00:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E244F3021588
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 03:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA6836215F;
-	Tue,  9 Jun 2026 03:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5639B363C5A;
+	Tue,  9 Jun 2026 03:13:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EEC35C19D;
-	Tue,  9 Jun 2026 03:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEC935E1D9;
+	Tue,  9 Jun 2026 03:12:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780974035; cv=none; b=VaPZKIgja3GsSfUO3lX5hijqMzoTAomnioVmg/ixITiTevuKtakjB//YwArS6A50npD4r2h+jEMeplo2I+wOd+cWUbLgjWDAU55knBsIIimK+RhGLlvjR1fgKaaUh5JCWEXRGdrlBFxkVHaUR4mA29Y7QRja0wjGgKWTm4jMddA=
+	t=1780974783; cv=none; b=E78im8WpjgeaEyc5I/k8bvXQ+0Vn6sUfwIouzvOHrQ3yRWi3Qj0aD6y68qiAI37wYeOzW+WImO03yH23jzgwzlg13zEmrwj+I4an4KM6KBWPbVw+iHnl95SFGHasFf3DAj8NNBLCEuKJkjl94QgMBYe1MybKX5JIYXIfDBXLwkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780974035; c=relaxed/simple;
-	bh=w2IONcZz6GFVawr6IJKBO6g4w1I6f6O99KDEPG18iwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZPRWEhwdZFB1K5OYKed3oAaFWaEwENDUmxNDJwPU4NvIMxLoaUGcmt3xxgdyf6qtxbL+NihEgTa4u6IjGy69vIJlQ3uqW0uYecr22Q5UhKJT4DEVZd9ni9eXYl+Go7zMZXf9mVVabGzq/qeI1BdgpJoJD6unpjHIlpRoVjfBfhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3XTeKCs; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377D41F00893;
-	Tue,  9 Jun 2026 03:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780974033;
-	bh=kqwNYo+45Cub0sZIpNMFbKfZt255D44xOYeenrcLOTI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=m3XTeKCsAIPpgmTtMkIYkCPqqLxE3ex/RbqkA1p0E42VR6veGci7+B1t0qtM15gfN
-	 VrpCvpjvtYsB0j/cULwJOJsWmNi2B6GsCp9LVrwS19dgIP6BlOFaf4dSXHBFWOSSIW
-	 BVpKB2glK629fcZjPgo3bgBmYhlEiTH71ueqKNSzDc7Nd86bpiRMMMr+Nfvns+wDAs
-	 Ydm6BRjGM7iqQ88Ynp6sTW06Wj3p8RA20YCDycayA4q5YrEZ2XzVIujkZl7bFxtVkV
-	 N9KTC0SAb/XatWTu7oy1tq843JbaJSX9YTUG+mKc+Mxu2GLtKby+wM0KD2CeKGcNWQ
-	 L8x5kZKNf6Syg==
-Date: Mon, 8 Jun 2026 20:00:32 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Yiming Qian <yimingqian591@gmail.com>
-Cc: security@kernel.org, John Fastabend <john.fastabend@gmail.com>, Jakub
- Sitnicki <jakub@cloudflare.com>, Sabrina Dubroca <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, keenanat2000@gmail.com, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net/tls: preserve sk_msg sg.copy when splitting
- records
-Message-ID: <20260608200032.77aebf5c@kernel.org>
-In-Reply-To: <20260604134019.39161-1-yimingqian591@gmail.com>
-References: <20260604134019.39161-1-yimingqian591@gmail.com>
+	s=arc-20240116; t=1780974783; c=relaxed/simple;
+	bh=xMgcYcolNdpZFjTTRkA44kIuPU/eKVBzDgStF/3Ch4A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QJfwjiZj+6J+hJTiQzQbyp48h4WRV6hxqx1uLdwK0h+YGKe+dkgfqf0x7fc3tqQokkvOrnA2OjbeO3WW6nPF40H2e4WxSzQQ4OrsNsMQ5QVFPuYUH5tjrappAq/HGt4dLtuUogVk2YH/Eak/dE4lAaVsmmxfPZQx8zPLD6TgLkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Upsn0Izl; arc=none smtp.client-ip=117.135.210.5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=44
+	1oI75A3DiUMyUNb96b+ndobyPHuqxaJuMlZ8Mxlsk=; b=Upsn0IzlUv5jmnULn7
+	6oFFSjknORw15wB5PDSNScXkexPdpak1nn5arHRSct/enbUZ2kW7MpJOFbni9Eks
+	1PGjPwrwY4HKROxB7a8ge1oUbdh4XlGlxF5MG18k6E+H9wndNWjsu7vbjvkH9eGV
+	v3YWgbHjztKfhEJTGqck8eyTI=
+Received: from 163.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wC3tOqdhCdqU+8qCQ--.4915S2;
+	Tue, 09 Jun 2026 11:12:33 +0800 (CST)
+From: w15303746062@163.com
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	linux-i2c@vger.kernel.org,
+	wsa+renesas@sang-engineering.com
+Subject: Please cherry-pick commit 617eb7c0961a
+Date: Tue,  9 Jun 2026 11:12:27 +0800
+Message-Id: <20260609031227.21001-1-w15303746062@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC3tOqdhCdqU+8qCQ--.4915S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU24lkDUUUU
+X-CM-SenderInfo: jzrvjiatxuliiws6il2tof0z/xtbDAAGtkWonhKHMqgAA3z
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-262168-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:yimingqian591@gmail.com,m:security@kernel.org,m:john.fastabend@gmail.com,m:jakub@cloudflare.com,m:sd@queasysnail.net,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:keenanat2000@gmail.com,m:netdev@vger.kernel.org,m:bpf@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:linux-i2c@vger.kernel.org,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262169-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[163.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,cloudflare.com,queasysnail.net,davemloft.net,google.com,redhat.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w15303746062@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6D9D065BF4D
+X-Rspamd-Queue-Id: 50C5665BFF1
 
-On Thu,  4 Jun 2026 13:40:11 +0000 Yiming Qian wrote:
-> tls_split_open_record() copies scatterlist entries from the current
-> plaintext sk_msg into a newly allocated plaintext sk_msg when an open
-> record is split.
-> 
-> The scatterlist entry and the corresponding msg->sg.copy bit are one
-> ownership record. Splice-backed entries are created by sk_msg_page_add()
-> with the copy bit set so sk_msg_compute_data_pointers() does not expose
-> them as writable BPF msg->data.
-> 
-> The split path used memcpy() to copy both partial and whole tail entries
-> but left the new sk_msg copy bitmap clear. A subsequent SK_MSG verdict on
-> the split tail could therefore receive a writable data pointer to a page
-> that was only supposed to be copied, allowing BPF to overwrite externally
-> owned page cache.
-> 
-> Add a helper for copying one sg.copy bit and use it for the partial tmp
-> entry and for each copied tail entry.
-> 
-> Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
-> Reported-by: Yiming Qian <yimingqian591@gmail.com>
-> Reported-by: Keenan Dong <keenanat2000@gmail.com>
-> Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
-> Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-> ---
->  include/linux/skmsg.h | 9 +++++++++
->  net/tls/tls_sw.c      | 7 +++++++
->  2 files changed, 16 insertions(+)
-> 
-> diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-> index 19f4f253b4f90..f3988ce2219db 100644
-> --- a/include/linux/skmsg.h
-> +++ b/include/linux/skmsg.h
-> @@ -283,6 +283,15 @@ static inline void sk_msg_sg_copy(struct sk_msg *msg, u32 i, bool copy_state)
->  	} while (1);
->  }
->  
-> +static inline void sk_msg_sg_copy_one(struct sk_msg *dst, u32 dst_i,
-> +				      const struct sk_msg *src, u32 src_i)
-> +{
-> +	if (test_bit(src_i, src->sg.copy))
-> +		__set_bit(dst_i, dst->sg.copy);
-> +	else
-> +		__clear_bit(dst_i, dst->sg.copy);
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-__assign_bit()?
+Hi,
 
-Also _assign() may be a better suffix for the helper than _one 
+Please cherry-pick the following upstream commit into stable trees 
+from 5.10 up to 7.0:
 
-> +}
-> +
->  static inline void sk_msg_sg_copy_set(struct sk_msg *msg, u32 start)
->  {
->  	sk_msg_sg_copy(msg, start, true);
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index 964ebc268ee46..434753de8aadd 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -623,6 +623,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
->  	struct scatterlist *sge, *osge, *nsge;
->  	u32 orig_size = msg_opl->sg.size;
->  	struct scatterlist tmp = { };
-> +	u32 tmp_i = NR_MSG_FRAG_IDS;
->  	struct sk_msg *msg_npl;
->  	struct tls_rec *new;
->  	int ret;
-> @@ -644,6 +645,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
->  		if (sge->length > apply) {
->  			u32 len = sge->length - apply;
->  
-> +			tmp_i = i;
->  			get_page(sg_page(sge));
->  			sg_set_page(&tmp, sg_page(sge), len,
->  				    sge->offset + apply);
-> @@ -675,6 +677,10 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
->  	nsge = sk_msg_elem(msg_npl, j);
->  	if (tmp.length) {
->  		memcpy(nsge, &tmp, sizeof(*nsge));
-> +		if (WARN_ON_ONCE(tmp_i == NR_MSG_FRAG_IDS))
-> +			__clear_bit(j, msg_npl->sg.copy);
-> +		else
-> +			sk_msg_sg_copy_one(msg_npl, j, msg_opl, tmp_i);
+617eb7c0961a8dfcfc811844a6396e406b2923ea
 
-Not immediately obvious from the diff or commit message why this
-special handling is needed.
+It fixes a local DoS via userspace-controlled integer overflow 
+in the I2C_TIMEOUT ioctl.
 
->  		sk_msg_iter_var_next(j);
->  		nsge = sk_msg_elem(msg_npl, j);
->  	}
-> @@ -682,6 +688,7 @@ static int tls_split_open_record(struct sock *sk, struct tls_rec *from,
->  	osge = sk_msg_elem(msg_opl, i);
->  	while (osge->length) {
->  		memcpy(nsge, osge, sizeof(*nsge));
-> +		sk_msg_sg_copy_one(msg_npl, j, msg_opl, i);
->  		sg_unmark_end(nsge);
->  		sk_msg_iter_var_next(i);
->  		sk_msg_iter_var_next(j);
+The patch applies cleanly to all active LTS branches.
 
-This patch looks a little short. I have a recollection of trying to fix
-this and giving up after realizing how big the diff would be just to fix
-all the cases within skmsg. Could you look harder for places that
-shuffle skmsg entries around, not just the ones in TLS? Maybe I'm
-misremembering but I thought there was a lot more of them...
+Thanks,
+Mingyu Wang
+
 
