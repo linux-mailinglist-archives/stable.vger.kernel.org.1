@@ -1,284 +1,212 @@
-Return-Path: <stable+bounces-262348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fMkTIZpLKGoQBwMAu9opvQ
-	(envelope-from <stable+bounces-262348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:21:30 +0200
+	id rv19NYlJKGqDBgMAu9opvQ
+	(envelope-from <stable+bounces-262351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:12:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0043662E24
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:21:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C31E662CB4
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 19:12:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UTP7Mot9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262348-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262348-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=google.com header.s=20251104 header.b=goprdiZZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262351-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262351-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDD87314AA19
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:51:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77A15300F7A5
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 17:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021F9421F0D;
-	Tue,  9 Jun 2026 16:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C744E3B19A9;
+	Tue,  9 Jun 2026 17:03:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF702DECA3
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 16:50:57 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781023859; cv=fail; b=pmYx0FEbpyR3vxVcVmNqDG0gs0sgLIKACGZup03iDTECHrDSK1jM20QoYxVNvUXfT6SLVkBUw0EGa/bApTqxUm+y5saU8QCbV2+x9HYKiG2fGmQcWpuvp8Lepi91weknYt9ESgy2VKLFK0FDjbFqH4ybSyKR31eUmVemUYyFWTU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781023859; c=relaxed/simple;
-	bh=okPDTiJLsiKDqwqm2WiC+R9o4Oa5FtfereScFiManM4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=C5jy22LUW3GfiTIQoHEqvLHxPfYU0TUiTHYn2kQr/+XudDB+moqfOM4EIzKFVgGS/a0ifQA5B26l2dUpZHp81voSSxuY0xxOBeUX6h+TpVelPPJuzQgDbJChympxPF380OqkXr5zTg/w3wbFeu3vBPhvW3UO8skHHmgGSHlP0iU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UTP7Mot9; arc=fail smtp.client-ip=198.175.65.16
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781023857; x=1812559857;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=okPDTiJLsiKDqwqm2WiC+R9o4Oa5FtfereScFiManM4=;
-  b=UTP7Mot9P6KVOOx+I6mnUF1RBODFGrVn0fn38VPn18AGU6u+i0f6HnYA
-   MVyNrpdIcRRJ0TMMcg7poAeA1EMDmMjxTbeJ5A7bAV6nPiHlJM8beb+xg
-   32LQxtFZz+95qQSHESlDodTafowHU61YPlcMoIb9otHcGU7brQerzsz+Z
-   WiKj4+zUX5WAM4+wDhu/NYrAyUG+3C1swB8gAU7LqocXCGn8aVl0VFaoh
-   kB4q/tqm4wDYBS+Ye9JkQmQEGjg4xw20wPZX8iugaoC5XdmQCdSIz5Zs4
-   KyHlZExLGAvuNR8ZfADQ9Lw/eoBuL9Wgff6v+/cMG5xKod0lNMX9alG+0
-   g==;
-X-CSE-ConnectionGUID: Nld2urMvSM6Gkv0nvuXTsA==
-X-CSE-MsgGUID: QLvxdYf/RySZR2iWaO5JCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11812"; a="81983150"
-X-IronPort-AV: E=Sophos;i="6.24,196,1774335600"; 
-   d="scan'208";a="81983150"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 09:50:57 -0700
-X-CSE-ConnectionGUID: cKe/El6uQHec7JCjrFg5gw==
-X-CSE-MsgGUID: S2z21iRVTOylLH4N9ksAbg==
-X-ExtLoop1: 1
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2026 09:50:56 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 9 Jun 2026 09:50:55 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 9 Jun 2026 09:50:55 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.8) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 9 Jun 2026 09:50:55 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GQRRawQ47WTvQUx9uE0JGZZmgt3JzlDUh99SCBzEJJlnFJPyBCzeYj0NGROtW0FgLCZqWDHEg8O/FM4OXexKgpBqov2BIxYHnBhbRtGa707nmMntCmGo640SaakFV0PgCNqsMf/lwRvADuoH9DbOfDcb8MlOJvZJ919ABz+bxG1bAUU6uS3XzXhZh/ZPuspfQq/IX3SzWuxC/0tRNo8KTMjByYWs/SzdyuDOmDcSEN3IeVzRB+h/VphX982TJp2blJcAXLkOrDZX0SmEWd8hPs2rrybzpaa8bNRzXV+9EeheYnSGhm3fWji/EPngmjTA5in9ZJFC/Xl4FzyKxKrDHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z6N6tgoIlDXfyzyaJEF35GKzIoX/g2lbCl+eKy1R5Ag=;
- b=ZLRiVdeT4dzK9HucINb0SlVigPN4oShe6EmuudgdCD9yBTL4dd2um1H2X+HWywX2dWiDa43vd80sTS3r4SxNuzNIDX2drTFRUMB2U8eXaNMy1ELqoh6xUg4hbR5HPTGHeJXbcofdYMNwhMJMkP7TZD0utWuVmj4wQS2CWQWeBUntm0n743hWbyC2XTo7nTc8oozFHzPxCcUwiEjriA0S78osj1kdy+xYPlpR5QrdzQtzl0uSQAfHI5aYh8AwdwwZVycHATcgNkhBx/ZLqXnm/TUMzWSKxkaeeAajE+zRAog8O9bVg6iKheH6mV0s4v6rStbaVGxEDp00lFMCEQgoJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB8177.namprd11.prod.outlook.com (2603:10b6:8:17e::22)
- by DS0PR11MB6541.namprd11.prod.outlook.com (2603:10b6:8:d3::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Tue, 9 Jun 2026
- 16:50:53 +0000
-Received: from DM4PR11MB8177.namprd11.prod.outlook.com
- ([fe80::5c75:19e7:62d9:80fb]) by DM4PR11MB8177.namprd11.prod.outlook.com
- ([fe80::5c75:19e7:62d9:80fb%4]) with mapi id 15.21.0092.011; Tue, 9 Jun 2026
- 16:50:53 +0000
-Message-ID: <320f511f-7067-4498-93d5-1e9a9dd0393e@intel.com>
-Date: Tue, 9 Jun 2026 12:50:50 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe/guc: Fix buffer overflow in steered register list
- allocation
-To: Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	<intel-xe@lists.freedesktop.org>
-CC: <stable@vger.kernel.org>
-References: <20260609055657.440911-2-tejas.upadhyay@intel.com>
-Content-Language: en-US
-From: "Dong, Zhanjun" <zhanjun.dong@intel.com>
-In-Reply-To: <20260609055657.440911-2-tejas.upadhyay@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0377.namprd04.prod.outlook.com
- (2603:10b6:303:81::22) To DM4PR11MB8177.namprd11.prod.outlook.com
- (2603:10b6:8:17e::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A23377560
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 17:03:39 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781024620; cv=none; b=hWxUSnMeCaDur0FgnosS+Qek9FyB68aW5XukFOX7Q9xkpl7feveJQq55DqE+8ePYxunDeA/agAUIrRXEsLqQnO87vfUghzHZx/VA/HPNkg/vEma+QeDgNxkqfwVMpfXH4AiB52IVg1rh83Wr0/iXhYbODsTn2foWR3vhyd2pz3g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781024620; c=relaxed/simple;
+	bh=S+ORIibTBKQ0pFdjGliKCIE3wa/sE73a0IDa+NYkQBE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qz7LTlQDKa1JqB8vffZ5LJadr0oF9uu8CVJW1LcVxsqydzBHezpd0ra9SnjjgDB0smwLBSdlvXjc/xe4mbf9aWzzzwjN4yKhJYeBqpciU7mF8D84r4TNygJuSqqKFetzQH+t023M3vjhlvKlrnvnKVmQiCVcdrnMl7ZgemfRLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=goprdiZZ; arc=none smtp.client-ip=209.85.214.176
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2bf2911f93cso460305ad.1
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 10:03:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781024619; x=1781629419; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S2CN/F+xLRpEvDTUPWxMr6FI2U9i+V7+WZC6JlOTISM=;
+        b=goprdiZZacls0vpxuCZI/C3imIKQCZxDsxSwmmNMAO1/IRwa/zotmua7eKwwgOUsLP
+         kmtZPj0IT+YpFU2J2UbxzRgR1l+XFO2Ct9/O/pQ2vwEIU+MH9mzqOr8xc2eBbamMiFgq
+         RPMFXMBPjHxDI/gOjMgG4jW8w1ElMAJiQHPFpgDFYyqr4vfzI+L4dEMVYsMEyxNwpdTq
+         5xv6GWOokuvziD4DSJj9vIYdDPxN6zsg/QOwKyWVkQkyZPlHP1KieqNs+spg1Imt51Ap
+         YIrkLAIWSykAFdQYD42f3uJqo2ID8LsVxSr/PTx2adbBUvHGLgrK9aQDecyQ5r3tnZcK
+         rnDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781024619; x=1781629419;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S2CN/F+xLRpEvDTUPWxMr6FI2U9i+V7+WZC6JlOTISM=;
+        b=FlnBYoKcVJblNmzm3Ek7p7jkVFxYBmQO6oOGGnrrNYEFLe3bk09nJ4onB3bmoVLl+L
+         /5OKZn2y9Snb+EXH5SXjht/WX+EPebs21mpk5w1L/ROuD3pqtwpgWndzynRa3UY4EIiz
+         XJw92/4R/IplGYC8TA+8t5Po1eDYaTsYhu3ZBS9jvlYHn9w5veazyou9C0qFb2pTHhWR
+         Etts2wU9VmXO80t25ZXF2t9WkZk/NvWk/KmIo7InP30HOQFvP8pKbZHBoWSRL69T3h87
+         XOFrXMAcE5J8QGYdmOeUNlJjwMy1nWOlNlMe9umxgRcgFD5Tf4fnjQOr/9fQ/rpVZKZd
+         0n2w==
+X-Forwarded-Encrypted: i=1; AFNElJ+wb8gMsy28AfxDKsNxwQDQ3SZvJEpb+mL1FhWn7mdH7/JxOa+dU8usWl5dOZ8QutvfHmPa2W0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7zC4aGelOgXfoyHypqXu4bn6fFGpuUmjr2Zpi4VCu8+mtLZEd
+	clZ6PzpnI9yBA49yFxrkWv7tH9NoKAQYi+Lgf4TWEL25Vk2Ynz5nLkwl76nfdpMt5A==
+X-Gm-Gg: Acq92OE2f0A9kWDz0L7OGRFvozJ5KeGGIz5CqnNT6xdltktwbSrtTlPJ3LIUBTWAqCj
+	TGzhyKnZpv5w0QJFHBnEcscvpTKQCjlOElNLxOm8baqX9XQyDOAT9wo86FsBmqrXHsl0rltlOhf
+	XyO2SgdBgFuBicvQb5S5t9KP9TAjbNBlnimomxOhilmX43RTGY/HQU2TRGtpXhgc07YbK6lEpUj
+	gpliDYnctHLXU6ov3HCT/nXRo5zZ+eKyrCUVSMtB0vmLfbUcgEpR4bD0U5M/JVRVFQr5Da/lfKn
+	5SW4OUgLltpnewBpRfC7lJvMOWPvGW2lIZSkBG/efWblvPl4cNb3fogtU28FDi8hqNPsLZBGlcL
+	JhZYuaMlhlLI/FqbttHp3aJEV70BaXyIvNOyLYAg22TRnbXaj8UOgS22QCtXgOuA8nWbqyO6Zsd
+	VeuYnrtB6WNe1HOX9JPSy91+U3T940Ms+Pw2tvQnuEU+92s6PrDEc6AuUa604Jr4+ZIEk7xdZhQ
+	bpysINQqBW9Vzc60StDJNv5I2NIRA==
+X-Received: by 2002:a17:903:3d10:b0:2bd:6dad:3dfa with SMTP id d9443c01a7336-2c1eb9443abmr8784635ad.24.1781024618140;
+        Tue, 09 Jun 2026 10:03:38 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c86151154a8sm10528937a12.22.2026.06.09.10.03.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 10:03:37 -0700 (PDT)
+Date: Tue, 9 Jun 2026 17:03:34 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: iommu@lists.linux.dev, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leonro@nvidia.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Mark Lord <mlord@pobox.com>, patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH rc] iommu/dma: Do not try to iommu_map a 0 length region
+ in swiotlb
+Message-ID: <aihHRieLr9oEaNEK@google.com>
+References: <0-v1-8536728bc89f+469-swiotlb_warn_jgg@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB8177:EE_|DS0PR11MB6541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95964a7e-61c6-4b59-4f95-08dec64744a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099006|22082099003|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info: VjC38nEgxBM0Rtvz0EfoVrVcEKIur5+9dr3U9yUpM/NKlLvIImZcULeCJRKoFbADnBEMxEkHTAoUUrPSjLuedsOo1/YBic0l/gCw87GjjR4yg2qcQ663lloj+a3NvjgvDhcIRyzzPDm5YrqLmpzH1j3PAJnlxI3F+c++CAhxPrV5NvXCrNZiNDujEtj+4G6iYR5X4QaLyKDYCrXkfo9BA3qByE0mIPwXEa0pBj6aCrANLUQi/2Hv+/p70tFBJLj5fUTe5FywL6GX5Hj8yYSfvKo2YphSuqKhSwyk6DKjHHZmElhyDoBC/kKqv7K7rDzZhxEiFBw2DcGviF8GWmM2aJl+hWnBRGVAfdAqNKDioOM1uqH6l5iQkqaUbV6a4YuB0v0I1TlySVn7QWqi3+CoeKKrhTzfbG6M3CN3frGy/AxVN6Vc9fxn+hwp4fqkp2FMEnDzJixO/KguurjPmlfJWcHlLNAy46gCEiy7WyzBsKRuMTidRvwbwsEtJ4syF0pTHhONarsxtznJjAVFIkHj2ZS2zvCmd7qvNxQOB0x7/2kckmSrQ+aYKWZXT1BqKMkJtDulqvvVVUr3k5M1ZNN/8tNClIAies8JboLqEr2/cJJMzuU9U6Pwvrl8rDBYBBX2Tz0weATrKFjKX8xDJ0gFiIzwihtHxvn0M1vkmCQ55pBCavnMVfoBWUqPywSnQtIw
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB8177.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099006)(22082099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UHcxdWtWOGtLZ2gwUGw4SktnT1VOUVFqQk1md0lXNmR6dUw4UkNna0w0aTU3?=
- =?utf-8?B?SGRTYTZKZkZWODlNV3h6Q1JYeHBONXpsTXZrVm1laDdOV0gvNFpVOUE3WURV?=
- =?utf-8?B?c09panVyS09yTnNpUXVtTGZhcmhFb3hMWE5saEVMMkYrMmZHRWlCUW9Cb1h4?=
- =?utf-8?B?aWdSV2FFVUEydmdaZ3FwdVhMTHJQWENCY0dxblFhTkcvMHQ5ZkVXeGxCWVBC?=
- =?utf-8?B?Qld1aVFxQ1krWXIwTVBQRTY1T1BwaGlpYm1oUllyUTM1OGJrSTgwV0x1Kzhh?=
- =?utf-8?B?cjRJTU1yYW42cFZaNlExR1R6Nm9zVHAzTkVQM3lHaVRIUnZjaG1VeUdSZUdm?=
- =?utf-8?B?aEp0ZHFNMlhzV2FvWE12RTdDRFhtM0pmZmhGdlpwN0l5c0ZnMjV2b3UzNksv?=
- =?utf-8?B?ZVJuaU03MXVDVE1PQzhhamExbEVDWWZCZGovK3RFZFRPRUc3RHlYSG5jL1gw?=
- =?utf-8?B?WmZRMmJ3QzcyMTA0NEl0NjJoei94YzFnVWpvZTkra2ZYQmdHZHJRTGtmN3B4?=
- =?utf-8?B?UWllOXZzcDcxRWo4S1dJWkIyYmI2amVRSlZtcUgrZE1FbmJCMDlqajJLMkMx?=
- =?utf-8?B?VGdkM2hnRm9JM1YvQmdnL2psN2dENzhsVm8yTE1LcXd3aVhiMU41b2F0eStk?=
- =?utf-8?B?aWpubE1pcnFmUWFaYnExZUxJelJ5di9WcG1vVkJZeXV2OXl3TXJkWVBhZURE?=
- =?utf-8?B?N0wwaERWSnZ1Ny8xYnZ2cU9JY2JXckd6UTM0R3kzNjZZZythL3RGcDRwZGxU?=
- =?utf-8?B?bTlDUTJRTFM3a3lZMEw2NStmQ0Q1QVprTURPOTlzWjFZd0hZVmU5QmpBU3Qr?=
- =?utf-8?B?VzFnbHJDMWErNVBqSlY5aW5VemZYNDh1bVhkYjE4Q283elRVNC9vZXMyWXdn?=
- =?utf-8?B?YkFwcytTTjBnNTI3NmgxK3RrYmhtV09tNW5pZGR6SjFpWkVTc3UyTjFPR2Vn?=
- =?utf-8?B?M2F5ZGJjdzg0eCtORHlmOUVzTXlZSDZrbERzZ2xnOE13ZnR2TkIwZkRmZUxX?=
- =?utf-8?B?U0twMDBML3RrYldEbW9SUXZQQzJZRVk2TjQrcC80b0dPSXZOL2lja3ZiN0pV?=
- =?utf-8?B?Zklrclo5N0svWng5dWNEMzBwM2VlTzl1SnF6WjBhdzduU3pZdk95NFJXdlBa?=
- =?utf-8?B?R0Njd1BJLzBqNEFsdkJySklkSjh5djk3UzBjRHJLekNxSGtzalo4VlNNNTU3?=
- =?utf-8?B?MS9wNjdiMXpxVlgrb3YvemdQL2w5NDFrczVpZ2JoZVdGTlBvQ0wrZFhVTXk2?=
- =?utf-8?B?NjIyaVhBUnV5djgydzhpRHJ5SnBlZ2l2emtkQkNyVFlUWER2T0Vod1R5ZDRZ?=
- =?utf-8?B?Y1lBNXhBMk9pYVBLTWVHd1p1bW1yVXYrWWxkUUovU1l5RnljV1l3NDRGc0pK?=
- =?utf-8?B?OGcwM2FjMHhmTmpGeE95cm1CVnRNSndmcEVQd3pBN3VlQ0JIWXRwTHk0MXRt?=
- =?utf-8?B?RDFXbVMycnJEcitQbTNUOW5rcVZQekpSV2dzS0Y1WUlKTkdlWExNTVgyOTNu?=
- =?utf-8?B?aUNPU1h6TVZqZnBLZS90TEk1RzF5NzVWNWVDVnEzTE10V1R6SERQbmtoeEc0?=
- =?utf-8?B?a0EyZFFoU0NhYmpOYzh0N2lHZnpNT2FZSEprQXhJdDVkOG5vUnhyV0NQVEVX?=
- =?utf-8?B?QVpPVW83R092MXNJa0NuSEdmeFpaeVJQbzZtRHFSSnppajZqMy80VllRRUgx?=
- =?utf-8?B?NGdxL2VybTR5U01QMEpOajdES2lZd05JVHNra0M1WlhRQWxnd2NqVzc3eU5q?=
- =?utf-8?B?eHVMOGVrZ3d3S0Rld1VtZXNuMkZIdzVSZXlqSTJzb0c0Y2JtelVzdGFlbHpY?=
- =?utf-8?B?QlJWbk9MZ0loNDd3ZDVGSEdiRTl6N002dmZnZTJQSDVOTmdYcG0zMEltZW1u?=
- =?utf-8?B?MkFUNEd6ME1CWWw1TC9XclFTODlvbms3eFQvbWhMZlNKeFBERE53RkxUUHI1?=
- =?utf-8?B?ZFM5M1VOSnhDOXZUdXdzbkorc1pibXRMY0hSL3Jtei8zakx4eUxNRTRrbUYy?=
- =?utf-8?B?SmRpZlRWbUR0M21JZ1ZVZG0vdmhOZG9uMlJHRXV0elBOTkpsRlFLR0R5MUFJ?=
- =?utf-8?B?UlpSbTBsaHJ3S24xZ1pXbW9WU0s3VTZzZkw2VDV5WEROa3plQUY0K3dSalpO?=
- =?utf-8?B?dnlSQ2VnZDFucnQvWHZUaDdCSWpKVDhpR2M5U1ZqWXNMaFlpWDFVazFhWGZX?=
- =?utf-8?B?TndEV1BNMHpaM3pLTUFGMEx2Y3VlNVJHY2pUcGd0UGxRL3Y3N3VtVW5yR201?=
- =?utf-8?B?RUpOUHdtRU9JaGtoQlBDaE5OSStSeUgyQnJReUlzZU9pN2ZWSzRCTVFjRjBG?=
- =?utf-8?B?OXVjUjFHR2s2a3I3UjhWR0daclZUV0ZFa0RxY24rMk12bWZ3Wlg3dz09?=
-X-Exchange-RoutingPolicyChecked: j8p7DC1OgGzmUL8Gv/csz6G4cYzFD+twDr9iLIRyiTsgeOQ9lIYk972gAUyYzdoglJ3moVxH7pDAoJrKKRpmbMcGWqXhx81VUtva7zDKXXNgc27HCmrjV+m1Oj0ZXeRP/Vpr2+i1jQe3qvdzXN1ahEbePf5PCLuEe56mMyeE9quxMNW/dBscB3x5xncj/536KjosqoYl6t53lNjK5nmnhrtq9iyxxTysy9RTV9A8ojZlyiZRs/2NNxIsp8tCwDm5+9TTQ9GiQcIqCvyPlxzh8DmPWF35FE6P3JIzMoQorIJUXcRvHC6D4IVlZAr7LXTcj6K8coQ7LsOrRL9LRj9h4A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95964a7e-61c6-4b59-4f95-08dec64744a7
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB8177.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2026 16:50:53.1802
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dGjagVqa0bySmpV0qxYnPk2JUnluEbk2Su8EhCX6jpTnSSQVu1EUo5+y0rhqyeYnO1jwCHyH341svsJ3vKhbGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6541
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <0-v1-8536728bc89f+469-swiotlb_warn_jgg@nvidia.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262348-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262351-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tejas.upadhyay@intel.com,m:intel-xe@lists.freedesktop.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,intel.com:email,intel.com:mid,intel.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:jgg@nvidia.com,m:iommu@lists.linux.dev,m:joro@8bytes.org,m:robin.murphy@arm.com,m:will@kernel.org,m:axboe@kernel.dk,m:hch@lst.de,m:leonro@nvidia.com,m:m.szyprowski@samsung.com,m:mcgrof@kernel.org,m:mlord@pobox.com,m:patches@lists.linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER(0.00)[skhawaja@google.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[google.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[skhawaja@google.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,pobox.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E0043662E24
+X-Rspamd-Queue-Id: 3C31E662CB4
 
-Thanks for fix this buffer issue.
+On Mon, Jun 08, 2026 at 03:10:04PM -0300, Jason Gunthorpe wrote:
+>iommu_dma_iova_link_swiotlb() processes a mapping that is unaligned in three
+>parts, the head, middle and trailer. If the middle is empty because there
+>are no aligned pages it will call down to iommu_map() with a 0 size
+>which the iommupt implementation will fail as illegal.
+>
+>It then tries to do an error unwind and starts from the wrong spot
+>corrupting the mapping so the eventual destruction triggers a WARN_ON.
+>
+>Check for 0 length and avoid mapping and use offset not 0 as the starting
+>point to unlink.
+>
+>This is frequently triggered by using some kinds of thunderbolt NVMe
+>drives that trigger forced SWIOTLB for unaligned memory. NVMe seems to
+>pass in oddly aligned buffers for the passthrough commands from smartctl
+>that hit this condition.
+>
+>Cc: stable@vger.kernel.org
+>Fixes: 433a76207dcf ("dma-mapping: Implement link/unlink ranges API")
+>Reported-by: Mark Lord <mlord@pobox.com>
+>Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+>---
+> drivers/iommu/dma-iommu.c | 19 +++++++++++++------
+> 1 file changed, 13 insertions(+), 6 deletions(-)
+>
+>This was discovered because iommupt errors on mapping length=0 instead of
+>making it a NOP, so it is an became an issue since commit d6c65b0fd621
+>("iommupt: Avoid rewalking during map") making it a regression this merge
+>window.
+>
+>diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+>index 54d96e847f161b..381b60d9e7ceaf 100644
+>--- a/drivers/iommu/dma-iommu.c
+>+++ b/drivers/iommu/dma-iommu.c
+>@@ -1918,12 +1918,18 @@ static int iommu_dma_iova_link_swiotlb(struct device *dev,
+> 			return 0;
+> 	}
+>
+>+	/*
+>+	 * After removing the partial head and tail, there may be no aligned
+>+	 * middle left to map.  The tail still gets bounced below.
+>+	 */
+> 	size -= iova_end_pad;
+>-	error = __dma_iova_link(dev, addr + mapped, phys + mapped, size, dir,
+>-			attrs);
+>-	if (error)
+>-		goto out_unmap;
+>-	mapped += size;
+>+	if (size) {
+>+		error = __dma_iova_link(dev, addr + mapped, phys + mapped,
+>+				size, dir, attrs);
+>+		if (error)
+>+			goto out_unmap;
+>+		mapped += size;
+>+	}
+>
+> 	if (iova_end_pad) {
+> 		error = iommu_dma_iova_bounce_and_link(dev, addr + mapped,
+>@@ -1936,7 +1942,8 @@ static int iommu_dma_iova_link_swiotlb(struct device *dev,
+> 	return 0;
+>
+> out_unmap:
+>-	dma_iova_unlink(dev, state, 0, mapped, dir, attrs);
+>+	if (mapped)
+>+		dma_iova_unlink(dev, state, offset, mapped, dir, attrs);
+> 	return error;
+> }
+>
+>
+>base-commit: 4549871118cf616eecdd2d939f78e3b9e1dddc48
+>-- 
+>2.43.0
+>
+>
 
-Suggestion: This could use bitmap_weighted_or() here, since we need both 
-the ORed DSS mask and its weight. That would avoid the separate 
-bitmap_or() + bitmap_weight() sequence and align with the style already 
-used in xe_pagefault_queue_init.
-
-Like:
-{
-     xe_dss_mask_t all_dss;
-
-     total = bitmap_weighted_or(all_dss, gt->fuse_topo.g_dss_mask,
-                 gt->fuse_topo.c_dss_mask, XE_MAX_DSS_FUSE_BITS) *
-		guc_capture_get_steer_reg_num(guc_to_xe(guc));
-}
-
-// Ignore the format, got trouble to make text alignment in email
-
-Regards,
-Zhanjun Dong
-
-
-On 2026-06-09 1:56 a.m., Tejas Upadhyay wrote:
-> The size calculation for the steered register extarray uses only the
-> geometry DSS mask (g_dss_mask) to determine the number of entries to
-> allocate:
-> 
->    total = bitmap_weight(gt->fuse_topo.g_dss_mask, ...) * steer_reg_num;
-> 
-> However, the filling loop uses for_each_dss_steering(), which iterates
-> over for_each_dss(), defined as the union of g_dss_mask and c_dss_mask
-> (geometry + compute DSS). On platforms with compute-only DSS bits, the
-> loop writes past the allocated buffer, corrupting adjacent slab objects.
-> 
-> This manifests as list_del corruption and SLUB redzone overwrites during
-> drm_managed_release on device unbind, since the overflow corrupts the
-> drmres list_head of neighboring allocations.
-> 
-> Fix by computing the allocation size using the union of both DSS masks,
-> matching the iteration pattern of for_each_dss_steering().
-> 
-> Fixes: b170d696c1e2 ("drm/xe/guc: Add XE_LP steered register lists")
-> References: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/8049
-> Cc: Zhanjun Dong <zhanjun.dong@intel.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> Assisted-by: GitHub Copilot (Claude Opus 4.6)
-> ---
->   drivers/gpu/drm/xe/xe_guc_capture.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_guc_capture.c b/drivers/gpu/drm/xe/xe_guc_capture.c
-> index 21f7caf9ea08..181e8b60357d 100644
-> --- a/drivers/gpu/drm/xe/xe_guc_capture.c
-> +++ b/drivers/gpu/drm/xe/xe_guc_capture.c
-> @@ -461,8 +461,14 @@ static void guc_capture_alloc_steered_lists(struct xe_guc *guc)
->   	if (!list || guc->capture->extlists)
->   		return;
->   
-> -	total = bitmap_weight(gt->fuse_topo.g_dss_mask, sizeof(gt->fuse_topo.g_dss_mask) * 8) *
-> -		guc_capture_get_steer_reg_num(guc_to_xe(guc));
-> +	{
-> +		xe_dss_mask_t all_dss;
-> +
-> +		bitmap_or(all_dss, gt->fuse_topo.g_dss_mask,
-> +			  gt->fuse_topo.c_dss_mask, XE_MAX_DSS_FUSE_BITS);
-> +		total = bitmap_weight(all_dss, XE_MAX_DSS_FUSE_BITS) *
-> +			guc_capture_get_steer_reg_num(guc_to_xe(guc));
-> +	}
->   
->   	if (!total)
->   		return;
-
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 
