@@ -1,182 +1,146 @@
-Return-Path: <stable+bounces-262319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qL9eFYFDKGoPBQMAu9opvQ
-	(envelope-from <stable+bounces-262319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:46:57 +0200
+	id nZebKAtGKGq2BQMAu9opvQ
+	(envelope-from <stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:57:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3486628E9
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:46:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92F7662AEC
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:57:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=Pxu95Q9+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262319-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262319-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
+	dkim=pass header.d=makarenk.ooo header.s=default header.b=iN3WSvHV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=makarenk.ooo;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35B99307D7DD
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 15:52:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 624A43097BDA
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6605495503;
-	Tue,  9 Jun 2026 15:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A41371D17;
+	Tue,  9 Jun 2026 16:10:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE70C363095;
-	Tue,  9 Jun 2026 15:52:13 +0000 (UTC)
+Received: from hognose1.porkbun.com (hognose1.porkbun.com [35.82.102.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D1636E493;
+	Tue,  9 Jun 2026 16:10:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781020336; cv=none; b=AZN6KbR1uz8XuVp2QQCt4SnPYpHXXpDdrZ7D6RPZMX9MR0f1rt0iZBUW4LUGpDL3DZi8l9pA7jexPShDYUDH2Q0HIXTSRWIQ+wZvJv1or4psR290NXI8OSOmS8cLGySXnAgkhd3Dv/EfuX0lMCfE7AoG+6GHF2YGbNmsOPBnBZs=
+	t=1781021448; cv=none; b=SUiKt4oyNsc+80qHn4vFjy8SEsXPlZwTL0Vh6l47kdbnTEE+WGSaHle1Krj9DnodfJ+95zFHwIyKYSRXx4NLQ+nD9gofpyp4j2pHpTnyuVSJBpT7jjgIp4lrLwaQWgkwVCd7vzXfEw9LPtkDlBBD6NUwQwn9bk1HsbjO3nZLbrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781020336; c=relaxed/simple;
-	bh=8042xhM56BUjDU6m/D/cqtu2jqtYY5gytptBcB/9n0g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cRZfp3fe0NJzqVvf2UrbdfOfFCu29wVPhBN668mM74/dNWwbz6QR+UIwlX+eyOU+aK15XrS+G9PkJaZ5RViGg+8xAlOL1+QamJ4kFYVeuf30+adbDoeDd+Scu2qIhrYXjfUPQeUOv5NGbLb8IcmmSIWykbWnMhHMz4gE+ugxVT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=Pxu95Q9+; arc=none smtp.client-ip=162.243.161.220
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=d2nsr
-	8MMQegCYjrAboIX+CyGXLDqAeF5OkypEuhFvp0=; b=Pxu95Q9+b4Vy3CuLfoo6T
-	Wh+DWcxSXL58xNb7biIn/SR6ovXRsJB/FZyjS2RsQR+0j9eTFjkSgRWegHaIMZcE
-	O4694RQBwwEyFdJZsPzzBeANLH1UDC+UikuDLmjc5WpLbCGSnzvOhA+lAx8CPhf8
-	OWSOiZd0KhEhmrqxm50ZhQ=
-Received: from DESKTOP-35NLEVI (unknown [166.111.239.142])
-	by web3 (Coremail) with SMTP id ygQGZQCX5ZKiNihqKZBEAg--.20133S2;
-	Tue, 09 Jun 2026 23:52:03 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: v9fs@lists.linux.dev
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1781021448; c=relaxed/simple;
+	bh=O+eLWs+OWcxYj/ZX81C3cSzRxN9E5RQJC632vb41yYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AC46y1SIchOQ0TS5z8+PlkorRAvbgK99I6qbIPBpamNOt4U4pCy3r/+zXamVxNJTVT1dE8KtbNGo+jc082MBwdqx8UBO1oOmn1sXI64y8r8r7SNuVgN9YwMAksz/amnrBLGCf8jnePdZnnPIGehBZW+NAY+j9LJ/OqAe8aVfCes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=makarenk.ooo; spf=pass smtp.mailfrom=makarenk.ooo; dkim=pass (1024-bit key) header.d=makarenk.ooo header.i=@makarenk.ooo header.b=iN3WSvHV; arc=none smtp.client-ip=35.82.102.206
+Received: from home-pc (62-157-05.netrun.cytanet.com.cy [62.228.157.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: oleg@makarenk.ooo)
+	by hognose1.porkbun.com (Postfix) with ESMTPSA id D2EFB485390;
+	Tue,  9 Jun 2026 16:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=makarenk.ooo;
+	s=default; t=1781020865;
+	bh=7dc5ymui68NYn6ueFqGVyMe26N+0nALw55iH7WG77r8=;
+	h=From:To:Cc:Subject:Date;
+	b=iN3WSvHVKesrHY4pGyQIxvHuxu/UGemqYEEyXP8ZHIYUTfwB51DRBk8cYcesMfQC3
+	 ZpiUkGruCW+4IQZUccnTTnX9YR7C1ntPwiU28YYJVEBApR0E4iUaxn5z+NgumrpNjI
+	 G1W9WbTUje65pmvCSzTj1u4ZSgLD8/AAt59/lhYc=
+From: Oleg Makarenko <oleg@makarenk.ooo>
+To: jikos@kernel.org,
+	bentiss@kernel.org
+Cc: Oleg Makarenko <oleg@makarenk.ooo>,
 	stable@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>
-Subject: [PATCH] 9p/xen: drain response work after unbinding IRQ
-Date: Tue,  9 Jun 2026 23:52:01 +0800
-Message-ID: <20260609155202.1706-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.53.0.windows.2
+	Oliver Roundtree <oroundtree1@gmail.com>,
+	=?UTF-8?q?Ryno=20Kotz=C3=A9?= <lemon.xah@gmail.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Anssi Hannula <anssi.hannula@gmail.com>,
+	Dmitry Torokhov <dtor@mail.ru>,
+	linux-input@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] HID: pidff: Use correct effect type in effect update
+Date: Tue,  9 Jun 2026 19:00:27 +0300
+Message-ID: <20260609160031.493353-1-oleg@makarenk.ooo>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:ygQGZQCX5ZKiNihqKZBEAg--.20133S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur13Gr4UGr13WF4xKry7Awb_yoW8tw1kpa
-	9Iyr98tFykAFyYyFZYqFWxJ3WrCFW8GwsrKryjyay3X3Z8JFy0grWkKw1F9F98Cr4kKF1I
-	vrn0qFWq9rn8AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_XrWl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU0lksUUUU
-	U
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAgMNAWonzACpjgABsq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[makarenk.ooo,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[makarenk.ooo:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262319-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262322-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:oleg@makarenk.ooo,m:stable@vger.kernel.org,m:oroundtree1@gmail.com,m:lemon.xah@gmail.com,m:tomasz.pakula.oficjalny@gmail.com,m:anssi.hannula@gmail.com,m:dtor@mail.ru,m:linux-input@vger.kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lemonxah@gmail.com,m:tomaszpakulaoficjalny@gmail.com,m:anssihannula@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_RECIPIENTS(0.00)[m:v9fs@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:ericvh@kernel.org,m:lucho@ionkov.net,m:asmadeus@codewreck.org,m:linux_oss@crudebyte.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER(0.00)[oleg@makarenk.ooo,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,kernel.org,ionkov.net,codewreck.org,crudebyte.com,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[makarenk.ooo:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oleg@makarenk.ooo,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[makarenk.ooo,vger.kernel.org,gmail.com,mail.ru];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,seu.edu.cn:email,mails.tsinghua.edu.cn:dkim,mails.tsinghua.edu.cn:mid,mails.tsinghua.edu.cn:from_mime]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,makarenk.ooo:dkim,makarenk.ooo:email,makarenk.ooo:mid,makarenk.ooo:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B3486628E9
+X-Rspamd-Queue-Id: C92F7662AEC
 
-commit ea4f1009408e ("9p/xen : Fix use after free bug in=0D
-xen_9pfs_front_remove due to race condition") added cancel_work_sync()=0D
-to keep xen_9pfs_front_free() from freeing a ring while=0D
-p9_xen_response() is still running.=0D
-=0D
-The work is currently drained before the event channel IRQ is unbound.=0D
-That leaves a race window where xen_9pfs_front_event_handler() can run=0D
-after cancel_work_sync() returns and queue p9_xen_response() again.  The=0D
-following unbind_from_irqhandler() synchronizes with the IRQ handler, but=0D
-it does not cancel work that the handler already queued.  The teardown=0D
-can then free the ring and private data while the response work remains=0D
-pending, and the worker later dereferences ring->priv and priv->client.=0D
-=0D
-Unbind the event channel IRQ before draining the work.  Once the IRQ is=0D
-unbound, no new response work can be queued by the backend event channel,=0D
-and cancel_work_sync() waits for any work that was queued before or=0D
-during the unbind.  It is then safe to release the ring resources.=0D
-=0D
-Fixes: ea4f1009408e ("9p/xen : Fix use after free bug in xen_9pfs_front_rem=
-ove due to race condition")=0D
-Cc: stable@vger.kernel.org=0D
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>=0D
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>=0D
-Reported-by: Ao Wang <wangao@seu.edu.cn>=0D
-Reported-by: Xuewei Feng <fengxw06@126.com>=0D
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>=0D
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>=0D
-Assisted-by: GLM:GLM-5.1=0D
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>=0D
----=0D
- net/9p/trans_xen.c | 4 ++--=0D
- 1 file changed, 2 insertions(+), 2 deletions(-)=0D
-=0D
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c=0D
-index f9fb2db7a066..73c75fbdfa21 100644=0D
---- a/net/9p/trans_xen.c=0D
-+++ b/net/9p/trans_xen.c=0D
-@@ -281,14 +281,14 @@ static void xen_9pfs_front_free(struct xen_9pfs_front=
-_priv *priv)=0D
- 		for (i =3D 0; i < XEN_9PFS_NUM_RINGS; i++) {=0D
- 			struct xen_9pfs_dataring *ring =3D &priv->rings[i];=0D
- =0D
--			cancel_work_sync(&ring->work);=0D
--=0D
- 			if (!ring->intf)=0D
- 				break;=0D
- 			if (ring->irq >=3D 0) {=0D
- 				unbind_from_irqhandler(ring->irq, ring);=0D
- 				ring->irq =3D -1;=0D
- 			}=0D
-+			cancel_work_sync(&ring->work);=0D
-+=0D
- 			if (ring->data.in) {=0D
- 				for (j =3D 0; j < (1 << ring->intf->ring_order);=0D
- 				     j++) {=0D
--- =0D
-2.43.0=0D
+When updating an existing effect, the effect type from the last created
+effect was sent to the device instead of the updated one.
+This caused incorrect reports when a game creates multiple different
+effects and updates only one that is not the last created.
+
+Fixes FFB in multiple games that create multiple simultaneous effects
+(Forza Horizon 5/6).
+
+Fixes: 224ee88fe395 ("Input: add force feedback driver for PID devices")
+Cc: <stable@vger.kernel.org>
+Tested-by: Oliver Roundtree <oroundtree1@gmail.com>
+Co-developed-by: Ryno Kotzé <lemon.xah@gmail.com>
+Signed-off-by: Ryno Kotzé <lemon.xah@gmail.com>
+Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
+---
+ drivers/hid/usbhid/hid-pidff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index c45f182d0448..5f4395f7c645 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -522,7 +522,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 	pidff->set_effect[PID_EFFECT_BLOCK_INDEX].value[0] =
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+-		pidff->create_new_effect_type->value[0];
++		pidff_get_effect_type_id(pidff, effect);
+ 
+ 	pidff_set_duration(&pidff->set_effect[PID_DURATION],
+ 			   effect->replay.length);
+-- 
+2.54.0
 
 
