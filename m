@@ -1,180 +1,203 @@
-Return-Path: <stable+bounces-262171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ti+0JzOJJ2qyygIAu9opvQ
-	(envelope-from <stable+bounces-262171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:32:03 +0200
+	id VTPrLXaNJ2pbywIAu9opvQ
+	(envelope-from <stable+bounces-262172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:50:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3987C65C0F5
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:32:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B5965C1C9
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 05:50:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=LfkVgTXj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262171-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262171-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=pqKxfASP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262172-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262172-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3A683009B2F
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 03:31:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 473003023DC1
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 03:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009A0372EEA;
-	Tue,  9 Jun 2026 03:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E243BE174;
+	Tue,  9 Jun 2026 03:50:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E68372EC1
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 03:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0814E35E925;
+	Tue,  9 Jun 2026 03:50:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780975897; cv=none; b=sneMgpWtwbDRcicAMwgcGNOjKiyDDZyz4X3GytPnzO8xMV/yIx/VyD9FANoGhZThR175VuANFZ8tBhvW2B3vZl+Ur9fcMJPLoP5PL6LbLPKZtZQ6XYnlMn5kqBDfiuk3JQQNz9QEjx6hXwNq2k++yuh+5RCvh1eCvxFAkcXLBbc=
+	t=1780977009; cv=none; b=V1+v+MRJbHH9I5/gDLq+1IKNbXbmMzmrfwyHtGsWsr9cxIV7j0wJcHXjE3Hs5eC8f45d45Ls0+SoTh4nMoriScPmACVLZucteOf1nwm5tj0ca6deBItWly5uXMjMRcKAqxIPHVkE2pjWoEZuJVPp38Bqbs+petVWhG4nrLkg05M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780975897; c=relaxed/simple;
-	bh=jfe0Gv32TJvkzmDAezzNMWcuvBvk140gbHR2Jyv9rfI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YHFWLnq16fB6t/sMIyTnTUM63GuEFc3s+SMRt4UW6efUPsvL0VVk5HCnDZ/TjPKigbp1vDj54JqXbX2AcNNU5SXU997FptMBKny8W7oHRGYCjJTQB/k0Nv4LTYUX1bB6Y/2S0KvBsycjX/wHI/dOS6bfW4o0kumL1MjCI88fpMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LfkVgTXj; arc=none smtp.client-ip=209.85.210.201
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-842211d6e48so5804525b3a.0
-        for <stable@vger.kernel.org>; Mon, 08 Jun 2026 20:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1780975894; x=1781580694; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4QWk8m6cD8s0kHa/VMPBa/DWD4qEXAmgem93o9OWtA=;
-        b=LfkVgTXjWg6w2Pa92RZVsOYk5zPx3oLfnJqAWpStN/Nc2cOJm9wTgqhh90rcciZszt
-         INDN5/ONVbpjfjJa2eity9kmz9XFIQ2tx+5blzmuMNqwarJ/aC0eHNpVwkwa4bAVGgOS
-         NN+GjHP8UoSugXRBUNpiZYxitQO1UKrqEgdaHg5JIxo6VQ1/exJgBnJnD9MK3cV6ZT7S
-         0fa/Pa9aZqPVPdbSKJB0xZWFcoNzl3J84ppfVPILsJuxjpg/mENGYF1NN+LT9Rb2NHNg
-         +u8leYn2RqBurcN0H0Xiid7TrhZCYdk8kYSIgdNtK0SFkbKKwv9OtEmVEYFc0WLJIzrk
-         4MRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780975894; x=1781580694;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j4QWk8m6cD8s0kHa/VMPBa/DWD4qEXAmgem93o9OWtA=;
-        b=pFbyn29YFKdE0llOm0Hj/CpC+ElJHS3EKdpiwy6/Ck+g5TWGdGb0U/JhHdXXXQVFF1
-         /i0oG7r+GLLVJOmJZVO369bnaIihdeFzUg/YJxudRDMd/ytlIH/iDi+PG2CucQ+YJwrS
-         Exzu5xojbevchm2E/Xmk1vlcIofc6KIc9x1eq1k3ANuesR0yxne7qr4hMBmJ+RBrW5q4
-         N7imCZSyC5rO/YKUdMAFX8HOuoFajSe34ikGuJ+nHE15C8vMbqTL+uvIk4Zs+OH8H3L/
-         dCrLjyGDcmVIXmDRytawgdVhZWg5GVgnOTOLX8l6GIG8CvRFKyfGXc/eIZJh+bK1m8cj
-         hirw==
-X-Forwarded-Encrypted: i=1; AFNElJ8OF1Ofc+n/mtU+/rxFZeQnV4rjD8NUx5sr2QfnYDuwFmD6FokaiEE7lS6eK3G+ySJBxg+M6Xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsIn9Vchiwp4NOMybuWIViCQ0y88h2o8vH+2fpgbZyPcmw9sNh
-	J6nF5WU0JwlN/u8ThlZmDnrvmBQs9A9CherKTm9kceUwa58IDY/lSkfQAtBUmqh+STw290HVnVj
-	TppBXrw==
-X-Received: from pfn35.prod.google.com ([2002:a05:6a00:a223:b0:842:b0e7:887d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1d8e:b0:842:6099:c55c
- with SMTP id d2e1a72fcca58-842b0d82a44mr18014085b3a.3.1780975894067; Mon, 08
- Jun 2026 20:31:34 -0700 (PDT)
-Date: Mon, 8 Jun 2026 20:31:33 -0700
-In-Reply-To: <20260604160733.12555-2-pbonzini@redhat.com>
+	s=arc-20240116; t=1780977009; c=relaxed/simple;
+	bh=v3yhIW1AHD52ketwXrPT313yzyHoo2f43Boy1ORM8I4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HmK5TckYaXtYIZ8jHkwSqOxVivCry8yMHO3FDw4PYR/kXy+HN8SEr7HVJBJ1YH6czrkIbPYaSV2R3/NGpWHLidxr4QHrUujl7lIkGRPB+JOZiVBCXRYIeYQ06K3Td3KD3x7f3DoN43Os9oD6EuA12DnO5dSmJkK2mPOl8Za0iyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pqKxfASP; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 658CVbC32894314;
+	Tue, 9 Jun 2026 03:49:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=ooNIQw239ybpuWm5zqCyb0z28r9XLR
+	d5kIecBPWrCv0=; b=pqKxfASPqPmRSN+ASCY73xPQ1WXBaR3vd52qGSMhPTVmAp
+	Y86esXq+t6qXd27tzeFrTHJHqevJWGfx1+1ThOM5PVeaRcfta3mD9Rf5PfQzm8xG
+	E8e6WavO+3JmRxseGjvNfCHA0h2WoiesDCibLdyjp7hMbv01JOV0qpsiqEoJ4uDS
+	FH6XRiWRYIIfVVfcFs9UFT3iJHPNTLR+a2QZmeZ2jVjgJLRreF8Hed8Ihrbdj681
+	uN2R8a1cZmCa6m6KXSSQVN1CtYF2tt2Wbch8j+9IPICtO2Y9YOejisE0kyo2KggP
+	btKdjoNcx+ORXexx5VLnk7ZMx7kORt70cdSCuUOA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4emb7qj79c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 03:49:45 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6593nahL022996;
+	Tue, 9 Jun 2026 03:49:44 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvq0dgq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jun 2026 03:49:44 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6593ngMp47120832
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Jun 2026 03:49:43 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C814C58051;
+	Tue,  9 Jun 2026 03:49:42 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAE025805A;
+	Tue,  9 Jun 2026 03:49:35 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.27.30])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with SMTP;
+	Tue,  9 Jun 2026 03:49:35 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 09 Jun 2026 09:19:33 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Harsh Prateek Bora
+ <harshpb@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>,
+        Anushree
+ Mathur <anushree.mathur@linux.ibm.com>,
+        Gautam Menghani
+ <gautam@linux.ibm.com>,
+        Mukesh Kumar Chaurasiya <mkchauras@gmail.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman
+ <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
+In-Reply-To: <20260608201001.65760-1-amachhiw@linux.ibm.com>
+References: <20260608201001.65760-1-amachhiw@linux.ibm.com>
+Date: Tue, 09 Jun 2026 09:19:33 +0530
+Message-ID: <8733ywmkz6.fsf@vajain21.in.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260604160733.12555-1-pbonzini@redhat.com> <20260604160733.12555-2-pbonzini@redhat.com>
-Message-ID: <aieJFWE3gQBwkS07@google.com>
-Subject: Re: [PATCH 1/3] KVM: nVMX: unwind PDPTR load if processor triggers a
- nested VMFail
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=HppG3UTS c=1 sm=1 tr=0 ts=6a278d5a cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=ezl3feXKi1nSa3xQh9EA:9
+X-Proofpoint-GUID: nLK-bo4i65HP7pTgpF5BUe4U0GOTUnhY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjA5MDAyOSBTYWx0ZWRfXyWd75HkTvpkt
+ 6xUfmdxc3VgkBVlIhdvp5r8ai3apPO1d1UaX0Mr4Xbi45ZF2DIa7UxOOOSlCeeynXnflwMw/FaC
+ Ps74+z0YsMIsvC5OvOijpaE0aYT+OxazOJz701dAeEimxStERLtpoQaeu55wmjcRfMsx/+z3Xyi
+ v5yVdFLG78rt94Jq1wcWSKbBzwUpANOfG6NTCSPFRZR4RB7flAb1NMaKhugVaATVeh3/S9wh+vl
+ JTV5hs+Qfbuh6cUdxpNGHfpC34OQXWih7i87hLwYNT55xsr5VYVIn+RyKPzKJALud7ttNt/n3Gz
+ r8GVlr3vPSpH5xsXd0ZqXUvFQ+3tfZpXA9b8N5/ytG/52CxvvIv60bb+qeVW0xa1cTsspUednfm
+ bPLtRbvP2QjkcGMe20HNrtlEQ8zAmbAKb6mMVNlrbMUJrTzQjFFXiAJnE0tlVcII6GPzRQi32DA
+ U2fTrB0AW0Fd/XISf6w==
+X-Proofpoint-ORIG-GUID: YQwCV_7By69o5DBf0MO6YIWiF4mdjeHJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-08_06,2026-06-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 clxscore=1011 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606090029
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-262172-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,redhat.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262171-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[vaibhav@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:amachhiw@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:harshpb@linux.ibm.com,m:ritesh.list@gmail.com,m:anushree.mathur@linux.ibm.com,m:gautam@linux.ibm.com,m:mkchauras@gmail.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:thuth@redhat.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:pbonzini@redhat.com,m:linux-kernel@vger.kernel.org,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vaibhav@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[12];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,vajain21.in.ibm.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.ibm.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3987C65C0F5
+X-Rspamd-Queue-Id: 19B5965C1C9
 
-On Thu, Jun 04, 2026, Paolo Bonzini wrote:
-> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
-> index 4690a4d23709..d612a5d071fc 100644
-> --- a/arch/x86/kvm/vmx/nested.c
-> +++ b/arch/x86/kvm/vmx/nested.c
-> @@ -4947,6 +4947,7 @@ static inline u64 nested_vmx_get_vmcs01_guest_efer(struct vcpu_vmx *vmx)
->  
->  static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
->  {
-> +	enum vm_entry_failure_code ignored;
->  	struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
->  	struct vcpu_vmx *vmx = to_vmx(vcpu);
->  	struct vmx_msr_entry g, h;
-> @@ -4984,20 +4985,19 @@ static void nested_vmx_restore_host_state(struct kvm_vcpu *vcpu)
->  	vmx_set_cr4(vcpu, vmcs_readl(CR4_READ_SHADOW));
->  
->  	nested_ept_uninit_mmu_context(vcpu);
-> -	vcpu->arch.cr3 = vmcs_readl(GUEST_CR3);
-> -	kvm_register_mark_available(vcpu, VCPU_REG_CR3);
->  
->  	/*
-> -	 * Use ept_save_pdptrs(vcpu) to load the MMU's cached PDPTRs
-> -	 * from vmcs01 (if necessary).  The PDPTRs are not loaded on
-> -	 * VMFail, like everything else we just need to ensure our
-> -	 * software model is up-to-date.
-> +	 * Now that nested EPT has been disabled, load the MMU's CR3 and
-> +	 * possibly PDPTRs from vmcs01 (if necessary).  This should not
-> +	 * happen for VMFail, but we get here if the check was caught by
-> +	 * the processor and therefore the guest CR3 was loaded prematurely.
->  	 */
-> +	kvm_mmu_unload(vcpu);
-> +	if (nested_vmx_load_cr3(vcpu, vmcs_readl(GUEST_CR3), false, !enable_ept, &ignored))
-> +		nested_vmx_abort(vcpu, VMX_ABORT_LOAD_HOST_PDPTE_FAIL);
 
-This isn't quite correct either.  I mean, none of this is architecturally correct,
-but this is less correct than the other incorrect code here :-)
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-To do this "right", KVM should snapshot the PDPTRs and shove them into the MMU,
-without touching guest memory.
+<snip>
+> Introduce a validation mechanism that detects unsupported arch_compat
+> values early in the guest initialization path. When an unsupported
+> arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
+> host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
+> detect the mismatch and sets arch_compat to PVR_ARCH_INVALID. This
+> triggers kvmppc_sanity_check() to mark the vCPU as invalid by setting
+> vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
+> checks this flag and returns -EINVAL, preventing the guest from running
+> with an invalid processor compatibility configuration.
+>
+> With this, when a Power11 arch_compat is requested on a Power10
+> compatibility mode host, the guest fails early during boot with:
+>
+>   error: kvm run failed Invalid argument
+>
+<snip>
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 
-On a very related topic, I have a patch to stash CR3 in software instead of
-abusing vmcs01.GUEST_CR3, as KVM fails to restore vmcs01.GUEST_CR3 to its proper
-state if nested_vmx_enter_non_root_mode() bails after clobbering vmcs01.GUEST_CR3,
-but before loading guest state.  We could probably do the same thing for PDPTRs?
+Thanks Amit for addressing the issue reported on v1. The v2 patch
+changes look aligned to what we discussed offline. Hence,
 
-https://lore.kernel.org/all/20260603223418.1720035-3-seanjc@google.com
 
->  	if (enable_ept && is_pae_paging(vcpu))
->  		ept_save_pdptrs(vcpu);
->  
-> -	kvm_mmu_reset_context(vcpu);
-> -
->  	/*
->  	 * This nasty bit of open coding is a compromise between blindly
->  	 * loading L1's MSRs using the exit load lists (incorrect emulation
-> -- 
-> 2.52.0
-> 
-> 
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+
+
+-- 
+Cheers
+~ Vaibhav
 
