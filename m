@@ -1,70 +1,78 @@
-Return-Path: <stable+bounces-262152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262153-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XIOGMKJkJ2qgvwIAu9opvQ
-	(envelope-from <stable+bounces-262152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 02:56:02 +0200
+	id gwJ1DEJkJ2pYvwIAu9opvQ
+	(envelope-from <stable+bounces-262153-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 02:54:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AA265B7AF
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 02:56:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D660865B76C
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 02:54:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HASS1J5t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262152-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262152-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aTLCtw3r;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262153-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262153-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88CB930DC2A5
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 00:52:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0B81F3057CA7
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 00:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7852FDC3C;
-	Tue,  9 Jun 2026 00:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC58D3019D8;
+	Tue,  9 Jun 2026 00:52:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39A654763;
-	Tue,  9 Jun 2026 00:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D193F2E040E;
+	Tue,  9 Jun 2026 00:52:25 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780966345; cv=none; b=Tbp6Cn1AdbXzM7JAM6BQ5Q60SOxIvlypQIL98qtlUdW9IHQkx5P0vfVgUx++KGIlR/vDKg8Q0juNlcz6y96qvsgbVr8iHd2w6q3PV6YXLEHGaz14SYIsLwhT+BsmMsI3JuWdeRl7iOD2y5QWAX2ECKuGZc+bY9IqK5NElkMUA2E=
+	t=1780966346; cv=none; b=FTKUVUg821svlK60wrKaAR4brB2RgotPTRho95WK88yMnfK5sFdukLsvM+wkNjENmBcceqEgt+dPNGpbP4w9UTPXmqxYOo/vDicgBj0cF29quuTKT/KTVxGpLZx71s0Lx6xIE7zPQg3ZeRHTRS3K85//fU0Uh0p/5SMUpNcIKO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780966345; c=relaxed/simple;
-	bh=z73HwLVnnq2+zeo30gLl5GrbC4oK1UqZKltRwRTcJPw=;
+	s=arc-20240116; t=1780966346; c=relaxed/simple;
+	bh=huvuw9ocJVMaJPY69c7Y/32YsqsUK8XeDkGkdakdgRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anbwK0aDXctwv+EMjL6YqqvH1GcuwGP+Lyi440n8hjQqCXzdwJ7Dsk09yW9QX+OT9Ws1OB6j44i17tAu7r1XOByFfikEB8Yk3iXFs2znjOGMeuoo8asfnfIA/KujcNV43zIk9Q55Sbwx9BYxA4oN18ur3xOfVrTSBGOs3hg/k8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HASS1J5t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C8F1F00893;
-	Tue,  9 Jun 2026 00:52:22 +0000 (UTC)
+	 MIME-Version; b=kbtd2kJSjQQgpGcoRkD+cyN46ianfZyJ2DV75VGulmQFffvPaNXiTfYoI3MEiAaIOfkICA90lTih4DinYvDgCywMT6liQSAxTy9I/Dw2E73TwW1xOOIloGCCPeGfVbC55gSQH8ZhF7zTr3JgzOitC1jUn4lRUlVvCX7ih6+sCnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTLCtw3r; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2B61F0089A;
+	Tue,  9 Jun 2026 00:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780966343;
-	bh=z73HwLVnnq2+zeo30gLl5GrbC4oK1UqZKltRwRTcJPw=;
+	s=k20260515; t=1780966345;
+	bh=huvuw9ocJVMaJPY69c7Y/32YsqsUK8XeDkGkdakdgRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HASS1J5tHtPOjb9zAvimiAvI77xPsvMFoR3clutZ5xCCx+GKXd/gR9EsSOqemR3S4
-	 DJtICHylvl61OlPN0d8Zd7TFXs8EJs+O2vlRqn6Jt5KN8aZw1PQdwqicttqQuXLBdY
-	 pfiqhAcEmQaU6xDHEVov0aS6xujmWyyjMoXMsKXxQLF5F2jFgtDJESgvHZDbI/gFR6
-	 0CLbjjDrwS+pHBepG6ufMX602PQrBAPskhMWCVMtUcsn29glNsb5Ypg58qniSiI4Et
-	 zpRBhpG9tPzGL66zDfwLHRUGKzALCrp2zSNTBhiAmloK5mt0UEphEH3vqTFHWnPuAW
-	 97ivpud/u2DTw==
+	b=aTLCtw3rpDDm7zkXqLgSU0rqtauNij+Z39bxQM16InMfMO8/XgdH+ZvQ4qtergGM3
+	 lQZF5cp9zeYnHWI0y7HaSJDHon1xpD3oC1wPyCJ8XBA5+Av2Ic42XBhP29VlPPVY+l
+	 JjAmDTJco/vLsm71tralhY/NdYJBhmvGtJSD1D5os8UuHUCl6Z/kl4FH/GwgoaaXHD
+	 TGT6rMqX4mepsVQFEB5i/39RS4jYv0LyCf1IoA6aCiU0d5YYM8/z8oCk75x8oCC3Kk
+	 vmwMrPSFSNbf5b8i6KkISi6eRTHxqr9ypkoQAcepKd8x0S1W/Y3aCH+EIxngHExHAX
+	 b0HSFNm4cndbA==
 From: Sasha Levin <sashal@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	khtsai@google.com
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	patches@lists.linux.dev,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	David Hildenbrand <david@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	raubcameo@gmail.com,
-	andrzej.p@samsung.com,
-	balbi@ti.com,
-	kyungmin.park@samsung.com,
-	linux-usb@vger.kernel.org,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: Re: [PATCH 6.6.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
-Date: Mon,  8 Jun 2026 20:51:59 -0400
-Message-ID: <20260608-stable-reply-0013@kernel.org>
+	lvc-project@linuxtesting.org,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Luis Chamberalin <mcgrof@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Pankaj Raghav <kernel@pankajraghav.com>
+Subject: Re: [PATCH v2 6.1] mm/memory_hotplug: fix hwpoisoned large folio handling in do_migrate_range()
+Date: Mon,  8 Jun 2026 20:52:00 -0400
+Message-ID: <20260608-stable-reply-0015@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260608053636.2797024-1-jianqkang@sina.cn>
-References: <20260608053636.2797024-1-jianqkang@sina.cn>
+In-Reply-To: <20260605190756.20413-1-adiupina@astralinux.ru>
+References: <20260605190756.20413-1-adiupina@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,47 +86,43 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-262152-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:khtsai@google.com,m:sashal@kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:raubcameo@gmail.com,m:andrzej.p@samsung.com,m:balbi@ti.com,m:kyungmin.park@samsung.com,m:linux-usb@vger.kernel.org,m:jianqkang@sina.cn,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,lists.linux.dev,vger.kernel.org,gmail.com,samsung.com,ti.com,sina.cn];
+	TAGGED_FROM(0.00)[bounces-262153-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:adiupina@astralinux.ru,m:david@redhat.com,m:osalvador@suse.de,m:akpm@linux-foundation.org,m:n-horiguchi@ah.jp.nec.com,m:mhocko@suse.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:lvc-project@linuxtesting.org,m:tujinjiang@huawei.com,m:ziy@nvidia.com,m:linmiaohe@huawei.com,m:wangkefeng.wang@huawei.com,m:mcgrof@kernel.org,m:willy@infradead.org,m:mhocko@kernel.org,m:kernel@pankajraghav.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 93AA265B7AF
+X-Rspamd-Queue-Id: D660865B76C
 
-> [PATCH 6.6.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
+> [PATCH v2 6.1] mm/memory_hotplug: fix hwpoisoned large folio handling in
+> do_migrate_range()
 
-I can't take this one (6.6 or 6.1) on its own. ec35c1969650 alone opens a
-userspace-reachable NULL deref in eth_get_drvinfo() that is later closed
-upstream by e002e92e88e1 ("usb: gadget: u_ether: Fix NULL pointer deref in
-eth_get_drvinfo"), so applying this commit by itself trades a UAF for a DoS.
-
-Please send a complete backport that also includes e002e92e88e124 (as the
-follow-up patch in the same series) for both 6.6.y and 6.1.y, and I'll queue
-them together.
+This inverts the folio_isolate_lru() check on 6.1. In 6.1 folio_isolate_lru()
+returns an int (0 on success), not a bool, so the "!folio_isolate_lru(folio)"
+condition is backwards here and takes the wrong branch on a successful
+isolation.
 
 --
 Thanks,
