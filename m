@@ -1,92 +1,91 @@
-Return-Path: <stable+bounces-262339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FexGA95DKGoqBQMAu9opvQ
-	(envelope-from <stable+bounces-262339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:48:30 +0200
+	id 7q4ELutDKGo7BQMAu9opvQ
+	(envelope-from <stable+bounces-262341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:48:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B242C662954
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6746566295C
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:48:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rdnd9xpY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262339-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262339-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AesH0hlr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262341-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262341-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FA93316B521
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:37:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E193630285FB
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CC941C2FF;
-	Tue,  9 Jun 2026 16:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF384963DF;
+	Tue,  9 Jun 2026 16:36:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C833AA1A9
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 16:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C92649218E
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 16:36:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781022937; cv=none; b=kJ+pkHwfInOvM6GQ90HzOdjFNScSyaEM1S0aT0buUc7lEpvcKsV00hVeL7ee3E10O0WgqrD/Q9G404wHCb30TMkBCVobT436Sp9Q8x58om9hbxShkK9hKzcUCiyTWIQg8rI14EqKhUXC3mZtk2rfIYwoEcqzbK4qNHuNgMFZX1A=
+	t=1781023012; cv=none; b=ec1S0psjFz3NZvMwXPSRWKH8Uz7TpTxTCJo8KJCakvzdcukTCx/7PVdDINbvo0h1nUdkp170mLsb6ArVYCed/cLqE5r4uM4pyqh25fDJDIyyh30WIz/P1OoseVMVYrI6EKIG1Ng0ukgPbSxr3MewrxZfTl/mDvYwUVh0YLyBwyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781022937; c=relaxed/simple;
-	bh=CqCQP01+LBJiO/yyYtoN/nAx25MrKlaUMoT7KCXPYeI=;
+	s=arc-20240116; t=1781023012; c=relaxed/simple;
+	bh=OGLH7jXzbsIii2mYqUyRub3wuJrPU46nL/mOrml4hmM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DmIGupguShcPVNMET0di7KffsWUFJHdQ62TX9X4c5AHvrAmy61121EHqpil+4eW8cGKa9xnL5L9BO8TPxEUVXtWTNW2TwGZFdvYckOzjyit7vH9MBwFujegepySzsxfgmnr77pDh9WhF5gjfGyyGaDL0znruGmnNuYJXFVU55ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rdnd9xpY; arc=none smtp.client-ip=209.85.128.47
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490c0c92cffso41158195e9.2
-        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 09:35:36 -0700 (PDT)
+	 MIME-Version; b=NSmimF5ezJUrqjVmVBPm0m3braDt1tOutzTZEdSNl3IbFxk4OZrwHixz3/6iIYRIETYqhL7SLoTNNdhXtj3SBdfNZZsDgJiXz6JAd1FOAt00O301q5bGY5vjX3Kk8E6sSi6bo5i6WOffT12i3wfPrn77jjketHRpo068TQapAUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AesH0hlr; arc=none smtp.client-ip=209.85.128.46
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490c1915793so39216295e9.2
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 09:36:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781022935; x=1781627735; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781023009; x=1781627809; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/ZISnQw1sq7YMU6WSz9bLO5KxRUTFmuBZ4joqQ9xMgg=;
-        b=rdnd9xpYNPimt5a2a3UTCVROnU96CIfowFUXOwynrh03Ezimi8gcHoe/4BC935d74q
-         ebh0kCyOjAYWjt+Uge8HAhSS7CyHxVTFQ+EJ5IOcESLn63XJtIfpipiHOa3EAYC+7Dg/
-         BOssa36Jw1Xi40xSpDinRlsiDkF8HMvghYwwZtCapSLw1/VCZbzmLs3fDsK17auF8pBZ
-         7+WECBjX6rypmtyFZmKLBPeRKByQmrSb4fyRE5JKRu7ZO6Q9vbJRi9RyB+KwHzyIqlcB
-         n0FJren6Yf32yTJoHOCcx1tIM9DKyEXJWHDxOFPGPwWKfyBzt6h0sYOthPx3FKmu3tnp
-         5vPg==
+        bh=0Jw5k2pr2Uxq2pN8ORiGv1jSaTS+XZ+Vd2/C3ba/TNc=;
+        b=AesH0hlrNI4zuNY7MldHwTG7877NnkNAZROvw162aPqOqaVVFA1rLFvghGU0TDOC03
+         9Oz4HseUfeqETnGyxY1C4uak+1jgawJtkB62iKxoB+zHScI1Q/hcoN+Twso4VuLwXXMV
+         7Cq+t9U4Xr9JYLcn7TetbDFKG+ReiIYvvTwLtp1ViTloejjXWrZSpefYm8k4izUbzk1s
+         omS835SlP8HXnosRDyHu94p19HalLfCtJ33sQPV0HQiszvrutnlrAaBBDerUUTeDtaio
+         AeSzEQpZDzg9Qu3AuTQrK9H8CRuJjepAXfsNJOlnPa3hfQPVCJpacN7QcRGfS8RdczEv
+         /oJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781022935; x=1781627735;
+        d=1e100.net; s=20251104; t=1781023009; x=1781627809;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/ZISnQw1sq7YMU6WSz9bLO5KxRUTFmuBZ4joqQ9xMgg=;
-        b=JNBJOh+c8pcA7MEEi5dTmW8I30PwTHIAG9oVjLHnkkEHNdlj/ChgKsKxpCIEts2k5v
-         b1aJOn+CdjzjolN/MP9jDAsqnpRKVIXKyKW5ibtEyc1mjlT9A9GEPzHwje4yBWxd5J2a
-         z2qREJ79AV2SxNl4uCt4kCujgdYF/CPFNWWJrd5kf5KTy8kKRRToeNbgqTqwuNtkm2Th
-         RZTHhl+CSKKJ3E9meMKLhKwEL5wpv1EVXf+UEizCtrdFSsLahiPJ+2JABLg3Fki7G8HX
-         4124Stl7RyEyjO/r5Y7l8xJgehoXdsN7WLoJv3xahKh4z0twbUu27f/XoD15qch3yT9o
-         avJA==
-X-Forwarded-Encrypted: i=1; AFNElJ/9Hg78Yat51eTecYu3gQPpwfzppVPc7N0cPlI2M0wXeKhdLW72wBRmSRivu0VWLqd4Wjaqud4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6MPqYNR968VBEN89XRmQ3b4BiSc7+anPzTle1EggmIaF5HILH
-	JXpYyNHcKRFKuj1cqY5g8uZkvDwC4DVKZUiBPSgJTM8zLtWdTmnam004
-X-Gm-Gg: Acq92OE4CnaAEfRaWQqnbroAidJ/h4Rxt8fb6u0OMyUv+7BeGKnUnBVrDjSFUfEujnJ
-	lpMFXTAJyXLa2BbBrarIUg90N2U2a5EOzZQXteeE0NxEVH2MxGlpt3AKj63iVH+TvRbMmmvG4ua
-	oN2rkFYLVAQYRBn9IXmTV/ofSyJlJqrA093lisgzyd9+l88WSWAjvDN1PpoJannYGKfzxHnxUta
-	0yrDFu0r/7KWxw67Cb0MY+0II5UN1KBbqBwuYfcbcZGRIzZJgbZKxTnAY7Id3dMJ/sQjKvQODqL
-	6QHx0mEzkimAs0LL00rRkAvV1LSi5NTOQUd9A7tjRmbnR7WRnjHg86kLRho0U5O8nyqmUgaa+mc
-	/0161rz5P8ptmVEbjrzyT4G/0GOKn3jO5piPVoDTMF6LD3IIqfPH6tMsL46Vs7A2BBCENwAYrAq
-	xique5Hlm0qZGeCGJEtKCKaT/SwkKJ79kBiA6il9gLcoi+tDrmt/F0qTsdW4rOKg8A7Rp22Ovcn
-	5Xf56SC266LAogDG6MD
-X-Received: by 2002:a05:600c:81c9:b0:490:bd66:db49 with SMTP id 5b1f17b1804b1-490c25a1e20mr292774665e9.12.1781022934301;
-        Tue, 09 Jun 2026 09:35:34 -0700 (PDT)
+        bh=0Jw5k2pr2Uxq2pN8ORiGv1jSaTS+XZ+Vd2/C3ba/TNc=;
+        b=Zk0+lvrz06n8uW54uJxG3LNOzqVX/eAW0C83Zp0T1Ok3bfscTmkpKmTVZQVdm8kAlw
+         otL8mXlutR+gArla6rQVmr/qzGLfIXYfsH097yWVrfHF5Y6rjfU4xBd0WgLvNxYGpgMR
+         31t6cK8Umpr//OllDiaFY45QWJYDK4BX/p+MeBm6VMvIDUkOw3eqZ8fDstvmgwsQtBz2
+         +ssjalwo3U6G9jkWNFXCLaf3Fx8wYMEhdhCllHWXMYeIGKC7nSg02gLOqWGCfL3RreZh
+         tYdRL8z1Abf2QLy/bN2gCby9kfUvxRZKYqcfJ9VylSMJW9m2ZzgKDLfd/8JN/eA8rPkS
+         AtCw==
+X-Forwarded-Encrypted: i=1; AFNElJ8IYflXWYKPefAD+qrxMCy/5Yw034khOsRkbtd9M1GNWc+zA7mcYhF7BbvBXhSsf4NUU5+JBdE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0gBvO7PaFF/DpT6h6fIRVJn4sAH1s7oGGuHLOI55JbWdQzM/e
+	j7GB3GsyqbFtts4UzEEXPB4QS7nGOVIeIUoUM5se0jqbebB/lc3ZcPDY
+X-Gm-Gg: Acq92OFwXXEaSOF2CYKHJNgY4SOraY4oWm6Z5XKUHPpgdatPfUAYojhoW8jVI5dzut4
+	uDETQmNZ11hrDmO20Z9uxSBT2nFjLWnVfe8NvhCtcXiiOO2Z9LO4QPsJ5pBRBI7TOWAf9DP2BR5
+	GEwfA1SvNubBZp48K3Hsf3lvXgJdiEkdNKvHpV5kUQHNJz0PYKVsVbTqvNE8iqMKyOlO5kSRosJ
+	PQn4TyfcMGs+2p1NkEpnRC2JYpmXg15ZOPixY2cxkBuAOnd/7kLdHOYTAHsQ9oq+PBM7NXxHJVf
+	Zk2BHnh6SNA/LsvEB2wqpQhki2kH/Q87B24RjA5rv/hBrb3polsLev+NKojGtgudGwtqkafYdez
+	lNMgaGUEsjFL0BwxRtfsCGbFjux/6L3jplg3wqrZbcMwWZJb2/wff3hxhJ5Qh1c0L5VCGeS+QW2
+	sXLyebXmV+VunUgdyttz8MEsg+tuoI78AW0lNdJZUuOF8SpWg+w3OM0R22O67hVQJOAwVkYdNH5
+	IE6sQwspw==
+X-Received: by 2002:a05:600c:34cb:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490c25afa03mr337809275e9.7.1781023008696;
+        Tue, 09 Jun 2026 09:36:48 -0700 (PDT)
 Received: from manta01.. (host-85-36-215-182.business.telecomitalia.it. [85.36.215.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3b5b06sm449114015e9.3.2026.06.09.09.35.33
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3b5b06sm449114015e9.3.2026.06.09.09.36.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 09:35:33 -0700 (PDT)
+        Tue, 09 Jun 2026 09:36:48 -0700 (PDT)
 From: Davide Ornaghi <d.ornaghi97@gmail.com>
 To: netfilter-devel@vger.kernel.org
 Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
 	coreteam@netfilter.org,
 	Davide Ornaghi <d.ornaghi97@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
-Date: Tue,  9 Jun 2026 18:32:14 +0200
-Message-Id: <20260609163215.1102215-2-d.ornaghi97@gmail.com>
+Subject: [PATCH 2/2] netfilter: nft_meta_bridge: fix stale stack leak via IIFHWADDR register
+Date: Tue,  9 Jun 2026 18:32:15 +0200
+Message-Id: <20260609163215.1102215-3-d.ornaghi97@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260609163215.1102215-1-d.ornaghi97@gmail.com>
 References: <20260609163215.1102215-1-d.ornaghi97@gmail.com>
@@ -103,23 +102,23 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262339-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262341-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[netfilter.org,gmail.com,strlen.de,vger.kernel.org];
+	FREEMAIL_CC(0.00)[netfilter.org,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:netfilter-devel@vger.kernel.org,m:pablo@netfilter.org,m:coreteam@netfilter.org,m:d.ornaghi97@gmail.com,m:fw@strlen.de,m:stable@vger.kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:netfilter-devel@vger.kernel.org,m:pablo@netfilter.org,m:coreteam@netfilter.org,m:d.ornaghi97@gmail.com,m:stable@vger.kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[dornaghi97@gmail.com,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dornaghi97@gmail.com,stable@vger.kernel.org];
@@ -131,81 +130,41 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B242C662954
+X-Rspamd-Queue-Id: 6746566295C
 
-For NFT_FIB_RESULT_OIFNAME the destination register is declared with
-len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
-RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
-register via "*dest = 0". The remaining three registers are left as
-whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
-downstream expression that loads the register span can leak that
-uninitialised kernel stack to userspace.
+NFT_META_BRI_IIFHWADDR declares its destination register with
+len = ETH_ALEN (6 bytes), which the register-init tracking rounds up to
+two 32-bit registers (8 bytes). nft_meta_bridge_get_eval() then does
+memcpy(dest, br_dev->dev_addr, ETH_ALEN), writing only 6 bytes and
+leaving the upper 2 bytes of the second register as uninitialised
+nft_do_chain() stack. A downstream load of that register span leaks
+those stale bytes to userspace.
 
-The NFTA_FIB_F_PRESENT case has the same shape: the register is declared
-with the result-type length but the eval stores a single byte via
-nft_reg_store8(), leaving the rest of the declared span stale.
+Zero the second register before the memcpy so the full declared span is
+written.
 
-Write the full declared span in both cases:
-
- - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
-   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
-   used on the other early-return path), and
-
- - declare the destination as a single u8 when NFTA_FIB_F_PRESENT is set,
-   so the marked span matches the one byte the eval writes.
-
-Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
-Suggested-by: Florian Westphal <fw@strlen.de>
+Fixes: cbd2257dc96e ("netfilter: nft_meta_bridge: introduce NFT_META_BRI_IIFHWADDR support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
 ---
- net/ipv4/netfilter/nft_fib_ipv4.c | 2 +-
- net/ipv6/netfilter/nft_fib_ipv6.c | 2 +-
- net/netfilter/nft_fib.c           | 3 +++
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/nft_meta_bridge.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/netfilter/nft_fib_ipv4.c b/net/ipv4/netfilter/nft_fib_ipv4.c
-index 9d0c6d7510..177d738825 100644
---- a/net/ipv4/netfilter/nft_fib_ipv4.c
-+++ b/net/ipv4/netfilter/nft_fib_ipv4.c
-@@ -128,7 +128,7 @@ void nft_fib4_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 		fl4.saddr = get_saddr(iph->daddr);
- 	}
+diff --git a/net/bridge/netfilter/nft_meta_bridge.c b/net/bridge/netfilter/nft_meta_bridge.c
+index 7763e78abb..219c406802 100644
+--- a/net/bridge/netfilter/nft_meta_bridge.c
++++ b/net/bridge/netfilter/nft_meta_bridge.c
+@@ -64,6 +64,8 @@ static void nft_meta_bridge_get_eval(const struct nft_expr *expr,
+ 		if (!br_dev)
+ 			goto err;
  
--	*dest = 0;
-+	nft_fib_store_result(dest, priv, NULL);
- 
- 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
++		/* ETH_ALEN (6) is shorter than the destination register span (8) */
++		dest[1] = 0;
+ 		memcpy(dest, br_dev->dev_addr, ETH_ALEN);
  		return;
-diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
-index 2dbe44715d..b9ad7cac14 100644
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -239,7 +239,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 
- 	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
- 
--	*dest = 0;
-+	nft_fib_store_result(dest, priv, NULL);
- 	ret = nft_fib6_lookup(nft_net(pkt), &fl6, &res, lookup_flags);
- 	if (ret || res.fib6_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
- 		return;
-diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
-index 327a5f3365..6df811b8d5 100644
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -107,6 +107,9 @@ int nft_fib_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 		return -EINVAL;
- 	}
- 
-+	if (priv->flags & NFTA_FIB_F_PRESENT)
-+		len = sizeof(u8);
-+
- 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
- 				       NULL, NFT_DATA_VALUE, len);
- 	if (err < 0)
+ 	default:
 -- 
 2.34.1
 
