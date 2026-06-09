@@ -1,218 +1,282 @@
-Return-Path: <stable+bounces-262277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262279-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id O1o6JywBKGpC7AIAu9opvQ
-	(envelope-from <stable+bounces-262277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:03:56 +0200
+	id N11RIGMCKGq87AIAu9opvQ
+	(envelope-from <stable+bounces-262279-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:09:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78AA65FCC5
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:03:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7A765FDCA
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 14:09:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AJMK5Aio;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262277-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262277-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=linux.beauty header.s=zmail header.b=rxWxu2TX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262279-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262279-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.beauty;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8791D3034A98
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 12:00:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF2EC301D016
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 12:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C7D406299;
-	Tue,  9 Jun 2026 12:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE2041363E;
+	Tue,  9 Jun 2026 12:08:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8395407CE4
-	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 12:00:07 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781006411; cv=none; b=ONojQzHzL/XS1SUUEQ0yTHlix85rSgTJ+aSS03MtfpDPCfvj36XDl+GPR8ksVMjh9QpwieGNbFJHNbDxUgweMSIeIx/7h7NmuRRj40E05/JxtlRaL8cj0kHJPrpp7oJpIpGroAHXLTd1PQL4NITsFC+biFrmdhL26FMPHGLaf0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781006411; c=relaxed/simple;
-	bh=Vomw9OlHRuAZaMfduu22dTOFBZHcQjMkmss46Pn+7h4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rGu0BidWjUdO3HXK6Xg8qzcO5+RfnUWs5ZkrJcUY/D11GFrQ2L984z0emCNF9TTlNBxuTn350XkO1JdWoa5y2UdR4Rg3W84yCD2kfY0OZDEfYPijTCw+yx4ek+qEqxIVJEg2R9A7jpKrXPw+gJcAnyP3T4Y0rRLmtZ+r9Y8DhL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJMK5Aio; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4751F00893;
-	Tue,  9 Jun 2026 12:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781006407;
-	bh=iOYRKiVJiXZawKpsMQpe8ydzQLLweaQ5wvxkQ4zEwmg=;
-	h=Subject:To:Cc:From:Date;
-	b=AJMK5Aio8wpRsvvxMGrSo8ZHo9rF9dwvuJDstTUQeIuWm62sWxjSfZzKyZ6zpElnw
-	 Lk8/K1Pf9eaSgHX7l7KWSs1r5Wp2k8JUI/qNQFJRhVAbws1cxOBzALJPKeiByAz6Fp
-	 upqad6COVmD3Q+SOz83fALXM1koDzgMj45mHki+c=
-Subject: FAILED: patch "[PATCH] ipv6: mcast: Fix use-after-free when processing MLD queries" failed to apply to 5.10-stable tree
-To: idosch@nvidia.com,dahern@nvidia.com,edumazet@google.com,jiayuan.chen@linux.dev,kuba@kernel.org,leo@depthfirst.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 09 Jun 2026 13:59:07 +0200
-Message-ID: <2026060907-blurry-monetary-1fa3@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDB540F8E4;
+	Tue,  9 Jun 2026 12:08:42 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781006925; cv=pass; b=Yi6EAgnAMYvBEA3a9/yE0HfNy7ms8K99LUnxqX+8SYP2u1XpeDK0WtXQWYTJzEbWRHqeQoc6IQ0rNDRmU2gtWAarocozn2oc//3FcXBY4C8QptWM2dFUjvjuUWu5ao379AHfZRBAcAwdl3EGI3zkEVp1QzIcWd34/qD+JlawaVw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781006925; c=relaxed/simple;
+	bh=KdJG4zRHuVbedneI0eAEw61H+V+L8AZzIyer0jQRuWE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QIb20wp66tNT/1jTJZo6Cmxl5w13kcrfJ7A6XWBR0LoSyyln4U2EDfwsgIohbhSR+JiL7Oq8jh+PcZgute5NCQX4/ZKG4/lOLfvdyU+GDqoXPnqT3vnfGYugof+5dnQOwY/QYIE67ysnhQMDCpFSRtvNdqmFWGMKRvxdm9aBrNo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=rxWxu2TX; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal: i=1; a=rsa-sha256; t=1781006891; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=G3NQ5tkhefxcgbR+fc5HttRlHEJU4pArvi5XB1B7YgOXYtZR5Fu6C0UDmbpny/pWIil0w2elQTSkWAJ5yiTEOBnfSsTw8Xbn1U6KaMS6evfQoAeRf6GcXf707FCgqrp3Rtu/PztVdYoVr6U4pdDw+WpeWws0I5xTG+ZLnAY5sqU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1781006891; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=GXAoC5zKyTc3h2xhSbceB5qyRcnqM5DC0tBvQYicLqI=; 
+	b=WHcXK8eOs8TNiNCWQ9+p/LcpqhUzInthRhsiFLNVw23V6MqojZDRekI7aYBL25LJZWtQRxrFFi5bRqotDHTiGLmMYYCO73NV15nKohrVvJJuWs03W4bAs4+G/EWxEeFO9Lf3jxZieVqBrf0neZQDxcJjmEbZW71zLmp0K1tp1oY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1781006891;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=GXAoC5zKyTc3h2xhSbceB5qyRcnqM5DC0tBvQYicLqI=;
+	b=rxWxu2TXAejLijEy/DzfNMO6h+Ax7DGheaTK4ht+myrGOAozX8N/ez6DPZM2epLN
+	e0jnTbHGYVwXpikoTuqhlj61I+pTPNmxNq1Nac5eEiDhTHDHVF9x5NOS7o/xJ94oxzg
+	MpiaCtj3OElTnm3HgfzA72o6SaDlQtWX8sg9Qviw=
+Received: by mx.zohomail.com with SMTPS id 1781006887616405.8886096625614;
+	Tue, 9 Jun 2026 05:08:07 -0700 (PDT)
+From: Li Chen <me@linux.beauty>
+To: Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	virtualization@lists.linux.dev,
+	nvdimm@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Li Chen <me@linux.beauty>
+Subject: [PATCH v4 5/7] nvdimm: virtio_pmem: refcount requests for token lifetime
+Date: Tue,  9 Jun 2026 20:07:19 +0800
+Message-ID: <20260609120726.1714780-6-me@linux.beauty>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260609120726.1714780-1-me@linux.beauty>
+References: <20260609120726.1714780-1-me@linux.beauty>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linux.beauty,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.beauty:s=zmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262277-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262279-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:idosch@nvidia.com,m:dahern@nvidia.com,m:edumazet@google.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,m:leo@depthfirst.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:pankaj.gupta.linux@gmail.com,m:dan.j.williams@intel.com,m:vishal.l.verma@intel.com,m:dave.jiang@intel.com,m:ira.weiny@intel.com,m:alison.schofield@intel.com,m:virtualization@lists.linux.dev,m:nvdimm@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:me@linux.beauty,m:pankajguptalinux@gmail.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[me@linux.beauty,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,lists.linux.dev];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[me@linux.beauty,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.beauty:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,linux.dev:email,depthfirst.com:email,msgid.link:url,nvidia.com:email]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E78AA65FCC5
+X-Rspamd-Queue-Id: DF7A765FDCA
 
+KASAN reports slab-use-after-free in __wake_up_common():
+BUG: KASAN: slab-use-after-free in __wake_up_common+0x114/0x160
+Read of size 8 at addr ffff88810fdcb710 by task swapper/0/0
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026060907-blurry-monetary-1fa3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 791c91dc7a9dfb2457d5e29b8216a6484b9c4b40 Mon Sep 17 00:00:00 2001
-From: Ido Schimmel <idosch@nvidia.com>
-Date: Wed, 3 Jun 2026 13:18:11 +0300
-Subject: [PATCH] ipv6: mcast: Fix use-after-free when processing MLD queries
-
-When processing an MLD query, a pointer to the multicast group address
-is retrieved when initially parsing the packet. This pointer is later
-dereferenced without being reloaded despite the fact that the skb header
-might have been reallocated following the pskb_may_pull() calls, leading
-to a use-after-free [1].
-
-Fix by copying the multicast group address when the packet is initially
-parsed.
-
-[1]
-BUG: KASAN: slab-use-after-free in __mld_query_work (net/ipv6/mcast.c:1512)
-Read of size 8 at addr ffff8881154b8e90 by task kworker/4:1/118
-
-Workqueue: mld mld_query_work
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
+6.19.0-next-20260220-00006-g1eae5f204ec3 #4 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux
+1.17.0-2-2 04/01/2014
 Call Trace:
-<TASK>
-dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-print_report (mm/kasan/report.c:482)
-kasan_report (mm/kasan/report.c:595)
-__mld_query_work (net/ipv6/mcast.c:1512)
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
-</TASK>
+ <IRQ>
+ dump_stack_lvl+0x6d/0xb0
+ print_report+0x170/0x4e2
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __virt_addr_valid+0x1dc/0x380
+ kasan_report+0xbc/0xf0
+ ? __wake_up_common+0x114/0x160
+ ? __wake_up_common+0x114/0x160
+ __wake_up_common+0x114/0x160
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ __wake_up+0x36/0x60
+ virtio_pmem_host_ack+0x11d/0x3b0
+ ? sched_balance_domains+0x29f/0xb00
+ ? __pfx_virtio_pmem_host_ack+0x10/0x10
+ ? _raw_spin_lock_irqsave+0x98/0x100
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ vring_interrupt+0x1c9/0x5e0
+ ? __pfx_vp_interrupt+0x10/0x10
+ vp_vring_interrupt+0x87/0x100
+ ? __pfx_vp_interrupt+0x10/0x10
+ __handle_irq_event_percpu+0x17f/0x550
+ ? __pfx__raw_spin_lock+0x10/0x10
+ handle_irq_event+0xab/0x1c0
+ handle_fasteoi_irq+0x276/0xae0
+ __common_interrupt+0x65/0x130
+ common_interrupt+0x78/0xa0
+ </IRQ>
 
-[...]
+virtio_pmem_host_ack() wakes a request that has already been freed by the
+submitter.
 
-Freed by task 118:
-kasan_save_stack (mm/kasan/common.c:57)
-kasan_save_track (mm/kasan/common.c:78)
-kasan_save_free_info (mm/kasan/generic.c:584)
-__kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
-kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6251 mm/slub.c:6566)
-pskb_expand_head (net/core/skbuff.c:2335)
-__pskb_pull_tail (net/core/skbuff.c:2878 (discriminator 4))
-__mld_query_work (net/ipv6/mcast.c:1495 (discriminator 1))
-mld_query_work (net/ipv6/mcast.c:1563)
-process_one_work (kernel/workqueue.c:3314)
-worker_thread (kernel/workqueue.c:3397 kernel/workqueue.c:3478)
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/x86/kernel/process.c:158)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:245)
+This happens when the request token is still reachable via the virtqueue,
+but virtio_pmem_flush() returns and frees it.
 
-Fixes: 97300b5fdfe2 ("[MCAST] IPv6: Check packet size when process Multicast")
-Reported-by: Leo Lin <leo@depthfirst.com>
-Reviewed-by: David Ahern <dahern@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260603101811.612594-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix the token lifetime by refcounting struct virtio_pmem_request.
+virtio_pmem_flush() holds a submitter reference, and the virtqueue holds an
+extra reference once the request is queued. The completion path drops the
+virtqueue reference, and the submitter drops its reference before
+returning.
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 3330adcf26db..d9b855d5191b 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -1424,9 +1424,9 @@ void igmp6_event_query(struct sk_buff *skb)
- static void __mld_query_work(struct sk_buff *skb)
+Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
+---
+v2->v3:
+- Add raw KASAN report to the patch description.
+- Drop timestamps from the embedded report.
+v3->v4:
+- Rebased onto v7.1-rc7 and renumbered after the flush error patches.
+
+ drivers/nvdimm/nd_virtio.c   | 34 +++++++++++++++++++++++++++++-----
+ drivers/nvdimm/virtio_pmem.h |  2 ++
+ 2 files changed, 31 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index f8c0604edde51..f5264f6afe44f 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -9,6 +9,14 @@
+ #include "virtio_pmem.h"
+ #include "nd.h"
+ 
++static void virtio_pmem_req_release(struct kref *kref)
++{
++	struct virtio_pmem_request *req;
++
++	req = container_of(kref, struct virtio_pmem_request, kref);
++	kfree(req);
++}
++
+ static void virtio_pmem_wake_one_waiter(struct virtio_pmem *vpmem)
  {
- 	struct mld2_query *mlh2 = NULL;
--	const struct in6_addr *group;
- 	unsigned long max_delay;
- 	struct inet6_dev *idev;
-+	struct in6_addr group;
- 	struct ifmcaddr6 *ma;
- 	struct mld_msg *mld;
- 	int group_type;
-@@ -1458,8 +1458,8 @@ static void __mld_query_work(struct sk_buff *skb)
- 		goto kfree_skb;
+ 	struct virtio_pmem_request *req_buf;
+@@ -36,6 +44,7 @@ void virtio_pmem_host_ack(struct virtqueue *vq)
+ 		virtio_pmem_wake_one_waiter(vpmem);
+ 		WRITE_ONCE(req_data->done, true);
+ 		wake_up(&req_data->host_acked);
++		kref_put(&req_data->kref, virtio_pmem_req_release);
+ 	}
+ 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+ }
+@@ -66,6 +75,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	if (!req_data)
+ 		return -ENOMEM;
  
- 	mld = (struct mld_msg *)icmp6_hdr(skb);
--	group = &mld->mld_mca;
--	group_type = ipv6_addr_type(group);
-+	group = mld->mld_mca;
-+	group_type = ipv6_addr_type(&group);
++	kref_init(&req_data->kref);
+ 	WRITE_ONCE(req_data->done, false);
+ 	init_waitqueue_head(&req_data->host_acked);
+ 	init_waitqueue_head(&req_data->wq_buf);
+@@ -83,10 +93,23 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 	  * to req_list and wait for host_ack to wake us up when free
+ 	  * slots are available.
+ 	  */
+-	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req_data,
+-					GFP_ATOMIC)) == -ENOSPC) {
+-
+-		dev_info(&vdev->dev, "failed to send command to virtio pmem device, no free slots in the virtqueue\n");
++	for (;;) {
++		err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req_data,
++					GFP_ATOMIC);
++		if (!err) {
++			/*
++			 * Take the virtqueue reference while @pmem_lock is
++			 * held so completion cannot run concurrently.
++			 */
++			kref_get(&req_data->kref);
++			break;
++		}
++
++		if (err != -ENOSPC)
++			break;
++
++		dev_info_ratelimited(&vdev->dev,
++				     "failed to send command to virtio pmem device, no free slots in the virtqueue\n");
+ 		WRITE_ONCE(req_data->wq_buf_avail, false);
+ 		list_add_tail(&req_data->list, &vpmem->req_list);
+ 		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+@@ -95,6 +118,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		wait_event(req_data->wq_buf, READ_ONCE(req_data->wq_buf_avail));
+ 		spin_lock_irqsave(&vpmem->pmem_lock, flags);
+ 	}
++
+ 	err1 = virtqueue_kick(vpmem->req_vq);
+ 	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+ 	/*
+@@ -110,7 +134,7 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
+ 		err = le32_to_cpu(req_data->resp.ret);
+ 	}
  
- 	if (group_type != IPV6_ADDR_ANY &&
- 	    !(group_type&IPV6_ADDR_MULTICAST))
-@@ -1509,7 +1509,7 @@ static void __mld_query_work(struct sk_buff *skb)
- 		}
- 	} else {
- 		for_each_mc_mclock(idev, ma) {
--			if (!ipv6_addr_equal(group, &ma->mca_addr))
-+			if (!ipv6_addr_equal(&group, &ma->mca_addr))
- 				continue;
- 			if (ma->mca_flags & MAF_TIMER_RUNNING) {
- 				/* gsquery <- gsquery && mark */
+-	kfree(req_data);
++	kref_put(&req_data->kref, virtio_pmem_req_release);
+ 	return err;
+ };
+ 
+diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
+index f72cf17f9518f..1017e498c9b4c 100644
+--- a/drivers/nvdimm/virtio_pmem.h
++++ b/drivers/nvdimm/virtio_pmem.h
+@@ -12,11 +12,13 @@
+ 
+ #include <linux/module.h>
+ #include <uapi/linux/virtio_pmem.h>
++#include <linux/kref.h>
+ #include <linux/libnvdimm.h>
+ #include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ 
+ struct virtio_pmem_request {
++	struct kref kref;
+ 	struct virtio_pmem_req req;
+ 	struct virtio_pmem_resp resp;
+ 
+-- 
+2.52.0
 
 
