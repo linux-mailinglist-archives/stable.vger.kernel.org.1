@@ -1,146 +1,181 @@
-Return-Path: <stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nZebKAtGKGq2BQMAu9opvQ
-	(envelope-from <stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:57:47 +0200
+	id QAwqL6Q8KGoVAwMAu9opvQ
+	(envelope-from <stable+bounces-262320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:17:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92F7662AEC
-	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:57:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD0B662407
+	for <lists+stable@lfdr.de>; Tue, 09 Jun 2026 18:17:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=makarenk.ooo header.s=default header.b=iN3WSvHV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262322-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=makarenk.ooo;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=i6iUo6Il;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262320-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262320-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 624A43097BDA
-	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:10:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83CF730DC7E1
+	for <lists+stable@lfdr.de>; Tue,  9 Jun 2026 16:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A41371D17;
-	Tue,  9 Jun 2026 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751683451D9;
+	Tue,  9 Jun 2026 16:01:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from hognose1.porkbun.com (hognose1.porkbun.com [35.82.102.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D1636E493;
-	Tue,  9 Jun 2026 16:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F14344DAE
+	for <stable@vger.kernel.org>; Tue,  9 Jun 2026 16:01:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781021448; cv=none; b=SUiKt4oyNsc+80qHn4vFjy8SEsXPlZwTL0Vh6l47kdbnTEE+WGSaHle1Krj9DnodfJ+95zFHwIyKYSRXx4NLQ+nD9gofpyp4j2pHpTnyuVSJBpT7jjgIp4lrLwaQWgkwVCd7vzXfEw9LPtkDlBBD6NUwQwn9bk1HsbjO3nZLbrY=
+	t=1781020896; cv=none; b=gG1R/wdfWJN+aR5WSj65gtRBJAl88BNuYyrTUN48z7KqgELxAtNmEb3xguv3v1gLikq/L4SUNZEHrE+i3Yjuhwh3aS8BpBUWOEds4LOK8o1vb3UoywG4BsrdxcBSp6r4GkJuLrnBOCpBncli9cqiaYvIw8qCdmA8PmVZMj+rPi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781021448; c=relaxed/simple;
-	bh=O+eLWs+OWcxYj/ZX81C3cSzRxN9E5RQJC632vb41yYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AC46y1SIchOQ0TS5z8+PlkorRAvbgK99I6qbIPBpamNOt4U4pCy3r/+zXamVxNJTVT1dE8KtbNGo+jc082MBwdqx8UBO1oOmn1sXI64y8r8r7SNuVgN9YwMAksz/amnrBLGCf8jnePdZnnPIGehBZW+NAY+j9LJ/OqAe8aVfCes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=makarenk.ooo; spf=pass smtp.mailfrom=makarenk.ooo; dkim=pass (1024-bit key) header.d=makarenk.ooo header.i=@makarenk.ooo header.b=iN3WSvHV; arc=none smtp.client-ip=35.82.102.206
-Received: from home-pc (62-157-05.netrun.cytanet.com.cy [62.228.157.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: oleg@makarenk.ooo)
-	by hognose1.porkbun.com (Postfix) with ESMTPSA id D2EFB485390;
-	Tue,  9 Jun 2026 16:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=makarenk.ooo;
-	s=default; t=1781020865;
-	bh=7dc5ymui68NYn6ueFqGVyMe26N+0nALw55iH7WG77r8=;
-	h=From:To:Cc:Subject:Date;
-	b=iN3WSvHVKesrHY4pGyQIxvHuxu/UGemqYEEyXP8ZHIYUTfwB51DRBk8cYcesMfQC3
-	 ZpiUkGruCW+4IQZUccnTTnX9YR7C1ntPwiU28YYJVEBApR0E4iUaxn5z+NgumrpNjI
-	 G1W9WbTUje65pmvCSzTj1u4ZSgLD8/AAt59/lhYc=
-From: Oleg Makarenko <oleg@makarenk.ooo>
-To: jikos@kernel.org,
-	bentiss@kernel.org
-Cc: Oleg Makarenko <oleg@makarenk.ooo>,
-	stable@vger.kernel.org,
-	Oliver Roundtree <oroundtree1@gmail.com>,
-	=?UTF-8?q?Ryno=20Kotz=C3=A9?= <lemon.xah@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	Anssi Hannula <anssi.hannula@gmail.com>,
-	Dmitry Torokhov <dtor@mail.ru>,
-	linux-input@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: pidff: Use correct effect type in effect update
-Date: Tue,  9 Jun 2026 19:00:27 +0300
-Message-ID: <20260609160031.493353-1-oleg@makarenk.ooo>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1781020896; c=relaxed/simple;
+	bh=AHsIE3Mf0v+BtXwYQr0ZF+LTuN1HanlCwhxJURYpu0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DMyrsIMYg2c7bAQ8a/3r1atZ61S10AJX+tyu0b59dWnwd9wO4x5wdz/CUzTK4AgYWdTggCdn/JIhpMXgci3ftz74CK6dqVpIvw1r8hAZTRTZJ68/yIbs0PGNyuzfwnkk50uv63SHKC7Uq4doFUJYnYuuo41yfgi67SSO06wRwzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i6iUo6Il; arc=none smtp.client-ip=209.85.128.45
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-490b3637b90so49589735e9.3
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 09:01:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781020893; x=1781625693; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZVnaveXVwMZjOVOXk+BfC9BsJLogm3/Wh5ng9U3F8JY=;
+        b=i6iUo6IlS15tpVn1C7LS+Rdo+APhqsEAwbglD2wLVCX7zBpt863+DL0RRGxAltZkfG
+         TS1S7KSzhYUqgR7FULrQJIYn8jBku64NGOv/wF503Y9rq7TKr4y5uN5JLobMkzAfGiWr
+         AMnwefmDfK016hcraOiYtZnPpsl/4oIvgUhZwuj2TyVI1HjjwnOCAzBa0D88wsUv4OY6
+         kR+H7zz/QXn7PvwqDKq1zkw6OI6c1pPG/dHwQh/TaTRR7h6+df5CJRxaanuCu4Jqp+hF
+         277dtkZFBQMr0/F8Zn4M9Bf0PMhDtzn4mUz+QvfGEY9lmFYSTKHbZvU9zfRFj+hWn31/
+         miaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781020893; x=1781625693;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZVnaveXVwMZjOVOXk+BfC9BsJLogm3/Wh5ng9U3F8JY=;
+        b=A2WjUfGAqW0ZygWrwAwsb+LR34/TcxF0vpHC8hjb7pPcipvpcU/IiytFiWdz3f8/8J
+         VqIYuqSsPse9QG2g3qNRzhMSYwuBx9QsSN6YoEwnXXHaJgpkmMrmKsbyDQrzm8co8W8i
+         6h+0XYWsFH7pEEZkbsYE4Mtj90gkFVXq28hKJ8/qdrpo1aBUu/VSyjP5kOFXkFjDLwF2
+         GNH9ZkayxPoU/9S3saRSYLyJjEuLti+dVwgI9YH3GZpI+o8cWKryWi/OeqzQZOA9Hbzx
+         mXjtoadhQN9ykIw2Ig2RSJs/S2S2ZCIyNNB+hw3xMrkeFx25GceDSSK/5Qce+gDW3kbL
+         cNnw==
+X-Forwarded-Encrypted: i=1; AFNElJ92RW8lQjSk/iovwu9FW0IYxRLuptPebLk04Ns0lZBRMFQruJzB6PR2KoM2/HVflP70RhjH9oE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQuFXvnBA0rNf5yMF7CItEXJkP0zW7zJbRx2NgumO13H5ClTFU
+	DewBTg+MhAvO63KBRWUTD470Uba1E++6ukKRRdfEuBEtYDQcW7mvesDg
+X-Gm-Gg: Acq92OHrLBeeqaNFHxsDeupsFrt5PG0fYh4J7snxRMQjvTaG7+ln6JBVpeq2KvmcwV1
+	SYbtrCvUF4u7D2fNVm4yFy3fXGHLZ5f8fzqMBn8+k3eoJNIt9nAEWOVl92m/42FRejBpu6E/YSf
+	4XblMx2LHxkfFU2WzA9H3KnRBy6Q0kL2yqdMhGNr1FUrZy1ONub/cghCt7hdOwjcZBxTD5Jyp8H
+	JiJUHTFk8F/ZxViOVZKCr7Cxf97w0P35AAUM9HuNFiCNZjFButdZzLlkyob0N5qRqdiZyu43Cjg
+	RKs4ylrvOgr1bPNkpYNtt3kScod/2LT/Lz3u+/EnrVCguldrE/CgIbeOLqBFyGZcMNzCzdmbHUQ
+	Js484ZSHJss0quf31lAkbA8/HBgWfpGw/+Q7GokJReFigl4famMN05S1nhkcjR3Zge4TeKVl6Hk
+	/GHFl6r/pDxBIf17PYznTQvZpgX6Z0p13xhb99
+X-Received: by 2002:a05:600c:45d1:b0:490:bf13:a1b with SMTP id 5b1f17b1804b1-490c260567bmr319243365e9.26.1781020892932;
+        Tue, 09 Jun 2026 09:01:32 -0700 (PDT)
+Received: from nsa ([148.63.225.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc3c1149sm433068545e9.4.2026.06.09.09.01.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jun 2026 09:01:32 -0700 (PDT)
+Date: Tue, 9 Jun 2026 17:02:32 +0100
+From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+To: Paul Cercueil <paul@crapouillou.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: gadget: f_fs: Fix DMA fence leak
+Message-ID: <aig48OoC1vkdRMYL@nsa>
+References: <20260609152905.729328-1-paul@crapouillou.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260609152905.729328-1-paul@crapouillou.net>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[makarenk.ooo,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[makarenk.ooo:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262322-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jikos@kernel.org,m:bentiss@kernel.org,m:oleg@makarenk.ooo,m:stable@vger.kernel.org,m:oroundtree1@gmail.com,m:lemon.xah@gmail.com,m:tomasz.pakula.oficjalny@gmail.com,m:anssi.hannula@gmail.com,m:dtor@mail.ru,m:linux-input@vger.kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lemonxah@gmail.com,m:tomaszpakulaoficjalny@gmail.com,m:anssihannula@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[oleg@makarenk.ooo,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[makarenk.ooo:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oleg@makarenk.ooo,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[makarenk.ooo,vger.kernel.org,gmail.com,mail.ru];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[nonamenuno@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:paul@crapouillou.net,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:nuno.sa@analog.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262320-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,makarenk.ooo:dkim,makarenk.ooo:email,makarenk.ooo:mid,makarenk.ooo:from_mime,vger.kernel.org:from_smtp]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nonamenuno@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,vger.kernel.org:from_smtp,crapouillou.net:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C92F7662AEC
+X-Rspamd-Queue-Id: 5DD0B662407
 
-When updating an existing effect, the effect type from the last created
-effect was sent to the device instead of the updated one.
-This caused incorrect reports when a game creates multiple different
-effects and updates only one that is not the last created.
+On Tue, Jun 09, 2026 at 05:29:05PM +0200, Paul Cercueil wrote:
+> In ffs_dmabuf_transfer(), a ffs_dma_fence object is kmalloc'd, with the
+> underlying dma_fence later initialized by dma_fence_init(), which sets
+> its kref counter to 1. Then, dma_resv_add_fence() gets a second
+> reference, and a pointer to the ffs_dma_fence is passed as the
+> usb_request's "context" field.
+> 
+> The dma-resv mechanism will manage the second reference, but the first
+> reference is never properly released; the ffs_dmabuf_cleanup() function
+> decreases the reference count, but only to balance with the reference
+> grab in ffs_dmabuf_signal_done().
+> 
+> The code will then slowly leak memory as more ffs_dma_fence objects are
+> created without being ever freed.
+> 
+> Address this issue by transferring ownership of the fence to the DMA
+> reservation object, by calling dma_fence_put() right after
+> dma_resv_add_fence(). The ffs_dma_fence then gets properly discarded
+> after being signalled.
+> 
+> Fixes: 7b07a2a7ca02 ("usb: gadget: functionfs: Add DMABUF import interface")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> ---
 
-Fixes FFB in multiple games that create multiple simultaneous effects
-(Forza Horizon 5/6).
+Tested-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 
-Fixes: 224ee88fe395 ("Input: add force feedback driver for PID devices")
-Cc: <stable@vger.kernel.org>
-Tested-by: Oliver Roundtree <oroundtree1@gmail.com>
-Co-developed-by: Ryno Kotzé <lemon.xah@gmail.com>
-Signed-off-by: Ryno Kotzé <lemon.xah@gmail.com>
-Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
----
- drivers/hid/usbhid/hid-pidff.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index c45f182d0448..5f4395f7c645 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -522,7 +522,7 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
- 	pidff->set_effect[PID_EFFECT_BLOCK_INDEX].value[0] =
- 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
- 	pidff->set_effect_type->value[0] =
--		pidff->create_new_effect_type->value[0];
-+		pidff_get_effect_type_id(pidff, effect);
- 
- 	pidff_set_duration(&pidff->set_effect[PID_DURATION],
- 			   effect->replay.length);
--- 
-2.54.0
-
+>  drivers/usb/gadget/function/f_fs.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+> index 75912ce6ab55..7cc446502980 100644
+> --- a/drivers/usb/gadget/function/f_fs.c
+> +++ b/drivers/usb/gadget/function/f_fs.c
+> @@ -1704,6 +1704,7 @@ static int ffs_dmabuf_transfer(struct file *file,
+>  	resv_dir = epfile->in ? DMA_RESV_USAGE_READ : DMA_RESV_USAGE_WRITE;
+>  
+>  	dma_resv_add_fence(dmabuf->resv, &fence->base, resv_dir);
+> +	dma_fence_put(&fence->base);
+>  	dma_resv_unlock(dmabuf->resv);
+>  
+>  	/* Now that the dma_fence is in place, queue the transfer. */
+> -- 
+> 2.53.0
+> 
 
