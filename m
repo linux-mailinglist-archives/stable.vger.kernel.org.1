@@ -1,159 +1,187 @@
-Return-Path: <stable+bounces-262435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gsq4HIUPKWqYPgMAu9opvQ
-	(envelope-from <stable+bounces-262435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:17:25 +0200
+	id +Xt3IY4PKWqfPgMAu9opvQ
+	(envelope-from <stable+bounces-262437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:17:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78556668DE
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6376668E9
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:17:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lyszrwGf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262435-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262435-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j3yzACNQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262437-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262437-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 181183145FB9
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 07:09:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B573A31557DF
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 07:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EA0379990;
-	Wed, 10 Jun 2026 07:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E1F30C629;
+	Wed, 10 Jun 2026 07:10:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5B6371860
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 07:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6C7331EDA
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 07:10:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781075395; cv=none; b=JY7+QiIi3V0mR7jikEFNXeaESWZK5+bJ0LzbrmGn7rTyJ1x1DzRpgyfW6qNsmwJSe2TxhRRLQ2NGfLmpqJ/uDHJf2MTfRU7g+Jc06p4qEvYRXNaaZy95nDVquww9COjLQNpzQunAUTSUxrq6McocmRHFeCXoGh/6dcQ8zl9pnZI=
+	t=1781075405; cv=none; b=mB1iIZZRVaSflY5rvWg4OUS5efrn3qBtdaAp5cMZrGCsxLL84kWXqlwNIHWnInM5ssrM/jJ1qaHHqKlPpirnFuiZL7x3DMINpkVXxbB7mkSzOSR64rkQ3SsB7MrNrsutaWzNTZ8Js6iva1nP451iQF+YLv7/MP3vRepwsmBO9tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781075395; c=relaxed/simple;
-	bh=KK3BxFyY+k1mBTx2IExWA/ouwxlV2Df+c3wdgi7Lk0o=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iS6KS+x2p5Ag/TfND0dXDWXXtjBsBjJq6+avNTC14iKOrJolV7dRcIYasm0gDuOjuNvXR/H9DIDT0f/d1rCHC2xuzfrQjDfHo1dow/Jw2NS/FSOPS6RSOmWp5HqAlJgg76cwreYfQAgyQDbP1bbdWDU8+PeJH6gH1tN3Px680DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyszrwGf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FB81F00899
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 07:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781075394;
-	bh=jtHvcgqAu8v2YPctakrIYsBNQrHANt0cF9AvYDlwPQ4=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=lyszrwGf+ZPaiiV0PeqShNWNbgTtzndJExdRpbn72JvsnAjHx6nq8WGf7riT1PfI9
-	 4IumPqXb/9cB2FslZ0Pbnu31jtCtChOESA0yUFhBJl3yCRf7P0VUvP8CE8Tduq+Xmo
-	 t0aC2kX0ECCJRvX6OESXwBzKheyX0u07j4KNhfmt025wQRbpn67mbWrHB3ZhNZvCB+
-	 WrgT9advMxtmjlvwN5jyuGj3ak30cbM2b2FEoPzts+keFOTqx4aa7/GP7MEbZzFNLf
-	 GmV/0/OpCDSYDHCzgVc1RHwwPwuNX3PzzMtzh+Laju6ytm0cQ1eJduyGcmEAwMTFmy
-	 Os55XLLp+kkcA==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-39666f49929so57312011fa.0
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 00:09:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/YyOIbXkWElqF9mya7f1Pv5llB5MrUIqoKfwrN4+psADNnlf7wgtulL1nHdfg28PprmOMiu5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxygUbIGSOLIRfuDaCT+C+hFhmkP4ZJjII1KomXSeXzGkuEntY
-	9zKVamypArIdc7gp9UIzHURSyqhLy6BlPJ/coDkNRDUNaCtRsdYIFPRmh4GpAypSDXDwnJmdAzq
-	k2nCuLRs0LazVnvuVszgd3EQvp8pQgZXWhdJzATUdrg==
-X-Received: by 2002:a05:6512:60b:b0:5aa:6dfd:459e with SMTP id
- 2adb3069b0e04-5aa87b8e1bemr4673923e87.7.1781075392952; Wed, 10 Jun 2026
- 00:09:52 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 10 Jun 2026 03:09:51 -0400
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 10 Jun 2026 03:09:51 -0400
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260610030513.2651018-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1781075405; c=relaxed/simple;
+	bh=46eYrWMMOwque0hGIWlgjDSe6yByv2jADvlK9lMcif4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b7seOKxs/dVZXDSvWDpM8DUf5R2x3+SK2Xk1GqU2VM4F8Jjon+pnVtKqiV1v3B8IvpEdr5zWPlHEW/HTnyWwkXUlD0ODhNQAwQgs3IoCj7YkbdJo7tJcXCkOQbQYQ5mW2AiGVuy2OOo5ty4RPedcazlzAFQLzbKd0ckKvzXJH68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j3yzACNQ; arc=none smtp.client-ip=209.85.210.52
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7e6fe199b81so2263297a34.1
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 00:10:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781075403; x=1781680203; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GS3IvbRaVRHuQ7jWVUtX/UMvAifgWuNPLIfjnTq2Txo=;
+        b=j3yzACNQ3Nr2fHBfdHzsaq3WlgXk+09MzwesdZ4DbtyFSyRoHNNOu/W5lcXj1qvtF6
+         dApklx0dZarGhd4XuU/p/rfy51Ti99MrmDt5VjapO5c3MXnV9mh6c5zgPqcbSNBm4XCZ
+         9am03fJPi/VMUG6wZMDS6C7A/ybxxNKk8zBfm49BuNk/oenGz7f/cSao7S2FaIwgiik2
+         Qt7/qmP/NTa/aOiGxPBcSNobB2+2ZvWBKr1HY6P3Qfi1+MHkkJgAcwrWeULqReZZTNlM
+         KlpsZZ/K8qnh0PZBQNJ+fklabPiVSJYVrkuWDRYzClNyqU3IhZUjttbmMkqFa3dML3vW
+         kZ/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781075403; x=1781680203;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GS3IvbRaVRHuQ7jWVUtX/UMvAifgWuNPLIfjnTq2Txo=;
+        b=rRD8gJsO6f3nvBomB8Pwfy8kNR1/P+JeqihoLD0OiOFVFUhvfVLAWRxKC4TpDCwuvt
+         PLsn+EPdouZEFwL3Dn/mCAwA1pifwfndfuEWbR3BhZr0K/CDbnlHiYdGN/kmd13sz06l
+         Icz07a9tw9e5MK+kJBE4rNw3Cx8EJeinKUBj32ujR845RxHMKvKlcJh+feEr/Yg9r3ZA
+         vcFAEZM3M7Upjl28hQF9BrNsSlBDjLl5iloHkojRaR/S30DwYVWkk2ixD6c7SZGj/AAu
+         pBzr/60WqS7GO01Jt8d0NVU2LQzIjEFnHvXftos5wkEmvR7d/PBjNPvz47ofY19tmNpU
+         476A==
+X-Gm-Message-State: AOJu0YygSW24g7S59pQhBHE9IYaf6+gXSytWHDzgT/ZodH2A4nMMWmx3
+	rRDLgMK60m58gxeyLhw/sf3oFNNF8i3RCU2ImElyR9VR+JSuqjAAY7dbNTHJ7ghHn/lvJA==
+X-Gm-Gg: Acq92OHMN0gqOM/Ag5Z7BLdnNaS7OK/TtY4cC4WrKVhcQOSFn/Ov8fUhkhl7Lq4AkXY
+	gw94Ha5LY8dHFaDLqrZQxmMkuIQMAtbfNL/fDGzijlSrE0qFNf8yvoTRwEi44wk1NG4/KgRpQjl
+	QKmHRRyw0g1Q4cTm2+rxBddDeU+renmH/4F/Yoa+MJdeayyHSLkhccYY5ITzmXY//Yb+AHmKUxA
+	zINobG4SpIz00SdpMMXbU6x2c1gce8UdV6agXYawtL2LdD1gkBEOEM1P4exk4aNLS3VEIGoXfvN
+	YqvIYOIIF39g3kAuq1b0qXFKEM8ivgkut85HG22BlNRH9BDRobBgbriKbs3rsBW3giZ2BTkSbUB
+	tLRleSj6zHtn+k8lxx+7wN5rRK+26EdSIioVoJ2UvLdDKJ/i7W2XXnem3V6WUP0lbNvS79F19qk
+	4WuiBA98V6PIKrZ0NZxtJhjDvexuF/bSb1NzNy1PhgnWC/GtfgJwgJvlGVdA==
+X-Received: by 2002:a05:6830:2b0b:b0:7dc:d7e8:cb37 with SMTP id 46e09a7af769-7e70ca635fdmr14003665a34.21.1781075403469;
+        Wed, 10 Jun 2026 00:10:03 -0700 (PDT)
+Received: from localhost.localdomain ([47.246.98.85])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e6e79821edsm15939572a34.27.2026.06.10.00.10.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 10 Jun 2026 00:10:02 -0700 (PDT)
+From: "=?UTF-8?q?=E9=93=AD=E5=AE=A3?=" <omeux327@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=E9=93=AD=E5=AE=A3?= <yangmingxuan.ymx@antgroup.com>
+To: omeux327@gmail.com
+Cc: stable@vger.kernel.org,
+	HanQuan <eilaimemedsnaimel@gmail.com>
+Subject: [PATCH] bpf: Reject programs where arena and non-arena paths converge on ALU insn
+Date: Wed, 10 Jun 2026 15:09:52 +0800
+Message-ID: <20260610070952.43103-1-yangmingxuan.ymx@antgroup.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610030513.2651018-1-haoxiang_li2024@163.com>
-Date: Wed, 10 Jun 2026 03:09:51 -0400
-X-Gmail-Original-Message-ID: <CAMRc=MfjpibfmnHKi1GeMRCgDOc3=+1_C3aJfYQwR_YMcHtC_A@mail.gmail.com>
-X-Gm-Features: AVVi8CfY527vYJqPCTKFLvrHgAhLfpoYrAWJS-RKMwI2pvUAHuO9GyiDhNNz-o4
-Message-ID: <CAMRc=MfjpibfmnHKi1GeMRCgDOc3=+1_C3aJfYQwR_YMcHtC_A@mail.gmail.com>
-Subject: Re: [PATCH] i2c: davinci: Unregister cpufreq notifier on probe failure
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, brgl@kernel.org, 
-	andi.shyti@kernel.org, khilman@deeprootsystems.com, chaithrika@ti.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262435-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262437-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:linux-arm-kernel@lists.infradead.org,m:linux-i2c@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:brgl@kernel.org,m:andi.shyti@kernel.org,m:khilman@deeprootsystems.com,m:chaithrika@ti.com,s:lists@lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email];
-	FORGED_SENDER(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[163.com];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:omeux327@gmail.com,m:stable@vger.kernel.org,m:eilaimemedsnaimel@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,antgroup.com:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C78556668DE
+X-Rspamd-Queue-Id: ED6376668E9
 
-On Wed, 10 Jun 2026 05:05:13 +0200, Haoxiang Li <haoxiang_li2024@163.com> said:
-> davinci_i2c_probe() registers a cpufreq transition notifier before adding
-> the I2C adapter.  If i2c_add_numbered_adapter() fails, the probe error path
-> releases the device resources without unregistering the notifier.
->
-> Add a dedicated error path to unregister the cpufreq notifier after
-> i2c_add_numbered_adapter() fails.
->
-> Fixes: 82c0de11b734 ("i2c: davinci: Add cpufreq support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-> ---
->  drivers/i2c/busses/i2c-davinci.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/i2c/busses/i2c-davinci.c b/drivers/i2c/busses/i2c-davinci.c
-> index a773ba082321..a24c3e8b87ff 100644
-> --- a/drivers/i2c/busses/i2c-davinci.c
-> +++ b/drivers/i2c/busses/i2c-davinci.c
-> @@ -818,12 +818,14 @@ static int davinci_i2c_probe(struct platform_device *pdev)
->  	adap->nr = pdev->id;
->  	r = i2c_add_numbered_adapter(adap);
->  	if (r)
-> -		goto err_unuse_clocks;
-> +		goto err_cpufreq;
->
->  	pm_runtime_put_autosuspend(dev->dev);
->
->  	return 0;
->
-> +err_cpufreq:
-> +	i2c_davinci_cpufreq_deregister(dev);
->  err_unuse_clocks:
->  	pm_runtime_dont_use_autosuspend(dev->dev);
->  	pm_runtime_put_sync(dev->dev);
-> --
-> 2.25.1
->
->
+From: Mingxuan <omeux327@gmail.com>
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+The needs_zext flag is per-instruction but set per-path. When a single
+ALU64 instruction is reachable via both a PTR_TO_ARENA path and a
+SCALAR path, the arena path sets needs_zext=true which causes
+opt_subreg_zext_lo32() to convert the instruction to ALU32 for all
+paths. This creates a verifier-runtime semantic mismatch on the scalar
+path: the verifier tracked ALU64 semantics while runtime executes ALU32.
+
+This mismatch enables an attacker to create a controlled 4GB
+out-of-bounds write primitive, leading to kernel panic or local
+privilege escalation with only CAP_BPF.
+
+Fix by rejecting programs where arena and non-arena paths converge on
+the same ALU instruction, which would create conflicting needs_zext
+requirements.
+
+Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
+Cc: stable@vger.kernel.org
+Reported-by: Mingxuan <omeux327@gmail.com>
+Reported-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Mingxuan <omeux327@gmail.com>
+---
+ kernel/bpf/verifier.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7fb88e1cd7c4..9d7218340683 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15083,6 +15083,11 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 	if (dst_reg->type == PTR_TO_ARENA || (src_reg && src_reg->type == PTR_TO_ARENA)) {
+ 		struct bpf_insn_aux_data *aux = cur_aux(env);
+ 
++		if (aux->seen && !aux->needs_zext) {
++			verbose(env, "BPF_ALU64 with arena and non-arena paths converge; needs_zext conflict\n");
++			return -EACCES;
++		}
++
+ 		if (dst_reg->type != PTR_TO_ARENA)
+ 			*dst_reg = *src_reg;
+ 
+@@ -15099,6 +15104,11 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 		return 0;
+ 	}
+ 
++	if (cur_aux(env)->needs_zext) {
++		verbose(env, "non-arena ALU path conflicts with prior arena needs_zext\n");
++		return -EACCES;
++	}
++
+ 	if (dst_reg->type != SCALAR_VALUE)
+ 		ptr_reg = dst_reg;
+ 
+-- 
+2.50.1 (Apple Git-155)
+
 
