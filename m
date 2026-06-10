@@ -1,74 +1,94 @@
-Return-Path: <stable+bounces-262438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fdRkDwEPKWpRPgMAu9opvQ
-	(envelope-from <stable+bounces-262438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:15:13 +0200
+	id J0CuChAQKWrqPgMAu9opvQ
+	(envelope-from <stable+bounces-262440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:19:44 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3211A666883
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278B9666925
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 09:19:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=lxoC9Ba5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262438-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262438-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vk7emvOM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262440-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262440-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CDBC0302488A
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 07:12:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C848F3027CAE
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 07:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E587D385D8D;
-	Wed, 10 Jun 2026 07:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F010C385D8C;
+	Wed, 10 Jun 2026 07:14:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585743839AF;
-	Wed, 10 Jun 2026 07:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E794379C48
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 07:14:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781075539; cv=none; b=WEwZsvgvtKXrc38Is7PyLYhrjT83ruFECQYrDo5SQHGwUJfLKX10QOYJUBUxFN+ck+0snE/TfYjJPXmAFJysjYeGgY6Eu2+/nuHeQKDpu3aJTGWQg4+vsljkJ7LH695SKcKLOBIsWtyXxUaJZ0uMb80AlKEM4NFr+QV5/SODyaQ=
+	t=1781075674; cv=none; b=LMpcbZ7dL55JBCxYdKO/eosFqLeWhQ2m1UuD2pJ9AJ8uQ5aJewTRiu+gg2/qIGLh+b0FiK2BAL9Ks0yvwO4WU0Rdi+0BGNItjUBQJLkUthHeDqBnScYdMc75W7Kwok7dPmhK8zHUvQ0hTmRMasTIPKGI0kOuTs0jG17GdimXJuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781075539; c=relaxed/simple;
-	bh=Va/x2fqxUYV30kGVCxqH/tEstcHoycOGRwN8DJNv7CQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Bdxtp2Z4M0VtvHF5OteP2aPFMQeNPikv4qP0G5qkEOQIuZXbq9LqOdPQLsRCxFHZ7Px1GK48cYHdRLJwD/NSMdoQcnkC+ufgIeg5RZH5sG9ZuRgp3VZOJwQTPt5Gfgpm3r8lJ/qDPQuW15ZxhmggVWd4GVVj3bfuNE72ubJmUdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=lxoC9Ba5; arc=none smtp.client-ip=54.204.34.129
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781075482;
-	bh=Lz7tRcHhsQMSOJADDW7TXRw2/HZdu+zrYPBgdVPaoJ0=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=lxoC9Ba5gdZVCGgoP21Tk4kTElzw7kh8mZhoCWjlZADl69kDfRwrG8DfQUD2NNoxZ
-	 TWkQ/JfLg5gPy07a0bsCWaAbhlEIadlrOp54vUlcJEoGE0pYJdbMXwUCqMu3M8iCoM
-	 dQg9VyytfZGnabcTS4oq8zE65SXW6VXXmUUq0DWE=
-X-QQ-mid: esmtpsz20t1781075463tdf94633b
-X-QQ-Originating-IP: u7bnKZCN2RIVwN7K432cgmAtncJafcjvuAwIW4UI9ss=
-Received: from localhost.localdomain ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 10 Jun 2026 15:11:00 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 18434185685029258688
-EX-QQ-RecipientCnt: 11
-From: ZhaoJinming <zhaojinming@uniontech.com>
-To: Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Oded Gabbay <ogabbay@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	ZhaoJinming <zhaojinming@uniontech.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6 2/2] accel/rocket: Fix iommu_group leak and unsafe IRQ register access
-Date: Wed, 10 Jun 2026 15:10:45 +0800
-Message-Id: <20260610071045.3414828-2-zhaojinming@uniontech.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20260610071045.3414828-1-zhaojinming@uniontech.com>
-References: <20260610061915.1CA281F00893@smtp.kernel.org>
- <20260610071045.3414828-1-zhaojinming@uniontech.com>
+	s=arc-20240116; t=1781075674; c=relaxed/simple;
+	bh=46eYrWMMOwque0hGIWlgjDSe6yByv2jADvlK9lMcif4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JeYybT3qmtaO6L8V1/aOykH1c6+qhYq+iLIxDpNgJeej//k5nfv2sMK82BEMIGOmdS4EFmeLNSZ27TE5/ZJxJe2RuGrPmdAQzgSol9aXhrIbDrAYC9QXAB8ymXMoXXGgwUtDxXZMUY9wIcfIavRnorvaJ3aOBAk6usfb7SdAKhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vk7emvOM; arc=none smtp.client-ip=209.85.160.51
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-43d2ff651f2so5185690fac.2
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 00:14:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781075672; x=1781680472; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GS3IvbRaVRHuQ7jWVUtX/UMvAifgWuNPLIfjnTq2Txo=;
+        b=Vk7emvOMxDR7nl2FpWOz0jzA/aia3fTFl0GVrxqSHS7ixtTl9yw7uiIlIAK9uMa/y9
+         vx5sPw2eE8hoQyyDhRLojCkrt3WOOHjhMDYIXHjEc/6CuQ7njGiXxS3Faxwp7nvfXwrX
+         1zUkcyIgRKg8z0Khfz+GxQhubDAjWj2uoVA5SkvJWkQhi1lRT4Cj5TtMC2uOrREBb1CG
+         8SjHg0df50nIfwaqhQdxh8NPcLZvN07dHFbhIhNT/RmLAPLJDmENQTQSKmYsHg6hwevI
+         rs+kBLSJfvWx0T3mpMZQOIduFjL6Zi/X7t/6HZdMbSSTW/4YZbNxnUw6gC6oqehz1RnL
+         V3ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781075672; x=1781680472;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GS3IvbRaVRHuQ7jWVUtX/UMvAifgWuNPLIfjnTq2Txo=;
+        b=CNVx6zSAkJKKWqLHU+8aeS+CL8wXwfxpbMfqHV3cX993G68pRPV9pXG7+gRoAWkBIi
+         Sd4hYb7ZkjkjqjxYJjJVHcyE7V8ILzg0EtSObk/cbLlFtpQsf8SQ9k2XXLsjKEesCmHp
+         2tmrPITDwTXUg57baTKeO0G32uUwNVMCKstRN4XeGShw1OuNwSqi504OvtSWHtxVMQdS
+         lP1newj2zhgsqrtYPwWrQVxTw1SCxogtRiUDPhN8BgE11Q2vZYZQlIDtpopuj93HWhKt
+         xqPv7YzQ/ucu5HVLIK5/K7S1m3lhhRD6MZb9xtSf0I86BebT1wmCVEX6Xea6juoVWq/X
+         9b8A==
+X-Forwarded-Encrypted: i=1; AFNElJ/t11cUPNtDkEeWrFSuKY31Vv5y+WpKDJ32avyE3tVnbe+5RhjtOiQcLxqXOjM6pQj4B9vg0Fs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrdZmwPVQrUZ+jiTj44iL43DkY7VYc1eo1EmaN9thNCjpmU2h1
+	Tx9ugg9uS+VdLJFG7TRIr3TRzq+emsgvpLtnVpWlL8nhgX3ylm1pEaBT
+X-Gm-Gg: Acq92OFo448aN2z2wkEbnlEs031cFakpNIiT1Z64uEKeXz3CZibjbT4rLQI4WefFEsH
+	pqe+mvjKzWW6SBJDeie6c5wt3fX4vV35vH/hGDl/xUIIqoS6Hj0wiUv6Y1DqvNLFPDm353wvULh
+	l+WWEA4UqOFF4PKi9yXshHMpKZmvJ21ryUYs7s+LhcswQtCKLEnSXyCVE7z5eA3vblP6UjT15/o
+	9kXv94fwf2IhuahhcFfTvEVS9pI1wS8kJLPRk/c5DdZYmBs+wFmqvj2N2Ydi2mSFle4hemFaIEh
+	Gj3vU/krYmlHmcO6Xlpnutm3zM8moO+uGYmEm3f82BFksUbpkWUxbAbux6XZt1UPAnpGLXClvK9
+	JGyss0Lr4Y0FKe/AOZd5CKLooJCOAUS3S34jl95lOor3ZWdzk4LrfbHMXRk90KnB3CQSv6UxtiI
+	vSYHy60OtCCJOd68/ngzxDBIblTK1fxIEFu9Ugf7QWF46+bIRkmCmLaechrA==
+X-Received: by 2002:a05:6870:489:b0:43b:7f1e:6d20 with SMTP id 586e51a60fabf-4413d242f73mr13745935fac.7.1781075672474;
+        Wed, 10 Jun 2026 00:14:32 -0700 (PDT)
+Received: from localhost.localdomain ([47.246.98.85])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-440d7b79ad4sm20408841fac.4.2026.06.10.00.14.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 10 Jun 2026 00:14:31 -0700 (PDT)
+From: "=?UTF-8?q?=E9=93=AD=E5=AE=A3?=" <omeux327@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=E9=93=AD=E5=AE=A3?= <yangmingxuan.ymx@antgroup.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	eddyz87@gmail.com
+Cc: security@kernel.org,
+	andrii@kernel.org,
+	memxor@gmail.com,
+	stable@vger.kernel.org,
+	eilaimemedsnaimel@gmail.com,
+	Mingxuan <omeux327@gmail.com>
+Subject: [PATCH] bpf: Reject programs where arena and non-arena paths converge on ALU insn
+Date: Wed, 10 Jun 2026 15:14:09 +0800
+Message-ID: <20260610071409.43721-1-yangmingxuan.ymx@antgroup.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,149 +96,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NRaYAQcThOfQHS/M6CWXU1r/FUxQh0b6LxZ09Zc3ZxGh05Mzzmcp16ME
-	tw3CHItjPoiD/3EYQHqYiuzdEdLnkneXhPuvv1xn9DhKn9ezirxBhdb0tBy9n3rXPaH+/FR
-	AHjKoOi2gFpasAn/s1MrE+ExYqgyX8RqNFTNoLya6u2ebW4FdTjSdv9NpUvj3IGzHxgPk3m
-	wX9YawW9y+N8HgS64TRhD4eeVwR5mZSdDefEoKUPu+If/KYfsIOCEUBbbBQ65NA5sdPCnQ3
-	hGu6xJo5kZLIhLuBWnQh8jCwxS5Yt5QBBhFBiPuPVsbq3txBNe7Pltwqgqr2YYTFsXCSMGy
-	5PYgztGJXSXciFa8pVL9WxmngHKCoE1f1Zau/gJy3pj41YlM4XVMa9Ksj5SGHLjGAvXOcXs
-	yEav71TcBoOGR2D/Rww9c+X3H4UdnO3F6OeZY2HUgv4hPxV6av3F+EyA/G9zIIYVvy94b9n
-	LU8Y5vY0MRWtjLiZwMNo91bUXAeE2SBzWwTJpDSUkt1wi3pDgEB0OMxvbdMqTXmhpIXfQoa
-	N15PBAuy3JALOkfnth5Va/rwHH8+6fUgoscePceIcpGitIglYPPbLEG9LBCrgyAwd6RxAVn
-	qjZT9Vkn892aTVmfvy/1DRR9Z662ngIAA2nmumCKuvKNWvu82PSEJe4fksrdONuDFTN1GIL
-	+5GBv4RVMlbJ3AeUN78UAjZlp8bOKLDiGLTSPnM8bEcD+7ghTYPJ7O/1qz7Rc40kcY6jGIJ
-	Wnwh46+DpveLuYYSClYEAHTS+s236maKXlMfCG+rDT+qfxJQnqCAydSu2ZnvzyL4cVKNvNe
-	I+U61TNedif0/WutKQjAYsYdRxX1KwuKpaEaOPHuoXOUHacNmlf4VudLi6Uk8FayV87SjuT
-	b9LTHZkLk1J+MFlz0fjdn9vRSwGeRJNorZpAJmr0yHWPoXRazM1srfnszDgiUm1DuIfL2ir
-	iMHY9C8+/2hVJP8oZOuYWyrQA+Rq/58x3HGqdCNI6VqYTCc8sYWq+1LTLY5wZ/ExSW/rXHn
-	8FzdCvFKYCLIHmS/W73Ymr1ae205QzKL9iAIVDQbW2KT6etzbafoRTeZzxl/e8iVf7dYUcF
-	NlZoc2ewBHpnpm60X5b/asSZw0+ZEpJinL9gG4xmQtbnPO+RDmA3nP78a+Qzf6/jYGO2FxJ
-	0Fv3kENyyw0h44A2Be+upcDR4g==
-X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
-X-QQ-RECHKSPAM: 0
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-262440-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262438-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	FORGED_SENDER(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:tomeu@tomeuvizoso.net,m:ogabbay@kernel.org,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jeff.hugo@oss.qualcomm.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:linux-media@vger.kernel.org,m:linaro-mm-sig@lists.linaro.org,m:zhaojinming@uniontech.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ast@kernel.org,m:daniel@iogearbox.net,m:eddyz87@gmail.com,m:security@kernel.org,m:andrii@kernel.org,m:memxor@gmail.com,m:stable@vger.kernel.org,m:eilaimemedsnaimel@gmail.com,m:omeux327@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[kernel.org,iogearbox.net,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[omeux327@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[uniontech.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uniontech.com:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,antgroup.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3211A666883
+X-Rspamd-Queue-Id: 278B9666925
 
-Two bugs in the IRQ handling path:
+From: Mingxuan <omeux327@gmail.com>
 
-1) iommu_group reference leak in rocket_job_handle_irq():
-   iommu_group_get() increments the reference count but the returned
-   pointer is passed directly to iommu_detach_group() which does not
-   consume it. Since this runs on every completed job, the reference
-   count accumulates and prevents the group from being freed. Use
-   core->iommu_group instead, consistent with rocket_reset().
+The needs_zext flag is per-instruction but set per-path. When a single
+ALU64 instruction is reachable via both a PTR_TO_ARENA path and a
+SCALAR path, the arena path sets needs_zext=true which causes
+opt_subreg_zext_lo32() to convert the instruction to ALU32 for all
+paths. This creates a verifier-runtime semantic mismatch on the scalar
+path: the verifier tracked ALU64 semantics while runtime executes ALU32.
 
-2) Unsafe hardware register access in shared IRQ handler:
-   rocket_job_irq_handler() is registered with IRQF_SHARED but accesses
-   hardware registers without checking runtime PM status. If another
-   device on the same IRQ line triggers an interrupt while the NPU is
-   suspended, register reads return 0xffffffff, spuriously triggering
-   WARN_ON macros and falsely returning IRQ_WAKE_THREAD.
+This mismatch enables an attacker to create a controlled 4GB
+out-of-bounds write primitive, leading to kernel panic or local
+privilege escalation with only CAP_BPF.
 
-   Add pm_runtime_get_if_active() in the hardirq handler to atomically
-   verify the device is active before accessing registers. Each handler
-   (hardirq and threaded) independently acquires and releases its own
-   runtime PM reference to avoid coalescing-related leaks when the
-   IRQ core coalesces multiple wakeups into a single thread execution.
+Fix by rejecting programs where arena and non-arena paths converge on
+the same ALU instruction, which would create conflicting needs_zext
+requirements.
 
+Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the verifier.")
 Cc: stable@vger.kernel.org
-Fixes: 0810d5ad88a1 ("accel/rocket: Add job submission IOCTL")
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
+Reported-by: Mingxuan <omeux327@gmail.com>
+Reported-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Mingxuan <omeux327@gmail.com>
 ---
- drivers/accel/rocket/rocket_job.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/accel/rocket/rocket_job.c b/drivers/accel/rocket/rocket_job.c
-index e8a073e22ac2..334bf01c3382 100644
---- a/drivers/accel/rocket/rocket_job.c
-+++ b/drivers/accel/rocket/rocket_job.c
-@@ -349,7 +349,7 @@ static void rocket_job_handle_irq(struct rocket_core *core)
- 				return;
- 			}
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7fb88e1cd7c4..9d7218340683 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -15083,6 +15083,11 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 	if (dst_reg->type == PTR_TO_ARENA || (src_reg && src_reg->type == PTR_TO_ARENA)) {
+ 		struct bpf_insn_aux_data *aux = cur_aux(env);
  
--			iommu_detach_group(NULL, iommu_group_get(core->dev));
-+			iommu_detach_group(NULL, core->iommu_group);
- 			dma_fence_signal(core->in_flight_job->done_fence);
- 			pm_runtime_put_autosuspend(core->dev);
- 			core->in_flight_job = NULL;
-@@ -420,7 +420,10 @@ static irqreturn_t rocket_job_irq_handler_thread(int irq, void *data)
- {
- 	struct rocket_core *core = data;
- 
--	rocket_job_handle_irq(core);
-+	if (pm_runtime_get_if_active(core->dev) == 1) {
-+		rocket_job_handle_irq(core);
-+		pm_runtime_put(core->dev);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-@@ -428,16 +431,28 @@ static irqreturn_t rocket_job_irq_handler_thread(int irq, void *data)
- static irqreturn_t rocket_job_irq_handler(int irq, void *data)
- {
- 	struct rocket_core *core = data;
--	u32 raw_status = rocket_pc_readl(core, INTERRUPT_RAW_STATUS);
-+	u32 raw_status;
-+	int ret;
++		if (aux->seen && !aux->needs_zext) {
++			verbose(env, "BPF_ALU64 with arena and non-arena paths converge; needs_zext conflict\n");
++			return -EACCES;
++		}
 +
-+	ret = pm_runtime_get_if_active(core->dev);
-+	if (ret == 0)
-+		return IRQ_NONE;
-+
-+	raw_status = rocket_pc_readl(core, INTERRUPT_RAW_STATUS);
+ 		if (dst_reg->type != PTR_TO_ARENA)
+ 			*dst_reg = *src_reg;
  
- 	WARN_ON(raw_status & PC_INTERRUPT_RAW_STATUS_DMA_READ_ERROR);
- 	WARN_ON(raw_status & PC_INTERRUPT_RAW_STATUS_DMA_WRITE_ERROR);
+@@ -15099,6 +15104,11 @@ static int adjust_reg_min_max_vals(struct bpf_verifier_env *env,
+ 		return 0;
+ 	}
  
- 	if (!(raw_status & PC_INTERRUPT_RAW_STATUS_DPU_0 ||
--	      raw_status & PC_INTERRUPT_RAW_STATUS_DPU_1))
-+	      raw_status & PC_INTERRUPT_RAW_STATUS_DPU_1)) {
-+		if (ret > 0)
-+			pm_runtime_put(core->dev);
- 		return IRQ_NONE;
++	if (cur_aux(env)->needs_zext) {
++		verbose(env, "non-arena ALU path conflicts with prior arena needs_zext\n");
++		return -EACCES;
 +	}
++
+ 	if (dst_reg->type != SCALAR_VALUE)
+ 		ptr_reg = dst_reg;
  
- 	rocket_pc_writel(core, INTERRUPT_MASK, 0x0);
-+	if (ret > 0)
-+		pm_runtime_put(core->dev);
- 
- 	return IRQ_WAKE_THREAD;
- }
 -- 
-2.20.1
+2.50.1 (Apple Git-155)
 
 
