@@ -1,165 +1,165 @@
-Return-Path: <stable+bounces-262581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SwnYJIjoKWrgfQMAu9opvQ
-	(envelope-from <stable+bounces-262581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:43:20 +0200
+	id JvlbKxbqKWo3fgMAu9opvQ
+	(envelope-from <stable+bounces-262582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:49:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72E166D3B1
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:43:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3FE66D40E
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:49:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sB+HiCCJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262581-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262581-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="KhN7oK/b";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262582-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262582-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84235302BA63
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 22:42:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2569A300EC6C
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 22:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF323314B8C;
-	Wed, 10 Jun 2026 22:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3136837DE8B;
+	Wed, 10 Jun 2026 22:49:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EED834B661
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 22:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D287336A355
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 22:49:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781131370; cv=none; b=b3vjvTdLB2nUWplhA/1S1xz12bFQ5rgyk0ioFkhcHiakZT6iI/+jO/0qkCTLCHb++foyGIO4IN4Yv6/ElOzJF5k3GEC7PTvh5XbCZmNGpWMDK4smhhx6IK+r1TROTC2S7mC6MIek+43UfgWV4QNxEbcwirAAJFBzrPp6Fv7EU+E=
+	t=1781131779; cv=none; b=lyMoBpoIKu83QqXpfEg9OLctyMCt/yVgPTw6QmYq0mA6Nxas9GvZKnJp5kKBXZ46BXp34W4r+JmyOpU68n9KOzi8blLMEwDNcAFqFrzhhO3pZ7epcQe80z0x/NbnX0GfYzVdO3lbcDhZPEB57+vVaFYdQlpEBFUweTjl81VSLjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781131370; c=relaxed/simple;
-	bh=KGb2+RnBGqWGYJWr5yEi7yn5Go85cTY3qJrXW/hZZNs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GQQKpUigTYst+3NZ+9EwuEuW53lzKw8hbUz/A0MyPQlZ0+ugtAAm8P1G1MypCxfaWKs6vPFSYI5GDt++Bi1i8RFHvoT1b5AL+aDJAxILSy9zk0TmlB1WRjoIS5ayiO/oVppzR/JpLGgLLQ6F2YJrErGCY4tIRYdcB0xFm9m23aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sB+HiCCJ; arc=none smtp.client-ip=74.125.82.66
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-138129a622dso6430013c88.0
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 15:42:49 -0700 (PDT)
+	s=arc-20240116; t=1781131779; c=relaxed/simple;
+	bh=8f/3NqncAopUkhQQ7pVzzHLYV7a2fGjbRa0tql4HClA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XkxDR3xFD6h9C2YYhkIffWTMqtiZeMSghX+4Og9qMuiAabDK6qsshjuQ10FMOeIeJCpDdJ+bUCAXdOcWdnES48/kxhdoWF08XePtfVbqJ+SiXv2nOFWKocKSwLxXVAYu9Sy6U1TtW8jbeFXX56OwWiNiZAwRGFpMzqzSOC81TSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KhN7oK/b; arc=none smtp.client-ip=74.125.82.171
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30759632453so1898460eec.1
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 15:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781131368; x=1781736168; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mjxMs1UWDXcOR4Ip0bVRp20Hps+s1fUTy1xCBCJP+bE=;
-        b=sB+HiCCJ42xJepSa1+Lo8D4DG+GF3uJ0fmFX54ym1FSMnxxjyHQ5iuX3skg5groNMf
-         UjbvmV/6SA23UofdGFQkNBERjTfhxZuqc0F7hdmcpzAjunPLFN5UD1qzmSmAtzHWRrVb
-         a2MCgwFCT2b5p21iiXjNjmATtMfo2hR1+OtWgEhKPd1RJuXg+iWPOO3z3G53Cn5NpiC8
-         48MFr+7A63mCCkf16BvIPE3MY9k70aHcQqHTDv2LNLH/f3ws4DZB2VEC81xsGfpgAW/9
-         Om5qPRSb+MI8BfWSQ/hvO89XeUI4WDKitHPLgoEfiAzJ4wobyfUOi5FvHZvaKlyUxX6+
-         Hyqw==
+        d=gmail.com; s=20251104; t=1781131777; x=1781736577; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iI334LxgKLmlRyNgL8Ur4M9ac5DP95VOVSvPZmKZ8RU=;
+        b=KhN7oK/b7a9RnLa9mMF37ZK+61y4EPpJqL/eyVcaOOi8WXls07hj/HNRoHXMc0TLv2
+         q1yN3KhGDnEuTziYHIHOhESubSuGRtGdqrfLmJwuQGt+ySMBlnV7KEG/rf3tijK4eZRa
+         PueZi7+rCSNUtJqMUC+u7+qczgWuqThNgX5QehFr1eGeGs8ravUBC5gPlIR7Pt0yn9B+
+         ytYzLvNC6/1WlXASHQUIXM/LIisIZrdlL2dYk5GNBUs7oBJhjpYLOPSs304IAI5jq17a
+         Vv/X59nrCo0YGwd1Gnv5aYro4rimJ5bOTHTxpTPbtMqT/HTcISaeqtUpkkYr5c46aMP9
+         viHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781131368; x=1781736168;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mjxMs1UWDXcOR4Ip0bVRp20Hps+s1fUTy1xCBCJP+bE=;
-        b=OQ1pvHjCipHakLrn2H/19VuO0W35u+0tBQk2PFqFqkxIdJ8+x+WmXAZbt2CX953LgG
-         OrbFoyKxSdp1CBkBTdZsWBrIB+VJ1125gcsx05PjiA54+JR6TBue/Rk2XH276QQVttBc
-         79Kpy696u7WPysx0LkQwvVrYG5zZPLyh9vh5ajMQ9lzyCTA0Xo6nypmpkBnjMyMBEe5V
-         uXKE2xcWp5p9Sjq0FTwGcim6O1bDwCu7cLOxSa+cIlnI1WWcGhVQR3HNvgxcyRVcLUxT
-         E/TxQhR0lKeMbHVnvOb1SwM+zr/UflGqXk3ezuC0lkpzabJ2ezzENfWo2Gasy54aSswJ
-         CFBg==
-X-Forwarded-Encrypted: i=1; AFNElJ/rA//WeTspetDM50TVuFCf9HV35pA75lkSZUpfTcahkYt0ODgOCWLkLDA44zUXuyJF7Be574g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDNa1/AQXLqQKmK7ybvtb6/SHTae8N8TFMWPXYVLtx1kuPMYr7
-	slhK05MDmXc+6nXd3OtjMO+Ckn5aaHaIek7m0d1AG/ohEfy/hRSxRWKc
-X-Gm-Gg: Acq92OFeNx5FP9gorbA7AjSznLGn7Tqct28MM6+5Gsicp6J/n/gf8eW4mBvU+DqaJxf
-	TbVKUIUAwS3FR0gyWyBHwGYV6mx7zbxwo7Z5H+6a/4MZ3VoH2GiZ4+wmMPoNk85vx3aBN4NPiEU
-	k4thH3SIWnvfZtAdhUvFqIQykjkMoH8wHDveNMBnIWanL3Cq+skEcdtp//qpeSdy9+faDQqgnWH
-	1fuPS35wlcyY7ouiEcB6KzkltGQhNovdx7dq9+LHM9lDqN3BlTEnYc6Q77nCxIjxD7CToicZoCb
-	l//XqgCdaGqWF4/LFSGN/RV0lQAo63oH8uqg47bvnKtdVs0ntSKqcJ0G5K4sK/gG/+mN87lNgx5
-	oglCEJo/KLeU11s8enrP/rEvarUswm+sCaJC7xPpysiy4edTh9h3Lo8M7WoAK464ouKJGG61ZLL
-	C5C+eJH2YL8OosdbqXpNMjHZPMbFmClg4fqBdy3gGxTYT3kfp7euf/9HLSmAONuakVa0bMUjt7W
-	btUYiMWVtk9gKanmDjsvEvQ8mFfXS0VTICxAxGlW/lFH5lZF7b9qvlyZH+UeUFiyHvECMLcyWxQ
-	tfmN2S4UvSMIgfscLglO5Npz9/PP
-X-Received: by 2002:a05:7022:403:b0:138:11a:36f with SMTP id a92af1059eb24-138421600ddmr132935c88.1.1781131368427;
-        Wed, 10 Jun 2026 15:42:48 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-137f5539432sm23652848c88.9.2026.06.10.15.42.47
+        d=1e100.net; s=20251104; t=1781131777; x=1781736577;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iI334LxgKLmlRyNgL8Ur4M9ac5DP95VOVSvPZmKZ8RU=;
+        b=Fvi/767zBElBC8E6fxFshsm796ESmH6BUbKHi5bA+MbvDcbeMwHQF3OL7k2L39J3Dn
+         jEm02M2m0TN2jCeJws+aY/1EQh52BVFcux6ESq4leqbXSRbviHFpnZIMx6XqoriiB5Dv
+         qUbrCJNnQKMZtU11YnmpQ2lMQrHBgur1Ns0ivw6FcyPjQ6p85iJXC9NOkIWHFtHjDT4H
+         a2VeJ6ulqnE+XCAatvEIA6LQzgJityXfN2Dmr9sExqujpfM+/Kzoj4ieM9Q2V/t1Yx8g
+         e4PBhWvbEhWVBqjSJNpTcNeLxcwmsJU/6D/vxVrKOK8JOMqIhj2O+DF4eKS+PcCJ99AB
+         Q60g==
+X-Forwarded-Encrypted: i=1; AFNElJ+EGheXCH8bcRFuDtbMIjpiC13m+mLEQcoz463Dfcof2uZQ/gDDVZfx+XqW8NLxk9f8p9vM5z4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydZYzAMEkO2TG0+qSqDbRzQUKRlSLC1r/qYbyPJJytIvyKS9pU
+	0+koMhpSLuKaLFNjYJlzejmOUoftVOmZcKa5CXdcOEcfiF0KXXQAKW79
+X-Gm-Gg: Acq92OE0Ll/hgTOZLWv5PDwvbyF8inCeYhQaLj7/g9g7cZSxHv01Z3ricBQIfSf4++C
+	Eu/rrUnvWKRg1A8LH07e80lIj34v/EQtK7KVycRr/ftYrfpf/9g/Xg44z+VpBzERMVz6paXHD4H
+	9maeBmASiIWnecPyyPYMcKpy72otqRNxowrs01sLx7Q7BZpyfsRq4CILGfbs0yZyQJd7Mx4JTlH
+	WU4+aRwW80CcAlt3BXXp7w8ha0gF190LE8JOO6jBsUXFQxhR7gdBaK3s0SaOtAbESXRjYL3ipXa
+	2unr2nHyeZtGqW1Ozxe5qspr9/cgHxqXIjYCUhPDjsYigpb0IBwpX6eauqbTa80gZfslmuo7zNl
+	TenzdC55X33DPiD6uLj6+m4h2ID67viwsnvEsGW8QQ48Q8vOqFWZ068yWk9toh83119taZ2889T
+	I5cMt+e2KrgqRUBAepsy1vWwuc+wT+oRizX7pouVzZj3RgY56XtSJEDrQC0PPfcm4LUZhFut8Vt
+	D8=
+X-Received: by 2002:a05:7301:9bc5:b0:307:3a6c:ecf4 with SMTP id 5a478bee46e88-3080465303emr215050eec.9.1781131776830;
+        Wed, 10 Jun 2026 15:49:36 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2ebe:8:ae0e:e075:91c8:6570])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df191d0sm39841199eec.21.2026.06.10.15.49.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 15:42:48 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: Lee Jones <lee@kernel.org>,
-	Lukas Timmermann <linux@timmermann.space>,
-	linux-leds@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Pavel Machek <pavel@kernel.org>
-Subject: [PATCH] leds: as3668: correct name of config option to match Makefile
-Date: Wed, 10 Jun 2026 15:42:43 -0700
-Message-ID: <20260610224244.128063-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 10 Jun 2026 15:49:36 -0700 (PDT)
+Date: Wed, 10 Jun 2026 15:49:33 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Kris Bahnsen <kris@embeddedts.com>
+Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org, 
+	Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] Input: ads7846 - don't use scratch for tx_buf when
+ clearing register
+Message-ID: <ainp9-NDND6AFLWk@google.com>
+References: <20260507164943.760009-1-kris@embeddedTS.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260507164943.760009-1-kris@embeddedTS.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-262581-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:linux@timmermann.space,m:linux-leds@vger.kernel.org,m:enelsonmoore@gmail.com,m:stable@vger.kernel.org,m:pavel@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262582-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kris@embeddedts.com,m:marex@denx.de,m:stable@vger.kernel.org,m:mark@embeddedts.com,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E72E166D3B1
+X-Rspamd-Queue-Id: 9D3FE66D40E
 
-The Makefile for the AS3668 LED driver refers to CONFIG_LEDS_AS3668,
-whereas the config file defines CONFIG_LEDS_OSRAM_AMS_AS3668. This
-causes the driver to never be compiled. Correct the name in the Kconfig
-file to match the Makefile. Doing the opposite would also have worked,
-but the name in the Makefile better matches the format of other
-drivers' options.
+On Thu, May 07, 2026 at 04:49:43PM +0000, Kris Bahnsen wrote:
+> The workaround for XPT2046 clears the command register, giving the
+> touchscreen controller a NOP. The change incorrectly re-uses the
+> req->scratch variable which is used as rx_buf for xfer[5], so by
+> the time xfer[6] occurs, the contents of req->scratch may not be
+> 0. It was found that the touchscreen controller can end up in
+> a completely unresponsive state due to it being given a command
+> the driver does not expect.
+> 
+> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
+> transmit all 0 bits and use the scratch variable for the rx_buf for
+> both the 1 byte command to and 2 byte response from the controller.
+> 
+> Also relocates the scratch member of struct ser_req to force it
+> into a different cache line to prevent any potential issues of
+> DMA stepping on unrelated data in other struct members due to
+> sharing the same cache line.
+> 
+> This change was tested on real TSC2046 and ADS7843 controllers,
+> but not the XPT2046 the workaround was originally created for.
+> Confirming that the original modification to clear the command
+> register does not impact either real controller.
+> 
+> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
+> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
+> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
 
-Fixes: c7dd343a3756 ("leds: as3668: Driver for the ams Osram 4-channel i2c LED driver")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- drivers/leds/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thank you.
 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index f4a0a3c8c870..5ac63cb59469 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -107,7 +107,7 @@ config LEDS_ARIEL
- 
- 	  Say Y to if your machine is a Dell Wyse 3020 thin client.
- 
--config LEDS_OSRAM_AMS_AS3668
-+config LEDS_AS3668
- 	tristate "LED support for Osram AMS AS3668"
- 	depends on LEDS_CLASS
- 	depends on I2C
 -- 
-2.43.0
-
+Dmitry
 
