@@ -1,133 +1,173 @@
-Return-Path: <stable+bounces-262539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d1OdAF+UKWoPaAMAu9opvQ
-	(envelope-from <stable+bounces-262539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:44:15 +0200
+	id qcOWIwSYKWo3aQMAu9opvQ
+	(envelope-from <stable+bounces-262541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:59:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A396966B9D5
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:44:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBB066BC40
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:59:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3mu8BqO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262539-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262539-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=geuYnpIl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262541-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262541-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8E1430623F1
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:35:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 15247326242D
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6516733C1BD;
-	Wed, 10 Jun 2026 16:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9153491D0;
+	Wed, 10 Jun 2026 16:52:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D2C33260D;
-	Wed, 10 Jun 2026 16:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE2834753F;
+	Wed, 10 Jun 2026 16:52:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781109315; cv=none; b=c3spsbRP4aHcNu5f1jojInbcMbTn7+TyxtBr+pAMZS4jRgoM6UYfUy0Rpx5CggMVSWAsLGecbaN5g+Cg3Y2TC0rbep4Grbms/R+3tkNMy3kcXARsmPS5Nh/zJjjL5MQfpXnlO6kh1BTnhzuhg9aH4xOXG1+Db2TQjIi7fyeNjyg=
+	t=1781110378; cv=none; b=n47j7CriA8hkwDEOKHeZW7sOT7AXlyUkvyciimoEwTEuPZfuFBrPv3ofJQsfsqX6NVlIg8VBaX7uB0CE5f7FXF2ucBYjRdhXhFD5ByZWOMBwzQN76By+7AgWqK96WAjodWl3hhORjfSPBQEn4Yw++T51FGdXvQcNatU1235QlRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781109315; c=relaxed/simple;
-	bh=o0UHpGfUu2Y4xLXTxuCWVifSMbbKVSTfndNre6mkvOI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=qCftIQcjstABWtROfu2CHVBHOb7tWAIpm6vowjCscgCeWjqDxQqsC9HoJAKrgZ59HNhuGR6gjxe/C7ZSerhY2LE3KehZxPrRVnqRQUnW+8bDqfP9oUkYKSk94A1Pec24n+/VShBXhrTSh/Dli/rWnKUPrjf3ihG5T6BVPdi498M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3mu8BqO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582261F00893;
-	Wed, 10 Jun 2026 16:35:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781109314;
-	bh=aoK4NCFgt75hg7TUdwmbCdz+xbW1TUVb2FQGnQHVjwA=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=b3mu8BqOUoGIadgVLDjbMjxNFwmzOyhLO9iw9neqEa2FHJ59+cShg6pCsZ0X7zxci
-	 xYgz3vHkfIBVbc9LxTn3kaOIS+90YPGNUtuSsHDWZGR0be2sllU9Hf2fzCIJIquxkz
-	 mPkGID8tcz2n1T9lmScUhc/eqRsxz7Hm0spgTJ72QOdYW/dQ4ZhQBUfBTgMCPCAywk
-	 azHFKAzDwNwp+bNruoqZ/FEMtMd3VncalI5Cd5hhOHGvwQTutkV7H7el0tqIRsyG+6
-	 EdpNrtATopu+l9syg62MYsXpiOfW+KTPgt4UI+Vo7cCyntg0gmVm8Gkg6lOAPmt2Te
-	 GqnZgBKRlbjgw==
-Date: Wed, 10 Jun 2026 18:35:11 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Tianchu Chen <tianchu.chen@linux.dev>
-cc: bentiss@kernel.org, linux-input@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] HID: hid-goodix-spi: validate report size to prevent
- stack buffer overflow
-In-Reply-To: <f7e444a3facbe5fb2627167ab205771476e46bc8@linux.dev>
-Message-ID: <081p3q54-1553-0o92-4osr-r51s82023q24@xreary.bet>
-References: <f7e444a3facbe5fb2627167ab205771476e46bc8@linux.dev>
+	s=arc-20240116; t=1781110378; c=relaxed/simple;
+	bh=jbk6yBEdIz+siIk4AW7hcrswKcQ5IcPD/9629Hos0/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cpqUSKuCvxBhaS2UM20gXzYVWfF5GEiZM2dyglO0Gbf8QcDriUH1aWPxeqF1S3vF3AMISUInEFsEjfsJagDCR3m744nhA6bRFlVN/bPo1ZTWzJUEt3pfhifoxjfIoCWujYtEhDkjSKwWvbO98fqQfxoNGHzZF3BdNU9BAjmD3QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=geuYnpIl; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65A6Saof3739674;
+	Wed, 10 Jun 2026 16:52:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=quHNC8xouJtRxjNmNIJvukXcwZ1ls4HZ0NJKzRWu6
+	iI=; b=geuYnpIlZK8RCRW+O3KkgSvZnosxECF0aAGka9nmpX6bNurqxa5lYyN5m
+	j8tymSZ7c4NW3cd3527+0cks/KC7rVaHb2C86O4WmYk0dBwuvq2KGfoe+RQBq2XS
+	6oXp4kpUx8Qo8tDPEgsfJxRzBHbA0Gk6CO/IESaBreuWEuHtqmeOEs8j2FZ1kRn7
+	3KoMsqKegfrj3oTg7V2UcpjMwGWgeRwvIDuQCa836Sykd7dg8O2XOgcnU/CYLKKk
+	GypDDaV16hoKg0AhLszSvL7Zs99ZjycjaI9BGKp1p6+CAEPNBjvMLUDItUQ3uMs7
+	pD/1tBPuoeFFbRPpZTHBdYHdCWZxQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4em8yj1xfg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 16:52:54 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65AGnar8010361;
+	Wed, 10 Jun 2026 16:52:53 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4emwvq7pe5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jun 2026 16:52:53 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65AGqlKD49545710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Jun 2026 16:52:47 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AE3F52004B;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E78420040;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+Received: from p-imbrenda.ehn-de.ibm.com (unknown [9.224.75.30])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 10 Jun 2026 16:52:47 +0000 (GMT)
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        borntraeger@de.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        seiden@linux.ibm.com, nrb@linux.ibm.com, schlameuss@linux.ibm.com,
+        gra@linux.ibm.com
+Subject: [PATCH v2 0/5] KVM: s390: A few misc gmap fixes.
+Date: Wed, 10 Jun 2026 18:52:42 +0200
+Message-ID: <20260610165247.238366-1-imbrenda@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDE1NiBTYWx0ZWRfX4d5SU0bndSkI
+ DyjmBoyc3JqpC4JAy9JkERE/IWP1vfrQzcxnsoRBpUsKA0i2f1SDspYK+RfEnkZhXkeReJC02/X
+ OTIM5cWW0psoqyiXqQNaQg4/mYj80/KbOuSR17JzmeBMf3Ko3c4RmGoV5DV9+jLOaA75lQ/+Oag
+ qKgB8NrRt+RkLJp0dH7+1C24cyv5vrlyRe0gyz7+jsWSOqBAN3L+SpVvhBwkN++hGmt3nOwGJmw
+ cektIHIx1zM0uNm+Kwoun/FQF4N9ogy7XnBdjWKdWIC0fo4RLyclcYE9oPwjbO9uiBFOSVEg9oX
+ PDc0Gmb90CPNtV8Y+NNHyiBJXi09rwrKZF5LwDu2rjhM/Ak9XaCrmaHUDB7FhxNS99CeIAmEDee
+ fAmtmbERvEX2a3deig3oDQbLeAFZCb0ELWiKSbgdRstKHahkkeAUTuIMK+nl3YTlYfpkwQZMCCc
+ Dc65+koNTFEHm1Q8qAw==
+X-Authority-Analysis: v=2.4 cv=HvFG3UTS c=1 sm=1 tr=0 ts=6a299666 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=NwVYdQMMGb_YwOmgCikA:9
+X-Proofpoint-ORIG-GUID: 5y0QIONP62bslpwex0t_UFVzn-Uf0fVL
+X-Proofpoint-GUID: 5y0QIONP62bslpwex0t_UFVzn-Uf0fVL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-10_03,2026-06-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605210000 definitions=main-2606100156
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:tianchu.chen@linux.dev,m:bentiss@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jikos@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262539-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262541-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[imbrenda@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:kvm@vger.kernel.org,m:linux-s390@vger.kernel.org,m:borntraeger@de.ibm.com,m:frankja@linux.ibm.com,m:david@kernel.org,m:seiden@linux.ibm.com,m:nrb@linux.ibm.com,m:schlameuss@linux.ibm.com,m:gra@linux.ibm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[imbrenda@linux.ibm.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ALIAS_RESOLVED(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.ibm.com:mid,linux.ibm.com:from_mime];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A396966B9D5
+X-Rspamd-Queue-Id: 2FBB066BC40
 
-On Fri, 29 May 2026, Tianchu Chen wrote:
+A few more minor gmap fixes.
 
-> From: Tianchu Chen <flynnnchen@tencent.com>
-> 
-> goodix_hid_set_raw_report() builds a protocol frame in a 128-byte stack
-> buffer (tmp_buf), writing an 11-12 byte header followed by the
-> caller-supplied report data.  The HID core caps report size at
-> HID_MAX_BUFFER_SIZE (16384) by default, while the driver does not set
-> hid_ll_driver.max_buffer_size and performs no bounds checking before
-> copying the payload:
-> 
->     memcpy(tmp_buf + tx_len, buf, len);
-> 
-> A hidraw SET_REPORT ioctl with a report larger than ~116 bytes
-> overflows the stack buffer.
-> 
-> Add a size check after constructing the header, rejecting reports that
-> would exceed the buffer capacity.
-> 
-> Discovered by Atuin - Automated Vulnerability Discovery Engine.
-> 
-> Fixes: 75e16c8ce283 ("HID: hid-goodix: Add Goodix HID-over-SPI driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+v1->v2:
+* Improve suppression of __must_check, by using a pointless if instead
+  of casting to (void)
+* Fix allocation size for struct vsie_rmap in kvm_s390_mmu_cache_topup()
+* Add missing radix_tree_preload() in _gaccess_shadow_fault()
+ 
+Claudio Imbrenda (5):
+  KVM: s390: Silence potential warnings in _gmap_crstep_xchg_atomic()
+  KVM: s390: Fix unlikely race in try_get_locked_pte()
+  KVM: s390: vsie: Fix allocation of struct vsie_rmap
+  KVM: s390: vsie: Add missing radix_tree_preload() in
+    _gaccess_shadow_fault()
+  KVM: s390: vsie: Use mmu cache to allocate rmap
 
-Applied, thanks and sorry for the delay.
+ arch/s390/kvm/dat.c         |  2 +-
+ arch/s390/kvm/gaccess.c     | 65 ++++++++++++++++++++++---------------
+ arch/s390/kvm/gmap.c        |  7 ++--
+ arch/s390/kvm/gmap.h        | 14 ++++++--
+ arch/s390/mm/gmap_helpers.c |  6 ++--
+ 5 files changed, 58 insertions(+), 36 deletions(-)
 
 -- 
-Jiri Kosina
-SUSE Labs
+2.54.0
 
 
