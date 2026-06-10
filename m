@@ -1,150 +1,209 @@
-Return-Path: <stable+bounces-262431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262432-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pKLeJcoJKWqlPAMAu9opvQ
-	(envelope-from <stable+bounces-262431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:52:58 +0200
+	id eDAWDf8JKWrNPAMAu9opvQ
+	(envelope-from <stable+bounces-262432-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:53:51 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE77666662
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 285B466666F
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:53:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ideasonboard.com header.s=mail header.b=wZ8V9jsx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262431-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262431-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ideasonboard.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Aie3j5Da;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262432-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262432-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A97BD301EB0C
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 06:49:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02589300CBFB
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 06:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE69E379990;
-	Wed, 10 Jun 2026 06:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1B13812E9;
+	Wed, 10 Jun 2026 06:50:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B4238229A;
-	Wed, 10 Jun 2026 06:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06992376BE0
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 06:50:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781074141; cv=none; b=sy3uVDEr0QDwOMCBqj/iuD7MtJqfJluziX6Hfij5r21sakT6L91HGc7S2RIWHSeMEv5GqyazK3y8KaoJP7MscW5b6U73N+Txx0Zu27nUBaBkurLERjAKW1RxH/IzYg2505ONL9H1W6KiNrXx5JN5ZKyOQvzspXrOJPq0f0JfL+0=
+	t=1781074223; cv=none; b=aB6zb9yoz2KPV7iHOYcitD9S3x7+CTMJAXtKmkMPy3keqbRsG7srBPnWcxII4coXVMcRvH/CuDrRmupwduTbYPxwFnLqXW+uUKCKoWwQdSvdX2AzS5ZJrRbXEWXjdsfQ6F7Rk+vi5m25piGR5VEtNaiNV73k4Dr0oUv65kHIA+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781074141; c=relaxed/simple;
-	bh=pe5LfmLVMxdrbMZtCnvMirKPK27BgplU4bk7CK1xW7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNigGyBm/i7iKD4vBwau5YtqkTJRV+Zt3NF9kRjerZupkZpY+fiX2dnzOfSCqXEfG++EJ3OoK1LyXYUXZr75n9Y9GBnNpfklXpeX8FRUsYtEl1Q0ACzOMfk/do8q9kEq2QJwd2pDJ3U5Q8nP6DVzFqCpfllgB15XZRtYKgH6v3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=wZ8V9jsx; arc=none smtp.client-ip=213.167.242.64
-Received: from [192.168.0.43] (chfd-03-b2-v4wan-176392-cust229.vm15.cable.virginm.net [82.19.20.230])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 44F39517;
-	Wed, 10 Jun 2026 08:48:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1781074109;
-	bh=pe5LfmLVMxdrbMZtCnvMirKPK27BgplU4bk7CK1xW7M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=wZ8V9jsx7yDilDWnpKmjIBFBOs2Ae3344PMjIY2g6dcSN0RTOQWXcd8NzEAT0JRON
-	 +r+QB6yBJt8zWoxI92bDy5KV1h/EOQB9qf78rzLtopiGw51/oMzm6iCqfk75htEsXX
-	 Dv+mlEarJqyDbqTIeT0PkJB5FcG9t5gmrJl09iJw=
-Message-ID: <f31703b3-3c31-4617-a228-a25347d00140@ideasonboard.com>
-Date: Wed, 10 Jun 2026 07:48:54 +0100
+	s=arc-20240116; t=1781074223; c=relaxed/simple;
+	bh=jKfE6a5TaSVzDEupEWUxlVjQJEQNk2ihgL/iofH7YZ8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sH1z9JxLJlO4eCysMeP46V+xIoD9usqaqU62aw55HRsDp8tr38rGFyP79aPlInvicQZFbGtswMPOyD0kLZGVC6atjvlxFit2MPTWLyQodGwYyYg2sRbajAsYE6YIfweeia3ptYD5Qkch9SG+XI/y3KigztJRNMbAxkFyLqwjPdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Aie3j5Da; arc=none smtp.client-ip=209.85.208.74
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-68d232dc704so6629782a12.0
+        for <stable@vger.kernel.org>; Tue, 09 Jun 2026 23:50:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781074220; x=1781679020; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBP+gyWP0FVt0I05DGqGEo5PSl+DTUOm1WH2EmKpkXo=;
+        b=Aie3j5DaffUSaY7DdI73G+q+sOfxAVNTyp676BJlYoIJ7dyOOgLJfDluhYgl2EMoZz
+         cEQIclBuKG16M9zt9IWrT1p2Ta4RIHpjjebJVN1D94Ukq0xN9xI4BGThzRDFly+h0NhA
+         5goZ+Vs9C2Lu9ggxLH6d3tUoRRrpqZovmeJNmf0r5foatzSGJJpROWFpXnyhmyOmibpp
+         yYG7+jf8RPqE5mCVBHF+jaIHkV0BMBAzMRwUlUNaMH2LIr3lU0N2K/hXnwXf8a47jMUl
+         kR2Ts0PJTiCCcIk3NXLir9DrPyHi/+VEznpYCYVcq14KxViGAoiwNzO4ZtKsiH2JSoza
+         peZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781074220; x=1781679020;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBP+gyWP0FVt0I05DGqGEo5PSl+DTUOm1WH2EmKpkXo=;
+        b=SSjRRlQonm9eFk4/Q0Sz3GAZEDNleJowKKI5L862+x6cd2pLNFYrFZu+VqBewWKuml
+         +5jeh3l4dytLbzqhA1P1qReEQYZ+XSBgmp83+jqChtZjWcLkn+pFkNZEcipFMd4CtYED
+         oDazXVwIUdCYEE+f4zv03dcn9SaO3YxlVKLzYeFOtsxdsFW+YyFyCnzE9z+3FvdUVKG/
+         YcVXFihCixzAmArW4MWiDoMXRS7OdamKQLFRnFwNP2rpu957purIruiVPEQXD8yxXXh9
+         Km4jXWGl+s5FyHIl7RzIFALLo9yG7JCM9wmeKToLbumTtoaxgVDIqAbX6NC81xelS1H4
+         2qmg==
+X-Forwarded-Encrypted: i=1; AFNElJ9XVujiAbR/kM/uWSPDAniJxUSPQsmS+VT9Sql3pDeNdpEcxC2au3ay3EhPi7MMrobunhDfxu4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLkunULjg+htaLktUKr0+yf6SCKqlVLWUk0oanGjUcM8VSbKay
+	J0Kt9whfhW7XLn3C9Q4L2uXvVVgOCQ5RnjjoCmgDq0OII1i1PGRbaG5CvswjY1h3sq7vvLI2ENF
+	lN8vBJxhjdP+dh8F4Fg==
+X-Received: from edvl10.prod.google.com ([2002:a05:6402:28a:b0:692:5e5e:968f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:5405:b0:687:3580:fc26 with SMTP id 4fb4d7f45d1cf-68fa4f2dae1mr10525298a12.13.1781074220179;
+ Tue, 09 Jun 2026 23:50:20 -0700 (PDT)
+Date: Wed, 10 Jun 2026 06:50:17 +0000
+In-Reply-To: <20260606022233.2402965-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: mali-c55: fix dropped last AEC histogram zone
- weight
-To: David Carlier <devnexen@gmail.com>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
- Nayden Kanchev <nayden.kanchev@arm.com>,
- Hans Verkuil <hverkuil+cisco@kernel.org>, linux-media@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260602185305.30759-1-devnexen@gmail.com>
-Content-Language: en-US
-From: Dan Scally <dan.scally@ideasonboard.com>
-In-Reply-To: <20260602185305.30759-1-devnexen@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260606022233.2402965-1-cmllamas@google.com>
+Message-ID: <aikJKVuny_eOivwN@google.com>
+Subject: Re: [PATCH] binder: fix UAF in binder_thread_release()
+From: Alice Ryhl <aliceryhl@google.com>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262431-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262432-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,ideasonboard.com];
-	FORGED_SENDER(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:devnexen@gmail.com,m:jacopo.mondi@ideasonboard.com,m:mchehab@kernel.org,m:nayden.kanchev@arm.com,m:hverkuil+cisco@kernel.org,m:linux-media@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:cmllamas@google.com,m:gregkh@linuxfoundation.org,m:arve@android.com,m:tkjos@android.com,m:brauner@kernel.org,m:kernel-team@android.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dan.scally@ideasonboard.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,ideasonboard.com:dkim,ideasonboard.com:email,ideasonboard.com:mid,ideasonboard.com:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABE77666662
+X-Rspamd-Queue-Id: 285B466666F
 
-Hi David, thanks for the patch
-
-On 02/06/2026 19:53, David Carlier wrote:
-> The 15x15 AEC histogram metering grid has 225 per-zone weights, packed
-> by userspace as a u8 array. The driver writes the first 56 registers
-> (zones 0 through 223) in a loop, then handles the final register on its
-> own to keep static analysers from flagging the array access.
+On Sat, Jun 06, 2026 at 02:22:32AM +0000, Carlos Llamas wrote:
+> When a thread exits, binder_thread_release() walks its transaction stack
+> to clear the t->from and t->to_proc that correspond with the exiting
+> thread. However, a process dying in parallel might attempt to kfree some
+> of these transactions. And if one of them has no associated t->to_proc,
+> the t->to_proc->inner_lock will not be acquired.
 > 
-> That separate path computes the address and value for the 225th weight
-> (the bottom-right zone) but never issues the register write, so the zone
-> keeps its stale or default weight. Any non-default weight userspace sets
-> for the last zone is silently ignored, skewing auto-exposure metering.
-> Both the AEXP_HIST_WEIGHTS and AEXP_IHIST_WEIGHTS blocks are affected as
-> they share this handler.
+> This means that transaction accesses in binder_thread_release() after
+> t->to_proc has been cleared might race with binder_free_transaction()
+> and cause a use-after-free error as reported by KASAN:
 > 
-> Issue the missing write, masking the value as the loop does.
+>   ==================================================================
+>   BUG: KASAN: slab-use-after-free in binder_thread_release+0x5d0/0x798
+>   Write of size 8 at addr ffff000016627500 by task X/715
 > 
-> Fixes: 01535ea08674 ("media: platform: Add mali-c55 parameters video node")
+>   CPU: 17 UID: 0 PID: 715 Comm: X Not tainted 7.1.0-rc5-00149-g8fde5d1d47f6 #30 PREEMPT
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    binder_thread_release+0x5d0/0x798
+>    binder_ioctl+0x12c0/0x299c
+>    [...]
+> 
+>   Allocated by task 717 on cpu 18 at 67.267803s:
+>    __kasan_kmalloc+0xa0/0xbc
+>    __kmalloc_cache_noprof+0x174/0x444
+>    binder_transaction+0x554/0x8150
+>    binder_thread_write+0xa30/0x4354
+>    binder_ioctl+0x20f0/0x299c
+>    [...]
+> 
+>   Freed by task 202 on cpu 18 at 90.416221s:
+>    __kasan_slab_free+0x58/0x80
+>    kfree+0x1a0/0x4a4
+>    binder_free_transaction+0x150/0x294
+>    binder_send_failed_reply+0x398/0x6d8
+>    binder_release_work+0x3e4/0x4ec
+>    binder_deferred_func+0xbd8/0x104c
+>    [...]
+>   ==================================================================
+> 
+> In order to avoid this, make sure that binder_free_transaction() reads
+> the t->to_proc under the transaction lock. This will serialize the
+> transaction release with the accesses in binder_thread_release(). Plus,
+> it matches the documented locking rules for @to_proc.
+> 
 > Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: David Carlier <devnexen@gmail.com>
+> Fixes: 7a4408c6bd3e ("binder: make sure accesses to proc/thread are safe")
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 > ---
-
-Oops! Change looks good to me:
-
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-
->   drivers/media/platform/arm/mali-c55/mali-c55-params.c | 1 +
->   1 file changed, 1 insertion(+)
+>  drivers/android/binder.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/media/platform/arm/mali-c55/mali-c55-params.c b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> index de0e9d898db7..33e2232ec8f5 100644
-> --- a/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> +++ b/drivers/media/platform/arm/mali-c55/mali-c55-params.c
-> @@ -212,6 +212,7 @@ mali_c55_params_aexp_hist_weights(struct mali_c55 *mali_c55,
->   
->   	val = params->zone_weights[MALI_C55_MAX_ZONES - 1];
->   	addr = base + MALI_C55_AEXP_HIST_ZONE_WEIGHTS_OFFSET + (4 * 56);
-> +	mali_c55_ctx_write(mali_c55, addr, val & MALI_C55_AEXP_HIST_ZONE_WEIGHT_MASK);
->   }
->   
->   static void mali_c55_params_digital_gain(struct mali_c55 *mali_c55,
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index 9e6194224593..09bc052186cf 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -1658,7 +1658,11 @@ static void binder_txn_latency_free(struct binder_transaction *t)
+>  
+>  static void binder_free_transaction(struct binder_transaction *t)
+>  {
+> -	struct binder_proc *target_proc = t->to_proc;
+> +	struct binder_proc *target_proc;
+> +
+> +	spin_lock(&t->lock);
+> +	target_proc = t->to_proc;
+> +	spin_unlock(&t->lock);
 
+Although I don't think this fixes all issues here, as we discussed more
+in private, this does fix the specific UAF referenced in this patch, so:
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+The logic is that either binder_free_transaction() reads a non-null
+target_proc, in which case we take the inner proc lock and fully
+synchronize with the entirety of binder_thread_release(), or we read a
+null target_proc in which case the transaction spinlock ensures that we
+wait for the part of binder_thread_release() touching this particular
+'struct binder_transaction'.
+
+Alice
+
+>  	if (target_proc) {
+>  		binder_inner_proc_lock(target_proc);
+> -- 
+> 2.54.0.1032.g2f8565e1d1-goog
+> 
 
