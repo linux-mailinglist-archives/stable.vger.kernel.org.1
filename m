@@ -1,132 +1,255 @@
-Return-Path: <stable+bounces-262532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id n0cYJdSNKWqAZQMAu9opvQ
-	(envelope-from <stable+bounces-262532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:16:20 +0200
+	id LaWEGLWMKWoCZQMAu9opvQ
+	(envelope-from <stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:11:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E3C66B491
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:16:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E5466B387
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:11:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OCHesFF8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262532-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262532-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=intel.com header.s=Intel header.b=lLOZ6Zel;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5278536BA64E
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:01:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DAF53158603
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09AE4219FF;
-	Wed, 10 Jun 2026 16:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5486C426698;
+	Wed, 10 Jun 2026 16:03:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EF1429827;
-	Wed, 10 Jun 2026 16:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27493314C2;
+	Wed, 10 Jun 2026 16:03:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781107257; cv=none; b=sbMaE+wd3WogRUj9U8azmQHUZPuhG5dMGombqUMkzaTZRmIAoLGV3IhbonYrBNsO9Et+Ujk0gUztxMVIPTSznblw9VK0/u16/m1fTmscpQwJ4PUzLN8B+IMDPQs12KOHFzJhjIH5jx3kqhC6Sl/JNAfEAZog++H1vaLMofNG8I8=
+	t=1781107406; cv=none; b=oiWHSzIlTqnmZRxWVLI68YP28hZjUnG5JrXhmoZNi7aXdrc2qWaLIGYXMs6NRRU8bZ6cTaf6lxWR9EOgKrv1J/ttmbKrYFm34df1HtkK+lGNqP+v8uhD4PRlSeyPphfuGmLVypa+YurbYQibAjaVkU4vGCkVs6Gjcku6XA9j25I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781107257; c=relaxed/simple;
-	bh=yygwYe7ShSyUHaZhEeUMjmed3v11V4TuHwXMVMS5XAs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=cq86y6QpHk0LcWbLcmUtZGIyIkodjIQfUNorTKT6IZVIU+1qAmnkhwjyu3rKzNxlcsjauBvkKM2sbbvxA0v1FTbkjJoO+sgyFujjoEi0odtstfdmYZJdm8gfs75b/oxDmUKZxU8iALub6FgOllgnJWBH3RaqIyx9TeWC6StW6ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCHesFF8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC231F00893;
-	Wed, 10 Jun 2026 16:00:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781107256;
-	bh=yygwYe7ShSyUHaZhEeUMjmed3v11V4TuHwXMVMS5XAs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References;
-	b=OCHesFF8//A0zaC61op3thmafZuokfM0wtk/nGR7unwxA6rAoQyBfDdNAja9hHcQm
-	 63kdmOZXk9Xh7vQBQCm6+8Y6Gtt01PVDdrkYEYbDSgKpGrsIItxyQMzDHCKFaP6965
-	 ZbKaf/LU4f59jQDD0vErq6gZzwGVlmNWtpMYBwx93bFUnWBvHWwlhfRY/p4QX8oApc
-	 nFAecEk/dDfyLFdmUHUwo1PYgx2WjkL/r3jTwNpprMMCg+hs313gh/Mmz7EaYLzvCT
-	 aih3q50WkLu+GzTRY1VgHueBVKeLTzf2UkmjfdamM1T0vHg8G6E/5X06pm/EgXSum2
-	 yV02N2ttD+XPg==
-Date: Wed, 10 Jun 2026 18:00:52 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Oleg Makarenko <oleg@makarenk.ooo>
-cc: bentiss@kernel.org, stable@vger.kernel.org, 
-    Oliver Roundtree <oroundtree1@gmail.com>, 
-    =?ISO-8859-15?Q?Ryno_Kotz=E9?= <lemon.xah@gmail.com>, 
-    =?ISO-8859-2?Q?Tomasz_Paku=B3a?= <tomasz.pakula.oficjalny@gmail.com>, 
-    Anssi Hannula <anssi.hannula@gmail.com>, Dmitry Torokhov <dtor@mail.ru>, 
-    linux-input@vger.kernel.org, linux-usb@vger.kernel.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] HID: pidff: Use correct effect type in effect update
-In-Reply-To: <20260609160031.493353-1-oleg@makarenk.ooo>
-Message-ID: <r9903509-5s4n-o1qs-7798-sn361qqp0282@xreary.bet>
-References: <20260609160031.493353-1-oleg@makarenk.ooo>
+	s=arc-20240116; t=1781107406; c=relaxed/simple;
+	bh=2QGjrHy/PRoch3raeOtztmQV+KiNPyVKF+x5MWha63M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nPoK/uROxNlkPHp3qHpOIXGIwx/cHgDQebdCaqchrFyUU4UIIlVIiv5HdxflBgxrTZhhn5m4Q9HmxvnDRvdTKphSq+uPXSMtJc+t73NDTpebUXU2jd3jye5K5sbrIcIaab9zlx2zpHWOVX8Vh1iic7/wgdS3KCE1M7DRmi2m++M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLOZ6Zel; arc=none smtp.client-ip=192.198.163.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781107404; x=1812643404;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2QGjrHy/PRoch3raeOtztmQV+KiNPyVKF+x5MWha63M=;
+  b=lLOZ6ZelgyeAJQiovI3TdDD5QxDcUWjeXpBdBqVgrAhBY81B9ZsDS7+W
+   qfkkv/2TLWkkF4UckOwTfJZJ8F+QU8OS+X/P4TfeRALt+Natw6b2I6Lv1
+   ouwh+Ez/qwrKRFScEsIWAVo4MM6u8Q29C415a7vbRVxDusbMvuqBOU4v5
+   zRh9b6ZDz5UWhExsl29ErPMhDecr2JKamEJUrInY0xnb6aCjNFfcw5AlA
+   d53adWKxLJwn6UCasI9lMQ9luLNug/IKb6eZXt9xjsaSjDptE3JrLrX0K
+   6okaj/5DJSCtI/DpksSe2vXBALZOxc8Kqu6ln5UCbzeluqdmfikTIkhUe
+   g==;
+X-CSE-ConnectionGUID: 24QdbxixTvy7MbSNu2qErA==
+X-CSE-MsgGUID: MhSV5aoDTleSd8NvkVc0vw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81752196"
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="81752196"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 09:03:23 -0700
+X-CSE-ConnectionGUID: 2KXcPB6cQbagpNdC04+jOA==
+X-CSE-MsgGUID: UdTztvqLTKiCm3Pp1WNmfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
+   d="scan'208";a="251297485"
+Received: from krybak-mobl1.ger.corp.intel.com (HELO [10.245.246.32]) ([10.245.246.32])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 09:03:19 -0700
+Message-ID: <fcf37969-2641-4480-a4cf-3eaf37b7d3b9@linux.intel.com>
+Date: Wed, 10 Jun 2026 19:03:27 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: SOF: topology: validate vendor array size before
+ parsing
+To: =?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+ Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+ Jaroslav Kysela <perex@perex.cz>
+Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org, notify@kernel.org, stable@vger.kernel.org
+References: <20260603-sof-topology-array-size-signed-v1-1-84f97879a4ef@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
+In-Reply-To: <20260603-sof-topology-array-size-signed-v1-1-84f97879a4ef@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262532-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,mail.ru];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:oleg@makarenk.ooo,m:bentiss@kernel.org,m:stable@vger.kernel.org,m:oroundtree1@gmail.com,m:lemon.xah@gmail.com,m:tomasz.pakula.oficjalny@gmail.com,m:anssi.hannula@gmail.com,m:dtor@mail.ru,m:linux-input@vger.kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:lemonxah@gmail.com,m:tomaszpakulaoficjalny@gmail.com,m:anssihannula@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[jikos@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:cassiogabrielcontato@gmail.com,m:lgirdwood@gmail.com,m:yung-chuan.liao@linux.intel.com,m:daniel.baluta@nxp.com,m:kai.vehmanen@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:broonie@kernel.org,m:tiwai@suse.com,m:perex@perex.cz,m:sound-open-firmware@alsa-project.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:notify@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,nxp.com,linux.dev,kernel.org,suse.com,perex.cz];
+	FORGED_SENDER(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262534-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,xreary.bet:mid,makarenk.ooo:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4E3C66B491
+X-Rspamd-Queue-Id: 76E5466B387
 
-On Tue, 9 Jun 2026, Oleg Makarenko wrote:
 
-> When updating an existing effect, the effect type from the last created
-> effect was sent to the device instead of the updated one.
-> This caused incorrect reports when a game creates multiple different
-> effects and updates only one that is not the last created.
->=20
-> Fixes FFB in multiple games that create multiple simultaneous effects
-> (Forza Horizon 5/6).
->=20
-> Fixes: 224ee88fe395 ("Input: add force feedback driver for PID devices")
-> Cc: <stable@vger.kernel.org>
-> Tested-by: Oliver Roundtree <oroundtree1@gmail.com>
-> Co-developed-by: Ryno Kotz=E9 <lemon.xah@gmail.com>
-> Signed-off-by: Ryno Kotz=E9 <lemon.xah@gmail.com>
-> Signed-off-by: Oleg Makarenko <oleg@makarenk.ooo>
 
-Applied, thanks.
+On 03/06/2026 20:57, Cássio Gabriel wrote:
+> sof_parse_token_sets() reads array->size while iterating over topology
+> private data. The loop condition only checks that some data remains, so a
+> malformed topology with a truncated trailing vendor array can make the
+> parser read the size field before a full vendor-array header is available.
+> 
+> Validate that the remaining private data contains a complete
+> snd_soc_tplg_vendor_array header before reading array->size.
+> 
+> The declared array size check also needs to remain signed. asize is an int,
+> but sizeof(*array) has type size_t, so comparing them directly promotes
+> negative asize values to unsigned and lets them pass the check,
+> as reported in the stable review thread reference below.
+> 
+> Cast sizeof(*array) to int when validating the declared array size. This
+> rejects negative, zero and otherwise too-small sizes before the parser
+> dispatches to the tuple-specific code.
+> 
+> Link: https://lore.kernel.org/stable/CANiDSCsjR5NHqu_Ui5cOqWdJgFqmYsQ9WR8O7m0WOhngaYXFpw@mail.gmail.com/t/#m9b3be379221e79327cc13fd71009287368ef4f23
+> Fixes: 215e5fe75881 ("ASoC: SOF: topology: reject invalid vendor array size in token parser")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> ---
+>  sound/soc/sof/topology.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+> index 8fc7726aec29..bb6b981e55d1 100644
+> --- a/sound/soc/sof/topology.c
+> +++ b/sound/soc/sof/topology.c
+> @@ -740,10 +740,13 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
+>  	int ret;
+>  
+>  	while (array_size > 0 && total < count * token_instance_num) {
+> +		if (array_size < (int)sizeof(*array))
+> +			return -EINVAL;
+> +
+>  		asize = le32_to_cpu(array->size);
+>  
+>  		/* validate asize */
+> -		if (asize < sizeof(*array)) {
+> +		if (asize < (int)sizeof(*array)) {
+>  			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
+>  				asize);
+>  			return -EINVAL;
 
---=20
-Jiri Kosina
-SUSE Labs
+I think this only partially right, I would cover a bit more:
+
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index 898b94f88706..b0d37ec2bc5e 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -12,6 +12,7 @@
+ #include <linux/device.h>
+ #include <linux/errno.h>
+ #include <linux/firmware.h>
++#include <linux/overflow.h>
+ #include <linux/workqueue.h>
+ #include <sound/tlv.h>
+ #include <uapi/sound/sof/tokens.h>
+@@ -738,27 +739,43 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
+ 	size_t offset = 0;
+ 	int found = 0;
+ 	int total = 0;
++	int max_tokens;
+ 	int asize;
+ 	int ret;
+ 
+-	while (array_size > 0 && total < count * token_instance_num) {
++	if (check_mul_overflow(count, token_instance_num, &max_tokens)) {
++		dev_err(scomp->dev, "%s: token count overflow %d * %d\n",
++			__func__, count, token_instance_num);
++		return -EINVAL;
++	}
++
++	while (array_size > 0 && total < max_tokens) {
++		if (array_size < (int)sizeof(*array)) {
++			dev_err(scomp->dev,
++				"%s: invalid remaining array size %d\n",
++				__func__, array_size);
++			return -EINVAL;
++		}
++
+ 		asize = le32_to_cpu(array->size);
+ 
+ 		/* validate asize */
+-		if (asize < sizeof(*array)) {
+-			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
+-				asize);
++		if (asize < (int)sizeof(*array)) {
++			dev_err(scomp->dev, "%s: vendor array too small %d\n",
++				__func__, asize);
+ 			return -EINVAL;
+ 		}
+ 
+ 		/* make sure there is enough data before parsing */
+-		array_size -= asize;
+-		if (array_size < 0) {
+-			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
+-				asize);
++		if (asize > array_size) {
++			dev_err(scomp->dev,
++				"%s: vendor array size %d exceeds remaining data\n",
++				__func__, asize);
+ 			return -EINVAL;
+ 		}
+ 
++		array_size -= asize;
++
+ 		/* call correct parser depending on type */
+ 		switch (le32_to_cpu(array->type)) {
+ 		case SND_SOC_TPLG_TUPLE_TYPE_UUID:
+
+> 
+> ---
+> base-commit: bb451bc01ea42c9e47557638400708e20df34178
+> change-id: 20260530-sof-topology-array-size-signed-06abdacb1cdc
+> 
+> Best regards,
+> --  
+> Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> 
+
+-- 
+Péter
 
 
