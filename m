@@ -1,82 +1,66 @@
-Return-Path: <stable+bounces-262553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id B2mAAuqhKWoEbAMAu9opvQ
-	(envelope-from <stable+bounces-262553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:42:02 +0200
+	id 2gq/J7OlKWpIbQMAu9opvQ
+	(envelope-from <stable+bounces-262555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:58:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9529466C052
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:42:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1786266C178
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:58:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="CGVsG/EJ";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262553-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=oracle.com;
+	dkim=pass header.d=sms-medipool.de header.s=mail header.b=u+eNISFm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262555-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262555-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=sms-medipool.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F04E302926C
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 17:39:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 203753046EC7
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 17:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F68A34AB19;
-	Wed, 10 Jun 2026 17:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A375351C1F;
+	Wed, 10 Jun 2026 17:58:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mail.sms-medipool.de (mail.sms-medipool.de [178.63.14.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EBF222582;
-	Wed, 10 Jun 2026 17:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FAC175A6A;
+	Wed, 10 Jun 2026 17:58:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781113173; cv=none; b=OZDYtw8XbPIa2kDvKxvXAO/IL3ybmOXXagHS1ZxbpUSHzm4vqDWVwlO/HLX0lyZi4kYyq/QgjWNFgcnkaX20JyezCCjxxJiHuwE762qwi+sLnPBsetpNO+DXVQh4hmb6CbKD0OnyzoIBWhDC6Er9uOlu+/FVmr0xtzvyJ1l7I/g=
+	t=1781114289; cv=none; b=ImcGJyYRJ14AjI2sYGMPagqlUBZYRyIgf155KuDs5I1QUHP88aFG2nKzKEs2VKQLPBa277U0/uE68qoAs1hhLu++7EtMBSpbkcRFaBTIpHxpWiMumsEjVa0UE9+KAl4Sl27OOsjwrBwB5WbF1KzmnUsnLpkzBYx8vsPvEJlm5As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781113173; c=relaxed/simple;
-	bh=mFsPdIQNmumD6FdOZ1f3tsuWa3qRREaX+mUfFjjJrVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RJTF9mM6MoNchMwFTI1Uis4ZoX1QO95mbIA7sZQwty93+HaNxNxVr+otJXThFOxqWhEAHOEOhPSWmINpI0MF8eNYJdbt6PQEa83Q7aPZXan/g9gIV6sv/1WFvNalYRaGmNwDWOkq9VJnbCOjgcFRQ78oeWEHWMGvLzi6uWEa4LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CGVsG/EJ; arc=none smtp.client-ip=205.220.177.32
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65ADulOL140590;
-	Wed, 10 Jun 2026 17:39:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=KYcM7IBQoilglZiFsT2AYDGdPiR3Z
-	d59yAtoqkqCQaE=; b=CGVsG/EJZlJzknu1fMkTXnuvXp7Mr0jd3VMZdEZo5iUPI
-	X/ej4PJH61hpJoRLZ1nUrn3Ubwx1s/l1ajxWfsBNb8MO6H8+70BAP15VNU88qrxg
-	eQLNAW2rfRTrxYJ05Q9QCk9gwoBvRWdqNtDNJRifdE6L9DvsTUA7QuQe9QPZH/7E
-	n5H1Ryg0fo1g79VPPcE1m36dv3mgKog/yBPlimsGVDA6DuSwlVH0/EeSObnG885D
-	E09elU48TWLE2ZO8rjzFeiOSJOsNwtOKzN0e96w+7PFQGrm7YiPA2u1WLu6S5gnf
-	9qjI65JJ4aIAbMWdry5QG9NkM7DN3IHNy8Qsli0dw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4embkjf5e2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Jun 2026 17:39:20 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65AHXBvJ028974;
-	Wed, 10 Jun 2026 17:39:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4eqbqftdda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 10 Jun 2026 17:39:18 +0000 (GMT)
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 65AHbHKj011533;
-	Wed, 10 Jun 2026 17:39:17 GMT
-Received: from mbpatil-ws.osdevelopmeniad.oraclevcn.com (mbpatil-ol10-ws.webad1iad.osdevelopmeniad.oraclevcn.com [100.100.228.95])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4eqbqftdcg-1;
-	Wed, 10 Jun 2026 17:39:17 +0000 (GMT)
-From: Manjunath Patil <manjunath.b.patil@oracle.com>
-To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-        Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-        netdev@vger.kernel.org
-Cc: Manjunath Patil <manjunath.b.patil@oracle.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Patrisious Haddad <phaddad@nvidia.com>, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH net] net/mlx5e: Use sender devcom for MPV master-up
-Date: Wed, 10 Jun 2026 10:39:15 -0700
-Message-ID: <20260610173915.4053423-1-manjunath.b.patil@oracle.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1781114289; c=relaxed/simple;
+	bh=ihUlkXSiWA5fqy0pE0DcLIch1Zf7ZM2UeRQXu1e/d1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QlhW0lUi7EI3PpJDLBwyNYhRfvsF0pxm0pkxFiRsf78euot2PHfse5vTgU0Sud7QwLA7A4X0bvl7lDCAa33w9GSF7DIz7G/WZoK4u0Fz23m3mhWeEw7Yj6+Sotea3gXIFgMLpoH9sHtHb9bkx59lQN4H20TAdCGCMk0EoAm9Ldg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sms-medipool.de; spf=pass smtp.mailfrom=sms-medipool.de; dkim=pass (2048-bit key) header.d=sms-medipool.de header.i=@sms-medipool.de header.b=u+eNISFm; arc=none smtp.client-ip=178.63.14.108
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sms-medipool.de;
+	s=mail; t=1781113715;
+	bh=7CkiQSdVEazQZCCPmgIysSgNdiIAqqWLAFnaduLrUlg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u+eNISFmHGseP8N+lfeibs4IRYOJCPuvlX1FeO0BU6PbGObJFXmnV2mJwPYcNMuw3
+	 4pctoaVwys5K27CEBi6CQ80Bp6qhLLXEw40ZtrucMja7EZGwd1Io5ghMEsU9H5fyIv
+	 zAY+nnGh2cUIvoZ13e+lqL6VhFhlEf3Q9M2wFagLkcVhrY11PnKUmFjtRFle6f+ZnM
+	 yMRCEa3WPUDOpXHZ/FhQ5PN1uZIKHqObmgWlZHEESJ3OmDo+suaijYoYfWL5/YJY2n
+	 HIKJc6XGBmCF8xrwLJGF7otWSDL3rydezOV5/AicL9oLdMIgyavIAnQOpio/DaW4yJ
+	 YQyND8mkrVMfQ==
+Received: from mail.stoss-medica.de (mail.stoss-medica.de [213.147.17.40])
+	by mail.sms-medipool.de (Postfix) with ESMTPS id C8F3811D51;
+	Wed, 10 Jun 2026 19:48:35 +0200 (CEST)
+Received: from NUC16-Linux.sb.golima.de ([95.88.98.111])
+	by mail.stoss-medica.de (Kerio Connect 10.0.8 patch 2) with ESMTP;
+	Wed, 10 Jun 2026 19:48:34 +0200
+From: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
+To: Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	stable@vger.kernel.org,
+	alexander.kaplan@sms-medipool.de
+Subject: [PATCH] ALSA: hda/hdmi: disable KAE for Intel Panther Lake
+Date: Wed, 10 Jun 2026 19:48:34 +0200
+Message-ID: <20260610174834.6301-1-alexander.kaplan@sms-medipool.de>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,136 +68,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-10_03,2026-06-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
- spamscore=0 suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2605130000 definitions=main-2606100166
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjEwMDE2NiBTYWx0ZWRfX5k9kQImBYMJb
- TMnA5U8R2f/ilo5tGIBLsZOBGtQpXW/f1VA7Ezklmbh8vd0LZEpKoW82H6n/TnfbcP1d9RDy28P
- A5eORAeKQXS9F6vyr4KHmiOdxfaaOnrb5Zwp3zdgAEyKMuqG/iupBtskzaIosIetTg+20JwhziR
- QLQ+spAy96a/vM5bQnfy2vMl2pc3Op7aqgltz1KuQ17O4bPhPuUOHn/IjtYynVeF2eoaQaHajIT
- bRcePuOjn5svN4ijB8TFM65Oi4GRuxs3ThzUFClYtbQ7nbLmW65Xqq1UKRPA+ykYkVyx4k09LYf
- Za1nkOXPA1tPCq+4zjTjGCG6Kf8AwZG3m1JlL87tzFOqcLE6hNLt1VbYjWZRmSCLjfW4erRuuDq
- 7ICJ4z9sK8fu9ZcBReuJwwdAN5XVhUpFnX8AYrKs9w62HUPHstFHQ8ng+YMjRkheZ7y1j2j4AjI
- j5T+wUcwha70ZaEAu8w==
-X-Authority-Analysis: v=2.4 cv=ROSD2Yi+ c=1 sm=1 tr=0 ts=6a29a148 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8 a=VwQbUJbxAAAA:8
- a=JXUkVfB3YJkj4ag9OGkA:9
-X-Proofpoint-GUID: kFF8KusQBGovR0sKGsMd2h_cailNstJk
-X-Proofpoint-ORIG-GUID: kFF8KusQBGovR0sKGsMd2h_cailNstJk
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sms-medipool.de,reject];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sms-medipool.de:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262553-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-262555-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:perex@perex.cz,m:kai.vehmanen@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:stable@vger.kernel.org,m:alexander.kaplan@sms-medipool.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[manjunath.b.patil@oracle.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:saeedm@nvidia.com,m:tariqt@nvidia.com,m:mbloch@nvidia.com,m:leon@kernel.org,m:netdev@vger.kernel.org,m:manjunath.b.patil@oracle.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:phaddad@nvidia.com,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[manjunath.b.patil@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,oracle.com:dkim,oracle.com:email,oracle.com:mid,oracle.com:from_mime];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[sms-medipool.de:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCVD_COUNT_SEVEN(0.00)[9]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sms-medipool.de:dkim,sms-medipool.de:email,sms-medipool.de:mid,sms-medipool.de:from_mime,vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9529466C052
+X-Rspamd-Queue-Id: 1786266C178
 
-After PCIe DPC recovery, mlx5 reloads the affected functions and
-replays multiport affiliation events. In the reported failure, the
-first relevant device error was:
+On Panther Lake the keep-alive engine poisons the display side of the
+audio path for multichannel PCM.
+Once KAE has been active in the running display power cycle, the first
+6 or 8 channel stream on that pin plays silent and wedges the pin.
+All subsequent streams stay silent regardless of their format.
+Only a display power domain cycle recovers the pin, in practice a
+reboot or one suspend cycle.
 
-  pcieport 0000:10:01.1: DPC: containment event
-  pcieport 0000:10:01.1: PCIe Bus Error: severity=Uncorrected (Fatal)
-  pcieport 0000:10:01.1:    [ 5] SDES                   (First)
+The wedge sits behind the audio converter.
+Sample counters in the display audio register block keep running during
+the silent playback while the output stays dead.
+The wedge survives clearing the KAE bit ahead of the stream id
+programming, fully quiescing the converter (KAE bit, stream id and
+format cleared before the multichannel setup), a complete codec and
+controller reset through a driver rebind with the keep-alive kept off,
+and powering down the audio well for ten minutes.
+The sequence is harmless when the keep-alive was never enabled in the
+running display power cycle, which isolates the KAE hardware as the
+trigger.
 
-mlx5 recovered the PCI functions and resumed 0000:11:00.1. During
-that resume, RDMA multiport binding replayed
-MLX5_DRIVER_EVENT_AFFILIATION_DONE and mlx5e sent
-MPV_DEVCOM_MASTER_UP. The host then panicked with:
+Easy reproducer on a sink whose LPCM capability is limited to
+2 channels:
+speaker-test -c2 plays, one speaker-test -c6 run plays silent and every
+following speaker-test -c2 stays silent until reboot.
+With enable_silent_stream=0 the same sequence plays normally.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000010
-  RIP: mlx5_devcom_comp_set_ready+0x5/0x40 [mlx5_core]
-  RDI: 0000000000000000
+This is the failure class already known from commit 6ab6f98fcdc9
+("ALSA: hda/hdmi: disable KAE for Intel DG2").
+Handle Panther Lake like DG2 and fall back to the older i915 silent
+stream method, which uses the regular stream path instead of the
+keep-alive engine.
+Like on DG2 this keeps the codec powered while the silent stream runs.
 
-Call trace included:
-
-  mlx5_devcom_comp_set_ready
-  mlx5e_devcom_event_mpv
-  mlx5_devcom_send_event
-  mlx5_ib_bind_slave_port
-  mlx5r_mp_probe
-  mlx5_pci_resume
-
-MPV devcom registration publishes mlx5e private data to the component
-peer list before mlx5e_devcom_init_mpv() stores the returned component
-device in priv->devcom. A concurrent master-up event can therefore
-reach a peer whose private data is visible but whose priv->devcom
-backpointer is still NULL.
-
-MPV_DEVCOM_MASTER_UP already carries the sender/master mlx5e private
-data as event_data. The ready bit is stored on the shared devcom
-component, not on an individual peer. Use the sender devcom when
-marking the MPV component ready.
-
-This preserves the readiness transition while avoiding a NULL
-dereference of the peer devcom pointer during affiliation replay after
-PCI error recovery.
-
-Fixes: bf11485f8419 ("net/mlx5: Register mlx5e priv to devcom in MPV mode")
-Assisted-by: Codex:gpt-5
-Signed-off-by: Manjunath Patil <manjunath.b.patil@oracle.com>
-Cc: stable@vger.kernel.org # 6.7+
+Cc: stable@vger.kernel.org
+Fixes: e9481d9b83f8 ("ALSA: hda: add HDMI codec ID for Intel PTL")
+Signed-off-by: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Found and verified on an ASUS NUC 16 Pro (Panther Lake H, codec
+0x80862822) driving an LG TV through a Synaptics VMM7100 DP-to-HDMI
+protocol converter, kernel 7.1-rc7.
+The poisoning is independent of the sink and of the video mode.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 8f2b3abe0092..f7ff20b97e8c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -211,11 +211,14 @@ static void mlx5e_disable_async_events(struct mlx5e_priv *priv)
- 
- static int mlx5e_devcom_event_mpv(int event, void *my_data, void *event_data)
- {
--	struct mlx5e_priv *slave_priv = my_data;
-+	struct mlx5e_priv *master_priv = event_data;
- 
- 	switch (event) {
- 	case MPV_DEVCOM_MASTER_UP:
--		mlx5_devcom_comp_set_ready(slave_priv->devcom, true);
-+		if (!master_priv || !master_priv->devcom)
-+			return -EINVAL;
-+
-+		mlx5_devcom_comp_set_ready(master_priv->devcom, true);
- 		break;
- 	case MPV_DEVCOM_MASTER_DOWN:
- 		/* no need for comp set ready false since we unregister after
+This may also fix the silent Dolby TrueHD passthrough on Battlemage
+reported in
+https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/7515.
+Battlemage uses the same keep-alive code path and TrueHD passthrough
+is the same first-multichannel-stream pattern, but I could not test
+that hardware.
+
+Workaround for affected systems without this patch:
+snd_hda_codec_intelhdmi.enable_silent_stream=0.
+
+ sound/hda/codecs/hdmi/intelhdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/hda/codecs/hdmi/intelhdmi.c b/sound/hda/codecs/hdmi/intelhdmi.c
+index 6a7882544a..52997caae9 100644
+--- a/sound/hda/codecs/hdmi/intelhdmi.c
++++ b/sound/hda/codecs/hdmi/intelhdmi.c
+@@ -791,7 +791,7 @@ static const struct hda_device_id snd_hda_id_intelhdmi[] = {
+ 	HDA_CODEC_ID_MODEL(0x8086281e, "Battlemage HDMI",	MODEL_ADLP),
+ 	HDA_CODEC_ID_MODEL(0x8086281f, "Raptor Lake P HDMI",	MODEL_ADLP),
+ 	HDA_CODEC_ID_MODEL(0x80862820, "Lunar Lake HDMI",	MODEL_ADLP),
+-	HDA_CODEC_ID_MODEL(0x80862822, "Panther Lake HDMI",	MODEL_ADLP),
++	HDA_CODEC_ID_MODEL(0x80862822, "Panther Lake HDMI",	MODEL_TGL),
+ 	HDA_CODEC_ID_MODEL(0x80862823, "Wildcat Lake HDMI",	MODEL_ADLP),
+ 	HDA_CODEC_ID_MODEL(0x80862824, "Nova Lake HDMI",	MODEL_ADLP),
+ 	HDA_CODEC_ID_MODEL(0x80862882, "Valleyview2 HDMI",	MODEL_BYT),
 -- 
-2.47.3
+2.54.0
+
 
 
