@@ -1,244 +1,157 @@
-Return-Path: <stable+bounces-262554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 70AtFXulKWo1bQMAu9opvQ
-	(envelope-from <stable+bounces-262554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:57:15 +0200
+	id 9HHaGf+lKWpgbQMAu9opvQ
+	(envelope-from <stable+bounces-262556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:59:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD13166C155
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:57:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA4266C193
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 19:59:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ndufresne-ca.20251104.gappssmtp.com header.s=20251104 header.b=JBvTxIE3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262554-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262554-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=ndufresne.ca (policy=none);
+	dkim=pass header.d=google.com header.s=20251104 header.b=eQdS6bnK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262556-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262556-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3648313BE47
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 17:55:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D800830683E3
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 17:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4694F351C31;
-	Wed, 10 Jun 2026 17:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507F93546C2;
+	Wed, 10 Jun 2026 17:59:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16821D6DB5
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 17:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B603A3546E5
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 17:59:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781114116; cv=none; b=WmiPVdsawzkii/Xe6oWs9QE6T2/wTRpftjIXVrgrHgIUEQ1NDn/jZYQVz824PI8nVIMkfuWzBxTsBix70m8a+2n7wZP8lJwQUf8D4AzSeEG6gC78r9IGw3fF4W5lWCDo0GjSmMTdRAJDYurtqHq0Ur4g+psZOq6JBXQIQTIY6ig=
+	t=1781114343; cv=none; b=g73B/5KV3GI66Kuh0bNyh/9pUguWjljWTnHS+fweEle59SxbDwmRqqiEaZciAJfldia3rwcge8BKrcIC+0wYtE4aYpB3k6dfll92S4CUsWtBSSLmf2Llz56maRwKtbnUou+jT9pz3qkzMFQoB9hglriY9o00XhwMEJ6hT6arC/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781114116; c=relaxed/simple;
-	bh=3FBv/EOGjeC0r39H/l8rvAlfT1jWGq5iy39JWbN5UhA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VhCscvRRIrZaXskDA9Ro2o0a4OjFAOH5DKarFwmoUuQJLyr+B+bw4340YNKpJPzesJsvx81q1uVDXfQxVaaRcRLJDN9SBqfGbDcZgNroNz5G6trUHmMytoJLx3NPvVR4FIn7Kqdz8wSPBdioWKjMFanQL1arQxw+s+r0IMNH6ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=JBvTxIE3; arc=none smtp.client-ip=209.85.222.182
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-915aa0a9293so13935985a.1
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 10:55:13 -0700 (PDT)
+	s=arc-20240116; t=1781114343; c=relaxed/simple;
+	bh=rjDwk63GlpD6IcSyJ6iGWBTG0j4qGvoDZhdWCYjXdCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QBBWTsI8nweDX+2SQODrj6frfT9Qo95eZ5etWQZVU0nldfomaEtYtqdMv1kZTh5cVCRRNIW2njKl9xtnTI3VgOwFW0gmqIWnTe6ZGPWdOqFoF745Iwm8R9Uh1f4oWXTKFzeGnTWAhjBvMvmiMm81xwe9D9LWYpqDvWcI8nTLoaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eQdS6bnK; arc=none smtp.client-ip=209.85.214.181
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bf22c18ad3so13315ad.0
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 10:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1781114113; x=1781718913; darn=vger.kernel.org;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TFzr6Ap8q6XOCl46PeL7Sqp+9/TMWSjPVAD+5M0vgVw=;
-        b=JBvTxIE3XGk3vVPMH7Dt3U2BZAkpcceFDgS4rNeqtT+ZegZdCYH/4bn4zdfmI23A0W
-         GcBhM1EhkLqTxC9B57meRh7KMJKq/PDQkPBq3TfdVxQrK8LyEzbPAHyVR0p0lxd5gfEd
-         IMTPDqBtRLqgt/fZjUt+2fwcvAb4r/wrPg1EMsZxYJJ5YnkVjkYzutfQ4ngADrlJmiv2
-         x8cGP3uKKK6vxfT54/3+F1PY/+nPtOcABwWKi7dZztFj9MKt0hUBcrsQWqwDKLut6BVt
-         +vIVPGLUMGVs4nln/Z9RIQTzGiBWstJPa/YDgUUKLcHshWhEWZJWMou4gVduunKyrMg6
-         /+Cw==
+        d=google.com; s=20251104; t=1781114340; x=1781719140; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aDcoxqooq3aEAqC8ohG0LuHtDb4TZolRXl4+Rn70IsU=;
+        b=eQdS6bnKf8OFjYdZWTGgi6/DB/Hk2p7zbEYwc/MsYJpMNpd5U/+hJIeUFJMhgboGdC
+         qIEibdadVSNL99aVgECMz5I666Z/PbQYqOi2NnWTsve9F2964/SBEquLWuJiSEjTgZQK
+         fC4FvZCzWIZPtiImHSf3QQvzaM72vUWxewuGI2j4GP1aQjoTtSRNPtEbLbdZ3qjLWaEW
+         0doAE+5G0hN30YpVfya2FQ/6/pNCRtxqQjgJ0hRRG/Cyn+SQzmAEiS/R8TwXkCT7WEtV
+         DnMXQ7eQxGfwQi+Sh+TiylbqIuI9t9Z2EUdnzzX0tGJfPv3dYpbyaoI0qG1556njWiIE
+         +Hyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781114113; x=1781718913;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20251104; t=1781114340; x=1781719140;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TFzr6Ap8q6XOCl46PeL7Sqp+9/TMWSjPVAD+5M0vgVw=;
-        b=qrDf9DRzgCppYo39PnGWbKvgV3H3ibRutk+oHXIjSMuL3RlYN4IMcgChcgMtIgrT7c
-         8QVagCt+UabN48kkdxzKYs1dDqZoNmGaBQh7lnfuFV5sWqOtyDOufaAcfSnUMUpUsr2k
-         eP4pH8/44d+c6NplaOuA7Qbjk/2W0fD+n/ZRs8k4KK+2tcWT0WplCA3dpqJqzd0EaX2o
-         9ArU1zqc7l93oH10XHPx9iMA1flxiYLSqtW/8ivpgB8k8m4401kYvbQfqhdM16gaiyuI
-         8QRv2i7koJJbNBKgKSL/49d82YPWjvw/LweYJ932QpXT+qgsyw4hqzAdOeozl+xP6+IK
-         8uHg==
-X-Forwarded-Encrypted: i=1; AFNElJ8FnMz4kX5rS+FwtISe+RrivhP6vIj4wInRd5r/933WJ3TPF4JqSjRgFA75372edBt4o3A0CwA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkCARnjrcymJEtUn3Z3BIQ8OqcmyBzxVzBWUJws252H9xPCCeg
-	QXi9iB04Sxv2y8gOpg5PgiCb8LIWAvweCiVFgmeQxYzuAZ+XY9uaGUGNvmityhB/bDk=
-X-Gm-Gg: Acq92OHa3CXOOvbdHok9I86SgCPwbt6my3rmrXwjgnrwAqCfljAeITxhMxFw6Yig4SH
-	MG5RAN61SW6Fj11IwtNRGXy2hkM7skI/8JmN89rNeWnxyuJXGiRPw8y0Au31k0yiAYQW/asXPj0
-	BEotad/ljJ2lYKnTi+JHcHsOKl0iZ2MS03iy9bkqxwNxlRktde9MxbmNisaMPv8dIs3M9O19D7M
-	x/+uurDSmyFtROVElxJJXguXzD9yWlPnhu0SXlQH8sR2i39yYvlw1JGog9YD14IRASWkGmgmQYj
-	dXSqxnpokG9/DkLBguJcy6v89v+wWara5kEYsuiJGK7mB2HG32kF1U1mZjNAq+rvFKyvZMLw18d
-	xezpwqt4xPE5ZVZCf49Z6OBxM9Y1fBOEztNPa28SCT1V6NM4JLEwjhjctAmiiWw4msejIgahXnN
-	ODPxCtZmz8VBP7WAPg348AWFKvxLWJ8XnyGPPPhoDNghTaXvSkKsOsqr47CjhDT5cPdpxoaJ5jP
-	yk7efE=
-X-Received: by 2002:a05:620a:4625:b0:913:dcd2:f117 with SMTP id af79cd13be357-915ad2f40aamr3123760185a.24.1781114112689;
-        Wed, 10 Jun 2026 10:55:12 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0? ([2606:6d00:15:e06b:3a7c:76ff:fea1:2ac0])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a21f871sm2515222585a.12.2026.06.10.10.55.10
+        bh=aDcoxqooq3aEAqC8ohG0LuHtDb4TZolRXl4+Rn70IsU=;
+        b=cUgFFOY3JCLtmxs8X0l1bDvOdmmrawC5x9+xSxQnLm+KZcxLK4DJ2PVlu1mEww0zNK
+         4PN5Ee456tsfMwtRVC7Q7gIFIgz04a7y8gs2CrZxvzZkjP226Mw4yMm32N5c3DjvJWn5
+         6Ttq375B5TzJGclEGqWEEvVrgNlwcN6hYHgUYyakb9gt2LpEi8gDGDYDMFFCXdeSk5TM
+         W8RuSf6l9rDNaLfQxG4LkJ2SW1zXFIj2ufuJD82m/XaORcAeN4cBAX1xBXStSstvKCZR
+         SDqOQ15bQApXBNmUk2UwCiaaFLoekGcLta0CdDUpOOW0ywtjMQ2B4U1JA0hchIhHdeY0
+         JPbw==
+X-Forwarded-Encrypted: i=1; AFNElJ8YroP8Iz21BqZX5sC2+017ZIshGNxRJZbw2oBSCi6LK38cvZJsa0cTI0AlOh4XWlwRrkAh7yU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxepWwt762TJTeVD9n+GcNv2TRAb3Z2GpCdC/tyG8EJeNwwD3hZ
+	8dsr4YOXvK1bKjAmvC8UXL3E8fR7HTkIyHg8uyZe3vFwj+ZFRk3iSmuFRfrSGKiLJA==
+X-Gm-Gg: Acq92OE1xMGuJFDqIhiXv0jiq0ny/KuNqm5rtskfYKpF9uBxottkVPRACfK/0WBvhMM
+	A5wLdfkMvXXOm44SW31gerAU1O1ePkv/LN9oBYYqy4NhvuYUUBYcNYA4JprVLLc8F9Yyd5cLreC
+	baceDXKsOLRR/cnK9/66pufbygqfu9PaeZVmbgXmeTv/IW5+aa1KEWwRvFMiJkhs+lM+Csymgtq
+	Cpx0FYfLjUKKrZ+VnHXPOU997areb8oPfK3XbX0u8HpFl3xenc/N0pWBkax7Irqo8YM4RtYfCJf
+	X1u8cfdbB1dIjhrYFA+lPUZONI6nGLz6P+48KQjGp0Ckc8YowhYnhy1vvhm7gxvfET8d+u6YCCT
+	99yMvKKuiV7tC6o4oMnJHt/OA4hXvCxT0v+I1SeQREiupnGLOrqCDxtMDxMs5wYhmeF5Y2DeF2K
+	mMfv57beCyRazyFSWSvnXuU8tz0SPhRQq3pcaCkg84Q91++e1tmbu41X+IMqgMQxc0kwcbVuimF
+	YTkFmjnAIXDM5NcHYYM+IQwd6uaGZRAizr6lACUiYlthYXHvnw7DwXY
+X-Received: by 2002:a17:902:e84e:b0:2bf:749:551 with SMTP id d9443c01a7336-2c2d93c9b9cmr564445ad.22.1781114339342;
+        Wed, 10 Jun 2026 10:58:59 -0700 (PDT)
+Received: from google.com (112.174.16.34.bc.googleusercontent.com. [34.16.174.112])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428221a7e9sm33046676b3a.11.2026.06.10.10.58.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 10:55:11 -0700 (PDT)
-Message-ID: <0e3b9cdb9d8bd692290dfabafb32d7faa5bd50f8.camel@ndufresne.ca>
-Subject: Re: [PATCH v6 1/2] accel/rocket: Fix error path handling in
- rocket_job_run()
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ZhaoJinming <zhaojinming@uniontech.com>, Tomeu Vizoso
-	 <tomeu@tomeuvizoso.net>, Oded Gabbay <ogabbay@kernel.org>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, Christian
- =?ISO-8859-1?Q?K=F6nig?=
-	 <christian.koenig@amd.com>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	stable@vger.kernel.org
-Date: Wed, 10 Jun 2026 13:55:09 -0400
-In-Reply-To: <20260610071045.3414828-1-zhaojinming@uniontech.com>
-References: <20260610061915.1CA281F00893@smtp.kernel.org>
-	 <20260610071045.3414828-1-zhaojinming@uniontech.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-Xq/WDBnnQBcMXRcBkujo"
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+        Wed, 10 Jun 2026 10:58:58 -0700 (PDT)
+Date: Wed, 10 Jun 2026 17:58:54 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, khtsai@google.com,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	raubcameo@gmail.com, andrzej.p@samsung.com, balbi@ti.com,
+	kyungmin.park@samsung.com, linux-usb@vger.kernel.org,
+	Jianqiang kang <jianqkang@sina.cn>
+Subject: Re: [PATCH 6.6.y] usb: gadget: f_ncm: Fix net_device lifecycle with
+ device_move
+Message-ID: <aiml3pDOjudjX71j@google.com>
+References: <20260608053636.2797024-1-jianqkang@sina.cn>
+ <20260608-stable-reply-0013@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260608-stable-reply-0013@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	TAGGED_FROM(0.00)[bounces-262554-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
-	FORGED_SENDER(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:zhaojinming@uniontech.com,m:tomeu@tomeuvizoso.net,m:ogabbay@kernel.org,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jeff.hugo@oss.qualcomm.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:linux-media@vger.kernel.org,m:linaro-mm-sig@lists.linaro.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,google.com,lists.linux.dev,gmail.com,samsung.com,ti.com,sina.cn];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[cmllamas@google.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:khtsai@google.com,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:raubcameo@gmail.com,m:andrzej.p@samsung.com,m:balbi@ti.com,m:kyungmin.park@samsung.com,m:linux-usb@vger.kernel.org,m:jianqkang@sina.cn,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne.ca:mid,ndufresne.ca:from_mime,uniontech.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD13166C155
+X-Rspamd-Queue-Id: CCA4266C193
 
+On Mon, Jun 08, 2026 at 08:51:59PM -0400, Sasha Levin wrote:
+> > [PATCH 6.6.y] usb: gadget: f_ncm: Fix net_device lifecycle with device_move
+> 
+> I can't take this one (6.6 or 6.1) on its own. ec35c1969650 alone opens a
+> userspace-reachable NULL deref in eth_get_drvinfo() that is later closed
+> upstream by e002e92e88e1 ("usb: gadget: u_ether: Fix NULL pointer deref in
+> eth_get_drvinfo"), so applying this commit by itself trades a UAF for a DoS.
+> 
+> Please send a complete backport that also includes e002e92e88e124 (as the
+> follow-up patch in the same series) for both 6.6.y and 6.1.y, and I'll queue
+> them together.
 
---=-Xq/WDBnnQBcMXRcBkujo
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I just ran this patch plus a cherry-pick of e002e92e88e1 that you
+mentioned through Android's CI with no issues. Same goes with 6.1.y, so
+I can send Jianqiang's backports with the fix added to them.
 
-Hi,
-
-Le mercredi 10 juin 2026 =C3=A0 15:10 +0800, ZhaoJinming a =C3=A9crit=C2=A0=
-:
-> In rocket_job_run(), after taking an extra fence reference for
-> job->done_fence via dma_fence_get(), the error paths have three bugs:
->=20
-> - The dma_fence reference held by job->done_fence is never released,
-> =C2=A0 causing a reference leak.
-> - pm_runtime_get_sync() increments the usage counter even on failure,
-> =C2=A0 but the error path does not decrement it, leaking the runtime PM
-> =C2=A0 reference and preventing the NPU from suspending.
-> - A valid but unsignaled fence is returned to the DRM scheduler,
-> =C2=A0 which triggers WARN("Fence ... released with pending signals!")
-> =C2=A0 when the scheduler drops its reference.
->=20
-> Fix by replacing pm_runtime_get_sync() with pm_runtime_resume_and_get()
-> which auto-balances the usage counter on failure, releasing both fence
-> references on error, and returning ERR_PTR(ret) instead of the
-> unsignaled fence.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 0810d5ad88a1 ("accel/rocket: Add job submission IOCTL")
-> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-> ---
-
-This is a lot of versions within the same day. You should slow down a littl=
-e so
-a human can provide a review, and also document the differences in this sec=
-tion,
-after the ---, or using a cover letter.
-
-Nicolas
-
-> =C2=A0drivers/accel/rocket/rocket_job.c | 19 ++++++++++++++-----
-> =C2=A01 file changed, 14 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/accel/rocket/rocket_job.c
-> b/drivers/accel/rocket/rocket_job.c
-> index ac51bff39833..e8a073e22ac2 100644
-> --- a/drivers/accel/rocket/rocket_job.c
-> +++ b/drivers/accel/rocket/rocket_job.c
-> @@ -310,13 +310,22 @@ static struct dma_fence *rocket_job_run(struct
-> drm_sched_job *sched_job)
-> =C2=A0		dma_fence_put(job->done_fence);
-> =C2=A0	job->done_fence =3D dma_fence_get(fence);
-> =C2=A0
-> -	ret =3D pm_runtime_get_sync(core->dev);
-> -	if (ret < 0)
-> -		return fence;
-> +	ret =3D pm_runtime_resume_and_get(core->dev);
-> +	if (ret < 0) {
-> +		dma_fence_put(job->done_fence);
-> +		job->done_fence =3D NULL;
-> +		dma_fence_put(fence);
-> +		return ERR_PTR(ret);
-> +	}
-> =C2=A0
-> =C2=A0	ret =3D iommu_attach_group(job->domain->domain, core->iommu_group)=
-;
-> -	if (ret < 0)
-> -		return fence;
-> +	if (ret < 0) {
-> +		pm_runtime_put(core->dev);
-> +		dma_fence_put(job->done_fence);
-> +		job->done_fence =3D NULL;
-> +		dma_fence_put(fence);
-> +		return ERR_PTR(ret);
-> +	}
-> =C2=A0
-> =C2=A0	scoped_guard(mutex, &core->job_lock) {
-> =C2=A0		core->in_flight_job =3D job;
-
---=-Xq/WDBnnQBcMXRcBkujo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaimk/QAKCRDZQZRRKWBy
-9GXRAQCaqFjOga0b8AcWUWyj7n1hBiojgtP5sEJWopdr9ZDLTQD6A7XpFDMgyJa4
-NJEu5ngUhgE6hDlNbS+w6OnOyC7oRQI=
-=G0Lr
------END PGP SIGNATURE-----
-
---=-Xq/WDBnnQBcMXRcBkujo--
+Cheers,
+--
+Carlos Llamas
 
