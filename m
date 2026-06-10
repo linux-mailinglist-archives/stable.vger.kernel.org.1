@@ -1,184 +1,136 @@
-Return-Path: <stable+bounces-262563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ek6LJAStKWp3bwMAu9opvQ
-	(envelope-from <stable+bounces-262563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 20:29:24 +0200
+	id Km+2D/+tKWqqbwMAu9opvQ
+	(envelope-from <stable+bounces-262564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 20:33:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118B866C412
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 20:29:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8808F66C489
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 20:33:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WVRyNzN6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262563-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262563-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CuwFyV4i;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262564-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262564-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E5442309F765
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:28:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4734031CD102
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69ED35AC24;
-	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D086334C134;
+	Wed, 10 Jun 2026 18:32:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6590034F48A;
-	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1301230BDB;
+	Wed, 10 Jun 2026 18:32:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781116106; cv=none; b=Ns7xvOAoJi2gn8VOFeKlxKtB1F0G/2HQz5xQl5X80I6FFeClGFlgsp3487T98s3V/DMOsZfYV0UbdtEg+6clhEeEcSC7U1b9cSZ54dBZHwBgZiWKk+LeIelqpA5IcV1ad4RQuMHhc1ofdO3A9WGTyG18dA/7NIrezpHv2dBP/rY=
+	t=1781116372; cv=none; b=rjqzav8xDgEhlqsOkuCDZ/Z+VRYpRrRPvGk+2mWVsc9bhJ6GxQyUOvyyReY/TwW+QFhP7Azp3xuH2+5/CjtR6zVtnqWiD2d9kV6j9Z+axqPpNtvF7Ic1FrobxmP88oeDAXMUwBt87bELkeY8a/ykD+0+oQQjDtHO8jAtgpCr/oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781116106; c=relaxed/simple;
-	bh=f8SrsdtyM1rgsFTUL63CV9k8mrmfy6y6rj81qhSxPK4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dpUeT8W0qsTwFmUt5i8wy2QTn5iq2cMceWik5mKLvnBxZmVA0yd9UhypDiCp3liXj32boCHRdxEjTAhZgq2cnFZ9dY16s+jPHVOH3adcRDKxdg6t4+Lf1ELaPKXG4S4o1abSj4iwkA/RQM/ihrbaPAiLLmus+JFg6ArDgL9Ac5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVRyNzN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 24721C2BCC7;
-	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1781116106;
-	bh=f8SrsdtyM1rgsFTUL63CV9k8mrmfy6y6rj81qhSxPK4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=WVRyNzN6QUj29V847ygVs58FUIVVOU8wWYzd2p9OZ6h6qC4xgjcU8YcsLYCypH2y7
-	 sz7m1y/ZXmntMy7lo93b8FcvYSpEVDLQ3OtXFt3fPqVbzOnr/fOPBN94/7s3mrwVaf
-	 62SkVg6zkKAbQ16nqsGgB1FRa9SaofyCHcy8YFLTbESSn+Mx5TWjBrHhd25WD/msHH
-	 IW3PUxXWwOl5us4Rk1zUAhwoorMIuar5yu4XGpnkBYGlnievSXfrYlsuh6kRs78dRU
-	 jxbtOLi2LDvZJfYV0SGAqzVQgRIU6KC52cAweJu9uhBm5hGV4Td4/wzYlFrizOAq4C
-	 mc3qN4SflqUHg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18666CD8C90;
-	Wed, 10 Jun 2026 18:28:26 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 10 Jun 2026 20:28:22 +0200
-Subject: [PATCH v8 2/9] media: qcom: camss: csiphy-3ph: Fix lane mask
- calculation
+	s=arc-20240116; t=1781116372; c=relaxed/simple;
+	bh=QrrLgJmid1pcjdifn1cSMHyFkEv7i9QEuCmUJw9vzS4=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=o1SJv+WFEb3Bi22NKN5/NpqYplWpu+c2jqLZ90pZJytZSpW9S8p8V0Vyea9ozNeQPlHDtmzwBeGGRLKJR6N1QoPmOEA7VFgh4iDxnnwOlKGnTk+Rl6Oss/ia3VeTeKrmb7soHqrzpvS/IVM4tHmN8c9ew9ZWGcmb79O0edkPbNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuwFyV4i; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77441F00893;
+	Wed, 10 Jun 2026 18:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781116371;
+	bh=dUGweDSziW71Yfh7+Ix3Xp/cFCJDme2uhYtUanaAjn8=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=CuwFyV4iWtnjeemUsC4jMGcJ7JbQK902oozFNPkgrfXATD7IcJzmngQRwI1K0GhiT
+	 SjnrvgZObZGFf/LJXiRDI+B2uxp309FE/Yg3A2FlDpC0YrrnmDIUbXYJmi8t+iUqlN
+	 SIwW07u1wts6QEOmxL1FjsQECXHbdDqHSNTD/gG7PcJ9GP8ccUnGk92js9ojLWtVL/
+	 9yye0QuEiPuTGyktwfmXXm7Q6HMYDZfxyOPenkIkLJT1hKo2ZOi9aEHza4sFveT+LI
+	 p0tks5fDaBNBASb41OaLUfO+qpB42+6YqPvweVzpJfNIbbPl5OJMKxDa0wA+kqMwTS
+	 XuNlcYNaMSOFA==
+Date: Wed, 10 Jun 2026 20:32:48 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+cc: David Rheinsberg <david@readahead.eu>, 
+    Benjamin Tissoires <bentiss@kernel.org>, Lee Jones <lee@kernel.org>, 
+    kernel-team@android.com, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org, 
+    "open list:UHID USERSPACE HID IO DRIVER" <linux-input@vger.kernel.org>
+Subject: Re: [PATCH] HID: uhid: convert to hid_safe_input_report()
+In-Reply-To: <20260606181552.3095967-1-cmllamas@google.com>
+Message-ID: <62ps4q24-o804-35ss-8pqn-8n32pnp7sr32@xreary.bet>
+References: <20260606181552.3095967-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-qcom-cphy-v8-2-cd4387785179@ixit.cz>
-References: <20260610-qcom-cphy-v8-0-cd4387785179@ixit.cz>
-In-Reply-To: <20260610-qcom-cphy-v8-0-cd4387785179@ixit.cz>
-To: Robert Foss <rfoss@kernel.org>, Todor Tomov <todor.too@gmail.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Bryan O'Donoghue <bod@kernel.org>, 
- Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>, Petr Hodina <phodina@protonmail.com>, 
- "Dr. Git" <drgitx@gmail.com>, Cory Keitz <ckeitz@amazon.com>, 
- Loic Poulain <loic.poulain@oss.qualcomm.com>, 
- Hans Verkuil <hverkuil@kernel.org>, 
- Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Cc: Frank Li <Frank.Li@nxp.com>, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Kieran Bingham <kbingham@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, David Heidelberg <david@ixit.cz>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1206; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=fVr/sKiSUifC1zTyd9NJfz2/7dlahZ+nJFq+MKqII4Q=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBqKazHrEq72fCIjBjv5GAwcwAD87AwFCvVFNX8o
- UcaO9akx5uJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCaimsxwAKCRBgAj/E00kg
- ctpwD/4/WsbiW6UstsGTs+oI+7288BjF7yxrlnh9CnB6PTSK0uj2fe50jkbGJWP45Gw0aCYoobM
- eabGhwamHCUahsw7Rmw3ewmJbIOcK5UNB/0NC57x/5XVZXMXYRLYF23AfC9O5wzHUh7RxZ4YeMY
- UNmuHdmhcyAahwrjAZTIBjbeqQUO9yFIFyrzXshdLlZE5ChpodZroYN0p2J7WVD/LDHIFsWEcHU
- Z636bAZ/72L9Zv5l3IUm8FgMZFG5vfHgJW1PdMwILI8UM7iVG71T+nTvfgTDRd0jQQ8ekwBkhqY
- DM7Q0qe9gsaXejuf8nA4+FLNOeMxrof7iw10YuVsI099/juO//84+HNWomMEAdbNN91bnFdnWwD
- lFNNDjvYC1AFxK3ApgbiitMZMP1YQN19hevUBOqZMNrvJ2K/v13fsZkts/LKApZuxcmKfoisHNG
- aWNRQfi+W//gqYg7nDBaiLWnO6B4RklvCJvYA68N3z478jkRIdJpmZGh5U6SG8LxUuBBSKthXqB
- 0w+YMH/Zoa8VVbrU2NNq2iQnzQZ7y2UDViAtil3sREALE8OAXeAh8YdNOsxfUVi2w3uv8GYx3LP
- f+BscvKk5Fvs+m+/xtO7udSCXkCUXcb7aXIaQx5wqTa7mzU4sy/k0fVcWCMdmvvvZl4O1yI+wfI
- 5CRlocIMb2+jzfQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262563-lists,stable=lfdr.de,david.ixit.cz];
-	FORGED_RECIPIENTS(0.00)[m:rfoss@kernel.org,m:todor.too@gmail.com,m:bryan.odonoghue@linaro.org,m:bod@kernel.org,m:vladimir.zapolskiy@linaro.org,m:mchehab@kernel.org,m:luca.weiss@fairphone.com,m:phodina@protonmail.com,m:drgitx@gmail.com,m:ckeitz@amazon.com,m:loic.poulain@oss.qualcomm.com,m:hverkuil@kernel.org,m:nihal.gupta@oss.qualcomm.com,m:Frank.Li@nxp.com,m:konrad.dybcio@oss.qualcomm.com,m:kbingham@kernel.org,m:sakari.ailus@linux.intel.com,m:linux-media@vger.kernel.org,m:linux-arm-msm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:phone-devel@vger.kernel.org,m:david@ixit.cz,m:stable@vger.kernel.org,m:todortoo@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,linaro.org,fairphone.com,protonmail.com,amazon.com,oss.qualcomm.com];
-	FORGED_SENDER(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262564-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:cmllamas@google.com,m:david@readahead.eu,m:bentiss@kernel.org,m:lee@kernel.org,m:kernel-team@android.com,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:linux-input@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	HAS_REPLYTO(0.00)[david@ixit.cz];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER(0.00)[jikos@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jikos@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ixit.cz:replyto,ixit.cz:email,ixit.cz:mid,qualcomm.com:email]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,xreary.bet:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 118B866C412
+X-Rspamd-Queue-Id: 8808F66C489
 
-From: David Heidelberg <david@ixit.cz>
+On Sat, 6 Jun 2026, Carlos Llamas wrote:
 
-The lane mask must be multiplied by 2, but this was accidentally omitted.
+> Commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> bogus memset()"), added a check in hid_report_raw_event() to reject
+> reports if the received data size is smaller than expected. This was
+> intended to prevent OOB errors by no longer allowing zeroing-out of
+> shorter reports due to the lack of buffer size information.
+> 
+> However, this leads to regressions in hid_report_raw_event(), where
+> shorter than expected reports are rejected, even though their buffers
+> are sufficiently large to be zero-padded.
+> 
+> To solve this issue, Benjamin introduced a safer alternative in commit
+> 206342541fc8 ("HID: core: introduce hid_safe_input_report()"), which
+> forwards the buffer size and allows hid_report_raw_event() to safely
+> zero-pad the data.
+> 
+> Convert uhid to use hid_safe_input_report() and pass UHID_DATA_MAX as
+> the buffer size. This prevents the reported regressions [1], allowing
+> hid core to zero-pad the shorter reports safely as expected.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing bogus memset()")
+> Closes: https://lore.kernel.org/all/ahsh0UtTX6e0ZeHa@google.com/ [1]
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-Fixes: c94d21ffa814 ("media: camss: Add CSIPHY files")
-Cc: stable@vger.kernel.org
-Suggested-by: Nihal Kumar Gupta <nihal.gupta@oss.qualcomm.com>
-Signed-off-by: David Heidelberg <david@ixit.cz>
----
- drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-index dac8d2ecf7995..7c8c0e41bc62f 100644
---- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-@@ -1114,17 +1114,17 @@ static void csiphy_gen2_config_lanes(struct csiphy_device *csiphy,
- static u8 csiphy_get_lane_mask(struct csiphy_lanes_cfg *lane_cfg)
- {
- 	u8 lane_mask;
- 	int i;
- 
- 	lane_mask = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
- 
- 	for (i = 0; i < lane_cfg->num_data; i++)
--		lane_mask |= 1 << lane_cfg->data[i].pos;
-+		lane_mask |= BIT(lane_cfg->data[i].pos * 2);
- 
- 	return lane_mask;
- }
- 
- static bool csiphy_is_gen2(u32 version)
- {
- 	bool ret = false;
- 
+Applied, thanks.
 
 -- 
-2.53.0
-
+Jiri Kosina
+SUSE Labs
 
 
