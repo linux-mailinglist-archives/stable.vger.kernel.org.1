@@ -1,138 +1,226 @@
-Return-Path: <stable+bounces-262446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HvnbEeseKWoJRAMAu9opvQ
-	(envelope-from <stable+bounces-262446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 10:23:07 +0200
+	id sWjhLWMcKWpbQwMAu9opvQ
+	(envelope-from <stable+bounces-262444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 10:12:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB546671BF
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 10:23:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D99E666FD6
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 10:12:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=cknow-tech.com header.s=key1 header.b=NqlJu1XQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262446-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262446-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=cknow-tech.com;
+	dkim=pass header.d=ursulin.net header.s=google header.b=gNZAl7kd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262444-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262444-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 043D231881E9
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:14:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26B363057E3A
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 08:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95F93A4F5F;
-	Wed, 10 Jun 2026 08:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D7E397AF2;
+	Wed, 10 Jun 2026 08:06:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684963A4535;
-	Wed, 10 Jun 2026 08:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFCE39B4AD
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 08:06:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781079265; cv=none; b=eQiI+r1zn4nWoQkh7XSCWs1pcvRortNq/xgCaxtb+cn0T77Bx/NjYe5CdbJBQqFU5hSFakEj+MABvpJVNyd3G5NWfglbZ2mLivOVEy4MT7zfQGew9WquzJ8Bn1XXR8rLIESuDC5lwmsEiUgoyZgIaZzE0uYcx4bXTEzN+yvsmEE=
+	t=1781078815; cv=none; b=h7xePf8e4y/d8vpeHnVthXUaXr1T2RjukSCj68fDuaEifcyif35XeEIvkU2DLgB4Hy2dgSjdjLrRLCKGNvQspytygEWk1GIVmWzXEkM8i3C294fcg15lbDDjtxTgq2az7YAJn1HxNeuilfjJDi/o8/pHGwVDJhCsGOqmVJ5GYDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781079265; c=relaxed/simple;
-	bh=spRVBlGQqW9gPeAmUE2Yu2/R44YAQEpXfhl1wos4Kp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zug7aT+zmbIqcqcV973YBtP4CLy9nH6svAZD5kH6SEhwMTFjoO+74SLnkKp2cxRoTtfBfam2wPdfGISqQjq7U9JmVKZkMJ9Vuww9Nc92yLrZJyIezSE5lJS54ItkDY1wInyeUPwaMrGo0kBY2HwPekyD27ha2gOkGu0Ve01x+K8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=NqlJu1XQ; arc=none smtp.client-ip=95.215.58.182
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
-	s=key1; t=1781079261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4D3U0MJrq3HMALbVG4yy5LYGiwOLwK/bQQJ3BITNLwM=;
-	b=NqlJu1XQMQhaZi7mQd/ZOpEchPr+6zrwj3xNiK+0D8Ko97FQl9fiDao64Tv2W03aTZOkM/
-	PRrJn0gHWNAItsWzuKZ6Z88MV/dMcDUfjdsml+OG9OnOC0hA163TdPxEfxK8i7v0vT7ORH
-	rhIxZWUJCEjFA4tMfM5bTE9k2BcE4C8UBVhmTXvMKA7aV6KOF8ugrlSkKr71PDTzwLwHDB
-	5hOFtos5Ldd4PqC5j3DXZy0MiCwqIYWW/TJOu5H9kfLKIyrcT7QvRrIGH1Ee66OhZeDMSZ
-	9YmnU7Wu8VSYL85dsLtmfDdpeSxSlGvcDaF/Rn17xBttHzxXNz/t+PpbOHW+7g==
-From: Diederik de Haas <diederik@cknow-tech.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>
-Cc: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Marcin Juszkiewicz <marcin@juszkiewicz.com.pl>,
-	Diederik de Haas <diederik@cknow-tech.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] arm64: dts: rockchip: Fix USB hub phy-supply config for NanoPC-T6 LTS
-Date: Wed, 10 Jun 2026 10:04:06 +0200
-Message-ID: <20260610081400.758687-3-diederik@cknow-tech.com>
-In-Reply-To: <20260610081400.758687-1-diederik@cknow-tech.com>
-References: <20260610081400.758687-1-diederik@cknow-tech.com>
+	s=arc-20240116; t=1781078815; c=relaxed/simple;
+	bh=c61ZUQoJtB0rHTiFvqMpD3/N2ph5ckMa47xktcDV1zU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uoqTfZYQA8QBlAoBP4vTbo2IUdTzmZ3jdscNRcUYYdfGx7r/Q3gtrlfJfz4EXzjw8/DTAX5NUQz1krwvg3sxsFBfcFbtafwII2mxu004fWlO6wWrzhZyMer6ku7adNIP1V9f6UZgkoLcqCuOP7UfO0QeQqy16pKMMB8On7dt1YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=pass smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin.net header.i=@ursulin.net header.b=gNZAl7kd; arc=none smtp.client-ip=209.85.208.42
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-68c19f1f3ceso10350997a12.2
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 01:06:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ursulin.net; s=google; t=1781078812; x=1781683612; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tV8bVaCGg3y34HefJ73rptnGNh2U6CedJrnOiZid/gE=;
+        b=gNZAl7kdYHVXQKI2SUUaAfKsc2Qya62zteulOsm80EoLh1HLPbkM+NMzJzcJ0HQWa+
+         faBH9YdBngqC8nL9fqub/3OQedIxg/z/gtNF8En/NstXNW4wOeIbO1thwX4TyjmynaqG
+         g56+2xEfw3py4rr0BP7WUZYBZ1NlzliWlpwclP5od/kf3uaSrmVj7i3WK1omZ/Ml+OA4
+         lWNK4LoaCpnVpodITVfmRF0DANpCXnylTXkiF/pXT3b8S9BnzwLBpbuCV9F9jnJ55GMF
+         Z4AKEmcv+aB8yr6wjGtdwBxCHGF7AKFAzh405JKvbXmMvv6KDxRGkS6HArOlTD2c9GGb
+         N7fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781078812; x=1781683612;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tV8bVaCGg3y34HefJ73rptnGNh2U6CedJrnOiZid/gE=;
+        b=Q+nOs5VdArkNhunvNY12EnJBCtg62bN2ZffL85DWzGCxfM0whQ2PXSqi62hoqHRYys
+         YVi0HeA5bY9NtTIMyAMoT7+/znwDcNguZ3Dzs+Y7rtNUP9Hy3GOxjJ3pnjNHxsWXnhuA
+         /7QSh9ovzb35yybL/M5xntT7+hnnAMwCLt2l5mFvZrE+6h1cOMZPNxSYdns6r86pHsCc
+         cHojKasyLymEd1TMSpO1IiMhBQ4dUl1XV/Uaeu1R0R9NjPIO115lvqOFNC5/7EK9URrh
+         t3lybRTqcWy1+iUUnESd7ZDUYmkUOGxvQP5GCHChSc1ZvBDZW6CsYnGeDQnZub3nj5Lk
+         nrjQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9Gd5aJfbkrDfgUDJlcnS3eMvNkAR4HNoPB14cp58PWsCdFZaB3uHnbly5wFD021M1yqg4A0ro=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIXz3r7fLnqnshFXfzdC+fsWGXFWvQepATdcS7gJ73FXFSksix
+	LMgvg8VXl2KrBD/dJxsGuN1n4TxHGa4lf+/7aUhWAOvF9qAaZ4MtIaG0euhCgLa10+q/c3v4VWj
+	/E2o6vhk=
+X-Gm-Gg: Acq92OHNAhx+U1v0BE/ZnK/udJntZLyYs/Jl2P273jf8+gDwFO0xz4NzmGFYJhJH1pp
+	rFiGflvD1YClDtVkQ3abMxTYyWkv6RxtEFcCb6WWqpLnn7xieut3BnxyX2z4JMXh0HjgUdl/eHg
+	fSGtWWUSDYISHvNBevIvIgglmP1u9dC3w0drg14tG98y9UsN0s4BW4VXizbTY0d2UPy+S5a/BcF
+	EMSrvWsDa7GP7Y2qEZ+9GinzgjkYH6Z+tbLGOmUvVm34BEv25ljLDeZKxZcaeKA7hMoReG4Z68J
+	J4DE08ZCWyNzfZu/9WaiWV4g6cnN+L0BvZepgsOdMYQqVby40zTx4N7gFF5U0sCn/+F50FDJYZw
+	7IUZ+h4h5HEOkqqYDQBrGhJs73THJ375XSqC59q9rvUR6jJ8wFMUzD+C6sbNXsCSw2EI9fI95Ad
+	2TZQX0hBGu7To6VFa+1kdSmRU3tXU9Vs5qWlnkDaKJYDLZiTrPn2FbwJw=
+X-Received: by 2002:a05:6402:d0d:b0:676:988e:8eb6 with SMTP id 4fb4d7f45d1cf-68fa5354446mr10490926a12.26.1781078812054;
+        Wed, 10 Jun 2026 01:06:52 -0700 (PDT)
+Received: from [192.168.0.116] ([90.240.106.137])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-68e6585154dsm9480292a12.15.2026.06.10.01.06.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 01:06:51 -0700 (PDT)
+Message-ID: <9f827a2e-bb9a-4356-96d1-6b10d100695b@ursulin.net>
+Date: Wed, 10 Jun 2026 09:06:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/i915/gem: Fix phys BO pread/pwrite with offset
+To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Intel graphics driver community testing & development
+ <intel-gfx@lists.freedesktop.org>
+Cc: Direct Rendering Infrastructure - Development
+ <dri-devel@lists.freedesktop.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, stable@vger.kernel.org,
+ Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>
+References: <20260610060314.26111-1-joonas.lahtinen@linux.intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+In-Reply-To: <20260610060314.26111-1-joonas.lahtinen@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[cknow-tech.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[cknow-tech.com:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ursulin.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:heiko@sntech.de,m:devicetree@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-rockchip@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jonas@kwiboo.se,m:marcin@juszkiewicz.com.pl,m:diederik@cknow-tech.com,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262446-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[tursulin@ursulin.net,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262444-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ursulin.net:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[diederik@cknow-tech.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DMARC_NA(0.00)[ursulin.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:joonas.lahtinen@linux.intel.com,m:intel-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:willy@infradead.org,m:stable@vger.kernel.org,m:simona@ffwll.ch,m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[diederik@cknow-tech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[cknow-tech.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cknow-tech.com:dkim,cknow-tech.com:email,cknow-tech.com:mid,cknow-tech.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tursulin@ursulin.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ursulin.net:dkim,ursulin.net:email,ursulin.net:mid,ursulin.net:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,intel.com:email,ffwll.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8DB546671BF
+X-Rspamd-Queue-Id: 0D99E666FD6
 
-The MTT USB 2.0 hub is connected to the SoC's USB20 HOST1, so the phy-supply
-belongs to u2phy3_host, not u2phy2_host as that is for USB20 HOST0.
 
-Fixes: db1dcbe5f752 ("arm64: dts: rockchip: add NanoPC-T6 LTS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Diederik de Haas <diederik@cknow-tech.com>
----
- arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/06/2026 07:03, Joonas Lahtinen wrote:
+> sg_page() returns struct page pointer not (void *) so the scaling
+> of pread/pwrite is wrong for phys BO and wrong parts of BO would be
+> accessed if non-zero offset is used.
+> 
+> Last impacted platform with overlay or cursor planes using phys
+> mapping was Gen3/945G/Lakeport.
+> 
+> Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Fixes: c6790dc22312 ("drm/i915: Wean off drm_pci_alloc/drm_pci_free")
+> Cc: <stable@vger.kernel.org> # v4.5+
+> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> ---
+>   drivers/gpu/drm/i915/gem/i915_gem_phys.c | 19 +++++++++++++++----
+>   1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_phys.c b/drivers/gpu/drm/i915/gem/i915_gem_phys.c
+> index e375afbf458e..d53129eb5603 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_phys.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_phys.c
+> @@ -18,6 +18,17 @@
+>   #include "i915_gem_tiling.h"
+>   #include "i915_scatterlist.h"
+>   
+> +/* Abuse scatterlist to store pointer instead of struct page. */
+> +static inline void __set_phys_vaddr(struct scatterlist *sg, void *vaddr)
+> +{
+> +	sg_assign_page(sg, (struct page *)vaddr);
+> +}
+> +
+> +static inline void *__get_phys_vaddr(struct scatterlist *sg)
+> +{
+> +	return (void *)sg_page(sg);
+> +}
+> +
+>   static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
+>   {
+>   	struct address_space *mapping = obj->base.filp->f_mapping;
+> @@ -58,7 +69,7 @@ static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
+>   	sg->offset = 0;
+>   	sg->length = obj->base.size;
+>   
+> -	sg_assign_page(sg, (struct page *)vaddr);
+> +	__set_phys_vaddr(sg, vaddr);
+>   	sg_dma_address(sg) = dma;
+>   	sg_dma_len(sg) = obj->base.size;
+>   
+> @@ -99,7 +110,7 @@ i915_gem_object_put_pages_phys(struct drm_i915_gem_object *obj,
+>   			       struct sg_table *pages)
+>   {
+>   	dma_addr_t dma = sg_dma_address(pages->sgl);
+> -	void *vaddr = sg_page(pages->sgl);
+> +	void *vaddr = __get_phys_vaddr(pages->sgl);
+>   
+>   	__i915_gem_object_release_shmem(obj, pages, false);
+>   
+> @@ -139,7 +150,7 @@ i915_gem_object_put_pages_phys(struct drm_i915_gem_object *obj,
+>   int i915_gem_object_pwrite_phys(struct drm_i915_gem_object *obj,
+>   				const struct drm_i915_gem_pwrite *args)
+>   {
+> -	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
+> +	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
+>   	char __user *user_data = u64_to_user_ptr(args->data_ptr);
+>   	struct drm_i915_private *i915 = to_i915(obj->base.dev);
+>   	int err;
+> @@ -170,7 +181,7 @@ int i915_gem_object_pwrite_phys(struct drm_i915_gem_object *obj,
+>   int i915_gem_object_pread_phys(struct drm_i915_gem_object *obj,
+>   			       const struct drm_i915_gem_pread *args)
+>   {
+> -	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
+> +	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
+>   	char __user *user_data = u64_to_user_ptr(args->data_ptr);
+>   	int err;
+>   
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts b/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
-index 0ee67ee24f3c..0e15a2e1f2ff 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6-lts.dts
-@@ -38,6 +38,6 @@ usb20_host_pwren: usb20-host-pwren {
- 	};
- };
- 
--&u2phy2_host {
-+&u2phy3_host {
- 	phy-supply = <&vcc5v0_usb20_host>;
- };
--- 
-2.53.0
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+
+Regards,
+
+Tvrtko
 
 
