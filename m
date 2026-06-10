@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-262396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +z/qKHi6KGobIwMAu9opvQ
-	(envelope-from <stable+bounces-262396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 03:14:32 +0200
+	id ouniGwi8KGpZIwMAu9opvQ
+	(envelope-from <stable+bounces-262397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 03:21:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409F2665254
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 03:14:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AD46652E2
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 03:21:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KPVH1/wu";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262396-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262396-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KWFMJfie;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262397-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262397-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB75B3017E72
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:14:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CED94314AA04
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 01:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05460246766;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F9224DCF9;
 	Wed, 10 Jun 2026 01:14:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B89238D52;
-	Wed, 10 Jun 2026 01:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF622417D1;
+	Wed, 10 Jun 2026 01:14:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781054070; cv=none; b=Qb3/if1KcFKXiwL5g1U0etXVEL6FuUGK22e5HwW2DRiGfoutH61F5DpXyQ+bSGbl/obzLv8LNJJLZR2rvHcnHuf4z+oyIuw43b7ewqK3KKa9ErvVvdLyUDKrXrvFhF56XGVr1EoXVs4nJyIUvkYeMIMQ2hZoIDfPgsD5ZylMC6A=
+	t=1781054071; cv=none; b=BF6hDqH23VtCzwsFzFEb73xSVwP4OmCGi5By1wUmf0TOJdnMMGryPNGJ7/dGwaKjpLBgWQ8CPw8IHH3Iecvf+PQC8PXt97Kq4a2ezAccxlZjHo4aQxVspZxL/SnuhqLdD+ePD9WhPsnyMRV19ExRLuVk1FcbNeMWSEy4Y8hEjnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781054070; c=relaxed/simple;
-	bh=+DWarB0QpQ9bFNyB+0gAPgMonXqPezkYcU0OEhN0pL8=;
+	s=arc-20240116; t=1781054071; c=relaxed/simple;
+	bh=WIPA9dIrzYtN3A/rdctB0jxSPzPrRiW6LEy6UQ6IhbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u63svunzceqwFArxc8d3jkZzBo2UGAEIV8yrXJlxNb/WXWP2TV9I9Gg9s9uxit7PkROmRE4TKpdRRJGLhqoJdUI0QmqU9W0qwcWf8qkITMeXxSjwWYraStc/xlmhN0+pfTKxm5Mbmq7hduCmhJWtPFaUvbHvQsW0xiP0PbIDr3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPVH1/wu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2F01F0089A;
+	 MIME-Version; b=UEQiMGvKzIerl02FGcmyKeL/1mM2LQ7SJ/zNBTrLfvw8ToNunJHqdHZn8IPUogMc9qBq+ZN4+Ri8gw2KhB8UbK01K3XW9h9dCsXWfQ9TiYYNuAT1bhQKRgJ4EpeWTpkwLuujJFxJtZA8xTlTvVq3oM3j2jIHmoaSVIt6LFFPStA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWFMJfie; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25D01F00893;
 	Wed, 10 Jun 2026 01:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781054069;
-	bh=4hjcTwQxd/8erExTfvC7SkLcmq65ZXVC4ot5zMsJvgk=;
+	s=k20260515; t=1781054070;
+	bh=EDkQJtDgOrU4lvsYg1EkfO75V/KL21F3Sc45rqb1ccE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KPVH1/wuZX1pKNk89xoBpd5zJ4L3zLJ6DX7e/G8/BVJ4ne460wFdrrw0wKwKdqosB
-	 IFyOFC4pKAvH1KZRY2aS54e+NX3EEy1puz18Hr1rwh0gyeRs3htZIvSGWxBZTlNMvG
-	 VnNTzhBj9RU/mOK+AO1zTWkeaCd8FHylf2FnfV2NbgAvJvwdtXkVid4Onz6ieWciH2
-	 pFXiEivi+usJKLFHbGL4iPgIWbd8JNo5Vdf/qbvQ0FkTxhoSqyDlQB/gvrwArEd7Ix
-	 6It4QjR8iTRe5MY1uC8mcMOxi6glGKHJkTR9ODqnHr1Jz7RDN8eGKn0/wGg6P7iGSa
-	 t+uMSLL2iifZw==
+	b=KWFMJfiegjFg0WXrcLnHcHfAA3zFD1ialmjAqXBok7YhTCANjdE7xYwGjiFGEOzk/
+	 sGt3p52Spn+RwPkoS0ak/O0aeGudQNIYmBhFe+yZpPvyJGXtYffGTaL0mcL+PrCrl8
+	 k183Z/1bcT1kGS1yoWauwpGqb4sQXXFKoRso0jsRomXbqeTMl857U97cInXWYY29Xr
+	 V35de5vmNgRTscF4vEt1LBxQr60qMZLPcehklKgWGMECc+ezQFkM98Z+jLno46kEYr
+	 Bw4EP83L37IVYTkgyRD3Gaw9YqsrkR5Irfs9qD5mCKpNTyN0y6b5QWbPvl5ee2c0uh
+	 iyn9/m1NH3C/w==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
+	"# 6 . 16 . x" <stable@vger.kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 2/4] samples/damon/prcl: handle damon_start() failure
-Date: Tue,  9 Jun 2026 18:14:15 -0700
-Message-ID: <20260610011420.3018-3-sj@kernel.org>
+Subject: [RFC PATCH v3 3/4] samples/damon/mtier: handle damon_start() failure
+Date: Tue,  9 Jun 2026 18:14:16 -0700
+Message-ID: <20260610011420.3018-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260610011420.3018-1-sj@kernel.org>
 References: <20260610011420.3018-1-sj@kernel.org>
@@ -74,13 +74,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262396-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262397-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:stable@vger.kernel.org,m:akpm@linux-foundation.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
@@ -98,61 +98,77 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 409F2665254
+X-Rspamd-Queue-Id: C5AD46652E2
 
-damon_sample_prcl_start() callers assume it will clean up resources when
-it fails.  And the function does the cleanup for context buildup
+damon_sample_mtier_start() callers assume it will clean up resources
+when it fails.  And the function does the cleanup for context buildup
 failures.  However, it is not doing the cleanup for damon_start()
-failure.  As a result, when damon_start() fails, it leaks the memory for
-DAMON context.  Free the context in case of the failure to fix the
-issues.
+failure.
+
+As a result, when damon_start() fails, it could leak the memory for
+DAMON context.  Also, if damon_start() fails for only the second
+context, the first context will indefinitely run, and avoid starting
+other DAMON contexts since it is running in the exclusive mode.  Stop
+possibly started DAMON context and free the contexts in case of the
+failure to fix the issues.
 
 Note that the issue can reliably be reproduced because the module calls
 damon_start() in the exclusive mode.  For example,
 
     $ sudo damo start
-    $ echo $$ | sudo tee /sys/module/damon_sample_prcl/parameters/target_pid
-    $ echo Y | sudo tee /sys/module/damon_sample_prcl/parameters/enabled
+    $ echo Y | sudo tee /sys/module/damon_sample_mtier/parameters/enabled
     $ sudo cat /proc/allocinfo | grep damon_new_ctx
 
-Because the first command is running another DAMON instance, the third
+Because the first command is running another DAMON instance, the second
 command fails the damon_start() call because the new DAMON instance
-cannot exclusively run.  And without this fix, by repeating the third
-and the fourth commands above, we can show the memory consumption is
-only increasing due to the leaks.  It requires the sudo permission
-though.
+cannot exclusively run.  And without this fix, by repeating the second
+and the third commands above, we can show the memory consumption is only
+increasing due to the leaks.  It requires the sudo permission though.
 
 The issue was discovered [1] by Sashiko.
 
-[1] https://lore.kernel.org/20260609145814.70163-1-sj@kernel.org
+[1] https://lore.kernel.org/20260608112455.274231F00893@smtp.kernel.org
 
-Fixes: 2aca254620a8 ("samples/damon: introduce a skeleton of a smaple DAMON module for proactive reclamation")
-Cc: <stable@vger.kernel.org> # 6.14.x
+Fixes: 82a08bde3cf7 ("samples/damon: implement a DAMON module for memory tiering")
+Cc: <stable@vger.kernel.org> # 6.16.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- samples/damon/prcl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ samples/damon/mtier.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
-index b7c50f2656ce7..0db2598946911 100644
---- a/samples/damon/prcl.c
-+++ b/samples/damon/prcl.c
-@@ -106,8 +106,10 @@ static int damon_sample_prcl_start(void)
- 	damon_set_schemes(ctx, &scheme, 1);
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index eb1143de8df17..66b591f2180fa 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -174,6 +174,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ static int damon_sample_mtier_start(void)
+ {
+ 	struct damon_ctx *ctx;
++	int err;
  
- 	err = damon_start(&ctx, 1, true);
--	if (err)
-+	if (err) {
-+		damon_destroy_ctx(ctx);
- 		return err;
-+	}
+ 	ctx = damon_sample_mtier_build_ctx(true);
+ 	if (!ctx)
+@@ -185,7 +186,15 @@ static int damon_sample_mtier_start(void)
+ 		return -ENOMEM;
+ 	}
+ 	ctxs[1] = ctx;
+-	return damon_start(ctxs, 2, true);
++	err = damon_start(ctxs, 2, true);
++	if (!err)
++		return 0;
++
++	if (damon_is_running(ctxs[0]))
++		damon_stop(ctxs, 1);
++	damon_destroy_ctx(ctxs[0]);
++	damon_destroy_ctx(ctxs[1]);
++	return err;
+ }
  
- 	repeat_call_control.data = ctx;
- 	return damon_call(ctx, &repeat_call_control);
+ static void damon_sample_mtier_stop(void)
 -- 
 2.47.3
 
