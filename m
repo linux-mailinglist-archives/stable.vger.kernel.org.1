@@ -1,255 +1,179 @@
-Return-Path: <stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LaWEGLWMKWoCZQMAu9opvQ
-	(envelope-from <stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:11:33 +0200
+	id kPf/JleOKWqxZQMAu9opvQ
+	(envelope-from <stable+bounces-262535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:18:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E5466B387
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:11:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF53666B4F0
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:18:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lLOZ6Zel;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262534-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=intel.com;
+	dkim=pass header.d=astralinux.ru header.s=mail header.b=ma44tvA+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262535-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262535-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=astralinux.ru;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DAF53158603
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:03:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDF9A309669C
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5486C426698;
-	Wed, 10 Jun 2026 16:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6342B744;
+	Wed, 10 Jun 2026 16:11:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27493314C2;
-	Wed, 10 Jun 2026 16:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D727242DFF4;
+	Wed, 10 Jun 2026 16:11:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781107406; cv=none; b=oiWHSzIlTqnmZRxWVLI68YP28hZjUnG5JrXhmoZNi7aXdrc2qWaLIGYXMs6NRRU8bZ6cTaf6lxWR9EOgKrv1J/ttmbKrYFm34df1HtkK+lGNqP+v8uhD4PRlSeyPphfuGmLVypa+YurbYQibAjaVkU4vGCkVs6Gjcku6XA9j25I=
+	t=1781107915; cv=none; b=ANv9t5QiAxL3dJNQK8GDXMABf0g45g3D33IjxAbnGLYcLszxPRYV3SENLrEwR1ZnY49Y7Rol+sTk0RdEmLPydl2O6QAvAUwtFE/OU1OkD/DpAzqkHbe1fdxTfXGnBhDmwMvbIYrUp4jsyrv009/wwstvQFlm1GYd/l0B3Kej67c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781107406; c=relaxed/simple;
-	bh=2QGjrHy/PRoch3raeOtztmQV+KiNPyVKF+x5MWha63M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nPoK/uROxNlkPHp3qHpOIXGIwx/cHgDQebdCaqchrFyUU4UIIlVIiv5HdxflBgxrTZhhn5m4Q9HmxvnDRvdTKphSq+uPXSMtJc+t73NDTpebUXU2jd3jye5K5sbrIcIaab9zlx2zpHWOVX8Vh1iic7/wgdS3KCE1M7DRmi2m++M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lLOZ6Zel; arc=none smtp.client-ip=192.198.163.17
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1781107404; x=1812643404;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2QGjrHy/PRoch3raeOtztmQV+KiNPyVKF+x5MWha63M=;
-  b=lLOZ6ZelgyeAJQiovI3TdDD5QxDcUWjeXpBdBqVgrAhBY81B9ZsDS7+W
-   qfkkv/2TLWkkF4UckOwTfJZJ8F+QU8OS+X/P4TfeRALt+Natw6b2I6Lv1
-   ouwh+Ez/qwrKRFScEsIWAVo4MM6u8Q29C415a7vbRVxDusbMvuqBOU4v5
-   zRh9b6ZDz5UWhExsl29ErPMhDecr2JKamEJUrInY0xnb6aCjNFfcw5AlA
-   d53adWKxLJwn6UCasI9lMQ9luLNug/IKb6eZXt9xjsaSjDptE3JrLrX0K
-   6okaj/5DJSCtI/DpksSe2vXBALZOxc8Kqu6ln5UCbzeluqdmfikTIkhUe
-   g==;
-X-CSE-ConnectionGUID: 24QdbxixTvy7MbSNu2qErA==
-X-CSE-MsgGUID: MhSV5aoDTleSd8NvkVc0vw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81752196"
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="81752196"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 09:03:23 -0700
-X-CSE-ConnectionGUID: 2KXcPB6cQbagpNdC04+jOA==
-X-CSE-MsgGUID: UdTztvqLTKiCm3Pp1WNmfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,197,1774335600"; 
-   d="scan'208";a="251297485"
-Received: from krybak-mobl1.ger.corp.intel.com (HELO [10.245.246.32]) ([10.245.246.32])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 09:03:19 -0700
-Message-ID: <fcf37969-2641-4480-a4cf-3eaf37b7d3b9@linux.intel.com>
-Date: Wed, 10 Jun 2026 19:03:27 +0300
+	s=arc-20240116; t=1781107915; c=relaxed/simple;
+	bh=g7BZo8ONelciFNcARnK87kA3zf9NSxNSUp1iCmZQtVQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=M91cxJr+1Y1V+/AbNSMybwx6Ytsx5d/d3+pBEWJxOIiuBZPsZa3EE6ownzXhK4KCIZuHxwOU2lS/Dgi8PDNKYXYlP2naQNqfZzoyLkAI0XGkMUczmVCWWa2TFPN9zqX3mzqkZIu/BnuzhVb/g/ql9J8Yzbs9PmAGsrIK4MUU6Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=ma44tvA+; arc=none smtp.client-ip=93.188.205.243
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1781107905;
+	bh=g7BZo8ONelciFNcARnK87kA3zf9NSxNSUp1iCmZQtVQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ma44tvA+NM5cHhIt1pBHaxRO88MNmtYScqat8SnVdYCUN1ymXX9lHpB7m5JDfSsLT
+	 +ixHyDKbZnI/KZCc2Sto77QTaMVMRMz9WrHYgkBEisTyPtBFKxydnn6iA1qvOr41X1
+	 BfhT/GyI8gthjohkokqof5CdmD5ehOmTb1Ezl/qjtatZgxtjrth/NQQ0qywKmJzuch
+	 zDZpi7fnqJXHCIY7bNB1aiso57JTkXRHN4QsnOjpOgD7wfFwFavGZqEcl+/UkmvLlf
+	 OVuF90C/UDzlR4lua1Dz5bO3OU+l8/qxLIDFn0RWhykHe0UjWDP4NpCPGDaLT7OFUC
+	 FLkLqXBe2YVUQ==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id 059541FA2D;
+	Wed, 10 Jun 2026 19:11:45 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Wed, 10 Jun 2026 19:11:41 +0300 (MSK)
+Received: from rbta-msk-lt-156703.astralinux.ru (unknown [10.198.54.246])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4gb9l06wmyzZd74;
+	Wed, 10 Jun 2026 19:11:40 +0300 (MSK)
+From: Alexey Panov <apanov@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Panov <apanov@astralinux.ru>,
+	Mark Brown <broonie@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Neil Armstrong <narmstrong@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Dongliang Mu <mudongliangabcd@gmail.com>,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	lvc-project@linuxtesting.org,
+	Felix Gu <ustc.gu@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10] spi: meson-spicc: Fix double-put in remove path
+Date: Wed, 10 Jun 2026 19:11:29 +0300
+Message-Id: <20260610161129.7612-1-apanov@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: SOF: topology: validate vendor array size before
- parsing
-To: =?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Bard Liao <yung-chuan.liao@linux.intel.com>,
- Daniel Baluta <daniel.baluta@nxp.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
- Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- Jaroslav Kysela <perex@perex.cz>
-Cc: sound-open-firmware@alsa-project.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, notify@kernel.org, stable@vger.kernel.org
-References: <20260603-sof-topology-array-size-signed-v1-1-84f97879a4ef@gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-In-Reply-To: <20260603-sof-topology-array-size-signed-v1-1-84f97879a4ef@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/06/10 14:25:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: apanov@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 107 0.3.107 575e75fe8e3b9d45c142d144823c5de38605099e, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_internal2}, {Tracking_from_domain_doesnt_match_to}, patch.msgid.link:7.1.1;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203793 [Jun 10 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/06/10 13:12:00 #28226830
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/06/10 14:25:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[astralinux.ru,quarantine];
+	R_DKIM_ALLOW(-0.20)[astralinux.ru:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_RECIPIENTS(0.00)[m:cassiogabrielcontato@gmail.com,m:lgirdwood@gmail.com,m:yung-chuan.liao@linux.intel.com,m:daniel.baluta@nxp.com,m:kai.vehmanen@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:broonie@kernel.org,m:tiwai@suse.com,m:perex@perex.cz,m:sound-open-firmware@alsa-project.org,m:linux-sound@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:notify@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[astralinux.ru,kernel.org,baylibre.com,googlemail.com,gmail.com,vger.kernel.org,lists.infradead.org,linaro.org,linuxtesting.org];
+	TAGGED_FROM(0.00)[bounces-262535-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com,nxp.com,linux.dev,kernel.org,suse.com,perex.cz];
-	FORGED_SENDER(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262534-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:apanov@astralinux.ru,m:broonie@kernel.org,m:khilman@baylibre.com,m:narmstrong@baylibre.com,m:jbrunet@baylibre.com,m:martin.blumenstingl@googlemail.com,m:mudongliangabcd@gmail.com,m:linux-spi@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-amlogic@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:neil.armstrong@linaro.org,m:lvc-project@linuxtesting.org,m:ustc.gu@gmail.com,m:johan@kernel.org,m:martinblumenstingl@gmail.com,m:ustcgu@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[apanov@astralinux.ru,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peter.ujfalusi@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[apanov@astralinux.ru,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[astralinux.ru:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:dkim,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76E5466B387
+X-Rspamd-Queue-Id: EF53666B4F0
 
+From: Felix Gu <ustc.gu@gmail.com>
 
+commit 63542bb402b7013171c9f621c28b609eda4dbf1f upstream.
 
-On 03/06/2026 20:57, Cássio Gabriel wrote:
-> sof_parse_token_sets() reads array->size while iterating over topology
-> private data. The loop condition only checks that some data remains, so a
-> malformed topology with a truncated trailing vendor array can make the
-> parser read the size field before a full vendor-array header is available.
-> 
-> Validate that the remaining private data contains a complete
-> snd_soc_tplg_vendor_array header before reading array->size.
-> 
-> The declared array size check also needs to remain signed. asize is an int,
-> but sizeof(*array) has type size_t, so comparing them directly promotes
-> negative asize values to unsigned and lets them pass the check,
-> as reported in the stable review thread reference below.
-> 
-> Cast sizeof(*array) to int when validating the declared array size. This
-> rejects negative, zero and otherwise too-small sizes before the parser
-> dispatches to the tuple-specific code.
-> 
-> Link: https://lore.kernel.org/stable/CANiDSCsjR5NHqu_Ui5cOqWdJgFqmYsQ9WR8O7m0WOhngaYXFpw@mail.gmail.com/t/#m9b3be379221e79327cc13fd71009287368ef4f23
-> Fixes: 215e5fe75881 ("ASoC: SOF: topology: reject invalid vendor array size in token parser")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-> ---
->  sound/soc/sof/topology.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-> index 8fc7726aec29..bb6b981e55d1 100644
-> --- a/sound/soc/sof/topology.c
-> +++ b/sound/soc/sof/topology.c
-> @@ -740,10 +740,13 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
->  	int ret;
->  
->  	while (array_size > 0 && total < count * token_instance_num) {
-> +		if (array_size < (int)sizeof(*array))
-> +			return -EINVAL;
-> +
->  		asize = le32_to_cpu(array->size);
->  
->  		/* validate asize */
-> -		if (asize < sizeof(*array)) {
-> +		if (asize < (int)sizeof(*array)) {
->  			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
->  				asize);
->  			return -EINVAL;
+meson_spicc_probe() registers the controller with
+devm_spi_register_controller(), so teardown already drops the
+controller reference via devm cleanup.
 
-I think this only partially right, I would cover a bit more:
+Calling spi_controller_put() again in meson_spicc_remove()
+causes a double-put.
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 898b94f88706..b0d37ec2bc5e 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -12,6 +12,7 @@
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/firmware.h>
-+#include <linux/overflow.h>
- #include <linux/workqueue.h>
- #include <sound/tlv.h>
- #include <uapi/sound/sof/tokens.h>
-@@ -738,27 +739,43 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
- 	size_t offset = 0;
- 	int found = 0;
- 	int total = 0;
-+	int max_tokens;
- 	int asize;
- 	int ret;
+Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Alexey: Remove the equivalent legacy spi_master_put() call used in
+  linux-5.10.y. ]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+---
+Backport fix for CVE-2026-31489
+ drivers/spi/spi-meson-spicc.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
+index 6974a1c947aa..ae818e7df791 100644
+--- a/drivers/spi/spi-meson-spicc.c
++++ b/drivers/spi/spi-meson-spicc.c
+@@ -863,8 +863,6 @@ static int meson_spicc_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(spicc->core);
+ 	clk_disable_unprepare(spicc->pclk);
  
--	while (array_size > 0 && total < count * token_instance_num) {
-+	if (check_mul_overflow(count, token_instance_num, &max_tokens)) {
-+		dev_err(scomp->dev, "%s: token count overflow %d * %d\n",
-+			__func__, count, token_instance_num);
-+		return -EINVAL;
-+	}
-+
-+	while (array_size > 0 && total < max_tokens) {
-+		if (array_size < (int)sizeof(*array)) {
-+			dev_err(scomp->dev,
-+				"%s: invalid remaining array size %d\n",
-+				__func__, array_size);
-+			return -EINVAL;
-+		}
-+
- 		asize = le32_to_cpu(array->size);
+-	spi_master_put(spicc->master);
+-
+ 	return 0;
+ }
  
- 		/* validate asize */
--		if (asize < sizeof(*array)) {
--			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
--				asize);
-+		if (asize < (int)sizeof(*array)) {
-+			dev_err(scomp->dev, "%s: vendor array too small %d\n",
-+				__func__, asize);
- 			return -EINVAL;
- 		}
- 
- 		/* make sure there is enough data before parsing */
--		array_size -= asize;
--		if (array_size < 0) {
--			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
--				asize);
-+		if (asize > array_size) {
-+			dev_err(scomp->dev,
-+				"%s: vendor array size %d exceeds remaining data\n",
-+				__func__, asize);
- 			return -EINVAL;
- 		}
- 
-+		array_size -= asize;
-+
- 		/* call correct parser depending on type */
- 		switch (le32_to_cpu(array->type)) {
- 		case SND_SOC_TPLG_TUPLE_TYPE_UUID:
-
-> 
-> ---
-> base-commit: bb451bc01ea42c9e47557638400708e20df34178
-> change-id: 20260530-sof-topology-array-size-signed-06abdacb1cdc
-> 
-> Best regards,
-> --  
-> Cássio Gabriel <cassiogabrielcontato@gmail.com>
-> 
-
 -- 
-Péter
-
+2.47.3
 
