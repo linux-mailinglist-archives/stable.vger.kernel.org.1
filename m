@@ -1,186 +1,181 @@
-Return-Path: <stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0Z8cJViKKWobZAMAu9opvQ
-	(envelope-from <stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:28 +0200
+	id sS5dHSeSKWpOZwMAu9opvQ
+	(envelope-from <stable+bounces-262537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:34:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E44466B1E0
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6DE66B85A
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:34:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NqTl75qY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=crudebyte.com header.s=kylie header.b=cTJA+mxY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262537-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=crudebyte.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A2437B0610
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 15:48:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1F4930F0D7A
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 16:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA0D494A10;
-	Wed, 10 Jun 2026 15:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D167A33689E;
+	Wed, 10 Jun 2026 16:25:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BF2428859
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A2931F9A2;
+	Wed, 10 Jun 2026 16:25:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781106193; cv=none; b=f+irTYaSJBLptIas9K7aqy07TOqJVrFK4JsufPQRzKztEb2EHcNpJSpZw8oM8BESzwccdBUnQIESxNfXSB5laXLqBFpgiE5oRf1XIW32s3eUOljikGboqeAKg5c5lgAgJwtpaL7ClNLfX2K+Pmz7YwiObM8ufAYBLvd8JiJlQkY=
+	t=1781108741; cv=none; b=mG+Wt7JtaHca991jaXtLkRhmCaQiyU7GH4txcMZx3yt31PfogcxfT9Sn9UtVQZuK/pyJvDBZ5/NPU1eHgzj8udNwIp8YS3Iu9OIKhHlf7lTmC6WPBAhfkXZ53Xn40eu112XfWZ/X2oLh9dV55X9ZlGcysbZgtQL5rO3UpLzk4kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781106193; c=relaxed/simple;
-	bh=xqZfYDYPDBPN7aKZCdWGjnvMLnaV5O+1fNS2MXClDPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qMuM+NDHr2hFCWmswkeGhGW2Pcq2CkDwHXeel+amGBGNVQx+sPWNa3L9MYkHeAToO7L2tZjB/lmlaUWiVCP/MzsnJlP8Sw8CX/AZzME22Re38rjMpu4f1qZ9+LtnA5gFcf75FlsHlaXvAgsFT7gLdwswxdb0LAI3GDTFPRsqQ8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NqTl75qY; arc=none smtp.client-ip=209.85.215.171
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c855599a77aso3515323a12.0
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 08:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781106191; x=1781710991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9XDGbUf4iEhNvwcof5vdLMuCB999+9vu1yeTxgx41Mo=;
-        b=NqTl75qYL4rVakJ66OV9nA+0nOuFRfU4qnWPcxbMPT4q05LHakfYVq6OahMxifGPwk
-         5BjFJn/G3EHoAEO7RfL23QYrroGqaYHiI5DuBgxgMlIat2fbJyyvZz4twZnZ2gUwXxub
-         oGdTKqe8W30GCc0v5+IYFDBSBIe4NtzBOPUXYCLlkmZBHPol/jODAXeHq1/62aSmcH9i
-         23wG+A9Xs7r6bxd6aKuAcmQHBWpF3paknj0rvKw/MRSuM+OmHZauQdsk0VVFcBHdDkTt
-         tS7y43FGqI+6bayXkH0BS6CitJ4bPfaNl3bW3c19jFhQnU1fkYB47O17ksXjUcywMe2y
-         VYuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781106191; x=1781710991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9XDGbUf4iEhNvwcof5vdLMuCB999+9vu1yeTxgx41Mo=;
-        b=lSkqS+JjalJbFrCHvRe7okeZ2sXReul36E0u1zYY4vkUiuUETNmN5DmN0VoBgSbxzw
-         LXKZZdCtYUoa81G0dIRGO2KN6bLbG6kWLKTsrUiJ54c5sK/ISc56moJJbR5nzeybxZet
-         BgKdUpV0oW71pGctWULi028tIiGVASrXvjIUMuSuqp79LtT3OXeYEuEgQgVwUwg3yIYq
-         ImHmeMm/CeKnZitgH2AY3H9NRCurmo7sZcXtjyuAMl1Q1EFF7v28vPeRpwQ50aWN4LLN
-         zZe2089YwYMPQ3vjwCqbUmomxhcpYIE6rZyPy7hBw8L6stbgv+IXDVL8wRbU1YIGYBf7
-         QLPg==
-X-Forwarded-Encrypted: i=1; AFNElJ9vdBGnVaArRq7DDW5dHAshfxRECM25BWMDcNMIIkHrugg3Hq/uBwhR44GDt6zh67KKCWmD5tI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBTfibnSEMQokJ9j/aFVqmqY64PnWifY9L8CTs6zj/1YnayvNp
-	YxLPIwB/OoyDFZp4VLSt6/dLPXmC0CUU5X8IpXH3Ejeyt9g1VJdi9ffz
-X-Gm-Gg: Acq92OG0bytmVFDJ5gERnj9axfse8IzvlV5sH4LhuPsJcfvWPR3mnl63IyCnBLUzso3
-	31eeCF8JdwKAeRPK276eXwt4JJT3SC+Q0uW+SkFzYiPXjWXTrAD1FSOHRF1xU8bqF8F1hr7QifR
-	8sv0Q4maK1cealzphHGPflLrxR8+XZxbCzIeM1HMn+5nPT4lXQCtTJ+Rdm9lnkx/cxP1Q0Hb0xn
-	fHWymaA8VaUxflIJXRgPE87nIHjGp81uEXQPJTwUZHA806hnbqdHeS4vFhb2zi1kAbdQEHmHTDU
-	SAaAHZhJWm9NvdoNXWnqyx4wH/MgwUGE1A744OKHToYcqbVNQh3pXkFme0k2DcBlEOgv0YrUbFd
-	Hn1R82iCJOQtheSUFdme8+JXc5XBeUHIpaAOu4w5Od1PN6gxWUQQTYkogjKiBYwSLCMwPHy1rWc
-	Q5Wn4m222BBE2tN4g9YgAz5bpo/kH8ma7yggDRky2dwJ3L+y6ItDz/EO9Bmzu8RfH7aUJ8/413U
-	A==
-X-Received: by 2002:a05:6a21:7a82:b0:3b4:85db:1bea with SMTP id adf61e73a8af0-3b4ccd1b486mr31060842637.5.1781106190947;
-        Wed, 10 Jun 2026 08:43:10 -0700 (PDT)
-Received: from KRHW1CJW23.bytedance.net ([139.177.225.252])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b26bbsm21482885a12.23.2026.06.10.08.43.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 10 Jun 2026 08:43:10 -0700 (PDT)
-From: Zhao Li <enderaoelyther@gmail.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhao Li <enderaoelyther@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: ieee80211: validate MLE common info length
-Date: Wed, 10 Jun 2026 23:43:03 +0800
-Message-ID: <20260610154303.37079-1-enderaoelyther@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1781108741; c=relaxed/simple;
+	bh=htM2khgHfnUWMbxF5QO2EKmsTuEgphGXBdpgWSrVaMo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dZrCtoWLkszv/1rYQFqCpVLiU8ScU7Viar6C82d+/eojS30sy0ozICjvaDoZe54hEKhDF1qJgAcfOxScdpFG6/N9a19DpV2wOcPpOLxfW1DEjBNaVIfMZJ0IKNhYKTjRmtSa1n2j6KwStXzYSbQhRCIGsl/u/BvKBX00dfgMR6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=cTJA+mxY; arc=none smtp.client-ip=5.189.157.229
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=KfS3ig5mGkyyFPWW4cNnCQUNTT0//5Cf3AvgXx33nes=; b=cTJA+mxYjbBuaNXV0SH0a+A6jL
+	smB44HSPEerkEBSBM6zbvzNWyP1oBLeY65DKP4tlyiA4v3/I2TsLGb6kGOusZC+oKQTIATfkDOtZF
+	BC0vhqReWRlQEGzE9BxUG3jEHTUTOtm3oxGXBO+mor6haVWdyIhcw3PNnV3okahmBIEngTxH/30oA
+	daJ6DPmStx59GaXzgN4ARaR/4KCam5nk973OCaZDaYG0iqOKlvISaG5i0w5SiBiTJa2guG6wqWmGD
+	RKW6aBzLtlsXy6165oTAMEExNOcZKYjdgfuByKfDwFA1vGU0FTwKNqdyIi04luJv+UmW785o/CCl6
+	4pDwBLhLjEHEQEsdaQ4b3VyODUoAanUG/WvWi4wPvi2FbW69MjOhVEH5/ozWPr6S5tVwLvgeJ0d9N
+	gybbDJCPTlccA5CYyZiqo3RC6kT+eYk+ry+2tWc/QTqrGXgZQ7tLutTrKejTMf5M8VsCDiU3rCPY6
+	FB5aVRu/0TSUnlSKqi+SClXC0/uSFBaQDFDXapPdjy/je8W9PHkYYbaSPTreXiIGNr3rgT1+iOIX7
+	/UHFybMlScO3JYE1tZUjVHYcStaXzYuuBO/u82CK+C4SSof20BtimM4bHssryD+ZjVz76NIREwTXu
+	iTbbqWWrryQkoljrMGI0e1WDEttJSs+xX+PaB1DOw=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: Eric Van Hensbergen <ericvh@kernel.org>,
+ Latchesar Ionkov <lucho@ionkov.net>,
+ Dominique Martinet <asmadeus@codewreck.org>,
+ Michael Bommarito <michael.bommarito@gmail.com>
+Cc: v9fs@lists.linux.dev, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] 9p/trans_virtio: bound mount_tag show copy to one page
+Date: Wed, 10 Jun 2026 17:46:13 +0200
+Message-ID: <1962500.CQOukoFCf9@weasel>
+In-Reply-To: <20260610114206.3749904-1-michael.bommarito@gmail.com>
+References: <20260610114206.3749904-1-michael.bommarito@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	CTE_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[crudebyte.com,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[crudebyte.com:s=kylie];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-262528-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262537-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_TO(0.00)[kernel.org,ionkov.net,codewreck.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:ericvh@kernel.org,m:lucho@ionkov.net,m:asmadeus@codewreck.org,m:michael.bommarito@gmail.com,m:v9fs@lists.linux.dev,m:virtualization@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RSPAMD_EMAILBL_FAIL(0.00)[stable@vger.kernel.org:query timed out];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER(0.00)[linux_oss@crudebyte.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux_oss@crudebyte.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[crudebyte.com:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,crudebyte.com:dkim,crudebyte.com:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3E44466B1E0
+X-Rspamd-Queue-Id: 3C6DE66B85A
 
-ieee80211_mle_size_ok() verifies that the advertised common information
-length is large enough for the fixed fields that are present, but it does
-not verify that the length also fits in the containing element.
+On Wednesday, 10 June 2026 13:42:06 CEST Michael Bommarito wrote:
+> p9_mount_tag_show() copies strlen(chan->tag) + 1 bytes into the
+> single-page buffer the sysfs core provides, with no upper bound. The
+> mount tag length comes from virtio_9p_config.tag_len, a 16-bit field read
+> from the device at probe in p9_virtio_probe() with no cap. Under the
+> confidential-computing threat model, where the guest does not trust the
+> host, a malicious or compromised host can present a 65535-byte tag with
+> no embedded NUL. A read of the world-readable /sys/.../mount_tag
+> attribute (udev reads it at probe) then copies ~64 KiB into the 4 KiB
+> sysfs page, a slab-out-of-bounds write of host-controlled content.
+> 
+> Bound the copy to the page size in the show handler.
+> 
+> Fixes: 179a5bc4b8cb ("net/9p: use memcpy() instead of snprintf() in
+> p9_mount_tag_show()") Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+> ---
+>  net/9p/trans_virtio.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+> index 4cdab7094b273..b62aa7b309f1c 100644
+> --- a/net/9p/trans_virtio.c
+> +++ b/net/9p/trans_virtio.c
+> @@ -573,7 +573,11 @@ static ssize_t p9_mount_tag_show(struct device *dev,
+>  	chan = vdev->priv;
+>  	tag_len = strlen(chan->tag);
+> 
+> -	memcpy(buf, chan->tag, tag_len + 1);
+> +	if (tag_len > PAGE_SIZE - 2)
+> +		tag_len = PAGE_SIZE - 2;
+> +
+> +	memcpy(buf, chan->tag, tag_len);
+> +	buf[tag_len] = '\0';
+> 
+>  	return tag_len + 1;
+>  }
 
-Reconfiguration and Priority Access MLEs also carry a common information
-length octet, but currently skip the common-length check. Reconfiguration
-additionally fails to include the length octet in the minimum common size.
+Given that this has already seen some rotations, it is worth to think a bit 
+more about it:
 
-Validate the common information length for Reconfiguration and Priority
-Access MLEs, account for the Reconfiguration length octet, and reject
-common lengths that exceed the element body.
+1. Destination buffer being PAGE_SIZE large is an implementation detail of 
+seq_file. If the latter is changed, this code breaks (again) silently without 
+anybody noticing.
 
-Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
----
- include/linux/ieee80211-eht.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+2. memcpy() was introduced by 179a5bc4b8cb because chan->tag was not NULL 
+terminated. However since edcd9d977354 it *is* NULL terminated.
 
-diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.h
-index a97b1d01f3acf..d875045abf6cc 100644
---- a/include/linux/ieee80211-eht.h
-+++ b/include/linux/ieee80211-eht.h
-@@ -878,6 +878,8 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 		check_common_len = true;
- 		break;
- 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
-+		common += 1;
-+		check_common_len = true;
- 		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
- 			common += ETH_ALEN;
- 		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
-@@ -893,6 +895,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 		break;
- 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
- 		common = ETH_ALEN + 1;
-+		check_common_len = true;
- 		break;
- 	default:
- 		/* we don't know this type */
-@@ -906,7 +909,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 		return true;
- 
- 	/* if present, common length is the first octet there */
--	return mle->variable[0] >= common;
-+	return mle->variable[0] >= common && mle->variable[0] <= len - fixed;
- }
- 
- /**
--- 
-2.50.1 (Apple Git-155)
+Given those two, an alternative would be:
+
+  len = sysfs_emit(buf, "%s", chan->tag);
+
+As it already handles the PAGE_SIZE limit inside its implementation.
+
+However, still ...
+
+3. Is it a good idea to just *silenty* truncate a very long tag to something 
+else just to avoid an OOB? It would at least break auto mount rules, as the 
+truncated tag would not match device's real tag.
+
+4. And most importantly: Would a sane 9p device *ever* use a 64k tag, if yes 
+what for?
+
+I would say no, a 64k tag is at least suspicious, if not even hostile.
+
+Therefore: what about simply rejecting the device at probe time if its tag is 
+beyond a certain length?
+
+/Christian
+
 
 
