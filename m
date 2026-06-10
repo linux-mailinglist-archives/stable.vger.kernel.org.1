@@ -1,172 +1,186 @@
-Return-Path: <stable+bounces-262527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zQ1lA3aKKWonZAMAu9opvQ
-	(envelope-from <stable+bounces-262527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:58 +0200
+	id 0Z8cJViKKWobZAMAu9opvQ
+	(envelope-from <stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3723166B1F1
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E44466B1E0
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 18:01:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SEYUC121;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262527-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262527-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NqTl75qY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262528-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D2C473076E97
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 15:42:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96A2437B0610
+	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 15:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A56643E4A4;
-	Wed, 10 Jun 2026 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA0D494A10;
+	Wed, 10 Jun 2026 15:43:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D386413612;
-	Wed, 10 Jun 2026 15:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BF2428859
+	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 15:43:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781106030; cv=none; b=LyotXgSsRih7sa0wdVAekd8jU8nrB4CwTwI1OR1H7AJdD//aa7l10sHbPtA+2dHNfyS3WkMTQA7fH1+aCYsKycp23Itcvqg9ogLFi3GAoy5oCH3JU9VmNd5PWiQZrZtgOpECBWx4L84bjtLV7DMDQf0ydy9jOnhHW0ZcB+7kwT4=
+	t=1781106193; cv=none; b=f+irTYaSJBLptIas9K7aqy07TOqJVrFK4JsufPQRzKztEb2EHcNpJSpZw8oM8BESzwccdBUnQIESxNfXSB5laXLqBFpgiE5oRf1XIW32s3eUOljikGboqeAKg5c5lgAgJwtpaL7ClNLfX2K+Pmz7YwiObM8ufAYBLvd8JiJlQkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781106030; c=relaxed/simple;
-	bh=elxlxlkWq/7LRTBB0hu0idyCoKOuy0FeQXq5wzcu6io=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EhY1yKDTwHwVXRxkmI8GK0EWJJ49PbOocinj5t7Eele395uy4YNvH6s02TPVz25/sZPjgqD5ZcYIhRxuo3TD/hDpwjvl0+S6l/uS24GFPDftU2Y9mUl/LO6MG3leF1cPKi7UwaGYBZtWoQ2D7kJxoLjbhtX77IGbr2yHYV7ZPUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEYUC121; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119E41F00899;
-	Wed, 10 Jun 2026 15:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781106028;
-	bh=EcPADI751DZUFmAf8tMZbq8OK7pAbO29bPO2oNj30UI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SEYUC121sf/7PG2uBKmnFs6RVfZUcO9yIuyUGVekneIQcQDdInxcAael6nek53to7
-	 OWDpMOwTekAxg2MUzrujVjDdFt9FLj40D+spbz2KEUqE3j6X6Ny1RHH+I0XUqxZoei
-	 ysoQaGoHsOJSu6fINHXSgWRiMcemPkOXRnsqNuPxfIkrb1lMyd67U5atQNkKqeRcwb
-	 T5YWpOd1i98Ijvk4JyrVX6LWWmzrninQe1gP+7mGwW0lqBlMiWmRcE6D5cCtc95wno
-	 NItL0t3TzcaOWPAXW1sFVOuxprpWbxzV17wOoQkkVMqAdBgfr0op1nU2QIhqjGYScW
-	 psTFj/44omEEQ==
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 10 Jun 2026 17:40:03 +0200
-Subject: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
+	s=arc-20240116; t=1781106193; c=relaxed/simple;
+	bh=xqZfYDYPDBPN7aKZCdWGjnvMLnaV5O+1fNS2MXClDPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qMuM+NDHr2hFCWmswkeGhGW2Pcq2CkDwHXeel+amGBGNVQx+sPWNa3L9MYkHeAToO7L2tZjB/lmlaUWiVCP/MzsnJlP8Sw8CX/AZzME22Re38rjMpu4f1qZ9+LtnA5gFcf75FlsHlaXvAgsFT7gLdwswxdb0LAI3GDTFPRsqQ8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NqTl75qY; arc=none smtp.client-ip=209.85.215.171
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c855599a77aso3515323a12.0
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 08:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781106191; x=1781710991; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9XDGbUf4iEhNvwcof5vdLMuCB999+9vu1yeTxgx41Mo=;
+        b=NqTl75qYL4rVakJ66OV9nA+0nOuFRfU4qnWPcxbMPT4q05LHakfYVq6OahMxifGPwk
+         5BjFJn/G3EHoAEO7RfL23QYrroGqaYHiI5DuBgxgMlIat2fbJyyvZz4twZnZ2gUwXxub
+         oGdTKqe8W30GCc0v5+IYFDBSBIe4NtzBOPUXYCLlkmZBHPol/jODAXeHq1/62aSmcH9i
+         23wG+A9Xs7r6bxd6aKuAcmQHBWpF3paknj0rvKw/MRSuM+OmHZauQdsk0VVFcBHdDkTt
+         tS7y43FGqI+6bayXkH0BS6CitJ4bPfaNl3bW3c19jFhQnU1fkYB47O17ksXjUcywMe2y
+         VYuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781106191; x=1781710991;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9XDGbUf4iEhNvwcof5vdLMuCB999+9vu1yeTxgx41Mo=;
+        b=lSkqS+JjalJbFrCHvRe7okeZ2sXReul36E0u1zYY4vkUiuUETNmN5DmN0VoBgSbxzw
+         LXKZZdCtYUoa81G0dIRGO2KN6bLbG6kWLKTsrUiJ54c5sK/ISc56moJJbR5nzeybxZet
+         BgKdUpV0oW71pGctWULi028tIiGVASrXvjIUMuSuqp79LtT3OXeYEuEgQgVwUwg3yIYq
+         ImHmeMm/CeKnZitgH2AY3H9NRCurmo7sZcXtjyuAMl1Q1EFF7v28vPeRpwQ50aWN4LLN
+         zZe2089YwYMPQ3vjwCqbUmomxhcpYIE6rZyPy7hBw8L6stbgv+IXDVL8wRbU1YIGYBf7
+         QLPg==
+X-Forwarded-Encrypted: i=1; AFNElJ9vdBGnVaArRq7DDW5dHAshfxRECM25BWMDcNMIIkHrugg3Hq/uBwhR44GDt6zh67KKCWmD5tI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBTfibnSEMQokJ9j/aFVqmqY64PnWifY9L8CTs6zj/1YnayvNp
+	YxLPIwB/OoyDFZp4VLSt6/dLPXmC0CUU5X8IpXH3Ejeyt9g1VJdi9ffz
+X-Gm-Gg: Acq92OG0bytmVFDJ5gERnj9axfse8IzvlV5sH4LhuPsJcfvWPR3mnl63IyCnBLUzso3
+	31eeCF8JdwKAeRPK276eXwt4JJT3SC+Q0uW+SkFzYiPXjWXTrAD1FSOHRF1xU8bqF8F1hr7QifR
+	8sv0Q4maK1cealzphHGPflLrxR8+XZxbCzIeM1HMn+5nPT4lXQCtTJ+Rdm9lnkx/cxP1Q0Hb0xn
+	fHWymaA8VaUxflIJXRgPE87nIHjGp81uEXQPJTwUZHA806hnbqdHeS4vFhb2zi1kAbdQEHmHTDU
+	SAaAHZhJWm9NvdoNXWnqyx4wH/MgwUGE1A744OKHToYcqbVNQh3pXkFme0k2DcBlEOgv0YrUbFd
+	Hn1R82iCJOQtheSUFdme8+JXc5XBeUHIpaAOu4w5Od1PN6gxWUQQTYkogjKiBYwSLCMwPHy1rWc
+	Q5Wn4m222BBE2tN4g9YgAz5bpo/kH8ma7yggDRky2dwJ3L+y6ItDz/EO9Bmzu8RfH7aUJ8/413U
+	A==
+X-Received: by 2002:a05:6a21:7a82:b0:3b4:85db:1bea with SMTP id adf61e73a8af0-3b4ccd1b486mr31060842637.5.1781106190947;
+        Wed, 10 Jun 2026 08:43:10 -0700 (PDT)
+Received: from KRHW1CJW23.bytedance.net ([139.177.225.252])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0b26bbsm21482885a12.23.2026.06.10.08.43.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 10 Jun 2026 08:43:10 -0700 (PDT)
+From: Zhao Li <enderaoelyther@gmail.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Zhao Li <enderaoelyther@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: ieee80211: validate MLE common info length
+Date: Wed, 10 Jun 2026 23:43:03 +0800
+Message-ID: <20260610154303.37079-1-enderaoelyther@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
-To: Harry Yoo <harry@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
- David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:harry@kernel.org,m:hao.li@linux.dev,m:cl@gentwo.org,m:rientjes@google.com,m:roman.gushchin@linux.dev,m:surenb@google.com,m:ast@kernel.org,m:akpm@linux-foundation.org,m:hannes@cmpxchg.org,m:mhocko@kernel.org,m:shakeel.butt@linux.dev,m:glider@google.com,m:elver@google.com,m:dvyukov@google.com,m:kasan-dev@googlegroups.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:vbabka@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-262528-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-262527-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:johannes.berg@intel.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[vbabka.kernel.org:query timed out];
+	RSPAMD_EMAILBL_FAIL(0.00)[stable@vger.kernel.org:query timed out];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3723166B1F1
+X-Rspamd-Queue-Id: 3E44466B1E0
 
-When init (zeroing) on allocation is requested, for kmalloc() we
-generally have to zero the full object size even if a smaller size is
-requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
+ieee80211_mle_size_ok() verifies that the advertised common information
+length is large enough for the fixed fields that are present, but it does
+not verify that the length also fits in the containing element.
 
-But if we track the requested size, krealloc() uses that information to
-do the right thing. With red zoning also enabled, any unused size
-became part of the red zone, so it must not be zeroed.
+Reconfiguration and Priority Access MLEs also carry a common information
+length octet, but currently skip the common-length check. Reconfiguration
+additionally fails to include the length octet in the minimum common size.
 
-However the check is imprecise, and will trigger also when only
-SLAB_RED_ZONE is enabled without SLAB_STORE_USER. This means enabling
-red zoning alone can compromise krealloc()'s __GFP_ZERO contract.
+Validate the common information length for Reconfiguration and Priority
+Access MLEs, account for the Reconfiguration length octet, and reject
+common lengths that exceed the element body.
 
-Fix this by using slub_debug_orig_size() instead, which is the exact
-check for whether the requested size is tracked. We don't need to care
-if red zoning is also enabled or not. Also update and expand the
-comment accordingly.
-
-Fixes: 9ce67395f5a0 ("mm/slub: only zero requested size of buffer for kzalloc when debug enabled")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
 ---
- mm/slub.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ include/linux/ieee80211-eht.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/mm/slub.c b/mm/slub.c
-index 63c1ef998dd3..e2ee8f1aaccf 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -4574,15 +4574,17 @@ bool slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 	gfp_t init_flags = flags & gfp_allowed_mask;
+diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.h
+index a97b1d01f3acf..d875045abf6cc 100644
+--- a/include/linux/ieee80211-eht.h
++++ b/include/linux/ieee80211-eht.h
+@@ -878,6 +878,8 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		check_common_len = true;
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
++		common += 1;
++		check_common_len = true;
+ 		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
+ 			common += ETH_ALEN;
+ 		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
+@@ -893,6 +895,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		common = ETH_ALEN + 1;
++		check_common_len = true;
+ 		break;
+ 	default:
+ 		/* we don't know this type */
+@@ -906,7 +909,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		return true;
  
- 	/*
--	 * For kmalloc object, the allocated memory size(object_size) is likely
--	 * larger than the requested size(orig_size). If redzone check is
--	 * enabled for the extra space, don't zero it, as it will be redzoned
--	 * soon. The redzone operation for this extra space could be seen as a
--	 * replacement of current poisoning under certain debug option, and
--	 * won't break other sanity checks.
-+	 * For kmalloc object, the allocated size (object_size) can be larger
-+	 * than the requested size (orig_size). We however need to zero the
-+	 * whole object_size to handle possible later krealloc() with
-+	 *__GFP_ZERO properly.
-+	 *
-+	 * But if we keep track of the requested size, krealloc() uses that
-+	 * information. Additionally if red zoning is enabled, the extra space
-+	 * is also red zone, so we should not overwrite it. So limit zeroing to
-+	 * orig_size if we track it.
- 	 */
--	if (kmem_cache_debug_flags(s, SLAB_STORE_USER | SLAB_RED_ZONE) &&
--	    (s->flags & SLAB_KMALLOC))
-+	if (slub_debug_orig_size(s))
- 		zero_size = orig_size;
+ 	/* if present, common length is the first octet there */
+-	return mle->variable[0] >= common;
++	return mle->variable[0] >= common && mle->variable[0] <= len - fixed;
+ }
  
- 	/*
-
+ /**
 -- 
-2.54.0
+2.50.1 (Apple Git-155)
 
 
