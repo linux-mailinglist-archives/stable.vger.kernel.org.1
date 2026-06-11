@@ -1,196 +1,171 @@
-Return-Path: <stable+bounces-262737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jCGUJ8/JKmoZxAMAu9opvQ
-	(envelope-from <stable+bounces-262737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:44:31 +0200
+	id Uj+rGHbKKmpHxAMAu9opvQ
+	(envelope-from <stable+bounces-262739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:47:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56531672CCC
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:44:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3E0672D2C
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:47:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sms-medipool.de header.s=mail header.b=U9ta5I9Y;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262737-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262737-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=sms-medipool.de;
+	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=j1Cc6G41;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262739-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262739-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=sntech.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3945B3005157
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:44:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1374633A9082
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1003112AB;
-	Thu, 11 Jun 2026 14:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38AF363082;
+	Thu, 11 Jun 2026 14:46:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.sms-medipool.de (mail.sms-medipool.de [178.63.14.108])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A76AFBE1;
-	Thu, 11 Jun 2026 14:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA70176FB1
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 14:46:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781189063; cv=none; b=pSo2UTDGMIkK3xLPcnI5n4GvoRrhwd3Gelwbc3I67TLtoHy7EWg8EEc9GWEEbtENom3FpvSrPnxJONT9NufcfbX02EblvUIcZbelVf/YIq765B6+9MWoNaZ/EMgk1Ua76g7ZjRQ2GUQOZ4TmhLsWQ919CT3HAx+gJsQ6ckpMNds=
+	t=1781189219; cv=none; b=qD/w9Pb57MjvFSSAHuH5tPSznPaohr923YoEC75RG9UhD/skq8bzaiS3jDQh6Egkg3wmlsp5s+rUYvwYU5IVkf2eDen6nAbc5Ryqu9Hs89vzjF/Ta/OUmWJLgWrvPG1DSuDBsWZm7jVKcb3DfOASdrdVrNZBy8HESBykk9Tov3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781189063; c=relaxed/simple;
-	bh=ale706WJrCqHRFPgGjzouIqQ7wD2DgR0VSWvuZ0duAU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HeTiZTaXaJ29MOj1iQE6nhpN/1PdtIv0ttRRqsqkjV8ZQeWIpW/ocjOjWwJgJmLBxsEWo3UUgfNGpTe3SQRndKaEClguwxYUENGb+xKZJ0oc5iuh557malZtJ5ILHZYq8yf06qzXwamWOfTi8ePixFyhMI1sfaZxwqv9BsKbDlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sms-medipool.de; spf=pass smtp.mailfrom=sms-medipool.de; dkim=pass (2048-bit key) header.d=sms-medipool.de header.i=@sms-medipool.de header.b=U9ta5I9Y; arc=none smtp.client-ip=178.63.14.108
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sms-medipool.de;
-	s=mail; t=1781189059;
-	bh=ale706WJrCqHRFPgGjzouIqQ7wD2DgR0VSWvuZ0duAU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U9ta5I9YwZ5n1BpVehDDJWHG4U+DZWJGQlZFJdzZAYOoFDtPlcvmmnI9nIsywgoVv
-	 E7Wgs/SFFETTUGaMqt1yEo946jazVuEobl5ozN2n/BDATn2QJfiLVJVWm8MVtOuPqq
-	 UqqIhUIsogHhOft7YkFYI2dnPPk9fBzgFFlxrVg74QH6d9WFS4WRuilbRXMpGvE9N/
-	 xhn3kZub3c3NHl0GtuRqp8tPp5rZ/F1IkgEtCr2dfxcbEvIkgsRgUCHecQfm/rky1X
-	 EwE+NLqWr4pAxaP/+Ik6v+7PlvMtJhsoY5czNG9JHMcUKb/A9LHuuS5a1K/GDzZesw
-	 FU0uQsCQEUOFg==
-Received: from mail.stoss-medica.de (mail.stoss-medica.de [213.147.17.40])
-	by mail.sms-medipool.de (Postfix) with ESMTPS id AF42215132;
-	Thu, 11 Jun 2026 16:44:19 +0200 (CEST)
-Received: from NUC16-Linux.sb.golima.de ([95.88.98.111])
-	by mail.stoss-medica.de (Kerio Connect 10.0.8 patch 2) with ESMTP;
-	Thu, 11 Jun 2026 16:44:19 +0200
-From: Alexander Kaplan <alexander.kaplan@sms-medipool.de>
-To: =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Cc: Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Jaroslav Kysela <perex@perex.cz>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	stable@vger.kernel.org,
-	Uma Shankar <uma.shankar@intel.com>,
-	alexander.kaplan@sms-medipool.de
-Subject: Re: [PATCH] ALSA: hda/hdmi: disable KAE for Intel Panther Lake
-Date: Thu, 11 Jun 2026 16:44:18 +0200
-Message-ID: <20260611144418.23640-1-alexander.kaplan@sms-medipool.de>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <ec0d51a0-a31d-4c06-92f6-e38c408884b9@linux.intel.com>
-References: <ec0d51a0-a31d-4c06-92f6-e38c408884b9@linux.intel.com>
+	s=arc-20240116; t=1781189219; c=relaxed/simple;
+	bh=g6bROWU/w+beWWhMI/E8y0Zj2Vltr07b8bQTQCHGSxw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pt0Xrs0AQQ2nLqEUNj/91zF+c6EoAQKzS2TCcqyTY/PzrSRK1YBSF4+YPlNVjOelaLtc8XZiKloFXjOEukAmOyeQ5hwXufxa9HntqkzmYm9jAAkrk579xpuDd2CFadLU+/0bfHvQUi460G8xB0LVp9IEbqFyCWjH8WkhyLuV6qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=j1Cc6G41; arc=none smtp.client-ip=185.11.138.130
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+	Subject:Cc:To:From:Reply-To:Content-Type:In-Reply-To:References;
+	bh=BLq8QwBnW6aRyonTh8EpUWUPio44/d/QCVz8r1i2VV0=; b=j1Cc6G41ExU2Pxbr51wNtc9FNd
+	UswJZCWltiL84O/ak+OER4nNjQDK2Nc7g1l00lR/A10a8S2f4MoRVPFtuh7W06zL8tahSk12yTvdv
+	eZM0xSOKAErKUaSihtSDOupO+6MhpVFerHFebosGCw/S3s615trnSevuJxB8G9Irhjd9Q3yYnyb18
+	ArqcyE/vPtGaMALlnnCVD+Q+dK43XU/ya77PV7qn2XREuDQQGmEZdkAJP62I97VJy3N8YOuPEpEnG
+	Cm0RnYSeZSLv70iI9JM4rtKND+2sOaazbuQ12rYyNpgLO0lIxL40X+aAnlvLe52KWgZRhEvPh7mQd
+	RiEUrgWQ==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: stable@vger.kernel.org
+Cc: Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>
+Subject: [PATCH 6.12.y] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
+Date: Thu, 11 Jun 2026 16:46:15 +0200
+Message-ID: <20260611144615.478035-1-heiko@sntech.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[sms-medipool.de,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[sms-medipool.de:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262737-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:peter.ujfalusi@linux.intel.com,m:tiwai@suse.com,m:linux-sound@vger.kernel.org,m:perex@perex.cz,m:kai.vehmanen@linux.intel.com,m:pierre-louis.bossart@linux.dev,m:stable@vger.kernel.org,m:uma.shankar@intel.com,m:alexander.kaplan@sms-medipool.de,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sms-medipool.de:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:shardul.b@mpiricsoftware.com,m:syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,m:Jason@zx2c4.com,m:kuba@kernel.org,m:heiko.stuebner@cherry.de,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262739-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexander.kaplan@sms-medipool.de,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[sntech.de:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sms-medipool.de:dkim,sms-medipool.de:mid,sms-medipool.de:from_mime]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,f2fbf7478a35a94c8b7c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,sntech.de:dkim,sntech.de:mid,sntech.de:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 56531672CCC
+X-Rspamd-Queue-Id: AC3E0672D2C
 
-On 11/06/2026 12:33, Péter Ujfalusi wrote:
->> My setup is: laptop HDMI -> SYNIC HDMI audio extractor -> HDMI KVM ->
->> monitor w/o speakers.
->> I use the extractor to grab the audio and it is clean every time I play
->> audio to HDMI.
->
-> Just to rule out iffy equipment on my side, I have connected the PTL
-> laptop to my Denon AVR both in SOF and legacy HDA mode. I cannot hear
-> any issue regarding to audio on my 5.1 speaker set.
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-Hi Péter,
+[ Upstream commit 60a25ef8dacb3566b1a8c4de00572a498e2a3bf9 ]
 
-thanks for testing this and for pulling in Uma.
+wg_netns_pre_exit() manually acquires rtnl_lock() inside the
+pernet .pre_exit callback.  This causes a hung task when another
+thread holds rtnl_mutex - the cleanup_net workqueue (or the
+setup_net failure rollback path) blocks indefinitely in
+wg_netns_pre_exit() waiting to acquire the lock.
 
-Your two setups have one thing in common.
-Both use the native HDMI port of the laptop.
-That turned out to be the missing piece.
-I spent the day on a discrimination matrix here and your result now fits the picture exactly.
+Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
+Add ->exit_rtnl() hook to struct pernet_operations."), where the
+framework already holds RTNL and batches all callbacks under a
+single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
+window.
 
-This machine also has a native HDMI port next to the USB-C ports.
-On native HDMI the wedge does not reproduce at all.
-With KAE enabled the same stereo to 6 and 8 channel transitions play fine on the same TV.
+The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
+from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
+because all RCU readers of creating_net either use maybe_get_net()
+- which returns NULL for a dying namespace with zero refcount - or
+access net->user_ns which remains valid throughout the entire
+ops_undo_list sequence.
 
->> Can this be somehow related to the DP-to-HDMI converter? Have you tested
->> that with other machine?
->> Or a combination of xe2+DP-to-HDMI?
+Reported-by: syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+[ Jason: added __net_exit and __read_mostly annotations that were missing. ]
+Fixes: 900575aa33a3 ("wireguard: device: avoid circular netns references")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20260414153944.2742252-5-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+---
+ drivers/net/wireguard/device.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-I only have this one PTL machine, so no cross machine data from me.
-But the converter question was the right direction, with one important refinement.
-The DP path is required to trigger the wedge, while the stuck state itself sits on the host side.
-
-The wedge reproduces on all three DP-alt to HDMI converters I have.
-A Club3D CAC-2505 with Synaptics VMM7100 firmware 7.1, a Cable Matters adapter on the VMM7100 7.2 firmware line and a Thunderbolt 4 dock with an integrated Synaptics converter.
-
-Once wedged, the state survives a converter replug, a move to the other USB-C port and a full TV power cycle (forced reboot of the TV over the network while everything stayed connected).
-Only a host suspend cycle or reboot clears it.
-While wedged on the converter path, moving the TV cable to the native HDMI port plays immediately.
-Moving it back to the converter wedges again.
-So nothing downstream of the host holds the state.
-It lives in the display side of the PTL audio path and only shows on DP.
-
-Some register level observations from the wedged state, maybe they help locating it internally.
-During the wedged silent playback the sample counters in the display audio register block at 0x65e04 and 0x650d0 keep advancing at the expected rate for the stream format.
-So the samples still arrive at the display side and the stream dies further down, behind the audio converter.
-There is also a register at 0x65f20 in that block which the driver does not define anywhere, directly behind AUD_CHICKENBIT_REG3 at 0x65f1c.
-With a 2 channel stream running its low bits read 0x482 in the healthy state and 0x4a1 in the wedged state.
-The same readback shows 0x4a1 as the normal value while a 6 channel stream plays, so it has to be sampled with a stereo stream.
-That readback follows the wedge through everything that does not power cycle the display.
-And 0x65e04 only counts at all while KAE is enabled, with this patch applied it stays at zero, so it seems to belong to the keep-alive machinery itself.
-
-There are also visible display side effects while KAE is in use, maybe interesting for Uma.
-Starting a 6 channel stream through the converter makes the TV drop from HDR to SDR.
-Starting an 8 channel stream blanks the picture for a moment and HDR survives.
-Stereo does neither.
-Both effects are gone with the patch applied.
-So the KAE to stream transition seems to disturb more of the SDP transmission on the DP path than just the audio samples.
-
-Two caveats I want to be transparent about.
-All my DP sinks are Synaptics protocol converters and I have no plain DP monitor here.
-So I cannot tell whether plain DP audio is affected or only the DP plus PCON combination.
-That should be quick to check on your side.
-And the native HDMI immunity is based on this one machine and one TV.
-
-For completeness, the sink does not explain the split.
-The TV advertises 2 channel LPCM only, on the converter path and on native HDMI alike, and native HDMI still plays every format.
-
-One unrelated observation from the native HDMI tests, in case someone trips over it while reproducing.
-This TV takes anywhere between a second and a few minutes to lock onto a new channel layout on native HDMI.
-The delay is the same with KAE enabled and with this patch applied, so KAE plays no role in it.
-During that time the host output is provably healthy, the PCM keeps running and the audio infoframe is correct for the new layout.
-Stopping the player for a few seconds and starting it again makes the TV lock immediately.
-That is a sink quirk.
-
-On the patch form.
-I am aware the model change gives up the KAE power benefit for the whole platform, like the DG2 change did, and PTL is mostly a mobile platform.
-If you prefer a narrower fix I can gate the silent stream type on the ELD connection type instead, so native HDMI pins keep KAE and only DP pins fall back to the older method.
-Given that the HDMI immunity rests on a single machine I did not want to make that call unilaterally.
-
-If you want to reproduce, a VMM7100 based USB-C to HDMI adapter plus one multichannel PCM stream should show it within a minute.
-
-Should the Battlemage boards drive their HDMI ports through an onboard protocol converter like the DG2 boards did, the TrueHD report in issue 7515 would fit this same pattern.
-
-Regards,
-Alexander
+diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+index 45e9b908dbfb..055ea3877156 100644
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -406,12 +406,11 @@ static struct rtnl_link_ops link_ops __read_mostly = {
+ 	.newlink		= wg_newlink,
+ };
+ 
+-static void wg_netns_pre_exit(struct net *net)
++static void __net_exit wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
+ {
+ 	struct wg_device *wg;
+ 	struct wg_peer *peer;
+ 
+-	rtnl_lock();
+ 	list_for_each_entry(wg, &device_list, device_list) {
+ 		if (rcu_access_pointer(wg->creating_net) == net) {
+ 			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
+@@ -424,11 +423,10 @@ static void wg_netns_pre_exit(struct net *net)
+ 			mutex_unlock(&wg->device_update_lock);
+ 		}
+ 	}
+-	rtnl_unlock();
+ }
+ 
+-static struct pernet_operations pernet_ops = {
+-	.pre_exit = wg_netns_pre_exit
++static struct pernet_operations pernet_ops __read_mostly = {
++	.exit_rtnl = wg_netns_exit_rtnl
+ };
+ 
+ int __init wg_device_init(void)
+-- 
+2.53.0
 
 
