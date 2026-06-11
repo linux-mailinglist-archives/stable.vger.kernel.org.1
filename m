@@ -1,139 +1,218 @@
-Return-Path: <stable+bounces-262824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id x2WjEeI7K2oA4wMAu9opvQ
-	(envelope-from <stable+bounces-262824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 00:51:14 +0200
+	id +4oaNi49K2qv4wMAu9opvQ
+	(envelope-from <stable+bounces-262825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 00:56:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990C7675B3F
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 00:51:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDB5675BB2
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 00:56:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G63+Ss0v;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262824-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262824-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=suse.com header.s=google header.b=IByxDIx7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262825-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B1F33148D42
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 22:50:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C8542300ED85
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 22:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D26F4BC024;
-	Thu, 11 Jun 2026 22:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09563BE17C;
+	Thu, 11 Jun 2026 22:56:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED67D38E8D0;
-	Thu, 11 Jun 2026 22:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0D538398D
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 22:56:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781218235; cv=none; b=CMYh/cEm5QyYVuNWxPIZzorTwl30gVMhD4/EMW/4+zDqRooBeW88lYCtdJiJTg7XIwC37VS2aPH0ZAypFT5LDiI4BRqIRmWqNgUkBU/7cgR8iApP6XtBfDFPxpre3JEJEtuPs5aunNIYCEu82C/je/Sx1mHbUkngFW1QAw1kgUc=
+	t=1781218603; cv=none; b=VJ85jvYgsXcj+Jepi7010QRqcCmlb5CP00C+yDHi5/gne58nRBY9OTCboQKAkuG/6r33HezcN5PF0R9600nVn5uDgnPRCaFCu8k050CBi/2hx6HYeL1LJS1LWpwCVctQXqu98O2DxiF+7BZrEvS8WSQM4OPUklCGylq8J/6JSDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781218235; c=relaxed/simple;
-	bh=TyNX+oJc/MFzFuxAGt/IUzK+asDmWADNvzEqvgAfhbQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NBsx6HpfWpKYjvj4a/qCpgjxOh3jYPGdNXnXpDe1Yyy/AwlAcwGnixdPNxGjowx8xVXq2geGyczwyLjGZvrPlhv9HVKXntBogS7GFn3iDNPbAkgNRmm/N1y1SFZEjFtRaWPA6mMwRhnPl7dzz+m6AZDoUZ9Bn+FJukCEb6fp8/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G63+Ss0v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B1E81F00A3A;
-	Thu, 11 Jun 2026 22:50:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781218232;
-	bh=G3sIlCr+rOPD9zI4jT1mrmwCd8/1/QyIAfXHZsN8XTg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=G63+Ss0vyBhAJx/JJId/1dHYeFdIa7okyK3Hx0OTR7UynO+FfYuZxVnDvUSW5h9nu
-	 n0dQ9Zh3JOnBRcWewKrm4AuBQa6sEzPMf7MK0K72nugGpbfet+nu/NezzXLlpa09LT
-	 wFBcGp0uYpQ70gjG75IxMmSy8P0w6UO3J42OShSAYmTHfw7kMUCEhjKefZGCRV938y
-	 njnsMzQ/pZdZM8CVInqvYPuhecufwWF3Y9TGmRM4IJlJQwWQJ5ZCZ5LaxlfhMZQiFe
-	 yyqLFqSKu8r6OLHsKQaPaDTS/L4D7O54+FQ1/NPR7nqSCWWuZEqv2noazo7AQb/Pc7
-	 dbs6OV2XW9Ggw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B7A3930FB3;
-	Thu, 11 Jun 2026 22:50:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1781218603; c=relaxed/simple;
+	bh=kDAIqXWz1E/I0LK0cVdx/EYaIgPxvlGOf46EX9S5tyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Luoi0yq6CbWUXU419yohOrDciAAX2Hs9F+I7sBTDuu4DNHwa12FFH1Hr94S0ij9oWbBHGmuw3+hPHERNOLLYQxv4P8y2KOQg87e6WV+a0GSJnLqZO2DVrA+yzhHEJjTA4jiK7+OXuLUa6A0ivlK0HfioFAvoswe7mNX4p9HPWGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IByxDIx7; arc=none smtp.client-ip=209.85.128.51
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-490a76757e5so2246425e9.2
+        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 15:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781218598; x=1781823398; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=oXcZK8qp7QLk+DdLmv6M/5Jfzy4SnHpAz6K348JDz18=;
+        b=IByxDIx77UsOmqHWuzyl5cPeUDEFHZdDjEq40WBQeVuVuKnWEbJC2rsW9s0gtsJfqG
+         8PgXJDJHWUkYeIU8KMGdzIWSEYrvEB8IW2jmLz1pi8VwBNOcjiNbbafcTxq2S/pmwg/u
+         1A8sHCQXVU1zviNvv2w4DzTh1M9XN0tmQ2ymJvZdNlb/kPhkXckYsAHFtKl7KChXzkF1
+         reaWppjoljIgBI02/NrkJIncQ4Ur+ix3Kmtajc5YdpbtZp3qgiCo0gfvrvAyoIACpzzu
+         RwWqvpHNDRaFFJbslhgG9+FYJm1kfE9v/fmuyDAh9fCKRJZWZncNmWGDlPT6MqjAyndv
+         Rcpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781218598; x=1781823398;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oXcZK8qp7QLk+DdLmv6M/5Jfzy4SnHpAz6K348JDz18=;
+        b=rLT3xocaQowExYAimFpByA0SuOskn1p+Fkz4RXVvIs4wazsJuUEsp4MNxMrRT4U+y7
+         WPy4L3r+EF9lMVxF8/Nzu1IBb80PBtuFypi8+Ou1d+9ij14oVBdFaEeZtqjDLighbk7O
+         RL2FGtJWkQXp87U/66uAc+Gx2I6cecBW9rYx9d7/jfInt4VUf4fmfy+0opbPFLGYq+fW
+         oET016iJuYoo5XJaogzkkPPMzRXd7zkM3SUxTVV/vAqxqLvrSy3k2Ogw8Q68zoiKzFf0
+         3PwtOe7MUft63ypK84hqAlusvtVDg+hdijQhC2MCCEOrJvMeSd0RFnGy+PE+HCkRHuWF
+         Pk0g==
+X-Forwarded-Encrypted: i=1; AFNElJ/zjhL88j37ZaoSJ17eTWPHpOEWhCrtPO1o93jlIa9ibTbGGNzziiIrHW42JTYsPE/WFXaDf0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+FKrfxH/pu2aIRTIxevStp8kgwvCy39zyai5oh3fU4eYn25hu
+	zCSbnfSlc5kad4xyYctvLgzsaJRsdTvbzn1yNk/KJF2nv3g0sMgYn9VeJBULyBgoB0E=
+X-Gm-Gg: Acq92OFNOa0p7mFxZIxl2xq1Z3i1Uestc15OdwHgfuyVrRSUZn2ICSYtExcYKxeWpdL
+	PCc/2LOU7QOyQgkfEXwpZsYaQK83cFsbPACZyWJK0ziYYOliwxrdO+tFLXDr5vWMATnRFHmqaQ6
+	iP9Hb6MANOSILTsREd7oFQ5VRrCxP14YjWgWCNfYLE4yq3dgZHE2PnCziGZmGb+GDdv7Zcc/rDa
+	fF7ZdkrLBmzLdSFaAH4icI2ArHlUDSdsAEKvVbIuYc7Ya9oRLmMvfCrezT5x1SDJY/tI96XPuDG
+	yStSMOfFxzwGp7PPyNLOsMA13r9OIqVU2At914c/vLEIUPFIQrlTuZj7mfd2216Ftpt73WtN1yx
+	k/OwUsc01otr/TJYki1J6Z37iL5q0zuFc3vU51un35GtayTbMuPnrxbl1jAkIBnuZzY29WInzl9
+	rZPRS1hCC72tlwxC5F/JVNSan0BVX+DsyDmnIZhc7JXap7MPIe2K2t4rNRDloU5Cf9mdMpS7xoL
+	1EBkYykII9gA5guFhosyHWikkcNTkeVANwkf1Wg9sEtcA==
+X-Received: by 2002:a05:600c:314a:b0:490:4e3e:b483 with SMTP id 5b1f17b1804b1-490ec502cacmr416665e9.22.1781218598274;
+        Thu, 11 Jun 2026 15:56:38 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1:0:2bb5:f164:6e6a:38d8? (2403-580d-fda1-0-2bb5-f164-6e6a-38d8.ip6.aussiebb.net. [2403:580d:fda1:0:2bb5:f164:6e6a:38d8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f2e52a9sm87765ad.11.2026.06.11.15.56.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jun 2026 15:56:37 -0700 (PDT)
+Message-ID: <dbb8c9d8-346a-486e-9e23-f200f6bebb5f@suse.com>
+Date: Fri, 12 Jun 2026 08:26:31 +0930
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: validate root ref item size and name length
+To: Kyle Zeng <kylebot@openai.com>, linux-btrfs@vger.kernel.org
+Cc: Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ outbounddisclosures@openai.com, stable@vger.kernel.org
+References: <20260611212445.4848-1-kylebot@openai.com>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <20260611212445.4848-1-kylebot@openai.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: bcmgenet: convert RX path to page_pool
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178121822938.394849.1162071638339486124.git-patchwork-notify@kernel.org>
-Date: Thu, 11 Jun 2026 22:50:29 +0000
-References: <20260610114835.2225423-1-nb@tipi-net.de>
-In-Reply-To: <20260610114835.2225423-1-nb@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- justin.chen@broadcom.com, phil@raspberrypi.com,
- bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,broadcom.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,raspberrypi.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262824-lists,stable=lfdr.de,netdevbpf];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262825-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kylebot@openai.com,m:linux-btrfs@vger.kernel.org,m:clm@fb.com,m:dsterba@suse.com,m:outbounddisclosures@openai.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:nb@tipi-net.de,m:opendmb@gmail.com,m:florian.fainelli@broadcom.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:justin.chen@broadcom.com,m:phil@raspberrypi.com,m:bcm-kernel-feedback-list@broadcom.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,suse.com:dkim,suse.com:mid,suse.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 990C7675B3F
+X-Rspamd-Queue-Id: 7FDB5675BB2
 
-Hello:
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 10 Jun 2026 13:48:35 +0200 you wrote:
-> Replace the per-packet __netdev_alloc_skb() + dma_map_single() in the
-> RX path with page_pool. SKBs are built from pool pages via
-> napi_build_skb() with skb_mark_for_recycle() so the network stack
-> returns pages to the pool, and DMA mapping happens once per page
-> instead of once per packet.
+在 2026/6/12 06:54, Kyle Zeng 写道:
+> ROOT_REF and ROOT_BACKREF items contain a struct btrfs_root_ref followed
+> by one variable-length name.  The tree checker validates only generic leaf
+> geometry for these item types, so corrupted metadata can expose a root-ref
+> item whose item size does not match the embedded name_len field.
 > 
-> Reject HW-reported lengths smaller than the RSB so a runt cannot
-> underflow the SKB build path.
+> Several readers later trust the item size or the name_len field when
+> copying the name into fixed-size buffers.  For example,
+> BTRFS_IOC_GET_SUBVOL_INFO subtracts sizeof(struct btrfs_root_ref) from
+> the item size and copies that many bytes into the 256-byte subvolume name
+> field.  A crafted ROOT_BACKREF item can therefore trigger a kernel heap
+> out-of-bounds write.
 > 
-> [...]
+> Validate root refs in the tree checker before other Btrfs code consumes
+> them.  Reject items that are too small for the fixed header, names larger
+> than BTRFS_NAME_LEN, and item sizes that do not exactly match
+> sizeof(struct btrfs_root_ref) plus the embedded name length.
+> 
+> Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
+> Fixes: b64ec075bded ("btrfs: Add unprivileged ioctl which returns subvolume information")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5.5
+> Signed-off-by: Kyle Zeng <kylebot@openai.com>
 
-Here is the summary with links:
-  - [net-next,v2] net: bcmgenet: convert RX path to page_pool
-    https://git.kernel.org/netdev/net-next/c/7bc054c2d4ed
+Tell you stupid agent to grab the correct branch.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+All it's doing is just a worse version of the existing check in for-next 
+tree.
 
+> ---
+>   fs/btrfs/tree-checker.c | 38 ++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 38 insertions(+)
+> 
+> diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+> index 1f15d0793a9c..fb072045ca18 100644
+> --- a/fs/btrfs/tree-checker.c
+> +++ b/fs/btrfs/tree-checker.c
+> @@ -1915,6 +1915,40 @@ static int check_inode_extref(struct extent_buffer *leaf,
+>   	return 0;
+>   }
+>   
+> +static int check_root_ref(struct extent_buffer *leaf, int slot)
+> +{
+> +	struct btrfs_root_ref *rref;
+> +	const u32 item_size = btrfs_item_size(leaf, slot);
+> +	u32 expect_size;
+> +	u16 name_len;
+> +
+> +	if (unlikely(item_size < sizeof(*rref))) {
+> +		generic_err(leaf, slot,
+> +			    "invalid root ref item size, have %u expect >= %zu",
+> +			    item_size, sizeof(*rref));
+> +		return -EUCLEAN;
+> +	}
 
+Your stupid agent doesn't reject name_len == 0 case, meanwhile the 
+for-next one does.
 
