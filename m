@@ -1,93 +1,95 @@
-Return-Path: <stable+bounces-262599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y4x/EscKKmoAhwMAu9opvQ
-	(envelope-from <stable+bounces-262599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 03:09:27 +0200
+	id fN8ZEQUOKmrZhwMAu9opvQ
+	(envelope-from <stable+bounces-262600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 03:23:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22A166D981
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 03:09:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2B266DA14
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 03:23:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sL8bjxAm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262599-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262599-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=pafV0ytK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262600-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262600-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A7A6301A417
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 01:09:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE9C3079C9F
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 01:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE4D1DED5B;
-	Thu, 11 Jun 2026 01:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECCE15B971;
+	Thu, 11 Jun 2026 01:23:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
+Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D92714BF92
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 01:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8C40D593
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 01:23:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781140162; cv=none; b=fMj70J4HIInWpIActqy7gBu1Z23ZhYJZqdiIKaut7I9K8R9sSETJUC1eIgfGVtrOY4EEgwPQXoKhDUKSM/HORM0/fytaQH33D5YPCfyDYStxjtXe9PUFWEok9xVU7aN+45Jb1X/leYj4KByqrngbSlXrAR9Kc+HlfUI865cqX3k=
+	t=1781140994; cv=none; b=lB4O1YoUpAr7o6oAwkz+nAfWS1hz5tiCgI93NsWSytUsoLdDAWzblQCssEzMEii/ohwoj6N2VbO3KDuqcRfGxC7/2SGyzus6bM+q7CZfUGsQLUMLKrMP1rJ2KA3PE1Htgpg7YhtR41wMZ/SQKSVdsscRgO+MBIHYPsk/KBvlyT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781140162; c=relaxed/simple;
-	bh=6KNTz/ZwbwhW/tHYlmAtIJz5wzkhbvWdHahK176PG/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dXSP5cuAOtkbZWzijDaIQGStWRAdoOpb6UowO9FdAiqyDZmkD0inmYG96cJbMrAj0PwZRumDW+UDFA/7ZFGGxIet4t50bSOX3WRyFjTDA3FS0ggdyuTjxdUUQDG0AMTMF+EnqRbC+Ifa6XDQYg3nFsvGg7+xKma70uR9mJTWRuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sL8bjxAm; arc=none smtp.client-ip=74.125.82.66
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-138405b7bc5so1234251c88.1
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 18:09:20 -0700 (PDT)
+	s=arc-20240116; t=1781140994; c=relaxed/simple;
+	bh=gck/DeVDDWTzBKyZWa0PRS0mDw28Zfsifbm4nLZLUAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=il1MiIWajGsYzZLIGPXRI0s5JuDsPaADZmBJmUQali926PlPkZnSY9qiVEWBZtEOduLKIUVZJI+OZiqTjA7cB+NDHfzZNUDsV7ybXY2z3Aor6KUsilAgrcLWpXZ297i6MBa6JjNXcS6I90RXQvB8i97/b2I+9PimT+s+cTaCmis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pafV0ytK; arc=none smtp.client-ip=74.125.82.68
+Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-1363fe80fe8so10769539c88.0
+        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 18:23:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781140160; x=1781744960; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781140992; x=1781745792; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wVFUmgfZWQUg8yb+neHfsaKcJQcz+e1b1jXoBTh5r50=;
-        b=sL8bjxAm/CVo1j5SpH7Fdn79hVi9GWASd2Db0FaqT0Ed7ZQsATMMgsSuUR8zBL+kVJ
-         eQ4YLYBL5bsTybJPG56unJ8wzH6v/Wb1xc71EtsoxNaTWs+njPfToYDtdLNIeEdXUxns
-         99xflWI8/wWrr/ozw+2EX8zYvU9bydUOsPTCL1G3ncpV+UmPFy9ro+SVwrlXVZUwZI3o
-         UJc6+/1bFQkkT+ICnP/ru80KD4FTS68WgerdwpipAN/P/piUoYkACAyJG2R0mM2BBunt
-         wJEnPfBm+ac0ZV+YrsBQIstkn6j8M6efKhnmVHvTy+XULO2AjIX6YGRtrnolJjEh7xio
-         ZXfw==
+        bh=8WT+fivEx36NO5awPOrGIa04kuZ3OK/PwrNjHMoyylI=;
+        b=pafV0ytKgIRw5Cew3l+4sdihmv26NDl9678gSGg7UJzaLvrJxVqhJIk3VCWztLujeA
+         0qY71gjoooRdL9I+1f9zuEJjK/INxX+KYmIg7wjyEcR0/+/M2oJNCmiibsYKnJfuePxq
+         1KjGTEzFmCljj5uQ5kjpGbwXbidNiubVBc0sxW1j9K8TLe0TgwnmfEZ4vLjooUHV3Ex5
+         cQE9rYac6KnySvSPkjF3dvvbyBc+z3IX893t5SENVTEc0StNleq78kHNFgGbYW1+QRiN
+         NPm2KAHGtnSfTl3PlgRUDOQ/ngejnvZvIonD/MYX6Bd6/O4SuKhz0puQcoZWMiuxMPAa
+         E+gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781140160; x=1781744960;
+        d=1e100.net; s=20251104; t=1781140992; x=1781745792;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wVFUmgfZWQUg8yb+neHfsaKcJQcz+e1b1jXoBTh5r50=;
-        b=LWtfe5dyhqTzgDKF9bJVZU4QkknpXOF+XugjoLPV4qjxah5JCPRTrJ5nsM227oBDBY
-         x/7VfZdgqZ//YZCjVQet/yP6aOqvLMBqAGbVML1A4u/ySTucjhBvxO0MiIX01XSCYJka
-         QDHUvlTVxzkNiNoSh4PVFRCtnsfRy+WGCZe3xrILfEw5a9FAiqcSasMoo6kD/hrKNyFw
-         e/mT/8GAm5WsXh3zY5VS9ZWiIXXjsmsvJTPxIqrxLnpEgOnqBTCJGA0nYFzXv/wnKKsY
-         mOAf0LN11al0opGxkB3CGqe2yuEU7xf5IFIwjUV8KBglyXHcvrF5uNqmEHh0O+6gGuKk
-         VyAg==
-X-Forwarded-Encrypted: i=1; AFNElJ+9yZ1c6BeIS+p1oseFzPyJvqNPirXc4NF0eEUhMgePh9Gn5gqT0CTLxtzY2vtCMh8e5jrE4ew=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNv+1hSMi5LbKkzhNl+3lOMebJPHEbsZxhPPCYZwxbXzQ3sZTf
-	2rtHvSZRVknnsuhv1i+PTQQPG3gNReuSujEC5HFl3xsyTEHpZsfC7iPj
-X-Gm-Gg: Acq92OEprjGtalPJh/RK1QViNsikfH/0/dKohLIKB3iRJ3nFLvpfzP/CQuThyaYurWJ
-	jJYLA8M2Q/n5rriw4XdTNYMZzUScNYL6dxsAvih5iI68r8QKESCqezZXBMvbMfSYO/kM4NtCmAv
-	+tbpm8msfotqHSBXxrZWt0HxpMBMIhMAkVubOToa4YI3LxNbuGh10n21aFTpYrJcWi555fO/+KS
-	cOqLfFeRShUP2FY3qwpRXLpuMYRdQ4dzwj5CCgqsl953mo80QFienoarWQitsHAfKOagMWwnIIC
-	EZ4QooB4dAgTUtQV8XKlZd5dN5mMf5Elr6aBq73BkW0ltvZHuvw2q5ZN9hCTZNKp9gNddiEIwEd
-	idbfVbWZUcdBslwJ3BEYPVSxT1fsoDDsxMWE99WETiYv0yDubYXQ4rlsqZRoi3zzqOMB+QjUqzn
-	gy4h2az9dontyjjY3fGUyUdzA4fTlaOA5hH/xZl7ixPzh6BP8eBj57jUeMpi/uJoRcRFpFDCbAN
-	baRKuZ6Bp8PBSyicTAiZm6pmeFiw1HVBEbnesePy1MgVuCU2wtFoEhSHJtIa4v5pJFTdheZLpMq
-	FyE+J9eGvR1l62gHc2BI1W5M3g7s
-X-Received: by 2002:a05:701b:2914:b0:136:e42d:2c2b with SMTP id a92af1059eb24-138421be22fmr248006c88.17.1781140159987;
-        Wed, 10 Jun 2026 18:09:19 -0700 (PDT)
+        bh=8WT+fivEx36NO5awPOrGIa04kuZ3OK/PwrNjHMoyylI=;
+        b=cr/rG3mPoYhlsiuOupe7uzukTq3/5hx/4DMYj6MwJ30EYXR71CSwAZ4MN2ipwlDvx8
+         bksfOTMGRBCvbpQfWpckf/lDzLxujbYbQkWSME5Sm8QeZnOXfYWpMIsLdOm5TSVDdpgI
+         gz7Ckr7DHNnTA+zaoWcgK79XAPb71nVp/4LETPfXEpMXwGcAMRvx8eoY6DuztjmY0L+5
+         Jh2+VmEwcT5dLTrBnTnO2yIZZmXHeyUHyL7Duyjf5Ru2EJq/viXprTuPIxTKfFtpmDDQ
+         OKy5/qUxKcsqp2NyxpfrIAdrcqHTnrysofOflHH1K4wSFncr8ssaRpsLwWYmpgpGtfOl
+         yjKg==
+X-Forwarded-Encrypted: i=1; AFNElJ9IOgGZOT0bzgB33g82erfjR8VnODpjYBOZiZ8VahDNjRlfcH0hoseH1VffOm+tGDjj0H6PLOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4BLCnxeRNnQUSdPT3lc0Z04OliJIwS8d8P0T/+jlK3++ORuhD
+	tk+LSYdvIXUtvstRCnV8ICKUOD/vzjns/XcG6AmDzVNEdmiK6xHnLNfxIlulnflp
+X-Gm-Gg: Acq92OHUPa099wdDfjVNLKYFqZkL4PipVbd1LdIXgTRqRNQEA7nLJz9Ez4SGlrU2TJp
+	aaylpkj3DXlED8YuT9ETpAbgxnWcLFFoe3J3n8zM9j6WAEzTCO8lwTBRPKHzQrPgyhbtSbcstJn
+	dc7zYPBq8Z182StXhv1QQ3oNkwjNKem5diIgaxESX3C4/KTNytHbyRNmnZIJz/jZoX9IKzWdsKq
+	IRNPZ8zvkPRosBS6zWGv0MTPKTkTcqrtbKkm7Zc36a3OTAUkrHVr4K/uGrNlm8OAXv6YIy1E2aa
+	3V8hs36V+/FU3j3uLeou1V0z3CdD7tId7k8GtlwwOppYgS6ZiKSpD3ts76e02VIUaLFRJfun+cn
+	rMj1yULg2F9Kadl/esf5+YyPt/vHWFP7/ATjV5IbCaiIxQgu7cMXuhfI/5s5OulocZsiOnEodsC
+	LZ6vET71jqEpo42vOQznVKYdg98E1GnqfINiuTSus7mPvarAfbHolu3HeYNaIGDgSwz54Gk4q2t
+	0C8nU4B/OSzbP/+5GLLz1Tv+g4+ftoW1wfEG/zb5MDqndLDYn93nkCz7MPMQ+9dZrVGhlCV5Aut
+	kmhuiCccm+VtLv+tEtbU5N3pZr5W
+X-Received: by 2002:a05:7022:4a1:b0:138:42:96eb with SMTP id a92af1059eb24-138422cb8e2mr382496c88.17.1781140992031;
+        Wed, 10 Jun 2026 18:23:12 -0700 (PDT)
 Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13843790552sm117029c88.13.2026.06.10.18.09.19
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13842f81b4bsm290810c88.1.2026.06.10.18.23.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 18:09:19 -0700 (PDT)
+        Wed, 10 Jun 2026 18:23:11 -0700 (PDT)
 From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sayali Patil <sayalip@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org
+To: Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-mm@kvack.org
 Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] powerpc/uaccess: correct check for CONFIG_PPC_E500 in mask_user_address()
-Date: Wed, 10 Jun 2026 18:09:12 -0700
-Message-ID: <20260611010914.429574-1-enelsonmoore@gmail.com>
+Subject: [PATCH] mm: fix CONFIG_STACK_GROWSUP typo in tools/testing/vma/include/dup.h
+Date: Wed, 10 Jun 2026 18:22:44 -0700
+Message-ID: <20260611012258.432043-1-enelsonmoore@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -98,69 +100,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262599-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:npiggin@gmail.com,m:chleroy@kernel.org,m:maddy@linux.ibm.com,m:sayalip@linux.ibm.com,m:mpe@ellerman.id.au,m:linuxppc-dev@lists.ozlabs.org,m:enelsonmoore@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,linux.ibm.com,ellerman.id.au,lists.ozlabs.org];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262600-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vbabka@kernel.org,m:jannh@google.com,m:pfalcato@suse.de,m:ljs@kernel.org,m:akpm@linux-foundation.org,m:liam@infradead.org,m:aliceryhl@google.com,m:linux-mm@kvack.org,m:enelsonmoore@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A22A166D981
+X-Rspamd-Queue-Id: 9D2B266DA14
 
-CONFIG_E500 was renamed to CONFIG_PPC_E500 in commit 688de017efaa
-("powerpc: Change CONFIG_E500 to CONFIG_PPC_E500"), but the check for
-it in mask_user_address() was not updated, causing
-mask_user_address_isel() to no longer be used on E500 hardware. Fix the
-check to use the correct name.
+Commit 2b6a3f061f11 ("mm: declare VMA flags by bit") significantly
+refactored the header file include/linux/mm.h.  In that step, it introduced
+a typo in an ifdef, referring to a non-existing config option
+STACK_GROWS_UP, whereas the actual config option is called STACK_GROWSUP.
 
-Fixes: 688de017efaa ("powerpc: Change CONFIG_E500 to CONFIG_PPC_E500")
-Cc: stable@vger.kernel.org # 6.1+
+Commit 40a4af52e047 ("mm: fix CONFIG_STACK_GROWSUP typo in mm.h") fixed
+this typo in the mm.h header file, but did not update the copy of the
+code in tools/testing/vma/include/dup.h. Update this copy as well.
+
+Commit message adapted from the above-referenced fix to mm.h.
+
+Fixes: 2b6a3f061f11 ("mm: declare VMA flags by bit")
+Cc: stable@vger.kernel.org # 7.0+
 Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 +-
+ tools/testing/vma/include/dup.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index e98c628e3899..619270bb7380 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -511,7 +511,7 @@ static inline void __user *mask_user_address(const void __user *ptr)
- 
- 	if (IS_ENABLED(CONFIG_PPC64))
- 		return mask_user_address_simple(ptr);
--	if (IS_ENABLED(CONFIG_E500))
-+	if (IS_ENABLED(CONFIG_PPC_E500))
- 		return mask_user_address_isel(ptr);
- 	if (TASK_SIZE <= UL(SZ_2G) && border >= UL(SZ_2G))
- 		return mask_user_address_simple(ptr);
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 9e0dfd3a85b0..adbc3179085d 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -243,7 +243,7 @@ enum {
+ #define VM_NOHUGEPAGE	INIT_VM_FLAG(NOHUGEPAGE)
+ #define VM_MERGEABLE	INIT_VM_FLAG(MERGEABLE)
+ #define VM_STACK	INIT_VM_FLAG(STACK)
+-#ifdef CONFIG_STACK_GROWS_UP
++#ifdef CONFIG_STACK_GROWSUP
+ #define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
+ #else
+ #define VM_STACK_EARLY	VM_NONE
 -- 
 2.43.0
 
