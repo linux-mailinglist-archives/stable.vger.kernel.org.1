@@ -1,156 +1,143 @@
-Return-Path: <stable+bounces-262583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262584-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hu63B2b2KWq1gAMAu9opvQ
-	(envelope-from <stable+bounces-262583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 01:42:30 +0200
+	id CIpFOkf8KWqcggMAu9opvQ
+	(envelope-from <stable+bounces-262584-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:07:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC8466D67A
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 01:42:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F33D66D7A8
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:07:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kAOPjs3L;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262583-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262583-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nK13vhrB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262584-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262584-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83AF330144FE
-	for <lists+stable@lfdr.de>; Wed, 10 Jun 2026 23:41:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BEB263091F33
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F67B3932FC;
-	Wed, 10 Jun 2026 23:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88ADFC0A;
+	Thu, 11 Jun 2026 00:06:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA8939150D
-	for <stable@vger.kernel.org>; Wed, 10 Jun 2026 23:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0119E56A;
+	Thu, 11 Jun 2026 00:06:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781134869; cv=none; b=sIopPLZ1KK0iGNZ4Cyp8k+0iKGxAlfE2Rjg4pyhECDFMD8/0thGRyC/zj8PYsGV5GFD1swJv70vp650grAtgUHL+G/PxdpPY2PEspVOGGCUxZJJj/S/yGzXpm/OacN+Zall4TPP5oUZWokndyg1dKFUyaNNllQf2kTe5ML0ktMk=
+	t=1781136419; cv=none; b=pFgk0HlY66+pAHDE22P6wcMlEgx626z0q64lBf8DKJNUJEWNBGybfMM4U13Ah7ShTvnduI+mz6KWm+pnMhf59wuEe403XHFMjDoTCYvd3NEce+X/pu/96ttQXwSC8Bz2W0iqZWRFVUeEKaIv34Fx+nLlZ/G+Qx635vLz8+ea/Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781134869; c=relaxed/simple;
-	bh=9rozZdgv7t8p8ynviikc0qoAvrM/IC3PX/LUZKZPytU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Im+RbsgSzDqPOz+op7a+JBKycxE9k58GJBt71h9k+/LwaJ9pF6f7RjRXgDJUonzAXDum4PtcVss1KWo/DQ4o+0QMSLTL3EvVH8qROk2av8H/0B8ciKyP/7rbSZhDf/iOmR5Hu447Tk5mpKxWOJRqnnnA2YIjceq8YTCuoQsKrto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAOPjs3L; arc=none smtp.client-ip=74.125.82.171
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-304cf518c9dso9205655eec.1
-        for <stable@vger.kernel.org>; Wed, 10 Jun 2026 16:41:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781134867; x=1781739667; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/EpTMNZ1obqYILWzMgsVeOkGLftyPXzrtSogbriqTbI=;
-        b=kAOPjs3LPEts8EtP1R4zJaUGOxk4483n1o3bcroQS3wxpt9naWIXhCud7S9evm5Yxx
-         0obAPzDD6uPh2xI7ylf0UlcyIDCix99A5KbwoyRn6FxItVGO9DYZnXvPRf9sK/qvrjA3
-         1T6W+6LyCJ96MAOtp49gucQGlfs3sNKchvyJCXkSzN8BKP163sWhurVRKou5K05j7FDC
-         r8wy+j4K1baGl5HJmf/nLxiTlWHlC38MsnoPKkH01nRkXYZuob1xDVrlpDgBtUvfx1XD
-         rFIBNTpwkI/SuJLGxpyseRlijoe8Rpd4o+0l/spZa8sbFoWmF5t0+4IDBhjJsgxc1yIw
-         HH5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781134867; x=1781739667;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/EpTMNZ1obqYILWzMgsVeOkGLftyPXzrtSogbriqTbI=;
-        b=dytC9AWwif+S66PovMlWvWroDAjFiOCamHQF1wU6FnH2+tzh5oAHX0B5jiE1dq3OSW
-         +q4M7jtRbOHwFVkUicrQqRueSD4WJvGmR3PbV4/PbBvCRGjuF+nCdFLf24LAS5qqOZOK
-         m1JPnh6JdkYvy8j/jLqqQCtdYEo8SfXmMIlCeyrssKz+FK5y7FZvT/1aIgeyxLBYRy1n
-         2W4fIoT0uatNv5/H0kdJZ2EafzWqXzEVpTkPWIG2Qqh4HYmk9K8Ks7GSDUnAzNzialFx
-         CaSnoBjZo1eXrZRHVEqGmg+O2Fokm2XQliVN8HI5dxTa874ZTdSTL+OJz2LG3irdIiES
-         2xmg==
-X-Forwarded-Encrypted: i=1; AFNElJ8XFhFhvpOL0hTQMcw3aZ2wu3DYToayGnTDIJNg4Ov+bX2GblhFjHYD2Rxxn8RnsgSpuytiitE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6/7r4RIylwSAp5hQNQ9tsfXzk+ecS9Fw3IrzIIiIm2tF8kwAr
-	EC92+mRu7HxUaOdVaJ7x+bSDp1aOZX5rZmcxw0T8Bw6Y7jELjEbzj2mu
-X-Gm-Gg: Acq92OGFX4+YCEe06gBXReNofBAluhfYNDOif6T4tLrOGiErxhiiUP1ALZaM6fXCXpz
-	ddqhlWFAp7CI3EUD909SJtrkK8u0S8pE4FQYWxosHi73Tv6O3uKHnC4YfphRpl12nBdew6s4Kbz
-	L9bLhGFW9gtEY3ZrZYodKPyLLwwdX776GtLJkByyZK8rnIunPRYCkGKHsmkf3cJXLq4h2oeIKwg
-	7luO9mnQ2mjyr67wqcbLFTF1ZTM3ARR9/Xxs0YinzaQjjzIj4Uc1LIYueF5i7px/xKpcTSWHrzn
-	EA+A6Tm2GoF3PzQ1pdQU7p1FAdnYbUlY8hpw74VfidMpoLKhTUX/XG2UuPAZDbbDPWRFnlsneO5
-	hS8wPIsnP6LaOnpl88D9i6m6klMVDqDDweFPiRiC4eY/iMarfjP0C9+OB/uHN42RfdZRwrrm5hz
-	y6WMeavvQYAgckQpiqKsp0GmWWQ7tU6KFF3etnYfU01kECLtarJ74wr3K0IPT/LWWJGYlHIOqZt
-	tc=
-X-Received: by 2002:a05:7300:6c25:b0:307:934e:da79 with SMTP id 5a478bee46e88-30804b769b7mr347241eec.34.1781134867104;
-        Wed, 10 Jun 2026 16:41:07 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:ae0e:e075:91c8:6570])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3074df77a0asm29449322eec.27.2026.06.10.16.41.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 16:41:06 -0700 (PDT)
-Date: Wed, 10 Jun 2026 16:41:03 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Haoxiang Li <haoxiang_li2024@163.com>
-Cc: git@apitzsch.eu, Marge.Yang@tw.synaptics.com, kees@kernel.org, 
-	jiapeng.chong@linux.alibaba.com, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Input: synaptics-rmi4 - unregister function handlers on
- physical driver registration failure
-Message-ID: <ain1g0QAE2sr32Pj@google.com>
-References: <20260610064633.2837084-1-haoxiang_li2024@163.com>
+	s=arc-20240116; t=1781136419; c=relaxed/simple;
+	bh=q36BwwCsV40+cFpAm3AvOUUrjVXzu4BR8KoZBT9OlPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dSKF1ZHDifu4nWQvVN+KK9DMBdj5o6KbJE2i689FUqMa9ORrd48ZBYe2XcTauhSR+d64+KhEaITDDnkDL3c/yXCS3c5VHjPcocZPCGfiFldOWv34qxLYGxYddLJMzdBtpXFhs1dWhptlZBfd+YRe34SWwTH2QPW/qxGgPrRDp40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nK13vhrB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95581F00893;
+	Thu, 11 Jun 2026 00:06:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781136418;
+	bh=6ZiqRq+M7qmIk1c5q+OVo0ETrzZ8J3PZC8bJm21Xrmw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nK13vhrBbVYUK3fkIigBoyZRmWr3HNoCWYLMmEinbOXYrfWmN49FxDfGBMrXf579D
+	 UVNQD1X2HKXOqycminDynETvnmfGL96Jvo8Eh8MtMgrpnk01Dr2i6+5/ifOdypM8gn
+	 ov923rhoVIr0KBLcylMaataHU/0yi7vhpZXEdLDHhYPmYscQgrQIawaDtY8tKL1gX+
+	 sjQuyQkd27ub0DAeRcF+ys8E4DLlWHoPiFxiYwOeZk92kVEwwi9Kt34dH92ZwNfljM
+	 K5S8jqnMFA7PDFqEInmlIxRA6N3zv7WeaYvGhgojZb1Uq9BiPY7l8GU+SwoGGjzmUG
+	 FxgVS3Q+0UMjw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 14 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v4 0/6] samples/damon: handle damon_{start,stop}() failures
+Date: Wed, 10 Jun 2026 17:06:45 -0700
+Message-ID: <20260611000646.68793-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260610135546.64943-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610064633.2837084-1-haoxiang_li2024@163.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262583-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haoxiang_li2024@163.com,m:git@apitzsch.eu,m:Marge.Yang@tw.synaptics.com,m:kees@kernel.org,m:jiapeng.chong@linux.alibaba.com,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[163.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-262584-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:sj@kernel.org,m:stable@vger.kernel.org,m:akpm@linux-foundation.org,m:damon@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:linux-mm@kvack.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ABC8466D67A
+X-Rspamd-Queue-Id: 3F33D66D7A8
 
-Hi Haoxiang,
+On Wed, 10 Jun 2026 06:55:38 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-On Wed, Jun 10, 2026 at 02:46:33PM +0800, Haoxiang Li wrote:
-> If rmi_register_physical_driver() fails, the current error path
-> unregisters only the RMI bus. The function handlers registered
-> earlier remain registered with the driver core.
+> All DAMON sample modules are not correctly handling failures from
+> damon_start().  Among those, mtier also has an additional problem for
+> handling of damon_stop() failures.  wsse and prcl also have a problem in
+> their damon_call() failure handling.  As a result, memory leaks, next
+> DAMON operation disruptions, and use-after-free can happen.  Fix those.
 > 
-> Add a separate error path to unregister the function handlers
-> before unregistering the bus in this failure case.
-> 
-> Fixes: d6e680837ec5 ("Input: synaptics-rmi4 - fix function name in kerneldoc")
+> Note that only the damon_start() failure caused issues can reliably be
+> reproduced.  Reproducing those issues require the admin permission,
+> though.
 
-This is not correct commit for fixes. I changed this to 
+Finally this series passed the Sashiko review [1].  I initially aimed to drop
+RFC of this patch series as soon as passing Sashiko review.  But, the size of
+this series has been 3x compared to the initial one, because Sashiko was
+finding more pre-existing issues for every review round, and I added fixes for
+those in this series.
 
-2b6a321da9a2 ("Input: synaptics-rmi4 - add support for Synaptics RMI4 devices")
+Due to the size and short remaining time until the next merge window, I'm now
+hesitatng.i  The last three fixes might not deserve to rush, because they are
+relatively difficult to intentionally be reproduced.  The first three fixes
+might be better to be merged as soon as possible, since the issues can reliably
+and repetitively triggered.  But, still those are sample modules, and the bug
+was introduced with 6.14, which was released in Mar 2025.
 
-and applied, thank you.
+So I think it is better to give Andrew and Linus more time for the merge
+window.  I will hold dropping RFC tag of this series until it seems Andrew
+finished the next merge window works.  Let me know if any of you have different
+opinions, though!
 
-Thanks.
+[1] https://sashiko.dev/#/patchset/20260610135546.64943-1-sj%40kernel.org
 
--- 
-Dmitry
+
+Thanks,
+SJ
+
+[...]
 
