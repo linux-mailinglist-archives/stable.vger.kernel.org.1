@@ -1,202 +1,168 @@
-Return-Path: <stable+bounces-262680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g45wENaeKmo+twMAu9opvQ
-	(envelope-from <stable+bounces-262680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:41:10 +0200
+	id cDv6JHvYKmoIyAMAu9opvQ
+	(envelope-from <stable+bounces-262759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:47:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D068467176F
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF5F6732D5
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:47:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=KFAaqtNJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262680-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262680-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=ibm.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YaY7LoFa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262759-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262759-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1105331A728
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 11:40:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14586342F0AF
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4D83E7BD8;
-	Thu, 11 Jun 2026 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD350403B13;
+	Thu, 11 Jun 2026 15:44:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E040E385D78;
-	Thu, 11 Jun 2026 11:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867673AA4EF;
+	Thu, 11 Jun 2026 15:44:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781178005; cv=none; b=OWlFYQIC6yZsSm20Uwtjzu2ZF88V+nY2KXn8h1Txq7MP0pLhll9pQeLfjrQfRMyjFDmPNbx4KTtOyH8evAMo0J8uvXHct7h7K7IrkZflgjd7Sf/HFYZnJEKWJQP+Mr5qMqt51kf9Rg/+TbTBeLJiQghh2z5WAScCgnVEsoE5i94=
+	t=1781192651; cv=none; b=gVdppmIn3sTOpGDJjw5lyIhCnTM1SeSu7FRy6SrClBZQSa7RR11GkH7kb4itkJIvssAnSXRB5r94UtdAoO4SfK7APXOO2B6YRkqH0DXNwFa7ZkmsQPPmJwQaiLNHecxYX6PGRwvK2xmGVx84tOEPSexTq+5N1x/e//C7p3NTqF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781178005; c=relaxed/simple;
-	bh=bJJXop+vQbaqbgnuYkB39muLUUK+y9Qw+P9eUxUiRFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKnOhRp0PuEE8W0CuI9UF3DjA8u79k5hF5d07miMYfM1SnsjyUQj7Zuo8XmOIYfgoYo4l5R4bNhuuomyVtUxMlCrA5RszEQM+YSYBeFPzp+/dcqGMjIe00AWT/Of/6osnOdeNwO/th1Ujp77m8z9HuX0kmGxTPT/suvw+41LQL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KFAaqtNJ; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65AJu3Q33872812;
-	Thu, 11 Jun 2026 11:39:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=G6y18mncZIgt5K/wZ
-	7XyJ9yInKvsEdVikmQT6EfaYy0=; b=KFAaqtNJJS9M53b0X4bSGlYFtbSDjpKyo
-	4D49uBZOHQbPNvm2Pi0FcvDqOES0tOAL40Uqdg3OzuBpRAJD9pfgtWjkRIA3EKJ3
-	bkPmYs2QLIUEe79Urr25TUQ0XQagjHqT/OwCZokplwoCS/nB2FaIN9Hu3wn3npuK
-	zQc+Tjv0K/KyylAqeZYAuC59KTHCEj/PDFxGtFEb//dWr+LSy66Tk66EQff6Oyoz
-	nuMcMYVanhH+b/RIS3DCRmpTKW2JMN2cTOJCIRJhopxyUGz8qmDD/bvZr4q4thls
-	rVbmX0aiILp1AAEoh3zbQQQMX/uUrxPV+r4JyfZY+t40NA4nVs+zA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eqe8eu5tr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jun 2026 11:39:49 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65BBYgnF004679;
-	Thu, 11 Jun 2026 11:39:48 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4eqe0a2yc2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jun 2026 11:39:48 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65BBdiJf32833844
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jun 2026 11:39:44 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E02120049;
-	Thu, 11 Jun 2026 11:39:44 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E95BE20040;
-	Thu, 11 Jun 2026 11:39:41 +0000 (GMT)
-Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Jun 2026 11:39:41 +0000 (GMT)
-From: adubey@linux.ibm.com
-To: bpf@vger.kernel.org
-Cc: hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
-        shuah@kernel.org, linux-kselftest@vger.kernel.org,
-        stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>,
-        sashiko-bot@kernel.org
-Subject: [PATCH v7 7/7] powerpc/bpf: fix buffer overflow in JIT for large BPF programs
-Date: Thu, 11 Jun 2026 11:38:26 -0400
-Message-ID: <20260611153826.31187-8-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260611153826.31187-1-adubey@linux.ibm.com>
-References: <20260611153826.31187-1-adubey@linux.ibm.com>
+	s=arc-20240116; t=1781192651; c=relaxed/simple;
+	bh=h4jvRN4E19dkpQ5yFK5n2JakFhO2aBg/U/ArfFskC4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FDid4+Le9lJ3b6CFU3o/y1YSiG0/0beJTnF4FEXuYdJ7XOSyi8VT1Ax37H3eBYJI7mwYFzEZO92V04WAB2dd/ThTEwSniHFjoixhoApEddZW4fbTIOVAHCyCwAml/QWrMJcZCNYrAGVcWtQFL+mQTeeLVtDO2XxnYArGENsTDZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YaY7LoFa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D871F1F00893;
+	Thu, 11 Jun 2026 15:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781192650;
+	bh=pmsBVymF0RW9AqgzB2dQja46aWO5BZy9eGdHvQpD6ek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YaY7LoFaeAUVz9gq9ORvzSAqAeLeuR/CxFTi6xjrHFXmJbXd3lydvX41hXg1wR22o
+	 isLmPS/+YZA+NapMuA/f5wryeKj82fKhibKJJydc18pUa5xPRkJxENudaoQxX1lGWh
+	 dWWf8wqsrvbtBakrfVvbphsuWEpLzxm8stkQ+IretBeNylcXMUvr+6Enbo8WLnm9ql
+	 IMNPtiEcpMJ4moID7tLnWgMsgfeeH3nglCbIOBgXPzCllWOoc8XAwVD47e7c5FMVQy
+	 lIFgOUwraZYeNutL3iQ9LGosIqvBVpNBm8U0TH9ejug6YIcf4aG/LnXMknoitgcWk/
+	 BNWJbVjB4rgdg==
+Date: Thu, 11 Jun 2026 11:44:08 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Simon Liebold <lieboldsimonpaul@gmail.com>
+Cc: Qi Tang <tpluszz77@gmail.com>, Florian Westphal <fw@strlen.de>,
+	Simon Liebold <simonlie@amazon.de>
+Subject: Re: [PATCH 6.12.y v2] xfrm: hold dev ref until after
+ transport_finish NF_HOOK
+Message-ID: <airXyC2CaS0kO84h@laps>
+References: <20260611121127.3908131-1-simonlie@amazon.de>
+ <20260611-stable-reply-0102@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDExNiBTYWx0ZWRfX/lrTLMYd8nPA
- ZPexYj5ezPrwrn3RcbZulW7v2DyXnrJ6L7jAZtjjVRaK+83Mu1Elh2LqmAwTjMz6ii81NIEzTgo
- xNeqYDAueZosA2Lxe/3IvCsNuL7buC7C4wIlHQgdFRBTXGFph4fCJlFwWQFA94wz8JJKPunsnww
- Db/dW1X3ngsuRmFpXACDeeTn8k49zaZ9QFKh4tiAZ7GAmE3DDqk808mCIxHqQxwaBxhQ6ISe2ft
- fEzVpRN5lJfYlIdJRmG2dNV+IDMugU+vA/xsOWylZJ9TSJEKyT4dPVgx48lLDri8/aJutZhe66C
- wxAbxAbbNWvrs+ViHhmbH7xi+4sROYIzCJn0A5mU352/nclyYTOoGqsFgrL4mkn9vC671UwAixV
- EOeWIkii54nzdXcwlVs5w8H9TicLGHo2yWXVu1U20M5vtQMV7Wgl4JI5ABTGdAYLQTI4NygTefJ
- S4mlZlbHtTHYDcpOBUw==
-X-Authority-Analysis: v=2.4 cv=dr7rzVg4 c=1 sm=1 tr=0 ts=6a2a9e85 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=wpy86o5_7BG6Z5BpgyoA:9
-X-Proofpoint-ORIG-GUID: _p0xeLb9uORoUEICqLbX58bd51zhV88K
-X-Proofpoint-GUID: _p0xeLb9uORoUEICqLbX58bd51zhV88K
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDExNiBTYWx0ZWRfX4jRI4J3YheYE
- Vhn1l9EgcpgVYNK64rI7cLyJ8MVSC9bEHUGoi0LLPrq+DcMkUKXwZHC7ew78L2nSm7tMrBkdVM/
- joB9KxS7I5iawMVUpu8kClnBhZcTI9k=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-11_02,2026-06-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 suspectscore=0 priorityscore=1501 phishscore=0
- clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606110116
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260611-stable-reply-0102@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.34 / 15.00];
-	DATE_IN_FUTURE(4.00)[3];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:dsahern@kernel.org,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:lieboldsimonpaul@gmail.com,m:tpluszz77@gmail.com,m:fw@strlen.de,m:simonlie@amazon.de,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[secunet.com,gondor.apana.org.au,davemloft.net,kernel.org,google.com,redhat.com,vger.kernel.org,gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-262680-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:ast@kernel.org,m:andrii@kernel.org,m:daniel@iogearbox.net,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,m:adubey@linux.ibm.com,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262759-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,strlen.de,amazon.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FROM_NO_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,laps:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D068467176F
+X-Rspamd-Queue-Id: DFF5F6732D5
 
-From: Abhishek Dubey <adubey@linux.ibm.com>
+On Thu, Jun 11, 2026 at 11:26:20AM -0400, Sasha Levin wrote:
+>On Thu, Jun 11, 2026 at 12:11:27PM +0000, Simon Liebold wrote:
+>> [ Upstream commit 1c428b03840094410c5fb6a5db30640486bbbfcb ]
+>>
+>> After async crypto completes, xfrm_input_resume() calls dev_put()
+>> immediately on re-entry before the skb reaches transport_finish.
+>
+>Queued for 6.12, thanks.
 
-During pass 0 (size calculation), exit_addr is 0 since addrs[fp->len]
-is not yet populated. bpf_jit_emit_exit_insn() treats a zero exit_addr
-as in-range and skips bpf_jit_build_epilogue(), so the alternate inline
-epilogue instructions are not counted in alloclen.
+Ugh... Looking at it again, I've dropped it.
 
-In later passes, if the real exit_addr falls outside the 32MB branch
-range, the full inline epilogue is emitted into the already-allocated
-buffer, writing past its end and corrupting adjacent memory.
+The problem is the assumption that "the dev_put in the encap_type == -1
+async-resumption block does not exist" in 6.12.y. It's true there is no dev_put
+inside the 'if (encap_type == -1)' block, but that is only because the early
+drop lives somewhere else here: it's the dev_put right at the 'resume:' label.
 
-Fix by ensuring exit_addr is non-zero before treating it as in-range,
-so pass 0 always falls through to bpf_jit_build_epilogue() and
-conservatively accounts for all epilogue instructions in alloclen.
-Also conditionally range check alt_exit_addr directly.
+Look at where 'resume:' sits relative to the per-iteration dev_put:
 
-Reported-by: sashiko-bot@kernel.org
-Closes: https://lore.kernel.org/bpf/20260529015855.364704-2-adubey@linux.ibm.com/T/#mfcb23909d977b949727cca4f59ee56a13fd69b92
-Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
----
- arch/powerpc/net/bpf_jit_comp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+   mainline (post-fix):              6.12.y:
+         dev_hold(skb->dev);               dev_hold(skb->dev);
+         nexthdr = ...input(x, skb);       nexthdr = ...input(x, skb);
+         if (nexthdr == -EINPROGRESS) {    if (nexthdr == -EINPROGRESS)
+                 if (async)                        return 0;
+                         dev_put(...);     resume:
+                 return 0;                         dev_put(skb->dev);   <-- early drop
+         }
+         dev_put(skb->dev);
+   resume:                                 [async re-entry does goto resume,
+         ...                                so this dev_put runs immediately]
 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index b36b55f12a8b..470a359b7807 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -128,11 +128,10 @@ void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context
- int bpf_jit_emit_exit_insn(u32 *image, u32 *fimage, struct codegen_context *ctx,
- 							int tmp_reg, long exit_addr)
- {
--	if (!exit_addr || is_offset_in_branch_range(exit_addr - (ctx->idx * 4))) {
-+	if (exit_addr && is_offset_in_branch_range(exit_addr - (long)(ctx->idx * 4))) {
- 		PPC_JMP(exit_addr);
--	} else if (ctx->alt_exit_addr) {
--		if (WARN_ON(!is_offset_in_branch_range((long)ctx->alt_exit_addr - (ctx->idx * 4))))
--			return -1;
-+	} else if (ctx->alt_exit_addr &&
-+		is_offset_in_branch_range(ctx->alt_exit_addr - (long)(ctx->idx * 4))) {
- 		PPC_JMP(ctx->alt_exit_addr);
- 	} else {
- 		ctx->alt_exit_addr = ctx->idx * 4;
+In mainline the fix works because 'resume:' is *after* the per-iteration
+dev_put, so when xfrm_input_resume() re-enters and does 'goto resume', the
+async ref taken at the loop-top dev_hold is *not* dropped - it is held
+continuously until after the NF_HOOK (plus the inline 'if (async) dev_put()' it
+adds at the decaps/gro/drop/secondary-EINPROGRESS exits).
+
+In 6.12.y 'resume:' is *before* that dev_put, so the async 'goto resume' hits
+'dev_put(skb->dev)' straight away and drops the ref at the very start of resume
+processing. The fresh 'dev_hold(skb->dev)' added before transport_finish does
+not save it:
+
+   - between the early dev_put and the re-hold, skb->dev is held by no
+     xfrm reference at all - the exact window device teardown can race; and
+   - 'dev_hold(skb->dev)' itself dereferences skb->dev to bump the
+     refcount, so if the device was already freed in that window the
+     re-hold is itself a use-after-free.
+
+So this is a lifetime bug, not a refcount-balance bug: every hold still has a
+matching put, but the reference no longer covers the critical window.
+
 -- 
-2.52.0
-
+Thanks,
+Sasha
 
