@@ -1,95 +1,56 @@
-Return-Path: <stable+bounces-262771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TOlrNmrgKmqPygMAu9opvQ
-	(envelope-from <stable+bounces-262771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:20:58 +0200
+	id znG1MRPkKmqiywMAu9opvQ
+	(envelope-from <stable+bounces-262774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:36:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80836673698
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:20:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F7A673967
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:36:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DT6bqm+x;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262771-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262771-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262774-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C4C5E3108148
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:20:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0994305E2B8
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD0C328616;
-	Thu, 11 Jun 2026 16:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCF543635E;
+	Thu, 11 Jun 2026 16:26:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B4F428472
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 16:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35072426EBF;
+	Thu, 11 Jun 2026 16:26:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194799; cv=none; b=RT8i++ebUm85wfLcrh8u+5izrnzX6uJZanpgHztyU7RO86rswVgLaM0yQ2O3HyU5Cr3lVTC2twd1YsXwylnacb9YO0NFnHMcblNL4rqYSm10LB58LPyI5xZESiime9WOTbziGxebpv5OpA+ddxAf9+8SiI3kL2eu5vFPiKL71uY=
+	t=1781195168; cv=none; b=Zz3X02an3RvTKSOd9w66k2pe7RuaoUhY9Rbe66D8Le+p7MAa9Y0jLwh9Ep5m6tn52FPL2DUQjkP1wvntfm2AQHbn5qflkd2MwPE1t+KYRMthZNd3SwNekkT86TPN7orJog2qs//0hn19uAnHz1a0NxRuxfpRQJ6yjUIINkES97A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194799; c=relaxed/simple;
-	bh=kaG5qyz7UM2ji9838UuP3ncG1zNanDsJ30nAadWGaGU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLTKOMUnypJwsYNBVj7bAkAggnRff0kd2H7QhnYNix5+F1gLcRg45ZsE4HDuFfa2CNetK20p5oGKVuOpZjDES9KM7Ui4XyES3lTCPDCvf7BMpiCEnknaVgLT3U62IaYFsit8fPu4nEAIZq/7GqyG8x0Ouq3psQqlenrn62KguJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DT6bqm+x; arc=none smtp.client-ip=209.85.210.173
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-842307472d4so63175b3a.0
-        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 09:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781194798; x=1781799598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ozfYwTRjguWwldkipZcumrs2T+DMse6/l34PtGviF+8=;
-        b=DT6bqm+xpm1DQ1SoXwSy4yFQ9QbVt1pKWrNGgUShln/5TWgWFaXgznC7Kys9BYoe57
-         Xznbo1EHH15pPbIyVCobDzOm1E036J2+xR07gBJNUomR1nifX2FQLqc+dfUwvJGwimwV
-         pAUVghNVPSiWvpZ2j+wvcC6jfaW756FtwNzoD26Rq49qdniKcgDljOCUEyEMTJA+k6zu
-         r+77wEKnMcWgdpUPS2q61A4OPMHPy+Q3Cqu/DayycWcYQQlrmlQrMZHlw271+N9nZ1iX
-         fRnSaqnulksSIkCJAlGGWjhSTI91SsUsVnX5PUoAzTZoVRSjt5v0ba9+fR1+gamGUmLf
-         ALNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781194798; x=1781799598;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ozfYwTRjguWwldkipZcumrs2T+DMse6/l34PtGviF+8=;
-        b=IHq3nCIMDuu7jIwb8w8VoRURCiI3Zn+di8wWlrtcZjFc2NUthb9GkOYAHHyhg7cvIS
-         wV4Cx9u3Q7s4FbqyiIf4clJSgr8z1a/4HBiQXTa9OhjYkhWNMi4ub7OtDHpD3iKcFGZw
-         cBeWX+TZvbBWmDmR2xJaTlRtTQuuU+urZDcwpM9X96WQFcjt0DvtQbJG+naVeIoC9EEj
-         8+wIj5wyQV7HYeXRfw8EtbkgxO5AiLc+h300v1u7z3C08P3BtvrBMKa56/v6AZM2Z9Tr
-         RuZsBPQHg8CpES+extSxL7RRhR1y3EbgzWyLl5ASwBrnvdOyZydP2tCzNoHf4N1Ia+pg
-         +iHA==
-X-Forwarded-Encrypted: i=1; AFNElJ8UIbZpfN7QPS6Z7arImFp/xvNqcms4TyRN3k/bq37Lq1ielRd1s/eqwL7+4fBEHwyVgZUosYs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYRsBJBCwmJIKeV0vbuInNS2kNVprvHhySsLacOoHLNbo6Ac80
-	yPfUVzCjCdNFlwNU86dvyst8IEy+FWswbmnkrU4qGzmMee27IAVquf+T
-X-Gm-Gg: Acq92OHNBZTciM3RviIvFw1t6dyL+vC1Bbvltq8Xtu8U3stSamjcgJIjBZW1aRrxSp8
-	uOXjUwnNs7jkKvs5XOatf3Ld6g4HgxkMxnLAhYX6PQRX5UuoqpNsUwr4ljxuWhYQSACW3HIEePA
-	dTGf6gakEp1orrcQFbivy8WTG8mLigpZ/vDpNt93kiaTRx2LHLhvJX7hWtGdanfPQG28wKjUqEa
-	mp4fSdG09WCKOju8+z2utsAmWEFEkaOp5Hr+RpjJSSJbfkaa8v5nljS7zG9Aw2bzSXjE1Ldp2eY
-	OPFAW7DwRjtRgmrzi1rs/u95ImINXGWv31/XFps5UMhpCt7+3y+zbK6w06fXXWPLSOMUy2kJkp7
-	HYuhYzbiS7rxtVE5PvSm61LzaqzxRsJ1IxKwDnSN3qKAAElJHryxibDe72tR5h46zcA79DveEYq
-	VNcTfmhy0U8qLqShU/4zN17bL1GYFiXadzkQ93SPisBXBtduXU90KKBFH52sIfeek=
-X-Received: by 2002:a05:6a20:da12:b0:39b:89e0:2e37 with SMTP id adf61e73a8af0-3b5e31d9e1dmr4203682637.14.1781194797751;
-        Thu, 11 Jun 2026 09:19:57 -0700 (PDT)
-Received: from KRHW1CJW23.bytedance.net ([139.177.225.254])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c865881640bsm2871231a12.26.2026.06.11.09.19.54
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 11 Jun 2026 09:19:57 -0700 (PDT)
-From: Zhao Li <enderaoelyther@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Thomas Pedersen <thomas@adapt-ip.com>,
-	linux-wireless@vger.kernel.org,
+	s=arc-20240116; t=1781195168; c=relaxed/simple;
+	bh=HQwtJaedgsqPooR7mPQBcOpOaTxPXNP5nqSTbE6Ent8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=slo4V0nN8nYgMKUz/PDgkHlXP55oNtEINQe8/mcHSv/csp1EjQDfQSjUaUtRSoen34sA8nekYMHQpLbP3HekB4ZwCHwX9Wnwe3txojMiAZL/xxZMddqefvCdPSz0RovrTiELnF+2cZppRiw3WWiTkovXUWPGpy32jbda+z/GJYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowABX7RCW4SpqkvQZEw--.3644S2;
+	Fri, 12 Jun 2026 00:25:59 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Zhao Li <enderaoelyther@gmail.com>,
+	WenTao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: cfg80211: derive S1G beacon TSF from S1G fields
-Date: Fri, 12 Jun 2026 00:19:46 +0800
-Message-ID: <20260611161943.91069-6-enderaoelyther@gmail.com>
+Subject: [PATCH] devlink: fix refcount leak in devlink_nl_reload_doit()
+Date: Fri, 12 Jun 2026 00:25:57 +0800
+Message-ID: <20260611162557.98150-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260611161943.91069-4-enderaoelyther@gmail.com>
-References: <20260610162700.58722-1-enderaoelyther@gmail.com>
- <20260611161943.91069-4-enderaoelyther@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,82 +58,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABX7RCW4SpqkvQZEw--.3644S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFW5Zr1UCw1fZr1UJr4xWFg_yoW8Gw1UpF
+	1Sk3ZrCrW7Jr13KayDXw43WF429F1jqrW5Cr1Sk3WfC3ZYgFnYqr18G3WS9ay8Ars3K34j
+	qrWUKrWrZrWDuFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUZYFZUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoPA2oqzjQvPwADsp
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[adapt-ip.com,vger.kernel.org,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-262771-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:johannes@sipsolutions.net,m:thomas@adapt-ip.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:enderaoelyther@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262774-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:jiri@resnulli.us,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80836673698
+X-Rspamd-Queue-Id: 17F7A673967
 
-cfg80211_inform_bss_frame_data() parses S1G beacons with the extension
-frame layout, but still reads the TSF from the regular probe response
-layout after the S1G branch. For S1G beacons that reads bytes at the
-regular management-frame timestamp offset instead of the S1G timestamp.
+When devlink_nl_reload_doit() is asked to change network namespace
+(via DEVLINK_ATTR_NETNS_*) but the reload action is not
+DEVLINK_RELOAD_ACTION_DRIVER_REINIT, it calls devlink_netns_get()
+which acquires a reference on the destination net namespace. Then,
+after detecting that namespace change is only supported for reinit
+action, it returns -EOPNOTSUPP without releasing the reference, thus
+leaking the net namespace.
 
-Use the 32-bit S1G beacon timestamp and the S1G Beacon Compatibility
-element's TSF completion field when informing an S1G BSS. Keep the
-regular management-frame timestamp read in the non-S1G branch.
+Fix the leak by releasing the reference with put_net() before
+returning the error, for example by adding it directly on that error
+path. A cleaner alternative is to introduce a common cleanup label
+that performs the put_net() if the pointer is non-NULL.
 
-Fixes: 9eaffe5078ca ("cfg80211: convert S1G beacon to scan results")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+Fixes: 2edd92570441 ("devlink: don't allow to change net namespace for FW_ACTIVATE reload action")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
- net/wireless/scan.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/devlink/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 27a56ee2e8f0b..c90619eeb03b1 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3309,14 +3309,15 @@ cfg80211_inform_bss_frame_data(struct wiphy *wiphy,
- 		bssid = ext->u.s1g_beacon.sa;
- 		capability = le16_to_cpu(compat->compat_info);
- 		beacon_interval = le16_to_cpu(compat->beacon_int);
-+		tsf = le32_to_cpu(ext->u.s1g_beacon.timestamp);
-+		tsf |= (u64)le32_to_cpu(compat->tsf_completion) << 32;
- 	} else {
- 		bssid = mgmt->bssid;
- 		beacon_interval = le16_to_cpu(mgmt->u.probe_resp.beacon_int);
- 		capability = le16_to_cpu(mgmt->u.probe_resp.capab_info);
-+		tsf = le64_to_cpu(mgmt->u.probe_resp.timestamp);
+diff --git a/net/devlink/dev.c b/net/devlink/dev.c
+index 57b2b8f03543..fd5633fa88ec 100644
+--- a/net/devlink/dev.c
++++ b/net/devlink/dev.c
+@@ -578,6 +578,7 @@ int devlink_nl_reload_doit(struct sk_buff *skb, struct genl_info *info)
+ 		    action != DEVLINK_RELOAD_ACTION_DRIVER_REINIT) {
+ 			NL_SET_ERR_MSG_MOD(info->extack,
+ 					   "Changing namespace is only supported for reinit action");
++			put_net(dest_net);
+ 			return -EOPNOTSUPP;
+ 		}
  	}
- 
--	tsf = le64_to_cpu(mgmt->u.probe_resp.timestamp);
--
- 	if (ieee80211_is_probe_resp(mgmt->frame_control))
- 		ftype = CFG80211_BSS_FTYPE_PRESP;
- 	else if (ext)
 -- 
 2.50.1 (Apple Git-155)
 
