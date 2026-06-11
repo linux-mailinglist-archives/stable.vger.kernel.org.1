@@ -1,223 +1,258 @@
-Return-Path: <stable+bounces-262745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uLn3N7TOKmoWxQMAu9opvQ
-	(envelope-from <stable+bounces-262745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:05:24 +0200
+	id G26vMDHQKmqbxQMAu9opvQ
+	(envelope-from <stable+bounces-262747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:11:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76C57672EB1
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16840672F78
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:11:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gibson.sh header.s=20260228 header.b=Qtb5htk3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262745-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262745-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=google.com header.s=20251104 header.b=QVFpcKSG;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262747-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262747-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 273DC340ACE3
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:04:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAC38338A196
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539913F23BE;
-	Thu, 11 Jun 2026 15:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CC43EB10D;
+	Thu, 11 Jun 2026 15:11:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [84.16.66.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2A835504D
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 15:04:36 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781190279; cv=none; b=qmM3Bcs+DZRqw/IbtEuKfgLcX+yfo4EP1d6GURuHqG2nn6fO8Ch0HTSPyaBNBnuErHDOm2Kunw7W4Off0Jtyx+ww1cd3H/pIDXHVl36sV6n8xAjRQ5PBRXye7fTkGOmv/VPjP77sE1yMNovQrrUNvtmCNPtd+Q9rqVRZm9BLquE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781190279; c=relaxed/simple;
-	bh=Jq8ysKyX9XjKDYarXwCW/jpo7H3q6jR29jqXAKG+VP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fWzP+1N1P3lP1hMl1rtUPkJRy95cEPmn4NVYDYH+MyYuLQZBBThArAlnpmMzhjFgTxUiyGcFWT0lrxD4W6LuoN5nGLT8BoVre9X5hVbtMjeYNKKLcspI12NAzj1HrJb1GkZPjweO43fpR1kqaqoZUJslGVsJ95i9pKGdSiG70tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gibson.sh; spf=pass smtp.mailfrom=gibson.sh; dkim=pass (2048-bit key) header.d=gibson.sh header.i=@gibson.sh header.b=Qtb5htk3; arc=none smtp.client-ip=84.16.66.172
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gbmC119KvzkMw
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 17:04:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gibson.sh;
-	s=20260228; t=1781190269;
-	bh=/TzDI8kdlhnZuKW1ZWymH3Q+HdpRLbQx52o+ic/JCXo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qtb5htk3Vn+e2Rpkg86SP2/Y2QT5V3gS7vQwBgyIAPTN2rDW3tnR6yHU7JjeTFsfv
-	 MsETIF0DfRHnzr9K9J3xjo5H6s6wrGSKnKbIfmFMkWLbBtCTdhgyjtnzZJIiC7ms+p
-	 +p/qVDBTjnaB/vdRDTOGuSIacIzJ4Nf08sNGghwP8LDXuAdUjMBWV93qTkyftjfEeL
-	 9zVjbh2o79D/peyBqSgxroVtttnj7mLFzaC8wCeBUkpcUwhxYNyQTxfCHXkFvR6oeM
-	 2mB9ktm9e083LjWNAEjoVVDH5k2A+vhXNbrp7ZySBVIJNTm9+Gr7WCSwxtQJ3GQJDb
-	 u2pJAY/oWQj5w==
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gbmC04gpfzMd5
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 17:04:28 +0200 (CEST)
-Received: from unknown by spiderdemon.horst.lan (DragonFly Mail Agent v0.13);
-	Thu, 11 Jun 2026 17:04:28 +0200
-From: Daniel Gibson <daniel@gibson.sh>
-To: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Hans de Goede <hansg@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mario Limonciello <superm1@kernel.org>
-Cc: Daniel Gibson <daniel@gibson.sh>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6 4/4] platform/x86/amd/pmc: Don't log during intermediate wakeups
-Date: Thu, 11 Jun 2026 17:04:26 +0200
-Message-ID: <20260611150426.3683372-5-daniel@gibson.sh>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260611150426.3683372-1-daniel@gibson.sh>
-References: <20260611150426.3683372-1-daniel@gibson.sh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64210301465
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 15:11:00 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781190661; cv=pass; b=j+vPJxkUBdVhrLvRpITgoDRHpYv3cVkjOtklNdzW20h/23NdxaTko0HyKqLgaTs3TkqFRNV2Ml0Ty6ap2hwfO0v5/yMxovJ4sMU9HuANhBRlB7ekxjQezqImkd0Skfn6zw77DHBW/slewtMN6fGOQqwXjXvExM+qq527aayw80s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781190661; c=relaxed/simple;
+	bh=mqba1T9nauxNnwYVB0xz79JPbzcaMr3EFsx18vTPUkI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YnpOtWj6zRq/IOPJkXzr1ow3BnXyvjjcUamKwBrWdIOHPuM6FSHG+Pl5614Ld8LVYdwndRH4zOkAEvswzhvgPKo4Yjy3WVqKP+fVTwjJFXh15UZ6KmQVtFVzrT1nMsTLBjmKzybVxyG4tjJIcYE7Vd8lACWV6jE5c6ZFKi4jXFQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QVFpcKSG; arc=pass smtp.client-ip=74.125.82.47
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-137dd523634so12724519c88.1
+        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 08:11:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781190659; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a/N+3VPaxpLcJKW8iELPFl/uGAMfkVXK9Mm5xx9WYeM0sD0wzlbyz0jkRComsKe/zE
+         ZHDgHiZOmHuWQMgoSUJ3grAvzMMDqSmEUCUWUicrYiW4wi+KN/ubQiTJvnj9n8ORFRyw
+         1lh886PRYYtv7clQX3Qn6iLGoXGgmMntgJVQTckhWbOu/HosNced7xhcXeacE+JJIEjl
+         Elnd+ibVN3g/UxzjuDYIfetHkfNvEW9xjgPnPiqSs4zeGi4YMlv3J002M5X0Hq/W68QZ
+         GGvtrY4lHA7J26l7Tcs1t1UwZf+1DGBGvSnkYkrb5ATkhEwKf8roExkFBfKX/3RtxvaV
+         AJ3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lxKXtOKyjTv+sAJ/+Fz+4at9+0jNf2gFTtOvWpxVwCw=;
+        fh=Yz45prcCS0p3DW6e9EGDJSHkIsBx1ia6mBka7cS2CuM=;
+        b=fR0lkgvGwYZSRbi7wy8n/J9VobPvLa/M0DEHSA6cI/B+Ie0MnRYXjyq1T1Ki/vaKNh
+         ULGx2ha4HoIxUdptWcVPWActn0+SGg9L+fK1xTJmkdisWPPaXLf0mqT7LEx5eIn2dHhN
+         ERjZoln7azdHVGBP6rMuGBsyjj+/FiUUYJEA4pG5Y3aUtWZZgZxCEEv+TmdReioNsFxb
+         nl0iKBxAazdriAamiq/sHDoTfBj1Dcu/F6w8RI7hr82LCRjD+gPGA96afg1/SXwIbtgN
+         G42PZWZL0N48VYFuuOMABSbS0pCtTdJwbEvKsxp7uyH+XB27M2oi3qHwCze28LAD5teO
+         4NGg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781190659; x=1781795459; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lxKXtOKyjTv+sAJ/+Fz+4at9+0jNf2gFTtOvWpxVwCw=;
+        b=QVFpcKSGE7vMkwgzeDGG47E8T2+BQD82hpGgIusIaUA4CDOjp66YYvby9aUVsRHxa/
+         SbGokfSUZ0PBSd9mig6IraEuuwGCXYyFLgW1X1bCLzNikartw9Eh2plxCenQgHeGm6hG
+         NMmSROF1yWrLofwvUFEKDUSebvbj9xk5VWIfb8oujvZsyCKlIGwgL+uw5HUqoP24jvbf
+         yuM+bkrVdIlxgErkCROggsVhk+OEZ4WPxxcvCC85+EOqjKeEmI786DLYjdHgNc3LeaUf
+         i2AGMHAZVSQBpxJeTvqZHv/nB7M46H7YN/K7HySXSfP9dCWhRrb1H31uyS3wT+WeXo3a
+         O6kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781190659; x=1781795459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lxKXtOKyjTv+sAJ/+Fz+4at9+0jNf2gFTtOvWpxVwCw=;
+        b=Jn3TBJMZaKl3nkq+19/Y7gToHPkPG/7sC4QWQEnccM5aEURwyL85sFwpcT+2SGz6tb
+         W1jiEDVCJvp0WTtIE4HlYMWvcsScJgFzcXZ2v/CMAvxk1+REhCL2Ifp9xyaLankIbAuw
+         jY7CYlTWDtPoZfx+ZL/KqCUlomsVVEVbJ4a9ysnYQZJioYeolnTKxil++++OnZdj/8VM
+         ixtkviL+JyJiSKbhfCrfU1KQm3uBSXkqgM/OyZZg1nIDzZ/MzOybPq+PoMLyvploil4i
+         VJe1XNup9irokb/xr/ujo6rQzGSAouJpyKuqP8UC4/mueu7VHeZSBXqr7C4QdyIEu4BP
+         R7gQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/13C5dMBo/jI6JaR31Ed6vyVqRpGx0eKyDt9MH/XbvIU5Ho/FyUhCDMDSWHiqe4tqcESRGkag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXnvF5Nu+wmYWzM5UuHrxLcE1LrNgxLA2sn1BiDTd73dDVisai
+	xYlcyVo/+GGoPj1Aeo0/2DPI4rfTHT5/DyV8JgDNZedNCWFw5JWLrh35ZR1fWbbLKhZAtUEkF9A
+	P39DCXPrx3L5HypVNRo16lrTX/Ws/SZDHWQOhT2qW
+X-Gm-Gg: Acq92OG1AkaULy2vl3lf3T+85GqpAEfYIE7+639cb0vDGLlNvi8Xo54votWV2YHzEMV
+	UL1Thu6ja47TbPU9eCjQEBAi+3tVl06uDWpEPcglkbnc0p+twBU/tAKWfKLo0TFrIXeAgCmh1/F
+	f7YQFzbZa69cD92fo/KUCC2MepRzdqtPJfwE2t+MilSdlWQnGSToX9brTrVhdwIJhAQchYvavfJ
+	gnFRMA77qIbRJcbrcLR+FtSAz/OUGoB8uccDAsjFnMXecSotn7XAkXjKUSIAp8DSV01Mbk0297j
+	yhysefmHoz19Y4ztrEu0gd1luueSkT4YlYWFpJjziX0mmY0XdGKR/lQLTTc=
+X-Received: by 2002:a05:701b:4552:20b0:138:44ab:75f7 with SMTP id
+ a92af1059eb24-13844ab773cmr770322c88.21.1781190658662; Thu, 11 Jun 2026
+ 08:10:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+References: <20260611002437.1671401-1-digonzal@google.com>
+In-Reply-To: <20260611002437.1671401-1-digonzal@google.com>
+From: Brian Vazquez <brianvv@google.com>
+Date: Thu, 11 Jun 2026 11:10:46 -0400
+X-Gm-Features: AVVi8Cd9uZgzE9Vtr2KiKxKuSPVMf5kiWug4xcnQibRwcwPz9EwHUXafig-7Bv0
+Message-ID: <CAMzD94SgL2QtQqu26icixW4MVL1D-UsauKbFF6qrtZ7TxCgNfA@mail.gmail.com>
+Subject: Re: [PATCH iwl-net] idpf: decrease statistics refresh interval
+To: Danny Gonzalez <digonzal@google.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	David Decotigny <decot@google.com>, Anjali Singhai <anjali.singhai@intel.com>, 
+	Sridhar Samudrala <sridhar.samudrala@intel.com>, Li Li <boolli@google.com>, 
+	emil.s.tantilov@intel.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gibson.sh:s=20260228];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262745-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:Shyam-sundar.S-k@amd.com,m:hansg@kernel.org,m:ilpo.jarvinen@linux.intel.com,m:platform-driver-x86@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:superm1@kernel.org,m:daniel@gibson.sh,m:johannes.goede@oss.qualcomm.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[gibson.sh];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:digonzal@google.com,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:davem@davemloft.net,m:kuba@kernel.org,m:edumazet@google.com,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:decot@google.com,m:anjali.singhai@intel.com,m:sridhar.samudrala@intel.com,m:boolli@google.com,m:emil.s.tantilov@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[brianvv@google.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gibson.sh:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[daniel@gibson.sh,stable@vger.kernel.org];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-262747-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brianvv@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gibson.sh:dkim,gibson.sh:email,gibson.sh:mid,gibson.sh:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email]
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,mail.gmail.com:mid,uso.py:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76C57672EB1
+X-Rspamd-Queue-Id: 16840672F78
 
-The ECs in the IdeaPads that need the delay_suspend quirk send lots
-of messages when charging, which not only causes intermediate wakeups
-when suspended, but also prevents the device from reaching the deepest
-suspend state.
+Tested-by: Brian Vazquez <brianvv@google.com>
 
-Because of this amd_pmc_intermediate_wakeup_need_delay() returns false
-during intermediate wakeups and amd_pmc_want_suspend_delay() is called.
-So far it always logged its "Delaying suspend by 2.5s ..." messages
-then, which spams dmesg. This commit makes sure that those messages are
-only logged once per suspend.
+Before patch:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221383
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Signed-off-by: Daniel Gibson <daniel@gibson.sh>
-Cc: stable@vger.kernel.org
----
- drivers/platform/x86/amd/pmc/pmc.c | 39 ++++++++++++++++++++++++------
- drivers/platform/x86/amd/pmc/pmc.h |  1 +
- 2 files changed, 32 insertions(+), 8 deletions(-)
+# sar -n DEV 1  | grep eth1
+08:09:51         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:52         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:53         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:54         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:55         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:56         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:57         eth1   4225.00   1801.00    736.18   1125.49
+0.00      0.00      0.00      0.00
+08:09:58         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:09:59         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:00         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:01         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:02         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:03         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:04         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:05         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:06         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:07         eth1      0.00      0.00      0.00      0.00
+0.00      0.00      0.00      0.00
+08:10:08         eth1   3788.00   1435.00    628.26    535.24
+0.00      0.00      0.00      0.00
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index ce97c27bc362..b2eb9909f6a4 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -691,6 +691,20 @@ static bool amd_pmc_intermediate_wakeup_need_delay(struct amd_pmc_dev *pdev)
- 
- static bool amd_pmc_want_suspend_delay(struct amd_pmc_dev *pdev)
- {
-+	/*
-+	 * intermediate_wakeup implies that the machine didn't get to deepest sleep
-+	 * state before - otherwise this function isn't called in amd_pmc_s2idle_check()
-+	 * because amd_pmc_intermediate_wakeup_need_delay() returns true first.
-+	 * On some IdeaPads that happens when charging, because the EC seems
-+	 * to send lots of messages then that wake the machine.
-+	 *
-+	 * But even in that case, the sleep here is necessary (on those IdeaPads),
-+	 * otherwise they wake up completely (resume) after a few seconds.
-+	 * So this variable is only used to avoid spamming dmesg on each
-+	 * intermediate wakeup.
-+	 */
-+	bool intermediate_wakeup = !pdev->is_first_check_after_suspend;
-+
- 	/*
- 	 * Some Lenovo Laptops (like different IdeaPad 3 Slims) need some
- 	 * me-time before sleeping or they get uncooperative after waking
-@@ -709,17 +723,20 @@ static bool amd_pmc_want_suspend_delay(struct amd_pmc_dev *pdev)
- 		 * disabled with disable_workarounds or delay_suspend=0
- 		 */
- 		if (delay_suspend == 1 || (delay_suspend == -1 && !disable_workarounds)) {
--			dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
-+			if (!intermediate_wakeup)
-+				dev_info(pdev->dev, "Delaying suspend by 2.5s to avoid platform bug\n");
- 			return true;
- 		}
--		dev_info(pdev->dev, "Not delaying suspend because of module parameter, even though your device is assumed to need it!\n");
-+		if (!intermediate_wakeup)
-+			dev_info(pdev->dev, "Not delaying suspend because of module parameter, even though your device is assumed to need it!\n");
- 	} else if (delay_suspend == 1) {
--		dev_info(pdev->dev, "Delaying suspend by 2.5s because delay_suspend=1. If this solves problems on your machine, please report this whole line to: platform-driver-x86@vger.kernel.org so it can be automatically detected as affected in the future. System Vendor: \"%s\" Product Name: \"%s\" Product Family: \"%s\" Board Vendor: \"%s\" Board Name: \"%s\"\n",
--			 dmi_get_system_info(DMI_SYS_VENDOR),
--			 dmi_get_system_info(DMI_PRODUCT_NAME),
--			 dmi_get_system_info(DMI_PRODUCT_FAMILY),
--			 dmi_get_system_info(DMI_BOARD_VENDOR),
--			 dmi_get_system_info(DMI_BOARD_NAME));
-+		if (!intermediate_wakeup)
-+			dev_info(pdev->dev, "Delaying suspend by 2.5s because delay_suspend=1. If this solves problems on your machine, please report this whole line to: platform-driver-x86@vger.kernel.org so it can be automatically detected as affected in the future. System Vendor: \"%s\" Product Name: \"%s\" Product Family: \"%s\" Board Vendor: \"%s\" Board Name: \"%s\"\n",
-+				 dmi_get_system_info(DMI_SYS_VENDOR),
-+				 dmi_get_system_info(DMI_PRODUCT_NAME),
-+				 dmi_get_system_info(DMI_PRODUCT_FAMILY),
-+				 dmi_get_system_info(DMI_BOARD_VENDOR),
-+				 dmi_get_system_info(DMI_BOARD_NAME));
- 		return true;
- 	}
- 	return false;
-@@ -731,6 +748,9 @@ static void amd_pmc_s2idle_prepare(void)
- 	int rc;
- 	u32 arg = 1;
- 
-+	/* Reset this variable because this is a fresh suspend */
-+	pdev->is_first_check_after_suspend = true;
-+
- 	/* Reset and Start SMU logging - to monitor the s0i3 stats */
- 	amd_pmc_setup_smu_logging(pdev);
- 
-@@ -769,6 +789,9 @@ static void amd_pmc_s2idle_check(void)
- 	rc = amd_stb_write(pdev, AMD_PMC_STB_S2IDLE_CHECK);
- 	if (rc)
- 		dev_err(pdev->dev, "error writing to STB: %d\n", rc);
-+
-+	/* remember that first check after suspend is done (until next prepare) */
-+	pdev->is_first_check_after_suspend = false;
- }
- 
- static int amd_pmc_dump_data(struct amd_pmc_dev *pdev)
-diff --git a/drivers/platform/x86/amd/pmc/pmc.h b/drivers/platform/x86/amd/pmc/pmc.h
-index 1ef182bb240d..6973a639d7e3 100644
---- a/drivers/platform/x86/amd/pmc/pmc.h
-+++ b/drivers/platform/x86/amd/pmc/pmc.h
-@@ -136,6 +136,7 @@ struct amd_pmc_dev {
- 	struct dentry *dbgfs_dir;
- 	struct quirk_entry *quirks;
- 	bool disable_8042_wakeup;
-+	bool is_first_check_after_suspend;
- 	struct amd_mp2_dev *mp2;
- 	struct stb_arg stb_arg;
- 	const struct amd_pmc_cpu_info *cpu_info;
--- 
-2.48.1
+After patch (you can now see background traffic reported right away!):
 
+# sar -n DEV 1 | grep eth1
+08:08:33         eth1    527.00    443.00    261.74     76.69
+0.00      0.00      0.00      0.00
+08:08:34         eth1    440.00    423.00    101.89     78.75
+0.00      0.00      0.00      0.00
+08:08:35         eth1    356.00    353.00     68.68     57.02
+0.00      0.00      0.00      0.00
+08:08:36         eth1    437.00    462.00    114.18    124.07
+0.00      0.00      0.00      0.00
+08:08:37         eth1    377.00    383.00     61.40     65.97
+0.00      0.00      0.00      0.00
+08:08:38         eth1    335.00    337.00     83.08     75.39
+0.00      0.00      0.00      0.00
+08:08:39         eth1    387.00    392.00     58.95     74.58
+0.00      0.00      0.00      0.00
+08:08:40         eth1    351.00    371.00     51.39    103.25
+0.00      0.00      0.00      0.00
+08:08:41         eth1    339.00    338.00     55.38     54.91
+0.00      0.00      0.00      0.00
+08:08:42         eth1    324.00    328.00     54.15     55.71
+0.00      0.00      0.00      0.00
+
+
+On Wed, Jun 10, 2026 at 8:24=E2=80=AFPM Danny Gonzalez <digonzal@google.com=
+> wrote:
+>
+> The default 10s statistics refresh interval is too slow for real-time
+> monitoring and causes network selftests (e.g., uso.py) to fail when
+> verifying traffic immediately after transmission.
+>
+> A 10s delay also causes aliasing in telemetry tools polling at shorter
+> intervals (e.g., 5s), leading to inaccurate rate calculations on
+> high-throughput NICs.
+>
+> Decrease the refresh interval to 250ms to ensure fresh stats and fix
+> test failures.
+>
+> Tested: drivers/net/hw:uso.py now passes
+> Fixes: a251eee62133 ("idpf: add SRIOV support and other ndo_ops")
+> Signed-off-by: Danny Gonzalez <digonzal@google.com>
+> ---
+>  drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/eth=
+ernet/intel/idpf/idpf_lib.c
+> index cf966fe6c759..e2890d219431 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -1364,7 +1364,7 @@ void idpf_statistics_task(struct work_struct *work)
+>         }
+>
+>         queue_delayed_work(adapter->stats_wq, &adapter->stats_task,
+> -                          msecs_to_jiffies(10000));
+> +                          msecs_to_jiffies(250));
+>  }
+>
+>  /**
+> --
+> 2.54.0.1099.g489fc7bff1-goog
+>
 
