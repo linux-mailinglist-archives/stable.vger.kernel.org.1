@@ -1,150 +1,211 @@
-Return-Path: <stable+bounces-262740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GHhiCTTMKmqbxAMAu9opvQ
-	(envelope-from <stable+bounces-262740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:54:44 +0200
+	id AIHPAKTOKmoMxQMAu9opvQ
+	(envelope-from <stable+bounces-262742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:05:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB4A672DAF
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:54:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C29FD672EA1
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:05:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sntech.de header.s=gloria202408 header.b=XW54+iVu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262740-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262740-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=sntech.de;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=LpBZI8u2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262742-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262742-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9355B3095477
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:54:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34A91310ED3A
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FA92DCBE3;
-	Thu, 11 Jun 2026 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1F23EFD14;
+	Thu, 11 Jun 2026 15:02:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C00A2512C8
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 14:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767343EE1D3;
+	Thu, 11 Jun 2026 15:01:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781189681; cv=none; b=M72b9/AGRQ3DJOW0E/htq33zMjU7qTT6zCf02MAYWBE2jbpnGrPUthXZ0koSocxiElmXahJswJZqbE9DiXAgg7l08chLm/x+eUUKi3d1UD9rgh66TGwBdsF914Aeqtl1rZyzt64ouzXKcSenAxemA8rM6kT3WEdBpG6H5o9xtWQ=
+	t=1781190124; cv=none; b=G5PVZyewpDntiWpNcM0m60qNWjgXE3NbyJNqACYm2IH+IPrz2iHr1B7mNNzsIUnwHP7mVxyVgcrlQBLbDTx+LZDEe//vc0eYFmga6bGhTca7zoUtwGm3biO4IdYb45sJOemATnLIKl0AeuPwUo8e5jdgec1HV2q5WY8VYHOvo98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781189681; c=relaxed/simple;
-	bh=i9goQK+PfYxDMzpCTFRX9PHYViJz9NrGz6efZpUIYp4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IpK3ZOBV/b85D7am1Tz2Tt9/2ESntzaBUAMF4WlRzXnAvNeNfeKcqlPdGV8ypsBzs65RYd8UYoRge57gxTOIin8Tvem0MfCs9+u7/LWpdSW6Ep7JswW83XorFmZJIU0RYFzf6FtW2uFoPhwqxErpFr8OtRYCilqgYiLB5xX5Xf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=XW54+iVu; arc=none smtp.client-ip=185.11.138.130
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=L7V10b80aH2eAPlxp6gsdj3fgz/Fgp1to3s7xDTV0x0=; b=XW54+iVublKhNpEzF1YWUiUMyw
-	Cq2XoLLaCfEBTWihUWiE5efWodqtb437avV+hx/WWyMLE7b6NcEomzOqwlDSeW23wt0osIC79wCDt
-	fKiNoab6q2tasjw8kcVmjBbGAzJ13xZMZup/UhRsqTdbqejm/DudlUtS1I99Zck4q8qrxrDnpUQmO
-	blSh74DGqa2bhbzoh4L9HkfLy6/LfQJir9qe+HigrQckXPaDBAi3PuJJNRMKGnkAgMAgZkr9LTyEj
-	Zwdq3U+BvwdGcZf0loLFt88lCZuh/k0K/mBjRq7rBoh2glCkdSgRbPDX07hQ6TxOe3gkIgthnfy0n
-	oWADHfXQ==;
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: stable@vger.kernel.org
-Cc: Shardul Bankar <shardul.b@mpiricsoftware.com>,
- syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,
- "Jason A. Donenfeld" <Jason@zx2c4.com>, Jakub Kicinski <kuba@kernel.org>,
- Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject:
- Re: [PATCH 6.12.y] wireguard: device: use exit_rtnl callback instead of
- manual rtnl_lock in pre_exit
-Date: Thu, 11 Jun 2026 16:54:37 +0200
-Message-ID: <2278549.Icojqenx9y@diego>
-In-Reply-To: <20260611144615.478035-1-heiko@sntech.de>
-References: <20260611144615.478035-1-heiko@sntech.de>
+	s=arc-20240116; t=1781190124; c=relaxed/simple;
+	bh=ZmVmNuX65Goph8N6UbyxibTsBhOkF5GkFPBUbhd/DWk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A+BsAsnvkmtEbEQvLuy9eizfaI/mHDvXdBvsfFc7rHN+xRhOLk5pucKY7UDww167jp1vPgJc1eWNahpg7af0C5OxY5B2+PTq6GLslLQixa0nTX5wGPsYLFU+/i3V0b0oK4rKmMshIWyPwOCfPg8xTqqukTjge/Z5QYkSiidLJtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LpBZI8u2; arc=none smtp.client-ip=45.254.49.197
+Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4205c505f;
+	Thu, 11 Jun 2026 22:56:40 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: lee@kernel.org
+Cc: jpanis@baylibre.com,
+	bhargav.r@ltts.com,
+	mwalle@kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] mfd: tps6594: copy regmap IRQ chip descriptors per probe
+Date: Thu, 11 Jun 2026 22:56:32 +0800
+Message-Id: <20260611145632.2219430-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eb72f711903a1kunmc0dd0bed169173
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaTEtMVhgZSk5NQkpOTE9DSlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=LpBZI8u2xYt3z0+wCF2/FfO1GT1UH5PKQDlX7OyzpiIHfmu/zOCzYty5xATdmMOphSGi/XcwbhaVVqQEnZ1wyDN5fr6R5ptpbVf+kwaS8d8xxvVHnYo+ZhzsQzdqisw2sIzeI4nWR6W5O2ADlhQgTy2JW1bPKG1X0gfFgRWOlkE=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=vAXX1FWY7d0pKj0hRNMAuE1UO3M7K8roEjMfQO+m2CE=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:shardul.b@mpiricsoftware.com,m:syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,m:Jason@zx2c4.com,m:kuba@kernel.org,m:heiko.stuebner@cherry.de,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262740-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[sntech.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262742-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:jpanis@baylibre.com,m:bhargav.r@ltts.com,m:mwalle@kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f2fbf7478a35a94c8b7c];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sntech.de:dkim,sntech.de:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,appspotmail.com:email,vger.kernel.org:from_smtp,diego:mid,cherry.de:email,mpiricsoftware.com:email]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,irq_chip_copy.name:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8AB4A672DAF
+X-Rspamd-Queue-Id: C29FD672EA1
 
-Hi all,
+tps6594_device_init() selects one of several shared static
+struct regmap_irq_chip templates and then writes the current probe's
+irq_drv_data and generated name into that shared descriptor before
+passing it to devm_regmap_add_irq_chip().
 
-Am Donnerstag, 11. Juni 2026, 16:46:15 Mitteleurop=C3=A4ische Sommerzeit sc=
-hrieb Heiko Stuebner:
-> From: Shardul Bankar <shardul.b@mpiricsoftware.com>
->=20
-> [ Upstream commit 60a25ef8dacb3566b1a8c4de00572a498e2a3bf9 ]
->=20
-> wg_netns_pre_exit() manually acquires rtnl_lock() inside the
-> pernet .pre_exit callback.  This causes a hung task when another
-> thread holds rtnl_mutex - the cleanup_net workqueue (or the
-> setup_net failure rollback path) blocks indefinitely in
-> wg_netns_pre_exit() waiting to acquire the lock.
->=20
-> Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
-> Add ->exit_rtnl() hook to struct pernet_operations."), where the
-> framework already holds RTNL and batches all callbacks under a
-> single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
-> window.
->=20
-> The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
-> from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
-> because all RCU readers of creating_net either use maybe_get_net()
-> - which returns NULL for a dying namespace with zero refcount - or
-> access net->user_ns which remains valid throughout the entire
-> ops_undo_list sequence.
->=20
-> Reported-by: syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?id=3Dcb64c22a492202ca929e18262f=
-db8cb89e635c70
-> Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
-> [ Jason: added __net_exit and __read_mostly annotations that were missing=
-=2E ]
-> Fixes: 900575aa33a3 ("wireguard: device: avoid circular netns references")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> Link: https://patch.msgid.link/20260414153944.2742252-5-Jason@zx2c4.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+On a running system this is reachable whenever another TPS6594,
+TPS65224, or TPS652G1 instance probes through the same descriptor
+family. regmap-irq keeps the raw chip pointer, so the later probe
+overwrites the earlier instance's callback context. A later IRQ can
+then run tps6594_handle_post_irq() with the wrong struct tps6594,
+name, chip_id, regmap, and CRC handling path.
 
-sorry about the mail-noise, but I messed up sending this :-(
-Will re-try once I fixed my mistake.
+The issue was found on Linux v6.18.21 during manual auditing of drivers
+that reuse shared regmap_irq_chip descriptors while filling probe-local
+irq_drv_data and name fields before devm_regmap_add_irq_chip(), and was
+confirmed with a focused QEMU no-device validation harness. That test
+showed a later probe could overwrite the earlier registration's saved
+callback context through the shared chip descriptor, while per-probe
+descriptor copies preserved callback ownership for both registrations.
 
-Heiko
+Copy the selected descriptor with devm_kmemdup(), mutate only the
+copy, and pass that copy to devm_regmap_add_irq_chip(). Also mark the
+static descriptors const so probe-local state cannot be written back
+into shared templates again.
 
+Fixes: 325bec7157b3 ("mfd: tps6594: Add driver for TI TPS6594 PMIC")
+Fixes: 9d855b8144e6 ("mfd: tps6594-core: Add TI TPS65224 PMIC core")
+Fixes: 626bb0a45584 ("mfd: tps6594: Add TI TPS652G1 support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/mfd/tps6594-core.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-
+diff --git a/drivers/mfd/tps6594-core.c b/drivers/mfd/tps6594-core.c
+index 8b26c4127472..36904979b6b0 100644
+--- a/drivers/mfd/tps6594-core.c
++++ b/drivers/mfd/tps6594-core.c
+@@ -531,7 +531,7 @@ static int tps6594_handle_post_irq(void *irq_drv_data)
+ 	return ret;
+ };
+ 
+-static struct regmap_irq_chip tps6594_irq_chip = {
++static const struct regmap_irq_chip tps6594_irq_chip = {
+ 	.ack_base = TPS6594_REG_INT_BUCK1_2,
+ 	.ack_invert = 1,
+ 	.clear_ack = 1,
+@@ -543,7 +543,7 @@ static struct regmap_irq_chip tps6594_irq_chip = {
+ 	.handle_post_irq = tps6594_handle_post_irq,
+ };
+ 
+-static struct regmap_irq_chip tps65224_irq_chip = {
++static const struct regmap_irq_chip tps65224_irq_chip = {
+ 	.ack_base = TPS6594_REG_INT_BUCK,
+ 	.ack_invert = 1,
+ 	.clear_ack = 1,
+@@ -555,7 +555,7 @@ static struct regmap_irq_chip tps65224_irq_chip = {
+ 	.handle_post_irq = tps6594_handle_post_irq,
+ };
+ 
+-static struct regmap_irq_chip tps652g1_irq_chip = {
++static const struct regmap_irq_chip tps652g1_irq_chip = {
+ 	.ack_base = TPS6594_REG_INT_BUCK,
+ 	.ack_invert = 1,
+ 	.clear_ack = 1,
+@@ -707,7 +707,10 @@ int tps6594_device_init(struct tps6594 *tps, bool enable_crc)
+ {
+ 	struct device *dev = tps->dev;
+ 	int ret;
+-	struct regmap_irq_chip *irq_chip;
++	const struct regmap_irq_chip *irq_chip;
++	struct regmap_irq_chip irq_chip_copy;
++	const char *irq_chip_name;
++	void *irq_chip_desc;
+ 	unsigned int pwr_on, gpio3_cfg;
+ 	const struct mfd_cell *cells;
+ 	int n_cells;
+@@ -738,15 +741,22 @@ int tps6594_device_init(struct tps6594 *tps, bool enable_crc)
+ 		cells = tps6594_common_cells;
+ 	}
+ 
+-	irq_chip->irq_drv_data = tps;
+-	irq_chip->name = devm_kasprintf(dev, GFP_KERNEL, "%s-%ld-0x%02x",
+-					dev->driver->name, tps->chip_id, tps->reg);
++	irq_chip_name = devm_kasprintf(dev, GFP_KERNEL, "%s-%ld-0x%02x",
++				       dev->driver->name, tps->chip_id, tps->reg);
++	if (!irq_chip_name)
++		return -ENOMEM;
++
++	irq_chip_copy = *irq_chip;
++	irq_chip_copy.irq_drv_data = tps;
++	irq_chip_copy.name = irq_chip_name;
+ 
+-	if (!irq_chip->name)
++	irq_chip_desc = devm_kmemdup(dev, &irq_chip_copy, sizeof(irq_chip_copy),
++				     GFP_KERNEL);
++	if (!irq_chip_desc)
+ 		return -ENOMEM;
+ 
+ 	ret = devm_regmap_add_irq_chip(dev, tps->regmap, tps->irq, IRQF_SHARED | IRQF_ONESHOT,
+-				       0, irq_chip, &tps->irq_data);
++				       0, irq_chip_desc, &tps->irq_data);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add regmap IRQ\n");
+ 
+-- 
+2.34.1
 
