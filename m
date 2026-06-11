@@ -1,96 +1,54 @@
-Return-Path: <stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +oGmNKy4KmobvwMAu9opvQ
-	(envelope-from <stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:24 +0200
+	id XEh4Kre4KmofvwMAu9opvQ
+	(envelope-from <stable+bounces-262704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157A9672590
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 439C3672595
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=e7juqfne;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=IU9WaWHI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262704-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262704-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 241DF3098072
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:28:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90D69300C3B2
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF45409E01;
-	Thu, 11 Jun 2026 13:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187A040D57A;
+	Thu, 11 Jun 2026 13:30:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF6F408029
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB212C3757;
+	Thu, 11 Jun 2026 13:30:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781184531; cv=none; b=aOjrKUyRC1Sb7x0bs7tfd2HBMc4N1OObV2RbXNfCJct3BMZNnskg6YfyELmrrfRrr8ukR0xLlr0hYKzg6Hhw2S/1zh+ICx4n1trtCcRoxb/YUpaxGtUo7i0UQaaOmIvbDHwI00nFTzmRC6CatSwSxqhJo2epYKyGcftgnziShIo=
+	t=1781184622; cv=none; b=A/1lSTw44mjL05WOTUEmXWYRNHXkVUYHvV2SCLvLBjarqQ3fi1ajK7nzk5aNT8/VLxt2rJV4uRLcBJwnXOyMniQMm0+0zHLW2R2hc4o0H5hICK6TgY+hqkUgspeN7nxoAIVFln/wtKlybCLEw0ooftuJ74XLZYIwSZwsb2dijl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781184531; c=relaxed/simple;
-	bh=crKmGM2BPtU1gWofMArc5RSNIxo8syCXCMCQHJjzvSk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uXfE8l57FDaM6jl4CiSRNmRUR7RRmDoCXioFoZqaGEMDe2p4thnhqFRaMG5V0UOcBnrEdu5nlTCUn+hgkcGyAZbZc+rhErY91r88n4KeTPCKLfh4ZfMYLheu7+lRIbh2koUWbRzsgrJhlBQ0gGzHCCvhevf6oW51qMAurwLViJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7juqfne; arc=none smtp.client-ip=209.85.214.181
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c0aa420401so61377505ad.3
-        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 06:28:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781184528; x=1781789328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kr6lr/Zk4qDdZQL9yjJdI0zh4QdrOtRvdN1aN8UPXKU=;
-        b=e7juqfne4BEQWFb7uAsbNpZ6bBRPG3XKGRIkDFcLIKc8iHJxeg9PA4FwMuKx7izMrC
-         zvcAYxmIVlTvSVBp+TMJHP0r1EQvwEbLGK1fGIJ+6nyoZvSRfLUe1zf5TI8PldPbCOr+
-         ExKcFbrPiAyvvEReMVudx9VRa36T2oNDa4o4DPEoXd+cy+n4LSq6ciplza6ioTStRog5
-         CwEA07jb4eRKzZ2RQU/QQ1bYgjYeve4XXm+ZtkLjWDdzygl5E8vZhMSF7XVlOeJPpmcQ
-         13yn1ybBiP5X0e0jfSA0u4mDoweAI90lqnk/Xl4BwjhN5Oif7gfuybYKUrNhIT7cAMPW
-         yw/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781184528; x=1781789328;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kr6lr/Zk4qDdZQL9yjJdI0zh4QdrOtRvdN1aN8UPXKU=;
-        b=FBuoxY4DyfDa0qUMERl0kULLCxhyUR2LMlN+WsguwRTxVwE9QwVUny1EsZKtbayuBi
-         ezuziB93uKakWQqRqqCjsYO/oP34dyQlpzS+wrlerYm9s6ReSnV3oBMG+rogDfif7oEb
-         TYe7IaADc1qpSWQqFqC0Lk61cprNNXGuLODqpKnlM8hHsZG5ZT0GfoYpVNr20ir1bhaz
-         2yCcIOvWWNZ1Ci1GPrkAYaawFH/Fij3DmqXQoZ+9kyq+RQHPtob41q85SzMeYT5P8+oq
-         Ywpx0TYqFsUthOnsHOMApMCyDwlIRXb6OkY1/Gq+9e0qk8b1a1QRry2Gta36tsyoAamt
-         sK5A==
-X-Forwarded-Encrypted: i=1; AFNElJ9I1VsdTBDbeCasTN4KHMMNxBycoEiWAfvpt8mdKB6yPAjlCmEdlo0mtF3Oww9HYgWqtYeA8/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkU4cQ5L2MXYU7wwlpDSsSp+8R/72FOBsWPKPVLuo+RFxjN2Q1
-	vyywh2kDSO/6cIDibBRUxRWklPaR6qBOGCvgYFqP7UBBsgsu5hwAuVmV
-X-Gm-Gg: Acq92OE5AXWwsaTgdpwvyiYEIacHDCy5i/RNX88MZOygxt0ozkt246Rf+QvF06WdQfn
-	Y88HWK31YVfcTRoxUMfmzzuOXem9SMxDC62d8vPk1qgI8VmRmdeJCOE2HkCzl59aQfvMOK16r1Y
-	ejkRZ0sJOZzfXDmzw9g4VM0sScm1dwjlwewTTMi8WJtE43MQj9hhEVpb4ke89km80aHb/VoJgSE
-	BFhIuYlv0GkJzxEZeGdwUnr/JgNjewWruboaNVkjUYqfkc1soB2yRJ3Va+7mOlOI/ANLLNeKvGE
-	BSWud6Fr2CyeTKdQpATA5oATPjr0Jmj3CMjRR1SaBKnwdeEh10tHHNEtMZxhHw8GAmqvirXopBS
-	5W47qoeS/GIu7OOusT8CmGh8X2p5nBcha2hIYaa9z5tP0saKPxfjev4L4uK0TUmEvaAzNwZ7DZ+
-	1IkivqCfk2Mopmlg8F6hk0mI/rfDqfzgXxAFCAK+SltGoz2lVQkUrs3AHOMIEy4WmZEAGbspnoK
-	GeslLDEC/FIBp5JkDOoVzidfcLbi9kgiUCVijP/qXsFVZ3JjDmCGbn5kMUBbCEHIfZavHew/ix9
-	9zKnD4W5Cp8NDOYAkJod0xqaeQnK+z7K4HhhjyEiOHrk5fKj
-X-Received: by 2002:a17:903:90c:b0:2bf:dd8b:7cd with SMTP id d9443c01a7336-2c2f10165e3mr31858515ad.10.1781184528412;
-        Thu, 11 Jun 2026 06:28:48 -0700 (PDT)
-Received: from jfk-HP-EliteBook-640-14-inch-G10-Notebook-PC.cse.unsw.EDU.AU (dyn-dhcp-226.cse.unsw.EDU.AU. [129.94.175.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629cfb4sm292927115ad.59.2026.06.11.06.28.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 06:28:47 -0700 (PDT)
-From: Weigang He <geoffreyhe2@gmail.com>
-To: Hans Verkuil <hverkuil@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: linux-media@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1781184622; c=relaxed/simple;
+	bh=piJtE2ahdVYa+ggULfzDB8d/kV1sx/QZAzOpPP90Gkc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lVmx4LcFtFKXu1A8xPBsdyp2Zt/GDT61S0RXyklZzv/UeF182nhTVCa/1M2bsr6vdrFhwLsAhBAhUB2SBoXjf5kF7yId+8lheeMbYE76H0liDNE4EezeN8eBulIG/OSlj4DwGQmWm8NEflEH1LZrT1DPuk21II/H2A4snYVQFiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=IU9WaWHI; arc=none smtp.client-ip=45.254.49.198
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 420485744;
+	Thu, 11 Jun 2026 21:25:03 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: clm@fb.com,
+	dsterba@suse.com,
+	linux-btrfs@vger.kernel.org
+Cc: naohiro.aota@wdc.com,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Weigang He <geoffreyhe2@gmail.com>
-Subject: [PATCH] media: cec: stm32: prevent out-of-bounds write on RX overflow
-Date: Thu, 11 Jun 2026 23:22:48 +1000
-Message-ID: <20260611132248.114519-1-geoffreyhe2@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: zoned: protect sb_write_pointer() reads with invalidate lock
+Date: Thu, 11 Jun 2026 21:24:50 +0800
+Message-Id: <20260611132450.971236-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,95 +56,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eb6db8f8703a1kunm4232c44d1660e1
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZHUhJVk9PSkJDS0IaQ0MfSlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=IU9WaWHI4YTlvVhpHFkqGyFJ9U1KIWnreKJLh0Myrkamq8J7gR720fAuAmVY7feesrnjwVn07hksuIythqXyDLamVpRgIFKzQRkJuwCFoGZpHvYSoBbwnDRf+MtDvdp5X3PdczAwuX2jRPb3bJIlnCYVhwxIKStvMxd+svwvOfk=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=MYYVWZGuWUy72thSlvgrKpQW5sePp3HufvzonBWY/1U=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262701-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:hverkuil@kernel.org,m:mchehab@kernel.org,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:linux-media@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:geoffreyhe2@gmail.com,m:mcoquelinstm32@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com,foss.st.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[geoffreyhe2@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262704-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:clm@fb.com,m:dsterba@suse.com,m:linux-btrfs@vger.kernel.org,m:naohiro.aota@wdc.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[geoffreyhe2@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 157A9672590
+X-Rspamd-Queue-Id: 439C3672595
 
-stm32_rx_done() appends each received CEC byte to rx_msg.msg[] using
-rx_msg.len as the write index, incrementing it on every RXBR
-(receive-byte-ready) interrupt without checking it against the buffer
-size:
+When both zoned superblock log zones are full, sb_write_pointer() reads
+the last superblock page from each zone with read_cache_page_gfp() to
+compare generations. Those reads go through bdev->bd_mapping without
+filemap_invalidate_lock(), even though the same zoned discovery flow
+later reaches btrfs_read_disk_super(), whose final read already takes
+filemap_invalidate_lock(mapping).
 
-	cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
+A running system can reach this while mounting or scanning a zoned
+filesystem whose superblock log has both zones full. In that state,
+sb_write_pointer() performs two unprotected page-cache reads before
+btrfs_read_disk_super() does its later protected final read.
 
-rx_msg.msg[] is a fixed CEC_MAX_MSG_SIZE (16) byte array in struct
-cec_msg, and rx_msg.len is only reset on RXACKE/RXOVR or after a
-completed message (RXEND). The number of bytes received before RXEND is
-decided by the remote CEC device (it sets EOM), not by the driver. A
-peer that keeps sending bytes without ending the message drives RXBR
-repeatedly, pushing rx_msg.len past 16 and writing peer-controlled bytes
-out of bounds into the surrounding memory. This is reachable in normal
-operation once the driver has probed and receiving is enabled, from the
-IRQ thread, without any local privilege.
+This leaves the early discovery reads outside the same synchronization
+domain used by set_blocksize() when it changes the block-device mapping
+geometry. As a result, read_cache_page_gfp() can race a concurrent
+block-size/layout update on the same mapping and see inconsistent
+geometry across folio allocation and mapping state.
 
-The length check in the CEC core runs on the consumer side, after the
-byte has been stored, so it does not prevent the overflow. Bound the
-index in the driver before the store, as the other platform CEC drivers
-already do (e.g. tegra_cec), dropping the excess bytes of an overlong
-frame.
+This issue was found by our static analysis tool while scanning
+read_cache_page_gfp(bdev->bd_mapping, ...) sites for missing
+filemap_invalidate_lock() coverage, and then manually audited on Linux
+v6.18.21. The same synchronization requirement is already enforced for
+the final read in btrfs_read_disk_super().
 
-Found by static analysis tool CodeQL.
+A focused QEMU KCSAN test then raced the zoned superblock discovery
+path against a set_blocksize-style mapping update on the same
+bdev->bd_mapping. It reported a race between
+blkbszset_update_mapping() and read_cache_page_gfp(), with the read
+side reaching:
 
-Fixes: d69ae57453c8 ("[media] cec: add STM32 cec driver")
+  sb_write_pointer()
+  sb_log_location()
+  btrfs_sb_log_location_bdev()
+  btrfs_read_disk_super()
+
+Add filemap_invalidate_lock()/unlock() around the two
+read_cache_page_gfp() calls in sb_write_pointer() so the zoned
+superblock discovery path uses the same invalidate-lock contract as the
+final read in btrfs_read_disk_super().
+
+Fixes: 12659251ca5d ("btrfs: implement log-structured superblock for ZONED mode")
 Cc: stable@vger.kernel.org
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- drivers/media/cec/platform/stm32/stm32-cec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/zoned.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/cec/platform/stm32/stm32-cec.c b/drivers/media/cec/platform/stm32/stm32-cec.c
-index 1ec0cece0a5b7..8c2fc232202de 100644
---- a/drivers/media/cec/platform/stm32/stm32-cec.c
-+++ b/drivers/media/cec/platform/stm32/stm32-cec.c
-@@ -132,7 +132,8 @@ static void stm32_rx_done(struct stm32_cec *cec, u32 status)
- 		u32 val;
+diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
+index e14a4234954b..edc797a43fb5 100644
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -130,8 +130,10 @@ static int sb_write_pointer(struct block_device *bdev, struct blk_zone *zones,
+ 			u64 bytenr = ALIGN_DOWN(zone_end, BTRFS_SUPER_INFO_SIZE) -
+ 						BTRFS_SUPER_INFO_SIZE;
  
- 		regmap_read(cec->regmap, CEC_RXDR, &val);
--		cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
-+		if (cec->rx_msg.len < CEC_MAX_MSG_SIZE)
-+			cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
- 	}
- 
- 	if (cec->irq_status & RXEND) {
-
-base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
++			filemap_invalidate_lock(mapping);
+ 			page[i] = read_cache_page_gfp(mapping,
+ 					bytenr >> PAGE_SHIFT, GFP_NOFS);
++			filemap_invalidate_unlock(mapping);
+ 			if (IS_ERR(page[i])) {
+ 				if (i == 1)
+ 					btrfs_release_disk_super(super[0]);
 -- 
-2.43.0
-
+2.34.1
 
