@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-262589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262590-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TVjYLEcFKmpdhQMAu9opvQ
-	(envelope-from <stable+bounces-262589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:45:59 +0200
+	id LZNbLkYFKmpahQMAu9opvQ
+	(envelope-from <stable+bounces-262590-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:45:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BD866D889
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:45:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6267A66D882
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:45:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QS07DJNY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262589-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262589-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RIUbwOar;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262590-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262590-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C811A30FBD4C
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:45:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8D53302DFB0
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 00:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6658E1A6836;
-	Thu, 11 Jun 2026 00:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AC51D88D7;
+	Thu, 11 Jun 2026 00:45:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516D226ACC;
-	Thu, 11 Jun 2026 00:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F4C199949;
+	Thu, 11 Jun 2026 00:45:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781138735; cv=none; b=PxIbf0VEB5xjn5YUV/EZaP+oXwO6ZQOjwMSMMrleELqPNRK6vaRdRcyaj8aRnZqWvJTPqzdl3pkarA4TgNLnYoTC+DHQFqzpk7GK5jOvPZ02s2pfEpyRFwypqh3N09Q2PjgNOoN991fzSnDf/lqWe0EQdMxibtuug8IcB77pn4I=
+	t=1781138737; cv=none; b=GVpZWLX10OF56TFt1Y6wSdNVGZJk5cfdp+oiGXH4XL8WZqfd0ekqj7CoYKsQBTEvmJQwh0hBldQJ5f3recjFVfho99io1sy2ijFMp7BkYjXkMLwa48E2HcZo/CwxRo96y1a8PbgkvyCmm+a6VMIf+y2+Drc+80btKCsEfY9H3Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781138735; c=relaxed/simple;
-	bh=hwXwjiQT15eBwFE5mDnQ6aoYNv6u8J6wc6EtSAC5lAs=;
+	s=arc-20240116; t=1781138737; c=relaxed/simple;
+	bh=PR3Oqi5TQM5S1MD49NNzRGEphF4xa22xv9/BSaUvkl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyAChZeBmb8V2JxMgPzUk4PQ98LAq3CFfP+j2i+YmPIZUxuXeWpPZFGEPuc3REyTauLRYyNPW8G7V8XMNXtDB/HI1CXtVfK2ibQ+T68UMHHUqj/05n0CyggJL1KW6zkTcsDchGzeIXMZNCywiR0/Gy+V/ghFB/4F25rLbMcP0II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QS07DJNY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468DE1F00899;
-	Thu, 11 Jun 2026 00:45:32 +0000 (UTC)
+	 MIME-Version; b=ZMVHe58ypBoelgV7ktm8/6mh/rWMWafdqertwCVFs3bfocTKXs6vi45rB4KzlSUXYCaWHdRlRHXLMhaf17ADAlwlTn8GTfWcqh+c+rDEoxknMuZBngWqVIVdn0ad+lCgz/KiFRYdjfkLsFj4SNILPsvE+3p1elckLKkBuju2A9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIUbwOar; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A521F00898;
+	Thu, 11 Jun 2026 00:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781138734;
-	bh=hwXwjiQT15eBwFE5mDnQ6aoYNv6u8J6wc6EtSAC5lAs=;
+	s=k20260515; t=1781138736;
+	bh=PR3Oqi5TQM5S1MD49NNzRGEphF4xa22xv9/BSaUvkl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QS07DJNYJu5hqeh/Zb0LIPX5iRjohZUadtsQN5+NwZ6qIIBbl713/iKM9A0qxx4m2
-	 8BWG0LARy2eVt4Ne43Xw0de5RkpVtQqOUd7apbR2K6KAB71ZqzQilWo3blj55GdDh3
-	 3cQ8Nv+mK8ZcucqYHXMClnG8ypys/TVd4QIflIwIj68KsAzPm0+FLDmklPOi2vmMFW
-	 ekjKY7Q+/c2Chl3LZWx/gnoM+hRnYC6Uxe7qB962w9aPPhICCWmuxV/Jir+bCuQ+lQ
-	 cSWJWNbI7yzPVdVgTCWU1haP13CTJ6xphqtG98fTg1yMyQ5KieaoG6rLAgDJ6czGDn
-	 AQgXQTEMZ6+nA==
+	b=RIUbwOaribefmXn7gOJFOR0McmBexb33G0oQ16M+ASyEaVTNblI2gz+2jbaYDlC12
+	 ovJX6agyAluiXIC6UgPmz/bWUiA2fAq58r9SNnFFTOokeEumiMHxb3wCoaKMHw/4FJ
+	 oGPOQmcCLu42UVJgwoTy+EvivxTBu2JZ4MIAXUMoJuawrfga2corqtgHO+AqKmJM0b
+	 AJ5kW0h+Oznl+u+BNt0/odOJF6Es8KIvW/Xq4EX1EEapoBh9vx/F6rEBEK9s7Nnd8x
+	 O3Uhw31JMT8ChhBlHko62Namk0QPDf6Poj0abg00TJ95oHlvhicEy17GLdhk/9qz+O
+	 5UUOBF7TPJX5w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Sasha Levin <sashal@kernel.org>,
 	Alexey Panov <apanov@astralinux.ru>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	linux-ext4@vger.kernel.org,
+	Jay Vosburgh <j.vosburgh@gmail.com>,
+	Veaceslav Falico <vfalico@gmail.com>,
+	Andy Gospodarek <andy@greyhouse.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Garzik <jeff@garzik.org>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Baokun Li <libaokun@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	lvc-project@linuxtesting.org,
-	syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	stable@kernel.org
-Subject: Re: [PATCH 5.10/5.15] ext4: validate p_idx bounds in ext4_ext_correct_indexes
-Date: Wed, 10 Jun 2026 20:45:19 -0400
-Message-ID: <20260610-stable-reply-0003@kernel.org>
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Subject: Re: [PATCH 5.10] bonding: limit BOND_MODE_8023AD to Ethernet devices
+Date: Wed, 10 Jun 2026 20:45:20 -0400
+Message-ID: <20260610-stable-reply-0004@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260609164430.29988-1-apanov@astralinux.ru>
-References: <20260609164430.29988-1-apanov@astralinux.ru>
+In-Reply-To: <20260609164835.32573-1-apanov@astralinux.ru>
+References: <20260609164835.32573-1-apanov@astralinux.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,21 +85,21 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:apanov@astralinux.ru,m:tytso@mit.edu,m:adilger.kernel@dilger.ca,m:linux-ext4@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:libaokun@linux.alibaba.com,m:jack@suse.cz,m:ojaswin@linux.ibm.com,m:ritesh.list@gmail.com,m:yi.zhang@huawei.com,m:lvc-project@linuxtesting.org,m:syzbot+04c4e65cab786a2e5b7e@syzkaller.appspotmail.com,m:tejas.bharambe@outlook.com,m:stable@kernel.org,m:riteshlist@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,m:apanov@astralinux.ru,m:j.vosburgh@gmail.com,m:vfalico@gmail.com,m:andy@greyhouse.net,m:davem@davemloft.net,m:kuba@kernel.org,m:jeff@garzik.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jv@jvosburgh.net,m:andrew+netdev@lunn.ch,m:edumazet@google.com,m:pabeni@redhat.com,m:lvc-project@linuxtesting.org,m:syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,m:jvosburgh@gmail.com,m:andrew@lunn.ch,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262589-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-262590-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[kernel.org,astralinux.ru,mit.edu,dilger.ca,vger.kernel.org,linux.alibaba.com,suse.cz,linux.ibm.com,gmail.com,huawei.com,linuxtesting.org,syzkaller.appspotmail.com,outlook.com];
+	FREEMAIL_CC(0.00)[kernel.org,astralinux.ru,gmail.com,greyhouse.net,davemloft.net,garzik.org,vger.kernel.org,jvosburgh.net,lunn.ch,google.com,redhat.com,linuxtesting.org,syzkaller.appspotmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -108,18 +109,18 @@ X-Spamd-Result: default: False [-3.16 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,04c4e65cab786a2e5b7e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,netdev,9c081b17773615f24672];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 67BD866D889
+X-Rspamd-Queue-Id: 6267A66D882
 
-On Mon, Jun 09, 2026 at 07:44:30PM +0300, Alexey Panov wrote:
-> [PATCH 5.10/5.15] ext4: validate p_idx bounds in ext4_ext_correct_indexes
+On Mon, Jun 09, 2026 at 07:48:35PM +0300, Alexey Panov wrote:
+> [PATCH 5.10] bonding: limit BOND_MODE_8023AD to Ethernet devices
 
-Queued for 5.15 and 5.10, thanks.
+Queued for 5.10, thanks.
 
 --
 Thanks,
