@@ -1,53 +1,70 @@
-Return-Path: <stable+bounces-262736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id H2VvC9XIKmrnwwMAu9opvQ
-	(envelope-from <stable+bounces-262736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:40:21 +0200
+	id n9whAujJKmodxAMAu9opvQ
+	(envelope-from <stable+bounces-262738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:44:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98537672C71
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:40:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71746672CDD
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:44:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262736-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262736-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gLdHd6LO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262738-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262738-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D4FBC300CEB2
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:40:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F5CA3095C97
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87452F1FC3;
-	Thu, 11 Jun 2026 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA94D3191CE;
+	Thu, 11 Jun 2026 14:44:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6272E40D567;
-	Thu, 11 Jun 2026 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D0233922;
+	Thu, 11 Jun 2026 14:44:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781188817; cv=none; b=Im0EoN/DGoiQzip7PoPVPDLWTzdbq5TZNn7gwRK3f6l/vs/tkFc9zdLQq7znGsRGG0u2f7kzw26OX0mXtm19M4EtPyTzgJMbZQE7TpbT7q4fPc61t0zQAIbpKE/bQTpjD5UsKtKkSqI4CgbaKxQgMWWp5S8aK6EkKkWF5+9zwac=
+	t=1781189089; cv=none; b=hPUc+xuRPgibdIP8eQSjVvNTpoQsGSF8vFvhGlc8UBzG9jW3I0OqvHwLFC6EW9W6cdXDWLNcSLuxPB9ZOwva72w/VZS9WWfL1xjQNsyePmDjhQ4+/m8hl4MS8pR31xAwk8Dam/RQGp8QtTuKwaao8Rc02JdgwX6FRyyaPk1SjIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781188817; c=relaxed/simple;
-	bh=VxlQ8Q/mIPv2p36F1IgHfA/69SnhoWRW8i9Ij8pUEX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wc301FQAm022UKzdpbuFyfvIWGmIENFN9CO54gUNpHKrOnpPvLy4nN0FJWlezjUhnMsfoSBryfLw50kOewwuqVxJWpnTHIEHjwx5GTVVS/tttmW0JJ5BDHxnl6k1TTVEzmQHnBY4ZjnXUJoPYjMJruFwKQM+xnewATIM5EkGRso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.76])
-	by APP-05 (Coremail) with SMTP id zQCowAAXXcDJyCpq2KwXEw--.1062S2;
-	Thu, 11 Jun 2026 22:40:12 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: idryomov@gmail.com,
-	amarkuze@redhat.com,
-	slava@dubeyko.com
-Cc: ceph-devel@vger.kernel.org,
+	s=arc-20240116; t=1781189089; c=relaxed/simple;
+	bh=tGX2theAQhAy9tSUIsfMCcmQQSOrGpJU24wZE8u/g/Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KD/z89X2bNoUII5Z1z3GsE8LAbW2b06SFHERppChUz3entg0PUN/L36MuWG0wJcncT9IsXJDS9anNpiMAYiVx7eQQRNGJE0sy8I2UN46N/ZnJLwS5KFg2vif9Xr8+tzk/k2OFpjEXUuZrH5+VGI5y56wicT29Aqz2lyifmZq3iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLdHd6LO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157431F00893;
+	Thu, 11 Jun 2026 14:44:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781189088;
+	bh=J3IzR5NXDA4imuyDY0iZdwVa7rhntxKKeT3HhY1M8TM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gLdHd6LOElfOLC8x9m8fKdgUDNBqscivHnEJaYP18Hvy6w4iqhb05uuw8fySwTYh4
+	 tSjMoWsB6B7bdYSQywHZgRCXygV/akgCPaSVGO0+E2pYbNjkuNUoi4Txddj1dzwYFF
+	 FdfmqzjcKGTHgmw7uKAWnh3ItLjvjIHAgc/18Ek9U+O8dX16ncTsJx6MrsV0p7t+R+
+	 PehDm0fCn8JW4WV8fwm2bkuMgJj/1wlxe/sQjDf8FcGK1/JBsG6bXV98s6jJzqiVWe
+	 p7D/oG1wRK1+2JnFIMEJ1Bf3PpJZpXIIn5OBtu160YVNYEdiGWUIx8knQ50KTYXxyO
+	 gwOQyqlRtQ8VA==
+From: Simon Horman <horms@kernel.org>
+To: vulab@iscas.ac.cn
+Cc: Simon Horman <horms@kernel.org>,
+	rafal@milecki.pl,
+	bcm-kernel-feedback-list@broadcom.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] ceph: fix refcount leak in ceph_readdir()
-Date: Thu, 11 Jun 2026 22:40:07 +0800
-Message-ID: <20260611144007.88851-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+Subject: Re: [PATCH] net: bgmac: fix refcount leak in bgmac_phy_connect_direct()
+Date: Thu, 11 Jun 2026 15:42:02 +0100
+Message-ID: <20260611144200.600147-3-horms@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260609074411.205176-1-vulab@iscas.ac.cn>
+References: <20260609074411.205176-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,100 +72,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAXXcDJyCpq2KwXEw--.1062S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrW7JFy3Cry3WFyDXF1UZFb_yoW8Xw4fpF
-	4kKas0yrW5J343CF92vFnYvrWF9ay3CF1rCrWxAw129a15Gwsrt3sFyF90gF17Cr4rGrsI
-	qF4kGFW7ZF1UGF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUvXd8UUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoPA2oqhg7QRwAAsf
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-262738-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:idryomov@gmail.com,m:amarkuze@redhat.com,m:slava@dubeyko.com,m:ceph-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262736-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:horms@kernel.org,m:rafal@milecki.pl,m:bcm-kernel-feedback-list@broadcom.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,redhat.com,dubeyko.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sashiko.dev:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 98537672C71
+X-Rspamd-Queue-Id: 71746672CDD
 
-The ceph_readdir() function allocates a ceph_mds_request via
-ceph_mdsc_create_request() and stores it in dfi->last_readdir. In
-the directory entry processing loop, if the entry's offset is less
-than ctx->pos or if the inode pointer is unexpectedly NULL, the
-function returns -EIO without releasing the reference held by
-dfi->last_readdir, causing a refcount leak.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
 
-Fix this by adding ceph_mdsc_put_request(dfi->last_readdir) before
-returning on these error paths. Also set dfi->last_readdir to NULL
-for safety, matching the cleanup done at the normal exit.
+Simon says:
 
-Cc: stable@vger.kernel.org
-Fixes: af9ffa6df7e3 ("ceph: add support to readdir for encrypted names")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+Although the issues reported below are flagged as pre-existing
+I wonder if they should be considered in the scope of this patch (set)
+as they appear to be similar issues to the one this patch addresses.
 ---
- fs/ceph/dir.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+net: bgmac: fix refcount leak in bgmac_phy_connect_direct()
 
-diff --git a/fs/ceph/dir.c b/fs/ceph/dir.c
-index 27ce9e55e947..ef9e92e362d3 100644
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -546,11 +546,16 @@ static int ceph_readdir(struct file *file, struct dir_context *ctx)
- 			pr_warn_client(cl,
- 				"%p %llx.%llx rde->offset 0x%llx ctx->pos 0x%llx\n",
- 				inode, ceph_vinop(inode), rde->offset, ctx->pos);
-+			ceph_mdsc_put_request(dfi->last_readdir);
-+			dfi->last_readdir = NULL;
- 			return -EIO;
- 		}
- 
--		if (WARN_ON_ONCE(!rde->inode.in))
-+		if (WARN_ON_ONCE(!rde->inode.in)) {
-+			ceph_mdsc_put_request(dfi->last_readdir);
-+			dfi->last_readdir = NULL;
- 			return -EIO;
-+		}
- 
- 		ctx->pos = rde->offset;
- 		doutc(cl, "%p %llx.%llx (%d/%d) -> %llx '%.*s' %p\n", inode,
--- 
-2.50.1 (Apple Git-155)
+In bgmac_phy_connect_direct(), fixed_phy_register() returns a
+phy_device with an incremented refcount. If the subsequent
+phy_connect_direct() call fails, the function returns the error
+without releasing the phy_device reference. Add the missing
+fixed_phy_unregister() in the error path to prevent the leak.
 
+> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+> index 3e9c57196a397..c97cf7ebad7f1 100644
+> --- a/drivers/net/ethernet/broadcom/bgmac.c
+> +++ b/drivers/net/ethernet/broadcom/bgmac.c
+> @@ -1456,6 +1456,7 @@ int bgmac_phy_connect_direct(struct bgmac *bgmac)
+>  				 PHY_INTERFACE_MODE_MII);
+>  	if (err) {
+>  		dev_err(bgmac->dev, "Connecting PHY failed\n");
+> +		fixed_phy_unregister(phy_dev);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this driver still leak
+the fixed phy identifier during driver teardown and in other error paths?
+
+In bgmac_enet_remove(), the driver calls phy_disconnect() but does not
+appear to unregister the fixed phy:
+
+drivers/net/ethernet/broadcom/bgmac.c:bgmac_enet_remove() {
+	unregister_netdev(bgmac->net_dev);
+	phy_disconnect(bgmac->net_dev->phydev);
+	netif_napi_del(&bgmac->napi);
+	bgmac_dma_free(bgmac);
+}
+
+Similarly, in the error path of bgmac_enet_probe():
+
+drivers/net/ethernet/broadcom/bgmac.c:bgmac_enet_probe() {
+...
+err_phy_disconnect:
+	phy_disconnect(net_dev->phydev);
+...
+}
+
+Since fixed_phy_register() allocates an identifier from fixed_phy_ids (which
+has a hard limit of 8 slots), failing to unregister it means the identifier
+is never released. After 8 unbind or bind cycles or probe failures, the
+fixed_phy_ids bitmap will be exhausted, permanently failing subsequent probes.
+
+Should fixed_phy_unregister() also be called in these paths to prevent
+exhausting the fixed phy identifiers?
+
+>  		return err;
+>  	}
+>
 
