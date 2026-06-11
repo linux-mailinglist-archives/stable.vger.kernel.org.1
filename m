@@ -1,45 +1,96 @@
-Return-Path: <stable+bounces-262658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bk5iCgCRKmoYsgMAu9opvQ
-	(envelope-from <stable+bounces-262658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:42:08 +0200
+	id i5JvE3mRKmpRsgMAu9opvQ
+	(envelope-from <stable+bounces-262659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:44:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDF1670EEB
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:42:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA95670F4F
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:44:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262658-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262658-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rg8TaMdQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Fxr73VTf;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rg8TaMdQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Fxr73VTf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262659-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=suse.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D220335FC80
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 10:38:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A56CB300BCB6
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 10:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D15F3CCFC4;
-	Thu, 11 Jun 2026 10:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E5D3D5226;
+	Thu, 11 Jun 2026 10:41:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5063D45F8;
-	Thu, 11 Jun 2026 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F108B3D45DE
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 10:41:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781174326; cv=none; b=VoK7grpLzFFBda+R01sayevjL2pmnTmW4TaOKNP+wbHI+wAzMelJG8pT/3ZM0lncN239TFHHvvNR57VHorDBMuALv2rpOl/WF3Cj0w4r6kbORQGuoobrWWDWHf+OMSROX8owjN8XlzSz/0oG1KvFFyJtSwKu5iKlDvVnmAf9EI8=
+	t=1781174475; cv=none; b=T5BpsiDAK2bNtWspxWhXv8fDTpR9bDA0LHJvl/bWuQ+IazM6t6g9Ki52/4oHkZhQ8OatMwkM4HBRcqH3Y3kogQOFHDoCJJOejZ+cueSZgMKZRfa6F5oIXYPvje2qW5ZWNdPB1fjbqKle2hqrKCd3t+0AtMqGL5s3D1RKHGrCoqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781174326; c=relaxed/simple;
-	bh=Ox60/Qurnjavu4NZNXhSBK7a0gRFLOSnM4lCEXouXmo=;
+	s=arc-20240116; t=1781174475; c=relaxed/simple;
+	bh=osfDK15FSftz7gfjZnxbmvGTvlTyEoSyz4LV3QuKhwg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SELbKCwiD5gUG2kHwz1Hnt/QBh+wzAxcfa3pjWwL/xnpEsU3ITYBDWlnYjI5yuK+WTJBz30x42fsIH94aJl8fdoulGTJpGIk2eVonLVbTmL94ONhC85cG1Jnd+AKsz3WSLZSJfMMIc34avNEG0ZrK7W9+sdkjv66QouNYkefiWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Received: from [10.88.128.241] (obninsk.basealt.ru [217.15.195.17])
-	(Authenticated sender: ajratma)
-	by air.basealt.ru (Postfix) with ESMTPSA id 31096233B7;
-	Thu, 11 Jun 2026 13:38:36 +0300 (MSK)
-Message-ID: <8a9fcb14-1fb9-4fec-999d-5f610f6edbb4@altlinux.org>
-Date: Thu, 11 Jun 2026 13:38:35 +0300
+	 In-Reply-To:Content-Type; b=MGRG7T4KioTWFmiZKjncz3QaXCw1RDAnQUv37l5a+0BnRhx1b/jZKwKtxuk/50dBLOJNLaUWnJSTRMMNzdtdyt3qTCFATi+Ai1i5cAlmw70ZFDYoP4LYdSQZE5u47KBQE0dsSZLXybk1R7eProrb0U2kDbT4ILDy9Yj4izIf9EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rg8TaMdQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Fxr73VTf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rg8TaMdQ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Fxr73VTf; arc=none smtp.client-ip=195.135.223.130
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 084A26AF30;
+	Thu, 11 Jun 2026 10:41:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781174472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uHu7E2XqoT0FsRVls0T7yIylb70qW7C5ilx/tc4d4Ps=;
+	b=rg8TaMdQSYQlq/MkRl2DVzsltsld2rbp2dpBErdZldlOkl+HD5q9rBemlQHyqpOF99tYiQ
+	VhpQS5f/9WK6rC0AMrPV5N3hD+MOs5Gn7Igz52ACFCM2h2tIvw261+1kdDpw2DltkUdpfh
+	OvbCKw0RjYlOapSRsHThd5+5S0jejDs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781174472;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uHu7E2XqoT0FsRVls0T7yIylb70qW7C5ilx/tc4d4Ps=;
+	b=Fxr73VTfc2VJNcWPSP6s2r69Fn6rR0HNs0v/SDC7NORvVHAXlfhZ8aAxfKUgNJuwbLslg5
+	hRLGCCLbrRP37yCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1781174472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uHu7E2XqoT0FsRVls0T7yIylb70qW7C5ilx/tc4d4Ps=;
+	b=rg8TaMdQSYQlq/MkRl2DVzsltsld2rbp2dpBErdZldlOkl+HD5q9rBemlQHyqpOF99tYiQ
+	VhpQS5f/9WK6rC0AMrPV5N3hD+MOs5Gn7Igz52ACFCM2h2tIvw261+1kdDpw2DltkUdpfh
+	OvbCKw0RjYlOapSRsHThd5+5S0jejDs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1781174472;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=uHu7E2XqoT0FsRVls0T7yIylb70qW7C5ilx/tc4d4Ps=;
+	b=Fxr73VTfc2VJNcWPSP6s2r69Fn6rR0HNs0v/SDC7NORvVHAXlfhZ8aAxfKUgNJuwbLslg5
+	hRLGCCLbrRP37yCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3568C779A7;
+	Thu, 11 Jun 2026 10:41:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aR4nC8eQKmpkawAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 11 Jun 2026 10:41:11 +0000
+Message-ID: <45aec54a-ec80-48ed-9bcc-84e7bccc11eb@suse.de>
+Date: Thu, 11 Jun 2026 12:41:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,110 +98,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [stable request] mt7921e: backport two mt76 fixes to 6.12.y
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, linux-wireless@vger.kernel.org
-References: <20260610080943.17734-1-rauty@altlinux.org>
- <20260610-stable-reply-0014@kernel.org>
-Content-Language: en-US, ru
-From: Ajrat Makhmutov <rauty@altlinux.org>
-Autocrypt: addr=rauty@altlinux.org; keydata=
- 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
-In-Reply-To: <20260610-stable-reply-0014@kernel.org>
+Subject: Re: [PATCH v5 01/15] drm/amd/display: Handle struct
+ drm_plane_state.ignore_damage_clips
+To: Javier Martinez Canillas <javierm@redhat.com>, mripard@kernel.org,
+ maarten.lankhorst@linux.intel.com, airlied@redhat.com, airlied@gmail.com,
+ simona@ffwll.ch, admin@kodeit.net, gargaditya08@proton.me,
+ paul@crapouillou.net, jani.nikula@linux.intel.com, mhklkml@zohomail.com,
+ zack.rusin@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ harry.wentland@amd.com, sunpeng.li@amd.com, siqueira@igalia.com,
+ alexander.deucher@amd.com, rodrigo.vivi@intel.com,
+ joonas.lahtinen@linux.intel.com, tursulin@ursulin.net,
+ dmitry.osipenko@collabora.com, gurchetansingh@chromium.org, olvaffe@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-mips@vger.kernel.org, virtualization@lists.linux.dev,
+ amd-gfx@lists.freedesktop.org, Zack Rusin <zackr@vmware.com>,
+ stable@vger.kernel.org
+References: <20260610152505.260172-1-tzimmermann@suse.de>
+ <20260610152505.260172-2-tzimmermann@suse.de>
+ <87y0gl5qw8.fsf@ocarina.mail-host-address-is-not-set>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <87y0gl5qw8.fsf@ocarina.mail-host-address-is-not-set>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -4.51
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262658-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[altlinux.org];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:linux-wireless@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[rauty@altlinux.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262659-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:javierm@redhat.com,m:mripard@kernel.org,m:maarten.lankhorst@linux.intel.com,m:airlied@redhat.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:admin@kodeit.net,m:gargaditya08@proton.me,m:paul@crapouillou.net,m:jani.nikula@linux.intel.com,m:mhklkml@zohomail.com,m:zack.rusin@broadcom.com,m:bcm-kernel-feedback-list@broadcom.com,m:harry.wentland@amd.com,m:sunpeng.li@amd.com,m:siqueira@igalia.com,m:alexander.deucher@amd.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tursulin@ursulin.net,m:dmitry.osipenko@collabora.com,m:gurchetansingh@chromium.org,m:olvaffe@gmail.com,m:dri-devel@lists.freedesktop.org,m:linux-hyperv@vger.kernel.org,m:intel-gfx@lists.freedesktop.org,m:intel-xe@lists.freedesktop.org,m:linux-mips@vger.kernel.org,m:virtualization@lists.linux.dev,m:amd-gfx@lists.freedesktop.org,m:zackr@vmware.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	FREEMAIL_TO(0.00)[redhat.com,kernel.org,linux.intel.com,gmail.com,ffwll.ch,kodeit.net,proton.me,crapouillou.net,zohomail.com,broadcom.com,amd.com,igalia.com,intel.com,ursulin.net,collabora.com,chromium.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rauty@altlinux.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.com:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BCDF1670EEB
+X-Rspamd-Queue-Id: 9FA95670F4F
 
-Hi Sasha,
+Hi Javier
 
-> I'm going to hold off on this one. The second commit, 5ed54896b6bd,
-> introduces a reachable dev->mutex self-deadlock on STA-remove-while-ROC;
-> the follow-up that cures it (d5059e52) isn't in any stable tree and was
-> never marked for stable (it's only in linux-next so far).
+Am 11.06.26 um 12:10 schrieb Javier Martinez Canillas:
+> Thomas Zimmermann <tzimmermann@suse.de> writes:
+>
+> Hello Thomas,
+>
+>> The mode-setting pipeline can disabled damage clippings for a commit
+>> by setting ignore_damage_clips in struct drm_plane_state. The commit
+>> will then do a full display update.
+>>
+>> Test the flag in DCN code and do a full update in DCN code if it has
+>> been set.
+>>
+>> Commit 35ed38d58257 ("drm: Allow drivers to indicate the damage helpers
+>> to ignore damage clips") introduced ignore_damage_clips to selectively
+>> ignore damage clipping in certain framebuffer changes. This driver does
+>> not do that, but DRM's damage iterator will soon rely on the flag.
+>> Therefore supporting it here as well make sense for consistency.
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Fixes: 35ed38d58257 ("drm: Allow drivers to indicate the damage helpers to ignore damage clips")
+> I don't think that a Fixes tag is correct here? Your patch series
+> is changing the 'struct drm_plane_state.ignore_damage_clips' and
+> the changes make sense, but definitely isn't a fix in my opinion.
 
-Thanks, and good catch.
-I'll resend the request for all three together as soon as it lands in 
-Linus' tree.
+But shouldn't we have added this test in amdgpu and the other drivers as 
+part of commit 35ed38d58257 ? Sure, these drivers don't use 
+ignore_damage_clips, but it's still an inconsistency wrt damage 
+handlers. Hence the Fixes tag. Another problem is that the drivers never 
+did the test for changes to the plane-state src coordinate that the 
+damage iterator does. But that is only fixed later in the series.
+>
+> Having said that, the change look good to me.
+>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Note for whenever it does: when applied to 6.12.y, d5059e52 needs one 
-trivial
-change - keep del_timer_sync() instead of timer_delete_sync(), as the timer
-API rename is not present in 6.12.y.
+Thanks for reviewing.
 
-Thanks,
-Ajrat
+Best regards
+Thomas
+
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
