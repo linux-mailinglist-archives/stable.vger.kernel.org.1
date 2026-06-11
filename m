@@ -1,191 +1,194 @@
-Return-Path: <stable+bounces-262773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1J3wAaPgKmqkygMAu9opvQ
-	(envelope-from <stable+bounces-262773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:21:55 +0200
+	id eXfREZDfKmo7ygMAu9opvQ
+	(envelope-from <stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:17:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38076736D1
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:21:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FE7673614
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:17:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b="BpRjE/DB";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262773-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262773-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41AA5301A983
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:21:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 48A953010200
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74C8427A0D;
-	Thu, 11 Jun 2026 16:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D0F41930D;
+	Thu, 11 Jun 2026 16:15:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6A0425CF7;
-	Thu, 11 Jun 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134E7395AEE
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 16:15:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194882; cv=none; b=Op5QUHmFEnIj1juv2/h1DXmTD7NUMJjIyI56GUc/l4hu+VYkMuPlc9B4GrWRgNCGwXw7U0ypdDiaSUQYlteiuh43pHGMKbA+WHhN8kyOg6SAwHy7QniJ9WUyZ3XoRNrbhkOrRCo5d05xmFEsia1G42ZzW/5ip3I7gKCXqKkokxw=
+	t=1781194557; cv=none; b=OtkLHLCj+f95Ctf26nizYwQhtKZH+CWLyLIdgKIGpmBq+UUmQohaZf06hNgv7HJgBdLEzz+WscuQvqh5Pe3Bg0H6hgD3b8krkBss9vUu+Xc11E+qiGdFmsHoOttiKcPKkkDdUsgX/IWQyiFYriCsyRcY28kX6pWKkiai0rfcBoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194882; c=relaxed/simple;
-	bh=/t4jyeDK2IvqS0+9MlVEkaR3MYfgo1rC9yuzyQbe5oo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JqYv+CsgxHyv924JcAAe0bqtWfVBv3s77PaRogiER1NOfrwWw4odkkO3pFs822HPlADjaGDKHn9Bs97b08SLQkzvhnZQszFVFABQYh0/uKmo5q0WrwZAc46BYWdJcAmytYsNmMyxKbza4EatosjiXV0F81TZKVdPZYDPL64JiGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=BpRjE/DB; arc=none smtp.client-ip=45.254.49.197
-Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 420765eaa;
-	Fri, 12 Jun 2026 00:16:07 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: broonie@kernel.org
-Cc: david.rhodes@cirrus.com,
-	rf@opensource.cirrus.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	Paul.Handrigan@cirrus.com,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: cs35l34: drain threaded IRQ before runtime suspend
-Date: Fri, 12 Jun 2026 00:15:53 +0800
-Message-Id: <20260611161553.3378721-3-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260611161553.3378721-1-runyu.xiao@seu.edu.cn>
-References: <20260611161553.3378721-1-runyu.xiao@seu.edu.cn>
+	s=arc-20240116; t=1781194557; c=relaxed/simple;
+	bh=cx2qflHw6C4M4RY90ItuEe017sHOEZ5NnTaU/Zxi+us=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=HyUy9BzZH28b1keBDAHk4CN2ZZPVzfFsbY0HUfWpown67fbutdkY2fSZgxJn4JqYu+Y+q9P2GHdsIXCOxKEjXk5omEPrg3GUQWi4nC/6skWbQ052V6YzdOooFS9yU/dX6k0nT1rKPcnJD2FxUrGxK7eK8xmgMIuxjruJoRgXNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.214.198
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c0532a6588so249925ad.0
+        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 09:15:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781194555; x=1781799355;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0lM2grzrB5nVp/LDdwf5++oZa/eGINgQ46KeI9aLB8w=;
+        b=LIhZGq4+QaZwTqvW0FkvxkpXYahByoA0mTaCvAwSMrqWM4vP2cwmPYQ+HS7wAxQhBI
+         8mAFGRN7ryxz1xKq1fz6r1w0ZOfLFV7VUMH6qxNiEmCD0ScXGc+VqPWi2gZ8osJsawpH
+         xqEgscmjpH38WnyUj4ZeV1NKTBaoQULRsOmI3PjRAGabMwaa1OXWNLEMg2OjRjcUrtLB
+         9Z7+R0YfXgpOxXyvGfUi5QwSxluf2c53AgmlG0AYlL4XhSPS1UD0z7LqJCSZ106HG3bQ
+         b49zwkZ5hEh6YAVpriV2Igxo2N853z1kurn02T7p6iaZoYWn506971GitX5dmxJ/k//C
+         37HQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7vnz/5IbYbRM/qKfXgWtBZKGQsBJeNyBu7LxdSlD2DJmgIueAYkDbpkJ/misU0Nd2LYZnAj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGAxKuOGVPtsCfUa6rYdWDGJ4C4fr913CKM9yBhZX5CcF131j5
+	Pe5WxYJ3MpeaMrCAcWOm5BMIOzVq8E20a/2RChGJ01f8IqBaPhPtdyK5KsFUAOOrA2mlj5oSyp/
+	uTHv90+VN7hu3MVwI6amlN8SX3meRdTgSw28FkMIoDkBicM7Dv8x9c8jg6Jc=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9eb77830f003a1kunmccb51b6d16b65d
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSE0YVhpJSkpNQ0xDTkpCTVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=BpRjE/DBu48nvcOQ6bkGn7W+jne3svKx0CeX2CxLeeMB40JSDFNT38Fa0MTlAZlrWMi9mBId907AzeAjl8ANqtczDnR0fdSaqEa47McTuNI7iJn7EpY2V0P9ooHx7QYJ8b3HuqTQfFr091XYmaypcxCoMTmpx0PeQ1wmkp1lqWI=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=i0Zv/u7L567sfUl0cz5HV/ubd0jANpYYqAp7pHutO1U=;
-	h=date:mime-version:subject:message-id:from;
+X-Received: by 2002:a17:903:1112:b0:2c0:c14c:bf38 with SMTP id
+ d9443c01a7336-2c2f229cf4dmr41104675ad.24.1781194555490; Thu, 11 Jun 2026
+ 09:15:55 -0700 (PDT)
+Date: Thu, 11 Jun 2026 09:15:55 -0700
+In-Reply-To: <20260610214523.2905255-2-clopez@suse.de>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
+Subject: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8 intercept on
+ PPR update
+From: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
+To: bp@alien8.de, clopez@suse.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	osteffen@redhat.com, pbonzini@redhat.com, rkagan@virtuozzo.com, 
+	seanjc@google.com, sgarzare@redhat.com, stable@vger.kernel.org, 
+	tglx@kernel.org, x86@kernel.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[cirrus.com,opensource.cirrus.com,gmail.com,perex.cz,suse.com,vger.kernel.org,seu.edu.cn];
-	TAGGED_FROM(0.00)[bounces-262773-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:Paul.Handrigan@cirrus.com,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	TO_DN_NONE(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:bp@alien8.de,m:clopez@suse.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mingo@redhat.com,m:osteffen@redhat.com,m:pbonzini@redhat.com,m:rkagan@virtuozzo.com,m:seanjc@google.com,m:sgarzare@redhat.com,m:stable@vger.kernel.org,m:tglx@kernel.org,m:x86@kernel.org,m:syzbot@lists.linux.dev,m:syzkaller-bugs@googlegroups.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262767-lists,stable=lfdr.de,ci493c6d734b63e050];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlesource.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D38076736D1
+X-Rspamd-Queue-Id: 37FE7673614
 
-cs35l34_runtime_suspend() currently switches the codec into
-regcache_cache_only(true), asserts reset low, and powers the device off
-without first quiescing the threaded IRQ registered by
-devm_request_threaded_irq(). That leaves a window where
-cs35l34_irq_thread() can still run after suspend has removed live
-hardware access.
+syzbot ci has tested the following series
 
-A running system can reach this during runtime PM while the driver still
-has critical fault IRQs unmasked. If the threaded handler runs in that
-window, it reads volatile INT_STATUS_1..4 after cache_only has been
-enabled, ignores the regmap_read() failures, and can still execute the
-PROT_RELEASE_CTL release sequence or the BST fault power-down writes.
+[v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+https://lore.kernel.org/all/20260610214523.2905255-2-clopez@suse.de
+* [PATCH v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
 
-Use disable_irq() before entering cache_only/reset-low/power-off so any
-in-flight threaded handler is drained and no new IRQ thread can run
-while the device is suspended. Re-enable the IRQ only after
-runtime_resume() has restored live register access with regcache_sync().
-Since probe only logs request_threaded_irq() failures and keeps going,
-track whether the IRQ was actually installed before disabling or
-re-enabling it.
+and found the following issue:
+WARNING in vmx_update_cr8_intercept
 
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+Full report is available here:
+https://ci.syzbot.org/series/d94aebb2-8082-4777-ab08-5c3a0d680bed
+
+***
+
+WARNING in vmx_update_cr8_intercept
+
+tree:      linux-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
+base:      c1f7303302927f9cbf4efedf70f0512cde168c65
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/8f417377-50a6-450a-8ce0-a83de33b8c6d/config
+syz repro: https://ci.syzbot.org/findings/62a660e6-a9b1-42ca-9cf0-7aadd2f5d292/syz_repro
+
+------------[ cut here ]------------
+debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
+WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
+Modules linked in:
+CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
+RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
+Code: 0b 90 e9 f1 fe ff ff e8 30 12 69 00 90 0f 0b 90 e9 59 fe ff ff e8 22 12 69 00 e8 ad 86 d6 ff e9 ca fe ff ff e8 13 12 69 00 90 <0f> 0b 90 e9 fc fc ff ff e8 05 12 69 00 e8 90 86 d6 ff eb a7 48 c7
+RSP: 0018:ffffc9000271f758 EFLAGS: 00010293
+RAX: ffffffff815d048d RBX: ffff888113380000 RCX: ffff8881142b8000
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: 00000000ffffffff R08: ffff8881114d9703 R09: 1ffff1102229b2e0
+R10: dffffc0000000000 R11: ffffed102229b2e1 R12: 0000000000000000
+R13: dffffc0000000000 R14: ffff888116d0bca0 R15: 0000000000000001
+FS:  00007ff34d6b86c0(0000) GS:ffff88818dc9b000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffc75e78ae8 CR3: 000000010c609000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
+ kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
+ kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
+ kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
+ kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
+ kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff34c79ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff34d6b8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007ff34ca15fa0 RCX: 00007ff34c79ce59
+RDX: 0000000000000002 RSI: 000000000000ae41 RDI: 0000000000000004
+RBP: 00007ff34c832d6f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ff34ca16038 R14: 00007ff34ca15fa0 R15: 00007ffe4bc28aa8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
- sound/soc/codecs/cs35l34.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index a5a8075598ff..35bc38132f23 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -45,6 +45,7 @@ struct  cs35l34_private {
- 	int num_core_supplies;
- 	int mclk_int;
- 	bool tdm_mode;
-+	bool irq_requested;
- 	struct gpio_desc *reset_gpio;	/* Active-low reset GPIO */
- };
- 
-@@ -1032,10 +1033,12 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client)
- 	}
- 
- 	ret = devm_request_threaded_irq(&i2c_client->dev, i2c_client->irq, NULL,
--			cs35l34_irq_thread, IRQF_ONESHOT | IRQF_TRIGGER_LOW,
--			"cs35l34", cs35l34);
-+				cs35l34_irq_thread, IRQF_ONESHOT | IRQF_TRIGGER_LOW,
-+				"cs35l34", cs35l34);
- 	if (ret != 0)
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
-+	else
-+		cs35l34->irq_requested = true;
- 
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
- 				"reset", GPIOD_OUT_LOW);
-@@ -1140,6 +1143,9 @@ static int cs35l34_runtime_resume(struct device *dev)
- 		dev_err(dev, "Failed to restore register cache\n");
- 		goto err;
- 	}
-+
-+	if (cs35l34->irq_requested)
-+		enable_irq(to_i2c_client(dev)->irq);
- 	return 0;
- err:
- 	regcache_cache_only(cs35l34->regmap, true);
-@@ -1153,6 +1159,10 @@ static int cs35l34_runtime_suspend(struct device *dev)
- {
- 	struct cs35l34_private *cs35l34 = dev_get_drvdata(dev);
- 
-+	/* Drain and block the threaded IRQ before cache_only/power-off. */
-+	if (cs35l34->irq_requested)
-+		disable_irq(to_i2c_client(dev)->irq);
-+
- 	regcache_cache_only(cs35l34->regmap, true);
- 	regcache_mark_dirty(cs35l34->regmap);
- 
--- 
-2.34.1
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
