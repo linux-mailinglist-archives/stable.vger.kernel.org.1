@@ -1,194 +1,140 @@
-Return-Path: <stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eXfREZDfKmo7ygMAu9opvQ
-	(envelope-from <stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:17:20 +0200
+	id nq+7CuDhKmoKywMAu9opvQ
+	(envelope-from <stable+bounces-262769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:27:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FE7673614
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:17:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5116737C5
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:27:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262767-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262769-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262769-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 48A953010200
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:16:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 208CA353B101
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D0F41930D;
-	Thu, 11 Jun 2026 16:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256B430674E;
+	Thu, 11 Jun 2026 16:17:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134E7395AEE
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 16:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F381BD9C9;
+	Thu, 11 Jun 2026 16:17:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194557; cv=none; b=OtkLHLCj+f95Ctf26nizYwQhtKZH+CWLyLIdgKIGpmBq+UUmQohaZf06hNgv7HJgBdLEzz+WscuQvqh5Pe3Bg0H6hgD3b8krkBss9vUu+Xc11E+qiGdFmsHoOttiKcPKkkDdUsgX/IWQyiFYriCsyRcY28kX6pWKkiai0rfcBoA=
+	t=1781194674; cv=none; b=uzjB9UM4DHuCvdycq7ExcLYrwR1Kd2XhuLclRK4MRU7BsrZQ5BHpMVoAg5avpAkQfcyBU38Wi2MK6Wf+6KWHIWMfn9NqDMx+3ZSAOp9uwceUUSY8VNjI09Zw38QGrJrpZeSP0jlC4FGSn3S2LTr8kKPaDT3LtM8JwxCho7h+G7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194557; c=relaxed/simple;
-	bh=cx2qflHw6C4M4RY90ItuEe017sHOEZ5NnTaU/Zxi+us=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=HyUy9BzZH28b1keBDAHk4CN2ZZPVzfFsbY0HUfWpown67fbutdkY2fSZgxJn4JqYu+Y+q9P2GHdsIXCOxKEjXk5omEPrg3GUQWi4nC/6skWbQ052V6YzdOooFS9yU/dX6k0nT1rKPcnJD2FxUrGxK7eK8xmgMIuxjruJoRgXNyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.214.198
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c0532a6588so249925ad.0
-        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 09:15:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781194555; x=1781799355;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0lM2grzrB5nVp/LDdwf5++oZa/eGINgQ46KeI9aLB8w=;
-        b=LIhZGq4+QaZwTqvW0FkvxkpXYahByoA0mTaCvAwSMrqWM4vP2cwmPYQ+HS7wAxQhBI
-         8mAFGRN7ryxz1xKq1fz6r1w0ZOfLFV7VUMH6qxNiEmCD0ScXGc+VqPWi2gZ8osJsawpH
-         xqEgscmjpH38WnyUj4ZeV1NKTBaoQULRsOmI3PjRAGabMwaa1OXWNLEMg2OjRjcUrtLB
-         9Z7+R0YfXgpOxXyvGfUi5QwSxluf2c53AgmlG0AYlL4XhSPS1UD0z7LqJCSZ106HG3bQ
-         b49zwkZ5hEh6YAVpriV2Igxo2N853z1kurn02T7p6iaZoYWn506971GitX5dmxJ/k//C
-         37HQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+7vnz/5IbYbRM/qKfXgWtBZKGQsBJeNyBu7LxdSlD2DJmgIueAYkDbpkJ/misU0Nd2LYZnAj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGAxKuOGVPtsCfUa6rYdWDGJ4C4fr913CKM9yBhZX5CcF131j5
-	Pe5WxYJ3MpeaMrCAcWOm5BMIOzVq8E20a/2RChGJ01f8IqBaPhPtdyK5KsFUAOOrA2mlj5oSyp/
-	uTHv90+VN7hu3MVwI6amlN8SX3meRdTgSw28FkMIoDkBicM7Dv8x9c8jg6Jc=
+	s=arc-20240116; t=1781194674; c=relaxed/simple;
+	bh=9H4V2pExes05I7O70GtQWQ5UQXp8LoyP47luW0j1+eA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E6IVZgdMi6EWqB4ES6TrqSsd5ajfgNdbXLgDw42WMJDLGcOgqQ0y1VrrixEGDnb/7ofJATM/PrFyZ5t7B+naE0+9e+jHmwennTOKcA2O5lP0S8spcwB37QNdEo8azE8JXddL1QUAL3k38L2H5bB8T+hAOGu76uT1kuEOAIdowY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowACX99qj3ypqGsIZEw--.1776S2;
+	Fri, 12 Jun 2026 00:17:41 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: anna-maria@linutronix.de,
+	frederic@kernel.org,
+	tglx@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] posix-cpu-timers: Fix pid refcount leak in do_cpu_nanosleep() error path
+Date: Fri, 12 Jun 2026 00:17:38 +0800
+Message-ID: <20260611161738.97043-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a17:903:1112:b0:2c0:c14c:bf38 with SMTP id
- d9443c01a7336-2c2f229cf4dmr41104675ad.24.1781194555490; Thu, 11 Jun 2026
- 09:15:55 -0700 (PDT)
-Date: Thu, 11 Jun 2026 09:15:55 -0700
-In-Reply-To: <20260610214523.2905255-2-clopez@suse.de>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
-Subject: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8 intercept on
- PPR update
-From: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
-To: bp@alien8.de, clopez@suse.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
-	osteffen@redhat.com, pbonzini@redhat.com, rkagan@virtuozzo.com, 
-	seanjc@google.com, sgarzare@redhat.com, stable@vger.kernel.org, 
-	tglx@kernel.org, x86@kernel.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACX99qj3ypqGsIZEw--.1776S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XF47Cr1fCw17Ww48Cry8Xwb_yoWkKrc_Kr
+	1rXF93Jw15Cw42vw4UA3yjvryYgr4qgFW8Cw4UKFZxCa98Ar15A3yDZrn0kF4kZFsxu3WU
+	Crs5u3sFvw17ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUehL0UUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoPA2oqzjQvPwABsr
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bp@alien8.de,m:clopez@suse.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mingo@redhat.com,m:osteffen@redhat.com,m:pbonzini@redhat.com,m:rkagan@virtuozzo.com,m:seanjc@google.com,m:sgarzare@redhat.com,m:stable@vger.kernel.org,m:tglx@kernel.org,m:x86@kernel.org,m:syzbot@lists.linux.dev,m:syzkaller-bugs@googlegroups.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-262767-lists,stable=lfdr.de,ci493c6d734b63e050];
+	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:anna-maria@linutronix.de,m:frederic@kernel.org,m:tglx@kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262769-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlesource.com:url,appspotmail.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,cpu.pid:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37FE7673614
+X-Rspamd-Queue-Id: 6A5116737C5
 
-syzbot ci has tested the following series
+In do_cpu_nanosleep(), posix_cpu_timer_create() takes a pid reference
+via get_pid() and stores it in timer.it.cpu.pid. If the subsequent
+posix_cpu_timer_set() call fails, the function returns immediately
+without calling posix_cpu_timer_del() to release the pid reference,
+causing a leak.
 
-[v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
-https://lore.kernel.org/all/20260610214523.2905255-2-clopez@suse.de
-* [PATCH v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+Fix it by calling posix_cpu_timer_del() before the unlock-and-return
+on the error path, consistent with the other exit paths in the same
+function.
 
-and found the following issue:
-WARNING in vmx_update_cr8_intercept
-
-Full report is available here:
-https://ci.syzbot.org/series/d94aebb2-8082-4777-ab08-5c3a0d680bed
-
-***
-
-WARNING in vmx_update_cr8_intercept
-
-tree:      linux-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next
-base:      c1f7303302927f9cbf4efedf70f0512cde168c65
-arch:      amd64
-compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-config:    https://ci.syzbot.org/builds/8f417377-50a6-450a-8ce0-a83de33b8c6d/config
-syz repro: https://ci.syzbot.org/findings/62a660e6-a9b1-42ca-9cf0-7aadd2f5d292/syz_repro
-
-------------[ cut here ]------------
-debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
-WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
-WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
-Modules linked in:
-CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
-RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
-Code: 0b 90 e9 f1 fe ff ff e8 30 12 69 00 90 0f 0b 90 e9 59 fe ff ff e8 22 12 69 00 e8 ad 86 d6 ff e9 ca fe ff ff e8 13 12 69 00 90 <0f> 0b 90 e9 fc fc ff ff e8 05 12 69 00 e8 90 86 d6 ff eb a7 48 c7
-RSP: 0018:ffffc9000271f758 EFLAGS: 00010293
-RAX: ffffffff815d048d RBX: ffff888113380000 RCX: ffff8881142b8000
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: 00000000ffffffff R08: ffff8881114d9703 R09: 1ffff1102229b2e0
-R10: dffffc0000000000 R11: ffffed102229b2e1 R12: 0000000000000000
-R13: dffffc0000000000 R14: ffff888116d0bca0 R15: 0000000000000001
-FS:  00007ff34d6b86c0(0000) GS:ffff88818dc9b000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffc75e78ae8 CR3: 000000010c609000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
- kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
- kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
- kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
- kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
- kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ff34c79ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ff34d6b8028 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ff34ca15fa0 RCX: 00007ff34c79ce59
-RDX: 0000000000000002 RSI: 000000000000ae41 RDI: 0000000000000004
-RBP: 00007ff34c832d6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ff34ca16038 R14: 00007ff34ca15fa0 R15: 00007ffe4bc28aa8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ kernel/time/posix-cpu-timers.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index 0de2bb7cbec0..6f3ddb2b1f46 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -1504,6 +1504,7 @@ static int do_cpu_nanosleep(const clockid_t which_clock, int flags,
+ 		spin_lock_irq(&timer.it_lock);
+ 		error = posix_cpu_timer_set(&timer, flags, &it, NULL);
+ 		if (error) {
++			posix_cpu_timer_del(&timer);
+ 			spin_unlock_irq(&timer.it_lock);
+ 			return error;
+ 		}
+-- 
+2.50.1 (Apple Git-155)
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
 
