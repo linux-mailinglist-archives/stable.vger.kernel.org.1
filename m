@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-262768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yRTIGCbhKmrXygMAu9opvQ
-	(envelope-from <stable+bounces-262768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:24:06 +0200
+	id SyfdNwviKmoWywMAu9opvQ
+	(envelope-from <stable+bounces-262772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:27:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA113673744
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:24:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3073A6737EB
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 18:27:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=LOPuWeIV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262768-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262768-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=ZSHyf1vQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262772-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262772-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBA473564A9E
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:18:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5BF732FDEBB
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 16:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9534418CB;
-	Thu, 11 Jun 2026 16:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B8C426D09;
+	Thu, 11 Jun 2026 16:21:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AA642B725;
-	Thu, 11 Jun 2026 16:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13976395AD2;
+	Thu, 11 Jun 2026 16:21:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781194644; cv=none; b=Su+yC44wnoDNMKzpL/EY0HSKkswvPEhA7xu/BEzwcJ6bDy3TcApqQmntwNeEm6STyrHTGLgiqTn7gMUuSrrsOa46sJ0jAV+bRwZIX620l8vXHPFf1Quub3mVOsLW5sYvG70g476lBFY+HnbZkzXbm0Pp71N0g9MlUP7xk2A0riw=
+	t=1781194881; cv=none; b=OPSWQ6MJoOwbk563zqDAp4K0mUn5AFyVufkWTr9rxLWsJEALFbbkywHoLEFwl9/dc2mi5SeqeaqA5mbb9BBIa5gXPPXdkzgJgTacXeJb7kT31H7zzdcpu9eQSFDrWqMwxXz76TqvRL0fW7l+Ukz/P5bNH1oR0wXQOSq3TugDiVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781194644; c=relaxed/simple;
-	bh=xpmzJMC9Lj1r+79ySTS1jkkVd7vSUHY35sGpP9wu+3U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YM9FZp5+FjpIkl69ssMpvbvgtydy7S+Uv3zyxwHLFlK+EaLMQbz8R56Rz99oRiSWdlbPWFx1gEAXWFUYKXeAwIzW+ElW6ytYFbKNzke6d/fKzGpRk9KiUrmh9+7WhntAz/7/uPtkv5ZEyHKi6x/jwByQcdLIAbAoPQM55uN5kBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=LOPuWeIV; arc=none smtp.client-ip=45.254.49.198
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 42075fbe8;
-	Fri, 12 Jun 2026 00:12:08 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	marcin.szycik@linux.intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1781194881; c=relaxed/simple;
+	bh=XJc86QB+5kL1ZRVdMFWfLc4uKAaSmvYsb3ACW49+rOM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=c/7Uslj0aIJQIyGYnJGDFgLOp+4DS4yYfH8j6Nc4sUh2AsvOb7dn+vIbrUbnl0SZXeme/hFfy1w+qS1LjKYnWQu16yw6Z5Vyh4jK9EsBn4m1uFwp2nc2oyuEft//FQ1M1QMmXvHiAtYiLxilN3h0Fiyl5d5tZGqrxN65UJ5psCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=ZSHyf1vQ; arc=none smtp.client-ip=45.254.49.198
+Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 420765ea9;
+	Fri, 12 Jun 2026 00:16:07 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: broonie@kernel.org
+Cc: david.rhodes@cirrus.com,
+	rf@opensource.cirrus.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	Paul.Handrigan@cirrus.com,
+	linux-sound@vger.kernel.org,
+	patches@opensource.cirrus.com,
 	linux-kernel@vger.kernel.org,
-	zilin@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
 	stable@vger.kernel.org
-Subject: [PATCH net v2] ice: fix memory leak in ice_lbtest_prepare_rings()
-Date: Fri, 12 Jun 2026 00:12:04 +0800
-Message-Id: <20260611161204.605962-1-dawei.feng@seu.edu.cn>
+Subject: [PATCH 1/2] ASoC: cs35l33: drain threaded IRQ before runtime suspend
+Date: Fri, 12 Jun 2026 00:15:52 +0800
+Message-Id: <20260611161553.3378721-2-runyu.xiao@seu.edu.cn>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260611161553.3378721-1-runyu.xiao@seu.edu.cn>
+References: <20260611161553.3378721-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,113 +64,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9eb77489aa03a2kunm2fb335821bb296
+X-HM-Tid: 0a9eb7782d8303a1kunmccb51b6d16b65a
 X-HM-MType: 10
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTh5LVh8ZH0JOTk1MQx9DQ1YeHw
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSRhMVhoaGUpLTU9CTkMdSlYeHw
 	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
 	xVSktLVUpCS0tZBg++
 DKIM-Signature: a=rsa-sha256;
-	b=LOPuWeIVsjZnYtyyAQfxsVo40kaSfbJuE9As/8gn1PRAcCoA+4YvH0dRXq9O1d7OrTIJ0xpoQQiTzFXqO/xQBvhGwRUUIJE6nMUcUvQ74luUn3Fe9bZHv03bh2Bnh3njX9SyNFl/rRspaxF7gNmrAiHLbc0OaWvVDQTxNbo4NV8=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=9Q52+xgmmc1yQ1BqrOtrtFbwp3KVyEeS2vTssPxdECo=;
+	b=ZSHyf1vQnAq1O4g3mJTHAD+EnfM0bKcmCetFhXcDC8gbb8fnNb73QlC4Cexq+rMneVijjojALUfsTQ1ShWXSIQqN5BBsbBlByvMx1/lMfiRiOU7ghROWvbjT0l8QUKh5Jtm9D9R+UeJ0xlsM7VrAzQyJ51OmL7kpqamrVWI9Yqo=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=JcD5WughWGOu5c6ypcsnW+u0HANazIyLykF4ul8LDwg=;
 	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:marcin.szycik@linux.intel.com,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262768-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[cirrus.com,opensource.cirrus.com,gmail.com,perex.cz,suse.com,vger.kernel.org,seu.edu.cn];
+	TAGGED_FROM(0.00)[bounces-262772-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:david.rhodes@cirrus.com,m:rf@opensource.cirrus.com,m:lgirdwood@gmail.com,m:perex@perex.cz,m:tiwai@suse.com,m:Paul.Handrigan@cirrus.com,m:linux-sound@vger.kernel.org,m:patches@opensource.cirrus.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA113673744
+X-Rspamd-Queue-Id: 3073A6737EB
 
-ice_lbtest_prepare_rings() frees Rx rings only when
-ice_vsi_start_all_rx_rings() fails. If ice_vsi_setup_rx_rings() fails
-after allocating some descriptors, or if ice_vsi_cfg_lan() fails after
-the Rx rings were prepared, the function reaches the Tx cleanup path
-without releasing the initialized Rx resources.
+cs35l33_runtime_suspend() currently switches the codec into
+regcache_cache_only(true) and powers it down without first quiescing the
+threaded IRQ registered by devm_request_threaded_irq(). That leaves a
+window where cs35l33_irq_thread() can still run after suspend has closed
+off live register access.
 
-Fix this by adding separate unwind paths for Rx setup failure and LAN
-configuration failure. The Rx setup failure path releases the partially
-prepared Rx rings before freeing Tx rings, while later failures first
-undo the LAN Tx configuration and then release the Rx rings in reverse
-setup order.
+A running system can reach this during runtime PM while the driver still
+has critical fault IRQs unmasked. If the threaded handler runs in that
+window, it reads volatile INT_STATUS_1/2 after cache_only has been
+enabled, ignores the regmap_read() failures, and can still drive the
+AMP_SHORT_RLS, CAL_ERR_RLS, OTE_RLS, and OTW_RLS release paths.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc5.
+Use disable_irq() before entering cache_only/power-off so any in-flight
+threaded handler is drained and no new IRQ thread can run during the
+suspended state. Re-enable the IRQ only after runtime_resume() has
+restored live register access with regcache_sync(). Since probe only
+warns if devm_request_threaded_irq() fails, track whether the IRQ was
+actually installed before disabling or re-enabling it.
 
-An x86_64 allyesconfig build showed no new warnings. As we do not have an
-Intel E800 Series adapter available to run the ethtool offline loopback
-selftest, no runtime testing was able to be performed.
-
-Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
+Fixes: 3333cb7187b9 ("ASoC: cs35l33: Initial commit of the cs35l33 CODEC driver.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
-Changes in v2:
-- Fix cleanup order
+ sound/soc/codecs/cs35l33.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index f28416a707d7..10a4abc66974 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -1069,18 +1069,18 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
+diff --git a/sound/soc/codecs/cs35l33.c b/sound/soc/codecs/cs35l33.c
+index c927592f90c9..af9dad199084 100644
+--- a/sound/soc/codecs/cs35l33.c
++++ b/sound/soc/codecs/cs35l33.c
+@@ -40,6 +40,7 @@ struct cs35l33_private {
+ 	struct regmap *regmap;
+ 	struct gpio_desc *reset_gpio;
+ 	bool amp_cal;
++	bool irq_requested;
+ 	int mclk_int;
+ 	struct regulator_bulk_data core_supplies[2];
+ 	int num_core_supplies;
+@@ -881,6 +882,9 @@ static int cs35l33_runtime_resume(struct device *dev)
+ 		goto err;
+ 	}
  
- 	status = ice_vsi_cfg_lan(vsi);
- 	if (status)
--		goto err_setup_rx_ring;
-+		goto err_cfg_lan;
- 
- 	status = ice_vsi_start_all_rx_rings(vsi);
- 	if (status)
--		goto err_start_rx_ring;
-+		goto err_cfg_lan;
- 
++	if (cs35l33->irq_requested)
++		enable_irq(to_i2c_client(dev)->irq);
++
  	return 0;
  
--err_start_rx_ring:
--	ice_vsi_free_rx_rings(vsi);
--err_setup_rx_ring:
-+err_cfg_lan:
- 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
-+err_setup_rx_ring:
-+	ice_vsi_free_rx_rings(vsi);
- err_setup_tx_ring:
- 	ice_vsi_free_tx_rings(vsi);
+ err:
+@@ -900,6 +904,10 @@ static int cs35l33_runtime_suspend(struct device *dev)
+ 	/* redo the calibration in next power up */
+ 	cs35l33->amp_cal = false;
  
++	/* Drain and block the threaded IRQ before cache_only/power-off. */
++	if (cs35l33->irq_requested)
++		disable_irq(to_i2c_client(dev)->irq);
++
+ 	regcache_cache_only(cs35l33->regmap, true);
+ 	regcache_mark_dirty(cs35l33->regmap);
+ 	regulator_bulk_disable(cs35l33->num_core_supplies,
+@@ -1154,10 +1162,12 @@ static int cs35l33_i2c_probe(struct i2c_client *i2c_client)
+ 	}
+ 
+ 	ret = devm_request_threaded_irq(&i2c_client->dev, i2c_client->irq, NULL,
+-			cs35l33_irq_thread, IRQF_ONESHOT | IRQF_TRIGGER_LOW,
+-			"cs35l33", cs35l33);
++				cs35l33_irq_thread, IRQF_ONESHOT | IRQF_TRIGGER_LOW,
++				"cs35l33", cs35l33);
+ 	if (ret != 0)
+ 		dev_warn(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
++	else
++		cs35l33->irq_requested = true;
+ 
+ 	/* We could issue !RST or skip it based on AMP topology */
+ 	cs35l33->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
 -- 
 2.34.1
 
