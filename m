@@ -1,67 +1,74 @@
-Return-Path: <stable+bounces-262752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r/JqArHTKmqyxgMAu9opvQ
-	(envelope-from <stable+bounces-262752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:26:41 +0200
+	id ovX6NMfTKmq2xgMAu9opvQ
+	(envelope-from <stable+bounces-262753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:27:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3896730C7
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:26:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A096730DA
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:27:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EytGKTvE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262752-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262752-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bKbwMp+G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262753-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262753-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3ABD530B143E
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:26:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9FEF03065E91
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BA540C5DA;
-	Thu, 11 Jun 2026 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58BA40F8ED;
+	Thu, 11 Jun 2026 15:26:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87D344DA8;
-	Thu, 11 Jun 2026 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C7840FDB6;
+	Thu, 11 Jun 2026 15:26:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781191589; cv=none; b=NRbn8q3SBaU7/G86rxp323Voa9Fcm6lHGJUOiYPhnssf9WJQcwOfZwBzusogBO2f4hTb94v5w1etU+Xrk35nUjVn9RqACKR5uQn+8csMp9a47Wp6iow/T7Lwvmks+Nf1Nvh9A/dXYbW9zoeIYsbK+96s7CwG6bB0/jcYsjZJMWI=
+	t=1781191591; cv=none; b=fhXamVxPB1nGghTQysDFdV+V0dRePW5n+M9g5xk24mKK4fDE58GeA3Zk8ViIZsO0YhVjciWlhqnlHpYGTC0j7U1B58DIlb6Od7am2rI3uy0xWJU6uGw3hE0XX3qHv0IUotH3ffRu7F92OVN5qPfQA+AzdplHN0DNC09AtYBREC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781191589; c=relaxed/simple;
-	bh=XTWajMK6bH1jKnuhcK0cazfy6hb2heIOrcYynGZuUfc=;
+	s=arc-20240116; t=1781191591; c=relaxed/simple;
+	bh=6LXrZ1aYkYPQ86R1qjEGHQtqIpJ4sdxGxcM/MDc8B7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6y02DtyM5ZBX1U71M/4+yWKnkWljxBtNeeYLIYa9x1F8RXX6acbPBoDkR4e8IcNtlx1gGb6s0wRn5e0xwXWbphSBylED6sKqJlPT775Qq12JeRDFaO3KsdkoPD1GCCpnmDO17wockyCyMb+lpWotKNovDH7ZqNAnn6dPbrzm+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EytGKTvE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEA11F00893;
-	Thu, 11 Jun 2026 15:26:27 +0000 (UTC)
+	 MIME-Version; b=q2tI6z5GyfijuIWBa+TXvkBliW5AvUhoHGpEB0fvbLzQGYO5u+so5AozkupvVgu0YJOxXVPv/5vDDKtVRmLx3ZFrLmRgiDs+SwfcGTkSB92wafogCM4hHd50zhjWYXAzZzZZkKtHdTf99MFMJlqsVWPSr67/jIbDEKrskps3r2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bKbwMp+G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80E01F00898;
+	Thu, 11 Jun 2026 15:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781191588;
-	bh=XTWajMK6bH1jKnuhcK0cazfy6hb2heIOrcYynGZuUfc=;
+	s=k20260515; t=1781191590;
+	bh=6LXrZ1aYkYPQ86R1qjEGHQtqIpJ4sdxGxcM/MDc8B7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EytGKTvEv/LBxF+nw+betOjnSHgQhS3cBMqcWjSKMUgm7eK+cticIsv9l/OgIV7ql
-	 Pj7vDBKDSFpEweSMY/tyHz+D2g3xXpf6N6R2Dg6u+o/sult5zvXzPT9TgZRmSYRDdK
-	 yc55E0ipqN7ww4j149UVJxdDmmwYGGa7PI57ewofcB5tF4a22pYQT8DNwUH4HgZ5Yx
-	 tTnuA1dND1KakGejJdvtjTi6lN+tKVxtRHJfmbC7ij+Ha1TD5u+o+qTRl6sIrfnIAF
-	 qNwTgfdLiTnIZIzlRu/vUCYEgCoNGlMNQtJzEhxKa6dubNSxrOK8eIcLPv+4n1MInL
-	 yvJzZSKDHyH0Q==
+	b=bKbwMp+GLD928jlx1bO+ICAuwTGOGQjGBZenytNiE3RTXfjNV4m2i/MolfJ9/Is3G
+	 Fh73XwawgD+1MUlrJS2MxpCqJyLK8xgOWbFi2SObepgpXFS3V4G3gAOdMxefCdq+dt
+	 f8FmIIbegf7ozBOfr/2zpy28MuoEFI0FclNc9KBfyPigKAdPnzJ1bmB1QY6JT0i4cB
+	 YD6BGzJ9/ifn9nGhD98P/qSOCMdJeQvtHS5yOwhNEIDdtMn/3ODC1aiHH0Iq3UKDUm
+	 OhHFzQIeKiAwKnp8Zqao30+gAXtHq+zXnT5t1cDyzu35uEg/zg1PSJ17/Epe60VBfT
+	 GVtJY4zc+FBaA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Simon Liebold <lieboldsimonpaul@gmail.com>
 Cc: Sasha Levin <sashal@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	Apurva Nandan <a-nandan@ti.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.18.y] spi: cadence-quadspi: fix unclocked access on unbind
-Date: Thu, 11 Jun 2026 11:26:19 -0400
-Message-ID: <20260611-stable-reply-0101@kernel.org>
+	Qi Tang <tpluszz77@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Simon Liebold <simonlie@amazon.de>
+Subject: Re: [PATCH 6.12.y v2] xfrm: hold dev ref until after transport_finish NF_HOOK
+Date: Thu, 11 Jun 2026 11:26:20 -0400
+Message-ID: <20260611-stable-reply-0102@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260611063719.3528053-1-rob_garcia@163.com>
-References: <20260611063719.3528053-1-rob_garcia@163.com>
+In-Reply-To: <20260611121127.3908131-1-simonlie@amazon.de>
+References: <20260611121127.3908131-1-simonlie@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,48 +80,48 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262752-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,ti.com,163.com,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262753-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:davem@davemloft.net,m:dsahern@kernel.org,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:lieboldsimonpaul@gmail.com,m:sashal@kernel.org,m:tpluszz77@gmail.com,m:fw@strlen.de,m:simonlie@amazon.de,s:lists@lfdr.de];
+	FREEMAIL_TO(0.00)[secunet.com,gondor.apana.org.au,davemloft.net,kernel.org,google.com,redhat.com,vger.kernel.org,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:johan@kernel.org,m:sashal@kernel.org,m:broonie@kernel.org,m:d-gole@ti.com,m:a-nandan@ti.com,m:rob_garcia@163.com,m:linux-spi@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,strlen.de,amazon.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AA3896730C7
+X-Rspamd-Queue-Id: 64A096730DA
 
-On Thu, Jun 11, 2026 at 02:37:19PM +0800, Robert Garcia wrote:
-> [ Upstream commit 233db2cb14db8b1935dda52a6affd97276462b82 ]
+On Thu, Jun 11, 2026 at 12:11:27PM +0000, Simon Liebold wrote:
+> [ Upstream commit 1c428b03840094410c5fb6a5db30640486bbbfcb ]
 >
-> Make sure that the controller is runtime resumed before disabling it
-> during driver unbind to avoid an unclocked register access.
+> After async crypto completes, xfrm_input_resume() calls dev_put()
+> immediately on re-entry before the skb reaches transport_finish.
 
-Now that the 6.18.y backport is here, I've queued both. Queued for 6.18
-and 6.12, thanks.
+Queued for 6.12, thanks.
 
 --
 Thanks,
