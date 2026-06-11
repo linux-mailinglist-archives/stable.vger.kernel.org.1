@@ -1,210 +1,191 @@
-Return-Path: <stable+bounces-262787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r+fNDgPxKmoRzwMAu9opvQ
-	(envelope-from <stable+bounces-262787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 19:31:47 +0200
+	id bRmAOjrwKmrSzgMAu9opvQ
+	(envelope-from <stable+bounces-262788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 19:28:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C4D673FFE
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 19:31:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63478673F7D
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 19:28:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=daZDmSNh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262787-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262787-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=BOgeznWH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262788-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262788-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3FEA73500A44
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:18:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 574DC30027D2
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C181E494A1C;
-	Thu, 11 Jun 2026 17:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98944963BE;
+	Thu, 11 Jun 2026 17:21:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA2E44D6A1
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD26B43DA2C
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 17:20:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781198298; cv=none; b=ZfvmBOYQWNTdQp4vW6x4JOCNW2P7V8wBSTMtwWmstbx4extB+bsj7aBsBags90i66faMuPyz+6Wl/0dVUZAbMJNyrtmoXuawx9fShZT0cKKMaV8/atBsRBs9DatX02IG9vu9NEe5yH/uXHoi9BUk4JfplglPTRLkSfteHmIwcQQ=
+	t=1781198460; cv=none; b=rfdSorfoj8t+7x8LCpYJ9yXFwvtRPQCv8oDcGWGaBtwBLFxyOnNOXenVScD6EATUA5nbLJmGLFYoBLp/eHBFiidYdtS0H5GsMFMlKH5trtuYXhVJpV8m/9tCvzJ7t+ZZNgDXfq0YPdvybNq9sSWERtY72pMZWDUY2Z1NQMXcfLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781198298; c=relaxed/simple;
-	bh=MpwzlKCxNvprYG6nGm+I8C1iP9aryXlPg3HlDXV5TIE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AzMFlzoZLkVsrpXBS79Ydis6FGr4KM/vfQmOAGPgOLuF+2FsqMXZXHnT+t0jqT+BGDx+XgfYY8n++gNNAIuiy0z7WafEScY5p18IaklcvU+r49AqmaKdUvFgDrdLtHMAxazaszLMKmSwCYEMcDF1Bbhb2ebVRlBTQddAXTWlx2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=daZDmSNh; arc=none smtp.client-ip=209.85.215.174
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c85d4b4245aso39387a12.1
-        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 10:18:11 -0700 (PDT)
+	s=arc-20240116; t=1781198460; c=relaxed/simple;
+	bh=Hot4UniHs4ligl/7ejYYsuex1217fakSzNm+wlM+65E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=F2Rd39CzQchADXnKq0wGxgXPUwcfiQD8YmDpg3Cwjpthtw3NFsFz6tb3HIwaYJmrpqK+O0TcmbegT9AyQWbxW1XDTA8R3vENmhjgN0hodJRkmKd20HM4h68OMGSbkZzHWgEAaxKc0vUbu70MY7dabfcRf2Zsm9aliS67bTmPvrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BOgeznWH; arc=none smtp.client-ip=209.85.214.201
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c0c32f4b1bso607815ad.2
+        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 10:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781198291; x=1781803091; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GwqBiB1V3FALHX4MUot7lj1fa4juan4nyiLVjCQIClc=;
-        b=daZDmSNhMkePX4XxL+GvSa3/ghWAAD90qQU6FTE27QU9j8JgZZIv1Esw18cMi73Ewo
-         ktx2+7GnZ7+41YuSanm/1n9FyG+mepcNmlox7xVXVuZrBRP5nPVf2YhpX+EEHoJunXkh
-         RrDKbTm0A6QYgXhoVDXbYmsOrHt5ivFlYqaqlb6EsqrpaTG3OYl5UxPkBlMbXbc8Jl8h
-         espvSIdobdwqGB1NncmzwAt+A0qO07JQ/ckcUE7DwW37kjAcawmNpiP2r7K+p5MK13kc
-         yLCLTaJOLWg3tA1O6YGdRQkfZoTiT+4h+0nKfbFnTHnof4QIcLiuk5NmyKm+W6nSNytR
-         i2Xg==
+        d=google.com; s=20251104; t=1781198455; x=1781803255; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9kKAnYeHG2u5wx8ciAL480Un709THxmEGRnj+zMfdq4=;
+        b=BOgeznWHOR6a4GlL7C9Mlg84PojMRBzvW48sayqsMWmAeEOCqMrYI2X2DbCjJJtHll
+         7N3XW4yWce6Wv1gtbMJoe02XBC4r5K8qJQb6K26UB27s/+0Fo2ocdQOrPRXtTXYJoEKY
+         0HrM5KS3fCpzOs81jzRVVEPaKH8bU7+sWWh2nuwOfEP4ihChBEBj0+749t6bJstIviPO
+         9kf63KoHLOb3keP/tSD7iMshHKyUGaq18/bHo8d/zhGIKPhY0IpLbsBbGtfr5GMowh8n
+         IpG/xRTEQy4s3zBcSGRuCbkvGdfNhyATKXmd07UCT4M4J8gp41tjhAtgs1ZBib3rMoFu
+         lmvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781198291; x=1781803091;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GwqBiB1V3FALHX4MUot7lj1fa4juan4nyiLVjCQIClc=;
-        b=dNyP2yFdIdV74s5GUtbO6gvvWe4sxXm29D/deQOLbgfuS7++qHYONyLNK4KGQYZReZ
-         6JhcPnk6BVT9OGLGeOe9qVKzMPg2podu2BpWhX25x89m6X/SiB3T2RwlWfJSeMFzw/IR
-         ft57VJ+Bz8jowA47fy2c5v+EF9nPkCSn4iImQEcmQgY4K470IMzh3lKcSJq+KrOYsTxh
-         4rBAaN97I0ua1TJcQg0EIDfU/l4RTZOPaX7/5X0Sau3yc/tDGx01bkColIyCi9+F8T8+
-         daBWBPLVWKGLAZbQs5Ik/mMBHAM3/VzFWwapH7DikhNPFWCsKp8j7Zf+jYY0e1OQGGAH
-         eJnw==
-X-Forwarded-Encrypted: i=1; AFNElJ+QzmBVqY9jux/zWQDQihVQ88bsIzM8+6JFX2OAIMDlLvHA52Lkp22N/QMjzU/KBkSWBcsmJm4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCHzLl1PuT2ULbmqF1sFqneN0593UQDxNfGG1aeiAlxqMZTrzj
-	soxpO1EGA7JYkZD0LsqB8UAr1rUy4SbhjacT33yUdsl+M7y5IsFnALx+
-X-Gm-Gg: Acq92OFgAKtjRykSPYLy+qGUjw0xeCTzy+4wZZJqG2hrquTgF6jLjJ6nbYKj9YaKh0+
-	SBpEwDi2PlKGPYqwdXfp2m7Q0/uLf0z4FkqJ+V3B92ugqZar1Ix2dKAA4d+N6PZcJfyku1xoZDT
-	//zXLWOx37r43XX8yDF7DeOXajYDOTKF9CNE/S3dO7NtTRNs1Epfy0pLPCdjnHPjWbm2UXE+Gge
-	f7D//HhnUlkDA1xtS7qTZH7OLM2G7jSucbNfw9x5MLgLhi4+DiouPr6MVWCoV6VOTtWzwCRZDla
-	UrsqCkCWOy9wthApbU+lR6dhorUU+f0vL5CazYcDL7qwknIuZAkjTj/lGbamn0r2AIkcTEQQY6K
-	SrHmOrbH2dbWLPNtX8LvCxEPXiRyhmQCgpiSpeGhX3ZYNIXtqoCh1dqCY9GCcws20jIGsJTCPUk
-	MTSU5ivQV6cDqJVQWjfMssVBnYkcLFQfSsNav8xtLP
-X-Received: by 2002:a05:6a00:a01:b0:842:459b:d61b with SMTP id d2e1a72fcca58-84336ba88b2mr3976561b3a.32.1781198290589;
-        Thu, 11 Jun 2026 10:18:10 -0700 (PDT)
-Received: from LAPTOP-N3B6U5LC.localdomain ([36.21.199.146])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8433831a89bsm2967346b3a.56.2026.06.11.10.18.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 10:18:09 -0700 (PDT)
-From: Zhenhao Wan <whi4ed0g@gmail.com>
-Date: Fri, 12 Jun 2026 01:15:54 +0800
-Subject: [PATCH] RDMA/rtrs-srv: Bound RDMA-Write length to chunk size in
- rdma_write_sg
+        d=1e100.net; s=20251104; t=1781198455; x=1781803255;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9kKAnYeHG2u5wx8ciAL480Un709THxmEGRnj+zMfdq4=;
+        b=PB6P4PbixWAEQ+xr969q6BoXEhFOtJoUISyoeIW0qT0//cJLUzTsv/+oagEHiQHY1f
+         ogIKwNuLUT471TD6aC/Q8lwayaEdceJpxorTL4Dyb6ztdbWBXfkjZ9JPhZpi8/DIh7BJ
+         Rx9GYMZCWLnAKcw5W8Xg0D4PZ8CF2U+reXBH/DrYdo+xrRbx3py67xE+rKtdxikWAzZ4
+         eUwM1UcFGlhhuLwNFqYZzyYXxQPmUT1gP8PKtpe9UoF1wpom8oAXnlzjOaBcybVhzXr1
+         /1Gr+odfauAwLgOSLAvlkLeGOZZjBrBMOlb2hhaanFtogul64t1Wsh7kAEXXp/9hLOS+
+         sFqQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/GXOI0nxS4pA8rTXkjkwgiIiOeLJYwZHYV+A7WDhmCSHWMji45yXHaQ8ehDfl91JWmhbvhjGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHFwKMF9QyVeZdXF3qFhE99bo9LDp8duZa5nErBhL2WRIUMcOK
+	8kGCkhVyxtOS/sG8UHNyRAR56zweOiIC/wxSH6nWX4HlBdAslyD0JjLX3mSKtAf1N8Vi0eh/T+E
+	xCk9C3w==
+X-Received: from pllh1.prod.google.com ([2002:a17:902:7481:b0:2b0:b22a:e6ef])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fc8f:b0:2c0:bcb3:86f
+ with SMTP id d9443c01a7336-2c2f18e2d19mr45384435ad.6.1781198454681; Thu, 11
+ Jun 2026 10:20:54 -0700 (PDT)
+Date: Thu, 11 Jun 2026 10:20:53 -0700
+In-Reply-To: <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260612-master-v1-1-70cde5c6fdc9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAErtKmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDM0Mj3dzE4pLUIl3z5KRkQ1OzlETDNAsloOKCotS0zAqwQdGxEH5xaVJ
- WanIJSLdSbS0AexEWc2oAAAA=
-X-Change-ID: 20260612-master-7cbc156da1f8
-To: "Md. Haris Iqbal" <haris.iqbal@ionos.com>, 
- Jack Wang <jinpu.wang@ionos.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
- Leon Romanovsky <leon@kernel.org>, 
- Danil Kipnis <danil.kipnis@cloud.ionos.com>
-Cc: Jack Wang <jinpu.wang@cloud.ionos.com>, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
- stable@vger.kernel.org, Zhenhao Wan <whi4ed0g@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781198286; l=2840;
- i=whi4ed0g@gmail.com; h=from:subject:message-id;
- bh=MpwzlKCxNvprYG6nGm+I8C1iP9aryXlPg3HlDXV5TIE=;
- b=ol0mkn6Z2NuzQW6U1P4SFHZoz7NQAV7dQugAAv2T/oUjuuQaWdhsvbax7JjJhlDZlkHfRm5ds
- tC0ADZLAkbbDbHtj2N8gN/w8zoO0cjfOs561TAYsi2VAyr53sPuBSIu
-X-Developer-Key: i=whi4ed0g@gmail.com; a=ed25519;
- pk=zRTKlstE0LmilshGwJsFYEVjiT6RiXMBXK8Og6VmuVQ=
+Mime-Version: 1.0
+References: <20260610214523.2905255-2-clopez@suse.de> <6a2adf3b.3b0a2d4e.8c8d1.0012.GAE@google.com>
+Message-ID: <airudX6N4oL5X_wE@google.com>
+Subject: Re: [syzbot ci] Re: KVM: x86: Unconditionally recompute CR8 intercept
+ on PPR update
+From: Sean Christopherson <seanjc@google.com>
+To: syzbot ci <syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com>
+Cc: bp@alien8.de, clopez@suse.de, dave.hansen@linux.intel.com, hpa@zytor.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, mingo@redhat.com, 
+	osteffen@redhat.com, pbonzini@redhat.com, rkagan@virtuozzo.com, 
+	sgarzare@redhat.com, stable@vger.kernel.org, tglx@kernel.org, x86@kernel.org, 
+	syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="us-ascii"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262787-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[cloud.ionos.com,vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[whi4ed0g@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:haris.iqbal@ionos.com,m:jinpu.wang@ionos.com,m:jgg@ziepe.ca,m:leon@kernel.org,m:danil.kipnis@cloud.ionos.com,m:jinpu.wang@cloud.ionos.com,m:linux-rdma@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:danisjiang@gmail.com,m:stable@vger.kernel.org,m:whi4ed0g@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262788-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:syzbot+ci493c6d734b63e050@syzkaller.appspotmail.com,m:bp@alien8.de,m:clopez@suse.de,m:dave.hansen@linux.intel.com,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:mingo@redhat.com,m:osteffen@redhat.com,m:pbonzini@redhat.com,m:rkagan@virtuozzo.com,m:sgarzare@redhat.com,m:stable@vger.kernel.org,m:tglx@kernel.org,m:x86@kernel.org,m:syzbot@lists.linux.dev,m:syzkaller-bugs@googlegroups.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[seanjc@google.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[whi4ed0g@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,ci493c6d734b63e050];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 77C4D673FFE
+X-Rspamd-Queue-Id: 63478673F7D
 
-When the server answers an RTRS READ, rdma_write_sg() builds the source
-scatter/gather entry for the IB_WR_RDMA_WRITE that returns data to the
-peer. Its length is taken directly from the wire descriptor:
+On Thu, Jun 11, 2026, syzbot ci wrote:
+> syzbot ci has tested the following series
+> 
+> [v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+> https://lore.kernel.org/all/20260610214523.2905255-2-clopez@suse.de
+> * [PATCH v2] KVM: x86: Unconditionally recompute CR8 intercept on PPR update
+> 
+> and found the following issue:
+> WARNING in vmx_update_cr8_intercept
 
-  plist->length = le32_to_cpu(id->rd_msg->desc[0].len);
+...
 
-rd_msg points into the chunk buffer that the remote peer filled via
-RDMA-WRITE-WITH-IMM (rtrs_srv_rdma_done() -> process_io_req() ->
-process_read()), so desc[0].len is attacker-controlled and, before this
-change, was only rejected when zero. The source address is the fixed
-chunk start (dma_addr[msg_id]) and the source lkey is the PD-wide
-local_dma_lkey, which is not tied to the chunk's MR mapping, so the verbs
-layer does not constrain the transfer length to max_chunk_size. msg_id
-and off are bounded against queue_depth and max_chunk_size in
-rtrs_srv_rdma_done(), but desc[0].len is a separate field that was not
-checked against the chunk size.
+> ------------[ cut here ]------------
+> debug_locks && !(lock_is_held(&(&vcpu->mutex)->dep_map) || !refcount_read(&vcpu->kvm->users_count))
+> WARNING: arch/x86/kvm/vmx/nested.h:61 at get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline], CPU#0: syz.2.19/5879
+> WARNING: arch/x86/kvm/vmx/nested.h:61 at vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879, CPU#0: syz.2.19/5879
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 5879 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> RIP: 0010:get_vmcs12 arch/x86/kvm/vmx/nested.h:60 [inline]
+> RIP: 0010:vmx_update_cr8_intercept+0x3de/0x4e0 arch/x86/kvm/vmx/vmx.c:6879
+>  apic_update_ppr arch/x86/kvm/lapic.c:984 [inline]
+>  kvm_lapic_reset+0x1c24/0x2980 arch/x86/kvm/lapic.c:3023
+>  kvm_vcpu_reset+0x44c/0x1bf0 arch/x86/kvm/x86.c:12986
+>  kvm_arch_vcpu_create+0x746/0x8b0 arch/x86/kvm/x86.c:12847
+>  kvm_vm_ioctl_create_vcpu+0x428/0x930 virt/kvm/kvm_main.c:4201
+>  kvm_vm_ioctl+0x893/0xd50 virt/kvm/kvm_main.c:5159
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-A peer that advertises desc[0].len larger than max_chunk_size can make
-the posted RDMA write read past the chunk's mapped region. The resulting
-behaviour depends on the IOMMU configuration: with no IOMMU or in
-passthrough mode the read may extend into memory adjacent to the chunk
-and be returned to the peer, which can disclose host memory; with a
-translating IOMMU the out-of-range access is expected to fault and abort
-the connection. In either case the transfer exceeds what the protocol
-permits and is driven by a remote peer.
+This is "fine", the assertion just wants to make sure KVM isn't access vmcs12
+without holding vcpu->mutex, otherwise any queries are inherently unstable.
+It's just that vCPU creation runs without taking vcpu->mutex, because the vCPU
+is otherwise unreachable.
 
-Reject a descriptor length above max_chunk_size, mirroring the existing
-off >= max_chunk_size bound in rtrs_srv_rdma_done(). Legitimate clients
-do not exceed it: the client sets desc[0].len to its MR length, which is
-capped at the negotiated max_io_size (max_chunk_size - MAX_HDR_SIZE).
+I'm pretty sure we can squash the WARN by grabbing vmcs12 if and only if the vCPU
+is actually in guest mode.
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenhao Wan <whi4ed0g@gmail.com>
----
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 6482ad859bd1..f81e122a3ccb 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -225,8 +225,9 @@ static int rdma_write_sg(struct rtrs_srv_op *id)
- 	/* WR will fail with length error
- 	 * if this is 0
- 	 */
--	if (plist->length == 0) {
--		rtrs_err(s, "Invalid RDMA-Write sg list length 0\n");
-+	if (plist->length == 0 || plist->length > max_chunk_size) {
-+		rtrs_err(s, "Invalid RDMA-Write sg list length %u\n",
-+			 plist->length);
- 		return -EINVAL;
- 	}
+diff --git arch/x86/kvm/vmx/vmx.c arch/x86/kvm/vmx/vmx.c
+index c548f22375ad..332fbcd924f2 100644
+--- arch/x86/kvm/vmx/vmx.c
++++ arch/x86/kvm/vmx/vmx.c
+@@ -6876,11 +6876,10 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
  
+ void vmx_update_cr8_intercept(struct kvm_vcpu *vcpu, int tpr, int irr)
+ {
+-       struct vmcs12 *vmcs12 = get_vmcs12(vcpu);
+        int tpr_threshold;
+ 
+        if (is_guest_mode(vcpu) &&
+-               nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW))
++           nested_cpu_has(get_vmcs12(vcpu), CPU_BASED_TPR_SHADOW))
+                return;
+ 
+        guard(vmx_vmcs01)(vcpu);
 
----
-base-commit: a48671671df5158a0b8e564cd509e04a090a941b
-change-id: 20260612-master-7cbc156da1f8
 
-Best regards,
---  
-Zhenhao Wan <whi4ed0g@gmail.com>
+Longer term, I'll work on figuring out how to handle this in get_vmcs12(), because
+to_hv_vcpu() has the solve the same fundamental problem:
 
+https://lore.kernel.org/all/aeqRzanSaa9P_EPg@google.com
 
