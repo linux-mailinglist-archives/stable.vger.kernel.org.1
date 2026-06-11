@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6aWcBrrRKmoBxgMAu9opvQ
-	(envelope-from <stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:18:18 +0200
+	id Vj39DPXRKmoLxgMAu9opvQ
+	(envelope-from <stable+bounces-262750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:19:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B54673007
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:18:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DFB673024
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:19:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=c4DBG+YC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262750-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262750-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADBC333D911F
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:17:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DD8133875FD
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6640B6F0;
-	Thu, 11 Jun 2026 15:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55124404BCF;
+	Thu, 11 Jun 2026 15:19:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-m2441.xmail.ntesmail.com (mail-m2441.xmail.ntesmail.com [45.195.24.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7FC40B394;
-	Thu, 11 Jun 2026 15:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3A43FCB1F;
+	Thu, 11 Jun 2026 15:19:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781191071; cv=none; b=EjH8LORhUqU/OLYzn+kEWoS5oqtwLVRSahBcewvWe1wY7uUWcg9ByWlFZIggxRu09CwzIZlTKBSVcVeN+iiOdSFCefvuipwHVrhzQe3XP/VDUyC5oIPEKMYiWcJdN6LurBKBvMDCRQVk5duu4/mwle+NpPIriXFNI+j+6a09HvA=
+	t=1781191149; cv=none; b=QD4hHq84yMRF193JUOaZNt23W66DRapQomrA8snXN/Y+BL20nYwZOpGH61PzERwPlVhToCoCCBbjUhXMFeMPBiEmaBoVzC/zC3s4nEfAZPVjCcwIbd1Mw3vmTilrTkm5QstwyrE705wVjZNqefpaxE5NrvLXrdrp6jxMaDQqljI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781191071; c=relaxed/simple;
-	bh=dSUt8JvY3OeC89mGtyPEnI9tz7ueHmVY11ipk+zAJFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hlw68UasgqY1YVLtrEydaQNOg0LM9Vm9D49akSXPrkqqdj11d9BCfk9qvzD54TUYrzajA6vjlZBQGOsc5gJlYGpKfF2H3GTVGxxR8VvQsC9vQ6uJcNFczE/DTVrArVkkAAxOcpkxospY5fWx7nmyLjoITccGs0Ou9yNDGOyvfxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.76])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Gt6I0SpqVGoYEw--.1282S2;
-	Thu, 11 Jun 2026 23:17:31 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: trondmy@kernel.org,
-	anna@kernel.org,
-	chuck.lever@oracle.com,
-	jlayton@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: neil@brown.name,
-	okorniev@redhat.com,
-	Dai.Ngo@oracle.com,
-	tom@talpey.com,
-	horms@kernel.org,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1781191149; c=relaxed/simple;
+	bh=b5Yaa5D9Q9tacvKyv70XltCPg/lllDC98RpZ+toEmtc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kVBFqsY9E6icAR4RL4eonbdLyHuZdb1xcQWRbnonfKQ3Dl22EbFsCCSOI/qnKyq0BR1WP4NW6pr9FP02+15Qv1LJONqlOI0RjPeIippk0aB0ZuaCIDqw8pPYd3BTYcfUp6ZoKf618iPdIjk+RQYXuEXEPca7UIQ14MtnxCAwBdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=c4DBG+YC; arc=none smtp.client-ip=45.195.24.41
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42068ba35;
+	Thu, 11 Jun 2026 23:18:57 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: linux-wireless@vger.kernel.org
+Cc: libertas-dev@lists.infradead.org,
+	linville@tuxdriver.com,
+	luisca@cozybit.com,
 	linux-kernel@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
 	stable@vger.kernel.org
-Subject: [PATCH] nfs: fix refcount leak in nfs_swap_activate()
-Date: Thu, 11 Jun 2026 23:17:26 +0800
-Message-ID: <20260611151726.92210-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+Subject: [PATCH] wifi: libertas_tf: kill shared URB before resubmitting it
+Date: Thu, 11 Jun 2026 23:18:48 +0800
+Message-Id: <20260611151848.2573316-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,100 +56,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Gt6I0SpqVGoYEw--.1282S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrW5Xw47KFW7ur43trWUurg_yoW8WFyrpr
-	yUur9xAr1v934fJ3y2yF4Dta4fArn5Ga1rKr40yw1rAw12kr48Aa4IkFyjgFWxJFZ8JFy5
-	Zw4Ykay3AF1qvF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0pRBuWLUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcPA2oqzuYF6wABsA
+X-HM-Tid: 0a9eb743d90803a1kunm78d9ab71169c51
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZHh8eVkgaSU8aQ0NCShodTFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=c4DBG+YC26VyKqRdOEIWQXAFyicGtWJ2umJ2JVbcdIGrwLf+rqi65w8HFgHKRNKX7ihqPj7SVB6UZY5vWmwKbqTlmS9cgClFzMD/WHHAan58Gyddawo+HweDuzPC8NjF2GDNuMtdzzv2j17vNZ/DzQ8WOZnmuNsUEsstKdOnd+I=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=rpUA/+FiAP1Fr1OdfUX65iVV1Nwx0bLdkSoyPLe/t0Y=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS(0.00)[m:trondmy@kernel.org,m:anna@kernel.org,m:chuck.lever@oracle.com,m:jlayton@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:horms@kernel.org,m:linux-nfs@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262749-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262750-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:linux-wireless@vger.kernel.org,m:libertas-dev@lists.infradead.org,m:linville@tuxdriver.com,m:luisca@cozybit.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66B54673007
+X-Rspamd-Queue-Id: 94DFB673024
 
-nfs_swap_activate() calls rpc_clnt_swap_activate(), which
-unconditionally increments the cl_swapper refcount via
-atomic_inc_return().  If the subsequent call to
-rpc_clnt_iterate_for_each_xprt() fails (e.g. the callback
-xprt_enable_swap() returns an error), rpc_clnt_swap_activate()
-returns the error without decrementing the refcount.  Back in
-nfs_swap_activate(), a nonzero return value is treated as a
-fatal error and causes an immediate return, so the elevated
-cl_swapper count is never released.
+libertas_tf's usb_tx_block() reuses a shared send URB and immediately
+does usb_fill_bulk_urb() plus usb_submit_urb() on it. Depending on the
+caller, that shared carrier is either cardp->tx_urb or cardp->cmd_urb.
+There is no patch-local usb_kill_urb() before reuse, and the file-local
+completion path provides no busy flag, completion, or other ownership
+handoff that would make active reuse safe.
 
-Fix this by adding an atomic_dec() in the error path of
-rpc_clnt_swap_activate() before returning the error code, so
-that a failed activation properly cleans up the refcount.
+A running system can reach this through if_usb_host_to_card() for normal
+data or command traffic, if_usb_issue_boot_command() for firmware boot
+commands, and if_usb_send_fw_pkt() for firmware download packets. Those
+paths all feed back into the same helper, so a second submission can
+refill and resubmit an URB while the previous transfer is still active.
 
+The issue was found by our static analysis tool and manually audited on
+Linux v6.18.21. It was further validated with a focused QEMU no-device KCSAN
+harness, which reproduced active reuse of both shared carriers:
+cardp->tx_urb through if_usb_host_to_card(), and cardp->cmd_urb through
+if_usb_issue_boot_command() and if_usb_send_fw_pkt().
+
+Call usb_kill_urb(urb) after selecting the shared target URB and before
+refilling it, so both tx_urb and cmd_urb are quiesced before reuse.
+
+Fixes: c305a19a0d0a ("libertas_tf: usb specific functions")
 Cc: stable@vger.kernel.org
-Fixes: 15001e5a7e1e ("SUNRPC: Make NFS swap work with multipath")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- net/sunrpc/clnt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/libertas_tf/if_usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index bc8ca470718b..97ab7aa71997 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -3396,9 +3396,13 @@ rpc_clnt_swap_activate(struct rpc_clnt *clnt)
- {
- 	while (clnt != clnt->cl_parent)
- 		clnt = clnt->cl_parent;
--	if (atomic_inc_return(&clnt->cl_swapper) == 1)
--		return rpc_clnt_iterate_for_each_xprt(clnt,
-+	if (atomic_inc_return(&clnt->cl_swapper) == 1) {
-+		int ret = rpc_clnt_iterate_for_each_xprt(clnt,
- 				rpc_clnt_swap_activate_callback, NULL);
-+		if (ret)
-+			atomic_dec(&clnt->cl_swapper);
-+		return ret;
-+	}
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(rpc_clnt_swap_activate);
+diff --git a/drivers/net/wireless/marvell/libertas_tf/if_usb.c b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+index 5662a244f82a..7542956d3c47 100644
+--- a/drivers/net/wireless/marvell/libertas_tf/if_usb.c
++++ b/drivers/net/wireless/marvell/libertas_tf/if_usb.c
+@@ -387,6 +387,8 @@ static int usb_tx_block(struct if_usb_card *cardp, uint8_t *payload,
+ 	else
+ 		urb = cardp->cmd_urb;
+ 
++	usb_kill_urb(urb);
++
+ 	usb_fill_bulk_urb(urb, cardp->udev,
+ 			  usb_sndbulkpipe(cardp->udev,
+ 					  cardp->ep_out),
 -- 
-2.50.1 (Apple Git-155)
-
+2.34.1
 
