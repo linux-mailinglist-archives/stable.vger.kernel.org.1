@@ -1,168 +1,166 @@
-Return-Path: <stable+bounces-262684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aH2lM7WmKmqouQMAu9opvQ
-	(envelope-from <stable+bounces-262684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:14:45 +0200
+	id hqi6Hp2nKmrbuQMAu9opvQ
+	(envelope-from <stable+bounces-262685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:18:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9A1671BA0
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:14:45 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20F7671C0F
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 14:18:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b="h/ysCyGJ";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262684-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262684-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gh1HRszp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262685-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262685-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D03F1300899A
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:14:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E95DB300D164
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 12:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A1B3F20FF;
-	Thu, 11 Jun 2026 12:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BEC3B9D93;
+	Thu, 11 Jun 2026 12:18:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71435374A1B;
-	Thu, 11 Jun 2026 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C15723C8C7;
+	Thu, 11 Jun 2026 12:18:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781180079; cv=none; b=G0U10NTbe3nUusHDPWKoBw9qy0/cfimZL5GrPiKwETRmOh/oZoo9kMlG0LVHqcV2wqnDu49H8Xwrc0nqrA9mrEErSP/Nc94+ix5EFidP5YKlzHf67tvknI9HHUtEKj2hk8p/YQ1A0cIIhn26CoG2ZV/KH1w7vMNtkJX3I7pwlMg=
+	t=1781180312; cv=none; b=PcE/VhuzjRrTfL6lOnNlUd5IqhNHARtWFPrsPRoji9Le+JJYtDauHhUUp3pl0XSl/ddlXGQ+nVOwsU9fCOl7ytGxk4kjcZhkuniuVLsgeK4/OMscm/CMu+7vaLKyAdmLWh9/5XJag2ottTKieRzALKVQLj+lEfcOY9PvpuU1uWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781180079; c=relaxed/simple;
-	bh=pZBwQN/SvU5hzocJ4ERPh0p5USb9OMY5oE+FNcAeqgU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OYg7nN0cVBPsgyzkAgZ0QEEGfMtVzbL8WWZKPsw/Cl/0w+kKTddfsFhrmG/gzLLS119zn/PX1Iky+iHJQ77p0ZB+48yd7vo4CSmY4G8dfF+iTK5v4JN71lGtPVqLHCEPPPgfRXfk4BMfbze7eGAepqNzi1cRFyYtmolexk6nG3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=h/ysCyGJ; arc=none smtp.client-ip=168.119.38.16
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WXxj1mkeB6TWeJTqqo+Z4AllTELSelgmZsAG2liQDH8=;
-	t=1781180077; x=1782389677; b=h/ysCyGJgxtIUNEOryO/jkwCnHmzUzjepqzxd/B5HXPGsLh
-	99dZlltXiRp4JyQTEdAM/6spEVbWaIChXWPGf29u2Bq/9sbeQGuDDlSQ6133lsqd0wYPQnYaDlOoH
-	eLc3DFzrGizE8v3I8u43JCKaQSRuybyHfpGRETzZnlmZDgewYt+V4eWJrpzsDklbd1gnUALwQbPvv
-	CL24zbpFIlNr6NVBTkNbzvHyfRnpcZIBkCMcWdLaU05YAHP/fTgIIdWGZRHNo/JypYecuQM55tymX
-	2u0R+hZVrdDh67LloYPGypEpHoboF0npBSchif3wdUKsRvVJemHmyUhorAiKoIXw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wXeIt-00000008zcj-0fJF;
-	Thu, 11 Jun 2026 14:14:35 +0200
-Message-ID: <caf46af4de722bd220fc934dd0b94e5090c5fe10.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: ieee80211: validate MLE common info length
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Thu, 11 Jun 2026 14:14:34 +0200
-In-Reply-To: <20260610154303.37079-1-enderaoelyther@gmail.com>
-References: <20260610154303.37079-1-enderaoelyther@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1781180312; c=relaxed/simple;
+	bh=uZd6o68zFqyX+82j3hPwFSN3yDQRe2yJ7Ue8vc5dM6c=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=Nv7tKxLKGNkPeaxhpvsWs9Iq+uBYEXPI/hlVmvgBait3w9ZGQm5ndhHqDbN2mmdDewqKjKxa1TnpLBnwSkguma3sX9ab1fzyNVRC10K9g+UQJ7nCrwhr6iJil3y+ZTgm9D9iylTOrFAZhFinqqSej6yymK8W6xWXciGbYSna3j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gh1HRszp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589251F00893;
+	Thu, 11 Jun 2026 12:18:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781180310;
+	bh=141gI6qHfCWItY/nQuT4+axMxf2+yNx7YkH48PkWfHI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=Gh1HRszpNwjIkArB4/fvKDY80JjRE/yZmV8Zw9IsvjQtEfpK6XpxVa+BcSmPFU41y
+	 D3YSpNYau8JPs/tKG3wmntbGokNlIhdV7eSXBGyDNgh6Rt3lZT2bgujywhHXM0E3Tc
+	 iNjH3IKGjlD4s17PV41igtl02nqUWGkvgEVW8GKNwcIsu/bQ3l4WoAoS5lasEK6ICW
+	 8BERJaO1tlfbPRSfRftEMfWIK1ft4FZKu2fex4WtertIEF76dvwKAgEC6K26poXLrV
+	 s6L/vUHVutMLnniK8VdVEU6+KcYfEkccJbld8V0wiKRq4hj+TOCqEP1sO9cSgT4naU
+	 Qnk7TEz2cGTwg==
+Content-Type: multipart/mixed; boundary="===============2293734144057904883=="
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Message-Id: <b3a9887383e78d4ab37879573df3b240c880d206529a6d23e3299e7f56a9df74@mail.kernel.org>
+In-Reply-To: <20260611153826.31187-3-adubey@linux.ibm.com>
+References: <20260611153826.31187-3-adubey@linux.ibm.com>
+Subject: Re: [PATCH v7 2/7] powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
+From: bot+bpf-ci@kernel.org
+To: adubey@linux.ibm.com,bpf@vger.kernel.org
+Cc: hbathini@linux.ibm.com,linuxppc-dev@lists.ozlabs.org,maddy@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,shuah@kernel.org,linux-kselftest@vger.kernel.org,stable@vger.kernel.org,adubey@linux.ibm.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Thu, 11 Jun 2026 12:18:30 +0000 (UTC)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-4.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	CTYPE_MIXED_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262685-lists,stable=lfdr.de,bpf-ci];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:enderaoelyther@gmail.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,kernel.org,iogearbox.net,vger.kernel.org,gmail.com,linux.dev,meta.com];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernel.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[bot@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:adubey@linux.ibm.com,m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:ast@kernel.org,m:andrii@kernel.org,m:daniel@iogearbox.net,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,m:martin.lau@kernel.org,m:eddyz87@gmail.com,m:yonghong.song@linux.dev,m:clm@meta.com,m:ihor.solodrai@linux.dev,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262684-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6F9A1671BA0
+X-Rspamd-Queue-Id: E20F7671C0F
 
-On Wed, 2026-06-10 at 23:43 +0800, Zhao Li wrote:
-> ieee80211_mle_size_ok() verifies that the advertised common information
-> length is large enough for the fixed fields that are present, but it does
-> not verify that the length also fits in the containing element.
->=20
-> Reconfiguration and Priority Access MLEs also carry a common information
-> length octet, but currently skip the common-length check. Reconfiguration
-> additionally fails to include the length octet in the minimum common size=
-.
->=20
-> Validate the common information length for Reconfiguration and Priority
-> Access MLEs, account for the Reconfiguration length octet, and reject
-> common lengths that exceed the element body.
->=20
-> Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link ele=
-ment")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
-> ---
->  include/linux/ieee80211-eht.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/linux/ieee80211-eht.h b/include/linux/ieee80211-eht.=
-h
-> index a97b1d01f3acf..d875045abf6cc 100644
-> --- a/include/linux/ieee80211-eht.h
-> +++ b/include/linux/ieee80211-eht.h
-> @@ -878,6 +878,8 @@ static inline bool ieee80211_mle_size_ok(const u8 *da=
-ta, size_t len)
->  		check_common_len =3D true;
->  		break;
->  	case IEEE80211_ML_CONTROL_TYPE_RECONF:
-> +		common +=3D 1;
-> +		check_common_len =3D true;
->  		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
->  			common +=3D ETH_ALEN;
->  		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
-> @@ -893,6 +895,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *da=
-ta, size_t len)
->  		break;
->  	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
->  		common =3D ETH_ALEN + 1;
-> +		check_common_len =3D true;
->  		break;
+--===============2293734144057904883==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You just made check_common_len redundant, it's now always true.
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -217,7 +217,8 @@ static inline void bpf_clear_seen_register(struct codegen_context *ctx, int i)
+>  void bpf_jit_build_epilogue(u32 *image, u32 *fimage, struct codegen_context *ctx);
+>  void bpf_jit_build_fentry_stubs(u32 *image, u32 *fimage, struct codegen_context *ctx);
+>  void bpf_jit_realloc_regs(struct codegen_context *ctx);
+> -int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg, long exit_addr);
+> +int bpf_jit_emit_exit_insn(u32 *image, u32 *fimage, struct codegen_context *ctx, int tmp_reg,
+> +										long exit_addr);
+                                                        ^^^^
 
-I originally introduced it because variable[0] wasn't always common_len,
-but that actually got fixed in later drafts, and we should've adjusted
-that when we added +1 to all of these, e.g. commit 19aa842dcbb58.
+Does this prototype change break the build for 32-bit configurations?
 
-We should probably more comprehensively change the whole thing so that
-common_info_len is a separate u8 rather than variable[0], but that's
-going to be much harder to do.
+The function definition in bpf_jit_comp.c and the caller in
+bpf_jit_comp64.c were both updated to the new 5-argument signature, but
+the caller in arch/powerpc/net/bpf_jit_comp32.c was not updated:
 
-A smaller but probably better change would be to use the sub-structs
-here that are defined, e.g. struct ieee80211_mle_preq_common_info,
-struct ieee80211_mle_tdls_common_info and struct
-ieee80211_mle_basic_common_info. But the layout is a bit stupid even
-that way, dunno.
+arch/powerpc/net/bpf_jit_comp32.c:bpf_jit_build_body() {
+    ...
+    case BPF_JMP | BPF_EXIT:
+        if (i != flen - 1) {
+            ret = bpf_jit_emit_exit_insn(image, ctx, _R0, exit_addr);
+            if (ret)
+                return ret;
+    ...
+}
 
-johannes
+This still passes only 4 arguments to a function now requiring 5, which
+will result in a compilation failure with 'too few arguments to function'
+when CONFIG_PPC32 is enabled.
+
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+
+[ ... ]
+
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -1726,7 +1726,8 @@
+>  			 * we'll just fall through to the epilogue.
+>  			 */
+>  			if (i != flen - 1) {
+> -				ret = bpf_jit_emit_exit_insn(image, ctx, tmp1_reg, exit_addr);
+> +				ret = bpf_jit_emit_exit_insn(image, fimage, ctx,
+> +								tmp1_reg, exit_addr);
+>  				if (ret)
+>  					return ret;
+>  			}
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/27344891421
+--===============2293734144057904883==--
 
