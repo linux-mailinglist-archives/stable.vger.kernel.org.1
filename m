@@ -1,70 +1,64 @@
-Return-Path: <stable+bounces-262748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zwE+OOXQKmrRxQMAu9opvQ
-	(envelope-from <stable+bounces-262748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:14:45 +0200
+	id 6aWcBrrRKmoBxgMAu9opvQ
+	(envelope-from <stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:18:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA19672FB3
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:14:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B54673007
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 17:18:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RXdeReEv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262748-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262748-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=none;
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262749-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F2525301137F
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:14:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADBC333D911F
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A2F3FF1D6;
-	Thu, 11 Jun 2026 15:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6640B6F0;
+	Thu, 11 Jun 2026 15:17:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4833FFAC1;
-	Thu, 11 Jun 2026 15:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7FC40B394;
+	Thu, 11 Jun 2026 15:17:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781190881; cv=none; b=Us1SjRoyzfCwbIbuVfewGPvwSyNA6rHZkIniuAD44DdBSUDhDQhpk1aGOKFkuKNMvsq6ExL3Y4FTlJ6Igb0pci1kyATuOXsQXFYD2iFt8t9JwYKHDzSHCcvxI1VQWMc+U8e0gktZ5TX3oI21x6IpeqP8aPcPAwn5nY0PaN2eKHo=
+	t=1781191071; cv=none; b=EjH8LORhUqU/OLYzn+kEWoS5oqtwLVRSahBcewvWe1wY7uUWcg9ByWlFZIggxRu09CwzIZlTKBSVcVeN+iiOdSFCefvuipwHVrhzQe3XP/VDUyC5oIPEKMYiWcJdN6LurBKBvMDCRQVk5duu4/mwle+NpPIriXFNI+j+6a09HvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781190881; c=relaxed/simple;
-	bh=zxpIPJPxzL4cXmPFrR+19nmED9wNZIY/Ks1hHRdvehc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4Iw5rjtwWOCZr/yB4UnPNpQV3h5oDrL1IWttuMzMZa+Prx7lOvjZZPuoRkeRiRntRHZqF+EN7NrRcH22saKPnhAGqScBL8LSR9I0uGW/wI47CRrP+OYHGJBaeFbl1aJvzlwpUfCCENeLx7IfmndMNaTDH44LkKfFg1sqrIJM6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXdeReEv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F731F00893;
-	Thu, 11 Jun 2026 15:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781190879;
-	bh=vS59teIiDlts9NPHogyQ4TbGCImDPrejJPxZv7Cl/jA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RXdeReEvDOXtS5dRlYe9GvVzPhHVqnT18yGqhcVKMCVFV0t34cfHA8iv36A+Jdzr6
-	 cYdHm7NOjC+wyXTRhxDh4Yc3zcGILNLtAYucWZVKnRMhtQgo6k9COy6Sj6idYVqanf
-	 4IxhjeM/wQ4ZSMt16hUD6BJJr8U4FzGxHT8qeHQ3vvmQRsRw7858Lz3noga/TxGi8Z
-	 4A3rlCt2OGVntVqZRQgJXQmyPa8qvaZ8nS7OkrTih9zsp2i/5Lo9GMGdBzlERaN5tp
-	 /pvKdHeVkM0YL5p1vDv0U1eFKJN9Zo8b9ZG8DgxfSjnaGHHJ4v3ZbGTpNCqA/M+iV1
-	 SnWhSx4cmLGbA==
-From: Simon Horman <horms@kernel.org>
-To: vulab@iscas.ac.cn
-Cc: Simon Horman <horms@kernel.org>,
-	rmody@marvell.com,
-	GR-Linux-NIC-Dev@marvell.com,
-	andrew+netdev@lunn.ch,
+	s=arc-20240116; t=1781191071; c=relaxed/simple;
+	bh=dSUt8JvY3OeC89mGtyPEnI9tz7ueHmVY11ipk+zAJFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hlw68UasgqY1YVLtrEydaQNOg0LM9Vm9D49akSXPrkqqdj11d9BCfk9qvzD54TUYrzajA6vjlZBQGOsc5gJlYGpKfF2H3GTVGxxR8VvQsC9vQ6uJcNFczE/DTVrArVkkAAxOcpkxospY5fWx7nmyLjoITccGs0Ou9yNDGOyvfxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-05 (Coremail) with SMTP id zQCowAC3Gt6I0SpqVGoYEw--.1282S2;
+	Thu, 11 Jun 2026 23:17:31 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: trondmy@kernel.org,
+	anna@kernel.org,
+	chuck.lever@oracle.com,
+	jlayton@kernel.org,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
+	pabeni@redhat.com
+Cc: neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
+	horms@kernel.org,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	WenTao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] bnx2: fix refcount leak in bnx2_change_ring_size()
-Date: Thu, 11 Jun 2026 16:13:50 +0100
-Message-ID: <20260611151349.607666-2-horms@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260609074746.206312-1-vulab@iscas.ac.cn>
-References: <20260609074746.206312-1-vulab@iscas.ac.cn>
+Subject: [PATCH] nfs: fix refcount leak in nfs_swap_activate()
+Date: Thu, 11 Jun 2026 23:17:26 +0800
+Message-ID: <20260611151726.92210-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,159 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3Gt6I0SpqVGoYEw--.1282S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrW5Xw47KFW7ur43trWUurg_yoW8WFyrpr
+	yUur9xAr1v934fJ3y2yF4Dta4fArn5Ga1rKr40yw1rAw12kr48Aa4IkFyjgFWxJFZ8JFy5
+	Zw4Ykay3AF1qvF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0pRBuWLUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAcPA2oqzuYF6wABsA
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262748-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:horms@kernel.org,m:rmody@marvell.com,m:GR-Linux-NIC-Dev@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:trondmy@kernel.org,m:anna@kernel.org,m:chuck.lever@oracle.com,m:jlayton@kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:neil@brown.name,m:okorniev@redhat.com,m:Dai.Ngo@oracle.com,m:tom@talpey.com,m:horms@kernel.org,m:linux-nfs@vger.kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262749-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_NA(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7FA19672FB3
+X-Rspamd-Queue-Id: 66B54673007
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+nfs_swap_activate() calls rpc_clnt_swap_activate(), which
+unconditionally increments the cl_swapper refcount via
+atomic_inc_return().  If the subsequent call to
+rpc_clnt_iterate_for_each_xprt() fails (e.g. the callback
+xprt_enable_swap() returns an error), rpc_clnt_swap_activate()
+returns the error without decrementing the refcount.  Back in
+nfs_swap_activate(), a nonzero return value is treated as a
+fatal error and causes an immediate return, so the elevated
+cl_swapper count is never released.
+
+Fix this by adding an atomic_dec() in the error path of
+rpc_clnt_swap_activate() before returning the error code, so
+that a failed activation properly cleans up the refcount.
+
+Cc: stable@vger.kernel.org
+Fixes: 15001e5a7e1e ("SUNRPC: Make NFS swap work with multipath")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
-bnx2: fix refcount leak in bnx2_change_ring_size()
+ net/sunrpc/clnt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-This patch attempts to balance the intr_sem semaphore on the failure path
-of bnx2_change_ring_size() by adding an atomic_dec() after the
-bnx2_napi_enable()/dev_close() sequence.
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index bc8ca470718b..97ab7aa71997 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -3396,9 +3396,13 @@ rpc_clnt_swap_activate(struct rpc_clnt *clnt)
+ {
+ 	while (clnt != clnt->cl_parent)
+ 		clnt = clnt->cl_parent;
+-	if (atomic_inc_return(&clnt->cl_swapper) == 1)
+-		return rpc_clnt_iterate_for_each_xprt(clnt,
++	if (atomic_inc_return(&clnt->cl_swapper) == 1) {
++		int ret = rpc_clnt_iterate_for_each_xprt(clnt,
+ 				rpc_clnt_swap_activate_callback, NULL);
++		if (ret)
++			atomic_dec(&clnt->cl_swapper);
++		return ret;
++	}
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(rpc_clnt_swap_activate);
+-- 
+2.50.1 (Apple Git-155)
 
-> diff --git a/drivers/net/ethernet/broadcom/bnx2.c b/drivers/net/ethernet/broadcom/bnx2.c
-> index f5722e929833..7f8ade29b7e5 100644
-> --- a/drivers/net/ethernet/broadcom/bnx2.c
-> +++ b/drivers/net/ethernet/broadcom/bnx2.c
-> @@ -7360,6 +7360,7 @@ bnx2_change_ring_size(struct bnx2 *bp, u32 rx, u32 tx, bool reset_irq)
->  		if (rc) {
->  			bnx2_napi_enable(bp);
->  			dev_close(bp->dev);
-> +			atomic_dec(&bp->intr_sem);
->  			return rc;
->  		}
-
-[Medium]
-Does the commit message match the change?
-
-The message states:
-
-    Fix this by calling bnx2_netif_start(true) in the error path to
-    properly release the semaphore count.
-
-but the diff inserts a raw atomic_dec(&bp->intr_sem), not a call to
-bnx2_netif_start().  These are not equivalent.  bnx2_netif_start() does
-an atomic_dec_and_test() and, when it transitions to zero with the
-device still running, additionally calls netif_tx_wake_all_queues(),
-bnx2_napi_enable(), bnx2_enable_int(), and bnx2_cnic_start():
-
-    static void
-    bnx2_netif_start(struct bnx2 *bp, bool start_cnic)
-    {
-            if (atomic_dec_and_test(&bp->intr_sem)) {
-                    if (netif_running(bp->dev)) {
-                            netif_tx_wake_all_queues(bp->dev);
-                            ...
-                            bnx2_napi_enable(bp);
-                            bnx2_enable_int(bp);
-                            if (start_cnic)
-                                    bnx2_cnic_start(bp);
-                    }
-            }
-    }
-
-At the patch site dev_close() has not yet run, so netif_running() is
-still true; calling bnx2_netif_start() here would re-enable interrupts
-and NAPI on a device that is about to be torn down.
-
-Could the commit message be updated to describe the actual change
-(an atomic_dec), since this affects stable backporters reading the log?
-
-The message also says:
-
-    bnx2_netif_stop(true) increments the semaphore at the start of the
-    function if the netif is running.
-
-Looking at bnx2_disable_int_sync() (called from bnx2_netif_stop()):
-
-    static void
-    bnx2_disable_int_sync(struct bnx2 *bp)
-    {
-            int i;
-
-            atomic_inc(&bp->intr_sem);
-            if (!netif_running(bp->dev))
-                    return;
-            ...
-    }
-
-the increment happens unconditionally before the netif_running() check,
-and bnx2_netif_stop() invokes bnx2_disable_int_sync() near the end (not
-the start).  Should the commit message be reworded to reflect that?
-
-[Medium]
-Does the single atomic_dec actually balance intr_sem on this error path?
-
-Tracing from the bnx2_open() baseline of intr_sem=0:
-
-  1. bnx2_netif_stop(bp, true) -> bnx2_disable_int_sync() does
-     atomic_inc (0 -> 1).
-
-  2. On error, bnx2_napi_enable() does not touch intr_sem.
-
-  3. dev_close(bp->dev) dispatches via ndo_stop to bnx2_close():
-
-        static int
-        bnx2_close(struct net_device *dev)
-        {
-                struct bnx2 *bp = netdev_priv(dev);
-
-                bnx2_disable_int_sync(bp);
-                ...
-        }
-
-     which performs another atomic_inc (1 -> 2).
-
-  4. The new atomic_dec brings it from 2 to 1.
-
-The semaphore is therefore left at +1, not 0.  Compare bnx2_reset_task(),
-which uses an explicit atomic_set(&bp->intr_sem, 1) before calling
-bnx2_netif_start() to forcibly reset state on a similar error path.
-
-Should this site either set intr_sem back to 0, or perform two
-atomic_dec calls (one for the bnx2_netif_stop() increment and one for
-the bnx2_close() increment), to fully balance the count as the changelog
-claims?
-
-In practice the residual +1 will be overwritten by the next
-bnx2_open() via atomic_set(&bp->intr_sem, 0), but the patch as written
-does not match its stated goal of fully releasing the count.
 
