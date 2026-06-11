@@ -1,145 +1,192 @@
-Return-Path: <stable+bounces-262699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aKatGWe2KmqfvgMAu9opvQ
-	(envelope-from <stable+bounces-262699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:21:43 +0200
+	id +oGmNKy4KmobvwMAu9opvQ
+	(envelope-from <stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68EC6724B4
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 157A9672590
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:31:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262699-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262699-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=e7juqfne;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262701-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 10B9330429B7
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:21:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 241DF3098072
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84EE40DFA0;
-	Thu, 11 Jun 2026 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF45409E01;
+	Thu, 11 Jun 2026 13:28:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203943FADE7;
-	Thu, 11 Jun 2026 13:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF6F408029
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 13:28:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781184093; cv=none; b=gd3sEm+jsySAdMm7JEuei12fbGFE7w0MwLveMLhW/Fl73yVZRX6rJgtxCN2vxYkJwrrK1lC43Jw8DntPE+u6oyUevnATrcmbq6z0ltY92LRWLzpl7h68f48gPgT/jLEl6zt3CVzc3m77cILT/xvC5N1gbZJMR2xT3mUBfxZrFDg=
+	t=1781184531; cv=none; b=aOjrKUyRC1Sb7x0bs7tfd2HBMc4N1OObV2RbXNfCJct3BMZNnskg6YfyELmrrfRrr8ukR0xLlr0hYKzg6Hhw2S/1zh+ICx4n1trtCcRoxb/YUpaxGtUo7i0UQaaOmIvbDHwI00nFTzmRC6CatSwSxqhJo2epYKyGcftgnziShIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781184093; c=relaxed/simple;
-	bh=LGENQiDsf9r0dmhm3a1JUWCqCwB6Upnst3CZgRW1qKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mt8byEQlp51Oy+48usIaP9gwuPzpm9ifoOk7jALbbH6eK2hm5nRIKk8QKW3oEZnOm5zHEbnImEnyk+lOtD94288uc3U14xZ1pURhzBXj1E4aXBdb8Bi6YJbGqCiXT9szco/0QWiRvCpl1/blR8zlvMV4RjieQsTtI/00iZ5NGFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.76])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Gt5Stipq9HYWEw--.576S2;
-	Thu, 11 Jun 2026 21:21:23 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: mathias.nyman@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
+	s=arc-20240116; t=1781184531; c=relaxed/simple;
+	bh=crKmGM2BPtU1gWofMArc5RSNIxo8syCXCMCQHJjzvSk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uXfE8l57FDaM6jl4CiSRNmRUR7RRmDoCXioFoZqaGEMDe2p4thnhqFRaMG5V0UOcBnrEdu5nlTCUn+hgkcGyAZbZc+rhErY91r88n4KeTPCKLfh4ZfMYLheu7+lRIbh2koUWbRzsgrJhlBQ0gGzHCCvhevf6oW51qMAurwLViJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e7juqfne; arc=none smtp.client-ip=209.85.214.181
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c0aa420401so61377505ad.3
+        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 06:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781184528; x=1781789328; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kr6lr/Zk4qDdZQL9yjJdI0zh4QdrOtRvdN1aN8UPXKU=;
+        b=e7juqfne4BEQWFb7uAsbNpZ6bBRPG3XKGRIkDFcLIKc8iHJxeg9PA4FwMuKx7izMrC
+         zvcAYxmIVlTvSVBp+TMJHP0r1EQvwEbLGK1fGIJ+6nyoZvSRfLUe1zf5TI8PldPbCOr+
+         ExKcFbrPiAyvvEReMVudx9VRa36T2oNDa4o4DPEoXd+cy+n4LSq6ciplza6ioTStRog5
+         CwEA07jb4eRKzZ2RQU/QQ1bYgjYeve4XXm+ZtkLjWDdzygl5E8vZhMSF7XVlOeJPpmcQ
+         13yn1ybBiP5X0e0jfSA0u4mDoweAI90lqnk/Xl4BwjhN5Oif7gfuybYKUrNhIT7cAMPW
+         yw/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781184528; x=1781789328;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kr6lr/Zk4qDdZQL9yjJdI0zh4QdrOtRvdN1aN8UPXKU=;
+        b=FBuoxY4DyfDa0qUMERl0kULLCxhyUR2LMlN+WsguwRTxVwE9QwVUny1EsZKtbayuBi
+         ezuziB93uKakWQqRqqCjsYO/oP34dyQlpzS+wrlerYm9s6ReSnV3oBMG+rogDfif7oEb
+         TYe7IaADc1qpSWQqFqC0Lk61cprNNXGuLODqpKnlM8hHsZG5ZT0GfoYpVNr20ir1bhaz
+         2yCcIOvWWNZ1Ci1GPrkAYaawFH/Fij3DmqXQoZ+9kyq+RQHPtob41q85SzMeYT5P8+oq
+         Ywpx0TYqFsUthOnsHOMApMCyDwlIRXb6OkY1/Gq+9e0qk8b1a1QRry2Gta36tsyoAamt
+         sK5A==
+X-Forwarded-Encrypted: i=1; AFNElJ9I1VsdTBDbeCasTN4KHMMNxBycoEiWAfvpt8mdKB6yPAjlCmEdlo0mtF3Oww9HYgWqtYeA8/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkU4cQ5L2MXYU7wwlpDSsSp+8R/72FOBsWPKPVLuo+RFxjN2Q1
+	vyywh2kDSO/6cIDibBRUxRWklPaR6qBOGCvgYFqP7UBBsgsu5hwAuVmV
+X-Gm-Gg: Acq92OE5AXWwsaTgdpwvyiYEIacHDCy5i/RNX88MZOygxt0ozkt246Rf+QvF06WdQfn
+	Y88HWK31YVfcTRoxUMfmzzuOXem9SMxDC62d8vPk1qgI8VmRmdeJCOE2HkCzl59aQfvMOK16r1Y
+	ejkRZ0sJOZzfXDmzw9g4VM0sScm1dwjlwewTTMi8WJtE43MQj9hhEVpb4ke89km80aHb/VoJgSE
+	BFhIuYlv0GkJzxEZeGdwUnr/JgNjewWruboaNVkjUYqfkc1soB2yRJ3Va+7mOlOI/ANLLNeKvGE
+	BSWud6Fr2CyeTKdQpATA5oATPjr0Jmj3CMjRR1SaBKnwdeEh10tHHNEtMZxhHw8GAmqvirXopBS
+	5W47qoeS/GIu7OOusT8CmGh8X2p5nBcha2hIYaa9z5tP0saKPxfjev4L4uK0TUmEvaAzNwZ7DZ+
+	1IkivqCfk2Mopmlg8F6hk0mI/rfDqfzgXxAFCAK+SltGoz2lVQkUrs3AHOMIEy4WmZEAGbspnoK
+	GeslLDEC/FIBp5JkDOoVzidfcLbi9kgiUCVijP/qXsFVZ3JjDmCGbn5kMUBbCEHIfZavHew/ix9
+	9zKnD4W5Cp8NDOYAkJod0xqaeQnK+z7K4HhhjyEiOHrk5fKj
+X-Received: by 2002:a17:903:90c:b0:2bf:dd8b:7cd with SMTP id d9443c01a7336-2c2f10165e3mr31858515ad.10.1781184528412;
+        Thu, 11 Jun 2026 06:28:48 -0700 (PDT)
+Received: from jfk-HP-EliteBook-640-14-inch-G10-Notebook-PC.cse.unsw.EDU.AU (dyn-dhcp-226.cse.unsw.EDU.AU. [129.94.175.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16629cfb4sm292927115ad.59.2026.06.11.06.28.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 06:28:47 -0700 (PDT)
+From: Weigang He <geoffreyhe2@gmail.com>
+To: Hans Verkuil <hverkuil@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-media@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	WenTao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: xhci: fix refcount leak in xhci_port_bw_show()
-Date: Thu, 11 Jun 2026 21:21:20 +0800
-Message-ID: <20260611132120.83185-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	stable@vger.kernel.org,
+	Weigang He <geoffreyhe2@gmail.com>
+Subject: [PATCH] media: cec: stm32: prevent out-of-bounds write on RX overflow
+Date: Thu, 11 Jun 2026 23:22:48 +1000
+Message-ID: <20260611132248.114519-1-geoffreyhe2@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Gt5Stipq9HYWEw--.576S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4DuFyDuryftFyrJF1UJrb_yoW8GrW8pa
-	n8WF47CrZ5Xr4ft345Arn7XFyru398tryUA3yI9as5ur45G3WayryUCFZ0q3WI9r9rJF15
-	tw4kXFW3AF1jkaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUfsqAUUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4PA2oqh4WSVQAAsO
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:mathias.nyman@intel.com,m:gregkh@linuxfoundation.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vulab@iscas.ac.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262701-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:hverkuil@kernel.org,m:mchehab@kernel.org,m:mcoquelin.stm32@gmail.com,m:alexandre.torgue@foss.st.com,m:linux-media@vger.kernel.org,m:linux-stm32@st-md-mailman.stormreply.com,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:geoffreyhe2@gmail.com,m:mcoquelinstm32@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,foss.st.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262699-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[geoffreyhe2@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geoffreyhe2@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B68EC6724B4
+X-Rspamd-Queue-Id: 157A9672590
 
-If xhci_port_bw_show() calls pm_runtime_get_sync() and it fails with
-a negative return value, the function returns the error directly without
-calling pm_runtime_put_sync(). This leaks the runtime PM usage count,
-preventing the device from ever suspending again.
+stm32_rx_done() appends each received CEC byte to rx_msg.msg[] using
+rx_msg.len as the write index, incrementing it on every RXBR
+(receive-byte-ready) interrupt without checking it against the buffer
+size:
 
-pm_runtime_get_sync() unconditionally increments dev->power.usage_count
-before calling rpm_resume(). If rpm_resume() fails, the usage count is
-not decremented — a well-known API pitfall. Add a pm_runtime_put_sync()
-call on the error path to balance the reference.
+	cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
 
+rx_msg.msg[] is a fixed CEC_MAX_MSG_SIZE (16) byte array in struct
+cec_msg, and rx_msg.len is only reset on RXACKE/RXOVR or after a
+completed message (RXEND). The number of bytes received before RXEND is
+decided by the remote CEC device (it sets EOM), not by the driver. A
+peer that keeps sending bytes without ending the message drives RXBR
+repeatedly, pushing rx_msg.len past 16 and writing peer-controlled bytes
+out of bounds into the surrounding memory. This is reachable in normal
+operation once the driver has probed and receiving is enabled, from the
+IRQ thread, without any local privilege.
+
+The length check in the CEC core runs on the consumer side, after the
+byte has been stored, so it does not prevent the overflow. Bound the
+index in the driver before the store, as the other platform CEC drivers
+already do (e.g. tegra_cec), dropping the excess bytes of an overlong
+frame.
+
+Found by static analysis tool CodeQL.
+
+Fixes: d69ae57453c8 ("[media] cec: add STM32 cec driver")
 Cc: stable@vger.kernel.org
-Fixes: 59d50e53e070 ("usb: xhci: Add debugfs support for xHCI port bandwidth")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 ---
- drivers/usb/host/xhci-debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/cec/platform/stm32/stm32-cec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-debugfs.c b/drivers/usb/host/xhci-debugfs.c
-index d07276192256..2974411f775d 100644
---- a/drivers/usb/host/xhci-debugfs.c
-+++ b/drivers/usb/host/xhci-debugfs.c
-@@ -679,8 +679,10 @@ static int xhci_port_bw_show(struct xhci_hcd *xhci, u8 dev_speed,
- 	struct device			*dev = hcd->self.controller;
+diff --git a/drivers/media/cec/platform/stm32/stm32-cec.c b/drivers/media/cec/platform/stm32/stm32-cec.c
+index 1ec0cece0a5b7..8c2fc232202de 100644
+--- a/drivers/media/cec/platform/stm32/stm32-cec.c
++++ b/drivers/media/cec/platform/stm32/stm32-cec.c
+@@ -132,7 +132,8 @@ static void stm32_rx_done(struct stm32_cec *cec, u32 status)
+ 		u32 val;
  
- 	ret = pm_runtime_get_sync(dev);
--	if (ret < 0)
-+	if (ret < 0) {
-+		pm_runtime_put_noidle(dev);
- 		return ret;
-+	}
+ 		regmap_read(cec->regmap, CEC_RXDR, &val);
+-		cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
++		if (cec->rx_msg.len < CEC_MAX_MSG_SIZE)
++			cec->rx_msg.msg[cec->rx_msg.len++] = val & 0xFF;
+ 	}
  
- 	ctx = xhci_alloc_port_bw_ctx(xhci, 0);
- 	if (!ctx) {
+ 	if (cec->irq_status & RXEND) {
+
+base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
 -- 
-2.50.1 (Apple Git-155)
+2.43.0
 
 
