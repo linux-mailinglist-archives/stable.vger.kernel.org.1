@@ -1,145 +1,200 @@
-Return-Path: <stable+bounces-262602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8ghGN5IYKmrSigMAu9opvQ
-	(envelope-from <stable+bounces-262602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 04:08:18 +0200
+	id /tOBHI0iKmqRjAMAu9opvQ
+	(envelope-from <stable+bounces-262603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 04:50:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABBB66DBEF
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 04:08:18 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9C66DE1B
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 04:50:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=PUswkuEQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262602-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262602-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=PSFbKFrl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262603-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262603-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F8EC30C9D02
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:08:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 771A0301104B
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 02:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D0923FC41;
-	Thu, 11 Jun 2026 02:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C723128A3;
+	Thu, 11 Jun 2026 02:50:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA03A218E91;
-	Thu, 11 Jun 2026 02:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7532D8DB5
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 02:50:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781143692; cv=none; b=MhzGVAHw8oyQCIv3XszeLU0vv1QUDeoKfDp5NWu6PtDaQ2kXiM/oGt1DHoUM926l9cq87WcL/lL+aRbqMWwgz4jYVYUAsbq7yyS4GS4UnrWGVMtSpv+bjSxNrNFd009E9YgTCYfQThPKHlnNiVCjBeQhcaxX5Q2mjdOThvNnYaE=
+	t=1781146251; cv=none; b=LH7z/QOAkFpsuR64QSGlq2ANgF8ZOlLgEproB7GjRaTXQq4k7UPIBEoBfyqxNS9BRICktYHf8eB3hBPk0+BoxkAFhFtwFD+wfnoYf8a6VzJq4XBot+svgcCdA8pBMChQ+bdQHAGjgdpe0ltDw7qKrBmIy0RL0SXmLbPzX1B9o8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781143692; c=relaxed/simple;
-	bh=QxxTGAVVbJiQCDDc9kzk1FaC2BxjYt8KgvKClQ5hVbI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C1rJHsYC1/4OaKp/Xsy8yk+U4lObGbTbZhxDhIpqNXIEC+3xRbIThtrf694/Ae5O7XxTF3c7x++kprGFX0cfKkJzUUJnBz+x1ux3w1gyuF05zayH7V++0u4nnPDnXxlDgtuRsVA9h+4ORcl0jJC/kJx46uvYuddSMil2rYq0c0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=PUswkuEQ; arc=none smtp.client-ip=45.254.49.197
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 41eb56573;
-	Thu, 11 Jun 2026 10:02:53 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: jacob.e.keller@intel.com
-Cc: andrew+netdev@lunn.ch,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	dawei.feng@seu.edu.cn,
-	edumazet@google.com,
-	intel-wired-lan@lists.osuosl.org,
-	jianhao.xu@seu.edu.cn,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	marcin.szycik@linux.intel.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	stable@vger.kernel.org,
-	zilin@seu.edu.cn
-Subject: Re: [Intel-wired-lan] [PATCH net] ice: fix memory leak in ice_lbtest_prepare_rings()
-Date: Thu, 11 Jun 2026 10:02:54 +0800
-Message-Id: <20260611020254.308446-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <00f5f6e3-e80f-4c16-8d2f-f8148bcddfa8@intel.com>
-References: <00f5f6e3-e80f-4c16-8d2f-f8148bcddfa8@intel.com>
+	s=arc-20240116; t=1781146251; c=relaxed/simple;
+	bh=5xCwTikiya66h9P56QgbjupR8T8Zpq6Mr2nqwVAVxkI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mx16icearcwX++79u4PU/XB637+ZsLEH5rOva2cBglx6XCbe3PntaTJauyt+I06rSZI/j4a8DOrPSq/pDlcXNkbmGNJzLDn0duyKSIof2jQ6+bBgpO/GMD27o5nfSQpysY2mX+RN8Awa9+J79l5yo2Z6yRGaP33Ay6b5ddKfieA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PSFbKFrl; arc=none smtp.client-ip=170.10.129.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781146249;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zeTt+ma90++oB/pmg/novekOFyYf+u+Cy444ynH4ojc=;
+	b=PSFbKFrl/rO23Ry29nmZxVR9x1UlI2tCf9j86gWzipJVyOhExPHaTXCyL53CBZvyaCEP3R
+	nPdShKcqySh3xwWZuvpKkhoxJZdHUwRhBZwOoKkb/5zdVq0hM1UpS2dddu57iIXXVwn9qh
+	0i6lmz/puRe8b2jkWvCTbMgPo45YRJ4=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-4GuzfYPJNDWLqOuDDRCa9Q-1; Wed,
+ 10 Jun 2026 22:50:45 -0400
+X-MC-Unique: 4GuzfYPJNDWLqOuDDRCa9Q-1
+X-Mimecast-MFC-AGG-ID: 4GuzfYPJNDWLqOuDDRCa9Q_1781146243
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41C861964CF2;
+	Thu, 11 Jun 2026 02:50:42 +0000 (UTC)
+Received: from [10.22.81.61] (unknown [10.22.81.61])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CE7E2ED4;
+	Thu, 11 Jun 2026 02:50:39 +0000 (UTC)
+Message-ID: <c1cb5025-d089-4e73-8bb4-d7b8cc0badf7@redhat.com>
+Date: Wed, 10 Jun 2026 22:50:38 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9eb46b072103a2kunm4f921c24193a19
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTkJKVh9NGkkZSE4aHRlJHlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
-	9ITFVKS0tVSkJLS1kG
-DKIM-Signature: a=rsa-sha256;
-	b=PUswkuEQxvP5C6A3S2B092O9Wh4MekFk1hfTk5VwxKgi1I6czgSuBzRYEDnO3wZPmVmONgPCZ4AGzHDYk1dfkYVv1DZD/mfu2tnfMqQIIfFJapZp5LsCaqa9M5WJ/fvP9OOLyNBoPWxn97LZswaohUtIGp3sHHY2AM5J88n9z2o=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=LsfLRl7OuI64QZa7FWNmdbCqTIV71pSU3+SydKKbDjw=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cgroup/cpuset: rebind mm mempolicy to effective_mems, not
+ mems_allowed
+To: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Gregory Price <gourry@gourry.net>
+Cc: Farhad Alemi <falemi@asu.edu>, Yury Norov <ynorov@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <25c4bc47-b65d-4c04-8a8f-18eef2b5566a@kernel.org>
+ <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+Content-Language: en-US
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262602-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jacob.e.keller@intel.com,m:andrew+netdev@lunn.ch,m:anthony.l.nguyen@intel.com,m:davem@davemloft.net,m:dawei.feng@seu.edu.cn,m:edumazet@google.com,m:intel-wired-lan@lists.osuosl.org,m:jianhao.xu@seu.edu.cn,m:kuba@kernel.org,m:linux-kernel@vger.kernel.org,m:marcin.szycik@linux.intel.com,m:netdev@vger.kernel.org,m:pabeni@redhat.com,m:przemyslaw.kitszel@intel.com,m:stable@vger.kernel.org,m:zilin@seu.edu.cn,m:andrew@lunn.ch,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262603-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:farhad.alemi@berkeley.edu,m:akpm@linux-foundation.org,m:david@kernel.org,m:gourry@gourry.net,m:falemi@asu.edu,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[asu.edu,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	FROM_HAS_DN(0.00)[]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6ABBB66DBEF
+X-Rspamd-Queue-Id: 0AD9C66DE1B
 
-Hi Marcin,
+On 6/9/26 7:57 PM, Farhad Alemi wrote:
+> cpuset_update_tasks_nodemask() rebinds a task's own mempolicy to the
+> cpuset's effective, online mems (newmems, from guarantee_online_mems()),
+> but rebinds that task's VMA mempolicies to the *configured* mask instead:
+>
+> 	cpuset_change_task_nodemask(task, &newmems);
+> 	...
+> 	mpol_rebind_mm(mm, &cs->mems_allowed);
+>
+> On the default (v2) hierarchy a cpuset that has never had cpuset.mems
+> written keeps mems_allowed empty while effective_mems is inherited
+> non-empty from the parent, and tasks may be attached to it (the
+> empty-mems attach check is v1-only).  A subsequent rebind -- e.g. from a
+> CPU hotplug event walking the cpuset -- then calls mpol_rebind_mm() with
+> an empty mask.  For a VMA policy created with MPOL_F_RELATIVE_NODES this
+> reaches mpol_relative_nodemask() ->
+> nodes_fold(..., nodes_weight(cs->mems_allowed) == 0) -> bitmap_fold(),
+> whose set_bit(oldbit % sz, dst) divides by zero:
+>
+>    Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+>    RIP: 0010:bitmap_fold+0x5e/0xb0
+>     mpol_rebind_nodemask
+>     mpol_rebind_mm
+>     cpuset_update_tasks_nodemask
+>     cpuset_handle_hotplug
+>     sched_cpu_deactivate
+>     cpuhp_thread_fun
+>
+> cs->mems_allowed is the only nodemask in this function that is not the
+> effective set: the task-policy rebind, the page-migration target and
+> cs->old_mems_allowed all use newmems.  The sibling cpuset_attach() path
+> already rebinds VMA policies against the effective mems
+> (cpuset_attach_nodemask_to = cs->effective_mems) and explicitly notes
+> that mems_allowed can be empty under hotplug.  Rebind the VMA policies to
+> newmems too: it is guaranteed non-empty by guarantee_online_mems(), which
+> fixes the divide-by-zero, and it makes the VMA policies consistent with
+> the task policy and with the nodes the task is actually allowed to use.
+>
+> Fixes: ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}")
+> Suggested-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> Cc: stable@vger.kernel.org
+> ---
+>   kernel/cgroup/cpuset.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -2649,7 +2649,7 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+>
+>   		migrate = is_memory_migrate(cs);
+>
+> -		mpol_rebind_mm(mm, &cs->mems_allowed);
+> +		mpol_rebind_mm(mm, &newmems);
+>   		if (migrate)
+>   			cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+>   		else
 
-Thanks for your review.
+Could you change it to &cs->effecitve_mems instead? For v2, 
+effective_mems will never be empty.
 
-On Tue, 9 Jun 2026 at 16:27:20 Marcin Szycik wrote:
-> IMO last two paragraphs should not be included in commit message,
-> rather after ---.
+In fact, this is part of the following patch
 
-The reason the manual inspection and testing commentary was placed above
-the `---` line is that we were strictly following the example template
-provided in Documentation/process/researcher-guidelines.rst. 
+https://lore.kernel.org/lkml/20260604150229.414135-2-longman@redhat.com/
 
-In the researcher-guidelines[1], the example explicitly places the build
-and hardware testing disclaimer before the Signed-off-by tags, which is
-why we included it directly in the commit message.
+Given that this bug can crash the kernel, it should be separated out as 
+a separate patch.
 
-Please let me know if you would like a v2 to adjust the position of the
-mentioned commit log details.
+Cheers,
+Longman
 
-> Correct me if I'm wrong, but looks like unroll order is reversed:
-> ice_vsi_stop_lan_tx_rings() unrolls ice_vsi_cfg_lan()
-> ice_vsi_free_rx_rings() unrolls ice_vsi_setup_rx_rings()
-> (was reversed before this patch too, but since we're fixing it, might as well)
 
-You are right. I'll update it in v2.
-
-[1] https://docs.kernel.org/process/researcher-guidelines.html
-
-Best regards,
-Dawei
 
