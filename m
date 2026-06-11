@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-262703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VGvKM2u4KmoNvwMAu9opvQ
-	(envelope-from <stable+bounces-262703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:30:19 +0200
+	id gGD+Ddy6Kmp2vwMAu9opvQ
+	(envelope-from <stable+bounces-262706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:40:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16691672580
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:30:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1629E672648
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:40:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262703-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262703-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=arm.com header.s=foss header.b=SXH17Raq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262706-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262706-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=arm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F616311B028
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:30:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E71423004075
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0CB400DFF;
-	Thu, 11 Jun 2026 13:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BB9403126;
+	Thu, 11 Jun 2026 13:40:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F3730F819;
-	Thu, 11 Jun 2026 13:30:01 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44A33F788A
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 13:40:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781184604; cv=none; b=DH1zCmYsjdRicNmw8970TsxLgSkgCa3xZOm9iG8RKUzFCJvjhBcuS9h4DPV9bnb9OdHFeZZLY3fd5tUMz07og2YujADYU4ro64cLTu24ZzAFU2ghpNdk8P0AMOdHETP5OsuTJC6eNIQYmuF0Rz5/Vd6aqamKwTgwHfYACMmaW14=
+	t=1781185236; cv=none; b=i7mif2WCoJasOt+YarNWsinmN+X7ie+In9B3xJ0YMjmqqQmi8z3jbdzoDlfgaV/Q6UQoN1LuRusWLelaxbwwCtd9N1VrGhGcSbdh6bQQZo8yotHXwmtuz5TwbMjDmhy+9UHImB7cCA1JSWjMCTF1wh4bzBUhoak2RbN7FQE6Yhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781184604; c=relaxed/simple;
-	bh=RHN3ZvGmE/NFe/R3w9D5eZ2rXHHGsjHgmU60jcHXJTk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P6Kzxo8XfSegZbbvAGJhKJwk9OzK9zxAx44KP7x6rR1rLzxwSYEKwxXob7WruJdRmqOmgF3g0Wi7jLBE2qfRykBshpkgcUPiQ896ADVsC2TiwONY0I3ipx9yx0XbNEr5Pg4EsfSoBmjVtpt554gmc/F6mNa6zEylouq+3QAxsCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from localhost.localdomain (unknown [117.182.75.76])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Gt5SuCpqYpoWEw--.628S2;
-	Thu, 11 Jun 2026 21:29:56 +0800 (CST)
-From: WenTao Liang <vulab@iscas.ac.cn>
-To: gregkh@linuxfoundation.org
-Cc: kees@kernel.org,
-	oneukum@suse.com,
-	vulab@iscas.ac.cn,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] USB: misc: uss720: fix refcount leak in submit_async_request()
-Date: Thu, 11 Jun 2026 21:29:52 +0800
-Message-ID: <20260611132952.83931-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1781185236; c=relaxed/simple;
+	bh=yrKs/eMhesXtTbBGx0mb3B4KBmCw2f6TOht/07OU9FQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xb0tRabmE+hrpNXcdVyzOyT5N6xR0cHIJfbL1YuaUY0PrsFW7sUtLy4u4Df9qSKqSWc2onKzj17TMTYPCppk+rK4bzf6a/JFoXnQqfkoKPKqib/aNzM8ftTu3A1HVrVrCLONiE9qpM8gK5onJtC+Av0sp8h49qfirhR9g8JKRjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=SXH17Raq; arc=none smtp.client-ip=217.140.110.172
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B62D1DB5;
+	Thu, 11 Jun 2026 06:40:28 -0700 (PDT)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2E2633FAF5;
+	Thu, 11 Jun 2026 06:40:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1781185233; bh=yrKs/eMhesXtTbBGx0mb3B4KBmCw2f6TOht/07OU9FQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SXH17RaqpbDtQGhYW85l/MWOqI2NpjT09jeIbJXXGQJ7Vq7AtxB4qu9scgq5PgIej
+	 KgftCCm+yT9atJw6vA5hm1ZTdAqwmJOXlqD3HWyS5y7/NJI6MHNWV9GZV5MSrg28qN
+	 KLnV+Z/e+39ZG5rKXr/BtDpidS1lt1pnzC4Rgb7A=
+From: Mark Rutland <mark.rutland@arm.com>
+To: stable@vger.kernel.org
+Cc: catalin.marinas@arm.com,
+	gregkh@linuxfoundation.org,
+	lee@kernel.org,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	oupton@kernel.org,
+	ryan.roberts@arm.com,
+	will@kernel.org
+Subject: [PATCH 6.12.y 0/2] arm64: tlb: Prerequisites for TLBI erratum workaround
+Date: Thu, 11 Jun 2026 14:40:22 +0100
+Message-Id: <20260611134024.1700323-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,90 +64,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Gt5SuCpqYpoWEw--.628S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tFWrWF48Gw47uw4fur1Dtrb_yoW8GFWDpF
-	4fG3yjkry5Xa1Sga17Jws5ZayFyanayryfGa9IkwnxZryfXaykC3W5Wayjkr9xAr4kJ347
-	tF4DJa13Ja4j9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUvXd8UUU
-	UU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4PA2oqh4WYdgAAsn
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-262703-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:kees@kernel.org,m:oneukum@suse.com,m:vulab@iscas.ac.cn,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[arm.com:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:catalin.marinas@arm.com,m:gregkh@linuxfoundation.org,m:lee@kernel.org,m:mark.rutland@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-262706-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ALIAS_RESOLVED(0.00)[];
 	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 16691672580
+X-Rspamd-Queue-Id: 1629E672648
 
-When submit_async_request()'s call to usb_submit_urb() fails, the
-error path directly calls destroy_async() on the request structure
-instead of kref_put(). This bypasses the reference counting mechanism
-because the kref is initialized to 1 and the preceding kref_get()
-increments it to 2. The callback function async_complete() will never
-run in this case, so the reference acquired by kref_get() is leaked,
-and the structure is freed while still holding two references.
+This is a v6.12.y-only backport of updates to arm64's
+ARM64_WORKAROUND_REPEAT_TLBI erratum workaround, which have been
+upstream since v7.0 and have already been backported to v6.18.y. These
+are prerequisites for patches to enable the workaround for many more
+CPUs, which are queued in the arm64 tree targetting v7.2-rc1:
 
-Fix by replacing destroy_async() with kref_put() in the failure
-branch, properly releasing the extra reference.
+  https://lore.kernel.org/linux-arm-kernel/20260609101203.1512409-1-mark.rutland@arm.com/
+  https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?h=for-next/errata
 
-Cc: stable@vger.kernel.org
-Fixes: adaa3c6342b2 ("USB: uss720 fixup refcount position")
-Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
----
- drivers/usb/misc/uss720.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I'm sending backports of these ahead of backports of the
+not-yet-upstream portion as these have the key logic changes and I'm
+hoping they could be queued early and see more testing. On their own
+they serve as an optimization to existing users of the workaround.
 
-diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
-index b7d3c44b970e..e1eba3cbef0a 100644
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -168,7 +168,7 @@ static struct uss720_async_request *submit_async_request(struct parport_uss720_p
- 	ret = usb_submit_urb(rq->urb, mem_flags);
- 	if (!ret)
- 		return rq;
--	destroy_async(&rq->ref_count);
-+	kref_put(&rq->ref_count, destroy_async);
- 	dev_err(&usbdev->dev, "submit_async_request submit_urb failed with %d\n", ret);
- 	return NULL;
- }
+I've pushed this series to my stable-6.12/arm-4118414/prerequisites
+branch:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.12/arm-4118414/prerequisites
+
+I've pushed a v6.12.y backport of all the not yet upstream patches to my
+stable-6.12/arm-4118414/backport branch:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=stable-6.12/arm-4118414/backport
+
+... and once those are merged into mainline I will submit stable
+backports.
+
+Mark.
+
+Mark Rutland (2):
+  arm64: tlb: Allow XZR argument to TLBI ops
+  arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
+
+ arch/arm64/include/asm/tlbflush.h | 63 ++++++++++++++++++-------------
+ arch/arm64/kernel/sys_compat.c    |  2 +-
+ arch/arm64/kvm/hyp/nvhe/mm.c      |  2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c     |  8 ++--
+ arch/arm64/kvm/hyp/pgtable.c      |  2 +-
+ arch/arm64/kvm/hyp/vhe/tlb.c      | 10 ++---
+ 6 files changed, 49 insertions(+), 38 deletions(-)
+
 -- 
-2.50.1 (Apple Git-155)
+2.30.2
 
 
