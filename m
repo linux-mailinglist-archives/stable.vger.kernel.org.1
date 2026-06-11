@@ -1,195 +1,154 @@
-Return-Path: <stable+bounces-262612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P1y6Lm45KmqukgMAu9opvQ
-	(envelope-from <stable+bounces-262612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 06:28:30 +0200
+	id 0O7wOQ5FKmrnlQMAu9opvQ
+	(envelope-from <stable+bounces-262613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 07:18:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C67966E2F1
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 06:28:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CAD66E77E
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 07:18:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R8PazR6j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262612-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262612-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=sa8XVQfH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262613-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262613-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=apana.org.au;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6246C30B4232
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 04:28:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB2973079575
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 05:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC80344DB9;
-	Thu, 11 Jun 2026 04:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F59364029;
+	Thu, 11 Jun 2026 05:04:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B8F272816;
-	Thu, 11 Jun 2026 04:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD55C279DCA;
+	Thu, 11 Jun 2026 05:04:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781152104; cv=none; b=rATFSzLHYN7YPZakXRO2Fm7bmhGd8S0s+xa7FJ9TNzwwQfAmq7JCzBlrzG9aX8y/z/A5FGdkRjbU2AZVk0soVXETCDyUCkSeMkZOeNhVoya+3sSm46qC/K5k4lLocf9d82rOjt0dYd4U6SC/8wYKPMKcKf/s7ZDQOCusFgmFO5o=
+	t=1781154292; cv=none; b=FHOJyicHDYV0V9rLESuBBqEosS9GTgNqd2/4vZdNy8b5FCpvud2ghRWcWigRQbiPWrRZEVmo1tZlGUc8ySCqFebPhk0POQ8EWd8QYFCSxPqspCPnhZCx523AbJ1Voay7n1F8dtkP2WoOTcodmroKzceJLXagOEUlFQUIIhHrqKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781152104; c=relaxed/simple;
-	bh=8ebuoNn8zdrqOpxqpNoXGy+JFde83KobHja3rzwz4bg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GbPQdm/CiE0zlAZ6IDj9/DNV1tR4ApsrjgvNrWCmSCG9gWzmpSSTJJD33b+6ArTVZ+vV3p3ALaD8FFKHmyZMJLxLm1u2PhnHAWXrSbMxRyy1aY8xdnybeg/ofwytYwsbtvlCe230ZVcs7yHMDsevcn1czbUaWgndcfGCPk3lxwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8PazR6j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E2C1F00893;
-	Thu, 11 Jun 2026 04:28:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781152102;
-	bh=8ebuoNn8zdrqOpxqpNoXGy+JFde83KobHja3rzwz4bg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R8PazR6jVPYyf7+wFXw1X07UgYA1ez4bgnqAF61ddxjFVJS5h8D5QtzyK7zw/G971
-	 HaMTOwnjh77Cw9Kkonln4915X4fMjR0tiz4JUB5RktFGKTL2tPSgjyGh489k+u440R
-	 n4QyqIY04sQHH9r6jYfgBlwWA1vRoxQko/hAAQ6ploD/y+5C2sL3MhyFynIq38j5+9
-	 G59bUR+8i6BF9unVvOi20zvvkAJfKf8CnktZPj8hXtTPkygc2A1Tg3hA8c5nwjMEyR
-	 Qa+sf2ZxBY1DFLzcn5h21YblZCGXDCAFAvCf+iuvEJsSChwcpHDcC9Co/U+opZZBak
-	 p9Ul/D30pCdeA==
-Message-ID: <df75999f-e96e-4a9b-8930-1b6c6c7c17cb@kernel.org>
-Date: Thu, 11 Jun 2026 13:28:14 +0900
+	s=arc-20240116; t=1781154292; c=relaxed/simple;
+	bh=gOCQVqhDJTyuRiUzL/+8C/j6YzhUC1w22ot05J1Cr/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mx1G4CudzYF7CSnUjTCpzjtqUwJsEeWjiX5Hpd/X6A81moUL0VYw3lHTjf3RLU1z3g0EFuqMTpBjptbtWN9W6IdXQlpRJT0lFlekQT66SYfjMtE/Hw69NFBWpIJMJWbylyb6hzNUdo7VWn1DUALzu+vJLeK4mlS6NQlKBeG2oc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=sa8XVQfH; arc=none smtp.client-ip=180.181.231.80
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=/YvzqMDI3nbkwkA5pMGiIeRglsYXX8ywE2cZbFG4rU8=; 
+	b=sa8XVQfHBThT8cDuG7BuRp8CBEjfeawbl2vlG6XfTIhjdaLqCbpsxSgga0OoaYU/NmYdlUE37UN
+	ZfyzjhDsZKU72uF1PVTcpwtosklGYJCIfbU0bPebY0zGJuwJfMv8aTY8jjFK2UsXUHHc2mFDMUKkY
+	E/3+22hcH+xyITALfnDVZtW4WVttpN1qXmhx/1HfGrzvaNqwEG3pKZxGPm2hgU3g/jvf4anx2wHwL
+	eHHm8gzuK/LZfno2wCOhIdM03kt5jmdyZVLoqygPrUUpHBf7ZeZhoeyecK2W4PNMWEQHyFyUcgFCy
+	og7b1lRiU8A4dZLRVnY2jPRF4XTlqX2N3VuQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1wXXaj-00000004Tmd-2lb3;
+	Thu, 11 Jun 2026 13:04:34 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 11 Jun 2026 13:04:33 +0800
+Date: Thu, 11 Jun 2026 13:04:33 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Nicolas Royer <nicolas@eukrea.com>,
+	Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>,
+	stable@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: atmel-tdes - use scatterlist length before DMA
+ mapping
+Message-ID: <aipB4S29ID_dQeLg@gondor.apana.org.au>
+References: <20260531204115.689052-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------9nrmmelZmALRVRtPX4TWPfgk"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260531204115.689052-3-thorsten.blum@linux.dev>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-7.26 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vbabka@kernel.org,m:hao.li@linux.dev,m:cl@gentwo.org,m:rientjes@google.com,m:roman.gushchin@linux.dev,m:surenb@google.com,m:ast@kernel.org,m:akpm@linux-foundation.org,m:hannes@cmpxchg.org,m:mhocko@kernel.org,m:shakeel.butt@linux.dev,m:glider@google.com,m:elver@google.com,m:dvyukov@google.com,m:kasan-dev@googlegroups.com,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[harry@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-262612-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262613-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:thorsten.blum@linux.dev,m:davem@davemloft.net,m:nicolas.ferre@microchip.com,m:alexandre.belloni@bootlin.com,m:claudiu.beznea@tuxon.dev,m:nicolas@eukrea.com,m:eric@eukrea.com,m:stable@vger.kernel.org,m:linux-crypto@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:url,apana.org.au:email,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,gondor.apana.org.au:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5C67966E2F1
+X-Rspamd-Queue-Id: D4CAD66E77E
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------9nrmmelZmALRVRtPX4TWPfgk
-Content-Type: multipart/mixed; boundary="------------ErL0jxv071rjUQMi0aMrpEeW";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- stable@vger.kernel.org
-Message-ID: <df75999f-e96e-4a9b-8930-1b6c6c7c17cb@kernel.org>
-Subject: Re: [PATCH v2 01/16] mm/slab: do not limit zeroing to orig_size when
- only red zoning is enabled
-References: <20260610-slab_alloc_flags-v2-0-7190909db118@kernel.org>
- <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-In-Reply-To: <20260610-slab_alloc_flags-v2-1-7190909db118@kernel.org>
-
---------------ErL0jxv071rjUQMi0aMrpEeW
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-
-
-On 6/11/26 12:40 AM, Vlastimil Babka (SUSE) wrote:
-> When init (zeroing) on allocation is requested, for kmalloc() we
-> generally have to zero the full object size even if a smaller size is
-> requested, in order to provide krealloc()'s __GFP_ZERO guarantees.
->=20
-> But if we track the requested size, krealloc() uses that information to=
-
-> do the right thing. With red zoning also enabled, any unused size
-> became part of the red zone, so it must not be zeroed.
->=20
-> However the check is imprecise, and will trigger also when only
-> SLAB_RED_ZONE is enabled without SLAB_STORE_USER. This means enabling
-> red zoning alone can compromise krealloc()'s __GFP_ZERO contract.
->=20
-> Fix this by using slub_debug_orig_size() instead, which is the exact
-> check for whether the requested size is tracked. We don't need to care
-> if red zoning is also enabled or not. Also update and expand the
-> comment accordingly.
->=20
-> Fixes: 9ce67395f5a0 ("mm/slub: only zero requested size of buffer for k=
-zalloc when debug enabled")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+On Sun, May 31, 2026 at 10:41:17PM +0200, Thorsten Blum wrote:
+> Using sg_dma_len() is only valid after mapping the scatterlist with
+> dma_map_sg(). However, atmel_tdes_crypt_start() uses it before mapping
+> to compare input/output lengths and to compute the transfer count.
+> 
+> Use the original scatterlist lengths before DMA mapping to avoid reading
+> stale or uninitialized DMA lengths when CONFIG_NEED_SG_DMA_LENGTH=y.
+> 
+> Fixes: 13802005d8f2 ("crypto: atmel - add Atmel DES/TDES driver")
+> Fixes: 1f858040c2f7 ("crypto: atmel-tdes - add support for latest release of the IP (0x700)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 > ---
+>  drivers/crypto/atmel-tdes.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/crypto/atmel-tdes.c b/drivers/crypto/atmel-tdes.c
+> index 643e507f9c02..0d62b24e9fc7 100644
+> --- a/drivers/crypto/atmel-tdes.c
+> +++ b/drivers/crypto/atmel-tdes.c
+> @@ -463,14 +463,14 @@ static int atmel_tdes_crypt_start(struct atmel_tdes_dev *dd)
+>  			IS_ALIGNED(dd->out_sg->length, dd->ctx->block_size);
+>  		fast = in && out;
+>  
+> -		if (sg_dma_len(dd->in_sg) != sg_dma_len(dd->out_sg))
+> +		if (dd->in_sg->length != dd->out_sg->length)
+>  			fast = 0;
+>  	}
+>  
+>  
+>  	if (fast)  {
+> -		count = min_t(size_t, dd->total, sg_dma_len(dd->in_sg));
+> -		count = min_t(size_t, count, sg_dma_len(dd->out_sg));
+> +		count = min_t(size_t, dd->total, dd->in_sg->length);
+> +		count = min_t(size_t, count, dd->out_sg->length);
 
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+If fast == 1, then dd->in_sg->length must be equal to dd->out_sg->length,
+so the second line is redundant.
 
---=20
 Cheers,
-Harry / Hyeonggon
-
---------------ErL0jxv071rjUQMi0aMrpEeW--
-
---------------9nrmmelZmALRVRtPX4TWPfgk
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaio5XgAKCRCGXBN6rc5S
-1sfjAQDJjxqdD8sQENhgXIPO4U/wPF/HiD82CcmCL/ATkiFhdwEA10COEVT9AbpI
-m0HnlYsxgxDFh2+UgTL2jf7cbIWfNwo=
-=AcAR
------END PGP SIGNATURE-----
-
---------------9nrmmelZmALRVRtPX4TWPfgk--
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
