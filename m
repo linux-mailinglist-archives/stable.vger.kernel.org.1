@@ -1,230 +1,200 @@
-Return-Path: <stable+bounces-262700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id G/w8KaK2KmqvvgMAu9opvQ
-	(envelope-from <stable+bounces-262700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:22:42 +0200
+	id MIKaL2K2KmqZvgMAu9opvQ
+	(envelope-from <stable+bounces-262698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:21:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117A46724D6
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:22:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A556724AF
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 15:21:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=yahoo.it header.s=s2048 header.b=uUMEo1Bv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262700-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262700-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=yahoo.it;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="Bi/UB5S/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262698-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262698-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=oracle.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 401F33069C1C
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:22:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95845305159E
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8349A23393D;
-	Thu, 11 Jun 2026 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5783D3FA5CE;
+	Thu, 11 Jun 2026 13:21:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sonic309-24.consmr.mail.ir2.yahoo.com (sonic309-24.consmr.mail.ir2.yahoo.com [77.238.179.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FC840BCB6
-	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 13:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEEE3B27F1
+	for <stable@vger.kernel.org>; Thu, 11 Jun 2026 13:21:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781184120; cv=none; b=bPtBZqJhrCdvHLSNPXUsKhC9ZZnWzJVM08Ls1qH4R6iqN4Un2puwTAvpQ4E6+yCUp2zdXWcsGIMWa4/6VeBHeCTiClT1hU3tUQGwSNH6AFBl8BBrFhosE1ULLKDfBaxmtZJkI5UGaUvnoZJ8N4TKpCQgV1ucRpUELhXitX7AJmY=
+	t=1781184082; cv=none; b=Xzy2Xkw6KIgmqEyxx1HvrzTqIQBR6s6EciLB+hojdS6ZMo1vIEo9m7sOXCI0BJYj5+AY4Bi/ydFWPW1WUFyxEREljQxXyjWkcq2TMU7rlXnRyhA+adM3ZX9ajIPSAX+6wy4h4k1o1m26KH2ne6ArmHQspt+sNGvWD9mrCADsIZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781184120; c=relaxed/simple;
-	bh=QinLdydYFFzhfzCwGWVsMabc9s7iP5QrwIHt7oRNp5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LOLFpVOI5AQGHiwKggEKj6Wqa+lQFcLDqMwK+GHbzpk00KbW83P50IsMfldQgL8Mo1mvo68D/SsXpbKsvSybEXWtKvQBuz2oPf3GtA0zcAM0NRgHQTt1h3aebC2ZbRlU4cewKV+qLDqmeS2TKPtRekJFCCipBoCzeZncvGfAhxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.it; spf=pass smtp.mailfrom=yahoo.it; dkim=pass (2048-bit key) header.d=yahoo.it header.i=@yahoo.it header.b=uUMEo1Bv; arc=none smtp.client-ip=77.238.179.82
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.it; s=s2048; t=1781184107; bh=aVPPymS4lmAww1BY+GTvl9Z2HVdq0OQBfTx60YXSaGA=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=uUMEo1Bv+HdV0my4FJKuohIsKH+EafUNp+7I1V7ZaPUbfS6zzhVF3K6YKHvYDSC1kZJzn4HElSREx7d4RBVgctC7W30hy2YCJXu6nD7kBqfbIlJH5CEPbXr8VpDJQRKdspRxoOZdRsJ3s49noukdEhtNxpVBz0qUrHJweaZRgO5TWjGjFs5Lc0adw3pDgpNzJvGbIoSHA1T1zz6TRIr57IeO0dkewDCgvFk/t8IEgA85utoj/ycL3sml5niDE+H7xX8fq06pHdJMTPVZKat9V1Fium+pbcddx9utawRJRwTWI/lsMY68MVQSXa9Vc9tLWGguMNGCOhuqiFsZxVIL3g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1781184107; bh=esQrL3F81tozhGDmLu/0nW5V5/vWcXWKDDoeCtW7wfj=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=NFjGojXunYNObufgScdDMku2DXvLLddFsPX0Jtd9RGkCFWQP4HxIez/wXE0IA+fPBc6Sftt2at9pphJl0z49f8BJnNqhzoVvF3e5LYKkq7xQL2WbhqX+4kAWN9/PfdquLduzH1ESs5HiUnNxpLmKwXhXcY9AEPMHpaMAfhqDrNNlRYyGU/WLZZ8sxz7MBanlRkPTZGWwJMAQh9rJ/lsa6/RjG/BCYK0kyirtt4FvFNdpjGvCE7hfrzJfxm+mC6DYtK22rswv7/vUoG/a9+g2onTQf6nPEZgRm77rofJu5ggJQ/8G5ImsU0ENXugbyQwrcbUxfu4QZKtP3nf5LGyHXQ==
-X-YMail-OSG: SrEcXyYVM1lFX3z1r73VM_ycb7gDGeEIp_Mph53lqH9BEDhFPAPgXZwGJyO9Dxa
- lOsaS96VL5wCBA7izgjkPpszO4tpa.b4pQ79ZAjemLy8Y357ebaA.utd2LIyxEBKKxXpbc1b7.W.
- Mq3AlpX8hqh2aPPS4pSMT2m1p1IDZbcfvlf5Qz5SqJQAfVsXKIsPlkP4v9sHebWEDDiTB1oQuf8e
- 0XbNTUTEJsRg.GlrDFbUzGgfcbMHHvksfWf8YUhQZCNBY2jfi5EyfhVJEmLA7NbpYs8Q0Wlz6xbY
- A8yE7db48ArCxGCUmx7gWU.FPeXkUT4Yrhc8Byf6wKpkYoPIpmxaCpFxuhLtV2i7gCGcK5k_Klft
- B3dsBUoZYCBAYeYWs8r37HudBiZcZM.uULVYHXQ6udiioAy68txzH_lSB.p_0G2xX0eCVTAimqqO
- lhwFtz1VAo8xsryXQxFbk2TapoRboHuUE0QRa6MF99ry81BF8vACUWxeo8K5uvWLr4PlyPgQmi0W
- VwAxj7NOliJbFNARsJQWiFBhAw9kRMkhhEhy2QT1j0IoQdcYqitnl3VTd5ArNvPoKzYEQV4ai13w
- TyDMoZJnEz2dHXTyDh0FQ1TbPL7tjLcWyVctfM3enfN0KuenMlLB.30xOCnW9JZHrGP3yNG.pzHO
- iPPqTleSCdwvOq.gT8Gmgww1TQsTji1KQT9rjS84nQH3BgfuII8GnHvNZKqDrVufjFVnUyNx2cjJ
- uzZdbR4tj0zGR.d4y2NlJAfg0yZDqKTMZdAm0LfqQD8ut.F_P6Q52kJytsmbU6w2AMyS5Z7aQWuv
- x1JySvyhbbXzQNxgpKWFjlWOmPahJUtcw1TiHeaj35uBiCBuDT3oEGWvXNaGLCsXwhiYhuTN8fgZ
- J9ZetMmaUVeX3.9Ks2MMaJxst6MozsI1TZZHP5c_M882hKT1vBgqU2WvR8bTiNocEb9ktOLuF4Ou
- KsulfHWBrCSY7hGQYtEjUd7B95De5Gkgp2.UKZH8eVLjyvj9v7vgtRjutbaYoAzOlXwosb.Hu2wc
- vwirXTFDRJSCJk0Xrcd1loJkqFguASeKHiLmRnMEy6l4epcQ2K.jvrch2GBdgTGzwf6EaJ8uSWAJ
- 1gKvr7T2y6eqwBZsdvfBByKhFe7UQiSirj54LeTNIFhbe6ijKlWa09NMBBNMcYh8QirWGrOKUTDT
- 4fXAZaeRqS0C2vnJ8mVN3JRhAFv86Z1vH3rkugaC2VEdhvoj2WshsQWRjjkwY68Osuxm_t.B.ZGN
- DdOWDlaHa_.OStV8S24VD3G4FZTneuuU64cC5CjXwZ.CmjMMDd6NA.cd7suz05j5NyAM.ta3pynn
- CEdrvOTPj_gEAqmlzm51d2VTuzX.jEJZzadUWLJrkpFhtNUyBbq851YyWtgGc.ELU2.qpwAHiifx
- idl3PubAb_Z_BmVos4P8tV5FRYMWNLvdHsx1oVV03ACnv6pEnAoxMizxKo09IToCG5lBhl5P47Ym
- VRBK7Du4l7lcXytotGXlzlXZkskHmk9GCn6iMpGgxy5PGVi1m2odmZYONaFS67urnZZqVGRhzPEt
- SsTUe1qSCE79yvUT4Y.BLnyIGbo1cgvR5ImHVWwL5yGcTBesiu505JMHKmiuNqB88zf7r4ee6Xwb
- .rDYEKokTOsNfKP3nBtEndRNSPXSkoJBUdzNEGg7YIOlvTfg4zOTG3up6.DSc98Wnl4Vco7ocK88
- tEJcq5YxVOCSNAZZ46n63AJOGGFvMvZvSX52TO.HZNBdYnkDPcbHVtgzAOwO1uY9kvYcsYhmbApf
- 5nU51aNl2qHQHMwiO5y5uEfYsvPQIODgUs31y3kk7MWeid4vvIFdMxeZzXY5JRaFqel4gAtFBO2v
- 3A53IF9u.OnhpS2iUzZ.W5py2CMMxW.btEMUb9TddX4n9bhL1y7pCAVCRJ8w0sNK60PrWE9yUFL1
- euwT1Tv6lIBbbkepbIQCSW.axbdrqaPCFL8bGFu0O_EnnbvZ66dLbe2xJPwZbLl005fMjPKohEtB
- 1josW5v.akdn6i1YaTo1fSy.8YImDYVREnGAmflR2MumRA36jUIKabe2Ms0.9I5Hh23ezMoxCRjM
- AsSiPbHoTYhjhcop8umObPBPevxjnvoOYQmWPQqhrTm7Q1BQa_y3heBG7wKVjHsbza5jNJzwCt3R
- 3gNDEuRF4qtSdu4LxK.FqM.6z3tVzly4Qm8ywWzypwPr2lfthvdKEpHouhLnGXojyEf7Ov.swD3B
- GCjlQerwjBhprGJEMxgz.odYDk0mOAoaUOH5742WKgvUTwXSYquAJthQQtK.1168i5pP5Rozc5Ge
- WeGP7A79.DKRzArohqFY-
-X-Sonic-MF: <giovannisantini93@yahoo.it>
-X-Sonic-ID: dabd766f-5f74-40af-bf73-06a68c4b29e2
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Thu, 11 Jun 2026 13:21:47 +0000
-Received: by hermes--production-ir2-89844b765-gkszj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c4171e10cdbfd69951135a50765e3e49;
-          Thu, 11 Jun 2026 13:11:27 +0000 (UTC)
-Message-ID: <02e09f1a-2807-4fec-aacf-1bc4bbb1ccd1@yahoo.it>
-Date: Thu, 11 Jun 2026 15:11:26 +0200
+	s=arc-20240116; t=1781184082; c=relaxed/simple;
+	bh=xFHh0bIJf7qPd4/M16+w++7kWh4PAw4tK8Sv5d6nr5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HbjuWdYzupW00aYQrrZIAceP5SafQjz5qLkNaWJpiAWRijeU1HEQdBi3/zxom/rJuUjRw/ZYNqNwpwCdwtaLvI1CeLLXUxn08eqD67T0BlB3kjnYgvUmVGPrv9NI0/HM3yDzWw0lWigJQG64mauwtOJbMx9fAr4etJVSqU66yP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Bi/UB5S/; arc=none smtp.client-ip=205.220.165.32
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65BCfg9g2044781;
+	Thu, 11 Jun 2026 13:21:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=ASn9wZgqrEwImvMeBp46wn7kh/rVf
+	67R1XNGTPiuNU8=; b=Bi/UB5S/r8MtzbnxLD6jXfZWkRqXw2SR3tcgz9o9tEL2D
+	/FSN9De/z1IXiW8T40u0Od57zoNqtk8Yb++5AmwPemtqQKV4l6YMig/CC25tlTTi
+	raqzd+b4x+RTQDkXxS/L8olcEjrvbgss6FHrIURCYAzHljMdQDzYrP9DKEi47rPy
+	cZq2jm4QHnSyJxcOm+tMehJ+qlb1peAschPLLQaHzzpfiVpWWo/SMNtZ/8ENNMvw
+	pP6EERph3jLPVrHr9RJ2LRr7ywO1cJTvouLeTawdOhPYvE3GvOVETYQoudrAKgmP
+	V5x7DvoGJ3/dT5OV2waSJzt9H/DzPxV3/ZbZvcpGw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4eqe76982k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jun 2026 13:21:11 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 65BDDfwb010913;
+	Thu, 11 Jun 2026 13:21:10 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4eqwf3h8p3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jun 2026 13:21:10 +0000 (GMT)
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 65BDLATH016790;
+	Thu, 11 Jun 2026 13:21:10 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4eqwf3h8n6-1;
+	Thu, 11 Jun 2026 13:21:09 +0000 (GMT)
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: stable@vger.kernel.org
+Cc: Weiming Shi <bestswngs@gmail.com>, Xiang Mei <xmei5@asu.edu>,
+        Dongli Zhang <dongli.zhang@oracle.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.10.y-6.18.y] tap: free page on error paths in tap_get_user_xdp()
+Date: Thu, 11 Jun 2026 06:21:06 -0700
+Message-ID: <20260611132106.610111-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: rtw88: WiFi card is not offloaded properly when suspending the OS
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <10da4c45-74ed-4deb-8c88-6d0b803465ba.ref@yahoo.it>
- <10da4c45-74ed-4deb-8c88-6d0b803465ba@yahoo.it>
- <efae0a4db2ab4b6193922b393d3dcdd6@realtek.com>
-Content-Language: en-US
-From: Giovanni Santini <giovannisantini93@yahoo.it>
-Autocrypt: addr=giovannisantini93@yahoo.it; keydata=
- xjMEaH5G6BYJKwYBBAHaRw8BAQdAZnF+SJD511cVwFnagEObR10TvHEDWiUkXn55qPW4mEPN
- LUdpb3Zhbm5pIFNhbnRpbmkgPGdpb3Zhbm5pc2FudGluaTkzQHlhaG9vLml0PsKTBBMWCgA7
- AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEsZlH+Qx7w0bL59UyBjXtZomc07YFAmh+
- UU4CGQEACgkQBjXtZomc07aqRAD/dTapfdaiXcED3umK46Ef4oj+4yMmgvILQvAzbTWCW8oB
- AMbcBT7PaB6GuHTLiM0mZwLaB8koObNKxw3XtV7kMw4HzjgEaH5G6BIKKwYBBAGXVQEFAQEH
- QI7SNDV1L0Dq0IjkhOsUDwU7Wzr+AunkhuOy1hUDbY1UAwEIB8J4BBgWCgAgFiEEsZlH+Qx7
- w0bL59UyBjXtZomc07YFAmh+RugCGwwACgkQBjXtZomc07YxZQD9GgcfEawEgJeUijTqZtoq
- /knXol2L++0rMJkdr1SODwYA/07vSweYeVzo00XbyjcQ1le1Y852Ktp6A7O+DZsQJZoG
-In-Reply-To: <efae0a4db2ab4b6193922b393d3dcdd6@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.25942 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-11_02,2026-06-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxlogscore=999 lowpriorityscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ phishscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2606040000 definitions=main-2606110133
+X-Authority-Analysis: v=2.4 cv=W6gIkxWk c=1 sm=1 tr=0 ts=6a2ab648 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=7Gl3-_t3PgB9XO-mQDs3:22 a=bC-a23v3AAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
+ a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=Ag6TqXP-0EEkkbMwXSEA:9
+ a=FO4_E8m0qiDe52t0p3_H:22 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
+ cc=ntf awl=host:13723
+X-Proofpoint-GUID: aAmLR5461sNeaMAyNPMIed3y4532Ofvb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjExMDEzNCBTYWx0ZWRfX9VdqEblShuTD
+ p8mpzTiktgiJrXWFZ3wfIyQopC/I5+71A966N7+K+qMQTsg4fBC6G404DVAn1/C5g8zwTUqfSoX
+ sHANnzSogVVpZoPmIy1ZDj7ab1FYUnpuiKxzTg6w3Fz9l36e1PRCF9zKQNVV4Z0hxUvP7dOvzG8
+ f9b+BpDNbmBTUX2Ksa1fAceQqG1+gu6MmJScEDkyJSLLYoWYW/9ewNiDjOyCCXmJUpnTxbekhgu
+ 3oxm+YSyTRmhWTsdEt/5GMl4mD50QWzzDsWYcnLNBQzfuInQFwB0ymqZgNTujT9kHR+fSWsO9KU
+ gk5OjnkO0rk3uj8k7kzRCbVLwucMQ9BKQblRwCuvzBK21hF6OcJY0ImS00PZX2o/ckeb1q0Q3we
+ EpKyXvVTkLCuMcGokN+Ql6COkAAel1ZUIHdEUgQCqTADVqom0IMldFWnRAsR84QeBeieF8IskZk
+ 2m7bx49JBa04XB/hDh9IQm9Q6Yh+uysFUeV0s7wY=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjExMDEzNCBTYWx0ZWRfX0wAAqiCJDg7D
+ xia+nAmueXDNQisWqv4aetFOikFEtEC1/UssLqY14R/Oo9F3tpxOX4KkaTY7s/brQFmg+30vQC6
+ I3Y+uAC+m+J9Mu/al0WWDyiPZO0ZGt2dObeufRrltx+rKGM1qNPQ
+X-Proofpoint-ORIG-GUID: aAmLR5461sNeaMAyNPMIed3y4532Ofvb
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-7.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[oracle.com:D:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[yahoo.it,reject];
+	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[yahoo.it:s=s2048];
+	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[yahoo.it];
-	TAGGED_FROM(0.00)[bounces-262700-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pkshih@realtek.com,m:stable@vger.kernel.org,m:linux-wireless@vger.kernel.org,m:regressions@lists.linux.dev,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[giovannisantini93@yahoo.it,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[giovannisantini93@yahoo.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[yahoo.it:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,asu.edu:email];
+	TAGGED_FROM(0.00)[bounces-262698-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,asu.edu,oracle.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[oracle.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[harshit.m.mogalapalli@oracle.com,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,yahoo.it:dkim,yahoo.it:email,yahoo.it:mid,yahoo.it:from_mime]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[9]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 117A46724D6
+X-Rspamd-Queue-Id: 14A556724AF
 
-Hi Ping-Ke,
+From: Weiming Shi <bestswngs@gmail.com>
 
-In short I should build the LTS kernel using the provided source with 
-all the module patches applied one by one, correct?
+[ Upstream commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2 ]
 
-If so, should I also set the modprobe.d options plus disable IOMMU?
+tap_get_user_xdp() rejects a frame shorter than ETH_HLEN with -EINVAL,
+and returns -ENOMEM when build_skb() fails. Both paths jump to the err
+label without freeing the page that vhost_net_build_xdp() allocated for
+the frame. tap_sendmsg() discards the per-buffer return value and always
+returns 0, so vhost_tx_batch() takes the success path and never frees
+the page; each rejected frame in a batch leaks one page-frag chunk.
 
-After I know this I can start testing.
+Free the page on both error paths, before the skb is built. This is the
+tap counterpart of the same leak in tun_xdp_one().
 
+Fixes: 0efac27791ee ("tap: accept an array of XDP buffs through sendmsg()")
+Fixes: ed7f2afdd0e0 ("tap: add missing verification for short frame")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260521163230.1478627-2-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 3bcf7aec6a9d16438f2cec29f5d7c8d5b8edf9b2)
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+---
+Clean cherry-pick , only build tested.
 
-Small update: the .35 LTS kernel has no issues for me, while 7.0.11 works.
+ drivers/net/tap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I was able to get my laptop to sleep a few times, but at a certain point 
-the issue happened.
-
-It is a bit hard to replicate the issue, so I will try my best.
-
-
-On 2026-06-08 03:32, Ping-Ke Shih wrote:
-> Giovanni Santini <giovannisantini93@yahoo.it> wrote:
->> Jun 02 17:25:33 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: failed
->> to send h2c command
->> Jun 02 17:25:33 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: failed
->> to send h2c command
->> Jun 02 17:25:33 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: failed
->> to send h2c command
->> Jun 02 17:25:33 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: failed
->> to send h2c command
->> Jun 02 17:25:36 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: failed
->> to poll offset=0x5 mask=0x2 value=0x0
->> Jun 02 17:25:36 archlinux-tug kernel: ------------[ cut here ]------------
->> Jun 02 17:25:36 archlinux-tug kernel: failed to read DBI register,
->> addr=0x0719
-> Add these below to see if it can help.
->
-> sudo nano /etc/modprobe.d/rtw88.conf
-> options rtw88_core disable_lps_deep=y
-> options rtw88_pci disable_aspm=y
->
-> After cold reboot, check /sys/modules/rtw88_*/paramters/* to see if
-> the modification takes effect.
->
->> I'm attaching the full boot log, if you need a fresh one I can provide it.
-> Before "failed to poll ..." log, I also see
->
-> Jun 02 17:25:02 archlinux-tug kernel: rtw88_8822ce 0000:03:00.0: AMD-Vi:
->   Event logged [IO_PAGE_FAULT domain=0x000e address=0xae9668bc flags=0x0000]
->
-> Please try to turn off IOMMU by editing /etc/default/grub
-> GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=off iommu=off"
->
-> And then update-grub
->
->> I run ArchLinux with KDE Plasma, for networking I use NetworkManager and
->> wpa_supplicant.
->>
->> If you would like me to run tests with e.g. just iwd I can do so, just
->> let me know what setup you would like me to have.
->>
->> I do not have this issue with the LTS kernel 6.18.34. This affects 7.0
->> and 7.1.
->> I believe this issue was not present in < 7 kernels, but I cannot guarantee.
->> I can however downgrade to previous kernels to understand where the
->> issue was introduced.
-> The commits between 6.18.34 ~ 7.0.10 are quite few, and I can't find the
-> one that can affect the behavior. Please switch your kernel back to 6.18.34,
-> and apply rtw88's patches added until 7.0.10.
->
-> Since the last commit of 6.18 is fce6fee0817b8899e0ee38ab6b98f0d7e939ceed
->
-> Please use below commands to get the (20) patches:
-> drivers/net/wireless/realtek/rtw88$ git format-patch v7.0.10...fce6fee0817b8899e0ee38ab6b98f0d7e939ceed -- ./
->
-> Then you can add them one by one to see which one is the cause.
->
-> The git repository you need is:
-> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
->
->
-> Ping-Ke
->
->
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 6fd3b14273b3..b51ce7af1b20 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1052,6 +1052,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	int err, depth;
+ 
+ 	if (unlikely(xdp->data_end - xdp->data < ETH_HLEN)) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -EINVAL;
+ 		goto err;
+ 	}
+@@ -1061,6 +1062,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 
+ 	skb = build_skb(xdp->data_hard_start, buflen);
+ 	if (!skb) {
++		put_page(virt_to_head_page(xdp->data));
+ 		err = -ENOMEM;
+ 		goto err;
+ 	}
 -- 
-Giovanni Santini
+2.50.1
 
 
