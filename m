@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-262672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KQ9kJKWcKmpptgMAu9opvQ
-	(envelope-from <stable+bounces-262672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:31:49 +0200
+	id M5lKG4yfKmp1twMAu9opvQ
+	(envelope-from <stable+bounces-262681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:44:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7EA671596
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:31:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAAE46717EC
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 13:44:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
 	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=socionext.com (policy=none);
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262672-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-262672-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262681-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262681-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 56B59300AB28
-	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 11:31:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA594325FAD2
+	for <lists+stable@lfdr.de>; Thu, 11 Jun 2026 11:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCDE3DDDA8;
-	Thu, 11 Jun 2026 11:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF35B3E9F96;
+	Thu, 11 Jun 2026 11:44:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837C936EA8B;
-	Thu, 11 Jun 2026 11:31:41 +0000 (UTC)
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D193E8359;
+	Thu, 11 Jun 2026 11:44:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781177504; cv=none; b=YIMWoUSZgRmmhfqUBHeIb7gdKU6OuWrCWGuVdoYTfwUYgvyQXY0nqLr7Sl0b+qovvqVurwkS6GRybeVDW0oc5mzFdU0OsrfHMvu91LUINMx4Qe8hB/mUnljk/G+coU3+ZrLZASyY87aDlaoptFnYOFFyPKRDrlPHBKBWpd/U5yE=
+	t=1781178246; cv=none; b=pu5tvU/BdB6sf/nefkh09U4rfohUIw1CUgKG/bV5v+JCUvnRh4yZbRmakPeqao7JIGiR9rImSrMoWeisRtlx6iUZfbKbSOj1COf5C7vgvhvddqgRtL/E1PYs5mcZeNc4Pa1R+Hy09gAVTVByBA1UyKtBaWO0CcwaSrB34WDq45w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781177504; c=relaxed/simple;
-	bh=vJ+2z3KiFFcyk3WXTDYMQmbKcwmaoNq+idUVtfNtL1Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sSbHISS6VE8htFAkYQqv1rISJ6a70+h94uxbsR/9dRhGv2ACA/V0/ZZ40G4D9vRPAETJgIJphdIE4cIEPVOhLIZLQ9msdCA31eg7QAGzaHg0wkCml9wBsyBAr4eiteckUl/3+yWeGwHRCnph2SRhFGr4ZlRA/fInkw+8lqsk9nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 11 Jun 2026 20:31:40 +0900
-Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 182E42068E61;
-	Thu, 11 Jun 2026 20:31:40 +0900 (JST)
-Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Thu, 11 Jun 2026 20:31:40 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan3.css.socionext.com (Postfix) with ESMTP id 852A515FF;
-	Thu, 11 Jun 2026 20:31:39 +0900 (JST)
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1781178246; c=relaxed/simple;
+	bh=/YXxyHXTqHsqvEX56BgGHLdQeyr8pfFezDRaGSt+e4I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BW10RuT3X8dN5wC+9EtkeFsM37GAaxUsfqt57FzYNp5yI0aERASW4HdBPh3FZJV330rywN8b6oMJO/qUVcXDKeEtS2Tpf/FVoE1WzEwPsixzX5/gp8pIN/Ovcyatq7wGTOz6wFangL0Sts6LUj66bvsohH2YASMMx7GNsRnY6gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Received: from localhost.localdomain (unknown [117.182.75.76])
+	by APP-03 (Coremail) with SMTP id rQCowADH5dx2nypqC0heFA--.468S2;
+	Thu, 11 Jun 2026 19:43:52 +0800 (CST)
+From: WenTao Liang <vulab@iscas.ac.cn>
+To: parthiban.veerasooran@microchip.com,
+	christian.gromm@microchip.com,
+	gregkh@linuxfoundation.org
+Cc: hverkuil+cisco@kernel.org,
+	laurent.pinchart+renesas@ideasonboard.com,
+	s9430939@naver.com,
+	error27@gmail.com,
+	vulab@iscas.ac.cn,
+	kees@kernel.org,
+	linux-staging@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	stable@vger.kernel.org,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH] spi: uniphier: Fix completion initialization order before devm_request_irq()
-Date: Thu, 11 Jun 2026 20:31:37 +0900
-Message-Id: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.34.1
+	stable@vger.kernel.org
+Subject: [PATCH] staging: most: video: fix refcount leak in comp_probe_channel()
+Date: Thu, 11 Jun 2026 19:43:35 +0800
+Message-ID: <20260611114335.77216-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,82 +60,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADH5dx2nypqC0heFA--.468S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFWxAw4DKr1xAw4DXFyDGFg_yoW8GFW7pa
+	y5Kay5tryYga1j9a9rWF1UXFyrCwnFy34fCFy0kw1S9ryfGFyfZr4vq34UKr4xX3yxAr4Y
+	qa47Jw4rZa15ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwwPA2oqhtFJ6wAAsy
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[socionext.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.infradead.org,vger.kernel.org,socionext.com,snu.ac.kr,gmail.com,kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:linux-spi@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:hayashi.kunihiko@socionext.com,m:sangyun.kim@snu.ac.kr,m:bookyungwook@gmail.com,m:stable@vger.kernel.org,m:mhiramat@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-262672-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262681-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS(0.00)[m:parthiban.veerasooran@microchip.com,m:christian.gromm@microchip.com,m:gregkh@linuxfoundation.org,m:hverkuil+cisco@kernel.org,m:laurent.pinchart+renesas@ideasonboard.com,m:s9430939@naver.com,m:error27@gmail.com,m:vulab@iscas.ac.cn,m:kees@kernel.org,m:linux-staging@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:hverkuil@kernel.org,m:laurent.pinchart@ideasonboard.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[hayashi.kunihiko@socionext.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hayashi.kunihiko@socionext.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,ideasonboard.com,naver.com,gmail.com,iscas.ac.cn,lists.linux.dev,vger.kernel.org];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,cisco,renesas];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC7EA671596
+X-Rspamd-Queue-Id: AAAE46717EC
 
-The driver calls devm_request_irq() before initializing the completion
-used by the interrupt handler. Because the interrupt may occur immediately
-after devm_request_irq(), the handler may execute before init_completion().
+If v4l2_device_register() fails in comp_probe_channel(), the
+function frees the allocated mdev with kfree() without releasing the
+reference count held by the embedded v4l2_device.  Because
+v4l2_device_register() initializes a kref in the v4l2_device, the
+reference count is already 1 on failure.  Dropping the last reference
+must be done with v4l2_device_put() so that the release callback can
+unregister the v4l2_device and free mdev.
 
-This may result in calling complete() on an uninitialized completion,
-causing undefined behavior. This has been observed with KASAN.
+Replace the kfree(mdev) with v4l2_device_put(&mdev->v4l2_dev).  The
+error path for comp_register_videodev() failure already does this
+correctly.
 
-Fix this by initializing the completion before registering the IRQ.
-
-Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
-Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Fixes: 3d31c0cb6c12 ("Staging: most: add MOST driver's aim-v4l2 module")
+Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 ---
- drivers/spi/spi-uniphier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/most/video/video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index 9e1d364a6198..6d3463fe0e3c 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -659,6 +659,8 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 	priv->host = host;
- 	priv->is_save_param = false;
- 
-+	init_completion(&priv->xfer_done);
-+
- 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(priv->base)) {
- 		ret = PTR_ERR(priv->base);
-@@ -690,8 +692,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 		goto out_disable_clk;
+diff --git a/drivers/staging/most/video/video.c b/drivers/staging/most/video/video.c
+index 04351f8ccccf..aa846959b217 100644
+--- a/drivers/staging/most/video/video.c
++++ b/drivers/staging/most/video/video.c
+@@ -491,7 +491,7 @@ static int comp_probe_channel(struct most_interface *iface, int channel_idx,
+ 	ret = v4l2_device_register(NULL, &mdev->v4l2_dev);
+ 	if (ret) {
+ 		pr_err("v4l2_device_register() failed\n");
+-		kfree(mdev);
++		v4l2_device_put(&mdev->v4l2_dev);
+ 		return ret;
  	}
  
--	init_completion(&priv->xfer_done);
--
- 	clk_rate = clk_get_rate(priv->clk);
- 
- 	host->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
 -- 
-2.34.1
+2.50.1 (Apple Git-155)
 
 
