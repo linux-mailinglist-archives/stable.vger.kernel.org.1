@@ -1,232 +1,155 @@
-Return-Path: <stable+bounces-262957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KJaNLBJCLGrwOQQAu9opvQ
-	(envelope-from <stable+bounces-262957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 19:29:54 +0200
+	id jKgdBb9ELGqWOgQAu9opvQ
+	(envelope-from <stable+bounces-262958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 19:41:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CA067B583
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 19:29:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EBC167B6B6
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 19:41:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=digikod.net header.s=20191114 header.b=jJjUIBYn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262957-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262957-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=LtOvuQx7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262958-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262958-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linux.microsoft.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC0B231FEECE
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 17:28:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BD758329BA25
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 17:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140C94071F5;
-	Fri, 12 Jun 2026 17:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14106406287;
+	Fri, 12 Jun 2026 17:40:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [45.157.188.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2FB407569
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 17:28:14 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE9339901C;
+	Fri, 12 Jun 2026 17:40:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781285299; cv=none; b=dpBAqdKg0of3ueCGw4m4tw01sbYUn7TylOqpDq2BmD+RRllsJjlmqyEn9DZMkmVLf9hURO/Gwn/OiVCc6Vn2sa3n09EzxMhKGKr2nyPr7Y9JJUhELIh+iobm5pSsNEr/Yv9EBYjsLpnGsM3bDq0xwbsNX+OWzhYKqeiWimoNOEw=
+	t=1781286038; cv=none; b=tgZNM77qsF8767Tu1QF+E5YsJivByOlRMphaIz5GBWaDerqcfMMug197ULUtIgPuhutdeOBb2UCRmVVLcti8eFflQD6DrneHILJqP1dk4iIsj4xsh8JfrJS/e2R3l1M3DBUdLU4/gGudk815iiZbZpmFN37UDqFCYFcA78MQ/e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781285299; c=relaxed/simple;
-	bh=UlvAvuQWbi916cPi3vd2hGdWyMhMGyJ8nVfPJ8HJzUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u5pWMvRdyPJZQuwNFrYwIuDXTCddPpvFUY9bZf0hTNEapWn9KOsa3EmOEowcO72nG+0qTUfmni4e4pIZJUOFxJMNsTfpxYp2p2tUY6pUAKiOz6jQU2gn2IcbKIuKJJj1K+lRXt+mu5KVpzVbmUouz46ZN0AwGXOJHVvP1as4xps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=jJjUIBYn; arc=none smtp.client-ip=45.157.188.12
-Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4gcRLH1NkMzFfP;
-	Fri, 12 Jun 2026 19:28:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1781285287;
-	bh=sDCihnMM6e2PYF53CG6R2LkXlUSqFxRVN5xeVo/MXqs=;
+	s=arc-20240116; t=1781286038; c=relaxed/simple;
+	bh=rxYD3iGHnqWVu5XQl3U9EwVXyhVxQt9pX+gvx+rskU4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OtxTv9gQMdnQHaCIH1gPR7Y4bEae1rICS4QpM3F8do58ZmfN0QAo8sxdelQ3fO0vXdLMTXaUg3zv/3SbM9M7QCnpJ0mgFYQ6RkPCcaTpq3iJQJf9QRvAJuNhTd042Gk92jX/tW8idpp0EF8KUU33C+0yOj84zZFNLaLAx5Nk6cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LtOvuQx7; arc=none smtp.client-ip=13.77.154.182
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id 68AA620B716A; Fri, 12 Jun 2026 10:40:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 68AA620B716A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1781286018;
+	bh=vr0Gms8K+x62jEtAJpSeA2K2xp0MKc2fsrScko8ouYA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=jJjUIBYnhlYxMkejfqsj9acvWky3jud1X62xkUDGHdnq475Q8TDkAMcAZeQwrob0u
-	 PAplumpngjg/Fd/gRK/A516vTctbU7dVBnI3j/W5GOnyOEXEA1XjHkMPYco2YV9pG7
-	 KzTeIK7c1QQy1/NAeVBb9J5dfOBX6+EOqmbebF+U=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4gcRLG3QkmzK5Q;
-	Fri, 12 Jun 2026 19:28:06 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	linux-security-module@vger.kernel.org,
-	Tingmao Wang <m@maowtm.org>,
-	Matthieu Buffet <matthieu@buffet.re>,
+	b=LtOvuQx7ZoFBUtZsD+GWZ9prPtIJOd55WTQuIbsqZi5iKhZPp7/GG1l6Fd2p0xlE6
+	 RFr7xvrQDfxWzEKh3c3lNk9gYdis5v1p17BW1AM39MPAJm4+acDI13t+UI5wD8/1B7
+	 IInEUH8CWIZaWhxwUeVpc02YV974N5cU62XNb4ZQ=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] landlock: Set audit_net.sk for socket access checks
-Date: Fri, 12 Jun 2026 19:27:55 +0200
-Message-ID: <20260612172757.1003481-1-mic@digikod.net>
+Subject: [PATCH] PCI: hv: add hard timeout to wait_for_response()
+Date: Fri, 12 Jun 2026 13:40:10 -0400
+Message-ID: <20260612174010.2598695-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.17 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[microsoft.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.83)[subject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[digikod.net:s=20191114];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262957-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gnoack@google.com,m:mic@digikod.net,m:linux-security-module@vger.kernel.org,m:m@maowtm.org,m:matthieu@buffet.re,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[mic@digikod.net,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[digikod.net];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[digikod.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mic@digikod.net,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-hyperv@vger.kernel.org,m:kys@microsoft.com,m:haiyangz@microsoft.com,m:wei.liu@kernel.org,m:decui@microsoft.com,m:longli@microsoft.com,m:lpieralisi@kernel.org,m:kwilczynski@kernel.org,m:mani@kernel.org,m:robh@kernel.org,m:bhelgaas@google.com,m:linux-pci@vger.kernel.org,m:hamzamahfooz@linux.microsoft.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262958-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,maowtm.org:email,digikod.net:dkim,digikod.net:email,digikod.net:mid,digikod.net:from_mime]
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.microsoft.com:dkim,linux.microsoft.com:mid,linux.microsoft.com:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21CA067B583
+X-Rspamd-Queue-Id: 5EBC167B6B6
 
-Set audit_net.sk in current_check_access_socket() to provide the socket
-object to audit_log_lsm_data().  This makes Landlock consistent with
-AppArmor, which always sets .sk for socket operations, and with
-SELinux's generic socket permission checks.
+It is possible that we never receive a rescind event, in which case we
+will wait indefinitely for a device that will never show up. So, assume
+a device is gone if have been polling for more than 5 seconds.
 
-The socket's local and foreign address information (laddr, lport, faddr,
-fport) is logged by the shared lsm_audit.c infrastructure when the
-socket has bound or connected state.  Fields with zero values are
-suppressed by print_ipv4_addr()/print_ipv6_addr(), so the audit output
-is unchanged for the common case of bind denials on unbound sockets.
-For connect denials after a prior bind, the bound local address (laddr,
-lport) appears before the existing sockaddr fields (daddr, dest).
-
-No existing fields are removed or reordered, and the new field names
-(laddr, lport, faddr, fport) are standard audit fields already emitted
-by other LSMs through the same lsm_audit.c code path.
-
-Add a connect_tcp_bound audit test that binds to an allowed port and
-then connects to a denied one, verifying that the denial record reports
-laddr/lport from the bound socket in addition to the connect
-destination.
-
-Cc: Günther Noack <gnoack@google.com>
-Cc: Tingmao Wang <m@maowtm.org>
 Cc: stable@vger.kernel.org
-Fixes: 9f74411a40ce ("landlock: Log TCP bind and connect denials")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: c3635da2a336 ("PCI: hv: Do not wait forever on a device that has disappeared")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 ---
+ drivers/pci/controller/pci-hyperv.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Changes since v1:
-https://lore.kernel.org/r/20260406143717.1815792-11-mic@digikod.net
-- Move the new socket-audit coverage into the network test fixture,
-  which sets up an isolated network namespace with a configured
-  loopback interface; the previous location ran without a network
-  namespace (reported by Tingmao Wang).  Cover the enriched laddr/lport
-  via a connect-after-bind denial.
----
- security/landlock/net.c                     |  1 +
- tools/testing/selftests/landlock/net_test.c | 62 +++++++++++++++++++++
- 2 files changed, 63 insertions(+)
-
-diff --git a/security/landlock/net.c b/security/landlock/net.c
-index c368649985c5..a38bdfcffc22 100644
---- a/security/landlock/net.c
-+++ b/security/landlock/net.c
-@@ -198,6 +198,7 @@ static int current_check_access_socket(struct socket *const sock,
- 		return 0;
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index cfc8fa403dad..bd63efc4a210 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -52,6 +52,7 @@
+ #include <linux/acpi.h>
+ #include <linux/sizes.h>
+ #include <linux/of_irq.h>
++#include <linux/jiffies.h>
+ #include <asm/mshyperv.h>
  
- 	audit_net.family = address->sa_family;
-+	audit_net.sk = sock->sk;
- 	landlock_log_denial(subject,
- 			    &(struct landlock_request){
- 				    .type = LANDLOCK_REQUEST_NET_ACCESS,
-diff --git a/tools/testing/selftests/landlock/net_test.c b/tools/testing/selftests/landlock/net_test.c
-index 4c528154ea92..0c256e7c8675 100644
---- a/tools/testing/selftests/landlock/net_test.c
-+++ b/tools/testing/selftests/landlock/net_test.c
-@@ -2026,4 +2026,66 @@ TEST_F(audit, connect)
- 	EXPECT_EQ(0, close(sock_fd));
+ /*
+@@ -1038,6 +1039,8 @@ static void put_pcichild(struct hv_pci_dev *hpdev)
+ 		kfree(hpdev);
  }
  
-+static int matches_log_tcp_bound(int audit_fd, const char *const addr,
-+				 __u16 lport, __u16 dport)
-+{
-+	static const char log_template[] = REGEX_LANDLOCK_PREFIX
-+		" blockers=net\\.connect_tcp laddr=%s lport=%u daddr=%s dest=%u$";
-+	/* Slack for two addresses and two port numbers. */
-+	char log_match[sizeof(log_template) + 40];
-+	int log_match_len;
++#define TIMEOUT_MS 5000
 +
-+	log_match_len = snprintf(log_match, sizeof(log_match), log_template,
-+				 addr, lport, addr, dport);
-+	if (log_match_len > sizeof(log_match))
-+		return -E2BIG;
+ /*
+  * There is no good way to get notified from vmbus_onoffer_rescind(),
+  * so let's use polling here, since this is not a hot path.
+@@ -1045,8 +1048,13 @@ static void put_pcichild(struct hv_pci_dev *hpdev)
+ static int wait_for_response(struct hv_device *hdev,
+ 			     struct completion *comp)
+ {
++	unsigned long timeout = get_jiffies_64() + msecs_to_jiffies(TIMEOUT_MS);
++	unsigned long now;
 +
-+	return audit_match_record(audit_fd, AUDIT_LANDLOCK_ACCESS, log_match,
-+				  NULL);
-+}
-+
-+/*
-+ * After a bind() to an allowed port, a denied connect must report laddr/lport
-+ * from the bound socket (made available through audit_net.sk) in addition to
-+ * the connect sockaddr's daddr/dest.
-+ */
-+TEST_F(audit, connect_tcp_bound)
-+{
-+	const struct landlock_ruleset_attr ruleset_attr = {
-+		.handled_access_net = LANDLOCK_ACCESS_NET_BIND_TCP |
-+				      LANDLOCK_ACCESS_NET_CONNECT_TCP,
-+	};
-+	const struct landlock_net_port_attr rule_bind = {
-+		.allowed_access = LANDLOCK_ACCESS_NET_BIND_TCP,
-+		.port = self->srv0.port,
-+	};
-+	struct service_fixture srv_remote;
-+	struct audit_records records;
-+	int ruleset_fd, sock_fd;
-+
-+	/* Uses a second port as the denied connect target. */
-+	ASSERT_EQ(0, set_service(&srv_remote, variant->prot, 1));
-+
-+	ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, ruleset_fd);
-+	ASSERT_EQ(0, landlock_add_rule(ruleset_fd, LANDLOCK_RULE_NET_PORT,
-+				       &rule_bind, 0));
-+	enforce_ruleset(_metadata, ruleset_fd);
-+	EXPECT_EQ(0, close(ruleset_fd));
-+
-+	sock_fd = socket_variant(&self->srv0);
-+	ASSERT_LE(0, sock_fd);
-+	EXPECT_EQ(0, bind_variant(sock_fd, &self->srv0));
-+	EXPECT_EQ(-EACCES, connect_variant(sock_fd, &srv_remote));
-+	EXPECT_EQ(0, matches_log_tcp_bound(self->audit_fd, variant->addr,
-+					   self->srv0.port, srv_remote.port));
-+
-+	EXPECT_EQ(0, audit_count_records(self->audit_fd, &records));
-+	EXPECT_EQ(0, records.access);
-+	EXPECT_EQ(1, records.domain);
-+
-+	EXPECT_EQ(0, close(sock_fd));
-+}
-+
- TEST_HARNESS_MAIN
-
-base-commit: d8dfb4c7faa87c3e41a8678f38f136c2c7c036fa
+ 	while (true) {
+-		if (hdev->channel->rescind) {
++		now = get_jiffies_64();
++		if (hdev->channel->rescind ||
++		    time_after(now, timeout)) {
+ 			dev_warn_once(&hdev->device, "The device is gone.\n");
+ 			return -ENODEV;
+ 		}
 -- 
 2.54.0
 
