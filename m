@@ -1,108 +1,60 @@
-Return-Path: <stable+bounces-262852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1ofQBCmEK2qp+wMAu9opvQ
-	(envelope-from <stable+bounces-262852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 05:59:37 +0200
+	id wuv3H7SIK2rN/AMAu9opvQ
+	(envelope-from <stable+bounces-262854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 06:19:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE536676809
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 05:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D7B676935
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 06:19:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kmwW1qEf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262852-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262852-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=cWjZqvCk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262854-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-262854-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18E21309E899
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 03:59:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56E533086156
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 04:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14004324B33;
-	Fri, 12 Jun 2026 03:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873E0367296;
+	Fri, 12 Jun 2026 04:18:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4D23290BD
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 03:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657C640D56B;
+	Fri, 12 Jun 2026 04:18:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781236773; cv=none; b=JgBRhBJLOZmvxZ/G85YMLOPk0gAg8F6Dy3GWyHiaIJWtYLnHCe8QfGP6bVT6jYfJkQ/xCtZ+iPBY43Qgu/FVWCyZDYNzC6aJ+BRBY+gMb6nwS5p/cDThB3Y3aocl5DA6WSgGqSM8qaEA8Xbn0Ij0xDv+Ra9dDl0l3UzW+H5iDog=
+	t=1781237934; cv=none; b=LD/nLzFxAcj/QPSjsHq/PcOaY+KLmFPqyoZFqvv80yDzaBM5jKjNawLti8rFPIL9xFBqxbHVtBTkoJeGtOMMbt1xiyySq9AtzYmQLpLFe9PBKPO3h2t9VEXjWoofVqRZdcUruvnh6lK17ZItevLeA6Vju+/Ggc1KhtIXXIo8tJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781236773; c=relaxed/simple;
-	bh=x9z/vRDeyr9Fu3596Te+LWfQJ5AgaVC79DfGI8JIx6c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP6FtjDrNmCbR88TXcoHIKs8tWb8xuxxTISvag6JTUCPG3NO0HRQqkhlabhtbrEDwIFLXSGQCLnpbvoLJXqfwAoPFwpmLsqSskVGRPYN/m8YKLqZ/R9UZACQvGdJuHeEqLStIdnr2R3cVzfXf9p4YbOtZrReTY21WP+wZyFNiS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=kmwW1qEf; arc=none smtp.client-ip=209.85.210.181
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-842307472d4so251565b3a.0
-        for <stable@vger.kernel.org>; Thu, 11 Jun 2026 20:59:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1781236772; x=1781841572; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bw/+TUFGRb1cb6WBPutvKTpZXTM41uBrQaMLYOSWWQg=;
-        b=kmwW1qEf4ygSo/Dk1/wfbv7+s6AQOGo8HVpFwtOgKs1jx1hdAWIg9tUaGPTa8rYY4/
-         6tpRTtwsh1Al+VSrm8aOzRoumuSpH726blbJxVcKcQCbHbl1wZKCyydcyg/5SKA+aiZC
-         sqjKnKDx2fhKE7tl4H09HmjQauaDR5x5yeiemxDwll7jU8bXqMS4enGbJYRHmeDNKk6f
-         UE6nLNQWWKyB+f5rC9Tp+MxoDGpCSJtj2vy+yIn0F6a8slvj+rrNS4I+eLDe3oikVWxz
-         G+WN+0hJN7YYhistgtuTLaK4y9Hd3I4WagA55SpnAjHY5lBVoq5pINo/inGtVu2P0S3w
-         vEog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781236772; x=1781841572;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bw/+TUFGRb1cb6WBPutvKTpZXTM41uBrQaMLYOSWWQg=;
-        b=n+whGO3xn0hfBFgmcudaqdb1pjsQZKwIpxa14+HpDkueTNvdrOOnvld1+3QztB9ohe
-         kRFaoFqlv58Df4P6fvjrAAoVevKuwhaECChP5xRSLnbIpJV0oH0358JDeIQc4Lkb6+ew
-         hFRHuiJm689UQKrsQkp8AYEHPEh74HQQFlIyCghdGXhx8J42CFiAcJ4POnrj+Dfw18Xb
-         /9RSmQY4zr59SStKDJuLXCH3jDrmOxr5BxT6A2e8G07XZEslcOSIGgE2jXDY9mPj4RAI
-         SCdFq7NW3hdF8zY76iAWrblRjEOxaWFfUyK7Vp9aDvX545mVWMgdsJ9BNE1iyljGR/cy
-         jKmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/4FmiUhbagUp7enBilLzQOF76TWnmqOrQGcd26qkdxtlj3/yjGUtRc/Ny6/4kgyFTUsV2J7b8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVaY0PigTHei48qrlFMulEVBefLydGg+26tQ25F3UHWOS7fW2/
-	6ICQClqthfBs5kfyPPzzYG5Eg2tBmrds/WCYiWzFr0lnaYdYfQlzp+2gucM32pp8wvQ=
-X-Gm-Gg: Acq92OEasEGsmMDFMbtw864z83IxNaQK/MINs8gWFBG0z0miuLqXDUZLq0fJQSSeofY
-	SdtPXg+4s80TwoAKYK4kqvE9TrQ4dKNKYpzKZAoHwdjaCRkv/SqoXC3/7zdW+oDAKQgxOaOLW+t
-	Sq7VR999NjcnV+zwV969Ceolq6w5tQGwe2V4460BcesK2KMchIw+CkRtcxHSfEx7ce9pmw3jVoP
-	R3JcyMU468ADy3HZZa5BPZWldpG/r0O4XsTWnEHm9dpAi0fMNY4HpvxL21vc16k6RrbWUX0vIJL
-	UYNXLF6Fq2EZSuvDrQOEPfOnifsndPrmIrc8KltjGmqZpeHpzTEqiq3JelUq21u0VEzRtmikraj
-	Nd1pcnztsWGI5KUXtGtBSEYu0qb9LHG0uZG2MyRpfDCj+vE0ZRURWjO3CYPK3VBYfcfWqTFnUgk
-	Sff1ND+NGPNnu15N1ir338s29fSl8EyHUKMr/TfhFgQYM=
-X-Received: by 2002:a05:6a00:3395:b0:842:5b1e:5908 with SMTP id d2e1a72fcca58-8434d0795a6mr1106623b3a.25.1781236771699;
-        Thu, 11 Jun 2026 20:59:31 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ad03fdcsm643352b3a.24.2026.06.11.20.59.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 20:59:31 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	linux-mm@kvack.org,
+	s=arc-20240116; t=1781237934; c=relaxed/simple;
+	bh=97gO9QVyDIk6/2qm521M6xSN2NMIU+1HB3IeTkISDGs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m1sfq7ZbGB+WbOOW6wTEP3KgdqeRqtVKXbSoY/wM3B1IiWeopR0GXx29bJFM0cWsLPqRENT/DKHN+peomElvEBsE2ay9gC7FzEwbpEI3I9CJ5bccb4gUHzriB8VxeXQ88u1P3UFRUc5yKx2/K4SfyE3r0oMwvke+7eZIi3IozzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=cWjZqvCk; arc=none smtp.client-ip=45.254.49.197
+Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 421956ae9;
+	Fri, 12 Jun 2026 12:13:37 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: nbd@nbd.name
+Cc: lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Muchun Song <songmuchun@bytedance.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
 	stable@vger.kernel.org
-Subject: [PATCH v4 04/19] mm/hugetlb: Initialize gigantic bootmem hugepage struct pages earlier
-Date: Fri, 12 Jun 2026 11:58:48 +0800
-Message-ID: <20260612035903.2468601-5-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260612035903.2468601-1-songmuchun@bytedance.com>
-References: <20260612035903.2468601-1-songmuchun@bytedance.com>
+Subject: [PATCH wireless] wifi: mt76: mt7615: avoid waiting for mac work under the mt76 mutex
+Date: Fri, 12 Jun 2026 12:13:31 +0800
+Message-Id: <20260612041331.2596331-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -110,154 +62,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9eba0914e503a1kunm03fd2058183751
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCT0geVhofSBkfSkNDGRpPQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=cWjZqvCkwXxZVEbFjh68UQ7EaB9BcYLiUm9fHZlAvdm5EJyYXSjW+nOjIoALwAHo/UPqk9Txv9JBE3aq6u1bPw4ivGw+gzoZbUE12ysfRWnAdD4KKa6nywJJhwBOtfNngJPPp84UWNvUoM2z5o8nqs2eSK5COoxOt58ERLBOfdo=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=0jVXe+HmAmsUTiUc8ErqpJQFUp2A/OQkNGrhA6RgKRc=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-262854-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[linux.dev,kernel.org,infradead.org,kvack.org,vger.kernel.org,gmail.com,linux.ibm.com,lists.ozlabs.org,oracle.com,bytedance.com];
-	TAGGED_FROM(0.00)[bounces-262852-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,mediatek.com,gmail.com,collabora.com,vger.kernel.org,lists.infradead.org,seu.edu.cn];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:osalvador@suse.de,m:david@kernel.org,m:akpm@linux-foundation.org,m:maddy@linux.ibm.com,m:mpe@ellerman.id.au,m:muchun.song@linux.dev,m:rppt@kernel.org,m:ljs@kernel.org,m:liam@infradead.org,m:vbabka@kernel.org,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:npiggin@gmail.com,m:chleroy@kernel.org,m:ritesh.list@gmail.com,m:aneesh.kumar@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:mike.kravetz@oracle.com,m:songmuchun@bytedance.com,m:stable@vger.kernel.org,m:riteshlist@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[songmuchun@bytedance.com,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:nbd@nbd.name,m:lorenzo@kernel.org,m:ryder.lee@mediatek.com,m:shayne.chen@mediatek.com,m:sean.wang@mediatek.com,m:matthias.bgg@gmail.com,m:angelogioacchino.delregno@collabora.com,m:linux-wireless@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-mediatek@lists.infradead.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,m:matthiasbgg@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[songmuchun@bytedance.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:dkim,bytedance.com:email,bytedance.com:mid,bytedance.com:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,checkpatch.pl:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AE536676809
+X-Rspamd-Queue-Id: 38D7B676935
 
-Gigantic bootmem HugeTLB pages are currently initialized from hugetlb_init(),
-but page_alloc_init_late() runs earlier and walks pageblocks to determine
-zone contiguity.
+mt7615_suspend() takes the mt76 mutex and then waits for mac_work with
+cancel_delayed_work_sync().  mt7615_mac_work() takes the same mutex at
+the top of the worker, so the suspend path can deadlock against the
+delayed work it is trying to flush.
 
-If a bootmem HugeTLB region is marked noinit, set_zone_contiguous() can
-observe still-uninitialized struct pages through __pageblock_pfn_to_page().
-This may not trigger an immediate failure, but it can make
-set_zone_contiguous() compute the wrong zone contiguity state. If extra
-poisoned-page checks are added in this path, such as PF_POISONED_CHECK()
-in page_zone_id(), it can also trigger an early boot panic.
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
 
-Initialize gigantic bootmem HugeTLB struct pages from page_alloc_init_late(),
-before zone contiguity is evaluated, so later page allocator setup only
-sees valid struct page state. This also makes the initialization order
-more natural, as struct pages should be initialized before later code
-inspects them.
+The grounded PoC kept the mt7615_suspend() ->
+cancel_delayed_work_sync(&phy->mt76->mac_work) path and the
+mt7615_mac_work() -> mt7615_mutex_acquire() edge.  Lockdep reported:
 
-Fixes: fde1c4ecf916 ("mm: hugetlb: skip initialization of gigantic tail struct pages if freed by HVO")
+  WARNING: possible circular locking dependency detected
+  mt7615_mac_work+0x1b/0x29 [vuln_msv]
+  __cancel_work_timer
+  *** DEADLOCK ***
+
+Stop queueing mac_work while the mutex is held, drop the mutex, and then
+flush the delayed work from the sleepable post-unlock path.
+
+Fixes: c6bf20109a3f ("mt76: mt7615: add WoW support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 ---
- include/linux/hugetlb.h | 5 +++++
- mm/hugetlb.c            | 5 ++---
- mm/mm_init.c            | 1 +
- mm/sparse-vmemmap.c     | 4 ++--
- 4 files changed, 10 insertions(+), 5 deletions(-)
+Notes:
+  - Validated with a grounded Lockdep PoC that preserves the
+    mt7615_suspend() -> cancel_delayed_work_sync(&phy->mt76->mac_work)
+    path and the mt7615_mac_work() -> mt7615_mutex_acquire() edge.
+  - checkpatch.pl --strict: clean.
+  - Not tested on mt7615 hardware.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..3700c0a1f6ff 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -171,6 +171,7 @@ extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group __read_mostly;
- extern struct list_head huge_boot_pages[MAX_NUMNODES];
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 15fe155ac3f3..fcb619c0f6cf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -1242,7 +1242,8 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
  
-+void hugetlb_bootmem_struct_page_init(void);
- void hugetlb_bootmem_alloc(void);
- extern nodemask_t hugetlb_bootmem_nodes;
- void hugetlb_bootmem_set_nodes(void);
-@@ -1293,6 +1294,10 @@ static inline bool hugetlbfs_pagecache_present(
- static inline void hugetlb_bootmem_alloc(void)
- {
+ 	clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
+ 	cancel_delayed_work_sync(&phy->scan_work);
+-	cancel_delayed_work_sync(&phy->mt76->mac_work);
++	/* mac_work re-enters the mt76 mutex, so flush it after unlock. */
++	cancel_delayed_work(&phy->mt76->mac_work);
+ 
+ 	set_bit(MT76_STATE_SUSPEND, &phy->mt76->state);
+ 	ieee80211_iterate_active_interfaces(hw,
+@@ -1254,6 +1255,7 @@ static int mt7615_suspend(struct ieee80211_hw *hw,
+ 		err = mt76_connac_mcu_set_hif_suspend(&dev->mt76, true, true);
+ 
+ 	mt7615_mutex_release(dev);
++	cancel_delayed_work_sync(&phy->mt76->mac_work);
+ 
+ 	return err;
  }
-+
-+static inline void hugetlb_bootmem_struct_page_init(void)
-+{
-+}
- #endif	/* CONFIG_HUGETLB_PAGE */
- 
- static inline spinlock_t *huge_pte_lock(struct hstate *h,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cd55524c7e30..2bf9fe16abb9 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3353,7 +3353,7 @@ static void __init gather_bootmem_prealloc_parallel(unsigned long start,
- 		gather_bootmem_prealloc_node(nid);
- }
- 
--static void __init gather_bootmem_prealloc(void)
-+void __init hugetlb_bootmem_struct_page_init(void)
- {
- 	struct padata_mt_job job = {
- 		.thread_fn	= gather_bootmem_prealloc_parallel,
-@@ -3582,7 +3582,7 @@ static unsigned long __init hugetlb_pages_alloc_boot(struct hstate *h)
-  * - For gigantic pages, this is called early in the boot process and
-  *   pages are allocated from memblock allocated or something similar.
-  *   Gigantic pages are actually added to pools later with the routine
-- *   gather_bootmem_prealloc.
-+ *   hugetlb_bootmem_struct_page_init.
-  * - For non-gigantic pages, this is called later in the boot process after
-  *   all of mm is up and functional.  Pages are allocated from buddy and
-  *   then added to hugetlb pools.
-@@ -4152,7 +4152,6 @@ static int __init hugetlb_init(void)
- 	}
- 
- 	hugetlb_init_hstates();
--	gather_bootmem_prealloc();
- 	report_hugepages();
- 
- 	hugetlb_sysfs_init();
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 0f64909e8d20..92e88fca717f 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2323,6 +2323,7 @@ void __init page_alloc_init_late(void)
- 	/* Reinit limits that are based on free pages after the kernel is up */
- 	files_maxfiles_init();
- #endif
-+	hugetlb_bootmem_struct_page_init();
- 
- 	/* Accounting of total+free memory is stable at this point. */
- 	mem_init_print_info();
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index bb23fb3077a3..6e09000ed3e1 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -342,8 +342,8 @@ static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *
- 	 *
- 	 * Any initialization done here will be overwritten by memmap_init().
- 	 *
--	 * gather_bootmem_prealloc() will take care of initialization after
--	 * memmap_init().
-+	 * hugetlb_bootmem_struct_page_init() will take care of initialization
-+	 * after memmap_init().
- 	 */
- 
- 	p = vmemmap_alloc_block_zero(PAGE_SIZE, node);
 -- 
-2.54.0
-
+2.34.1
 
