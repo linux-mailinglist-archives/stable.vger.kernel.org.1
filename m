@@ -1,137 +1,337 @@
-Return-Path: <stable+bounces-262969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EZkYJkFpLGpMQgQAu9opvQ
-	(envelope-from <stable+bounces-262969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 22:17:05 +0200
+	id Al+mAPxqLGqPQgQAu9opvQ
+	(envelope-from <stable+bounces-262971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 22:24:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FAC67C40C
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 22:17:04 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026AF67C46D
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 22:24:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262969-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262969-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=IseZxwFs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262971-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-262971-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DD363054C2F
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 20:16:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A0843004C9F
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 20:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536B53B6374;
-	Fri, 12 Jun 2026 20:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5040F3A0B3B;
+	Fri, 12 Jun 2026 20:24:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792223438B4;
-	Fri, 12 Jun 2026 20:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95E5397682;
+	Fri, 12 Jun 2026 20:24:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781295387; cv=none; b=V9/E3F6FF/F+gzgYQEdVn9EQ7MpgvYiqI142Gjx73SC46ErvOTPS+IwZLloJAZV/9BgtnFkKxdnG6sqklFjtSS62sFiQYIxplNJCC6eC14FLfp4sf3xoXPD9qfaxs5pS8eSu0UcEJmQAheEdrnjENPknfTE5G/QoaQpkMC8OSO8=
+	t=1781295862; cv=none; b=dRfKqDdtAlG03QlCApzi5NeAAUI3n6+17GTxIj7/CJKUPvNeCE9JAz/G1ehGz4clSvVdgPPO2rr0CkQbt9xFRe/GgVXqHOyPctKEy3vis3i9fMRAP697PYmaV0qq8gNoCVHebNQoftrKKr3GTPzPKQ2SdYpGCZDbS6tsuBtm32M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781295387; c=relaxed/simple;
-	bh=D39oCbI6GnTZppIvDAl9pgGpJpOY19zw9047pMIJRo0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iPIH9ypq9MODXy5Mem9MfNU5uPbnCMsbv54PhySWZHTCZwSZlHjiZjcdkmZRUTT0TXoDYq8WvyN1n33R0eCniGKrWY5RtONxat3vVHN12d0+iGeYT6kqr44vGttpcNfo5Yh2ZDwH17+6dsgk+xW6v/xRapFE2jfH3blwcZN0vLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=timmermann.space; spf=pass smtp.mailfrom=timmermann.space; arc=none smtp.client-ip=80.241.56.172
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4gcW4F44bJz9tPs;
-	Fri, 12 Jun 2026 22:16:13 +0200 (CEST)
-Date: Fri, 12 Jun 2026 22:16:10 +0200
-From: Lukas Timmermann <linux@timmermann.space>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>, 
-	Lee Jones <lee@kernel.org>, linux-leds@vger.kernel.org
-Cc: stable@vger.kernel.org, Pavel Machek <pavel@kernel.org>
-Subject: Re: [PATCH] leds: as3668: correct name of config option to match
- Makefile
-Message-ID: <aixoF5WDjhcdn7o_@archstation>
-References: <20260610224244.128063-1-enelsonmoore@gmail.com>
+	s=arc-20240116; t=1781295862; c=relaxed/simple;
+	bh=6msnmokA+pqL2rpEMBTiqzQNx8CpRNH27ir2l0RvrKM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PTad05C+tqsCREBQGi1p2PGcG7Ov/ii122JYOn8Yjdg9q6pfqmIzEGUR5cq6kxz4Vk4y1g+MDZrjoUVVho508hGbH5Sq+609Ap4KvAhO/LihOPuKI1jVtDikywlN6xBsFl9IvOFpyQYRVLzW/QYY9+76Sqe6BLYVHqVF96bro34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=IseZxwFs; arc=none smtp.client-ip=44.245.243.92
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1781295860; x=1812831860;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=iChme/E34uCboryDWummptj4VOkA8kgpO0MVzkueBFg=;
+  b=IseZxwFsmXRrW6w3vX8Lyb+/3KwOZ15B676XSw309Cdky+kWuKeeFa4v
+   /AEcNRuGZi0cfpcvBcgZpoIeJu01YlruywN9Jj2Lo3+/MErxf45aeHxzT
+   ZnT7SNz38y0SOzUOxapb6mDnl+GXK4WY2FmZmoHGHmmTcS2U9mLpaX6gf
+   ySvAMDAR4Be7I5JF6/ezOznHpdh+cj0kzWd2IH/XgNEwqDIesfI/AurQ/
+   C11dxtUxKqNrq2WZw9FgySPL2M0kFLM1gT5IdirFGA9yXhDNmGZkjigEv
+   0CDFZQJ8U4Z3g72DurEBrxcWqA7iP2euVgXJ/tdgTEkA7dK/96ngI/zmJ
+   w==;
+X-CSE-ConnectionGUID: aGP2EaitT6CYX2qPV1wPeQ==
+X-CSE-MsgGUID: dTdWs130QAmNvgKDlmWb0w==
+X-IronPort-AV: E=Sophos;i="6.24,201,1774310400"; 
+   d="scan'208";a="21169016"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 20:24:20 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.51:26259]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.226:2525] with esmtp (Farcaster)
+ id aa634630-adcd-4332-a889-a0a49a8f284e; Fri, 12 Jun 2026 20:24:20 +0000 (UTC)
+X-Farcaster-Flow-ID: aa634630-adcd-4332-a889-a0a49a8f284e
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 12 Jun 2026 20:24:20 +0000
+Received: from dev-dsk-mkbund-2b-ce767ba1.us-west-2.amazon.com (10.169.40.81)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Fri, 12 Jun 2026 20:24:19 +0000
+From: Mark Bundschuh <mkbund@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <netfilter-devel@vger.kernel.org>, Pablo Neira Ayuso
+	<pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.6.y] netfilter: ctnetlink: ensure safe access to master conntrack
+Date: Fri, 12 Jun 2026 20:24:08 +0000
+Message-ID: <20260612202408.1045757-1-mkbund@amazon.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260610224244.128063-1-enelsonmoore@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.96 / 15.00];
+X-Spamd-Result: default: False [-10.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
+	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:enelsonmoore@gmail.com,m:lee@kernel.org,m:linux-leds@vger.kernel.org,m:stable@vger.kernel.org,m:pavel@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[timmermann.space];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[linux@timmermann.space,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262971-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:pablo@netfilter.org,m:fw@strlen.de,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@timmermann.space,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-262969-lists,stable=lfdr.de];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkbund@amazon.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[amazon.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,strlen.de:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E4FAC67C40C
+X-Rspamd-Queue-Id: 026AF67C46D
 
-On Wed, Jun 10, 2026 at 03:42:43PM -0700, Ethan Nelson-Moore wrote:
-> The Makefile for the AS3668 LED driver refers to CONFIG_LEDS_AS3668,
-> whereas the config file defines CONFIG_LEDS_OSRAM_AMS_AS3668. This
-> causes the driver to never be compiled. Correct the name in the Kconfig
-> file to match the Makefile. Doing the opposite would also have worked,
-> but the name in the Makefile better matches the format of other
-> drivers' options.
-> 
-> Fixes: c7dd343a3756 ("leds: as3668: Driver for the ams Osram 4-channel i2c LED driver")
-> Cc: stable@vger.kernel.org # 7.0+
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/leds/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-> index f4a0a3c8c870..5ac63cb59469 100644
-> --- a/drivers/leds/Kconfig
-> +++ b/drivers/leds/Kconfig
-> @@ -107,7 +107,7 @@ config LEDS_ARIEL
->  
->  	  Say Y to if your machine is a Dell Wyse 3020 thin client.
->  
-> -config LEDS_OSRAM_AMS_AS3668
-> +config LEDS_AS3668
->  	tristate "LED support for Osram AMS AS3668"
->  	depends on LEDS_CLASS
->  	depends on I2C
-> -- 
-> 2.43.0
-> 
-> 
-Hi Ethan,
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-thank you for noticing that issue.
+[ Upstream commit bffcaad9afdfe45d7fc777397d3b83c1e3ebffe5 ]
 
-This was already fixed here:
-https://lore.kernel.org/all/177815964265.1857555.230971455145782585.b4-ty@b4/
+Holding reference on the expectation is not sufficient, the master
+conntrack object can just go away, making exp->master invalid.
 
-Best regards
-Lukas
+To access exp->master safely:
+
+- Grab the nf_conntrack_expect_lock, this gets serialized with
+  clean_from_lists() which also holds this lock when the master
+  conntrack goes away.
+
+- Hold reference on master conntrack via nf_conntrack_find_get().
+  Not so easy since the master tuple to look up for the master conntrack
+  is not available in the existing problematic paths.
+
+This patch goes for extending the nf_conntrack_expect_lock section
+to address this issue for simplicity, in the cases that are described
+below this is just slightly extending the lock section.
+
+The add expectation command already holds a reference to the master
+conntrack from ctnetlink_create_expect().
+
+However, the delete expectation command needs to grab the spinlock
+before looking up for the expectation. Expand the existing spinlock
+section to address this to cover the expectation lookup. Note that,
+the nf_ct_expect_iterate_net() calls already grabs the spinlock while
+iterating over the expectation table, which is correct.
+
+The get expectation command needs to grab the spinlock to ensure master
+conntrack does not go away. This also expands the existing spinlock
+section to cover the expectation lookup too. I needed to move the
+netlink skb allocation out of the spinlock to keep it GFP_KERNEL.
+
+For the expectation events, the IPEXP_DESTROY event is already delivered
+under the spinlock, just move the delivery of IPEXP_NEW under the
+spinlock too because the master conntrack event cache is reached through
+exp->master.
+
+While at it, add lockdep notations to help identify what codepaths need
+to grab the spinlock.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ fix timer_delete -> del_timer in diff context lines since 8fa7292
+("treewide: Switch/rename to timer_delete[_sync]()") landed in 6.15 ]
+Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
+---
+ include/net/netfilter/nf_conntrack_core.h |  5 ++++
+ net/netfilter/nf_conntrack_ecache.c       |  2 ++
+ net/netfilter/nf_conntrack_expect.c       | 10 +++++++-
+ net/netfilter/nf_conntrack_netlink.c      | 28 +++++++++++++++--------
+ 4 files changed, 35 insertions(+), 10 deletions(-)
+
+diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
+index 3384859a8921..8883575adcc1 100644
+--- a/include/net/netfilter/nf_conntrack_core.h
++++ b/include/net/netfilter/nf_conntrack_core.h
+@@ -83,6 +83,11 @@ void nf_conntrack_lock(spinlock_t *lock);
+ 
+ extern spinlock_t nf_conntrack_expect_lock;
+ 
++static inline void lockdep_nfct_expect_lock_held(void)
++{
++	lockdep_assert_held(&nf_conntrack_expect_lock);
++}
++
+ /* ctnetlink code shared by both ctnetlink and nf_conntrack_bpf */
+ 
+ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
+diff --git a/net/netfilter/nf_conntrack_ecache.c b/net/netfilter/nf_conntrack_ecache.c
+index 69948e1d6974..6526bdcca580 100644
+--- a/net/netfilter/nf_conntrack_ecache.c
++++ b/net/netfilter/nf_conntrack_ecache.c
+@@ -237,6 +237,8 @@ void nf_ct_expect_event_report(enum ip_conntrack_expect_events event,
+ 	struct nf_ct_event_notifier *notify;
+ 	struct nf_conntrack_ecache *e;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	rcu_read_lock();
+ 	notify = rcu_dereference(net->ct.nf_conntrack_event_cb);
+ 	if (!notify)
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 70bcddfc17cc..379711ea5ab6 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -51,6 +51,7 @@ void nf_ct_unlink_expect_report(struct nf_conntrack_expect *exp,
+ 	struct net *net = nf_ct_exp_net(exp);
+ 	struct nf_conntrack_net *cnet;
+ 
++	lockdep_nfct_expect_lock_held();
+ 	WARN_ON(!master_help);
+ 	WARN_ON(timer_pending(&exp->timeout));
+ 
+@@ -118,6 +119,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
+ 
+ bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+ {
++	lockdep_nfct_expect_lock_held();
++
+ 	if (del_timer(&exp->timeout)) {
+ 		nf_ct_unlink_expect(exp);
+ 		nf_ct_expect_put(exp);
+@@ -177,6 +180,8 @@ nf_ct_find_expectation(struct net *net,
+ 	struct nf_conntrack_expect *i, *exp = NULL;
+ 	unsigned int h;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!cnet->expect_count)
+ 		return NULL;
+ 
+@@ -459,6 +464,8 @@ static inline int __nf_ct_expect_check(struct nf_conntrack_expect *expect,
+ 	unsigned int h;
+ 	int ret = 0;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!master_help) {
+ 		ret = -ESHUTDOWN;
+ 		goto out;
+@@ -515,8 +522,9 @@ int nf_ct_expect_related_report(struct nf_conntrack_expect *expect,
+ 
+ 	nf_ct_expect_insert(expect);
+ 
+-	spin_unlock_bh(&nf_conntrack_expect_lock);
+ 	nf_ct_expect_event_report(IPEXP_NEW, expect, portid, report);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	return 0;
+ out:
+ 	spin_unlock_bh(&nf_conntrack_expect_lock);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 255996f43d85..eff5008f5e9d 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3326,31 +3326,37 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
+ 	if (err < 0)
+ 		return err;
+ 
++	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!skb2)
++		return -ENOMEM;
++
++	spin_lock_bh(&nf_conntrack_expect_lock);
+ 	exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-	if (!exp)
++	if (!exp) {
++		spin_unlock_bh(&nf_conntrack_expect_lock);
++		kfree_skb(skb2);
+ 		return -ENOENT;
++	}
+ 
+ 	if (cda[CTA_EXPECT_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 		if (id != nf_expect_get_id(exp)) {
+ 			nf_ct_expect_put(exp);
++			spin_unlock_bh(&nf_conntrack_expect_lock);
++			kfree_skb(skb2);
+ 			return -ENOENT;
+ 		}
+ 	}
+ 
+-	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+-	if (!skb2) {
+-		nf_ct_expect_put(exp);
+-		return -ENOMEM;
+-	}
+-
+ 	rcu_read_lock();
+ 	err = ctnetlink_exp_fill_info(skb2, NETLINK_CB(skb).portid,
+ 				      info->nlh->nlmsg_seq, IPCTNL_MSG_EXP_NEW,
+ 				      exp);
+ 	rcu_read_unlock();
+ 	nf_ct_expect_put(exp);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	if (err <= 0) {
+ 		kfree_skb(skb2);
+ 		return -ENOMEM;
+@@ -3397,22 +3403,26 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
+ 		if (err < 0)
+ 			return err;
+ 
++		spin_lock_bh(&nf_conntrack_expect_lock);
++
+ 		/* bump usage count to 2 */
+ 		exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-		if (!exp)
++		if (!exp) {
++			spin_unlock_bh(&nf_conntrack_expect_lock);
+ 			return -ENOENT;
++		}
+ 
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
++				spin_unlock_bh(&nf_conntrack_expect_lock);
+ 				return -ENOENT;
+ 			}
+ 		}
+ 
+ 		/* after list removal, usage count == 1 */
+-		spin_lock_bh(&nf_conntrack_expect_lock);
+ 		if (del_timer(&exp->timeout)) {
+ 			nf_ct_unlink_expect_report(exp, NETLINK_CB(skb).portid,
+ 						   nlmsg_report(info->nlh));
+-- 
+2.50.1
+
 
