@@ -1,66 +1,62 @@
-Return-Path: <stable+bounces-262931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kkoXM5YaLGrrLQQAu9opvQ
-	(envelope-from <stable+bounces-262931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:26 +0200
+	id f5aTOKUaLGrxLQQAu9opvQ
+	(envelope-from <stable+bounces-262932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D3067A476
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7313C67A47F
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0u9J25A;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262931-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262931-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LOin+Qs0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262932-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262932-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 243B130FEEC0
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 14:41:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C465431259C4
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 14:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58F2382F3A;
-	Fri, 12 Jun 2026 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34C038BF67;
+	Fri, 12 Jun 2026 14:41:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8BC35E1C3
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B12371048
+	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 14:41:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781275284; cv=none; b=EhDM/nySk+7qo3hiNc7EvFSiLorGqL+jS8Vm4WrYTv/TlFi1BkX4t0Ri9h4xL3DQmmjqE2RXiIRmOcMsmvaav+zMODbFA6jhss5sL8I79vGf7qpoo7GNtsLAdMvJsX9PYFk+zAsrpsr1d/tpRpWGZg5SbN0yHg9htYFvhiBOJ3w=
+	t=1781275285; cv=none; b=NXr7CX93Y6G1Wxsle7f7XgQAES1Z6QC65cBZYthMhhMF3s+T0r/BLQitegxpweMqV8Efj3C5teaqEp1HJuT2BcdSHGHdAD2R6F1kCfyWE5TDVNe/Xf6UCRGppvCLdFeSXbPQFoDz94hjmT19HbgwXlr6R1RzQKxeAHLhm7PmG5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781275284; c=relaxed/simple;
-	bh=tOihwrG2GW8dEz+XPM8wmcselRnF6BHlVgFIImbB9KA=;
+	s=arc-20240116; t=1781275285; c=relaxed/simple;
+	bh=IZHwMgvR7iqLgYv6719gt4wrdGsbCdFipyHP7Ua8eLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXms84yXZBfqn+0OlHUS1Bl0ct65IchvauFvzHRIblFPrr3P3XODB/XFhDVVo1AeJaC51rGTsBYMUKAmEiQrK3UO/Qn0tSDOpBV6RDfBIN48J6baswvPoPyHN+jRruBlbpAlq1lDA0zsVYn0RkGr7CxxWPWlV0RZpP3EYkRTaAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0u9J25A; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A775F1F000E9;
-	Fri, 12 Jun 2026 14:41:22 +0000 (UTC)
+	 MIME-Version; b=LEKOmrQdMOov3R6PX++utQaHk0saAg7qX/IWtPOBK8RGKL6LA3XAlzISEczfRcJB4JX3Elvja+nDX4FzuTAQ+fB+QOllaHbu5wJBNlRhDlR5gcxaf5FVmO9+YB1BvE8Y3OwAKbOUJnG5ei0cCPMqkIF9SMA7YTKbc7bvQBULLYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LOin+Qs0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EA11F00A3E;
+	Fri, 12 Jun 2026 14:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781275283;
-	bh=tOihwrG2GW8dEz+XPM8wmcselRnF6BHlVgFIImbB9KA=;
+	s=k20260515; t=1781275284;
+	bh=IZHwMgvR7iqLgYv6719gt4wrdGsbCdFipyHP7Ua8eLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l0u9J25AOGdhkafzxCGYv1nJx3UccgP8KpvY6Bfk38HDg+5LosKAxmqN2+c6Gb508
-	 f6XVtiC0a2lIWOMmzOoVSdhIAKtmn7YKBAi7VliGwWMPyj9dUcIgApFJoKyaCi473U
-	 H2rPVBAdthDs+oZRyiCs/9GeSX5MEj+f7tQJR8e6bsZJK0WxAPu+0Zg+6PFiO4OR2L
-	 riIG+Q733vEDra/m3RdnMBcXhFuWSu4A/fY9aHi3Jn9mccBIqFmZjObgFkBezbyNj/
-	 DafMX/t/lwbd0GdtdFZCMTJUkFLcu/txqEFvuYIVXrcP85jB8QNAov8VR7qEfunwHg
-	 J1jWeAMC4xcig==
+	b=LOin+Qs0+KK7jm7yHrrUuqTJkM4s9nQZutf2/ESsBWNX64ORiDYZ7yD5vqPCqSI8c
+	 CEXWl0lmbcpaD801tmrrqrNGwYfftOR9Eq9nZEqukhTklC/5/Ejm8ciU4VkaKMeunB
+	 Tku5hHpPoWoTsxNS+r7kEXQHcEWaBUJi+Xx1OAW1Inp8h3AGcWMOf6WxdsF5FcMnw+
+	 xqgO6nCmLtFfaRdbm0JWLpRQfuAToyHGwIitMWziJn2Mu+M97XBWSvvhpX76j1C/pm
+	 205pp9vVGrxmTgww11THmu48ZnwqGKt6UGVM52kQ9ZTi5YdFAxg50qDMMQZQcMWM1g
+	 8LGtIR2UXVaEA==
 From: Sasha Levin <sashal@kernel.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Minh Nguyen <minhnguyen.080505@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: Please apply 98d0912e9f84 ("net: skbuff: fix missing zerocopy reference in pskb_carve helpers") down to 6.1.y
-Date: Fri, 12 Jun 2026 10:41:16 -0400
-Message-ID: <20260612-stable-reply-pskb-carve-0001@kernel.org>
+	outbounddisclosures@openai.com,
+	Kyle Zeng <kylebot@openai.com>
+Subject: Re: [PATCH 6.12.y] bcachefs: validate disk group parent chains
+Date: Fri, 12 Jun 2026 10:41:17 -0400
+Message-ID: <20260612-stable-reply-bcachefs-0004@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <airicdmj6A7ZRGxs@eldamar.lan>
-References: <airicdmj6A7ZRGxs@eldamar.lan>
+In-Reply-To: <20260611223835.73757-1-kylebot@openai.com>
+References: <20260611223835.73757-1-kylebot@openai.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,51 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.16 / 15.00];
+X-Spamd-Result: default: False [-4.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262931-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linuxfoundation.org,gmail.com,google.com,redhat.com,decadent.org.uk];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-262932-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:outbounddisclosures@openai.com,m:kylebot@openai.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:carnil@debian.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:ben@decadent.org.uk,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50D3067A476
+X-Rspamd-Queue-Id: 7313C67A47F
 
-On Thu, Jun 11, 2026 at 06:29:37PM +0200, Salvatore Bonaccorso wrote:
-> Here is the backport for the 6.6.y series as well.
->
-> As mentioned in the other mail, I could not have looked explicitly for
-> the 5.15.y and 5.10.y. In particular for the later I think more work
-> is required.
+On Thu, Jun 11, 2026 at 03:38:35PM -0700, Kyle Zeng wrote:
+> Reject parent IDs outside the disk-group table, parents that reference
+> deleted groups, and cyclic parent chains before the groups are imported.
+> This prevents crafted superblocks from making the CPU conversion walk
+> past cpu_g->entries.
 
-Thanks, queued for 6.6.y and 6.1.y.
+Thanks for the fix. I can't queue this for stable, though: there's no
+upstream commit (bcachefs was removed from mainline after 6.12) and no
+maintainer Reviewed-by/Acked-by. I won't take a stable-only change for
+a removed subsystem without upstream presence or a maintainer ack.
+
+If you can get Kent to review and ack it, I'll reconsider.
 
 --
 Thanks,
