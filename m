@@ -1,198 +1,163 @@
-Return-Path: <stable+bounces-262893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +rZSO8HMK2r4FAQAu9opvQ
-	(envelope-from <stable+bounces-262893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:09:22 +0200
+	id 0NNOGOPNK2p3FQQAu9opvQ
+	(envelope-from <stable+bounces-262896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:14:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5177867812F
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC4467824F
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:14:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FGr99Ahu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262893-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262893-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=uniontech.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="FFo6c/gw";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262896-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262896-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F45433BB1E6
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 09:03:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64FD2319F970
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 09:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1723932CA;
-	Fri, 12 Jun 2026 09:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20102369203;
+	Fri, 12 Jun 2026 09:08:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F43012B143
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 09:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C113B3019C8;
+	Fri, 12 Jun 2026 09:08:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781255014; cv=none; b=ZhlAEyRZp50J+AcnCawP3NPY3mnkmEyMyPfXp3JFpLfjSCGRwL+2h2WT4KK8t6LskM3bdGtYsFIhdPMT3LQifVCtL4buDk6/0atzilhRAq9iTH99seeWUEHEC+zEpoczQHuSKXJjE8JhFVab3IZJHWFdgKdwDdz/hkuwkleVbTU=
+	t=1781255329; cv=none; b=fORcVHzBfqKOjzsxiXMgUsI/3yx2grfxb6yP6syLWDY7GCua+R9HTWbozoz7wnLETjzlTH/8UCK7rqF8UtgpL/1Z29f1oVme+Ytg1dQodKBRMor+7bU/zETT9Oe/QTIW/7tgu5dK9C/TKn9JR0XxZDxPYDAjKvEosrH2afhxkPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781255014; c=relaxed/simple;
-	bh=X31Kl78dLCDCMcs/F4rY6Z35nCi57iiNHRU1BErIdDQ=;
-	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
-	 Content-Type; b=kSrrvKCw6oJnDWZRlNoJdO4PxOObfoyCi/mei7VUakDh27b6PD5uDgE1aOFz2ZqA3LVofQmlIJCMYFuUu7vdn74Wx9dlHv2y7jDVGF/CT/Sz9h/Z+0LizXLL4mZEK952Mmb3jJmqchBgO3Sb7+VHP+3WDNzxMz7vrPqhlBsJUk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=FGr99Ahu; arc=none smtp.client-ip=54.207.22.56
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1781255001;
-	bh=X31Kl78dLCDCMcs/F4rY6Z35nCi57iiNHRU1BErIdDQ=;
-	h=Date:From:To:Subject:Mime-Version:Message-ID;
-	b=FGr99AhuZrENoWY9GqknwkZKnCG24UG8f7JxFUKExJepDUYL8n2WAhFvwmtGBEbd0
-	 kJJW4xOMMvVxZYv1bxWkfqLtjgxhZY4CpwhGpeudRCdi80pc7Zm9a2bfPBSsMLYtwn
-	 qwLjRSwZKdAqep/8QKUFKip7XKZeZofpkWvVde9Q=
-X-QQ-mid: esmtpsz11t1781254994td821a0de
-X-QQ-Originating-IP: JrpDEooSWmrGcBEWkJGnwpiWz7pwTm7IZMXTQ257GmE=
-Received: from PEN002676 ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 12 Jun 2026 17:03:11 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 13897525409563887300
-Date: Fri, 12 Jun 2026 17:03:12 +0800
-From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
-To: "Nicolas Dufresne" <nicolas@ndufresne.ca>, 
-	tomeu <tomeu@tomeuvizoso.net>, 
-	ogabbay <ogabbay@kernel.org>
-Cc: sumit.semwal <sumit.semwal@linaro.org>, 
-	christian.koenig <christian.koenig@amd.com>, 
-	jeff.hugo <jeff.hugo@oss.qualcomm.com>, 
-	dri-devel <dri-devel@lists.freedesktop.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-media <linux-media@vger.kernel.org>, 
-	linaro-mm-sig <linaro-mm-sig@lists.linaro.org>, 
-	stable <stable@vger.kernel.org>
-Subject: Re: [PATCH v6 1/2] accel/rocket: Fix error path handling in rocket_job_run()
-References: <20260610061915.1CA281F00893@smtp.kernel.org>, 
-	<20260610071045.3414828-1-zhaojinming@uniontech.com>, 
-	<0e3b9cdb9d8bd692290dfabafb32d7faa5bd50f8.camel@ndufresne.ca>
-X-Priority: 3
-X-GUID: D35A159F-6825-4573-AE95-48F50940D356
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.25.375[cn]
+	s=arc-20240116; t=1781255329; c=relaxed/simple;
+	bh=X0h9qzffs4Mr+jLbQ6wsfgUWcYZaSs/OHsx1tSguQhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ESEz5m5y3cYI58i6eL+lOUok2ZpO3lpXo8Q0Nq68BTU+0OwpIxHBRsQx4njBjjDkOitRLKnMMKBwJaUNporkMpz1rxbyqaTHGPdLoQONs8q2J70r57nx8fFV89hU/bg7wNmTD9XTsS/tih/Pmdt+vvMj/V7azXmKGqWF2qnchNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFo6c/gw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C4A1F00A3A;
+	Fri, 12 Jun 2026 09:08:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781255328;
+	bh=uFe+jQS8ife+ArR1PefA5xIjFY5vP2b+bv7MvqxNs90=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FFo6c/gwD5+/iMeteUmloxED+zhI1Jsefq05Le1kipgpQnHu/2MhqurllCutE3XLq
+	 wYxFJrjztv+7CGF+DguhK4C/ZQlkOGTG1rftY6t73Qbd2lNklOILx6n8pMNUDpm0iQ
+	 tsK6OybAzAHvrYxFUy32m0j6P1FaZPRYWhMi0TRYdatebDbeKWfyq+X1b6duVSWUFB
+	 ypdQFpq50xfdR6eteNidBnHOUgszRuyQfT6wIiL5XcNDWHmUZyNsiLvyHBhJR3jYEO
+	 I213v0/uufi/t5ljalanAoJeMM7qMf7o9yA6RybVGjgQC7ixxt5AejlZ3rJ+zmzBQQ
+	 V2LyLKSCWIfOQ==
+Received: from johan by xi.lan with local (Exim 4.99.3)
+	(envelope-from <johan@kernel.org>)
+	id 1wXxsb-00000002A1O-4AO2;
+	Fri, 12 Jun 2026 11:08:46 +0200
+Date: Fri, 12 Jun 2026 11:08:45 +0200
+From: Johan Hovold <johan@kernel.org>
+To: WenTao Liang <vulab@iscas.ac.cn>
+Cc: gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
+	mathias.nyman@linux.intel.com, khtsai@google.com,
+	thorsten.blum@linux.dev, kees@kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: hub: fix refcount leak in usb_new_device()
+Message-ID: <aivMnTkZ-jTRH2Jy@hovoldconsulting.com>
+References: <20260611130223.80884-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <F5773C4B33DAB9B9+2026061217031108584617@uniontech.com>
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NT7uTz3cNku21O2Qpo49ZX3qbjMEcHHwjR20QJ5Txmp+WOmPrG2dMary
-	MoRC55frpzDTh1rJAnmt0+nJsxhsJMTHgyRzJQliUkf8bPIgfDt/jfK3pNzgUytYBlGTp40
-	zvyjspZVajS+j7JObT4x+hciDJDR4o6JQhLI5d/3Jva6U9ecm8y9ZW2+vZ4WtZA4ayL7nun
-	dJbM3gzZry6V1zuR6GiI5jz82nguhi6Hjf8VDiMOMcSZBE6VKbeUAcHTxgS6HtYUSZAhwsI
-	V5OE4eG8pE1zjr0kb3S5WE3Yv+2OLfcEnTjgLdOL3Py6G0McN004WipMiEtHvOyUODvk6bQ
-	OOCjW/cVcTQCfM7Nkc2s8ogAZUmViVy3dILv77j/Btv6pjVfFFI5LAM4ts07ST1/V2sEHUG
-	b7klWidN3QCOAK2Oapyo2E+xrm+Y6PQ2qSRlBlGtj13iQN4aO+bHC8MFfB+/uSn/tkGg0k2
-	eNwZyAnc2eVNXHCNJIWPOQ25r442+VEbceBnDU/4Z5fX6eyQNj2LDIaJM665qvxx/OVLrrD
-	xRSw1dhibFd41cz18FV+6QdKPp3I3vTmKOzJtZA5fvM8fKVlOesAbcpaaeVeLhupCx1hp3R
-	aUNevySTmcVCKzPP13ZVFVxBq3A1h22QpHOvWP9ky/AU+3QgCq4Iqcpog1hn+q3Wb1Y1gFd
-	vsou7uZT1WMsfJGYhr4x+Egcp0g6RCetmYfGOeXS7gydbrwOwb3LECrtkmB+Og/2KDsEijh
-	JxJzMt0QUKBqLpIMYd71Rm2Ar93fvdUd0e1jPVXzHp2fe07PHhSFMSvd0PTr89dfKJg+ci8
-	m3E7Rc20hM2LTF4qs0WVBqMV41V3yXDsUMyXh9HtbQGQxHac+C/VLRebBV1x6HiANw0jJit
-	/UZY9uWkh0OB60ZCrtMUGW53e8pYjz3Ol3qHzXcJ5THa5Z+wt8KMya3l0IpyIRng5h27ZbH
-	BD3qxsFBEA3eLGDAc0X5znxpxtfhTzSmQSrmiJklC6W/RjdJxEOxugdW4JTowO8cH3sUqEo
-	TxL4ijRTcYOVVUQiBhsP+D1Fvyce8=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260611130223.80884-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.56 / 15.00];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:nicolas@ndufresne.ca,m:tomeu@tomeuvizoso.net,m:ogabbay@kernel.org,m:sumit.semwal@linaro.org,m:christian.koenig@amd.com,m:jeff.hugo@oss.qualcomm.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:linux-media@vger.kernel.org,m:linaro-mm-sig@lists.linaro.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262893-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
-	HAS_X_PRIO_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaojinming@uniontech.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262896-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:gregkh@linuxfoundation.org,m:stern@rowland.harvard.edu,m:mathias.nyman@linux.intel.com,m:khtsai@google.com,m:thorsten.blum@linux.dev,m:kees@kernel.org,m:linux-usb@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MIME_TRACE(0.00)[0:+]
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5177867812F
+X-Rspamd-Queue-Id: CDC4467824F
 
-SGksCgpBcG9sb2dpZXMgZm9yIHRoZSBjb25mdXNpb24gY2F1c2VkLiBJIHdhcyB0cnlpbmcgdG8g
-aW5jb3Jwb3JhdGUgZmVlZGJhY2sgZnJvbSB0aGUgQUkgdG8gbWFrZSBteSBjaGFuZ2VzIHNhZmVy
-LCBidXQgdGhlIHJlc3VsdCBzZWVtcyB1bnNhdGlzZmFjdG9yeS4KCkknZCBsaWtlIHRvIHNwbGl0
-IHRoZSB0d28gaW5kZXBlbmRlbnQgZml4ZXMgYW5kIHRhY2tsZSB0aGVtIHNlcGFyYXRlbHkuIExl
-dCdzIGZpcnN0IHJldmlldyBbUEFUQ0ggdjYgMS8yXSBhY2NlbC9yb2NrZXQ6IEZpeCBlcnJvciBw
-YXRoIGhhbmRsaW5nIGluIHJvY2tldF9qb2JfcnVuKCkuCgpJIGN1cnJlbnRseSBkb24ndCBmdWxs
-eSBncmFzcCB0aGUgQUkncyBwcm9ibGVtIGRlc2NyaXB0aW9uIHJlZ2FyZGluZyBbUEFUQ0ggdjYg
-Mi8yXSBhY2NlbC9yb2NrZXQ6IEZpeCBpb21tdV9ncm91cCBsZWFrIGFuZCB1bnNhZmUgSVJRIHJl
-Z2lzdGVyIGFjY2Vzcy4KClBsZWFzZSBsZXQgbWUga25vdyBpZiBJIHNob3VsZCBzdGFydCBhIG5l
-dyB0aHJlYWQgZm9yIFtQQVRDSCB2NiAxLzJdLgoKVGhhbmtzLAoKCi0tLS0tLS0tLS0tLS0tCgoK
-ClpoYW8gSmlubWluZwoKCj5IaSwKCgoKPgoKCgo+TGUgbWVyY3JlZGkgMTAganVpbiAyMDI2IKik
-IDE1OjEwICswODAwLCBaaGFvSmlubWluZyBhIKimY3JpdD86CgoKCj4+IEluIHJvY2tldF9qb2Jf
-cnVuKCksIGFmdGVyIHRha2luZyBhbiBleHRyYSBmZW5jZSByZWZlcmVuY2UgZm9yCgoKCj4+IGpv
-Yi0+ZG9uZV9mZW5jZSB2aWEgZG1hX2ZlbmNlX2dldCgpLCB0aGUgZXJyb3IgcGF0aHMgaGF2ZSB0
-aHJlZSBidWdzOgoKCgo+PiAKCgoKPj4gLSBUaGUgZG1hX2ZlbmNlIHJlZmVyZW5jZSBoZWxkIGJ5
-IGpvYi0+ZG9uZV9mZW5jZSBpcyBuZXZlciByZWxlYXNlZCwKCgoKPj4gPyBjYXVzaW5nIGEgcmVm
-ZXJlbmNlIGxlYWsuCgoKCj4+IC0gcG1fcnVudGltZV9nZXRfc3luYygpIGluY3JlbWVudHMgdGhl
-IHVzYWdlIGNvdW50ZXIgZXZlbiBvbiBmYWlsdXJlLAoKCgo+PiA/IGJ1dCB0aGUgZXJyb3IgcGF0
-aCBkb2VzIG5vdCBkZWNyZW1lbnQgaXQsIGxlYWtpbmcgdGhlIHJ1bnRpbWUgUE0KCgoKPj4gPyBy
-ZWZlcmVuY2UgYW5kIHByZXZlbnRpbmcgdGhlIE5QVSBmcm9tIHN1c3BlbmRpbmcuCgoKCj4+IC0g
-QSB2YWxpZCBidXQgdW5zaWduYWxlZCBmZW5jZSBpcyByZXR1cm5lZCB0byB0aGUgRFJNIHNjaGVk
-dWxlciwKCgoKPj4gPyB3aGljaCB0cmlnZ2VycyBXQVJOKCJGZW5jZSAuLi4gcmVsZWFzZWQgd2l0
-aCBwZW5kaW5nIHNpZ25hbHMhIikKCgoKPj4gPyB3aGVuIHRoZSBzY2hlZHVsZXIgZHJvcHMgaXRz
-IHJlZmVyZW5jZS4KCgoKPj4gCgoKCj4+IEZpeCBieSByZXBsYWNpbmcgcG1fcnVudGltZV9nZXRf
-c3luYygpIHdpdGggcG1fcnVudGltZV9yZXN1bWVfYW5kX2dldCgpCgoKCj4+IHdoaWNoIGF1dG8t
-YmFsYW5jZXMgdGhlIHVzYWdlIGNvdW50ZXIgb24gZmFpbHVyZSwgcmVsZWFzaW5nIGJvdGggZmVu
-Y2UKCgoKPj4gcmVmZXJlbmNlcyBvbiBlcnJvciwgYW5kIHJldHVybmluZyBFUlJfUFRSKHJldCkg
-aW5zdGVhZCBvZiB0aGUKCgoKPj4gdW5zaWduYWxlZCBmZW5jZS4KCgoKPj4gCgoKCj4+IENjOiBz
-dGFibGVAdmdlci5rZXJuZWwub3JnCgoKCj4+IEZpeGVzOiAwODEwZDVhZDg4YTEgKCJhY2NlbC9y
-b2NrZXQ6IEFkZCBqb2Igc3VibWlzc2lvbiBJT0NUTCIpCgoKCj4+IFNpZ25lZC1vZmYtYnk6IFpo
-YW9KaW5taW5nIDx6aGFvamlubWluZ0B1bmlvbnRlY2guY29tPgoKCgo+PiAtLS0KCgoKPgoKCgo+
-VGhpcyBpcyBhIGxvdCBvZiB2ZXJzaW9ucyB3aXRoaW4gdGhlIHNhbWUgZGF5LiBZb3Ugc2hvdWxk
-IHNsb3cgZG93biBhIGxpdHRsZSBzbwoKCgo+YSBodW1hbiBjYW4gcHJvdmlkZSBhIHJldmlldywg
-YW5kIGFsc28gZG9jdW1lbnQgdGhlIGRpZmZlcmVuY2VzIGluIHRoaXMgc2VjdGlvbiwKCgoKPmFm
-dGVyIHRoZSAtLS0sIG9yIHVzaW5nIGEgY292ZXIgbGV0dGVyLgoKCgo+CgoKCj5OaWNvbGFzCgoK
-Cj4KCgoKPj4gP2RyaXZlcnMvYWNjZWwvcm9ja2V0L3JvY2tldF9qb2IuYyB8IDE5ICsrKysrKysr
-KysrKysrLS0tLS0KCgoKPj4gPzEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCA1IGRl
-bGV0aW9ucygtKQoKCgo+PiAKCgoKPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvYWNjZWwvcm9ja2V0
-L3JvY2tldF9qb2IuYwoKCgo+PiBiL2RyaXZlcnMvYWNjZWwvcm9ja2V0L3JvY2tldF9qb2IuYwoK
-Cgo+PiBpbmRleCBhYzUxYmZmMzk4MzMuLmU4YTA3M2UyMmFjMiAxMDA2NDQKCgoKPj4gLS0tIGEv
-ZHJpdmVycy9hY2NlbC9yb2NrZXQvcm9ja2V0X2pvYi5jCgoKCj4+ICsrKyBiL2RyaXZlcnMvYWNj
-ZWwvcm9ja2V0L3JvY2tldF9qb2IuYwoKCgo+PiBAQCAtMzEwLDEzICszMTAsMjIgQEAgc3RhdGlj
-IHN0cnVjdCBkbWFfZmVuY2UgKnJvY2tldF9qb2JfcnVuKHN0cnVjdAoKCgo+PiBkcm1fc2NoZWRf
-am9iICpzY2hlZF9qb2IpCgoKCj4+ID8JCWRtYV9mZW5jZV9wdXQoam9iLT5kb25lX2ZlbmNlKTsK
-CgoKPj4gPwlqb2ItPmRvbmVfZmVuY2UgPSBkbWFfZmVuY2VfZ2V0KGZlbmNlKTsKCgoKPj4gPwoK
-Cgo+PiAtCXJldCA9IHBtX3J1bnRpbWVfZ2V0X3N5bmMoY29yZS0+ZGV2KTsKCgoKPj4gLQlpZiAo
-cmV0IDwgMCkKCgoKPj4gLQkJcmV0dXJuIGZlbmNlOwoKCgo+PiArCXJldCA9IHBtX3J1bnRpbWVf
-cmVzdW1lX2FuZF9nZXQoY29yZS0+ZGV2KTsKCgoKPj4gKwlpZiAocmV0IDwgMCkgewoKCgo+PiAr
-CQlkbWFfZmVuY2VfcHV0KGpvYi0+ZG9uZV9mZW5jZSk7CgoKCj4+ICsJCWpvYi0+ZG9uZV9mZW5j
-ZSA9IE5VTEw7CgoKCj4+ICsJCWRtYV9mZW5jZV9wdXQoZmVuY2UpOwoKCgo+PiArCQlyZXR1cm4g
-RVJSX1BUUihyZXQpOwoKCgo+PiArCX0KCgoKPj4gPwoKCgo+PiA/CXJldCA9IGlvbW11X2F0dGFj
-aF9ncm91cChqb2ItPmRvbWFpbi0+ZG9tYWluLCBjb3JlLT5pb21tdV9ncm91cCk7CgoKCj4+IC0J
-aWYgKHJldCA8IDApCgoKCj4+IC0JCXJldHVybiBmZW5jZTsKCgoKPj4gKwlpZiAocmV0IDwgMCkg
-ewoKCgo+PiArCQlwbV9ydW50aW1lX3B1dChjb3JlLT5kZXYpOwoKCgo+PiArCQlkbWFfZmVuY2Vf
-cHV0KGpvYi0+ZG9uZV9mZW5jZSk7CgoKCj4+ICsJCWpvYi0+ZG9uZV9mZW5jZSA9IE5VTEw7CgoK
-Cj4+ICsJCWRtYV9mZW5jZV9wdXQoZmVuY2UpOwoKCgo+PiArCQlyZXR1cm4gRVJSX1BUUihyZXQp
-OwoKCgo+PiArCX0KCgoKPj4gPwoKCgo+PiA/CXNjb3BlZF9ndWFyZChtdXRleCwgJmNvcmUtPmpv
-Yl9sb2NrKSB7CgoKCj4+ID8JCWNvcmUtPmluX2ZsaWdodF9qb2IgPSBqb2I7CgoK
+On Thu, Jun 11, 2026 at 09:02:23PM +0800, WenTao Liang wrote:
+> If usb_new_device() fails after pm_runtime_get_noresume() has
+> been called, it does not release the corresponding reference.
+> In the successful path, the reference is properly dropped via
+> pm_runtime_put_sync_autosuspend().  However, when an error
+> occurs during enumeration (e.g. usb_enumerate_device() failure)
+> or device registration (e.g. device_add() failure), the function
+> jumps to the "fail" label.  That error cleanup path only disables
+> runtime PM and marks the device as suspended, never putting the
+> usage count back.
 
+> This results in a permanent imbalance of
+> power.usage_count, preventing future runtime PM state transitions
+> and proper device cleanup.
+
+Not really, as the device is about to be freed. Sure, the runtime pm
+usage count is never balanced, but it does not have any practical
+implications whatsoever.
+
+> Fix the leak by adding a pm_runtime_put_noidle() call before
+> pm_runtime_disable() in the fail error path, which releases the
+> reference without queuing any suspend work and appropriately
+> matches the pm_runtime_get
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 9bbdf1e0afe7 ("USB: convert to the runtime PM framework")
+
+So there is no need for either a Fixes or CC-stable tag here.
+
+> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+
+How was this "issue" found? Are you using some kind of static checker or
+LLM?
+
+> ---
+>  drivers/usb/core/hub.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index 24960ba9caa9..05f1a4267aec 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -2731,6 +2731,7 @@ int usb_new_device(struct usb_device *udev)
+>  	device_del(&udev->dev);
+>  fail:
+>  	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
+> +	pm_runtime_put_noidle(&udev->dev);
+
+The reference should be dropped after disabling (so that the device
+cannot possibly be suspended here).
+
+>  	pm_runtime_disable(&udev->dev);
+>  	pm_runtime_set_suspended(&udev->dev);
+>  	return err;
+
+Johan
 
