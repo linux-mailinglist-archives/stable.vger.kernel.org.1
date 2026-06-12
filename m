@@ -1,74 +1,72 @@
-Return-Path: <stable+bounces-262907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XryjIBneK2rDGgQAu9opvQ
-	(envelope-from <stable+bounces-262907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 12:23:21 +0200
+	id JZkQMYvcK2pvGgQAu9opvQ
+	(envelope-from <stable+bounces-262905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 12:16:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E9F678AA9
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 12:23:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6F8678A45
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 12:16:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=katalix.com header.s=mail header.b=SPRRr0gI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262907-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262907-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=katalix.com header.s=mail header.b=bvDr7AK5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262905-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262905-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=katalix.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA8F2313A0C8
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 10:23:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B5CC3166C09
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 10:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4A137C91E;
-	Fri, 12 Jun 2026 10:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5D137C0FF;
+	Fri, 12 Jun 2026 10:16:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E412C339844;
-	Fri, 12 Jun 2026 10:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3614E3655D1;
+	Fri, 12 Jun 2026 10:16:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781259796; cv=none; b=u9UTOXPkA+kn5L1WVLyWX6rn/ynH7nJ89lZKX9ue+J7pkoH+SoeRwBBr0WZ+R961SPKZnVAHNe6fzMODnz5Hz8nVRoSRdm/aY6KTnXuGD5WVI01kayfC1bT2Gsd7cwmiUA1wLC7EEoFrIV9dMxccT7sdtyjsL6R1M/buVzY4ZyI=
+	t=1781259400; cv=none; b=uQmLuKb3At+lEcF8RLWYeWagyFH8A2rYLzmIzK5xHDXMqJxkVjGQtEq/1z1nRth+HL5F/vyb4WMF53vtZdW7+/MKhMx7NqVJmBEVt4qqfu3FHjP6D2x1OYPyym8dKXy9tvhVSH36OILCIPaTvM/UTGO0GmJ/tSPoC/HrSw3cMF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781259796; c=relaxed/simple;
-	bh=y7ZsiiApGtMB9h0eGkrwxtAixLDfbxxgVvN0++xbn7A=;
+	s=arc-20240116; t=1781259400; c=relaxed/simple;
+	bh=hjrEhoUEBGM8mLWtx1WhWLYp1tb43RgLe4klh/FVs7Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p4PnWy+zRUpyk3M1hlYzOrG8YvbbtYb38U2IflmAKB8cYlnsbVyGsZh0ZVhxFUKeDQ9PNRpWZiM1+GmyVt8QSuUrlUm9V+Kw5FvP7YgYCOSgr8V6+XjVeSVNwSoaVO5vKDkNXQlXKsWWadARhzp+yu2Kw6kdI9pCC1u2w4vfrx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=SPRRr0gI; arc=none smtp.client-ip=3.9.82.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=c0/SyzQl4PYi6YxHHWIxapEASDGDiqzGYtkQpj4GIur45C9tANL2+InrcTI48TfHIJTTaC2MSJgiwL+kPmmCsciOSwAROjmc+MQmwBA5Iq+kQH21G20jOLxGV8jrWNWI8Q3JtX5VBraXZfgK5EGwHIbq0j/K9tMJ7s6RAJY3jwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=bvDr7AK5; arc=none smtp.client-ip=3.9.82.81
 Received: from localhost (unknown [IPv6:2a02:8012:909b:0:5ee2:e15d:59c1:9a64])
 	(Authenticated sender: tom)
-	by mail.katalix.com (Postfix) with ESMTPSA id E34927D30F;
-	Fri, 12 Jun 2026 11:13:22 +0100 (BST)
+	by mail.katalix.com (Postfix) with ESMTPSA id C73B67DED3;
+	Fri, 12 Jun 2026 11:16:34 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1781259203; bh=y7ZsiiApGtMB9h0eGkrwxtAixLDfbxxgVvN0++xbn7A=;
+	t=1781259394; bh=hjrEhoUEBGM8mLWtx1WhWLYp1tb43RgLe4klh/FVs7Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Disposition:In-Reply-To:From;
-	z=Date:=20Fri,=2012=20Jun=202026=2011:13:22=20+0100|From:=20Tom=20P
+	z=Date:=20Fri,=2012=20Jun=202026=2011:16:34=20+0100|From:=20Tom=20P
 	 arkin=20<tparkin@katalix.com>|To:=20WenTao=20Liang=20<vulab@iscas.
-	 ac.cn>|Cc:=20jchapman@katalix.com,=20davem@davemloft.net,=20edumaz
-	 et@google.com,=0D=0A=09kuba@kernel.org,=20pabeni@redhat.com,=20hor
-	 ms@kernel.org,=0D=0A=09netdev@vger.kernel.org,=20linux-kernel@vger
-	 .kernel.org,=0D=0A=09stable@vger.kernel.org|Subject:=20Re:=20[PATC
-	 H]=20net:=20l2tp:=20fix=20refcount=20leak=20in=20pppol2tp_tunnel_g
-	 et()|Message-ID:=20<aivbwg0RMONNEyVm@katalix.com>|References:=20<2
-	 0260611164542.1031-1-vulab@iscas.ac.cn>|MIME-Version:=201.0|Conten
-	 t-Disposition:=20inline|In-Reply-To:=20<20260611164542.1031-1-vula
-	 b@iscas.ac.cn>;
-	b=SPRRr0gITTHjJUHq2yg70ZLej9siW6AZi3htjSrx+ML4Sq3qEZM8qW4elAvodA/t4
-	 qVhQECyNQyvfZ1n65OBPmEnSSt/wgN8naUbfr87WS5kAD0NeuHb199iwYU3d68wIgD
-	 sPSXL24Pm4ovVtXxMHfaZX2D7YXGcRW5G9eEugVgP8aY2PZeGilEgx37U/+L+/gOe1
-	 Z3mrua7stKni19m8r/jgRa/dZS9/6OEoFDCprAdr/DpPHr+yqREt+Blx55IBBXZSt+
-	 MCNtbNc+FrejcPVgJN2PH0yYD3elQ9XYlKCBD29jD4L21XjqffImQ7Wi/mUwFx5eS2
-	 HezmtG8jkzqNA==
-Date: Fri, 12 Jun 2026 11:13:22 +0100
+	 ac.cn>|Cc:=20davem@davemloft.net,=20edumazet@google.com,=20kuba@ke
+	 rnel.org,=0D=0A=09pabeni@redhat.com,=20horms@kernel.org,=20netdev@
+	 vger.kernel.org,=0D=0A=09linux-kernel@vger.kernel.org,=20stable@vg
+	 er.kernel.org|Subject:=20Re:=20[PATCH]=20l2tp:=20fix=20refcount=20
+	 leak=20in=20l2tp_nl_cmd_tunnel_create()|Message-ID:=20<aivcgvEIWdE
+	 AqEhG@katalix.com>|References:=20<20260611165449.2224-1-vulab@isca
+	 s.ac.cn>|MIME-Version:=201.0|Content-Disposition:=20inline|In-Repl
+	 y-To:=20<20260611165449.2224-1-vulab@iscas.ac.cn>;
+	b=bvDr7AK53xu/98tCV/j7K4/1ba1ZMBzQQb8bGmlx3WHrWeI9xOcWHHb8qn/G9uZ/9
+	 HdaDgZ/laY9QEjC006QCAitw5tNV4ivc403L3QztlWQffoIenUzMZDQonr13zszozK
+	 M7kJA1FWJx1wnsQP878lsQy1sX3aNyQ7zuKCUBeqkyC7e9xKuKIfuRrmoaj1XV/aNi
+	 a9lMISDGVeX1mmb77I5PVrNn2SiM0cMdOcBW9H4zd/fgg5LiTNXp6os6x8UCBUnTpV
+	 WzI6BPwU2Pw8g1BFrRGz7QD2kR4ZAz/OqKyWn5FYJeYB9kOiQS7/R4YhkJNEkTHX9I
+	 fA+bOeRO8/Nww==
+Date: Fri, 12 Jun 2026 11:16:34 +0100
 From: Tom Parkin <tparkin@katalix.com>
 To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: jchapman@katalix.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: l2tp: fix refcount leak in pppol2tp_tunnel_get()
-Message-ID: <aivbwg0RMONNEyVm@katalix.com>
-References: <20260611164542.1031-1-vulab@iscas.ac.cn>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] l2tp: fix refcount leak in l2tp_nl_cmd_tunnel_create()
+Message-ID: <aivcgvEIWdEAqEhG@katalix.com>
+References: <20260611165449.2224-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,60 +74,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3LnzsMWY4dGz5zTq"
+	protocol="application/pgp-signature"; boundary="seUafV8Inx2TLdVT"
 Content-Disposition: inline
-In-Reply-To: <20260611164542.1031-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260611165449.2224-1-vulab@iscas.ac.cn>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-4.26 / 15.00];
 	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[katalix.com,quarantine];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[katalix.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-262907-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-262905-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[katalix.com:+];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:jchapman@katalix.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER(0.00)[tparkin@katalix.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[katalix.com:+];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tparkin@katalix.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,iscas.ac.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 25E9F678AA9
+X-Rspamd-Queue-Id: 3A6F8678A45
 
 
---3LnzsMWY4dGz5zTq
-Content-Type: text/plain; charset=us-ascii
+--seUafV8Inx2TLdVT
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On  Fri, Jun 12, 2026 at 00:45:42 +0800, WenTao Liang wrote:
-> pppol2tp_tunnel_get() increments the tunnel's refcount via
-> refcount_inc() on the tunnel returned from l2tp_tunnel_create(). If
-> l2tp_tunnel_register() subsequently fails, the error path frees the
-> tunnel via kfree(), bypassing the refcount entirely. At that point the
-> refcount is 2 (one from l2tp_tunnel_create() and one from the
-> refcount_inc()), so the reference counts leak and the memory is freed
-> while still referenced, creating use-after-free potential.
+On  Fri, Jun 12, 2026 at 00:54:49 +0800, WenTao Liang wrote:
+> When l2tp_tunnel_register() fails, l2tp_nl_cmd_tunnel_create()
+> directly frees the tunnel object with kfree(). This is incorrect
+> because the tunnel's refcount was incremented to 2: once by
+> l2tp_tunnel_create() (initial refcount=3D1) and again by the
+> caller's refcount_inc() for a temporary reference. The successful
+> path releases the temporary reference with l2tp_tunnel_put(),
+> leaving the IDR to hold the remaining reference, but the error
+> path bypasses reference counting entirely. As a result, the
+> refcount stays at 2 while the memory is freed, which leaks
+> references and violates the object's lifecycle that expects
+> l2tp_tunnel_free() (via kfree_rcu()) when the refcount drops
+> to zero.
+
+(Same as the observation for the l2tp_ppp.c patch around the
+l2tp_tunnel_register call, apologies for cutting/pasting...)
 
 l2tp_tunnel_register only adds the newly created tunnel instance to
 the per-net IDR once all the validation and initialisation steps have
@@ -150,59 +157,59 @@ If the latter is a motivation it'd make more sense to say so in the
 commit comment IMO since I don't think the UAF argument holds in the
 current codebase.
 
-> Fix this by using the standard reference counting API: replace the
-> kfree() with two l2tp_tunnel_put() calls to properly release both
-> references. This mirrors the cleanup used in other error paths within
-> the same function.
-
-There's no other double l2tp_tunnel_put in pppol2tp_tunnel_get that I
-can see.
-
+>=20
+> Fix this by replacing kfree() with two l2tp_tunnel_put() calls:
+> the first releases the temporary reference, and the second
+> releases the initial reference, triggering the proper RCU=E2=80=91safe
+> cleanup.
 >=20
 > Cc: stable@vger.kernel.org
 > Fixes: 6b9f34239b00 ("l2tp: fix races in tunnel creation")
 > Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
 > ---
->  net/l2tp/l2tp_ppp.c | 3 ++-
+>  net/l2tp/l2tp_netlink.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-> index e0b1915be1a6..0ddfc1893121 100644
-> --- a/net/l2tp/l2tp_ppp.c
-> +++ b/net/l2tp/l2tp_ppp.c
-> @@ -661,7 +661,8 @@ static struct l2tp_tunnel *pppol2tp_tunnel_get(struct=
- net *net,
->  			refcount_inc(&tunnel->ref_count);
->  			error =3D l2tp_tunnel_register(tunnel, net, &tcfg);
->  			if (error < 0) {
-> -				kfree(tunnel);
-> +				l2tp_tunnel_put(tunnel);
-> +				l2tp_tunnel_put(tunnel);
->  				return ERR_PTR(error);
->  			}
-> =20
+> diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
+> index 59457c0c14aa..655bed496ffe 100644
+> --- a/net/l2tp/l2tp_netlink.c
+> +++ b/net/l2tp/l2tp_netlink.c
+> @@ -245,7 +245,8 @@ static int l2tp_nl_cmd_tunnel_create(struct sk_buff *=
+skb, struct genl_info *info
+>  	refcount_inc(&tunnel->ref_count);
+>  	ret =3D l2tp_tunnel_register(tunnel, net, &cfg);
+>  	if (ret < 0) {
+> -		kfree(tunnel);
+> +		l2tp_tunnel_put(tunnel);
+> +		l2tp_tunnel_put(tunnel);
+>  		goto out;
+>  	}
+>  	ret =3D l2tp_tunnel_notify(&l2tp_nl_family, info, tunnel,
 > --=20
 > 2.50.1 (Apple Git-155)
+>=20
+>=20
+
 --=20
 Tom Parkin
 Katalix Systems Ltd
 https://katalix.com
 Catalysts for your Embedded Linux software development
 
---3LnzsMWY4dGz5zTq
+--seUafV8Inx2TLdVT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEsUkgyDzMwrj81nq0lIwGZQq6i9AFAmor274ACgkQlIwGZQq6
-i9By3QgArjYsTrMwH9TtRzeemN27rroTsGDL567doXcmhfYgh0DLg8daadZHlFic
-yBv2zw8OgOpdx+unI0VvxntPrYATuwoKRgYsxp/qH9020bzTwXcmTWtW8PMwsuG6
-kBh1vmsDC8InKEbDtd2+hsJJfGzmIVUPX51224vf2ucbYXCRWQOXXQq5LSdmeryE
-SyqGJcCli1nvldgsujUra7/Jt9YvmO84UJdtL/exXXxYXgeQ6hIsQLrivfJ4YAK+
-dUQthkagMPxxNBu2ZeIN/GtZJdVs9kOsKpCpnQvN+iQohmKAt+K4i2h0Z7gSRewC
-/HkVxwvRm3dtripMW3MdWJa6wK1ELg==
-=WBgU
+iQEzBAABCgAdFiEEsUkgyDzMwrj81nq0lIwGZQq6i9AFAmor3IIACgkQlIwGZQq6
+i9BXmgf+IXY2KMgQuYYMSd8H9bafKjsRmjTDrHfqRUeOoPHkemHawLMuI+oSFwds
+oejLNrwHpgd/Z4umTm7pdc/umZuAt6skuhyvLFucMUCT9dE9smidIKucYtjAGjkT
+ctLIgz/z8CFX/ZCeuGZP9i52baqVWXG5Uh7P5Z6crU7MTKbo7JleGoltZuydSSG4
+fwRyn28GkdW5HkSOudxdQD9Pt6/xYw7xRKFllVLGBdFfmnldnFKHOtC4zQR+f6/w
+R5X9wj+19bguCyPWxSECkO+i7/ldgAGK/ijgxs9qABYX3OE0yMdnXrjuJ+aNaANo
+paMfECxIg7aYrAJVMKlvfKecRyPKAQ==
+=MO3G
 -----END PGP SIGNATURE-----
 
---3LnzsMWY4dGz5zTq--
+--seUafV8Inx2TLdVT--
 
