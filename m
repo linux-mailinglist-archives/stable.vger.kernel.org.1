@@ -1,118 +1,192 @@
-Return-Path: <stable+bounces-262934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262935-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ILAeDrcaLGrzLQQAu9opvQ
-	(envelope-from <stable+bounces-262934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:59 +0200
+	id ponoIBMiLGrzLwQAu9opvQ
+	(envelope-from <stable+bounces-262935-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 17:13:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB61767A488
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 16:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CCE67A6FD
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 17:13:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QipHgQ5X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262934-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262934-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=suse.com header.s=google header.b=R8F3NSXq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262935-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262935-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=suse.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2E983161106
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 14:41:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A7663284DEF
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 15:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0E238AC91;
-	Fri, 12 Jun 2026 14:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491F432938D;
+	Fri, 12 Jun 2026 15:12:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B93A3644DB
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00C832572F
+	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 15:12:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781275287; cv=none; b=T1UtmErORHqHnqmDFgIDVlFSgCNjpBtDw0C1Jnkua0nywrbOoMGaOeEzrRxge82sNPSwi+eEWfp1YxPQHV58T3rdIDuM25QmdLTxqBYbi43H3gjss2FN7Sh4iorgrF6BnB/MZa92JF+ut8g4wsSGuGZT2o6Sp8vgasRit4EPtmo=
+	t=1781277122; cv=none; b=olUmnqyZd1Hx0F8TMQH2XuCUvWFd5G3QBwSR2eXJ35OU8Z9Ho1AlAa4NM6xRe4nTT6aFdHuMBXNk4bIXjBSuyECBfdhRJA/FxnHKoP8+6GBl17/u4bf7nMPQqhtXrIfsso/seobu0GDKCUwDg7+yFUK0edAQurXwgqrfVKBVk2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781275287; c=relaxed/simple;
-	bh=w3g1VhNc3n/LCB2xfAbuWd51fsn1THMiYIqmouajrsg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jX3lysw1lAiBCDN4djqTHtQbuAE2s9jkoXVNS0P/w2bF6mYn2V/B19kNKVpWkb54yjUKqH1rwz51JE8Sijvb8n9M89aGPSFoS8mO7RmO9tHC5pAcrBlkYI27muGAf9epuqJwTLwZZf6e2AH6do4U1wHlf5p3kTU5D1n32nlGn2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QipHgQ5X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572C51F00A3D;
-	Fri, 12 Jun 2026 14:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781275285;
-	bh=w3g1VhNc3n/LCB2xfAbuWd51fsn1THMiYIqmouajrsg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QipHgQ5X4uVKiXTroRYPj+UaVOqSL5ReGWVVKsFjmdrLrTqJJrPN2qSR7fIjWAynK
-	 q+ZMcTrHcUULH8rU6YfQnpPi1Hck0CW22dSdwwkc78r8WayVJb+C9m8mkDAyDR8M40
-	 JHiJcG3hwPUG8jHwltds0q/ObCbwYlM4AkMhYw8tCujRuwGc7D/m+ZT5PZ3f+NlLD7
-	 fJRZbDy90GVnsplhTxRX3WIOgutFkt+ytfjDTB7agReAxqX5iRZR3p8zPmCS+e3JZA
-	 SZGKg3b8t1gdht1bTdvq+o95ba+fAhED8XnnTudWBVh6WlOW1uPsXMQMqEzP3W+ccx
-	 hGYEHzeMM54Hg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	outbounddisclosures@openai.com,
-	Kyle Zeng <kylebot@openai.com>
-Subject: Re: [PATCH 6.12.y] reiserfs: validate tail item bounds before conversion
-Date: Fri, 12 Jun 2026 10:41:19 -0400
-Message-ID: <20260612-stable-reply-reiserfs-tail-0006@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260611224027.74281-1-kylebot@openai.com>
-References: <20260611224027.74281-1-kylebot@openai.com>
+	s=arc-20240116; t=1781277122; c=relaxed/simple;
+	bh=G75brgHYs2YfSe+Qlduz0qj9/u727IddI66jXx2vWFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O76wmp6XzOdN2G5hNJ1KCRq8VtNI1fYpb87CcYyDvzjmh6oIU8cjmdZNvAYJTWAkfxmcoBh2/jsIcFpj6kdm15bSSK5EbrYLtTd/l2OK9ry1wmhm3G7o0/ffNNN7y0A2CNmXeE8tPr/+i9jTmOiIYF5zu+P9Q0fqOguhAs6Z/0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=R8F3NSXq; arc=none smtp.client-ip=209.85.221.44
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-45eedc94d37so646031f8f.3
+        for <stable@vger.kernel.org>; Fri, 12 Jun 2026 08:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1781277119; x=1781881919; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=uHz30rGtCI4aGvtHgmZ0RxbN8WTv9zc5L1bDGGQ4qcI=;
+        b=R8F3NSXqmvxuJiPVMiMTT2M7+gajgYka5n3GMB/HqQshDvfcEDzCIKmjn5RgZK3KAl
+         dYTNE5pMIgvPaIwfWFIgLtRF7ZwN7dPUx4G4YYmYEaj29y81BkpRhfclM1IXTCu6c+Tc
+         F1AuXKVttlc3KmKirfr56KMjIA25UjKMAJfhLen/o/+AQp5MtxGVHp+f9EfMbsnmoo3z
+         OfNj94Yxnr5ZspVAeW5Pj6hHfaTRy/Xfk8Ci8RPnNKAA9o482SSl6eOmZ60F6C32ACbd
+         YRMdrKvQWqOT+QXrUfvQGiiqSZL3TflypsRFGdFU5Mfvn/74t/v9mS4g3IxE2cdxQvO3
+         TtrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781277119; x=1781881919;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uHz30rGtCI4aGvtHgmZ0RxbN8WTv9zc5L1bDGGQ4qcI=;
+        b=B+wGNrvd7bykAsf5MVLq/qASCfFdZX6J2t3VIvZwK2qtrlx4jkPnsLgwsupqsOXa8i
+         6afRL5BRdGl6O01aS6LyBrJUM4UWLDlBThE/Ci4yFIVfhXknrBIn8aMyZpf06x+xPwAa
+         owsSIHBF+UQWd3LAPsuQ/x753ed6+lBfq9CRKFpBd0iCOnuTHr9uD2MAxRdnjVVMe9Un
+         r6dj1f19OyMwkIrJlma7w5u1wZvmi8SqYlimCOExkDdkxhSElbWeRedbpAXaw97qt0FJ
+         PcKV9zQe7edds1OXAQ8pJVKAOwsN+SnTxpZPE2xZCRMaQ+Oi/bZveggd3D6mcaj/dF6A
+         zp8g==
+X-Forwarded-Encrypted: i=1; AFNElJ8NOPbmi7pzoG7Kz13+xYri/sS06q4tmxeA+qQjPZVttpnIN5BDH462sm0VtqDd7PUIfGRFcgs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpxqQnueEcC7JQXELkVy1DEr/NwAiBtzxMzdTM56xVcOFSdjqZ
+	Q6HR9b/r3nvmN0//fSBaSBnMZVMaFgRG/HVwq54rPWS9Q+zpGgLBRuRcZ4B2YWiSRpo=
+X-Gm-Gg: Acq92OEt+B3q8mLuGLnJOTmI9Pz4G9RrWXnnaSSC3opKA4/+QjB8QEsSvNNYn6cf69k
+	/jXwGHxgHc6f2uHkGo1I5puS1XIeJEZkd9cZ1w6LWpCDuZPbr50O6uCYxVeZASObrn8vrM008Wa
+	RD9QVABKioKWkM3p0jZILsJRNvqTdVYbSZsQPj6AY9SRCqEyfq2S9bO8stSa0A0/WFSFg/Ib8WV
+	zmkD4M44PDp+6txWW3VKWaO9BcHCIVd7N1R+KeUhytVskdcHSGG/hxU/6EefCovlnZTYVVPzwyU
+	NysdtmbtcZW5LNo1sjS300ZRBzxwo3VWgEPYCa8weIfnpQBsIYdop+u0fo4xSSY/XcwMXSJkexh
+	P8WII06dv5JFaQsjB2SSDekKO4rOCSTwcNWf10vfWj4xZv8y1ffdv5C69Y05/8QV8phaiUOKrk5
+	AW9Ehr/gR5aIg6lsiTw9jN3trMDw==
+X-Received: by 2002:a05:6000:41f6:b0:45e:ed7f:1dd with SMTP id ffacd0b85a97d-4606db96b8dmr5403781f8f.25.1781277119080;
+        Fri, 12 Jun 2026 08:11:59 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2dbfb1sm6913084f8f.35.2026.06.12.08.11.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Jun 2026 08:11:58 -0700 (PDT)
+Date: Fri, 12 Jun 2026 17:11:56 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	mm-commits@vger.kernel.org, stable@vger.kernel.org,
+	nathan@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
+	ansuelsmth@gmail.com, andersson@kernel.org,
+	aleksander.lobakin@intel.com, agordeev@linux.ibm.com, arnd@arndb.de
+Subject: Re: + errh-use-__always_inline-on-all-error-pointer-helpers.patch
+ added to mm-nonmm-unstable branch
+Message-ID: <aiwhvPaHef0pdm3-@pathway.suse.cz>
+References: <20260526184100.3BA431F000E9@smtp.kernel.org>
+ <ah6WDkwO8eYY5f2a@ashevche-desk.local>
+ <ah7PWK4gTdOYG1t_@pathway>
+ <CAJ-ks9nHkcgwdh7i8efAv=ka2rtX9o6ZnGZk5KeroCX2G_t3mg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9nHkcgwdh7i8efAv=ka2rtX9o6ZnGZk5KeroCX2G_t3mg@mail.gmail.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262935-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.intel.com,linux-foundation.org,vger.kernel.org,kernel.org,linux.ibm.com,gmail.com,intel.com,arndb.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-262934-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:outbounddisclosures@openai.com,m:kylebot@openai.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FORGED_RECIPIENTS(0.00)[m:tamird@kernel.org,m:andriy.shevchenko@linux.intel.com,m:akpm@linux-foundation.org,m:mm-commits@vger.kernel.org,m:stable@vger.kernel.org,m:nathan@kernel.org,m:hca@linux.ibm.com,m:gor@linux.ibm.com,m:ansuelsmth@gmail.com,m:andersson@kernel.org,m:aleksander.lobakin@intel.com,m:agordeev@linux.ibm.com,m:arnd@arndb.de,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[suse.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmladek@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:dkim,suse.com:email,suse.com:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EB61767A488
+X-Rspamd-Queue-Id: D5CCE67A6FD
 
-On Thu, Jun 11, 2026 at 03:40:27PM -0700, Kyle Zeng wrote:
-> Validate the per-item page copy and aggregate tail length before calling
-> reiserfs_delete_item(), and reject corrupt metadata with -EIO after
-> reporting a filesystem error.
+On Tue 2026-06-02 09:46:33, Tamir Duberstein wrote:
+> On Tue, Jun 2, 2026 at 8:41 AM Petr Mladek <pmladek@suse.com> wrote:
+> >
+> > Adding Tamir into Cc.
+> >
+> > On Tue 2026-06-02 11:36:30, Andy Shevchenko wrote:
+> > > On Tue, May 26, 2026 at 11:40:59AM -0700, Andrew Morton wrote:
+> > >
+> > > > The patch titled
+> > > >      Subject: err.h: use __always_inline on all error pointer helpers
+> > > > has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+> > > >      errh-use-__always_inline-on-all-error-pointer-helpers.patch
+> > > >
+> > > > This patch will shortly appear at
+> > > >      https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/errh-use-__always_inline-on-all-error-pointer-helpers.patch
+> > >
+> > > Petr, shouldn't this also fix the problem with old (buggy) GCC for xtensa
+> > > (IIRC) that we encountered in some tests a couple of months ago?
+> >
+> > It might here there as well. Unfortunately, I could not test it easily
+> > because it required some old GCC.
+> >
+> > I wonder if Tamir could try to revert the commit 8901ac9d2c7eb8ed
+> > ("printf: Compile the kunit test with DISABLE_BRANCH_PROFILING")
+> > and try this patch instead.
+> 
+> Yes, confirmed.
+> 
+> I rebuilt xtensa-linux GCC 8.5.0 and tested printf_kunit.c with the original
+> randconfig and branch profiling enabled, without DISABLE_BRANCH_PROFILING.
+> 
+> Without Arnd's patch, the original failure reproduces:
+> 
+> printf_kunit.c: In function 'errptr.part.2': error: call to
+> '__compiletime_assert_313' declared with attribute error: BUILD_BUG_ON failed:
+> IS_ERR(PTR)
+> 
+> With "err.h: use __always_inline on all error pointer helpers" applied, the same
+> compile succeeds.
+> 
+> So Arnd's patch fixes this case and commit 8901ac9d2c7e ("printf: Compile the
+> kunit test with DISABLE_BRANCH_PROFILING") can be reverted once it lands.
 
-Thanks for the fix. Same as your other reiserfs patch: no upstream
-commit (reiserfs was removed in 6.13) and no maintainer ack, so I can't
-queue a stable-only change for a removed subsystem on my own.
+Great. Thank you both for pointing it out and testing it!
 
-If you can get subsystem review/ack, I'll reconsider. As before,
-exploitation requires mounting a crafted image.
+It seems that it is not in the Linus' tree yet. I guess
+that it will appear in the 7.2 merge window, ...
+I set up reminder to myself.
 
---
-Thanks,
-Sasha
+Best Regards,
+Petr
 
