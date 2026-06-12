@@ -1,102 +1,90 @@
-Return-Path: <stable+bounces-262892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eZ/tE+/LK2q4FAQAu9opvQ
-	(envelope-from <stable+bounces-262892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:05:51 +0200
+	id v9wmAi3MK2rKFAQAu9opvQ
+	(envelope-from <stable+bounces-262894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:06:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E725C6780DD
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:05:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABEE6780EC
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 11:06:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="csT6t/ve";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262892-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262892-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FhTI3J9w;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262894-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262894-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D421034BE3C6
-	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 09:00:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5419304A7A9
+	for <lists+stable@lfdr.de>; Fri, 12 Jun 2026 09:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5910D38B7D1;
-	Fri, 12 Jun 2026 09:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E45439C657;
+	Fri, 12 Jun 2026 09:06:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13516352017
-	for <stable@vger.kernel.org>; Fri, 12 Jun 2026 09:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576F3932CA;
+	Fri, 12 Jun 2026 09:06:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781254814; cv=none; b=eE+RRUemorFo7kKt+MEEUxFvAfr1tj3l5Jp/BBeGIcDU1ou9RBFfx91E1ntpXFebkxI8l+laSnT21O0pU+FHUAV+u831TbDejASIe31/iJthUK28+fOGE5lJlg9Py/4vaENjupUl2xVag4czCXX6j/DvJGpIP8IR17djIBgL5HQ=
+	t=1781255198; cv=none; b=MkyB0G09ojiDxGkr/00RPlLyUfbqHNlaUfSteRoq21Xq4mALQwwI1Ng7mldyMVIpz2V7fjICPUx3r4lzJYGdCuJ0kZiRl3P41+HTuwRF91NreJSrR+WtNd+D8aMf5EkhOW1BJFGVj8uiYEI73WI+NLFU6aKRXbd7JeoiTR0e/mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781254814; c=relaxed/simple;
-	bh=b1Ef7m01SlvbqYksVxxjRq3JiNuZbQ9XJSkONcITG2c=;
+	s=arc-20240116; t=1781255198; c=relaxed/simple;
+	bh=bD1BoXiqmyShSlNLT1bIG3TBncZCHp9m1WFvtZGgQc0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OXkoUKfRR1p4y9nxBAVd5d9/Q2vMEYgtzPFq68+HqrVh8T3I/wM38yLj0sp9oa7Ex2FgkDebrmuC2E6+Ie9q49ho0OgO/wf9w3kFN+DCfc2SkWmPMnsoUqmtMflgjufMv4ciEF6b5klYoJecMn6QcrPnsh26DqxlopFzbHm+yqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=csT6t/ve; arc=none smtp.client-ip=209.85.210.179
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8434840cea8so371307b3a.3
-        for <stable@vger.kernel.org>; Fri, 12 Jun 2026 02:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781254812; x=1781859612; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=am9un3Mpyi4zgWESM9WSZJ/9n4NAc/vveWguadq2LnY=;
-        b=csT6t/veI9lYyoxo+o4M26sc7eObWSVqBuM4P1YzcJq90dMpzaN9wjYNGCC73kzxqe
-         yHfM92J+TcObWIwCIbRbPvckqsOn/Ydr3npyaQRcp/ogN+PSUzyHyVeXjWnr+yW+PgBx
-         DlDNSjBL/G4mAzHynrm1l6bwn842YVsyjQwij+BLOF15V/thrhlC67SH4fumujEyz5G9
-         81DZywt1+H1HJvpQHAB/ZFBt3jVPitHog08VCpiPuYja3WCeHNuuOkcOh81tblqs1TXJ
-         6YbXbWp9zo0VIE7EN9uGAss5M/Qk68Eod+BZ80l2VVwfFMPmge9WiCzpOMYIncvH2Cop
-         8qnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781254812; x=1781859612;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=am9un3Mpyi4zgWESM9WSZJ/9n4NAc/vveWguadq2LnY=;
-        b=NxHrQ7uq2l/1eJTMUJdKtHg5TguhmaVW9LwV7GdE33P9goJSjGIfMQdwPPr3TsOn1I
-         4Oz6JdTr77tfAD6ZshqKefjwZNyMgcHSOX2U89t+iO/pS3AWe0JPnRu+RpEYzHaqVGzn
-         RIkMlEEAtr9xyJGv2qKJ8EE2IZ5uCorPxFqtAOxGlruS1V7VX0D5ZD6PS5DOF6wkFMwo
-         Edlg7CQ9CMrsg9yM3y2cRSeqJ1Rf5Fh9x39OPJ1pi2N1UGZ7uNDZcrbLvsfUZ/nEwNN7
-         zBQPTG3RnsQrpaY2R7t1B0mfIC7nMSPuBQ3YccdamYgh3Ev5hYxFGrQ2JSPbIIJncqeA
-         5A7A==
-X-Forwarded-Encrypted: i=1; AFNElJ+bQfth+Ir9ZFv9OTUbcVljnyKzNYeAiHY3gzWCnTjSfpAMfFfGSZVQrGXwz4g/IPllwqmTMtI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMko6EH6LCRl0Q+vgco163SnWk9cHD2rkVPMHp4go7kGcOeACU
-	sM5gIPePCcCVdUNths6Yq60tffvtZv9q10y+x+WjYYbSTV4Kcqw9CLdH
-X-Gm-Gg: Acq92OHA1ELIQVh09jn9Tbwj/BUlxRQKKxWBzrnaGDn6cHJtKV4ats8dwqJ38qkA6x0
-	iIqMQii9+J1EAqnYZmn+ldzgtFqu17T1DRuZaqtigWq4iLQafeV70uqt0YX94WVDZiZ050XLfQd
-	hLPuJ3YNNUbYUgFiy9sKtzZbfbDAhO+sBZf+pZIy5KcAZLNAC8wE/drsncPaswrszbhxkjj5rwT
-	iH9yqs1YvUeW3NKCVAs2yzXhP4BLU8oGF0wtZlp+XG8gVGKj0/3MUPcmYR5VL3m0nqNoqDmNal2
-	D8Ptg71XUKmDhqObLp+2Nfj1fO3UcJ7L1lIem3SGba38wDuBQO0Po/e9t3Mcvz0zUXvqBKBiYIe
-	fcCDECBNHeGxxJVMkeoEt1iPdpql4ru+K4sZDhEwfx4KQa6iQ2zG8F/cdakqWT058FCFYQzf176
-	T6Wk78HLaIKZJyRbUvXyCf8TFxvbU4n3tMbgGuZtSnk1Gcu/Qp1y9JZg4ms8c=
-X-Received: by 2002:a05:6a00:2354:b0:835:3f51:730e with SMTP id d2e1a72fcca58-8434cd24381mr2048514b3a.13.1781254812154;
-        Fri, 12 Jun 2026 02:00:12 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434a934a97sm1646892b3a.0.2026.06.12.02.00.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jun 2026 02:00:11 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Xiao Liang <shaw.leon@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Maoyi Xie <maoyixie.tju@gmail.com>
-Subject: [PATCH net v6 7/7] xfrm: xfrm_interface: require CAP_NET_ADMIN in the device netns for changelink
-Date: Fri, 12 Jun 2026 16:59:41 +0800
-Message-Id: <20260612085941.3158249-8-maoyixie.tju@gmail.com>
+	 MIME-Version; b=GHVcuZpCdn8kqcfKUGE3cg81G7EnSlbo88mXj7grbYGRtkAg3eFZwxPWxqRnRQiKjmh7hQkQk1t3jHdPPZSWCKeWoMWvrMeQ/el5cX3uejh7ICR24YLoQkBKoaPJytuvdgUbURJtiz93STAxSIxY8ANIKEMTD3Pd6Ody/u+QXh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FhTI3J9w; arc=none smtp.client-ip=198.175.65.15
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781255194; x=1812791194;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=bD1BoXiqmyShSlNLT1bIG3TBncZCHp9m1WFvtZGgQc0=;
+  b=FhTI3J9wErRBQoxmu7mM8aAflNnDbYp2wWoBRYlBohekdIMNuEKeMPIg
+   aA0V0wNBCFw+QO2zO2be9wjZePjqwERV1+f4ywB6Z5rvd2URThfuK1jcW
+   07sXxE8NSQvtWt+zPBe1KtHDMyiOitqTxbD/+gFmRM+nQrn/a/bzfbsVd
+   DZhWqEPfs8U0ksIQWEI+VlrRkBRikegSDzwcoLMJIex+1YuJlM9Qf3lrw
+   VzDrZ+DuCA0Nf3PKx+VAVYeSdR/rf0gFDt+BTVAqNfK5OFh+GxaYwCHGW
+   uV9QlI+/mjuX3iTlv1vxxg3uHbJHSJ3fZXO+69FcAesiR3FBbGqiJIRAo
+   A==;
+X-CSE-ConnectionGUID: Bp/lW3JOTsSW72+QSh9riA==
+X-CSE-MsgGUID: vwMdoXf+SiGwJP2rfmS/cQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="85714427"
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="scan'208";a="85714427"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2026 02:06:34 -0700
+X-CSE-ConnectionGUID: EheoKvP3R/uuYRbPgxi40Q==
+X-CSE-MsgGUID: qOaetd5vRrOPJGqT8pxa/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,200,1774335600"; 
+   d="scan'208";a="246838638"
+Received: from spr.sh.intel.com ([10.112.230.239])
+  by orviesa007.jf.intel.com with ESMTP; 12 Jun 2026 02:06:30 -0700
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Eranian Stephane <eranian@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	Dapeng Mi <dapeng1.mi@intel.com>,
+	Zide Chen <zide.chen@intel.com>,
+	Falcon Thomas <thomas.falcon@intel.com>,
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [Patch v3 1/8] perf/x86/intel: Remove anythread_deprecated bit from perf_capabilities
+Date: Fri, 12 Jun 2026 17:01:07 +0800
+Message-Id: <20260612090114.3188886-2-dapeng1.mi@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260612085941.3158249-1-maoyixie.tju@gmail.com>
-References: <20260612085941.3158249-1-maoyixie.tju@gmail.com>
+In-Reply-To: <20260612090114.3188886-1-dapeng1.mi@linux.intel.com>
+References: <20260612090114.3188886-1-dapeng1.mi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,77 +93,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-262892-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:dsahern@kernel.org,m:steffen.klassert@secunet.com,m:herbert@gondor.apana.org.au,m:horms@kernel.org,m:kuniyu@google.com,m:shaw.leon@gmail.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maoyixie.tju@gmail.com,m:shawleon@gmail.com,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-262894-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:alexander.shishkin@linux.intel.com,m:ak@linux.intel.com,m:eranian@google.com,m:linux-kernel@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:dapeng1.mi@intel.com,m:zide.chen@intel.com,m:thomas.falcon@intel.com,m:xudong.hao@intel.com,m:dapeng1.mi@linux.intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,secunet.com,gondor.apana.org.au,google.com,gmail.com,vger.kernel.org];
-	FORGED_SENDER(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ALIAS_RESOLVED(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E725C6780DD
+X-Rspamd-Queue-Id: 5ABEE6780EC
 
-xfrmi_changelink() operates on at most two netns, dev_net(dev) and the
-interface link netns xi->net. They differ once the device is created in
-or moved to a netns other than the one the request runs in. The rtnl
-changelink path checks CAP_NET_ADMIN only against dev_net(dev), so a
-caller privileged there but not in xi->net can rewrite an interface that
-lives in xi->net.
+AnyThread mode deprecation is enumerated by CPUID.0AH:EDX[15] instead of
+PERF_CAPABILITIES MSR. It's not a good practice to define a bit to
+represent "anythread deprecation" in perf_capabilities. It leads to the
+anythread_deprecated bit could be overwritten by the real value of
+PERF_CAPABILITIES MSR, just like the below code in update_pmu_cap() does.
 
-Gate xfrmi_changelink() on rtnl_dev_link_net_capable() at its top,
-before any attribute is parsed.
+```
+if (!intel_pmu_broken_perf_cap()) {
+	/* Perf Metric (Bit 15) and PEBS via PT (Bit 16) are hybrid enumeration */
+	rdmsrq(MSR_IA32_PERF_CAPABILITIES, hybrid(pmu, intel_cap).capabilities);
+}
+```
 
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOSzP1vaThGV35_VnsRCb=87_CPjPVsTHbq905k8A+BuUg@mail.gmail.com/
-Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
+It leads to the anythread_deprecated bit is cleared to 0 and the "any"
+attribute is incorrectly shown in the /sys/devices/cpu/format/ folder on
+these support Perfmon v6 platforms, like Clearwater Forest.
+
+```
+$grep . /sys/devices/cpu/format/*
+/sys/devices/cpu/format/acr_mask:config2:0-63
+/sys/devices/cpu/format/any:config:21
+/sys/devices/cpu/format/cmask:config:24-31
+```
+
+So remove the anythread_deprecated bit from perf_capabilities structure
+and directly depends on CPUID.0AH:EDX[15] to judge if anythread is
+deprecated.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reported-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: cadbaa039b99 ("perf/x86/intel: Make anythread filter support conditional")
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reviewed-by: Zide Chen <zide.chen@intel.com>
+Reviewed-by: Thomas Falcon <thomas.falcon@intel.com>
 ---
- net/xfrm/xfrm_interface_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/intel/core.c | 10 +++-------
+ arch/x86/events/perf_event.h |  2 +-
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 330a05286a56..688306bf62c5 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -869,6 +869,9 @@ static int xfrmi_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct net *net = xi->net;
- 	struct xfrm_if_parms p = {};
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 0217e701aeeb..ea3ab3050a3b 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -7946,12 +7946,6 @@ __init int intel_pmu_init(void)
  
-+	if (!rtnl_dev_link_net_capable(dev, net))
-+		return -EPERM;
-+
- 	xfrmi_netlink_parms(data, &p);
- 	if (!p.if_id) {
- 		NL_SET_ERR_MSG(extack, "if_id must be non zero");
+ 	x86_add_quirk(intel_arch_events_quirk); /* Install first, so it runs last */
+ 
+-	if (version >= 5) {
+-		x86_pmu.intel_cap.anythread_deprecated = edx.split.anythread_deprecated;
+-		if (x86_pmu.intel_cap.anythread_deprecated)
+-			pr_cont(" AnyThread deprecated, ");
+-	}
+-
+ 	/* The perf side of core PMU is ready to support the mediated vPMU. */
+ 	x86_get_pmu(smp_processor_id())->capabilities |= PERF_PMU_CAP_MEDIATED_VPMU;
+ 
+@@ -8828,8 +8822,10 @@ __init int intel_pmu_init(void)
+ 				      &x86_pmu.intel_ctrl);
+ 
+ 	/* AnyThread may be deprecated on arch perfmon v5 or later */
+-	if (x86_pmu.intel_cap.anythread_deprecated)
++	if (version >= 5 && edx.split.anythread_deprecated) {
+ 		x86_pmu.format_attrs = intel_arch_formats_attr;
++		pr_cont("AnyThread deprecated, ");
++	}
+ 
+ 	intel_pmu_check_event_constraints_all(NULL);
+ 
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index eae24bb35dc1..5902a297daa1 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -668,7 +668,7 @@ union perf_capabilities {
+ 		u64	perf_metrics:1;
+ 		u64	pebs_output_pt_available:1;
+ 		u64	pebs_timing_info:1;
+-		u64	anythread_deprecated:1;
++		u64	__reserved:1;
+ 		u64	rdpmc_metrics_clear:1;
+ 	};
+ 	u64	capabilities;
 -- 
 2.34.1
 
