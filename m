@@ -1,171 +1,127 @@
-Return-Path: <stable+bounces-263010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YftQGixqLWo3gAQAu9opvQ
-	(envelope-from <stable+bounces-263010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 16:33:16 +0200
+	id MVmPCIhuLWoFgQQAu9opvQ
+	(envelope-from <stable+bounces-263011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 16:51:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0812767EC71
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 16:33:16 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C3E67ED33
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 16:51:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=ZMyDIElr;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=dCske0KG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263010-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263010-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linutronix.de;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ATEp7Nyg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263011-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263011-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C56073006803
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 14:33:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AE343002D35
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC02311592;
-	Sat, 13 Jun 2026 14:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4AD3385A1;
+	Sat, 13 Jun 2026 14:51:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED6F2DB7BD;
-	Sat, 13 Jun 2026 14:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F340727FD51;
+	Sat, 13 Jun 2026 14:51:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781361187; cv=none; b=gO5yALV0yTJsPFa33FW6SkeYD/9+/43YVJVwT0uHzjtIrLPL6CaQUtJ2JL7YZkPVgSezN+L4mgSAZ1h7Ob/nlzD+79qbp81Nkfp3C3bo2OidggcEvJMWt7XwERPn1r07smgmDpoT4R+QLKQpUxxGVt38+z2ZJqxfu4xbDfOzYWk=
+	t=1781362301; cv=none; b=QrJDDbHbprPGl3fTTVYuiPN9kkiVwoTFORunVCNCEkJaNxHEZL43JznHCs2GNdo2ydH5QotssIPsgIrrezJYVBTvu27hd/F1pp1gW+I1+Yarvhxdor7g8jIgHxQcozLUYlHvg45maDnlLRe/mOletiruMyQVgzF0vCNERnOXYrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781361187; c=relaxed/simple;
-	bh=cKT2V39sibq7BBel9+6cqGHYCp/vctmYLYjWTx6XOX4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=e9ShNFhRcBGR/tgEXMHYySPF+MfwTzPAQ4roxlp8/7ZzQJt9BPY10CBznchO/gezPk/GQC/t/zX5Wkd+oh2JIhAWA/MV3N1hqtHTZXQ/p5/R3Hs1u5TG2gJ1rx/pDDpwKOFD2XtB6laZu59xU/+MjmyOyyFKJX6Ci2QwPQXTw9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZMyDIElr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dCske0KG; arc=none smtp.client-ip=193.142.43.55
-Date: Sat, 13 Jun 2026 14:33:03 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1781361184;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BB/EroULliXHgeVE8n5RhivSFf75axtaoX3gn6BuPxk=;
-	b=ZMyDIElri5WBrURnpWI0Qr7lE6jTlTu7RNFJtIeZ9QR17K55qMaX/a+bG4hsiNrne3vCjO
-	/rpGrpPxh+xx6HIvTsBZPppvY2+6d0oKXeRTVs4dnGXSwkVJ7kbFVsAHCYncYzEyEMaYJK
-	bHlDtacEWphuwSpPlWO+/jFoCcbsWZ8ZQHik5n+sInA75nQl/v7mrZOuWnbz0v7VaxiILd
-	LqbpZqLciDoyn8/zmhSx8bYyHLmA0c1tWAF1DdYqpAnF+3538HCuK0OxOlZGNrMKLvotRh
-	0KlvKrj5mAWGK2fFPLzPtAtsPOTVpIr+96VnsGZArWcHo57LnEWi/qiWPjyN7g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1781361184;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BB/EroULliXHgeVE8n5RhivSFf75axtaoX3gn6BuPxk=;
-	b=dCske0KGXlmm8o3s2Ef8iascQlzvc/oGhi760/BwwW9MjT1rt8lI3Bt3m4rDHN7DSREV7z
-	P/IFyM6fbPRwaGCQ==
-From: "tip-bot2 for Kartik Rajput" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/clocksource] clocksource/drivers/timer-tegra186: Fix
- support for multiple watchdog instances
-Cc: stable@vger.kernel.org, Kartik Rajput <kkartik@nvidia.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Jon Hunter <jonathanh@nvidia.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260507154557.2082697-2-kkartik@nvidia.com>
-References: <20260507154557.2082697-2-kkartik@nvidia.com>
+	s=arc-20240116; t=1781362301; c=relaxed/simple;
+	bh=l6ajO6PEYiRPvMXI+CPCWfcvCib+DRUZjHwnIx117VI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VyY0NnTpFGLVy7dGHaaJu4KgKKBheAOIzMMFpJbg9DFj0zo7yvX1zlBJ3nnZSakYt+cknDL9B68g3Z+R0dG3YTx6LYwyHqDCyu5UUNtzKKOWXzSr8WCqiaroLO0ijFDNXWYiIL9PM7xJi/F0K7zvQMqCVYLl1SX8hagJk7nWHNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATEp7Nyg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C071F000E9;
+	Sat, 13 Jun 2026 14:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781362297;
+	bh=l6ajO6PEYiRPvMXI+CPCWfcvCib+DRUZjHwnIx117VI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ATEp7Nyg1KWkylf5Q4x2aSeRSrLRCwMg25N3l+DafS4pzdHGeTkEfGBIWBV3P2CdI
+	 hr3SYx8cftxxcqANFuFSy3vEaaWT+8dYMQRL3a/hIKxyixLDrLbNkUweFDIBofXGgr
+	 aooQS7SmBTBQne6TIGykTatvSZYbqr7584u85N4HjpMbnLx8EhiyQ1I2ZYz6ARxV3i
+	 95Nfun10Qj/0DWeOA39SOLSCpYAEBNzrciA4ZMt8N4YxtihNhQSu5GNN3Ut35oBZcV
+	 4CrZHueRHeKORy4qBzOJDc01a4y6xVnP6V112iRbRDkF5MF72pSJPaD/uvsSaeGpmp
+	 LgxZkcgffV1Vw==
+From: Sasha Levin <sashal@kernel.org>
+To: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	jonmkohler@gmail.com,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Chao Gao <chao.gao@intel.com>,
+	stable@vger.kernel.org,
+	Gulshan Gabel <gulshan.gabel@nutanix.com>,
+	Jon Kohler <jon@nutanix.com>
+Subject: Re: [PATCH 6.18.y] KVM: VMX: Update SVI during runtime APICv activation
+Date: Sat, 13 Jun 2026 10:51:26 -0400
+Message-ID: <20260613143000.0001-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260612211003.2503400-1-jon@nutanix.com>
+References: <20260612211003.2503400-1-jon@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <178136118320.1650852.10754830901767426383.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263010-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS(0.00)[m:linux-tip-commits@vger.kernel.org,m:stable@vger.kernel.org,m:kkartik@nvidia.com,m:daniel.lezcano@kernel.org,m:jonathanh@nvidia.com,m:x86@kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:seanjc@google.com,m:pbonzini@redhat.com,m:tglx@linutronix.de,m:mingo@redhat.com,m:bp@alien8.de,m:dave.hansen@linux.intel.com,m:x86@kernel.org,m:hpa@zytor.com,m:kvm@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sashal@kernel.org,m:jonmkohler@gmail.com,m:dongli.zhang@oracle.com,m:chao.gao@intel.com,m:stable@vger.kernel.org,m:gulshan.gabel@nutanix.com,m:jon@nutanix.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263011-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,oracle.com,intel.com,vger.kernel.org,nutanix.com];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0812767EC71
+X-Rspamd-Queue-Id: 55C3E67ED33
 
-The following commit has been merged into the timers/clocksource branch of ti=
-p:
+On Fri, Jun 12, 2026 at 02:10:01PM -0700, Jon Kohler wrote:
+> From: Dongli Zhang <dongli.zhang@oracle.com>
+>
+> commit b2849bec936be642b5420801f902337f2507648e upstream.
 
-Commit-ID:     ca57bf46e7a94f8c53d05c376df9fcfdcb482100
-Gitweb:        https://git.kernel.org/tip/ca57bf46e7a94f8c53d05c376df9fcfdcb4=
-82100
-Author:        Kartik Rajput <kkartik@nvidia.com>
-AuthorDate:    Thu, 07 May 2026 21:15:54 +05:30
-Committer:     Daniel Lezcano <daniel.lezcano@kernel.org>
-CommitterDate: Wed, 10 Jun 2026 07:25:08 +02:00
+Queued for 6.18.y, thanks. (And thanks Sean for the ack.)
 
-clocksource/drivers/timer-tegra186: Fix support for multiple watchdog instanc=
-es
-
-Tegra SoCs support multiple watchdogs; currently only one (WDT0) is
-used. When multiple watchdogs are registered, tegra186_wdt_enable()
-overwrites the TKEIE(x) register, discarding any existing watchdog
-interrupt enable bits. As a result, enabling one watchdog inadvertently
-disables interrupts for the others.
-
-Fix this by preserving the existing TKEIE(x) value and updating it
-using a read-modify-write sequence.
-
-Fixes: 42cee19a9f83 ("clocksource: Add Tegra186 timers support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@kernel.org>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260507154557.2082697-2-kkartik@nvidia.com
----
- drivers/clocksource/timer-tegra186.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/clocksource/timer-tegra186.c b/drivers/clocksource/timer=
--tegra186.c
-index 3555588..bfe16d2 100644
---- a/drivers/clocksource/timer-tegra186.c
-+++ b/drivers/clocksource/timer-tegra186.c
-@@ -149,7 +149,8 @@ static void tegra186_wdt_enable(struct tegra186_wdt *wdt)
- 	u32 value;
-=20
- 	/* unmask hardware IRQ, this may have been lost across powergate */
--	value =3D TKEIE_WDT_MASK(wdt->index, 1);
-+	value =3D readl(tegra->regs + TKEIE(wdt->tmr->hwirq));
-+	value |=3D TKEIE_WDT_MASK(wdt->index, 1);
- 	writel(value, tegra->regs + TKEIE(wdt->tmr->hwirq));
-=20
- 	/* clear interrupt */
+--
+Thanks,
+Sasha
 
