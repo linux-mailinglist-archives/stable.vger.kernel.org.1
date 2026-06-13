@@ -1,69 +1,66 @@
-Return-Path: <stable+bounces-262983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-262981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YGMmOhujLGqMUAQAu9opvQ
-	(envelope-from <stable+bounces-262983-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 02:23:55 +0200
+	id ZDxzFwejLGqHUAQAu9opvQ
+	(envelope-from <stable+bounces-262981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 02:23:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF2267D423
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 02:23:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66B467D417
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 02:23:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJJu+55x;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-262983-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-262983-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDBYadxX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-262981-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-262981-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A48793486CD6
-	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 00:20:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9EFF83468B79
+	for <lists+stable@lfdr.de>; Sat, 13 Jun 2026 00:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FC3243964;
-	Sat, 13 Jun 2026 00:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB4323507C;
+	Sat, 13 Jun 2026 00:20:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BA32222A9;
-	Sat, 13 Jun 2026 00:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B231A9F8C
+	for <stable@vger.kernel.org>; Sat, 13 Jun 2026 00:20:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781310045; cv=none; b=MsnzWZ0CwAjPMszTty81m6Cwbl+y0jlhtILs4Bou/wdUzRzWMuXCK2VYSg8mRyO3gB8+NhHBOLNsnrhfs0M6UXZJfho1544nrnRUgHxhqVxmRoV4OPatN/bucxcP31y/snNPU9ajQvLHNn2eOEVtaqS5IbnAon5EmBnELyp1a/4=
+	t=1781310044; cv=none; b=FPPIe+dr+40mJjpC4CAj/ibRg+yzO4fY2lCNtm7tk+1k82QFZ5WiHOB0z/ERp7raGfdjTLasYsjGdY79aZKy75hUb5SowYXsej4ZLbzELjcumpdZIxTKNMhk+MRslu5pmZHGxn+poW/Me2s8MVyj4UgrbBLk5RlN6EowOWjOSjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781310045; c=relaxed/simple;
-	bh=hTUnNkRTucEdpjT2VSKjWvjF67ZPz1PePNE8kadCzz0=;
+	s=arc-20240116; t=1781310044; c=relaxed/simple;
+	bh=HAhhcYjAKT5J+ykF1nq/n9Mf/eHOm482fWFb2rB2ZH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIEyxelnzlkZ1dgyC9h1tP9+82GXtMhhPYOAwlAJeWo1N3c2IpFUSZdFe5KPvcrG3u2XQ6Fe9f1P5OS2iuiTaOe4+P90scy+g3DTD4sZ0vS7MW1t3igvmF20i5LAJqclj6l/SJiKyDFHJUAtTaOq460vNyF9lj6Sc3HLs4tuje0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJJu+55x; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0F51F00AC4;
-	Sat, 13 Jun 2026 00:20:38 +0000 (UTC)
+	 MIME-Version; b=e9xwCa1jCoN9DKzouyTkbvzaC2APs+rQn4tpAtqhaKCpWxD3GJ9Gz5Ba+LKTTaadLMBcY0wNXaKTS5V8uyEfihv4Es4j+YI76CtSIy6u3S62X5yMCqO9Say21EVaBS0jwC33kEK4SGM/0WqFKpGX9Ue+C6cLeowOrLbhOcSXJwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDBYadxX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2322B1F000E9;
+	Sat, 13 Jun 2026 00:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781310039;
-	bh=hTUnNkRTucEdpjT2VSKjWvjF67ZPz1PePNE8kadCzz0=;
+	s=k20260515; t=1781310041;
+	bh=HAhhcYjAKT5J+ykF1nq/n9Mf/eHOm482fWFb2rB2ZH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NJJu+55xdeU4dJPqC0L/dIX90ZmMunk4WeVdZy9+N0Fv1wm0MrNRUF/tX6Bj5TR1E
-	 n5SSYib7Vq8FtxedtyFJDGASzM421ovjoBfA0aOpmXD6tdwJ6CjqR1QCqbmOM5/Qmx
-	 Bg3KG6Bsoqdx4lDqtN4a71pYp4RmgWdQcJIhLKD/Uo1owmFUpa/qAt7Tu3rTT/ipJb
-	 F+VBzMBQHPiMqkfKlCoe64Sq4NBQfM3yFDztJBebErT/ZXFjrojcdGntM5+4WZIRHu
-	 PK4uay7sw7aVdn9DrRKewJO6pBGW0U+cZS3ZSjheT9PHhFw9B41U5Cs+8gp6MHbBO2
-	 GQRyOjFSy3dhA==
+	b=eDBYadxXt+9KG6UQeQxrlKq49Lojq8gJmm7PrRXl3YuFWZ8SB2Z/6Dsxz0sFiq2w4
+	 T8thAjnACRGSHTVHO+R4ssLOFmpL+blUNiAzuFM3vWNR5bfRLzwrmIz81t9ykCMVPH
+	 3VODfyeH/Z61YW6nD2gP40MJvL0hm1KD3eLMuBXGMWCxWaI6ynwo0Uyq4NHzwXbs62
+	 lkKWD6woRaNlLpRX6TWc5BJrOY1Uqxn2BCbTqR2L00a8m7XuNS+8ZeCkhTGie5OELM
+	 lz5W9pViJN6Gd9jhU4Ysj+gJo6VJym3Qe54PrdkI+IBc+DpF0HdtQVqGglzoZ7MzL9
+	 C/VvFcKj+W7Sg==
 From: Sasha Levin <sashal@kernel.org>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Salvatore Bonaccorso <carnil@debian.org>
 Cc: Sasha Levin <sashal@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
 	stable@vger.kernel.org,
-	xfs-stable@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	lvc-project@linuxtesting.org,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: Re: [PATCH 6.6 0/4] fix kernel crash for xfs/235 test
-Date: Fri, 12 Jun 2026 20:20:34 -0400
-Message-ID: <20260612233110.2-1-sashal@kernel.org>
+	Minh Nguyen <minhnguyen.080505@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: Re: Please apply 98d0912e9f84 ("net: skbuff: fix missing zerocopy reference in pskb_carve helpers") down to 6.1.y
+Date: Fri, 12 Jun 2026 20:20:35 -0400
+Message-ID: <20260612233120.3-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <aisAxyXVxf4wql2u@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20250322143418.216654-1-pchelkin@ispras.ru> <aisAxyXVxf4wql2u@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: <airicdmj6A7ZRGxs@eldamar.lan>
+References: <airicdmj6A7ZRGxs@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,20 +76,20 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.linux.dev,lst.de,oracle.com,linuxfoundation.org,linuxtesting.org,linux.microsoft.com];
-	TAGGED_FROM(0.00)[bounces-262983-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linuxfoundation.org,gmail.com,google.com,redhat.com,decadent.org.uk];
+	TAGGED_FROM(0.00)[bounces-262981-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:pchelkin@ispras.ru,m:sashal@kernel.org,m:leah.rumancik@gmail.com,m:stable@vger.kernel.org,m:xfs-stable@lists.linux.dev,m:djwong@kernel.org,m:hch@lst.de,m:catherine.hoang@oracle.com,m:gregkh@linuxfoundation.org,m:lvc-project@linuxtesting.org,m:hamzamahfooz@linux.microsoft.com,m:leahrumancik@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:carnil@debian.org,m:sashal@kernel.org,m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:minhnguyen.080505@gmail.com,m:willemb@google.com,m:pabeni@redhat.com,m:ben@decadent.org.uk,m:minhnguyen080505@gmail.com,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -102,26 +99,22 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5CF2267D423
+X-Rspamd-Queue-Id: D66B467D417
 
-On Wed, Jun 11, 2026 at 02:39:03PM -0400, Hamza Mahfooz wrote:
-> Any idea what happened to this series? It resolves an issue that I've
-> hit in a production environment FWIW.
+On Thu, Jun 11, 2026 at 06:29:37PM +0200, Salvatore Bonaccorso wrote:
+> Here is the backport for the 6.6.y series as well.
 >
-> Series is:
->
-> Tested-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> As mentioned in the other mail, I could not have looked explicitly for
+> the 5.15.y and 5.10.y. In particular for the later I think more work
+> is required.
 
-Thanks for the nudge, and thanks Fedor for putting the backport together.
-
-We generally don't take XFS backports without a maintainer signing off on them,
-so right now we're waiting for one to do so :)
+Thanks, the 6.6.y backport is queued, and 6.1.y is queued on top of it.
 
 --
 Thanks,
