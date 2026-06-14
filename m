@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-263045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DFFSAXRELmqKrgQAu9opvQ
-	(envelope-from <stable+bounces-263045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:04:36 +0200
+	id BvDiL4FELmqXrgQAu9opvQ
+	(envelope-from <stable+bounces-263046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:04:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE59680720
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:04:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38269680724
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:04:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=li3TCMX5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263045-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263045-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Yf176zpe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263046-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 35457300D17E
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:04:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BEBA3013A54
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4180A2BEFEB;
-	Sun, 14 Jun 2026 06:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216D02BEFEB;
+	Sun, 14 Jun 2026 06:04:45 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232562877DE
-	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E734B2877DE
+	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:04:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781417071; cv=none; b=CoHqG/txj+JaJeOTdrf4mFfiK0m9FCBj8DEPVDJaWnVC80+wslY0GsfutpbIcy05Me73TDYrNR7I6LCGj4jzcaLwqYjq11GaHcQikPvzC+l/oU5GYcnkhPfjRkT2GK26pRkwzhbcvinKBJTLz+/uuN1AqvOG0q20eDCUYbY7/vc=
+	t=1781417084; cv=none; b=sjbkWHGKDKwRMa/Yd8Y7BB4eKrM3/diA6+8wtdvrEqyB3m0tNuns5R4F8+Iif7Bgac4kgd8sk2dWq3szitb9vLfltkTZ/LHRyUTqVyXNHrFkAi2XVlc5OknxDbPU3N5Yoq4cXh+VCQDnXenIN9iw6l+Ch3CjQtJ+92p8VMqy0pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781417071; c=relaxed/simple;
-	bh=I0xoKZMl0Ve7P4srZf/OqPddrPvWB99g2YCfz/h7gJk=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=rCmyv2qGP6U2vyfT0u1ENLoYUfCbAh9JWBCWKhVKKoI+I5ofsgYqRTRJIIlSWrPN6kq//5BNNVCYe1jf6Rf+ujZjQ5ESi3Hk6X6oB69FdmOncHtlb9sC5ZhNc7VXZRkV/Cyf5jF0aLMQOWPyIm9LZtgeB8OoIGlCMTZJi7KKjOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=li3TCMX5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B811F000E9;
-	Sun, 14 Jun 2026 06:04:28 +0000 (UTC)
+	s=arc-20240116; t=1781417084; c=relaxed/simple;
+	bh=hOlKUH6UUk4K6GOuudHaPHq1OoydHwFZ0oe56Zp5nng=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=upZKJdtnoyNPeDq9ftdEymuj/KThEEJ4y/WlkSgv6y/TMJgtfzGOWqxvVUAkEO8o6JwP5j3szwf9FcPB5AWoSdClSTypy6r9X6/SqrAY3yvWUzcNdBu/kAv1W5/20sl0yq+KYy/ujbN7fzOfO21MlKCMqPlr6HKy+5xV47R5ldM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yf176zpe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FDB1F000E9;
+	Sun, 14 Jun 2026 06:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781417069;
-	bh=pN74bmhpcyCz087diixhEeyw9uJM2+eWydfQDT7J7zo=;
+	s=korg; t=1781417083;
+	bh=77Kd51MHY+voGLkKCwfGD2ej7woMyQaZL5mTUZDi+Bk=;
 	h=Subject:To:From:Date;
-	b=li3TCMX5QHg62aiAdboDgIwKNEerq+sGleNEed6eY+1lfpjVYdBN5+gAcSsSVhLSC
-	 1EYgPtGWHjAvIDiscwfRsEALAMVl19qIlDlH+ew6pY6ZGCa81zjOiflWoW+ix9pEWs
-	 /+TA2T2YccGiuWaRokCxyXikSaHxmN5P/PfGTcGk=
-Subject: patch "iio: adc: ad4062: add GPIOLIB dependency" added to char-misc-next
-To: arnd@arndb.de,Stable@vger.kernel.org,jic23@kernel.org
+	b=Yf176zpe53WVnwDoMTCje+PzavALM5a4PauELdkpBaU1AxGrokQogQZYXFHTTSRHp
+	 sfNwzt1tZNfI1C4BzKGIOt3H+fp91D1LzN1TEqLVdazKo/JIvzrY/MXfeQVuC7bsyH
+	 ihe0FoJKmz8X4/wkOKpyCC8F+tCpeOKMdk8SI8wA=
+Subject: patch "iio: gyro: bmg160: bail out when bandwidth/filter is not in table" added to char-misc-next
+To: sozdayvek@gmail.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Jun 2026 08:03:28 +0200
-Message-ID: <2026061428-shorts-lisp-2d2a@gregkh>
+Date: Sun, 14 Jun 2026 08:03:31 +0200
+Message-ID: <2026061431-slain-clench-a015@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,43 +59,44 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263046-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:sozdayvek@gmail.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263045-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:arnd@arndb.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,intel.com,kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arndb.de:email,gregkh:mid]
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5FE59680720
+X-Rspamd-Queue-Id: 38269680724
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad4062: add GPIOLIB dependency
+    iio: gyro: bmg160: bail out when bandwidth/filter is not in table
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -110,39 +111,71 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From a5b7991d5a737df71a5e4230554481255af64ed4 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 15 May 2026 11:07:53 +0200
-Subject: iio: adc: ad4062: add GPIOLIB dependency
+From 8320c77e67382d5d55d77043a5f60a867d408a2b Mon Sep 17 00:00:00 2001
+From: Stepan Ionichev <sozdayvek@gmail.com>
+Date: Sun, 10 May 2026 07:35:00 +0500
+Subject: iio: gyro: bmg160: bail out when bandwidth/filter is not in table
 
-The ad4062 driver gained support for the gpiochip and now fails
-to build when GPIOLIB is disabled:
+bmg160_get_filter() walks bmg160_samp_freq_table[] looking for the entry
+matching the bw_bits value read from the chip:
 
-390-linux-ld: drivers/iio/adc/ad4062.o: in function `ad4062_gpio_get':
-drivers/iio/adc/ad4062.c:1383:(.text+0x3dc): undefined reference to `gpiochip_get_data`
+	for (i = 0; i < ARRAY_SIZE(bmg160_samp_freq_table); ++i) {
+		if (bmg160_samp_freq_table[i].bw_bits == bw_bits)
+			break;
+	}
+	*val = bmg160_samp_freq_table[i].filter;
 
-Add a Kconfig dependency for this.
+If no entry matches, i ends up equal to the array size and the next line
+reads one slot past the end. bmg160_set_filter() has the same shape, driven
+by 'val' instead of bw_bits.
 
-Fixes: da1d3596b1e4 ("iio: adc: ad4062: Add GPIO Controller support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+smatch flags both:
+
+  drivers/iio/gyro/bmg160_core.c:204 bmg160_get_filter() error:
+  buffer overflow 'bmg160_samp_freq_table' 7 <= 7
+  drivers/iio/gyro/bmg160_core.c:222 bmg160_set_filter() error:
+  buffer overflow 'bmg160_samp_freq_table' 7 <= 7
+
+Return -EINVAL when no entry matches.
+
+The set_filter() path is reachable from userspace via the sysfs
+in_anglvel_filter_low_pass_3db_frequency interface, so userspace can
+trivially trigger the out-of-bounds read with a value that is not in
+bmg160_samp_freq_table[].filter.
+
+Fixes: 22b46c45fb9b ("iio:gyro:bmg160 Gyro Sensor driver")
+Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/adc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/gyro/bmg160_core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index a9dedbb8eb46..2dcb9980d7c8 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -78,6 +78,7 @@ config AD4030
- config AD4062
- 	tristate "Analog Devices AD4062 Driver"
- 	depends on I3C
-+	depends on GPIOLIB
- 	select REGMAP_I3C
- 	select IIO_BUFFER
- 	select IIO_TRIGGERED_BUFFER
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 38394b5f3275..58963f3ea186 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -201,6 +201,9 @@ static int bmg160_get_filter(struct bmg160_data *data, int *val)
+ 			break;
+ 	}
+ 
++	if (i == ARRAY_SIZE(bmg160_samp_freq_table))
++		return -EINVAL;
++
+ 	*val = bmg160_samp_freq_table[i].filter;
+ 
+ 	return ret ? ret : IIO_VAL_INT;
+@@ -218,6 +221,9 @@ static int bmg160_set_filter(struct bmg160_data *data, int val)
+ 			break;
+ 	}
+ 
++	if (i == ARRAY_SIZE(bmg160_samp_freq_table))
++		return -EINVAL;
++
+ 	ret = regmap_write(data->regmap, BMG160_REG_PMU_BW,
+ 			   bmg160_samp_freq_table[i].bw_bits);
+ 	if (ret < 0) {
 -- 
 2.54.0
 
