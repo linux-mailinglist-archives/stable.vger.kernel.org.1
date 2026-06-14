@@ -1,129 +1,181 @@
-Return-Path: <stable+bounces-263093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JJdaCy8pL2qQ8QQAu9opvQ
-	(envelope-from <stable+bounces-263093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 00:20:31 +0200
+	id fNiAJiwrL2re8QQAu9opvQ
+	(envelope-from <stable+bounces-263094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 00:29:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41F368265C
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 00:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2F468269E
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 00:29:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pk+PbvAQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263093-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263093-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=netfilter.org header.s=2025 header.b=su9oJQAZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263094-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263094-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 14F183001FEF
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 22:20:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D60B30022E3
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 22:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC84E37CD2F;
-	Sun, 14 Jun 2026 22:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A66F37D10F;
+	Sun, 14 Jun 2026 22:28:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EF6292B54;
-	Sun, 14 Jun 2026 22:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D68533AD9A;
+	Sun, 14 Jun 2026 22:28:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781475627; cv=none; b=n2hzQDf0w5FH23aq+rqYtbTzOKZIPLCY0F85T8xlGAedBGxflsVCB1wz4GodMtSHDI+Ru1FeMREIqV3ASFRrd+ldG3G4zsUSQxRzvtm3EI5XA/6udCAsO41ixKnJ/ekffSLF0T67b3Vx32pogX65O5PIKgWu2qsksSb4n54Nd/E=
+	t=1781476135; cv=none; b=StFRC56Zg+jdzsnGsvcr4+f2z/52dgCmwqvd2hMpm2OB/uEnVwK/nqUK6Cw/1sVhTWhZTnsLsN9H2/g9b9rzKGfQsITvI89ou/BrHWdsiaYt2XtACSHJ1jrVkF+58jxUbSbhYmKL84sBc3lthI5idR1Nv2WD7cct3M04XY6gtfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781475627; c=relaxed/simple;
-	bh=AolzJ5fBKCYhdZoy8bTLrjEDJd4XB/zbqN6ZB63xKyI=;
+	s=arc-20240116; t=1781476135; c=relaxed/simple;
+	bh=ABURyU1V3mecvrhWUnHt39hy2OScN13aV8oQpR0sbVo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpPtA0nlyGckXCDD+JVm0f1BjqQzr1W7H4xWzYKxuJkVpEnGBr/xZyJMzh9TA+CXTMiOK4DQGWfskl3GEKKzvPM5o6ph/ZpKhEhJeIDKwOGVWZF7AR8twUyPc9VfrHllyIxpoePaesiF4AG1ucuEQjCj0pNoscmvWEZq+jY124Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pk+PbvAQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2474C1F000E9;
-	Sun, 14 Jun 2026 22:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781475626;
-	bh=7RDOpRHXsto/ZnZ2BpjuO3i0UoV7uNmp1csBtkTg2I0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Pk+PbvAQog32lrbAeLhyfFZRdotgRwJRA1rtRd9LNXuh1UGqwuW6tP6p5vMmdWJ05
-	 nAAKVx2vh77PZThJWidRzxlpmog9S3x/hpE3pRiZWSg5IYrdmMnqVuEud1HKr1xzei
-	 186KjRZjhSXxiSm05dgb1CLShHW1x/u47FAOkISaFjRjzKqGQbWND3jBADRVPwFobl
-	 my+NJDRgFV/r01dr6QLOXteOs/yDysxqNkFAqK830UUymDlUoQQVK2vtgxnefmQlBG
-	 NRrj6/Kddf4Ace8BhzhxyqeOZBooxM23swbnVklJPRA6qbpmcO9QtYTcq8g0q1icz9
-	 NJb9eKmlGjWnQ==
-Date: Mon, 15 Jun 2026 00:20:21 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Hongliang Wang <wanghongliang@loongson.cn>
-Cc: Binbin Zhou <zhoubinbin@loongson.cn>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	loongarch@lists.linux.dev, Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v6 2/2] i2c: ls2x: Add clocks property parsing and adjust
- bus speed
-Message-ID: <ai8o9vxUX6rbZNV4@zenone.zhora.eu>
-References: <20260608024533.32419-1-wanghongliang@loongson.cn>
- <20260608024533.32419-3-wanghongliang@loongson.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JDCOslxhVtmYPMEuRCIcZNp9bslOp+5YZy2+Lxi8Uvr0jstnP14sqMHsDFNOd5EyIkCtOr0j/0wP1CCOMQlCPJqK9Jl/jhKie4yzqrqivVH1XlMmO95E8CndSBeJ8VzMq9/qME8A62tl4P2eCZPf+DJkCxEmgVKuvROO+wvbals=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=su9oJQAZ; arc=none smtp.client-ip=217.70.190.124
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 339F8600B5;
+	Mon, 15 Jun 2026 00:28:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1781476124;
+	bh=+y0oMMzJ8dGenJ1y6ujNCOKYta4OAPczMAXEIb9g7zY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=su9oJQAZAHHzjoP5TIpOvfhcDt9EjuD3+SizHqmsWtkE2Yw532y+27DPGDntzOCsz
+	 DKILpuMP/TcePqDzXZ3S2Ue3vKCuZXAZCGUtI9Df9L7QWpYEzn4RyqZqi2E7HhKKMF
+	 DGacrdOAN9BrvnITPKNXuaZervYcsr4xezHaFOgHw4C2kakoqNjigWlE6eZpECNYAE
+	 UjHnGrF2onVdMqbAOD/epwl8FqIHZbWIzn7mmePWCjyMNIFD8mFrjCera3ZyqNeZ4L
+	 PSTgw70wEZelUYum+Tz1L/9NO+C5Lrs89E44WdA7cFsQhjXB7NKIWIgR09ctlHH+vA
+	 oH8TH8cTJIt2Q==
+Date: Mon, 15 Jun 2026 00:28:41 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: XIAO WU <xiaowu.417@qq.com>
+Cc: Mark Bundschuh <mkbund@amazon.com>, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	netfilter-devel@vger.kernel.org, Florian Westphal <fw@strlen.de>
+Subject: Re: [PATCH 6.6.y] netfilter: ctnetlink: ensure safe access to master
+ conntrack
+Message-ID: <ai8rGfyUPgAe-eg_@chamomile>
+References: <20260612202408.1045757-1-mkbund@amazon.com>
+ <tencent_DFE6466C14D93204DE976442E459443CB807@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260608024533.32419-3-wanghongliang@loongson.cn>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_DFE6466C14D93204DE976442E459443CB807@qq.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[netfilter.org:s=2025];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263093-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:wanghongliang@loongson.cn,m:zhoubinbin@loongson.cn,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:chenhuacai@loongson.cn,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:xiaowu.417@qq.com,m:mkbund@amazon.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:netfilter-devel@vger.kernel.org,m:fw@strlen.de,s:lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[qq.com];
+	FORGED_SENDER(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[netfilter.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[netfilter.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andi.shyti@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
+	FROM_NEQ_ENVFROM(0.00)[pablo@netfilter.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263094-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B41F368265C
+X-Rspamd-Queue-Id: 2E2F468269E
 
-Hi Hongliang,
+Hi,
 
-On Mon, Jun 08, 2026 at 10:45:33AM +0800, Hongliang Wang wrote:
-> The i2c-ls2x driver supports dts and acpi parameter passing.
+On Sun, Jun 14, 2026 at 10:38:16PM +0800, XIAO WU wrote:
+> Hi,
 > 
-> In dts, uses clock framework, by parsing clocks property to
-> get i2c bus reference clock, and define the div of reference
-> clock by device data.
+> Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> > Holding reference on the expectation is not sufficient, the master
+> > conntrack object can just go away, making exp->master invalid.
+> >
+> > [...]
+> >
+> > This patch goes for extending the nf_conntrack_expect_lock section
+> > to address this issue for simplicity, in the cases that are described
+> > below this is just slightly extending the lock section.
 > 
-> In acpi, by passing clocks property to describe i2c bus reference
-> clock and clock-div property to describe the div of reference clock.
+> I tested this patch on 6.6.142-g005cf9204c4e with KASAN + lockdep
+> enabled and found that the lock extension in ctnetlink_get_expect()
+> and ctnetlink_del_expect() does address the expectation-lookup paths,
+> but one other path still races:
 > 
-> Based on i2c bus reference clock(clock_a), i2c bus speed(clock_s)
-> and div, calculate the prcescale of i2c divider register. The
-> calculation formula is
+>   clean_from_lists()
+>     nf_ct_remove_expectations()          // holds nf_conntrack_expect_lock
+>       list_for_each_entry_safe(exp, ...)
+>         nf_ct_remove_expect(exp)
+>           del_timer(&exp->timeout)       // returns false if timer is
+>                                          // already executing on another CPU
+>           // expectation NOT unlinked
+>   ...
+>   nf_conntrack_free(ct)                  // master is freed
 > 
-> prcescale = (clock_a*10)/(div*clock_s)-1
+>   // meanwhile, on another CPU:
+>   nf_ct_expectation_timed_out()          // timer callback fires
+>     nf_ct_unlink_expect_report(exp, ...) // acquires
+> nf_conntrack_expect_lock
+>       nf_ct_expect_event_report(...)
+>         e = nf_ct_ecache_find(exp->master);  // UAF -- master already freed
 > 
-> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+> nf_ct_remove_expect() already has the lockdep annotation added by this
+> patch:
+> 
+> > +    lockdep_nfct_expect_lock_held();
+> > +
+> >      if (del_timer(&exp->timeout)) {
+> >          nf_ct_unlink_expect(exp);
+> >          nf_ct_expect_put(exp);
+> 
+> But holding the lock is not enough: del_timer() cannot cancel a timer
+> that is already running on another CPU.  When it returns false, the
+> expectation stays in the hash table, the master is freed immediately
+> afterward, and the in-flight timer callback hits a dangling exp->master.
+> 
+> The same del_timer() pattern also exists in ctnetlink_del_expect(),
+> which the patch already extends:
+> 
+> > +        spin_lock_bh(&nf_conntrack_expect_lock);
+> > +
+> >          /* bump usage count to 2 */
+> >          exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+> > [...]
+> >          /* after list removal, usage count == 1 */
+> > -        spin_lock_bh(&nf_conntrack_expect_lock);
+> >          if (del_timer(&exp->timeout)) {
+> >              nf_ct_unlink_expect_report(exp, NETLINK_CB(skb).portid,
+> >                             nlmsg_report(info->nlh));
+> 
+> This del_timer() call has the same vulnerability -- just holding the
+> lock doesn't prevent the timer from executing concurrently before the
+> lock was acquired.  The timer callback will spin-wait for the lock,
+> acquire it after ctnetlink_del_expect() drops it, and then access the
+> now-freed (or about-to-be-freed) master.
 
-I think Huacai has not reviewed this patch, his review was only
-for patch 1. Am I right?
+Thanks for your report.
 
-Andi
+I started a patch to replace the existing expectation timers by GC
+workqueue to address this issue.
 
