@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GW0wObJELmrGrgQAu9opvQ
-	(envelope-from <stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:38 +0200
+	id T1fWN69ELmrDrgQAu9opvQ
+	(envelope-from <stable+bounces-263051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96A0268074F
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AD968074C
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VRjPrKcm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GsNpk+UF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263051-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263051-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0D88130160E6
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14A223015853
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1A830D3E4;
-	Sun, 14 Jun 2026 06:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB57C2DC764;
+	Sun, 14 Jun 2026 06:05:15 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C73024A078
-	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807FE318EE2
+	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781417122; cv=none; b=oRgZzxyZkwfdv20+9Gmnqxoc7QvgnENrJplWApWQQ8P6Row7VhigONi+4C7jFRC8vvLtF0yljDlDHTbRTChXhnT2gJzwV7x+HYAQ8KXYL/EVvRFURSMHhZne8Z1OJekEaBhqF7b2Phpaprpti438eLNzx0+eGJ4vIJ0cxAUFgJU=
+	t=1781417115; cv=none; b=TZFV1dDtIBSj0gAMwB8C5ac1SEdMXm7c2hXQtfcjRd77B1ajCyMQc5V9MoatkvyXhJ1Xc00yf7fKivd53jIk05ED0jVnL2M7ce7FjQzEtRI5VnfP5utGQBC8Knl9wXc4tI5WLwYlHP7cro5saLW51P6PaFXyfXnpV6M6TqlzJFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781417122; c=relaxed/simple;
-	bh=WRBtc3DG3tBD2BeX0YvPg6qJeEBck/4kuhgafEYTqkI=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=BRqHacLimpQ8bcjhnUwMBC+TloFKxvzb4E7EON0tFybyHnkBsB3vGXcrYM05+Ve2OdZVWi+izfy02skn1qU8dsUWoNScCJ9TKVHOdxsol8oXY+7Nt6Qe8kwcy87PPjk6jXaheVHFp/oysJs0qf5KVYZDv6wPVDJrcdhCjEab7ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRjPrKcm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B871F000E9;
-	Sun, 14 Jun 2026 06:05:20 +0000 (UTC)
+	s=arc-20240116; t=1781417115; c=relaxed/simple;
+	bh=rRe5au9idbX+SXqYsVRDNKFosEXD1UyP5gK5wp9kWro=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=LXXPGyduwQC/HKZwq6mBOlrGOd+WU0rEiXTL9m8nz9p/irs6qL221x2RmeQT0I8WrPiUDre0IBgeo97IIVpZ8mAaUxTNF89YO9B3fXKYF7mZFdBi5U9akTr2+cVDGPvnLh/tz40VDGHynLjwPcQeFKtveC/H8iG+cdwqQalFKrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsNpk+UF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964481F000E9;
+	Sun, 14 Jun 2026 06:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781417120;
-	bh=BIEUjk39cXeks7GNqQu1Q7Hd3wY7xIvgvfg5wREZI5k=;
+	s=korg; t=1781417114;
+	bh=2p9SIwMQMi/A2L8OuH858lh8mmhHXmHorIyY73OSbOo=;
 	h=Subject:To:From:Date;
-	b=VRjPrKcm4mHGhd3dISlN0bYEB87EnTQrA3SMxWrhUFZTMTaTfkKdJ+0Vx3zmRpmxW
-	 WfzBZYZqBNv6+fjYBeEX+HfiM1KOXS7d3qnVRJDozr1wuptkSfsJV2MFkaejIKZkfq
-	 mFZciK5H7jM6wbh9OTvEmyFKi9N8jCMWbdY0efSQ=
-Subject: patch "iio: light: al3010: read both ALS ADC registers again" added to char-misc-next
+	b=GsNpk+UF2o54WAN1x8uF0HnjMk8ITjPUbejUh91SYA7xCDu4RRSHtc8qYo2Givp7R
+	 7sNJhScF6yvY0hpnU1Im85UW9Q7J2Fq1xyOr21ar1Kx0O5lelovdCOS9jSZb5UfSW8
+	 GMK/xjb2aKeQLX40j5LEpr3deY+CaJ1iqqMEXe5M=
+Subject: patch "iio: light: al3320a: read both ALS ADC registers again" added to char-misc-next
 To: grandmaster@al2klimov.de,Stable@vger.kernel.org,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Sun, 14 Jun 2026 08:03:37 +0200
-Message-ID: <2026061436-power-scarcity-f5e0@gregkh>
+Message-ID: <2026061437-subplot-aerosol-75b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,11 +68,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263052-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263051-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:grandmaster@al2klimov.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:grandmaster@al2klimov.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -90,12 +90,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,al2klimov.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96A0268074F
+X-Rspamd-Queue-Id: 74AD968074C
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: light: al3010: read both ALS ADC registers again
+    iio: light: al3320a: read both ALS ADC registers again
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -110,44 +110,44 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From ee78fae068f52a5582aaf448d9414f826855c106 Mon Sep 17 00:00:00 2001
+From 744bccc2647c6b2206290e8e40890a23812116b3 Mon Sep 17 00:00:00 2001
 From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Date: Sat, 23 May 2026 13:44:57 +0200
-Subject: iio: light: al3010: read both ALS ADC registers again
+Date: Sat, 23 May 2026 13:44:58 +0200
+Subject: iio: light: al3320a: read both ALS ADC registers again
 
-al3010_read_raw() used to read two adjacent registers
+al3320a_read_raw() used to read two adjacent registers
 until the driver was modernized using the regmap framework.
 That cleanup accidentally replaced the 16-bit word read
 with a single byte read. I'm reverting latter.
 
-Fixes: 0e5e21e23dd6 ("iio: light: al3010: Implement regmap support")
+Fixes: 1850e6ae7f91 ("iio: light: al3320a: Implement regmap support")
 Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/light/al3010.c | 8 +++++---
+ drivers/iio/light/al3320a.c | 8 +++++---
  1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-index 0932fa2b49fa..6af7b5f14a31 100644
---- a/drivers/iio/light/al3010.c
-+++ b/drivers/iio/light/al3010.c
-@@ -111,7 +111,8 @@ static int al3010_read_raw(struct iio_dev *indio_dev,
- 			   int *val2, long mask)
+diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+index 63f5a85912fc..b9076f434417 100644
+--- a/drivers/iio/light/al3320a.c
++++ b/drivers/iio/light/al3320a.c
+@@ -135,7 +135,8 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
+ 			    int *val2, long mask)
  {
- 	struct al3010_data *data = iio_priv(indio_dev);
+ 	struct al3320a_data *data = iio_priv(indio_dev);
 -	int ret, gain, raw;
 +	int ret, gain;
 +	__le16 raw;
  
  	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
-@@ -120,11 +121,12 @@ static int al3010_read_raw(struct iio_dev *indio_dev,
- 		 * - low byte of output is stored at AL3010_REG_DATA_LOW
- 		 * - high byte of output is stored at AL3010_REG_DATA_LOW + 1
+@@ -144,11 +145,12 @@ static int al3320a_read_raw(struct iio_dev *indio_dev,
+ 		 * - low byte of output is stored at AL3320A_REG_DATA_LOW
+ 		 * - high byte of output is stored at AL3320A_REG_DATA_LOW + 1
  		 */
--		ret = regmap_read(data->regmap, AL3010_REG_DATA_LOW, &raw);
-+		ret = regmap_bulk_read(data->regmap, AL3010_REG_DATA_LOW,
+-		ret = regmap_read(data->regmap, AL3320A_REG_DATA_LOW, &raw);
++		ret = regmap_bulk_read(data->regmap, AL3320A_REG_DATA_LOW,
 +				       &raw, sizeof(raw));
  		if (ret)
  			return ret;
