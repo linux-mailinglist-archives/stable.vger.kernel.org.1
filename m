@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-263054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Eu+QAa1ELmq9rgQAu9opvQ
-	(envelope-from <stable+bounces-263054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:33 +0200
+	id 8ZodCrVELmrIrgQAu9opvQ
+	(envelope-from <stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0568073D
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC10C680754
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ry5yCXa4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263054-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263054-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uP4jbel6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 910C53015C8D
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E186D301649D
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAEE30D3E4;
-	Sun, 14 Jun 2026 06:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A83A318EE2;
+	Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE392F8BEE
-	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1A524A078
+	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781417128; cv=none; b=pZLAeJdjZtKLJ4DYdLSIgsqySAfxPYRC2BVRtmssExt1A0kV3ICR9Jj8umM3/xu/90EezQB1Bmh1Nk9L34+ilGWeyZytDbve5zeL4dRKGscw0P3N/3rgcoXJnffomQ3CdrKUbQEFkOX3dGw6EJ3pP8pHr2EaSGlQkK6ELlYyuNw=
+	t=1781417125; cv=none; b=IdK1GVLEWHECYAYvHDzXv0XyncSMF/t3L075TMqCLooI4YxqTGxwBGzfcqWi/SQVAhquuaorMC+hpyHyDFLpYF1JNrEVaIFsycnoLptHQBbdCV5P+askwQZ8qhR+Jo6bw+dQ9xT8IS8LCxpvfGg7DzFbsg6qNoChpOgZaprUB/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781417128; c=relaxed/simple;
-	bh=gvPH2m2bpfs736TmBIlRgt05ivgUlpwq1DSs9g9/Py4=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=B8uLQD/e5KrL0Nso0SUxp5SaKy1ac8bvCAPu7ukpHQqLD+BusgcOtUSIt7aTl5N/CiZbn6gYdeLLCBTjh9LmJLm1BqQjxXNTQgcRFDZ+QovcOtvZDeASGraioiSQT3KzJvz1lNYBTDlutek0U3/1zDUgXie7tYlEsb+Tx+MxU+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry5yCXa4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59411F000E9;
-	Sun, 14 Jun 2026 06:05:26 +0000 (UTC)
+	s=arc-20240116; t=1781417125; c=relaxed/simple;
+	bh=00Z37e9//bTa/nsa9vjJIuAcas3MswZVGinqWp4cdAs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Vpgsa1pPDL91Xsv+2fhs67IyPtgZHAc4SR3Q1CQCMOYGNpS+N5CedD7lS/zDSNH82cV70XvA0J+oWAAHoZXo/lwNjunSH89TIyliv9wuhu0X4ZE5ka7IfzDLrpZP6kav/AYpC7dSsNsI10N+7U0KZuW6nt7GSJIYGxV/9KLgBS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP4jbel6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8595E1F000E9;
+	Sun, 14 Jun 2026 06:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781417127;
-	bh=6Vm0S+sYacDpI7hTSAw2J/foEwrGLFXf59pGDM/aU9A=;
+	s=korg; t=1781417124;
+	bh=96U990QXN1C7BhBkHCddDqPJbdI2eEmgZ1wvax3eGeQ=;
 	h=Subject:To:From:Date;
-	b=ry5yCXa4FUFw91kSB6RA9yYp6XSF45K+brY6kOu/mKA3XgXkPCo8EPiX9Vhi0ErxM
-	 YcyNee6r23+5PqDdO8xLF7ChxRqLwFfkbHIMG/9x2cHG4UPFbAJcZhe0i1jCuKmVvk
-	 vH1GijOzQOqcR2Rolgpsqtf3NbP0y+MYq3vj7gKY=
-Subject: patch "iio: dac: ad3552r-hs: fix uninitialized data ni" added to char-misc-next
-To: error27@gmail.com,Stable@vger.kernel.org,adureghello@baylibre.com,jic23@kernel.org
+	b=uP4jbel6X5dhUMzbxkgkvujZtx9U3Hf/EgBvu0oUB7ilU0HsnD8BysQwXEJGV83q0
+	 1mOrosclF0gW9Y5yAz67y0atgW6hx9UmFRNRSOkR9q3LSmSbpa897jIqkpb3N/uQVk
+	 dCcJipdqzoyJG6+hKqlnSGpVvPTyBAgV31qXjWT0=
+Subject: patch "iio: backend: fix uninitialized data in debugfs" added to char-misc-next
+To: error27@gmail.com,Stable@vger.kernel.org,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Sun, 14 Jun 2026 08:03:38 +0200
-Message-ID: <2026061438-robust-truffle-5795@gregkh>
+Message-ID: <2026061438-overbid-tipper-160e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,22 +62,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263054-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263053-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:error27@gmail.com,m:Stable@vger.kernel.org,m:adureghello@baylibre.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:error27@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,baylibre.com,kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -88,15 +88,15 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,gregkh:mid,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4FE0568073D
+X-Rspamd-Queue-Id: CC10C680754
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: dac: ad3552r-hs: fix uninitialized data ni
+    iio: backend: fix uninitialized data in debugfs
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -111,39 +111,37 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From eaaa7eef181892ef7ba56c6295b81f0ae4492c13 Mon Sep 17 00:00:00 2001
+From a6e8b14a4897d0b6df9744f33d0a30e6b92368eb Mon Sep 17 00:00:00 2001
 From: Dan Carpenter <error27@gmail.com>
-Date: Mon, 25 May 2026 10:15:46 +0300
-Subject: iio: dac: ad3552r-hs: fix uninitialized data ni
- ad3552r_hs_write_data_source()
+Date: Mon, 25 May 2026 10:16:11 +0300
+Subject: iio: backend: fix uninitialized data in debugfs
 
-If the *ppos value is non-zero then the simple_write_to_buffer() function
-won't initialized the start of the buf[] buffer.  Non-zero values for
-*ppos won't work here generally, so just test for them and return -ENOSPC
-at the start of the function.
+If the *ppos value is non-zero then simple_write_to_buffer() will not
+initialize the start of the buf[] buffer.  Non-zero ppos values aren't
+going to work at all.  Check for that at the start of the function and
+return -ENOSPC.
 
-Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+Fixes: cdf01e0809a4 ("iio: backend: add debugFs interface")
 Signed-off-by: Dan Carpenter <error27@gmail.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/dac/ad3552r-hs.c | 2 +-
+ drivers/iio/industrialio-backend.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index a9578afa7015..6bc64f53bce9 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -549,7 +549,7 @@ static ssize_t ad3552r_hs_write_data_source(struct file *f,
- 
- 	guard(mutex)(&st->lock);
+diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+index 10e689f49441..cd697fbeae47 100644
+--- a/drivers/iio/industrialio-backend.c
++++ b/drivers/iio/industrialio-backend.c
+@@ -156,7 +156,7 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
+ 	ssize_t rc;
+ 	int ret;
  
 -	if (count >= sizeof(buf))
 +	if (*ppos != 0 || count >= sizeof(buf))
  		return -ENOSPC;
  
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+ 	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
 -- 
 2.54.0
 
