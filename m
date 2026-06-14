@@ -1,173 +1,168 @@
-Return-Path: <stable+bounces-263087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8if+KdEGL2pw7QQAu9opvQ
-	(envelope-from <stable+bounces-263087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 21:53:53 +0200
+	id R96CI8MgL2pQ8AQAu9opvQ
+	(envelope-from <stable+bounces-263088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 23:44:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0692D682166
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 21:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BB9682579
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 23:44:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=mMbRAbw5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263087-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263087-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	dkim=pass header.d=sina.com header.s=201208 header.b=ZU1qocWC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263088-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263088-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=sina.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A84873008756
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 19:53:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 413C03008786
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 21:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312FA221FB1;
-	Sun, 14 Jun 2026 19:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65C33112B2;
+	Sun, 14 Jun 2026 21:44:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.245.243.92])
+Received: from r3-21.sinamail.sina.com.cn (r3-21.sinamail.sina.com.cn [202.108.3.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A66146D53
-	for <stable@vger.kernel.org>; Sun, 14 Jun 2026 19:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0266179A3
+	for <stable@vger.kernel.org>; Sun, 14 Jun 2026 21:44:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781466831; cv=none; b=Fssg6EpkPyWb+WpamOT+hCy6tEILXgPLc3b6i7PIYtFxxGQ81hRc1CnCMtTJrM63DXGFseJeu/LAPh5hjMdojcajr/T+p4ioltwDBCSjXuvDsszaeQmFhdqjJioinGJwd2XIRY2sSqduk1c6TvCQtOQk4ealq1nziee4gE0VJJg=
+	t=1781473471; cv=none; b=n8fO93Qt4eA/WHxggUT7pSI3uR4ZuFIZmrGElM6AIIFKcORVkpMTtKzYiY4pDvwJh4ah1lcP/z4XjUrKcAZv4aLlJJQj5Fv4k2qGXw4U1dfr8Nw9OrkEKhopJ+DgXb962VOQArfVhk43uZwS9G1aVpU3xJgkFQJCXe6TLuRI0Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781466831; c=relaxed/simple;
-	bh=qy6XB5ftcsKKrvYeQQ1x/CaoDMgoBHrsLjrbSIhuOK8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nh6tJ+mC34ScSmXqyXUahU8Hr88t28ntAn9Kj6Au4lSrMst6aZIqeKdXgXlpCRs3tW1gH0SHG/jCuKfyA2Jg4+oPG3/NOIZvtSkpEnwQcPQ84iSIsFoqz34wByBt+jM1y05l9kXUh5Bg+tShUexbr9zmI32QXE9hEML41MjajVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.at; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=mMbRAbw5; arc=none smtp.client-ip=44.245.243.92
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1781466829; x=1813002829;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=qy6XB5ftcsKKrvYeQQ1x/CaoDMgoBHrsLjrbSIhuOK8=;
-  b=mMbRAbw5PdN+KK43rv9l2CwhxwDjH6wYr4Ymz2xX0pD2RNP/nqvQgJVd
-   RykJy0+vEJU/bKVJzKWd/f0mncfl9I/4srQ+vnHfAV13hsTlQ6GG3z6+B
-   A4d2EtruY285y1YnrFwB38Pksxi+7Eg69iKVLsNPHWaZ6phkukmGX1Oc/
-   OzPSJ2Q61FG4EV/0j5QVNC3aqGqY/jAZlmlxS3Nem+CF2me13buWCuODw
-   fvxCQdNrkGhlnfDucQDDIce9HUXaE/NSqG0r+NrEDf9jJlu9SMCnAmNlc
-   gE8oBEbkEwlNkWC1IW32m0qD1GlEhpfJnTpuszv/sQigbpZKKNqf9bmVG
-   g==;
-X-CSE-ConnectionGUID: RzcBb7dOQY+d3KoMa4Wy4Q==
-X-CSE-MsgGUID: blzlnT/cS/2e+HEIqZvDaw==
-X-IronPort-AV: E=Sophos;i="6.24,205,1774310400"; 
-   d="scan'208";a="21239188"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-001.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 19:53:49 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:18514]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.41.143:2525] with esmtp (Farcaster)
- id ce7173d4-7a96-42f6-958f-54e175b5517f; Sun, 14 Jun 2026 19:53:49 +0000 (UTC)
-X-Farcaster-Flow-ID: ce7173d4-7a96-42f6-958f-54e175b5517f
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Sun, 14 Jun 2026 19:53:48 +0000
-Received: from bcd0741a98fd.amazon.com (10.106.100.56) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Sun, 14 Jun 2026 19:53:47 +0000
-From: Michael Tautschnig <tautschn@amazon.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Michael Tautschnig <tautschn@amazon.com>, <stable@vger.kernel.org>
-Subject: [PATCH] staging: vme_user: fix heap OOB in buffer_from_user and buffer_to_user
-Date: Sun, 14 Jun 2026 21:53:08 +0200
-Message-ID: <20260614195318.40397-1-tautschn@amazon.com>
-X-Mailer: git-send-email 2.54.0
+	s=arc-20240116; t=1781473471; c=relaxed/simple;
+	bh=navlVoBp1kQky6qKHwqTrj7fZXVVpB0aQ4+B0v/QQL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BAJBj4A4EfrdkxKhIK0UNqkZnoezopLf5UzOAHe3Pb2uf1g5t3UUug/o3t2kF9dvAFA3U5lXJ/brHVW+49QVB3iJp77USnBEAtkFVHlL3HlBosg+t8Bq+ED5nVuOeqFaydmKWXWFhF4L3R38cXfyRPU+u/KFqPWd7SCR+VysfQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=ZU1qocWC; arc=none smtp.client-ip=202.108.3.21
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1781473467;
+	bh=MxEzgnVaJJNN8RKQtn+yY2RRWYcWvNqZBHZWDQPhb4o=;
+	h=From:Subject:Date:Message-ID;
+	b=ZU1qocWCzjeFmg1KejxMtJd5WSAvvMZ4q04Stxw8HID5FH9jjayqAns15y4JALRnV
+	 4ySHPRVk9412N9YRvtmQiqHoi1qARLm6Ygk9FrIXAYqW2OF2U8Wn/zHn5a8T5Dj7++
+	 kmZ61bqJegcCKH+h5p68mNtrrDzwyAwc0wjM9ygo=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
+	by sina.com (10.54.253.33) with ESMTP
+	id 6A2F2026000049F1; Sun, 15 Jun 2026 05:41:59 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+X-SMAIL-MID: 6070456685379
+X-SMAIL-UIID: 9BEF5C9187CE499A8DE2736CA6569A98-20260615-054159-1
+From: Hillf Danton <hdanton@sina.com>
+To: syzbot <syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com>
+Cc: Mohammed EL Kadiri <med08elkadiri@gmail.com>,
+	dhowells@redhat.com,
+	keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzkaller-bugs@googlegroups.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] KEYS: avoid filesystem reclaim while holding keyring->sem
+Date: Mon, 15 Jun 2026 05:41:49 +0800
+Message-ID: <20260614214150.1791-1-hdanton@sina.com>
+In-Reply-To: <20260614150041.21172-1-med08elkadiri@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D042UWB004.ant.amazon.com (10.13.139.150) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-11.06 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	WHITELIST_SPF_DKIM(-3.00)[amazon.com:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[amazon.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263087-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
-	FORGED_SENDER(0.00)[tautschn@amazon.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:tautschn@amazon.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-263088-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com,m:med08elkadiri@gmail.com,m:dhowells@redhat.com,m:keyrings@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:syzkaller-bugs@googlegroups.com,m:stable@vger.kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hdanton@sina.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tautschn@amazon.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[amazon.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,vger.kernel.org,googlegroups.com];
+	DKIM_TRACE(0.00)[sina.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hdanton@sina.com,stable@vger.kernel.org];
+	FREEMAIL_FROM(0.00)[sina.com];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,f55b043dacf43776b50c];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0692D682166
+X-Rspamd-Queue-Id: E6BB9682579
 
-VGhlIFNMQVZFLXBhdGggcmVhZC93cml0ZSBoZWxwZXJzIGJ1ZmZlcl90b191c2VyKCkgYW5kCmJ1
-ZmZlcl9mcm9tX3VzZXIoKSBjb3B5ICdjb3VudCcgYnl0ZXMgaW50by9vdXQgb2YgdGhlIGZpeGVk
-LXNpemUKa2Vybl9idWYgKFBDSV9CVUZfU0laRSA9IDB4MjAwMDAgPSAxMjggS2lCKSB3aXRob3V0
-IGJvdW5kaW5nCmNvdW50IGFnYWluc3Qgc2l6ZV9idWYuCgpUaGUgY2FsbGVyIHZtZV91c2VyX3dy
-aXRlKCkvdm1lX3VzZXJfcmVhZCgpIG9ubHkgY2xhbXBzIGNvdW50IHRvCnRoZSBWTUUgd2luZG93
-IHNpemUgKGltYWdlX3NpemUgPSB2bWVfZ2V0X3NpemUocmVzb3VyY2UpKSwgd2hpY2gKVk1FX1NF
-VF9TTEFWRSBzZXRzIGZyb20gdXNlci1zdXBwbGllZCBzbGF2ZS5zaXplIOKAlCB2YWxpZGF0ZWQK
-YWdhaW5zdCB0aGUgVk1FIGFkZHJlc3Mgc3BhY2UgKHVwIHRvIFZNRV9BMzJfTUFYID0gNCBHaUIp
-LCBOT1QKYWdhaW5zdCBQQ0lfQlVGX1NJWkUuICBXaGVuIHRoZSB3aW5kb3cgZXhjZWVkcyAxMjgg
-S2lCLCBhCndyaXRlKCkvcmVhZCgpIGNvcGllcyBwYXN0IHRoZSBrZXJuX2J1ZiBhbGxvY2F0aW9u
-LgoKRml4IGJ5IGNsYW1waW5nIGNvdW50IGFnYWluc3Qgc2l6ZV9idWYgaW4gYm90aCBidWZmZXJf
-ZnJvbV91c2VyKCkKYW5kIGJ1ZmZlcl90b191c2VyKCksIHdpdGggYW4gZWFybHkgcmV0dXJuIHdo
-ZW4gKnBwb3MgPj0gc2l6ZV9idWYuClRoaXMgbWlycm9ycyB0aGUgZXhpc3RpbmcgYm91bmRzIGNo
-ZWNrIGluIHJlc291cmNlX2Zyb21fdXNlcigpICh0aGUKTUFTVEVSLXBhdGggaGVscGVyKS4KClRo
-ZSBidWcgd2FzIGZvdW5kIGJ5IHN0YXRpYyBhbmFseXNpcyAoQ29kZVFMIHRhaW50IHRyYWNraW5n
-ICsgQ0JNQwpib3VuZGVkIG1vZGVsIGNoZWNraW5nKSBhbmQgZHluYW1pY2FsbHkgY29uZmlybWVk
-IHVuZGVyIEtBU0FOIHdpdGgKdGhlIHZtZV9mYWtlIGJyaWRnZToKCiAgQlVHOiBLQVNBTjogc2xh
-Yi1vdXQtb2YtYm91bmRzIGluIF9jb3B5X2Zyb21fdXNlcisweDJkLzB4ODAKICBXcml0ZSBvZiBz
-aXplIDI2MjE0NCBhdCBhZGRyIGZmZmY4ODgwMDQxMDAwMDAgYnkgdGFzayB0cmlnZ2VyLzY4CiAg
-ICBfY29weV9mcm9tX3VzZXIrMHgyZC8weDgwCiAgICB2bWVfdXNlcl93cml0ZSsweDEzZS8weDI0
-MCBbdm1lX3VzZXJdCiAgICB2ZnNfd3JpdGUrMHgxYjgvMHg3YTAKICAgIGtzeXNfd3JpdGUrMHhi
-OC8weDE1MAoKQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogTWljaGFl
-bCBUYXV0c2NobmlnIDx0YXV0c2NobkBhbWF6b24uY29tPgotLS0KIGRyaXZlcnMvc3RhZ2luZy92
-bWVfdXNlci92bWVfdXNlci5jIHwgMTggKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdl
-ZCwgMTggaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc3RhZ2luZy92bWVfdXNl
-ci92bWVfdXNlci5jIGIvZHJpdmVycy9zdGFnaW5nL3ZtZV91c2VyL3ZtZV91c2VyLmMKaW5kZXgg
-NTgyOWE0MTQxLi5iYWNmNmE3ZDYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3RhZ2luZy92bWVfdXNl
-ci92bWVfdXNlci5jCisrKyBiL2RyaXZlcnMvc3RhZ2luZy92bWVfdXNlci92bWVfdXNlci5jCkBA
-IC0xNTYsNiArMTU2LDE1IEBAIHN0YXRpYyBzc2l6ZV90IGJ1ZmZlcl90b191c2VyKHVuc2lnbmVk
-IGludCBtaW5vciwgY2hhciBfX3VzZXIgKmJ1ZiwKIHsKIAl2b2lkICppbWFnZV9wdHI7CiAKKwkv
-KiBDbGFtcCB0byB0aGUgZml4ZWQga2Vybl9idWYgKHNpemVfYnVmKTogdGhlIFZNRSB3aW5kb3cK
-KwkgKiAoaW1hZ2Vfc2l6ZSkgbWF5IGV4Y2VlZCBQQ0lfQlVGX1NJWkUsIHNvICpwcG9zICsgY291
-bnQgY2FuCisJICogcnVuIHBhc3Qga2Vybl9idWYgb3RoZXJ3aXNlLgorCSAqLworCWlmICgqcHBv
-cyA+PSBpbWFnZVttaW5vcl0uc2l6ZV9idWYpCisJCXJldHVybiAwOworCWlmIChjb3VudCA+IGlt
-YWdlW21pbm9yXS5zaXplX2J1ZiAtICpwcG9zKQorCQljb3VudCA9IGltYWdlW21pbm9yXS5zaXpl
-X2J1ZiAtICpwcG9zOworCiAJaW1hZ2VfcHRyID0gaW1hZ2VbbWlub3JdLmtlcm5fYnVmICsgKnBw
-b3M7CiAJaWYgKGNvcHlfdG9fdXNlcihidWYsIGltYWdlX3B0ciwgKHVuc2lnbmVkIGxvbmcpY291
-bnQpKQogCQlyZXR1cm4gLUVGQVVMVDsKQEAgLTE2OCw2ICsxNzcsMTUgQEAgc3RhdGljIHNzaXpl
-X3QgYnVmZmVyX2Zyb21fdXNlcih1bnNpZ25lZCBpbnQgbWlub3IsIGNvbnN0IGNoYXIgX191c2Vy
-ICpidWYsCiB7CiAJdm9pZCAqaW1hZ2VfcHRyOwogCisJLyogQ2xhbXAgdG8gdGhlIGZpeGVkIGtl
-cm5fYnVmIChzaXplX2J1Zik6IHRoZSBWTUUgd2luZG93CisJICogKGltYWdlX3NpemUpIG1heSBl
-eGNlZWQgUENJX0JVRl9TSVpFLCBzbyAqcHBvcyArIGNvdW50IGNhbgorCSAqIHJ1biBwYXN0IGtl
-cm5fYnVmIG90aGVyd2lzZS4KKwkgKi8KKwlpZiAoKnBwb3MgPj0gaW1hZ2VbbWlub3JdLnNpemVf
-YnVmKQorCQlyZXR1cm4gMDsKKwlpZiAoY291bnQgPiBpbWFnZVttaW5vcl0uc2l6ZV9idWYgLSAq
-cHBvcykKKwkJY291bnQgPSBpbWFnZVttaW5vcl0uc2l6ZV9idWYgLSAqcHBvczsKKwogCWltYWdl
-X3B0ciA9IGltYWdlW21pbm9yXS5rZXJuX2J1ZiArICpwcG9zOwogCWlmIChjb3B5X2Zyb21fdXNl
-cihpbWFnZV9wdHIsIGJ1ZiwgKHVuc2lnbmVkIGxvbmcpY291bnQpKQogCQlyZXR1cm4gLUVGQVVM
-VDsKLS0gCjIuNDMuMAoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgQXVzdHJpYSBHbWJICkJy
-dWVja2Vua29wZmdhc3NlIDEKODAyMCBHcmF6Ck9lc3RlcnJlaWNoClNpdHogaW4gR3JhegpGaXJt
-ZW5idWNobnVtbWVyOiBGTiA0Mzk0NTMgZgpGaXJtZW5idWNoZ2VyaWNodDogTGFuZGVzZ2VyaWNo
-dCBmdWVyIFppdmlscmVjaHRzc2FjaGVuIEdyYXoKCgo=
+> On Sun, 14 Jun 2026 16:00:41 +0100 Mohammed EL Kadiri wrote:
+>
+#syz test upstream master
 
+__key_link_begin() runs with keyring->sem held and calls
+assoc_array_insert(), which does GFP_KERNEL allocations.  Those
+allocations may enter filesystem reclaim, evict an fscrypt-protected
+inode, and reach keyring_clear() via fscrypt_put_master_key() --
+taking a keyring semaphore of the same lockdep class and closing a
+keyring->sem -> fs_reclaim -> keyring->sem cycle reported by syzbot.
+
+Wrap the assoc_array_insert() call with memalloc_nofs_save() /
+memalloc_nofs_restore() so reclaim cannot recurse into the keys
+subsystem while keyring->sem is held.
+
+Reported-by: syzbot+f55b043dacf43776b50c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f55b043dacf43776b50c
+Fixes: d7e7b9af104c ("fscrypt: stop using keyrings subsystem for fscrypt_master_key")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
+---
+ security/keys/keyring.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/security/keys/keyring.c b/security/keys/keyring.c
+index 5a9887d6b7be..21bb2e7e7cca 100644
+--- a/security/keys/keyring.c
++++ b/security/keys/keyring.c
+@@ -12,6 +12,7 @@
+ #include <linux/security.h>
+ #include <linux/seq_file.h>
+ #include <linux/err.h>
++#include <linux/sched/mm.h>
+ #include <linux/user_namespace.h>
+ #include <linux/nsproxy.h>
+ #include <keys/keyring-type.h>
+@@ -1298,6 +1299,7 @@ int __key_link_begin(struct key *keyring,
+ 		     struct assoc_array_edit **_edit)
+ {
+ 	struct assoc_array_edit *edit;
++	unsigned int nofs_flags;
+ 	int ret;
+ 
+ 	kenter("%d,%s,%s,",
+@@ -1315,10 +1317,12 @@ int __key_link_begin(struct key *keyring,
+ 	/* Create an edit script that will insert/replace the key in the
+ 	 * keyring tree.
+ 	 */
++	nofs_flags = memalloc_nofs_save();
+ 	edit = assoc_array_insert(&keyring->keys,
+ 				  &keyring_assoc_array_ops,
+ 				  index_key,
+ 				  NULL);
++	memalloc_nofs_restore(nofs_flags);
+ 	if (IS_ERR(edit)) {
+ 		ret = PTR_ERR(edit);
+ 		goto error;
+-- 
+2.43.0
 
