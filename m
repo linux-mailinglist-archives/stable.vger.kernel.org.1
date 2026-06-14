@@ -1,205 +1,204 @@
-Return-Path: <stable+bounces-263063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NImDNuZzLmqmwAQAu9opvQ
-	(envelope-from <stable+bounces-263063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 11:27:02 +0200
+	id 3OEaCo11Lmq/wQQAu9opvQ
+	(envelope-from <stable+bounces-263064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 11:34:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCC0680BE8
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 11:27:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1DA680C35
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 11:34:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R2qrsybh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263063-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263063-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=1wt.eu header.s=mail header.b=gd0IIxKO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263064-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263064-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=1wt.eu;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B60D7301B923
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 09:26:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 125493003D01
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 09:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C8139BFF8;
-	Sun, 14 Jun 2026 09:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAC91EB1AA;
+	Sun, 14 Jun 2026 09:34:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta1.formilux.org (mta1.formilux.org [51.159.59.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B832740D570
-	for <stable@vger.kernel.org>; Sun, 14 Jun 2026 09:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB911474CC;
+	Sun, 14 Jun 2026 09:33:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781429194; cv=none; b=FBJENesmtMRl2DbP4zxbuPkY5Lwk/28ckt3Eqc0Yy8qQHJ5EwKvxOXqcXvdJivzPPJCzXKLQCqVEYSyNx9kfU1x1EsMZUJTqOLHIatW4iSrcMx4YjjvKFw8WHRtt7lkU4pL9G7dVnUi1f4P6loo6xE0la9QWxffVNae6xak+As4=
+	t=1781429640; cv=none; b=jox89lp3AIRLUeuR8vGMG1eGnhR9VpMp1zL5Sk8hBhiiOXkGJHh1KIrdcmSJzYDuA7LYjHbSXqRdq8kalIn/HFxZkvY4Okh5uIrmxlmuEukUzOJaJKeixDqBpePA63DMzpbkLb+n3uk3Lj/mc3tCDbwH1d6zfihqVjGB6jRXoZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781429194; c=relaxed/simple;
-	bh=lhowr9EjwPapIm5LZ9CUvqkGMBmfsnVS9rihubPA5e4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MoKZPG+vsa7Fjp0zcG5SWkLs3GGn//xwal1LJEbv853Colqt3Qcmahdg0mD815wQRz9AqogoQiZ56fiynAm40CYJCdxF6+3XSmi7apAmLW1/BtP2ajcnIKTdQXWYJgvyRgvUFoMF1DKB2JrZucuZf3kpLUzaeSRT7yLGr0XwOuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R2qrsybh; arc=none smtp.client-ip=209.85.210.174
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-8419ab3a297so995610b3a.2
-        for <stable@vger.kernel.org>; Sun, 14 Jun 2026 02:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781429191; x=1782033991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NT1UtqM2AmX11NcJjNv9n62UrLKyvxdMBYbCsYRy7Tg=;
-        b=R2qrsybhpG8zS5xtDIWAsro5G+GDlQjIRuaZ9LuEoXyb1e3EzXKHCl6LDL9gegkaeq
-         Z1/O6/DL56G1edjEaLOjuJOywShKh2nScTQ13ZKbfGTVj/q8xk6tpyDgDEz0VlFD1Mka
-         AEitCfa0pqWyUDV2GoQ06P6yRwenUQqJDxKJEhrM6PsCRLy1dj9MdyoJ4ZmCLQNg1JP2
-         r0S7Eg0SuuC94fT7pdg+730X3Bp1T/i4KIBiMA38XzIaMoBRXExDHovyQdrT/c/ZDSSu
-         TX0CMuairgljLvQ9POq+wuVD6mT4Q/ZvlNGPRAQYwkA/b8qy2rTULQKSggOwh2Oq9m6O
-         YRAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781429191; x=1782033991;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NT1UtqM2AmX11NcJjNv9n62UrLKyvxdMBYbCsYRy7Tg=;
-        b=hZSLitELCj42V7n4TRWadDYG2GFBIWhiTULYSECnh4jRocG2QeU5qOSTrjdLNOSMZC
-         4vE1yBMYTGBiDwTRtvWYkjjdcNa+NWchJ2z/ylR8ijdzd+CK/ggvoubv6XtyQRyPqiEC
-         PIhauJ0n3HfXuxtTPx9I0LbW8idTyumXrVRBRMrE0KkUjjOpUgiH073Meydaonc1X4NE
-         R53XyQKP1jJFaS5PEqcYNe4b+0fVkE0yEVqag2CQnTnr859wWDFln2f7XzYpQGDj+lBx
-         MdQVvvKZR/E+DzmsPWc3enaOpm7mmXGnoT+Pamh0v6K6/YgiRl3csUwVnGlB0Fjy76P/
-         sRqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8zjEtbK8z9pAU4gUplLbR7xNdhkBZGb/fuYB9/LHSNaiN8wFcWag1Zc1KUb462YY5G8ulOU3g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFj25X874zNxzqPWpUfFNqAEtNnZEIwIJ6GnXO/l0nnRQhguLk
-	8wOcxOjyQJzfs4tbE6+9GvIVxdTgw/vN3tEofLQixeiDZoud4NnqdY0O
-X-Gm-Gg: Acq92OHhHt8B7NZMVOx23mkvxnLXmljsjuT7z3n+eR+0tkOJ0BzJvnbKcBgd4IAIO9w
-	/VriV+9dJ81Yb37hYXoFRnP/7zRY4o/xcN+Em+0ZMKu+hZ+566U1IIu5uk2ScImlUJMg/T6FMGu
-	V2kdAyoEnBLRyJ0YjIv5S4BX0cCXNJmJX7gA7/YoNIFcQ29cBVXW8gwHbOFsFYTIvgM6dAIAOXm
-	ospyBvBoP4u8ZE17AOSL+se4QVXiz90ex1pE5/spGLWqsXgC3JTdwTy/wjReMe8ZuMl+38u5FUF
-	QODJE19sky52YYZ0D3TjGGTEiJUtrdkw0NKQCuhB987FNGbmrEKZyPjlD0j3FMN0BbcpWcaGGaH
-	4hOVVrq16670QkhCriO1WbVXtChkeFWoIGMSQYdzq2rVKTDVDyocaHyRiUvzAOM6UlUHXRtjAVn
-	zOiu8G6nSpAoN19cS7a0+pmJFDQoyEpbHwl7Vx0+kL4Kxbm8p+sB36xerhjTZE0ni3pACUWh+DN
-	jbPoPgc+Be/YV+C
-X-Received: by 2002:a05:6a00:3c8c:b0:842:688f:307f with SMTP id d2e1a72fcca58-8434cf0e0e6mr10983905b3a.28.1781429190897;
-        Sun, 14 Jun 2026 02:26:30 -0700 (PDT)
-Received: from nugod-NUC15CRHU5.tail9f095a.ts.net ([218.237.104.87])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b057461sm8198423b3a.58.2026.06.14.02.26.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 02:26:30 -0700 (PDT)
-From: HyeongJun An <sammiee5311@gmail.com>
-To: Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	HyeongJun An <sammiee5311@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH bpf v2 1/2] libbpf: Reject out-of-range linker relocation offsets
-Date: Sun, 14 Jun 2026 18:26:15 +0900
-Message-ID: <20260614092616.165337-2-sammiee5311@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260614092616.165337-1-sammiee5311@gmail.com>
-References: <20260614092616.165337-1-sammiee5311@gmail.com>
+	s=arc-20240116; t=1781429640; c=relaxed/simple;
+	bh=39vi8RQyz3VrBoJ2dZQYUcftyCtehq+6tCngoyIN7+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewhUSKDCXCw5DqQABKD6HlGmcYqIGAdzQR21lrp0qozUzM2HqIUnewFrdvs5Z7qY33M+gvDgsbXNDt7bfzNHmkzPSOTObt1hCfjtjGb+dBQ/FPTO2se/lkhIQvGwW50uilOJy6Z53EuypZr/+uuYj1cFcEe4CuyaNDq0hKE2YcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=1wt.eu; spf=pass smtp.mailfrom=1wt.eu; dkim=pass (1024-bit key) header.d=1wt.eu header.i=@1wt.eu header.b=gd0IIxKO; arc=none smtp.client-ip=51.159.59.229
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1wt.eu; s=mail;
+	t=1781429630; bh=iJ8ltjNQO3XwTSQDKP9JX7ThWnfsAAoNUimBE3TzqWM=;
+	h=From:Message-ID:From;
+	b=gd0IIxKOE72g+WvkCNozzMTHRRTmzMlYcmhZJodIT//28LdK6lWM5xLLbnzQ2ICTq
+	 h/uKrrvpeoXr6ztQxG7GdHtCBC1z8GKsINRrHy6Z6K9rCbhWu4OgFi1KjyVjr4GDgJ
+	 rJiWawvCuTMWhFZk+Yd53YlmlsDQUjXIwWgRYMzM=
+Received: from 1wt.eu (ded1.1wt.eu [163.172.96.212])
+	by mta1.formilux.org (Postfix) with ESMTP id 48101C0A1D;
+	Sun, 14 Jun 2026 11:33:50 +0200 (CEST)
+Date: Sun, 14 Jun 2026 11:33:49 +0200
+From: Willy Tarreau <w@1wt.eu>
+To: "Artem S. Tashkinov" <aros@gmx.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: [RFC/PROPOSAL] Shifting the x.y.z Stable Tree to a Continuous,
+ Signed Patch-Stream Model
+Message-ID: <ai51ff9TcMOlEGqA@1wt.eu>
+References: <cdb0dd2f-f331-46ed-8439-1609173f083a@gmx.com>
+ <2026052444-unlawful-eskimo-9c41@gregkh>
+ <5f62925e-0faf-40aa-a594-10ef6d50f24e@gmx.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f62925e-0faf-40aa-a594-10ef6d50f24e@gmx.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[1wt.eu,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[1wt.eu:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-263063-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andrii@kernel.org,m:ast@kernel.org,m:daniel@iogearbox.net,m:eddyz87@gmail.com,m:memxor@gmail.com,m:martin.lau@linux.dev,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:shuah@kernel.org,m:bpf@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sammiee5311@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:aros@gmx.com,m:gregkh@linuxfoundation.org,m:linux-kernel@vger.kernel.org,m:sashal@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[w@1wt.eu,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263064-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sammiee5311@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmx.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[w@1wt.eu,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1wt.eu:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,1wt.eu:dkim,1wt.eu:mid,1wt.eu:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4FCC0680BE8
+X-Rspamd-Queue-Id: 9D1DA680C35
 
-The static linker sanity-checks relocation sections before appending them,
-but for executable target sections it only verifies that r_offset is
-BPF-instruction aligned.  It does not verify that the offset is inside the
-relocated section.
+On Sun, Jun 14, 2026 at 08:16:06AM +0000, Artem S. Tashkinov wrote:
+> A better model, in my view, would be:
+> 
+> * stable.git remains the canonical source of truth;
+> * every downstream-consumable stable state is identified by branch + signed
+> commit ID, optionally with a signed machine-readable manifest;
 
-A malformed object can therefore pass an out-of-range offset through
-linker_sanity_check_elf_relos().  When the relocation is against an
-STT_SECTION symbol, linker_append_elf_relos() uses the unchecked offset to
-find the instruction to adjust:
+Well, you have stable-queue which is getting closer to that.
 
-  insn = dst_linked_sec->raw_data + dst_rel->r_offset;
+> * distros consume `v7.0 + stable commits through <commit>` or `linux-7.0.y
+> as of <date/commit>`, according to their own testing and release policy;
 
-and then reads insn->code and updates insn->imm.
+what makes you think that distros will want to pick even less tested
+or validated commits ? Right now we know that some distros cherry-pick
+just what they see fit and they miss important fixes, probably based on
+lack of trust of a well-exposed set of patches that compose a version.
+If you refine the granularity, there will be even less trust in the
+level of test of each commit and they might wait even longer to pick
+fixes at all.
 
-This is reproducible with bpftool's static linker by crafting a BPF object
-with a 16-byte executable section and a relocation in its .rel section
-whose r_offset is 0x1000:
+> * point releases may continue to exist for consumers that require them, but
+> they become one possible checkpoint format rather than the central model.
 
-  BUG: AddressSanitizer: heap-buffer-overflow in linker_append_elf_relos
-  READ of size 1
-   linker_append_elf_relos
-   bpf_linker_add_file
-   bpf_linker__add_file
-   do_object
+This model at least gives a good indication of how late your system is
+(the last number roughly corresponds to the number of weeks past the
+release). It also offers opportunities to maintainers to voice in
+saying "not this patch" or "pick that one with it" even if it does
+not happen that often. And it increases the exposure on patches
+combinations to more users. The finer your granulary, the less tested
+each combination is. Here the current model sets discrete points in
+time where many users deploy the same version hence the same set of
+patches. This is particularly important and it has allowed many times
+in the past to quickly spot a regression that would have taken much
+longer to be noticed if everyone would deploy at a different point.
+> 
+> This decouples two decisions that are currently conflated:
+> 
+> 1. upstream's decision that a commit belongs in the stable branch;
+> 2. a downstream's decision that a particular aggregate is ready to ship to
+> its users.
+> 
+> Those are not the same decision. Fedora, Arch, Debian, Ubuntu, enterprise
+> vendors, embedded vendors, and live-patching teams all have different risk
+> tolerances, hardware exposure, CI capacity, reboot policies, module/signing
+> workflows, and urgency. A single upstream x.y.z cadence cannot be the right
+> integration boundary for all of them.
 
-Reject relocation offsets that are outside the relocated section before any
-later use.  This mirrors the normal object loading path, which already
-rejects executable relocations whose r_offset is not inside the program
-section.
+I see it the opposite way: those who don't want to follow stable branches
+already don't wait for patches to land into -stable to have them, and
+those who follow it will have even less reasons to trust aggregates on
+which they have no feedback at all.
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Cc: stable@vger.kernel.org
-Assisted-by: Codex:gpt-5
-Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
----
- tools/lib/bpf/linker.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+> In the recent 7.0 security/regression mess, the useful downstream question
+> should not have been "which point release has Greg cut yet?" It should have
+> been "which stable commits are required for the complete fix set, and has
+> our actual distro kernel artifact built from that stable commit range passed
+> enough testing to ship?"
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 78f92c39290a..3eb23da167d2 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -1048,6 +1048,12 @@ static int linker_sanity_check_elf_relos(struct src_obj *obj, struct src_sec *se
- 			return -EINVAL;
- 		}
- 
-+		if (relo->r_offset >= link_sec->shdr->sh_size) {
-+			pr_warn("ELF relo #%d in section #%zu has invalid offset %zu in %s\n",
-+				i, sec->sec_idx, (size_t)relo->r_offset, obj->filename);
-+			return -EINVAL;
-+		}
-+
- 		if (link_sec->shdr->sh_flags & SHF_EXECINSTR) {
- 			if (relo->r_offset % sizeof(struct bpf_insn) != 0) {
- 				pr_warn("ELF relo #%d in section #%zu points to missing symbol #%zu in %s\n",
--- 
-2.43.0
+So in fact you're just proposing to move the testing more on the distro
+side hence to fragment it.
 
+> If distros routinely consumed the stable branch as a signed linear stream,
+> they could pin a specific stable commit, build from it, test it, and declare
+> exactly what they shipped:
+
+Given that nothing prevents them from doing this already, surely if they
+don't do it it's because it's an extra effort that doesn't solve any
+problem ?
+
+> ```
+> base: v7.0
+> stable branch: linux-7.0.y
+> stable commit: <hash>
+> included range: v7.0..<hash>
+> downstream patches/reverts: <list>
+> ```
+> 
+> That is more auditable than chasing point releases or cherry-picking
+> individual commits from intermediate states. It also makes clear that the
+> distro package, not the upstream tarball, is the object that was actually
+> tested and deployed.
+
+That's already the case, usually they have different version numbering.
+
+> There is also a practical artifact problem here. For long-lived stable
+> series, publishing a complete source tarball for every x.y.z release is very
+> wasteful. By 5.10.258, the 5.10.y series has hundreds of distinct tarballs,
+> each over 100 MB compressed, representing tens of gigabytes of mostly
+> duplicated source snapshots for one stable line. The real information is the
+> base tree plus the incremental stable deltas. Git already represents that
+> naturally.
+
+That's an orthogonal aspect. Some tools are happy with the immediate
+availability of these tarballs, and if they are ever considered wasteful,
+they will probably stop being produced/archived or they might be deleted
+after some time. But many users just download incremental patches.
+
+All of this sounds very strange to me personally, more like a solution
+looking for a problem.
+
+Willy
 
