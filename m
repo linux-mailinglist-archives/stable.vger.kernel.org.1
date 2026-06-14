@@ -1,103 +1,101 @@
-Return-Path: <stable+bounces-263050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XA3+Jq5ELmrArgQAu9opvQ
-	(envelope-from <stable+bounces-263050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:34 +0200
+	id GW0wObJELmrGrgQAu9opvQ
+	(envelope-from <stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBB8680744
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A0268074F
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jhpUckRH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263050-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263050-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VRjPrKcm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263052-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7356E3014681
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D88130160E6
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6F830D3E4;
-	Sun, 14 Jun 2026 06:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1A830D3E4;
+	Sun, 14 Jun 2026 06:05:22 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0594E2BEFEB
-	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C73024A078
+	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781417112; cv=none; b=D9Ma4Ehklt1BKhZKUoLXEor3lZrMBQz5pEGJzGIgMXEYvwIB3BCc297P5MszykesEyJUbIgNAPitz3m6W5xBuZCwAiepayhW1e/zD0Gwc5gV1Ldx+Xok2h4orlJuapUZa6Go8jT7OVl79nIWNzPRf92QRoFRwYiLzXf8pi9XJK0=
+	t=1781417122; cv=none; b=oRgZzxyZkwfdv20+9Gmnqxoc7QvgnENrJplWApWQQ8P6Row7VhigONi+4C7jFRC8vvLtF0yljDlDHTbRTChXhnT2gJzwV7x+HYAQ8KXYL/EVvRFURSMHhZne8Z1OJekEaBhqF7b2Phpaprpti438eLNzx0+eGJ4vIJ0cxAUFgJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781417112; c=relaxed/simple;
-	bh=KhoXUnFYVsJHrR59Q+vDRwpZMFMYZgBt67hADAonsH0=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=newJztg+wuwzfELgnc41d6V+iMtaKNZSOnhRSM4f6+X5/TBOj9hKO5A0w8nhNJ5u9eHsB44R97L9ZFFuHe1OmclCXkQV9jWGZTHV2cYEtC+YGtDddapDL6RvpA5A4ITrh1Q22B9BbQYldg1KKswQxBU2py8wmsTdqbplH5UEMuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhpUckRH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1AA1F000E9;
-	Sun, 14 Jun 2026 06:05:10 +0000 (UTC)
+	s=arc-20240116; t=1781417122; c=relaxed/simple;
+	bh=WRBtc3DG3tBD2BeX0YvPg6qJeEBck/4kuhgafEYTqkI=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=BRqHacLimpQ8bcjhnUwMBC+TloFKxvzb4E7EON0tFybyHnkBsB3vGXcrYM05+Ve2OdZVWi+izfy02skn1qU8dsUWoNScCJ9TKVHOdxsol8oXY+7Nt6Qe8kwcy87PPjk6jXaheVHFp/oysJs0qf5KVYZDv6wPVDJrcdhCjEab7ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRjPrKcm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B871F000E9;
+	Sun, 14 Jun 2026 06:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781417110;
-	bh=OZMzdCmei0x2gTJ6UguMjFNyv9Gy/aTgrkPUD7LYvQo=;
+	s=korg; t=1781417120;
+	bh=BIEUjk39cXeks7GNqQu1Q7Hd3wY7xIvgvfg5wREZI5k=;
 	h=Subject:To:From:Date;
-	b=jhpUckRHv9HIwnXY/28LhbY+MLcguzz6xYEj8iyg/DTQwshsGCItiqgotaD6k70Qm
-	 BK8jGLU80JULdPhtZu0BY8nNtw/yJsxkOOjjrvxFgJb701PahR3slh0AZ4PN3YCGLd
-	 lsQjSb0FgqqpHIvTmXI2AoEDEGxhfICtvhkXvyDo=
-Subject: patch "iio: buffer: hw-consumer: free scan_mask on buffer release" added to char-misc-next
-To: ustc.gu@gmail.com,Stable@vger.kernel.org,andriy.shevchenko@intel.com,jic23@kernel.org,nuno.sa@analog.com
+	b=VRjPrKcm4mHGhd3dISlN0bYEB87EnTQrA3SMxWrhUFZTMTaTfkKdJ+0Vx3zmRpmxW
+	 WfzBZYZqBNv6+fjYBeEX+HfiM1KOXS7d3qnVRJDozr1wuptkSfsJV2MFkaejIKZkfq
+	 mFZciK5H7jM6wbh9OTvEmyFKi9N8jCMWbdY0efSQ=
+Subject: patch "iio: light: al3010: read both ALS ADC registers again" added to char-misc-next
+To: grandmaster@al2klimov.de,Stable@vger.kernel.org,jic23@kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Jun 2026 08:03:36 +0200
-Message-ID: <2026061436-coyness-clapping-d17a@gregkh>
+Date: Sun, 14 Jun 2026 08:03:37 +0200
+Message-ID: <2026061436-power-scarcity-f5e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263050-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,intel.com,kernel.org,analog.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263052-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:grandmaster@al2klimov.de,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:ustc.gu@gmail.com,m:Stable@vger.kernel.org,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,m:nuno.sa@analog.com,m:ustcgu@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,intel.com:email,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,al2klimov.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0BBB8680744
+X-Rspamd-Queue-Id: 96A0268074F
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: buffer: hw-consumer: free scan_mask on buffer release
+    iio: light: al3010: read both ALS ADC registers again
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -112,50 +110,53 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 6325d6e2204327965b849c0a16efb6ac9202e5a8 Mon Sep 17 00:00:00 2001
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Mon, 27 Apr 2026 19:11:39 +0800
-Subject: iio: buffer: hw-consumer: free scan_mask on buffer release
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From ee78fae068f52a5582aaf448d9414f826855c106 Mon Sep 17 00:00:00 2001
+From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Date: Sat, 23 May 2026 13:44:57 +0200
+Subject: iio: light: al3010: read both ALS ADC registers again
 
-The scan_mask lifetime changed in commit 9a2e1233d38c ("iio: buffer:
-hw-consumer: remove redundant scan_mask flexible array").
+al3010_read_raw() used to read two adjacent registers
+until the driver was modernized using the regmap framework.
+That cleanup accidentally replaced the 16-bit word read
+with a single byte read. I'm reverting latter.
 
-Before that change, the scan mask storage was embedded in struct
-hw_consumer_buffer, so iio_hw_buf_release() could free the whole
-allocation with a single kfree(hw_buf).
-
-That commit moved the scan mask to a separate bitmap_zalloc() allocation
-stored in buffer.scan_mask, but left iio_hw_buf_release() unchanged.
-
-Free the scan mask in iio_hw_buf_release() before freeing the buffer
-wrapper.
-
-Fixes: 9a2e1233d38c ("iio: buffer: hw-consumer: remove redundant scan_mask flexible array")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Fixes: 0e5e21e23dd6 ("iio: light: al3010: Implement regmap support")
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/buffer/industrialio-hw-consumer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/light/al3010.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/buffer/industrialio-hw-consumer.c b/drivers/iio/buffer/industrialio-hw-consumer.c
-index 700528c9a0a4..10e912bbf0c5 100644
---- a/drivers/iio/buffer/industrialio-hw-consumer.c
-+++ b/drivers/iio/buffer/industrialio-hw-consumer.c
-@@ -40,6 +40,8 @@ static void iio_hw_buf_release(struct iio_buffer *buffer)
+diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+index 0932fa2b49fa..6af7b5f14a31 100644
+--- a/drivers/iio/light/al3010.c
++++ b/drivers/iio/light/al3010.c
+@@ -111,7 +111,8 @@ static int al3010_read_raw(struct iio_dev *indio_dev,
+ 			   int *val2, long mask)
  {
- 	struct hw_consumer_buffer *hw_buf =
- 		iio_buffer_to_hw_consumer_buffer(buffer);
-+
-+	bitmap_free(buffer->scan_mask);
- 	kfree(hw_buf);
- }
+ 	struct al3010_data *data = iio_priv(indio_dev);
+-	int ret, gain, raw;
++	int ret, gain;
++	__le16 raw;
  
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -120,11 +121,12 @@ static int al3010_read_raw(struct iio_dev *indio_dev,
+ 		 * - low byte of output is stored at AL3010_REG_DATA_LOW
+ 		 * - high byte of output is stored at AL3010_REG_DATA_LOW + 1
+ 		 */
+-		ret = regmap_read(data->regmap, AL3010_REG_DATA_LOW, &raw);
++		ret = regmap_bulk_read(data->regmap, AL3010_REG_DATA_LOW,
++				       &raw, sizeof(raw));
+ 		if (ret)
+ 			return ret;
+ 
+-		*val = raw;
++		*val = le16_to_cpu(raw);
+ 
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
 -- 
 2.54.0
 
