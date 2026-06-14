@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8ZodCrVELmrIrgQAu9opvQ
-	(envelope-from <stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:41 +0200
+	id W0MuNa5ELmrCrgQAu9opvQ
+	(envelope-from <stable+bounces-263055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC10C680754
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60AFD680745
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 08:05:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uP4jbel6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263053-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mfrl4dyl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263055-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263055-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E186D301649D
-	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3413D3014C00
+	for <lists+stable@lfdr.de>; Sun, 14 Jun 2026 06:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A83A318EE2;
-	Sun, 14 Jun 2026 06:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BF63148BF;
+	Sun, 14 Jun 2026 06:05:32 +0000 (UTC)
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1A524A078
-	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC932DC764
+	for <Stable@vger.kernel.org>; Sun, 14 Jun 2026 06:05:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781417125; cv=none; b=IdK1GVLEWHECYAYvHDzXv0XyncSMF/t3L075TMqCLooI4YxqTGxwBGzfcqWi/SQVAhquuaorMC+hpyHyDFLpYF1JNrEVaIFsycnoLptHQBbdCV5P+askwQZ8qhR+Jo6bw+dQ9xT8IS8LCxpvfGg7DzFbsg6qNoChpOgZaprUB/k=
+	t=1781417131; cv=none; b=L9wp5Bqc4QtHQSxin59XURn0da7XA54qX/2G3cNObjfJGrjZXK5GNpMoazUxL3AzYQ4/UooCbDbu8MvHPpDOTscHINEM56Kd4l4KfmZ6D/MHbOC0yYyODN08XTz2hTVhnKiBQovP5bkjo0n8LIkapiE2Y9qQNy3FJX+c1/569w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781417125; c=relaxed/simple;
-	bh=00Z37e9//bTa/nsa9vjJIuAcas3MswZVGinqWp4cdAs=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Vpgsa1pPDL91Xsv+2fhs67IyPtgZHAc4SR3Q1CQCMOYGNpS+N5CedD7lS/zDSNH82cV70XvA0J+oWAAHoZXo/lwNjunSH89TIyliv9wuhu0X4ZE5ka7IfzDLrpZP6kav/AYpC7dSsNsI10N+7U0KZuW6nt7GSJIYGxV/9KLgBS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uP4jbel6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8595E1F000E9;
-	Sun, 14 Jun 2026 06:05:23 +0000 (UTC)
+	s=arc-20240116; t=1781417131; c=relaxed/simple;
+	bh=SWGXED45forJ5tylH1gli/GaQ6rGO7j4/9hChc9vBh8=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=mf7/twzbkWSh/tHcTszNu2ucwjgVMtl/6bxBNd7nq7x0J2ZvrHuor/+ZL1KzACCVZO+JkjNHJ4nl0bWIUWP+a6n0gZBnR7mz9D7h7E2TE5/4RhjcdlDKehCtz2m9S750m6mgB2kX/uBCZlO46Hj0mX2M6mDaYOhdO234bSb5Sko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfrl4dyl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1971D1F000E9;
+	Sun, 14 Jun 2026 06:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781417124;
-	bh=96U990QXN1C7BhBkHCddDqPJbdI2eEmgZ1wvax3eGeQ=;
+	s=korg; t=1781417130;
+	bh=a+L5b6I7osZleqfwrxcRj9hfP1IYkeBzuGu/vc9MPow=;
 	h=Subject:To:From:Date;
-	b=uP4jbel6X5dhUMzbxkgkvujZtx9U3Hf/EgBvu0oUB7ilU0HsnD8BysQwXEJGV83q0
-	 1mOrosclF0gW9Y5yAz67y0atgW6hx9UmFRNRSOkR9q3LSmSbpa897jIqkpb3N/uQVk
-	 dCcJipdqzoyJG6+hKqlnSGpVvPTyBAgV31qXjWT0=
-Subject: patch "iio: backend: fix uninitialized data in debugfs" added to char-misc-next
-To: error27@gmail.com,Stable@vger.kernel.org,jic23@kernel.org
+	b=mfrl4dylX/0mV8WBNNERsnSAaoimV0qagH10NifKbcFTTGIto+3Opa+8og9C41r9e
+	 2y+LvspPrGS2GWNKhX7jmbX+AOoadAWzl9PInoBd62eQks3QWejVcexNUQiCbrWvMp
+	 7dsKsGEN43KvFGJ+lGzkwO/wo4rFOhVHsCt9JHmA=
+Subject: patch "iio: chemical: scd30: Cleanup initializations and fix sign-extension" added to char-misc-next
+To: m32285159@gmail.com,Stable@vger.kernel.org,jic23@kernel.org,sashiko-bot@kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 14 Jun 2026 08:03:38 +0200
-Message-ID: <2026061438-overbid-tipper-160e@gregkh>
+Date: Sun, 14 Jun 2026 08:03:39 +0200
+Message-ID: <2026061439-smirk-kindling-9687@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,22 +62,22 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263053-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263055-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:m32285159@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashiko-bot@kernel.org,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:error27@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,kernel.org];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -88,15 +88,15 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,sashiko.dev:url,vger.kernel.org:from_smtp,octakon.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CC10C680754
+X-Rspamd-Queue-Id: 60AFD680745
 
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: backend: fix uninitialized data in debugfs
+    iio: chemical: scd30: Cleanup initializations and fix sign-extension
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -111,37 +111,80 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From a6e8b14a4897d0b6df9744f33d0a30e6b92368eb Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <error27@gmail.com>
-Date: Mon, 25 May 2026 10:16:11 +0300
-Subject: iio: backend: fix uninitialized data in debugfs
+From 60d877910a43c305b5165131b258a17b1d772d57 Mon Sep 17 00:00:00 2001
+From: Maxwell Doose <m32285159@gmail.com>
+Date: Tue, 26 May 2026 17:55:24 -0500
+Subject: iio: chemical: scd30: Cleanup initializations and fix sign-extension
+ bug
 
-If the *ppos value is non-zero then simple_write_to_buffer() will not
-initialize the start of the buf[] buffer.  Non-zero ppos values aren't
-going to work at all.  Check for that at the start of the function and
-return -ENOSPC.
+Include linux/bitfield.h for FIELD_GET().
 
-Fixes: cdf01e0809a4 ("iio: backend: add debugFs interface")
-Signed-off-by: Dan Carpenter <error27@gmail.com>
+Create new macros for bit manipulation in combination with manual bit
+manipulation being replaced with FIELD_GET().
+
+The current variable declaration and initializations are barely readable
+and use comma separations across multiple lines. Refactor the
+initializations so that mantissa and exp have separate declarations and
+sign gets initialized later.
+
+In addition (and due to the nature of the cleanup), fix a sign-extension
+bug where, float32 would get bitwise anded with ~BIT(31)
+(which is 0xFFFFFFFF7FFFFFFF) which corrupted the exponent.
+
+Fixes: 64b3d8b1b0f5c ("iio: chemical: scd30: add core driver")
+Reported-by: sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260524020309.18618-1-m32285159%40gmail.com
+Signed-off-by: Maxwell Doose <m32285159@gmail.com>
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 ---
- drivers/iio/industrialio-backend.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/chemical/scd30_core.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-index 10e689f49441..cd697fbeae47 100644
---- a/drivers/iio/industrialio-backend.c
-+++ b/drivers/iio/industrialio-backend.c
-@@ -156,7 +156,7 @@ static ssize_t iio_backend_debugfs_write_reg(struct file *file,
- 	ssize_t rc;
- 	int ret;
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index 11d6bc1b63e6..d02f2de42327 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -4,6 +4,8 @@
+  *
+  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
+  */
++
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/cleanup.h>
+ #include <linux/completion.h>
+@@ -43,6 +45,11 @@
+ #define SCD30_TEMP_OFFSET_MAX 655360
+ #define SCD30_EXTRA_TIMEOUT_PER_S 250
  
--	if (count >= sizeof(buf))
-+	if (*ppos != 0 || count >= sizeof(buf))
- 		return -ENOSPC;
++/* Floating point arithmetic macros */
++#define SCD30_FLOAT_MANTISSA_MSK GENMASK(22, 0)
++#define SCD30_FLOAT_EXP_MSK GENMASK(30, 23)
++#define SCD30_FLOAT_SIGN_MSK BIT(31)
++
+ enum {
+ 	SCD30_CONC,
+ 	SCD30_TEMP,
+@@ -89,10 +96,14 @@ static int scd30_reset(struct scd30_state *state)
+ /* simplified float to fixed point conversion with a scaling factor of 0.01 */
+ static int scd30_float_to_fp(int float32)
+ {
+-	int fraction, shift,
+-	    mantissa = float32 & GENMASK(22, 0),
+-	    sign = (float32 & BIT(31)) ? -1 : 1,
+-	    exp = (float32 & ~BIT(31)) >> 23;
++	int fraction, shift, sign;
++	int mantissa = FIELD_GET(SCD30_FLOAT_MANTISSA_MSK, float32);
++	int exp = FIELD_GET(SCD30_FLOAT_EXP_MSK, float32);
++
++	if (float32 & SCD30_FLOAT_SIGN_MSK)
++		sign = -1;
++	else
++		sign = 1;
  
- 	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf, count);
+ 	/* special case 0 */
+ 	if (!exp && !mantissa)
 -- 
 2.54.0
 
