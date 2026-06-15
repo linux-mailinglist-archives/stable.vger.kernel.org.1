@@ -1,160 +1,226 @@
-Return-Path: <stable+bounces-263101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Zw1YI1VjL2pA/gQAu9opvQ
-	(envelope-from <stable+bounces-263101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 04:28:37 +0200
+	id PxEALmNxL2o1AgUAu9opvQ
+	(envelope-from <stable+bounces-263103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 05:28:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023C2682DD2
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 04:28:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E15683095
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 05:28:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nSCjqjZC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263101-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263101-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dfC+60IP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263103-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263103-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=intel.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D7563006B21
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 02:28:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8BD3C3000BBC
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E3625B0A7;
-	Mon, 15 Jun 2026 02:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3A027E056;
+	Mon, 15 Jun 2026 03:28:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F00712CD8B
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 02:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE4826E142;
+	Mon, 15 Jun 2026 03:28:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781490512; cv=none; b=IpAmA7S+x7NvSAby5UfnuQRt90M5MgIOGJ2EAWIuxLJi+LonaEiGhum3tU6KIZwLf3RgcnivlxFfFTI4L0/DaR8miJCNPsw0vK5q84i436NscO6ZZ13JM02Ew5P3pbSMBHqBNCinpk2S7B1eSht6kP19z0pa38cq0EB6jF+vTlQ=
+	t=1781494106; cv=none; b=ek6vLKR7etc14s+bFt/gRvOzbwxfgdxGcvGTqWrCNITmf26h9R/nFd2OTFFXo7F28qYVRlDTflYLg1BXbqE3vxAlm9HzTmYEuZyhooL/+avB7avEZvLCtdae2Vm2/to2AzRAwFRWKpc2SooMQaq2REJvkexpQQsR31nEMar/ar0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781490512; c=relaxed/simple;
-	bh=2s3H7XMutfBTGQhHYiDPlkcpWbJdlnwO8KNFVSLUFcw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sgP0pLsz3GuA86nz2gDOsWT4OXC77/wLWtUOZ2PjprGpmb76Oo617Jib0s6iC+HQbRKGGpGXd90vrtZKf2nTErnWNsqiyE7pBWST88b17i8mogOzcBt0YAfg1HOLPju/YaOLzI/JTtQvBroweA9eXW+IJe/UWRdGeaT870mXOj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSCjqjZC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22C61F00A3E
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 02:28:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781490510;
-	bh=asoYaaxL0SkrmU7UienB4b34Q7eA2ms+abq39OGgQGk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nSCjqjZC7oeTvkq17frGoKxZmr6Ynq1prUKQJBELA8o1xriQalloxfYH2q6hUHWiV
-	 IXe1/nwtkciwghHADLN1yQfQ/ujIM1eTocqBzRbgUK81GY8w6DH94cUe/36nalSUpu
-	 VhLJF/bgnd2W9KkmV0tFiDNE1MAFqnwj1J1U40O0fGzXxqkQ0ORbwiQaMqUHVIq1Oa
-	 21sQBF+UCqWPaFJoRt73lT8bsh8E4PteBNl/xDMD96gN25ikHdS98OtHuvn5GdPUL5
-	 PuPEhQs/leE+fgw6OyGFw4wqjlCemqlegJapyIzCStfOemzUbb8N42STqJMr5lxrXw
-	 GoLf+mcnUZ1qQ==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-bec2ddee9bbso593459766b.3
-        for <stable@vger.kernel.org>; Sun, 14 Jun 2026 19:28:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/e5vR+hp0oMhKbU9j1vrpmUR2RY6Ifx4xR4wi2KYwPC1KvswZdHcWSEmiz5AR5F8wBZSbBzks=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAPpzEXBv1FLzOSGKFHpU8I2nei1hqoUMSOreJ6Sk7vZ49Dlb/
-	1GeiRMJ0ZpoOP/o/pnhsJdSikfXuOOGOf7oxU1nOAvwR0uySOAGhvtI65SQJSmsGyO96qmXnCa1
-	eU3lvevahJeJzMZn/lfb9EmOUMz/Q7IE=
-X-Received: by 2002:a17:906:7306:b0:bf8:a88c:9ea7 with SMTP id
- a640c23a62f3a-bfe2aff74admr617228466b.40.1781490509548; Sun, 14 Jun 2026
- 19:28:29 -0700 (PDT)
+	s=arc-20240116; t=1781494106; c=relaxed/simple;
+	bh=4QSeKF6M2bUtmSPGPmXEQd1gPEVqe2+AlnvWiJkvk4A=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=p1SQDSeDX1tztJrVO7vai74Z6Oz/DyJM0fGzmBuagnFShjCoqVR9iA+Updm4Ik6wm0RIoqJ6rNhEIKnt4Y/cwPwORNmJ2xk0OPQ7lIv2wOW0B4WT0FUdz2SUhN2NAJxNwBhbtUEGMAvk+ixdX8k4Y0X5cPBOTw1+6JzpNbtTM+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dfC+60IP; arc=none smtp.client-ip=198.175.65.17
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781494105; x=1813030105;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=4QSeKF6M2bUtmSPGPmXEQd1gPEVqe2+AlnvWiJkvk4A=;
+  b=dfC+60IPa18fv0/AVEbuZE6fq66/1zO0oWwrpEvqENkDKUD78FMgF54t
+   dAkQ5uKFVF/LckFGvIZSgemTO1C8xrGlU/J15+u5+QF6N19r+xiZ3PPoD
+   BhuOISOP6ddRtwidE7UZFb6skYQB0oH8zJo7gHQ5pbVE846RPndyfP/2w
+   lF/Uk6k+MhgNIL9Xsm3AT6r8IO4X7eKdHxANgJJAiU3XMjagmr3219yLf
+   4z8GcnFwWEdk8zp0z865ibgs0zrHOa/TQeR010zRNfb9TLqiyjpP/zum6
+   X62DOCliGkPwqloGlKFsGCR54xzKXWsebvdR8yJbMgRB1XQLr398P1AUx
+   w==;
+X-CSE-ConnectionGUID: Cx+qcwZySWmXyP3CXX7JzQ==
+X-CSE-MsgGUID: OwgBu3uxQEmadMOKs3P2Hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11817"; a="82239981"
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
+   d="scan'208";a="82239981"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 20:28:24 -0700
+X-CSE-ConnectionGUID: bv2PsRgiR9enq/l6OvGb4A==
+X-CSE-MsgGUID: 0mi2TBzDRv6fQxTpBXaUmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,205,1774335600"; 
+   d="scan'208";a="247443760"
+Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.147]) ([10.124.241.147])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2026 20:28:20 -0700
+Message-ID: <603bdf11-1bf1-4781-b129-c13da7c5e386@linux.intel.com>
+Date: Mon, 15 Jun 2026 11:28:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260608024533.32419-1-wanghongliang@loongson.cn>
- <20260608024533.32419-3-wanghongliang@loongson.cn> <ai8o9vxUX6rbZNV4@zenone.zhora.eu>
- <338facef-6893-c8d9-0efc-b4fc3aea756b@loongson.cn>
-In-Reply-To: <338facef-6893-c8d9-0efc-b4fc3aea756b@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 15 Jun 2026 10:28:52 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5R9fPvUs7dvNrZAbXrGiWvE4YPkaca2nxnhgS3A+TVYw@mail.gmail.com>
-X-Gm-Features: AVVi8Ce0MMcSlyyGqCOsSUds5-FItelvI2wk6xcrczWAv8W2if2QPOcRo0nZnkY
-Message-ID: <CAAhV-H5R9fPvUs7dvNrZAbXrGiWvE4YPkaca2nxnhgS3A+TVYw@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] i2c: ls2x: Add clocks property parsing and adjust
- bus speed
-To: Hongliang Wang <wanghongliang@loongson.cn>
-Cc: Andi Shyti <andi.shyti@kernel.org>, Binbin Zhou <zhoubinbin@loongson.cn>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, loongarch@lists.linux.dev, 
-	Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v3 1/8] perf/x86/intel: Remove anythread_deprecated bit
+ from perf_capabilities
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, Zide Chen <zide.chen@intel.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>,
+ stable@vger.kernel.org
+References: <20260612090114.3188886-1-dapeng1.mi@linux.intel.com>
+ <20260612090114.3188886-2-dapeng1.mi@linux.intel.com>
+ <20260612094648.GB42921@noisy.programming.kicks-ass.net>
+ <96a18944-bc0d-47dd-b435-e9aa63b93c43@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <96a18944-bc0d-47dd-b435-e9aa63b93c43@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-5.16 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	WHITELIST_SPF_DKIM(-3.00)[intel.com:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263101-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:wanghongliang@loongson.cn,m:andi.shyti@kernel.org,m:zhoubinbin@loongson.cn,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:chenhuacai@loongson.cn,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:peterz@infradead.org,m:mingo@redhat.com,m:acme@kernel.org,m:namhyung@kernel.org,m:irogers@google.com,m:adrian.hunter@intel.com,m:alexander.shishkin@linux.intel.com,m:ak@linux.intel.com,m:eranian@google.com,m:linux-kernel@vger.kernel.org,m:linux-perf-users@vger.kernel.org,m:dapeng1.mi@intel.com,m:zide.chen@intel.com,m:thomas.falcon@intel.com,m:xudong.hao@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263103-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,mail.gmail.com:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 023C2682DD2
+X-Rspamd-Queue-Id: C6E15683095
 
-On Mon, Jun 15, 2026 at 9:29=E2=80=AFAM Hongliang Wang
-<wanghongliang@loongson.cn> wrote:
->
-> Hi, Andi
->
-> On 2026/6/15 =E4=B8=8A=E5=8D=886:20, Andi Shyti wrote:
-> > Hi Hongliang,
-> >
-> > On Mon, Jun 08, 2026 at 10:45:33AM +0800, Hongliang Wang wrote:
-> >> The i2c-ls2x driver supports dts and acpi parameter passing.
-> >>
-> >> In dts, uses clock framework, by parsing clocks property to
-> >> get i2c bus reference clock, and define the div of reference
-> >> clock by device data.
-> >>
-> >> In acpi, by passing clocks property to describe i2c bus reference
-> >> clock and clock-div property to describe the div of reference clock.
-> >>
-> >> Based on i2c bus reference clock(clock_a), i2c bus speed(clock_s)
-> >> and div, calculate the prcescale of i2c divider register. The
-> >> calculation formula is
-> >>
-> >> prcescale =3D (clock_a*10)/(div*clock_s)-1
-> >>
-> >> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-> > I think Huacai has not reviewed this patch, his review was only
-> > for patch 1. Am I right?
-> >
-> > Andi
-> Sorry, it was my mistake,  I will send a new version later.
-Why? I really gave some suggestions in previous versions and you accepted.
-If an explicitly R-b is needed for each one, then
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
 
-Huacai
+On 6/15/2026 8:59 AM, Mi, Dapeng wrote:
+> On 6/12/2026 5:46 PM, Peter Zijlstra wrote:
+>> On Fri, Jun 12, 2026 at 05:01:07PM +0800, Dapeng Mi wrote:
+>>> AnyThread mode deprecation is enumerated by CPUID.0AH:EDX[15] instead of
+>>> PERF_CAPABILITIES MSR. It's not a good practice to define a bit to
+>>> represent "anythread deprecation" in perf_capabilities. It leads to the
+>>> anythread_deprecated bit could be overwritten by the real value of
+>>> PERF_CAPABILITIES MSR, just like the below code in update_pmu_cap() does.
+>>>
+>>> ```
+>>> if (!intel_pmu_broken_perf_cap()) {
+>>> 	/* Perf Metric (Bit 15) and PEBS via PT (Bit 16) are hybrid enumeration */
+>>> 	rdmsrq(MSR_IA32_PERF_CAPABILITIES, hybrid(pmu, intel_cap).capabilities);
+>>> }
+>>> ```
+>>>
+>>> It leads to the anythread_deprecated bit is cleared to 0 and the "any"
+>>> attribute is incorrectly shown in the /sys/devices/cpu/format/ folder on
+>>> these support Perfmon v6 platforms, like Clearwater Forest.
+>>>
+>>> ```
+>>> $grep . /sys/devices/cpu/format/*
+>>> /sys/devices/cpu/format/acr_mask:config2:0-63
+>>> /sys/devices/cpu/format/any:config:21
+>>> /sys/devices/cpu/format/cmask:config:24-31
+>>> ```
+>>>
+>>> So remove the anythread_deprecated bit from perf_capabilities structure
+>>> and directly depends on CPUID.0AH:EDX[15] to judge if anythread is
+>>> deprecated.
+>> Again, no markdown please. I've stripped it from these patches.
+> My bad. Thanks a lot.
+>
+> BTW, Peter, have you pull these patches? I didn't see them in perf/core or
+> perf/urgent branches. Sashiko reports a defect about "Patch 5/8:
+> perf/x86/intel: Validate the return value of intel_pmu_init_hybrid()". If
+> not, I would post a v4 patchset to fix the defect. Thanks.
+
+Just found the patches are merged into the perf/core branch in peterz/queue
+tree. :)
+
+Peter, Sashiko raises below concern against the patch 5/8: "perf/x86/intel:
+Validate the return value of intel_pmu_init_hybrid()",
+
+"
+
+[Severity: Medium]
+Does moving intel_pmu_arch_lbr_init() below
+intel_pmu_check_event_constraints_all() bypass the dynamic constraint
+validation for branch counters?
+
+When intel_pmu_check_event_constraints_all() runs, it eventually calls
+intel_pmu_check_dyn_constr(). This check relies on the PMU_FL_BR_CNTR flag
+and the x86_pmu.lbr_counters mask:
+
+arch/x86/events/intel/core.c:intel_pmu_check_dyn_constr() {
+    ...
+        case DYN_CONSTR_BR_CNTR:
+            if (x86_pmu.flags & PMU_FL_BR_CNTR)
+                mask = x86_pmu.lbr_counters;
+            break;
+    ...
+}
+
+Because intel_pmu_arch_lbr_init() is now deferred until after this validation,
+the PMU_FL_BR_CNTR flag hasn't been set yet. Will this cause the dynamic
+constraint check for branch counters to evaluate to false and be skipped?
+
+"
+
+It's a true defect. We need below changes to fix the defect. Would you
+prefer to post a new patchset or just a single patch to fix the defect? Thanks.
+
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 74dbf24b0ab6..edf6f8732234 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -8840,11 +8840,11 @@ __init int intel_pmu_init(void)
+                pr_cont("AnyThread deprecated, ");
+        }
+
+-       intel_pmu_check_event_constraints_all(NULL);
+-
+        if (boot_cpu_has(X86_FEATURE_ARCH_LBR))
+                intel_pmu_arch_lbr_init();
+
++       intel_pmu_check_event_constraints_all(NULL);
++
+        /*
+         * Access LBR MSR may cause #GP under certain circumstances.
+         * Check all LBR MSR here.
+
 
 >
-> Best regards,
-> Hongliang Wang
 >
 >
 
