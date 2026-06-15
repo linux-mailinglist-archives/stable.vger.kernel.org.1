@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ch/2CeFAMGrVQQUAu9opvQ
-	(envelope-from <stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:13:53 +0200
+	id +JUgKgtCMGoHQgUAu9opvQ
+	(envelope-from <stable+bounces-263428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:18:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7777C6891B4
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:13:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F279B6891F6
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:18:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7zsDVLt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9TFxH0t;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263428-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263428-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8738930ABEC5
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:13:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E6C730D59CA
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEE9303A0D;
-	Mon, 15 Jun 2026 18:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCBB30D3F5;
+	Mon, 15 Jun 2026 18:17:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919C62EA171
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 18:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0851FC7FB
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 18:16:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781547184; cv=none; b=IEOK3IUpt5llBslaCIhzYVnuvIAdPaS/gSYB8OzaGcwuOH8AG6ZN/751X0LydDPxTZntDWWKjyMRpyL+DpC5QHUhP1au5yQklVzCYv2Rf3z9fSvSWfA2WSmh0gqI54ZoqS5tMB04xtmzSVVwI7VhF8PVz3JVpSRWTVEzu6AK6vY=
+	t=1781547420; cv=none; b=dchD80kSOPtWqImUcF/mquzjyvRxiFxjLTHRIe6kyB/NEz5qKBcHleje5Pjm4YwrKhlpgHkYiHJ/6LrQWqP6QP/+kT78u+OyDOf6YIe8RpsgUp8bVM7fO90INhiZuB19usA1L67nJU5B+xCnzh2TnpL0o7gKqUGejMB/aIOT7wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781547184; c=relaxed/simple;
-	bh=xzCgYMjpgAmReXW/sSLU+gYIo700v43ypLqcCd85EQg=;
+	s=arc-20240116; t=1781547420; c=relaxed/simple;
+	bh=sEXdGPedN6uN9q5DklVj6sClgG2bCpleL0pOtLB5loY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGCOqP8vKAOxwPMyhzvUTwJEgOJWIJTFBmp63b1upCa1X+e4SqIJA/F+ySFNmDHp0ZwzqT/ecU/Ka6vDF2ajft/C/9N2nccTos3RpHCAhU082akOg2g7KjhpKWU+vOk5azS0dMIcpCUcgEPp42rbu45as3cy3+Vk8pKBqDXlR3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7zsDVLt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80561F000E9;
-	Mon, 15 Jun 2026 18:13:02 +0000 (UTC)
+	 MIME-Version; b=IQNf7Pix+gEBqhzQQjoCYoNdlQpMSSvO1QSYwPvG+2WXCEvRDv/2rFNPZmwkyHWSYMgjT5g/6WA275gq63pC/T6Rl2p72v5KUsxqTGi+x/crBbOG2xk6F8pnkThiAo+cKd36HgF7aFdGXQ8uA1ujpzckkCQquTEGnbSnxwTDWnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9TFxH0t; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0631F000E9;
+	Mon, 15 Jun 2026 18:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781547183;
-	bh=n2s3pbYmQnmxSsDcm8pHeqiI96srv2pR6iW+DTFIvw8=;
+	s=k20260515; t=1781547419;
+	bh=MvuekgrwLluhq3EMFmKJmqEg4BTJCrhLfG9w9BjvU2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U7zsDVLtPQMDT0dskfO6WoP55trJl9Ur5gFFrjaiDNfenZ7/Jk1lhdxt8ul8KX5qs
-	 nQClzExIn+MOWWdGNRSH2Gq8lAi0P7dIY7+L1H9m16CE7ji6Td71+t1Pk6I6d3nwUp
-	 30YlZBSp/xxllrGddQuuWe8IitzrL3A7RWGszYAYycEURtVflHu8OyozJVcRjWVZ1t
-	 Ey6WWPr/ScLtxwRdehYr5fVCbMFqcZvCAUlpqLBR/K3XO3hd8bpt5KQIbNUr/mlXa5
-	 XS8WGKy4cc/3VttXXji8gcfPQpdfPEdg+Xy+UjJAeb6Adfri5XHSaquM36qc3FPBd4
-	 WIDHpr9LUVsIA==
+	b=G9TFxH0tIiKTLM3/P5mKtabRgS5y/uOO3JLxbHqMd354sfz5sh9m3hST+vpQUlyA/
+	 t++pfKExUyOnNLjsHocsgcAwggTCpu5OpqRkkHF8cO2FF2Qw3ucptq865FHrDLA+DB
+	 oknvvW0990nK2xA0t5H+pOPxHDj+W6Zl6lEZtPhXi47oCfV70IyeDZrnYJW+T6HeP7
+	 pRsZDmKRwsgoOBFIDRpXMrhPlRGsz7qYJFZ4alXx21pbispwJ7rdN7N7Qk+ZxsgzxP
+	 Mm4eDiQlBC6ug0jMqkufYSAwCZME19cJXX9k0rIsn5XOTrPNxzbq8t6HyKpv6FrOxE
+	 7CfANPRob7sZA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Anton Leontev <leontyevantony@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
-Date: Mon, 15 Jun 2026 14:13:00 -0400
-Message-ID: <20260615181300.2319407-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+Date: Mon, 15 Jun 2026 14:16:57 -0400
+Message-ID: <20260615181657.2320366-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061524-importer-bogged-4a5f@gregkh>
-References: <2026061524-importer-bogged-4a5f@gregkh>
+In-Reply-To: <2026061524-eatery-geek-6a96@gregkh>
+References: <2026061524-eatery-geek-6a96@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,13 +71,13 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263427-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263428-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -96,11 +96,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7777C6891B4
+X-Rspamd-Queue-Id: F279B6891F6
 
 From: Anton Leontev <leontyevantony@gmail.com>
 
@@ -149,7 +149,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index ac2d706ef2d0ef..077595b42d4a77 100644
+index 058472f429386d..1e374de5cf8e63 100644
 --- a/drivers/net/hyperv/netvsc.c
 +++ b/drivers/net/hyperv/netvsc.c
 @@ -12,6 +12,7 @@
@@ -160,7 +160,7 @@ index ac2d706ef2d0ef..077595b42d4a77 100644
  #include <linux/delay.h>
  #include <linux/io.h>
  #include <linux/slab.h>
-@@ -992,12 +993,22 @@ static void netvsc_copy_to_send_buf(struct netvsc_device *net_device,
+@@ -956,12 +957,22 @@ static void netvsc_copy_to_send_buf(struct netvsc_device *net_device,
  	}
  
  	for (i = 0; i < page_count; i++) {
