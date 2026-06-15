@@ -1,345 +1,284 @@
-Return-Path: <stable+bounces-263285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XHuUCwEUMGr9MwUAu9opvQ
-	(envelope-from <stable+bounces-263285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:02:25 +0200
+	id d2dyFYoVMGrGNAUAu9opvQ
+	(envelope-from <stable+bounces-263288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:08:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E2168771C
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:02:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0826877CE
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:08:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=bynar.io header.s=google header.b=N7gEXVBI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263285-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263285-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=bynar.io;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=eXk+4gQU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263288-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263288-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F87130433D8
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:01:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B75C3033ADA
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1113D47C4;
-	Mon, 15 Jun 2026 15:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25492400E00;
+	Mon, 15 Jun 2026 15:08:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SY8PR01CU002.outbound.protection.outlook.com (mail-australiaeastazolkn19010076.outbound.protection.outlook.com [52.103.72.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450133FF8B0
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:01:13 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781535677; cv=none; b=s+f8oFQHIIx+XzVcWrAxS/bCXZULcGtQ6xMsOK+10R/3DMJTJ2HmOglkLYVXEyKWcGbMOA9Q/b9iK25oU0KCODDLgx9CllpYiEjQcV3K3dW5ZWfBhODbDHqf9a+3OYrD1Uq6itopQSQ58g2gKLY0DNdZglxnpjXHldUSs1ZEmEo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781535677; c=relaxed/simple;
-	bh=usCgJBs2ZEcaeIKGQxBoi3hhAqjPIERUW7n12UJneHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fde6JYricFyaUgnX/fv3JLMJt4dIzFkUtz577UsMRhYJbcR6EIYYzHiq9EqFNwW7JuuogEDIA67nyxKtUHcBnntZkg9os8xs1bCplRtzSzlFUJT1LhXyC5JYhDozHOXvxLjbxr5l4mLWDQJLM66JneZ2Qebc1Hy39SVPvefMC+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bynar.io; spf=pass smtp.mailfrom=bynar.io; dkim=pass (2048-bit key) header.d=bynar.io header.i=@bynar.io header.b=N7gEXVBI; arc=none smtp.client-ip=209.85.167.44
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aa7bf3d512so4392266e87.2
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 08:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bynar.io; s=google; t=1781535671; x=1782140471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=11kq7WU3cShcIS3SBeSPsFjxf0dv/lp/snMdSQFHRt8=;
-        b=N7gEXVBITq2S50UHEdkqrLntCTmm/LIiEIY6MLcLGb69/5lvyp/eyDwEPZlP1b70fE
-         jv7yoAJEDs4Q3sZjj79oRBVAGtaKJZZnL48TMDJOQ2vHnlV+ZuK9MUhf1ZGhunUBGSnJ
-         Qe5fb9aNObLP/v8Bmbvt9AM334P6SyLHqV30sAXiwu5UKknyeYOzjmyKTy+/+2ZJN0hj
-         uyQlQouul8e4TV2/ezlxZM4MwenrrBtt/Yb8J7xXC/Tu90vo91Mxu4kbeBa7F7XKx3Lm
-         c9Y+H+R5KyL3naxECcB0Er7vAWGpIeN0Yoo5wZ03gDffZ10rPXjIy2A/8tIDMs81xVyk
-         0F5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781535671; x=1782140471;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=11kq7WU3cShcIS3SBeSPsFjxf0dv/lp/snMdSQFHRt8=;
-        b=Vvw7o7FHgjq9PA6ktVcDEcgckoEggDpoaHFBYryOLUgUpdfLckTr6/Ei3W0F/2slLD
-         rgth/P6TtSBupR3BpeC439iYbuVLm0bDWr4qNIYh4bLwJNusYulzpZiv8S6LpenwigRk
-         71Z1xWz5zqTvaSEV5WKE6Cr1KpF2By4eXWGdvsUSUjl6cFJp/wLrZcRkU+2v7nhEAN1K
-         7NqtuddWpcmp8hq9qFckG5hfHRLvjIYv3OvKpC3HBtGYNprg/zSb76/55OP+OOAQBB2F
-         MsVTbwuM2bz6qjOzcmcAv/8JDCgiitVqe15PcY9BAuTnQmDn8cW8Z6YeMBRVKl7lCZsM
-         Y1jQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/5YpLg1TxtAy4D8E0gsvvCdyj6whoOjbFT/5+QLKzqSFbhdkOd4dXcxPt0hVOIFjR6DUr/JhQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/Ccz8/Bt5lHSU+sbDswX7eB7AwX+6dzCxwF1+QSD6RyiOnZSm
-	5hjGO5CYt7Ds70bxfSr89KDmigNm4R5QYy/YXK5BSnZ+kb8CX9vJtf906uUZgNFR0ErI
-X-Gm-Gg: Acq92OEp6iFAlPFhfiKLqnDExfEDB5+b/2NoX8nqYmu0rBkXD0kfGsrxMSieOVjFGRS
-	hRE8dVqjvJnTAt1gNyZht5LfdiRxTD3+5WviHsPiS7KJROqEaPjH0V03fl/vbaBwJGx4nQOvkVZ
-	g63DkrobAhcY6IjE9nDhYaMa1sfjcFRDJ1kzbRg3Yw6PUqkRKDtnXmlD7y1MTbalD5n9wZyvHsz
-	eFobVylEJ9s/QdomQu+zuNKH3CCYNgQWsJjar4Bkq3ROkphhF1tSpNXxl+y7bgVXr3djZPstdza
-	ScVc1Vr1kIRRAw0YPHc7M50K94o5218b/Nz4uUdPUjtt12T8GXxrvftrUgdJrJmzkISnPhkSSR4
-	VP1xDsveBX6iI4q62fHBPwr8VOWyqpAj2TovIuY0rx3W9hWvNBzj1ENtZXGReOs3A5C8IZ6/+Gf
-	uy7WKn0w38/IY=
-X-Received: by 2002:a05:6512:130e:b0:5aa:4bb4:1e9c with SMTP id 2adb3069b0e04-5ad2db4000cmr4493208e87.18.1781535670570;
-        Mon, 15 Jun 2026 08:01:10 -0700 (PDT)
-Received: from localhost ([2a06:61c2:d427:0:b321:1c7a:b072:326e])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1b7a3fsm2844185e87.82.2026.06.15.08.01.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 08:01:10 -0700 (PDT)
-From: Samuel Page <sam@bynar.io>
-To: Jon Maloy <jmaloy@redhat.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Samuel Page <sam@bynar.io>,
-	stable@vger.kernel.org
-Subject: [PATCH net] tipc: free bearer discoverer via RCU to fix tipc_disc_rcv UAF
-Date: Mon, 15 Jun 2026 16:00:09 +0100
-Message-ID: <20260615150009.1734270-1-sam@bynar.io>
-X-Mailer: git-send-email 2.54.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60768400DEE;
+	Mon, 15 Jun 2026 15:08:49 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781536130; cv=fail; b=lC+abBpaRL2k4THddVLBQ/cDlYHYDuIeSL4ewHwpHPNRnb7AvS9YSSLQO3vE6pAUa/LfQ5VVkp8i559mRHOYspTr8DCed0xBcWHxb3OQSxvOedEnOdgdOLtl7MIHhrd/zYGMD0VIlWUcM2He0qM5a0YjozcGzRkUOiMTSqCPhSY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781536130; c=relaxed/simple;
+	bh=4cZk1bue+wliX3V6akGA9wQmZIxD+L6574F3dG/2vZU=;
+	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:In-Reply-To:
+	 MIME-Version; b=jlxopw3j2ej4cLoDI+3VC7MkYhz/0Dk0NrkjGq66TG0QXffEHCNpiVrZKXHePPrk2dLo72oFT1As+BR5CTCS5SYLcMd6DV5Zqz3d+tRJ4eDRdMnItTv+UqQtVsgk3pN0vdNOTNpYjxHQBpmcSJGxS0fitB+PxP9VtaICxhqQPR0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=eXk+4gQU; arc=fail smtp.client-ip=52.103.72.76
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KbGs2mapk3mddrqvoZsMo/8bh/3P1emGvj1KSkc+qjHRbdr9NJsafw5epOo8vmqrJdNnedNKT433mmo9l/RHiMlPunc5fjl/ttqhTSRE/ul3izn7w4uRwhEji/yEORwZl3tqz0+QRfHKtGUhLeCwpkScEGq49ZMhHgf6qOER0YcPnVSRcmZ13i8y756jbYIvvwm1sqb8Tj0ECeSXe8U43AojSQCZc4844jlwjN7LRGp+uvq4b7mF7oV0fk44q7Pou9jDatRM0ooq2ngXTukQP9cAmUEYobYs8vBQYkWbKaUTNR0I9x469uiYL9cnlo1wW/NoWDN9HG2gp+iuYpx8cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HIopT/fprFf51sZrBWlo+ToR1Ams3zdbcjHw9sIDe0k=;
+ b=Bo+uwg9mN6zyBKRD0o/PerRiRFVNXZgfyEmGtU80sSyJdzfWy9X/CNO7BQEsNLjz4bbo1kgHwE3oOQPu9DfENGEczwVwBGyRWH7bLR352jFmRE4bLbM83bLHnGe1tgU4h2OwyB7TZE1en29XAHX8jFzubOMvmH6gVFowVyr1ArgxHWTx4MJUpK9y5YEzHwYunECxPMbzx7tjYo3q/G73gkXoJ09p3zLGjwEJu8D53UkwOoK2THzlyyK+pcmtmlWA88LcLHDoDUO16hd/iAldHoRyaV77NUaKIb2P8epXej1ICRqyd0tRAhRVEnsmUQqTd9k/fm4Jvrr/DA8nOcIHHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HIopT/fprFf51sZrBWlo+ToR1Ams3zdbcjHw9sIDe0k=;
+ b=eXk+4gQUBaocC2uh7BVCryJCUpbliOlIAK1dl4tktvVupu5CRntqwTAAOQTxuzCv0GPIK83c9hLh9mBYBqwELmdqAC/+h8smlnf0gzkk9ZZx2a68AymNHeDtLw8zXQRc0zgYVcxse7W4ZaitqI6+bmmiXhfdFYaG6cdm/P4q3vapXuKU7HUXgDa650ghsVElgtTBw5Db2xvV21/2M+w3Ve8ge0jHo9HSzUBPDOBZBQRnJ7PcbshJ9e+myhaalyLel5Ce0B4cR4S9ukiRUrj6CrDswmOmE7PYn8UNGiusIXv9WmqBBQIpLtXKCxnhaFsvxddH9w88AoR7xLYL7oBlDg==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY6PR01MB8137.ausprd01.prod.outlook.com (2603:10c6:10:1d0::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 15:08:43 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%3]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 15:08:42 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+Date: Mon, 15 Jun 2026 23:04:27 +0800
+Subject: [PATCH net v3] octeontx2-af: cn10k: restrict VF LMTLINE sharing to
+ its own PF
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID:
+ <SYBPR01MB78811656934E713B77DA6CEDAFE62@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-B4-Tracking: v=1; b=H4sIAHoUMGoC/x3KTQqAIBBA4avIrBP8QcGuEi1Ep5qNhUYE4t0bW
+ n6816FhJWwwiw4VH2p0FoadBKQjlh0lZTYYZbzy2smNXmzS2BBdyMkrbYDfq+IfeF2g4A3rGB/
+ +j2HXXAAAAA==
+X-Change-ID: 20260615-fixes-239a59dc6012
+To: Sunil Goutham <sgoutham@marvell.com>, 
+ Linu Cherian <lcherian@marvell.com>, Geetha sowjanya <gakula@marvell.com>, 
+ hariprasad <hkelam@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
+ Junrui Luo <moonafterrain@outlook.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2657;
+ i=moonafterrain@outlook.com; h=from:subject:message-id;
+ bh=4cZk1bue+wliX3V6akGA9wQmZIxD+L6574F3dG/2vZU=;
+ b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGLAORqswPD6xfH5tr6npv9bTLMywXR+3/bMD2eHIWd
+ 9P7nY2Pntd2lLIwiHExyIopshwvuPTNwneL7hafLckwc1iZQIYwcHEKwESWKTEydCXtjRHU//5I
+ yyNRjT/88ca4LwHKk45+eB3s9SBuUqTpHoZ/BhLrk6797qgN3qi15nz+mjMvviZw8+sGVDlf3ft
+ bfNFNdgCJmE2+
+X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
+ fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
+In-Reply-To: <SYBPR01MB788101745A9E36F6FD81CD7AAF152@SYBPR01MB7881.ausprd01.prod.outlook.com>
+X-ClientProxiedBy: SJ0PR03CA0345.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::20) To SYBPR01MB7881.ausprd01.prod.outlook.com
+ (2603:10c6:10:1b0::5)
+X-Microsoft-Original-Message-ID:
+ <20260615-fixes-v3-1-c7a66c65b812@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|SY6PR01MB8137:EE_
+X-MS-Office365-Filtering-Correlation-Id: eed30998-90f1-4849-0059-08decaeffcfc
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|12121999013|15080799012|8060799015|24071999003|19110799012|23021999003|5072599009|24021099003|6090799003|41001999006|20031999006|24121999003|39105399006|22091999003|10035399007|3412199025|4302099013|440099028|23121099006|40105399003|41105399003|26121999007|1602099012|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MkRjbGRCZDV0dGRzRHF3cXFobURjRWkxQlZ2VE9PUGVTSUM5T2tsS05BbVFT?=
+ =?utf-8?B?MHZPUEFIL1IxS2J5WlRRZzlNMGZvdlNUb2hpOHZRSzk5WFA3MzUycGxibFFM?=
+ =?utf-8?B?ZGUvQytFNG9WVHdVNm53UFVVakFJQnEyNHFBTS85MlBhRUNpclR1ZEhzajlH?=
+ =?utf-8?B?YTBMZmJFb1pBYkFlV0pUZDU4QkZXKzRkSTRQVlM3N3kwQ1FGMHZiWXZCemVT?=
+ =?utf-8?B?RFZMWDhmZnBqdTZvS2dqOHJLU1hnQS8rR0xKeG50N3NVNDc4dkJGNVgxdlFN?=
+ =?utf-8?B?cklaOW05YWpoRkZBRmQrWVZDSG1zeUp6cXNlL0VsRys1czh5c0pJV2lURU8z?=
+ =?utf-8?B?YWtUKy9xeWhjczlOdnZ5V3QzSDk2Y0tkMlZzYWdMVE8veVNVZlRwWXE3WlNY?=
+ =?utf-8?B?T3RlYTRPV0p4bU1FSzJSYnAra2I0b0RHaUFnQ21QdFlybVp6S2pFOHNCclhO?=
+ =?utf-8?B?b09jaVRCd2RRR0N4eXE3bGF6blNhdUJ6YWdhRFFQRC9pSkRYbG9jc1RIR3ZU?=
+ =?utf-8?B?bU13a1M2bC92RzZNUVdsYi82RmtRQ2JSVys5Vk9FSmh1UjBCVkFLM050ODBm?=
+ =?utf-8?B?WENYdVVFRTJ1VXRtQkx6TzVobFhVL2g0cUthZWVFN3VtSGJhWFU1SEpvL25I?=
+ =?utf-8?B?Y0NuRTJuSHA3WVNaZ3JMdTcveXEvakJ3bERkT3ZqTlVXNW9CNkQrelovVWJQ?=
+ =?utf-8?B?ZzBnS25RdVl4c0tUN0ZSdk5ERXBtR1FQalUxbHplcHF0ZnpZbXdXZnhrbVpV?=
+ =?utf-8?B?SXduR2VZMzFRMGNDbFRUY0E5clVrSmtYNHhENGtEZm9EbnFnZkVqaTB0TkVm?=
+ =?utf-8?B?aVYwbUU0YUFwNmFiRCtsM0RSUGIrNG5LN2oxb0NMekxqdTA0QmZvRkF4MFpH?=
+ =?utf-8?B?cUR3Q1dKYVptNXVzeHlMcUdaWVlySjdkRXMvalk0SmxRaWtsc0lvem5NQlNI?=
+ =?utf-8?B?SVZ2QlpQRU5kZThCV1RHTWRybldWOTVkcGtKOVhWR3ZzRko4QzlERzR3a2Va?=
+ =?utf-8?B?ZFd0MFJvZFMwVG9wODU4TGpHNTNBZGJpSzlrNG1MeEdmTjg2MWM5UUt3Z2M3?=
+ =?utf-8?B?OVJLU21NUTZ5eGRVRkdKV2VNTHA3YlkvY0tWZEF4dDNxOWdXRnBkMitJeUZh?=
+ =?utf-8?B?MjVnc1ZocExJOHdyb2o4TWxjUWdNcnN2TjJ6TEFXbGdoc252UzJvdmhXaWo0?=
+ =?utf-8?B?aG9LeGZEQlNBeXJKUU02QUZHMlk4WlIwdm9SUTRQN0wyZ3dFdzMrNFk0TkFN?=
+ =?utf-8?B?bGRKQmhlNEt5OWJzTWVNQUpwemZWb1pBN1k1YnFScmZhTmltRXFuTlQ2dG5R?=
+ =?utf-8?B?Z1VJenl6eGl5UjBuR0Z0cjlmc2gyaGRxS2ZrK1prTWJCQlpKajdwM3huWEtx?=
+ =?utf-8?B?VkU4L3RvK1ZyMjBxUm1RS1dUZ3h4ZnpIYnJYcE5EQk5nSFJJQTJJaTQ4R1Jm?=
+ =?utf-8?B?VFlVeFI0MVRzemw3TzBDZWdIVG5oOFN4ZWVRQVFUVDhIdXlUanNQV0JTcTdG?=
+ =?utf-8?B?NWRXYXZ3cmtacUMvV2Yya1hIK1lDSlh1RUhkTFptbzZwZmo0TzZXdERNMWVl?=
+ =?utf-8?B?SmlXMFdlQ29LMFlkTnZmcG5sbXdick82NENSWTVxUXBBVDQ3K0dyRWl0WFQw?=
+ =?utf-8?B?cmQzU3lFRm81VGpzSFhqckw4bit1M2UzMDB5cmtNN0lTYUJOWDNzdlBoT0dK?=
+ =?utf-8?B?RUVEb1RPVWVxMElxTUw2REMxdTd6VDBkV2pxRXpVdnZlUUVzbTBoYkF4WXFI?=
+ =?utf-8?B?Z3JtUFk3djBUd1o4ZWdVVU01MVFPVjU0dzk1T2I3NWZLSngveVlleTdvQUV6?=
+ =?utf-8?B?UmhWN0o3SmtvTTVoZDZId1I4ZjhhWG02TncxenlDaTdmWEQ1bVFZNDZjQjlZ?=
+ =?utf-8?Q?duOyg3eRiJB82?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YTVMQ2FLY1EyUEdrdko4Um56RG5PWlJlL285SjVnMExQcEY1TjBlMzF1Y1F1?=
+ =?utf-8?B?VXV1MnBuVDJ3RVRXdHdFZGY4bVB1aSt2RWFXL0lIbkdPakVoWGFldUdZRzQ3?=
+ =?utf-8?B?V1c1TjBMcDhkUExHTDV3WWRlVW1uTm0zZFZTTjgzT0Y3bm11Tk0xZDlCRi92?=
+ =?utf-8?B?Q2RKbmlla1NEOWtHZ3ppZHM3VjFqUHdQRDJzZUNDbFpUUjRWUy9FbC94aHQz?=
+ =?utf-8?B?MzRCSHdtQmNuWVFmaDdmRWpjLzh4TlRPV1IrQlYycTFVa1MzUC9teWg2cHRn?=
+ =?utf-8?B?TDdmNWtxb2NRZk9MNGEvNkM3aW16R3hTb1dtZE9IMUtUbWRueGs2WHJjbXY2?=
+ =?utf-8?B?djR6emVrdjhEMHVxRktiVFlBVVRQK2Y3Y2dhUFNBTkYvUFppdU5NWWlFOUNQ?=
+ =?utf-8?B?NjZlWTcvZ1A0Wld2WG9GOWZwYUp0NnRJVmNzWjJMRzNkK0VYZVYyY2g3cXE0?=
+ =?utf-8?B?ZzF0VXl4QnJJbDVDMGNCMG5nM0RUTWhDc204REdKaTcya0FhNUtzUlQyVDVY?=
+ =?utf-8?B?dmFTODdFR3NUYmFMVHBaZ2MwMmUxY0p2SERyckREZm40YTJGMWVmMUxLb29q?=
+ =?utf-8?B?b09NMmZDeW0rYXdwSnp6R29GdW9wUHp2RS9Jd3pxMmF0NlhTNXVsTm1NeVVs?=
+ =?utf-8?B?ZjY0M2tNbHQzRno0Nzg1N1N1Wm91YzFZVWduQ2tVRnRLTlRuQk9JNkluWW5z?=
+ =?utf-8?B?RzMzU2p4N25xa0xYTWNudnBSQWpoRTUvZlA3VW5yRDNaODZDKzNCazUvVDVV?=
+ =?utf-8?B?MXQwdXZqSlZ6L21pdTE4ay9VcU5seXJZV0hNZjl0bmFxNUp3NEREZGpkRi94?=
+ =?utf-8?B?bVpvS1BRcGYwY1dRUE80ekJIVkg4ZTN5aFBqK2hmWGFrZGJ1TFBmZEJtbWV4?=
+ =?utf-8?B?OXJkSTdTbU9jU29mcStaMlgrMDFPcHRmU2J5a05RaFl0a1dFUWZlVjhYa1pJ?=
+ =?utf-8?B?SkNySmFoK2NkQnYwWEk3OGVMbkpCeWdSTE93S1BPY2loM3FGRVFLMzVYbnda?=
+ =?utf-8?B?TVMva21XVFBCdmRzOFE1OXMxc3dOcmhBSXcwZWZuZjJKWXJJcEk3ejJMRllG?=
+ =?utf-8?B?RENNOGMwMUhqRmtmV0tPUmxlTUtNVUpYUHdHd1hkRzBmb0RoaElFalJkVnBQ?=
+ =?utf-8?B?c2Rsd25wd1VJa0UrSEJWdEdkMFZsWUdiRW5wS21ES1Z0TGJPRVYxazFrbnRk?=
+ =?utf-8?B?bm0yRjZIZ3J5d3U1OE1ZQjUrV2E3dWs5Y0k1TmpDemdUNFgyTFJuN0VPS0pO?=
+ =?utf-8?B?SFNRbVN2ejhXVUMzcVVlNkpxb2x1UEREL0IweUI1dHhIZ1AySXR2M2pnTndk?=
+ =?utf-8?B?amZmUlNOekticDV6RkV1ZUVyZ3hKSTNmWG1KTG9KRGdsN1A3UndVbUtFaUxK?=
+ =?utf-8?B?RGFXVk9Ld09adGMxNk9NTGZ4bHZ4STU3dkNuTm9Hc0hId1V5ZVhUaHRmZ1Jm?=
+ =?utf-8?B?Q3ViUFpHLzlXRjFDQWNja0FvOVEwYXl3QkNudHhWWm12WTRwM0FZOVdRZGZX?=
+ =?utf-8?B?elMrZDR5d0picjJpcVlVMlJzMTV2NHNSSjlDTm5vcnI4Q2F2MnliaitoT25k?=
+ =?utf-8?B?NWhPelBzZld2UUZaYU5jWmc2TVEzUnpqd1lZWEs5WEt5S0k3NVJZbzNiSzFD?=
+ =?utf-8?B?ZjdRMkdERDlxUlJhUUxDSGREaGhrL0tBK2pMZDVyd29nVEdPMkJyM2d3eHM1?=
+ =?utf-8?B?YnVodlA4NjBsNGpnVlJZNmlzMGYyNzVDMnR6emZsdkF2OFQ4TTBqRFZpMDAy?=
+ =?utf-8?B?KzNyVis3WXNXRElHdGdoVXFTWG8wY095a3h2UTYrZEJnUkYwTW9NSit3c0My?=
+ =?utf-8?B?Y2hxaFZTZzhLeCtHNFp2YzF4cWVBRkFsYmQ5M2haUk9zQVFOYkFIR1MrU2Vj?=
+ =?utf-8?Q?RhylDRLJ8yqHH?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eed30998-90f1-4849-0059-08decaeffcfc
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 15:08:42.9142
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY6PR01MB8137
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bynar.io,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[bynar.io:s=google];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER(0.00)[sam@bynar.io,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263288-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sgoutham@marvell.com,m:lcherian@marvell.com,m:gakula@marvell.com,m:hkelam@marvell.com,m:sbhatta@marvell.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:danisjiang@gmail.com,m:stable@vger.kernel.org,m:moonafterrain@outlook.com,m:andrew@lunn.ch,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-263285-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:jmaloy@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:netdev@vger.kernel.org,m:tipc-discussion@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:sam@bynar.io,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[bynar.io:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sam@bynar.io,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[sam@bynar.io:query timed out,sam.bynar.io:query timed out,stable@vger.kernel.org:query timed out];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,outlook.com];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:email,outlook.com:from_mime,vger.kernel.org:from_smtp,SYBPR01MB7881.ausprd01.prod.outlook.com:mid,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D7E2168771C
+X-Rspamd-Queue-Id: BB0826877CE
 
-bearer_disable() tears down a bearer's discovery object with
-tipc_disc_delete(), which frees the struct tipc_discoverer with a plain,
-synchronous kfree(). The discovery receive path, however, still reads
-that object under RCU in softirq context:
+rvu_mbox_handler_lmtst_tbl_setup() uses req->base_pcifunc as a direct
+index into the LMT map table to read another function's LMTLINE
+physical base address and copy it into the caller's own LMT map table
+entry. The mailbox dispatcher authenticates req->hdr.pcifunc from the
+IRQ source, but req->base_pcifunc is a separate payload field and is
+not sanitized.
 
-  tipc_udp_recv()            // udp_media.c, rcu_dereference(ub->bearer)
-    -> tipc_rcv()            // node.c
-      -> tipc_disc_rcv()     // discover.c
-        -> tipc_disc_addr_trial_msg(b->disc, ...)  // reads d->net etc.
+Reject the request with -EPERM when a VF caller's base_pcifunc is not a
+valid function under its own PF. is_pf_func_valid() bounds the FUNC field
+to the PF's configured VF count, keeping the computed index inside the
+caller's own slot block.
 
-tipc_udp_recv() only gates this path on test_bit(0, &b->up), which is a
-TOCTOU check: an RX softirq that observes b->up == 1 before
-bearer_disable() does clear_bit_unlock(0, &b->up) can still be executing
-inside tipc_disc_rcv() when bearer_disable() reaches
-
-	if (b->disc)
-		tipc_disc_delete(b->disc);
-
-and kfree()s the discoverer. The reader then dereferences freed memory
-(d->net, inlined into tipc_disc_rcv()) in softirq context [0].
-
-The bearer itself is freed RCU-safely (tipc_bearer_put() ->
-kfree_rcu(b, rcu)) because the RX path runs under RCU, but the discoverer
-hanging off b->disc is freed synchronously. The same b->disc is also
-touched under rcu_read_lock() by
-tipc_disc_add_dest()/tipc_disc_remove_dest().
-
-Free the discoverer with the same RCU lifetime as its bearer. Add an
-rcu_head to struct tipc_discoverer and defer the kfree_skb()/kfree() to
-an RCU callback so any in-flight reader that already loaded b->disc
-completes before the memory is released. The timer is still shut down
-synchronously up front with timer_shutdown_sync() (which can sleep and
-must not run from the RCU callback), and shutting it down before the
-grace period prevents the periodic LINK_REQUEST timer from rearming or
-re-entering the object.
-
-This mirrors the existing TIPC pattern of pairing call_rcu() with a
-cleanup callback (see tipc_node_free()/tipc_aead_free()).
-
-[0]: (trailing page/memory-state dump trimmed)
-BUG: KASAN: slab-use-after-free in tipc_disc_addr_trial_msg net/tipc/discover.c:149 [inline]
-BUG: KASAN: slab-use-after-free in tipc_disc_rcv+0xe7c/0x103c net/tipc/discover.c:236
-Read of size 8 at addr ffff000028f07428 by task ksoftirqd/0/15
-
-CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 7.0.11 #3 PREEMPT
-Hardware name: linux,dummy-virt (DT)
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xb4/0xd4 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x118/0x5d8 mm/kasan/report.c:482
- kasan_report+0xb0/0xf4 mm/kasan/report.c:595
- __asan_report_load8_noabort+0x20/0x2c mm/kasan/report_generic.c:381
- tipc_disc_addr_trial_msg net/tipc/discover.c:149 [inline]
- tipc_disc_rcv+0xe7c/0x103c net/tipc/discover.c:236
- tipc_rcv+0x1884/0x2b1c net/tipc/node.c:2126
- tipc_udp_recv+0x22c/0x684 net/tipc/udp_media.c:393
- udp_queue_rcv_one_skb+0x898/0x1798 net/ipv4/udp.c:2441
- udp_queue_rcv_skb+0x1b0/0xa44 net/ipv4/udp.c:2518
- udp_unicast_rcv_skb+0x13c/0x348 net/ipv4/udp.c:2678
- __udp4_lib_rcv+0x1aec/0x246c net/ipv4/udp.c:2754
- udp_rcv+0x78/0xa0 net/ipv4/udp.c:2936
- ip_protocol_deliver_rcu+0x68/0x410 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x28c/0x4b4 net/ipv4/ip_input.c:241
- NF_HOOK include/linux/netfilter.h:318 [inline]
- NF_HOOK include/linux/netfilter.h:312 [inline]
- ip_local_deliver+0x29c/0x2ec net/ipv4/ip_input.c:262
- dst_input include/net/dst.h:480 [inline]
- ip_rcv_finish net/ipv4/ip_input.c:453 [inline]
- ip_rcv_finish net/ipv4/ip_input.c:439 [inline]
- NF_HOOK include/linux/netfilter.h:318 [inline]
- NF_HOOK include/linux/netfilter.h:312 [inline]
- ip_rcv+0x21c/0x258 net/ipv4/ip_input.c:573
- __netif_receive_skb_one_core+0x110/0x184 net/core/dev.c:6195
- __netif_receive_skb+0x2c/0x170 net/core/dev.c:6308
- process_backlog+0x178/0x488 net/core/dev.c:6659
- __napi_poll+0xa8/0x540 net/core/dev.c:7726
- napi_poll net/core/dev.c:7789 [inline]
- net_rx_action+0x360/0x964 net/core/dev.c:7946
- handle_softirqs+0x2f0/0x7b0 kernel/softirq.c:622
- run_ksoftirqd kernel/softirq.c:1063 [inline]
- run_ksoftirqd+0x6c/0x88 kernel/softirq.c:1055
- smpboot_thread_fn+0x65c/0x958 kernel/smpboot.c:160
- kthread+0x39c/0x444 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Allocated by task 68873:
- kasan_save_stack+0x3c/0x64 mm/kasan/common.c:57
- kasan_save_track+0x20/0x3c mm/kasan/common.c:78
- kasan_save_alloc_info+0x40/0x54 mm/kasan/generic.c:570
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xd4/0xd8 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __kmalloc_cache_noprof+0x1b0/0x458 mm/slub.c:5385
- kmalloc_noprof include/linux/slab.h:950 [inline]
- tipc_disc_create+0xdc/0x5e0 net/tipc/discover.c:356
- tipc_enable_bearer+0x8b8/0xf94 net/tipc/bearer.c:348
- __tipc_nl_bearer_enable+0x2a8/0x398 net/tipc/bearer.c:1047
- tipc_nl_bearer_enable+0x2c/0x48 net/tipc/bearer.c:1056
- genl_family_rcv_msg_doit+0x1e4/0x2c0 net/netlink/genetlink.c:1114
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x4e8/0x750 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x204/0x3cc net/netlink/af_netlink.c:2550
- genl_rcv+0x3c/0x54 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x638/0x930 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x798/0xc68 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg+0xe0/0x128 net/socket.c:742
- __sys_sendto+0x230/0x2f4 net/socket.c:2206
- __do_sys_sendto net/socket.c:2213 [inline]
- __se_sys_sendto net/socket.c:2209 [inline]
- __arm64_sys_sendto+0xc4/0x13c net/socket.c:2209
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x84/0x2a8 arch/arm64/kernel/syscall.c:49
- el0_svc_common.constprop.0+0xe4/0x294 arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x44/0x5c arch/arm64/kernel/syscall.c:151
- el0_svc+0x38/0xac arch/arm64/kernel/entry-common.c:724
- el0t_64_sync_handler+0xa0/0xe4 arch/arm64/kernel/entry-common.c:743
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
-
-Freed by task 60072:
- kasan_save_stack+0x3c/0x64 mm/kasan/common.c:57
- kasan_save_track+0x20/0x3c mm/kasan/common.c:78
- kasan_save_free_info+0x4c/0x74 mm/kasan/generic.c:584
- poison_slab_object mm/kasan/common.c:253 [inline]
- __kasan_slab_free+0x88/0xb8 mm/kasan/common.c:285
- kasan_slab_free include/linux/kasan.h:235 [inline]
- slab_free_hook mm/slub.c:2685 [inline]
- slab_free mm/slub.c:6170 [inline]
- kfree+0x14c/0x458 mm/slub.c:6488
- tipc_disc_delete+0x50/0x68 net/tipc/discover.c:393
- bearer_disable+0x18c/0x278 net/tipc/bearer.c:418
- tipc_bearer_stop+0xe0/0x198 net/tipc/bearer.c:757
- tipc_net_stop+0x110/0x178 net/tipc/net.c:159
- tipc_exit_net+0x80/0x19c net/tipc/core.c:112
- ops_exit_list net/core/net_namespace.c:199 [inline]
- ops_undo_list+0x244/0x694 net/core/net_namespace.c:252
- cleanup_net+0x3a0/0x830 net/core/net_namespace.c:702
- process_one_work+0x628/0xd38 kernel/workqueue.c:3289
- process_scheduled_works kernel/workqueue.c:3372 [inline]
- worker_thread+0x7a8/0xac0 kernel/workqueue.c:3453
- kthread+0x39c/0x444 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Fixes: 25b0b9c4e835 ("tipc: handle collisions of 32-bit node address hash values")
+Fixes: 893ae97214c3 ("octeontx2-af: cn10k: Support configurable LMTST regions")
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 Cc: stable@vger.kernel.org
-Assisted-by: Bynario AI
-Signed-off-by: Samuel Page <sam@bynar.io>
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 ---
- net/tipc/discover.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+Changes in v3:
+- Validate base_pcifunc with is_pf_func_valid() in addition to the same-PF
+  check: it bounds the FUNC field to the PF's configured VF count and
+  rejects non-existent functions, closing the wrap. Thanks to the AI
+  review forwarded by Paolo Abeni for spotting this.
+- Link to v2: https://lore.kernel.org/all/SYBPR01MB788101745A9E36F6FD81CD7AAF152@SYBPR01MB7881.ausprd01.prod.outlook.com
+Changes in v2:
+- Restrict the check to VF callers only. PF callers are trusted and may
+ still share LMTLINEs across PFs.
+- Link to v1: https://lore.kernel.org/r/SYBPR01MB7881F8D11D2930BB84215253AF0D2@SYBPR01MB7881.ausprd01.prod.outlook.com
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/tipc/discover.c b/net/tipc/discover.c
-index 3e54d2df5683..844975b691ef 100644
---- a/net/tipc/discover.c
-+++ b/net/tipc/discover.c
-@@ -49,6 +49,7 @@
- 
- /**
-  * struct tipc_discoverer - information about an ongoing link setup request
-+ * @rcu: RCU head used to free the structure after a grace period
-  * @bearer_id: identity of bearer issuing requests
-  * @net: network namespace instance
-  * @dest: destination address for request messages
-@@ -60,6 +61,7 @@
-  * @timer_intv: current interval between requests (in ms)
-  */
- struct tipc_discoverer {
-+	struct rcu_head rcu;
- 	u32 bearer_id;
- 	struct tipc_media_addr dest;
- 	struct net *net;
-@@ -382,6 +384,17 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
- 	return 0;
- }
- 
-+/* RCU callback: free the discoverer only after any concurrent
-+ * tipc_disc_rcv() softirq reader of bearer->disc has finished.
-+ */
-+static void tipc_disc_free_rcu(struct rcu_head *rp)
-+{
-+	struct tipc_discoverer *d = container_of(rp, struct tipc_discoverer, rcu);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+index d2163da28d18..fa4ea1258d29 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cn10k.c
+@@ -178,6 +178,15 @@ int rvu_mbox_handler_lmtst_tbl_setup(struct rvu *rvu,
+ 	 * pcifunc (will be the one who is calling this mailbox).
+ 	 */
+ 	if (req->base_pcifunc) {
++		/* A VF is untrusted and must not redirect its LMTLINE to
++		 * another PF's region, so confine VF callers to their own PF.
++		 */
++		if (is_vf(req->hdr.pcifunc) &&
++		    (!is_pf_func_valid(rvu, req->base_pcifunc) ||
++		     rvu_get_pf(rvu->pdev, req->hdr.pcifunc) !=
++		     rvu_get_pf(rvu->pdev, req->base_pcifunc)))
++			return -EPERM;
 +
-+	kfree_skb(d->skb);
-+	kfree(d);
-+}
-+
- /**
-  * tipc_disc_delete - destroy object sending periodic link setup requests
-  * @d: ptr to link dest structure
-@@ -389,8 +402,7 @@ int tipc_disc_create(struct net *net, struct tipc_bearer *b,
- void tipc_disc_delete(struct tipc_discoverer *d)
- {
- 	timer_shutdown_sync(&d->timer);
--	kfree_skb(d->skb);
--	kfree(d);
-+	call_rcu(&d->rcu, tipc_disc_free_rcu);
- }
- 
- /**
+ 		/* Calculating the LMT table index equivalent to primary
+ 		 * pcifunc.
+ 		 */
 
-base-commit: 47186409c092cd7dd70350999186c700233e854d
+---
+base-commit: 9716c086c8e8b141d35aa61f2e96a2e83de212a7
+change-id: 20260615-fixes-239a59dc6012
+
+Best regards,
 -- 
-2.54.0
+Junrui Luo <moonafterrain@outlook.com>
 
 
