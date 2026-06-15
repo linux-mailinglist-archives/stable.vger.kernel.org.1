@@ -1,187 +1,178 @@
-Return-Path: <stable+bounces-263469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FED0FLtyMGqOTAUAu9opvQ
-	(envelope-from <stable+bounces-263469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:46:35 +0200
+	id xCTKJcN/MGptTwUAu9opvQ
+	(envelope-from <stable+bounces-263473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 00:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BCD68A375
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:46:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F47268A6FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 00:42:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ip0ZPIf2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263469-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263469-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gd84LM6x;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263473-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263473-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E1A6A300A594
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 21:46:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58363307CECF
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 22:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1AD3A9D8A;
-	Mon, 15 Jun 2026 21:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE6D3B9D99;
+	Mon, 15 Jun 2026 22:42:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1A2F39AB
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717CC3AD537;
+	Mon, 15 Jun 2026 22:41:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781559979; cv=none; b=HuJAZFWOiSBuUTu3TQbrxap3gZorVjkTG4160s8KnrYvLBe4YKuu4kekajaoE4JNcb+f8ppdhM4H9orW+m45x8TgmHfyLiKB/cuCoTQaWYTzWH4/0NOIZpn2/zxsUPoMx98KvpS2TV7wTy7B2bwFnuzo+yHaWRbWjBLbaJ5n0ko=
+	t=1781563320; cv=none; b=LztcmlMW//gG2e/vOoMnE6sNErIHocoEecCnggc18FK0appUnMUjo6zpjsG50pyFLJ/cy3niMhyTFDyRv4keO6LqTOvh+MsOdQER3Nv3XyDkQMD9XY1uJe9D0kulTmYPxmZKxqKi1b3ZBLi76uQ7DQ0L3cPrgvmQl+kNeEbYt8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781559979; c=relaxed/simple;
-	bh=1IdWJSsooHpRWnlvtfAwsDPz6wI8yPfuVVKZnegPiWY=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EprGeZVjjTI1Xott2eKfF1Rek1AiYs5qMCLYDqzDAH3GkqWT75cBlcyknfglGq7cHbk8DEQMYOxJcuwCsRL7X7KH00+dLhWbGwO1h6A/nXX/nv4ySEOjBRchr1Q8sxvEw+vqOg/Bx1VUCj/ncz/PFDlxhPmSCRqLfyTdIke8Zt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ip0ZPIf2; arc=none smtp.client-ip=209.85.215.173
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c8584bbbf2cso2260756a12.3
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:46:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781559977; x=1782164777; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vz6stOMSk3vpFUFzv+jJpjA2EoqJIkxHHZXo5ER0nFI=;
-        b=Ip0ZPIf2AZFGF3enB/dktdH89h+aGD2o2cgbJ8SPk3O0Mw80gTZekiJl6Qslhg2NMv
-         BkY+xIx8Rw6CPI1J+xIIIa/zBqduSbmX0s4bO33eZdaXc4pzC0JKPu0bRvfkyJSzlGKt
-         f0I5RX9gfEvGcMKqb82PTtqr8T5eL1HVrqSnTEr/uEslmSb2rd65GEzS2NIyq1q1CpzB
-         BXx1KaCIW5nBt/1HZMOfVPMK6p5uTG0Yw1fn73/hjOtfYg/A8cvKhq9SKbiYTic1BYg6
-         0Y6yqgLLqDgoLN/1rj4VGvQrAmKesyCXqKkwH2JmdMRYEs5KZKDUHoJF5x3RelwWbYpe
-         raXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781559977; x=1782164777;
-        h=mime-version:content-transfer-encoding:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vz6stOMSk3vpFUFzv+jJpjA2EoqJIkxHHZXo5ER0nFI=;
-        b=dfyp+PGGqQTSFKMrf0ZWIy1AZgkJVGZfdNdL5fME8OPEkAAfRZIdTgIhDih2iur3/3
-         dDiV5yKGzPO8lMGu0cvdy4ctUvpFYob3bcc9pshRgf9qmhxhGArqvrYqZ4caXwOZOL/y
-         ++TQGJ+ip21gGsjHf0/ucTkj3FxJ/+F4dFc3yc4+GfS/0in1p/gqwxq+XGhL4hrjMsYa
-         6Rzs6Mw7d6F38J6u6cIKYaLWSOAW+xx5VLVkW6KY1fGbtwUFpMNxZdTeFBNTSonqspOx
-         BMbSZlT3BiMBE6QtMJcoZOTI1mBnOWYfiDSb2c8B9/hL6eJgD+nxswW8mbepUWVndBkd
-         9m7A==
-X-Forwarded-Encrypted: i=1; AFNElJ8waDmIPQnsmLNOwCu6lnbXTMJ9IZgK8n6EgYxbDhByL0wwLhLRyChjFe2YonnY9Yvi+ZIkVvo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyunx4Y6W82N35yzpSmJzDM6ysRT7K8vzEUC6WZE+V4prtf2N50
-	UsDbyM9D32kh7GmttxtdRbWco31WgeviDe7i7hbdmgAKluor5V/hNqd5
-X-Gm-Gg: Acq92OEfD+ZOD4j6XIDZlDigOPxp2p1DcdbrLrKOts7+1Qg0bn7xkjSymQmp72FlVcp
-	hV3pYX2xvOt3opDncTpHjxkXEwn9iIMuDGHl4t62S1crcMNmIIoAslhZr1Gdfk6ArGL5kV0lExw
-	YvVCznJFlo5RNrCEEXQxTlzr1c02Lx8PvvcKqgYM3NFMpk6kvo5Ool1C6Q9jPeAMFHm9ZyLqvpL
-	B+EC2mirIl0WpZQ11iBGLw2i70JgCUL2+0wTM2g098pRP8NWDNLowdlIgLljSAke85UNBYAo8p3
-	yFPVi4PBxUmYdEq9QxIRoqo17c08f/Qwh3btduHgpuh8+JJ+1ZtTS+OK3AOe3hlewOyuuZ71qL0
-	MRo/PPTALOmg412IE2rmGlS6vgyKzvMERtWCJyLkBd+7O1OBWoMFEagepw/k7O1IN/WwUhtgcB3
-	VQWWnnGKuYlP1pXJezcqYUJNF0GWrS0vn/X0PYLzrtBVCmuAUf5zBRQYhCOFI2BeSXPreW+BXYE
-	erdtZnFOXkE7rJCvx5WsbebA3KSnw==
-X-Received: by 2002:a05:6a20:748a:b0:3b4:7aae:1ee8 with SMTP id adf61e73a8af0-3b79624cb18mr14017944637.14.1781559976818;
-        Mon, 15 Jun 2026 14:46:16 -0700 (PDT)
-Received: from 1.0.0.127.in-addr.arpa ([103.129.135.168])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8661b5e509sm9835799a12.3.2026.06.15.14.46.12
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 15 Jun 2026 14:46:16 -0700 (PDT)
-From: shuvampandey1@gmail.com
-To: Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Donald Robson <donald.robson@imgtec.com>,
- Sarah Walker <sarah.walker@imgtec.com>, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject:
- [PATCH] drm/imagination: Fix user array stride in pvr_set_uobj_array()
-Date: Tue, 16 Jun 2026 03:31:09 +0545
-Message-ID: <178155996993.4848.8618351576278880213@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1781563320; c=relaxed/simple;
+	bh=nH817WlNH0mznPTPZ+C0X94CpEuC0st/aKbM/Bcl0IA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qaHoi96iq3SKdBo+YfAEaQyQOKVq0m67vt+DE4fFtiaKswp6tm0X3suI1ieoxfFxpcMAn6NXZ5QYFtm8YBMwEjtywva2JHRKPG9oEcvG4CFcSTs81O0S1i2h70+1CGjnIzz2tAUU/h2aGZ2I7nbNpn0FG3LcbpUcvEk8mrzBHLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gd84LM6x; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B5291F00A3A;
+	Mon, 15 Jun 2026 22:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781563319;
+	bh=Zka1VrEutdqlVG4YdfZ4t9q/QPVwvFlN8ho8kFu3dFs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gd84LM6xJOVkKwoHL1z6ivwGRZy3VTWWz7y501GFo35fcRgYKE99JByZ3rXPlizVr
+	 ZjU1+2w0A2sWEtf3RnKS5lsxBY76DuSt5mCxf+BrTWuLAaeUG5eXF/BUQHdT+saCOz
+	 GHSVDRJPczonBxzAVnIRx9hhNhrggOaMocr3OQKoHPzI3Ge/0r9orwVhdATTtmnhxB
+	 ggeUHAxNaevmkH0+G4SNCUqx5iQZRg2GkDOLeJu/Xseh5GwJX8zyAzaWVBWjNfd+cO
+	 ljGWjDS1S4xT4Cvr7dwrH/KoAXwLBaqYPGiAfZhdVBxwHmTxBsrLGCrr7BbYvBhvOZ
+	 xBBNf8MOGL0QQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-kernel@vger.kernel.org,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Corentin Labbe <clabbe.montjoie@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/7] crypto: qcom-rng - Enable clock in hwrng case
+Date: Mon, 15 Jun 2026 15:41:25 -0700
+Message-ID: <20260615224131.69370-2-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260615224131.69370-1-ebiggers@kernel.org>
+References: <20260615224131.69370-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,imgtec.com,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263469-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263473-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[vger.kernel.org:server fail,sin.lore.kernel.org:server fail];
-	FROM_NEQ_ENVFROM(0.00)[shuvampandey1@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:frank.binns@imgtec.com,m:matt.coster@imgtec.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:airlied@gmail.com,m:simona@ffwll.ch,m:donald.robson@imgtec.com,m:sarah.walker@imgtec.com,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[shuvampandey1@gmail.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:linux-crypto@vger.kernel.org,m:herbert@gondor.apana.org.au,m:linux-kernel@vger.kernel.org,m:gaurav.jain@nxp.com,m:horia.geanta@nxp.com,m:pankaj.gupta@nxp.com,m:clabbe.montjoie@gmail.com,m:dmitry.baryshkov@oss.qualcomm.com,m:konrad.dybcio@oss.qualcomm.com,m:linux-arm-msm@vger.kernel.org,m:ebiggers@kernel.org,m:stable@vger.kernel.org,m:clabbemontjoie@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_NO_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,nxp.com,gmail.com,oss.qualcomm.com,kernel.org];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50BCD68A375
+X-Rspamd-Queue-Id: 3F47268A6FE
 
-pvr_set_uobj_array() copies an array of kernel objects to a userspace
-array whose element size is described by out->stride. When out->stride
-is different from the kernel object size, the slow path advances the
-userspace pointer by the kernel object size and the kernel pointer by the
-userspace stride.
+Fix qcom-rng.c to enable the clock before accessing the hardware.
 
-This reverses the intended layout. For larger userspace strides, later
-copies read from the wrong kernel addresses. For smaller userspace
-strides, later copies are written at the wrong userspace offsets. The
-padding clear is also done only for the first element instead of the
-padding area for each element.
-
-Advance the userspace pointer by out->stride and the kernel pointer by
-obj_size, and clear per-element padding while the current userspace
-pointer is still available.
-
-Fixes: f99f5f3ea7ef ("drm/imagination: Add GPU ID parsing and firmware loadin=
-g")
-Cc: stable@vger.kernel.org # v6.8+
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Fixes: f29cd5bb64c2 ("crypto: qcom-rng - Add hw_random interface support")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/gpu/drm/imagination/pvr_drv.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/crypto/qcom-rng.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/imagination/pvr_drv.c b/drivers/gpu/drm/imaginat=
-ion/pvr_drv.c
-index 268900464ab6..0a68a9c32361 100644
---- a/drivers/gpu/drm/imagination/pvr_drv.c
-+++ b/drivers/gpu/drm/imagination/pvr_drv.c
-@@ -1252,14 +1252,13 @@ pvr_set_uobj_array(const struct drm_pvr_obj_array *ou=
-t, u32 min_stride, u32 obj_
- 			if (copy_to_user(out_ptr, in_ptr, cpy_elem_size))
- 				return -EFAULT;
-=20
--			out_ptr +=3D obj_size;
--			in_ptr +=3D out->stride;
--		}
-+			if (out->stride > obj_size &&
-+			    clear_user(out_ptr + cpy_elem_size, out->stride - obj_size)) {
-+				return -EFAULT;
-+			}
-=20
--		if (out->stride > obj_size &&
--		    clear_user(u64_to_user_ptr(out->array + obj_size),
--			       out->stride - obj_size)) {
--			return -EFAULT;
-+			out_ptr +=3D out->stride;
-+			in_ptr +=3D obj_size;
- 		}
+diff --git a/drivers/crypto/qcom-rng.c b/drivers/crypto/qcom-rng.c
+index 150e5802e351..f31a7fe07ba7 100644
+--- a/drivers/crypto/qcom-rng.c
++++ b/drivers/crypto/qcom-rng.c
+@@ -111,17 +111,31 @@ static int qcom_rng_seed(struct crypto_rng *tfm, const u8 *seed,
+ 			 unsigned int slen)
+ {
+ 	return 0;
+ }
+ 
++static int qcom_hwrng_init(struct hwrng *hwrng)
++{
++	struct qcom_rng *qrng = container_of(hwrng, struct qcom_rng, hwrng);
++
++	return clk_prepare_enable(qrng->clk);
++}
++
+ static int qcom_hwrng_read(struct hwrng *hwrng, void *data, size_t max, bool wait)
+ {
+ 	struct qcom_rng *qrng = container_of(hwrng, struct qcom_rng, hwrng);
+ 
+ 	return qcom_rng_read(qrng, data, max);
+ }
+ 
++static void qcom_hwrng_cleanup(struct hwrng *hwrng)
++{
++	struct qcom_rng *qrng = container_of(hwrng, struct qcom_rng, hwrng);
++
++	clk_disable_unprepare(qrng->clk);
++}
++
+ static int qcom_rng_enable(struct qcom_rng *rng)
+ {
+ 	u32 val;
+ 	int ret;
+ 
+@@ -206,11 +220,13 @@ static int qcom_rng_probe(struct platform_device *pdev)
+ 		return ret;
  	}
-=20
+ 
+ 	if (rng->match_data->hwrng_support) {
+ 		rng->hwrng.name = "qcom_hwrng";
++		rng->hwrng.init = qcom_hwrng_init;
+ 		rng->hwrng.read = qcom_hwrng_read;
++		rng->hwrng.cleanup = qcom_hwrng_cleanup;
+ 		rng->hwrng.quality = QCOM_TRNG_QUALITY;
+ 		ret = devm_hwrng_register(&pdev->dev, &rng->hwrng);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Register hwrng failed: %d\n", ret);
+ 			qcom_rng_dev = NULL;
+-- 
+2.54.0
+
 
