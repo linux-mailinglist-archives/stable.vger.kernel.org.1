@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VcuAJLtuMGoFTAUAu9opvQ
-	(envelope-from <stable+bounces-263462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:31 +0200
+	id NQ7wNMVuMGoITAUAu9opvQ
+	(envelope-from <stable+bounces-263465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E349E68A2B4
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4934068A2BF
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JbZaYvpo;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263462-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263462-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fshQ14mN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263465-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263465-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DF46306A159
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 21:29:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6820830BB9B7
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 21:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B452F3AC0F5;
-	Mon, 15 Jun 2026 21:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409F53AC0DE;
+	Mon, 15 Jun 2026 21:29:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC1C382291
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EFC38BF75
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:29:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781558951; cv=none; b=VN7urzXE7FhLI2UMslaIMDHZWRBQZPizsPhsx61UinuMeG8VZu8Z/EFnsIUoG2NQ2bziMjwUbK7KBDAD9oQ0weubZ03jmOzhjWizj1+vvorE2GZUS7KctyP7Ym8RbGU1jV/IViOnIclGWajkKtDa1udcgOamF3wAgUIGZq6BQX8=
+	t=1781558954; cv=none; b=nMlGst30KydUXWA84NG6VJhCnrjJN/3KaTxFGmfSPncy1EjUTA7a8GVk50ysKHsR4lx/4cg1ZAnSJTiDTHiXsFIM8M4T+iHYwCUEJcqYbqHbTSHrsFdhq6AwctWyWKoOBLiu/O3ZpjrTPZHBofkq1iBpzeQ40EI4R9o+kQ0F8zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781558951; c=relaxed/simple;
-	bh=BVtQSTbZn9qQeiD9coQMOmRjYT1CZAmryXniwgObwjI=;
+	s=arc-20240116; t=1781558954; c=relaxed/simple;
+	bh=1JKrmjf7fPdQ3viG2ZM7U0knx0ZDMAgdtttN6vJirwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfDs4B2wfWtQ2CJ3ov3SAikbsNatce/mNwnudNBOF1CAT3WHa1wSonBByyJlFgOj+y5L0a/ly2MknbgEHlhmqSgzZCdcUZF3asUf/k+IzG+hKnZ04o81fxBZX45E5q2xcp8drbPbZv589TpFNvrvP85b2aCGefA6r5x9DV5/8lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JbZaYvpo; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D2C1F000E9;
-	Mon, 15 Jun 2026 21:29:09 +0000 (UTC)
+	 MIME-Version; b=g8gwO1qJ8DjYSr+TIJGcONySiTT4yM5a15XkvmTYQomEwhLSSLhoNSERB5TK4s/qUF4OdLlRPDD1s/GocajVb1lCcht3aJIuzGaWdv5L7P+j8bvvdjpu84EdungGg+AxHlBD0dNx+eGoeRvJdonMNuxeMVlNAkj7XW7wrNVnb8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fshQ14mN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F56A1F00A3D;
+	Mon, 15 Jun 2026 21:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781558950;
-	bh=EFThBJyyuUgbznb+7mRryU2JzT3KXzCNZAADHjmG5NY=;
+	s=k20260515; t=1781558952;
+	bh=piBfKzqz6iwFbEkNY0vkoSqRLKP1mD/h90Z608UmbAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JbZaYvpo6x5vEMrtM8sBtHzx9yVcJLeic6yi+Xl7psPi5gZTHtgQr7trGR+Y79Sgt
-	 CAtfx4LUP5Cihc9pBr1H4tfVYEYYTIFUF8uegpvHBy1ANuMup+Ejn4yfInq2S7UT1j
-	 Y4bH95OM5smA1TL58G09LmGIrOsEXSQ8JO+fSEdZ4mfKDX8AE54qg+k/P16H+E0+VK
-	 /1dynOVxope4/zPFt50aDj+0dkiVo8JZFCORgswCYghvivGIaXE5g0I9/8dY+sLzB6
-	 CBj3NU10N1oqlS5rY0lhA2tGidvpp+0RtKHtZn6B1GvNlJKI387wrWEeKGVOsI+x7v
-	 vbH5+KN+7jJfw==
+	b=fshQ14mNTrjTy+9WGiGCDXG/Wwap75ZEIyZTW5WXbO99yXGYzQBWFBLiP4g1G0QAu
+	 liRgYn/k0Alf5wJOlkjgwAtki7c5BYz32jMHwhAnqVJKjxl86/6RFqKhSU8HEMgzEo
+	 qqitwCm5B2fiEuPXUpLQc1wUVaOKIiAMOptLKXw+/d04kVgSoiDo/rV/q+8lv+qomW
+	 SkExlK1bw37nR/vI4TWy4YYanRisfj3VdTcpY2ZgPR0rRijHZJkJ/IHCetaR0GG7bl
+	 M9xvvZEkIP6cSRLFO5eS7L6Bs/2tyeYz4k75iuo0ZF3xYF2qRzfoQcGvVI8/OzcgaO
+	 3TX6++Uow1wkg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
+Cc: Jacob Moroni <jmoroni@google.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 1/3] RDMA/umem: fix kernel-doc warnings
-Date: Mon, 15 Jun 2026 17:29:06 -0400
-Message-ID: <20260615212908.2473687-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/4] RDMA/umem: Add ib_umem_dmabuf_get_pinned_and_lock helper
+Date: Mon, 15 Jun 2026 17:29:07 -0400
+Message-ID: <20260615212910.2473729-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061505-frayed-clergyman-65f9@gregkh>
-References: <2026061505-frayed-clergyman-65f9@gregkh>
+In-Reply-To: <2026061551-manor-verbalize-74cb@gregkh>
+References: <2026061551-manor-verbalize-74cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263462-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263465-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rdunlap@infradead.org,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -98,61 +98,91 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E349E68A2B4
+X-Rspamd-Queue-Id: 4934068A2BF
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit ff46d1392750444fab5ae5a0194764ffdc4ac0d2 ]
+[ Upstream commit 553dfa8cbd0c6d36adae042d9738ddf8f8765ac7 ]
 
-Add or correct kernel-doc comments to eliminate warnings:
+Move the inner logic of ib_umem_dmabuf_get_pinned_with_dma_device()
+to a new static function that returns with the lock held upon success.
 
-Warning: include/rdma/ib_umem.h:104 function parameter 'biter' not
- described in 'rdma_umem_for_each_dma_block'
-Warning: include/rdma/ib_umem.h:140 function parameter 'pgsz_bitmap' not
- described in 'ib_umem_find_best_pgoff'
-Warning: include/rdma/ib_umem.h:141 No description found for return
- value of 'ib_umem_find_best_pgoff'
+The intent is to allow reuse for the future get_pinned_revocable_and_lock
+function.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://patch.msgid.link/20260224003120.3173892-1-rdunlap@infradead.org
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20260305170826.3803155-2-jmoroni@google.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
+Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/rdma/ib_umem.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/umem_dmabuf.c | 35 ++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
-diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
-index 0a8e092c0ea878..09b7f7d4685ed8 100644
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -94,6 +94,7 @@ static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
- /**
-  * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
-  * @umem: umem to iterate over
-+ * @biter: block iterator variable
-  * @pgsz: Page size to split the list into
-  *
-  * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
-@@ -121,7 +122,7 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
-  * ib_umem_find_best_pgoff - Find best HW page size
-  *
-  * @umem: umem struct
-- * @pgsz_bitmap bitmap of HW supported page sizes
-+ * @pgsz_bitmap: bitmap of HW supported page sizes
-  * @pgoff_bitmask: Mask of bits that can be represented with an offset
-  *
-  * This is very similar to ib_umem_find_best_pgsz() except instead of accepting
-@@ -134,6 +135,9 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
-  *
-  * If the pgoff_bitmask requires either alignment in the low bit or an
-  * unavailable page size for the high bits, this function returns 0.
-+ *
-+ * Returns: best HW page size for the parameters or 0 if none available
-+ *   for the given parameters.
-  */
- static inline unsigned long ib_umem_find_best_pgoff(struct ib_umem *umem,
- 						    unsigned long pgsz_bitmap,
+diff --git a/drivers/infiniband/core/umem_dmabuf.c b/drivers/infiniband/core/umem_dmabuf.c
+index 44bb7449738cf4..acb0922a786131 100644
+--- a/drivers/infiniband/core/umem_dmabuf.c
++++ b/drivers/infiniband/core/umem_dmabuf.c
+@@ -198,18 +198,19 @@ static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
+ 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
+ };
+ 
+-struct ib_umem_dmabuf *
+-ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
+-					  struct device *dma_device,
+-					  unsigned long offset, size_t size,
+-					  int fd, int access)
++static struct ib_umem_dmabuf *
++ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
++				   struct device *dma_device,
++				   unsigned long offset,
++				   size_t size, int fd, int access,
++				   const struct dma_buf_attach_ops *ops)
+ {
+ 	struct ib_umem_dmabuf *umem_dmabuf;
+ 	int err;
+ 
+-	umem_dmabuf = ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
+-							 size, fd, access,
+-							 &ib_umem_dmabuf_attach_pinned_ops);
++	umem_dmabuf =
++		ib_umem_dmabuf_get_with_dma_device(device, dma_device, offset,
++						   size, fd, access, ops);
+ 	if (IS_ERR(umem_dmabuf))
+ 		return umem_dmabuf;
+ 
+@@ -222,7 +223,6 @@ ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
+ 	err = ib_umem_dmabuf_map_pages(umem_dmabuf);
+ 	if (err)
+ 		goto err_release;
+-	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
+ 
+ 	return umem_dmabuf;
+ 
+@@ -231,6 +231,23 @@ ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
+ 	ib_umem_release(&umem_dmabuf->umem);
+ 	return ERR_PTR(err);
+ }
++
++struct ib_umem_dmabuf *
++ib_umem_dmabuf_get_pinned_with_dma_device(struct ib_device *device,
++					  struct device *dma_device,
++					  unsigned long offset, size_t size,
++					  int fd, int access)
++{
++	struct ib_umem_dmabuf *umem_dmabuf =
++		ib_umem_dmabuf_get_pinned_and_lock(device, dma_device, offset,
++						   size, fd, access,
++						   &ib_umem_dmabuf_attach_pinned_ops);
++	if (IS_ERR(umem_dmabuf))
++		return umem_dmabuf;
++
++	dma_resv_unlock(umem_dmabuf->attach->dmabuf->resv);
++	return umem_dmabuf;
++}
+ EXPORT_SYMBOL(ib_umem_dmabuf_get_pinned_with_dma_device);
+ 
+ struct ib_umem_dmabuf *ib_umem_dmabuf_get_pinned(struct ib_device *device,
 -- 
 2.53.0
 
