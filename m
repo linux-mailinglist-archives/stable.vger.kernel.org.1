@@ -1,101 +1,102 @@
-Return-Path: <stable+bounces-263167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uvgLJ2THL2owGQUAu9opvQ
-	(envelope-from <stable+bounces-263167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:35:32 +0200
+	id yUjtMyvIL2pUGQUAu9opvQ
+	(envelope-from <stable+bounces-263168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:38:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51E0685184
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:35:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15D66851D4
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:38:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LjEH6Qhh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pt1yfHlk;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=A0wm2e9c;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VQtO9FdC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263167-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263167-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=suse.de;
+	dkim=pass header.d=gourry.net header.s=google header.b=cMw1C28+;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263168-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263168-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B72BF3022ABE
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:35:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E7DE43004D3A
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9B53D9DCE;
-	Mon, 15 Jun 2026 09:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B213DA7CE;
+	Mon, 15 Jun 2026 09:38:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AE93D6CC5
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 09:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8209D3D9DB3
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 09:38:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781516130; cv=none; b=EXMbWNXhjtQFcnEE0EtlmJNDxKdK+LiipAnxICpupEx899wFBqXHm93C/Rq+W2elApuLoC9iFpnyQBwzKAymhYdgl+fI/JOnMP/DFO+YZUiMncb6wdUS8E+RTKiqoOqQ+fYwX5I5mQ4Gdq2JNy0nPVPP8F3c+CzHvaSpnw7iKuU=
+	t=1781516327; cv=none; b=px70Y+mxE1BYW4eBFT5t9hhOsIfoCFkAwXKUCkb/CCRbXGknbVyDmsw6VwS/JChJ+Dx1O9MtKjbOSJvl+QMlZk6WQZi4wqJkEkvOIKFtnlCYA7DQvmLxeo+fxsXPXPXlDAY6KizUj3PE4slTi40eaDv0Rc/SkJmyTPM5UU0gUxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781516130; c=relaxed/simple;
-	bh=TObyHCrog0J37zOBX+KTGoi74gpbHRQn8XN9jcDMGEc=;
+	s=arc-20240116; t=1781516327; c=relaxed/simple;
+	bh=5W9S4pgDg4/wNgsNm7pUUV0vbqnLkdd/LqkUgfe2UH8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QN6SWIatgo9oBe3AK2knnDbBwIZYpTgg/BE3h2wPct9Tit61KTJJlDS2ISq0MERY8rvApugoXV7pFuRSZ2FEtjZgH1sRRTf7J5ZcjO4bcy/FQA5AJeF/J1Ei/mKByA9iGSjobGnZeLgvYdGta1jaoVSg83eF7VTejLDECzfy2cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=LjEH6Qhh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Pt1yfHlk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=A0wm2e9c; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=VQtO9FdC; arc=none smtp.client-ip=195.135.223.130
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C40D46AC95;
-	Mon, 15 Jun 2026 09:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781516127; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afhcBrMHwtuNpl6EOyz1Ve+TLR1X1Oc6pxCJDnx1z1w=;
-	b=LjEH6QhheCbXn2yYPxvbrQS4POOD1+xCC+LO3SkvS9XwqOGQegNJetZOCT4begs2XLaB9J
-	2h9aIEuCZvmyn/UuI2zWP4GX84GOGHRbAgh/rUEvfj0/D+nvYNAxwWZMIz8ctCyBduGet7
-	0S/z0OyZJNnyU/3lUIEQQnfWF0NGB/I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781516127;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afhcBrMHwtuNpl6EOyz1Ve+TLR1X1Oc6pxCJDnx1z1w=;
-	b=Pt1yfHlktWylvTPkHQFn+SL7QASL8d9bAifpFbwv1SSVHNKU59GDIYbOX9vsWqe1JyoSyT
-	F65YD0EcejhkunAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1781516126; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afhcBrMHwtuNpl6EOyz1Ve+TLR1X1Oc6pxCJDnx1z1w=;
-	b=A0wm2e9cm42qj6Nt6QFoHr1xCPbseD1yIj4YlRvk43PHySHrjrH5ewdfM1Olyx8hU8iSQ3
-	GRuql8ut/sAK6Zwm/zYmWkILVhPVh21xP/+WBQFnp6M/SXNt8/h4o/m8LRASOp8gjWX3DZ
-	YOWy+CzvrK4xB/kUSypZ0RXNMdThJLY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1781516126;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=afhcBrMHwtuNpl6EOyz1Ve+TLR1X1Oc6pxCJDnx1z1w=;
-	b=VQtO9FdC4JV39U9SaPNzDuOosxdZ2fjfbcabW45ia/MaienRPG4n1qi1Ubkn42EwpAr0Ne
-	0sFDJefdiMtxwlDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB1E0779A7;
-	Mon, 15 Jun 2026 09:35:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xk9TKF7HL2qVRgAAD6G6ig
-	(envelope-from <dwagner@suse.de>); Mon, 15 Jun 2026 09:35:26 +0000
-Date: Mon, 15 Jun 2026 11:35:25 +0200
-From: Daniel Wagner <dwagner@suse.de>
-To: WenTao Liang <vulab@iscas.ac.cn>
-Cc: Ram Vegesna <ram.vegesna@broadcom.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K . Petersen" <martin.petersen@oracle.com>, 
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>, Kees Cook <kees@kernel.org>, James Smart <jsmart2021@gmail.com>, 
-	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=XjaAayvBtKN7GA1Zur8jZxpLpWthPM8GwaYXm9AJKlQ4+1hOu9Xjm0p5oBr+Pw8ZwVZ6H2PprR42s2DTFU434Rt8F01+LsAGKLuGCg5FZI+eceYfwZxJScFNAhUhporcHYQawt2BIFIcl9vhx+fV0rxPdOt7yeKYA+86b1iIZHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=cMw1C28+; arc=none smtp.client-ip=209.85.219.53
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ccedaf0b54so22018626d6.0
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 02:38:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1781516323; x=1782121123; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oamN5hjWi+TCb5PPsVj9eSoiuDSUof3U7OYNH2/rvIc=;
+        b=cMw1C28+9tJYOQ7hVT3DvNUY4YjCbCe2Ok9i4q/E05Sur6rmTz9O2dcb3COWbmXt/i
+         a0vynKs0BbsB90oTaKZ8uvD1N8mde9+hkviXYyugr7IApL7yiNOadkidIRZoZ2Cm39uB
+         5JLaETSbJ+soFLeS1g9CNT6yAX4/6tbO/oskVDeWFOC6J6KEux9/yF3aNbSaXwF86rkh
+         r8Xt49c87Hl1BEuRmhVsYwEs+kyN7FG3lnGUzTqqW73HeMKb9h5E91yzGvCw+OhwiCeo
+         1eo9t3zZC0Fd7dPA0Q8ARRYLPxbNitfRNOcr3ao143B8K2T+mqJpeGr5cOoH0w2Wc13s
+         w/IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781516323; x=1782121123;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oamN5hjWi+TCb5PPsVj9eSoiuDSUof3U7OYNH2/rvIc=;
+        b=gYQHVtMaJyZ2BsOdKdocLO2XenRwHoOQXeeIiAj5r3vASYQHJs3AOUUiVkw8xluqEL
+         SD9TNdbj0HvfKzDhwZkime4Pj/WnIJf2zyMllXlN5P0xX1mdHAw/cHsEltYpu+rySF5w
+         G0MO4lXKckUPp245ohStMhdXG/vi7NVcD9w+vZ1/oEHZaHDzOnRK+/h3wYvM7l2hgcbr
+         /9xnpblXzYWAFrCirgqcrygDugfcAT8Nl7XMnU1zBQc41Ci0rWtfMlxJDkaHvXQAYBGr
+         w7Hakg3qTOJq21tFPPxvxV0qaDZkopYhcvl5/1DRCdhSv34jnaddjTJsea50GaDZrDMn
+         lAEA==
+X-Forwarded-Encrypted: i=1; AFNElJ8DcqOl8fkuxO8ksha2BB6F6jGA4NvI9psu95qNEWv/h2SJYd6BT35DiW8TQirp8IPxvkjG/28=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6G2SWX2cvyLZJvvFd91NPwgFTOGx+RX01whNOGMLDlxn7z8IA
+	pMOyu/E6LbMNM/qrX2mxjmYPW6PESFnBx7n5Z6b4OiJaLr2gUh4wzxYjJPWX3qQGDBc=
+X-Gm-Gg: Acq92OEFy8DYqW20CPhvnwhaNn5Z6OR3tfyB7bIqPJ7E6MLoIdfl96X+TYqwWF2T3MF
+	T4NT7fNc7r8+BxxG55zPIfImdV3c+SiJvYhqKhJQEgexzoWCEit61cHPmvFM70IG6FjiAqO4rlJ
+	DZdboSoutVEnLsB/Mrfujni5iTRmp2i7BwjQPgMHSS3W0iAfnOBjSOcQGEyY1vsozVP6p4IyPFb
+	KgfByDMD8aNLyfua1wBhICK+YhOh8ARhJbbrEZ8xAlWsmGmiMPVi8qsNyldR6tPJh9UZLHcdqOw
+	17C0BeUaRlejnPK+1IY944SP/OZGnltR2C/pm+Nc1TmISXzagHXBiDCU8UeYYT9qL9dtYdyKz1d
+	Wzj0kOmvll9zvqFSh3Pif2S0sFqVR8j4iaQUsEvxCeOjo9MkHYuJxSQ84wlhrBH4HIIMZWEY1Gz
+	NhtQzydrKiI/Tswu4hGqYWVzYSbliyrpC3Z/SvsLZd3UpVkB8IUEaoc5QK+tlh3kHRxuvAhP65Z
+	ZYwqnaz/k/U2O8=
+X-Received: by 2002:a05:6214:5907:b0:8cb:e63e:2a45 with SMTP id 6a1803df08f44-8d32c4eb32emr217014056d6.18.1781516323361;
+        Mon, 15 Jun 2026 02:38:43 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (158-94-182-130.mclarenap.oninferno.net. [158.94.182.130])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8d301c237e8sm108166456d6.17.2026.06.15.02.38.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 02:38:42 -0700 (PDT)
+Date: Mon, 15 Jun 2026 05:38:38 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>, Farhad Alemi <falemi@asu.edu>,
+	Yury Norov <ynorov@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: elx: efct: fix refcount leak in efct_hw_io_abort()
-Message-ID: <b601d4e2-8b10-417d-8d4d-1c09e556e94a@flourine.local>
-References: <20260611053037.63756-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+Message-ID: <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,67 +105,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260611053037.63756-1-vulab@iscas.ac.cn>
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
+In-Reply-To: <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gourry.net:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[broadcom.com,hansenpartnership.com,oracle.com,mt-integration.ru,kernel.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263167-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263168-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:vulab@iscas.ac.cn,m:ram.vegesna@broadcom.com,m:James.Bottomley@hansenpartnership.com,m:martin.petersen@oracle.com,m:v.shevtsov@mt-integration.ru,m:kees@kernel.org,m:jsmart2021@gmail.com,m:linux-scsi@vger.kernel.org,m:target-devel@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	DMARC_NA(0.00)[gourry.net];
+	FORGED_SENDER(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:farhad.alemi@berkeley.edu,m:akpm@linux-foundation.org,m:longman@redhat.com,m:falemi@asu.edu,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[dwagner@suse.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[berkeley.edu,linux-foundation.org,redhat.com,asu.edu,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dwagner@suse.de,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gourry@gourry.net,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gourry.net:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,iscas.ac.cn:email]
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gourry.net:dkim,gourry.net:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,gourry-fedora-PF4VCD3F:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E51E0685184
+X-Rspamd-Queue-Id: B15D66851D4
 
-On Thu, Jun 11, 2026 at 01:30:37PM +0800, WenTao Liang wrote:
-> When efct_hw_reqtag_alloc() fails in efct_hw_io_abort(), the error
-> path returns -ENOSPC without releasing the reference obtained via
-> kref_get_unless_zero() earlier in the function. All other error
-> paths correctly drop the reference. This causes a permanent
-> reference leak on the io_to_abort object.
+On Mon, Jun 15, 2026 at 10:08:51AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/14/26 15:25, Farhad Alemi wrote:
+> > 
+> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> > --- a/kernel/cgroup/cpuset.c
+> > +++ b/kernel/cgroup/cpuset.c
+> > @@ -2649,7 +2649,7 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+> > 
+> >  		migrate = is_memory_migrate(cs);
+> > 
+> > -		mpol_rebind_mm(mm, &cs->mems_allowed);
+> > +		mpol_rebind_mm(mm, &cs->effective_mems);
 > 
-> Additionally, the abort_in_progress flag is left set to true on
-> this path, which means future abort attempts for the same I/O will
-> immediately return -EINPROGRESS even though the abort was never
-> submitted, effectively blocking recovery.
-> 
-> Fix this by adding the missing kref_put() call and reset
-> abort_in_progress to false, matching the cleanup done in the
-> efct_hw_wq_write() failure path below.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 63de51327a64 ("scsi: elx: efct: Hardware I/O and SGL initialization")
-> Signed-off-by: WenTao Liang <vulab@iscas.ac.cn>
+> God this is confusing.
+>
 
-Looks good to me.
+All interactions between mempolicy and cpuset are horrible and
+confusing.  Much like Lorenzo's anon_vma work, I have to keep
+notes on how this whole thing doesn't just spew SIGBUS constantly.
 
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
+The short answer is: mempolicy is advisory and cpuset is strictly
+followed - in a dispute cpuset wins... except for file backed memory,
+then everyon loses and nothing is consistent.
+
+> Naturally I wonder: Why are we not using "task->mems_allowed" (maybe cs vs. tsk
+> was the original bug?), which is effectively just newmems?
+>
+
+Short answer: task->mems_allowed is protected by the task lock and we
+don't hold the task lock for a foreign task (not-current) over mm
+operations.
+
+Long answer: Reasons and "Stop looking at the spaghetti, it's going to
+break"
+
+~Gregory
 
