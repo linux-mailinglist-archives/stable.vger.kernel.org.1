@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MJvVOQsoMGqxPAUAu9opvQ
-	(envelope-from <stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:27:55 +0200
+	id dUkjG4QnMGqNPAUAu9opvQ
+	(envelope-from <stable+bounces-263393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:25:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714CA6885BB
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:27:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D86688553
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:25:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BO0YxwY2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hvDAf6R9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263393-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263393-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93F8D30F983A
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:21:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72CE0301FF27
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4DE409628;
-	Mon, 15 Jun 2026 16:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C4D409635;
+	Mon, 15 Jun 2026 16:21:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DB1406298
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE2140961E
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:21:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540480; cv=none; b=Gfyh53/U4sybg6DbKnd3m935YS/UpWlRGcKBmeZHL1botsnu0p4q02fzmfDooK2roJebvhYT+/4k5IyAorWaHvpWxN3F1N0cGfdvrMPs8/Xn5u6vBufsTp6eaC2S/Khm9YvQz77gQr7WK3Z1RJ1e6j21kicTqVBChEQDQTClZ9A=
+	t=1781540489; cv=none; b=iZtO7NFw68d8YTym7fRclSy8rsp0uQIqxbDmWqqGdhQ70RM/l3xBD8n4eoP1MGCeEO+URtB5TwLIqJG2BND10RPQ9/maVyj36klSJT1Mxq3ZDGTXXW3XhMIL5fyGom6GxZWiWt43NHfBBs1y2Asv7tBfRVz/zmUI0e3PPhRJ+/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540480; c=relaxed/simple;
-	bh=CuDKZZReAj3F7f9qzEea1By3YDygCQb6GIFHvtlKddk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WV2PT9mjh1u0USgRL7VfiB2Gzgobzlv07Cb506M4oV1CxRmrgq6RwSJT2lEIi05Gg7OzShk5scDJ3ckBsXnlrJjdG6HdV0N0wqiQdmzjTqwOyDvE01ZHhTUCgZgKFIVh6LOPJzhpb3P5vCUjgD3tHKnFNvpY98TeCoVRxFkkV/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO0YxwY2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A011F000E9;
-	Mon, 15 Jun 2026 16:21:18 +0000 (UTC)
+	s=arc-20240116; t=1781540489; c=relaxed/simple;
+	bh=6d9+ptbLyx12poobEuqZtDy2ri+1lQcXgeshHluHZo4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YwiF6rjYxna5W279J5ELzPlS0LgsZY4g+I4hcc5OyOO5GiItCsq9RqrBzVy2GuNmzQxpjG4ffKqOR3FwQVYKKlGoMGGxO7UFLn3ppxYgEV3QL0XrdWEJXkricjN88iViRj+hQnTGKMYf1LdXpPNO+irLCuiSyPlbdcVzYKFg3WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvDAf6R9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EFE1F000E9;
+	Mon, 15 Jun 2026 16:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781540479;
-	bh=o9E/skiLSKpxHCAAuuQ4zUwZiRf9QUG6Z6bPZEXpRNs=;
+	s=korg; t=1781540488;
+	bh=JdmBSZRKgNwqRPMw3SghRZKwrgIj2OvJ+9vUFn5HWcs=;
 	h=Subject:To:Cc:From:Date;
-	b=BO0YxwY2K153W/LDG+QFGS5yxBTZFFLjpxFH+YEnyPMSK39YacPisnezUuRkJ+9zr
-	 h8RsJ70rZ+ut+gddY0aMsvY0DM7EPtY7Ke1EEAKI1LQG1ytqvYQUbZbLnln76GZAbm
-	 AOnxYIXaEWA/XECUt7ldSnLkkghmsjkez3u2dtIs=
-Subject: FAILED: patch "[PATCH] drm/amdkfd: Fix buffer overflow in SDMA queue" failed to apply to 6.1-stable tree
-To: andrew.martin@amd.com,alexander.deucher@amd.com
+	b=hvDAf6R9k2QQWXyWXVoOC6F9PqCHZEvuW2SDIcGN1NjqsbpcImTPWubTW/hzIFVNH
+	 2FU1QWDBn74MeR9TWoG9eO2XZoXHLdpYfjup6oncabK2k5DzWoSSvv5BIzVasYDsVE
+	 EKUWSOgCj+6H91LEd1fBKn+dMkzsTi66LxQpOmcY=
+Subject: FAILED: patch "[PATCH] drm/xe/display: fix oops in suspend/shutdown without display" failed to apply to 6.12-stable tree
+To: jani.nikula@intel.com,matthew.brost@intel.com,suraj.kandpal@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 18:00:05 +0200
-Message-ID: <2026061505-negation-astride-3036@gregkh>
+Date: Mon, 15 Jun 2026 18:00:20 +0200
+Message-ID: <2026061520-pediatric-private-c0b5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,18 +62,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263392-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263393-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:jani.nikula@intel.com,m:matthew.brost@intel.com,m:suraj.kandpal@intel.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:andrew.martin@amd.com,m:alexander.deucher@amd.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -83,30 +83,30 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid,amd.com:email]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gregkh:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,msgid.link:url,gitlab.freedesktop.org:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 714CA6885BB
+X-Rspamd-Queue-Id: 05D86688553
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 352ea59028ea48a6fff77f19ae28f98f71946a80
+git cherry-pick -x 68938cc08e23a94fd881e845837ff918de005ce7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061505-negation-astride-3036@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061520-pediatric-private-c0b5@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -118,118 +118,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 352ea59028ea48a6fff77f19ae28f98f71946a80 Mon Sep 17 00:00:00 2001
-From: Andrew Martin <andrew.martin@amd.com>
-Date: Thu, 28 May 2026 12:54:39 -0400
-Subject: [PATCH] drm/amdkfd: Fix buffer overflow in SDMA queue
- checkpoint/restore on GFX11
+From 68938cc08e23a94fd881e845837ff918de005ce7 Mon Sep 17 00:00:00 2001
+From: Jani Nikula <jani.nikula@intel.com>
+Date: Fri, 15 May 2026 19:09:20 +0300
+Subject: [PATCH] drm/xe/display: fix oops in suspend/shutdown without display
 
-The v11 MQD manager incorrectly assigned the CP-compute variants of
-checkpoint_mqd/restore_mqd for KFD_MQD_TYPE_SDMA queues. These functions
-use sizeof(struct v11_compute_mqd) (2048 bytes) instead of sizeof(struct
-v11_sdma_mqd) (512 bytes), causing a 1536-byte overflow.
+The xe driver keeps track of whether to probe display, and whether
+display hardware is there, using xe->info.probe_display. It gets set to
+false if there's no display after intel_display_device_probe(). However,
+the display may also be disabled via fuses, detected at a later time in
+intel_display_device_info_runtime_init().
 
-During CRIU checkpoint of an SDMA queue on Navi3x:
-- checkpoint_mqd() reads 2048 bytes from a 512-byte SDMA MQD buffer,
-  leaking 1536 bytes of adjacent GTT memory to userspace
+In this case, the xe driver does for_each_intel_crtc() on uninitialized
+mode config in xe_display_flush_cleanup_work(), leading to a NULL
+pointer dereference, and generally calls display code with display info
+cleared.
 
-During CRIU restore:
-- restore_mqd() writes 2048 bytes into a 512-byte SDMA MQD buffer,
-  corrupting 1536 bytes of adjacent GTT memory (often the ring buffer
-  or neighboring MQDs)
+Check for intel_display_device_present() after
+intel_display_device_info_runtime_init(), and reset
+xe->info.probe_display as necessary. Also do unset_display_features()
+for completeness, although display runtime init has already done
+that. This will need to be unified across all cases later.
 
-This is a copy-paste regression unique to v11. All other ASIC backends
-(cik, vi, v9, v10, v12) correctly use the SDMA-specific variants.
+Move intel_display_device_info_runtime_init() call slightly earlier,
+similar to i915, to avoid a bunch of unnecessary setup for no display
+cases.
 
-Add checkpoint_mqd_sdma() and restore_mqd_sdma() functions that properly
-handle the smaller v11_sdma_mqd structure, matching the pattern used in
-other MQD managers.
+Note #1: The xe driver has no business doing low level display plumbing
+like for_each_intel_crtc() to begin with. It all needs to happen in
+display code.
 
-Fixes: cc009e613de6 ("drm/amdkfd: Add KFD support for soc21 v3")
-Assisted-by: Claude:Sonnet 4-5
-Signed-off-by: Andrew Martin <andrew.martin@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6fa41db7ffdec97d62433adf03b7b9b759af8c2c)
-Cc: stable@vger.kernel.org
+Note #2: The actual bug is present already in commit 44e694958b95
+("drm/xe/display: Implement display support"), but the oops was likely
+introduced later at commit ddf6492e0e50 ("drm/xe/display: Make display
+suspend/resume work on discrete").
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-index a1e3cf2384dd..527c531676e4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -320,8 +320,7 @@ static void checkpoint_mqd(struct mqd_manager *mm, void *mqd, void *mqd_dst, voi
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7904
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/6150
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260515160920.1082842-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 7c3eb9f47533220888a67266448185fd0775d4da)
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index 00dfa68af29a..b17fb698d2f8 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -124,6 +124,15 @@ int xe_display_init_early(struct xe_device *xe)
  
- static void restore_mqd(struct mqd_manager *mm, void **mqd,
- 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
--			struct queue_properties *qp,
--			const void *mqd_src,
-+			struct queue_properties *qp, const void *mqd_src,
- 			const void *ctl_stack_src, const u32 ctl_stack_size)
- {
- 	uint64_t addr;
-@@ -337,14 +336,48 @@ static void restore_mqd(struct mqd_manager *mm, void **mqd,
- 		*gart_addr = addr;
+ 	intel_display_driver_early_probe(display);
  
- 	m->cp_hqd_pq_doorbell_control =
--		qp->doorbell_off <<
--			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
--	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
--			m->cp_hqd_pq_doorbell_control);
-+		qp->doorbell_off << CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
-+	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n", m->cp_hqd_pq_doorbell_control);
++	intel_display_device_info_runtime_init(display);
++
++	/* Display may have been disabled at runtime init */
++	if (!intel_display_device_present(display)) {
++		xe->info.probe_display = false;
++		unset_display_features(xe);
++		return 0;
++	}
++
+ 	/* Early display init.. */
+ 	intel_opregion_setup(display);
  
- 	qp->is_active = 0;
- }
+@@ -137,8 +146,6 @@ int xe_display_init_early(struct xe_device *xe)
  
-+static void checkpoint_mqd_sdma(struct mqd_manager *mm,
-+				void *mqd,
-+				void *mqd_dst,
-+				void *ctl_stack_dst)
-+{
-+	struct v11_sdma_mqd *m;
-+
-+	m = get_sdma_mqd(mqd);
-+
-+	memcpy(mqd_dst, m, sizeof(struct v11_sdma_mqd));
-+}
-+
-+static void restore_mqd_sdma(struct mqd_manager *mm, void **mqd,
-+			     struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
-+			     struct queue_properties *qp,
-+			     const void *mqd_src,
-+			     const void *ctl_stack_src,
-+			     const u32 ctl_stack_size)
-+{
-+	uint64_t addr;
-+	struct v11_sdma_mqd *m;
-+
-+	m = (struct v11_sdma_mqd *) mqd_mem_obj->cpu_ptr;
-+	addr = mqd_mem_obj->gpu_addr;
-+
-+	memcpy(m, mqd_src, sizeof(*m));
-+
-+	m->sdmax_rlcx_doorbell_offset =
-+		qp->doorbell_off << SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
-+
-+	*mqd = m;
-+	if (gart_addr)
-+		*gart_addr = addr;
-+
-+	qp->is_active = 0;
-+}
+ 	intel_bw_init_hw(display);
  
- static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
- 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
-@@ -529,8 +562,8 @@ struct mqd_manager *mqd_manager_init_v11(enum KFD_MQD_TYPE type,
- 		mqd->update_mqd = update_mqd_sdma;
- 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
- 		mqd->is_occupied = kfd_is_occupied_sdma;
--		mqd->checkpoint_mqd = checkpoint_mqd;
--		mqd->restore_mqd = restore_mqd;
-+		mqd->checkpoint_mqd = checkpoint_mqd_sdma;
-+		mqd->restore_mqd = restore_mqd_sdma;
- 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
- 		mqd->mqd_stride = kfd_mqd_stride;
- #if defined(CONFIG_DEBUG_FS)
+-	intel_display_device_info_runtime_init(display);
+-
+ 	err = intel_display_driver_probe_noirq(display);
+ 	if (err)
+ 		goto err_opregion;
 
 
