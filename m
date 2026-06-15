@@ -1,167 +1,159 @@
-Return-Path: <stable+bounces-263284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Jby5MRsSMGp+MwUAu9opvQ
-	(envelope-from <stable+bounces-263284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:54:19 +0200
+	id 19sCO80cMGp4NwUAu9opvQ
+	(envelope-from <stable+bounces-263321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:39:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A17687637
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6795C687C91
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:39:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=suse.com header.s=google header.b=I6U+fGUn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263284-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263284-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cPiqNbxx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263321-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263321-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C62323052FEA
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 14:54:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4ADCC30D5A89
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E353FE34C;
-	Mon, 15 Jun 2026 14:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2CB405C5B;
+	Mon, 15 Jun 2026 15:33:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5483FD971
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AC840629B
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:33:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781535257; cv=none; b=g4F0xHHbXgrsXZBfdnXbY4HdNhic+YMlZYRwmpNZLaxiQ0NeuyQURMDE+EI7XvAq8yGoRuJljSkXrdGH1IBTKgCJ3j+f5yGAfVPq5io1EjGsWDUbZI8F5W7L2IC/ob4epg2N0oDnAkcLjH1QO29WSZLX1Q8mntL53iql12qCjn0=
+	t=1781537625; cv=none; b=l0SVos+UADcQW/CeumvAZBqWCfygnM1a3SdLVvDHpGa0hPOuldiXAss2CtxXC5HbtmB3x6+Js/Ae//d9tuC1HpmfBXfkhwgtDl1ms7MOFmTQG1+4kS/NvShQNmhiuzGi0nawNLshq/6k9hAtukGOk0wmVToYceP1sF1uOoNi2hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781535257; c=relaxed/simple;
-	bh=KYBcS7h0pNuUxhCatDx8FkyldB1WhenoX3VwO+hlFKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ewMz7RfxS4g+vHVOigna2Mnt+L2SdpuqPW5uT5Xl7s/binidWv74D9se7bRX+AmAVa0dnLlWQV58vd1u1Xj2WyqvlAPJ1WIz4ujx7fheMQh6kHD7UmtatMmFIQzmrxgREbkCR3gFKYje37uT5RqY5Ky4KX7jtPBk2sd+qKPxvP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=I6U+fGUn; arc=none smtp.client-ip=209.85.128.46
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490be03d47bso36556825e9.0
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 07:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1781535254; x=1782140054; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EmZs6H9aAPAvXyfQHo8A/76oZU6GrjxGn5dT6papBg4=;
-        b=I6U+fGUnmTPvxmxzjRlkS4MQ94VqKcEw6ZFKest3+ZNQ/qFrhhGWthehbgGfdsXVuj
-         tRjelmrXjtBcM1OYa6stoULIsKvm0rLypq7qOF/MGA8NdhSHiRJUGxLi+iXc+zkPxZih
-         9TYdPjPtas5SPwLMiveei6UrWs2cg8URlsBPPxU3BlNFFhWRU550t2Rn/+aANy4fuwb+
-         fi3gzTzFSnywHuaJ8gP/55Je2uLRWfOImeu9OxI2NERhv/efAqnuW7c3IFsTNZyGOm/U
-         V7ChYZnuLe3aIg/oPfCCVQerFyliwEqahsL26rhjUY1xHrSyrOqgXFjObCSoIyQN6ST6
-         6ppQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781535254; x=1782140054;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EmZs6H9aAPAvXyfQHo8A/76oZU6GrjxGn5dT6papBg4=;
-        b=sCUnVxXZExxqnI/lIpoyapnv5RQFtckhI6XdWlyDIo7pCLGcYFK7XFWhp0RNWuqX8+
-         WUvKuV7Yzie1eM30H9Q9HYJivLkjRTvRVPFkpS4JYuMh+7YG0ZqigiNs7KxkUN+GW62c
-         Uc4SU11UcNy9cuPztLlD9jh7n8D5NxA9t53QRAWc1a5qyzVisSVytJfGtRudgzHAgfqS
-         /irBcBBCSdB6FX+2t+8gY+9/zJ8ClqL2eYwasPw/Fv3T4yryglkuvvVsBlp5ks+QouhF
-         H/5sYVjpa7xlYRuJtWHcRg9LBgNHDQmLFntYfzkQHg9FanDGaHtWEZVxt4fXWQkz7PsM
-         g3VQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9iygWg5s6fNY732kuqzAotEMjf0q9DVWhyZqAZQkkkYtVFcRNFKhJ5xCOC5E7swLG6SC7iqHQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+dDp/1W5CO76eBS4+d7p7+sLx383dqUUaIaLcNLYX8qjoLyx6
-	a6pF5YcRYqvJPoNe9I5vOxFxaJt+Kmx6PFYIq01mll6vdxgiSOLE//ulr4jBZfvusU0=
-X-Gm-Gg: Acq92OFvng6ke+2ED0wwQRST78QwUo3h4aQofSahCCfZcaRqP3tebWUSkr9BN8PlNM1
-	vgg0CeUciN3yLU3eflyyCbBUITnwB8O9DDhoRqPhXKNmyoNrzeKz5wUvt+aOJZtRExsBexxFDKj
-	jzV7zUL2KUnpyGW95HDfSqOoK6+LbL19fF2cN8Knak6T18Dad5CedNlVaodfnFM8XEH4JnDIjP/
-	8+dVbJ9h8AbsOjWYSlRt+3wivNq6/AiTKHER2qg/jh7F8fbGyq4hEwAyxN/dgZToVC/UXL9oNeM
-	WzTXY4fPGSgdyQCnCcslYZ3Qr1mE1TtIBAowLAtaaOw2kWIXHiYlfLMg6L+kl5mF7n3yUxII2f4
-	CgK0KDqI26xZLQoIzyOj6Uzm2FeuViSBQn71F3k4cRnSKozgE0XOJT2iAKiTZT+E8RWNupuI2JT
-	T32hLy0wTaxftttg==
-X-Received: by 2002:a05:600c:3512:b0:490:bb45:79da with SMTP id 5b1f17b1804b1-490ec4d650amr196478285e9.13.1781535254039;
-        Mon, 15 Jun 2026 07:54:14 -0700 (PDT)
-Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081e5d0849sm16670216eec.7.2026.06.15.07.54.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 15 Jun 2026 07:54:12 -0700 (PDT)
-Date: Mon, 15 Jun 2026 22:54:06 +0800
-From: joeyli <jlee@suse.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Chun-Yi Lee <joeyli.kernel@gmail.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Matthew Garrett <mjg59@srcf.ucam.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] debugfs: Fix lockdown check for mmap_prepare
-Message-ID: <20260615145406.GQ11413@linux-l9pv.suse>
-References: <20260615104750.1000-1-jlee@suse.com>
- <ai_fWlr61AzrNrDz@lucifer>
+	s=arc-20240116; t=1781537625; c=relaxed/simple;
+	bh=2H8F6aNCaZGWW2sAb/Jl8vm22pnw6mGkhLlzLaWBhBY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fx/tTcK81gHUnoMmQN7b0yF2eC9oXx+1fSGRtFEblvunjapLAJZEQL9qb0c94RJ/+QpAq/ymUyPS3dzZKPfnIPLCDgkFCa1r9HN9enEfgKRQpc0V4sSKdKFAkQPtUFmiZDX2M3lcnRAR/a/+MhqbIa/t+WX1NhIlbZ40UR9OyfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPiqNbxx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4CD1F00A3A;
+	Mon, 15 Jun 2026 15:33:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781537623;
+	bh=wrx9rt3ts8A5gDDak5Qlp2vwjBkryLaU1rFbhxpd4do=;
+	h=Subject:To:Cc:From:Date;
+	b=cPiqNbxx01/F132hTxLmJPXaV+Q1GCYWqvMXFYOAUFzTfxamMuOgVfwYe+FPsYQLm
+	 Ri1/6HRiwToFTa7aPhWhpFu5xm7K/AvM03U63/Pcr1BxqRUvHVRTXEIjDa5yHB5qoA
+	 IxOzgY82/WomU34ELCG9Myd5gwio/wk8QT3uTFUk=
+Subject: FAILED: patch "[PATCH] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios" failed to apply to 6.12-stable tree
+To: jannh@google.com,brauner@kernel.org,mszeredi@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 15 Jun 2026 16:55:23 +0200
+Message-ID: <2026061523-blurt-traffic-e169@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ai_fWlr61AzrNrDz@lucifer>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263284-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:ljs@kernel.org,m:joeyli.kernel@gmail.com,m:rafael@kernel.org,m:dhowells@redhat.com,m:andy.shevchenko@gmail.com,m:tglx@linutronix.de,m:mjg59@srcf.ucam.org,m:gregkh@linuxfoundation.org,m:dakr@kernel.org,m:driver-core@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:joeylikernel@gmail.com,m:andyshevchenko@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[jlee@suse.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,redhat.com,linutronix.de,srcf.ucam.org,linuxfoundation.org,lists.linux.dev,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jlee@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
+	TAGGED_FROM(0.00)[bounces-263321-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:jannh@google.com,m:brauner@kernel.org,m:mszeredi@redhat.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:dkim,suse.com:email,suse.com:from_mime,linux-l9pv.suse:mid]
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21A17687637
+X-Rspamd-Queue-Id: 6795C687C91
 
-On Mon, Jun 15, 2026 at 12:18:29PM +0100, Lorenzo Stoakes wrote:
-> On Mon, Jun 15, 2026 at 06:47:50PM +0800, Chun-Yi Lee wrote:
-> > From: Chun-Yi Lee <jlee@suse.com>
-> >
-> > Commit 651fdda8406d ("relay: update relay to use mmap_prepare")
-> > changed the `mmap` file operation to `mmap_prepare` for relayfs, but
-> > the lockdown check in debugfs was not updated accordingly.
-> >
-> > This prevents debugfs from being locked down when the kernel is in
-> > integrity mode if a file uses `mmap_prepare` but not `mmap`.
-> >
-> > Since the conversion to `mmap_prepare` across the kernel is not yet
-> > complete, update the lockdown check to look for both `mmap` and
-> > `mmap_prepare` to ensure comprehensive coverage.
-> >
-> > Fixes: 651fdda8406d ("relay: update relay to use mmap_prepare")
-> > Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-> 
-> LGTM so:
-> 
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
->
 
-Thanks for Lorenzo's review!
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Joey Lee
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061523-blurt-traffic-e169@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c Mon Sep 17 00:00:00 2001
+From: Jann Horn <jannh@google.com>
+Date: Tue, 19 May 2026 16:40:34 +0200
+Subject: [PATCH] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
+
+FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
+can contain uninitialized data.
+Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
+in the page cache and not wait for data from the FUSE daemon, treat
+!uptodate folios as if they weren't present.
+
+This only has security impact on systems that don't enable automatic
+zero-initialization of all page allocations via
+CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
+
+Cc: stable@kernel.org
+Fixes: 2d45ba381a74 ("fuse: add retrieve request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
+Acked-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 5dda7080f4a9..08d364ed7d6c 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1912,6 +1912,10 @@ static int fuse_retrieve(struct fuse_mount *fm, struct inode *inode,
+ 		folio = filemap_get_folio(mapping, index);
+ 		if (IS_ERR(folio))
+ 			break;
++		if (!folio_test_uptodate(folio)) {
++			folio_put(folio);
++			break;
++		}
+ 
+ 		folio_offset = offset_in_folio(folio, pos);
+ 		nr_bytes = min(folio_size(folio) - folio_offset, num);
+
 
