@@ -1,130 +1,124 @@
-Return-Path: <stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2vICIgdbL2rT+wQAu9opvQ
-	(envelope-from <stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:53:11 +0200
+	id v7G4FYFiL2oH/gQAu9opvQ
+	(envelope-from <stable+bounces-263100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 04:25:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76DC682CB7
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:53:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B534682DA8
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 04:25:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=xry111.site header.s=default header.b="T0Gb6UN/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=xry111.site;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=socionext.com (policy=none);
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263100-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263100-lists+stable=lfdr.de@vger.kernel.org";
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A22933005756
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 01:53:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8691130028A5
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 02:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C191A9FB0;
-	Mon, 15 Jun 2026 01:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBB0254AFF;
+	Mon, 15 Jun 2026 02:25:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF912CCC5
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 01:53:06 +0000 (UTC)
+Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9D0244687;
+	Mon, 15 Jun 2026 02:24:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781488387; cv=none; b=bweuchK2wX/5OPrqKnMUlrD2aRQX9i6fd1cgqa52pth0mO6QyOQmPPGs6WhNhUjaVDmgiq3ecLX8sTgNc6ocI8+EvXg41ZtuQ39IqKJ/A78FqHuQveBt8kt+fc8GVEvnE9H4dqLSCKv/DiI2CAhCWVcCUDsMgJXYPGkK/rJSRjQ=
+	t=1781490301; cv=none; b=N8pwEfrYK7oOsVcGq+dYcM4w7/M5UTc4j6svonSZbcsNJ6GyFYZkmAE0RJ9GvUpZ9/WKWWwbb79jMCnSrSdhH+dVa8rJ2YjHqszJwa9pJO2BVefaD+jcNg7qW17tllLaltJvbymnrRH0AHd7h1Xsyy02gmdXOzATK1U9xbN0yDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781488387; c=relaxed/simple;
-	bh=u3Aiw4YiS8VJikbLRVI5zqBMF0/XbmAbla4ft/2zHAk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eKbMkzZCkrWXyj1N5LMedbyRAadKThAvHVcVLDh7QOi9VaaGy05wSshEP6+00ULtEuNP+k7IIn2bHBc/A1jfrglN+2C7E12Z4qZoybXB7l/9tEF6pvmSR+thbHaIb7Hjiq8ov6tSgqO2eA7lL0WgmXcl6Wdiujlw+RhqLrddoOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=T0Gb6UN/; arc=none smtp.client-ip=89.208.246.23
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
-	s=default; t=1781488380;
-	bh=u3Aiw4YiS8VJikbLRVI5zqBMF0/XbmAbla4ft/2zHAk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=T0Gb6UN/q9xz/iMZo3+zY/Txk007UjbdC4u0yiV9sobWiRpCeeqrgJEvuY+KTDFyN
-	 7wNpGBOydnLqeqAz/XvOHQ4aj0B+Khe9TY0fAcxqQwXJiCwwUlIidmsDXrmamJSvZB
-	 ySPHM/R7ZLSAZSFWNPvhrPUwrPSOXnDIuwXSVocQ=
-Received: from [IPv6:2409:8a4c:e12:98c1::376] (unknown [IPv6:2409:8a4c:e12:98c1::376])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id F223165982;
-	Sun, 14 Jun 2026 21:52:58 -0400 (EDT)
-Message-ID: <e7026309150cd147be874d2521dbc17fe0ecb1e8.camel@xry111.site>
-Subject: Re: [PATCH v7.0.y v2 0/8] drm/amd: Backport FPU Guard Move from DML
- to DC
-From: Xi Ruoyao <xry111@xry111.site>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: amd-gfx@lists.freedesktop.org
-Date: Mon, 15 Jun 2026 09:52:52 +0800
-In-Reply-To: <6fff98f69549a9069321a727f2333d3e4aa5e84f.camel@xry111.site>
-References: <20260603153920.249671-1-xry111@xry111.site>
-		 <20260603210831.item005@kernel.org>
-	 <6fff98f69549a9069321a727f2333d3e4aa5e84f.camel@xry111.site>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 
+	s=arc-20240116; t=1781490301; c=relaxed/simple;
+	bh=MR61lgIaKdV6p/YLuZYNVwMFQPzl3hdBc7xY85ZG7Dw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V0ETsyyBeyRHG4gHsUpBuQU1TUvot/9BcHUKbiFYUtPwNoXaAS1CEhZlRNDFBSQXq0P+J/0Dw0hPLLxawjN+1ohVyCcw2naX6aJ8yPtrtolMTOPisfuS2hT1aYbKD4yggnnEdyC85MJiYGTA8I0lqxW+1mzaiEP7MkzmD39/ggs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
+Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 15 Jun 2026 11:24:52 +0900
+Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
+	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 93A452068E61;
+	Mon, 15 Jun 2026 11:24:52 +0900 (JST)
+Received: from iyokan3.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Mon, 15 Jun 2026 11:24:52 +0900
+Received: from [10.213.138.178] (unknown [10.213.138.178])
+	by iyokan3.css.socionext.com (Postfix) with ESMTP id 091D8107185;
+	Mon, 15 Jun 2026 11:24:52 +0900 (JST)
+Message-ID: <c18914f2-3dba-48ad-abcd-04dc3251f4c9@socionext.com>
+Date: Mon, 15 Jun 2026 11:24:53 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: uniphier: Fix completion initialization order before
+ devm_request_irq()
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Sangyun Kim <sangyun.kim@snu.ac.kr>,
+ Kyungwook Boo <bookyungwook@gmail.com>, stable@vger.kernel.org,
+ Masami Hiramatsu <mhiramat@kernel.org>
+References: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
+ <airBmzYhnxuK_xdh@sirena.co.uk>
+ <cd454dac-868d-43b9-9b50-9ba9f3f370a9@socionext.com>
+ <aiv9j5CInFE3twZX@sirena.co.uk>
+Content-Language: en-US
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+In-Reply-To: <aiv9j5CInFE3twZX@sirena.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
-	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[socionext.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263099-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.infradead.org,snu.ac.kr,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263100-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:broonie@kernel.org,m:linux-spi@vger.kernel.org,m:linux-arm-kernel@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:sangyun.kim@snu.ac.kr,m:bookyungwook@gmail.com,m:stable@vger.kernel.org,m:mhiramat@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[hayashi.kunihiko@socionext.com,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[xry111.site:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hayashi.kunihiko@socionext.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[socionext.com:mid,socionext.com:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D76DC682CB7
+X-Rspamd-Queue-Id: 0B534682DA8
 
-On Thu, 2026-06-04 at 11:46 +0800, Xi Ruoyao wrote:
-> On Wed, 2026-06-03 at 20:05 -0400, Sasha Levin wrote:
-> > > [PATCH v7.0.y v2 0/8] drm/amd: Backport FPU Guard Move from DML to
-> > > DC
-> > > Rebased onto 7.0.11.
-> >=20
-> > Thanks for the series. Unfortunately it doesn't apply to the current
-> > 7.0.y tree: patch 3/8 creates dcn42 resource files that don't exist in
-> > this tree, and patch 5/8 depends on dml21_wrapper_fpu.c, which is not
-> > created in 7.0.y either.
->=20
-> dml21_wrapper_fpu.c is created by 4/8 (upstream commit
-> 4bb2f0721ed8a2a70f864b9358bd6cd4d92199b3) which moves out the logic
-> requiring FPU from dml21_wrapper.c to that new file, so the remaining
-> code can safely use DC_FPU_{START,END}.
->=20
-> The dcn42 files should be removed.=C2=A0 I'll recheck if the series conta=
-ins
-> anything related to dcn42 and remove them in v3.
+Hi Mark,
 
-Abandoned considering 7.1 is released and 7.0 is not LTS.
+On 2026/06/12 21:37, Mark Brown wrote:
+> On Fri, Jun 12, 2026 at 05:17:49PM +0900, Kunihiko Hayashi wrote:
+>> On 2026/06/11 23:09, Mark Brown wrote:
+> 
+>>> This doesn't apply against current code, please check and resend.
+> 
+>> That seems a bit strange. I applied this patch to v7.0 and linux-next successfully.
+>> Which tree did you apply to and fail?
+> 
+> It applies to none of spi/for-7.1, spi/for-7.2 nor spi/for-next.
 
---=20
-Xi Ruoyao <xry111@xry111.site>
+Sorry for my mistake.
+I've checked the differences, so I'll resent it.
+
+Thank you,
+
+---
+Best Regards
+Kunihiko Hayashi
 
