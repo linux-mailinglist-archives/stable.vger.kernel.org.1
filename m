@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-263353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6FbNImMhMGo7OgUAu9opvQ
-	(envelope-from <stable+bounces-263353-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:59:31 +0200
+	id 8pDaNgYhMGoVOgUAu9opvQ
+	(envelope-from <stable+bounces-263354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:57:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC0B688021
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:59:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69071687FCB
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:57:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Vr+bUvOf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263353-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263353-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MfZiGIE4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263354-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263354-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D91A9302AC98
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:52:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 857D33127FF7
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F11C40757F;
-	Mon, 15 Jun 2026 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5FE407CC7;
+	Mon, 15 Jun 2026 15:51:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F791407594
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011C54071EA
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:51:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538672; cv=none; b=sHP3AhAnbv3x3y/glqh2w6nSM8AruLxk3+p7bEk8eI+Ow9RolzQTPVjZfLhBeHxHaw3Ts+kYLOD7ELRLAO/Wzkb72v+8kdos1KrADSOPfeNAXY/l/iTqhYCLM6ROECO3YLGOP83lotFh0ZYCwLr6HWMtlKlYlPoU7Tyb/aiZub8=
+	t=1781538681; cv=none; b=TmYJWBYm5ufAcN8NA1OZ8ttkv/ZJTNAoB498l5AypGIUqzbGrfLSoLPfPDLVLLFaM5zE2KKOO470niaOvKgYQutWkCuxFT2wa+fd9dWo9oCuqYUbcBUvXgwItaFxOkEkeGAWSotlHEGhw+q8s1R9/kPNgwqqXV2IlRKL680FzHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538672; c=relaxed/simple;
-	bh=OEnkoolpRIUMXzggsD2JiWXrZbwxIK836kEmh/sLAqw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ByiFkWEIiuGWVkqTjrOJcfZxBYMfFDYFAsXAbA6EnxeZs8/UoQtwgoR0AHE85QIhsP79RJOlto+BHar1QMYfag920ue51K7j/TgpqMUbL8eBjaB3T1e4Nl1Ed+eC6Dr5lqR/062R1k0MGmAqGIDN1df8qFo266QyplvGLgO9/xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr+bUvOf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E071F000E9;
-	Mon, 15 Jun 2026 15:51:10 +0000 (UTC)
+	s=arc-20240116; t=1781538681; c=relaxed/simple;
+	bh=Ik+NALzGGJ5ErejDzG02VqywW93g31GmNEAx1agaHp4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UBf5PDS29b8Ua9u/2QQ9ODdCpObZXLLDJhs0iD4FJQ2KQettHhy/3FZyKtlgejVej6xgqMnXORO+uf5TOBbxW3ZP84kT3kuIS+0rwqpCoEpKPO4jWMjJOdNcTGDstFRNWG2qygwB6Q4A7LzEIfdayuZxYOVLi1HQh3yTZ8Qdj1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfZiGIE4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51181F000E9;
+	Mon, 15 Jun 2026 15:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781538671;
-	bh=Ia8aCT/ri3G1+iMAprpUrF0GcbCIOKzqeem+hxW/Jok=;
+	s=korg; t=1781538679;
+	bh=LKDA/GyzJeOhaAFuUiGpqZ/cxZvF4q8dXTTcmqj4eZY=;
 	h=Subject:To:Cc:From:Date;
-	b=Vr+bUvOfO25558j2s5R0g0K1UjsdkryKSo4RgS5Tm2S9CrOrcTEE6tc7YTi4ew5a1
-	 FX67agFx9x58j5GXxhEf3p0n5m2mqQeQRgrwtMhLG8n4wgfbN0CV80uP6dqhNANur1
-	 OSzCKaduJoZTPvFdPiKEz4GebFM722KqXYCxoXJ0=
-Subject: FAILED: patch "[PATCH] rxrpc: Fix the ACK parser to extract the SACK table for" failed to apply to 6.6-stable tree
-To: dhowells@redhat.com,davem@davemloft.net,edumazet@google.com,horms@kernel.org,jaltman@auristor.com,kuba@kernel.org,marc.dionne@auristor.com,michael.bommarito@gmail.com,pabeni@redhat.com
+	b=MfZiGIE4GCaqWwhv+wqVHs7LMYO8+p2xVTYJUq3dUcho9oLZP0Hn4mg2/aFDOi7+G
+	 bxkVJyvXK0rj0jZ6MWpkwffaxMJ+lPWqVe2v/teBP7EO8WP0N3/YynYawYwl+IeSAo
+	 hnLZnHvB3YIRlM4j5+JGvGZuAKwrPrgcr+JPYe6g=
+Subject: FAILED: patch "[PATCH] thunderbolt: Validate XDomain request packet size before type" failed to apply to 5.15-stable tree
+To: michael.bommarito@gmail.com,mika.westerberg@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 17:43:43 +0200
-Message-ID: <2026061543-superior-passerby-d597@gregkh>
+Date: Mon, 15 Jun 2026 17:45:17 +0200
+Message-ID: <2026061517-lyrically-tigress-4a4d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,58 +57,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263354-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263353-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:dhowells@redhat.com,m:davem@davemloft.net,m:edumazet@google.com,m:horms@kernel.org,m:jaltman@auristor.com,m:kuba@kernel.org,m:marc.dionne@auristor.com,m:michael.bommarito@gmail.com,m:pabeni@redhat.com,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[redhat.com,davemloft.net,google.com,kernel.org,auristor.com,gmail.com];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:stable@vger.kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,linux.intel.com];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,davemloft.net:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,infradead.org:email,auristor.com:email,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,gregkh:mid,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8EC0B688021
+X-Rspamd-Queue-Id: 69071687FCB
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 333b6d5bb9f87827ac2639c737bf9613dbae7253
+git cherry-pick -x a504b9f2797b739e0304d537e8aa4ce883ecce39
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061543-superior-passerby-d597@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061517-lyrically-tigress-4a4d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -120,100 +119,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 333b6d5bb9f87827ac2639c737bf9613dbae7253 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Thu, 4 Jun 2026 12:46:00 +0100
-Subject: [PATCH] rxrpc: Fix the ACK parser to extract the SACK table for
- parsing
+From a504b9f2797b739e0304d537e8aa4ce883ecce39 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Mon, 25 May 2026 05:28:28 -0400
+Subject: [PATCH] thunderbolt: Validate XDomain request packet size before type
+ cast
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+tb_xdp_handle_request() casts the received packet buffer to
+protocol-specific structs without verifying that the allocation
+is large enough for the target type.  A peer can send a minimal
+XDomain packet that passes the generic header length check but is
+shorter than the struct accessed after the cast, causing out-of-
+bounds reads from the kmemdup allocation.
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
+Plumb the packet length through xdomain_request_work and validate
+it against the expected struct size before each cast.
 
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
+Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
-
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 24aceb183c2c..ce761466b02d 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct rxrpc_call *call,
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_txqueue *tq = call->tx_queue;
- 	unsigned long extracted = ~0UL;
--	unsigned int nr = 0;
-+	unsigned int nr = 0, nsack;
- 	rxrpc_seq_t seq = call->acks_hard_ack + 1;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
+diff --git a/drivers/thunderbolt/xdomain.c b/drivers/thunderbolt/xdomain.c
+index 4099419c7479..9d54e3ccc827 100644
+--- a/drivers/thunderbolt/xdomain.c
++++ b/drivers/thunderbolt/xdomain.c
+@@ -55,6 +55,7 @@ static const char * const state_names[] = {
+ struct xdomain_request_work {
+ 	struct work_struct work;
+ 	struct tb_xdp_header *pkg;
++	size_t pkg_len;
+ 	struct tb *tb;
+ };
  
- 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
+@@ -733,6 +734,7 @@ static void tb_xdp_handle_request(struct work_struct *work)
+ 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
+ 	const struct tb_xdp_header *pkg = xw->pkg;
+ 	const struct tb_xdomain_header *xhdr = &pkg->xd_hdr;
++	size_t pkg_len = xw->pkg_len;
+ 	struct tb *tb = xw->tb;
+ 	struct tb_ctl *ctl = tb->ctl;
+ 	struct tb_xdomain *xd;
+@@ -764,7 +766,7 @@ static void tb_xdp_handle_request(struct work_struct *work)
+ 	switch (pkg->type) {
+ 	case PROPERTIES_REQUEST:
+ 		tb_dbg(tb, "%llx: received XDomain properties request\n", route);
+-		if (xd) {
++		if (xd && pkg_len >= sizeof(struct tb_xdp_properties)) {
+ 			ret = tb_xdp_properties_response(tb, ctl, xd, sequence,
+ 				(const struct tb_xdp_properties *)pkg);
+ 		}
+@@ -818,7 +820,8 @@ static void tb_xdp_handle_request(struct work_struct *work)
+ 		tb_dbg(tb, "%llx: received XDomain link state change request\n",
+ 		       route);
  
- 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
- 		tq = tq->next;
+-		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH) {
++		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH &&
++		    pkg_len >= sizeof(struct tb_xdp_link_state_change)) {
+ 			const struct tb_xdp_link_state_change *lsc =
+ 				(const struct tb_xdp_link_state_change *)pkg;
  
-+	/* Extract an individual SACK table.  A normal SACK table is up to 255
-+	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
-+	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
-+	 * across all bit 0's then all bit 1's, then all bit 2's, ...
-+	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
-+
- 	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
- 		/* Decant ACKs until we hit a txqueue boundary. */
-+		if ((i & 255) == 0)
-+			acks = sack;
- 		shiftr_adv_rotr(acks, extracted);
--		if (i == 256) {
--			acks -= i;
--			i = 0;
--		}
- 		seq++;
- 		nr++;
- 		if ((seq & RXRPC_TXQ_MASK) != 0)
-@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+@@ -870,6 +873,7 @@ tb_xdp_schedule_request(struct tb *tb, const struct tb_xdp_header *hdr,
+ 		kfree(xw);
+ 		return false;
+ 	}
++	xw->pkg_len = size;
+ 	xw->tb = tb_domain_get(tb);
  
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	call->acks_latest_ts = ktime_get_real();
- 	call->acks_hard_ack = hard_ack;
- 	call->acks_prev_seq = prev_pkt;
+ 	schedule_work(&xw->work);
 
 
