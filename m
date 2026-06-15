@@ -1,211 +1,161 @@
-Return-Path: <stable+bounces-263180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BJBLBTfgL2pKIQUAu9opvQ
-	(envelope-from <stable+bounces-263180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 13:21:27 +0200
+	id 2eNuFY3iL2rAIQUAu9opvQ
+	(envelope-from <stable+bounces-263181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 13:31:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7C3685AFD
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 13:21:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC2B685BDD
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 13:31:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=SgLkN05S;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263180-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263180-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	dkim=pass header.d=lunn.ch header.s=20171124 header.b=1HCsP8aM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263181-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263181-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=lunn.ch;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13B303036774
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:21:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A7673009F68
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 11:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D5B3E44E8;
-	Mon, 15 Jun 2026 11:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C3A3AB46F;
+	Mon, 15 Jun 2026 11:31:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47973E2745
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 11:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1262E7BB6;
+	Mon, 15 Jun 2026 11:31:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781522477; cv=none; b=M6AoOTDI+SfT3AHjMLQwkU29DBpkjpOqxKJqVlJFrPSCqNLT6pSx/iT/Tg/YZVOuD3p+j2Adx5aQPR7fPFbg1Jz/oyYkZKrM/5zFk3jYfFc1g/5hIczDupRv+DngqSwzu/KGfRytNxs+91tfJgj6R/w3/wTyJj27rf9VRub9Skk=
+	t=1781523080; cv=none; b=O1iH/siq5KejWNhvrlMFNoPdet0NoyWAigz/mDmPuXBC/3KAXZKJ2vlmqXbeSt86Cu91oy2mGaaABRYlCa6eNTxtV96rQXkQuuKrY5WnGes0bkHHXiZinLeAAzzrSUmN+7lSzDMdiCKHQM+Hy+5AdrqgO7qYZNMNkkqK+gGWvow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781522477; c=relaxed/simple;
-	bh=5U6hRboFmaA2jOHsVIjiXeUUhlJIyvz1/OH/G0G51GQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gTZt62dwnU2zZ7y/EAJ4a/JwbfchDJuWo1pyIm1DPsPGHBJ7swXAcTtt/3Si1oWubTHFTk1nxv40SEvtl8UorBZ/wmewIkmM8tGbF7cwPGay3bUX1ql/tK+K/bE+4td09NfqhNXFA7wnVbg8w20QxKL2ClWK9kUHP+RPJcA2Lvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SgLkN05S; arc=none smtp.client-ip=170.10.133.124
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781522474;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=B6WQlP4LsP1BC2/D9rOcFasJgBtWxq+pQN34qv7/LvI=;
-	b=SgLkN05ST3Axypb654UX7ywFh4vy+reizC666gVIIr73dtj2l5ZYt4N8Onk9XIxGwvO61g
-	+f6gia+hlOEOae4irmtV+cJnZZo6lLlgBxAW6TYQexPkqGXd90zLrOtIQA/GGjijxuU6QP
-	qEBufveMP3C56/pETsf0HQs23d6ra6w=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-jMW5aiWeMYq1zjUJVUtulQ-1; Mon,
- 15 Jun 2026 07:21:11 -0400
-X-MC-Unique: jMW5aiWeMYq1zjUJVUtulQ-1
-X-Mimecast-MFC-AGG-ID: jMW5aiWeMYq1zjUJVUtulQ_1781522470
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F239E19540D3;
-	Mon, 15 Jun 2026 11:21:09 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.44.48.61])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DD5291774;
-	Mon, 15 Jun 2026 11:21:06 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jjohnson@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ath12k: fix NULL pointer dereference in rhash table destroy
-Date: Mon, 15 Jun 2026 13:21:03 +0200
-Message-ID: <20260615112103.601982-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1781523080; c=relaxed/simple;
+	bh=vGp9DeeFUhWXlnjhTHj/krKinCUvuD2zCvy7lDw0bp4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WeNj2SxGnNjhBmbKz1af37O5NUdVSipNfstXkeniswKIAQD9BzCz2+20BcnjalCzf5qZ7rQH28JHxdJZnL+AtqXbQfZcRGvIS38YLuz539jRiajjQGnpbRohka4TRoQdtQNvMN0awBLU8Hy5vTT5khwWTlX69EQtuzUlriMjlM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1HCsP8aM; arc=none smtp.client-ip=156.67.10.101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dYCpL2v7hA6/R1B/68TFnCiOpsxkYHbF6QRYAWthKL8=; b=1HCsP8aMou7VyueWI4ao4mnO+y
+	ysEVx8CdjtiPjz4A1VktRS9OAo3ZY1ihF6KiZSLWzEwFL6RjVTBmPcXqJmaGVKi17szH0AeEwh0Hd
+	M67LUPjzeINeLgmag66iHSQrtzeM/7DiaFo2vEf9dW7y9Ig5xsOUrGQxYRwCJ4duJ82M=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wZ5Wq-007n0V-0c; Mon, 15 Jun 2026 13:30:56 +0200
+Date: Mon, 15 Jun 2026 13:30:55 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: 3chas3@gmail.com, davem@davemloft.net, edumazet@google.com,
+	fengxw06@126.com, horms@kernel.org, kees@kernel.org,
+	kuba@kernel.org, linux-atm-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, qli01@tsinghua.edu.cn, stable@vger.kernel.org,
+	wangao@seu.edu.cn, xuke@tsinghua.edu.cn,
+	yangyx22@mails.tsinghua.edu.cn
+Subject: Re: [PATCH net] atm: br2684: validate IP header length before
+ filtering
+Message-ID: <354fec7a-608e-45a3-ba62-a6d532d26e46@lunn.ch>
+References: <e85fe7cc-05d1-4fb1-a919-baa170d08307@lunn.ch>
+ <20260615061055.30419-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260615061055.30419-1-zhaoyz24@mails.tsinghua.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	RECEIVED_SPAMHAUS_CSS(1.00)[54.186.198.63:received];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263180-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263181-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[redhat.com:s=mimecast20190719];
+	FORGED_RECIPIENTS(0.00)[m:zhaoyz24@mails.tsinghua.edu.cn,m:3chas3@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:fengxw06@126.com,m:horms@kernel.org,m:kees@kernel.org,m:kuba@kernel.org,m:linux-atm-general@lists.sourceforge.net,m:linux-kernel@vger.kernel.org,m:netdev@vger.kernel.org,m:pabeni@redhat.com,m:qli01@tsinghua.edu.cn,m:stable@vger.kernel.org,m:wangao@seu.edu.cn,m:xuke@tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,davemloft.net,google.com,126.com,kernel.org,lists.sourceforge.net,vger.kernel.org,redhat.com,tsinghua.edu.cn,seu.edu.cn,mails.tsinghua.edu.cn];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:jjohnson@kernel.org,m:linux-wireless@vger.kernel.org,m:ath12k@lists.infradead.org,m:linux-kernel@vger.kernel.org,m:jtornosm@redhat.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c0a:e001:db::12fc:5321:from];
-	DMARC_POLICY_ALLOW(0.00)[redhat.com,quarantine];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jtornosm@redhat.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[100.90.174.1:received,10.30.177.95:received];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lunn.ch:dkim,lunn.ch:mid,lunn.ch:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B7C3685AFD
+X-Rspamd-Queue-Id: DEC2B685BDD
 
-When unbinding the ath12k driver, kernel NULL pointer dereferences
-occur in irq_work_sync() called from rhashtable_destroy().
+On Mon, Jun 15, 2026 at 02:10:55PM +0800, Yizhou Zhao wrote:
+> Hi Andrew,
+> 
+> On Sun, Jun 14, 2026 at 08:36:57PM +0800, Andrew Lunn wrote:
+> > So did all these people find the problem at the same time in parallel?
+> > Can you point to their reports?
+> 
+> No, they were not independent reports found in parallel. This came from
+> one internal analysis/reproducer effort, and I do not have separate
+> public reports to point to. Sorry for the confusion.
 
-Two hash tables are affected:
-1. ath12k_link_sta hash table in ath12k_base
-2. ath12k_dp_link_peer hash table in ath12k_dp
+Please take a read of:
 
-The issue happens because the destroy functions are called unconditionally
-in cleanup paths, but the hash tables are only initialized late in their
-respective init functions. If the device was never fully started or if the
-init functions failed before initializing the hash tables, the pointers
-will be NULL. The issues are always reproducible from a VM because the MSI
-addressing initialization is failing.
+https://docs.kernel.org/process/submitting-patches.html
 
-Call trace for ath12k_link_sta_rhash_tbl_destroy:
- RIP: irq_work_sync+0x1e/0x70
- rhashtable_destroy+0x12/0x60
- ath12k_link_sta_rhash_tbl_destroy+0x19/0x40 [ath12k]
- ath12k_core_stop+0xe/0x80 [ath12k]
- ath12k_core_hw_group_cleanup+0x6b/0xb0 [ath12k]
- ath12k_pci_remove+0x60/0x110 [ath12k]
+There is a section about Reported-by, and what it means.
 
-Call trace for ath12k_dp_link_peer_rhash_tbl_destroy:
- RIP: irq_work_sync+0x1e/0x70
- rhashtable_destroy+0x12/0x60
- ath12k_dp_link_peer_rhash_tbl_destroy+0x29/0x50 [ath12k]
- ath12k_dp_cmn_device_deinit+0x21/0x140 [ath12k]
- ath12k_core_hw_group_cleanup+0x6b/0xb0 [ath12k]
- ath12k_pci_remove+0x60/0x110 [ath12k]
+>  > It is a long time since i worked with ATM. From what i remember,
+> ATM > cells are 48 bytes in size. So can the packet actually be
+> smaller than > 48? Would a 48 byte packet trigger this? Or is AAL5
+> involved here? Can > AAL5 carry a frame smaller than 48 bytes?  On
+> the cell-size question: yes, ATM cells carry 48 bytes of payload,
+> but br2684_push() does not receive raw ATM cells.  It receives the
+> reassembled AAL5 CPCS-SDU/PDU from the ATM layer.  AAL5 can carry a
+> shorter user payload in one cell by padding the final cell, with the
+> AAL5 trailer carrying the real payload length.  So an 8-byte
+> LLC/SNAP BR2684 PDU can be carried in a single ATM cell with
+> padding, while br2684 still sees skb->len == 8 after AAL5
+> reassembly.  A reassembled 48-byte BR2684 PDU would not trigger the
+> issue in the LLC case: after pulling the 8-byte LLC/SNAP header, 40
+> bytes remain, so the IPv4 daddr access is in bounds. The problematic
+> case is a reassembled AAL5 PDU shorter than the encapsulation header
+> plus a minimum IPv4 header, for example an 8-byte LLC/SNAP IPv4 PDU
+> with no IP payload. The VC-routed case is similar: the current code
+> reads iph->version before checking that the reassembled PDU contains
+> an IPv4 header.  > What hardware was used when finding this problem?
+> I know DSL often > used ATM underneath, so was it a DSL modem?  I'm
+> sorry that no physical ATM/DSL hardware was used. I verified this in
+> QEMU/KVM with a small dummy ATM device that registers an atm_dev and
+> injects reassembled AAL5 PDUs through the real VCC receive callback
+> after BR2684 is attached.
 
-Fix this by adding NULL checks before calling rhashtable_destroy() in
-both destroy functions.
+So this is hypothetical and in real life not a real issue. Please drop
+the Fixes tag, and submit to net next.
 
-The NULL check approach was chosen because the rhashtable pointer
-serves as the initialization state indicator. The init can fail at
-various points, leaving some components uninitialized. Checking the
-pointer directly is simpler than adding separate state flags that
-would need synchronization.
+ATM is pretty much dead. If you do any further work, could you please
+look at currently used hardware, and try to avoid wasting our time
+with hypothetical problems.
 
-Fixes: 57ccca410237 ("wifi: ath12k: Add hash table for ath12k_link_sta in ath12k_base")
-Fixes: a88cf5f71adf ("wifi: ath12k: Add hash table for ath12k_dp_link_peer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+    Andrew
+
 ---
-v2: - Use guard(mutex) instead of manual mutex_lock/unlock with goto in
-    ath12k_dp_link_peer_rhash_tbl_destroy (suggested by Jeff Johnson)
-    - Add rationale paragraph in commit message explaining why NULL check
-    approach was chosen over state flags
-v1: https://lore.kernel.org/all/20260604071032.659009-1-jtornosm@redhat.com/ 
-
- drivers/net/wireless/ath/ath12k/dp_peer.c | 7 +++++--
- drivers/net/wireless/ath/ath12k/peer.c    | 3 +++
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_peer.c b/drivers/net/wireless/ath/ath12k/dp_peer.c
-index a1100782d45e..ab3e3e107782 100644
---- a/drivers/net/wireless/ath/ath12k/dp_peer.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_peer.c
-@@ -274,11 +274,14 @@ int ath12k_dp_link_peer_rhash_tbl_init(struct ath12k_dp *dp)
- 
- void ath12k_dp_link_peer_rhash_tbl_destroy(struct ath12k_dp *dp)
- {
--	mutex_lock(&dp->link_peer_rhash_tbl_lock);
-+	guard(mutex)(&dp->link_peer_rhash_tbl_lock);
-+
-+	if (!dp->rhead_peer_addr)
-+		return;
-+
- 	rhashtable_destroy(dp->rhead_peer_addr);
- 	kfree(dp->rhead_peer_addr);
- 	dp->rhead_peer_addr = NULL;
--	mutex_unlock(&dp->link_peer_rhash_tbl_lock);
- }
- 
- static int ath12k_dp_link_peer_rhash_insert(struct ath12k_dp *dp,
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
-index 2e875176baaa..80fee2ce68f1 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -444,6 +444,9 @@ int ath12k_link_sta_rhash_tbl_init(struct ath12k_base *ab)
- 
- void ath12k_link_sta_rhash_tbl_destroy(struct ath12k_base *ab)
- {
-+	if (!ab->rhead_sta_addr)
-+		return;
-+
- 	rhashtable_destroy(ab->rhead_sta_addr);
- 	kfree(ab->rhead_sta_addr);
- 	ab->rhead_sta_addr = NULL;
--- 
-2.54.0
-
+pw-bot: cr
 
