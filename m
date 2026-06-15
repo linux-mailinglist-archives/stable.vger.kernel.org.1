@@ -1,252 +1,157 @@
-Return-Path: <stable+bounces-263333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263351-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /oVzEFEeMGonOAUAu9opvQ
-	(envelope-from <stable+bounces-263333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:46:25 +0200
+	id IKTCGRMiMGp3OgUAu9opvQ
+	(envelope-from <stable+bounces-263351-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:02:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36738687D90
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:46:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378D26880C9
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:02:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oR4TCr2G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263333-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263333-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UTn1FmzC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263351-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263351-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 45FAC302706F
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:43:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E91D318B5C9
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20247404BD9;
-	Mon, 15 Jun 2026 15:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F875408005;
+	Mon, 15 Jun 2026 15:50:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB56405C33
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:42:35 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538156; cv=pass; b=eJNDkjb/h5Y+ZHBj3UzbjCP/5OKK4gXVJnNCHZYE75LbepnDIdVW81DHGmPMfq0RLgdcF7f4jV+JCl2nzoduegmAEn/OoIGC/3xNZjcI7MQ4inAnaGsvHFSC+rHMxMFea+J1/ZzVadwQ5mNApEB4sAgn3XEvg6hAR0No6IlpnZw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538156; c=relaxed/simple;
-	bh=ccFXD2g0SBG551wS62ws7fc8dZzkwjgII0jKEY0Jdf4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h+Zbl9jgdm4X+FoK2BKxTx2JBGVLko4mHZOanlFMn0tX0L038u3v3Z/ugPgwocfAp+G/jkS4wl4/wB9PBGqv3cG79ynP4QCQAv43P//gxvTcv5mZI9iIFKYm99cF+FL5z8aJnP4fK18TW5g2l7sd4ZtvFMYxj+JN98VA5dU0VgE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oR4TCr2G; arc=pass smtp.client-ip=74.125.82.180
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-304dc707c7eso286510eec.1
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 08:42:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781538154; cv=none;
-        d=google.com; s=arc-20240605;
-        b=co2eZc0A0G1f1yLnpPdIWHs3ePsDObnufUgqvmJks8MxxWwK3tgdORcYyWpKSdaNEj
-         MovAILeXE0cSRndyls1ReDecLExItIdIJ3mz3McNiFgk7oxVtSbnUV2/hI5Gb5Y+sxrn
-         57TxjQaXR+wlwGByoSXt+chsnS5Wl1Y5h7/iKtFpFyt095NttxZOoGk5Aue5Ck7PBJW5
-         ptnq9T6BzKkCnwRipOPUCH39IF73NauK5Li23a2Mo7DbQ7Hh85vko94zYBqtwDyG8W1P
-         DhCupmu+ZOqGN4QPIrIPlKxUwfUEBKQmQsOfgbZqbq6vBlJUNgw2YYBzoUuUUXkC+X9Y
-         IayQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HB5OTOAis4aNREHBYkXcEkOC2lkh0rrUy7H3L0anj/A=;
-        fh=JxkOeA5FkIyYMgMZPSNOp8UuwK6Sy398WKTxgSXQF2c=;
-        b=b9gI8j8exkekSqxTxbsu8NGFCPW6QVQSF8YEGralDNFLsh41boGXLoRmH9Ex3ThJA8
-         9M+zmzr1Q8cy/1eMSHR4JoJl7Bh5AVm2qWyKtp0e44oEmw6agpLCP+prIDrH5JKZoMee
-         aqRjYGmZEP0ksW35glwsbKb4XdcW8rRuCC7w17fmfhvX/rmoDnOt32cuF+TnxT8+/yL0
-         OKRbAHCSl6KYbRvE5s3JydMa4d0LlJuN6gFd0ZAE67XxjIpC0KSRA2QYcRqzfjHCcHCC
-         2/F3S6+y7SQMVDpgJjIdStcouLxTVg7sFStjzPPZzqt38B2Etot5tJFaT/fPlqDnqkWF
-         7h/Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781538154; x=1782142954; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HB5OTOAis4aNREHBYkXcEkOC2lkh0rrUy7H3L0anj/A=;
-        b=oR4TCr2GWwAAiSsw6OPC7ajnnQb/cDtwU+WIEWB1Axeg9agPDkHL7P2VSz4grRWcYy
-         2EPdkBDv+hWil+2lO/XMsu4crAyB/DQwBIJWkNdioJ/9a/K2TgY+KU6QRyfDBgZb2EXY
-         VlwWdkUnHTysJNjrfHiLA4wdbxP6ZGriGL7nSzWWLu00QfUzraTWVRwtKJmEq7KkuJmZ
-         cxg/IIu9CMsOSynf06jyQ8254+37DVq6R+j4Xzb1wo/HUwLJnDYSt2TsNO1azs9o5yJ7
-         K7DrmOBrv+cOGheuJxmbKzRQtQzgWNpflULmWr4uajIOo09+/xhxmh+IPI+c+Eoyr2y8
-         y7sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781538154; x=1782142954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HB5OTOAis4aNREHBYkXcEkOC2lkh0rrUy7H3L0anj/A=;
-        b=GrBZYoBysft6WbwKLlDB/ENfegi8YF8KK8HZs8+O7DQ38w1cmXCYSrMxGnY+E7qK8d
-         4PN0uqm4UuLM0HnHXl1cR1Lg88IpQ7HIyCO7g6pbnENyCeZsuV4PZzOCzM/HE0THo69P
-         5y9gZZBvCHIyf16D8cpQvW7b22FRUYyoc2KB75ivDzSnKAjw5kCJfd0htgrwEBshEIi2
-         2r/WipOhM1elA0rNYh9N3U2M8uxdWTvAQmJCA5A/Xm6u/K1twh8Ft1Mp9sr8WLeS1dcu
-         pV6tZGycuq/QqIasImDu2riZXkljkHZx6DwyW2m4boh52RHOJoM6DZw0jB2Zvu9amR0O
-         Jv6g==
-X-Forwarded-Encrypted: i=1; AFNElJ8QB8xS+iwtcxS70t6vNgLcOkEXiYP712I0UCNBKKcTkh8b2aa2SAyXDKLjw2mkiokBACURzSM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzswmelK2wcIH3HhJ2j0YGXHq1rEI9nBiigU7Ai9nd7e0y79A//
-	9aezvKg/OJupufyaVNPvNP69tIDYwuFTm11Pz7O1/hIk6xPUl6Gumhys89NbExjYSun7g6pSVwb
-	SIB4qJjmTKxirMFgJsWGjdjob5nmZijg=
-X-Gm-Gg: Acq92OF0VKrBgx7DjeHr4kdOLzexKow2/GX3uABNmhdEhcAEytMh0IIoYTD79TQQLJA
-	1rjeEpPDJlVj05V9xgH2kF89atTp2KXKPZAqlpi6WkFVsaw6QQYr3EC4tjKgrcSJhJfsPiK9zL+
-	OnareWgdDopmqzdXItxZcGGs3yJ9NXo2w8lhhzGnjJHHW28BoYXBd+qZTjWXYFVXPuYGEn+p32q
-	Fp0/+AOAt4BgNnvHKKwI+pokRhKXlmedR8u7nTSBSCc4WtdW34YIFk4mRJ9YPDRdgKZ8JYoWudZ
-	QzUTNLArpBFYH8TRs50q6RG9obwwh8t8T9/LNAWJaC7eZ/29PemQHC3pYXNJ0nvV82T5L6jqvsB
-	Wpr74
-X-Received: by 2002:a05:7022:68a0:b0:137:ef27:e297 with SMTP id
- a92af1059eb24-139724e2eaamr2051152c88.3.1781538154433; Mon, 15 Jun 2026
- 08:42:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433924071D6
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:50:54 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781538655; cv=none; b=YbQi7H1kvK22pk35hjQoQPAPuQvc9BHBAZeJijS8P9hsxXrU2Y//OIS0KXvs39NYIYgSrSy/rtOMBPclA/QHp40H0MfbxAfib0FUE2/sDjyrg2FyYPI8dGHcZGN3ER34TE+Q96IDNxC1Lb12nilFD9o9zaPzOUfLCqxVP7eX/50=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781538655; c=relaxed/simple;
+	bh=d7BfPRwr35FLvH0ybPGxxpZUAEsE/X6NllkFhN1GC0s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TAsyJXY0slw+PMcw9o0MlmRfFy4OjetuYrYXzCOsGsmKKnqpyJ4fWETfUTBweynjzKWGQC+ZAGaRHH+BkbPmQF9dVFIhvIkIRtdOpP/KOP0SyrnOnX0DZFWxPUSbH4fcf6f4XNgtIGiQAysWicE+sYchf86jK/C1bFghqwgzbKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTn1FmzC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25EE1F000E9;
+	Mon, 15 Jun 2026 15:50:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781538653;
+	bh=uF7JCpUX2LyNly3BpZ2hkZoqXVq2Iq6YZMoOPnPtz/E=;
+	h=Subject:To:Cc:From:Date;
+	b=UTn1FmzCC90EzQNMm12swHaRLbndAopwk762U2+7vbJFFThkDcLozCXftDcYOehdT
+	 52V5uk38alV34WchTsGMYHq6qlCFVWDwBYIYxTjxp5Bq7uZPNK6WrxxqSm87QGfWZw
+	 fkj1obbQUOd3Hm89JkhdeabxmQn50h8mk7+MtcSA=
+Subject: FAILED: patch "[PATCH] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC" failed to apply to 5.10-stable tree
+To: prabhakar.mahadev-lad.rj@bp.renesas.com,geert+renesas@glider.be,ulfh@kernel.org,wsa+renesas@sang-engineering.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 15 Jun 2026 17:42:46 +0200
+Message-ID: <2026061546-plexiglas-flaky-762c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260610083245.1057241-1-pavel.ondracka@gmail.com> <f0041fae-2703-480b-be9a-51a1df964a01@amd.com>
-In-Reply-To: <f0041fae-2703-480b-be9a-51a1df964a01@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 15 Jun 2026 11:42:21 -0400
-X-Gm-Features: AVVi8CfkqX2jHXjaMSoirH3Cv4qa5toEnvBVc9Ay0ocL4YvWUTf4hiVAjEFqETY
-Message-ID: <CADnq5_MxrcO7GX+jGQbkuaF40QipnkxSq_+P1cbDmanO2K05uA@mail.gmail.com>
-Subject: Re: [PATCH] drm/radeon: fix r100_copy_blit for large BOs
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: =?UTF-8?Q?Pavel_Ondra=C4=8Dka?= <pavel.ondracka@gmail.com>, 
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	alexander.deucher@amd.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263333-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:christian.koenig@amd.com,m:pavel.ondracka@gmail.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:alexander.deucher@amd.com,m:stable@vger.kernel.org,m:pavelondracka@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-263351-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:geert+renesas@glider.be,m:ulfh@kernel.org,m:wsa+renesas@sang-engineering.com,m:stable@vger.kernel.org,m:geert@glider.be,m:wsa@sang-engineering.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,lists.freedesktop.org,amd.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,amd.com:email,mail.gmail.com:mid,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,renesas.com:email,gregkh:mid,glider.be:email,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sang-engineering.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 36738687D90
+X-Rspamd-Queue-Id: 378D26880C9
 
-Applied.  Thanks!
 
-On Wed, Jun 10, 2026 at 5:24=E2=80=AFAM Christian K=C3=B6nig
-<christian.koenig@amd.com> wrote:
->
-> On 6/10/26 10:32, Pavel Ondra=C4=8Dka wrote:
-> >
-> > r100_copy_blit() copies BOs as 1024-pixel-wide ARGB8888 blits, so one
-> > GPU page becomes one blit row. Large copies are split into chunks of at
-> > most 8191 rows.
-> >
-> > The kernel register header names the packet coordinate dwords SRC_Y_X
-> > and DST_Y_X. In the BITBLT_MULTI description in
-> > R5xx_Acceleration_v1.5.pdf docs, these correspond to [SRC_X1 | SRC_Y1]
-> > and [DST_X1 | DST_Y1], which are signed 13-bit coordinates in the
-> > -8192..8191 range. The old code kept SRC/DST_PITCH_OFFSET at the BO bas=
-e
-> > and used SRC_Y_X/DST_Y_X as the chunk address, so large BO moves could
-> > exceed that coordinate range.
-> >
-> > Compute per-chunk SRC/DST_PITCH_OFFSET bases and emit zero source and
-> > destination coordinates. r100_copy_blit() already packs
-> > SRC/DST_PITCH_OFFSET as pitch plus base offset, so large chunk addresse=
-s
-> > belong there rather than in the coordinate fields.
-> >
-> > This fixes Prison Architect corruption with 4096x4096 mipped textures
-> > after they are evicted to GTT under memory pressure on RV530.
->
-> Wow, impressive piece of work.
->
-> > Closes: https://gitlab.freedesktop.org/mesa/mesa/-/work_items/6716
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Pavel Ondra=C4=8Dka <pavel.ondracka@gmail.com>
->
-> Acked-by: Christian K=C3=B6nig <christian.koenig@amd.com>
->
-> Thanks a lot for digging into this,
-> Christian.
->
-> > ---
-> >  drivers/gpu/drm/radeon/r100.c | 13 +++++++++----
-> >  1 file changed, 9 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r10=
-0.c
-> > index 3ac1a79b6f13..533215d6e9cb 100644
-> > --- a/drivers/gpu/drm/radeon/r100.c
-> > +++ b/drivers/gpu/drm/radeon/r100.c
-> > @@ -906,6 +906,7 @@ struct radeon_fence *r100_copy_blit(struct radeon_d=
-evice *rdev,
-> >  {
-> >         struct radeon_ring *ring =3D &rdev->ring[RADEON_RING_TYPE_GFX_I=
-NDEX];
-> >         struct radeon_fence *fence;
-> > +       uint64_t cur_src_offset, cur_dst_offset;
-> >         uint32_t cur_pages;
-> >         uint32_t stride_bytes =3D RADEON_GPU_PAGE_SIZE;
-> >         uint32_t pitch;
-> > @@ -934,6 +935,10 @@ struct radeon_fence *r100_copy_blit(struct radeon_=
-device *rdev,
-> >                         cur_pages =3D 8191;
-> >                 }
-> >                 num_gpu_pages -=3D cur_pages;
-> > +               cur_src_offset =3D src_offset +
-> > +                       (uint64_t)num_gpu_pages * RADEON_GPU_PAGE_SIZE;
-> > +               cur_dst_offset =3D dst_offset +
-> > +                       (uint64_t)num_gpu_pages * RADEON_GPU_PAGE_SIZE;
-> >
-> >                 /* pages are in Y direction - height
-> >                    page width in X direction - width */
-> > @@ -950,13 +955,13 @@ struct radeon_fence *r100_copy_blit(struct radeon=
-_device *rdev,
-> >                                   RADEON_DP_SRC_SOURCE_MEMORY |
-> >                                   RADEON_GMC_CLR_CMP_CNTL_DIS |
-> >                                   RADEON_GMC_WR_MSK_DIS);
-> > -               radeon_ring_write(ring, (pitch << 22) | (src_offset >> =
-10));
-> > -               radeon_ring_write(ring, (pitch << 22) | (dst_offset >> =
-10));
-> > +               radeon_ring_write(ring, (pitch << 22) | (cur_src_offset=
- >> 10));
-> > +               radeon_ring_write(ring, (pitch << 22) | (cur_dst_offset=
- >> 10));
-> >                 radeon_ring_write(ring, (0x1fff) | (0x1fff << 16));
-> >                 radeon_ring_write(ring, 0);
-> >                 radeon_ring_write(ring, (0x1fff) | (0x1fff << 16));
-> > -               radeon_ring_write(ring, num_gpu_pages);
-> > -               radeon_ring_write(ring, num_gpu_pages);
-> > +               radeon_ring_write(ring, 0);
-> > +               radeon_ring_write(ring, 0);
-> >                 radeon_ring_write(ring, cur_pages | (stride_pixels << 1=
-6));
-> >         }
-> >         radeon_ring_write(ring, PACKET0(RADEON_DSTCACHE_CTLSTAT, 0));
-> > --
-> > 2.52.0
-> >
->
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x f48ee49726ee4ab545fd2dc644f169c0809b19b3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061546-plexiglas-flaky-762c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From f48ee49726ee4ab545fd2dc644f169c0809b19b3 Mon Sep 17 00:00:00 2001
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Date: Tue, 19 May 2026 14:53:40 +0100
+Subject: [PATCH] mmc: renesas_sdhi: Add OF entry for RZ/G2H SoC
+
+The RZ/G2H (R8A774E1) SoC was previously handled via the generic
+"renesas,rcar-gen3-sdhi" fallback compatible string. However, because
+the SDHI IP on RZ/G2H is identical with the R-Car H3-N (R8A77951), it
+requires the specific quirks and configuration defined in
+`of_r8a7795_compatible` rather than the generic Gen3 data.
+
+Add the explicit "renesas,sdhi-r8a774e1" match entry to map it correctly.
+Note that the DT binding file renesas,sdhi.yaml does not need an update
+as the entry for this SoC is already present.
+
+Fixes: 31941342888d ("arm64: dts: renesas: r8a774e1: Add SDHI nodes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+
+diff --git a/drivers/mmc/host/renesas_sdhi_internal_dmac.c b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+index f6ebb7bc7ede..838248bf8dd6 100644
+--- a/drivers/mmc/host/renesas_sdhi_internal_dmac.c
++++ b/drivers/mmc/host/renesas_sdhi_internal_dmac.c
+@@ -279,6 +279,7 @@ static const struct renesas_sdhi_of_data_with_quirks of_rza2_compatible = {
+ static const struct of_device_id renesas_sdhi_internal_dmac_of_match[] = {
+ 	{ .compatible = "renesas,sdhi-r7s9210", .data = &of_rza2_compatible, },
+ 	{ .compatible = "renesas,sdhi-mmc-r8a77470", .data = &of_rcar_gen3_compatible, },
++	{ .compatible = "renesas,sdhi-r8a774e1", .data = &of_r8a7795_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a7795", .data = &of_r8a7795_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a77961", .data = &of_r8a77961_compatible, },
+ 	{ .compatible = "renesas,sdhi-r8a77965", .data = &of_r8a77965_compatible, },
+
 
