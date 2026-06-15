@@ -1,159 +1,190 @@
-Return-Path: <stable+bounces-263325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C1W6F9AcMGp5NwUAu9opvQ
-	(envelope-from <stable+bounces-263325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:40:00 +0200
+	id 4ftCDzIVMGqENAUAu9opvQ
+	(envelope-from <stable+bounces-263287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:07:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E356C687C96
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:39:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C709D6877A3
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:07:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2hm8vNww;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263325-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263325-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=PyAPjSAK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263287-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263287-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A601630E1A64
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:34:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 280A830BB981
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DCA3ECBF9;
-	Mon, 15 Jun 2026 15:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2803FFAD6;
+	Mon, 15 Jun 2026 15:03:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BCB3ACA52
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9E258CCC;
+	Mon, 15 Jun 2026 15:03:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781537656; cv=none; b=XQFxeQFXZaiVHWwYCX8rinZ2ftWsy9gI8ZI25LIyOSAZ9XLgAwMe6ehKcd5zZSs+qXdxGRBgw8HJiuhHlAMlXHZXvoxVTvecQOKLFpL8HN26tRPZvdDSa2HsRLD/6qtDFIPqAlFaNeoCC7G/czWIyES47DipH4sdBgpDGnb7KKE=
+	t=1781535804; cv=none; b=IZbvbNWzyKe+eLSrhzpDyBLKOlFPouHtLXL+UXmvvkzfZ7vyHChTmSKYaGXiVm18hfUgNI3nWUVIZ2s4+6CRO7SeOGPkK6xjJZ5CL1DBJEs5fLkQgJo86nrFOnQfo518+NmwQFLX+J5rb3VRre4kP9Jah2glzYjr9Bplnp17oBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781537656; c=relaxed/simple;
-	bh=+K3lWJszTbNI52o4L/hC7wog5/Bc71btM3vuw3r9dws=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NfGV24sDixJDTwlGabMXok68uZcokyVyjCXpy0uIodcctrW4j+zYqnWISjk05c3DSfboou5t9l6G+3hSav8/SDwa6mWp6jpdDt+t/gzsz8DzPOggC6QwD7I6SWcD2+5wG+4czaZzoQbT+YmUccmT9f0fZ9uJEXB8Q/PfS2LeEVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hm8vNww; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8E31F000E9;
-	Mon, 15 Jun 2026 15:34:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781537655;
-	bh=FDmKe+92WhVOwL3PGEppCYFoucgnDOKjxtHubkp+dnU=;
-	h=Subject:To:Cc:From:Date;
-	b=2hm8vNww4mAyY8MidZRRU3/NeudevAFmc4UZSS7CKqN8jMQXw5hQh+1jeHCJrZf3G
-	 exjB/4a8jvWBoBk3Jfa03zObNT8ebMW3SQJ3fqEAO8EHAtz3+lhnLAaav+bAkNk4L0
-	 LFPP1P3mVp0eEUBUnpOrdsLnihDCGyjU0QFQCiJE=
-Subject: FAILED: patch "[PATCH] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios" failed to apply to 5.10-stable tree
-To: jannh@google.com,brauner@kernel.org,mszeredi@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 16:55:31 +0200
-Message-ID: <2026061531-salvage-winnings-04e9@gregkh>
+	s=arc-20240116; t=1781535804; c=relaxed/simple;
+	bh=73e1DdZ+QIiRhlKXN8cwPIzmnNKAZDeP+2nvLRWZ930=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VsIJVEBnGlsajsYrBd1Q7K1HGkaqlMwWuInAGrhcsj15FiHk4YVj9rLzAEyjInysMWJZBeZwstbnB6IgqgdYERRhpxmc5D/gOf9LCEvh+zj/ugsOYc3E3imh8lsIzSxYgglGu5BhYKSC6HWNPWo89iTmCDPSJtjfd9uRBCCeQEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=PyAPjSAK; arc=none smtp.client-ip=101.71.155.101
+Received: from PC-202605011814.localdomain (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 42733caac;
+	Mon, 15 Jun 2026 22:58:03 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	linux-leds@vger.kernel.org
+Cc: Andreas Werner <andreas.werner@men.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shreshtha Kumar Sahu <shreshthakumar.sahu@stericsson.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	runyu.xiao@seu.edu.cn,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] leds: lm3530: use brightness_set_blocking for sleepable callback
+Date: Mon, 15 Jun 2026 22:57:55 +0800
+Message-Id: <20260615145756.1019184-2-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260615145756.1019184-1-runyu.xiao@seu.edu.cn>
+References: <20260615145756.1019184-1-runyu.xiao@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ecbca26f003a1kunm9a9f3cac5b37
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDTkMdVkhKGksZHkxOHkhJH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=PyAPjSAKzyt7dH3aOnnJNqV1zL1IPXG2gLZ80cBJWn+wNiAXWy9mdHHAv7hxwREF3lz3uti4hxs+M8DbsS7IqWT2SR/TePY7795MUFYUediYG0eH2RZ0EAn29bkY912Q3aS63LyRq+A3r8Gr0rVO764Ab1eXaAxbZEmbOK5tAW0=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=JCCunYeVHa+1sB4HCYuS09JRHSXJpHAiCHjDNeVGR6Y=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263325-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:jannh@google.com,m:brauner@kernel.org,m:mszeredi@redhat.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,gregkh:mid,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,msgid.link:url]
+	FREEMAIL_CC(0.00)[men.de,linux-foundation.org,stericsson.com,gmail.com,vger.kernel.org,seu.edu.cn];
+	TAGGED_FROM(0.00)[bounces-263287-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:lee@kernel.org,m:pavel@kernel.org,m:linux-leds@vger.kernel.org,m:andreas.werner@men.de,m:akpm@linux-foundation.org,m:shreshthakumar.sahu@stericsson.com,m:cooloney@gmail.com,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:runyu.xiao@seu.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[runyu.xiao@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,checkpatch.pl:url,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E356C687C96
+X-Rspamd-Queue-Id: C709D6877A3
 
+lm3530_brightness_set() talks to the device over I2C and can sleep, but
+the driver registers it as brightness_set.  That leaves the LED core
+free to invoke the callback from atomic contexts.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This issue was found by our static analysis tool and then manually
+reviewed against the current tree.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+A minimal Lockdep reproducer that keeps the original registration and
+call chain is enough to trigger the warning: lm3530_probe() still
+publishes lm3530_brightness_set() as brightness_set,
+led_trigger_event_atomic() invokes it under spin_lock_irqsave(), and
+the callback reaches i2c_smbus_write_byte_data() as its first
+sleepable edge.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061531-salvage-winnings-04e9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Lockdep reports:
 
-Possible dependencies:
+  BUG: sleeping function called from invalid context
+  i2c_smbus_write_byte_data.constprop.0+0x14/0x30 [vuln_msv]
+  lm3530_brightness_set+0x4e/0x66 [vuln_msv]
+  led_trigger_event_atomic.constprop.0+0x2b/0x40 [vuln_msv]
 
+Convert the callback to brightness_set_blocking so the LED core only
+invokes it from a sleepable context.
 
+Fixes: b1e6b7068f02 ("leds: add driver for LM3530 ALS")
+Cc: stable@vger.kernel.org
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+Notes:
+  - Validated with a grounded Lockdep PoC that preserves the
+    lm3530_probe() brightness_set registration and the
+    led_trigger_event_atomic() -> lm3530_brightness_set() ->
+    i2c_smbus_write_byte_data() path.
+  - checkpatch.pl --strict: clean.
+  - Not tested on LM3530 hardware.
 
-thanks,
+ drivers/leds/leds-lm3530.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 4e3d1b2c48ca6c55f1e9ca7f8dccc76f120f276c Mon Sep 17 00:00:00 2001
-From: Jann Horn <jannh@google.com>
-Date: Tue, 19 May 2026 16:40:34 +0200
-Subject: [PATCH] fuse: limit FUSE_NOTIFY_RETRIEVE to uptodate folios
-
-FUSE_NOTIFY_RETRIEVE must be limited to uptodate folios; !uptodate folios
-can contain uninitialized data.
-Since FUSE_NOTIFY_RETRIEVE is intended to only return data that is already
-in the page cache and not wait for data from the FUSE daemon, treat
-!uptodate folios as if they weren't present.
-
-This only has security impact on systems that don't enable automatic
-zero-initialization of all page allocations via
-CONFIG_INIT_ON_ALLOC_DEFAULT_ON or init_on_alloc=1.
-
-Cc: stable@kernel.org
-Fixes: 2d45ba381a74 ("fuse: add retrieve request")
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260519-fuse-retrieve-uptodate-v1-1-a7a1912a37f9@google.com
-Acked-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 5dda7080f4a9..08d364ed7d6c 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1912,6 +1912,10 @@ static int fuse_retrieve(struct fuse_mount *fm, struct inode *inode,
- 		folio = filemap_get_folio(mapping, index);
- 		if (IS_ERR(folio))
- 			break;
-+		if (!folio_test_uptodate(folio)) {
-+			folio_put(folio);
-+			break;
-+		}
+diff --git a/drivers/leds/leds-lm3530.c b/drivers/leds/leds-lm3530.c
+index e44a3db106c3..ba744961ebcd 100644
+--- a/drivers/leds/leds-lm3530.c
++++ b/drivers/leds/leds-lm3530.c
+@@ -301,10 +301,11 @@ static int lm3530_init_registers(struct lm3530_data *drvdata)
+ 	return ret;
+ }
  
- 		folio_offset = offset_in_folio(folio, pos);
- 		nr_bytes = min(folio_size(folio) - folio_offset, num);
-
+-static void lm3530_brightness_set(struct led_classdev *led_cdev,
+-				     enum led_brightness brt_val)
++static int
++lm3530_brightness_set_blocking(struct led_classdev *led_cdev,
++			       enum led_brightness brt_val)
+ {
+-	int err;
++	int err = 0;
+ 	struct lm3530_data *drvdata =
+ 	    container_of(led_cdev, struct lm3530_data, led_dev);
+ 	struct lm3530_platform_data *pdata = drvdata->pdata;
+@@ -344,6 +345,8 @@ static void lm3530_brightness_set(struct led_classdev *led_cdev,
+ 	default:
+ 		break;
+ 	}
++
++	return err;
+ }
+ 
+ static ssize_t mode_show(struct device *dev,
+@@ -438,7 +441,8 @@ static int lm3530_probe(struct i2c_client *client)
+ 	drvdata->brightness = LED_OFF;
+ 	drvdata->enable = false;
+ 	drvdata->led_dev.name = LM3530_LED_DEV;
+-	drvdata->led_dev.brightness_set = lm3530_brightness_set;
++	drvdata->led_dev.brightness_set_blocking =
++		lm3530_brightness_set_blocking;
+ 	drvdata->led_dev.max_brightness = MAX_BRIGHTNESS;
+ 	drvdata->led_dev.groups = lm3530_groups;
+ 
+-- 
+2.34.1
 
