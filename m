@@ -1,179 +1,252 @@
-Return-Path: <stable+bounces-263452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Cr3WF+xjMGr6SQUAu9opvQ
-	(envelope-from <stable+bounces-263452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 22:43:24 +0200
+	id huCbMvhkMGplSgUAu9opvQ
+	(envelope-from <stable+bounces-263453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 22:47:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0E068A059
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 22:43:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87E768A0C0
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 22:47:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=dama-to.20251104.gappssmtp.com header.s=20251104 header.b=trofXPR9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263452-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263452-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="kmwI/mF3";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263453-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263453-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5819A300B458
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:43:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E09E30091F4
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605533B71B0;
-	Mon, 15 Jun 2026 20:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C113B42CE;
+	Mon, 15 Jun 2026 20:47:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012049.outbound.protection.outlook.com [52.101.43.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC773B71A0
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 20:43:20 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781556202; cv=none; b=H99yeJFKoUPFE5AsSzdeiVZYE9GbCfUBwA5JhWwpHuN2b/Me5lniAFH8EVYh7pDb8BsWU+hmp+WqGr0yDimydn2xZahsjkwAF/hwTgWsrBfHU+9FUvsn8ORh4GACUJJMCRNsrX5VI8Q+88e2sBy4Nlri/16TCFqViKIRtTA5f0Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781556202; c=relaxed/simple;
-	bh=ItAbYBi28K0MNqBDjO6bRAnm3lIyowUJvCtTVyIeJGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IJlDxdzAaUOeHrN4UXjOhrWhAkSqjm5PW9mNvVyuVG5QsFBFKPFj4Wvkfo9ay/M8G3XusziDyyWIx76fHQD1rswtE4WyeXo/Y0JGgwXCaXeSoXu8l43Y/K4NeJ/eqkYt26TkzZe6rmUZXi4DOFBnV9zcidy8S20wBrqnNcbHMYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=trofXPR9; arc=none smtp.client-ip=209.85.214.169
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2bf1f074a12so38626055ad.0
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 13:43:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1781556200; x=1782161000; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IppM0Vc4ukPCYxBBrz8f6rK4ET/XTsCGtsSBhGqG1J4=;
-        b=trofXPR9avEaWyEiAggHZBjsxDpClaiod04+q/w0NIffxaRJmxX+BIMANJkrhsUwRp
-         Vmg61WY8sa2JMUctGUd/Bl3dEAdt/fjMprARaRyPuOK4RSopIT6+ACXytNhZitie4ktu
-         vPkeH2lat88n7jRM5r4zhK+3D6ZvqyMFus5TmWpBxRTbOM5pzloSnCm5cn9lJcEtAjFD
-         29VQjju6VtFUMfuGHHxRlkE7GV/F/b0vp4yKFaln2JWy2XOw5deS3ToR+VpDxPAN4VZO
-         jj1UMfsiOs8tIwOQCXYxf+Sacss4ETAidsQS4pqR8zT7fFWK59llP0oTR2YdQDcP7Sc4
-         mxvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781556200; x=1782161000;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IppM0Vc4ukPCYxBBrz8f6rK4ET/XTsCGtsSBhGqG1J4=;
-        b=VotfzwdB55W400HbplqH2pcpDh7/48n217TO9JgAaw5AbH6Y6qfkeQLxVCMgvQrNvZ
-         6GHDfPvuIRn4960I827+gSNfbyoZwc9hwMtQd2Bw9Z6kMU3NWfcLiIdcKGr/JGzyAuV5
-         PgbWetsvdNsDrxyMeyBRGFjqfpcAq9JGj1vxBPHnCflESKZRdSAYbq/9Hg9lHX1oH8df
-         Ci4K40gr8P/cCD4rBXSmTG2v5ZOAclvN/3TAKyHdO2SXKlCs1b0pGk8oKjuy25l1IgTU
-         9ngKHH9pAYMPHF6CfU23YTuyviCvYi5VeYJBX/xl87mNSZYUajT5nZJloGNNvchGGklF
-         6+mQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/iMPjb+IxJvfISOU7KhwsaWBltIMCuJl/R2GVQxazUQ7X82J6UD3xDr8AIXjfJN4TyXhE8XSk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXRjM+uIxsJU89uaGQesimyIG11ka2T6N7J0LAYCvrhqKv5+9P
-	HGM5sRuD7oyu8WzK2vf/ZxpmnCcLJnNl7cKvdCimKMuNpbPwHJZ7EGjaHk02RKerkQ4=
-X-Gm-Gg: Acq92OE5P40mJHZgsSaDId+A2JOAJCljKah8m5kwU3aVm87suJNaI8GNWVco2NOvxKl
-	U4CpMet3MEt5OzhP/3tNbmXEV6/S446ukO8Nqb2sUOM4PglEt1PhwDRV06m6vSvNEV18tK/ofQf
-	x9+u9v11OfuGnxOflW0GGV16EW4qBEDbDEuCD8axAUNFH88L9+FwwrgqtkAg5UdJ3wU6L0Jln86
-	ZbYzRgYOWwdsVV6/eEFGhBR6zwIYna1ac3b0+/s8JUsWq6ZzTG/bsauEj3fnTbWaL+jmiX+DrRV
-	C+wRvcENAhucw1BEWYvEu46MlKApMCTzLRmGWvcoux9MzHfebY8fZtmv7a9mBKWHc6rZ0I2TzoC
-	fwE9eIHGeZFP9cXBwkOZcJoE+yh0cmAt+r0zS03OJDELshyIjxHxQTRJTcj/vfTR5SiA8mp9hEj
-	t9qEo=
-X-Received: by 2002:a17:903:950:b0:2c0:b319:fb43 with SMTP id d9443c01a7336-2c69a1731a1mr8508155ad.21.1781556200372;
-        Mon, 15 Jun 2026 13:43:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:9::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c433558449sm114681195ad.78.2026.06.15.13.43.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 13:43:19 -0700 (PDT)
-Date: Mon, 15 Jun 2026 13:43:18 -0700
-From: Joe Damato <joe@dama.to>
-To: Maoyi Xie <maoyixie.tju@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	David Wei <dw@davidwei.uk>, Stanislav Fomichev <sdf@fomichev.me>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] netdev-genl: report NAPI thread PID in the caller's
- pid namespace
-Message-ID: <ajBj5j01YmdS02Uw@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Maoyi Xie <maoyixie.tju@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	David Wei <dw@davidwei.uk>, Stanislav Fomichev <sdf@fomichev.me>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAE2383C65;
+	Mon, 15 Jun 2026 20:47:42 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781556464; cv=fail; b=QpRkpFl1e9rM9GLD2luZSQ5iagN6Xz8uZfHVSEP6bIJ5edbaWwqd6Py/EvGRrXv3gmMois4E3rzbkWyuzVAIFWBmrn02w1yTLYwIVhp8raC7kN6nKSfAhQHZFbwJpW0i0gR0VPv6Zq0jwpFfuQ1fPo0pQudEXPV6PH0n4YhJiDs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781556464; c=relaxed/simple;
+	bh=fiWLQUGZcRcsQ7WTN2fPZmVt9PUvt3R5qw7n109hFxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VrtMsRrxF4eF+x939tPUTEtGQKwo05nOP1Bvy7fLL+N4WGGOa4B/p/7anWSoII3gzPKoO2e8lO6pQLMIoeAcyotdn6aTQMpTm1ljk82kD1YILyNwgFLEYEt7tgPogEQF1un67YYmAMK5jpTfuywX5yA6xZ5WUFOvtQHPS4nEvWw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kmwI/mF3; arc=fail smtp.client-ip=52.101.43.49
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fiIyRh0T9CBJIDXN9H8Sq/GZWwh2diVFWRPfsBuR9gXTIba1Z0z50HyO2E/3+TkwFzpZWxJXOXyaL/8nOzqg2A17M6jzgpDkXZxQ9MMMUrWsIbDqq7xfC+wzu/dFXryJaEGevg19w8y7HwC3v6C1h5XjjmdB7nRUpCfzqPt87mHSaVVoe0Zbd6IlQmQmdlRe+o14+xIYhifGnC1od0+I7bYLXjujvAX1EOLrqp5Bdhz5ibaiQvZybpLOxd85wWS5nKTTNg9XSSriD8I2IVhZhmKQdCJCbgb0GmreRUTsOUSpXuITSRIz9hR8BQSmBw43zB0sYqHYEhe49nhUzZGhjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0oZ0jDcs15ObbelhPc5hCjlwyQGcNlsYnVAqkimHPhQ=;
+ b=j1Ue8h3dkb7hIVlouGtHTI4XlvSZ78JSYw5ViTTNGkZvQjaN0D0ON0IbMedZO4ORwnjkKKY8qAr2WXjmWXWl76P8SyePAEqDEqw23g+ipv5ghaICDKguTNlyatU91jmgURGOCsIpsNxBYzAgSyrlSKBnrBCjGul5rujTmMyLlHCRY6EEmmfJqdwFezhL8jrRkoYKYW2vqsgdYjhlJrmYq0PLbBXFbz5EG8mLlbpE38jio4NUAW1aG+r4qz1L4QGHbY8vrzLl902vfi0+BsmDW51OOlbRyaVYOTDNb4EvEFOqT48gQqPo7G/jV55tmPzPIVs3SjmTUX7H5TAZNA6rEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0oZ0jDcs15ObbelhPc5hCjlwyQGcNlsYnVAqkimHPhQ=;
+ b=kmwI/mF3UBlLmgLn1bi7B+HdC2tpXzG/ufYy2PKUrBjEG5dpuCap2lmWxvVBXbjj4pm4VdQ1c5jap24tERHUm1prs4m+vRnV5cZm5iWcneDBQxcGum29oC+HvEQ6m18PYeTlEIO2w2afW7pLjM/7BCX2WI7BEsjI4Z6xMh944JR0l7ota5X+55fZ8S4N5taNU4Hpja1kvOdWBCvL2dH3L9YTVfqznkZnAH+5M8BpwYymYjZDM4QBBoRaf5giLJyPCy5V9YZCVo6BaudpN9rZSzDk8Nmd7Ed4djB6fZz+akzQ3nbzFped5nY1Gb+5ec4R7tcnvq9WiWGRB9oBOQN2/g==
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
+ by IA0PR12MB9009.namprd12.prod.outlook.com (2603:10b6:208:48f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 20:47:35 +0000
+Received: from LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
+ ([fe80::98b7:86de:b69:2a15%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 20:47:35 +0000
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: kvm <kvm@vger.kernel.org>,
+	Alex Williamson <alex@shazbot.org>
+Cc: Alex Williamson <alex.williamson@nvidia.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Kevin Tian <kevin.tian@intel.com>,
+	kanie@linux.alibaba.com,
+	Sashiko AI Review <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org,
+	Longfang Liu <liulongfang@huawei.com>
+Subject: [PATCH v3 7/6] vfio: Remove device debugfs before releasing devres
+Date: Mon, 15 Jun 2026 14:47:00 -0600
+Message-ID: <20260615204717.735302-1-alex.williamson@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260615191241.688297-1-alex.williamson@nvidia.com>
+References: <20260615191241.688297-1-alex.williamson@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY8PR22CA0021.namprd22.prod.outlook.com
+ (2603:10b6:930:45::22) To LV3PR12MB9411.namprd12.prod.outlook.com
+ (2603:10b6:408:215::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260615171736.1709318-1-maoyixie.tju@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA0PR12MB9009:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44f52675-ea65-478b-95a2-08decb1f5408
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|22082099003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	tbScsTMjDvAPCPuCxL3rJFnE39I24r3G97ts8J/3BlgkV5CEiHWNMQGSH05mJ+aw/X6RiG9bQyLtE7gvPF0bGrZUXZzGsSSM3lKtRO0UlZkkfsjGTax5AMryuH0Wca/LgczXMp2YAjNpI8lzKmiRkYfYtSyjlnLuiY8rVmNQxtLwLKvPcb75IaLluw0JCDP1JCIPMPySV/ccta378/DNv0aLbLSCQ1Dg7WfpnUHek1wzWJ7RS4AMvk1V5gOgCbQC84jigUa+i4eGAqC9OUORtMbk6xU82uqP2hcValA2BO4INR7NhyAFw3FOZuYBRiqL/fuyziBtEfWrdBmIRfRqDZ25Rosz/1G4F3/gpu4hRlpG9Ev4bqvtH+oPB2uC7ndY2wHYLpjOdFTazzySsdos5X6X4QZs4nhMg+1NZPPKSLH9CWS4ppmGMl3Mjzj8gEFULIgjuB0I6kkyeitzLgP/vJIkmrHXn9J1MZFUq2uubS9K3B3lSquxWusUGdizdnoRxgeLa4xb1I42CCx8r5NkqpWccPaVNKqQSeGTG7bsMPstv3B9Nq9NKD5v1Rjyaok29kDoOpZElT1p1D6ByEm5+T7RzrNR042xLTts70nYeBpj9qPsE63Wp0nETWJlr1Evqcfrf1vZmTHZZca1MQ0wM6mkt2QJn4XIILkts7A30h1gWD098uVmX5M7gixg7OChSEIyjOFbmROfNPmUhhM3FA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Y51bW2ODk3lMgK2Ucg3g5fAJgWVD+y0RUEa8Vk7BOsyzKCHqCOtRsN6iIIXa?=
+ =?us-ascii?Q?j619gfCMbZsKO758Mr+lq0ZSt0iexoCexvYkjBDinDwkYiM64307N6DWpRvo?=
+ =?us-ascii?Q?w1+bYu4uwue7BooZfpMyGZHBsPEzEuIiIme/BbEYUXx3k8UFlLAtJfBMs5zq?=
+ =?us-ascii?Q?ORWb1Q9Qk2wudXWdD3/EshLyGG2WggtfiyEsr69reQWEYA4oqcBPsS8LXl3n?=
+ =?us-ascii?Q?I4LIo4CjvSovdFzptiGn6O/i05YBzIEX801YAUl4bV/cxWBmEwjEwPc7MbMT?=
+ =?us-ascii?Q?QUUCEV9UT+rvDtxhhYRf7vtBTEnI2Nra90jacnv3wjE24TIpUsL0of5PrP4Q?=
+ =?us-ascii?Q?zCrYNJkRpdtBSq1HMZdaZWH2CFBWK5jCp80f2r323ZSjjb7WddEhqm/7BPt9?=
+ =?us-ascii?Q?U/ujdrBs0rYrZLpEblJ1SKewYbwGOHnDEQQ4oBRv354QtNJZqrivMGPWKOyY?=
+ =?us-ascii?Q?cHrpRccW4K9z768ic16sfV+Wb2ebcp5/fR/OAkx2yWkWxgk5Lr9c+R4apA1w?=
+ =?us-ascii?Q?WQZXUh27adkjjGgGMNbXuAk/MqitYekGToZKNrokO61Jl6NP2xnZg1Wo8pM7?=
+ =?us-ascii?Q?lhMzE5ukbR4+XRqjh/pnIraU0Lcpq9kfsjqxz1xhaF9vhXBOxcWiuoSYLOEJ?=
+ =?us-ascii?Q?wn7qkRZyAhD+APi6eHsioY+Rn69jwgO4NRL+YHZ0OLtPAC1/8SETK6iFVTMs?=
+ =?us-ascii?Q?4AVvnP/GLUyp4gNxGFHALQC98Eh7y8f8qr/9nBX36mEEAV2xieBLtBNl+OYe?=
+ =?us-ascii?Q?y53PFdOZJ3mGSOlHFtRUJ0Jny5843VpMbuukDoKEFSt3FO0cT1kw9eE0zAs4?=
+ =?us-ascii?Q?4WEOkWp6ReJu2rsPai6y50OQB84bbEx/Sr+m4XvL9IeKgsGW/OyJXaTlm/GT?=
+ =?us-ascii?Q?0ga2EZMZWfaP3NOipsWphYuqwENFfo9PYi5xTW1JiOtVSIOl1SjRkDxC4rt6?=
+ =?us-ascii?Q?tHjUo9CGeAUUHcELGaQ008I76kV1ldhfncFVQwC9soGNf9WHj1i0EYO496Ww?=
+ =?us-ascii?Q?0gw6MH2zMJZ6aqGfwhaGfGMkv+/b3h5XN0SG7xCI/3dPjq+BYTR0KQXT4OuP?=
+ =?us-ascii?Q?K5flq8zDF2iiQ/CzNC3JaUA4/R7f8O8ABtpYthWgvjq3fRI0RN/q2yUGXWC+?=
+ =?us-ascii?Q?Phq3ZZY6mT0WWUqUHKb6rNahG59bulBRrnQEQkPCkli6MiyfRaYYfw6gjSkp?=
+ =?us-ascii?Q?WRbd9y0oTwECuu8OlvAeUliNlrg4HIu8HzpUwuy6nAN7jF2GXX52OiFUII4T?=
+ =?us-ascii?Q?WUxH4pjEDXTm2jslkO4muZgXf3neXP3C1RssxDtnILP/h/RADIraRLcWMvtY?=
+ =?us-ascii?Q?YATQJzYHlRqvIMzCho5Wrgaf8wgICM05dAeLkiUG0rYMYOPyiZDnMIibM13I?=
+ =?us-ascii?Q?LmdaZN1qzAAlSNn2L68GcABx1A4CgUfKAwn+AveI2Y38C7DY62+GC/99YSd1?=
+ =?us-ascii?Q?/w9e60igCYWGqjcXe6mUkykPNh6Ocph8sSEfreVZg+F40g4ajsBLRPtjbwK8?=
+ =?us-ascii?Q?WdFiQOZUoaOjeS3uzvDiUYoDmvRXEVKSaXG1jERx6wr7SQILxpvFXP8IZAL8?=
+ =?us-ascii?Q?RlkEC7aOoyk/pcslGdUytpaxFsardp9bnIslmLOIJvaHkpeuej5oaGPe9PR/?=
+ =?us-ascii?Q?ajQG7XkKXlDSifzmmzmPivlAs1Z5QThaMmVwV8UB52jbVENGZh2dj5S+DOP+?=
+ =?us-ascii?Q?M5hbjZwcrUn9fFw0yNrVMovnmv3ndJKjzC/GXuA1hsHhUS39yzyipg9aSa1S?=
+ =?us-ascii?Q?Yyhtnx3I9Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44f52675-ea65-478b-95a2-08decb1f5408
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 20:47:35.0255
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JnHJ9qz08mKOB6QkupROAGjMf4SXLZmTSIv0hw7u3NI5yMTVUckk81CpD2xE7SNL2HnGPp3TwU5D3voDlGzAnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9009
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[dama-to.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-5.66 / 15.00];
+	WHITELIST_DMARC(-7.00)[nvidia.com:D:+];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:maoyixie.tju@gmail.com,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:daniel@iogearbox.net,m:razor@blackwall.org,m:dw@davidwei.uk,m:sdf@fomichev.me,m:dtatulea@nvidia.com,m:skhawaja@google.com,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[dama.to];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[joe@dama.to,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-263452-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[alex.williamson@nvidia.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263453-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kvm@vger.kernel.org,m:alex@shazbot.org,m:alex.williamson@nvidia.com,m:linux-kernel@vger.kernel.org,m:jgg@ziepe.ca,m:kevin.tian@intel.com,m:kanie@linux.alibaba.com,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,m:liulongfang@huawei.com,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex.williamson@nvidia.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joe@dama.to,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dama-to.20251104.gappssmtp.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,devvm20253.cco0.facebook.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED0E068A059
+X-Rspamd-Queue-Id: E87E768A0C0
 
-On Tue, Jun 16, 2026 at 01:17:36AM +0800, Maoyi Xie wrote:
-> netdev_nl_napi_fill_one() reports the NAPI kthread PID in NETDEV_A_NAPI_PID
-> using task_pid_nr(), which returns the PID in the initial pid namespace.
-> 
-> NETDEV_CMD_NAPI_GET does not have GENL_ADMIN_PERM and the netdev genl family
-> is netnsok, so a caller in a child pid namespace can issue it. That caller
-> then sees the kthread's global PID, even though the kthread is not visible
-> in its pid namespace, where the value should be 0.
-> 
-> Translate the PID through the caller's pid namespace, the same way commit
-> 3799c2570982 ("io_uring/fdinfo: translate SqThread PID through caller's
-> pid_ns") did for the io_uring SQPOLL thread. The doit and dumpit paths both
-> run synchronously in the caller's context, so task_active_pid_ns(current) is
-> the caller's pid namespace.
-> 
-> Fixes: db4704f4e4df ("netdev-genl: Add PID for the NAPI thread")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-> ---
->  net/core/netdev-genl.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
+VFIO device debugfs files created with debugfs_create_devm_seqfile()
+store a devres allocated debugfs_devm_entry as inode private data.
+vfio_unregister_group_dev() currently calls vfio_device_del() before
+vfio_device_debugfs_exit(), but device_del() releases devres.  This can
+leave debugfs entries visible with stale inode private data while
+unregister waits for userspace references to drain.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+Remove the per-device debugfs tree before vfio_device_del().  The debugfs
+view is diagnostic only, so losing it at the start of unregister is
+preferable to preserving entries whose backing storage may already have
+been released.
+
+Complete the teardown by clearing the per-device debugfs root after
+removal.  This matches the global debugfs root cleanup and prevents
+future users from mistaking a removed dentry for a live debugfs tree
+during the remainder of unregister.
+
+Fixes: 2202844e4468 ("vfio/migration: Add debugfs to live migration driver")
+Reported-by: Sashiko AI Review <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/r/20260615192725.6A2221F000E9@smtp.kernel.org
+Cc: stable@vger.kernel.org
+Cc: Longfang Liu <liulongfang@huawei.com>
+Assisted-by: OpenAI Codex:gpt-5
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+
+Avoiding a full respin, this is inteded to precede patch 6/ on commit.
+
+ drivers/vfio/debugfs.c   | 1 +
+ drivers/vfio/vfio_main.c | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/vfio/debugfs.c b/drivers/vfio/debugfs.c
+index 8b0ca7a09064..8a2f1b0cce3f 100644
+--- a/drivers/vfio/debugfs.c
++++ b/drivers/vfio/debugfs.c
+@@ -97,6 +97,7 @@ void vfio_device_debugfs_init(struct vfio_device *vdev)
+ void vfio_device_debugfs_exit(struct vfio_device *vdev)
+ {
+ 	debugfs_remove_recursive(vdev->debug_root);
++	vdev->debug_root = NULL;
+ }
+ 
+ void vfio_debugfs_create_root(void)
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 5e0422014523..ed538aebb0b8 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -406,6 +406,13 @@ void vfio_unregister_group_dev(struct vfio_device *device)
+ 	 */
+ 	vfio_device_group_unregister(device);
+ 
++	/*
++	 * Remove debugfs before device_del(), which releases devres.  Some
++	 * debugfs entries are created with debugfs_create_devm_seqfile() and
++	 * therefore rely on devres-managed inode private data.
++	 */
++	vfio_device_debugfs_exit(device);
++
+ 	/*
+ 	 * Balances vfio_device_add() in register path, also prevents
+ 	 * new device opened by userspace in the cdev path.
+@@ -435,7 +442,6 @@ void vfio_unregister_group_dev(struct vfio_device *device)
+ 		}
+ 	}
+ 
+-	vfio_device_debugfs_exit(device);
+ 	/* Balances vfio_device_set_group in register path */
+ 	vfio_device_remove_group(device);
+ }
+-- 
+2.53.0
+
 
