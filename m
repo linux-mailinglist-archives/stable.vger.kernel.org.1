@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-263466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /SswHshuMGoJTAUAu9opvQ
-	(envelope-from <stable+bounces-263466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:44 +0200
+	id h+eYJMJuMGoHTAUAu9opvQ
+	(envelope-from <stable+bounces-263464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:38 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CC568A2C4
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2CA668A2BC
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:29:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lY7QZ1dp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263466-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263466-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dteQVuTx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263464-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263464-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1F7130D3C3B
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EC9F3098BC6
 	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 21:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB30A3B42F7;
-	Mon, 15 Jun 2026 21:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9B7165F16;
+	Mon, 15 Jun 2026 21:29:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9366138F934
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FBD3AC0DE
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 21:29:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781558954; cv=none; b=HubngjWtzhffsohz2TAWq92O4XnERaT8YeiPDcvaNW72pKc5XerzAqG68UuxbNhGOM0fr4RBkT6mACz48/DXG3WicKTXUS1PEbEf9EYLs9M0zZLO5C48ybuFgGDUlC7ngK/vFEE3hlhExiJZBoWfm5W54jm3rnvHbEXTjZgamc0=
+	t=1781558953; cv=none; b=IcBxiMktx9uNzfoqh9SSFy2RG84Vn8WQ5xajqufFrOUaA1epIp6VqDbbIufwS1LuN4xvmR10+9Ymro3IIpHo2pDc8xnvk6Y+DIVlHGP6DWHf0+aPRCCKhG7YI67Cb5SBmVDW2raFzoeklrG0EKAuwkBeYv/QizoblK9gMVCwTOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781558954; c=relaxed/simple;
-	bh=9hV0XGQ+G1fg3arV97mFJRsZ0HSfb/nbSiYs29LwVU8=;
+	s=arc-20240116; t=1781558953; c=relaxed/simple;
+	bh=XX9NREEVL4LcB2J0tgseR8DPRAVA2lLy4m5DDY7AohU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hF/GbpRNExZ/GtQA4bz69LA1sSaEKkScOFwlnorVlw7sTniqSQhQxaw8SSmnf1IR4gAHDTD7BD8b7GWlrSI8AFgJn8djXDcBg97X22+OvfhyRcPJ+1z5GNIe05Kdk4MrbOh1Q7fBOZDUv62fmEzwRFVg/CxafCRPEKcmkM8rVgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lY7QZ1dp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097B41F000E9;
-	Mon, 15 Jun 2026 21:29:12 +0000 (UTC)
+	 MIME-Version; b=Cgez/wCE9LdB6EU2biklZtHAax0cVmGMbN/Z2HXAvav2c7TUdk2pI7OaG7nx+agYep+D5Vk89aV4euOgjRdoQfZGs0D5bf864kuxwna8MkU/j0O9y1p6Q/2Z9AKat0KVqIg0GJLZbu+sdwDPjR3WXF8fFRgMJCEjBkkf1Ftmwvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dteQVuTx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DF31F00A3E;
+	Mon, 15 Jun 2026 21:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781558953;
-	bh=g2Fdl4K7J+hXWQqq0+FgsD/6uQAvINwJ5xdytovGxoM=;
+	s=k20260515; t=1781558951;
+	bh=KFjx4yAs8YVVPzl3rDzoomN4IkY3u5v7ji1eWL/E2ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lY7QZ1dp24By6zQk4ftDmPW4iflxoLd8m5vq2OsanV9jH8PX+0JYFgm7C3LROmsho
-	 SYYpIOwuOkWBBNuvrGTuFdah/PBtdnmM+sT2INM87ggBM+J6vvAzlzEkOnjiW+LWph
-	 PeoJbE9AftlQahGUCwnCPse1SndJc5yqJBfFy6m8PJdbtVsbSaD5MZuDfaizgkAYAL
-	 shVlZvKrzfNWo0t9X15KeE4jpl7RSQjQ6etFvimlJHhPLaEW2gE8Qxex//4cNEkq8g
-	 cTSKu0YsuESgmsmfbBW8NVZQvSX7vUHq+6kbz3qNYbJF6VwJnlSW2hBFqYYytX9Zh3
-	 89XcmJ6cFWScA==
+	b=dteQVuTxSPvp3WNwjeB0ahR3SEeDvN9fG5jgFgbPsFP16T8YT+crav5koxSAib0QZ
+	 +eRFditDocYW8Kko5+vIixPkBfbEg3Vlp94/GZlVO/vlfvg0Aq+3lIV2Blie4vxYCs
+	 XEPyQtvGBH7DPuaXS9O+cVZwhHk4XQ5BxDkucaGFwvYlQvOteQXIbFen8RyD0XfvxO
+	 tkCA/qyKz525zXMXJuZtkZX6ESLe7qw5P+mQGZ4MDQjWmLvu9SN/CrjrTBiB5R3JyB
+	 RjeUgqswUN/gY8kWz0ciKFqUphKWK4YGRBcGd0wfalC+h76gS/xGZX0pgcCT6RqZE3
+	 V43TIvLehVDow==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jacob Moroni <jmoroni@google.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/4] RDMA/umem: Move umem dmabuf revoke logic into helper function
+Subject: [PATCH 6.18.y 3/3] RDMA/umem: Fix truncation for block sizes >= 4G
 Date: Mon, 15 Jun 2026 17:29:08 -0400
-Message-ID: <20260615212910.2473729-2-sashal@kernel.org>
+Message-ID: <20260615212908.2473687-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260615212910.2473729-1-sashal@kernel.org>
-References: <2026061551-manor-verbalize-74cb@gregkh>
- <20260615212910.2473729-1-sashal@kernel.org>
+In-Reply-To: <20260615212908.2473687-1-sashal@kernel.org>
+References: <2026061505-frayed-clergyman-65f9@gregkh>
+ <20260615212908.2473687-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,17 +76,17 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263466-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263464-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jgg@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -99,69 +98,45 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13CC568A2C4
+X-Rspamd-Queue-Id: D2CA668A2BC
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 797291a66ce346c96114b72222fc290d402da005 ]
+[ Upstream commit 15fe76e23615f502d051ef0768f86babaf08746c ]
 
-This same logic will eventually be reused from within the
-invalidate_mappings callback which already has the dma_resv_lock
-held, so break it out into a separate function so it can be reused.
+When the iommu is used the linearization of the mapping can give a single
+block that is very large split across multiple SG entries.
 
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260305170826.3803155-3-jmoroni@google.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
+When __rdma_block_iter_next() reassembles the split SG entries it is
+overflowing the 32 bit stack values and computed the wrong DMA addresses
+for blocks after the truncation.
+
+Use the right types to hold DMA addresses.
+
+Link: https://patch.msgid.link/r/1-v1-88303e9e509f+f7-ib_umem_types_jgg@nvidia.com
+Cc: stable@vger.kernel.org
+Fixes: a808273a495c ("RDMA/verbs: Add a DMA iterator to return aligned contiguous memory blocks")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem_dmabuf.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/infiniband/core/iter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem_dmabuf.c b/drivers/infiniband/core/umem_dmabuf.c
-index acb0922a786131..be5977daafa1de 100644
---- a/drivers/infiniband/core/umem_dmabuf.c
-+++ b/drivers/infiniband/core/umem_dmabuf.c
-@@ -198,6 +198,22 @@ static struct dma_buf_attach_ops ib_umem_dmabuf_attach_pinned_ops = {
- 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
- };
+diff --git a/drivers/infiniband/core/iter.c b/drivers/infiniband/core/iter.c
+index 8e543d100657ee..3ed351e8fcf6c9 100644
+--- a/drivers/infiniband/core/iter.c
++++ b/drivers/infiniband/core/iter.c
+@@ -19,8 +19,8 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
  
-+static void ib_umem_dmabuf_revoke_locked(struct dma_buf_attachment *attach)
-+{
-+	struct ib_umem_dmabuf *umem_dmabuf = attach->importer_priv;
-+
-+	dma_resv_assert_held(attach->dmabuf->resv);
-+
-+	if (umem_dmabuf->revoked)
-+		return;
-+	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
-+	if (umem_dmabuf->pinned) {
-+		dma_buf_unpin(umem_dmabuf->attach);
-+		umem_dmabuf->pinned = 0;
-+	}
-+	umem_dmabuf->revoked = 1;
-+}
-+
- static struct ib_umem_dmabuf *
- ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
- 				   struct device *dma_device,
-@@ -265,15 +281,7 @@ void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf)
- 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
+ bool __rdma_block_iter_next(struct ib_block_iter *biter)
+ {
+-	unsigned int block_offset;
+-	unsigned int delta;
++	dma_addr_t block_offset;
++	dma_addr_t delta;
  
- 	dma_resv_lock(dmabuf->resv, NULL);
--	if (umem_dmabuf->revoked)
--		goto end;
--	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
--	if (umem_dmabuf->pinned) {
--		dma_buf_unpin(umem_dmabuf->attach);
--		umem_dmabuf->pinned = 0;
--	}
--	umem_dmabuf->revoked = 1;
--end:
-+	ib_umem_dmabuf_revoke_locked(umem_dmabuf->attach);
- 	dma_resv_unlock(dmabuf->resv);
- }
- EXPORT_SYMBOL(ib_umem_dmabuf_revoke);
+ 	if (!biter->__sg_nents || !biter->__sg)
+ 		return false;
 -- 
 2.53.0
 
