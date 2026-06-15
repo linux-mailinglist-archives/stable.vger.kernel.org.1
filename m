@@ -1,175 +1,200 @@
-Return-Path: <stable+bounces-263417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7wq9NWE4MGqCQAUAu9opvQ
-	(envelope-from <stable+bounces-263417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 19:37:37 +0200
+	id liEMOLs6MGrEQAUAu9opvQ
+	(envelope-from <stable+bounces-263419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 19:47:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9B4688E95
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 19:37:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51340688F32
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 19:47:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aMMG2lkW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263417-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263417-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ankey-net.20251104.gappssmtp.com header.s=20251104 header.b=pa4XmYcx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263419-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263419-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 515D430422C1
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:37:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17CE33045465
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E20411664;
-	Mon, 15 Jun 2026 17:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419DE2E6116;
+	Mon, 15 Jun 2026 17:46:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ED440B6F7
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 17:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F073275B1A
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 17:46:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781545053; cv=none; b=my7IpfjHfegyqq5goYfB306Do7ssdgLRUIASlfwiRpx4CPNwcI+dqtXXOM717atpIVTc2pVX1S+ZAr6Xsx1EATYFq3VJqAo4DyT/BezUbSdNRT0uKW450VjB9MEIlGaqUJMyALhcPbAbqJy1OJUPupIOsTtEbdgDyMafDLOddMU=
+	t=1781545584; cv=none; b=d9CuxSuN5l1TAivUUZP5vEriRrL6DMEomXGAWXp/dyVhq5EhH2zXkcDOb3rT+HK5u0GDjL/iLP38gGWp4hJZK8KVPq6R+8/2p5ud6noKi6nG53eiodh0x3iURES1aYrzBIQcHWYACLEW1qTwsuNeEE306fi1+oxJ93DvwlM0vE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781545053; c=relaxed/simple;
-	bh=eP6q3hwPfT3HQ/gvF9VatfO0+FK6j56f5qsO9MengX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCsinJSIOdWJjdqnxotcluJPBFI7fPFNarhGhmf1gRR7e+ffXRtzjzRGIcpSJ62U9FoIkA5zfaykFVBwk9hvax/fcdQ97gVAqpiSHeacmeaxXK1p0TVVSBgL64TGIiU/bLG/fb2UJBOiN1U7nvw8jDQxYwPcbX0pD1Bidat8YD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMMG2lkW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF761F000E9;
-	Mon, 15 Jun 2026 17:37:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781545052;
-	bh=qA4oVRewk8RCJL2zdx8WrPRY6MHpavtSOrpH8WN4R2w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aMMG2lkWZ6wgYkQUm1qsDRLh63SoQTnDGFcJ4RL9dvelWXC8Is4Uzc64ubm8sd2HC
-	 +6DiGSW6I46NvcNHWrXnE1JcyqZZi7hHEXvuNV+poDjvqKALhub68Xr74lbk2hdyB8
-	 QhysGkgXU4cmgX0+75jMjEvQ5XWk4OgaupU4f4foM0bpOAlRfuYYa2V9wcJh0HFDML
-	 RABjB8u8A/pqLIQMCjcL2sbuXoFyVQa/zjFm7+R0QCe8jCX6B57M1I1605U3T5j7CV
-	 9Ia4yc5ZKRwssBEVJMIx24+nZyPAOMA6eWL8SV8TJtyYIk5eCK1FWBs1Oe/+BWKbK8
-	 /BbS6MipraSdQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] sched_ext: Don't warn on NULL cgrp_moving_from in scx_cgroup_move_task()
-Date: Mon, 15 Jun 2026 13:37:30 -0400
-Message-ID: <20260615173730.2303601-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061554-brink-cesarean-5dc5@gregkh>
-References: <2026061554-brink-cesarean-5dc5@gregkh>
+	s=arc-20240116; t=1781545584; c=relaxed/simple;
+	bh=6FChuiiY1Ab4DoQ0VIjmNXOowo/9a9Qo6Y6YIXFBBsw=;
+	h=From:Subject:Date:To:Cc:Message-ID:In-Reply-To:References; b=ojO+k0wOeCU5y1lPs0/pRHvZL0z2sKdRkGdr3oVH4YBlDvAh9zDswUZOkX8E6uREjnOd0093HZmrrIfzI49XPTHEX7fCUdVaYsQcAcOw1cnSZ6QzSGSxmHjMO4nFHHIL+GP3gZE6e8UB6wYaUn329temeySz7sWn4O/AuQyJkgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ankey.net; spf=none smtp.mailfrom=ankey.net; dkim=pass (2048-bit key) header.d=ankey-net.20251104.gappssmtp.com header.i=@ankey-net.20251104.gappssmtp.com header.b=pa4XmYcx; arc=none smtp.client-ip=209.85.210.170
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8422f395a4aso2433437b3a.0
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 10:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ankey-net.20251104.gappssmtp.com; s=20251104; t=1781545582; x=1782150382; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:cc:to:date:subject:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EM3udb0oDgJN3cKMNmux7YsMkV9lDzcITmGFkVGmGqE=;
+        b=pa4XmYcxUADAHuHOG3K+8NWlvTj24h7N/JrEGIWqgFjPaNqTt8HiBJ+eoGjulX/tUt
+         +GUNCsQTohhqIdY5rMnCUWZ2ekPSoktw03uR919hD+dEbcbTsaITMxciZoi9m5eecfvY
+         dficIhVifwvF3fTY9VW7a4+h9lHFkys+yMnbSaBCs3FyENYYY55zELXDODf0bUhEBvbj
+         syVrsfj/eZDyPVndaVB0NdpPF/d2ipaPG3vFycXzQsPYHQzE+HXtwD8/FZpywpdM8O5C
+         4UEIHFQNqxOXUo3tP8E8smAzX1qCU/5nGX3B0iElMJ49cN//YnqkHYF6e5ptCX8Ytbvq
+         0OUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781545582; x=1782150382;
+        h=references:in-reply-to:message-id:cc:to:date:subject:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EM3udb0oDgJN3cKMNmux7YsMkV9lDzcITmGFkVGmGqE=;
+        b=gRpd4pAa0P5SP8A6cOho6R1LDYa86VpveF47XgJ+2viWd7GHmiLJTtoi6NYC/l9MNF
+         6CL5trcIcAW8y+HlriayfPy9B0TsB7ObaVF/1hV6qa2Zrr/4cYbTP1l1R1yg1PhUCEwP
+         T2tr+NU99Knnz3GVWctA4CacvmRo/EMVgZ26v/3pKWqqmH8kicPlB3bPmmYoUYKsMDDi
+         w1uLldfnEIcag1aEBpn85B+CUVAp6YZot1AmGmdXnNpAbn9+B70DwCiNdx3uTyGziUf4
+         e4H1wCeZVgrIz3bSWQPV8Juwx3FZZVI7SsuRU5IF+bLaxIVewXRitCpvssvVSpFn3Zon
+         3hhA==
+X-Forwarded-Encrypted: i=1; AFNElJ+/TC46KY01pq+g4jFdk+XYoOpdh5E34TfqkZj/sjKBWLhgDvD2hTa1J//uU/sjOLaA2sS8iSE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXVIsAQVKu29JTC+qTRKoA8gnLXfx46Kmvc5JKC1zAzeTdeq7k
+	djNyt/t4BP4XccNboelAg0427q06Ihl+xxoWvJO9dpI9M/IDMASzGMOI6Qu9lfhB5kauS/LsXTX
+	7RS+NYw==
+X-Gm-Gg: Acq92OHw5NvG9sttTFzeL7HHBAWXBui17nlh0OdQOKLprIKfM7RzjzalLLENno1fxlp
+	iKP/1lYlYQOxHKM8Y47LxuS42JNmaoHXtrSDdyLyEQOWMoE3q6lHr75wTuHJwV3rPnrrHD+ObWX
+	Ow3SHWjnImbhYjqVauzNFSrcp0nLzcPPzH5sLpBYcejPHER3NilULGZQVayjAkfBwELd98Ki+Ox
+	g0y6SsRPV8CzRq0oZeSge9xAy4l2s3zzUWCxHwpPwc2AXUCuajbbcRcBHsoE3+hRs2EGdV0Iz+b
+	qa7PIYTium+UwR1iwhGLr1wz7JKv+ZLJ9mWVImNHq+r2ihpG3QZxv4gXvLQlBABXkKV4N4g7LOH
+	ejQ+pT2zXoUu6gc5birqGqqc7ehMN0bfTXKOi3npumTwywVsmY7DKsti1wENDMfUEhJ1g4c57I9
+	LJd7W+ZZPe5GU1qFleyVYkkhj9ER7YOZ/MHP+uO/rlyQDIIoXfy49CzIdWWFDPOmJxghpK6+B3r
+	tza38d8zod4Jrnb59kJ0CfUTw1glrWUuuB3
+X-Received: by 2002:a05:6a00:813:b0:842:614b:50e1 with SMTP id d2e1a72fcca58-84513e3c998mr348207b3a.12.1781545581724;
+        Mon, 15 Jun 2026 10:46:21 -0700 (PDT)
+Received: from atimofey-ld1.linkedin.biz ([52.149.25.61])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434accae18sm11214086b3a.17.2026.06.15.10.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 10:46:21 -0700 (PDT)
+From: Alex Timofeyev <sashka@ankey.net>
+Subject: [PATCH rdma-next v1 1/2] RDMA/core: use destination netdev MAC for
+ cross-NIC same-host local dst
+Date: Mon, 15 Jun 2026 17:46:19 +0000
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ linux-rdma@vger.kernel.org
+Cc: Parav Pandit <parav@nvidia.com>, Edward Srouji <edwards@nvidia.com>,
+ Vlad Dumitrescu <vdumitrescu@nvidia.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <1781545579.2-sashka@ankey.net>
+In-Reply-To: <1781545579.1-sashka@ankey.net>
+References: <1781545579.1-sashka@ankey.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ankey-net.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263417-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tj@kernel.org,m:mfleming@cloudflare.com,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263419-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:jgg@ziepe.ca,m:leon@kernel.org,m:linux-rdma@vger.kernel.org,m:parav@nvidia.com,m:edwards@nvidia.com,m:vdumitrescu@nvidia.com,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[sashka@ankey.net,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[ankey.net];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ankey-net.20251104.gappssmtp.com:+];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashka@ankey.net,stable@vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ankey-net.20251104.gappssmtp.com:dkim,ankey.net:email,ankey.net:mid,ankey.net:from_mime,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4B9B4688E95
+X-Rspamd-Queue-Id: 51340688F32
 
-From: Tejun Heo <tj@kernel.org>
+addr_resolve_neigh() treats every is_dst_local() destination as loopback
+and copies the source device's MAC into the path record's destination MAC
+(dst_dev_addr <- src_dev_addr). That is correct for true loopback (source
+and destination on the same netdev), but wrong when the local destination
+address lives on a different netdev of the same host.
 
-[ Upstream commit 02e545c4297a26dbbc41df81b831e7f605bcd306 ]
+In that cross-NIC same-host case the destination NIC will not accept a
+frame whose destination MAC is the source NIC's MAC, and drops it in
+hardware before it reaches the peer. rdma_resolve_addr() and
+ib_send_cm_req() both return success, but the CM REQ never arrives and the
+connection times out.
 
-A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
-its own subtree_control while a sched_ext scheduler is loaded:
+Look up the netdev that owns the destination address and copy its MAC into
+dst_dev_addr instead. Fall back to the source MAC when no netdev claims the
+address (true loopback), preserving the existing behaviour.
 
-  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
-   scx_cgroup_move_task+0xa8/0xb0
-   sched_move_task+0x134/0x290
-   cpu_cgroup_attach+0x39/0x70
-   cgroup_migrate_execute+0x37d/0x450
-   cgroup_update_dfl_csses+0x1e3/0x270
-   cgroup_subtree_control_write+0x3e7/0x440
+This was observed with two RoCEv2 ConnectX-7 ports on the same host, each
+holding a global IPv6 GID, when one process pinned per NUMA NIC connected
+to the other over RDMA-CM: the resolved destination MAC was the source
+port's MAC instead of the destination port's, and the REQ was silently
+dropped. With the fix the resolved MAC is the destination port's and the
+connection completes.
 
-scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
-cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
-through this sequence:
-
-  Step                               Result
-  ---------------------------------  ----------------------------------
-  1. cpu enabled on cgroup G         cpu css = A
-  2. cpu toggled off then on for G   A killed, B created (same cgroup)
-  3. an exiting task keeps A alive   migration skips it, A now stale
-  4. +memory migrates G              stale A vs current B pulls cpu in
-  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
-  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
-
-The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
-while migration drives the move on css identity, so a NULL cgrp_moving_from
-here is a legitimate css-only migration, not a missing prep.
-
-The call is already gated on cgrp_moving_from, so just drop the warning.
-ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
-
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c31e4038c97f ("RDMA/core: Use route entry flag to decide on loopback traffic")
+Cc: stable@vger.kernel.org
+Cc: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Alex Timofeyev <sashka@ankey.net>
 ---
- kernel/sched/ext.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/infiniband/core/addr.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 01dc2a613868fc..428cde37130dfc 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4069,10 +4069,13 @@ void scx_cgroup_move_task(struct task_struct *p)
- 		return;
+diff --git a/drivers/infiniband/core/addr.c b/drivers/infiniband/core/addr.c
+index 7e62b5b1ffaa..84aa43436bfe 100644
+--- a/drivers/infiniband/core/addr.c
++++ b/drivers/infiniband/core/addr.c
+@@ -451,10 +451,26 @@ static int addr_resolve_neigh(const struct dst_entry *dst,
+ 			      u32 seq)
+ {
+ 	if (is_dst_local(dst)) {
+-		/* When the destination is local entry, source and destination
+-		 * are same. Skip the neighbour lookup.
++		struct net_device *dst_ndev;
++
++		/* When the destination is local, source and destination are on
++		 * the same host. For true loopback (same netdev) the source and
++		 * destination MACs are equal, but when the destination address
++		 * lives on a different netdev of the same host the destination
++		 * MAC must be that netdev's MAC -- otherwise the destination NIC
++		 * silently drops the frame. Look up the netdev that owns the
++		 * destination address and copy its MAC; fall back to the source
++		 * MAC if no netdev claims the address.
+ 		 */
+-		memcpy(addr->dst_dev_addr, addr->src_dev_addr, MAX_ADDR_LEN);
++		rcu_read_lock();
++		dst_ndev = rdma_find_ndev_for_src_ip_rcu(dev_net(dst->dev), dst_in);
++		if (!IS_ERR(dst_ndev))
++			memcpy(addr->dst_dev_addr, dst_ndev->dev_addr,
++			       MAX_ADDR_LEN);
++		else
++			memcpy(addr->dst_dev_addr, addr->src_dev_addr,
++			       MAX_ADDR_LEN);
++		rcu_read_unlock();
+ 		return 0;
+ 	}
  
- 	/*
--	 * @p must have ops.cgroup_prep_move() called on it and thus
--	 * cgrp_moving_from set.
-+	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
-+	 * cgroup changes. Migration keys off css rather than cgroup identity,
-+	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
-+	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
-+	 * keep prep_move and move paired.
- 	 */
--	if (SCX_HAS_OP(cgroup_move) && !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
-+	if (SCX_HAS_OP(cgroup_move) && p->scx.cgrp_moving_from)
- 		SCX_CALL_OP_TASK(SCX_KF_UNLOCKED, cgroup_move, p,
- 			p->scx.cgrp_moving_from, tg_cgrp(task_group(p)));
- 	p->scx.cgrp_moving_from = NULL;
 -- 
-2.53.0
+2.40.4
 
 
