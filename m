@@ -1,243 +1,381 @@
-Return-Path: <stable+bounces-263171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9VIgHIXWL2r4HgUAu9opvQ
-	(envelope-from <stable+bounces-263171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:40:05 +0200
+	id TLu/FNvWL2oHHwUAu9opvQ
+	(envelope-from <stable+bounces-263173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:41:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADE568563E
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36D6685657
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:41:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=mails.tsinghua.edu.cn header.s=dkim header.b=iPDF9ezI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263171-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263171-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=mails.tsinghua.edu.cn;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=windriver.com header.s=PPS06212021 header.b=AZUYjSIw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263173-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263173-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=windriver.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 179D23027947
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 10:40:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E2A93040DB9
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 10:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4672833A032;
-	Mon, 15 Jun 2026 10:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EACE33A032;
+	Mon, 15 Jun 2026 10:41:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AB21990C7;
-	Mon, 15 Jun 2026 10:39:53 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781519999; cv=none; b=jlc82U6UXLkiFnEDxYzDGj2l8VEEglWAf/IOcmsCkprniqq2LIcnkLs1PEEU94CEVrTwABICWlGDvSr1Rk6Hdyh2IbG0qgc+tRe7nF7pMHzpiPDVUrt5+3IcHNXGIOjyMNAfYajsNhYefXmJR70q0z0IVIHWaAFZOeNGHH7urJY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781519999; c=relaxed/simple;
-	bh=pjPunVM0Lju5iCYpWfHWOCfJjBSSKWp+2Ebpbpdwyzo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f+rHAceLbIsU6uqFH0x+Llm8PcwvzB2KKU2g6cnt6ayNf6bNukkxnQzu0zWhBYANIhLppB/WWn1avt1tiqYTCeCRFYC/oVy1sa1LuNpxbsQdy+Bz7gRvup7wwh2cTmIZwF0cY3WCXJhyPlOLEXEFKgQ+28PL4yqfhSH2KxJ75AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=iPDF9ezI; arc=none smtp.client-ip=206.189.21.223
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=GFlRp
-	zpDSFpH2nXPFhy658PC3HdI4pPCMhyiMaEt5+o=; b=iPDF9ezIPMCnyryfxg9vi
-	Ab68Jc4ez7nJR6APfcaSS8CI116I7wnPwRo88mtTam3AkwukvXafC6fewza0OifO
-	P/E/LVtUszh85noQoKe2zuTMcVjAMl9UWVQBccph/Vz4nZYaj3Pnn0A+ziowFsge
-	Qx2TFqTLuLZDc5Z3V/2l/s=
-Received: from DESKTOP-35NLEVI (unknown [166.111.239.35])
-	by web5 (Coremail) with SMTP id zAQGZQDXYLtp1i9qZENxAg--.8653S2;
-	Mon, 15 Jun 2026 18:39:37 +0800 (CST)
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-To: netdev@vger.kernel.org
-Cc: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Kito Xu <veritas501@foxmail.com>,
-	linux-kernel@vger.kernel.org,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net] appletalk: fix use-after-free in atalk_find_primary()
-Date: Mon, 15 Jun 2026 18:39:28 +0800
-Message-ID: <20260615103930.1484-1-zhaoyz24@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.53.0.windows.2
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CAE339705;
+	Mon, 15 Jun 2026 10:40:59 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781520061; cv=fail; b=qnklgdacxgTz4l26nyf/mHE0WEsLXciwgvwZ+DMY4Rgufc8742QAgHKd5T5fusXELxa1HsOUqwM6PuinW+pk60//gOJ86qOlEQnQR0FRrXjPD5EDTnKYJWug5juVggw+FGeBrYGMX6b3s8IdFDk75N5Mf6Ww5uSOEndjYonIYgA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781520061; c=relaxed/simple;
+	bh=ARLjsdvZi/+Ftlkw23KnwYHMmk7clPEzYZ+87htCHmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Bgtk4G/NoXh+j1oN/yeWBZuNYv61kJ0diVuBRDOlBtaesyfYY34+1G0LE+SR1Q8pXTs9aXExiCHzWefHEPyUfb6iPT5JGj6HsAimmTV4bZ1Q1hCmg4c4+mGE9baiwo9rIqP3XCzeevjYIlyTNJai/qpIQqu8I4YKiJS2crQsBXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=AZUYjSIw; arc=fail smtp.client-ip=205.220.166.238
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FAd3uG1038723;
+	Mon, 15 Jun 2026 03:40:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=bFNo3SHpC
+	GEqZm2VlJFB0P0O5p9zUPFTImkabEeIfLs=; b=AZUYjSIw8rWUzA/0VD7ulmvWq
+	06wAknVIYG4l9SPhqXOLqVvQlBN/JWgc8LoCO6pMAv6jtnugxPz/QL1wG7wM4qb0
+	Cgl4JEQT+TitW9SMWgdEtuhnJPw50e9M4Hd/si4b/91CR6QmY3ZseVUkDUqklkjZ
+	GvO/zcdmdctMMwE2TDdJjU2W1RLWerSELBXBKWuwxeSsuf4duN4ICLB2fg5z1FRk
+	7QPZfEaUtq+VzTWrnpwqsAi1ay0TCHw5WzWssCZlLON1bzSHemsZ45swiIMzgPQw
+	FmD6U//U3saHDMLgGDDDdk20KRRlzIPdvaRrB99A74vAHExvq9RANSIIhGTDg==
+Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011066.outbound.protection.outlook.com [52.101.62.66])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4es6qdt2db-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 15 Jun 2026 03:40:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r1B5RFOYiRjdekAVYUXkACepxXMjNotI/y6zO0igXiS0f91aO/YGLL94U10qqWRYvLCMT5vDb6L4LhHHuOWKJ1nFo31jAvRozAdKcggVsN2hgdiXO4cPj8IKCnPECMRp939krfV2H0lhK1tza9t/g62sjQ2LIaSmjBL1Cz4NRREhj72dgOk+S6rnsdCt93Djy6WJXi+nhNwp64tGY89N7asnHfSbSd93KaSNLmV2VYjkOJ4QaZJ5oVaYsBqKAyjuLPqynmFMHrWmnJRP4SXrRpTkVoYsETZ3kW4KUP+bIO7Rm8JWoFraVKfiL3IHOISzuuNmfjkFhih62EPX7Jx+Lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bFNo3SHpCGEqZm2VlJFB0P0O5p9zUPFTImkabEeIfLs=;
+ b=v25PohrrhtELMsF/UPbVn6oKVGtod40TGwKL1rc+SIVHMFHQqz470b+NEIKmfsL3pyM84gjLunvD5KlS0S45T/2BggOgdWva1sg/hUnziXJf8aQ5FlbGirYu8GrumzrCZZbvnvmlCcgCTyIMEVPZVo1OLu9ujQsxtl7OdvNVxslOQwabGq0guNVSt0kivawGNhPY5ST7wV5WHN93zvXXwNYC2eE9GR9ZlfzrLXEY7Ck+z1UU8J8vtXp78ve+fJQd3mrUATxppOMMXra+pzaBWxP5r01UO7p3+xUUAY9DhC+kMR0FCXl806AmnTthwtPUkVJa4EZMPGtR2IIWw7Tdog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from BYAPR11MB3606.namprd11.prod.outlook.com (2603:10b6:a03:b5::25)
+ by DS0PR11MB8161.namprd11.prod.outlook.com (2603:10b6:8:164::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 10:40:00 +0000
+Received: from BYAPR11MB3606.namprd11.prod.outlook.com
+ ([fe80::6b12:513c:c6c1:42ca]) by BYAPR11MB3606.namprd11.prod.outlook.com
+ ([fe80::6b12:513c:c6c1:42ca%3]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 10:40:00 +0000
+From: "Bogdan Codres (Wind River)" <bogdan.codres@windriver.com>
+To: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: vkoul@kernel.org, dave.jiang@intel.com, vinicius.gomes@intel.com,
+        xueshuai@linux.alibaba.com, yi.sun@intel.com, fenghuay@nvidia.com,
+        dan.carpenter@linaro.org, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org
+Subject: [PATCH] dmaengine: idxd: fix use-after-free in idxd_free() and idxd_alloc() error paths
+Date: Mon, 15 Jun 2026 13:39:31 +0300
+Message-ID: <20260615103932.61828-1-bogdan.codres@windriver.com>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1P195CA0053.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:802:5a::42) To BYAPR11MB3606.namprd11.prod.outlook.com
+ (2603:10b6:a03:b5::25)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:zAQGZQDXYLtp1i9qZENxAg--.8653S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJFyfKFy7Ary5ur48Ar1UKFg_yoWrXF4xpF
-	W7urWqka4DX34Ygr4DJrW7AF15Cry8K3y3Cr1rG3W0yrn0gr9a9a40yryavFnIkr97GrZ5
-	JryxK3s7ZF4UCwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14
-	v_Gw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AK
-	xVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrx
-	kI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v2
-	6r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8Jw
-	CI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOv38UUUU
-	U
-X-CM-SenderInfo: 52kd05r2suqzpdlo2hxwvl0wxkxdhvlgxou0/1tbiAQETAWovr0JGUAAAss
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3606:EE_|DS0PR11MB8161:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1a99029-a9be-4d0c-4573-08decaca7327
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|52116014|23010399003|376014|18002099003|38350700014|56012099006|3023799007|6133799003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	vMYgxKfF9aP6e631Uvv19cVfz/P9IZA1hN6ITJxILtKkFb2FlTh9p01JnmRDB34gCNl3B9UGG0eUf2VjI/y5ZciP283ND8stxCT0tjnzmA+qwQnfm0gLHfTgbK65if4T8UdZ8nrMurk/+n3NhOV/6F2KezZqvD01uM6Zsu09F2SZCyGB7KyyXby5ql9K3hkyjhjqP4zQDk7wTZqhWjwJpDLt+y8iS118IkCVwKYbC4mVWNcLBkNWE2xiMRMLX65igmsZNj18xp/xcnSn0gg1P2sjiFNC6F3TOT/5ZYgZw2DeZriCevrmiUKMvBDFr/2klUW3lfuBSqSqVNelSOANMqCApIHc/xvirw8hhw7vQUFePyWhN5PG8Hc9mLC7IDYhRIZ+t4MA4jvD5oBYbqVh4CeDRFxQek7a5L0Iu4YA6m4a+8vrNOlbS53Ygm0XznmhkyaXMqdFFa0vbu7y9/U+YRCDZJgWLdpQhr2gNlA7JE+0wWv0BSWRaeUjc9VIN10bycCcR8WWkebo2j1kRhvGqbm38ccjoRMwJRhAHBPA1C6RgLTfdPSAmEuuirrxwn0KUjS7n6gDt65UO/5hymzHvAetgVyvcGqxuGGVm6ZmyX2HFajwV+zHNRMqVW6lnm8WRiKO8M5eAG1fMC7XdKXJD3mB+yR1xTU1nw4+qr8AFil4aEjJvETxNFCI6rAkjFmrx+drwpStu2H2e8r6FSgE5lMplE4PyOqrpse2Vfxu3hD0iWLngqfl30F6qi7rG+sQ
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3606.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(52116014)(23010399003)(376014)(18002099003)(38350700014)(56012099006)(3023799007)(6133799003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LCU8Bn2rAT27UEdll0K0Qtm2qpSGQJneOabcbRItsQGlzdOiylp8d6WtQh51?=
+ =?us-ascii?Q?rV4KVP9Rh80y66oOcWnS8mWN7e5PEdQpbiXaRH4XVCnjisGM+P3l7FrEO1En?=
+ =?us-ascii?Q?DL9OzWzKD4q2Bal5eEhkY/kaN2TUNAHcZUBuzGg6rmxA/Mcct47nKwD/VKFi?=
+ =?us-ascii?Q?UWXnkpdSVKW0GyFUqaDErzaKF1ndS0PNOpE5xQcFcx6uqpnkP9wvjkDrjO4r?=
+ =?us-ascii?Q?fW/nrqrN15JcOyTjPvAs12bbjoMnu3zXOZErtUk94fS1oBHVxdeIoa0C3yNt?=
+ =?us-ascii?Q?16Y+qnXMJ9ChOBijChTmPtkcPL597B4ZpIxgNgQwCTV8mmxdjo2chmIhSrO6?=
+ =?us-ascii?Q?IUI9hGq1Cl+BKr8ukDAT6qOwqZyO2CNdHcQ0YQycBhDHvA8gYPyop1T7YKBG?=
+ =?us-ascii?Q?3sLZMOKaCImObtbWnsnM1ko7usiWUdkKXfOq/hGPq4sfgBT9b9ghg8ge3B/B?=
+ =?us-ascii?Q?0G0vRguSZVmLwdTaouC+ta07gbLSA3OXfJyP2BrVpGaWE0RnhfazMj6f2fzO?=
+ =?us-ascii?Q?myPjNX5i4sb4JuFAmpeYQrtOE0ajd/YhAomlRZbjGJkDdzzWQb2SoDynIKmd?=
+ =?us-ascii?Q?yTZCreuJfIyFNJTF9TPNb6BtfQEwfrl6aQW9NeDvi8UmG7r4zEeWcbFInhOS?=
+ =?us-ascii?Q?XKnIrzvw8SEfUEITG1LmESPYX9NOs96//8j/SjzlSDWc7OVNzTFWnOZu7Ls0?=
+ =?us-ascii?Q?cHAfzxPEZCSQFVC8N/+RhU6XMbTrNJAt/aa7ZJdKkK6oyKcbosm49eUodIdw?=
+ =?us-ascii?Q?jsOYpmzB+AFLb4ESjYJDmcssAycXFAu6VMjNu+u0knaFXXp1SAm2NzVPUe9d?=
+ =?us-ascii?Q?8kHLox6ZiVbIwMZS1nsZBVdVy+etDPDVR4ps20FgJvQKr9u4DbyjShUwEVxg?=
+ =?us-ascii?Q?gL6CZYdJGMU6ACyr3nG36ph+ZFJAe1/5IFDpeGcRpXpx6vY6B2NGIAxtvTN9?=
+ =?us-ascii?Q?fL6WxtfCDBZB71CkC3ONys+aSkc5d03Fvm8HETTFuZBxrba4otAOervDnXnO?=
+ =?us-ascii?Q?Q0iuFj6JODHEYOXvRFrpkkOZ61QGc4s4JK+Pd6vQtMQ877KXVESYNk0tn95J?=
+ =?us-ascii?Q?mbid1je7ZDaaQzFex2U1JO7St3D0fx6Spz52f563T1RU1pnw3vy0wHAOXA5r?=
+ =?us-ascii?Q?ZpyUoMNBU903O+rhc2F3HSaAd/4X1278GOX4sHIw53KLvLHZecS/Li4T31rI?=
+ =?us-ascii?Q?PI83zLm8SapHT2FzdPLA30KLwv5LGfs1VGVfrjLwu2ZwxOfpguJhKGLC3LdX?=
+ =?us-ascii?Q?A4J8WkyJ4BwOPpIzBdO5iUq/L0uMWgEF3ZgA3XBv3TpVHw2p8M4cMqo8ixsr?=
+ =?us-ascii?Q?d2HaiRIL0cjO8P0dh94bgYNw2iwRhfzfoLcjlPp2UhGFK1WHWbEIZrTCGI5K?=
+ =?us-ascii?Q?lzrDA7KoD5vqGqUBrZ/Lx2MJPFsM9x0eAW1XwUVt4CbvVJD1ZKPWFYZKcpPr?=
+ =?us-ascii?Q?EDiCqIViRZeLJdSTdxDKkF/FjyDC+ttnlTvUuMh2svGxIKnEWB5jcs1yTzZa?=
+ =?us-ascii?Q?dmsE/zAKfcAkkdG9P5Z02jSVpqlnK+edHjs2tLCEA0OBWjP42VmVo4AZGqTT?=
+ =?us-ascii?Q?VjXtIirjRWagrlj6YOtUn6hjFUb4lvhqXPhpRQxisDrHUPdC7gqvEdCDKHLb?=
+ =?us-ascii?Q?h/C120JFuamGac2A9lgeXT9bJurQvrELO3Nkzqol8gQLrqZ5/Duj5h7EgjBJ?=
+ =?us-ascii?Q?rpU9Ajx4A38RXTAKsByv2QossEzLOv7b1tnujAFsiWHx1WgO1fWwOjcOsMit?=
+ =?us-ascii?Q?3msdzWKsQUOyJtsptK2qTI0aMOwhQ0E=3D?=
+X-Exchange-RoutingPolicyChecked:
+	rfu27pJCuBQnToBItmYqb/Qtf6R2EHak2fen+FsQaxg71JcnGltpgqc6Mg0yWenaKWU7eAMpAN1b+vTjHWCUBcCaZcMNPuCYXtRDUud2EU7gQuBgsoalYpLzpQzAiBiGud9CV7CQoT46Wpc9JVQCh6YhbugWd1RlLLBfK+LpmHUuhrxbxhE/UoMeWYsKxHNxbIWZm5snl2HQRwb0U/2DXDKj0O3VK4xkKgq5yWauxNIszcmoiWcWRjBNk7uTZtJwDDJQYBJabszA+wwRqVMTPV25sfcMe1QZbpldEFgc5DgW0tfcmudMoxDCX5F0ZIs6LX550SNTKdPEwqW59OII1g==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1a99029-a9be-4d0c-4573-08decaca7327
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3606.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2026 10:40:00.2637
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LJsiSAzdbf30baWyKS29UEElw5Fyv8i3VSWSs0OS08eIu/QtS9lf0uI9OF/Kll8iq3fMTt+HSl5eKOXVGQd26q4xWVCYZ61cmK0A21OFNzs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB8161
+X-Authority-Analysis: v=2.4 cv=DLq/JSNb c=1 sm=1 tr=0 ts=6a2fd682 cx=c_pps
+ a=OANxLEngf0bc/nxW+UjZ1w==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=iKiJcTA2PjBS6x5JeXcw:22 a=VwQbUJbxAAAA:8
+ a=QyXUC8HyAAAA:8 a=SRrdq9N9AAAA:8 a=Ikd4Dj_1AAAA:8 a=KKAkSRfTAAAA:8
+ a=ag1SF4gXAAAA:8 a=GELfJQfxpZnB2HLHRscA:9 a=cvBusfyB2V15izCimMoJ:22
+ a=Yupwre4RP9_Eg_Bd0iYG:22
+X-Proofpoint-GUID: fA-3DCYFuLBiKhnj40bST-qjV38rFNjQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDExMSBTYWx0ZWRfX6M4GEyIrpbeB
+ GANP9jWsq9XwTx0YkDKpRZsaOzOCwJaUWhYKqgd1WBplgYkKoh7onh6h9MpXWH8AU6A1ld3MoXi
+ Pj3b2tq7vOolIuBfY7URg30vm4VyhKeVypTUX+DkB4thE7VT4Bh3XOhevd5rBJxU2gMviDxIBo7
+ Acyd7K6aNuBF/XmCSr5ALKMl/qLalCKjQaeXagGen3m6OtYUfj5Y58IMMSFiL1B+ziXfcDcVqQJ
+ cwETVUU4jQ5KFY8vYjlZkHoZvmNEVa9utOOVwcyFBCodLwympx45bAny+nikmhA2VL6jYv9ITUM
+ 9D6WKCdm5z3Qb4eOHyj1PHTo6HdUV/4EipKaJP60dQOy1d/68jglxByUOUQh6wDvKwK0g+EepBZ
+ +2f3xLdincUIQDpwN6xA+SJf5N02DGai9q/FbL1F4vETbXsU74W9U0zyTWNmqWmB1bwlIHVbgiC
+ 6L5e6gZb3X41zvutlRw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDExMSBTYWx0ZWRfX0zQd2jsufp5/
+ tYSOMHXAR7fKQAqBG8p7AxGHa1qvGvYvjocCgq2jBvLjop5YYDE2ycce8yERPyLxeP4bWcf96AI
+ eqgaOqL3tFCijrYTH/bB3Qexb1I5onH3vFqTe+a4BRbdsWEG+ePX
+X-Proofpoint-ORIG-GUID: fA-3DCYFuLBiKhnj40bST-qjV38rFNjQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-15_02,2026-06-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 suspectscore=0 phishscore=0 adultscore=0
+ impostorscore=0 spamscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150111
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,quarantine];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263171-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:netdev@vger.kernel.org,m:zhaoyz24@mails.tsinghua.edu.cn,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:kees@kernel.org,m:veritas501@foxmail.com,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[mails.tsinghua.edu.cn,davemloft.net,google.com,kernel.org,redhat.com,foxmail.com,vger.kernel.org,seu.edu.cn,126.com,tsinghua.edu.cn];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhaoyz24@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263173-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[bogdan.codres@windriver.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:dmaengine@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:vkoul@kernel.org,m:dave.jiang@intel.com,m:vinicius.gomes@intel.com,m:xueshuai@linux.alibaba.com,m:yi.sun@intel.com,m:fenghuay@nvidia.com,m:dan.carpenter@linaro.org,m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bogdan.codres@windriver.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ALIAS_RESOLVED(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,alibaba.com:email,linaro.org:email];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tsinghua.edu.cn:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CADE568563E
+X-Rspamd-Queue-Id: E36D6685657
 
-atalk_find_primary() walks the global AppleTalk interface list under=0D
-atalk_interfaces_lock, but returns a pointer to iface->address after=0D
-dropping that lock.  Both atalk_autobind() and atalk_bind() then=0D
-dereference the returned pointer without any lifetime protection.=0D
-=0D
-The interface can be removed concurrently through the normal AppleTalk=0D
-interface ioctl path.  SIOCATALKDIFADDR calls atalk_dev_down(), which=0D
-eventually reaches atif_drop_device() and frees the same struct=0D
-atalk_iface that owns the returned address field.  A racing bind can=0D
-therefore read from freed memory.=0D
-=0D
-This is reachable with a configured AppleTalk interface; reproducing the=0D
-race does not require a malicious device or driver.  The configuration=0D
-ioctls require CAP_NET_ADMIN in the initial user namespace, and=0D
-AF_APPLETALK sockets are limited to init_net.=0D
-=0D
-Fix the lifetime issue without changing the returned address pointer=0D
-type.  Rename the helper to atalk_find_primary_locked() and keep=0D
-atalk_interfaces_lock held across the return.  The callers now copy=0D
-s_net and s_node while the lock is still held, then immediately release=0D
-the lock before doing any further work.=0D
-=0D
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")=0D
-Cc: stable@vger.kernel.org=0D
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>=0D
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>=0D
-Reported-by: Ao Wang <wangao@seu.edu.cn>=0D
-Reported-by: Xuewei Feng <fengxw06@126.com>=0D
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>=0D
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>=0D
-Assisted-by: GLM:GLM-5.1=0D
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>=0D
----=0D
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c=0D
-index 30a6dc06291c..4d6576cd0ae8 100644=0D
---- a/net/appletalk/ddp.c=0D
-+++ b/net/appletalk/ddp.c=0D
-@@ -351,7 +351,7 @@ struct atalk_addr *atalk_find_dev_addr(struct net_devic=
-e *dev)=0D
- 	return iface ? &iface->address : NULL;=0D
- }=0D
- =0D
--static struct atalk_addr *atalk_find_primary(void)=0D
-+static struct atalk_addr *atalk_find_primary_locked(void)=0D
- {=0D
- 	struct atalk_iface *fiface =3D NULL;=0D
- 	struct atalk_addr *retval;=0D
-@@ -378,7 +378,6 @@ static struct atalk_addr *atalk_find_primary(void)=0D
- 	else=0D
- 		retval =3D NULL;=0D
- out:=0D
--	read_unlock_bh(&atalk_interfaces_lock);=0D
- 	return retval;=0D
- }=0D
- =0D
-@@ -1132,20 +1131,24 @@ static int atalk_autobind(struct sock *sk)=0D
- {=0D
- 	struct atalk_sock *at =3D at_sk(sk);=0D
- 	struct sockaddr_at sat;=0D
--	struct atalk_addr *ap =3D atalk_find_primary();=0D
-+	struct atalk_addr *ap =3D atalk_find_primary_locked();=0D
- 	int n =3D -EADDRNOTAVAIL;=0D
- =0D
- 	if (!ap || ap->s_net =3D=3D htons(ATADDR_ANYNET))=0D
--		goto out;=0D
-+		goto unlock_and_out;=0D
- =0D
- 	at->src_net  =3D sat.sat_addr.s_net  =3D ap->s_net;=0D
- 	at->src_node =3D sat.sat_addr.s_node =3D ap->s_node;=0D
-+	read_unlock_bh(&atalk_interfaces_lock);=0D
- =0D
- 	n =3D atalk_pick_and_bind_port(sk, &sat);=0D
- 	if (!n)=0D
- 		sock_reset_flag(sk, SOCK_ZAPPED);=0D
- out:=0D
- 	return n;=0D
-+unlock_and_out:=0D
-+	read_unlock_bh(&atalk_interfaces_lock);=0D
-+	goto out;=0D
- }=0D
- =0D
- /* Set the address 'our end' of the connection */=0D
-@@ -1165,14 +1168,15 @@ static int atalk_bind(struct socket *sock, struct s=
-ockaddr_unsized *uaddr, int a=0D
- =0D
- 	lock_sock(sk);=0D
- 	if (addr->sat_addr.s_net =3D=3D htons(ATADDR_ANYNET)) {=0D
--		struct atalk_addr *ap =3D atalk_find_primary();=0D
-+		struct atalk_addr *ap =3D atalk_find_primary_locked();=0D
- =0D
- 		err =3D -EADDRNOTAVAIL;=0D
- 		if (!ap)=0D
--			goto out;=0D
-+			goto unlock_and_out;=0D
- =0D
- 		at->src_net  =3D addr->sat_addr.s_net =3D ap->s_net;=0D
- 		at->src_node =3D addr->sat_addr.s_node =3D ap->s_node;=0D
-+		read_unlock_bh(&atalk_interfaces_lock);=0D
- 	} else {=0D
- 		err =3D -EADDRNOTAVAIL;=0D
- 		if (!atalk_find_interface(addr->sat_addr.s_net,=0D
-@@ -1201,6 +1205,9 @@ static int atalk_bind(struct socket *sock, struct soc=
-kaddr_unsized *uaddr, int a=0D
- out:=0D
- 	release_sock(sk);=0D
- 	return err;=0D
-+unlock_and_out:=0D
-+	read_unlock_bh(&atalk_interfaces_lock);=0D
-+	goto out;=0D
- }=0D
- =0D
- /* Set the address we talk to */=0D
-=0D
---=0D
-2.43.0=
+To: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Vinod Koul <vkoul@kernel.org>,
+    Dave Jiang <dave.jiang@intel.com>,
+    Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+    Shuai Xue <xueshuai@linux.alibaba.com>,
+    Yi Sun <yi.sun@intel.com>,
+    Fenghua Yu <fenghuay@nvidia.com>,
+    Dan Carpenter <dan.carpenter@linaro.org>,
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+    stable@vger.kernel.org
 
+Hi,
+
+This patch fixes a double-free / use-after-free bug in the IDXD driver's
+probe error path that corrupts the slab allocator and crashes the kernel.
+The bug was introduced by commit 90022b3a6981 ("dmaengine: idxd: fix memory
+leak in error handling path of idxd_pci_probe") which added the idxd_free()
+helper.
+
+Root Cause
+----------
+
+idxd_free() performs:
+
+  static void idxd_free(struct idxd_device *idxd)
+  {
+      if (!idxd)
+          return;
+      put_device(idxd_confdev(idxd));   // (1) triggers release callback
+      bitmap_free(idxd->opcap_bmap);    // (2) USE AFTER FREE
+      ida_free(&idxd_ida, idxd->id);    // (3) DOUBLE ida_free
+      kfree(idxd);                      // (4) DOUBLE kfree
+  }
+
+Since device_initialize() was called in idxd_alloc(), conf_dev has
+refcount=1. Step (1) drops it to 0 and synchronously triggers:
+
+  put_device() -> kobject_put() -> kobject_release() -> kobject_cleanup()
+    -> device_release() -> dev->type->release -> idxd_conf_device_release()
+
+idxd_conf_device_release() (in sysfs.c) already does:
+
+  static void idxd_conf_device_release(struct device *dev)
+  {
+      struct idxd_device *idxd = confdev_to_idxd(dev);
+      kfree(idxd->groups);
+      bitmap_free(idxd->wq_enable_map);
+      kfree(idxd->wqs);
+      kfree(idxd->engines);
+      kfree(idxd->evl);
+      kmem_cache_destroy(idxd->evl_cache);
+      ida_free(&idxd_ida, idxd->id);    // <- FIRST ida_free
+      bitmap_free(idxd->opcap_bmap);    // <- FIRST bitmap_free
+      kfree(idxd);                      // <- FIRST kfree
+  }
+
+So after put_device() returns in idxd_free():
+  - idxd pointer is dangling (memory freed)
+  - idxd->opcap_bmap is dangling
+  - idxd->id has already been freed from the IDA
+
+Steps 2-4 then operate on freed memory, corrupting the slab allocator.
+
+The same pattern exists in idxd_alloc() at the err_name label.
+
+How to Reproduce
+----------------
+
+This occurs during kdump (crash dump collection) on systems with
+Intel IDXD hardware:
+
+  1. System has Intel IDXD (DSA/IAX) -- e.g., Granite Rapids / Sapphire
+     Rapids platforms
+  2. Original kernel panics (any reason)
+  3. Kdump kernel boots with: reset_devices nr_cpus=1
+  4. IDXD device is in HALTED state due to reset_devices
+  5. IDXD driver probes the device -> probe fails -> idxd_free() ->
+     double-free -> slab corruption
+  6. systemd-udevd loads next module -> module signature verification
+     allocates memory -> hits corrupted slab -> kernel oops
+
+Console Output (kdump kernel)
+-----------------------------
+
+  [   18.628791] idxd 0000:00:01.0: Device is HALTED!
+  [   18.631447] idxd 0000:00:01.0: Intel(R) IDXD DMA Engine init failed
+  [   18.631450] ------------[ cut here ]------------
+  [   18.631451] ida_free called for id=0 which is not allocated.
+  [   18.631462] WARNING: CPU: 0 PID: 11 at lib/idr.c:525 ida_free+0xd3/0x130
+  [   18.631502]  idxd_pci_probe+0x1b0/0x1860 [idxd]
+    ...
+  [   18.898798] BUG: unable to handle page fault for address: ff2c9dd300000010
+  [   18.931865] RIP: 0010:___slab_alloc+0x168/0xa10
+    ...
+  [   19.097220]  __kmalloc_cache_noprof+0x82/0x230
+  [   19.102683]  mpi_alloc+0x20/0x80
+  [   19.106676]  rsa_enc+0x2f/0x120
+  [   19.110549]  pkcs1pad_verify+0x13b/0x1a0
+    ...
+  [   19.161968]  module_sig_check+0x87/0xe0
+  [   19.166709]  load_module+0x3c/0x1e80
+
+Affected Versions
+-----------------
+
+  - Mainline: present at HEAD (introduced Apr 2025)
+  - Stable: v6.12.30+ (backport commit 017d4012dc05)
+  - Also present in other stable branches that received the backport
+
+Test Platform
+-------------
+
+  - Dell PowerEdge XR8720t
+  - Intel Xeon 6716P-B (Granite Rapids)
+  - Kernel: 6.12.0-1-rt-amd64 (StarlingX 6.12.40-1.stx.140)
+  - RT: PREEMPT_RT
+
+Why This Was Not Caught Earlier
+-------------------------------
+
+  1. The error path only triggers when IDXD device is HALTED -- this
+     only happens with reset_devices (kdump) or hardware error
+  2. On normal boot, IDXD probe always succeeds
+  3. Most kdump configurations blacklist IDXD via module_blacklist=
+  4. Systems without IDXD hardware are unaffected
+  5. The ida_free WARNING alone doesn't crash -- it's the subsequent
+     slab corruption that causes the fatal oops, which may appear as
+     an unrelated bug
+
+Workaround
+----------
+
+Add idxd to module_blacklist in the kdump kernel command line:
+
+  module_blacklist=idxd,idxd_bus
+
+Fix
+---
+
+Remove the duplicate bitmap_free/ida_free/kfree from idxd_free()
+since idxd_conf_device_release() (triggered by put_device()) already
+handles all resource deallocation. Similarly fix idxd_alloc() err_name
+path.
+
+Related Commits
+---------------
+
+  - 90022b3a6981 ("dmaengine: idxd: fix memory leak in error handling
+    path of idxd_pci_probe") -- introduces the bug
+  - 46a5cca76c76 ("dmaengine: idxd: fix memory leak in error handling
+    path of idxd_alloc") -- same pattern in idxd_alloc
+  - f41c538881ee ("dmaengine: idxd: Remove improper idxd_free") -- fixes
+    the same function but only in idxd_remove(), not probe error path
+  - c311f5e9248471 ("dmaengine: idxd: Fix freeing the allocated ida too
+    late") -- establishes the correct pattern for cdev (ida_free before
+    put_device, not in .release())
+
+Thanks,
+Bogdan
+
+Bogdan Codres (1):
+  dmaengine: idxd: fix use-after-free in idxd_free() and idxd_alloc()
+    error paths
+
+ drivers/dma/idxd/init.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
 
