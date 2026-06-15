@@ -1,114 +1,112 @@
-Return-Path: <stable+bounces-263315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7pwsKHAZMGosNgUAu9opvQ
-	(envelope-from <stable+bounces-263315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:25:36 +0200
+	id qua1BNQYMGrqNQUAu9opvQ
+	(envelope-from <stable+bounces-263316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:23:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8F8687A52
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:25:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D4D6879DA
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:22:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Rk4IVmW1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263315-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263315-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="FXd+/GiM";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263316-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263316-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD0B23065BCA
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:22:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5BB0C3008D65
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372E7403129;
-	Mon, 15 Jun 2026 15:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E744028CB;
+	Mon, 15 Jun 2026 15:22:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09657402B8D
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74BD3D1CD1
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:22:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781536961; cv=none; b=cwawLnV4G8PPIyWCmjor1JtYPaxo86ZIxDLHG3piRhrawUPw232yV/j8P4EdglmIALwwDRgfomix3k2jc+jBYFNH91l3BiyjFaJU06JxKtmqjWOjiLGOtM9VA3y8QVRcbKvxCldZqSxjLoBD4HVCe07l3Qh7H8vZNYB8SlSpOfg=
+	t=1781536968; cv=none; b=jglRVjNhLicH/hlYlbZfoNuUn19LSZkfsmsmpJOorj1tu6QojDxf2lho0AqiyeBB8K1lDVYgB+GEItSJyL+s4J1Lx/usAlsVHBml/31Xv+4fmeNlYBfuXVMfkYCAR1vhZIlnqRaZMT4IFuGgc7J87MvXUcAXthe1RqVAJwp+Kms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781536961; c=relaxed/simple;
-	bh=TqDF8T6ime7HnJjDdXNkOVS+Vg5lU+ACsnSSpJbsgUs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uJCIbUkF05UKiUo1c3bMosveyk2ruUZ1i32j/3UF+Rp4YuWXgLfgoXKrfo6VHgFJuWpI5tQU/3uLJBs9IHAnG/U0gXXduADvIKJm6cpKt6Jj91eD5j0SAfHNoa4Mmf4CyN04gh+WCOZ9NdXomRFGGqRnvTYMBUM8vs/DHPRaGk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rk4IVmW1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9B91F000E9;
-	Mon, 15 Jun 2026 15:22:37 +0000 (UTC)
+	s=arc-20240116; t=1781536968; c=relaxed/simple;
+	bh=isZIoKiFXhfZj3+Hw4gZjSOswqF5z0i5Lve13Z6KrBk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jkbiGuMW20SNBXR3FQJ7ZFQA6w3OWm5KoqsMShK3ES5pwTe+/DHvGNMjyrIif45DBQ6AlX5MHtF6vSIyw8dpmRy6iOxN/B9wtHHdgKO08VOomqtvrGO7NzOzhczNWSVM+XGO2lwRvlIXUfAWiezp7YOiAwIRa0nyz94BVohgfno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXd+/GiM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77991F000E9;
+	Mon, 15 Jun 2026 15:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781536959;
-	bh=B3NcVHCiY3c5us1mbNSQjAFu8nxGKs5RVRUvifNxTwk=;
+	s=korg; t=1781536967;
+	bh=v0S626Z6PQeXjVKTB2RpxaEaT59Khwf19Xw0CTMnTjs=;
 	h=Subject:To:Cc:From:Date;
-	b=Rk4IVmW1X+Kwchn3KRGC2gtOL0PnQm4zYPJmVdal1//f2uZFvyB0FnkThlc0wI0eS
-	 QPRRNNdT+3/SsUTPYrKvWSvtyIzlnvLIc6tS9xmxMqoex++T6QJoZZnxAsLgbdCYAg
-	 Ya0MOOt/yPJ9l8+vumay17TlcBy1oX7H0D4rUKgM=
-Subject: FAILED: patch "[PATCH] net: phonet: free phonet_device after RCU grace period" failed to apply to 5.10-stable tree
-To: santosh.kalluri129@gmail.com,horms@kernel.org,kuba@kernel.org,remi@remlab.net
+	b=FXd+/GiM5TaWyfRVCAoCqp4U6kJtsgRHmbEzOJaQDQzW/9vBWnmxyujflcNXQuOkE
+	 s2+CV3G5H8ONK3YfxYi619pyQxs4UQNQBUUf8ulFmYo6jz6T4wbApu7kwpaZS6RAZi
+	 BjAsfzMF4HYRSqHIrihzepCjsivGY79tudKK0ACk=
+Subject: FAILED: patch "[PATCH] nvmem: core: fix use-after-free bugs in error paths" failed to apply to 6.6-stable tree
+To: bartosz.golaszewski@oss.qualcomm.com,gregkh@linuxfoundation.org,srini@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 16:50:49 +0200
-Message-ID: <2026061549-equipment-myspace-2ba7@gregkh>
+Date: Mon, 15 Jun 2026 16:51:20 +0200
+Message-ID: <2026061520-whisking-chatter-c323@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263315-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,remlab.net];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263316-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:bartosz.golaszewski@oss.qualcomm.com,m:gregkh@linuxfoundation.org,m:srini@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:santosh.kalluri129@gmail.com,m:horms@kernel.org,m:kuba@kernel.org,m:remi@remlab.net,m:stable@vger.kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,remlab.net:email]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime,gregkh:mid,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0E8F8687A52
+X-Rspamd-Queue-Id: B2D4D6879DA
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 71de0177b28da751f407581a4515cf4d762f6296
+git cherry-pick -x 5b6b6fc491899d583eaa75344e094796ae9b530b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061549-equipment-myspace-2ba7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061520-whisking-chatter-c323@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -120,41 +118,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 71de0177b28da751f407581a4515cf4d762f6296 Mon Sep 17 00:00:00 2001
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Date: Wed, 3 Jun 2026 17:08:43 -0700
-Subject: [PATCH] net: phonet: free phonet_device after RCU grace period
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 5b6b6fc491899d583eaa75344e094796ae9b530b Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Sat, 30 May 2026 21:43:40 +0100
+Subject: [PATCH] nvmem: core: fix use-after-free bugs in error paths
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+Fix several instances of error paths in which we call
+__nvmem_device_put() - which may end up freeing the underlying memory
+and other resources - and then keep on using the nvmem structure. Always
+put the reference to the nvmem device as the last step before returning
+the error code.
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
-
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
 Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7ae6478b304b ("nvmem: core: rework nvmem cell instance creation")
+Fixes: e888d445ac33 ("nvmem: resolve cells from DT at registration time")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204340.116743-3-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/net/phonet/pn_dev.c b/net/phonet/pn_dev.c
-index 86325b7fc1b6..ad44831d6745 100644
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -108,7 +108,7 @@ static void phonet_device_destroy(struct net_device *dev)
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
- 
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 311cb2e5a5c0..e871181751f3 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1468,18 +1468,16 @@ struct nvmem_cell *of_nvmem_cell_get(struct device_node *np, const char *id)
+ 	cell_entry = nvmem_find_cell_entry_by_node(nvmem, cell_np);
+ 	of_node_put(cell_np);
+ 	if (!cell_entry) {
+-		__nvmem_device_put(nvmem);
+ 		nvmem_layout_module_put(nvmem);
+-		if (nvmem->layout)
+-			return ERR_PTR(-EPROBE_DEFER);
+-		else
+-			return ERR_PTR(-ENOENT);
++		ret = nvmem->layout ? -EPROBE_DEFER : -ENOENT;
++		__nvmem_device_put(nvmem);
++		return ERR_PTR(ret);
  	}
+ 
+ 	cell = nvmem_create_cell(cell_entry, id, cell_index);
+ 	if (IS_ERR(cell)) {
+-		__nvmem_device_put(nvmem);
+ 		nvmem_layout_module_put(nvmem);
++		__nvmem_device_put(nvmem);
+ 	}
+ 
+ 	return cell;
+@@ -1593,8 +1591,8 @@ void nvmem_cell_put(struct nvmem_cell *cell)
+ 		kfree_const(cell->id);
+ 
+ 	kfree(cell);
+-	__nvmem_device_put(nvmem);
+ 	nvmem_layout_module_put(nvmem);
++	__nvmem_device_put(nvmem);
  }
+ EXPORT_SYMBOL_GPL(nvmem_cell_put);
  
 
 
