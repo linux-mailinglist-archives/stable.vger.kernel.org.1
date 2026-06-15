@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-263388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lx5iHjomMGrAOwUAu9opvQ
-	(envelope-from <stable+bounces-263388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:20:10 +0200
+	id MJvVOQsoMGqxPAUAu9opvQ
+	(envelope-from <stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:27:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE62C688459
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:20:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714CA6885BB
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:27:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gHwsnv9H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263388-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263388-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BO0YxwY2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263392-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B73FB31B2491
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:14:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93F8D30F983A
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D74A423A97;
-	Mon, 15 Jun 2026 16:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4DE409628;
+	Mon, 15 Jun 2026 16:21:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECD7423142
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DB1406298
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:21:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539882; cv=none; b=hMQY7uoDHDcACNiJwIHhdkvNBgVg0/FLmlL931EpAFMI6fOOUXNPEvgMHBK3RhR7DK+IFKSNa8n/FiEZj1Aq1rTv5a+Osv0rHEmhkdVyoT7X+nFgIQeNKz/rwU42IVx+VmDO0rdvPROHt414oV588ByrKZDH8xjwfNNm3huwMPk=
+	t=1781540480; cv=none; b=Gfyh53/U4sybg6DbKnd3m935YS/UpWlRGcKBmeZHL1botsnu0p4q02fzmfDooK2roJebvhYT+/4k5IyAorWaHvpWxN3F1N0cGfdvrMPs8/Xn5u6vBufsTp6eaC2S/Khm9YvQz77gQr7WK3Z1RJ1e6j21kicTqVBChEQDQTClZ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539882; c=relaxed/simple;
-	bh=MmxSoy1Ldx48YUo8MsAo/KbNJ+p4Y7y0niSVM7aQVxU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Slnj6vLCcnB3L+DTYb7kyNNgyD2K1jyMfXy4VTWqDgaGlzm7Q/AZskgI3m207mOySrD9qLEcRShSr6i36umuT6eB+Xo2YO3TEcKrKrQtI7yiY4lnVVhGnPYVVPdgxI3b4e01FY5Dj7Y1EV94vXFT4QHGN/eZbepSYkF1+agW838=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHwsnv9H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCB81F000E9;
-	Mon, 15 Jun 2026 16:11:20 +0000 (UTC)
+	s=arc-20240116; t=1781540480; c=relaxed/simple;
+	bh=CuDKZZReAj3F7f9qzEea1By3YDygCQb6GIFHvtlKddk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WV2PT9mjh1u0USgRL7VfiB2Gzgobzlv07Cb506M4oV1CxRmrgq6RwSJT2lEIi05Gg7OzShk5scDJ3ckBsXnlrJjdG6HdV0N0wqiQdmzjTqwOyDvE01ZHhTUCgZgKFIVh6LOPJzhpb3P5vCUjgD3tHKnFNvpY98TeCoVRxFkkV/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO0YxwY2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A011F000E9;
+	Mon, 15 Jun 2026 16:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781539881;
-	bh=H6IUnVGSjcHElJ1IWZxgR/mpsTPJACx80z8lCvZGCFI=;
+	s=korg; t=1781540479;
+	bh=o9E/skiLSKpxHCAAuuQ4zUwZiRf9QUG6Z6bPZEXpRNs=;
 	h=Subject:To:Cc:From:Date;
-	b=gHwsnv9HwJBOFRaRyqXqa8iFD4mLkXxMXSZ6PfPPH7fHNVa6VEGhbVg0+Ze63AgLB
-	 zUndc4pH+qO25z9aLkKSEvAocQmycK6bJeYnYd27zt9+U7G/6jh+vDGMXB6dDPPCQm
-	 64z0rvaIXhfmKRGZJ7DUremztRkiCVjnkAFHQP/0=
-Subject: FAILED: patch "[PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas" failed to apply to 5.10-stable tree
-To: muchun.song@linux.dev,0x7f454c46@gmail.com,akpm@linux-foundation.org,david@kernel.org,fvdl@google.com,liam@infradead.org,ljs@kernel.org,mhocko@suse.com,mina86@mina86.com,osalvador@kernel.org,rppt@kernel.org,songmuchun@bytedance.com,stable@vger.kernel.org,stefan.strogin@gmail.com,surenb@google.com,vbabka@kernel.org
+	b=BO0YxwY2K153W/LDG+QFGS5yxBTZFFLjpxFH+YEnyPMSK39YacPisnezUuRkJ+9zr
+	 h8RsJ70rZ+ut+gddY0aMsvY0DM7EPtY7Ke1EEAKI1LQG1ytqvYQUbZbLnln76GZAbm
+	 AOnxYIXaEWA/XECUt7ldSnLkkghmsjkez3u2dtIs=
+Subject: FAILED: patch "[PATCH] drm/amdkfd: Fix buffer overflow in SDMA queue" failed to apply to 6.1-stable tree
+To: andrew.martin@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 17:54:09 +0200
-Message-ID: <2026061509-even-tapping-4630@gregkh>
+Date: Mon, 15 Jun 2026 18:00:05 +0200
+Message-ID: <2026061505-negation-astride-3036@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,58 +57,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263388-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263392-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linux.dev,gmail.com,linux-foundation.org,kernel.org,google.com,infradead.org,suse.com,mina86.com,bytedance.com,vger.kernel.org];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:muchun.song@linux.dev,m:0x7f454c46@gmail.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:fvdl@google.com,m:liam@infradead.org,m:ljs@kernel.org,m:mhocko@suse.com,m:mina86@mina86.com,m:osalvador@kernel.org,m:rppt@kernel.org,m:songmuchun@bytedance.com,m:stable@vger.kernel.org,m:stefan.strogin@gmail.com,m:surenb@google.com,m:vbabka@kernel.org,m:stefanstrogin@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:andrew.martin@amd.com,m:alexander.deucher@amd.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,gregkh:mid,amd.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CE62C688459
+X-Rspamd-Queue-Id: 714CA6885BB
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x c0ca59beb5252ea2bd4fdaef009d003dedc2030e
+git cherry-pick -x 352ea59028ea48a6fff77f19ae28f98f71946a80
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061509-even-tapping-4630@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061505-negation-astride-3036@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -120,61 +118,118 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c0ca59beb5252ea2bd4fdaef009d003dedc2030e Mon Sep 17 00:00:00 2001
-From: Muchun Song <muchun.song@linux.dev>
-Date: Wed, 20 May 2026 14:10:25 +0800
-Subject: [PATCH] mm/cma_debug: fix invalid accesses for inactive CMA areas
+From 352ea59028ea48a6fff77f19ae28f98f71946a80 Mon Sep 17 00:00:00 2001
+From: Andrew Martin <andrew.martin@amd.com>
+Date: Thu, 28 May 2026 12:54:39 -0400
+Subject: [PATCH] drm/amdkfd: Fix buffer overflow in SDMA queue
+ checkpoint/restore on GFX11
 
-cma_activate_area() can fail after allocating range bitmaps.  Its cleanup
-path frees those bitmaps, but only clears cma->count and
-cma->available_count.  It leaves cma->nranges and each range's count in
-place, so cma_debugfs_init() can still register debugfs files for an area
-that never activated successfully.
+The v11 MQD manager incorrectly assigned the CP-compute variants of
+checkpoint_mqd/restore_mqd for KFD_MQD_TYPE_SDMA queues. These functions
+use sizeof(struct v11_compute_mqd) (2048 bytes) instead of sizeof(struct
+v11_sdma_mqd) (512 bytes), causing a 1536-byte overflow.
 
-That exposes two problems.  Reading the bitmap file can make debugfs walk
-a freed range bitmap and trigger an invalid memory access.  Reading
-maxchunk can also take cma->lock even though that lock is initialized only
-on the successful activation path.
+During CRIU checkpoint of an SDMA queue on Navi3x:
+- checkpoint_mqd() reads 2048 bytes from a 512-byte SDMA MQD buffer,
+  leaking 1536 bytes of adjacent GTT memory to userspace
 
-Fix this by creating debugfs entries only for CMA areas that reached
-CMA_ACTIVATED.
+During CRIU restore:
+- restore_mqd() writes 2048 bytes into a 512-byte SDMA MQD buffer,
+  corrupting 1536 bytes of adjacent GTT memory (often the ring buffer
+  or neighboring MQDs)
 
-c009da4258f9 introduced the invalid access to bitmap file.  2e32b947606d
-introduced the invalid access to cma->lock.  This change applies to both
-issues.  So I added two Fixes tags.
+This is a copy-paste regression unique to v11. All other ASIC backends
+(cik, vi, v9, v10, v12) correctly use the SDMA-specific variants.
 
-Link: https://lore.kernel.org/20260520061025.3971821-1-songmuchun@bytedance.com
-Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Dmitry Safonov <0x7f454c46@gmail.com>
-Cc: Frank van der Linden <fvdl@google.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Michal Nazarewicz <mina86@mina86.com>
-Cc: Stefan Strogin <stefan.strogin@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Add checkpoint_mqd_sdma() and restore_mqd_sdma() functions that properly
+handle the smaller v11_sdma_mqd structure, matching the pattern used in
+other MQD managers.
 
-diff --git a/mm/cma_debug.c b/mm/cma_debug.c
-index 5ae38f5abbcc..523ba4a0f9f7 100644
---- a/mm/cma_debug.c
-+++ b/mm/cma_debug.c
-@@ -205,7 +205,8 @@ static int __init cma_debugfs_init(void)
- 	cma_debugfs_root = debugfs_create_dir("cma", NULL);
+Fixes: cc009e613de6 ("drm/amdkfd: Add KFD support for soc21 v3")
+Assisted-by: Claude:Sonnet 4-5
+Signed-off-by: Andrew Martin <andrew.martin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6fa41db7ffdec97d62433adf03b7b9b759af8c2c)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+index a1e3cf2384dd..527c531676e4 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -320,8 +320,7 @@ static void checkpoint_mqd(struct mqd_manager *mm, void *mqd, void *mqd_dst, voi
  
- 	for (i = 0; i < cma_area_count; i++)
--		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
-+		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
-+			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
+ static void restore_mqd(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+-			struct queue_properties *qp,
+-			const void *mqd_src,
++			struct queue_properties *qp, const void *mqd_src,
+ 			const void *ctl_stack_src, const u32 ctl_stack_size)
+ {
+ 	uint64_t addr;
+@@ -337,14 +336,48 @@ static void restore_mqd(struct mqd_manager *mm, void **mqd,
+ 		*gart_addr = addr;
  
- 	return 0;
+ 	m->cp_hqd_pq_doorbell_control =
+-		qp->doorbell_off <<
+-			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
+-	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
+-			m->cp_hqd_pq_doorbell_control);
++		qp->doorbell_off << CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
++	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n", m->cp_hqd_pq_doorbell_control);
+ 
+ 	qp->is_active = 0;
  }
+ 
++static void checkpoint_mqd_sdma(struct mqd_manager *mm,
++				void *mqd,
++				void *mqd_dst,
++				void *ctl_stack_dst)
++{
++	struct v11_sdma_mqd *m;
++
++	m = get_sdma_mqd(mqd);
++
++	memcpy(mqd_dst, m, sizeof(struct v11_sdma_mqd));
++}
++
++static void restore_mqd_sdma(struct mqd_manager *mm, void **mqd,
++			     struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
++			     struct queue_properties *qp,
++			     const void *mqd_src,
++			     const void *ctl_stack_src,
++			     const u32 ctl_stack_size)
++{
++	uint64_t addr;
++	struct v11_sdma_mqd *m;
++
++	m = (struct v11_sdma_mqd *) mqd_mem_obj->cpu_ptr;
++	addr = mqd_mem_obj->gpu_addr;
++
++	memcpy(m, mqd_src, sizeof(*m));
++
++	m->sdmax_rlcx_doorbell_offset =
++		qp->doorbell_off << SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
++
++	*mqd = m;
++	if (gart_addr)
++		*gart_addr = addr;
++
++	qp->is_active = 0;
++}
+ 
+ static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+@@ -529,8 +562,8 @@ struct mqd_manager *mqd_manager_init_v11(enum KFD_MQD_TYPE type,
+ 		mqd->update_mqd = update_mqd_sdma;
+ 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
+ 		mqd->is_occupied = kfd_is_occupied_sdma;
+-		mqd->checkpoint_mqd = checkpoint_mqd;
+-		mqd->restore_mqd = restore_mqd;
++		mqd->checkpoint_mqd = checkpoint_mqd_sdma;
++		mqd->restore_mqd = restore_mqd_sdma;
+ 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
+ 		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
 
 
