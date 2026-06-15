@@ -1,151 +1,130 @@
-Return-Path: <stable+bounces-263098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UGAvE6NVL2pz+gQAu9opvQ
-	(envelope-from <stable+bounces-263098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:30:11 +0200
+	id 2vICIgdbL2rT+wQAu9opvQ
+	(envelope-from <stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:53:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04B4682C17
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:30:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D76DC682CB7
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 03:53:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263098-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263098-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=xry111.site header.s=default header.b="T0Gb6UN/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263099-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=xry111.site;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C6493006B6F
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 01:29:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A22933005756
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 01:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287C723AE9B;
-	Mon, 15 Jun 2026 01:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C191A9FB0;
+	Mon, 15 Jun 2026 01:53:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFCC21A447;
-	Mon, 15 Jun 2026 01:29:35 +0000 (UTC)
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF912CCC5
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 01:53:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781486978; cv=none; b=oVzw6frbwz6RuQ6mLZSkTf1Z2PZ15H2wHr1WqMwhoywm6AiVaOqUpBEEIBD501irrdF2ybJtwbMK3+e6547QhICXCFe62D3MmSClTAsIcei57vfpMDiXeQx6gwvMuZZ8P+irlFSKQY8DwOI/eAc7Z9kmmz2PswyW+JY1J8Wvgw0=
+	t=1781488387; cv=none; b=bweuchK2wX/5OPrqKnMUlrD2aRQX9i6fd1cgqa52pth0mO6QyOQmPPGs6WhNhUjaVDmgiq3ecLX8sTgNc6ocI8+EvXg41ZtuQ39IqKJ/A78FqHuQveBt8kt+fc8GVEvnE9H4dqLSCKv/DiI2CAhCWVcCUDsMgJXYPGkK/rJSRjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781486978; c=relaxed/simple;
-	bh=tiuiSeIm9AiWzjJNxtY1e8JovVLBdhymd0dx4YMDESY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=J+ZdDWnlqhBGj+uTbkBbKR5yHrhtB7kRawnQ+qVK8kSQSZJSJCjHnGhCwnGrcTWz0rdDm+6bGLLEyputQ/Lzf98jVtlTxwc2QB+7YNToxxoDevU9kPwwS3IQUyELzivcVYSZeyq9BZlgZztDJGIIFr75fhgd/8l6lI1yitdbzVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Received: from loongson.cn (unknown [10.20.42.101])
-	by gateway (Coremail) with SMTP id _____8AxvsB+VS9qaCcUAA--.29234S3;
-	Mon, 15 Jun 2026 09:29:34 +0800 (CST)
-Received: from [10.20.42.101] (unknown [10.20.42.101])
-	by front1 (Coremail) with SMTP id qMiowJCx98B8VS9qR5imAA--.40429S3;
-	Mon, 15 Jun 2026 09:29:33 +0800 (CST)
-Subject: Re: [PATCH v6 2/2] i2c: ls2x: Add clocks property parsing and adjust
- bus speed
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Binbin Zhou <zhoubinbin@loongson.cn>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
- loongarch@lists.linux.dev, Huacai Chen <chenhuacai@loongson.cn>,
- stable@vger.kernel.org
-References: <20260608024533.32419-1-wanghongliang@loongson.cn>
- <20260608024533.32419-3-wanghongliang@loongson.cn>
- <ai8o9vxUX6rbZNV4@zenone.zhora.eu>
-From: Hongliang Wang <wanghongliang@loongson.cn>
-Message-ID: <338facef-6893-c8d9-0efc-b4fc3aea756b@loongson.cn>
-Date: Mon, 15 Jun 2026 09:27:46 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1781488387; c=relaxed/simple;
+	bh=u3Aiw4YiS8VJikbLRVI5zqBMF0/XbmAbla4ft/2zHAk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eKbMkzZCkrWXyj1N5LMedbyRAadKThAvHVcVLDh7QOi9VaaGy05wSshEP6+00ULtEuNP+k7IIn2bHBc/A1jfrglN+2C7E12Z4qZoybXB7l/9tEF6pvmSR+thbHaIb7Hjiq8ov6tSgqO2eA7lL0WgmXcl6Wdiujlw+RhqLrddoOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=T0Gb6UN/; arc=none smtp.client-ip=89.208.246.23
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1781488380;
+	bh=u3Aiw4YiS8VJikbLRVI5zqBMF0/XbmAbla4ft/2zHAk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=T0Gb6UN/q9xz/iMZo3+zY/Txk007UjbdC4u0yiV9sobWiRpCeeqrgJEvuY+KTDFyN
+	 7wNpGBOydnLqeqAz/XvOHQ4aj0B+Khe9TY0fAcxqQwXJiCwwUlIidmsDXrmamJSvZB
+	 ySPHM/R7ZLSAZSFWNPvhrPUwrPSOXnDIuwXSVocQ=
+Received: from [IPv6:2409:8a4c:e12:98c1::376] (unknown [IPv6:2409:8a4c:e12:98c1::376])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id F223165982;
+	Sun, 14 Jun 2026 21:52:58 -0400 (EDT)
+Message-ID: <e7026309150cd147be874d2521dbc17fe0ecb1e8.camel@xry111.site>
+Subject: Re: [PATCH v7.0.y v2 0/8] drm/amd: Backport FPU Guard Move from DML
+ to DC
+From: Xi Ruoyao <xry111@xry111.site>
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: amd-gfx@lists.freedesktop.org
+Date: Mon, 15 Jun 2026 09:52:52 +0800
+In-Reply-To: <6fff98f69549a9069321a727f2333d3e4aa5e84f.camel@xry111.site>
+References: <20260603153920.249671-1-xry111@xry111.site>
+		 <20260603210831.item005@kernel.org>
+	 <6fff98f69549a9069321a727f2333d3e4aa5e84f.camel@xry111.site>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ai8o9vxUX6rbZNV4@zenone.zhora.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID:qMiowJCx98B8VS9qR5imAA--.40429S3
-X-CM-SenderInfo: pzdqwxxrqjzxhdqjqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7JF45ZF4xGFy5Xr15XF4rtFc_yoWDJrg_WF
-	Wvyr1UCw1UZFn8Ga93tF43A3s0qayUKr4DWrnrAF15JrW3tFZakF18W39a9wnxWay29as0
-	vry8Aw47AF1a9osvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
-	JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
-	xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v2
-	6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
-	vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
-	1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_MaUUUU
-	U
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263098-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263099-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:andi.shyti@kernel.org,m:zhoubinbin@loongson.cn,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:wsa+renesas@sang-engineering.com,m:linux-i2c@vger.kernel.org,m:devicetree@vger.kernel.org,m:loongarch@lists.linux.dev,m:chenhuacai@loongson.cn,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[wanghongliang@loongson.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:amd-gfx@lists.freedesktop.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[xry111@xry111.site,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[loongson.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wanghongliang@loongson.cn,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,loongson.cn:mid,loongson.cn:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E04B4682C17
+X-Rspamd-Queue-Id: D76DC682CB7
 
-Hi, Andi
+On Thu, 2026-06-04 at 11:46 +0800, Xi Ruoyao wrote:
+> On Wed, 2026-06-03 at 20:05 -0400, Sasha Levin wrote:
+> > > [PATCH v7.0.y v2 0/8] drm/amd: Backport FPU Guard Move from DML to
+> > > DC
+> > > Rebased onto 7.0.11.
+> >=20
+> > Thanks for the series. Unfortunately it doesn't apply to the current
+> > 7.0.y tree: patch 3/8 creates dcn42 resource files that don't exist in
+> > this tree, and patch 5/8 depends on dml21_wrapper_fpu.c, which is not
+> > created in 7.0.y either.
+>=20
+> dml21_wrapper_fpu.c is created by 4/8 (upstream commit
+> 4bb2f0721ed8a2a70f864b9358bd6cd4d92199b3) which moves out the logic
+> requiring FPU from dml21_wrapper.c to that new file, so the remaining
+> code can safely use DC_FPU_{START,END}.
+>=20
+> The dcn42 files should be removed.=C2=A0 I'll recheck if the series conta=
+ins
+> anything related to dcn42 and remove them in v3.
 
-On 2026/6/15 上午6:20, Andi Shyti wrote:
-> Hi Hongliang,
->
-> On Mon, Jun 08, 2026 at 10:45:33AM +0800, Hongliang Wang wrote:
->> The i2c-ls2x driver supports dts and acpi parameter passing.
->>
->> In dts, uses clock framework, by parsing clocks property to
->> get i2c bus reference clock, and define the div of reference
->> clock by device data.
->>
->> In acpi, by passing clocks property to describe i2c bus reference
->> clock and clock-div property to describe the div of reference clock.
->>
->> Based on i2c bus reference clock(clock_a), i2c bus speed(clock_s)
->> and div, calculate the prcescale of i2c divider register. The
->> calculation formula is
->>
->> prcescale = (clock_a*10)/(div*clock_s)-1
->>
->> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-> I think Huacai has not reviewed this patch, his review was only
-> for patch 1. Am I right?
->
-> Andi
-Sorry, it was my mistake,  I will send a new version later.
+Abandoned considering 7.1 is released and 7.0 is not LTS.
 
-Best regards,
-Hongliang Wang
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
