@@ -1,248 +1,190 @@
-Return-Path: <stable+bounces-263283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zf83BFQSMGqNMwUAu9opvQ
-	(envelope-from <stable+bounces-263283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:55:16 +0200
+	id PPnQBn0OMGpwMgUAu9opvQ
+	(envelope-from <stable+bounces-263247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:38:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C37687667
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:55:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC2F6873F8
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:38:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xNuRFf4O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263283-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263283-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=PZCI0sYv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263247-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263247-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 831933024A34
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 14:47:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 201573004C90
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4563FC5AC;
-	Mon, 15 Jun 2026 14:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB39E3EC2CB;
+	Mon, 15 Jun 2026 14:38:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7663F39C5
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7DC3F0AB1
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:38:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781534857; cv=none; b=WcWzXh3UYbiUMPTMMkND2qEahAy2Kdu8DFPbGWZIkxBgwsdYZ8z6zD6MAj+uIhPkonEiLkCGVoA/L3Q+SM4DDC+52TqFwdmH676bAN/ZQsr91pGUzEgZG21MdZOasjXMDBdLmYF3k8EOpKWx3APdb8YJa4gX+aamRMOpYE1DCsQ=
+	t=1781534325; cv=none; b=lPNO2UYOJ9bAMB/9ZjlY45PAyxsFbKMgc7WFKoik7DuQtmD/ffXea6f4LkKLxx/3KB9efQsGRP1Yg3rmHONmdfqmGgQkT340AHvCH8CNIf/NBAEH34k/RdN6eMwwHE45TQURbrhfDE1pbM66Eu/ZfDDHli4BbcvJYpv21myV5dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781534857; c=relaxed/simple;
-	bh=X/O4bovvKvBP2yZ34/iyt7NoRs9UIT0/o4Kh2T4E8gU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pIp5rUaASuQs4BBHS6wR24/ecwOAlknUJCus0VQmpoXbBI2LRE7x+ppE1kHvxJRGONct9J0uonKQCbMnBsbUWzkz44hKkg6bmmqV6GpLDx3p7giENibIvIkVLn4PPcdvQeDwK4PdS4sYBwwDt6VbsiZ13Vt5rJalYa0nvFQMYkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNuRFf4O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF18C1F000E9;
-	Mon, 15 Jun 2026 14:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781534855;
-	bh=CJiDCpyT/+On/k+9h6hVDc7cSjGm6WPJgd1wusIPClQ=;
-	h=Subject:To:Cc:From:Date;
-	b=xNuRFf4OiJZVvfDHLYrgmLUHroNqQcMf+GFektbovt5xPtV+wCSgtuB+/rgUYn7gk
-	 pBLzNDpR9ya/vf+FU7vS2AkacP2uq0GySV7dlhyYN169KFBzjqhFFKrMZzzSxrZAzq
-	 Em0FFNoVOawA7YVldToM8ntM8ydFRgz1j9JvvpB8=
-Subject: FAILED: patch "[PATCH] ASoC: fsl_sai: Support multiple data channel enable bits" failed to apply to 5.10-stable tree
-To: shengjiu.wang@nxp.com,broonie@kernel.org,nicoleotsuka@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 16:38:01 +0200
-Message-ID: <2026061501-giggle-unspoiled-256e@gregkh>
+	s=arc-20240116; t=1781534325; c=relaxed/simple;
+	bh=qBeQ1M7/XRrDXwotUCpa2UJ4IpCdxmtNZa/U6g2Ke+g=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=nxQel0Ns5tPl8dGlEbTbYFtmIsmYegjq23Hk5vRfK1TMH1/zJipc/PLjiRxlu0zpbFF7Fy83VmpBl8b+nPgIZlG4lN7tu9cxGYvijIxps8CvV1Y5DnPI6QYAd3bG/AMPz6uzJ/v2Hwl85F9SxdeLl7NSwB/dyMU3nkBQl6SwV7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=PZCI0sYv; arc=none smtp.client-ip=209.85.210.48
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7e6b571750bso2865037a34.1
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 07:38:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1781534321; x=1782139121; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+hzImMW9AXbAx6Z6GDoMG7/37MaDKHScKw3Nhz4SZOI=;
+        b=PZCI0sYvmiy5E+VyapyD8AcFtiOf0mQaBTV1SroxPV+Vs/SJUdZ+i8BtP9RZfiWvPl
+         QgPIodewwxkzrvZzGC5Bx/IlAYmk1v9XH9hgDL5nehGk8vEnSPJehnaNqtcr9tQdAhhc
+         jeR4zK903puWLeTwlV/WxnhHsviEQHBmOualmZuqgz/Ip2wDYgQGWn13m8dAjDdCSiS5
+         1m6RG1oa/KL2a7tGKIcf3feCiVOXK6QontUoT3N05l1EiDPchh1T1un7+oWmoTpOeJa7
+         jO9jGAkik3JzLvgzGlLEHri40AioKGEndjLCcd/vBP+ymEqBAL/ZME5Is0j13y/XZyan
+         aJoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781534321; x=1782139121;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+hzImMW9AXbAx6Z6GDoMG7/37MaDKHScKw3Nhz4SZOI=;
+        b=qeVrgcKpcvLt2jgiMPVqKfAZDvPGj+rYcjpgiVdlFjXIsiBIgytX7pVM08TfQ7WHsG
+         ah/NjDFoX375FPtkHCT2oxyKwCRy4h716L/7At6jGUqE99TDGrQa3+jR2hzoZFDYxFGc
+         ud8tP64/Hoh31Z1NUKs2M0oF5xSQcZaobLHWEbUacrN3B9OeCs9U5tT7A3JXHXdLGmRi
+         f2j8yIJDljrqspgjVShhVLww6/gZu5Lj6CY3Jzar5RF+DQllGSlVSsUgPt0RmA5L4tfD
+         2m23LYllIAZxD3gqAah325uXV3O2aEn9os1mAI6d9elxMP+jvCZ5JHIbpqBnSGJ7mkM6
+         WWnQ==
+X-Gm-Message-State: AOJu0YxRSokrULu/W5DAZn7a1drVI15ESQv8AgzGHQuN1wSlzZq25RXS
+	lZDBprlXLz4nbKYzg9eeTAfiXfLzt5z9/TfuIQuemaI+Y2/AUbEIGYcNz4t9S0s822VuucWGX05
+	zl1UjdZA=
+X-Gm-Gg: Acq92OHVxrcRA8+BTlU4yS638goH+Hmd/e4Eu3p3xczP4sZyAgMQa6pznz2cpS7/iar
+	NrgJe7Ht8C2qekVSf6QeL37PgsJMtRpzOScu39J+/9g8HCPn2NYKN4PBKkoECTfgS9swVy07U3t
+	MDDofsEgaeeo4t4jf6+i+6vhMeNRwes4bBxIriPc5MQsrWxvmQ24oaApeMEmBvTyxt8guWcKYHj
+	VXD24cdGBraIrbVferI2ed0vKm8DtpV4a4SyCZHKvCvdcrUWmeClT2sXXR7BKeW8e0eYZD3302h
+	xD7z/KMobL6U96wn+r1YPPMrpXz3sBrTSRWxEkl5ZcsgoSiEmzskZvBi9NhDtW2YsztcAzpPKoK
+	GILqc1/wx00RezCIiJS51TRz7EpLeGXBoqjbI/0qM9D9iPr6Li7diywtuMnySvG34dX5AKQJ7j8
+	ZBGYN/oVsK/HwTc8FdCElLM4hxt1sI2yLBnfewJ0i0WevfhHQJkYW2dp3/ICzeAs3vzdbgH5hOK
+	gF9BrbI
+X-Received: by 2002:a05:6830:368b:b0:7dc:d2ad:fb29 with SMTP id 46e09a7af769-7e784820e60mr10483681a34.24.1781534321092;
+        Mon, 15 Jun 2026 07:38:41 -0700 (PDT)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e79f6dfaf4sm4342643a34.21.2026.06.15.07.38.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jun 2026 07:38:39 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------vZF6c8tUwhgwj5Wnw6sa5MP7"
+Message-ID: <b3189608-5ff3-497f-a1a1-f5e8219da914@kernel.dk>
+Date: Mon, 15 Jun 2026 08:38:38 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring/wait: fix min_timeout behavior"
+ failed to apply to 6.18-stable tree
+To: gregkh@linuxfoundation.org, lk@c--e.de, tip@tenbrinkmeijs.com
+Cc: stable@vger.kernel.org
+References: <2026061509-unwatched-transpire-cd39@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2026061509-unwatched-transpire-cd39@gregkh>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.56 / 15.00];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263283-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263247-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	HAS_ATTACHMENT(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:shengjiu.wang@nxp.com,m:broonie@kernel.org,m:nicoleotsuka@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:lk@c--e.de,m:tip@tenbrinkmeijs.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[nxp.com,kernel.org,gmail.com];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	FORGED_SENDER(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
 	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,c--e.de:email,msgid.link:url,vger.kernel.org:from_smtp,kernel.dk:email,kernel.dk:mid,kernel.dk:from_mime,linuxfoundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 90C37687667
+X-Rspamd-Queue-Id: 0CC2F6873F8
 
+This is a multi-part message in MIME format.
+--------------vZF6c8tUwhgwj5Wnw6sa5MP7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 6/15/26 8:18 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.18-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Here's one for 6.18-stable.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 770f58d7d2c58b8ff31d3694ce14a785c2e75009
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061501-giggle-unspoiled-256e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+-- 
+Jens Axboe
 
-Possible dependencies:
+--------------vZF6c8tUwhgwj5Wnw6sa5MP7
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-wait-fix-min_timeout-behavior.patch"
+Content-Disposition: attachment;
+ filename="0001-io_uring-wait-fix-min_timeout-behavior.patch"
+Content-Transfer-Encoding: base64
 
+RnJvbSBmM2JkZjU2YTViMTY3NzE1M2Q3ZmYzOGUwYTJhNjljODdiYzUwZjdjIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiAiQ2hyaXN0aWFuIEEuIEVocmhhcmR0IiA8bGtAYy0t
+ZS5kZT4KRGF0ZTogU2F0LCA2IEp1biAyMDI2IDIyOjExOjIwICswMjAwClN1YmplY3Q6IFtQ
+QVRDSCAxLzJdIGlvX3VyaW5nL3dhaXQ6IGZpeCBtaW5fdGltZW91dCBiZWhhdmlvcgoKQ29t
+bWl0IDI5ZmUxYmQwMWI5OTcxNGYzMTM2ZjkyMjIzMGE2NDNjMjc0MmNkYTkgdXBzdHJlYW0u
+CgpUaGUgd2FrZXVwIGNvbmRpdGlvbiBpZiBhIG1pbiB0aW1lb3V0IGlzIHByZXNlbnQgYW5k
+IGhhcyBleHBpcmVkIGlzIHRoYXQKYXQgbGVhc3QgX29uZV8gQ1FFIHdhcyBwb3N0ZWQuIFRo
+dXMgc2V0IHRoZSBjcV90YWlsIHRhcmdldCB0bwotPmNxX21pbl90YWlsICsgMS4gV2l0aG91
+dCB0aGlzIGNvbW1pdCBhIHNwdXJpb3VzIHdha2V1cCBjYW4gcmVzdWx0IGluIGEKcHJlbWF0
+dXJlIHdha2V1cCBiZWNhdXNlIGlvX3Nob3VsZF93YWtlKCkgd2lsbCByZXR1cm4gdHJ1ZSBl
+dmVuIGlmIF9ub18KQ1FFIHdhcyBwb3N0ZWQgYXQgYWxsLgoKQ2M6IFRpcCB0ZW4gQnJpbmsg
+PHRpcEB0ZW5icmlua21laWpzLmNvbT4KRml4ZXM6IGUxNWNiMjIwMGI5MyAoImlvX3VyaW5n
+OiBmaXggbWluX3dhaXQgd2FrZXVwcyBmb3IgU1FQT0xMIikKQ2M6IHN0YWJsZUB2Z2VyLmtl
+cm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogQ2hyaXN0aWFuIEEuIEVocmhhcmR0IDxsa0BjLS1l
+LmRlPgpMaW5rOiBodHRwczovL3BhdGNoLm1zZ2lkLmxpbmsvMjAyNjA2MDYyMDExMjAuMTQ0
+MTQ0Ny0xLWxrQGMtLWUuZGUKU2lnbmVkLW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2Vy
+bmVsLmRrPgotLS0KIGlvX3VyaW5nL2lvX3VyaW5nLmMgfCAyICstCiAxIGZpbGUgY2hhbmdl
+ZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9pb191cmlu
+Zy9pb191cmluZy5jIGIvaW9fdXJpbmcvaW9fdXJpbmcuYwppbmRleCAwM2U3YjlkNmI0NDgu
+LjdmMzk4YzRhM2E2ZSAxMDA2NDQKLS0tIGEvaW9fdXJpbmcvaW9fdXJpbmcuYworKysgYi9p
+b191cmluZy9pb191cmluZy5jCkBAIC0yNTg2LDcgKzI1ODYsNyBAQCBzdGF0aWMgZW51bSBo
+cnRpbWVyX3Jlc3RhcnQgaW9fY3FyaW5nX21pbl90aW1lcl93YWtldXAoc3RydWN0IGhydGlt
+ZXIgKnRpbWVyKQogCX0KIAogCS8qIGFueSBnZW5lcmF0ZWQgQ1FFIHBvc3RlZCBwYXN0IHRo
+aXMgdGltZSBzaG91bGQgd2FrZSB1cyB1cCAqLwotCWlvd3EtPmNxX3RhaWwgPSBpb3dxLT5j
+cV9taW5fdGFpbDsKKwlpb3dxLT5jcV90YWlsID0gaW93cS0+Y3FfbWluX3RhaWwgKyAxOwog
+CiAJaHJ0aW1lcl91cGRhdGVfZnVuY3Rpb24oJmlvd3EtPnQsIGlvX2NxcmluZ190aW1lcl93
+YWtldXApOwogCWhydGltZXJfc2V0X2V4cGlyZXModGltZXIsIGlvd3EtPnRpbWVvdXQpOwot
+LSAKMi41My4wCgo=
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 770f58d7d2c58b8ff31d3694ce14a785c2e75009 Mon Sep 17 00:00:00 2001
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-Date: Tue, 1 Sep 2020 19:01:08 +0800
-Subject: [PATCH] ASoC: fsl_sai: Support multiple data channel enable bits
-
-One data channel is one data line. From imx7ulp, the SAI IP is
-enhanced to support multiple data channels.
-
-If there is only two channels input and slots is 2, then enable one
-data channel is enough for data transfer. So enable the TCE/RCE and
-transmit/receive mask register according to the input channels and
-slots configuration.
-
-Move the data channel enablement from startup() to hw_params().
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Link: https://lore.kernel.org/r/1598958068-10552-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 62c5fdb678fc..38c7bcbb361d 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -443,6 +443,7 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 	u32 slots = (channels == 1) ? 2 : channels;
- 	u32 slot_width = word_width;
- 	int adir = tx ? RX : TX;
-+	u32 pins;
- 	int ret;
- 
- 	if (sai->slots)
-@@ -451,6 +452,8 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 	if (sai->slot_width)
- 		slot_width = sai->slot_width;
- 
-+	pins = DIV_ROUND_UP(channels, slots);
-+
- 	if (!sai->is_slave_mode) {
- 		if (sai->bclk_ratio)
- 			ret = fsl_sai_set_bclk(cpu_dai, tx,
-@@ -501,13 +504,17 @@ static int fsl_sai_hw_params(struct snd_pcm_substream *substream,
- 				   FSL_SAI_CR5_FBT_MASK, val_cr5);
- 	}
- 
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
-+			   FSL_SAI_CR3_TRCE_MASK,
-+			   FSL_SAI_CR3_TRCE((1 << pins) - 1));
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR4(tx, ofs),
- 			   FSL_SAI_CR4_SYWD_MASK | FSL_SAI_CR4_FRSZ_MASK,
- 			   val_cr4);
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR5(tx, ofs),
- 			   FSL_SAI_CR5_WNW_MASK | FSL_SAI_CR5_W0W_MASK |
- 			   FSL_SAI_CR5_FBT_MASK, val_cr5);
--	regmap_write(sai->regmap, FSL_SAI_xMR(tx), ~0UL - ((1 << channels) - 1));
-+	regmap_write(sai->regmap, FSL_SAI_xMR(tx),
-+		     ~0UL - ((1 << min(channels, slots)) - 1));
- 
- 	return 0;
- }
-@@ -517,6 +524,10 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
- {
- 	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
-+	unsigned int ofs = sai->soc_data->reg_offset;
-+
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
-+			   FSL_SAI_CR3_TRCE_MASK, 0);
- 
- 	if (!sai->is_slave_mode &&
- 			sai->mclk_streams & BIT(substream->stream)) {
-@@ -651,14 +662,9 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
- 		struct snd_soc_dai *cpu_dai)
- {
- 	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
--	unsigned int ofs = sai->soc_data->reg_offset;
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
- 	int ret;
- 
--	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
--			   FSL_SAI_CR3_TRCE_MASK,
--			   FSL_SAI_CR3_TRCE);
--
- 	/*
- 	 * EDMA controller needs period size to be a multiple of
- 	 * tx/rx maxburst
-@@ -675,17 +681,6 @@ static int fsl_sai_startup(struct snd_pcm_substream *substream,
- 	return ret;
- }
- 
--static void fsl_sai_shutdown(struct snd_pcm_substream *substream,
--		struct snd_soc_dai *cpu_dai)
--{
--	struct fsl_sai *sai = snd_soc_dai_get_drvdata(cpu_dai);
--	unsigned int ofs = sai->soc_data->reg_offset;
--	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
--
--	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
--			   FSL_SAI_CR3_TRCE_MASK, 0);
--}
--
- static const struct snd_soc_dai_ops fsl_sai_pcm_dai_ops = {
- 	.set_bclk_ratio	= fsl_sai_set_dai_bclk_ratio,
- 	.set_sysclk	= fsl_sai_set_dai_sysclk,
-@@ -695,7 +690,6 @@ static const struct snd_soc_dai_ops fsl_sai_pcm_dai_ops = {
- 	.hw_free	= fsl_sai_hw_free,
- 	.trigger	= fsl_sai_trigger,
- 	.startup	= fsl_sai_startup,
--	.shutdown	= fsl_sai_shutdown,
- };
- 
- static int fsl_sai_dai_probe(struct snd_soc_dai *cpu_dai)
-diff --git a/sound/soc/fsl/fsl_sai.h b/sound/soc/fsl/fsl_sai.h
-index 6aba7d28f5f3..5f630be74853 100644
---- a/sound/soc/fsl/fsl_sai.h
-+++ b/sound/soc/fsl/fsl_sai.h
-@@ -109,7 +109,7 @@
- #define FSL_SAI_CR2_DIV_MASK	0xff
- 
- /* SAI Transmit and Receive Configuration 3 Register */
--#define FSL_SAI_CR3_TRCE	BIT(16)
-+#define FSL_SAI_CR3_TRCE(x)     ((x) << 16)
- #define FSL_SAI_CR3_TRCE_MASK	GENMASK(23, 16)
- #define FSL_SAI_CR3_WDFL(x)	(x)
- #define FSL_SAI_CR3_WDFL_MASK	0x1f
-
+--------------vZF6c8tUwhgwj5Wnw6sa5MP7--
 
