@@ -1,76 +1,62 @@
-Return-Path: <stable+bounces-263487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tt3XLQGSMGpMUgUAu9opvQ
-	(envelope-from <stable+bounces-263487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:00:01 +0200
+	id 9JteJxeSMGpNUgUAu9opvQ
+	(envelope-from <stable+bounces-263488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:00:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFD168AC09
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:00:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEEB68AC0D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:00:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzBbQoQv;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263487-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263487-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nggqKwJ9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263488-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263488-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D279930A766F
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:58:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE97430C9548
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 23:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F51636F91C;
-	Mon, 15 Jun 2026 23:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D90C36EA82;
+	Mon, 15 Jun 2026 23:58:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E915A36DA03
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 23:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EFB36A373
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 23:58:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781567923; cv=none; b=tIY21LxSfEHW6f2+8V5QScGeEZOsfT9z56H8WXWMAfUxyPiy49gsgZPf2qsGLdWEucB3FTa5AybWXchGHkdNMXGRdsyuULvMPX2ZBC0b1ZacT8RILTynjtvj06rYr17LI2k74/YcTIA4JBp7JB5zwuTn1Gd0n0avqSqzdlLvzGo=
+	t=1781567932; cv=none; b=reNZ3LguKVx/WRD+XQJSv1FwITeaQEhZPmpJpL1qC9nwvgIvBNyT8JvkCE5TVwLCgqrKPkCY3ii9fd0rRlnVvAfTzGs0cnOmbGgLTnsKwrAHBZB4a9Lg89oOIYUAIxHUwUX0CZVEGPRr62niml2NEEbn/llIQKWSvPL6YiRGQf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781567923; c=relaxed/simple;
-	bh=sdTICWsF8Gg9xVi/txzCViLwgo5JzWiDEQ+TQjrHAII=;
+	s=arc-20240116; t=1781567932; c=relaxed/simple;
+	bh=H8MmZnleVXladOY9nVYx3Xyf6r23IflLN3SX3KF++/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HeiR4Tdv/pIZCpAsdSRQpJt7hhosos9SDOS5v5DXPvDfvi5+C0JuO1a4uYWwEHqjVMydJ5b65R1kEdn2NzzQaKLYxlIzfq8LOTEDVe6No6e11NXZHR3HjYuQqRV7b7BUiiJqD0vIdW2+Fa8yz8wwL3AqIVsvI2fVk420U0H4tJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzBbQoQv; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324AC1F000E9;
-	Mon, 15 Jun 2026 23:58:39 +0000 (UTC)
+	 MIME-Version; b=XoFcIOZY9vD5X+q3B+OWz/hzOoAy50agQT44/FgHIoTltpTeOpaLFGTi3kPRMzVQ09Ow1+9M1qldYps8khGsb8qFZIP9AdChcdiGr+Bl5u8yLRqA120CaTNDr8ttGIfPH2nsK9ysZprSMdFtn8cscUs29N4UviaEGPbRQmgKh5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nggqKwJ9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7241F000E9;
+	Mon, 15 Jun 2026 23:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781567920;
-	bh=V6isKLp7UB5A1v0a+aE494HpQ0z3KBILeG+CKaX5+cU=;
+	s=k20260515; t=1781567930;
+	bh=zdvTmUoY4RdAjtYgzIemCuyRj97zeirSzFgf+Zj9mA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EzBbQoQvBbTBuqZ2cBqCBdowcejUr5wyiutJ8ghaHJe5KQ72xSceCKIU+vHwBbx6/
-	 TUQpK4u38041xE54/RcJIJYTnAj8zpaBzrfDM7aR4IMUB0TlZ0xKaZy5g1HbPH30A8
-	 NZVPhXb/GqaneHZQbhTHtNkXxIwButUKZw7n4iMN9veDBopbED8T6WMr2VFBgFEFN7
-	 5n6X6IEHutM8/4KBE8hGEpzXG87wn3sbgeWh30bB6tzEFyvu3pefLQTKtj7ScWGYzZ
-	 0LMRpoMRW2WX0QQdn0BL/6bitrTmpPzp9QcsloKvt9o+FdL76RWn9xRzQ+xw7szgiV
-	 a9DMEwFoCQhOQ==
+	b=nggqKwJ94YGlGNafuBI4XN7XsWd4vteflVO7ZseWx1+iAzducVFqGTdz5/RtIipdi
+	 xGIJlYFh2huJ3f4G0Gdr6Jr83g3gb6VabQc2AnukRH25UL8QJlpIecrD9eTJy3PqKH
+	 ATFFMKhxqZy2x54bqBAJmJUMqK4H/nvALWBJC0pcVTLh7vfkLMVpApXx2vjZfZSDtV
+	 tH2RA1lAukNU6xsKU3VH49zynRSqLqhTef+khTBcOFkquCtp9L5fD9iBr+ebWkjpqN
+	 nj7mLzob7/NbKGir0NXt2NsuuiH/369TQqHDyAw4G6ODHnm0cO9gkNmSImtE75kvSm
+	 CP9XSAcwF2/Bw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Yang Shi <yang.shi@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] mm/huge_memory: update file PMD counter before folio_put()
-Date: Mon, 15 Jun 2026 19:58:37 -0400
-Message-ID: <20260615235837.2561574-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] RDMA/umem: fix kernel-doc warnings
+Date: Mon, 15 Jun 2026 19:58:46 -0400
+Message-ID: <20260615235848.2562462-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061509-perjurer-trio-7c92@gregkh>
-References: <2026061509-perjurer-trio-7c92@gregkh>
+In-Reply-To: <2026061508-amuck-winner-adaf@gregkh>
+References: <2026061508-amuck-winner-adaf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,23 +69,23 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263487-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:rdunlap@infradead.org,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263488-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -109,62 +95,65 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,infradead.org:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1CFD168AC09
+X-Rspamd-Queue-Id: EFEEB68AC0D
 
-From: Yin Tirui <yintirui@huawei.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
+[ Upstream commit ff46d1392750444fab5ae5a0194764ffdc4ac0d2 ]
 
-__split_huge_pmd_locked() updates the file/shmem RSS counter after
-dropping the PMD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+Add or correct kernel-doc comments to eliminate warnings:
 
-Move the counter update before folio_put().
+Warning: include/rdma/ib_umem.h:104 function parameter 'biter' not
+ described in 'rdma_umem_for_each_dma_block'
+Warning: include/rdma/ib_umem.h:140 function parameter 'pgsz_bitmap' not
+ described in 'ib_umem_find_best_pgoff'
+Warning: include/rdma/ib_umem.h:141 No description found for return
+ value of 'ib_umem_find_best_pgoff'
 
-Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
-Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Yang Shi <yang.shi@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ changed folio API calls (folio_remove_rmap_pmd/mm_counter_file(folio)/folio_put) to page-based equivalents (page_remove_rmap/mm_counter_file(page)/put_page) ]
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260224003120.3173892-1-rdunlap@infradead.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/rdma/ib_umem.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2c118713f77126..7023bdf4896055 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2085,7 +2085,9 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 			if (!PageReferenced(page) && pmd_young(old_pmd))
- 				SetPageReferenced(page);
- 			page_remove_rmap(page, vma, true);
-+			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 			put_page(page);
-+			return;
- 		}
- 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
- 		return;
+diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
+index 565a850445414d..d64b42ffd04b32 100644
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -89,6 +89,7 @@ static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
+ /**
+  * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
+  * @umem: umem to iterate over
++ * @biter: block iterator variable
+  * @pgsz: Page size to split the list into
+  *
+  * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
+@@ -116,7 +117,7 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+  * ib_umem_find_best_pgoff - Find best HW page size
+  *
+  * @umem: umem struct
+- * @pgsz_bitmap bitmap of HW supported page sizes
++ * @pgsz_bitmap: bitmap of HW supported page sizes
+  * @pgoff_bitmask: Mask of bits that can be represented with an offset
+  *
+  * This is very similar to ib_umem_find_best_pgsz() except instead of accepting
+@@ -129,6 +130,9 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+  *
+  * If the pgoff_bitmask requires either alignment in the low bit or an
+  * unavailable page size for the high bits, this function returns 0.
++ *
++ * Returns: best HW page size for the parameters or 0 if none available
++ *   for the given parameters.
+  */
+ static inline unsigned long ib_umem_find_best_pgoff(struct ib_umem *umem,
+ 						    unsigned long pgsz_bitmap,
 -- 
 2.53.0
 
