@@ -1,208 +1,213 @@
-Return-Path: <stable+bounces-263192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Gxm2AQD4L2owKgUAu9opvQ
-	(envelope-from <stable+bounces-263192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:02:56 +0200
+	id YmSID1f4L2pnKgUAu9opvQ
+	(envelope-from <stable+bounces-263193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:04:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8D26867FF
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:02:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419B4686825
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:04:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=readmodwrite-com.20251104.gappssmtp.com header.s=20251104 header.b=ZDMKQoH+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263192-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263192-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=aweta.nl header.s=selector1 header.b=kKVGYUBR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263193-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263193-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=reject) header.from=aweta.nl;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 12D0E305E36A
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:47:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8B2933036DA2
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 12:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6542253EB;
-	Mon, 15 Jun 2026 12:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940CA3E63A1;
+	Mon, 15 Jun 2026 12:48:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023119.outbound.protection.outlook.com [52.101.72.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D867F3EEAF0
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 12:47:07 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781527629; cv=none; b=diIEtIlHMri6fi9yLIPkyA9p4PJYNz/MSZ6EB282q4BTytdeQ7UHPtQe8fq7b5WTafKkCtfED0KXrjjIZtmOzgE2DP10YeYTfAUuRy2fnYxVgso55igHZxHpwzHolidYrmbBuJvhNMJqUhvmrxFFZDFWrdaJzxDeB/6J7y0IZZ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781527629; c=relaxed/simple;
-	bh=ZkakF9oXw2JJ3W+/cLDR4b60U5xSBjf+/trk4pVFs7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCRg2NBi37dz2NaM13gWqTug7Zt5nk6xi04ik/ca6TtO5LNinY8F/Zm55PuSYegLbAqQXZponU5VWNB8TXS8CuUo6yPtRs+d0w3hWB1mjmquGJmesNY6TUbXwGrD8NFezbPxXjhb6h+WaUTlTT8i3/nyrNiB070n/oRVrQvhvqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=readmodwrite.com; spf=none smtp.mailfrom=readmodwrite.com; dkim=pass (2048-bit key) header.d=readmodwrite-com.20251104.gappssmtp.com header.i=@readmodwrite-com.20251104.gappssmtp.com header.b=ZDMKQoH+; arc=none smtp.client-ip=209.85.221.51
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-45ef82204c6so1715150f8f.3
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 05:47:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=readmodwrite-com.20251104.gappssmtp.com; s=20251104; t=1781527626; x=1782132426; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=crH4Z9hoDTNPeb6V+9xac0v/Umo3o6vZRxmQqiDS3ww=;
-        b=ZDMKQoH+A/wLpeTpAZojlYGcySTAyHs3p+JA202m+HJXnKWx7buxKOUYjAnYBH7GnB
-         63GqWwLr8I4pw+XUTV+//gQMgEF3mN7i2Wxnm5rwKm+Ko3qZhRp/yVyUBM6CeL8sFM9I
-         AcGJHe8YUK7UqP0nqyfStlzFpKP+e64exAK6Mzpt3Aml7lIe3i5+mmk5AYIQSHV16tOP
-         gMbg51T91QMaOV31W50iFunecuQ3rSSZ2Ku5loLKq5FwwP2frBUqwBECtBt4sWUc0ZX9
-         F0sagElHrhPoHI26RUJk/WLHRmp+fU5oAfFUe2KfRxeMQIma8jHFXG8wlF0822gd4iDz
-         IoeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781527626; x=1782132426;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=crH4Z9hoDTNPeb6V+9xac0v/Umo3o6vZRxmQqiDS3ww=;
-        b=K9vJnSohMmF/2Th1CwlYix3jTqrigqOZJG5Kh03n2zwCh+XmLS5GPS2XwP3kw6bi3G
-         k5t2VaOMlPLwWoK4bI6BO9DnWklgdFY8L7SIAZa8xUlkvEuulym+JQSfexcQ6eEqFog9
-         HTh2SL20I6DF+QQ/r1OiIByPCXl58yyxa8aKr+9aOQ922ziEDNum9sbMns8eArPEcdIk
-         lqHQh0305UEvmnhDJfg2hqA83fCgZD++OMCdJwC7pAw/yUA1rjk9IvzVWRoNn2RZ+NvH
-         9UdeDtK5QUyfHQAhWcsdk2wSEeEIUzRcIFqMHegWIEJqs7MPN8jvxeTwa442Yfl5IFK7
-         Y2sw==
-X-Gm-Message-State: AOJu0YyILBXA4ieXaE9qDRMC+cceUys2o+RWZDKXYdF8tp7gBa5N855b
-	qJ/wcfdUYluH48A2a+zcpjB266R4G0EbGSYULxFhWiBl097ywIO6rPFFyKJIcoE/ovTE5wVfqsH
-	fdlkt
-X-Gm-Gg: Acq92OFh5QL9y3BXXdQ0EEjCbTT0HGpY6gYzTS6xUmlzaAv/iGIoI2sRcB9MiUfVbJh
-	q5TgzZbCOBTHN/tmIzO8QCZ65ZF8InAtoMTBnDTPksioR6sYDIoIkwVr2EB0fKhMKjz9HMIzOsB
-	bq+0qDzdznoI2I4ODSd2k0PC6SNuvx/EyBCPkBXKufJdK99iSv3X1rwOsiR5ZVuluxF66l5a66w
-	zqEIS+0BlL35S/2vV4KaC8EeALBkIDV/SvzFT5dIqm2GQN9XnhtKasmXljkZhgVhyfJhkEN+Xpa
-	9ZUcY2MJbNDQG7CdnlHLfY/hzRavITlW4snawKtUwMDzOAX45n6Cn529TuGMwW/gB3CYWrhVJgg
-	B00wRMt3TjjvCZtZDE+0jzc6uYlJMRSJSXyXXuY2ztSMyNhKMLBeyOTMfY32HQbHqosJQOhXmcj
-	CKmWzt+PUxOzkSDZZwaluOs8CTTg==
-X-Received: by 2002:a5d:4ec5:0:b0:43d:7b90:fa23 with SMTP id ffacd0b85a97d-4606dba20d5mr14528473f8f.29.1781527625806;
-        Mon, 15 Jun 2026 05:47:05 -0700 (PDT)
-Received: from matt-Precision-5490.. ([2a09:bac6:37a8:1cdc::2e0:a5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f2c3fcfsm30333861f8f.26.2026.06.15.05.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 05:47:05 -0700 (PDT)
-From: Matt Fleming <matt@readmodwrite.com>
-To: stable@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
-	Matt Fleming <mfleming@cloudflare.com>
-Subject: [PATCH 6.18.y] sched_ext: Don't warn on NULL cgrp_moving_from in scx_cgroup_move_task()
-Date: Mon, 15 Jun 2026 13:47:03 +0100
-Message-ID: <20260615124703.2238517-1-matt@readmodwrite.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2026061553-elderly-speech-3446@gregkh>
-References: <2026061553-elderly-speech-3446@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E77B3E5A2D;
+	Mon, 15 Jun 2026 12:48:33 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781527716; cv=fail; b=KS3GRZzQ98sUCfGRJ7BcTfacNIdJLFyZMtNMQm4nl2vxPw9uZ3fsRYPGzWkyVzNKqcqYo/eOH4zz8WB0XZWqj8E6AKGizobjDg9jLaUV9eRnPMdRmkX1k/FJMhTT7rwQX1SicC3UcjeebPNYcE0WNPSgmWPDhsTxlXUFF4V52ho=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781527716; c=relaxed/simple;
+	bh=NcuMPJ412NDj6cMrPKLiYFtduBARHCpQDcntQsoC3sc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hTZH14XR6D5LsQHovfpy7J/1nuyItFUiBDgLPo59G7B0ACu1lei4lM+Ya1VDxqdA6SXRqIdypEr7lxw+/HEdQYIMDI6sI89Jlj+p6xPHdT3UEgiMffsMei0tcmJS7uX/JTVLtYHMS70s0Q9wrZayJm+VfwxzwxBKS9D5BB6tRxs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aweta.nl; spf=pass smtp.mailfrom=aweta.nl; dkim=pass (2048-bit key) header.d=aweta.nl header.i=@aweta.nl header.b=kKVGYUBR; arc=fail smtp.client-ip=52.101.72.119
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K1NOkiIA+c18MBbaWq0W9GOwli0C+nU8QKe1Pe6NyLsZhWwqjUuQBTaVCExB2eHTSER6pI1lYS5qkuSEaQillDOmynociMfhoGYqOdPZQoIUhe4FtXgH5T19SWQoLvB7vMgnBZh84T7SUDh5tRhAcvg/0akR+pyGitWlb0oiiJ+2s2PawVyebwFmxpTkkX22cbAn7PqPTICbsN59JXeA1OArwP25u/yktsILD4XeazFvd3ntvS3YTUgtORyxYEi/N2ZL2kA8bHeGKMggr0nH10grdJPFYLU7DBkFNarrxEHbYvjEuXwohup1WwD5JajEwGbmMnzNCT5Mpx/t+bGAXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NcuMPJ412NDj6cMrPKLiYFtduBARHCpQDcntQsoC3sc=;
+ b=gZOJcrDOYm/mfoagwRFG+Wox7lau1zPZa3yQxbMAlo3N2b4gsqLfEW0o63Oa9mxU8ZDV1E4bw/JdVIKgmaSPpsQN63of+hqbQCAkK5wZpas3sqP41otwlOZSbCb4fMY57qKVfFSlJDlCdRdvJsxwFT7OilsPPiDv8C9T9ME388j94NsgNzwkRyrrF5P/H3fclnEX/y98+C6GY4fPCCKwp1GTa+FpnZS751Nje09KscleG/ZydbuZdNLEW2KhLKCOrdDO/z9K/7pyQFqOMH7kIQ+/kBFCAZErA+4fZhK8iWCRmvX+Blbb5BtUsTOlj5iB4Xb+4imaLdTZNW3rY8pcgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aweta.nl; dmarc=pass action=none header.from=aweta.nl;
+ dkim=pass header.d=aweta.nl; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aweta.nl; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NcuMPJ412NDj6cMrPKLiYFtduBARHCpQDcntQsoC3sc=;
+ b=kKVGYUBRZ1bwTN0ASgLYZtoieOeS3FPQfAU9ERXHWGBHwYvD4As33bNQdyLZH9NzM+JI/lzzpfysk1+D2bvEG8Yes/l3H6NO9tQb6t9V1LoRmqHyrt48TFMgDSV2NtswyOs+IXoqZKVFKjeKPYWuEAPg+FQ4Zunmkc4gcvYtCaLjttmzskTX75ksKTdYFVSAzv2UJlGB8M+19qgVUrA66WVjFWk1POSi6ijaQOqj7ixHxpCQ06yOaa/k6qYaeNwHsP2vKFqE08wX2tINV0kgNiFQUyX3yt5NPtLmamLT7HUG2Qin6cXvy/NhLBQaYB55nv0SKoE4zGNz5Tbp+Td2yQ==
+Received: from PAWPR05MB10691.eurprd05.prod.outlook.com (2603:10a6:102:35a::6)
+ by DU0PR05MB10523.eurprd05.prod.outlook.com (2603:10a6:10:426::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Mon, 15 Jun
+ 2026 12:48:28 +0000
+Received: from PAWPR05MB10691.eurprd05.prod.outlook.com
+ ([fe80::3b9c:573e:3c13:3754]) by PAWPR05MB10691.eurprd05.prod.outlook.com
+ ([fe80::3b9c:573e:3c13:3754%6]) with mapi id 15.21.0113.015; Mon, 15 Jun 2026
+ 12:48:28 +0000
+From: Tjerk Kusters <tkusters@aweta.nl>
+To: Kurt Kanzenbach <kurt@linutronix.de>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+	"przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, "hawk@kernel.org"
+	<hawk@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net] igb: only strip Rx timestamp header on the first
+ buffer of a frame
+Thread-Topic: [PATCH net] igb: only strip Rx timestamp header on the first
+ buffer of a frame
+Thread-Index: Adz6QcrRn2ovfM6lTRK8EOoivUdfWACWOigAAAqj4MA=
+Date: Mon, 15 Jun 2026 12:48:28 +0000
+Message-ID:
+ <PAWPR05MB106916AD984FCDF63E73A8E3FB9E62@PAWPR05MB10691.eurprd05.prod.outlook.com>
+References:
+ <PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com>
+ <8733yojljf.fsf@jax.kurt.home>
+In-Reply-To: <8733yojljf.fsf@jax.kurt.home>
+Accept-Language: en-US, nl-NL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAWPR05MB10691:EE_|DU0PR05MB10523:EE_
+x-ms-office365-filtering-correlation-id: 4b4e4ba9-1fe4-4799-1709-08decadc6602
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|56012099006|4143699003|38070700021|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ lDKwXN/v1ZcAIo/+tvnyPm1w99i08R2FcJ2DADtLb133mE2zM3AopGaYBVnKe7dIPs/0YD1N4XAU4z41mm7ErjLzr/PqXUKj6fspT7mQiSjvW1SEaNpNNpyf/+jz0TRBn64/cmzwZRiAsejf5NoKSfTfJA9x9xdAxU07HO+/09UGPr+8BlxDIW9R3awRa61qa7iuG8/he10NlWEGGP0lPKFr9vb7MjYB+iPKABY1yL2Hq4Lnmu+mDwxRdqLSKvcQ3+lYEvLa6ItdDMJR6LrgrwGU6dMiqkjQ1UF/xnP+QLh5kvtG/z0ekkvRmxvp//dhgAZYDYfYbepqSBaVgPH2Zbv09YA/h4OhPf95RsMxSiyU23BEbzBtaEg6R8kIHf0gCm4VpfX5ta2K6CRU9MyFBG37So5Q1qR6+2akZIO84Bc5Q/uRcGO3ef08MlCykF9zPKyk+Zhi6Gd+IWxlSDi+ZPYNOO/Q4AnoLuWybjjRLvGfj7leLxkZ68Lc0VJWTd3AdsLMXw2rwFc49p1gOS3MRjmVRRC6sQhTKUtdXzbBLQ+6h7quaWn/3HywSuZf4SIOiw62157a3nZM8Iqq7j89DwOutEQFDKtUPMhS+G20bNoG6ocTM1SxrM7/aXH5t1omjwo2KMX7htRoz86S/bxzpXcbCNn+BF9QmjVT5wpiiGfHzIkfXbwAaMT5mZ274Zeap3JUA3MmpqSMXRdT9HSkM8gT0DmZ7g6wBlXF8IbTsZu0sFJLBx3EEEI/czGtrz4u
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAWPR05MB10691.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(56012099006)(4143699003)(38070700021)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ZaDyT4S4W5+oOvwqah3ynDN0Io7bwvqYhCBn9f2l2F0t9UmAcuqdZGh0M2do?=
+ =?us-ascii?Q?gtyErQ1lgFSp0BY/wdbUA+/J0AqTnzVeuwq/3p9VMrafw46La2Mppe5tGy0h?=
+ =?us-ascii?Q?j5Jc+ipxcXh1vQkt9FsCsyYnHVlvMYcGAO+pmhodHPotmh4ie3bDgjzmBDA5?=
+ =?us-ascii?Q?+sQ/3K0XlTFe1aa3OkBMXjn0iqGIYUtl2kGy9ySlQu4qzJwirB4NQqeclPwr?=
+ =?us-ascii?Q?dn7Pi8wuGepjrPNhj+koWJvBEJZxXOhjhZsUEDD8iXualzjL66NjK5IsJhyA?=
+ =?us-ascii?Q?3FCgJdrsbmMLUTpMhsvOSqvdn4UxbX13fIVV00pjtw+qki8TvxgbF7jBD3Jr?=
+ =?us-ascii?Q?0btXTiwpefruojkw9DXiDKOV/IZE9DXci0aIUxnxBL5YBBH5Q3PMg3vQO240?=
+ =?us-ascii?Q?ZvazZPPHAaVDl9pkmRFLbw6oWm6CLPd5GnWDqvXs19Hmqm6b2rjC/GFEmR4x?=
+ =?us-ascii?Q?UH0Tkuo/W5rr/g4QTEgJWUz1Ye9aGy7l4i+RxdwwlRjEFjOgcxDOF/DcuPPl?=
+ =?us-ascii?Q?n4CFs/AhCdAYVLmUheDP1+T/Kjm3OfJUWMTUyQrFertQfywroQb0spsh+yZD?=
+ =?us-ascii?Q?Sb1wqmH9Y1TBv8dyoojPZby0yt51hzWpCIxGgUgFZkhCSeR0NrkSDgnhGEfP?=
+ =?us-ascii?Q?FSsmKyL4UsMHo89teIM/NQ1Bc6yNQ1ln4oXcEkwbUi8bxkJR6Nkqu0HWHp9I?=
+ =?us-ascii?Q?8LsOTnLBuWw0zf9vG79bnPFGDnGicAhZfYGY0JK3Crpggly+1c8g/K1TYoRA?=
+ =?us-ascii?Q?rFuUPRvclpqagjkJ0MdrrRKzNBAReLrgmXdmZx9AJdjkSy46DFLul4AuS4cB?=
+ =?us-ascii?Q?aaJu/AMy99ygdFtKwfJabOcS5YAj5KNd/DWzzdC1OIAffKLtrvdn6bHdvwIZ?=
+ =?us-ascii?Q?vBCUTEt+nXgM77mRygM3gNexaDhsec57iCuGqJ74n+2SMWWjQH63niPgVu9Z?=
+ =?us-ascii?Q?2QedJ65npHi/40BehpWPaXSL1N9ZcMeieka1n8IJeEwxPvuz6/PzvhvtPGWG?=
+ =?us-ascii?Q?kmse3lk6dAod4q5bXGzrpSYU4nM8GpdB0lzRRvwRKT9gniSjZPX1y2WWLYj1?=
+ =?us-ascii?Q?IJitM6ZFulsRthYv8ZnbRpenIwBtpX1iGhaEOtr7EoqEgDMvp/HVu6Fd0cLq?=
+ =?us-ascii?Q?ao21mfsnTKC0htq4s7JJYGchS1WcMxPxcH0lwU6sOTa19wLpez3JOcu7D67H?=
+ =?us-ascii?Q?PyWs2oZ5oqR0GZzlB1gCmw9e6FEuRsoOZgYPjA/hIOh+OPTyAPp7X1N4hhcW?=
+ =?us-ascii?Q?9jlJ0uhimu/GfHjDxXw7JGRfzy819H3guytMbhyrKEWnTrdx3LnrUB8DsMOL?=
+ =?us-ascii?Q?nCp2IGd+ZSQqGkyjg+ZbnI+9RQxOelKU+bO8rbpvsmdu+oIkjF4eKCO6CaWj?=
+ =?us-ascii?Q?1gYbMbIpOkK7u5dTRBRkSPyto4T46LeiRNeR6LjGP6voytzgNsGuQc1MD8sO?=
+ =?us-ascii?Q?HjYJntYzYEITSoArl8LHwJQbuWRvvq2RVmUbBSAAl6ytiQ3aYaQMYb7ZEhfN?=
+ =?us-ascii?Q?ahYtkct4DjkpJayc11yMCklsFavXN/ci7p9+zOgLL5KZn0pftDF5dkV/NcF0?=
+ =?us-ascii?Q?83QfQVxw2Xb0vR/qMEmRqQxkulxVPd0u7ppgOg/EfYBRspZtJnuLcj+p1hRL?=
+ =?us-ascii?Q?oHTcsb8nKkP8uia/zTVV3WrZ0oRF2mjhVapuUwEgmTcGqLry44t9L5z0WaAW?=
+ =?us-ascii?Q?Ie4Atqjg1CO6tyQnRph6NGydOIjKON5VrQY52JTIiDCKKuGM?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: aweta.nl
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAWPR05MB10691.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b4e4ba9-1fe4-4799-1709-08decadc6602
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2026 12:48:28.6042
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 6546512a-ba20-41bf-9d8d-c076dcbf6fd9
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Fo2BlkcvVIFxRyWv4+CX95uKDKO8yLqFSxOl4ieTUNrhWWDzOk69+NNI0L/ED8H92wPn+MtaCkkR5aqv5B6KZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR05MB10523
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[readmodwrite-com.20251104.gappssmtp.com:s=20251104];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[aweta.nl,reject];
+	R_DKIM_ALLOW(-0.20)[aweta.nl:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263193-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.osuosl.org,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263192-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:tj@kernel.org,m:arighi@nvidia.com,m:mfleming@cloudflare.com,s:lists@lfdr.de];
-	DMARC_NA(0.00)[readmodwrite.com];
-	FORGED_SENDER(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[PAWPR05MB10691.eurprd05.prod.outlook.com:server fail,aweta.nl:server fail,vger.kernel.org:server fail,linutronix.de:server fail];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FORGED_RECIPIENTS(0.00)[m:kurt@linutronix.de,m:netdev@vger.kernel.org,m:intel-wired-lan@lists.osuosl.org,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:richardcochran@gmail.com,m:hawk@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[tkusters@aweta.nl,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[readmodwrite-com.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[matt@readmodwrite.com,stable@vger.kernel.org];
-	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[nvidia.com:query timed out,cloudflare.com:query timed out,readmodwrite.com:query timed out,readmodwrite-com.20251104.gappssmtp.com:query timed out];
-	ALIAS_RESOLVED(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	SEM_URIBL_UNKNOWN_FAIL(0.00)[readmodwrite-com.20251104.gappssmtp.com:query timed out,readmodwrite.com:query timed out,cloudflare.com:query timed out];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[aweta.nl:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[readmodwrite.com:mid,readmodwrite.com:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,readmodwrite-com.20251104.gappssmtp.com:dkim]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tkusters@aweta.nl,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[aweta.nl:server fail,linutronix.de:server fail,vger.kernel.org:server fail,PAWPR05MB10691.eurprd05.prod.outlook.com:server fail];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RBL_SEM_FAIL(0.00)[104.64.211.4:server fail];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linutronix.de:email,PAWPR05MB10691.eurprd05.prod.outlook.com:mid,aweta.nl:dkim,aweta.nl:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2B8D26867FF
+X-Rspamd-Queue-Id: 419B4686825
 
-From: Tejun Heo <tj@kernel.org>
+Hello,
 
-commit 02e545c4297a26dbbc41df81b831e7f605bcd306 upstream.
+>=20
+> Great explanation! igb_clean_rx_irq_zc() does not need the same treatment=
+,
+> correct?
+>=20
+> Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+>=20
 
-A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
-its own subtree_control while a sched_ext scheduler is loaded:
+Looks in the ZC path each frame fits in a single buffer, so igb_ptp_rx_pkts=
+tamp() only runs on that one buffer. The bug only hits the regular RX path,=
+ which can spread a frame over multiple buffers and calls igb_ptp_rx_pktsta=
+mp() on each one - a continuation buffer can then be misread as a timestamp=
+ header.
 
-  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
-   scx_cgroup_move_task+0xa8/0xb0
-   sched_move_task+0x134/0x290
-   cpu_cgroup_attach+0x39/0x70
-   cgroup_migrate_execute+0x37d/0x450
-   cgroup_update_dfl_csses+0x1e3/0x270
-   cgroup_subtree_control_write+0x3e7/0x440
+On affected systems I switched to Intel's out-of-tree igb 5.19.10 driver, w=
+hich is not affected. I also reproduced both the failure and the 5.19.10 su=
+ccess with a simple UDP test client/server (jumbo all-zero payloads), match=
+ing what the real GigE camera showed
 
-scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
-cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
-through this sequence:
-
-  Step                               Result
-  ---------------------------------  ----------------------------------
-  1. cpu enabled on cgroup G         cpu css = A
-  2. cpu toggled off then on for G   A killed, B created (same cgroup)
-  3. an exiting task keeps A alive   migration skips it, A now stale
-  4. +memory migrates G              stale A vs current B pulls cpu in
-  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
-  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
-
-The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
-while migration drives the move on css identity, so a NULL cgrp_moving_from
-here is a legitimate css-only migration, not a missing prep.
-
-The call is already gated on cgrp_moving_from, so just drop the warning.
-ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
-
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-[ mfleming: keep the 6.18.y SCX_KF_REST argument in the
-  SCX_CALL_OP_TASK() call. ]
-Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
----
- kernel/sched/ext.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 7b750bf42698..d8280f874433 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3221,11 +3221,13 @@ void scx_cgroup_move_task(struct task_struct *p)
- 		return;
- 
- 	/*
--	 * @p must have ops.cgroup_prep_move() called on it and thus
--	 * cgrp_moving_from set.
-+	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
-+	 * cgroup changes. Migration keys off css rather than cgroup identity,
-+	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
-+	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
-+	 * keep prep_move and move paired.
- 	 */
--	if (SCX_HAS_OP(sch, cgroup_move) &&
--	    !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
-+	if (SCX_HAS_OP(sch, cgroup_move) && p->scx.cgrp_moving_from)
- 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, cgroup_move, task_rq(p),
- 				 p, p->scx.cgrp_moving_from,
- 				 tg_cgrp(task_group(p)));
--- 
-2.43.0
+Regards
+Tjerk
 
 
