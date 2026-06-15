@@ -1,409 +1,348 @@
-Return-Path: <stable+bounces-263402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qTz+DMonMGqcPAUAu9opvQ
-	(envelope-from <stable+bounces-263402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:26:50 +0200
+	id 30VzCHokMGosOwUAu9opvQ
+	(envelope-from <stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:12:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BCB68858C
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:26:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B216882CB
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:12:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="UQFLTa/u";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263402-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263402-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0LnpDnc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4272A30202A9
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:23:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B52A1300609D
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8EE40B366;
-	Mon, 15 Jun 2026 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A685C40863D;
+	Mon, 15 Jun 2026 16:10:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65DF40913D
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46181408616
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:10:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781540599; cv=none; b=mFMIRv0Txbukq15Nxy1jN9OLvOdiLt0MnQ8OEJCDvuRN3SkSx5+bIjK+GoJFy7/p6jx4dNsQxQsPCHmBsuimnI4UtejbPqW3isNW2rc6oURF8qWeLxFUAQwC9PIdDFzw2mH23V8g269/LBAsB/sqkHbQzblOl6J3VC26yuVIXiM=
+	t=1781539810; cv=none; b=lHKEfuM4+avWlcAp+KYHz+sfdyieHhLPZA/WTYgzoPEOIdW6l2hkphfgDSKtMtTtmr2U7lFKS53ErscsCaswb8lsCXLJZ8jE772ZMdINKEnRlf2sa4xlCK4+/Rx/hfwRfAejilS+fJ8mGGIyv6rcbYVZgwcutrOk6RbXNX859YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781540599; c=relaxed/simple;
-	bh=gQqAScLMptcfg/18ZEeH/JZH1ZcfdU3GShhFlbbISS4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YVy33p/00d0FjhY2sKoan5sUuorn6UuTNzgYMGbnxfmo3PITh234HPRGYG2hmh7RXavj/exHl+RxpSv9OQhkxayssii6bhpaPHx60owRczvnPo2uZS9ALJqXqWWY1R/lEGp8xEZLUUNYZvsAV2sEKyWK7P63+keOacnNq+U/uP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQFLTa/u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32041F000E9;
-	Mon, 15 Jun 2026 16:23:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781540597;
-	bh=JhLS0TZZOKdeS+atLF+ZWSWpf6IIQmLdJlYpPRoV1qQ=;
-	h=Subject:To:Cc:From:Date;
-	b=UQFLTa/upueaCzF4W12eTWStoxDWbnk8oajdRm87kvhiIpBw719qzMJWw+YDyAO0L
-	 BltDyyIkv2nUfuClsbERg7Zv9zykZpBCEwN5U5KxwM12QBs7KfeGz//4AQjoT6EN95
-	 QRaej6VHzDsbMG/YeMdV2A7B+ULLaPeTF9PVOnL4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Bound VBIOS record-chain walk loops" failed to apply to 5.10-stable tree
-To: harry.wentland@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,ray.wu@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 15 Jun 2026 18:02:58 +0200
-Message-ID: <2026061558-chuck-blame-a159@gregkh>
+	s=arc-20240116; t=1781539810; c=relaxed/simple;
+	bh=Id2E+D8gmd0pRPN8WxOc/qBsESy5CXlbetgksc5teWs=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d3REFHwlmVv9bOLDtPgmeDGrxHUO8TUwVgiiaL6TnKDw0sgtXlCg7ZmV/H8xl2bLtnlPg1aJI1DEloXf4CdrdRfoOqMaWVW61wv6LaViNAGMZmbAispHDuAC0fVEYqHW3BbthL/jNWSWH7UiJmGKNC3oQvcSHdYGqXuPLgHgrtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0LnpDnc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAB11F00A3A
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:10:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781539808;
+	bh=w4SYa4JXnwW8VDFisq3TRs3kpNlLcYUTqvc4oyIga4g=;
+	h=From:To:Subject:Date:In-Reply-To:References;
+	b=B0LnpDnc2yQHhbXbzg0prmkEKRthPYXdyyy+HmD73yIiiGvelWUuQf2bY5OvsORH6
+	 qv0/uiHGQxrn3goCNL+hwso4L0uigBZ/pB6Xqb/0uN5dzOI47qKbV+FMgZv0umnX7+
+	 fQoo+06cmctc1C3d47+k7ioW2eAiMAB2R28z7Nbx+6YKpCGry9QZdmqUtaFpVy1LxP
+	 22IRNIdgM8T/XFZkfDN45V/faKAgveffqVwOA7nY4wQclaBPKcniqDWHERVYYUfiq0
+	 top6r5PMCaxkPAg7BJ7AjxGiQ3MmxcP3eOdNgkfAw0/Q1A9uBSYA/BsGRVHr+EeR3a
+	 k/K9Uw6s6Ap+w==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 6.12.y] mm/hugetlb: avoid false positive lockdep assertion
+Date: Mon, 15 Jun 2026 17:09:55 +0100
+Message-ID: <20260615160955.258138-1-ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <2026061500-humorist-stinging-e849@gregkh>
+References: <2026061500-humorist-stinging-e849@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263402-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:harry.wentland@amd.com,m:alex.hung@amd.com,m:alexander.deucher@amd.com,m:daniel.wheeler@amd.com,m:ray.wu@amd.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263383-lists,stable=lfdr.de];
+	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_ONE(0.00)[1];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_NONE(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C6BCB68858C
+X-Rspamd-Queue-Id: 34B216882CB
 
+Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split,
+not before") changed the locking model around hugetlbfs PMD unsharing on
+VMA split, but did not update the function which asserts the locks,
+hugetlb_vma_assert_locked().
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This function asserts that either the hugetlb VMA lock is held (if a
+shared mapping) or that the reservation map lock is held (if private).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+If you get an unfortunate race between something which results in one of
+these locks being released and a hugetlb VMA split and you have
+CONFIG_LOCKDEP enabled, you can therefore see a false positive assertion
+arise when there is in fact no issue.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x ff287df16a1a58aca78b08d1f3ee09fc44da0351
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061558-chuck-blame-a159@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Since this change introduced a new take_locks parameter to
+hugetlb_unshare_pmds(), which, when set to false, indicates that locking
+is sufficient, simply pass this to the unsharing logic and predicate the
+lock assertions on this.
 
-Possible dependencies:
+This is safe, as we already asserted the file rmap lock and the VMA write
+lock prior to this (implying exclusive mmap write lock), so we cannot be
+raced by either rmap or page fault page table walkers which the asserted
+locks are intended to protect against (we don't mind GUP-fast).
 
+Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
+check_locks parameter, and update hugetlb_unshare_pmds() to pass this
+parameter to it.
 
+This leaves all other callers of huge_pmd_unshare() still correctly
+asserting the locks.
 
-thanks,
+The below reproducer will trigger the assert in a kernel with
+CONFIG_LOCKDEP enabled by racing process teardown (which will release the
+hugetlb lock) against a hugetlb split.
 
-greg k-h
+void execute_one(void)
+{
+	void *ptr;
+	pid_t pid;
 
------------------- original commit in Linus's tree ------------------
+	/*
+	 * Create a hugetlb mapping spanning a PUD entry.
+	 *
+	 * We force the hugetlb page allocation with populate and
+	 * noreserve.
+	 *
+	 * |---------------------|
+	 * |                     |
+	 * |---------------------|
+	 * 0                 PUD boundary
+	 */
+	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
+		   MAP_FIXED | MAP_SHARED | MAP_ANON |
+		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
+		   -1, 0);
+	if (ptr == MAP_FAILED) {
+		perror("mmap");
+		exit(EXIT_FAILURE);
+	}
 
-From ff287df16a1a58aca78b08d1f3ee09fc44da0351 Mon Sep 17 00:00:00 2001
-From: Harry Wentland <harry.wentland@amd.com>
-Date: Tue, 12 May 2026 15:24:22 -0400
-Subject: [PATCH] drm/amd/display: Bound VBIOS record-chain walk loops
+	/*
+	 * Fork but with a bogus stack pointer so we try to execute code in
+	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
+	 *
+	 * The clone will cause PMD page table sharing between the
+	 * processes first via:
+	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
+	 *
+	 * Then tear down and release the hugetlb 'VMA' lock via:
+	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
+	 */
+	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
+	if (pid < 0) {
+		perror("clone");
+		exit(EXIT_FAILURE);
+	} if (pid == 0) {
+		/* Pop stack... */
+		return;
+	}
 
-[Why & How]
-All record-chain walk loops in bios_parser.c and bios_parser2.c use
-for(;;) and only terminate on a 0xFF record_type sentinel or zero
-record_size. A malformed VBIOS image missing the terminator record
-causes unbounded iteration at probe time, potentially hundreds of
-thousands of iterations with record_size=1. In the final iterations
-near the BIOS image boundary, struct casts beyond the 2-byte header
-validated by GET_IMAGE can also read out of bounds.
+	/*
+	 * We are the parent process.
+	 *
+	 * Race the child process's teardown with a PMD unshare.
+	 *
+	 * We do this by triggering:
+	 *
+	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
+	 *
+	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
+	 * it), meaning we assert in hugetlb_vma_assert_locked().
+	 *
+	 *            .
+	 * |----------.----------|
+	 * |          .          |
+	 * |----------.----------|
+	 * 0          .     PUD boundary
+	 */
+	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
+	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
+}
 
-Cap all 14 record-chain walk loops to BIOS_MAX_NUM_RECORD (256)
-iterations. The atombios.h defines up to 22 distinct record types
-and atomfirmware.h has 13. Assuming an average of less than 10
-records per type (which is reasonable since most are connector-
-based) 256 is a generous upper bound.
+int main(void)
+{
+	int i;
 
-Fixes: 4562236b3bc0 ("drm/amd/dc: Add dc display driver (v2)")
-Assisted-by: Copilot:claude-opus-4.6 Mythos
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 95700a3d660287ed657d6892f7be9ffc0e294a93)
-Cc: stable@vger.kernel.org
+	/* Kick off fork children. */
+	for (i = 0; i < NUM_FORKS; i++) {
+		pid_t pid = fork();
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index c307f42fe0b9..507b628abdb5 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -222,6 +222,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
- 	ATOM_COMMON_RECORD_HEADER *header;
- 	ATOM_I2C_RECORD *record;
- 	struct bios_parser *bp = BP_FROM_DCB(dcb);
-+	int i;
+		if (pid < 0) {
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+
+		/* Fork children do their work and exit. */
+		if (!pid) {
+			int j;
+
+			for (j = 0; j < NUM_ITERS; j++)
+				execute_one();
+			return EXIT_SUCCESS;
+		}
+	}
+
+	/* If we succeeded, wait on children. */
+	for (i = 0; i < NUM_FORKS; i++)
+		wait(NULL);
+
+	return EXIT_SUCCESS;
+}
+
+[ljs@kernel.org: account for the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case]
+  Link: https://lore.kernel.org/agWZsPGYid08uU6O@lucifer
+Link: https://lore.kernel.org/20260513085658.45264-1-ljs@kernel.org
+Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Jann Horn <jannh@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit b4aea43cd37afad714b5684fe9fdfcb0e78dba26)
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ mm/hugetlb.c | 57 ++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 37 insertions(+), 20 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index c5975b411afb..09aa3fca7eec 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -86,6 +86,9 @@ static int hugetlb_acct_memory(struct hstate *h, long delta);
+ static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
+ static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
+ static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
++static int __huge_pmd_unshare(struct mmu_gather *tlb,
++		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++		bool check_locks);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, bool take_locks);
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+@@ -7223,6 +7226,31 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	return pte;
+ }
  
- 	if (!info)
- 		return BP_RESULT_BADINPUT;
-@@ -234,7 +235,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
- 	offset = le16_to_cpu(object->usRecordOffset)
- 			+ bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
- 
- 		if (!header)
-@@ -293,11 +294,12 @@ static enum bp_result bios_parser_get_device_tag_record(
- {
- 	ATOM_COMMON_RECORD_HEADER *header;
- 	uint32_t offset;
-+	int i;
- 
- 	offset = le16_to_cpu(object->usRecordOffset)
- 			+ bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
- 
- 		if (!header)
-@@ -966,6 +968,7 @@ static ATOM_HPD_INT_RECORD *get_hpd_record(struct bios_parser *bp,
- {
- 	ATOM_COMMON_RECORD_HEADER *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -975,7 +978,7 @@ static ATOM_HPD_INT_RECORD *get_hpd_record(struct bios_parser *bp,
- 	offset = le16_to_cpu(object->usRecordOffset)
- 			+ bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
- 
- 		if (!header)
-@@ -1670,6 +1673,7 @@ static ATOM_ENCODER_CAP_RECORD_V2 *get_encoder_cap_record(
- {
- 	ATOM_COMMON_RECORD_HEADER *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -1679,7 +1683,7 @@ static ATOM_ENCODER_CAP_RECORD_V2 *get_encoder_cap_record(
- 	offset = le16_to_cpu(object->usRecordOffset)
- 					+ bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, offset);
- 
- 		if (!header)
-@@ -2769,6 +2773,7 @@ static enum bp_result update_slot_layout_info(struct dc_bios *dcb,
- {
- 	(void)i;
- 	unsigned int j;
-+	unsigned int n;
- 	struct bios_parser *bp;
- 	ATOM_BRACKET_LAYOUT_RECORD *record;
- 	ATOM_COMMON_RECORD_HEADER *record_header;
-@@ -2778,7 +2783,7 @@ static enum bp_result update_slot_layout_info(struct dc_bios *dcb,
- 	record = NULL;
- 	record_header = NULL;
- 
--	for (;;) {
-+	for (n = 0; n < BIOS_MAX_NUM_RECORD; n++) {
- 
- 		record_header = GET_IMAGE(ATOM_COMMON_RECORD_HEADER, record_offset);
- 		if (record_header == NULL) {
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 4f213ea865b8..0e1f973326ed 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -396,6 +396,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
- 	struct atom_i2c_record *record;
- 	struct atom_i2c_record dummy_record = {0};
- 	struct bios_parser *bp = BP_FROM_DCB(dcb);
-+	int i;
- 
- 	if (!info)
- 		return BP_RESULT_BADINPUT;
-@@ -429,7 +430,7 @@ static enum bp_result bios_parser_get_i2c_info(struct dc_bios *dcb,
- 		break;
- 	}
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -534,6 +535,7 @@ static struct atom_hpd_int_record *get_hpd_record_for_path_v3(struct bios_parser
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -542,7 +544,7 @@ static struct atom_hpd_int_record *get_hpd_record_for_path_v3(struct bios_parser
- 
- 	offset = object->disp_recordoffset + bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -611,6 +613,7 @@ static struct atom_hpd_int_record *get_hpd_record(
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -620,7 +623,7 @@ static struct atom_hpd_int_record *get_hpd_record(
- 	offset = le16_to_cpu(object->disp_recordoffset)
- 			+ bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -2195,6 +2198,7 @@ static struct atom_encoder_caps_record *get_encoder_cap_record(
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -2203,7 +2207,7 @@ static struct atom_encoder_caps_record *get_encoder_cap_record(
- 
- 	offset = object->encoder_recordoffset + bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -2232,6 +2236,7 @@ static struct atom_disp_connector_caps_record *get_disp_connector_caps_record(
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -2240,7 +2245,7 @@ static struct atom_disp_connector_caps_record *get_disp_connector_caps_record(
- 
- 	offset = object->disp_recordoffset + bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -2268,6 +2273,7 @@ static struct atom_connector_caps_record *get_connector_caps_record(struct bios_
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -2276,7 +2282,7 @@ static struct atom_connector_caps_record *get_connector_caps_record(struct bios_
- 
- 	offset = object->disp_recordoffset + bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -2354,6 +2360,7 @@ static struct atom_connector_speed_record *get_connector_speed_cap_record(struct
- {
- 	struct atom_common_record_header *header;
- 	uint32_t offset;
-+	int i;
- 
- 	if (!object) {
- 		BREAK_TO_DEBUGGER(); /* Invalid object */
-@@ -2362,7 +2369,7 @@ static struct atom_connector_speed_record *get_connector_speed_cap_record(struct
- 
- 	offset = object->disp_recordoffset + bp->object_info_tbl_offset;
- 
--	for (;;) {
-+	for (i = 0; i < BIOS_MAX_NUM_RECORD; i++) {
- 		header = GET_IMAGE(struct atom_common_record_header, offset);
- 
- 		if (!header)
-@@ -3263,6 +3270,7 @@ static enum bp_result update_slot_layout_info(
- {
- 	unsigned int record_offset;
- 	unsigned int j;
-+	unsigned int n;
- 	struct atom_display_object_path_v2 *object;
- 	struct atom_bracket_layout_record *record;
- 	struct atom_common_record_header *record_header;
-@@ -3284,7 +3292,7 @@ static enum bp_result update_slot_layout_info(
- 		(object->disp_recordoffset) +
- 		(unsigned int)(bp->object_info_tbl_offset);
- 
--	for (;;) {
-+	for (n = 0; n < BIOS_MAX_NUM_RECORD; n++) {
- 
- 		record_header = (struct atom_common_record_header *)
- 			GET_IMAGE(struct atom_common_record_header,
-@@ -3378,6 +3386,7 @@ static enum bp_result update_slot_layout_info_v2(
- 	struct slot_layout_info *slot_layout_info)
- {
- 	unsigned int record_offset;
-+	unsigned int n;
- 	struct atom_display_object_path_v3 *object;
- 	struct atom_bracket_layout_record_v2 *record;
- 	struct atom_common_record_header *record_header;
-@@ -3400,7 +3409,7 @@ static enum bp_result update_slot_layout_info_v2(
- 		(object->disp_recordoffset) +
- 		(unsigned int)(bp->object_info_tbl_offset);
- 
--	for (;;) {
-+	for (n = 0; n < BIOS_MAX_NUM_RECORD; n++) {
- 
- 		record_header = (struct atom_common_record_header *)
- 			GET_IMAGE(struct atom_common_record_header,
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
-index ab162f2fe577..19fd7aea18f1 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser_helper.h
-@@ -37,4 +37,9 @@ void bios_set_scratch_critical_state(struct dc_bios *bios, bool state);
- 
- #define GET_IMAGE(type, offset) ((type *) bios_get_image(&bp->base, offset, sizeof(type)))
- 
-+/* Upper bound on the number of records in a VBIOS record chain. Prevents
-+ * unbounded looping if the VBIOS image is malformed and lacks a terminator.
-+ */
-+#define BIOS_MAX_NUM_RECORD 256
++static int __huge_pmd_unshare(struct mmu_gather *tlb,
++		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++		bool check_locks)
++{
++	unsigned long sz = huge_page_size(hstate_vma(vma));
++	struct mm_struct *mm = vma->vm_mm;
++	pgd_t *pgd = pgd_offset(mm, addr);
++	p4d_t *p4d = p4d_offset(pgd, addr);
++	pud_t *pud = pud_offset(p4d, addr);
 +
- #endif
++	if (sz != PMD_SIZE)
++		return 0;
++	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
++		return 0;
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	if (check_locks)
++		hugetlb_vma_assert_locked(vma);
++	pud_clear(pud);
++
++	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
++
++	mm_dec_nr_pmds(mm);
++	return 1;
++}
++
+ /**
+  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
+  * @tlb: the current mmu_gather.
+@@ -7242,25 +7270,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep)
+ {
+-	unsigned long sz = huge_page_size(hstate_vma(vma));
+-	struct mm_struct *mm = vma->vm_mm;
+-	pgd_t *pgd = pgd_offset(mm, addr);
+-	p4d_t *p4d = p4d_offset(pgd, addr);
+-	pud_t *pud = pud_offset(p4d, addr);
+-
+-	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+-	hugetlb_vma_assert_locked(vma);
+-	if (sz != PMD_SIZE)
+-		return 0;
+-	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
+-		return 0;
+-
+-	pud_clear(pud);
+-
+-	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
+-
+-	mm_dec_nr_pmds(mm);
+-	return 1;
++	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
+ }
+ 
+ /*
+@@ -7294,6 +7304,13 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	return NULL;
+ }
+ 
++static int __huge_pmd_unshare(struct mmu_gather *tlb,
++		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++		bool check_locks)
++{
++	return 0;
++}
++
+ int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		unsigned long addr, pte_t *ptep)
+ {
+@@ -7564,7 +7581,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		if (!ptep)
+ 			continue;
+ 		ptl = huge_pte_lock(h, mm, ptep);
+-		huge_pmd_unshare(&tlb, vma, address, ptep);
++		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
+ 		spin_unlock(ptl);
+ 	}
+ 	huge_pmd_unshare_flush(&tlb, vma);
+-- 
+2.54.0
 
 
