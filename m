@@ -1,185 +1,165 @@
-Return-Path: <stable+bounces-263336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PZe5MI4fMGotOQUAu9opvQ
-	(envelope-from <stable+bounces-263336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:51:42 +0200
+	id QA4JAC4gMGrGOQUAu9opvQ
+	(envelope-from <stable+bounces-263375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:54:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62351687E8A
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:51:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDDA687F19
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 17:54:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sEsX57p3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263336-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263336-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VUm+8pQ3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263375-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263375-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E10030FF969
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:48:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0924E3007B8A
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 15:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8BD407CC0;
-	Mon, 15 Jun 2026 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC973C65FE;
+	Mon, 15 Jun 2026 15:54:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229884071EA
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B90401A26
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 15:54:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781538504; cv=none; b=HpuuBOUgZvVP508iIqTJahLjWRB4PTOV+zwTQANIS+NPSZJY/hwbnAMUtnXs2aDZDm+0ReEvHGWC59ycY/EO0EZ0WnWSFMGFCcF0daY5XeYdeVJApqiyJytKNoO6zzuSgeKZNWpT8TGDj+W8+lPXpQJSRFyXlM07SaBXBikMkIQ=
+	t=1781538859; cv=none; b=Bswx19bl9290CU4nR/Kb8r4qi/EhGUUNxJ3bG2zknSNt+tWYKo91NyNh0K1rt5SQavA2VEjVXJE1gLr8/KdiFWr9E29uiafPuV3idkYCc8Uge8iUT1MapYIzugnH7WeK3iOROntP6NOC8YfzAVLk5+M7sTaURsAaf4p0K8ehSmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781538504; c=relaxed/simple;
-	bh=m4MDgDNJGJh6NUsFNjQqW0yFQBUw3oV+QM5zFXmcAFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgpA7W8QtR47lr49nrn+5u6FbJOeoBjoASc5Br1RJ0laDYRmCI30EOG/MDfoyHxhukwsScR6gaNjpTKzFQ7AUvVYGtp4DqrPlFp0Vqwz68WaCrMmxwwZVfA6VQxV27J7dSONz6w/aJoxb9jleSwRLONxuIppWgXrDRJ1tUbrILg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sEsX57p3; arc=none smtp.client-ip=209.85.221.52
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45ef616daf6so3996926f8f.3
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 08:48:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781538500; x=1782143300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N45xHGzaBC8uEBeOLmM+IjqfOYO20BdZazBFDqO07Kg=;
-        b=sEsX57p3U6qbYGqJ9E/t8LNvHVaYFPySd3BrjbvOdlHbS6KegTJCunI2kmHNoqf+1f
-         VES6I+9A5YcOLxQnWalGVyUPbnXhFFCdtejT9SCDCPyYrIwj0XOkk61BOkrJ4Xwm20ir
-         G07mTbYKaw1IY0Oi7t1RzXo8nHTAN8xTFvkKrdBPd+Iyg3GLi70QQ9mdO8DSNIB45wZ4
-         xwRIbWTtXZ/00I70ZbQl5PGF+VuUi+9V3govbkIIsswprxfV76nJECgXp+4HDIe+Ejj4
-         986kFFdeu56hjltso4Rd5x8Bca/bbjTtjnyhTifPz3wCGJjr1i6fKnXYR+8CRbdXKLHL
-         GG0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781538500; x=1782143300;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=N45xHGzaBC8uEBeOLmM+IjqfOYO20BdZazBFDqO07Kg=;
-        b=rga5U0Pk9hwlHhPnt36jvPDsDh0XsKxZW4LVs3yMgVncXTFdQeh0SrhX77sHWtdT+d
-         5ml6y3hwukDy2sla+75evYk9odjIFCclTiuWo5LSXL8mGhsOC0dx+Ch7LuNgavhyoHwF
-         NBgpDvvyrBU7BmZRzA4uJvpGfbCfd2F152IXzo3yfnIAfCmTBDI2GgjlHmiMEuIs3uaV
-         fbrg/IJ2WJOC1T0VHO5mZrwTWVn5yxvkBMyXTSSvUAwsPpjoq0z4uQ9UXIP3mMvawtEw
-         xx8PC5zaaIlNBNVltl+p+s7VeOpmfW8+77nqtEDzZ9mpn6y5bh+9Veaq86tK39sQwudZ
-         oWtQ==
-X-Forwarded-Encrypted: i=1; AFNElJ99oTH/U2bD7gru9c5ZJqGV3M6MwawDOQ1wkbi76m6XWwqkqMKsXDByTzPPk01RG8vgXG8849w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpCrEWjMGx6OYcKS2oDRkXEBnMfX7gygT4nGK2ApwT7luwD9/t
-	Zpu/H20Asrpsy0eOn6B4rAlvZBeSel9IVEgt4oov1GIk0syjEdK3H7gf
-X-Gm-Gg: Acq92OFfSreKwXox19pkLOa2v+19xUQrj5k7zZp/d5QOuhyeDdFNaRl4HheTV+uItYZ
-	qpIZggihqmqAn4ZGGD5FKDBYFH9ZEiakZlxfxZRQ1D2fGtxxvSIj1j188c5lh/8R4kW9w4ewons
-	lW2XrjTTWRH/aQhA+4Wp3tjpyK3VDeMiRUVT8DzsyWumL04NAWu67D83TDmPFP25Cqjxh75uQro
-	OWyu3hLm861082aOCpKjvKYA6fwIZhn6InTrxlb2nYHi77vGygw0ZgprxSb4R5q9AKpq7owEQX5
-	wrmnckA6ycF6BabJB1qBjsreIDN1qJeVT3+qWMO7gsSFi1VLMGyG7ZV+KyAHM4KcQxpU7oS/GH8
-	Ud2VfJaj5mv3wWrPzdx8JlgKBQ+xd3y76AEZt1qEMrfEsjJEUL5IZ56eyfSdsaZ4ywPEx6R/lhd
-	bJBbfvNklhBn/TmoiMXOt2IyoDeLBnv6A9aqhdn4/D9fooh+T6SVvi/Zw9gdVM66nNcf0rFnXd9
-	PBobLlQufZnsS7KSCURs0srMq0s3HZCjbyp
-X-Received: by 2002:a05:6000:46dc:b0:460:18cc:dcfe with SMTP id ffacd0b85a97d-4606dbba5dfmr12896535f8f.34.1781538500271;
-        Mon, 15 Jun 2026 08:48:20 -0700 (PDT)
-Received: from iku.Home ([2a06:5906:61b:2d00:1e4:992f:3ad2:4f2b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4606f26434dsm36010995f8f.1.2026.06.15.08.48.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 08:48:19 -0700 (PDT)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-rtc@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 02/12] rtc: rzn1: Handle EPROBE_DEFER for optional pps interrupt
-Date: Mon, 15 Jun 2026 16:47:55 +0100
-Message-ID: <20260615154805.1619693-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260615154805.1619693-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20260615154805.1619693-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+	s=arc-20240116; t=1781538859; c=relaxed/simple;
+	bh=VMPebKy9LpXggdZu/pk88CHvtXc5UuWH7CEjqGho9+U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SFag5AZooeg/Vq1jw5/YuNG3d5zLPIX1JjHNailsfs5JyMN9ofIv4Xdep5egKFqLD7iEDkqQeJwOhd6m9ApdaSKwFVs7uM+xYERln/j5vsYZtVFIqhvWBSyA/yIfcF1VVgtp+8obj1pXK0+dpQmvLZXCF6QZfcIY931QqS5te5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUm+8pQ3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48A91F000E9;
+	Mon, 15 Jun 2026 15:54:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781538858;
+	bh=kch5YvWIlPzoUx1g+jbVRDR2F9DbJjdIMmNNdnJNv5I=;
+	h=Subject:To:Cc:From:Date;
+	b=VUm+8pQ3B3/JMJvKtlNwKPUF7d6XQL140t2GA0Cg2FD8pzK4ZgqlRyoWodGXuT8Q4
+	 bTJGYG1amxVUFaWsseL4W5vtxZzEhNoDS3+VlfPNgLDPuYpTnpXk8WvPRP0Ggj2u0Z
+	 mp0IPvxIFMQ+/Gfrgr2ICQ7nenE9U4FxTLrEELBk=
+Subject: FAILED: patch "[PATCH] slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership" failed to apply to 6.6-stable tree
+To: bjorn.andersson@oss.qualcomm.com,dmitry.baryshkov@oss.qualcomm.com,gregkh@linuxfoundation.org,mukesh.ojha@oss.qualcomm.com,srini@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 15 Jun 2026 17:47:59 +0200
+Message-ID: <2026061559-egotistic-safeguard-3f23@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263375-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263336-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_RECIPIENTS(0.00)[m:miquel.raynal@bootlin.com,m:alexandre.belloni@bootlin.com,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:geert+renesas@glider.be,m:magnus.damm@gmail.com,m:wsa+renesas@sang-engineering.com,m:linux-rtc@vger.kernel.org,m:linux-renesas-soc@vger.kernel.org,m:devicetree@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:prabhakar.csengg@gmail.com,m:biju.das.jz@bp.renesas.com,m:fabrizio.castro.jz@renesas.com,m:prabhakar.mahadev-lad.rj@bp.renesas.com,m:stable@vger.kernel.org,m:krzk@kernel.org,m:conor@kernel.org,m:geert@glider.be,m:magnusdamm@gmail.com,m:wsa@sang-engineering.com,m:prabhakarcsengg@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[bootlin.com,kernel.org,glider.be,gmail.com,sang-engineering.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,bp.renesas.com,renesas.com];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:bjorn.andersson@oss.qualcomm.com,m:dmitry.baryshkov@oss.qualcomm.com,m:gregkh@linuxfoundation.org,m:mukesh.ojha@oss.qualcomm.com,m:srini@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[prabhakarcsengg@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,renesas.com:email,vger.kernel.org:from_smtp,bp.renesas.com:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,gregkh:mid]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 62351687E8A
+X-Rspamd-Queue-Id: 8FDDA687F19
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Check for -EPROBE_DEFER from platform_get_irq_byname_optional() and handle
-the deferred probe request properly.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Although the "pps" interrupt is optional, an error code of -EPROBE_DEFER
-indicates that the interrupt subsystem is not yet ready. Intercept this
-specific error condition, assign it to the return value, and jump to the
-dis_runtime_pm label to avoid ignoring a valid probe deferral.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: eea7791e00f33 ("rtc: rzn1: implement one-second accuracy for alarms")
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 960b53a3f76fa214c2fc493734ae7b3c5e713bbf
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061559-egotistic-safeguard-3f23@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 960b53a3f76fa214c2fc493734ae7b3c5e713bbf Mon Sep 17 00:00:00 2001
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Date: Sat, 30 May 2026 21:44:17 +0100
+Subject: [PATCH] slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
+
+PDR and SSR callbacks are registred from the controller probe function,
+but currently released from the child device's remove function.
+
+The remove() function should only be unwinding what was done in the
+same device's probe() function.
+
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
----
- drivers/rtc/rtc-rzn1.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-5-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/rtc/rtc-rzn1.c b/drivers/rtc/rtc-rzn1.c
-index c4ed43735457..f81d691c8b9a 100644
---- a/drivers/rtc/rtc-rzn1.c
-+++ b/drivers/rtc/rtc-rzn1.c
-@@ -465,6 +465,10 @@ static int rzn1_rtc_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/slimbus/qcom-ngd-ctrl.c b/drivers/slimbus/qcom-ngd-ctrl.c
+index 6b91a6f11cb6..e9238927cd2a 100644
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1683,6 +1683,9 @@ static void qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
+ {
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
  
- 	irq = platform_get_irq_byname_optional(pdev, "pps");
-+	if (irq == -EPROBE_DEFER) {
-+		ret = irq;
-+		goto dis_runtime_pm;
-+	}
- 	if (irq >= 0)
- 		ret = devm_request_irq(&pdev->dev, irq, rzn1_rtc_1s_irq, 0, "RZN1 RTC 1s", rtc);
++	pdr_handle_release(ctrl->pdr);
++	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
++
+ 	qcom_slim_ngd_unregister(ctrl);
+ }
  
--- 
-2.54.0
+@@ -1691,8 +1694,6 @@ static void qcom_slim_ngd_remove(struct platform_device *pdev)
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+-	pdr_handle_release(ctrl->pdr);
+-	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
+ 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
 
 
