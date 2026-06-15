@@ -1,173 +1,245 @@
-Return-Path: <stable+bounces-263151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id UqwoDIesL2qaEQUAu9opvQ
-	(envelope-from <stable+bounces-263151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:40:55 +0200
+	id tjT0HrGvL2ofEgUAu9opvQ
+	(envelope-from <stable+bounces-263154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:54:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE6A684472
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 918FD68458D
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 09:54:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="JWp/+HCa";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263151-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=ODNxDDQO;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b="/8pMZfjP";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263154-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263154-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linutronix.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A18E3003713
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 07:40:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2614F3006915
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 07:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D953B42ED;
-	Mon, 15 Jun 2026 07:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8F33BBFCC;
+	Mon, 15 Jun 2026 07:54:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098CB305682
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 07:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC193BFAE2;
+	Mon, 15 Jun 2026 07:53:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781509250; cv=none; b=YMiKQH2HuyYH3VRMTdBT7CpLpjdC+KehMxqUyBCskzo4tbn1Qob6TZRAj10Z4M4fDUjEuuzpLfe4//cHbrwjFnJHdUzhYZ6fgq/mzC9XvJPeZS0/jMeTGjCR2T9Jir/2qorCE3Hcsl4x/WTxciQ9pLfwU9f6tgijSlyLoinjHZw=
+	t=1781510040; cv=none; b=IujQc1HugefzK+Tc4fmJ6cdaafA7ALd0sA05olkJOES7rTiqfeiv0aLc679JlLxvK6MWVwhPRtbd3mKapP/qulOmExMYlFCq9EyAq4VfbOru2eJn/75MqQZTYaXUk/HGIDb55OkVxDENxZBQspRWKdpwmkFGtK3jlgdxBxeKwsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781509250; c=relaxed/simple;
-	bh=7gTGoROcY88FIx0BKI9qz9m4P1KC5KNO+9LCkMExk6Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=epfk81Km/VWft3oq6bNIEMlYdTrCmg1ppBawAJ268fvgblZsVLcuZHjRfHLhZzSypRtltbSdMTfTcE6QKkF9oTc6ex9DauSpto5ekequ7s6obbE2vbRAEAe/+fh84Kaoqg5rZU054q6G4GOov6dtLARuMuctUMtQWQOqwW+8Sdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JWp/+HCa; arc=none smtp.client-ip=209.85.218.47
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-beb2a97cc9aso562350166b.2
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 00:40:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781509247; x=1782114047; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7gTGoROcY88FIx0BKI9qz9m4P1KC5KNO+9LCkMExk6Q=;
-        b=JWp/+HCaUhyEnt2o/PJZ0btNxmB7yrbB5dHGBysqFYgc2VBD60QKSDWlMKZdI73pmN
-         2FEqtzYk+DAU/Ns/Hfgp/Fgbzap7TfDGfXylG7kqMhbWktryZ6U0j+DUCrhxLphbhWJG
-         Rk3t27QhUM4IlXtzP0BEgoBntsSwFS/3IKw6uaDUUQjBfQ4hH/lCjRuX12jrndjG7Xo0
-         +UfCtGpXOSO4AgJ1rGR9a/Smv/NP2aTLYzuUp1bWzHnwV3hTaV/qaArMVdVmxqekd4g7
-         xfX5Y/0Z30yLbAqKt1glo/cj0/gBwv72A8CJ6MN8YIdukyBlyYbbQFcBqo2VlYJ2s3X/
-         DtcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781509247; x=1782114047;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7gTGoROcY88FIx0BKI9qz9m4P1KC5KNO+9LCkMExk6Q=;
-        b=S/TWenYQ0+AoRAT0jt4TBLEquL0kVpGajBLaFkmSt/ahFz39sN2RGaZnF4PmrxmPSK
-         1YMdUuogjg0JRFo5FB3dbF27mH238icKv5/6Z22g3IGzoWWMdNaluDyt6J4URkKBmCdb
-         R9zrN7c4O8vIfvhQ6gMaoLjz3AoD2JvGYN0rG68SoHLE0EVv2hX/u+pigAOtgVLtTLra
-         ZZX7dt3oEkOF2Qb+u0VcqE9aR7AnmTLNm54tFInGvkW88fq7CX6zc6s1s6Ni40DiysHF
-         dprolpzA0U0nWx0X81DuWnKqYeHIOxWgVHzIShTsCmQRL4SdSV53xFAE/c95pJQvos1D
-         k/Gg==
-X-Forwarded-Encrypted: i=1; AFNElJ/AYbLganq2rOlIGJi6pBqQ9Dul+5tR9QvusdojglcO8HjEfipleXY7tuH7p/7seyO4K2orjWg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKZJaq99n8oaqx9kJp+TtX4nMrpznDMLPRxhBUBPtq/AgF0jIx
-	aoCa3jimW8O/l/juc+gK8W6glZ2c7HwTWDp9h9HusMO8cbnjn0AK9vYs
-X-Gm-Gg: Acq92OHqHASxfC5ZdZrotiUYJ9VDirDClyf5S1HrWz4d/WkA4WSQo6zdO/nF9EvfT3P
-	wIX7hSrbxWz+0lCw9pas0DlDdTD1LsLOhJOP9ueUtSgajMTLnJ9taZEOowq6CXYEgkLbslj7xP6
-	QthaTKaEgVBc8voxgfkWKIzXb7hMkw7pQ0ng6f2kD/4XMJFm5TVg0LrHsrjg8zIBveFpVVq8imT
-	Q2klmufK02ukTcyD/iTyHM/UsmzNYDN34a4WQgaMIPHjmr0i4CmpQQ8zztLh+Hb5ngV9sw9vwaB
-	d0VKBJC0gssKEp2NRF/bpHwmC71jmL/5kAIqEk8BWfE116dhsFLBBaWuYKNUBk0xxjvqPV1gjJ8
-	1rYcHvWRKxNPrRzQZU5GfiL9Q6gZrT/dFYvJRY4hK2p7iB/KwmGd9MBeZeGqzKBSkwXI9FdgSVe
-	kGBquyNI19rTfneqiTc3AN1WOQxibobaRe20GE2Ce2mS5S4+GwXcf1JzgSazvqZRxwaodaiXNOL
-	k5ZVcHBVnd3OJyuNGfTjGkatg==
-X-Received: by 2002:a17:906:ef0d:b0:bee:d554:f332 with SMTP id a640c23a62f3a-bfe282fb76cmr579858166b.16.1781509247059;
-        Mon, 15 Jun 2026 00:40:47 -0700 (PDT)
-Received: from ?IPV6:2001:9e8:f12e:9401:c875:96a4:7b6f:72fd? ([2001:9e8:f12e:9401:c875:96a4:7b6f:72fd])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bfdb4b22544sm413400966b.14.2026.06.15.00.40.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jun 2026 00:40:46 -0700 (PDT)
-Message-ID: <9cd444b3-aeb0-46bb-a8a3-1526aa8f191a@gmail.com>
-Date: Mon, 15 Jun 2026 09:40:45 +0200
+	s=arc-20240116; t=1781510040; c=relaxed/simple;
+	bh=4XLkdt17a7BumTtZvZ/QKmAK5ZbQIHCPTQYDHiDXzdk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Oq9ccoXWx9fGHMTLVw0qKXWTldkWxuYHbnI43r8wq4Yw+22RDxY420ionoiBdkCkFjeMtYHpeiUmitpsjgU/HcU2glcMi6j0nurYIouhITtJL1OQWQeAxr35tduSNcJOJSYARpGv44b8HLWnVCzZneX8S0mhjwcbBJmuXjIbMCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ODNxDDQO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/8pMZfjP; arc=none smtp.client-ip=193.142.43.55
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1781509428;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OBrL6lgGQBMYLJZdswh2V1MoY8JuyilmLozsgGz4/8o=;
+	b=ODNxDDQOCe9UfjLWIOph6jNPzGzUPcQ+xb+ydJN9M0i6CFMiDsHRgjKbJLr26Xs92UIUER
+	lKk3TdIbh4npedW/uj/ukiC4XGVc+eObQqnG/f4MIP5kVqDZDM/CLqZ5YNUESHyzn+cLy2
+	/yMm/xh19asWEgDKSKbe4u6Rg+QWSI2SfIM6JuIixgrz8fEimXRjEJxM2P4RyF60ZpOSK7
+	Du6tM6kFrNhg64BegewC6SFUM7+veG/iZtTEBVDQ1OjGbkbULfgR9PhU7HX0X8gHyVY2Mt
+	hV9T1J+MgpL1sefve2st+f6Ub7LERak9Nj+SzSHpQ5DlIoUYAxaXF4UOvWxOBQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1781509428;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OBrL6lgGQBMYLJZdswh2V1MoY8JuyilmLozsgGz4/8o=;
+	b=/8pMZfjPCT/NlvqtaxZ/j9kB+C0va9VKo3CGEL3R2t074ZTbNOt/mu7QDZ8BlQUZmbWcIa
+	6osH4nK734IJz6CQ==
+To: Tjerk Kusters <tkusters@aweta.nl>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>
+Cc: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>,
+ "przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "richardcochran@gmail.com"
+ <richardcochran@gmail.com>, "hawk@kernel.org" <hawk@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] igb: only strip Rx timestamp header on the first
+ buffer of a frame
+In-Reply-To: <PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com>
+References: <PAWPR05MB1069106D52F4E17F1EDB99C67B9182@PAWPR05MB10691.eurprd05.prod.outlook.com>
+Date: Mon, 15 Jun 2026 09:43:48 +0200
+Message-ID: <8733yojljf.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] MIPS: smp: report dying CPU to RCU in stop_this_cpu()
-Content-Language: en-US
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Thomas Gleixner <tglx@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260608093729.12111-1-jelonek.jonas@gmail.com>
- <CAAhV-H7vJ5YniUD8HhFWBbypNyWTo73M_vzw=Y-MZtR-b_RNfw@mail.gmail.com>
- <731bd6c4-0f70-45a2-8480-8fed315b82b4@gmail.com>
- <CAAhV-H6Va1VzpvdA-w5fX9KrZQArdX_Bjpg6t+4QNn3jHfgjmA@mail.gmail.com>
- <e9696d4d-7cd0-4d7f-af87-2b4631549475@gmail.com>
- <CAAhV-H5psOJQey+frswdc5Q76UnhCkrHJ_jtqvxHsfmi-dskyw@mail.gmail.com>
-From: Jonas Jelonek <jelonek.jonas@gmail.com>
-In-Reply-To: <CAAhV-H5psOJQey+frswdc5Q76UnhCkrHJ_jtqvxHsfmi-dskyw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263151-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:chenhuacai@kernel.org,m:tsbogend@alpha.franken.de,m:linux-mips@vger.kernel.org,m:bigeasy@linutronix.de,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:tglx@kernel.org,m:jiayuan.chen@linux.dev,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263154-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[kurt@linutronix.de,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[lists.osuosl.org,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:tkusters@aweta.nl,m:netdev@vger.kernel.org,m:intel-wired-lan@lists.osuosl.org,m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:richardcochran@gmail.com,m:hawk@kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jelonekjonas@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kurt@linutronix.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,linutronix.de:email,linutronix.de:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,jax.kurt.home:mid,aweta.nl:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EE6A684472
+X-Rspamd-Queue-Id: 918FD68458D
 
-On 15.06.26 09:30, Huacai Chen wrote:
->> [...]
->>
->>> However, synchronize_rcu() only gets called in the
->>> IS_ENABLED(CONFIG_PREEMPT_RT) case, so I think your configuration
->>> needs PREEMPT_RT, right?
->>>
->>> You said this is the default behavior, but PREEMPT_RT is not enabled by default.
->> The condition where this is added has two parts, see [1]. While PREEMPT_RT
->> isn't active for MIPS, arch_irq_work_has_interrupt gives false for MIPS (since
->> there is no implementation and it falls back to the generic one). This then
->> also calls synchronize_rcu.
-> Sorry, this is my mistake, then what's your preemption model? There
-> are too many config files for MIPS now.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-I'm using PREEMPT_NONE, apparently default for all targets in OpenWrt.
+Hi,
 
-> Huacai
+On Fri Jun 12 2026, Tjerk Kusters wrote:
+> Hi,
 >
->>> Huacai
->>>
->> Best,
->> Jonas
->>
->> [1] https://elixir.bootlin.com/linux/v7.1-rc7/source/kernel/irq_work.c#L291-L302
+> The patch is attached (0001-igb-only-strip-Rx-timestamp-header-on-the-fir=
+st-buff.patch)
+> as my mail setup cannot send it inline via git send-email; apologies for =
+the
+> attachment.
 
-Best,
-Jonas
+b4 has a web submission endpoint. Maybe you can use that one:
+
+https://b4.docs.kernel.org/en/latest/contributor/send.html
+
+[snip]
+
+> From fee3e3452dfcd7e109332369672a3e0090cadeb3 Mon Sep 17 00:00:00 2001
+> From: T Kusters <tkusters@aweta.nl>
+> Date: Tue, 9 Jun 2026 14:06:24 +0200
+> Subject: [PATCH net] igb: only strip Rx timestamp header on the first buf=
+fer
+>  of a frame
+>
+> When Rx hardware timestamping is enabled (e.g. ptp4l, which configures
+> HWTSTAMP_FILTER_ALL), the NIC prepends a 16-byte timestamp header to the
+> first Rx buffer of every received frame. igb_clean_rx_irq() strips this
+> header inside its per-buffer loop:
+>
+> 	if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+> 		ts_hdr_len =3D igb_ptp_rx_pktstamp(rx_ring->q_vector,
+> 						 pktbuf, &timestamp);
+> 		pkt_offset +=3D ts_hdr_len;
+> 		size -=3D ts_hdr_len;
+> 	}
+>
+> For a frame that spans more than one Rx buffer (e.g. a jumbo frame), this
+> block runs once per buffer. The timestamp header only exists at the start
+> of the first buffer, but igb_ptp_rx_pktstamp() is called for every buffer.
+>
+> On a continuation buffer the data is packet payload, not a timestamp
+> header. igb_ptp_rx_pktstamp() already has two guards against acting on a
+> non-header buffer: it returns 0 if PTP is disabled, and returns 0 if the
+> reserved dwords (the first 8 bytes) are non-zero. Neither is sufficient
+> here: PTP is enabled, and a continuation buffer whose payload happens to
+> begin with 8 zero bytes passes the reserved-dword check. In that case the
+> payload is mistaken for a valid timestamp header and igb_ptp_rx_pktstamp()
+> returns IGB_TS_HDR_LEN, so the caller strips 16 bytes of real data from
+> that buffer. A frame spanning N buffers whose continuation buffers start
+> with zero bytes therefore loses 16 * (N - 1) bytes from its tail.
+>
+> This is easily triggered by a GigE Vision camera streaming dark frames
+> (mostly 0x00 pixel data) over jumbo UDP with PTP active on the receiver:
+> the all-zero frames arrive truncated while frames with non-zero content
+> are fine. There is no error indication.
+>
+> No content-based check can reliably tell a continuation buffer that begins
+> with zero bytes from a real timestamp header, because both are all zero.
+> Fix it structurally instead: only attempt the strip on the first buffer of
+> a frame, which is the only buffer that can contain a timestamp header. In
+> igb_clean_rx_irq() skb is NULL until the first buffer has been processed,
+> so guarding the strip with !skb restricts it to the first buffer
+> regardless of payload content.
+>
+> Fixes: 5379260852b0 ("igb: Fix XDP with PTP enabled")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: T Kusters <tkusters@aweta.nl>
+
+Great explanation! igb_clean_rx_irq_zc() does not need the same
+treatment, correct?
+
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+
+> ---
+>  drivers/net/ethernet/intel/igb/igb_main.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethe=
+rnet/intel/igb/igb_main.c
+> index ce91dda00ec0..abb55cd589a9 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> @@ -9061,7 +9061,8 @@ static int igb_clean_rx_irq(struct igb_q_vector *q_=
+vector, const int budget)
+>  		pktbuf =3D page_address(rx_buffer->page) + rx_buffer->page_offset;
+>=20=20
+>  		/* pull rx packet timestamp if available and valid */
+> -		if (igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+> +		if (!skb &&
+> +		    igb_test_staterr(rx_desc, E1000_RXDADV_STAT_TSIP)) {
+>  			int ts_hdr_len;
+>=20=20
+>  			ts_hdr_len =3D igb_ptp_rx_pktstamp(rx_ring->q_vector,
+> --=20
+> 2.27.0
+>
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmovrTQTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgiv3D/0UL1rHA6YpGPl2jWtXbXCrHgwJJdw5
+A7Gz5HXnRnXa9w1rEAJR5yTlDo6NGCctjf0ZQbauwUVEoZ24+mBdNWHZbRi+alOw
+CiiLygla3wwCp6bwPdOfxoOWWw1RM9E+auZCv+8Gl9yFinuJkwY7ZgRmdzf99U//
+FhM/mxLAcnheWAWmvPFeaQZY8jcBh7gy//sN5FaFnIamQXIVulKMmfLAuzqPtoUf
+QMT/wL9nLi/yyp0cQUM9OXsb3WCFWfk1VyIHdOFtDKt8xZE3tgotUAH1JwYvUb5A
+EBb7PwgbvPhlqBEjDgtCi7p+KL/Jk8AIxjReHNjG+nXxxc6FURTEkuvkHAu0Zfx9
+O9hc9reE3zsvwDvtrL+wfcMst894XDrQfdlMhDGZDaDHkiOUHk5wpm2FTO3BhM43
+cR1xUuXchLSmUufMYh4aW9iP+k6TqZqdRMK3x/v+4RGhkuHUvHbjEnyCKkfhsRAn
+bqDgB2tnCHHHi3DUAPAu+fRf8yK/D5DYDWTrLT2EIsrDeTqU4DmTrA++NNsfkQU4
+FqPIZssxIYXDDC9PtiG9CEscDL+EkMDeFVGzvYUIL5kLxAUl1UfmMCky9k7Qd4Mt
+Paph8NOdC03rwrQQikqJ2SoH4hnakRiIeBu8YkWVhGKvzU/WTx9PtSKtrhVkzWeR
+tnGF2+a/wNMIOQ==
+=+94Q
+-----END PGP SIGNATURE-----
+--=-=-=--
 
