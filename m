@@ -1,348 +1,158 @@
-Return-Path: <stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 30VzCHokMGosOwUAu9opvQ
-	(envelope-from <stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:12:42 +0200
+	id G1duElMmMGrQOwUAu9opvQ
+	(envelope-from <stable+bounces-263389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:20:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B216882CB
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:12:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B88688469
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:20:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B0LnpDnc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263383-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b="GNo3F/Lw";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263389-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263389-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=none;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B52A1300609D
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:10:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F26FB307EB9E
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A685C40863D;
-	Mon, 15 Jun 2026 16:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41ABF425CE7;
+	Mon, 15 Jun 2026 16:11:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46181408616
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCBD423A74
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:11:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781539810; cv=none; b=lHKEfuM4+avWlcAp+KYHz+sfdyieHhLPZA/WTYgzoPEOIdW6l2hkphfgDSKtMtTtmr2U7lFKS53ErscsCaswb8lsCXLJZ8jE772ZMdINKEnRlf2sa4xlCK4+/Rx/hfwRfAejilS+fJ8mGGIyv6rcbYVZgwcutrOk6RbXNX859YI=
+	t=1781539883; cv=none; b=HxrsTnTTMCEXFZNgav9n8Q7o29n9e504SdZyVsyG0P6oQF7uxVPBoKDiG/LQvuhnPNBWRtBJXWJ2siBx2o66upk+dBj1ORrA2MX522SSKqeRJIK1zwrpYqBaMZ/K3It7jd5nQk8e7Eyf1qLR9ykURF7XlPGoOhUzG9TlX1J3ock=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781539810; c=relaxed/simple;
-	bh=Id2E+D8gmd0pRPN8WxOc/qBsESy5CXlbetgksc5teWs=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3REFHwlmVv9bOLDtPgmeDGrxHUO8TUwVgiiaL6TnKDw0sgtXlCg7ZmV/H8xl2bLtnlPg1aJI1DEloXf4CdrdRfoOqMaWVW61wv6LaViNAGMZmbAispHDuAC0fVEYqHW3BbthL/jNWSWH7UiJmGKNC3oQvcSHdYGqXuPLgHgrtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0LnpDnc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAB11F00A3A
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 16:10:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781539808;
-	bh=w4SYa4JXnwW8VDFisq3TRs3kpNlLcYUTqvc4oyIga4g=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=B0LnpDnc2yQHhbXbzg0prmkEKRthPYXdyyy+HmD73yIiiGvelWUuQf2bY5OvsORH6
-	 qv0/uiHGQxrn3goCNL+hwso4L0uigBZ/pB6Xqb/0uN5dzOI47qKbV+FMgZv0umnX7+
-	 fQoo+06cmctc1C3d47+k7ioW2eAiMAB2R28z7Nbx+6YKpCGry9QZdmqUtaFpVy1LxP
-	 22IRNIdgM8T/XFZkfDN45V/faKAgveffqVwOA7nY4wQclaBPKcniqDWHERVYYUfiq0
-	 top6r5PMCaxkPAg7BJ7AjxGiQ3MmxcP3eOdNgkfAw0/Q1A9uBSYA/BsGRVHr+EeR3a
-	 k/K9Uw6s6Ap+w==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 6.12.y] mm/hugetlb: avoid false positive lockdep assertion
-Date: Mon, 15 Jun 2026 17:09:55 +0100
-Message-ID: <20260615160955.258138-1-ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <2026061500-humorist-stinging-e849@gregkh>
-References: <2026061500-humorist-stinging-e849@gregkh>
+	s=arc-20240116; t=1781539883; c=relaxed/simple;
+	bh=v+O+yppkseenWDZs1JbF/AaLknmY2AN0YpoReeQBaRo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rpOsqaj3ORE7C71xXxinYZzcdrDbW0kYzrtzHze04NfxVBP9G5/z9TKaunaLFwF3QSAuW0Ga0DBtn8h4mWoZyTd5uXaX8sqZMNvxQQCXqR/la/c0iv8RAYTfa425kPnEJQDQgOLcPXL8Eow4/lcD0IPFQh/n8bfyyM1jZHhdNxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=GNo3F/Lw; arc=none smtp.client-ip=209.85.210.41
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e6e9408e30so2257161a34.2
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 09:11:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1781539880; x=1782144680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qj7icUEMs4GIx/u6FWTf4aEg63YvIWSyt4xXxioMfP0=;
+        b=GNo3F/Lwc8eWmcjX/yyBDPRLHwjBOnNzqbt0sItdN9OGWbppMkV8YclwQU9W5KAn9v
+         HA6+fWB+gUBaTLZPfVWxZ/9h4GkmY5FVSUP7oUb/FS1MlJi6N1Hff9TmU1L8lP6y0WpS
+         gsPnNarH8cegM0/A3u4OphUHpZ1FZi5XN4tVYkPvOPgo1FSxzmDG1g9/XiEXKLi6jVXd
+         2yW5zsA005RglNBPoSz5lIGCJxYQ2l24imDJrrGWFYPrPfhYWBD7fTl8q2tHwGgryk76
+         PuCPBb8XT43UqQ0eCRkqIByTbnuwuQ3ux9NpAml8VEWEigNc3DVxH8I31jc9H3AEA0kj
+         7AYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781539880; x=1782144680;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qj7icUEMs4GIx/u6FWTf4aEg63YvIWSyt4xXxioMfP0=;
+        b=N33GIaNdy5oOAsxUZvKGESTTrGBQIpDBImCBhdYC4YD7whAHMxfelrjh9wfr8+a0XH
+         tWAshwFsZhMpR+CTB9DAOZNoRVqNpEmG690zVDuoZIz78AquceJnkNmiRjRZmhLMhF+6
+         UNXw6sIFrCCdz7iA5GxB33Dk28iyBaO96HYWopjCyifHT/dHElD2VwXBqweg1PkT/cxj
+         ti2SW8gjCDBrAmh2e3qxmWAK7O+Kb4feEzVGs8k8pOs1taYDlLpvvCCVvQKiz6TLdTrM
+         wxl8vAGyb54JJNCsDd6lD0l2PLfkDflg12u3V0N5khnrSbdLcWmAo2l5ewQA8DPj/GJl
+         gj6A==
+X-Forwarded-Encrypted: i=1; AFNElJ8aUgd1qxtFrox781gFvalDeTCcfXViiwtg+ULKOFx/ejfUuThMMhm4mKYNi2ZTmL9sgh9Xrt8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRZDoBOqIaMyvu8ZwB6d+ZBZe1YTiStzeirjsZNv822tfh6+4S
+	tVasf3ya3+79rJBCRjN1NIv2s+dEdS/1Xpn0YuItI5uXNBC9UBdttMqqZdDRNSOAAKs=
+X-Gm-Gg: Acq92OEwmhZP8Qg0svMweu503BpBJtmX5Zk9TpCM6BeheBKmFzQT9CzJsH1XTQTyYev
+	PGvJgVP2Q9VG6Nw3vsy6pKE9qkAr8eWnOEiS3WWWOxd5IuXhUSEt4iy/9WsbMoF4+DCrIZBt5gp
+	i0bFbDSzjLwdlMIKoZbwGwIZy9FIClNoQUY5tW4hxaj518ekNm5SW0ZEfrcML9DDf2gtBbSSKJe
+	iCL2EyriiLeUkfY1+cpJ5X+txyQzP4zrXrIo02X7+ura2AvuSQo1s41h2hr3k2zmJUjv6EjFAAH
+	7D/gK0VE2dPbit0tK6mbTzMatdnZThNv5KMlPRDoluFfG3jnnGgY0COxTr89V/pJETr8XrxT5+4
+	s3wIEze4SksU9ikiaRfgqgkOhE1tP3jvqWYYeXQIXmgOlINiGAG13JR8egChgN3jWv8PywfvOs8
+	9lqmq4Tm9UmegmLnDMp2yn6SbC0zRLksjEFfO2mV4+VNAZ/YBwXzLXbtqjkH0yEiokD0JgASxPI
+	VAVvPAoz571Xw==
+X-Received: by 2002:a05:6830:f90:b0:7e6:f7fb:967f with SMTP id 46e09a7af769-7e78e628c3fmr8131058a34.2.1781539880593;
+        Mon, 15 Jun 2026 09:11:20 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e79f6fb5edsm4581811a34.26.2026.06.15.09.11.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 09:11:19 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Michael Wigham <michael@wigham.net>
+Cc: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20260613225240.34032-1-michael@wigham.net>
+References: <20260613225240.34032-1-michael@wigham.net>
+Subject: Re: [PATCH] io_uring/rw: preserve partial result for iopoll
+Message-Id: <178153987932.2073745.6612566060392161190.b4-ty@b4>
+Date: Mon, 15 Jun 2026 10:11:19 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:michael@wigham.net,m:asml.silence@gmail.com,m:io-uring@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:asmlsilence@gmail.com,s:lists@lfdr.de];
+	DMARC_NA(0.00)[kernel.dk];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263383-lists,stable=lfdr.de];
-	FORGED_SENDER(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_ONE(0.00)[1];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,s:lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263389-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
 	ALIAS_RESOLVED(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,suse.de:email,linux-foundation.org:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,kernel.dk:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel-dk.20251104.gappssmtp.com:dkim]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 34B216882CB
+X-Rspamd-Queue-Id: E1B88688469
 
-Commit 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split,
-not before") changed the locking model around hugetlbfs PMD unsharing on
-VMA split, but did not update the function which asserts the locks,
-hugetlb_vma_assert_locked().
 
-This function asserts that either the hugetlb VMA lock is held (if a
-shared mapping) or that the reservation map lock is held (if private).
+On Sat, 13 Jun 2026 23:52:16 +0100, Michael Wigham wrote:
+> A partial read will store the completed byte count in io->bytes_done.
+> The regular completion path applies io_fixup_rw_res() so that, when the
+> following operation reaches EOF, the number of bytes already read is
+> returned.
+> 
+> The iopoll completion path does not apply this fixup to the return value
+> and can return zero instead.
+> 
+> [...]
 
-If you get an unfortunate race between something which results in one of
-these locks being released and a hugetlb VMA split and you have
-CONFIG_LOCKDEP enabled, you can therefore see a false positive assertion
-arise when there is in fact no issue.
+Applied, thanks!
 
-Since this change introduced a new take_locks parameter to
-hugetlb_unshare_pmds(), which, when set to false, indicates that locking
-is sufficient, simply pass this to the unsharing logic and predicate the
-lock assertions on this.
+[1/1] io_uring/rw: preserve partial result for iopoll
+      commit: 15a90c358c33871eec14588d4c72b548b4f679b2
 
-This is safe, as we already asserted the file rmap lock and the VMA write
-lock prior to this (implying exclusive mmap write lock), so we cannot be
-raced by either rmap or page fault page table walkers which the asserted
-locks are intended to protect against (we don't mind GUP-fast).
-
-Separate out huge_pmd_unshare() into __huge_pmd_unshare() to add a
-check_locks parameter, and update hugetlb_unshare_pmds() to pass this
-parameter to it.
-
-This leaves all other callers of huge_pmd_unshare() still correctly
-asserting the locks.
-
-The below reproducer will trigger the assert in a kernel with
-CONFIG_LOCKDEP enabled by racing process teardown (which will release the
-hugetlb lock) against a hugetlb split.
-
-void execute_one(void)
-{
-	void *ptr;
-	pid_t pid;
-
-	/*
-	 * Create a hugetlb mapping spanning a PUD entry.
-	 *
-	 * We force the hugetlb page allocation with populate and
-	 * noreserve.
-	 *
-	 * |---------------------|
-	 * |                     |
-	 * |---------------------|
-	 * 0                 PUD boundary
-	 */
-	ptr = mmap(0, PUD_SIZE, PROT_READ | PROT_WRITE,
-		   MAP_FIXED | MAP_SHARED | MAP_ANON |
-		   MAP_NORESERVE | MAP_HUGETLB | MAP_POPULATE,
-		   -1, 0);
-	if (ptr == MAP_FAILED) {
-		perror("mmap");
-		exit(EXIT_FAILURE);
-	}
-
-	/*
-	 * Fork but with a bogus stack pointer so we try to execute code in
-	 * a non-VM_EXEC VMA, causing segfault + teardown via exit_mmap().
-	 *
-	 * The clone will cause PMD page table sharing between the
-	 * processes first via:
-	 * copy_process() -> ... -> huge_pte_alloc() -> huge_pmd_share()
-	 *
-	 * Then tear down and release the hugetlb 'VMA' lock via:
-	 * exit_mmap() -> ... -> vma_close() -> hugetlb_vma_lock_free()
-	 */
-	pid = syscall(__NR_clone, 0, 2 * PMD_SIZE, 0, 0, 0);
-	if (pid < 0) {
-		perror("clone");
-		exit(EXIT_FAILURE);
-	} if (pid == 0) {
-		/* Pop stack... */
-		return;
-	}
-
-	/*
-	 * We are the parent process.
-	 *
-	 * Race the child process's teardown with a PMD unshare.
-	 *
-	 * We do this by triggering:
-	 *
-	 * __split_vma() -> hugetlb_split() -> hugetlb_unshare_pmds()
-	 *
-	 * Which, importantly, doesn't hold the hugetlb VMA lock (nor can
-	 * it), meaning we assert in hugetlb_vma_assert_locked().
-	 *
-	 *            .
-	 * |----------.----------|
-	 * |          .          |
-	 * |----------.----------|
-	 * 0          .     PUD boundary
-	 */
-	mmap(0, PUD_SIZE / 2, PROT_READ | PROT_WRITE,
-	     MAP_FIXED | MAP_ANON | MAP_PRIVATE, -1, 0);
-}
-
-int main(void)
-{
-	int i;
-
-	/* Kick off fork children. */
-	for (i = 0; i < NUM_FORKS; i++) {
-		pid_t pid = fork();
-
-		if (pid < 0) {
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-
-		/* Fork children do their work and exit. */
-		if (!pid) {
-			int j;
-
-			for (j = 0; j < NUM_ITERS; j++)
-				execute_one();
-			return EXIT_SUCCESS;
-		}
-	}
-
-	/* If we succeeded, wait on children. */
-	for (i = 0; i < NUM_FORKS; i++)
-		wait(NULL);
-
-	return EXIT_SUCCESS;
-}
-
-[ljs@kernel.org: account for the !CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING case]
-  Link: https://lore.kernel.org/agWZsPGYid08uU6O@lucifer
-Link: https://lore.kernel.org/20260513085658.45264-1-ljs@kernel.org
-Fixes: 081056dc00a2 ("mm/hugetlb: unshare page tables during VMA split, not before")
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Jann Horn <jannh@google.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit b4aea43cd37afad714b5684fe9fdfcb0e78dba26)
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- mm/hugetlb.c | 57 ++++++++++++++++++++++++++++++++++------------------
- 1 file changed, 37 insertions(+), 20 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c5975b411afb..09aa3fca7eec 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -86,6 +86,9 @@ static int hugetlb_acct_memory(struct hstate *h, long delta);
- static void hugetlb_vma_lock_free(struct vm_area_struct *vma);
- static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end, bool take_locks);
- static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
-@@ -7223,6 +7226,31 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return pte;
- }
- 
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	unsigned long sz = huge_page_size(hstate_vma(vma));
-+	struct mm_struct *mm = vma->vm_mm;
-+	pgd_t *pgd = pgd_offset(mm, addr);
-+	p4d_t *p4d = p4d_offset(pgd, addr);
-+	pud_t *pud = pud_offset(p4d, addr);
-+
-+	if (sz != PMD_SIZE)
-+		return 0;
-+	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
-+		return 0;
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (check_locks)
-+		hugetlb_vma_assert_locked(vma);
-+	pud_clear(pud);
-+
-+	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+
-+	mm_dec_nr_pmds(mm);
-+	return 1;
-+}
-+
- /**
-  * huge_pmd_unshare - Unmap a pmd table if it is shared by multiple users
-  * @tlb: the current mmu_gather.
-@@ -7242,25 +7270,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
--	unsigned long sz = huge_page_size(hstate_vma(vma));
--	struct mm_struct *mm = vma->vm_mm;
--	pgd_t *pgd = pgd_offset(mm, addr);
--	p4d_t *p4d = p4d_offset(pgd, addr);
--	pud_t *pud = pud_offset(p4d, addr);
--
--	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
--	hugetlb_vma_assert_locked(vma);
--	if (sz != PMD_SIZE)
--		return 0;
--	if (!ptdesc_pmd_is_shared(virt_to_ptdesc(ptep)))
--		return 0;
--
--	pud_clear(pud);
--
--	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
--
--	mm_dec_nr_pmds(mm);
--	return 1;
-+	return __huge_pmd_unshare(tlb, vma, addr, ptep, /*check_locks=*/true);
- }
- 
- /*
-@@ -7294,6 +7304,13 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	return NULL;
- }
- 
-+static int __huge_pmd_unshare(struct mmu_gather *tlb,
-+		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
-+		bool check_locks)
-+{
-+	return 0;
-+}
-+
- int huge_pmd_unshare(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		unsigned long addr, pte_t *ptep)
- {
-@@ -7564,7 +7581,7 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		if (!ptep)
- 			continue;
- 		ptl = huge_pte_lock(h, mm, ptep);
--		huge_pmd_unshare(&tlb, vma, address, ptep);
-+		__huge_pmd_unshare(&tlb, vma, address, ptep, take_locks);
- 		spin_unlock(ptl);
- 	}
- 	huge_pmd_unshare_flush(&tlb, vma);
+Best regards,
 -- 
-2.54.0
+Jens Axboe
+
+
 
 
