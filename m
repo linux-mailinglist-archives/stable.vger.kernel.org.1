@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-263426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id k1ZnDQZAMGqiQQUAu9opvQ
-	(envelope-from <stable+bounces-263426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:10:14 +0200
+	id Ch/2CeFAMGrVQQUAu9opvQ
+	(envelope-from <stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:13:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE7368913D
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:10:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7777C6891B4
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 20:13:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aj1WyhWk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263426-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263426-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7zsDVLt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263427-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A74F30434EE
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:10:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8738930ABEC5
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 18:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C621E30567B;
-	Mon, 15 Jun 2026 18:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEE9303A0D;
+	Mon, 15 Jun 2026 18:13:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D182EB5B8;
-	Mon, 15 Jun 2026 18:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919C62EA171
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 18:13:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781547011; cv=none; b=ahbT4mOwIfBFa1IEPh2SKdSLr2do/oI3l4txZM8s5e1PWaj2I5bGx1/6kmYmhSVYK1J+C09SJWvett2N8BThdQNjsPNII2IKjj6bR8XpAEiTW3Nfo42wf2KfLk1Fiakn86ZTuXx7BbYytYa2R1ESQoEdNEhpr6fNZbuirtFl9Vo=
+	t=1781547184; cv=none; b=IEOK3IUpt5llBslaCIhzYVnuvIAdPaS/gSYB8OzaGcwuOH8AG6ZN/751X0LydDPxTZntDWWKjyMRpyL+DpC5QHUhP1au5yQklVzCYv2Rf3z9fSvSWfA2WSmh0gqI54ZoqS5tMB04xtmzSVVwI7VhF8PVz3JVpSRWTVEzu6AK6vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781547011; c=relaxed/simple;
-	bh=9bGJPAAQWrSiefUyfK2vvzRYymLRr0ggWFXKFmaNQwk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fh368z5PZj7kwJE9ggREwy/q2Xa9qk1MObAJiO43LSBqN+dXIVU0uF/BKyYRrTzo+oel5UF3sFfnP2K/dOOke3elxDIG7JxW+IZBIaL8y1CPd5NA4qOTYAeBtdO5Sgko2NKLCEYFAp8ON3nBN5cIvyyk2hBI6deUoA45ERDhkro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aj1WyhWk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD441F000E9;
-	Mon, 15 Jun 2026 18:10:10 +0000 (UTC)
+	s=arc-20240116; t=1781547184; c=relaxed/simple;
+	bh=xzCgYMjpgAmReXW/sSLU+gYIo700v43ypLqcCd85EQg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jGCOqP8vKAOxwPMyhzvUTwJEgOJWIJTFBmp63b1upCa1X+e4SqIJA/F+ySFNmDHp0ZwzqT/ecU/Ka6vDF2ajft/C/9N2nccTos3RpHCAhU082akOg2g7KjhpKWU+vOk5azS0dMIcpCUcgEPp42rbu45as3cy3+Vk8pKBqDXlR3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7zsDVLt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80561F000E9;
+	Mon, 15 Jun 2026 18:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781547010;
-	bh=cIN7Q2WGpJ4nSTosWIwtbS/aqJIMSj9ILTwihRVKATE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Aj1WyhWk6c1oSzbN2H4HLBtLlQlCEmfHRCIcrTLiaJjARqwGcMMyA+w5zTtyHZApf
-	 mfvn+1DuwbwyqDqhTtMIjGhoB99iiUiMZgKvKLukGGOACWkSQZKFaxhwFUQBMUH+cQ
-	 ZW5yzn0+zzV5gH4jhxTDZsOMHyiO0n4SyRmpituzT3DWMk9gWPIviIoSkoOzWNG6wi
-	 b3DfXiO/4zwd2y3OV+q9uKk2FkpmnYt73BZL9n7GJK3OUoYTpeooOiFihVHwh0fbIk
-	 s8pCMXYn9tn/pGYzF1ji2A8YAbZ5+9lIy0p1fpQtfzg9XMh0L17hXeb142ClXCMbmh
-	 fBPmZMy64MuLw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9396D3839A06;
-	Mon, 15 Jun 2026 18:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781547183;
+	bh=n2s3pbYmQnmxSsDcm8pHeqiI96srv2pR6iW+DTFIvw8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=U7zsDVLtPQMDT0dskfO6WoP55trJl9Ur5gFFrjaiDNfenZ7/Jk1lhdxt8ul8KX5qs
+	 nQClzExIn+MOWWdGNRSH2Gq8lAi0P7dIY7+L1H9m16CE7ji6Td71+t1Pk6I6d3nwUp
+	 30YlZBSp/xxllrGddQuuWe8IitzrL3A7RWGszYAYycEURtVflHu8OyozJVcRjWVZ1t
+	 Ey6WWPr/ScLtxwRdehYr5fVCbMFqcZvCAUlpqLBR/K3XO3hd8bpt5KQIbNUr/mlXa5
+	 XS8WGKy4cc/3VttXXji8gcfPQpdfPEdg+Xy+UjJAeb6Adfri5XHSaquM36qc3FPBd4
+	 WIDHpr9LUVsIA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Anton Leontev <leontyevantony@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+Date: Mon, 15 Jun 2026 14:13:00 -0400
+Message-ID: <20260615181300.2319407-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061524-importer-bogged-4a5f@gregkh>
+References: <2026061524-importer-bogged-4a5f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,82 +64,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] Bluetooth: hci_uart: clear HCI_UART_SENDING when
- write_work is canceled
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <178154700514.231677.2643745417902047047.git-patchwork-notify@kernel.org>
-Date: Mon, 15 Jun 2026 18:10:05 +0000
-References: 
- <9fdead8517c36f37c0b23b7b60f590d735792cfa.1781375875.git.pav@iki.fi>
-In-Reply-To: 
- <9fdead8517c36f37c0b23b7b60f590d735792cfa.1781375875.git.pav@iki.fi>
-To: Pauli Virtanen <pav@iki.fi>
-Cc: linux-bluetooth@vger.kernel.org, marcel@holtmann.org,
- luiz.dentz@gmail.com, 25181214217@stu.xidian.edu.cn,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-3.66 / 15.00];
 	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,holtmann.org,gmail.com,stu.xidian.edu.cn];
-	TAGGED_FROM(0.00)[bounces-263426-lists,stable=lfdr.de,bluetooth];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263427-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:pav@iki.fi,m:linux-bluetooth@vger.kernel.org,m:marcel@holtmann.org,m:luiz.dentz@gmail.com,m:25181214217@stu.xidian.edu.cn,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:luizdentz@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,redhat.com,kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8EE7368913D
+X-Rspamd-Queue-Id: 7777C6891B4
 
-Hello:
+From: Anton Leontev <leontyevantony@gmail.com>
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
 
-On Sat, 13 Jun 2026 21:43:37 +0300 you wrote:
-> HCI_UART_SENDING bit in tx_state means write_work is pending and blocks
-> queueing it again.  Currently this bit is not cleared when canceling the
-> work in hci_uart_close(), which blocks future writes when device is
-> reopened later if write_work was pending.
-> 
-> Fix by clearing HCI_UART_SENDING when canceling the work.
-> 
-> [...]
+netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
+send buffer using phys_to_virt() on the entry PFN. Entries for the
+RNDIS header and the skb linear data come from kmalloc'd memory and
+are always in the kernel direct map, but entries for skb fragments
+reference page cache or user pages, which on 32-bit x86 with
+CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
+phys_to_virt() returns an address outside the direct map and the
+subsequent memcpy() faults on the transmit softirq path, which is
+fatal.
 
-Here is the summary with links:
-  - [v2] Bluetooth: hci_uart: clear HCI_UART_SENDING when write_work is canceled
-    https://git.kernel.org/bluetooth/bluetooth-next/c/3b7686310806
+Map the pages with kmap_local_page() instead, handling two properties
+of the page buffer entries:
 
-You are awesome, thank you!
+ - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
+   not a native PFN. Reconstruct the physical address first and derive
+   the native page from it, so the mapping stays correct where
+   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
+
+ - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
+   grouping in the page buffer array"), an entry describes a full
+   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
+   while kmap_local_page() maps a single page. Copy page by page,
+   splitting at native page boundaries.
+
+The copy path only handles packets smaller than the send section size
+(6144 bytes by default); larger packets take the cp_partial path where
+only the RNDIS header is copied. So entries here are bounded by the
+section size and a copy is split at most once on 4K-page systems. On
+!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
+no mapping work is added.
+
+Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
+Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted `phys_to_page(paddr)` to `pfn_to_page(PHYS_PFN(paddr))` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/hyperv/netvsc.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+index ac2d706ef2d0ef..077595b42d4a77 100644
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -12,6 +12,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -992,12 +993,22 @@ static void netvsc_copy_to_send_buf(struct netvsc_device *net_device,
+ 	}
+ 
+ 	for (i = 0; i < page_count; i++) {
+-		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
+-		u32 offset = pb[i].offset;
++		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
++				    pb[i].offset;
+ 		u32 len = pb[i].len;
+ 
+-		memcpy(dest, (src + offset), len);
+-		dest += len;
++		while (len) {
++			struct page *page = pfn_to_page(PHYS_PFN(paddr));
++			u32 off = offset_in_page(paddr);
++			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
++			char *src = kmap_local_page(page);
++
++			memcpy(dest, src + off, chunk);
++			kunmap_local(src);
++			dest += chunk;
++			paddr += chunk;
++			len -= chunk;
++		}
+ 	}
+ 
+ 	if (padding)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
 
