@@ -1,194 +1,254 @@
-Return-Path: <stable+bounces-263251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id t5nyL2kPMGq5MgUAu9opvQ
-	(envelope-from <stable+bounces-263251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:42:49 +0200
+	id VHNAHvURMGpvMwUAu9opvQ
+	(envelope-from <stable+bounces-263257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:53:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2C26874BF
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA19687625
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 16:53:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b="P/W6Erp3";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263251-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263251-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MqDC13mo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263257-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263257-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 077F73022570
-	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 14:41:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C79003076E38
+	for <lists+stable@lfdr.de>; Mon, 15 Jun 2026 14:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3AC3FB05A;
-	Mon, 15 Jun 2026 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCB83FBEAC;
+	Mon, 15 Jun 2026 14:43:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56603FADE9
-	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2AF3FBB68
+	for <stable@vger.kernel.org>; Mon, 15 Jun 2026 14:43:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781534484; cv=none; b=cLGSShDGBGZj9qdwI+J38i8EaLwMU3dKwkxHtj9nspnGsa6KWN2yO5007n5M8NSND6TM3fVkNyn0KndPlQ8Sor6QxdSkAazAZGCNgzRHvlQGqDZu47Z1iElV2vkhjovVRuyeizjd9EnhWGF6rcQ7aoelp/v6Bio0wuFMWpmrvS0=
+	t=1781534636; cv=none; b=mVcOqERXFhsfPC3jkKZxlst4nD06adSUJF/VNqArIf9oLlw9zpXsUfqk3Mx+loI+WSeZ+/2eeLTg2ziboelW5FILraessafZxXsWxcuqOWqNZ/AMKlBinkqW/CpV6ViAh+f8qEKZteHrjDmubhHjxM1IsvLLLdP1Om3bKAui8dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781534484; c=relaxed/simple;
-	bh=JKSHaKk+guCdYxRe7Vv6fE5X4yQYslPz2+l8BCsSqGM=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=hLxrsilgeh25eeVmbLlfEy1t0tndqTkGQjkm109vGE2ICuoU6qvrQVo/2x7HWk69eUc236qKecKK1UmRmcNSjZYKzxbtq27bo5peVx5C0vuM1oKLenz/7YNeDDsXJj93Mge79hzSxdej7RlWvVtCQhzs19KYd3WrXpBKqefpS7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=P/W6Erp3; arc=none smtp.client-ip=209.85.161.44
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-69e8a8608d7so2088207eaf.0
-        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 07:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1781534480; x=1782139280; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ILtnIQxD6DomeJBfmptALas2HKPpvZEBo2oohSNd3Ws=;
-        b=P/W6Erp3sSLFVT9eNfz4BSgbZVMOPG3RrEdnjA8khrIZQJse5cJhfMpQQ3D3QEw80H
-         mzRWSdCFTdOYnsRf9q1wC9bDO9O2EqXwQK6t/9Zl0U1MCdAAMfb5QwzhUjO1VwnfTlP3
-         d8CfDfsXMp/Nx6ATmYAg20yA6O2LcdcEOhpGl/fgRznGf1AB2YKwaAFUaSP/5Qa2bVdO
-         iD8VE/1n1j421yWzu1Fvy0JBQK9h2BSsqY3UY7gXNuBDDfb9zFExwRbuVebsGKzo/GZi
-         pWj25bHEr/MJRDlrq+39jih+2EFzOuDT/m+SHv4z+7N4/oujL6lyx30OZLD/OMO7xSaf
-         IC7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781534480; x=1782139280;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ILtnIQxD6DomeJBfmptALas2HKPpvZEBo2oohSNd3Ws=;
-        b=rCKicmNs9a1KJESzqF0AL4VjG7x/EYqBt1Yj6SF66NrlzfqOv+ckXlyM8/GlXh3IMr
-         i9VmyAQLetYevuD7+0fdA7rivEzOMQ1HS00BwG7YjkWwW7xSEw/pDiDD/1No/nhf1fB8
-         u6AHqfazhfavLNYm6qo+fgnecd1tnQiGC+wOoV4hMj//+fQJ7kNEk9cghkakzNAGxmqt
-         +usZTGlWSaP4fMbEEzuuOQYUILzpr+asDESxwz16tocNWApXAByHY2E4DA2YMXF91bDl
-         mqJVA/HKoF+mYGt3eYT7owsxcECEsp1WxFEpn30SwqAvq+6O6aMho2EuvSMfWNBDRf7b
-         O3bA==
-X-Gm-Message-State: AOJu0YyxbPOjcz/AlKfsn4FB++F7lHlFBM9sjQav/AvJ1szioNtGJ8SN
-	B2dQHqcF84HDAq/UG+rwy0q798P3MlpM6lhZb7Q1tKhakyFN3INSPaT53rB0w2jhRdg=
-X-Gm-Gg: Acq92OEbg2xRcS8AokebrBW8p2lh7lPOz9xx34Fu5YfXFupnTGUWAek+JDNGJ4Wboex
-	P3LE0+1MfaLAAsEFnPZFQwVqkN1aT+EekzlefBiER6C7euSKbTmmyev89CjWsWpZiHEpRyXQ0Sm
-	BWgn+RGbtjMs2HR2I8wr10prUGlPirHYXMrJsfXKF8Qj0b/ACaxBa6ExQzbvAb1boXTZzM4bE6n
-	l21QNzTXuEFGaUTSyjbmICyvLyAE30S5AbUpgbddwpcizg3ObAcQIxsZAkCaMUQPULn1EyZ3c8S
-	r89mMDY7FGzMr73Gcmqhg9e0+vC1oF9V/alYw43JENn8nqjjf8E5whDbT27k7ubUBOYCLeT+LbA
-	oK1LvhGrJqKVVsFvPWKudMY2UgbYkksVA+9aWywTQbdkzSH3etJ+tvBkTAQxX6gjcdmnOnJT7Fc
-	K1Fps/1sydrIWX9E35N5Ud+oeQlaSGAhyUjedhw+N6Txymr0GpUUrcj2wroPg8BVqUO0vkqTCXf
-	fp9ckMhqd/3itEaeOY=
-X-Received: by 2002:a05:6820:1a0d:b0:69d:cfb6:4f4a with SMTP id 006d021491bc7-69edc642864mr9081319eaf.15.1781534480489;
-        Mon, 15 Jun 2026 07:41:20 -0700 (PDT)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4430866fa15sm58192fac.0.2026.06.15.07.41.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jun 2026 07:41:19 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------Mr8rDufnV5LLv0WSKjRUgXsv"
-Message-ID: <e14ac015-9540-40d4-9783-4b920319ba70@kernel.dk>
-Date: Mon, 15 Jun 2026 08:41:18 -0600
+	s=arc-20240116; t=1781534636; c=relaxed/simple;
+	bh=jAytqilMThdh1/iVQrmDplkY7uXRR3e0JC+TOJ9+Uq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eLKd89jJnNvC+nA3/YVOLvLiHN0F7mKpUpn3KHoCeHEGb4heu3PMxU6GXCNjMdA87omZsMonhAGCLfTeesiD4Qv3FgWfjgLVctxgT8TDIFA4rt5t7plk2OOkinO5cGNi78DiEoVHw/zfPMBld2TEGaJyfScclsALnhHAkkm3tvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MqDC13mo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EC01F000E9;
+	Mon, 15 Jun 2026 14:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781534634;
+	bh=IvmzOw5YZNW5PBcMLTJ6WdLrJ6BxRKyVz7YsQla7mto=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MqDC13moc0wT+2HARHJEcD8HygCIkwZM2lNaXGsgF+j8mivzrqrKHa/WWb6ba3HxY
+	 h9Djy55Q5Lp4RhBNdnrRuZ/a4JKsTjvbmHBBmw+ABTJq9x63s13lw/MvJ4Ke8HvVFB
+	 +QZd6V7UOfErb+nZJxXtQLo5/3Rc4E0Dh60Kf9udXmJybx32nKp2apmWi/o0GfUwNl
+	 8imwPgsWHpmy3FMLzlnAeymDpDgpx+x2jvvnP8kiXRW20L/QKGpO40wEmcmIouiJMp
+	 QD3yLKcOyZXIZJgE6nDkAY2Ed4Pl211dd4WwK2j7Zj6iLO8u+teI5sF8sJhYZsCfZF
+	 2p+TbB0kjBuBg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+Date: Mon, 15 Jun 2026 10:43:52 -0400
+Message-ID: <20260615144352.2161917-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061554-legal-rubbing-8905@gregkh>
+References: <2026061554-legal-rubbing-8905@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/kbuf: don't truncate end buffer
- for bundles" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org, federico.brasili@gmail.com
-Cc: stable@vger.kernel.org
-References: <2026061526-unroasted-disbelief-650a@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2026061526-unroasted-disbelief-650a@gregkh>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.56 / 15.00];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263251-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
+	TAGGED_FROM(0.00)[bounces-263257-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:manivannan.sadhasivam@oss.qualcomm.com,m:sumit.garg@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:federico.brasili@gmail.com,m:stable@vger.kernel.org,m:federicobrasili@gmail.com,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,kernel-dk.20251104.gappssmtp.com:dkim,vger.kernel.org:from_smtp,kernel.dk:email,kernel.dk:mid,kernel.dk:from_mime,linuxfoundation.org:email]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F2C26874BF
+X-Rspamd-Queue-Id: EAA19687625
 
-This is a multi-part message in MIME format.
---------------Mr8rDufnV5LLv0WSKjRUgXsv
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-On 6/15/26 8:18 AM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+[ Upstream commit d922113ef91e6e7e8065e9070f349365341ba32e ]
 
-Here's one for 6.12-stable.
+The current platform driver design causes probe ordering races with
+consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
+probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
+with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
+be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
+driver probe has failed due to above reasons or it is waiting for the SCM
+driver.
 
+Moreover, there is no devlink dependency between ICE and consumer drivers
+as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
+have no idea of when the ICE driver is going to probe.
+
+To address these issues, store the error pointer in a global xarray with
+ice node phandle as a key during probe in addition to the valid ice pointer
+and synchronize both qcom_ice_probe() and of_qcom_ice_get() using a mutex.
+
+If the xarray entry is NULL, then it implies that the driver is not
+probed yet, so return -EPROBE_DEFER. If it has any error pointer, return
+that error pointer directly. Otherwise, add the devlink as usual and return
+the valid pointer to the consumer.
+
+Xarray is used instead of platform drvdata, since driver core frees the
+drvdata during probe failure. So it cannot be used to pass the error
+pointer to the consumers.
+
+Note that this change only fixes the standalone ICE DT node bindings and
+not the ones with 'ice' range embedded in the consumer nodes, where there
+is no issue.
+
+Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
+Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Cc: stable@vger.kernel.org # 6.4
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-1-2a595382185b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ changed `.remove` to `.remove_new` for the void callback and replaced the `__free(device_node)` direct-return with an explicit `goto out` in `of_qcom_ice_get()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/qcom/ice.c | 36 +++++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+index d6e205e3812a96..94e91835062b26 100644
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -15,6 +15,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/xarray.h>
+ 
+ #include <linux/firmware/qcom/qcom_scm.h>
+ 
+@@ -49,6 +50,9 @@ struct qcom_ice {
+ 	struct clk *core_clk;
+ };
+ 
++static DEFINE_XARRAY(ice_handles);
++static DEFINE_MUTEX(ice_mutex);
++
+ static bool qcom_ice_check_supported(struct qcom_ice *ice)
+ {
+ 	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
+@@ -288,6 +292,8 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
+ 		return qcom_ice_create(&pdev->dev, base);
+ 	}
+ 
++	guard(mutex)(&ice_mutex);
++
+ 	/*
+ 	 * If the consumer node does not provider an 'ice' reg range
+ 	 * (legacy DT binding), then it must at least provide a phandle
+@@ -304,12 +310,11 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
+ 		goto out;
+ 	}
+ 
+-	ice = platform_get_drvdata(pdev);
+-	if (!ice) {
+-		dev_err(dev, "Cannot get ice instance from %s\n",
+-			dev_name(&pdev->dev));
++	ice = xa_load(&ice_handles, pdev->dev.of_node->phandle);
++	if (IS_ERR_OR_NULL(ice)) {
+ 		platform_device_put(pdev);
+-		ice = ERR_PTR(-EPROBE_DEFER);
++		if (!ice)
++			ice = ERR_PTR(-EPROBE_DEFER);
+ 		goto out;
+ 	}
+ 
+@@ -378,24 +383,40 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
+ 
+ static int qcom_ice_probe(struct platform_device *pdev)
+ {
++	unsigned long phandle = pdev->dev.of_node->phandle;
+ 	struct qcom_ice *engine;
+ 	void __iomem *base;
+ 
++	guard(mutex)(&ice_mutex);
++
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base)) {
+ 		dev_warn(&pdev->dev, "ICE registers not found\n");
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, (__force void *)base, GFP_KERNEL);
+ 		return PTR_ERR(base);
+ 	}
+ 
+ 	engine = qcom_ice_create(&pdev->dev, base);
+-	if (IS_ERR(engine))
++	if (IS_ERR(engine)) {
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 		return PTR_ERR(engine);
++	}
+ 
+-	platform_set_drvdata(pdev, engine);
++	xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 
+ 	return 0;
+ }
+ 
++static void qcom_ice_remove(struct platform_device *pdev)
++{
++	unsigned long phandle = pdev->dev.of_node->phandle;
++
++	guard(mutex)(&ice_mutex);
++	xa_store(&ice_handles, phandle, NULL, GFP_KERNEL);
++}
++
+ static const struct of_device_id qcom_ice_of_match_table[] = {
+ 	{ .compatible = "qcom,inline-crypto-engine" },
+ 	{ },
+@@ -404,6 +425,7 @@ MODULE_DEVICE_TABLE(of, qcom_ice_of_match_table);
+ 
+ static struct platform_driver qcom_ice_driver = {
+ 	.probe	= qcom_ice_probe,
++	.remove_new	= qcom_ice_remove,
+ 	.driver = {
+ 		.name = "qcom-ice",
+ 		.of_match_table = qcom_ice_of_match_table,
 -- 
-Jens Axboe
+2.53.0
 
---------------Mr8rDufnV5LLv0WSKjRUgXsv
-Content-Type: text/x-patch; charset=UTF-8;
- name="0002-io_uring-kbuf-don-t-truncate-end-buffer-for-bundles.patch"
-Content-Disposition: attachment;
- filename*0="0002-io_uring-kbuf-don-t-truncate-end-buffer-for-bundles.pat";
- filename*1="ch"
-Content-Transfer-Encoding: base64
-
-RnJvbSBjYTQ4NGEzYjk1NDIwYjI4NDE1MzliOWJjNTE0MzUwNzkyOWVhZDBhIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFN1biwgNyBKdW4gMjAyNiAxNjowNTo0NyAtMDYwMApTdWJqZWN0OiBbUEFUQ0ggMi8y
-XSBpb191cmluZy9rYnVmOiBkb24ndCB0cnVuY2F0ZSBlbmQgYnVmZmVyIGZvciBidW5kbGVz
-CgpDb21taXQgNzBmNDg4NmJjYmI5MjllODgwMzhjODgwN2YxZGFmN2ZjNTg3YWU3YyB1cHN0
-cmVhbS4KCklmIGJ1ZmZlcnMgaGF2ZSBiZWVuIHBlZWtlZCBmb3IgYSBidW5kbGUgcmVjZWl2
-ZSwgdGhlIGtlcm5lbCB3aWxsCnRydW5jYXRlIHRoZSBlbmQgYnVmZmVyLCBpZiB0aGUgYXZh
-aWxhYmxlIGxlbmd0aCBpcyBzaG9ydGVyIHRoYW4gdGhlCmJ1ZmZlciBpdHNlbGYuIFRoaXMg
-aXMgdW5uZWNlc3NhcnksIGFzIGFwcGxpY2F0aW9ucyBpdGVyYXRpbmcgYnVuZGxlCnJlY2Vp
-dmVzIG11c3QgYWx3YXlzIHVzZSB0aGUgbWluaW11bSBzaXplIG9mIHRoZSBidWZmZXIgbGVu
-Z3RoIGFuZCB0aGUKcmVtYWluaW5nIG51bWJlciBvZiBieXRlcyBpbiB0aGUgYnVuZGxlLiBU
-aGUgZXhhbXBsZXMgaW4gbGlidXJpbmcgZG8KdGhhdCBhcyB3ZWxsLCBlZyBleGFtcGxlcy9w
-cm94eS5jLgoKSWYgdGhlIGtlcm5lbCBkb2VzIHRydW5jYXRlIHRoaXMgYnVmZmVyIEFORCB0
-aGUgY3VycmVudCB0cmFuc2ZlciBmYWlscywKdGhlbiB0aGUgYnVmZmVyIHdpbGwgYmUgbGVm
-dCB3aXRoIGEgc21hbGxlciBzaXplIHRoYW4gd2hhdCBpcyBvdGhlcndpc2UKYXZhaWxhYmxl
-LgoKSnVzdCByZW1vdmUgdGhlIGJ1ZmZlciB0cnVuY2F0aW9uLCBhcyBpdCdzIG5vdCBuZWNl
-c3NhcnkgaW4gdGhlIGZpcnN0CnBsYWNlLgoKTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
-cmcvaW8tdXJpbmcvQ0FBRXI4amJZNjBub0dqMWZ3X2s5MVVKUkJreWlSVm9TNj1uTGhaN1N2
-d2lkam40Q0FBQG1haWwuZ21haWwuY29tLwpSZXBvcnRlZC1ieTogRmVkZXJpY28gQnJhc2ls
-aSA8ZmVkZXJpY28uYnJhc2lsaUBnbWFpbC5jb20+CkNjOiBzdGFibGVAdmdlci5rZXJuZWwu
-b3JnCkZpeGVzOiAzNWM4NzExYzhmYzQgKCJpb191cmluZy9rYnVmOiBhZGQgaGVscGVycyBm
-b3IgZ2V0dGluZy9wZWVraW5nIG11bHRpcGxlIGJ1ZmZlcnMiKQpTaWduZWQtb2ZmLWJ5OiBK
-ZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0tLQogaW9fdXJpbmcva2J1Zi5jIHwgMSAt
-CiAxIGZpbGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2lvX3VyaW5n
-L2tidWYuYyBiL2lvX3VyaW5nL2tidWYuYwppbmRleCBmNjdlY2FjZDI1NDMuLmRmNWJhMGQ3
-ZmJiMyAxMDA2NDQKLS0tIGEvaW9fdXJpbmcva2J1Zi5jCisrKyBiL2lvX3VyaW5nL2tidWYu
-YwpAQCAtMjkzLDcgKzI5Myw2IEBAIHN0YXRpYyBpbnQgaW9fcmluZ19idWZmZXJzX3BlZWso
-c3RydWN0IGlvX2tpb2NiICpyZXEsIHN0cnVjdCBidWZfc2VsX2FyZyAqYXJnLAogCQkJCWFy
-Zy0+cGFydGlhbF9tYXAgPSAxOwogCQkJCWlmIChpb3YgIT0gYXJnLT5pb3ZzKQogCQkJCQli
-cmVhazsKLQkJCQlXUklURV9PTkNFKGJ1Zi0+bGVuLCBsZW4pOwogCQkJfQogCQl9CiAKLS0g
-CjIuNTMuMAoK
-
---------------Mr8rDufnV5LLv0WSKjRUgXsv--
 
