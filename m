@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-264592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266057-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HuO+Aqd5MWoxkQUAu9opvQ
-	(envelope-from <stable+bounces-264592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:23 +0200
+	id gJ9xA6+VMWrKnQUAu9opvQ
+	(envelope-from <stable+bounces-266057-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7106921BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91862694249
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BaItuaZC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264592-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264592-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JjMummUa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266057-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266057-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3FEF230EF4BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:18:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 176F230A3412
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E87646AEC5;
-	Tue, 16 Jun 2026 16:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F16F478868;
+	Tue, 16 Jun 2026 18:27:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4465043E4BA;
-	Tue, 16 Jun 2026 16:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BBB3D810C;
+	Tue, 16 Jun 2026 18:27:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626729; cv=none; b=a8DDmh2ldrjmAWtmvAq9jbm8qvvsu5IXrdX/d1vzvrPVN2kYuZhoH/jPYorjkYP5lWLgLXcfZzwMG/t02zvZslrPndknrDXqog2kmb25izhyFML1MWeFcGY2sFNcOwWyng9fNa2nA2IXsVZZrbY8NsOqGI/2o7DxD30PxoVn8LE=
+	t=1781634436; cv=none; b=bOGsj8Ez7J+/GOUHLyy+CWMlvpvtdxHXOmoKLPIk1MywB2gigoHQ/SvPWZZNWoRyUn6fx5XkZ1S37iWM5tlNfqTgfJWXOVkSpikXCQCq/1jQoIefkwvVkaQCF7tbdHf6ptX2u/alnUUsNWBnFdjV5CiXXooEIeA5zqIYUmi2VmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626729; c=relaxed/simple;
-	bh=whHCH0sO8r5zMQcDVCJM+IK8IP2r7yXiLo41A18/Nx0=;
+	s=arc-20240116; t=1781634436; c=relaxed/simple;
+	bh=wNATrmJ1u1J+Y7NgUf/bIl+GJyT9QFAVNCjOc9BmzvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okj/A4sd9GR/hkVvzvIaGfi/iyfMRYxjEaCMKvDSq1tnPxC+TMTQ3eV37wqbT2aHpyTdYMHj80AoTiU1zWej/LVSGTENXicdulXf3wvXtCWmK9iTGDTD/BquXsX/+YiXYeIqiMxC3ltvX9KFJ2P/6ncWHIvxA9xruEYjNW9+dNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BaItuaZC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470231F000E9;
-	Tue, 16 Jun 2026 16:18:46 +0000 (UTC)
+	 MIME-Version; b=tLvnuMkAAUyNXGhMrKgoiimVKcZhT4cbKIGOD7f8YGrH+4rsov9xrlNab62McSgBpPViMep03cL33Lalyl06QJEm/cpOfDoQduqmp/7/0oZqcHdR3YvqDJiIr17LiXIs7kRPFJWjh5ff4R9xAXaDyJvS49xvpc3+IiyuqQKHTLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjMummUa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301471F000E9;
+	Tue, 16 Jun 2026 18:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626728;
-	bh=ZQS41QXP8InLel0W8jGMFBoluVtu83Pbc79E/8wgy+4=;
+	s=korg; t=1781634435;
+	bh=JQO1AFkkhWijLPjMns4IyiH0ZfFtpIm4d9NuzVywyL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BaItuaZCcRhW4Gd6mg0ZzFVbdjDe4F/pRvOlVsRyjuQnjM4LJVOqOuEcXuv7d6cTC
-	 TkNGinZg112vqgXYZD/nG9t7nT3ILhMyIAxjyEBChkxEW1C7xQTXpmPhdqlWTpVmAY
-	 00AsK1gnUeNTaBOQ91XNKXBd1kdNzPwg+Tg2dZ/s=
+	b=JjMummUaAjZxmajN0sv3vkgL8N3lf0FBBG5hJ32rnWiNnHcIMr2cpKIJJiIUw6gUf
+	 vA8zkWKLAz4pqJKdXCoNFy5LTKsOYaf98aUeMGmcq8tOujMA1da9kPR5JMIinO7KrW
+	 bwcieaL+oRFXGAeTG5UthDvJhOIK5dQYwaA+96Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/261] ieee802154: 6lowpan: only accept IPv6 packets in lowpan_xmit()
+Subject: [PATCH 5.15 257/411] ksmbd: require minimum ACE size in smb_check_perm_dacl()
 Date: Tue, 16 Jun 2026 20:28:15 +0530
-Message-ID: <20260616145047.799926376@linuxfoundation.org>
+Message-ID: <20260616145114.656367555@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,22 +73,23 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264592-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-266057-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com,m:edumazet@google.com,m:miquel.raynal@bootlin.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,69 +97,117 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f13c19f75e1097abd116];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,appspotmail.com:email,bootlin.com:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F7106921BE
+X-Rspamd-Queue-Id: 91862694249
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 3a5f3f7aff18bcc36a57839cf50cf0cc8de707f3 ]
+[ Upstream commit d07b26f39246a82399661936dd0c853983cfade7 ]
 
-The aoe driver (or similar) generates a non-IPv6 packet
-(e.g., ETH_P_AOE) and queues it for transmission via dev_queue_xmit()
-on a 6LoWPAN interface (configured by the user or test case).
+Both ACE-walk loops in smb_check_perm_dacl() only guard against an
+under-sized remaining buffer, not against an ACE whose declared
+`ace->size` is smaller than the struct it claims to describe:
 
-Since the packet is not IPv6, the 6LoWPAN header_ops->create function
-(lowpan_header_create or header_create) returns early without initializing
-the lowpan_addr_info structure in the skb headroom.
+  if (offsetof(struct smb_ace, access_req) > aces_size)
+      break;
+  ace_size = le16_to_cpu(ace->size);
+  if (ace_size > aces_size)
+      break;
 
-In the transmit function (lowpan_xmit), the driver calls lowpan_header
-(or setup_header) which unconditionally copies and uses the lowpan_addr_info
-from the headroom, which contains uninitialized data.
+The first check only requires the 4-byte ACE header to be in bounds;
+it does not require access_req (4 bytes at offset 4) to be readable.
+An attacker who has set a crafted DACL on a file they own can declare
+ace->size == 4 with aces_size == 4, pass both checks, and then
 
-Fix this by dropping non IPv6 packets.
+  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
+  compare_sids(&sid, &ace->sid);                         /* lower loop */
 
-A similar fix is needed in net/bluetooth/6lowpan.c bt_xmit().
+reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
+offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
+* 4 bytes).
 
-Fixes: 4dc315e267fe ("ieee802154: 6lowpan: move transmit functionality")
-Reported-by: syzbot+f13c19f75e1097abd116@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a1fd763.278b5b03.2bcf39.0049.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260603072955.4032221-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tighten both loops to require
+
+  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
+
+which is the smallest valid on-wire ACE layout (4-byte header +
+4-byte access_req + 8-byte sid base with zero sub-auths).  Also
+reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
+before letting compare_sids() dereference sub_auth[] entries.
+
+parse_sec_desc() already enforces an equivalent check (lines 441-448);
+smb_check_perm_dacl() simply grew weaker validation over time.
+
+Reachability: authenticated SMB client with permission to set an ACL
+on a file.  On a subsequent CREATE against that file, the kernel
+walks the stored DACL via smb_check_perm_dacl() and triggers the
+OOB read.  Not pre-auth, and the OOB read is not reflected to the
+attacker, but KASAN reports and kernel state corruption are
+possible.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ changed le16_to_cpu to le32_to_cpu for num_aces field which is __le32 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ieee802154/6lowpan/tx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ksmbd/smbacl.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
-index 0c07662b44c0ca..4df76ff50699ed 100644
---- a/net/ieee802154/6lowpan/tx.c
-+++ b/net/ieee802154/6lowpan/tx.c
-@@ -255,6 +255,11 @@ netdev_tx_t lowpan_xmit(struct sk_buff *skb, struct net_device *ldev)
+--- a/fs/ksmbd/smbacl.c
++++ b/fs/ksmbd/smbacl.c
+@@ -1265,10 +1265,13 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 		aces_size = acl_size - sizeof(struct smb_acl);
+ 		for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
+-			if (offsetof(struct smb_ace, access_req) > aces_size)
++			if (offsetof(struct smb_ace, sid) +
++			    aces_size < CIFS_SID_BASE_SIZE)
+ 				break;
+ 			ace_size = le16_to_cpu(ace->size);
+-			if (ace_size > aces_size)
++			if (ace_size > aces_size ||
++			    ace_size < offsetof(struct smb_ace, sid) +
++				       CIFS_SID_BASE_SIZE)
+ 				break;
+ 			aces_size -= ace_size;
+ 			granted |= le32_to_cpu(ace->access_req);
+@@ -1286,13 +1289,19 @@ int smb_check_perm_dacl(struct ksmbd_con
+ 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 	aces_size = acl_size - sizeof(struct smb_acl);
+ 	for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
+-		if (offsetof(struct smb_ace, access_req) > aces_size)
++		if (offsetof(struct smb_ace, sid) +
++		    aces_size < CIFS_SID_BASE_SIZE)
+ 			break;
+ 		ace_size = le16_to_cpu(ace->size);
+-		if (ace_size > aces_size)
++		if (ace_size > aces_size ||
++		    ace_size < offsetof(struct smb_ace, sid) +
++			       CIFS_SID_BASE_SIZE)
+ 			break;
+ 		aces_size -= ace_size;
  
- 	pr_debug("package xmit\n");
- 
-+	if (skb->protocol != htons(ETH_P_IPV6)) {
-+		kfree_skb(skb);
-+		return NET_XMIT_DROP;
-+	}
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++			break;
 +
- 	WARN_ON_ONCE(skb->len > IPV6_MIN_MTU);
- 
- 	/* We must take a copy of the skb before we modify/replace the ipv6
--- 
-2.53.0
-
+ 		if (!compare_sids(&sid, &ace->sid) ||
+ 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
+ 			found = 1;
 
 
 
