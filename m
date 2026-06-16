@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266209-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zmlVENJ8MWqWkgUAu9opvQ
-	(envelope-from <stable+bounces-264744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:54 +0200
+	id pwxqLKGZMWq0nwUAu9opvQ
+	(envelope-from <stable+bounces-266209-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8496925AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B1C6946BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YalFoovj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264744-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264744-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="aE/MaEVa";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266209-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266209-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6B8230EE08D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DEEB322AE5F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8A84779BB;
-	Tue, 16 Jun 2026 16:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A1247CC64;
+	Tue, 16 Jun 2026 18:40:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2387944CF37;
-	Tue, 16 Jun 2026 16:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1875F47CC79;
+	Tue, 16 Jun 2026 18:40:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627658; cv=none; b=J1hC18h7SLRVYc/WkJGC4QjfCb1eidcD1UYL+ajup84oXu3cZzv+citzIBtkRfxjH/gM9kXJiHqL8jLf0oLpgOyDpvYWqRLF2bDelDUhg/0Dm+sohQQXGdHklzh5RZQVcN08ibVY7YE3trmnmR1tWu+nGgmv9XuGD1NUIyoMT7o=
+	t=1781635227; cv=none; b=uctIRG0iVpMG9FLs/8m5V7VhTNiIoaL37+3hvhz6y6DY4/ceCHl5rX9qQV7lDdwoX+STy8eMinx8lV3gYIER0HOMg7WB0Etn0VsuaWtmrSrVY0vg2eoOMo3g/y+VHcyqBjtysXsv6IvW6bYEXVyp+fyKNRslX+YdhJWVfxRjCIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627658; c=relaxed/simple;
-	bh=FtEOLCCLwbDDvA8O8magH9QMQ6kSR5rdRMv/0A9JgZs=;
+	s=arc-20240116; t=1781635227; c=relaxed/simple;
+	bh=vX3ywn3P6pxEWqO3btEUDDe3EZGtcnY9HCdFZp+jxMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqmLNeWWsah8yezQAsNmtTp9IYuezl9R2LCwbt8YAnKXnqSE94WVx+ejI8jaRRskWsCNhvWm43RpI/3tH3aMcHM29F/m0Zq3fVtQik8i3RmY4UYEXLy+Kxy0M8Jt0DXPIOK7PFeQ3Kl4SaJedMgn0bIx+rW6e9d/4dBP079Sfsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YalFoovj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7BD1F000E9;
-	Tue, 16 Jun 2026 16:34:15 +0000 (UTC)
+	 MIME-Version; b=qWunJnI7+dM7Zm0EaJ9nlftFb4oQ7rhBy1TMA2Vlev2GYQXAinGudiLHb+pBKquax0XpXw28On4UbETXvYCfCD0iT4gYzde8LqmSfPAA/ONV4vFHKnJKSkK5srrpCKQRzj6CA43DeaYCOQi858lfRmrGiIpmkkd4u+az+5B30EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aE/MaEVa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FB91F000E9;
+	Tue, 16 Jun 2026 18:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627656;
-	bh=FcqNvtJ6+hfFBwQaRi5otTC1I7JQLXYTaoO3xQfpCNo=;
+	s=korg; t=1781635226;
+	bh=DPXdcjhv6wq3eTRFaqGy0buXJ12KzJBbbe2HVozUykY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YalFoovj2U5y0Jb+RjtAV8zt/8A5HHtu6KC6t+osbejSg2dwKukW67rvtcCBsydN7
-	 xlgDadkfpVuJfXpxKxFh5VGI0kkyVf5tDIe/HMVyZ1uinPuVU2fo9MMXKiDa70rVR9
-	 C+qfxiHJf/1dj7C10y83FKiTgdkgB57Ax8RP5qk8=
+	b=aE/MaEVaBKUwfLy+U+PIw7MPnSshQbe/0mebYYE/xpCEILlLklhpCGvAFqVTkKASY
+	 ZAjMP2qopK9tqxyh9EjvC2F1i9w0x1bvuWYO5ALtKjU6gqQCAItx5/1X8QE/H40elL
+	 8VN112VlvrLKIYdPED8/cEgB0LiuKPq/vn29sPag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.12 204/261] thunderbolt: Clamp XDomain response data copy to allocation size
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 404/411] arm64: cputype: Add C1-Premium definitions
 Date: Tue, 16 Jun 2026 20:30:42 +0530
-Message-ID: <20260616145054.502364604@linuxfoundation.org>
+Message-ID: <20260616145122.638254008@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +67,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266209-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264744-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:url,arm.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BD8496925AE
+X-Rspamd-Queue-Id: 06B1C6946BB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
+commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
 
-tb_xdp_properties_request() derives the per-packet copy length from
-the response header without checking that it fits in the previously
-allocated data buffer.  A malicious peer can set its length field
-larger than the declared data_length, causing memcpy to write past
-the kcalloc allocation.
+Add cputype definitions for C1-Premium. These will be used for errata
+detection in subsequent patches.
 
-Clamp the per-packet copy length so that the cumulative offset
-never exceeds data_len.
+These values can be found in the C1-Premium TRM:
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+  https://developer.arm.com/documentation/109416/0100/
+
+... in section A.5.1 ("MIDR_EL1, Main ID Register").
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v5.15.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |    2 ++
+ arch/arm64/include/asm/cputype.h |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -393,6 +393,8 @@ static int tb_xdp_properties_request(str
- 			}
- 		}
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -99,6 +99,7 @@
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+ #define ARM_CPU_PART_C1_ULTRA		0xD8C
+ #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
++#define ARM_CPU_PART_C1_PREMIUM		0xD90
  
-+		if (req.offset + len > data_len)
-+			len = data_len - req.offset;
- 		memcpy(data + req.offset, res->data, len * 4);
- 		req.offset += len;
- 	} while (!data_len || req.offset < data_len);
+ #define APM_CPU_PART_POTENZA		0x000
+ 
+@@ -169,6 +170,7 @@
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+ #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
++#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 
 
 
