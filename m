@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s68TFC92MWq2jwUAu9opvQ
-	(envelope-from <stable+bounces-264417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:35 +0200
+	id ZvAbHm59MWrYkgUAu9opvQ
+	(envelope-from <stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13EA691D36
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D7B692686
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:29 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zSUCS0il;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264417-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264417-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mAl6VybA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264700-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEE2D302F9BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:02:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AECB306E7A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D62450917;
-	Tue, 16 Jun 2026 16:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5C9472771;
+	Tue, 16 Jun 2026 16:29:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E206F3A16AC;
-	Tue, 16 Jun 2026 16:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30164534B9;
+	Tue, 16 Jun 2026 16:29:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625777; cv=none; b=pOB0TDYITm49L0vdEbHf3WTnARA1oYnbht5SRDxcICpOZoS5tWZY4Doop/9DtKf51FCe2m122UDVPrSLnaLaLRqjbheFuhVTR6bsoLvtjve1+7yGk1dBszU8zmI8VMzACF6sdx7kYq4d1WeIf2k0QpYnoNs4EtyrSpStg3RGFhE=
+	t=1781627379; cv=none; b=FbV4fH1i/5Stge/Tf6bRtoqIDpbuljESjqlo6j0PyFKCrrceMGGKO/CJ90fId17ziv+LJEN5iXYx6xUhUMkR5o45aG89f+MNO/OQjh0hTOFoaNH3s1mJw/5ituhn4q8ggbvwZMtAXUJOpfGpD+s/b3ZkSzBeDo4yfiAxazVBo7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625777; c=relaxed/simple;
-	bh=wBIgiiaosq+JDkAogFtvjYOLQbKL4XJm3hlGYVfyopo=;
+	s=arc-20240116; t=1781627379; c=relaxed/simple;
+	bh=zwBuQHcn9Xe6FfiDAIduVlOuDIE7hKjJqZ/cXCPkSDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L67Lq9+FYD4z7ANyPU6zZLgLvUlRaU9A62Von+HFhN9v2EfW8BOnyGSGfXoZqToqE+3RKxgnbu+CedfNvg63Mv8t7CSBXUU+3pRvaofSKIyLBA1lLMvC4aPcx6NZDJ4CEvJfvDhKt+2ibNaN0di6dwm6iYhZB6xCHz+iFArLyPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSUCS0il; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BACC61F000E9;
-	Tue, 16 Jun 2026 16:02:55 +0000 (UTC)
+	 MIME-Version; b=bz3Dbys8BQlnao7Zmbg6Fs9xAMXkyhkGxbjTRoLvpj1bM/pfZS/Y5LaTGstqOkjRpwvoVGYvZbUWAK0nqfaLVUzBzgcdIy6lD4Cu8I68WW8KpZTiKc9WRirx+tl6p9ARmvR7Aj5XOdB6qAu6xpJzn5fe/gLLL0VbWmQwaYX90CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAl6VybA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9292D1F000E9;
+	Tue, 16 Jun 2026 16:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625776;
-	bh=JCx/ilaYQz/A6Dp11Fw0tVPN3d0JR7m3i1B3515DOIs=;
+	s=korg; t=1781627378;
+	bh=NwOlaPCrHiipU6YoHpRAB1p/5bKT/qoDuTotWpwcDis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zSUCS0ilYrAsQIfgF41sKKvty2eOQ/mLjpoZxksmeRabOCGAO1AnmJhRtFaw7Ipco
-	 XyH5mT5DLrPivyxyuAhgYFHpvhU/tjko0DLh1iAqSM1KN4S/lpPtT2RZXMLOo5YQqr
-	 q01aubLkBOZkYBXA7XYZM+e9qtTpluxsg8Gt5am8=
+	b=mAl6VybAmvUybl0/J06gQRoXsDvCQfvzoa+DF/PUE+zSq5jDKbpuGd9hVMJeBEU5Z
+	 7SlGKHFRqIHTQFf93Vv2Xt5ObuZZ1Hk9qYsvGwyCgE8cwFDLgDfxwG1ayhsff5vzXf
+	 OAFZnWHQ+wVjBBkwVaxFUqgdHmaKppN4PEuwnMk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.18 205/325] wifi: iwlwifi: pcie: simplify the resume flow if fast resume is not used
-Date: Tue, 16 Jun 2026 20:30:01 +0530
-Message-ID: <20260616145108.257211308@linuxfoundation.org>
+	Alon Kariv <alonka@amazon.com>,
+	Amit Matityahu <amitmat@amazon.com>,
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH 6.12 164/261] timers/migration: Fix livelock in tmigr_handle_remote_up()
+Date: Tue, 16 Jun 2026 20:30:02 +0530
+Message-ID: <20260616145052.672081984@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264700-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:emmanuel.grumbach@intel.com,m:miriam.rachel.korenblit@intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alonka@amazon.com,m:amitmat@amazon.com,m:tglx@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,111 +98,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C13EA691D36
+X-Rspamd-Queue-Id: 73D7B692686
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Amit Matityahu <amitmat@amazon.com>
 
-commit 093305d801fae6ff9b8bb531fd78b579794c4f80 upstream.
+commit d486b4934a8e504376b85cdb3766f306d57aff5b upstream.
 
-In most distributions, NetworkManager shuts the device down before
-entering system suspend, so fast suspend is typically not used.
+tmigr_handle_remote_cpu() skips timer_expire_remote() when cpu ==
+smp_processor_id(), assuming the local softirq path already handled this
+CPU's timers.
 
-On older devices, resume currently tries to grab NIC access to infer
-whether the device was powered off while suspended. That probe is only
-meaningful for the fast-suspend path where the device is expected to
-remain alive.
+This assumption is wrong because jiffies can advance after the handling of
+the CPU's global timers in run_timer_base(BASE_GLOBAL) and before
+tmigr_handle_remote() evaluates the expiry times.
 
-Unfortunately, for unclear reasons, grabbing NIC access was harmful as
-reported in the bugzilla ticket below.
+As a consequence a timer which expires after the CPU local timer wheel
+advanced and becomes expired in the remote handling is ignored and the
+callback is never invoked and removed from the timer wheel.
 
-Workaround this issue by simply not grabbing NIC access if fast suspend
-is not used.
+What's worse is that fetch_next_timer_interrupt_remote() keeps reporting it
+as expired, and the event is re-queued with expires == now on each
+iteration.  The goto-again loop spins indefinitely.
 
+Fix this by calling timer_expire_remote() unconditionally. That's minimal
+overhead for the common case as __run_timer_base() returns immediately if
+there is nothing to expire in the local wheel.
+
+[ tglx: Amend change log and add a comment ]
+
+Fixes: 7ee988770326 ("timers: Implement the hierarchical pull model")
+Reported-by: Alon Kariv <alonka@amazon.com>
+Signed-off-by: Amit Matityahu <amitmat@amazon.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221501
-Assisted-by: GitHub Copilot:gpt-5.3-codex
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20260531133005.e2ed9e0cd44f.If283625983a843933e0c01561a421daff184e9e9@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260603170139.33628-1-amitmat@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |   56 ++++++++++++++------------
- 1 file changed, 32 insertions(+), 24 deletions(-)
+ kernel/time/timer_migration.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -1224,33 +1224,41 @@ static int _iwl_pci_resume(struct device
- 	if (!trans->op_mode)
- 		return 0;
+--- a/kernel/time/timer_migration.c
++++ b/kernel/time/timer_migration.c
+@@ -931,8 +931,12 @@ static void tmigr_handle_remote_cpu(unsi
+ 	/* Drop the lock to allow the remote CPU to exit idle */
+ 	raw_spin_unlock_irq(&tmc->lock);
  
--	/*
--	 * Scratch value was altered, this means the device was powered off, we
--	 * need to reset it completely.
--	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
--	 * but not bits [15:8]. So if we have bits set in lower word, assume
--	 * the device is alive.
--	 * Alternatively, if the scratch value is 0xFFFFFFFF, then we no longer
--	 * have access to the device and consider it powered off.
--	 * For older devices, just try silently to grab the NIC.
--	 */
--	if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
--		u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
--
--		if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
--		    scratch == ~0U)
--			device_was_powered_off = true;
--	} else {
-+	if (test_bit(STATUS_DEVICE_ENABLED, &trans->status)) {
- 		/*
--		 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
--		 * so re-enable them if _iwl_trans_pcie_grab_nic_access fails.
-+		 * Scratch value was altered, this means the device was powered
-+		 * off, we need to reset it completely.
-+		 * Note: MAC (bits 0:7) will be cleared upon suspend even with
-+		 * wowlan, but not bits [15:8]. So if we have bits set in lower
-+		 * word, assume the device is alive.
-+		 * Alternatively, if the scratch value is 0xFFFFFFFF, then we
-+		 * no longer have access to the device and consider it powered
-+		 * off.
-+		 * For older devices, just try silently to grab the NIC.
- 		 */
--		local_bh_disable();
--		if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
--			iwl_trans_pcie_release_nic_access(trans);
-+		if (trans->mac_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+			u32 scratch = iwl_read32(trans, CSR_FUNC_SCRATCH);
-+
-+			if (!(scratch & CSR_FUNC_SCRATCH_POWER_OFF_MASK) ||
-+			    scratch == ~0U) {
-+				IWL_DEBUG_WOWLAN(trans,
-+						 "Scratch 0x%08x indicates device was powered off\n",
-+						 scratch);
-+				device_was_powered_off = true;
-+			}
- 		} else {
--			device_was_powered_off = true;
--			local_bh_enable();
-+			/*
-+			 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
-+			 * so re-enable them if _iwl_trans_pcie_grab_nic_access
-+			 * fails.
-+			 */
-+			local_bh_disable();
-+			if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
-+				iwl_trans_pcie_release_nic_access(trans);
-+			} else {
-+				device_was_powered_off = true;
-+				local_bh_enable();
-+			}
- 		}
- 	}
+-	if (cpu != smp_processor_id())
+-		timer_expire_remote(cpu);
++	/*
++	 * This can't exclude the local CPU because jiffies might have advanced
++	 * after the timer softirq invoked run_timer_base(BASE_GLOBAL) and the
++	 * point where the jiffies snapshot @jif was taken in tmigr_handle_remote().
++	 */
++	timer_expire_remote(cpu);
  
+ 	/*
+ 	 * Lock ordering needs to be preserved - timer_base locks before tmigr
 
 
 
