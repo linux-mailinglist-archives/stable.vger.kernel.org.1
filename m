@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LWb7K0GZMWpgnwUAu9opvQ
-	(envelope-from <stable+bounces-266240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:13 +0200
+	id yh89H2pqMWo0iwUAu9opvQ
+	(envelope-from <stable+bounces-263924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3188A6945F0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:13 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EEE4690FA9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dSUzfaaz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266240-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266240-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="y4cE/FiD";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263924-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263924-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 190493098057
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B988F30378A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A945478E5E;
-	Tue, 16 Jun 2026 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DCC44BC8E;
+	Tue, 16 Jun 2026 15:20:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102C513777E;
-	Tue, 16 Jun 2026 18:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F07043E9F5;
+	Tue, 16 Jun 2026 15:20:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635388; cv=none; b=uDPTfH5tYtn3yyDIjbv3cDfO3NdjmUaj+zhjEZmx9B2drtabcv0YKY6nQpBQhwG2TSy8LBXqceAJolA9T7QcRv5oAsH7WQ7H3vvTILFR2sN8eA10kvDOcAz7GdbX+uPrCajABCdt+mUQhLI+7/SzVlltnH0MnZ+/D4utz1GgdPo=
+	t=1781623204; cv=none; b=OS3ToEsf9cnxyUrgf5rbks+4rtRlkdsO+KpF6VdvBRhbYoHU1stTloUVfsFjsRF9Hk4+ZhkWQLwIc5xnt4ynNUkjk14W85iFM00HrUUSsz9vgUcweXUa2ggogca5V5NUaNZeVlaOvEfWu8pYu3HJNLfKn3Rh18DFMfxAXg3DSgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635388; c=relaxed/simple;
-	bh=cMvzAjuGKwMylALLQkmbgQ+Ptuq67OVSiqjPyWrIn2A=;
+	s=arc-20240116; t=1781623204; c=relaxed/simple;
+	bh=qCaVeoUYh/eAGDDdT9InSjfpTaOfOzMwaZWx+ujsEPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJ+Ig/wwks/K87LdIuYhZlly03+IPxzS50gt8MhZf/APUrQMD4UYG0PtqtDbyG4o1CppofanGQa8j4tXSEG3KofgoNTOvIe1pCxKPF82dWsNk/PBnCFSjDl7GQsLi9dh5o4tTeBTvKrcnPTvO6qbOy4cTn5AcmjObi7Y+LQY0HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSUzfaaz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA7C1F000E9;
-	Tue, 16 Jun 2026 18:43:05 +0000 (UTC)
+	 MIME-Version; b=J1S+Sl75lqERtPMY204KkNVMYKP5ApgTUym5rCrWYj94/75CPQRq21hrrfuI9W5yUC0sb92NOflD0PPf6dOuiuQHgxJD45YZ5q9axBGBwwhelHVskpaBEgMVyv6NAje/Zsz6DYtmQ3CwJbbI/AlNHT4aHlYpDH3p1hRDgOOWk6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4cE/FiD; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9950F1F000E9;
+	Tue, 16 Jun 2026 15:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635387;
-	bh=mJe9O5OJVUZ5zK2ve7GrsZFATfr6Byw/Iyesqd8UdsQ=;
+	s=korg; t=1781623203;
+	bh=zmbbtohaAJYWO8jSZM3JyVvvcIBLV2l4TuOkZYOEhEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dSUzfaaze95ElJnyW1TtHaldUP4e5RwbULN8AGXzpmaNYN0IHHKZZFEUa8oq2Z/vK
-	 ZeM7LXhLstp4lzncNK1sFOUvY9pzuajYEekNIdEmQLnF7imGIoiIDxDQqLu3F4gCkB
-	 l6Py1LlCJY4SimsAaRzKnLfwJdsM5pfXpQzugRto=
+	b=y4cE/FiDKZ8+GHN0msHmwmKticYOJs8Ny3F854yrpEerjZ4oI4rs37ucsKsLPum83
+	 Um4CEihB1lLYcoio1Wvds354hiJVZBCEOZwj1yi2PoD9bG+PSKlDHaDJQFl11Q9A0Y
+	 Cq3GH/pqVjXJSONEeUCbST0wCiTJjmRNXn5GcXsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/342] batman-adv: tt: avoid empty VLAN responses
+Subject: [PATCH 7.0 104/378] net: ena: PHC: Add missing barrier
 Date: Tue, 16 Jun 2026 20:25:35 +0530
-Message-ID: <20260616145050.071430505@linuxfoundation.org>
+Message-ID: <20260616145115.839362949@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266240-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263924-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akiyano@amazon.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,97 +98,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,narfation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3188A6945F0
+X-Rspamd-Queue-Id: 0EEE4690FA9
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Arthur Kiyanovski <akiyano@amazon.com>
 
-commit fa1bd704940b5bcbc32c0b28db9167405c8ee5e0 upstream.
+[ Upstream commit 954981dbbfbd78f21d2fbac1ac0742dbf38b4e69 ]
 
-The commit 16116dac2339 ("batman-adv: prevent TT request storms by not
-sending inconsistent TT TLVLs") added checks to the local (direct) TT
-response code. But the response can also be done indirectly by another node
-using the global TT state. To avoid such inconsistency states reported in
-the original fix, also avoid sending empty VLANs for replies from the
-global TT state.
+Add dma_rmb() barrier after req_id completion check in
+ena_com_phc_get_timestamp(). On weakly-ordered architectures,
+payload fields may be read before req_id is observed as updated.
 
-Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-[ Context, drop flex array dependency ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: e0ea34158ee8 ("net: ena: Add PHC support in the ENA driver")
+Closes: https://sashiko.dev/#/patchset/20260430032507.11586-1-akiyano%40amazon.com
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_com.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 18eeeb80378dca..483121a85cf3fc 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -848,17 +848,19 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 				   s32 *tt_len)
- {
- 	u16 num_vlan = 0;
--	u16 num_entries = 0;
- 	u16 tvlv_len = 0;
- 	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
-+	u16 total_entries = 0;
- 	u8 *tt_change_ptr;
-+	int vlan_entries;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_com.c b/drivers/net/ethernet/amazon/ena/ena_com.c
+index 8c86789d867a5f..297fb36ab8c16f 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_com.c
+@@ -1880,6 +1880,11 @@ int ena_com_phc_get_timestamp(struct ena_com_dev *ena_dev, u64 *timestamp)
+ 			continue;
+ 		}
  
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
-+		vlan_entries = atomic_read(&vlan->tt.num_entries);
-+		total_entries += vlan_entries;
- 		num_vlan++;
--		num_entries += atomic_read(&vlan->tt.num_entries);
- 	}
- 
- 	change_offset = sizeof(**tt_data);
-@@ -866,7 +868,7 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 
- 	/* if tt_len is negative, allocate the space needed by the full table */
- 	if (*tt_len < 0)
--		*tt_len = batadv_tt_len(num_entries);
-+		*tt_len = batadv_tt_len(total_entries);
- 
- 	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
- 		*tt_len = 0;
-@@ -887,14 +889,27 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	(*tt_data)->num_vlan = htons(num_vlan);
- 
- 	tt_vlan = (struct batadv_tvlv_tt_vlan_data *)(*tt_data + 1);
-+	num_vlan = 0;
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
-+		vlan_entries = atomic_read(&vlan->tt.num_entries);
-+		if (vlan_entries < 1)
-+			continue;
++		/* Ensure PHC payload (timestamp, error_flags) is read
++		 * after req_id update is observed
++		 */
++		dma_rmb();
 +
- 		tt_vlan->vid = htons(vlan->vid);
- 		tt_vlan->crc = htonl(vlan->tt.crc);
- 		tt_vlan->reserved = 0;
- 
- 		tt_vlan++;
-+		num_vlan++;
- 	}
- 
-+	/* recalculate in case number of VLANs reduced */
-+	change_offset = sizeof(**tt_data);
-+	change_offset += num_vlan * sizeof(*tt_vlan);
-+	tvlv_len = *tt_len + change_offset;
-+
-+	(*tt_data)->num_vlan = htons(num_vlan);
-+
- 	tt_change_ptr = (u8 *)*tt_data + change_offset;
- 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
- 
+ 		/* req_id was updated by the device which indicates that
+ 		 * PHC timestamp and error_flags are updated too,
+ 		 * checking errors before retrieving timestamp
 -- 
 2.53.0
 
