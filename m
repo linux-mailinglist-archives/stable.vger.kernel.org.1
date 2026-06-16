@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264191-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /X/tJrmYMWoanwUAu9opvQ
-	(envelope-from <stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:57 +0200
+	id 0vGQM0NzMWqijgUAu9opvQ
+	(envelope-from <stable+bounces-264191-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21595694535
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D4B6919E7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bQJ8597t;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266153-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pgnfseGV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264191-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264191-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9C91321180D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 76375314314A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6794418D7;
-	Tue, 16 Jun 2026 18:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D51F45BD5C;
+	Tue, 16 Jun 2026 15:43:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D46A169AD2;
-	Tue, 16 Jun 2026 18:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B9A4534A4;
+	Tue, 16 Jun 2026 15:43:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634941; cv=none; b=uRc8eKWbTVDkBib4GfksX9NHdEvTFS2UIqav//0xm+uIgMzHbly50jzMbr0fUurR+fhc+7O75eq8W0YpgHzNpYJ60wZt3YE436Dph0VveBvUl6UMpMzmw2NvaFWeOI/OlwJi4kTaYCTzvoRf7vRAUN46Z32lFWGItGYCW/xHj10=
+	t=1781624612; cv=none; b=pSM1z1dNW5R02yeem9DbzCPTWkxhC4LzYEKkny9i1rGj1sKJGUANE75i/jOeukx1Zr5Svk4akTotS3WiCWz/SajtOiGJrP5ieXoCNO3oL1cI2wiHafUneeaoSqaqFPgfrBIIwxNlkV1fXOUOfHSnKn2wEApf495LcNrDHKBRxcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634941; c=relaxed/simple;
-	bh=gg2YkY/VgueBvaaEY4XCEd24Q8WHh3QuwgJeta00f4I=;
+	s=arc-20240116; t=1781624612; c=relaxed/simple;
+	bh=NdBrvqR/3tAWV45v7Q0/Onl0vImIuk1TKwPyiKEUCbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chM0rSHzGC5l/Qq53glXSO5IELNYSs8tC+Uat5KHnSd8VDEUTw8dem5wvUYbLmVEQvnGW1/kGkM30/vhF+wMyiyQnhEYqXhcuCJt9xf5utcXIPpJS/iWZ8bxV7jXDS5JVhhD2dLVjI42Aufqr4hZM3CTI3G+4FoUJSfLQdshlC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQJ8597t; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1755B1F000E9;
-	Tue, 16 Jun 2026 18:35:38 +0000 (UTC)
+	 MIME-Version; b=a+3nMPYUFd/aaoTh3v09TvrmGHO24/kOpNaLFi30UrdLgMlZ/0Fpx726wbcCgZ5MdyT2o2kmKAo+sQh4PHWMD6GtMQuBQT+RAW7J4QtLaRdhKUwnssvpV7lfeaInnStWbHvORb7MyfY3I2VOWopBf4A3QA282Nok8ynsyXNCrsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgnfseGV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB031F000E9;
+	Tue, 16 Jun 2026 15:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634940;
-	bh=0AVdeZZPlG4Hrz2w4N1G8udxL5nvQxL/Gyvwpt1In8g=;
+	s=korg; t=1781624611;
+	bh=qCi+ynFEM+XNtlNufw+ZweK7sVNtXzg83hxyhbQEBwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bQJ8597tAGGUFzEA4QnYc3VGQvavBMj/rYwxbOfWGLb+WJSUgY5BclV78I/ZhaJBf
-	 x/wa4B9QtWbD1Ccvodsb07P8e6gQao7DEhRRS24+jPKA385ub/M6yUzh1zGmON5Hhw
-	 HxP3Vqe+xIxC5nS3+3yFliUbDucF9b8+5Cvu9CyY=
+	b=pgnfseGV7fjJSFEBy6ozLoXPD8j+as4fb3V472rvqfvDT8V8pzjwNYEp/XIhq7Q4J
+	 OdorheRw882DQrjebKDh3+1hViR9Xr+oXFULvibk42F4wCGIYbpizGWWzNDtFrC10H
+	 4u8GHVVId+xRkGasA7mSYjYnUvqg0XCixoYZMHyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 359/411] spi: qup: fix error pointer deref after DMA setup failure
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 7.0 366/378] wifi: mac80211: tests: mark HT check strict
 Date: Tue, 16 Jun 2026 20:29:57 +0530
-Message-ID: <20260616145120.404059649@linuxfoundation.org>
+Message-ID: <20260616145129.395861399@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,79 +70,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266153-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264191-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johannes.berg@intel.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sashiko.dev:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 21595694535
+X-Rspamd-Queue-Id: 37D4B6919E7
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db ]
+commit 0cfff13c94cb5fa818bb374945ff280e08dc1bb9 upstream.
 
-The driver falls back to PIO mode if DMA setup fails during probe.
+The HT check now only applies in strict mode since APs
+were found to be broken. Mark it as such.
 
-Make sure to the clear the DMA channel pointers on setup failure to
-avoid dereferencing an error pointer (or attempting to release a channel
-a second time) on later probe errors or driver unbind.
-
-This issue was flagged by Sashiko when reviewing a devres allocation
-conversion patch.
-
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
-Cc: stable@vger.kernel.org	# 4.1
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 711a9c018ad2 ("wifi: mac80211: skip ieee80211_verify_sta_ht_mcs_support check in non-strict mode")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/tests/chan-mode.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -969,8 +969,11 @@ static int spi_qup_init_dma(struct spi_c
- 
- err:
- 	dma_release_channel(host->dma_tx);
-+	host->dma_tx = NULL;
- err_tx:
- 	dma_release_channel(host->dma_rx);
-+	host->dma_rx = NULL;
-+
- 	return ret;
- }
- 
+--- a/net/mac80211/tests/chan-mode.c
++++ b/net/mac80211/tests/chan-mode.c
+@@ -65,6 +65,7 @@ static const struct determine_chan_mode_
+ 		.ht_capa_mask = {
+ 			.mcs.rx_mask[0] = 0xf7,
+ 		},
++		.strict = true,
+ 	}, {
+ 		.desc = "Masking out a RX rate in VHT capabilities",
+ 		.conn_mode = IEEE80211_CONN_MODE_EHT,
 
 
 
