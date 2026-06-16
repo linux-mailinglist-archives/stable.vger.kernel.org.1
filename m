@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id I9HuKwV+MWoKkwUAu9opvQ
-	(envelope-from <stable+bounces-264841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:01 +0200
+	id eX7GK7BpMWr1igUAu9opvQ
+	(envelope-from <stable+bounces-263853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3EF69272B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D90D690EDA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eJh6fuIz;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264841-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264841-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tcJl8iun;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263853-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263853-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C090831A89EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 33AF330DF6EA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA3F477E21;
-	Tue, 16 Jun 2026 16:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9C243D4FA;
+	Tue, 16 Jun 2026 15:13:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649312F745E;
-	Tue, 16 Jun 2026 16:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9395742B738;
+	Tue, 16 Jun 2026 15:13:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628171; cv=none; b=SiMTuCyKgj+Bh7nqf8uzBsSxuVmIxPGLPSJ7T2BapMh6Sf0zwtppckUvney8GPQqWd/ohbtx1EFrVgo2BFetqoqvMo5SMrjAWWeyZuG89Uco78OfNUD01M3pyiyrwEceM7+C/3cUFxpFh5w7G2Gdu8SlLhl45YhxcWUFKsLKW0M=
+	t=1781622817; cv=none; b=vBij59oIPC0GjnxeCMsos31FExEh9iJzMtguvwuimM1LCvcE3+mp/iDx/lluJGOufEtwjpq1PRhPKeN9iETyGuVf3Ngz8Q4krbgtFCvuSUFySyRI9kAtbsuox/sJ/meCki4QN1hLLh+QBSfaRN8LCTe1D6ngODzgCh2fhWlfJEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628171; c=relaxed/simple;
-	bh=MZMiEun642ogEPxuRb7VPxkIbn3mP8T9SQNU4nMA/T4=;
+	s=arc-20240116; t=1781622817; c=relaxed/simple;
+	bh=6UEBoWkJMzB7rfDFeoouqACJn2dTYUDZ507TnOly3hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQZtQ/Wb1NmJXlDKGlxpKoBJK1Oi0mwo6uUbaUZgeLlFQfsKDpN9AHOy7Yup50pjeWSw1skVQ7SH3+hJ5lRcLjs17bzrkYQgA7HCcCK5KJKmctZHJd/ifNHRq4ho23tHcmq8cd5NnhINWi6CW13Q0AhJ1Q3QpoJeLe42YKKvttQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJh6fuIz; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D861F000E9;
-	Tue, 16 Jun 2026 16:42:49 +0000 (UTC)
+	 MIME-Version; b=GzHBSiTfW6TAViKjVESuFY4Kmz5ihGzWSAZUr2ZOl/Yyz0D6jA8Yzg//dXbRQLHPk0Du7LWIoK65aXx3oES9SO1sGNk5MzjVBOvVngkOOhW9fqRE5BNQGPHUc88dtNT5PB034hRX4IZNfk8fSt5sdvHK1UkeX9TdKuct7ZU0T/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcJl8iun; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F4F1F000E9;
+	Tue, 16 Jun 2026 15:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628170;
-	bh=DsJx5NNMQKJ/hw4rfEA3jTtcZmUyI5GLtZ1v/TRkLmA=;
+	s=korg; t=1781622816;
+	bh=88NT1A7whBs6lb9xkTXUPBpicbFBFxocfxZimGG0x/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eJh6fuIzWiKS8/ovWlSPMMwU0kpG5nKFclHwlPhAD2tmDRCP6NGYMcbNuJaOh8kH3
-	 fJrpggtY6qbdwI2wdWMRF7G5EMTJdRuEGt83gdJiYaOqPwQk+rf9WicO3B1Q7HCfr3
-	 HYgMPnQ9KRR+JPyj0L8Ifs0VA+C+fqRWTeBnwBes=
+	b=tcJl8iunkpSxSwL5ybHTJKC3TEGBE28QMzhoKEQhljpu3QhxpwQyYLRI2mPcmIEfa
+	 IgHjEEYaWO5cjLXPizumanuYnfuVTRlh5H4HhtG/nGbsmnVj/4sA76AS2vtfAbdy5j
+	 yx4YgjI5Zwh3eedtykAwpT3eS4iGLvgPIhUWdszE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Sowden <jeremy@azazel.net>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/452] netfilter: bitwise: rename some boolean operation functions
+Subject: [PATCH 7.0 011/378] soc: qcom: ice: Return -ENODEV if the ICE platform device is not found
 Date: Tue, 16 Jun 2026 20:24:02 +0530
-Message-ID: <20260616145118.611761187@linuxfoundation.org>
+Message-ID: <20260616145110.384483209@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,199 +70,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264841-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jeremy@azazel.net,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263853-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,azazel.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0B3EF69272B
+X-Rspamd-Queue-Id: 1D90D690EDA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Sowden <jeremy@azazel.net>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit a12143e6084c502fc3cfaa8b717bffc8c14cf806 ]
+[ Upstream commit 5a4dc805a80e6fe303d6a4748cd451ea15987ffd ]
 
-In the next patch we add support for doing AND, OR and XOR operations
-directly in the kernel, so rename some functions and an enum constant
-related to mask-and-xor boolean operations.
+By the time the consumer driver calls devm_of_qcom_ice_get(), all the
+platform devices for ICE nodes would've been created by
+of_platform_default_populate().
 
-Signed-off-by: Jeremy Sowden <jeremy@azazel.net>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 18014147d3ee ("netfilter: nf_tables: fix dst corruption in same register operation")
+So for the absence of any platform device, -ENODEV should not returned, not
+-EPROBE_DEFER.
+
+Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
+Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-2-2a595382185b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 10 ++++---
- net/netfilter/nft_bitwise.c              | 34 ++++++++++++------------
- 2 files changed, 24 insertions(+), 20 deletions(-)
+ drivers/soc/qcom/ice.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index 9c29015d09c10f..cbb1b58e181fca 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -560,16 +560,20 @@ enum nft_immediate_attributes {
- /**
-  * enum nft_bitwise_ops - nf_tables bitwise operations
-  *
-- * @NFT_BITWISE_BOOL: mask-and-xor operation used to implement NOT, AND, OR and
-- *                    XOR boolean operations
-+ * @NFT_BITWISE_MASK_XOR: mask-and-xor operation used to implement NOT, AND, OR
-+ *                        and XOR boolean operations
-  * @NFT_BITWISE_LSHIFT: left-shift operation
-  * @NFT_BITWISE_RSHIFT: right-shift operation
-  */
- enum nft_bitwise_ops {
--	NFT_BITWISE_BOOL,
-+	NFT_BITWISE_MASK_XOR,
- 	NFT_BITWISE_LSHIFT,
- 	NFT_BITWISE_RSHIFT,
- };
-+/*
-+ * Old name for NFT_BITWISE_MASK_XOR.  Retained for backwards-compatibility.
-+ */
-+#define NFT_BITWISE_BOOL NFT_BITWISE_MASK_XOR
- 
- /**
-  * enum nft_bitwise_attributes - nf_tables bitwise expression netlink attributes
-diff --git a/net/netfilter/nft_bitwise.c b/net/netfilter/nft_bitwise.c
-index 2cfb0104680c62..86abbe4c1308b3 100644
---- a/net/netfilter/nft_bitwise.c
-+++ b/net/netfilter/nft_bitwise.c
-@@ -25,8 +25,8 @@ struct nft_bitwise {
- 	struct nft_data		data;
- };
- 
--static void nft_bitwise_eval_bool(u32 *dst, const u32 *src,
--				  const struct nft_bitwise *priv)
-+static void nft_bitwise_eval_mask_xor(u32 *dst, const u32 *src,
-+				      const struct nft_bitwise *priv)
- {
- 	unsigned int i;
- 
-@@ -68,8 +68,8 @@ void nft_bitwise_eval(const struct nft_expr *expr,
- 	u32 *dst = &regs->data[priv->dreg];
- 
- 	switch (priv->op) {
--	case NFT_BITWISE_BOOL:
--		nft_bitwise_eval_bool(dst, src, priv);
-+	case NFT_BITWISE_MASK_XOR:
-+		nft_bitwise_eval_mask_xor(dst, src, priv);
- 		break;
- 	case NFT_BITWISE_LSHIFT:
- 		nft_bitwise_eval_lshift(dst, src, priv);
-@@ -90,8 +90,8 @@ static const struct nla_policy nft_bitwise_policy[NFTA_BITWISE_MAX + 1] = {
- 	[NFTA_BITWISE_DATA]	= { .type = NLA_NESTED },
- };
- 
--static int nft_bitwise_init_bool(struct nft_bitwise *priv,
--				 const struct nlattr *const tb[])
-+static int nft_bitwise_init_mask_xor(struct nft_bitwise *priv,
-+				     const struct nlattr *const tb[])
- {
- 	struct nft_data_desc mask = {
- 		.type	= NFT_DATA_VALUE,
-@@ -186,7 +186,7 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_BITWISE_OP]) {
- 		priv->op = ntohl(nla_get_be32(tb[NFTA_BITWISE_OP]));
- 		switch (priv->op) {
--		case NFT_BITWISE_BOOL:
-+		case NFT_BITWISE_MASK_XOR:
- 		case NFT_BITWISE_LSHIFT:
- 		case NFT_BITWISE_RSHIFT:
- 			break;
-@@ -194,12 +194,12 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 			return -EOPNOTSUPP;
- 		}
- 	} else {
--		priv->op = NFT_BITWISE_BOOL;
-+		priv->op = NFT_BITWISE_MASK_XOR;
+diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
+index bf4ab2d9e5c036..6520e146d2ce06 100644
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -657,7 +657,7 @@ static struct qcom_ice *of_qcom_ice_get(struct device *dev)
+ 	pdev = of_find_device_by_node(node);
+ 	if (!pdev) {
+ 		dev_err(dev, "Cannot find device node %s\n", node->name);
+-		return ERR_PTR(-EPROBE_DEFER);
++		return ERR_PTR(-ENODEV);
  	}
  
- 	switch(priv->op) {
--	case NFT_BITWISE_BOOL:
--		err = nft_bitwise_init_bool(priv, tb);
-+	case NFT_BITWISE_MASK_XOR:
-+		err = nft_bitwise_init_mask_xor(priv, tb);
- 		break;
- 	case NFT_BITWISE_LSHIFT:
- 	case NFT_BITWISE_RSHIFT:
-@@ -210,8 +210,8 @@ static int nft_bitwise_init(const struct nft_ctx *ctx,
- 	return err;
- }
- 
--static int nft_bitwise_dump_bool(struct sk_buff *skb,
--				 const struct nft_bitwise *priv)
-+static int nft_bitwise_dump_mask_xor(struct sk_buff *skb,
-+				     const struct nft_bitwise *priv)
- {
- 	if (nft_data_dump(skb, NFTA_BITWISE_MASK, &priv->mask,
- 			  NFT_DATA_VALUE, priv->len) < 0)
-@@ -249,8 +249,8 @@ static int nft_bitwise_dump(struct sk_buff *skb,
- 		return -1;
- 
- 	switch (priv->op) {
--	case NFT_BITWISE_BOOL:
--		err = nft_bitwise_dump_bool(skb, priv);
-+	case NFT_BITWISE_MASK_XOR:
-+		err = nft_bitwise_dump_mask_xor(skb, priv);
- 		break;
- 	case NFT_BITWISE_LSHIFT:
- 	case NFT_BITWISE_RSHIFT:
-@@ -270,7 +270,7 @@ static int nft_bitwise_offload(struct nft_offload_ctx *ctx,
- 	const struct nft_bitwise *priv = nft_expr_priv(expr);
- 	struct nft_offload_reg *reg = &ctx->regs[priv->dreg];
- 
--	if (priv->op != NFT_BITWISE_BOOL)
-+	if (priv->op != NFT_BITWISE_MASK_XOR)
- 		return -EOPNOTSUPP;
- 
- 	if (memcmp(&priv->xor, &zero, sizeof(priv->xor)) ||
-@@ -407,7 +407,7 @@ nft_bitwise_fast_dump(struct sk_buff *skb,
- 		return -1;
- 	if (nla_put_be32(skb, NFTA_BITWISE_LEN, htonl(sizeof(u32))))
- 		return -1;
--	if (nla_put_be32(skb, NFTA_BITWISE_OP, htonl(NFT_BITWISE_BOOL)))
-+	if (nla_put_be32(skb, NFTA_BITWISE_OP, htonl(NFT_BITWISE_MASK_XOR)))
- 		return -1;
- 
- 	data.data[0] = priv->mask;
-@@ -502,7 +502,7 @@ nft_bitwise_select_ops(const struct nft_ctx *ctx,
- 		return &nft_bitwise_ops;
- 
- 	if (tb[NFTA_BITWISE_OP] &&
--	    ntohl(nla_get_be32(tb[NFTA_BITWISE_OP])) != NFT_BITWISE_BOOL)
-+	    ntohl(nla_get_be32(tb[NFTA_BITWISE_OP])) != NFT_BITWISE_MASK_XOR)
- 		return &nft_bitwise_ops;
- 
- 	return &nft_bitwise_fast_ops;
+ 	ice = platform_get_drvdata(pdev);
 -- 
 2.53.0
 
