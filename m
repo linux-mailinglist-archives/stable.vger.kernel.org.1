@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ejX9HJqOMWqAmgUAu9opvQ
-	(envelope-from <stable+bounces-265701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:46 +0200
+	id pBp+I7p7MWoLkgUAu9opvQ
+	(envelope-from <stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D630D693A82
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269FE692445
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NDUcfkBZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265701-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265701-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=10ZUqtqJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264675-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF30231951D9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5239D3032F7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6D43C276B;
-	Tue, 16 Jun 2026 17:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE81F46AF21;
+	Tue, 16 Jun 2026 16:27:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3A136C9E5;
-	Tue, 16 Jun 2026 17:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C123BFE40;
+	Tue, 16 Jun 2026 16:27:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632541; cv=none; b=pybk75C0l0v139kKDfwOvhpFfHJYNG2lcJmavXDBM5x60wZ2OWpU7qGmpxRdcpsch3nT6jVgMDNoH7MEtCWde5quCemYrsPqyaUxOk54xTlJaFMhTK3RSf27LYJDc8XLQW2lmQxYfTtOSSICCwNsp1JNlckp/nV1vjwjDdoM7nY=
+	t=1781627223; cv=none; b=s9un8OgNgNrQOuOKtN4S0NqumB3KUU3xul3VNnxEkkbFRJEA9bmjSscpy8v9RiuXiCwb3sZzcpEnZID5wXipsvyae3LAN8q+4IfS7hmPvPp0Qu1T1uPM+LimvQ2Hs+2Jt3lDWSAsAxkYDlfR03unAE/BAUjwvghwNQyGVXoyX1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632541; c=relaxed/simple;
-	bh=yRQr2GsynTTOCX70OAT6pQJh8iGzNu8JsehVgafUAWs=;
+	s=arc-20240116; t=1781627223; c=relaxed/simple;
+	bh=QRh1esEtSdAIZJVS8MyuvX/Su40Jcoir8tZIpDy7feY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kukSk6PbI1pRflgnQu3d2yAN7Jp1XW87nmuCjEa8kXeqm35WywCD2V+y50RCt3XIburSag/0p1XifHK/OzQsiQ9ewUe2nHwLdy1+ogl/tApUaHNmIgfS0CGkEy8LURrmXjSLAnXrTWLSm/bnzmXDJJ7QXEoPsgsSYTssNdxbars=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDUcfkBZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183B51F000E9;
-	Tue, 16 Jun 2026 17:55:38 +0000 (UTC)
+	 MIME-Version; b=ATzTmCmgQDytJzKP9gbyYkTlA9E9GTBIVjumGtww7SR+143y2f9CZAP4MCDDQIzMSSdRpMZPUSlIGq18gxDdDBg1CwInEBCFjjeMR3zMiuZmmemB6WldX/JxAfKwUk/3RkTJ0WH7raH6epJg3RuZqH6Hr/kHMNqh07O18E+DLl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10ZUqtqJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29CB1F000E9;
+	Tue, 16 Jun 2026 16:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632539;
-	bh=HMv4w/PMpZZ4ntIMnYFdvIgGgppgKWwmK/Y3xrplMeg=;
+	s=korg; t=1781627222;
+	bh=AUWESKnSTar6qskMN/Mx/3Ow+QOWF6c60eaz5tgEl4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NDUcfkBZcmfLi6zYFD0sFdMLFEIvSSGNDgtxFuJ2+1iRrWAuQmaVWCK2UbPpy+y6n
-	 Qmx9EwN/pwMzQQR8VIrto4Qjbh+V7DnCiIeUHlntz89sIfcsIAJtBUyj8QDOJ4BVp7
-	 s4XOC9DZdqlWProOmjyqDLkERGWqzjm6atLyVDkI=
+	b=10ZUqtqJjE7l24ubIFGu5I2cQgRfUK85w6rm9pgJHJ0JiMaybFybGwZ9kgVusTKZz
+	 KKYTCUaD7PcDw49eyPDZQcR80fLDmQmNaLZUvUhECBGO4Bn+p0enBL+MtAQTefI8rt
+	 rpeir+DbsUBT8edEGHtel2aR+Qgp6PGuemtPXNOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 430/522] spi: lantiq-ssc: fix controller deregistration
-Date: Tue, 16 Jun 2026 20:29:37 +0530
-Message-ID: <20260616145146.087996431@linuxfoundation.org>
+	Adrian Korwel <adriank20047@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 140/261] USB: serial: io_ti: fix heap overflow in build_i2c_fw_hdr()
+Date: Tue, 16 Jun 2026 20:29:38 +0530
+Message-ID: <20260616145051.569629578@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +68,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264675-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265701-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hauke@hauke-m.de,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D630D693A82
+X-Rspamd-Queue-Id: 269FE692445
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Adrian Korwel <adriank20047@gmail.com>
 
-[ Upstream commit b99206710d032c16b7f8b75e4bc18414d8e4b9f4 ]
+commit 0fd2b00b2d3d05e3eaa13342b3dfb0fa85c226ae upstream.
 
-Make sure to deregister the controller before releasing underlying
-resources like clocks during driver unbind.
+build_i2c_fw_hdr() allocates a fixed-size buffer of
+(16*1024 - 512) + sizeof(struct ti_i2c_firmware_rec) bytes, then
+copies le16_to_cpu(img_header->Length) bytes into it without
+validating that Length fits within the available space after the
+firmware record header.
 
-Fixes: 17f84b793c01 ("spi: lantiq-ssc: add support for Lantiq SSC SPI controller")
-Cc: stable@vger.kernel.org	# 4.11
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
+img_header->Length is a __le16 from the firmware file and can be
+up to 65535. check_fw_sanity() validates the total firmware size
+but not img_header->Length specifically.
+
+Fix by rejecting images where img_header->Length exceeds the
+available destination space.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260409120419.388546-17-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ adapted spi_controller/host naming to spi_master/master and preserved the int-returning remove() with trailing return 0 ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-lantiq-ssc.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/serial/io_ti.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/spi/spi-lantiq-ssc.c
-+++ b/drivers/spi/spi-lantiq-ssc.c
-@@ -997,7 +997,7 @@ static int lantiq_ssc_probe(struct platf
- 		"Lantiq SSC SPI controller (Rev %i, TXFS %u, RXFS %u, DMA %u)\n",
- 		revision, spi->tx_fifo_size, spi->rx_fifo_size, supports_dma);
+--- a/drivers/usb/serial/io_ti.c
++++ b/drivers/usb/serial/io_ti.c
+@@ -844,6 +844,11 @@ static int build_i2c_fw_hdr(u8 *header,
+ 	/* Pointer to fw_down memory image */
+ 	img_header = (struct ti_i2c_image_header *)&fw->data[4];
  
--	err = devm_spi_register_master(dev, master);
-+	err = spi_register_master(master);
- 	if (err) {
- 		dev_err(dev, "failed to register spi_master\n");
- 		goto err_wq_destroy;
-@@ -1021,6 +1021,10 @@ static int lantiq_ssc_remove(struct plat
- {
- 	struct lantiq_ssc_spi *spi = platform_get_drvdata(pdev);
- 
-+	spi_master_get(spi->master);
-+
-+	spi_unregister_master(spi->master);
-+
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_IRNEN);
- 	lantiq_ssc_writel(spi, 0, LTQ_SPI_CLC);
- 	rx_fifo_flush(spi);
-@@ -1031,6 +1035,8 @@ static int lantiq_ssc_remove(struct plat
- 	clk_disable_unprepare(spi->spi_clk);
- 	clk_put(spi->fpi_clk);
- 
-+	spi_master_put(spi->master);
-+
- 	return 0;
- }
- 
++	if (le16_to_cpu(img_header->Length) >
++			buffer_size - sizeof(struct ti_i2c_firmware_rec)) {
++		kfree(buffer);
++		return -EINVAL;
++	}
+ 	memcpy(buffer + sizeof(struct ti_i2c_firmware_rec),
+ 		&fw->data[4 + sizeof(struct ti_i2c_image_header)],
+ 		le16_to_cpu(img_header->Length));
 
 
 
