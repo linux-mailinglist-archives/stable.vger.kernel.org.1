@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-265515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263988-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2QB4G+eLMWojmQUAu9opvQ
-	(envelope-from <stable+bounces-265515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:15 +0200
+	id 38XWE19sMWrXiwUAu9opvQ
+	(envelope-from <stable+bounces-263988-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC120693769
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B2B6911B2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QbwKeFsq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265515-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265515-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ntPB7oGR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263988-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263988-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 127D03225BDD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48EE331F7197
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B43347A0CD;
-	Tue, 16 Jun 2026 17:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F8F4418CA;
+	Tue, 16 Jun 2026 15:25:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC993876CF;
-	Tue, 16 Jun 2026 17:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D764343E486;
+	Tue, 16 Jun 2026 15:25:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631603; cv=none; b=qdgYhsPjyAta/x5tIN/+/1n55e8D1iDpfxME8L1gvpDAiEBEVuU7FQY6GeSHdP9w8Pp6CTLB2VJ9yN8CFmrjloP12tS0+qHed0PzF6ppZrk2sxOppJOj4P0hNHajyUmEwwknx+mv4q1R5k2npVMB+sFcEKttcSxBAmhTPYqvmms=
+	t=1781623543; cv=none; b=WHDP29bpyigUidCU7018i4bx0rjDQTs8/Zy80FsXDmpdoSBJ7FTYn4fuXbkEWE28S7lp1SbUCSTLyDDGY9qd1K9Bia1AC6BL+gPPBJRmm+GEJdcc1lMO9OM2PDfOLG4qyKEClQmdCVGyvHnCMc1NERxuQ+fGqMYpM5GGaHNXbuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631603; c=relaxed/simple;
-	bh=NsB8a7uCm2Ejz10cmr635EX0rGaWaolJWP6eoKpMqoE=;
+	s=arc-20240116; t=1781623543; c=relaxed/simple;
+	bh=6krX0OjVdnJD/4qdUcNyIrjgLskBucxEMMdqIFaThzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4H+He9jlyBLyyn0w+//YOYEn/XxGlrLYI7Jj35QenfcC6raRAzr5AC2FbZ5+i3lJ5beAtrVfcGaxm51rXij8GKrprYvsYvNUUQUzQJWlI2FYh5syN70187RmfZNGERgU20AIWMoeB0x+ml1Ub2CnTOaD5oJCvj3F1qJfgeftN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbwKeFsq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320CE1F000E9;
-	Tue, 16 Jun 2026 17:40:00 +0000 (UTC)
+	 MIME-Version; b=WXZKGC546qp/ypiCJpBD15pJgcahyfLqtcJ8RCWXdhMFn8bH61fcd0rpNZbJO4qQ3FUHIpVGCBCOOHrekNiNNkU1h7wfFNk0WIBO7XQEMyXuAdXEOZG45l40wxwqOdoKFrreMp2QR+lPjF7yCZmVmZbn96UmhpFsnTG5MjvqBUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntPB7oGR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBDE1F000E9;
+	Tue, 16 Jun 2026 15:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631602;
-	bh=smTaokSX2i1AkLZeExLF3ln+VErz9jOiOre31taJ2QA=;
+	s=korg; t=1781623542;
+	bh=fYZYuYb/P4iXPUMEtd0nSuRjC0FTjSywXmI1QuGhNDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbwKeFsqpXZfWXC+5jiVnDIKFFq2kZiFGYLnRhiBePe6qf+SrrHOz3oabhdRHzPmN
-	 ftqBjQeKiDFK8lxHxbmrLhOQChn4QQzVFzQxoh5C/kMn17CsySEAAvV+23ehhEQGtQ
-	 S4TKtembFcJKoij602tIY7sv84NvspCrTWQbcOOE=
+	b=ntPB7oGRc1e/5UM5lOPaZ9tSWG6hsAOWW/nCLbLJAC4VaoQuZzw3HAUI8al3Ufxm8
+	 TCYCf1wSUEM+g+60cwC0nvvCQUP8jFMx3Qg0gqGjqhqcGilVRpH9Ru4nYsGE1lowZn
+	 Sx5eEqqYrqicU79Kd0VlGvsZbl/ERMYrFg6+PeMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/522] net: guard timestamp cmsgs to real error queue skbs
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 7.0 168/378] namespace: restrict OPEN_TREE_NAMESPACE/FSMOUNT_NAMESPACE to directories
 Date: Tue, 16 Jun 2026 20:26:39 +0530
-Message-ID: <20260616145137.755202949@linuxfoundation.org>
+Message-ID: <20260616145119.152117642@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,10 +81,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265515-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263988-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:viro@zeniv.linux.org.uk,m:brauner@kernel.org,m:jack@suse.cz,m:stable@kernel.org,m:jannh@google.com,m:torvalds@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,117 +98,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux.org.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC120693769
+X-Rspamd-Queue-Id: 83B2B6911B2
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
+commit 805d5a2b792819171be100c50c9ddafa0f8c2231 upstream.
 
-skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
-from sk_error_queue. That assumption is not true for AF_PACKET sockets:
-outgoing packet taps are also delivered to packet sockets with
-skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
-instead of struct sock_exterr_skb.
+open_tree(..., OPEN_TREE_NAMESPACE) and
+fsmount(..., FSMOUNT_NAMESPACE, ...) currently work on non-directories,
+like regular files. That's bad for two reasons:
 
-If such an skb is received with timestamping enabled, the generic
-timestamp cmsg path can read AF_PACKET control-buffer state as
-sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
-counter overlaps opt_stats. An odd drop count makes the path emit
-SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
-skbs this copies past the linear head and can trigger hardened usercopy or
-disclose adjacent heap contents.
+ - It ends up mounting a regular file over the inherited namespace root,
+   which is a directory; mounting a non-directory over a directory is
+   normally explicitly forbidden, see for example do_move_mount()
 
-Keep skb_is_err_queue() local to net/socket.c, but make it verify that
-the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
-installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
-receive ownership and no longer pass as error-queue skbs, while legitimate
-sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
-ownership.
+ - It causes setns() on the new namespace to set the cwd to a regular
+   file, which the rest of VFS does not expect
 
-Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by restricting create_new_namespace() (which is used by both of
+these flags) to directories.
+
+Leave the behavior for OPEN_TREE_CLONE as-is, that seems unproblematic.
+
+Fixes: 9b8a0ba68246 ("mount: add OPEN_TREE_NAMESPACE")
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: stable@kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h |  1 +
- net/core/skbuff.c  |  6 +++---
- net/socket.c       | 11 ++++++-----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ fs/namespace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 2d34dd5941e795..1e7096e9bc4842 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1945,6 +1945,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
- 			     gfp_t priority);
- void skb_orphan_partial(struct sk_buff *skb);
- void sock_rfree(struct sk_buff *skb);
-+void sock_rmem_free(struct sk_buff *skb);
- void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index f1f5b2b25f8522..f41dd20991c3df 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4810,7 +4810,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
- }
- EXPORT_SYMBOL_GPL(skb_cow_data);
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -3098,6 +3098,9 @@ static struct mnt_namespace *create_new_
+ 	unsigned int copy_flags = 0;
+ 	bool locked = false;
  
--static void sock_rmem_free(struct sk_buff *skb)
-+void sock_rmem_free(struct sk_buff *skb)
- {
- 	struct sock *sk = skb->sk;
++	if (unlikely(!d_can_lookup(path->dentry)))
++		return ERR_PTR(-ENOTDIR);
++
+ 	if (user_ns != ns->user_ns)
+ 		copy_flags |= CL_SLAVE;
  
-@@ -4819,8 +4819,8 @@ static void sock_rmem_free(struct sk_buff *skb)
- 
- static void skb_set_err_queue(struct sk_buff *skb)
- {
--	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
--	 * So, it is safe to (mis)use it to mark skbs on the error queue.
-+	/* The error-queue test in skb_is_err_queue() matches this marker
-+	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
- 	 */
- 	skb->pkt_type = PACKET_OUTGOING;
- 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
-diff --git a/net/socket.c b/net/socket.c
-index 701389e2f22b3a..f2b4cf9b09a322 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -807,12 +807,13 @@ EXPORT_SYMBOL(kernel_sendmsg_locked);
- 
- static bool skb_is_err_queue(const struct sk_buff *skb)
- {
--	/* pkt_type of skbs enqueued on the error queue are set to
--	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
--	 * in recvmsg, since skbs received on a local socket will never
--	 * have a pkt_type of PACKET_OUTGOING.
-+	/* Error-queue skbs are marked as PACKET_OUTGOING in
-+	 * skb_set_err_queue() and use the destructor installed by
-+	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
-+	 * AF_PACKET outgoing taps use the same pkt_type.
- 	 */
--	return skb->pkt_type == PACKET_OUTGOING;
-+	return skb->pkt_type == PACKET_OUTGOING &&
-+	       skb->destructor == sock_rmem_free;
- }
- 
- /* On transmit, software and hardware timestamps are returned independently.
--- 
-2.53.0
-
 
 
 
