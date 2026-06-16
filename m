@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LQzlIH+EMWq2lQUAu9opvQ
-	(envelope-from <stable+bounces-265088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:39 +0200
+	id Z2gkI5NuMWq7jAUAu9opvQ
+	(envelope-from <stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89E6692E65
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A0A691494
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PGdEQkBB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265088-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265088-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hqASkftL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264096-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE16B323EDC9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7831D3058DE9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B8443E490;
-	Tue, 16 Jun 2026 17:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67915449EB8;
+	Tue, 16 Jun 2026 15:35:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2075843D4E9;
-	Tue, 16 Jun 2026 17:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A7B38837F;
+	Tue, 16 Jun 2026 15:35:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629411; cv=none; b=VfkDfvL8gGyEjColj0bQE2EyhgTYhg/Tj2k+7rdqTMiGDo2S5uqo/h4+9WUGPYQiwegdA16zGRuEoD9nlHOCoe1URVgEuqO3XNqmiwu+M5suZlUTme2axTTx4F/qU+mIRqoaQKLbNpDe0OLy4tl4Zp2hDpfePuYyB6S6tlMjBuE=
+	t=1781624105; cv=none; b=ePOVJPYFqLDSN2RGnMQEyxXoMow8uLf5J1b5L/E8UZmKvlk7tXqh5a6UalZoVjtsw0r6Ih6cu4QhIrsO/FdOA9vGaJzeN+iSYblNbzky9XXETpo9PA01++MrzS4j6Y0Dtr2x3LxPVgIlswHWGiDQQ/AlY9acQehndvMcIRKW9sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629411; c=relaxed/simple;
-	bh=A3soO1bcpb/a/s2RiBhvowR/QAlcS7L/I/riLXGGWk0=;
+	s=arc-20240116; t=1781624105; c=relaxed/simple;
+	bh=TdhYv0OeWrBZ7grc5+C/fF0UyWwuE0wwH2bmiOlfJaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fH1gBtAiAn+FVd3cgUMlRMG7zP/H7V47fxr28G1Dc3XpsEEU5sbZjtJuQmMI/rNuUBzMJnVdZD5H638AmpotvGRLIDjNHfJvgFf3YQOszpWqJwKXOhY6gMZxsKFdMQwyBe5cEZnBIWvNfE9fB11lg6hM/M/zCUyWBqxGmZV636A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGdEQkBB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DD01F000E9;
-	Tue, 16 Jun 2026 17:03:28 +0000 (UTC)
+	 MIME-Version; b=gw8Lczx4FJvtk0ck2pfseTcQ8y2aiuwOfjKhXEfgkHDPILJAa4HQtN67GKwHRNGCiV1pqQvsbq9yAO5gsluLhMMlC0Cs1+iO5/qRmPJdyve94a2fYBeCCrJqo2JMXSYEcbmEo/1DwgjFW0TsSomt/nmENbq5o2q5gbhebqHS2nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqASkftL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EF61F000E9;
+	Tue, 16 Jun 2026 15:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629410;
-	bh=ex5zxEdzlyeA5oU6KLbgsxE6Ln4BVnxso0IdiZG1Ko4=;
+	s=korg; t=1781624104;
+	bh=3MwV5pB3ZueDzwVndYWMXETHdbgQT1cm7Pyb+Ly9veA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PGdEQkBBHu7HdaUs2Ldfk8hBX39QXew0lNIMz+ksKjdwxl9mb1WtXsxVYqkXebSJF
-	 d6rc6/tuMrfdcquHPyyJpym+SLvYJLQcTfwGQ2sOUuDX5Ue7BNedgeuoaRgHnAxWd0
-	 1TVZJspY3rwkWSldFYzWOVQp1yr/lYirp6oIeCBY=
+	b=hqASkftLHjUv0RTsfnYqueQ1iveINpmVQcgvBippgWWzn59s0ZHVRnQWx/6x9LBGu
+	 nxdhCBaPaUVdp2L+RvF/1tKqaLyaG3RujFdXMkjFT6NwLqm0Bqs8w67luKKKyTQiTk
+	 qhWt8p59QWCAwde27ZEVAUtZQRpNquefBqFR0Br0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/452] netfilter: nf_log: validate MAC header was set before dumping it
+	Hongfei Ren <lcrhf@outlook.com>,
+	stable@kernel.org,
+	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 7.0 275/378] Input: atkbd - skip deactivate for HONOR BCC-Ns internal keyboard
 Date: Tue, 16 Jun 2026 20:28:26 +0530
-Message-ID: <20260616145132.293104414@linuxfoundation.org>
+Message-ID: <20260616145124.586326459@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,27 +68,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265088-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,kernel.org,linux.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-264096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lcrhf@outlook.com,m:stable@kernel.org,m:cryolitia.pukngae@linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,83 +97,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,asu.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,outlook.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D89E6692E65
+X-Rspamd-Queue-Id: 36A0A691494
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
-[ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
+commit fb402386af4cdce108ff991a796386de55439735 upstream.
 
-The fallback path of dump_mac_header() guards the MAC header access
-only with "skb->mac_header != skb->network_header", without checking
-skb_mac_header_was_set(). When the MAC header is unset, mac_header is
-0xffff, so the test passes and skb_mac_header(skb) returns
-skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
-dev->hard_header_len bytes out of bounds into the kernel log.
+After commit 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd -
+do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID"), HONOR
+BCC-N, aka HONOR MagicBook 14 2026's internal keyboard stops
+working. Adding the atkbd_deactivate_fixup quirk fixes it.
 
-This is reachable via the netdev logger: nf_log_unknown_packet() calls
-dump_mac_header() unconditionally, and an skb sent through AF_PACKET
-with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
-unset (__dev_queue_xmit(), which would reset it, is bypassed).
+DMI: HONOR BCC-N/BCC-N-PCB, BIOS 1.04 04/07/2026
 
-Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
-uses, and replace the open-coded MAC header length test with
-skb_mac_header_len(). Only skbs with an unset MAC header are affected;
-valid ones are dumped as before.
-
- BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
- Read of size 1 at addr ffff88800ea49d3f by task exploit/148
- Call Trace:
-  kasan_report (mm/kasan/report.c:595)
-  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
-  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
-  nf_log_packet (net/netfilter/nf_log.c:260)
-  nft_log_eval (net/netfilter/nft_log.c:60)
-  nft_do_chain (net/netfilter/nf_tables_core.c:285)
-  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
-  nf_hook_slow (net/netfilter/core.c:619)
-  nf_hook_direct_egress (net/packet/af_packet.c:257)
-  packet_xmit (net/packet/af_packet.c:280)
-  packet_sendmsg (net/packet/af_packet.c:3114)
-  __sys_sendto (net/socket.c:2265)
-
-Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9cf6e24c9fbf17e52de9fff07f12be7565ea6d61 ("Input: atkbd - do not skip atkbd_deactivate() when skipping ATKBD_CMD_GETID")
+Reported-by: Hongfei Ren <lcrhf@outlook.com>
+Link: https://github.com/colorcube/Linux-on-Honor-Magicbook-14-Pro/issues/1#issuecomment-4562679891
+Tested-by: Hongfei Ren <lcrhf@outlook.com>
+Cc: stable@kernel.org
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Link: https://patch.msgid.link/20260605-honor-v1-1-78e05e491193@linux.dev
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_log_syslog.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/keyboard/atkbd.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
-index 58402226045e84..09b9152e9e5492 100644
---- a/net/netfilter/nf_log_syslog.c
-+++ b/net/netfilter/nf_log_syslog.c
-@@ -799,8 +799,8 @@ static void dump_mac_header(struct nf_log_buf *m,
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -1952,6 +1952,13 @@ static const struct dmi_system_id atkbd_
+ 		},
+ 		.callback = atkbd_deactivate_fixup,
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HONOR"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "BCC-N"),
++		},
++		.callback = atkbd_deactivate_fixup,
++	},
+ 	{ }
+ };
  
- fallback:
- 	nf_log_buf_add(m, "MAC=");
--	if (dev->hard_header_len &&
--	    skb->mac_header != skb->network_header) {
-+	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
-+	    skb_mac_header_len(skb) != 0) {
- 		const unsigned char *p = skb_mac_header(skb);
- 		unsigned int i;
- 
--- 
-2.53.0
-
 
 
 
