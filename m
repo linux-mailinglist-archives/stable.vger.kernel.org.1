@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zeh/BeyEMWrylQUAu9opvQ
-	(envelope-from <stable+bounces-265238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:28 +0200
+	id Gnb8JId8MWpmkgUAu9opvQ
+	(envelope-from <stable+bounces-264789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D66692F23
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4668569253F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Sk0/FWBj";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265238-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265238-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZlfgStCo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264789-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264789-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 11A0E3003D35
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 214F7303789A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8F147AF4D;
-	Tue, 16 Jun 2026 17:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDE477995;
+	Tue, 16 Jun 2026 16:38:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C694D477E36;
-	Tue, 16 Jun 2026 17:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5950244DB64;
+	Tue, 16 Jun 2026 16:38:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630185; cv=none; b=NDt9bu2oDgcrOAMfjqT+1AlLgxiiXHZF1e8xR2aEU63V0tyJzAoQupOzZmc7rfkPD0S+fqeH3RFXOLG2vWCn/HjZyzceaCkoNUpSyHfNOZwGNcJHk7m1qfsgojU+6OF2Dq0IELYboSOqzeGucpIeomexyP/3kb0oRUrHt6bMu8Q=
+	t=1781627898; cv=none; b=XFoEAJidOlrwUHZLrTOaz+Ew8Ndd21wcy5ngDRidCkVXHS0KONlfWwYerHTJLguPFR2f7GLAu48ZgdIlS4m2SISsDCk/GmAgPzuBKU0z3/ZJCy5aMadMY5xKt6hX0uJQLWjR8vi3XhSsbMzvNWT72TAj091NwxWHgcVjqCNgKqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630185; c=relaxed/simple;
-	bh=7982pmaxv8Z4BnZrUDozyo4hyg3GfgSjxu/c2j9P39c=;
+	s=arc-20240116; t=1781627898; c=relaxed/simple;
+	bh=mw6+8adpYCxI4MkWFP3pUS6PZYvwqYYK7/SQfADni3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSJAphJY+qJU/Mz/kv2WjDz3/Yhhnk61Md/1+BMCWx1+s6AIqDelc6c1CywaiE2+P/UvweRbmfP3Q+T+eBoCSHh9n5+vTZcsfKK1jYZHAuaQT/kE5T4mVusLpVDzoZQz+37HNvhoq+ZzTcLHy39zcHcCQ7cG8X4J5V4FxUszLuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sk0/FWBj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465381F000E9;
-	Tue, 16 Jun 2026 17:16:22 +0000 (UTC)
+	 MIME-Version; b=gAZ1+Gwl3EIqHRIW9RUemFPVp3uAt3PZSRMMEMZktjRycbz7+sKcNkORqU0ULYtY5QeZwoexy+a9K31/ic5p23AYr61TMf/Waze8bKQN0PoIosXHQpTd5gzLyDAB/giymjqa4qATPu4Aj/MLmAaorPCx/959a/xs8qXcPgwD6Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlfgStCo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E151F000E9;
+	Tue, 16 Jun 2026 16:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630183;
-	bh=X/Ut174tgBwX/MvemaN9PJaa6QfS9rs9BdNyv/vD01E=;
+	s=korg; t=1781627897;
+	bh=070FqcNypqjkwZl79b1jJCsYV4eLWcMDaaMBacfIFlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sk0/FWBjs7MgjsaIsQF9WkPe9hri1W9kmG2QmBuSnjhknG0VM/ZCGxjj5A7tg1Vw2
-	 6TyAtEKhbGzOEQD7VhxDCVl688XbSp/JJ6mDbRqametdz4Rc7cZrB4UQ6wVpDw+foe
-	 ipWYnHkGT6q8QXi/qXJ2Y5yUsymGakaSseMHHR2g=
+	b=ZlfgStCoZcu/EzFrN68khQzOcQDZeRhR2g64G677uW7tn5NL/ahwqGe7E/oijdRrN
+	 fCjJfu/IxVINChoEEb5baQ/oXeSlQa9jZC84oomMHHl4tcHO8ahc6940JmCo+wGknD
+	 4tC1o3MdRrjbKOeN3/NORwwKjNV8r4zaZcm1jsD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Sasha Levin <sashal@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 6.6 426/452] usb: typec: ucsi: Dont update power_supply on power role change if not connected
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 215/261] drm/amdkfd: fix NULL dereference in get_queue_ids()
 Date: Tue, 16 Jun 2026 20:30:53 +0530
-Message-ID: <20260616145139.075808989@linuxfoundation.org>
+Message-ID: <20260616145054.995980552@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,80 +68,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264789-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265238-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,chromium.org:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 99D66692F23
+X-Rspamd-Queue-Id: 4668569253F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit d98d413ca65d0790a8f3695d0a5845538958ab84 ]
+commit 2bd550b547deabef98bd3b017ff743b7c34d3a6d upstream.
 
-We only need to update the power_supply on power role change if the port
-is connected, because otherwise the online status should be the same for
-both cases.
+When usr_queue_id_array is NULL and num_queues is non-zero,
+get_queue_ids() returns NULL. The callers check only IS_ERR() on the
+return value; since IS_ERR(NULL) == false the check passes, and
+suspend_queues() calls q_array_invalidate() which immediately
+dereferences NULL while iterating num_queues times.
 
-Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-2-6f1239535187@qtmlabs.xyz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ changed `UCSI_CONSTAT(con, CONNECTED)` accessor macro to `con->status.flags & UCSI_CONSTAT_CONNECTED` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Userspace can trigger this via kfd_ioctl_set_debug_trap() by supplying
+num_queues > 0 with a zero queue_array_ptr, causing a kernel panic.
+
+A NULL usr_queue_id_array with num_queues == 0 is a legitimate no-op
+(q_array_invalidate never executes, and resume_queues already guards
+all queue_ids dereferences behind a NULL check). Return ERR_PTR(-EINVAL)
+only when num_queues is non-zero and the pointer is absent; both callers
+already propagate IS_ERR() returns correctly to userspace.
+
+Fixes: a70a93fa568b ("drm/amdkfd: add debug suspend and resume process queues operation")
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f165a82cdf503884bb1797771c61b2fcc72113d4)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -912,7 +912,12 @@ static void ucsi_handle_connector_change
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -3195,7 +3195,7 @@ static void copy_context_work_handler (s
+ static uint32_t *get_queue_ids(uint32_t num_queues, uint32_t *usr_queue_id_array)
+ {
+ 	if (!usr_queue_id_array)
+-		return NULL;
++		return num_queues ? ERR_PTR(-EINVAL) : NULL;
  
- 	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) && role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
--		ucsi_port_psy_changed(con);
-+
-+		/* Some power_supply properties vary depending on the power direction when
-+		 * connected
-+		 */
-+		if (con->status.flags & UCSI_CONSTAT_CONNECTED)
-+			ucsi_port_psy_changed(con);
- 
- 		/* Complete pending power role swap */
- 		if (!completion_done(&con->complete))
+ 	if (num_queues > KFD_MAX_NUM_OF_QUEUES_PER_PROCESS)
+ 		return ERR_PTR(-EINVAL);
 
 
 
