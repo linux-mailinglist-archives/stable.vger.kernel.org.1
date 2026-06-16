@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oc2JGfyWMWp7ngUAu9opvQ
-	(envelope-from <stable+bounces-266125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:33:32 +0200
+	id 3oC/IwR2MWqjjwUAu9opvQ
+	(envelope-from <stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA24B6943D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D88B691D0D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pxqjiGIR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266125-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266125-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ihdCgk9L;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264353-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 462EF309CBFC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A4353075FF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C450477E33;
-	Tue, 16 Jun 2026 18:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2655A44E027;
+	Tue, 16 Jun 2026 15:57:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB2E47CC71;
-	Tue, 16 Jun 2026 18:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDED936E46C;
+	Tue, 16 Jun 2026 15:57:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634794; cv=none; b=AmNCpzKPFiF06l5wKWSioOUaKvDiq2a27yJk3NkRkKXlTNWJSGAUsLEm2PyVCyvyYJLj/nzuUlNpW0x9P/0ioIFuQp92DmPLzmz+peRpT61ivKb8xMGCZ56JcSRI2aXPPbggmiNyZKvGwsdWXsxBTubaeLLyNKz0M4lLrgviLrE=
+	t=1781625438; cv=none; b=eozr9xvQDsxdJxxwTyR0OacF1Xsl+7AQlp0hyAZKTMJMDfE0GD9XRlhqOLn1yLtaX3+f4hiFrfyJqWF7yOHL/8pK7dWxVfjr8SKuuLvs2hm1GwTLf3ftxGlSJFwCX6J+GWFWS7/FfqXYsuDMdbB2PPgq5mgCxVbwCTNPxirL5j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634794; c=relaxed/simple;
-	bh=ODdNzHFr0rAtSt32WFn7qmwd27ScU6RYILIre1eDmtY=;
+	s=arc-20240116; t=1781625438; c=relaxed/simple;
+	bh=sNteZ4JFuKDKqJw/FpzkGZk4onfAmK10wZlsnPit25o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cds6CjMpMBgxnfL+EJcft+LxQULDs6qpbGmcoKnCXKH7PETyguDgmOL4LyCqnsA2Fs9rhHPkQYGVI3tccZODfvtpwr2WE8wQh1bAYWBmQ+oYa/BzXm70wZ01wJ0hZHGIQpSPKObbZu5Xn4MMnNxxAyaYL8DANDI5xl9a93Mitak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxqjiGIR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78BB1F000E9;
-	Tue, 16 Jun 2026 18:33:11 +0000 (UTC)
+	 MIME-Version; b=gTIfUIKYeymIT58M1pOHrhkbjcj5vGSW3wUt6k1Snwl8rg3MfnRc/RQSkB7q+eRLf/OQYabX9EU1jedGC2wSprZGnO8FLbUmzW6v3mmWDPgptwZMyg0NjQXnB/5mMKobJt4csy7gP1F86C79rR2rf7RDKImTR3Vr4IjUaLRQqaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihdCgk9L; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020F11F000E9;
+	Tue, 16 Jun 2026 15:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634792;
-	bh=cL3IXt/CBAGrwj6A7uTK94U40+4XxDIAg9aGeP6PcY0=;
+	s=korg; t=1781625437;
+	bh=GmXv6WV4zV1P8ldGF85o1sYQU9vTHL8mnDryduucjs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pxqjiGIRGXpbMI3P5sW+yQtZVpsVZYhTOHGB1HTAavDOToJw3aAHo/DpWYoqJEvLY
-	 R1vhntDxuofcTPUf3bqWd0+414W+4Qk3mGbeU+WCD/T9dEfEDg/VbkTAB5Zd/pzkPH
-	 sIzvwL1x8KMfLyNAvP7jiYpB75bFmi5qu0UO4cJU=
+	b=ihdCgk9L3LGhmYKYWLxCZbPxoiqcuSeIOwAkp6jSapT2SWzNzVbRxtkjoPftjSkzP
+	 OGQ4pP/hRsfyrjunCYY5t78VzaJVEb8XhD8Q7nUDbLtVWggQQGKp1AjeBkgROyu8NW
+	 opxCzy8Iy9hdXKt0cXxXkPZhJD6zw1iALzldpOjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	John Ogness <john.ogness@linutronix.de>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 300/411] printk: add print_hex_dump_devel()
+Subject: [PATCH 6.18 142/325] drm/i915/edp: Check supported link rates DPCD read
 Date: Tue, 16 Jun 2026 20:28:58 +0530
-Message-ID: <20260616145117.092738029@linuxfoundation.org>
+Message-ID: <20260616145104.812163893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,12 +79,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266125-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264353-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:herbert@gondor.apana.org.au,m:thorsten.blum@linux.dev,m:john.ogness@linutronix.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:n.zhandarovich@fintech.ru,m:jani.nikula@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
@@ -99,55 +99,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,linutronix.de:email,apana.org.au:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linuxtesting.org:url,ursulin.net:email,fintech.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CA24B6943D6
+X-Rspamd-Queue-Id: 2D88B691D0D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit d134feeb5df33fbf77f482f52a366a44642dba09 ]
+[ Upstream commit 2673cefa99ca918e7ac5b0388ff578a83656c896 ]
 
-Add print_hex_dump_devel() as the hex dump equivalent of pr_devel(),
-which emits output only when DEBUG is enabled, but keeps call sites
-compiled otherwise.
+intel_edp_set_sink_rates() reads DP_SUPPORTED_LINK_RATES into a local
+stack array and then parses the array unconditionally. If the read
+fails, the array contents are not valid and may result in bogus sink
+link rates being used.
 
-Suggested-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 177730a273b1 ("crypto: caam - guard HMAC key hex dumps in hash_digest_key")
+Use drm_dp_dpcd_read_data() and clear the sink rate array on failure,
+so the existing parser falls back to the default sink rate handling.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 68f357cb7347 ("drm/i915/dp: generate and cache sink rate array for all DP, not just eDP 1.4")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patch.msgid.link/20260529145759.1640646-1-n.zhandarovich@fintech.ru
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit bd61c7756b34157e093028225a69383b4b1203cc)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/printk.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/i915/display/intel_dp.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/include/linux/printk.h
-+++ b/include/linux/printk.h
-@@ -740,6 +740,19 @@ static inline void print_hex_dump_debug(
- }
- #endif
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index a44fbac1e5e272..c7886b36477067 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -4372,10 +4372,17 @@ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
  
-+#if defined(DEBUG)
-+#define print_hex_dump_devel(prefix_str, prefix_type, rowsize,		\
-+			     groupsize, buf, len, ascii)		\
-+	print_hex_dump(KERN_DEBUG, prefix_str, prefix_type, rowsize,	\
-+		       groupsize, buf, len, ascii)
-+#else
-+static inline void print_hex_dump_devel(const char *prefix_str, int prefix_type,
-+					int rowsize, int groupsize,
-+					const void *buf, size_t len, bool ascii)
-+{
-+}
-+#endif
-+
- /**
-  * print_hex_dump_bytes - shorthand form of print_hex_dump_debug() with default
-  *                        params
+ 	if (intel_dp->edp_dpcd[0] >= DP_EDP_14) {
+ 		__le16 sink_rates[DP_MAX_SUPPORTED_RATES];
++		int ret;
+ 		int i;
+ 
+-		drm_dp_dpcd_read(&intel_dp->aux, DP_SUPPORTED_LINK_RATES,
+-				 sink_rates, sizeof(sink_rates));
++		ret = drm_dp_dpcd_read_data(&intel_dp->aux,
++					    DP_SUPPORTED_LINK_RATES,
++					    sink_rates, sizeof(sink_rates));
++		if (ret < 0) {
++			drm_dbg_kms(display->drm,
++				    "Unable to read eDP supported link rates, using default rates\n");
++			memset(sink_rates, 0, sizeof(sink_rates));
++		}
+ 
+ 		for (i = 0; i < ARRAY_SIZE(sink_rates); i++) {
+ 			int rate;
+-- 
+2.53.0
+
 
 
 
