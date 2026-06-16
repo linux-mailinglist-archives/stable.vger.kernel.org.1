@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tU68FNp2MWr0jwUAu9opvQ
-	(envelope-from <stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:26 +0200
+	id v0G3N5JxMWrWjQUAu9opvQ
+	(envelope-from <stable+bounces-264281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E481A691DFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9586917BD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LWE9RDHL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264557-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FOOtX5Ng;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264281-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264281-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 578A13030172
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 696013044F31
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1629472762;
-	Tue, 16 Jun 2026 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BAF44B68E;
+	Tue, 16 Jun 2026 15:52:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81D46AF25;
-	Tue, 16 Jun 2026 16:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAD944B69C;
+	Tue, 16 Jun 2026 15:52:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626551; cv=none; b=sco5ZbAAsOkcdVRU1MpB/QSN/j3NI55v+MQWpTrh92VWm9XhF8Q8wWPi2C7Xr3JHliEsmWoYwaJPUYNecJE5Xw8bL/vo07/b6R5YrR/vzppaMxDuWNiGY1Q1j7RKoBxCGsc3wJ+mvHuDcoqE4FVUsGHd52MAKafq9amOvMCuh80=
+	t=1781625137; cv=none; b=nznxt60tv7nNnPe5QqmfmUmeDo6C3e5MlZmmw+Oh9TKrjb0aDtmljZFq40OSnbDZY1/hV+Sc26XglVocHPW9rSeL3l5MkI/vzwQduPALsWT9120i9o7qnIqLsZbEFfPFj3ABPZc3Oe9COmy1tLjv1JWrd4zCLa4AaXyH35/S3vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626551; c=relaxed/simple;
-	bh=lzA9rKr0fPxpOK+JODuYzMIVhdUTvN2BhsRcWJTKBPs=;
+	s=arc-20240116; t=1781625137; c=relaxed/simple;
+	bh=iOnPlHlpvxlt0cKjZPaLRzpQf3MUE3d9TPkPKu5ru0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiLkBB9suSchZ8aH38FIZpUW2A7i+zDa9DcVWHLKTy4VIDxNRdesxiLuJovv/mdVITiqc1jne48HZJm2TqgYx2Ro5zxItUa/esEiualRL26wzpRH42bFf/oGUFGgVRuPkSzIV57EiNMYabsCWpug38kkE5hRAWlEQHJA5j3jK4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWE9RDHL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE65A1F00A3A;
-	Tue, 16 Jun 2026 16:15:49 +0000 (UTC)
+	 MIME-Version; b=tdZXUekFH3dEWSa2uVX7NF8XB1q2iUk3C91tOfMbUFHtTS/gIke90LfcU1BHJswlUDn04mWJwPZT16LnE7oUYqljYmyhDtCQV93ag7BtSRHWIT9keJh0tnZFHhQOGSLtgcJ5fchAv+dlg4HaoAJ9yEQI758V7nWrrfKk/NJmD60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOOtX5Ng; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53CF1F000E9;
+	Tue, 16 Jun 2026 15:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626550;
-	bh=Pg9eiHU8NRr7Cfcw2qA0S1tid9Mb4+huWlX5aZ7BxcA=;
+	s=korg; t=1781625136;
+	bh=p2vVQXt7ze19mo0uBlJ1T76zUGGt9I4Gd/nOn110gK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LWE9RDHL1BO8LMdFroBqGB8StfM6zTVa5aWkiECaAIVK71TXkKvysgmCcaqMGRseR
-	 gejNf1JyNQ87Fr3IEJ43AXgXFriSASTA0Jd5VYBkffvxPbDbUTEhZ3jSMbkKeZIDfp
-	 jDsDx5YDCC47ng6cnRS7GnvM+P18ElQoIVfryaGg=
+	b=FOOtX5Ngnz2ZUSgFCBNGuqyQVMZdsBcBZNx8iAZQLpnJvRgcwRtOx+Lsh03rFj79W
+	 kJVXroKTl3bUU7sE+rSgfTiaG18OilnhEsgspmWS/mnFkqeKtb5lJ2UcMqui/ACEet
+	 RnrNRKMM/DRtk03ylCruTjFxXq6DbffHFkNZFpK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.12 009/261] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 051/325] Bluetooth: MGMT: Fix backward compatibility with userspace
 Date: Tue, 16 Jun 2026 20:27:27 +0530
-Message-ID: <20260616145045.459032771@linuxfoundation.org>
+Message-ID: <20260616145100.255951651@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +66,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264281-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264557-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,xidian.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E481A691DFB
+X-Rspamd-Queue-Id: 7E9586917BD
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 617eb7c0961a8dfcfc811844a6396e406b2923ea upstream.
+[ Upstream commit 149324fc762c2a7acef9c26790566f81f475e51f ]
 
-While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
-timeout value` warning was observed, accompanied by SMBus controller
-state machine corruption.
+bluetoothd has a bug with makes it send extra bytes as part of
+MGMT_OP_ADD_EXT_ADV_DATA which are now being checked to be the
+exact the expected length, relax this so only when the expected
+length is greater than the data length to cause an error since
+that would result in accessing invalid memory, otherwise just
+ignore the extra bytes.
 
-The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
-10 ms. The user argument is checked against INT_MAX, but it is
-subsequently multiplied by 10 before being passed to msecs_to_jiffies().
-
-A malicious user can pass a large value (e.g., 429496729) that passes
-the `arg > INT_MAX` check but overflows when multiplied by 10. This
-results in a truncated 32-bit unsigned value that bypasses the
-internal `(int)m < 0` check in `msecs_to_jiffies()`.
-
-The truncated value is then assigned to `client->adapter->timeout`
-(a signed 32-bit int), which is reinterpreted as a negative number.
-When passed to wait_for_completion_timeout(), this negative value
-undergoes sign extension to a 64-bit unsigned long, triggering the
-`schedule_timeout` warning and causing premature returns. This leaves
-the SMBus state machine in an unrecoverable state, constituting a
-local Denial of Service (DoS).
-
-Fix this by bounding the user argument to `INT_MAX / 10`.
-
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-[wsa: move the comment as well]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-bluetooth/20260602204749.210857-1-luiz.dentz@gmail.com/T/#u
+Fixes: d3f7d17960ed ("Bluetooth: MGMT: validate Add Extended Advertising Data length")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/bluetooth/mgmt.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -487,12 +487,13 @@ static long i2cdev_ioctl(struct file *fi
- 		client->adapter->retries = arg;
- 		break;
- 	case I2C_TIMEOUT:
--		if (arg > INT_MAX)
-+		/*
-+		 * For historical reasons, user-space sets the timeout value in
-+		 * units of 10 ms.
-+		 */
-+		if (arg > INT_MAX / 10)
- 			return -EINVAL;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 9bb82d1fdc3cad..c87ec0138c430b 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9098,8 +9098,9 @@ static int add_ext_adv_data(struct sock *sk, struct hci_dev *hdev, void *data,
  
--		/* For historical reasons, user-space sets the timeout
--		 * value in units of 10 ms.
--		 */
- 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
- 		break;
- 	default:
+ 	BT_DBG("%s", hdev->name);
+ 
+-	expected_len = struct_size(cp, data, cp->adv_data_len + cp->scan_rsp_len);
+-	if (expected_len != data_len)
++	expected_len = struct_size(cp, data, cp->adv_data_len +
++				   cp->scan_rsp_len);
++	if (expected_len > data_len)
+ 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_ADD_EXT_ADV_DATA,
+ 				       MGMT_STATUS_INVALID_PARAMS);
+ 
+-- 
+2.53.0
+
 
 
 
