@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8cKLOIeBMWqOlAUAu9opvQ
-	(envelope-from <stable+bounces-265068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:59 +0200
+	id 7Zs8C4mVMWq6nQUAu9opvQ
+	(envelope-from <stable+bounces-266045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5720A692AA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 990D469421F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0Qr1xjDY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265068-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265068-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sz+upErq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266045-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266045-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0964303014B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A1C4B30B8BB6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BC14779B1;
-	Tue, 16 Jun 2026 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C7B478E3E;
+	Tue, 16 Jun 2026 18:26:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2814C32E728;
-	Tue, 16 Jun 2026 17:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254F1477E33;
+	Tue, 16 Jun 2026 18:26:10 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629315; cv=none; b=qgvm9pQp4QU9+105gsp8bYMKPwsDkvmjTOSjw3GKTSCmtWkBOvcrOVvlwyNpapQQlxf5gs5Wh8s6HXAyE2rjZlUFpsbHq0Q09n/MdA9zLmTIKjkF+PRe8apyFZ269yeHF/tThm0W+I4SvCJannfkBy+ZZ/wIAk4JAjyvhOh4SlQ=
+	t=1781634371; cv=none; b=JEFSu7yVStVMrzWGXJzY9U3MvBbDB7fTcqFwR4pVSf/QPsdBevrOI+WcM/z4E3AImzEdTwNSiIyxhmE5G+q0SIDeuAbn8Kue33QPwbClfroTU3j0Ed7A/rrZAOg8reMa/fgtfBa3VKTsBHHACQOTVKxJLbVeufwnq1+gOfZBKYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629315; c=relaxed/simple;
-	bh=LNP53ksq6da6vSIaxO77rsfjNXyROO7hlBZ59l2FJmk=;
+	s=arc-20240116; t=1781634371; c=relaxed/simple;
+	bh=/WBymGlZuPSgsJYIB6HeXruHpXaXR6h6QGf11k916dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phdSMDMdCLWlJD0MkcOaht5dp2hpYrF8zmxsBpbFKyTjxY0X35Nayi8rNSb8uRAga2m49felJtgSrusIKerXiJrLzl00fi48M+8azvnSUuSZ0+UbQQB4DbjxOlRGGawb0vKwmRNi6FEBjRR5TU2Z1QzeY4/nUWLseutVeXCpikA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qr1xjDY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EC71F00A3A;
-	Tue, 16 Jun 2026 17:01:52 +0000 (UTC)
+	 MIME-Version; b=pmMo6T/Q4/EpoEYnrwemKkATtKQqGoiqaSyD1owTvtiblZ5bVZv261vxWFSaRLLBQMLsy/2/ynhp36OYt5eSE+VXJHDJBWnA7IhlT8WWoqI1NTXZAbYze+Fp08nlujQqKFwkfNM8k8+wCQ2JjDArF/7JkeuulMTM4Nhr06npGz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz+upErq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134A01F000E9;
+	Tue, 16 Jun 2026 18:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629314;
-	bh=jxRQBy4PApG98N5R3PYwTLMJX0MS93H3AgRqSiqFRGI=;
+	s=korg; t=1781634370;
+	bh=ty79ofBkd2X1SryVfjiGK82XAgVuR9RMeIs1fL39NW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0Qr1xjDY7LyNB3TNV2hkAlR5+3EEbNjV7MbGDCBNR6EooSlK/+Rp4qKq4x56aWBCD
-	 r7RolXlVAVfyhkr5BqJNdhgRHg37H86QAh93wU+n9SZk2vgNIXtSWayG18cr2Rwz3r
-	 DDh9ArUlljSXpWPVC4JqVmb4ZD23j5qUsAUu2lnk=
+	b=Sz+upErqki45usnFrQTZCp+AEOz1qIuMxgAWqz5SPEezM3bZDx2mN98CjP+CtCszM
+	 HrpuD/1ALjgDmbZQTjn+yt7VBNLCOantzATDaEI3X0ggHU7Fl7FILrrNeiC05M3T2X
+	 aDAIsbWxIuuJCf/PgqYHfKdxEfmlZBzUR0rJYYq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Zhou <yun.zhou@windriver.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	stable@kernel.org,
+	syzbot+62538b67389ee582837a@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/452] gpio: mvebu: fix NULL pointer dereference in suspend/resume
+Subject: [PATCH 5.15 251/411] f2fs: fix to do sanity check on dcc->discard_cmd_cnt conditionally
 Date: Tue, 16 Jun 2026 20:28:09 +0530
-Message-ID: <20260616145131.378777594@linuxfoundation.org>
+Message-ID: <20260616145114.316369454@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +69,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265068-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266045-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yun.zhou@windriver.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:syzbot+62538b67389ee582837a@syzkaller.appspotmail.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,windriver.com:email]
+	TAGGED_RCPT(0.00)[stable,62538b67389ee582837a];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5720A692AA7
+X-Rspamd-Queue-Id: 990D469421F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Zhou <yun.zhou@windriver.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b9ad50d7505ebd48282ec3630258dc820fc85c81 ]
+[ Upstream commit 6af249c996f7d73a3435f9e577956fa259347d18 ]
 
-mvebu_pwm_suspend() and mvebu_pwm_resume() are called for all GPIO
-banks during suspend/resume, but not all banks have PWM functionality.
-GPIO banks without PWM have mvchip->mvpwm set to NULL.
+Syzbot reported a f2fs bug as below:
 
-Calling mvebu_pwm_suspend() with mvpwm == NULL causes a NULL pointer
-dereference when it tries to access mvpwm->blink_select.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:1900!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
+Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
+RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
+RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
+R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
+FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __f2fs_remount fs/f2fs/super.c:2960 [inline]
+ f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
+ reconfigure_super+0x227/0x8a0 fs/super.c:1080
+ do_remount fs/namespace.c:3391 [inline]
+ path_mount+0xdc5/0x10e0 fs/namespace.c:4151
+ do_mount fs/namespace.c:4172 [inline]
+ __do_sys_mount fs/namespace.c:4361 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ffa37dbda0a
 
-  Unable to handle kernel NULL pointer dereference at virtual address 00000020 when write
-  [00000020] *pgd=00000000
-  Internal error: Oops: 815 [#1] PREEMPT ARM
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 406 Comm: sh Not tainted 6.12.74-rt12-yocto-standard-g4e96f98fb7db-dirty #353
-  Hardware name: Marvell Armada 370/XP (Device Tree)
-  PC is at regmap_mmio_read+0x38/0x54
-  LR is at regmap_mmio_read+0x38/0x54
-  pc : [<c05fd2ac>]    lr : [<c05fd2ac>]    psr: 200f0013
-  sp : f0c11d10  ip : 00000000  fp : c100d2f0
-  r10: c14fb854  r9 : 00000000  r8 : 00000000
-  r7 : c1799c00  r6 : 00000020  r5 : 00000020  r4 : c179c7c0
-  r3 : f0a231a0  r2 : 00000020  r1 : 00000020  r0 : 00000000
-  Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-  Control: 10c5387d  Table: 135ec059  DAC: 00000051
-  Call trace:
-   regmap_mmio_read from _regmap_bus_reg_read+0x78/0xac
-   _regmap_bus_reg_read from _regmap_read+0x60/0x154
-   _regmap_read from regmap_read+0x3c/0x60
-   regmap_read from mvebu_gpio_suspend+0xa4/0x14c
-   mvebu_gpio_suspend from dpm_run_callback+0x54/0x180
-   dpm_run_callback from device_suspend+0x124/0x630
-   device_suspend from dpm_suspend+0x124/0x270
-   dpm_suspend from dpm_suspend_start+0x64/0x6c
-   dpm_suspend_start from suspend_devices_and_enter+0x140/0x8e8
-   suspend_devices_and_enter from pm_suspend+0x2fc/0x308
-   pm_suspend from state_store+0x6c/0xc8
-   state_store from kernfs_fop_write_iter+0x10c/0x1f8
-   kernfs_fop_write_iter from vfs_write+0x270/0x468
-   vfs_write from ksys_write+0x70/0xf0
-   ksys_write from ret_fast_syscall+0x0/0x54
+The root cause is there will be race condition in between f2fs_ioc_fitrim()
+and f2fs_remount():
 
-Add a NULL check for mvchip->mvpwm before calling the PWM
-suspend/resume functions.
+- f2fs_remount			- f2fs_ioc_fitrim
+ - f2fs_issue_discard_timeout
+  - __issue_discard_cmd
+  - __drop_discard_cmd
+  - __wait_all_discard_cmd
+				 - f2fs_trim_fs
+				  - f2fs_write_checkpoint
+				   - f2fs_clear_prefree_segments
+				    - f2fs_issue_discard
+				     - __issue_discard_async
+				      - __queue_discard_cmd
+				       - __update_discard_tree_range
+				        - __insert_discard_cmd
+				         - __create_discard_cmd
+				         : atomic_inc(&dcc->discard_cmd_cnt);
+  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
 
-Fixes: 757642f9a584 ("gpio: mvebu: Add limited PWM support")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
-Link: https://patch.msgid.link/20260608084334.2960803-1-yun.zhou@windriver.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+This will only happen when fitrim races w/ remount rw, if we remount to
+readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
+that means fitrim is not in process at that time.
+
+Cc: stable@kernel.org
+Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
+Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Different function signatures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mvebu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/f2fs.h    |    2 +-
+ fs/f2fs/segment.c |    6 +++---
+ fs/f2fs/super.c   |    9 +++++++--
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
-index 67497116ce27d4..ee184720de57c2 100644
---- a/drivers/gpio/gpio-mvebu.c
-+++ b/drivers/gpio/gpio-mvebu.c
-@@ -1002,7 +1002,7 @@ static int mvebu_gpio_suspend(struct platform_device *pdev, pm_message_t state)
- 		BUG();
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3467,7 +3467,7 @@ bool f2fs_is_checkpointed_data(struct f2
+ int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
+ void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
+ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
+ void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
+ 					struct cp_control *cpc);
+ void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1741,7 +1741,7 @@ void f2fs_stop_discard_thread(struct f2f
+ }
+ 
+ /* This comes from f2fs_put_super */
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
+ {
+ 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+ 	struct discard_policy dpolicy;
+@@ -1755,7 +1755,7 @@ bool f2fs_issue_discard_timeout(struct f
+ 	/* just to make sure there is no pending discard commands */
+ 	__wait_all_discard_cmd(sbi, NULL);
+ 
+-	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
++	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
+ 	return dropped;
+ }
+ 
+@@ -2197,7 +2197,7 @@ static void destroy_discard_cmd_control(
+ 	 * fill_super(), it needs to give a chance to handle them.
+ 	 */
+ 	if (unlikely(atomic_read(&dcc->discard_cmd_cnt)))
+-		f2fs_issue_discard_timeout(sbi);
++		f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	kfree(dcc);
+ 	SM_I(sbi)->dcc_info = NULL;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1600,7 +1600,7 @@ static void f2fs_put_super(struct super_
  	}
  
--	if (IS_REACHABLE(CONFIG_PWM))
-+	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
- 		mvebu_pwm_suspend(mvchip);
+ 	/* be sure to wait for any on-going discard commands */
+-	dropped = f2fs_issue_discard_timeout(sbi);
++	dropped = f2fs_issue_discard_timeout(sbi, true);
  
- 	return 0;
-@@ -1054,7 +1054,7 @@ static int mvebu_gpio_resume(struct platform_device *pdev)
- 		BUG();
+ 	if ((f2fs_hw_support_discard(sbi) || f2fs_hw_should_discard(sbi)) &&
+ 					!sbi->discard_blks && !dropped) {
+@@ -2409,8 +2409,13 @@ static int f2fs_remount(struct super_blo
+ 		} else {
+ 			dcc = SM_I(sbi)->dcc_info;
+ 			f2fs_stop_discard_thread(sbi);
++			/*
++			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
++			 * so it's safe to check discard_cmd_cnt in
++			 * f2fs_issue_discard_timeout().
++			 */
+ 			if (atomic_read(&dcc->discard_cmd_cnt))
+-				f2fs_issue_discard_timeout(sbi);
++				f2fs_issue_discard_timeout(sbi, *flags & SB_RDONLY);
+ 			need_restart_discard = true;
+ 		}
  	}
- 
--	if (IS_REACHABLE(CONFIG_PWM))
-+	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
- 		mvebu_pwm_resume(mvchip);
- 
- 	return 0;
--- 
-2.53.0
-
 
 
 
