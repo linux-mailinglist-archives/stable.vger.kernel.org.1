@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DqQmKIZ4MWq5kAUAu9opvQ
-	(envelope-from <stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:34 +0200
+	id Hy3FCxSGMWpglgUAu9opvQ
+	(envelope-from <stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC05692056
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9159B69305D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FfwLtVDX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264493-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jFk1ic4E;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E870323BDD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66ECC3016D3E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBBB44CAF5;
-	Tue, 16 Jun 2026 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F388B47A0B0;
+	Tue, 16 Jun 2026 17:19:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AB23A16AC;
-	Tue, 16 Jun 2026 16:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05991A6803;
+	Tue, 16 Jun 2026 17:18:59 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626183; cv=none; b=mAG9zHadgwjSiI4tTVMz5n2XCzvLH4Tts0kj2aJG0K2IpdkbQaBFiS0zmUN+7RtA2TZYgVbuT1MriVTEm1TNJ29gi5gFAAjepLaeYhAzuhDtN8h6/uV6tJYWUMLb94r+ttSZWKt7ByuHOSj3gmE9Y8FqC0sNtst4mxkQlMD7UQA=
+	t=1781630340; cv=none; b=l16vx8L//Zpm+jl8usHjm5+/uCcWfFvKzK/TKNbrk3F+iueqBHIZFeCk8Toz3eKu5h/AXMg4sHnm+nvgNIXSlGp/y+kvgx48sWPI+xjvFZgHnGwHxWL4fp6A6JDdkjIWK9NSBDTmGd39mJVHW0T13iUMpSUKQFdAZDBLHhfIAlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626183; c=relaxed/simple;
-	bh=+tdX7ZCQ7RhNbV7HWmMtQwY98VAyrNpcUcepAanJ8fc=;
+	s=arc-20240116; t=1781630340; c=relaxed/simple;
+	bh=H/vFCcePDB8yosbWgVimqAd+EfSu0EBwprM0Pze0mjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3xKKdO+DL2c4m5SXmwyhlG9NU18rldKklYUTOx2ze7yjixhhWASYFsmpdmQxEaO3ht1DfGS3y7tUKX3+eW71CqxrU5v33p6bEiLlVv6bqN/1eEIqzaetDnNTeGt5TRj/cdY54g6G/Mop7drjoJa8AedoJDiQWuqkTQbE39y/7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfwLtVDX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C441F000E9;
-	Tue, 16 Jun 2026 16:09:41 +0000 (UTC)
+	 MIME-Version; b=Dk4ROtTPzmgE09NDiIfCFsil/PTA9URHYqF+c7U9A6KfGr4U9cMA2TryuhHmALCCIWGS5N93NWk82e5SZP6cvTjobLC/gSDwZudIPSRSYGiiuJ4uhrUN07tsvLQgNiRXS+8HJsxtj36yG1mNn9FbSx+7j7e+fpuvpELi+3rYTvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFk1ic4E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994081F000E9;
+	Tue, 16 Jun 2026 17:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626182;
-	bh=AZ+rfh/6jSKnBLVduaT17yl5fhEwvEecuS7UewyeU/k=;
+	s=korg; t=1781630339;
+	bh=7V2soz66x4Y6Iq+UMLVRVeh7vG6affnAjzJSBbiDPvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FfwLtVDX+DCOK29IIlV6RYja5/rU8I+wPC+JGrRXeh46F7Lybq4ffATXhBYN7l6rb
-	 FGTgT4rGHyY54C0NoWtKz3LMp154QhwpCVZinK2uqiKRc2png7fhAvMvGeoLYHRfiJ
-	 Iq0RAf9kgM/jDpUDp1QlZtIQCAaVC8iSWhBk4WjU=
+	b=jFk1ic4EPUAU7rtZl8OGZCcy2aFLF/5L4GmKxdO8Q5HhzaZOxp0EWfEtgTzgttcas
+	 Ehxdal/UwVE2hnsSkGRsviV0kIYfXtit8dn0H5oApNeS3gjlFl9jjL0ZCt3yIVZ4g1
+	 zVWVcgbiu0LZDA0HlG4f68psWfNwbR+JmPg6mX78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 278/325] slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
-Date: Tue, 16 Jun 2026 20:31:14 +0530
-Message-ID: <20260616145112.579921666@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 448/452] mptcp: fix missing wakeups in edge scenarios
+Date: Tue, 16 Jun 2026 20:31:15 +0530
+Message-ID: <20260616145140.046013792@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264493-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265268-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,117 +99,53 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FC05692056
+X-Rspamd-Queue-Id: 9159B69305D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 07c564ea5fb859b7381429de935d5df4781947c6 upstream.
+[ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
 
-The work structs and work queue are controller resources, create and
-destroy them in the controller context. Creating them as part of the
-child device's probe path seems to be okay now that the controller's
-probe has been updated, but if for some reason the child does not probe
-successfully a SSR or PDR notification will schedule_work() on an
-uninitialized "ngd_up_work".
+The mptcp_recvmsg() can fill MPTCP socket receive queue via
+mptcp_move_skbs(), but currently does not try to wakeup any listener,
+because the same process is going to check the receive queue soon.
 
-Move the initialization of these controller resources to the controller
-probe function to avoid any issues, and to clarify the ownership.
+When multiple threads are reading from the same fd, the above can
+cause stall. Add the missing wakeup.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-7-srini@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |   38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ net/mptcp/protocol.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1588,25 +1588,8 @@ static int qcom_slim_ngd_probe(struct pl
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_noresume(dev);
- 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
--	if (ret) {
-+	if (ret)
- 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
--		return ret;
--	}
--
--	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
--	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
--	ctrl->mwq = create_singlethread_workqueue("ngd_master");
--	if (!ctrl->mwq) {
--		dev_err(&pdev->dev, "Failed to start master worker\n");
--		ret = -ENOMEM;
--		goto wq_err;
--	}
--
--	return 0;
--wq_err:
--	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
- 
- 	return ret;
- }
-@@ -1659,9 +1642,18 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 	init_completion(&ctrl->qmi.qmi_comp);
- 	init_completion(&ctrl->qmi_up);
- 
-+	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
-+	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
-+
-+	ctrl->mwq = create_singlethread_workqueue("ngd_master");
-+	if (!ctrl->mwq)
-+		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
-+
- 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
--	if (IS_ERR(ctrl->pdr))
--		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-+	if (IS_ERR(ctrl->pdr)) {
-+		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-+		goto err_destroy_mwq;
-+	}
- 
- 	ret = of_qcom_slim_ngd_register(dev, ctrl);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2205,7 +2205,11 @@ static bool __mptcp_move_skbs(struct mpt
+ 	}
  	if (ret)
-@@ -1688,6 +1680,8 @@ err_unregister_ngd:
- 	qcom_slim_ngd_unregister(ctrl);
- err_pdr_release:
- 	pdr_handle_release(ctrl->pdr);
-+err_destroy_mwq:
-+	destroy_workqueue(ctrl->mwq);
- 
- 	return ret;
- }
-@@ -1697,6 +1691,8 @@ static void qcom_slim_ngd_ctrl_remove(st
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
- 
- 	qcom_slim_ngd_unregister(ctrl);
+ 		mptcp_check_data_fin((struct sock *)msk);
+-	return !skb_queue_empty(&msk->receive_queue);
 +
-+	destroy_workqueue(ctrl->mwq);
++	ret = !skb_queue_empty(&msk->receive_queue);
++	if (ret && mptcp_epollin_ready(sk))
++		sk->sk_data_ready(sk);
++	return ret;
  }
  
- static void qcom_slim_ngd_remove(struct platform_device *pdev)
-@@ -1709,8 +1705,6 @@ static void qcom_slim_ngd_remove(struct
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
- 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
- 
- 	kfree(ctrl->ngd);
- 	ctrl->ngd = NULL;
+ static unsigned int mptcp_inq_hint(const struct sock *sk)
 
 
 
