@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-265522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZKjBIgqMMWoxmQUAu9opvQ
-	(envelope-from <stable+bounces-265522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:50 +0200
+	id B2cHNw2MMWoymQUAu9opvQ
+	(envelope-from <stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78C4693784
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA17693788
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="jQnMoHO/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265522-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265522-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kBIA78S4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265523-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 139C73031EA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3F33037F68
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C694779A8;
-	Tue, 16 Jun 2026 17:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0774779A8;
+	Tue, 16 Jun 2026 17:40:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4A83C4178;
-	Tue, 16 Jun 2026 17:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C1947AF6E;
+	Tue, 16 Jun 2026 17:40:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631643; cv=none; b=W+5+F+Hal6gV7LFvQL9AzjzIJgtwMBGLAH5efTpF9m9RBr9pGgrB0LkKY53LuYBrjgc/2gwcHmDxbtCKv9Fjp42b/GoelNZgAeiYEJglCoqKTuWFZVyT2nhOLWeOepBo6hMHjXJjNnybmmgB52htnyoXOUloEhfkMpsnCwQTTV8=
+	t=1781631644; cv=none; b=kiGv9Y1afR/1ssKyJl61LTSD9k/tnXp6efXvn+gQQL6suoHAIqhzwNxE/Xa3v7/+gpBXf3lUaXDOuLKzKzCi7IAVKTTrOrTZK8+YGyp6/7WE3FyCMfBTZsCXUMSyA+hKtrjrw8nNeyikBYXqANhpizKMnuNxM5Fj/C68Y9MQCmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631643; c=relaxed/simple;
-	bh=I1irsbtjfZdU0IVnbDTzSFHYDUETrJEoMUHc7wRKi+o=;
+	s=arc-20240116; t=1781631644; c=relaxed/simple;
+	bh=xUobUleStuu5j5Jy1is6v6Q+pomFAvxnMur7+zcDTYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V16tOhnr87gFID7dFdiKJ2/1UOYahwp1/Y9IiD3CNPsynqGl8UVoCRNaieLzBk1F9lzivI4rNLZ6dwybAzyaUEaysCMF6LlwCSNp72z5rEs6n0m9HbvJFV3RYHzzpNjGPG1C+7QUN8XpDzlELDim0v/fpz+849/2UVzrMOwOWgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQnMoHO/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04781F000E9;
-	Tue, 16 Jun 2026 17:40:37 +0000 (UTC)
+	 MIME-Version; b=JV77LBiL1iVyUiwOIq0RBcoy0Q+mVHo+FvDNQ+sRb8tjC1AfF28leN6V998biDZFZowBQQc80yQ7pmytdwzXffkVyO/ZmxVGCupcq0gMd92qDc1Jkk82cvPW1UUwkDsZr+gDQ7PT5ttsfU28FuntqOflLqviaMlZuACf5vaTlSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBIA78S4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C901F00A3A;
+	Tue, 16 Jun 2026 17:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631638;
-	bh=4pSJJqhYM2bdZ97xKBmD4qmYPxqpcKo1PvoWoTd0wno=;
+	s=korg; t=1781631643;
+	bh=gpUb/yNMd58vZK+hx1rdIYPU59KiQDkcBDuYPr78sd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jQnMoHO/XuBnMkc5vQUFgIg9IkpNB0yzSlwHahSVSC7uZmEdDC6cHXuTACmHgEmxx
-	 RU4IMC/eOdG/7S1rIEngMeJWw4yT1JVkJmVQRBVYbQaKRvX+gwcD1d69iuhjhVTCyp
-	 GJ5AaGOXTSD9lZnUfsEy7QSdEGLbYeMAGpXL0Qcc=
+	b=kBIA78S4k8MkRuMe68gMNPSU6W+5bSKfr8n4U87no4l9ypBalKRz2zWOpt81vqOVS
+	 Yrv9Z9f2POlSadIh0MoJEIrV5CgIvfxL1cFJpmoirdF7qhBcEa16qu+/Ow6FRNY7Ng
+	 oNaMvXhZsHc/OdYA4zcQw8h6lioif8dtNeh0vvQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/522] netfilter: nft_exthdr: fix register tracking for F_PRESENT flag
-Date: Tue, 16 Jun 2026 20:26:46 +0530
-Message-ID: <20260616145138.063894277@linuxfoundation.org>
+Subject: [PATCH 6.1 260/522] net: mvpp2: sync RX data at the hardware packet offset
+Date: Tue, 16 Jun 2026 20:26:47 +0530
+Message-ID: <20260616145138.109035489@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -77,74 +76,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265522-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265523-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A78C4693784
+X-Rspamd-Queue-Id: 3AA17693788
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit 772cecf198da732faebb5dcfc46d66a505be8495 ]
+[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
 
-nft_exthdr_init() passes user-controlled priv->len to
-nft_parse_register_store(), which marks that many bytes in the
-register bitmap as initialized.  However, when NFT_EXTHDR_F_PRESENT
-is set, the eval paths write only 1 byte (nft_reg_store8) or
-4 bytes (*dest = 0 on TCP/DCCP error path).  When len > 4,
-registers beyond the first are never written, retaining
-uninitialized stack data from nft_regs.
+mvpp2 programs the RX queue packet offset, so hardware writes received
+data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
+dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
+unused headroom and misses the same number of bytes at the packet tail.
 
-Bail out if userspace requests too much data when F_PRESENT is set.
+On non-coherent DMA systems this can leave the CPU reading stale cache
+contents for the end of the received frame.
 
-Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Fixes: c078ca3b0c5b ("netfilter: nft_exthdr: Add support for existence check")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
+offset so the sync covers the Marvell header and packet data actually
+written by hardware.
+
+Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 60d18bd60d821e..a7cb4dd6205e9f 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -531,6 +531,9 @@ static int nft_exthdr_init(const struct nft_ctx *ctx,
- 			return err;
- 	}
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index b42c2c498faa2e..62d72f5ed01295 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3948,9 +3948,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			dma_dir = DMA_FROM_DEVICE;
+ 		}
  
-+	if ((flags & NFT_EXTHDR_F_PRESENT) && len != 1)
-+		return -EINVAL;
-+
- 	priv->type   = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
- 	priv->offset = offset;
- 	priv->len    = len;
+-		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
+-					rx_bytes + MVPP2_MH_SIZE,
+-					dma_dir);
++		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
++					      MVPP2_SKB_HEADROOM,
++					      rx_bytes + MVPP2_MH_SIZE,
++					      dma_dir);
+ 
+ 		/* Buffer header not supported */
+ 		if (rx_status & MVPP2_RXD_BUF_HDR)
 -- 
 2.53.0
 
