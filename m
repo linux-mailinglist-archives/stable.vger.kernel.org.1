@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-266316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oR2TFYmbMWpqoAUAu9opvQ
-	(envelope-from <stable+bounces-266316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:57 +0200
+	id J7XYCSeMMWo+mQUAu9opvQ
+	(envelope-from <stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BAA6948B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9559C6937AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z6WoWIPX;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266316-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266316-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lNPmx2x/";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265527-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B428331F8B72
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F59D306F535
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392BD450902;
-	Tue, 16 Jun 2026 18:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3336A47AF5D;
+	Tue, 16 Jun 2026 17:41:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D733CFF55;
-	Tue, 16 Jun 2026 18:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B13101A7;
+	Tue, 16 Jun 2026 17:41:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635785; cv=none; b=p3XUpTFsyLhuI2/XSEqTklX7tnptwEg7xxob1EmedGtrJMa6uA3lJHguppto07TUxOqnDckqRAVv+NCU8z2JSrknUryln4Uoa2c+UeuXs+gq6h/ZFKz/9fL3uyrs27+AkWSWie2YLM6dwJZjiTEU9qhddJiAa5cQmU947wXf630=
+	t=1781631665; cv=none; b=PS6/3L2eNg141IZ4oOkwLdhUxk/29qXKCnHKXtGKFO6RmMUTJqvkvs61Hr0EIXK0ZV2+Y+0KbtlTW18h74VB87zLauMp5xhoGB5dGWzz1NjFQj5hlvEyFxvQHqzTqkQLqqMfGJGs3jDr57PoPAleuLYLliCwV2r/ifX4bwlZ5Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635785; c=relaxed/simple;
-	bh=ml3zv7HH0UwzZPq5AjIZFoLOqJhXHbbFovlWjtJhZAQ=;
+	s=arc-20240116; t=1781631665; c=relaxed/simple;
+	bh=YpHJXZz0LNhdl5Q4/psBhDM3CrynDCzWIQHM/eXttLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syCBgJP9TD2rhU3TAs8cilWBW2e9UHB12EQblONAtBcMMzLYSQB+gJkFwrRQoS8+ahvZBq7dybqymGZQdNynJeBS2TC8e2Y25ocnx5dln+DALT5VtBYF3JP2Vj91+jAXi0WYa8w8RyoLi69mhMWrIT8l6MeJzGgHww3MadCZ1Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6WoWIPX; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065091F000E9;
-	Tue, 16 Jun 2026 18:49:42 +0000 (UTC)
+	 MIME-Version; b=QS3xxBim9pG7FYl33S7oQGqC2Q0/vOl9ZVP777Ie93/tXWQbGDOUr8iYgvCewVVkSalnzxLg1diD7bfKlAtKJYjBHhTBdbELYA0kwfBgXZ8F6vlvCll6zlxpbhP2BmeoJhNP/kbqdu1ZvQzTOe+6NvA3tPgwfxicSqx5EyOccTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNPmx2x/; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F9B1F000E9;
+	Tue, 16 Jun 2026 17:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635783;
-	bh=oU/ne+ZZAi8K6vcVoF4aWtvKm9+sNQjlewrD870Peos=;
+	s=korg; t=1781631663;
+	bh=0AI1zpyTtRkNzkoGjfwbGg0vgM+HS83j4XUac2mJO5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z6WoWIPXxsyJKHZwWQcu1CzS5NC8+iuFzp2fw72Ypbwe8uVNtjLI9wSG1xVfBqA1S
-	 ybmb/RAcRH4BtBZx9Gqo7d7qbE/2gziIHYLEnRyiDa4GOzLuvppH04HEkuexrm4fgB
-	 ZoLDGwyuC+Xp/GVABK3M8E6ycpb99CDDZ05fcgTw=
+	b=lNPmx2x/Xe59Uy7VYs59/srsRvdMukQXZBOf6hp/Vzc2s8kOYjp2NVEMd4HVbqrgW
+	 AKnAOB+7QG1NbCZaFIxsImbRuf/Tx8uoKKhrQsS68TQ+X/KellLHVPMvfyCHXb6zm3
+	 gyxJ+pNJQwRT+a+jm7SwfP9RYLSwaCSe5ZX67/10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 5.10 114/342] serial: zs: Switch to using channel reset
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 263/522] net: mvpp2: refill RX buffers before XDP or skb use
 Date: Tue, 16 Jun 2026 20:26:50 +0530
-Message-ID: <20260616145053.524568194@linuxfoundation.org>
+Message-ID: <20260616145138.245215436@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,120 +76,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266316-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265527-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,orcam.me.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tk154.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B5BAA6948B7
+X-Rspamd-Queue-Id: 9559C6937AD
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Til Kaiser <mail@tk154.de>
 
-commit 8572955630f30948837088aa98bcbe0532d1ceac upstream.
+[ Upstream commit 5e8e2a9624df72fca7c736b2966b2cbf6c9c3ff6 ]
 
-Switch the driver to using the channel reset rather than hardware reset,
-simplifying handling by removing an interference between channels that
-causes the other channel to become uninitialised afterwards.
+The RX error path returns the current descriptor buffer to the hardware
+BM pool. That is only valid while the driver still owns the buffer.
 
-There is little difference between the two kinds of reset in terms of
-register settings that result, and we initialise the whole register set
-right away anyway.  However this prevents a hang from happening should
-the console output handler in the firmware try to access the other port
-whose transmitter has been disabled and line parameters messed up.
+mvpp2_rx_refill() can fail after the current buffer has been handed to
+XDP or attached to an skb. In those cases mvpp2_run_xdp() may have
+recycled, redirected, or queued the page for XDP_TX, and an skb free also
+retires the data buffer. Returning such a buffer to BM lets hardware DMA
+into memory that is no longer owned by the RX ring.
 
-For example this will happen if the keyboard port (port A) is chosen for
-the system console, unusually but not insanely for a headless system, as
-the port is wired to a standard DA-15 connector and an adapter can be
-easily made.  Or with the next change in place this would happen for the
-regular console port (port B), since the keyboard port (port A) will be
-initialised first.
+Refill the BM pool before handing the current buffer to XDP or to the
+skb. If the allocation fails there, drop the packet and return the
+still-owned current buffer to BM, preserving the pool depth. Once the
+refill succeeds, later local drops retire/free the current buffer instead
+of returning it to BM.
 
-Just remove the unnecessary complication then, a channel reset is good
-enough.  We still need the initialisation marker, now per channel rather
-than per SCC, as for the console port zs_reset() will be called twice:
-once early on via zs_serial_console_init() for the console setup only,
-and then again via zs_config_port() as the port is associated with a TTY
-device.
-
-Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.23+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062323430.46195@angie.orcam.me.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Fixes: d6526926de73 ("net: mvpp2: fix memory leak in mvpp2_rx")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-4-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 77a6b90ce56b ("net: mvpp2: build skb from XDP-adjusted data on XDP_PASS")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/zs.c |    7 ++++---
- drivers/tty/serial/zs.h |    2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 43 +++++++++++--------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -831,21 +831,22 @@ static void zs_shutdown(struct uart_port
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 4c299d8bb2392c..fc16e577a10376 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3973,6 +3973,12 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		else
+ 			frag_size = bm_pool->frag_size;
  
- static void zs_reset(struct zs_port *zport)
- {
-+	struct zs_port *zport_a = &zport->scc->zport[ZS_CHAN_A];
- 	struct zs_scc *scc = zport->scc;
- 	int irq;
- 	unsigned long flags;
++		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
++		if (err) {
++			netdev_err(port->dev, "failed to refill BM pools\n");
++			goto err_drop_frame;
++		}
++
+ 		if (xdp_prog) {
+ 			struct xdp_rxq_info *xdp_rxq;
  
- 	spin_lock_irqsave(&scc->zlock, flags);
- 	irq = !irqs_disabled_flags(flags);
--	if (!scc->initialised) {
-+	if (!zport->initialised) {
- 		/* Reset the pointer first, just in case...  */
- 		read_zsreg(zport, R0);
- 		/* And let the current transmission finish.  */
- 		zs_line_drain(zport, irq);
--		write_zsreg(zport, R9, FHWRES);
-+		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
- 		udelay(10);
- 		write_zsreg(zport, R9, 0);
--		scc->initialised = 1;
-+		zport->initialised = 1;
+@@ -3990,12 +3996,6 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 			if (ret) {
+ 				xdp_ret |= ret;
+-				err = mvpp2_rx_refill(port, bm_pool, pp, pool);
+-				if (err) {
+-					netdev_err(port->dev, "failed to refill BM pools\n");
+-					goto err_drop_frame;
+-				}
+-
+ 				ps.rx_packets++;
+ 				ps.rx_bytes += rx_bytes;
+ 				continue;
+@@ -4007,8 +4007,21 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		skb = build_skb(data, frag_size);
+ 		if (!skb) {
+ 			netdev_warn(port->dev, "skb build failed\n");
+-			goto err_drop_frame;
++			if (pp) {
++				page_pool_put_page(pp, virt_to_head_page(data),
++						   rx_bytes + MVPP2_MH_SIZE,
++						   true);
++			} else {
++				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
++						       bm_pool->buf_size,
++						       DMA_FROM_DEVICE,
++						       DMA_ATTR_SKIP_CPU_SYNC);
++				mvpp2_frag_free(bm_pool, pp, data);
++			}
++			goto err_drop_frame_retired;
+ 		}
++		if (pp)
++			skb_mark_for_recycle(skb);
+ 
+ 		/* If we have RX hardware timestamping enabled, grab the
+ 		 * timestamp from the queue and convert.
+@@ -4019,16 +4032,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 					 skb_hwtstamps(skb));
+ 		}
+ 
+-		err = mvpp2_rx_refill(port, bm_pool, pp, pool);
+-		if (err) {
+-			netdev_err(port->dev, "failed to refill BM pools\n");
+-			dev_kfree_skb_any(skb);
+-			goto err_drop_frame;
+-		}
+-
+-		if (pp)
+-			skb_mark_for_recycle(skb);
+-		else
++		if (!pp)
+ 			dma_unmap_single_attrs(dev->dev.parent, dma_addr,
+ 					       bm_pool->buf_size, DMA_FROM_DEVICE,
+ 					       DMA_ATTR_SKIP_CPU_SYNC);
+@@ -4047,13 +4051,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		continue;
+ 
+ err_drop_frame:
+-		dev->stats.rx_errors++;
+-		mvpp2_rx_error(port, rx_desc);
+ 		/* Return the buffer to the pool */
+ 		if (rx_status & MVPP2_RXD_BUF_HDR)
+ 			mvpp2_buff_hdr_pool_put(port, rx_desc, pool, rx_status);
+ 		else
+ 			mvpp2_bm_pool_put(port, pool, dma_addr, phys_addr);
++err_drop_frame_retired:
++		dev->stats.rx_errors++;
++		mvpp2_rx_error(port, rx_desc);
  	}
- 	load_zsregs(zport, zport->regs, irq);
- 	spin_unlock_irqrestore(&scc->zlock, flags);
---- a/drivers/tty/serial/zs.h
-+++ b/drivers/tty/serial/zs.h
-@@ -22,6 +22,7 @@
- struct zs_port {
- 	struct zs_scc	*scc;			/* Containing SCC.  */
- 	struct uart_port port;			/* Underlying UART.  */
-+	int		initialised;		/* For the console port.  */
  
- 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
- 
-@@ -41,7 +42,6 @@ struct zs_scc {
- 	struct zs_port	zport[2];
- 	spinlock_t	zlock;
- 	atomic_t	irq_guard;
--	int		initialised;
- };
- 
- #endif /* __KERNEL__ */
+ 	if (xdp_ret & MVPP2_XDP_REDIR)
+-- 
+2.53.0
+
 
 
 
