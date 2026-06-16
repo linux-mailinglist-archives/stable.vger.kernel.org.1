@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BNfCIitxMWqvjQUAu9opvQ
-	(envelope-from <stable+bounces-264186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:11 +0200
+	id C/JyKrp5MWpDkQUAu9opvQ
+	(envelope-from <stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2797D691740
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 790966921E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gpmfulKJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264186-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264186-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sV6nm8K2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0B344308578D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:44:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E94783035CFF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E759B44D6BD;
-	Tue, 16 Jun 2026 15:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569F94508F2;
+	Tue, 16 Jun 2026 16:28:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF951A682B;
-	Tue, 16 Jun 2026 15:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D3046AEDB;
+	Tue, 16 Jun 2026 16:28:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624586; cv=none; b=rndzACcdMUpP2TsD4HMOeC8OFbnc5MUY9E3K3J6ZtrXwTzCa6K/klmsI1CjiaSSpoW3FQ3RJJvlQ1FHDKS9dFw/0Ndb4y0zL1GzQd5Ade+JwXg7BuoQ9D1XFIIkHJpGgpGrdHRTg1+qKJkVf8tsCxXuybIFT80Zog66iBZat0l4=
+	t=1781627320; cv=none; b=Wi8/U5+KcMAbViVU5eoqN9QtYokm/eQV3JNrB9gOtpJBpbUPRrrg7s+clAwkvg7gvYtloCV1JYaWFmn6b1Vo5sv206DB5cnB0E9xPwlP7oPT7M9GU1Mp55+UNp4Rs6FkI18V56fEth2Ev3BxhxJWeoVFV9eHQlhJ5fJkxfw5hBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624586; c=relaxed/simple;
-	bh=eHGllp0SuCacImxsliIAHCGOyhjC15n+gBZzZ9F6hlE=;
+	s=arc-20240116; t=1781627320; c=relaxed/simple;
+	bh=0EDSydluTAoyw72oaag/Y0v3Jv3apo5gIlxH1Sjl7+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcQdTz4OfvWicn2rojl0AcqoECgapu+h5PHrGcm5LeSg6nYtMmI04Qj2t+/j8DjK6HSNu9o9QvfBZYUjNxqPst3DY0xy3yOW7lonnovQ+JG82R/75v0lliFT7ApfYQ0qDx08ob+GX0sGXHDltAMrxUF6k+NFUtCsaE2KTTkUgaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpmfulKJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897181F000E9;
-	Tue, 16 Jun 2026 15:43:04 +0000 (UTC)
+	 MIME-Version; b=HQDh8k+kVLv0ZBEfaEUz4UOa/0q0dFC/ixxQt7ws7/XtAnd7Q5wrx5OSVaW6aJ9LhZ3he7b8DPuW/Lgiw+s7KXHKdPXa75bRwuxakqQThpXFdx7mKQexCDBNYH8AoVVn49RZcKn8jXRHqA5p0Aj5nknm9s7L+ihbIh+38bEhhAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV6nm8K2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B691F000E9;
+	Tue, 16 Jun 2026 16:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624585;
-	bh=ZGRlFi/xW4wTWEYCumwrnLS44Xu+Dl/FxPMWi6Ht28I=;
+	s=korg; t=1781627319;
+	bh=Khyfcu2Ale2x8AoRny7zQa1GX5AdtoMuCppO75Dgfmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gpmfulKJaEe44vI4uPdNIgPmAklCJ/wckUR4wJID+8g62o84i28Zt9RD+FhALP5SA
-	 ptPheLz6URjvYeAN8+RscLbEmf+ifxI46vyEnYZPErVYiBIlTI7smbyw8REI80JoZw
-	 PjcL3b7Bbsf8hoEkpE9McyuXxJ99j1MPFv/uB3Hg=
+	b=sV6nm8K2+ONcGJueqdKaETZuLJWZqtnsidrwNA6a2FOuuIbKVC0ITPjgLbRYWwYj5
+	 LRZQVU+LEhI9jQ5+MVThasF7qJrW9VP+Wv5Npx4RYBYV8a6WC2tdWDeBTjIIsRWWHS
+	 ABzvuXDSaDF/06F7suOn+MbXGIZYhMA28T3Q/3S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Tsukerman <philiptsukerman@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 362/378] RDMA: During rereg_mr ensure that REREG_ACCESS is compatible
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.12 155/261] ARM: 9475/1: entry: use byte load for KASAN VMAP stack shadow
 Date: Tue, 16 Jun 2026 20:29:53 +0530
-Message-ID: <20260616145129.197307742@linuxfoundation.org>
+Message-ID: <20260616145052.261066618@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +67,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,16 +79,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264186-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:philiptsukerman@gmail.com,m:jgg@nvidia.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-264690-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,166 +96,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,armlinux.org.uk:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2797D691740
+X-Rspamd-Queue-Id: 790966921E2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Karl Mehltretter <kmehltretter@gmail.com>
 
-commit badad6fad60def1b9805559dd81dbab3d97b82aa upstream.
+commit 77a1f6883dc6e837bb2cb30b9b02e2f94338e2c6 upstream.
 
-If IB_MR_REREG_ACCESS changes from RO to RW then the umem has to be
-re-evaluated to ensure it is properly pinned as RW. Since the umem is
-hidden inside each driver's mr struct add a ib_umem_check_rereg() function
-that each driver has to call before processing IB_MR_REREG_ACCESS.
+Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
+VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
+__switch_to(). The read uses ldr, but the KASAN shadow address is
+byte-granular and is not guaranteed to be word aligned.
 
-mlx4 has to retain its duplicate ib_access_writable check because it
-implements IB_MR_REREG_ACCESS | IB_MR_REREG_TRANS by changing both items
-in place sequentially while the MR is live, so it will continue to not
-support this combination.
+ARMv5 faults unaligned word loads. With CONFIG_KASAN_VMALLOC and
+CONFIG_VMAP_STACK enabled, ARM926/VersatilePB crashes in __switch_to()
+with an alignment exception before reaching init.
 
-Cc: stable@vger.kernel.org
-Fixes: b40656aa7d55 ("RDMA/umem: remove FOLL_FORCE usage")
-Link: https://patch.msgid.link/r/0-v1-06fb1a2d6cf5+107-rereg_access_jgg@nvidia.com
-Reported-by: Philip Tsukerman <philiptsukerman@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Use ldrb for the dummy shadow access. The code only needs to fault in the
+shadow mapping if the stack shadow is missing, so a byte load is sufficient
+and matches the granularity of KASAN shadow memory.
+
+Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shadow")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem.c          |   16 ++++++++++++++++
- drivers/infiniband/hw/hns/hns_roce_mr.c |    4 ++++
- drivers/infiniband/hw/irdma/verbs.c     |    4 ++++
- drivers/infiniband/hw/mlx4/mr.c         |    4 ++++
- drivers/infiniband/hw/mlx5/mr.c         |    4 ++++
- drivers/infiniband/sw/rxe/rxe_verbs.c   |    5 +++++
- include/rdma/ib_umem.h                  |    8 ++++++++
- 7 files changed, 45 insertions(+)
+ arch/arm/kernel/entry-armv.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -332,3 +332,19 @@ int ib_umem_copy_from(void *dst, struct
- 		return 0;
- }
- EXPORT_SYMBOL(ib_umem_copy_from);
-+
-+/*
-+ * Called during rereg mr if the driver is able to re-use a umem for
-+ * IB_MR_REREG_ACCESS.
-+ */
-+int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags)
-+{
-+	if (!umem)
-+		return 0;
-+
-+	if ((flags & IB_MR_REREG_ACCESS) && !(flags & IB_MR_REREG_TRANS))
-+		if (ib_access_writable(new_access_flags) && !umem->writable)
-+			return -EACCES;
-+	return 0;
-+}
-+EXPORT_SYMBOL(ib_umem_check_rereg);
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -300,6 +300,10 @@ struct ib_mr *hns_roce_rereg_user_mr(str
- 		goto err_out;
- 	}
+--- a/arch/arm/kernel/entry-armv.S
++++ b/arch/arm/kernel/entry-armv.S
+@@ -567,7 +567,7 @@ ENTRY(__switch_to)
+ 	@ are using KASAN
+ 	mov_l	r2, KASAN_SHADOW_OFFSET
+ 	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
+-	ldr	r2, [r2]
++	ldrb	r2, [r2]
+ #endif
+ #endif
  
-+	ret = ib_umem_check_rereg(mr->pbl_mtr.umem, flags, mr_access_flags);
-+	if (ret)
-+		goto err_out;
-+
- 	mailbox = hns_roce_alloc_cmd_mailbox(hr_dev);
- 	ret = PTR_ERR_OR_ZERO(mailbox);
- 	if (ret)
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -3759,6 +3759,10 @@ static struct ib_mr *irdma_rereg_user_mr
- 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-+	ret = ib_umem_check_rereg(iwmr->region, flags, new_access);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	ret = irdma_hwdereg_mr(ib_mr);
- 	if (ret)
- 		return ERR_PTR(ret);
---- a/drivers/infiniband/hw/mlx4/mr.c
-+++ b/drivers/infiniband/hw/mlx4/mr.c
-@@ -208,6 +208,10 @@ struct ib_mr *mlx4_ib_rereg_user_mr(stru
- 	struct mlx4_mpt_entry **pmpt_entry = &mpt_entry;
- 	int err;
- 
-+	err = ib_umem_check_rereg(mmr->umem, flags, mr_access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	/* Since we synchronize this call and mlx4_ib_dereg_mr via uverbs,
- 	 * we assume that the calls can't run concurrently. Otherwise, a
- 	 * race exists.
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -1895,6 +1895,10 @@ struct ib_mr *mlx5_ib_rereg_user_mr(stru
- 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-+	err = ib_umem_check_rereg(mr->umem, flags, new_access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	if (!(flags & IB_MR_REREG_ACCESS))
- 		new_access_flags = mr->access_flags;
- 	if (!(flags & IB_MR_REREG_PD))
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -1332,6 +1332,7 @@ static struct ib_mr *rxe_rereg_user_mr(s
- 	struct rxe_mr *mr = to_rmr(ibmr);
- 	struct rxe_pd *old_pd = to_rpd(ibmr->pd);
- 	struct rxe_pd *pd = to_rpd(ibpd);
-+	int err;
- 
- 	/* for now only support the two easy cases:
- 	 * rereg_pd and rereg_access
-@@ -1341,6 +1342,10 @@ static struct ib_mr *rxe_rereg_user_mr(s
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
- 
-+	err = ib_umem_check_rereg(mr->umem, flags, access);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	if (flags & IB_MR_REREG_PD) {
- 		rxe_put(old_pd);
- 		rxe_get(pd);
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -179,6 +179,8 @@ void ib_umem_dmabuf_unmap_pages(struct i
- void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf);
- void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf);
- 
-+int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags);
-+
- #else /* CONFIG_INFINIBAND_USER_MEM */
- 
- #include <linux/err.h>
-@@ -239,5 +241,11 @@ static inline void ib_umem_dmabuf_unmap_
- static inline void ib_umem_dmabuf_release(struct ib_umem_dmabuf *umem_dmabuf) { }
- static inline void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf) {}
- 
-+static inline int ib_umem_check_rereg(struct ib_umem *umem, int flags,
-+				      int new_access_flags)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif /* CONFIG_INFINIBAND_USER_MEM */
- #endif /* IB_UMEM_H */
 
 
 
