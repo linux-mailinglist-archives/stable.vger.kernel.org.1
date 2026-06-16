@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lZ2MKOmMMWqbmQUAu9opvQ
-	(envelope-from <stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:33 +0200
+	id uOXRL9ByMWp7jgUAu9opvQ
+	(envelope-from <stable+bounces-264286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539F2693883
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AD9691988
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eR0wA84j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265641-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pkArL0fJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264286-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264286-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C24A23024AB4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 095C1302FA41
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B373466B4B;
-	Tue, 16 Jun 2026 17:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256BA44BCB8;
+	Tue, 16 Jun 2026 15:52:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B7332A3C9;
-	Tue, 16 Jun 2026 17:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AB715B998;
+	Tue, 16 Jun 2026 15:52:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632230; cv=none; b=iKGxN0Hv3hzG2+Zc4yh6ALs/O3Ee9Zg3ey2l/3X6LYOqpDDoqNmz3//n8f1gr8BxZSEPNX6J+GX1i3blHe65lpa6ct38kmHbt9cZhglX+k2agRGfRcgTHjKuIUKb4PHxUPS2BmK36waD9OJjQZouTuoVmdG2d6xdMAru6d9spjI=
+	t=1781625163; cv=none; b=iBAH0dcmnk0+OqDM7WciHl1Pq6ybJhJvKXSfAjMo6OG9m9FwNblL9YkLoHHQkgVpuJETWzJNKJsW2eo7AmymDv5Trg6U2tSITJkVFEcFOly/FtESGwS8+lnz7w0ZceA2Nzhr0J9Y09+OJIjxTy1BojNrkcge5MdEavlI5+AIr1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632230; c=relaxed/simple;
-	bh=xsaW54Fx45M+8gpVd3aIUKcnjMWfkflIUgAKrmDKl3I=;
+	s=arc-20240116; t=1781625163; c=relaxed/simple;
+	bh=HUbPa4AVK8CXO1KtkeeUe+ROuRL6mpYmf5hTO9m8bk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvFSc9tN1nFaMTrdkkF7QPpHPmVMpKH34VVriVtWSm/XEeA9SC0wgRNG+o0yRbPUoClyN0pOqd9vK/AgNCQz/GsTprTK/vKok5/NJmUKPBK60ze2R5LjKca3uVN4n2HEX/pUhTRfzyql0LSaDQ1wcsHpIHEWn7jtODXSlYGfILg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR0wA84j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B471F000E9;
-	Tue, 16 Jun 2026 17:50:27 +0000 (UTC)
+	 MIME-Version; b=TeDZ0RWmcuHAxPL/4t8hKoC8PC08WMYE9KO5FGda7lh2uRXhGQ0o/Btft9z5zdk/QGW8hrItm08Wfd8KDyzXwBziJHJYL8R9MOYfKn/LLYDYoiwNhnBir35TiTH1B01xq+a8C6DEKnYqVQjE/Sv0Xx9XnA3njHyg7Qakcvkcazo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkArL0fJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1CA1F000E9;
+	Tue, 16 Jun 2026 15:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632228;
-	bh=zLbhvf9guCj9PNtGWs1SDYV0xr1PDhB2GBjSgI0K7Lc=;
+	s=korg; t=1781625162;
+	bh=XO0avWOJnh8s8sSfMYE12oPPSdJSdtCnYBO0UXZQ4dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eR0wA84jzDhCD/3eKLS45ZsM2S+lft9JEA+HmzAHP1pEFkhKkKautip8caNweMqzr
-	 /A2NI/nr0+CqV5cr3qzlS6uXBv81h6Aa8Ttuw4o+X9rr99WBWO3bDHNMWvaetUi4IF
-	 fkYxxztB6OoF2alZ1BnmXerii6KyP4CDQonYxktE=
+	b=pkArL0fJ2nARLOLsQGQR3COf+SOVIoJXQdUGwsj+Ly+PnNICOl3rrhnbCKXV0tvs4
+	 kKPu9Btzmb2gNfH1q5DtMAMi4Dt0UOh0V2TPV7RZY5IeyG8o1GEyfg6FTgI81tA71X
+	 aDzmiKPi3rZ1ry3SYbSgcMDO1j8ZEibif+OKm5VQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Hodges <git@danielhodges.dev>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 339/522] wifi: mwifiex: fix use-after-free in mwifiex_adapter_cleanup()
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 090/325] ice: fix missing priority callbacks for U.FL DPLL pins
 Date: Tue, 16 Jun 2026 20:28:06 +0530
-Message-ID: <20260616145141.676569700@linuxfoundation.org>
+Message-ID: <20260616145102.187037376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +73,112 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265641-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:git@danielhodges.dev,m:johannes.berg@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264286-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aleksandr.loktionov@intel.com,m:pmenzel@molgen.mpg.de,m:poros@redhat.com,m:anthony.l.nguyen@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,m:sx.rinitha@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,danielhodges.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,mpg.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 539F2693883
+X-Rspamd-Queue-Id: 53AD9691988
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Hodges <git@danielhodges.dev>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit ae5e95d4157481693be2317e3ffcd84e36010cbb ]
+[ Upstream commit f1fa677e428e8873486938086bd934dc18169b47 ]
 
-The mwifiex_adapter_cleanup() function uses timer_delete()
-(non-synchronous) for the wakeup_timer before the adapter structure is
-freed. This is incorrect because timer_delete() does not wait for any
-running timer callback to complete.
+The U.FL2 input pin advertises DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE
+in its capability mask, but ice_dpll_pin_ufl_ops does not provide
+.prio_get and .prio_set callbacks. As a result the DPLL subsystem
+cannot report or accept priority for U.FL pins: pin-get omits the prio
+field on U.FL2 and pin-set with prio is rejected as invalid, even
+though the capability is present. This prevents user space from using
+priority to select or disable U.FL2 as a DPLL input source.
 
-If the wakeup_timer callback (wakeup_timer_fn) is executing when
-mwifiex_adapter_cleanup() is called, the callback will continue to
-access adapter fields (adapter->hw_status, adapter->if_ops.card_reset,
-etc.) which may be freed by mwifiex_free_adapter() called later in the
-mwifiex_remove_card() path.
+Reproducer with iproute2 (dpll command):
 
-Use timer_delete_sync() instead to ensure any running timer callback has
-completed before returning.
+  # dpll pin show board-label U.FL2
+  pin id 16:
+    module-name ice
+    board-label U.FL2
+    type ext
+    capabilities priority-can-change|state-can-change
+    parent-device:
+      id 0 direction input state selectable phase-offset 0
+    /* note: no "prio" between "direction" and "state",
+       even though priority-can-change is advertised */
 
-Fixes: 4636187da60b ("mwifiex: add wakeup timer based recovery mechanism")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel Hodges <git@danielhodges.dev>
-Link: https://patch.msgid.link/20260206194401.2346-1-git@danielhodges.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ changed `timer_delete_sync()` to `del_timer_sync()` ]
+  # dpll pin set id 16 parent-device 0 prio 5
+  RTNETLINK answers: Operation not supported
+
+After the fix the prio field is reported by pin show and pin set with
+prio is accepted on U.FL2.
+
+Add the missing .prio_get and .prio_set callbacks to
+ice_dpll_pin_ufl_ops, reusing ice_dpll_sw_input_prio_{get,set}. The
+same ops struct is shared by U.FL1 and U.FL2: U.FL2 (input) delegates
+to the backing hardware input pin, while U.FL1 (output) does not
+advertise DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE so the dpll core
+capability gate never invokes prio_set for it, and prio_get reports
+the OUTPUT sentinel (ICE_DPLL_PIN_PRIO_OUTPUT) on the output side
+exactly like the SMA path does today.
+
+Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20260602225513.393338-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/init.c
-+++ b/drivers/net/wireless/marvell/mwifiex/init.c
-@@ -388,7 +388,7 @@ static void mwifiex_invalidate_lists(str
- static void
- mwifiex_adapter_cleanup(struct mwifiex_adapter *adapter)
- {
--	del_timer(&adapter->wakeup_timer);
-+	del_timer_sync(&adapter->wakeup_timer);
- 	cancel_delayed_work_sync(&adapter->devdump_work);
- 	mwifiex_cancel_all_pending_cmd(adapter);
- 	wake_up_interruptible(&adapter->cmd_wait_q.wait);
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 14048ac5eff56f..81267bae0e5cb5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -2481,6 +2481,8 @@ static const struct dpll_pin_ops ice_dpll_pin_ufl_ops = {
+ 	.state_on_dpll_set = ice_dpll_ufl_pin_state_set,
+ 	.state_on_dpll_get = ice_dpll_sw_pin_state_get,
+ 	.direction_get = ice_dpll_pin_sw_direction_get,
++	.prio_get = ice_dpll_sw_input_prio_get,
++	.prio_set = ice_dpll_sw_input_prio_set,
+ 	.frequency_get = ice_dpll_sw_pin_frequency_get,
+ 	.frequency_set = ice_dpll_sw_pin_frequency_set,
+ 	.esync_set = ice_dpll_sw_esync_set,
+-- 
+2.53.0
+
 
 
 
