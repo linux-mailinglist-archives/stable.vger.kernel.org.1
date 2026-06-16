@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JHwpESyLMWqzmAUAu9opvQ
-	(envelope-from <stable+bounces-265553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:08 +0200
+	id 8pj/HfiBMWqxlAUAu9opvQ
+	(envelope-from <stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9217693660
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBF0692B01
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KO+94wvh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265553-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="06/oPpli";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265011-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B1829304ADC6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 23FE831097B7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1759647B429;
-	Tue, 16 Jun 2026 17:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEFD478E50;
+	Tue, 16 Jun 2026 16:57:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055F147AF6E;
-	Tue, 16 Jun 2026 17:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D909B4657F8;
+	Tue, 16 Jun 2026 16:57:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631785; cv=none; b=Jgf6mWQ2eGlTLmnHDY+HGRiW/KpIombK660l4ewi4cNbbL17GachtpH399Kf162IN3UzDKp3M6oA3CZ0MF3+NwmV+qvRPS6liretHdyW4GLn2nZaEB0eWz70LXEWBVX/SWMfumbXpihioWfvQ22NJrOjjc9OeG+OWsrVHHEcG38=
+	t=1781629028; cv=none; b=dym/0ENq5hXloKTXMYJz4Q7ZIWmuxoLMkb2g/xEvwTcQVt/toCJWISQvfJVgohUTSHLEhe8SOSYA6jjJkOs5f64JcG8W6Cid2NQvHCp4EAXP4Z+LZ/8/FcnSsWQ9bbe/dhvwG0XAcdKE66TRRVairvrKW3CG84nUCL0ExGqvSA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631785; c=relaxed/simple;
-	bh=fq3ZK4TvPGaCPkNmaEXfBnuUhT956reA0vlkMHBNmbg=;
+	s=arc-20240116; t=1781629028; c=relaxed/simple;
+	bh=xyC9uyiT17wGR8i+kEun5s/iRi2B8WAobwUDbkJ6dm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ge9vWRaaXte5Q58kVzYLOTrhKJHn5LN+0U+xV85vFt9w4OBBU61tvHfGOH8l5LrEXVTWNi3Vk3ybgCyB+yigOo9XkjOyHq/SurYi50DFm9KnnxvBEo4aktoM1yG/03H7lqCckyD4gL+0ux8zAaBgBpoG0Ud9BZkAk+wFwDbCyL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO+94wvh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCEE1F000E9;
-	Tue, 16 Jun 2026 17:43:02 +0000 (UTC)
+	 MIME-Version; b=ufHlaYIrfXyuo6Jz0DXBkL+6fMbpyRui/Hsene32HqsPqNWsvxCvmogKOaXgaCs+CGrl/ZAKJvG7Qi2QfOCGm+HZTk+KecF9FuFwDkDTOppH4k3eXlyRe9cCw5WYK8qefWCUv+AWdvqjrY89dCpHHFKhNc7ou+SdUJ7dkZA1oAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06/oPpli; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CABF1F000E9;
+	Tue, 16 Jun 2026 16:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631783;
-	bh=OqpYW5MlM6kyRRLAw91PXgL/dKZpRaFVGJNCi9dPQ94=;
+	s=korg; t=1781629026;
+	bh=FBMgxnFzK+bps7q8akdQm41Yd52rlk2uHFSnmFN7ed8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KO+94wvh2oWqct1Dasc1z4CS1u9w+D0seAYdNvCYRnm7ulPNLfXIrKQiJt2sRjrXx
-	 qU/Ol9mKsTZM5r41fwhLNKhq3+Yhu5zeR7y8MsHN5OVD/soWBZGXK46THvnbqjYLuJ
-	 F0zNnRS/er/xEPfGuAHT/88HGwh+s+6XX0TPb9K0=
+	b=06/oPplijURRFIwTb3gZ2vdKLFB4Blwuz20rqwTQPdaBorcqCev3YQR0YAmCsOlgf
+	 5VQo3uKmKmLAri3oZa/jYzYJSNOHQm1S8A1CjouTZGNNXEipekoxPnVRf6q6YXhg5o
+	 5jQ10zSht0K68Izfa/iW5wShjvLUmgTqVOgS/ZvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 287/522] mptcp: allow subflow rcv wnd to shrink
+	syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Vladislav Nikolaev <vlad102nikolaev@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 207/452] RDMA/rxe: Fix "trying to register non-static key in rxe_qp_do_cleanup" bug
 Date: Tue, 16 Jun 2026 20:27:14 +0530
-Message-ID: <20260616145139.369104576@linuxfoundation.org>
+Message-ID: <20260616145128.676665244@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +69,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265553-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-265011-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com,m:yanjun.zhu@linux.dev,m:leon@kernel.org,m:vlad102nikolaev@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,4edb496c3cad6e953a31];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,syzkaller.appspot.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A9217693660
+X-Rspamd-Queue-Id: DDBF0692B01
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit da23be77e1292cd611e736c3aa17da633d7ddce7 upstream.
+commit 1c7eec4d5f3b39cdea2153abaebf1b7229a47072 upstream.
 
-In MPTCP connection, the `window` field in the TCP header refers to the
-MPTCP-level rcv_nxt and it's right edge should not move backward. Such
-constraint is enforced at DSS option generation time.
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:986 [inline]
+ register_lock_class+0x4a3/0x4c0 kernel/locking/lockdep.c:1300
+ __lock_acquire+0x99/0x1ba0 kernel/locking/lockdep.c:5110
+ lock_acquire kernel/locking/lockdep.c:5866 [inline]
+ lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5823
+ __timer_delete_sync+0x152/0x1b0 kernel/time/timer.c:1644
+ rxe_qp_do_cleanup+0x5c3/0x7e0 drivers/infiniband/sw/rxe/rxe_qp.c:815
+ execute_in_process_context+0x3a/0x160 kernel/workqueue.c:4596
+ __rxe_cleanup+0x267/0x3c0 drivers/infiniband/sw/rxe/rxe_pool.c:232
+ rxe_create_qp+0x3f7/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:604
+ create_qp+0x62d/0xa80 drivers/infiniband/core/verbs.c:1250
+ ib_create_qp_kernel+0x9f/0x310 drivers/infiniband/core/verbs.c:1361
+ ib_create_qp include/rdma/ib_verbs.h:3803 [inline]
+ rdma_create_qp+0x10c/0x340 drivers/infiniband/core/cma.c:1144
+ rds_ib_setup_qp+0xc86/0x19a0 net/rds/ib_cm.c:600
+ rds_ib_cm_initiate_connect+0x1e8/0x3d0 net/rds/ib_cm.c:944
+ rds_rdma_cm_event_handler_cmn+0x61f/0x8c0 net/rds/rdma_transport.c:109
+ cma_cm_event_handler+0x94/0x300 drivers/infiniband/core/cma.c:2184
+ cma_work_handler+0x15b/0x230 drivers/infiniband/core/cma.c:3042
+ process_one_work+0x9cc/0x1b70 kernel/workqueue.c:3238
+ process_scheduled_works kernel/workqueue.c:3319 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3400
+ kthread+0x3c2/0x780 kernel/kthread.c:464
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-At the same time, the TCP stack ensures independently that the TCP-level
-rcv wnd right's edge does not move backward. That in turn causes artificial
-inflating of the MPTCP rcv window when the incoming data is acked at the
-TCP level and is OoO in the MPTCP sequence space (or lands in the backlog).
+The root cause is as below:
 
-As a consequence, the incoming traffic can exceed the receiver rcvbuf size
-even when the sender is not misbehaving.
+In the function rxe_create_qp, the function rxe_qp_from_init is called
+to create qp, if this function rxe_qp_from_init fails, rxe_cleanup will
+be called to handle all the allocated resources, including the timers:
+retrans_timer and rnr_nak_timer.
 
-Prevent such scenario forcibly allowing the TCP subflow to shrink the
-TCP-level rcv wnd regardless of the current netns setting.
+The function rxe_qp_from_init calls the function rxe_qp_init_req to
+initialize the timers: retrans_timer and rnr_nak_timer.
 
-Fixes: f3589be0c420 ("mptcp: never shrink offered window")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-4-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But these timers are initialized in the end of rxe_qp_init_req.
+If some errors occur before the initialization of these timers, this
+problem will occur.
+
+The solution is to check whether these timers are initialized or not.
+If these timers are not initialized, ignore these timers.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Reported-by: syzbot+4edb496c3cad6e953a31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4edb496c3cad6e953a31
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20250419080741.1515231-1-yanjun.zhu@linux.dev
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[ Vladislav: keep del_timer_sync() because linux-6.6.y has not renamed it
+  to timer_delete_sync() yet. The actual fix is unchanged: check the timer
+  .function fields before deleting the timers. ]
+Signed-off-by: Vladislav Nikolaev <vlad102nikolaev@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -564,6 +564,7 @@ static bool mptcp_established_options_ds
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
-+	struct tcp_sock *tp = tcp_sk(sk);
- 	unsigned int dss_size = 0;
- 	struct mptcp_ext *mpext;
- 	unsigned int ack_size;
-@@ -613,6 +614,12 @@ static bool mptcp_established_options_ds
- 	if (dss_size == 0)
- 		ack_size += TCPOLEN_MPTCP_DSS_BASE;
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 287fc8b8f5bafe..8426c261c263a9 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -817,7 +817,12 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
+ 	spin_unlock_irqrestore(&qp->state_lock, flags);
+ 	qp->qp_timeout_jiffies = 0;
  
-+	/* The caller is __tcp_transmit_skb(), and will compute the new rcv
-+	 * wnd soon: ensure that the window can shrink.
+-	if (qp_type(qp) == IB_QPT_RC) {
++	/* In the function timer_setup, .function is initialized. If .function
++	 * is NULL, it indicates the function timer_setup is not called, the
++	 * timer is not initialized. Or else, the timer is initialized.
 +	 */
-+	if (skb)
-+		tp->rcv_wnd = tp->rcv_nxt - tp->rcv_wup;
-+
- 	dss_size += ack_size;
- 
- 	*size = ALIGN(dss_size, 4);
++	if (qp_type(qp) == IB_QPT_RC && qp->retrans_timer.function &&
++		qp->rnr_nak_timer.function) {
+ 		del_timer_sync(&qp->retrans_timer);
+ 		del_timer_sync(&qp->rnr_nak_timer);
+ 	}
+-- 
+2.53.0
+
 
 
 
