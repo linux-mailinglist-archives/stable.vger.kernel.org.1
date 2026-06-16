@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-265283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pj9EFdiFMWpRlgUAu9opvQ
-	(envelope-from <stable+bounces-265283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:24 +0200
+	id KQ0HEB+IMWpflwUAu9opvQ
+	(envelope-from <stable+bounces-265285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED499693028
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3DD693328
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="2kS6y/EA";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265283-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265283-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=V38WbEIP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265285-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265285-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB6A0303BEF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E1F630640FC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B3947A0CD;
-	Tue, 16 Jun 2026 17:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73C447A0B5;
+	Tue, 16 Jun 2026 17:20:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A681A6803;
-	Tue, 16 Jun 2026 17:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AEF4657D0;
+	Tue, 16 Jun 2026 17:20:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630415; cv=none; b=dIqOQwZibkYdcqrx/Q6vFiFKLcO/To8xNq5+dIs/IjwNMaQdDsK/kpU0xpbyT9jq54FxRRXay3pMyN/7T+xXm/fZKpVWune/gSJnwcqMJW/WL/EnL7X7szmzMevJPsXHmZbO2dE7kn2ZvuX79vfhOwKRbmQWwdXg3HyUFWeb48E=
+	t=1781630425; cv=none; b=KldEO2DVw5eFFO5ggAByZ5BBoQoq96tP0yXrQ5h6wdlJIFBSVeyI50t49ZuG1rro3KoH31zaWCQfQ7Wfz+0MCrBthPn0zIHtWawY0sS5lV7WDBOM+muFLz/heKqsgkrcRiaboSkY7lLEnsdOLNG9S3apZNTpQ1zLhBB7H+WyOAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630415; c=relaxed/simple;
-	bh=PtwhrAb/o9hVr5ZZ8vY/ilj3oj61lZ43g1UywoSWHiY=;
+	s=arc-20240116; t=1781630425; c=relaxed/simple;
+	bh=nUUW1BrB1qUpNRrHpELDfMsh0bNMr2E6Weu2Ozm28j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CE20CF0PZYrVY6Eb8tHRYPo/JJm+rr6HQeOg8wKM4tAlSrgGJCNCWJzVAoQ9AbaEDKr1OpDl2CbHPcduQkVvcQ98ntkM2BNSUD5jvhXNerF6+/Uh2JkQMYeMUAlnGn62WLuKwEhm2EfNwK0kMlkz6vq7WgYtPnf3A44d8GgzoeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kS6y/EA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F155C1F000E9;
-	Tue, 16 Jun 2026 17:20:12 +0000 (UTC)
+	 MIME-Version; b=ecnZ/cr6dkuYZIODiLm+Ta6C6bDhF7u/GD30BDnIpqNmc858wBrghmgn/pk+N3M25xy6R2RosMnZEI/nquIV+RfLej68IIh9KOLUBhJIpfnqdZcbX0MqPTwipC2pNC7bzA1YQ2UesI49aC4YRUmN7t0oUXMhb6vCh5JjI7So0mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V38WbEIP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7D41F000E9;
+	Tue, 16 Jun 2026 17:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630413;
-	bh=eHBlvSmMiDHB7M9dFvSi1vVLv4zAQrpXMJB3GTEWe4s=;
+	s=korg; t=1781630424;
+	bh=3encwpfr5YGPRcV2otxd53se654vjHMPHTxpg7VyqOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2kS6y/EA/iqDoPJvoY+cxxlwutahe5n+QNpjqT4HgzegYgoBuLm55ngsbCNX1jSvB
-	 MGFHXOzuVz+bx7ts9qdVlFIWtadQ3LU4G13VT5c9VJRRvp0G/fSXIZjEg6hxmpXov/
-	 ix+6TyUKnMjGaGuP7vdeZxvxBXw1kj4VeSQDSyX4=
+	b=V38WbEIPTilW5LUepINbGAKUk1t+BxKshVWZJ5j3c18svekXzhWPpVa27SF5wggiZ
+	 Bu2k1+WWwFRnZf0nX7A67ZCRKbwmfuso7UTlqaJhEbrFx1I/g6o2YYK3hgLdYPdSeJ
+	 oEM2MnRuxFjtwGEOq2hHe+0x3EHZUI17pg4kNjKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,9 +51,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stefano Brivio <sbrivio@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/522] tunnels: load network headers after skb_cow() in iptunnel_pmtud_build_icmp[v6]()
-Date: Tue, 16 Jun 2026 20:22:52 +0530
-Message-ID: <20260616145126.805160696@linuxfoundation.org>
+Subject: [PATCH 6.1 026/522] vxlan: do not reuse cached ip_hdr() value after skb_tunnel_check_pmtu()
+Date: Tue, 16 Jun 2026 20:22:53 +0530
+Message-ID: <20260616145126.856380893@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
 References: <20260616145125.307082728@linuxfoundation.org>
@@ -72,14 +72,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265283-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265285-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:sbrivio@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,9 +99,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED499693028
+X-Rspamd-Queue-Id: 2B3DD693328
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
@@ -109,82 +109,49 @@ X-Rspamd-Queue-Id: ED499693028
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b4bc94353050b1fa7b702bd4c6600710dd926cff ]
+[ Upstream commit 7d9ef0cb271555d8cf39fefe6c981e1493b25ecf ]
 
-Sashiko found that iptunnel_pmtud_build_icmp() and
-iptunnel_pmtud_build_icmpv6() were caching ip_hdr() and ipv6_hdr()
-before an skb_cow() call which can reallocate skb->head.
+skb_tunnel_check_pmtu() can change skb->head.
 
-Fix this possible UAF by initializing the local variables
-after the skb_cow() call.
+Reusing old_iph afer skb_tunnel_check_pmtu() can cause an UAF.
 
-Remove skb_reset_network_header() calls which were not needed.
+Use instead ip_hdr(skb) as done in drivers/net/bareudp.c
+and drivers/net/geneve.c.
+
+Found by Sashiko.
 
 Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20260525201335.2361845-1-edumazet@google.com
+Link: https://patch.msgid.link/20260525203642.2389723-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index 75e3d7501752df..5fb437f040ace7 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -194,7 +194,7 @@ EXPORT_SYMBOL_GPL(iptunnel_handle_offloads);
-  */
- static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- {
--	const struct iphdr *iph = ip_hdr(skb);
-+	const struct iphdr *iph;
- 	struct icmphdr *icmph;
- 	struct iphdr *niph;
- 	struct ethhdr eh;
-@@ -208,7 +208,6 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 6ad59c8afdcfc1..9d7ebf8aa79f66 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2682,7 +2682,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			goto out_unlock;
+ 		}
  
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
--	skb_reset_network_header(skb);
+-		tos = ip_tunnel_ecn_encap(tos, old_iph, skb);
++		tos = ip_tunnel_ecn_encap(tos, ip_hdr(skb), skb);
+ 		ttl = ttl ? : ip4_dst_hoplimit(&rt->dst);
+ 		err = vxlan_build_skb(skb, ndst, sizeof(struct iphdr),
+ 				      vni, md, flags, udp_sum);
+@@ -2745,7 +2745,7 @@ static void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 			goto out_unlock;
+ 		}
  
- 	err = pskb_trim(skb, 576 - sizeof(*niph) - sizeof(*icmph));
- 	if (err)
-@@ -218,7 +217,7 @@ static int iptunnel_pmtud_build_icmp(struct sk_buff *skb, int mtu)
- 	err = skb_cow(skb, sizeof(*niph) + sizeof(*icmph) + ETH_HLEN);
- 	if (err)
- 		return err;
--
-+	iph = ip_hdr(skb);
- 	icmph = skb_push(skb, sizeof(*icmph));
- 	*icmph = (struct icmphdr) {
- 		.type			= ICMP_DEST_UNREACH,
-@@ -290,7 +289,7 @@ static int iptunnel_pmtud_check_icmp(struct sk_buff *skb, int mtu)
-  */
- static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- {
--	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-+	const struct ipv6hdr *ip6h;
- 	struct icmp6hdr *icmp6h;
- 	struct ipv6hdr *nip6h;
- 	struct ethhdr eh;
-@@ -305,7 +304,6 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 
- 	skb_copy_bits(skb, skb_mac_offset(skb), &eh, ETH_HLEN);
- 	pskb_pull(skb, ETH_HLEN);
--	skb_reset_network_header(skb);
- 
- 	err = pskb_trim(skb, IPV6_MIN_MTU - sizeof(*nip6h) - sizeof(*icmp6h));
- 	if (err)
-@@ -316,6 +314,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	if (err)
- 		return err;
- 
-+	ip6h = ipv6_hdr(skb);
- 	icmp6h = skb_push(skb, sizeof(*icmp6h));
- 	*icmp6h = (struct icmp6hdr) {
- 		.icmp6_type		= ICMPV6_PKT_TOOBIG,
+-		tos = ip_tunnel_ecn_encap(tos, old_iph, skb);
++		tos = ip_tunnel_ecn_encap(tos, ip_hdr(skb), skb);
+ 		ttl = ttl ? : ip6_dst_hoplimit(ndst);
+ 		skb_scrub_packet(skb, xnet);
+ 		err = vxlan_build_skb(skb, ndst, sizeof(struct ipv6hdr),
 -- 
 2.53.0
 
