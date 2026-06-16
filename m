@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cmsGOKRvMWojjQUAu9opvQ
-	(envelope-from <stable+bounces-264113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:40 +0200
+	id uXQvBtuEMWrnlQUAu9opvQ
+	(envelope-from <stable+bounces-265116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAC56915E0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95700692F08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qHop+3Ag;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264113-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264113-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jXAR9bk0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265116-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265116-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6723D30A5B34
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36D753081101
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A36A44CAFB;
-	Tue, 16 Jun 2026 15:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF734779B1;
+	Tue, 16 Jun 2026 17:05:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D83744CAE6;
-	Tue, 16 Jun 2026 15:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B346543E4BC;
+	Tue, 16 Jun 2026 17:05:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624195; cv=none; b=r+b2F97b+uoKE5MchwHnxS0rwJFM9zZZpwtXUAIaJZU13Zzvk5DRMWq5x3KZbxYRghB+0Lag0b6Qky3giNkdz+4vbQ122UKGUTuF4lophyIAyCZf7dr4fAtIR+NoZAuldsxNbu/9mKLjDJADtwjzB0EMn/PzdD2sXMQi4e8S+io=
+	t=1781629548; cv=none; b=ovCMyfvUy/+qolkk4LucnPsRehKWBmEOtJrWwoRE/g1olcctZysl5jAV7f07MvTPq2tocvl3yngJcsJmQzJgeJLfRWRqEKDpYmtDQv5lqbHfcQhmVeNp9Uq0DRLdb2OWp0CiY6Nh5eb7xh/SCMghPpbEJsNGovmKzOuu65igS3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624195; c=relaxed/simple;
-	bh=W9W5wV05l7M7oqCINxXMoTyW4jVKeI5ClHgv6eR6MgU=;
+	s=arc-20240116; t=1781629548; c=relaxed/simple;
+	bh=ganKpKBH4TH/BwkjH9bOalzLuE7hKSZvmzSEia+ShTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqsLlMk5v9raWu8mpjHwsGl4vnd2WEGFW67SJOtRNaYlau0J0qxDLDn39f+XubdlShg/Rq5+QTQEeOWri+KuIjOS+L5q4RGEt9M5fUrJ0J6rl7rRIsySZvnY6vNUb2yj2nBd2rB0+D/3MfsxTcRQi2LzA07Sn8h8vyZFqfVUw9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHop+3Ag; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2141E1F000E9;
-	Tue, 16 Jun 2026 15:36:32 +0000 (UTC)
+	 MIME-Version; b=mt2vucQS11mwEjSeev5ZMTRhJ54+QN3gJsDba0Nb2g7UiexWJBATiGkKbmV6wA8c5I5S1L/LV+QZjK9mgXU+HvLHgkM5ZuaRjpGDAUl4A2HTnk41PkoD5ehJ4F/QKy7jAjiMoHvjc7kZVR0ctQxyLJaZFTGL1wBZcrilHjfEgaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXAR9bk0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C961F000E9;
+	Tue, 16 Jun 2026 17:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624194;
-	bh=wrr2Oz/1wKeAOukN6iWF3hRIWW4ilymOMltlbsZmk2Q=;
+	s=korg; t=1781629547;
+	bh=JPNlIgCPUwutR63MvWwT0/TTx5+paxH7o+4fMo/On7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qHop+3AgO16iwJRoWVhA2SvgOiA8g+D7gYCvjfmMS5tq8ogu1of8QqnT85UlwD48B
-	 pdVKgZ+b/AkKi0ALcaDJ99X5PuIasC/bmGf3gW6Ap/JARvzhpinLVEKdNwsZZ6FBoh
-	 eaQ8YZ9ek6bB+ZxHLLPVTUBkTVqyJLuQX3eewoAU=
+	b=jXAR9bk0Fc3K6/K45M5FhqgHg00ev3MxdHvFD0ApEr67koNn3UVycfUgh0WyfTo8V
+	 K1OAxToCox6HjHfyh60UlqknUlWT4F+fPt4L5/vzVY+Z5+pP1X1Hs8v46rBXJFPvrv
+	 HlLKwxPjfQebbPeaUfdxiI01yK+OI+EdHUCkfrFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 290/378] net: mv643xx: fix OF node refcount
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.6 294/452] tracing/probes: Point the error offset correctly for eprobe argument error
 Date: Tue, 16 Jun 2026 20:28:41 +0530
-Message-ID: <20260616145125.339778643@linuxfoundation.org>
+Message-ID: <20260616145132.986460134@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264113-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265116-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:rostedt@goodmis.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,47 +97,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAAC56915E0
+X-Rspamd-Queue-Id: 95700692F08
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 4aacf509e537a711fa71bca9f234e5eb6968850e upstream.
+commit 85e0f27dd1396307913ffc5745b0c05137e9beac upstream.
 
-Platform devices created with platform_device_alloc() call
-platform_device_release() when the last reference to the device's
-kobject is dropped. This function calls of_node_put() unconditionally.
-This works fine for devices created with platform_device_register_full()
-but users of the split approach (platform_device_alloc() +
-platform_device_add()) must bump the reference of the of_node they
-assign manually. Add the missing call to of_node_get().
+Fix to point the error offset correctly for eprobe argument error.
+In the cleanup commit 1b8b0cd754cd ("tracing/probes: Move event parameter
+fetching code to common parser"), due to incorrect backward compatibility
+aimed at conforming to the test specifications, the error location was set
+to 0 when a non-existent formal parameter was specified for Eprobe.
+However, this should be corrected in both the test and the implementation
+to point correct error position.
 
+Link: https://lore.kernel.org/all/177967567399.209006.1451571244515632097.stgit@devnote2/
+
+Fixes: 1b8b0cd754cd ("tracing/probes: Move event parameter fetching code to common parser")
 Cc: stable@vger.kernel.org
-Fixes: 76723bca2802 ("net: mv643xx_eth: add DT parsing support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260602073414.22500-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mv643xx_eth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_probe.c                                              |    2 --
+ tools/testing/selftests/ftrace/test.d/dynevent/eprobes_syntax_errors.tc |    2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/marvell/mv643xx_eth.c
-+++ b/drivers/net/ethernet/marvell/mv643xx_eth.c
-@@ -2780,7 +2780,7 @@ static int mv643xx_eth_shared_of_add_por
- 		goto put_err;
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -933,8 +933,6 @@ static int parse_probe_vars(char *orig_a
+ 			code->op = FETCH_OP_COMM;
+ 			return 0;
+ 		}
+-		/* backward compatibility */
+-		ctx->offset = 0;
+ 		goto inval;
  	}
- 	ppdev->dev.coherent_dma_mask = DMA_BIT_MASK(32);
--	ppdev->dev.of_node = pnp;
-+	ppdev->dev.of_node = of_node_get(pnp);
  
- 	ret = platform_device_add_resources(ppdev, &res, 1);
- 	if (ret)
+--- a/tools/testing/selftests/ftrace/test.d/dynevent/eprobes_syntax_errors.tc
++++ b/tools/testing/selftests/ftrace/test.d/dynevent/eprobes_syntax_errors.tc
+@@ -20,7 +20,7 @@ check_error 'e:foo/^12345678901234567890
+ check_error 'e:foo/^bar.1 syscalls/sys_enter_openat'	# BAD_EVENT_NAME
+ 
+ check_error 'e:foo/bar syscalls/sys_enter_openat arg=^dfd'	# BAD_FETCH_ARG
+-check_error 'e:foo/bar syscalls/sys_enter_openat ^arg=$foo'	# BAD_ATTACH_ARG
++check_error 'e:foo/bar syscalls/sys_enter_openat arg=^$foo'	# BAD_ATTACH_ARG
+ 
+ if grep -q '<attached-group>\.<attached-event>.*\[if <filter>\]' README; then
+   check_error 'e:foo/bar syscalls/sys_enter_openat if ^'	# NO_EP_FILTER
 
 
 
