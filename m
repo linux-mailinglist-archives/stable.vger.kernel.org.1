@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265566-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZNTaDwtyMWoGjgUAu9opvQ
-	(envelope-from <stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:55 +0200
+	id tMqNBW+LMWrymAUAu9opvQ
+	(envelope-from <stable+bounces-265566-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1211769185D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7316936D3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wiMvQZF8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gkopsheM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265566-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265566-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3AED303680F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82AC53019111
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12D8466B5B;
-	Tue, 16 Jun 2026 15:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F1247AF68;
+	Tue, 16 Jun 2026 17:44:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9778D45107A;
-	Tue, 16 Jun 2026 15:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275B47AF67;
+	Tue, 16 Jun 2026 17:44:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624796; cv=none; b=Dlx11h0r8rHuyAwy5U79i7gWdDBHaRm4s8O/fGlYavbE5kwH1QPy3RTRYYvDzi9pKPJJNZiI/Wrc9NFoYJuN7HhQzoPjfWG8tO6Q9JKwwVE37t37WOqwWSA8jJVBFvRtP5Kru0DSR1lZxprYmAaBVvMA+FGNWy7a+NWES2sONbQ=
+	t=1781631850; cv=none; b=ftwP3qDlT2QGblkRWqnkXhFN6Ryf4FI4ZXTkqVdeNkO34eyzI+Eq2osGGdzPg5o6OAFRnHvVROS9ABRoS+BZMXTcP/GfHmdE+xcvRLeinzG9pkJ5c7Z5EQAwfu2PC99a3msC1PeSeYNKdXpBex154Jm2i9Tb6/8yIzJ+uUT5Mn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624796; c=relaxed/simple;
-	bh=AsYgbmtz1Z+9FPUIKNScMDTEmA31Bb0oScDlu/oAE7A=;
+	s=arc-20240116; t=1781631850; c=relaxed/simple;
+	bh=jiEyR43M6dQvIvP/bCu7eLTXh80kwFhGmrMjg5iauow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Om+TaV0hWgqtWKTyUKIWzrjCfdQCMM9hvtleXrgpe8UF5Jk3EduzxBiOH64MGf4IJJsGAhFZ2UfpZnG2qb7wGdYis2rH66iIrnmEJPFdqpznfasuUKe9V7RIJno/S0uUt6PI4+vOfqIKfmd0fnIqyYS6wbazEp9PAum/vc4rAGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiMvQZF8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCF31F000E9;
-	Tue, 16 Jun 2026 15:46:32 +0000 (UTC)
+	 MIME-Version; b=C5p4JKftW+CWjBiBnqi8bJlJHP+8PG6rL+64msVlbsWUzbyPKjoy/SqJy0ZPOBEu5jwMkbDUoONe/98yfpvZBzLI34kO5Q0iDawZYr/c8IwX1UOIBMPk9+RmgPc5kMaBuwsCvyYZaOaqHiDuLSCFiuR0lC0MYLfnUk2JTvSNTGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkopsheM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D261F000E9;
+	Tue, 16 Jun 2026 17:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624793;
-	bh=0oF3t8rkrcIYkSlQQJPThEwXl5lwCBOyEFgJ0SuVbtE=;
+	s=korg; t=1781631848;
+	bh=vs6/GEg8rdZn8D2Lh/0r5l7wRSqiDYVLeMWi1Gw2dhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wiMvQZF8XjF8kF6SY8vfTOEFnK4Yv27ezPWnArkrxmyTi7uLASSlAIoRlA61sBAQg
-	 9KhtFbOGNXlTDTSOeyqqmWWXw+3OUsTHOV0toq3u65js/t+CHHyH3POi+XSXIli2YX
-	 pngRLWelaRnC49cZYF1GV7PFDeWHmAhKDGaOe2wA=
+	b=gkopsheMlpZ+hBVXtEWlVmbU0qmfSLkHz25ZChyX57ncvkLNL5pr0vSodceorFfdp
+	 lQDBHrEXrnwdL2KMzsMAbq4OMifcDjURTZjXwiIGuC9gLWkOcG1TNY45KBt0WZbCKv
+	 19Oft0v89nxo/j40CQfhTv7bW8w810CIqqTT+NMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 030/325] l2tp: pppol2tp: hold reference to session in pppol2tp_ioctl()
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 279/522] drm/amd/display: Reject gpio_bitshift >= 32 in bios_parser_get_gpio_pin_info()
 Date: Tue, 16 Jun 2026 20:27:06 +0530
-Message-ID: <20260616145059.260463258@linuxfoundation.org>
+Message-ID: <20260616145138.998570262@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,214 +71,86 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264226-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265566-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1211769185D
+X-Rspamd-Queue-Id: 7A7316936D3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit a213a8950414c684999dcf03edeea6c46ede172e ]
+commit 49c3da65961fe9857c831d47fa1989084e87514a upstream.
 
-pppol2tp_ioctl() read sock->sk->sk_user_data directly without any
-locks or reference counting.  If a controllable sleep was induced during
-copy_from_user() (e.g. via a userfaultfd page fault sleep), a concurrent
-socket close could trigger pppol2tp_session_close() asynchronously.  This
-frees the l2tp_session structure via the l2tp_session_del_work workqueue.
-Upon resuming, the ioctl thread dereferences the stale session pointer,
-resulting in a Use-After-Free (UAF).
+[Why & How]
+gpio_bitshift is a uint8_t read directly from the VBIOS GPIO pin table.
+If the value is >= 32, the expression "1 << gpio_bitshift" triggers
+undefined behaviour in C (shift count exceeds type width). On x86 the
+shift is silently masked to 5 bits, producing an incorrect GPIO mask
+that may cause wrong MMIO register bits to be toggled.
 
-Fix this by securely fetching the session reference using the RCU-safe,
-refcounted helper pppol2tp_sock_to_session(sk) on entry.  This locks the
-session's refcount across the sleep.  We structured the function to exit
-via standard err breaks, guaranteeing that l2tp_session_put() is cleanly
-called on all return paths to drop the reference.
+Validate gpio_bitshift before use and return BP_RESULT_BADBIOSTABLE for
+out-of-range values.
 
-To preserve existing behavior we validate the session and its magic
-signature only for the specific L2TP commands that require it.  This
-ensures that generic/unknown ioctls called on an unconnected socket
-still return -ENOIOCTLCMD and correctly fall back to generic handlers
-(e.g. in sock_do_ioctl()).
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Fixes: fd558d186df2 ("l2tp: Split pppol2tp patch into separate l2tp and ppp parts")
-Link: https://patch.msgid.link/20260527133630.2120612-1-lee@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
+Assisted-by: Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eadf438ab8d370b9d19acee9359918c85afeb80d)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_ppp.c | 82 +++++++++++++++++++++++++++------------------
- 1 file changed, 50 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 5e12e7ce17d8a7..f388bf9abf378d 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1044,64 +1044,76 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- {
- 	struct pppol2tp_ioc_stats stats;
- 	struct l2tp_session *session;
-+	int err = 0;
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -700,8 +700,10 @@ static enum bp_result bios_parser_get_gp
+ 		info->offset_en = info->offset + 1;
+ 		info->offset_mask = info->offset - 1;
+ 
+-		info->mask = (uint32_t) (1 <<
+-			header->gpio_pin[i].gpio_bitshift);
++		if (header->gpio_pin[i].gpio_bitshift >= 32)
++			return BP_RESULT_BADBIOSTABLE;
 +
-+	session = pppol2tp_sock_to_session(sock->sk);
- 
-+	/* Validate session presence and magic integrity ONLY for commands
-+	 * that belong to L2TP and require a valid session.
-+	 */
- 	switch (cmd) {
- 	case PPPIOCGMRU:
- 	case PPPIOCGFLAGS:
--		session = sock->sk->sk_user_data;
-+	case PPPIOCSMRU:
-+	case PPPIOCSFLAGS:
-+	case PPPIOCGL2TPSTATS:
- 		if (!session)
- 			return -ENOTCONN;
- 
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
-+		if (session->magic != L2TP_SESSION_MAGIC) {
-+			l2tp_session_put(session);
- 			return -EBADF;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
- 
-+	switch (cmd) {
-+	case PPPIOCGMRU:
-+	case PPPIOCGFLAGS:
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (put_user(0, (int __user *)arg))
--			return -EFAULT;
-+		if (put_user(0, (int __user *)arg)) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCSMRU:
- 	case PPPIOCSFLAGS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (!access_ok((int __user *)arg, sizeof(int)))
--			return -EFAULT;
-+		if (!access_ok((int __user *)arg, sizeof(int))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCGL2TPSTATS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Session 0 represents the parent tunnel */
- 		if (!session->session_id && !session->peer_session_id) {
- 			u32 session_id;
--			int err;
- 
- 			if (copy_from_user(&stats, (void __user *)arg,
--					   sizeof(stats)))
--				return -EFAULT;
-+					   sizeof(stats))) {
-+				err = -EFAULT;
-+				break;
-+			}
- 
- 			session_id = stats.session_id;
- 			err = pppol2tp_tunnel_copy_stats(&stats,
- 							 session->tunnel);
- 			if (err < 0)
--				return err;
-+				break;
- 
- 			stats.session_id = session_id;
- 		} else {
-@@ -1111,15 +1123,21 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- 		stats.tunnel_id = session->tunnel->tunnel_id;
- 		stats.using_ipsec = l2tp_tunnel_uses_xfrm(session->tunnel);
- 
--		if (copy_to_user((void __user *)arg, &stats, sizeof(stats)))
--			return -EFAULT;
-+		if (copy_to_user((void __user *)arg, &stats, sizeof(stats))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	default:
--		return -ENOIOCTLCMD;
-+		err = -ENOIOCTLCMD;
-+		break;
- 	}
- 
--	return 0;
-+	if (session)
-+		l2tp_session_put(session);
-+
-+	return err;
- }
- 
- /*****************************************************************************
--- 
-2.53.0
-
++		info->mask = 1u << header->gpio_pin[i].gpio_bitshift;
+ 		info->mask_y = info->mask + 2;
+ 		info->mask_en = info->mask + 1;
+ 		info->mask_mask = info->mask - 1;
 
 
 
