@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kivOCwFnMWovigUAu9opvQ
-	(envelope-from <stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:49 +0200
+	id WZsgKlh9MWrLkgUAu9opvQ
+	(envelope-from <stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862E8690C91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA2969265B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Oqo1/2Rd";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263817-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cviYj3zZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264840-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D016830158A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:08:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E84430398B4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044643A8FE6;
-	Tue, 16 Jun 2026 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9690F4779B1;
+	Tue, 16 Jun 2026 16:42:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9D433067F;
-	Tue, 16 Jun 2026 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264B328610;
+	Tue, 16 Jun 2026 16:42:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622526; cv=none; b=VS5QM4nsG+yK2AgTywxy6SnBuIJoqeUPx0Af92sugVbIIzhUGKl8fHSGsx3ibKQhL8FNnYbkIRwnqxhdiBn8krvtRXb1X6lkSk2GrtZ2GEH0TFPX+jtXUr6qukt11u65RZQvxK1h2LEmWU8GY17fKYXiRtu1+ELl4vhthj+Wbfw=
+	t=1781628166; cv=none; b=R1jOY+tckoE6cGGFoW3q6iM5+ANXmNryxLk5rE4eFOkZAMdGxXioRiCda5cDa8UP9Ly86LmznuFHyvWuEXHsQquEeii8pb9t00qLPxyzYi4I7NuzMql+fosfErJz2g+u+MVbExESWS8RDmwEInbNAq5Njh2qAxhwWPQ6zkqzVew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622526; c=relaxed/simple;
-	bh=G9m3G1P/pt13S0PGMPUBfgteaBgmjiJIvfjwr3HV/Jk=;
+	s=arc-20240116; t=1781628166; c=relaxed/simple;
+	bh=q3VXbqYUTV4wqTcmC1q+VcubCCRMRAOfG1Vf+qW6tRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcRHoCytrUYXACC4s6YQ/upjtPovgUYSgp390rDRV0HKzazJf9NAzyNKXvLNS8+ZSb0jItxD22uG6eMdIZFptsqQaCeFYYn0+GFbWdQTP0SOIu7jqtMdvg0izCBFeaJuwySlO35yGjQYBGM54HD6a2DEACBfP/3zCKObhJjfV5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oqo1/2Rd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC321F000E9;
-	Tue, 16 Jun 2026 15:08:44 +0000 (UTC)
+	 MIME-Version; b=bqoqn4i1hmH3+QHHZYJp9yUic35xpUzuyKWHV8sl7OcHSUlAiZ25MIGWqd5JT+ToOLXPWi+YG6Jrj/9ObHQKN02xzrmUGaE+MvvqMhqhzQE5q1n0cWXa9Po0sqSzenE+jqkTUUXjHZ/NA/EQ3+wGvZyVwCrOL4uOBNRhFJ9p7xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cviYj3zZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5464C1F00A3A;
+	Tue, 16 Jun 2026 16:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622525;
-	bh=CxC/rV7mJH66yu/t9Buq3vpMtukKGZfo2nK7x7SGhUc=;
+	s=korg; t=1781628165;
+	bh=neEJK5SDAORcQ2JA6KX9XHpmxQh4xYbCtjX7lrPpa3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Oqo1/2RdbK7L55TNV5H2ozLpUhOVSHOJ4xNEHpAGiT8yB8s2BoBeKGntJfYRy7IME
-	 raUo2MKyJRyi3Dlx3zu+iyLlLdpZjnfPxk+UcJP/nvkVBcsdjPlimJ66nCRiGdaRIr
-	 geWx22GI1ye8jbSNLqOpO47vE2m5BGwe4OQF9x6U=
+	b=cviYj3zZtn8ACuTkisjo++cZ+OvyK//22yaNyqoDv06Uc/a6bjrQiCs6atcnKet5P
+	 zCJ+eJvbEqMafJ38LEIhqX6rHSC2O09wssN0395FVUIZIP0yTnb4PHT8YgbIXpjWjP
+	 9N9iGHH+HJfAYKOUiiM1alVCdIt9HU2iRyvsuDT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Luxiao Xu <rakukuip@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/411] net: mctp: ensure our nlmsg responses are initialised
+Subject: [PATCH 6.6 014/452] netfilter: ebtables: fix OOB read in compat_mtw_from_user
 Date: Tue, 16 Jun 2026 20:24:01 +0530
-Message-ID: <20260616145100.549718597@linuxfoundation.org>
+Message-ID: <20260616145118.555665929@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +73,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[139.com:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263817-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:horms@kernel.org,m:kuba@kernel.org,m:1468888505@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-264840-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:rakukuip@gmail.com,m:n05ec@lzu.edu.cn,m:fmancera@suse.de,m:fw@strlen.de,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,codeconstruct.com.au,kernel.org,139.com];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,suse.de,strlen.de,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,vger.kernel.org:from_smtp,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 862E8690C91
+X-Rspamd-Queue-Id: 3DA2969265B
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a6a9bc544b675d8b5180f2718ec985ad267b5cbf ]
+[ Upstream commit f438d1786d657d57790c5d138d6db3fc9fdac392 ]
 
-Syed Faraz Abrar (@farazsth98) from Zellic, and Pumpkin (@u1f383) from
-DEVCORE Research Team working with Trend Micro Zero Day Initiative
-report that a RTM_GETNEIGH will return uninitalised data in the pad
-bytes of the ndmsg data.
+Luxiao Xu says:
 
-Ensure we're initialising the netlink data to zero, in the link, addr
-and neigh response messages.
+ The function compat_mtw_from_user() converts ebtables extensions from
+ 32-bit user structures to kernel native structures. However, it lacks
+ proper validation of the user-supplied match_size/target_size.
 
-Fixes: 831119f88781 ("mctp: Add neighbour netlink interface")
-Fixes: 06d2f4c583a7 ("mctp: Add netlink route management")
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260209-dev-mctp-nlmsg-v1-1-f1e30c346a43@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
+ When certain extensions are processed, the kernel-side translation
+ logic may perform memory accesses based on the extension's expected
+ size. If the user provides a size smaller than what the extension
+ requires, it results in an out-of-bounds read as reported by KASAN.
+
+ This fix introduces a check to ensure match_size is at least as large
+ as the extension's required compatsize. This covers matches, watchers,
+ and targets, while maintaining compatibility with standard targets.
+
+AFAIU this is relevant for matches that need to go though
+match->compat_from_user() call.  Those that use plain memcpy with the
+user-provided size are ok because the caller checks that size vs the
+start of the next rule entry offset (which itself is checked vs. total
+size copied from userspace).
+
+The ->compat_from_user() callbacks assume they can read compatsize bytes,
+so they need this extra check.
+
+Based on an earlier patch from Luxiao Xu.
+
+Fixes: 81e675c227ec ("netfilter: ebtables: add CONFIG_COMPAT support")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Luxiao Xu <rakukuip@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/device.c | 1 +
- net/mctp/neigh.c  | 1 +
- net/mctp/route.c  | 1 +
- 3 files changed, 3 insertions(+)
+ net/bridge/netfilter/ebtables.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index aec7ffad2666ab..a11d5aca201c27 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -55,6 +55,7 @@ static int mctp_fill_addrinfo(struct sk_buff *skb, struct netlink_callback *cb,
- 		return -EMSGSIZE;
+diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
+index f99e348c8f37fa..bc69406d103df6 100644
+--- a/net/bridge/netfilter/ebtables.c
++++ b/net/bridge/netfilter/ebtables.c
+@@ -1952,6 +1952,25 @@ enum compat_mwt {
+ 	EBT_COMPAT_TARGET,
+ };
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ifa_family = AF_MCTP;
- 	hdr->ifa_prefixlen = 0;
- 	hdr->ifa_flags = 0;
-diff --git a/net/mctp/neigh.c b/net/mctp/neigh.c
-index bc75a263719c77..18a6be38f17211 100644
---- a/net/mctp/neigh.c
-+++ b/net/mctp/neigh.c
-@@ -217,6 +217,7 @@ static int mctp_fill_neigh(struct sk_buff *skb, u32 portid, u32 seq, int event,
- 		return -EMSGSIZE;
++static bool match_size_ok(const struct xt_match *match, unsigned int match_size)
++{
++	u16 csize;
++
++	if (match->matchsize == -1) /* cannot validate ebt_among */
++		return true;
++
++	csize = match->compatsize ? : match->matchsize;
++
++	return match_size >= csize;
++}
++
++static bool tgt_size_ok(const struct xt_target *tgt, unsigned int tgt_size)
++{
++	u16 csize = tgt->compatsize ? : tgt->targetsize;
++
++	return tgt_size >= csize;
++}
++
+ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 				enum compat_mwt compat_mwt,
+ 				struct ebt_entries_buf_state *state,
+@@ -1977,6 +1996,11 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 		if (IS_ERR(match))
+ 			return PTR_ERR(match);
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->ndm_family = AF_MCTP;
- 	hdr->ndm_ifindex = dev->ifindex;
- 	hdr->ndm_state = 0; // TODO other state bits?
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 48d32bfd386363..a93796eb0a092c 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -1031,6 +1031,7 @@ static int mctp_fill_rtinfo(struct sk_buff *skb, struct mctp_route *rt,
- 		return -EMSGSIZE;
++		if (!match_size_ok(match, match_size)) {
++			module_put(match->me);
++			return -EINVAL;
++		}
++
+ 		off = ebt_compat_match_offset(match, match_size);
+ 		if (dst) {
+ 			if (match->compat_from_user)
+@@ -1996,6 +2020,12 @@ static int compat_mtw_from_user(const struct compat_ebt_entry_mwt *mwt,
+ 					    mwt->u.revision);
+ 		if (IS_ERR(wt))
+ 			return PTR_ERR(wt);
++
++		if (!tgt_size_ok(wt, match_size)) {
++			module_put(wt->me);
++			return -EINVAL;
++		}
++
+ 		off = xt_compat_target_offset(wt);
  
- 	hdr = nlmsg_data(nlh);
-+	memset(hdr, 0, sizeof(*hdr));
- 	hdr->rtm_family = AF_MCTP;
- 
- 	/* we use the _len fields as a number of EIDs, rather than
+ 		if (dst) {
 -- 
 2.53.0
 
