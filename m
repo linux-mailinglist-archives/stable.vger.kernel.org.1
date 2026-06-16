@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CCLhC7lwMWp+jQUAu9opvQ
-	(envelope-from <stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:17 +0200
+	id hGmAHXudMWosoQUAu9opvQ
+	(envelope-from <stable+bounces-266389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BEE6916D7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA876694A98
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ztU1yWDd;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O5Kad2aC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266389-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266389-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4687C307324F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A31331DB032
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2268243E9CE;
-	Tue, 16 Jun 2026 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D0747B435;
+	Tue, 16 Jun 2026 18:56:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD8F1684BE;
-	Tue, 16 Jun 2026 15:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E8A4779BF;
+	Tue, 16 Jun 2026 18:56:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625013; cv=none; b=Dt0JV5E1tKfwBGWn8C9mLVxsVdXllK6oZLDrWvg6YCG/4va7gHMzbo1DCL5NEZssfbMvSat8JI02WswdApoLUXsarxpWprqV24//sTAGzE3G4YtDRYZ6cr40SD3h8VtnC8ISklK4rYsu9zH6hgANpqo3/ySRRQ+AGq+1j7MvH6Q=
+	t=1781636167; cv=none; b=K7Wjj6zd+udPLnzmLLx5SQLrivydNOiL3yFLGefL923VNA/gJngEERhkHK4AOFzvIS3a4QORhNIX+W2MWghw8+Jf55G56EohYR3AAJ8R0fqhqi3yCxb8RHvD82P2ALU2ikfL3AVDFflDjzHYvodHWNoxD0jDK4BIeZz425Ishu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625013; c=relaxed/simple;
-	bh=6x2ZQVmYevZX4boYyqW7k+XzObMeQuoWESqMx/rW30o=;
+	s=arc-20240116; t=1781636167; c=relaxed/simple;
+	bh=w+sXC9MhbAeiQ12kKwL+zn6PZ+NiM+wUR3/ZLQ2g3Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MpxiKYaQd+QWTalIl9ucV58vJwklkMUmb5zgWE9phEtpe0xUzyQhvT9JVy4KGH4zlzqvBrH4t5IdisX5AawaapWbUDQVGBKoVZc7TJGWK/gU8aU3eFXwwRw8piyqYR9UQiZeM14efvwR2vcI8V3WSY1rG/JGI5PzYQktN2YevGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztU1yWDd; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE01F1F000E9;
-	Tue, 16 Jun 2026 15:50:11 +0000 (UTC)
+	 MIME-Version; b=Sls0e3Sv23Z5dMcRDJCxOVStSDxZ6CRVYRr5jzJk2JrFosQ8dgb4mTzu7UUq2vvwsDugHLlwplHV+AYK8sNdq9BzAA6kID4ByNy0T4/74KCAjjbVqvDu8gXxppb+0VOLErNuZUetwULgiic2Ov97Z3ZHEn29OAJkubrElsB6u3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5Kad2aC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 287061F000E9;
+	Tue, 16 Jun 2026 18:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625012;
-	bh=+nZZXQEMR6fzwumI/STC4hTNTqKZFuzXNyhP6MLN3nQ=;
+	s=korg; t=1781636166;
+	bh=JCqyT3dqz99aC18MWtdzBsQeORNHBNnwGKyldhr4pac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ztU1yWDdr1JskYDA/OPYseEfqqBvTa7CEKG0FvWfqHpCnfPqL93y8D6EkUjs63Gd1
-	 20BIVWir8vkwi0cfGYy8pG4MSwuxNfMmD55LptZDMgmklAfTzfaYIfF1sOtvOkul0S
-	 2l3pCUsz9dF7xrC6faf0VPX+04DaibUdHgOVpZLc=
+	b=O5Kad2aCz/WnV+g3Slfd/Py8JhlwAAST6hndOO5GjYS/JiA8VZguMejadBFeA2oPB
+	 osp3n9KA11syniErYt6arW2MF/1EELwCF2EuI5zaVChRtJOBJBpwrG4ZPBTt9jqjmW
+	 dvm6TmJ9RsLyzG9RlZr2EFJWiPo0FjkhW5btMABI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Roulin <aroulin@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 064/325] vxlan: vnifilter: fix spurious notification on VNI update
+Subject: [PATCH 5.10 164/342] arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
 Date: Tue, 16 Jun 2026 20:27:40 +0530
-Message-ID: <20260616145100.891925078@linuxfoundation.org>
+Message-ID: <20260616145055.819149908@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,10 +82,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264261-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266389-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:maz@kernel.org,m:oupton@kernel.org,m:ryan.roberts@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -96,64 +99,389 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:url,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85BEE6916D7
+X-Rspamd-Queue-Id: DA876694A98
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
+commit a8f78680ee6bf795086384e8aea159a52814f827 upstream.
 
-When a VNI is re-added with the same attributes (e.g. same group or no
-group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
-even though nothing changed.
+The ARM64_WORKAROUND_REPEAT_TLBI workaround is used to mitigate several
+errata where broadcast TLBI;DSB sequences don't provide all the
+architecturally required synchronization. The workaround performs more
+work than necessary, and can have significant overhead. This patch
+optimizes the workaround, as explained below.
 
-The bug is that 'if (changed)' tests whether the pointer is non-NULL,
-not the bool value it points to. Since every caller passes a valid
-pointer, the condition is always true and the notification fires
-unconditionally.
+The workaround was originally added for Qualcomm Falkor erratum 1009 in
+commit:
 
-Fix by dereferencing the pointer: 'if (*changed)'.
+  d9ff80f83ecb ("arm64: Work around Falkor erratum 1009")
 
-Reproducer:
+As noted in the message for that commit, the workaround is applied even
+in cases where it is not strictly necessary.
 
- # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
-      nolearning external vnifilter
- # ip link set vxlan100 up
- # bridge monitor vni &
- # bridge vni add vni 1000 dev vxlan100
- # bridge vni add vni 1000 dev vxlan100  # spurious notification
+The workaround was later reused without changes for:
 
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+* Arm Cortex-A76 erratum #1286807
+  SDEN v33: https://developer.arm.com/documentation/SDEN-885749/33-0/
+
+* Arm Cortex-A55 erratum #2441007
+  SDEN v16: https://developer.arm.com/documentation/SDEN-859338/1600/
+
+* Arm Cortex-A510 erratum #2441009
+  SDEN v19: https://developer.arm.com/documentation/SDEN-1873351/1900/
+
+The important details to note are as follows:
+
+1. All relevant errata only affect the ordering and/or completion of
+   memory accesses which have been translated by an invalidated TLB
+   entry. The actual invalidation of TLB entries is unaffected.
+
+2. The existing workaround is applied to both broadcast and local TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for broadcast invalidation.
+
+3. The existing workaround replaces every TLBI with a TLBI;DSB;TLBI
+   sequence, whereas for all relevant errata it is only necessary to
+   execute a single additional TLBI;DSB sequence after any number of
+   TLBIs are completed by a DSB.
+
+   For example, for a sequence of batched TLBIs:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI <op1>[, <arg1>]
+       DSB ISH                  // additional
+       TLBI <op1>[, <arg1>]     // additional
+       TLBI <op2>[, <arg2>]
+       DSB ISH                  // additional
+       TLBI <op2>[, <arg2>]     // additional
+       TLBI <op3>[, <arg3>]
+       DSB ISH                  // additional
+       TLBI <op3>[, <arg3>]     // additional
+       DSB ISH
+
+   ... whereas it is sufficient to have:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+       TLBI <opX>[, <argX>]     // additional
+       DSB ISH                  // additional
+
+   Using a single additional TBLI and DSB at the end of the sequence can
+   have significantly lower overhead as each DSB which completes a TLBI
+   must synchronize with other PEs in the system, with potential
+   performance effects both locally and system-wide.
+
+4. The existing workaround repeats each specific TLBI operation, whereas
+   for all relevant errata it is sufficient for the additional TLBI to
+   use *any* operation which will be broadcast, regardless of which
+   translation regime or stage of translation the operation applies to.
+
+   For example, for a single TLBI:
+
+       TLBI ALLE2IS
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI ALLE2IS             // additional
+       DSB ISH                  // additional
+
+   ... whereas it is sufficient to have:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI VALE1IS, XZR        // additional
+       DSB ISH                  // additional
+
+   As the additional TLBI doesn't have to match a specific earlier TLBI,
+   the additional TLBI can be implemented in separate code, with no
+   memory of the earlier TLBIs. The additional TLBI can also use a
+   cheaper TLBI operation.
+
+5. The existing workaround is applied to both Stage-1 and Stage-2 TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for Stage-1 invalidation.
+
+   Architecturally, TLBI operations which invalidate only Stage-2
+   information (e.g. IPAS2E1IS) are not required to invalidate TLB
+   entries which combine information from Stage-1 and Stage-2
+   translation table entries, and consequently may not complete memory
+   accesses translated by those combined entries. In these cases,
+   completion of memory accesses is only guaranteed after subsequent
+   invalidation of Stage-1 information (e.g. VMALLE1IS).
+
+Taking the above points into account, this patch reworks the workaround
+logic to reduce overhead:
+
+* New __tlbi_sync_s1ish() and __tlbi_sync_s1ish_hyp() functions are
+  added and used in place of any dsb(ish) which is used to complete
+  broadcast Stage-1 TLB maintenance. When the
+  ARM64_WORKAROUND_REPEAT_TLBI workaround is enabled, these helpers will
+  execute an additional TLBI;DSB sequence.
+
+  For consistency, it might make sense to add __tlbi_sync_*() helpers
+  for local and stage 2 maintenance. For now I've left those with
+  open-coded dsb() to keep the diff small.
+
+* The duplication of TLBIs in __TLBI_0() and __TLBI_1() is removed. This
+  is no longer needed as the necessary synchronization will happen in
+  __tlbi_sync_s1ish() or __tlbi_sync_s1ish_hyp().
+
+* The additional TLBI operation is chosen to have minimal impact:
+
+  - __tlbi_sync_s1ish() uses "TLBI VALE1IS, XZR". This is only used at
+    EL1 or at EL2 with {E2H,TGE}=={1,1}, where it will target an unused
+    entry for the reserved ASID in the kernel's own translation regime,
+    and have no adverse affect.
+
+  - __tlbi_sync_s1ish_hyp() uses "TLBI VALE2IS, XZR". This is only used
+    in hyp code, where it will target an unused entry in the hyp code's
+    TTBR0 mapping, and should have no adverse effect.
+
+* As __TLBI_0() and __TLBI_1() no longer replace each TLBI with a
+  TLBI;DSB;TLBI sequence, batching TLBIs is worthwhile, and there's no
+  need for arch_tlbbatch_should_defer() to consider
+  ARM64_WORKAROUND_REPEAT_TLBI.
+
+When building defconfig with GCC 15.1.0, compared to v6.19-rc1, this
+patch saves ~1KiB of text, makes the vmlinux ~42KiB smaller, and makes
+the resulting Image 64KiB smaller:
+
+| [mark@lakrids:~/src/linux]% size vmlinux-*
+|    text    data     bss     dec     hex filename
+| 21179831        19660919         708216 41548966        279fca6 vmlinux-after
+| 21181075        19660903         708216 41550194        27a0172 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l vmlinux-*
+| -rwxr-xr-x 1 mark mark 157771472 Feb  4 12:05 vmlinux-after
+| -rwxr-xr-x 1 mark mark 157815432 Feb  4 12:05 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l Image-*
+| -rw-r--r-- 1 mark mark 41007616 Feb  4 12:05 Image-after
+| -rw-r--r-- 1 mark mark 41073152 Feb  4 12:05 Image-before
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Mark: Backport to v5.10.y; use inline ALTERNATIVE() sequence]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/tlbflush.h | 51 ++++++++++++++++++++++---------
+ arch/arm64/kernel/sys_compat.c    |  2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c     |  6 ++--
+ arch/arm64/kvm/hyp/vhe/tlb.c      |  6 ++--
+ 4 files changed, 44 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 43c70c395b58e5..215e82876662de 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -661,7 +661,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
- 	if (ret)
- 		return ret;
+diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
+index b17d8b049d258b..0fd1bb180561c2 100644
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -30,18 +30,10 @@
+  */
+ #define __TLBI_0(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op "\n"				       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op,	       \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : )
  
--	if (changed)
-+	if (*changed)
- 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
+ #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op ", %x0\n"			       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op ", %x0",    \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : "rZ" (arg))
  
- 	return 0;
+ #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+@@ -158,6 +150,37 @@ static inline unsigned long get_trans_granule(void)
+ #define __TLBI_RANGE_NUM(pages, scale)	\
+ 	((((pages) >> (5 * (scale) + 1)) & TLBI_RANGE_MASK) - 1)
+ 
++#define __repeat_tlbi_sync(op, arg)						\
++do {										\
++	asm volatile(								\
++	ALTERNATIVE("nop\n			nop",				\
++		    "tlbi " #op ", %x0\n	dsb ish",			\
++		    ARM64_WORKAROUND_REPEAT_TLBI,				\
++		    CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)			\
++	:									\
++	: "rZ" (arg));								\
++} while (0)
++
++/*
++ * Complete broadcast TLB maintenance issued by the host which invalidates
++ * stage 1 information in the host's own translation regime.
++ */
++static inline void __tlbi_sync_s1ish(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale1is, 0);
++}
++
++/*
++ * Complete broadcast TLB maintenance issued by hyp code which invalidates
++ * stage 1 translation information in any translation regime.
++ */
++static inline void __tlbi_sync_s1ish_hyp(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale2is, 0);
++}
++
+ /*
+  *	TLB Invalidation
+  *	================
+@@ -239,7 +262,7 @@ static inline void flush_tlb_all(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -251,7 +274,7 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
+ 	asid = __TLBI_VADDR(0, ASID(mm));
+ 	__tlbi(aside1is, asid);
+ 	__tlbi_user(aside1is, asid);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
+@@ -269,7 +292,7 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
+ 				  unsigned long uaddr)
+ {
+ 	flush_tlb_page_nosync(vma, uaddr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ /*
+@@ -357,7 +380,7 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
+ 		}
+ 		scale++;
+ 	}
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_range(struct vm_area_struct *vma,
+@@ -386,7 +409,7 @@ static inline void flush_tlb_kernel_range(unsigned long start, unsigned long end
+ 	dsb(ishst);
+ 	for (addr = start; addr < end; addr += 1 << (PAGE_SHIFT - 12))
+ 		__tlbi(vaale1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -400,7 +423,7 @@ static inline void __flush_tlb_kernel_pgtable(unsigned long kaddr)
+ 
+ 	dsb(ishst);
+ 	__tlbi(vaae1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ #endif
+diff --git a/arch/arm64/kernel/sys_compat.c b/arch/arm64/kernel/sys_compat.c
+index 51274bab25653f..a42266f495d463 100644
+--- a/arch/arm64/kernel/sys_compat.c
++++ b/arch/arm64/kernel/sys_compat.c
+@@ -38,7 +38,7 @@ __do_compat_cache_op(unsigned long start, unsigned long end)
+ 			 * We pick the reserved-ASID to minimise the impact.
+ 			 */
+ 			__tlbi(aside1is, __TLBI_VADDR(0, 0));
+-			dsb(ish);
++			__tlbi_sync_s1ish();
+ 		}
+ 
+ 		ret = __flush_cache_user_range(start, start + chunk);
+diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
+index 435d0a54ab9a25..deeb4bc943d89c 100644
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -79,7 +79,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -95,7 +95,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -120,5 +120,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
+index 67047feb306876..ac695f43f651fc 100644
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -105,7 +105,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -121,7 +121,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_mmu *mmu)
+ 	__tlb_switch_to_guest(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	__tlb_switch_to_host(&cxt);
+@@ -146,5 +146,5 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
 -- 
 2.53.0
 
