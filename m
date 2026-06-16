@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id qmULDSF1MWpBjwUAu9opvQ
-	(envelope-from <stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:05 +0200
+	id jZbMOByfMWrooQUAu9opvQ
+	(envelope-from <stable+bounces-266534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BC0691BB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82588694C50
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kPTRJj9W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264402-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0dkDL26g;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266534-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266534-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 884C732F0B30
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E619030302DF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4ED44611EE;
-	Tue, 16 Jun 2026 16:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9D43DDDD5;
+	Tue, 16 Jun 2026 19:08:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2156D45BD71;
-	Tue, 16 Jun 2026 16:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8255C3DE425;
+	Tue, 16 Jun 2026 19:08:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625699; cv=none; b=BsB7Ld3zLXpE/g59pMa6jHTA/Sur8LZD9IM/H4Hy/x3K+iNApFF2GVT5NdtfZQN6r5TjNAkj0BnBYwWpZ80HUnsKk+WMzXSuc2EWG8Xlb0KQVdheRtOmHFRF96qmZE7TZfgSF/n5S78mwocP2lk2e5jTle6DDizXMFiuQCLlnY8=
+	t=1781636888; cv=none; b=Xns7TbMfG2oZbbXKXYFj90qf+3Vs7BaaABGun/c1uTtM3/lMNvl4PfDJmN7ut0ZPeUF+YxcMxu9HgF8HonyvjhDh+X6ouXd4gS+o0guHYhvbDpTeBizRjznGUeR/1+naE/c2iyND5OlQC5DVnvosvKQcVQHO+aCsOragIt2VVS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625699; c=relaxed/simple;
-	bh=YuAJH/B29+0G2YnO64mWtJvSIxZG+mivTct80BiywPQ=;
+	s=arc-20240116; t=1781636888; c=relaxed/simple;
+	bh=a8OoWlTg2BgBOBidK61DhRxwmNgLgZ4EKrrBnyy4YnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4cO+hcylppdj9+5pGtoT1YvBkvXK+QE4D4oUsV9avrzcIrAuA7EzHUjmsVpH0T7YGnatn4f7ahMhxu3FoOchoDq16d67b7S97eCsuNw5ltiEE1c5WJB2wxISAk+q+b2nqvDHRoRw9AGoHjJ/CWLJDXy1Jb7tys1p674hD7sBRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPTRJj9W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D931B1F000E9;
-	Tue, 16 Jun 2026 16:01:36 +0000 (UTC)
+	 MIME-Version; b=CHnfv6pVDwgm3O6/CVJf3GMZXny5bsCslmClleQWguM1/wbNL+eHiLdlIin3ftPdYUWTJqgQIY/ysrVuQAgWdMTNG2zy5Y9zwtFkLcvahnH0C4MutnBRhBln0D+HIUJ8mxVLk98r++xYUqHYIhjHqKAzSfceO30aItprP1wWZic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dkDL26g; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508671F000E9;
+	Tue, 16 Jun 2026 19:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625697;
-	bh=CP+X8Y5hwgdUNG/8fNM9UeeeUcuv2zwgO3tKPqEJKCc=;
+	s=korg; t=1781636887;
+	bh=SbMlfkirl7Lyn/RUANcyaJtn04xJ23AIkg4WMSLG8Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kPTRJj9WbibICcr8u+4/HhCllRr0/0f4wFLtKu+Dv5toPBthy5Zb+1rv3CQp5ufjL
-	 Z6tigz5tPbiLG0YowUjQmkSEsXg1Vq0FDDlc1kFmpHI2YTZG4Pke+HapJfhrYhA/RP
-	 jWIYZIv6KFbGUg+I1hR1TW/uH1eHWIxrwt6bLcX4=
+	b=0dkDL26g9MmiNGkvgdUhi3oUmlanioSmnAQvyppbxrYClJxvjvXpQwCsNpaBJZ0J3
+	 lqPHe83lmkVlGC1f+zw9+h/t07nC9xbL8GqmMTatwv14OTAHdtb2uER5WdYZp9MtL0
+	 auugqllWSkTQHHC/GZV6/LZlYjsFMmp13yh4LQn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.18 191/325] ARM: socfpga: Fix OF node refcount leak in SMP setup
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 291/342] mptcp: do not drop partial packets
 Date: Tue, 16 Jun 2026 20:29:47 +0530
-Message-ID: <20260616145107.445025681@linuxfoundation.org>
+Message-ID: <20260616145101.971308212@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +70,112 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264402-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266534-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shardul.b@mpiricsoftware.com,m:pabeni@redhat.com,m:matttbe@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,mpiricsoftware.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9BC0691BB8
+X-Rspamd-Queue-Id: 82588694C50
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
+[ Upstream commit 50c2d91c5dfa0e465826ec1f8dbad9cdc254bd85 ]
 
-socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
-of_find_compatible_node(), which returns a node reference that must be
-released with of_node_put().
+When a packet arrives with map_seq < ack_seq < end_seq, the beginning
+of the packet has already been acknowledged but the end contains new
+data. Currently the entire packet is dropped as "old data," forcing
+the sender to retransmit.
 
-The function maps the SCU registers and then returns without dropping
-that reference, leaking the node on both the success path and the
-of_iomap() failure path.
+Instead, skip the already-acked bytes by adjusting the skb offset and
+enqueue only the new portion. Update bytes_received and ack_seq to
+reflect the new data consumed.
 
-Drop the reference once the mapping attempt is complete. The returned
-MMIO mapping does not depend on keeping the device node reference held.
+A previous attempt at this fix has been sent by Paolo Abeni [1], but had
+issues [2]: it also added a zero-window check and changed rcv_wnd_sent
+initialization, which caused test regressions. This version addresses
+only the partial packet handling without modifying receive window
+accounting.
 
-Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
+Fixes: ab174ad8ef76 ("mptcp: move ooo skbs into msk out of order queue.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Link: https://lore.kernel.org/c9b426a4e163aa3c4fe8b80c79f1a610f47ae7d8.1763075056.git.pabeni@redhat.com [1]
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/600 [2]
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+[pabeni@redhat.com: update map]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-1-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ dropped `msk->bytes_received += copy_len;` and relocated the `drop:` label to the function end for the existing RCVPRUNED `goto drop;` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-socfpga/platsmp.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/protocol.c |   22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
---- a/arch/arm/mach-socfpga/platsmp.c
-+++ b/arch/arm/mach-socfpga/platsmp.c
-@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -314,10 +314,26 @@ static bool __mptcp_move_skb(struct mptc
+ 		return false;
  	}
  
- 	socfpga_scu_base_addr = of_iomap(np, 0);
-+	of_node_put(np);
- 	if (!socfpga_scu_base_addr)
- 		return;
- 	scu_enable(socfpga_scu_base_addr);
+-	/* old data, keep it simple and drop the whole pkt, sender
+-	 * will retransmit as needed, if needed.
++	/* Completely old data? */
++	if (!after64(MPTCP_SKB_CB(skb)->end_seq, msk->ack_seq)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
++		mptcp_drop(sk, skb);
++		return false;
++	}
++
++	/* Partial packet: map_seq < ack_seq < end_seq.
++	 * Skip the already-acked bytes and enqueue the new data.
+ 	 */
+-	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
++	copy_len = MPTCP_SKB_CB(skb)->end_seq - msk->ack_seq;
++	MPTCP_SKB_CB(skb)->offset += msk->ack_seq - MPTCP_SKB_CB(skb)->map_seq;
++	MPTCP_SKB_CB(skb)->map_seq += msk->ack_seq -
++				      MPTCP_SKB_CB(skb)->map_seq;
++	WRITE_ONCE(msk->ack_seq, msk->ack_seq + copy_len);
++
++	skb_set_owner_r(skb, sk);
++	__skb_queue_tail(&sk->sk_receive_queue, skb);
++	return true;
++
+ drop:
+ 	mptcp_drop(sk, skb);
+ 	return false;
 
 
 
