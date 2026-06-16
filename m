@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IKPZABaSMWoLnAUAu9opvQ
-	(envelope-from <stable+bounces-265892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:38 +0200
+	id QOwCCnNsMWraiwUAu9opvQ
+	(envelope-from <stable+bounces-263954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:03 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8509D693E43
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A1D6911BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SUZOgXuI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265892-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265892-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cJpvuS72;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263954-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263954-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 903BA308DB98
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:12:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F146309AF70
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E865A3D75CE;
-	Tue, 16 Jun 2026 18:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F38943E48C;
+	Tue, 16 Jun 2026 15:22:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81833D091A;
-	Tue, 16 Jun 2026 18:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA59283FE5;
+	Tue, 16 Jun 2026 15:22:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633553; cv=none; b=BlObjp7lzNVV8M+I+TGCbyF4DchSEcJe/0ZUH/Nrj7+XhF9AJA/XF7JCHvxr8hwMDAmRsOCwnw5KdQ4p0qoC1feDgnAVexd1UP3qsd7nyE6m3qiLuMM8BvmOMWlUZv6b61yHp5rgXKYaP1lcn2T5LeC4isKAEq3tcFRmYPTwxP4=
+	t=1781623372; cv=none; b=uQtpuI/MxWbIjMi7ZW2AkSxiOTEuBpoVrSATylJgb0LF7SBDBqT0zMIJWue40WTdFLKWs5ML60sDa4IC+mniT176/z+8B2M6QJ5ko7g6qAV9tq2wD0wr6Pg/whjyMBaQcSvKCrZVUGjmRx2KlnJeJMCbf0jrUmausd4K2JHhALM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633553; c=relaxed/simple;
-	bh=+tu83gurt9S0lCRkR7JeG8XTMNotOW1Ec9U/Ro4ygak=;
+	s=arc-20240116; t=1781623372; c=relaxed/simple;
+	bh=ajQWZxluQX67STYZLl48wXyCj54PhtDxyoaQl/VV+F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2C109pEUTOzPWUYfLMCT+GYSLdo1CS2ky7T/CfWWSCEM619FmW2phUldSYCQ9z4d0GVy0AQ33L8/tEmeKL7CZxWYieN6VA+/tfN8+oExE7Ughcoj/Q8ntKv2ZnUl19kucOFPA5GF4kpsLhHIL8NkeAyvkf2NPxVrjqyIBNfVy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUZOgXuI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28421F000E9;
-	Tue, 16 Jun 2026 18:12:31 +0000 (UTC)
+	 MIME-Version; b=pByMSN+t3z4A/7pmUq1U36uyDOug+vw1CqiK7mZ/cQyCH3K7Pd6cv61Ja0YeZ7InTY6J+ShfomwlmXFyPbtMw8uWq5LVcKUgp2qTKeKgcNrDaSCElFSrIlGdWOtdmjqTMqnAh1RIPruQnJfycFW4INHvoyIHiLDJJ2mLOT42L/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJpvuS72; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28CB1F000E9;
+	Tue, 16 Jun 2026 15:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633552;
-	bh=xira9+mLHShq68RF6cWR1YnL3htTgzCH9htwhWqBJlI=;
+	s=korg; t=1781623370;
+	bh=e7VqVUtMGbO5iF/gCpwzTCvXiyeRJHyKjaH7KXOjedQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SUZOgXuIXgOLpTiuq1T3UiKO39EJnHGmqY9oIm7SzBON7vdwi139KpMRQf9paJjl0
-	 TPD033+kGlv8Ys4ak3jTdC5PZz2dzbpmtfQbsR+ajW+yPPrmGaYkMYRvlRNU0ejyrR
-	 XlAAAV0Wi0/eMUUfy6dtFLxq+MPrBSphK84NQ7EE=
+	b=cJpvuS72Fbx4anYsM5qq/zoKGY8JihlZtQOTgfjm9klJV5xMM1fYqoUY2yfgKxoZz
+	 8ASUAdObGPAqi2xs9zB6eq7myk1u6G54CZARPgPYnOTp+KkoUGStB8UO0YC8AZ2Lmu
+	 HBkTz3nL8bNVmvhhZg0FGRHXkd5r4IiP8elAiopw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <malin89@huawei.com>,
-	Chenyuan Mi <michenyuan@huawei.com>,
-	Jingguo Tan <tanjingguo@huawei.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 5.15 101/411] xfrm: esp: restore combined single-frag length gate
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 108/378] ASoC: wm_adsp: Fix NULL dereference when removing firmware controls
 Date: Tue, 16 Jun 2026 20:25:39 +0530
-Message-ID: <20260616145105.606905683@linuxfoundation.org>
+Message-ID: <20260616145116.056778081@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,98 +69,90 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265892-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263954-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rf@opensource.cirrus.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,queasysnail.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cirrus.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8509D693E43
+X-Rspamd-Queue-Id: 91A1D6911BE
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingguo Tan <tanjingguo@huawei.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
+[ Upstream commit 7d3fb78b550301e43fdc60312aed733069694426 ]
 
-The ESP out-of-place fast path appends the trailer in esp_output_head()
-before esp_output_tail() allocates the destination page frag. The
-head-side gate currently checks skb->data_len and tailen separately, but
-the tail code allocates a single destination frag from the combined
-post-trailer skb->data_len.
+In wm_adsp_control_remove() check that the priv pointer is not NULL
+before attempting to cleanup what it points to.
 
-Reject the page-frag fast path when the combined aligned length exceeds a
-page. Otherwise skb_page_frag_refill() may fall back to a single page while
-the destination sg still spans the combined skb->data_len.
+When cs_dsp creates a control it calls wm_adsp_control_add_cb() so that
+wm_adsp can create its own private control data. There are two cases
+where private data is not created:
 
-Restore this combined-length page gate for both IPv4 and IPv6.
+1. The control is a SYSTEM control, so an ALSA control is not created.
 
-Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lin Ma <malin89@huawei.com>
-Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
-Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. The codec driver has registered a control_add() callback that
+   hides the control, so wm_adsp_control_add() is not called.
+
+When cs_dsp_remove destroys its control list it calls
+wm_adsp_control_remove() for each control. But wm_adsp_control_remove()
+was attempting to cleanup the private data pointed to by cs_ctl->priv
+without checking the pointer for NULL.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 0700bc2fb94c ("ASoC: wm_adsp: Separate generic cs_dsp_coeff_ctl handling")
+Link: https://patch.msgid.link/20260604101244.1402862-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c |    4 ++--
- net/ipv6/esp6.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/wm_adsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -459,8 +459,8 @@ int esp_output_head(struct xfrm_state *x
- 			return err;
- 	}
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index 2e23848e1dce94..d7ba14ce613b74 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -666,6 +666,9 @@ static void wm_adsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
+ {
+ 	struct wm_coeff_ctl *ctl = cs_ctl->priv;
  
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
++	if (!ctl)
++		return;
++
+ 	cancel_work_sync(&ctl->work);
  
- 	if (!skb_cloned(skb)) {
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -495,8 +495,8 @@ int esp6_output_head(struct xfrm_state *
- 			return err;
- 	}
- 
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
+ 	kfree(ctl->name);
+-- 
+2.53.0
+
 
 
 
