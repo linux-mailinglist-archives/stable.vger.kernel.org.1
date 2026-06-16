@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-265149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GpguFDKGMWpwlgUAu9opvQ
-	(envelope-from <stable+bounces-265149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:54 +0200
+	id +nohOWSdMWoloQUAu9opvQ
+	(envelope-from <stable+bounces-266442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642BA69307F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B25694A80
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="wZ/9Riso";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265149-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265149-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mafPeLIV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266442-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266442-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A96EF3095964
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 073F03007A7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24A647B403;
-	Tue, 16 Jun 2026 17:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A4B3DD513;
+	Tue, 16 Jun 2026 19:00:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528347AF49;
-	Tue, 16 Jun 2026 17:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018783D668F;
+	Tue, 16 Jun 2026 19:00:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629721; cv=none; b=O4Th84EiPUg/XfQutCRx5oeDp2W8uJtWRahXwJaRlgyvGQsvbbs6fFwYTHXBGmdAAw4FFinFzMjrLN6WvM0SbYWH/fr6p2E9pY5m70atYv9CmnUmcq9QPcS01yIn2j3S+N3QgBqSDXTKwb3oDRhgd4IrzlH6z4irQzFlxSXHIJk=
+	t=1781636447; cv=none; b=dZVBEHYYIu2M7hwG/iM8RzHi8tQ1n2nLegnkrqqBc9fDcL4WBRr0EiQbkpWumcCu+QXLQWhG4xrdbPssp04Dhhurk4PYlqq65x66IlRTnYHBtBGwIaoedc2nVhExosUA5v2BPMnrT6j8sbHJl6jJ3TkxDun9jCVk6TlOy89t4Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629721; c=relaxed/simple;
-	bh=jDEkjm1qU/s003fqhwXd+5IRNxYcwgEoaa0eq3K+pE0=;
+	s=arc-20240116; t=1781636447; c=relaxed/simple;
+	bh=2352pqhxa5X3qEbWtsMNp9B3SZyOI/Op3YCm8oSvfis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxiQTwUwNalxPjbURnDLd3c7yzRVcdg+EN/MfkQNRwzdWpa45jKGzGPADHzw87k6gbUtIIYw1rBTFgpKghsazLila9WDr3HxhlndQ/bpzkvBH2SE48vDLYe5a+9ADZSHYtdEPD+1lp9OsjLiFY60P82ndTI5ZYWb/wlx93wwyA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZ/9Riso; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113FC1F000E9;
-	Tue, 16 Jun 2026 17:08:38 +0000 (UTC)
+	 MIME-Version; b=cOOmLhHwKpOMcNSIpNhQcG3FDr/MggQ48aKFwMV94LUXNrNb/3jDzTU2LsUs7QmJKQ/V9YZFvut5t26UF+YV28EH5oPvZAYLG7SufoettQbFh56JXIe0+CY2ZLfI+93XkpZ6BvqNXTdSHwU5/06CobX22m7z2Hlr00AFrId9vSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mafPeLIV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E551F000E9;
+	Tue, 16 Jun 2026 19:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629720;
-	bh=XHhiWBPstCRLpjcNUGQqvDvs74TZXO3WmngVOw1OIw4=;
+	s=korg; t=1781636445;
+	bh=IZ/Flk8vesj+PYym3q3j1feBthE1sgM2Li5hDFgsP8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=wZ/9RisoahvQFl4hcdgEW7bB0e9jP9Oe4FSri7Qx7eh1mTS4Np/ao4DYpNpLziPW4
-	 qhzdJ7kJ9cXgSBYsWFbtX3heWkvlEkq8CSdgk6XzuGbsG6m83CU0nQ/9OcZbyQRVy6
-	 s91Pcdoi4gfJyvVRNEVAxOdlcGJRv7yXEvqJbv+s=
+	b=mafPeLIVrefTSXA3gNnvebA5ndI5wndLhznUdOKX4sWBuxDEEKj4LNdqfYUysPHtw
+	 acKa15nW4YsJ4IOQkofVajoYw897+sNNY8/V9w4offZRddVG5LneY+PP+W+mFA45If
+	 pKdLL/pRh3R9Jnw0wd/RmRet2AOBbBXOqzEL7Mus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Cunlong Li <shenxiaogll@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Minchan Kim <minchan@kernel.org>,
-	Yisheng Xie <xieyisheng1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 309/452] zram: fix use-after-free in zram_bvec_write_partial()
+	Seohyeon Maeng <bioloidgp@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 240/342] udf: fix partition descriptor append bookkeeping
 Date: Tue, 16 Jun 2026 20:28:56 +0530
-Message-ID: <20260616145133.741172046@linuxfoundation.org>
+Message-ID: <20260616145059.388135002@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,79 +76,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lst.de,chromium.org,gmail.com,kernel.dk,kernel.org,huawei.com,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-265149-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hch@lst.de,m:senozhatsky@chromium.org,m:shenxiaogll@gmail.com,m:axboe@kernel.dk,m:minchan@kernel.org,m:xieyisheng1@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266442-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bioloidgp@gmail.com,m:jack@suse.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.cz,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,kernel.dk:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,chromium.org:email,lst.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 642BA69307F
+X-Rspamd-Queue-Id: E0B25694A80
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cunlong Li <shenxiaogll@gmail.com>
+From: Seohyeon Maeng <bioloidgp@gmail.com>
 
-commit 732fd9f0b9c1cdc6dfd77162ded60df005182cc0 upstream.
+[ Upstream commit 08841b06fa64d8edbd1a21ca6e613420c90cc4b8 ]
 
-zram_read_page() picks the sync or async backing device read path based on
-whether the parent bio is NULL.  zram_bvec_write_partial() passes its
-parent bio down, so for ZRAM_WB slots the read is dispatched
-asynchronously and zram_read_page() returns 0 while the bio is still in
-flight.  The caller then runs memcpy_from_bvec(), zram_write_page() and
-__free_page() on the buffer, leaving the async read to write into a freed
-page.
+Mounting a crafted UDF image with repeated partition descriptors can
+trigger a heap out-of-bounds write in part_descs_loc[].
 
-zram_bvec_read_partial() was switched to NULL in commit 4e3c87b9421d
-("zram: fix synchronous reads") for the same reason; the write_partial
-counterpart was missed.
+handle_partition_descriptor() deduplicates entries by partition number,
+but appended slots never record partnum. As a result duplicate
+Partition Descriptors are appended repeatedly and num_part_descs keeps
+growing.
 
-Link: https://lore.kernel.org/20260528-zram-v3-1-cab86eef8764@gmail.com
-Fixes: 8e654f8fbff5 ("zram: read page from backing device")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Cunlong Li <shenxiaogll@gmail.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yisheng Xie <xieyisheng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Once the table is full, the growth path still sizes the allocation from
+partnum even though inserts are indexed by num_part_descs. If partnum is
+already aligned to PART_DESC_ALLOC_STEP, ALIGN(partnum, step) can keep
+the old capacity and the next append writes past the end of the table.
+
+Store partnum in the appended slot and size growth from the next append
+count so deduplication and capacity tracking follow the same model.
+
+Fixes: ee4af50ca94f ("udf: Fix mounting of Win7 created UDF filesystems")
+Cc: stable@vger.kernel.org
+Signed-off-by: Seohyeon Maeng <bioloidgp@gmail.com>
+Link: https://patch.msgid.link/20260310081652.21220-1-bioloidgp@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+[ replaced kzalloc_objs() helper with equivalent kcalloc() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/zram/zram_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/udf/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1569,7 +1569,7 @@ static int zram_bvec_write_partial(struc
- 	if (!page)
- 		return -ENOMEM;
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1657,8 +1657,9 @@ static struct udf_vds_record *handle_par
+ 			return &(data->part_descs_loc[i].rec);
+ 	if (data->num_part_descs >= data->size_part_descs) {
+ 		struct part_desc_seq_scan_data *new_loc;
+-		unsigned int new_size = ALIGN(partnum, PART_DESC_ALLOC_STEP);
++		unsigned int new_size;
  
--	ret = zram_read_page(zram, page, index, bio);
-+	ret = zram_read_page(zram, page, index, NULL);
- 	if (!ret) {
- 		memcpy_from_bvec(page_address(page) + offset, bvec);
- 		ret = zram_write_page(zram, page, index);
++		new_size = data->num_part_descs + PART_DESC_ALLOC_STEP;
+ 		new_loc = kcalloc(new_size, sizeof(*new_loc), GFP_KERNEL);
+ 		if (!new_loc)
+ 			return ERR_PTR(-ENOMEM);
+@@ -1668,6 +1669,7 @@ static struct udf_vds_record *handle_par
+ 		data->part_descs_loc = new_loc;
+ 		data->size_part_descs = new_size;
+ 	}
++	data->part_descs_loc[data->num_part_descs].partnum = partnum;
+ 	return &(data->part_descs_loc[data->num_part_descs++].rec);
+ }
+ 
 
 
 
