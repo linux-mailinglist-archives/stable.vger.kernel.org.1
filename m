@@ -1,75 +1,62 @@
-Return-Path: <stable+bounces-265514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W3g/CuSLMWoimQUAu9opvQ
-	(envelope-from <stable+bounces-265514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:12 +0200
+	id 9Lu8KBObMWpFoAUAu9opvQ
+	(envelope-from <stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0BA693764
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FDF694847
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zp1jFsYk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265514-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265514-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nRVN3JZ6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266330-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C035322420C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6C08303DB78
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B89147A0CD;
-	Tue, 16 Jun 2026 17:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249CC4657F8;
+	Tue, 16 Jun 2026 18:50:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8C23876CF;
-	Tue, 16 Jun 2026 17:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E979D34FF79;
+	Tue, 16 Jun 2026 18:50:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631597; cv=none; b=EG+ypw0vKGw5Kmlkccvk0L196AfQtme3+k3cppTIALD4ZZfVAYut50yvm3qmjAlzOlALrRryjHjEeSYEMMqIBcCdiz5LZ6z8fve/FkSVVsbTW+ORBMS5A5eHxFHfmehi5W/5+djIEVflKvU8MPWr+nrBntmcIT9ea4q6OlIk3pw=
+	t=1781635856; cv=none; b=BEjTB6QCpTKWbP8/hXsc0UeZu55yWSfL4MwoxtMnCxpLBnIUgF4fZ+6ZD/on4yzoySU/2Rou5KzWMZkuS07FVoyqOOwCOMLXHUzsAJx9m+bhy0U6CESM7OFqnABVX4tOXlosvkGTc/uGe3tpGd5KDWKaQgonzH7St+ZScdI76Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631597; c=relaxed/simple;
-	bh=M85bzhLnLmkIKRX/wR7n19Gqoh3FSCnFrP/tVIBEwWc=;
+	s=arc-20240116; t=1781635856; c=relaxed/simple;
+	bh=2RaIrOQ2lTgsbQZXwJPqs+IufcoV7SwSpTcR6V/AF9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APRXzsYOnN50llsFfbNnJsJ5fStQRs/XzwkwPBIOqlHqprFsmURnfrTCczBwvEi6xVcRJIbRHX5Gf906G3e064Si14aSPQgr6CBb/qsIKaEbofQMmatJxgx697tvna/bLzc4ScaPCI4kuvZKSpQTY/oHvMFsb7PTv7wZGLlv3Us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp1jFsYk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7C21F000E9;
-	Tue, 16 Jun 2026 17:39:54 +0000 (UTC)
+	 MIME-Version; b=sGl//2Kn/LaMHLGbhOLvuaKJgtztRobYjRkLwg3bub+iKpL7JXAlp2LJqOaAX8/ri7iR7JzOqaLKQMhiJSust/jx5IJEPRcBy9J8e1zOV4FvkR58NmHY/48VLY08yOSGxkwEqsl0cHI1W/7NP+dtFJ3w8iVqoKOnKGTG0EZVrZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRVN3JZ6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77CF1F000E9;
+	Tue, 16 Jun 2026 18:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631596;
-	bh=uVyo5MzyYcNcztjcwQW4Zhg8C6YvQP/GRxpYlrX7DZE=;
+	s=korg; t=1781635855;
+	bh=siAkvKNCoaMiDPk5u+ZiLM0r/wzZkvbcwYfDYrPEK+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zp1jFsYktzU/Pg0i8T3DYJCWR23iJpd6tt9QztNLIgK69LDE3zwKjEA9AN4dsARvw
-	 jiuZ0IOJDpV2cFYO+FW0pLkKVErBOJlBaI6UH+E+wUIT9RtFUyU0rIJgAncsIg5cUO
-	 9YVfGiOV8ItdPWaw7bVNafuFmzMrSo2aroQrPQ1M=
+	b=nRVN3JZ6DrnMRlFFn9rMHgMnzR4n6rF/nXXX+3kWp8+eUpP91UkLyCffi744eniKQ
+	 CEW6c90XrZjEBmT57DNFhSWZOHyf51XtkCVjyUsJuWp88JrsFviq7UIxWlO/cMYpjW
+	 jsCK8G60d/WbvWT957K4MCUKMrTiWtv9iPo544LU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Tamir Shahar <tamirthesis@gmail.com>,
-	Amit Klein <aksecurity@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/522] tcp: restrict SO_ATTACH_FILTER to priv users
+	stable <stable@kernel.org>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.10 094/342] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
 Date: Tue, 16 Jun 2026 20:26:30 +0530
-Message-ID: <20260616145137.349922250@linuxfoundation.org>
+Message-ID: <20260616145052.610413532@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,95 +73,114 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-266330-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265514-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:willemb@google.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@linux.dev,m:eddyz87@gmail.com,m:memxor@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:john.fastabend@gmail.com,m:sdf@fomichev.me,m:kuba@kernel.org,m:sashal@kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org,iogearbox.net,linux.dev,fomichev.me];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,fomichev.me:email,iogearbox.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8F0BA693764
+X-Rspamd-Queue-Id: 74FDF694847
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 5d39580f68e6ddeedd15e587282207489dfb3da2 ]
+commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
 
-This patch restricts the use of SO_ATTACH_FILTER (cBPF) on TCP sockets
-to users with CAP_NET_ADMIN capability.
+This patch follows up Zheng Wang's 2023 report of a use-after-free in
+vudc_remove(). The original thread stalled on Shuah Khan's request for
+runtime testing of the unplug/unbind path. This patch supplies that
+testing and keeps Zheng's original fix shape.
 
-This blocks potential side-channel attack where an unprivileged application
-attaches a filter to leak TCP sequence/acknowledgment numbers.
+In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
+usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
+vudc_remove() can then free the containing struct vudc while the timer is
+still pending or executing.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Tamir Shahar <tamirthesis@gmail.com>
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Song Liu <song@kernel.org>
-Cc: Yonghong Song <yonghong.song@linux.dev>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KASAN confirms the race on an unpatched x86_64 QEMU guest with
+CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
+that repeatedly writes a socket fd to usbip_sockfd, closes the socket
+pair, and unbinds/rebinds usbip-vudc.0:
+
+  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
+  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
+  Allocated by task 239:
+    vudc_probe+0x4d/0xaa0
+  Freed by task 239:
+    kfree+0x18f/0x520
+    device_release_driver_internal+0x388/0x540
+    unbind_store+0xd9/0x100
+
+This lands in the timer core rather than v_timer() itself because the
+embedded timer_list is being walked after its containing struct vudc has
+already been freed. The underlying lifetime bug is the same one Zheng
+reported.
+
+With v_stop_timer() called from vudc_remove() and the timer deleted
+synchronously, the same harness completed 5000 bind/unbind iterations
+with no KASAN report.
+
+Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
+Cc: stable <stable@kernel.org>
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/usbip/vudc_dev.c      |    1 +
+ drivers/usb/usbip/vudc_transfer.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 62411c8870e855..5f79f0b78321c8 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1294,6 +1294,11 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 	case SO_ATTACH_FILTER: {
- 		struct sock_fprog fprog;
+--- a/drivers/usb/usbip/vudc_dev.c
++++ b/drivers/usb/usbip/vudc_dev.c
+@@ -633,6 +633,7 @@ int vudc_remove(struct platform_device *
+ {
+ 	struct vudc *udc = platform_get_drvdata(pdev);
  
-+		if (sk_is_tcp(sk) &&
-+		    !sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN)) {
-+			ret = -EPERM;
-+			break;
-+		}
- 		ret = copy_bpf_fprog_from_user(&fprog, optval, optlen);
- 		if (!ret)
- 			ret = sk_attach_filter(&fprog, sk);
--- 
-2.53.0
-
++	v_stop_timer(udc);
+ 	usb_del_gadget_udc(&udc->gadget);
+ 	cleanup_vudc_hw(udc);
+ 	kfree(udc);
+--- a/drivers/usb/usbip/vudc_transfer.c
++++ b/drivers/usb/usbip/vudc_transfer.c
+@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
+ {
+ 	struct transfer_timer *t = &udc->tr_timer;
+ 
+-	/* timer itself will take care of stopping */
++	/* Delete the timer synchronously before teardown frees udc. */
+ 	dev_dbg(&udc->pdev->dev, "timer stop");
++	timer_delete_sync(&t->timer);
+ 	t->state = VUDC_TR_STOPPED;
+ }
 
 
 
