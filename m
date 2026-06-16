@@ -1,179 +1,141 @@
-Return-Path: <stable+bounces-263649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y6KKCtYcMWokbwUAu9opvQ
-	(envelope-from <stable+bounces-263649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:52:22 +0200
+	id oT8KJtkcMWolbwUAu9opvQ
+	(envelope-from <stable+bounces-263650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:52:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9973468DB98
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:52:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2750E68DB9B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 11:52:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OI29wn2G;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263649-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263649-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IS9er9Zy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263650-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263650-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E084A3039C49
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 09:51:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1334F3019017
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 09:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8589423A78;
-	Tue, 16 Jun 2026 09:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2634423A67;
+	Tue, 16 Jun 2026 09:51:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62610421F1E
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 09:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7220A4218A3
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 09:51:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781603505; cv=none; b=S1JVGeQW8FGbY6DBRHsaSChGDqLzHuLDnESGse1Eg8TH2yFNJr66VGTY50FabwlnQ7ONaKfgmyCvhkyvmtQRxPxse0l5cWxzFObmqqMlvn1FcM/zdq1sMksoNNkBWwk8zIx2OxO6ieX+j/zlMSXbzexm/2qx1SzB8NGlNuLUNgM=
+	t=1781603510; cv=none; b=CRrObJfGkzrYLBGWv1Mv99dCQOXMS7jfooYP6X4e1tdkN45ZwrfW2pHmrLMLvaEYzB+ZuCs9iCb/DuS2l36chtfGc9XLUugoKO8qqjdU/3qNUzgXatBGjrKd8g62ME0diJ6+bXe+5vctE7k2UyIb9mA2NYjMkdFg/GhV9rSIJnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781603505; c=relaxed/simple;
-	bh=nNOYqJKg+E9DtF5cabxttmgFZLNw1VZag7YLT39Q2eA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AL5ucy/jaGoUIohgN+nY+pNERvyl0/lqlTUtm+Gv+4uHAMkDvG/lK9gqcRYDD17IvzO11ObxPUwfOehq5YNse4Nqme4DsjFz2d0yAQL/HYOXjSoYoPj9CLu9KC5CDIeZdFokQjXkn0+EmhhZ9x0TRP0ud2OmK3rncQS+r3+VeJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OI29wn2G; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A991F00A3A;
-	Tue, 16 Jun 2026 09:51:42 +0000 (UTC)
+	s=arc-20240116; t=1781603510; c=relaxed/simple;
+	bh=4QJiPHhQcMVIgoWrGQcv7JcIHUWB0PJwmlzg53rbZnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MP3a6oqwoYjWd/wFDHlt/QVP40EOF5OxhzJOKNjwPr+UPOTD0VbOt+/SnJ+Qdg+1MD0kE/UDGQeX3qwBLOYPf2hFczuZALVtHQC6gCuxBcQMdgFg1yxLg5yKwi29ode+nqSy27S+ldiac4f3dT7hobbu0gumGTCAE7N7fNro37w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IS9er9Zy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AC01F00ADF;
+	Tue, 16 Jun 2026 09:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781603504;
-	bh=ShppHeUljh+kOCQ+z4aC/5IYGwqFdmTXYohWq+5vbH8=;
-	h=Subject:To:Cc:From:Date;
-	b=OI29wn2G6WfNBoCQAua/BGmsOOxe0IopFL0p0fai2uO7ALvcdpkmE4MHP9/wnKdtC
-	 f/nWiR6viDEAEfyhCo3ZkLsZYb/JUwHYieQwIRcZ6THlxWsbpZ2wdXHBFTgmTadgWr
-	 hnQ6x/DK598tCZdZ9yr7VfrpdGdPthhxXZvn84oY=
-Subject: FAILED: patch "[PATCH] debugobjects: Do not fill_pool() if pi_blocked_on" failed to apply to 5.10-stable tree
-To: koike@igalia.com,tglx@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 16 Jun 2026 15:20:13 +0530
-Message-ID: <2026061612-grievance-elm-4367@gregkh>
+	s=korg; t=1781603509;
+	bh=tnPXwz8Ljl+BTZQqNNRCKO7wyV6CLmiC3uhVOmPGa5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IS9er9Zyzzja3pNL6479/n91Kfbrlv3GEao8x87CZ/kwMX315D/3NAjgQ6Q96E4Ec
+	 LtQkYBalW4ZMC3+yMoSRTFMhk/w5GNh5CgPfT8busqSdleInsbtCN4IZcwZ4OXrTM9
+	 8Dccd/xjnadhwjlUuYAKwhwZMvsmnB/vybX5//PA=
+Date: Tue, 16 Jun 2026 15:20:42 +0530
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Waiman Long <longman@redhat.com>
+Cc: bigeasy@linutronix.de, tglx@kernel.org, tglx@linutronix.de,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] debugobjects: Don't call fill_pool() in
+ early boot hardirq" failed to apply to 7.0-stable tree
+Message-ID: <2026061622-manager-quarrel-8346@gregkh>
+References: <2026061558-amiable-showman-7ea7@gregkh>
+ <1ba5a885-ac2b-46e2-b18f-f5b3e02e8094@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ba5a885-ac2b-46e2-b18f-f5b3e02e8094@redhat.com>
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263649-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:koike@igalia.com,m:tglx@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:longman@redhat.com,m:bigeasy@linutronix.de,m:tglx@kernel.org,m:tglx@linutronix.de,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263650-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,gregkh:mid,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:from_mime,syzkaller.appspot.com:url]
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gregkh:mid,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9973468DB98
+X-Rspamd-Queue-Id: 2750E68DB9B
 
+On Mon, Jun 15, 2026 at 04:03:09PM -0400, Waiman Long wrote:
+> 
+> On 6/15/26 10:31 AM, gregkh@linuxfoundation.org wrote:
+> > The patch below does not apply to the 7.0-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 0d046ae106255cba5eb83b23f78ee93f3620247d
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061558-amiable-showman-7ea7@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Commit 0d046ae10625 ("debugobjects: Don't call fill_pool() in early boot
+> hardirq context") has dependency on commit 5f41161059fd ("debugobjects: Do
+> not fill_pool() if pi_blocked_on") as they both modify
+> debug_objects_fill_pool(). So commit 5f41161059fd has to be applied before
+> commit 0d046ae10625 to avoid a merge conflict. Since both are fix commits, I
+> supposed they should both be applied to v7.0.y in the right order. Similarly
+> for the other stable branches.
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5f41161059fd0f1bbf18c90f3180e38cc45a14eb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026061612-grievance-elm-4367@gregkh' --subject-prefix 'PATCH 5.10.y' 'HEAD^..'
-
-Possible dependencies:
-
-
+That only worked for 7.0.y, which I've done, but it fails to apply to
+all older trees.
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5f41161059fd0f1bbf18c90f3180e38cc45a14eb Mon Sep 17 00:00:00 2001
-From: Helen Koike <koike@igalia.com>
-Date: Mon, 11 May 2026 18:53:05 -0300
-Subject: [PATCH] debugobjects: Do not fill_pool() if pi_blocked_on
-
-On RT enabled kernels, fill_pool() ends up calling rtlock_lock(), which
-asserts if current::pi_blocked_on is set, because a task can obviously only
-block on one lock as otherwise the priority inheritenace chain gets
-corrupted.
-
-Prevent this by expanding the conditional to take current::pi_blocked_on
-into account.
-
-Fixes: 4bedcc28469a ("debugobjects: Make them PREEMPT_RT aware")
-Reported-by: syzbot+b8ca586b9fc235f0c0df@syzkaller.appspotmail.com
-Signed-off-by: Helen Koike <koike@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260511215359.3351259-1-koike@igalia.com
-Closes: https://syzkaller.appspot.com/bug?extid=b8ca586b9fc235f0c0df
-
-diff --git a/lib/debugobjects.c b/lib/debugobjects.c
-index 12e2e42e6a31..772ddabcbe7d 100644
---- a/lib/debugobjects.c
-+++ b/lib/debugobjects.c
-@@ -711,6 +711,15 @@ static struct debug_obj *lookup_object_or_alloc(void *addr, struct debug_bucket
- 	return NULL;
- }
- 
-+static inline bool debug_objects_is_pi_blocked_on(void)
-+{
-+#ifdef CONFIG_RT_MUTEXES
-+	return current->pi_blocked_on != NULL;
-+#else
-+	return false;
-+#endif
-+}
-+
- static void debug_objects_fill_pool(void)
- {
- 	if (!static_branch_likely(&obj_cache_enabled))
-@@ -727,11 +736,12 @@ static void debug_objects_fill_pool(void)
- 
- 	/*
- 	 * On RT enabled kernels the pool refill must happen in preemptible
--	 * context -- for !RT kernels we rely on the fact that spinlock_t and
--	 * raw_spinlock_t are basically the same type and this lock-type
--	 * inversion works just fine.
-+	 * context and not enqueued on an rt_mutex -- for !RT kernels we rely
-+	 * on the fact that spinlock_t and raw_spinlock_t are basically the
-+	 * same type and this lock-type inversion works just fine.
- 	 */
--	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || preemptible() || system_state < SYSTEM_SCHEDULING) {
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT) || system_state < SYSTEM_SCHEDULING ||
-+	    (preemptible() && !debug_objects_is_pi_blocked_on())) {
- 		/*
- 		 * Annotate away the spinlock_t inside raw_spinlock_t warning
- 		 * by temporarily raising the wait-type to LD_WAIT_CONFIG, matching
-
 
