@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yoDIN6KMMWp2mQUAu9opvQ
-	(envelope-from <stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:22 +0200
+	id MecgBh+cMWqdoAUAu9opvQ
+	(envelope-from <stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51CDD693834
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE05694936
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zelujaXW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TZru+7w4;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A10A330E9A05
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2092E322C98E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0332B47AF6E;
-	Tue, 16 Jun 2026 17:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380E547CC9A;
+	Tue, 16 Jun 2026 18:51:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ED4466B70;
-	Tue, 16 Jun 2026 17:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E47332E13B;
+	Tue, 16 Jun 2026 18:51:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631875; cv=none; b=AJRrn3T5gObM+e03Q1p/EoFcNPD5pzvelZvlO2xQd+4qCJxgTEUBVAfIU/R5Qi+i0Xny5R+ybUj0k8412hVEjLFKxtHVXfyWq6Lnmq7EhaFtGLF+JQf51K1FF2egIGsCMpO4f8fNuaJVG5VT4jSGLVJmq/Y2jGyX77KZ3GrPtTo=
+	t=1781635889; cv=none; b=VVR0F3BOIKXG4UCOjOL0/7rWip5xjhpEzJuDusOnZndq5evF+/tP1mDGOa2kWfJJo5nFOUfhTA+OW44D+QvbIDe67ozm1g/TwWWUP1MWV5K1USEd1Fp0BYgAyg4/RVlQcnJJy+yR3G6lkGw5kaCnUVKdx33BxUMIho1uXPZLGC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631875; c=relaxed/simple;
-	bh=0Ov/ZaitxeYxL/Ijaaa+rKbeOVxgPrY54CCO1vzPpLU=;
+	s=arc-20240116; t=1781635889; c=relaxed/simple;
+	bh=iMVJMcMDjrftob5qVg+MlE50qbpCeWpGu5pAadcPeRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmC04cL3GOvFRtMZ0tQUxMrYNeX3FOsErn6PoXnmxd6HKLnpOVnvQVOyr0jAyS3Phw7a12GJV27G7IR5fL9b389JtGnCz6Ng72J5VvPvvxrwQXup4ySEyGudpAGn2luYhO02/c7LNQDxf2ct/KmAKlRDMwnH08LakTiRqinwpQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zelujaXW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607791F000E9;
-	Tue, 16 Jun 2026 17:44:33 +0000 (UTC)
+	 MIME-Version; b=u+Ly530WqW0MQCHwaq40fGPXmDYAnC4GnjkofH3KPPAyYtYPv+wnDWykDeoDHk1kp40b8/SdTeKruEx3qsDU0GNfsrh5c6U0j8ItTIODtJ4KQgIWCe+/M45UwqfJgChBY3LRuuPSMwoSX5FFTBXyx1F9ALINTznhdgFxa1lqFFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZru+7w4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A6F1F00A3A;
+	Tue, 16 Jun 2026 18:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631874;
-	bh=ub9oCk+ueGXnsqcazqnjel3bRtnMb6TxaJ+6t9WbPSg=;
+	s=korg; t=1781635886;
+	bh=ctIhuwKMx/fVdJDfyvUGhvIxvoH/X9sQry3esgCFOrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zelujaXWp0Uju/4u3xT0Al+Q4swj3jpLfoBNSDFeERlszLPsM//m1ip1uOZMixG1c
-	 gZZ4LF+W+Z5AI9bT1GNJ3QlQf3HeIW2M1xkYQs9jsoAIOhE5OYPTQ/c5RFdT+8I3lc
-	 hIWyaDgVskMGfAb+wfRwX6HCbE/NGgR78B4Y2AEA=
+	b=TZru+7w4wlek//F7iYl6g+IF82Vo4x6pP2HAh5H732i9LfvjkKCsl2qNevHs6hFfJ
+	 mV1LjCZkpXv6xMeDEg4HXZhlqqQxqqkFfpLvjoStwrW1crxvFGoCl1ksD18mALZkfg
+	 le/IW9LO9WdiIxOQydvu/HgwnE/vpVxjaHWgb2w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.1 284/522] ARM: 9475/1: entry: use byte load for KASAN VMAP stack shadow
+	Florian Westphal <fw@strlen.de>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 135/342] netfilter: conntrack_irc: fix possible out-of-bounds read
 Date: Tue, 16 Jun 2026 20:27:11 +0530
-Message-ID: <20260616145139.230402799@linuxfoundation.org>
+Message-ID: <20260616145054.480151376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +68,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265571-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266336-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:fmancera@suse.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,armlinux.org.uk:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,sashiko.dev:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 51CDD693834
+X-Rspamd-Queue-Id: 5EE05694936
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karl Mehltretter <kmehltretter@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 77a1f6883dc6e837bb2cb30b9b02e2f94338e2c6 upstream.
+[ Upstream commit 66eba0ffce3b7e11449946b4cbbef8ea36112f56 ]
 
-Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
-VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
-__switch_to(). The read uses ldr, but the KASAN shadow address is
-byte-granular and is not guaranteed to be word aligned.
+When parsing fails after we've matched the command string we
+should bail out instead of trying to match a different command.
 
-ARMv5 faults unaligned word loads. With CONFIG_KASAN_VMALLOC and
-CONFIG_VMAP_STACK enabled, ARM926/VersatilePB crashes in __switch_to()
-with an alignment exception before reaching init.
+This helper should be deprecated, given prevalence of TLS I doubt it has
+any relevance in 2026.
 
-Use ldrb for the dummy shadow access. The code only needs to fault in the
-shadow mapping if the stack shadow is missing, so a byte load is sufficient
-and matches the granularity of KASAN shadow memory.
-
-Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shadow")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
+Closes: https://sashiko.dev/#/patchset/20260525182924.28456-1-fw%40strlen.de
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/entry-armv.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_irc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm/kernel/entry-armv.S
-+++ b/arch/arm/kernel/entry-armv.S
-@@ -793,7 +793,7 @@ ENTRY(__switch_to)
- 	@ are using KASAN
- 	mov_l	r2, KASAN_SHADOW_OFFSET
- 	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
--	ldr	r2, [r2]
-+	ldrb	r2, [r2]
- #endif
- #endif
+diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
+index 65b5b05fe38d37..24533bee001b7d 100644
+--- a/net/netfilter/nf_conntrack_irc.c
++++ b/net/netfilter/nf_conntrack_irc.c
+@@ -199,7 +199,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
+ 			if (parse_dcc(data, data_limit, &dcc_ip,
+ 				       &dcc_port, &addr_beg_p, &addr_end_p)) {
+ 				pr_debug("unable to parse dcc command\n");
+-				continue;
++				goto out;
+ 			}
  
+ 			pr_debug("DCC bound ip/port: %pI4:%u\n",
+@@ -213,7 +213,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
+ 				net_warn_ratelimited("Forged DCC command from %pI4: %pI4:%u\n",
+ 						     &tuple->src.u3.ip,
+ 						     &dcc_ip, dcc_port);
+-				continue;
++				goto out;
+ 			}
+ 
+ 			exp = nf_ct_expect_alloc(ct);
+-- 
+2.53.0
+
 
 
 
