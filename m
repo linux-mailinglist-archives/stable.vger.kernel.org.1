@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ICufNgyaMWrmnwUAu9opvQ
-	(envelope-from <stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:36 +0200
+	id BwKuH4SAMWoylAUAu9opvQ
+	(envelope-from <stable+bounces-264971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50BFD694751
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121CD6929D4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2lrA0NWj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266279-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vZapU1vI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264971-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264971-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 56939306AD0B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D7B9F30327F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEA83ACF15;
-	Tue, 16 Jun 2026 18:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75423876CF;
+	Tue, 16 Jun 2026 16:54:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0663AE1A2;
-	Tue, 16 Jun 2026 18:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9455D4502F;
+	Tue, 16 Jun 2026 16:54:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635594; cv=none; b=Irpy070Acabsp3OzMOs+oYpW6BJYRjI6dzwFPBCrYdMGx7JofCiOa6b8tTzfFWTNiozC2Y10Uisf59Kugmz60H+BiE/7x3cYNRTHanZGtfW44ItkPPGl1yS2kVCEOXp+RthV4taYe9tMaulcoJ84BdKLM384zBdu4Zu2QzbirWY=
+	t=1781628855; cv=none; b=Ennh5o6MNE9PjXafDwOhA0KYiFilugzotTH0gff9joNfAUThRELw/3lKIx74j5hcazQX1Wo76mCo435QwUvniWecRm8dWgbkOf8gEPpkhNcRZYQ2BiC0/M92QRw09Cx4H9HrWCUgnqejvgICR5BcM5gQ9RrI7SWU0VdL1hsQbKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635594; c=relaxed/simple;
-	bh=RGo9jXh3UyWWvSbTRpoPCYXhRPMizaHxo/1QSGnMqGs=;
+	s=arc-20240116; t=1781628855; c=relaxed/simple;
+	bh=MA1IaZ3JyaeIIIslq9f5/OzfhGNyeoVvdFhW+2JgMis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZwUuD4mC+VVqnUTktUDdnEDqM3OK94JjwJEDwnbCT0To5opci9mdm81xi2nVcv720j6s2vZlr+JcIvssHscZC+HJd61dkjq4jy3HCT8NBlSuuycRLvEz1JCUmtZ8gZR/2nyjfS1DPw+pnw6NGgYHRtw1Adm48BnnBLi0cLc2wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lrA0NWj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834861F000E9;
-	Tue, 16 Jun 2026 18:46:32 +0000 (UTC)
+	 MIME-Version; b=gvEp+X/cREdNz2w4D1/xgmP/yjPoTB9jUqg4X30UqsGUeg6F4JKwW2vBJupnvVSvYGRLjEe8W31Pv/0vsVgPLHnif3lhJXXQ2MZU6UHvv29CdTYyO0PzNWgtJZcI3Zv/FMzlNKVv4bajONTXLZrNONBGbSlXFHIfe0WWposQ188=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZapU1vI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933C71F000E9;
+	Tue, 16 Jun 2026 16:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635593;
-	bh=NQeG+mrgm4OknUyPVIaZ3ZhYC2nWzhmET19jDcWMzvg=;
+	s=korg; t=1781628854;
+	bh=b3BnC4FV6iEb70NIFESc2sKaPEO1uy1BNiBMF9vtafo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2lrA0NWjhTEnqHOxlggwSfSjX88X3CcAtdvDVibHa2bgOZazTcaKr+Xpf5fnXMB5/
-	 uyGsfjFCxNU0FL6r/JG5D22u28GLdnoVI+buUWxlMKvh4S16ioz/pwOUBY9uo5Uf89
-	 pCUKnlflc2QDNTOqsSbH8zTh+gzP5vaeoPxwcI8U=
+	b=vZapU1vIwjsmBFfAcx0MCI8LR+507xD0R/2adCD2he3JTJ8xUZosvEbMj8msc5B01
+	 Beg+kg8da066BT/Je8b/RbfBuLAp76HVvdT17D6+v9/45NfYZ+1btgFQwOv+4jWefq
+	 1D9lzgyJtWkDNNzWsfSRBGzBTY6nci1G+XsWOdFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	David Heidelberg <david@ixit.cz>
-Subject: [PATCH 5.10 078/342] nfc: hci: fix out-of-bounds read in HCP header parsing
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.6 147/452] comedi: comedi_test: fix check for valid scan_begin_src in waveform_ai_cmdtest()
 Date: Tue, 16 Jun 2026 20:26:14 +0530
-Message-ID: <20260616145051.878161808@linuxfoundation.org>
+Message-ID: <20260616145125.423477479@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,125 +71,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264971-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266279-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:horms@kernel.org,m:ashutoshdesai993@gmail.com,m:david@ixit.cz,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,ixit.cz];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:abbotti@mev.co.uk,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ixit.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 50BFD694751
+X-Rspamd-Queue-Id: 121CD6929D4
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashutosh Desai <ashutoshdesai993@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-commit f040e590c035bfd9553fe79ee9585caf1b14d67b upstream.
+commit 542f5248cb481073203e0dadab5bcbd28aeae308 upstream.
 
-Both nfc_hci_recv_from_llc() and nci_hci_data_received_cb() read
-packet->header from skb->data at function entry without first checking
-that the buffer holds at least one byte. A malicious NFC peer can send
-a 0-byte HCP frame that passes through the SHDLC layer and reaches
-these functions, causing an out-of-bounds heap read of packet->header.
-The same 0-byte frame, if queued as a non-final fragment, also causes
-the reassembly loop to underflow msg_len to UINT_MAX, triggering
-skb_over_panic() when the reassembled skb is written.
+Commit 783ddaebd397 ("staging: comedi: comedi_test: support
+scan_begin_src == TRIG_FOLLOW") neglected to add a test that
+`scan_begin_src` has only one bit set.  The allowed values are
+`TRIG_FOLLOW` and `TRIG_TIMER`, but the code incorrectly also allows
+`TRIG_FOLLOW | TRIG_TIMER`.  Add a call to
+`comedi_check_trigger_is_unique()` to check that only one trigger source
+bit is set.
 
-Fix this by adding a pskb_may_pull() check at the entry of each
-function before packet->header is first accessed. The existing
-pskb_may_pull() checks before the reassembled hcp_skb is cast to
-struct hcp_packet remain in place to guard the 2-byte HCP message
-header.
-
-Fixes: 8b8d2e08bf0d ("NFC: HCI support")
-Fixes: 11f54f228643 ("NFC: nci: Add HCI over NCI protocol support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Link: https://patch.msgid.link/20260505170712.96560-1-ashutoshdesai993@gmail.com
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Fixes: 783ddaebd397 ("staging: comedi: comedi_test: support scan_begin_src == TRIG_FOLLOW")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260422162138.36003-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/hci/core.c |   10 ++++++++++
- net/nfc/nci/hci.c  |   10 ++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/comedi/drivers/comedi_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/nfc/hci/core.c
-+++ b/net/nfc/hci/core.c
-@@ -861,6 +861,11 @@ static void nfc_hci_recv_from_llc(struct
- 	struct sk_buff *frag_skb;
- 	int msg_len;
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -273,6 +273,7 @@ static int waveform_ai_cmdtest(struct co
+ 	/* Step 2a : make sure trigger sources are unique */
  
-+	if (!pskb_may_pull(skb, NFC_HCI_HCP_PACKET_HEADER_LEN)) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	packet = (struct hcp_packet *)skb->data;
- 	if ((packet->header & ~NFC_HCI_FRAGMENT) == 0) {
- 		skb_queue_tail(&hdev->rx_hcp_frags, skb);
-@@ -904,6 +909,11 @@ static void nfc_hci_recv_from_llc(struct
- 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
- 	 * in separate context where handler can also execute command.
- 	 */
-+	if (!pskb_may_pull(hcp_skb, NFC_HCI_HCP_HEADER_LEN)) {
-+		kfree_skb(hcp_skb);
-+		return;
-+	}
-+
- 	packet = (struct hcp_packet *)hcp_skb->data;
- 	type = HCP_MSG_GET_TYPE(packet->message.header);
- 	if (type == NFC_HCI_HCP_RESPONSE) {
---- a/net/nfc/nci/hci.c
-+++ b/net/nfc/nci/hci.c
-@@ -444,6 +444,11 @@ void nci_hci_data_received_cb(void *cont
- 		return;
- 	}
+ 	err |= comedi_check_trigger_is_unique(cmd->convert_src);
++	err |= comedi_check_trigger_is_unique(cmd->scan_begin_src);
+ 	err |= comedi_check_trigger_is_unique(cmd->stop_src);
  
-+	if (!pskb_may_pull(skb, NCI_HCI_HCP_PACKET_HEADER_LEN)) {
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	packet = (struct nci_hcp_packet *)skb->data;
- 	if ((packet->header & ~NCI_HCI_FRAGMENT) == 0) {
- 		skb_queue_tail(&ndev->hci_dev->rx_hcp_frags, skb);
-@@ -487,6 +492,11 @@ void nci_hci_data_received_cb(void *cont
- 	 * unblock waiting cmd context. Otherwise, enqueue to dispatch
- 	 * in separate context where handler can also execute command.
- 	 */
-+	if (!pskb_may_pull(hcp_skb, NCI_HCI_HCP_HEADER_LEN)) {
-+		kfree_skb(hcp_skb);
-+		return;
-+	}
-+
- 	packet = (struct nci_hcp_packet *)hcp_skb->data;
- 	type = NCI_HCP_MSG_GET_TYPE(packet->message.header);
- 	if (type == NCI_HCI_HCP_RESPONSE) {
+ 	/* Step 2b : and mutually compatible */
 
 
 
