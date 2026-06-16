@@ -1,62 +1,84 @@
-Return-Path: <stable+bounces-264764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lFr7C3l+MWo7kwUAu9opvQ
-	(envelope-from <stable+bounces-264764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:57 +0200
+	id jYrOJkxHMWrafwUAu9opvQ
+	(envelope-from <stable+bounces-263717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:53:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B39069279C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB01468FA0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:53:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UMRSM2fF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264764-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264764-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=K08yR9Lr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263717-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263717-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=ibm.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78E403050FA3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 628BF3190686
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A57A477E2B;
-	Tue, 16 Jun 2026 16:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693F7366DB9;
+	Tue, 16 Jun 2026 12:48:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C154C478E50
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 16:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5973382DC;
+	Tue, 16 Jun 2026 12:48:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627772; cv=none; b=U4s5kv10eRyT5gbi0W0tdfP1449AHtF2LonTqvhPTOP/vyKB7gDSvY+gGDNUtm19q7G8NwHzPbBEg1z2gN8hL9Z0J/nNw5tAuTDoc19pOR2W+qyrRzo/H536SRk/9+usX7gmYCXYIUXLsXU1rgNGjMPYbA7zIt9p798yyHTmfJU=
+	t=1781614113; cv=none; b=HPkDLfDny15Sv3OJ0XBvt++JAspG/pWN/Y+9SrEqIw6RoTcVjYWocqF/HBy+OU1OLHwoFgK3BH90Fw+lHm/YWGcH+5bJh9oKDsts5u2mRAZyzi1wEIGQaRW4jG1brq6u5dXum+LUcf+bBMP+jp0UKYiWWfDH2RCyTlLcWMn62r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627772; c=relaxed/simple;
-	bh=mfc6n0A7sbM0kjEl9/C74kqzhMmQRtaxLBOpW31w0YA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0N7GkSAOX8OMS3lHTNGU/GgAoRf8r7JoF+tg/82iMRe92xT1sEDtc/3UXuyUn8qGPz4djHOLcZWOWUBQG4kkACydhctbgjfpGuJyw7XTiyp0XBxp+kjq/MY2FGAvJ+Ma3iIt5rJ9KrRcI2FNdsw3JG6X1eboQPSYBQYNN40OKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMRSM2fF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E08C1F00A3A;
-	Tue, 16 Jun 2026 16:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781627771;
-	bh=XF6QMOjZ2NqPiOjMU16ndMtHlK7HjWRu49qLw2B2K8M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UMRSM2fFrTqLTlyox8S3mYWRci9Z0RdVAAick5kpGH1Xg2do57eeb27hScSRC+IeK
-	 IlwNI+7vXKflQKMJm+EllxPp4ihGWCktYl4+mhIK/q606XAV0yP5/nR3jCDjtOHAPb
-	 4gJDCTIRJp2uRhCWD5IrfCLT3oDlKWOYTpxZp7i9S1OG2JdqCj/13w1ndBNwy3SHTq
-	 1W+Rn6Ego/HTDsCk815QnxtEF1dqxzdu73EmWO438sKpf8j5/8gsLcJlD8EWBygWWX
-	 S4L7c6+sg9EWrizD5VvJhRsvteis1b0BLFc8Z1NATI2LOP6nzElpzPEeEX1RZ/fGRX
-	 bSENzur4gPaoA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jann Horn <jannh@google.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] fhandle: fix UAF due to unlocked ->mnt_ns read in may_decode_fh()
-Date: Tue, 16 Jun 2026 12:36:09 -0400
-Message-ID: <20260616163609.3352096-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026061543-clavicle-quote-2f44@gregkh>
-References: <2026061543-clavicle-quote-2f44@gregkh>
+	s=arc-20240116; t=1781614113; c=relaxed/simple;
+	bh=hVhWc268az8O4PtBUHVZMCEiBnAJT+yxM0hFZ11kP+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ovClt7shQlmLiwGz+srFUI3VcjKRLVw6gUNvUOo6LI2nf9UjalrJR4pV9xBHsJFBk7j2qIdf0V8VklI09YuELC6hGdadurEllKlJtqrbwNXqX7GoOAPmRx+HVXVGwlgg+8Vd0kB+kywl0W+Q/r59gqzZ4rUAkVJyAXhL4nUP2zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=K08yR9Lr; arc=none smtp.client-ip=148.163.158.5
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65GAIkkg1135632;
+	Tue, 16 Jun 2026 12:48:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=JmZjVLyYt2Jdu0KiD3Xh8P5rAdhxowVUkLDvUuq0E
+	X8=; b=K08yR9LrIdQmzmqPZFlrFeJQDp0pspi7w2fRtRNhqNvXLAsypvjYCoIro
+	7W8mlg2DrJYjxw4MF8Fk1XeIePVrtBe7+IhtYyt2uY3NetaGJW7OfP9ueQ6z5uKw
+	0EBUvGAMDhGJgw4FjV1yZt8W1i8WTPVU03YedC7id4fd4FD1TArSaXtqxZzoySLT
+	AL+sWjJZpj58EZCPhhQq7YCEgTSOxROE6uywN7Lr8/IoZKR5uDfIwS63s4WJnSSx
+	LnuLBDVRTMhquGaifPdx/owTmQ+fWT5o3l4iAphRW2eUFehCXDFbSBkH65aFshMw
+	cHSul6SeXfY4V0iSyikrAw6Wtavxg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4es1u0n5k0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:48:13 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65GCYi4V022470;
+	Tue, 16 Jun 2026 12:48:12 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4esm7y3438-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jun 2026 12:48:12 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65GCm9ft49611198
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jun 2026 12:48:09 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFE592004B;
+	Tue, 16 Jun 2026 12:48:08 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DEBD620040;
+	Tue, 16 Jun 2026 12:48:06 +0000 (GMT)
+Received: from ltcrain4-lp15.ltc.tadn.ibm.com (unknown [9.5.7.39])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 16 Jun 2026 12:48:06 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: bpf@vger.kernel.org
+Cc: hbathini@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+        ast@kernel.org, andrii@kernel.org, daniel@iogearbox.net,
+        shuah@kernel.org, linux-kselftest@vger.kernel.org,
+        stable@vger.kernel.org, Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [bpf v8 0/7] powerpc/bpf: address missing verifier selftest coverage
+Date: Tue, 16 Jun 2026 12:47:34 -0400
+Message-ID: <20260616164741.32252-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,194 +86,254 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: VuZiljQB4oj4qLq5Q97hRpmRhHKDyf6U
+X-Authority-Analysis: v=2.4 cv=XdK5Co55 c=1 sm=1 tr=0 ts=6a31460d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=fKsxTWJvHqBfRfrz3VUA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE2MDEzMCBTYWx0ZWRfX+DHT9Sq8XXNC
+ 6LZNm0xfczrX2zbOE5er10f271yyJxK2LHsDdd3bbwvbKJfMPFQ+fzSYn9Ar5A0VzgXXlT+L3rp
+ cKVS25M9ze5BM7dG1J1Ki4odXDDvY4K21j494pKO4imwD68ZTA0teJe93kBWfzsgu+hG+eO1ZQ9
+ P4gkBvD6vsgZFWYPr9Oncvph2gY1yZ0rR+TLNx4PVJqkiSnF0NytkItH6uhNpng37WHyGxnBmxD
+ Y9lY8OPs7zt8tFwGYbDWyPee31tIXBCWkdeGofb1ahweHurdeojevq7xa1SU//+8Toh2ywSi4RH
+ SdoV6zUDWWjEzIMLwMQa/pqyWxzyfd1uXmjRrz5dJQbCk7Pzv/aN6x+v+QzU0dVTMPLWeHOjm9b
+ 3s3npZSBELMcJh7CKZUbTh3avbVKkEo62gu27HsuB4E5P9IIH0AJAZZoGkcABArbiBFXFVxUob4
+ LwlFZ3FJgn0HkKV1wBw==
+X-Proofpoint-ORIG-GUID: VuZiljQB4oj4qLq5Q97hRpmRhHKDyf6U
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE2MDEzMCBTYWx0ZWRfX2Kf0hzOieB+M
+ zTmGQJFpll8yfixwDN2zjl/oa5/e6aGskb7zPDCnrQ8JBUSXcIe20CVkGGzaOH9lBM6h6F2ay04
+ Fe8rhNoaGE9di6ZrQkO/sUVa0Vpir0A=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-16_03,2026-06-15_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 malwarescore=0
+ spamscore=0 phishscore=0 priorityscore=1501 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606160130
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.34 / 15.00];
+	DATE_IN_FUTURE(4.00)[3];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:jannh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264764-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263717-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:bpf@vger.kernel.org,m:hbathini@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:ast@kernel.org,m:andrii@kernel.org,m:daniel@iogearbox.net,m:shuah@kernel.org,m:linux-kselftest@vger.kernel.org,m:stable@vger.kernel.org,m:adubey@linux.ibm.com,s:lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	FROM_NO_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linux.ibm.com:mid,linux.ibm.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[adubey@linux.ibm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1B39069279C
+X-Rspamd-Queue-Id: EB01468FA0F
 
-From: Jann Horn <jannh@google.com>
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-[ Upstream commit 40ab6644b99685755f740b872c00ef40d9aa870e ]
+The verifier selftest validates JITed instructions by matching expected
+disassembly output. The first two patches fix issues in powerpc instruction
+disassembly that were causing test flow failures. The fix is common for 
+64-bit & 32-bit powerpc. Add support for the powerpc-specific "__powerpc64"
+architecture tag in the third patch, enabling proper test filtering in
+verifier test files. Introduce verifier testcases for tailcalls on powerpc64
+in the final patch.
 
-may_decode_fh() accesses mount::mnt_ns without holding any locks; that
-means the mount can concurrently be unmounted, and the mnt_namespace can
-concurrently be freed after an RCU grace period.
+The first patch in series is fix patch, correcting memory alignment with
+8-byte boundary for long branch address field. The subsequent patches
+enables verifier selftests on powerpc. The fifth patch in the series fixes
+incorrect comparator usage for comparing tailcall info with tailcall
+threshold. The last patch fixes JIT buffer overflow for large BPF progs.
 
-This race can happens as follows, assuming that the mount point was
-created by open_tree(..., OPEN_TREE_CLONE):
+Issue Details:
+--------------
 
-thread 1            thread 2            RCU
-                    __do_sys_open_by_handle_at
-                      do_handle_open
-                        handle_to_path
-                          may_decode_fh
-                            is_mounted
-                              [mount::mnt_ns access]
-                            [mount::mnt_ns access]
-__do_sys_close
-  fput_close_sync
-    __fput
-      dissolve_on_fput
-        umount_tree
-        class_namespace_excl_destructor
-          namespace_unlock
-            free_mnt_ns
-              mnt_ns_tree_remove
-                call_rcu(mnt_ns_release_rcu)
-                                        mnt_ns_release_rcu
-                                          mnt_ns_release
-                                            kfree
-                            [mnt_namespace::user_ns access] **UAF**
+    The Long branch stub in the trampoline implementation[1] provides
+    flexibility to handles short as well as long branch distance to
+    actual trampoline. Whereas, the 8 bytes long dummy_tramp_addr field
+    sitting before long branch stub leads to failure when enabling
+    verifier based seltest for ppc64.
+    
+    The verifier selftests require disassembing the final jited image
+    to get native instructions. Later the disassembled instruction
+    sequence is matched against sequence of instructions provided in
+    test-file under __jited() wrapper. The final jited image contains
+    Out-of-line stub and Long branch stub as part of epilogue jitting
+    for a bpf program. The 8 bytes space for dummy_tramp is sandwiched
+    between both above mentioned stubs. These 8 bytes contain memory
+    address of dummy trampoline during trampoline invocation which don't
+    correspond to any powerpc instructions. So, disassembly fails
+    resulting in failure of verifier selftests.
+    
+    The following code snippet shows the problem with current arrangement
+    made for dummy_tramp_addr.
+    
+    /* Out-of-line stub */
+    mflr    r0  
+    [b|bl]  tramp
+    mtlr    r0 //only with OOL 
+    b       bpf_func + 4 
+    /* Long branch stub */
+    .long   <dummy_tramp_addr>  <---Invalid bytes sequence, disassembly fails
+    mflr    r11 
+    bcl     20,31,$+4
+    mflr    r12 
+    ld      r12, -8-SZL(r12)
+    mtctr   r12 
+    mtlr    r11 //retain ftrace ABI 
+    bctr
 
-Fix it by taking rcu_read_lock() around the mount::mnt_ns access, like
-in __prepend_path().
-Additionally, document the semantics of mount::mnt_ns, and use WRITE_ONCE()
-for writers that can race with lockless readers.
+    Consider test program binary of size 112 bytes:
+    0:  00000060 10004de8 00002039 f8ff21f9 81ff21f8 7000e1fb 3000e13b
+    28: 3000e13b 2a006038 f8ff7ff8 00000039 7000e1eb 80002138 7843037d
+    56: 2000804e a602087c 00000060 a603087c bcffff4b c0341d00 000000c0
+    84: a602687d 05009f42 a602887d f0ff8ce9 a603897d a603687d 2004804e
 
-This bug is unreachable unless one of the following is set:
+    Disassembly output of above binary for ppc64le:
+    pc:0     left:112    00 00 00 60  :  nop
+    pc:4     left:108    10 00 4d e8  :  ld 2, 16(13)
+    pc:8     left:104    00 00 20 39  :  li 9, 0
+    pc:12    left:100    f8 ff 21 f9  :  std 9, -8(1)
+    pc:16    left:96     81 ff 21 f8  :  stdu 1, -128(1)
+    pc:20    left:92     70 00 e1 fb  :  std 31, 112(1)
+    pc:24    left:88     30 00 e1 3b  :  addi 31, 1, 48
+    pc:28    left:84     30 00 e1 3b  :  addi 31, 1, 48
+    pc:32    left:80     2a 00 60 38  :  li 3, 42
+    pc:36    left:76     f8 ff 7f f8  :  std 3, -8(31)
+    pc:40    left:72     00 00 00 39  :  li 8, 0
+    pc:44    left:68     70 00 e1 eb  :  ld 31, 112(1)
+    pc:48    left:64     80 00 21 38  :  addi 1, 1, 128
+    pc:52    left:60     78 43 03 7d  :  mr    3, 8
+    pc:56    left:56     20 00 80 4e  :  blr
+    pc:60    left:52     a6 02 08 7c  :  mflr 0
+    pc:64    left:48     00 00 00 60  :  nop
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     c0 34 1d 00  :
+    ...
 
- - CONFIG_PREEMPTION
- - CONFIG_RCU_STRICT_GRACE_PERIOD
+    Failure log:
+    Can't disasm instruction at offset 76: c0 34 1d 00 00 00 00 c0 a6 02 68 7d 05 00 9f 42
+    --------------------------------------
 
-because it requires an RCU grace period to happen during a syscall without
-an explicit preemption.
+    Observation:
+    Can't disasm instruction at offset 76 as this address has
+    ".long <dummy_tramp_addr>" (0xc0341d00000000c0)
+    But valid instructions follow at offset 84 onwards.
 
-This doesn't seem to have interesting security impact; worst-case, it could
-leak the result of an integer comparison to userspace (from the level
-check in cap_capable()), cause an endless loop, or crash the kernel by
-dereferencing an invalid address.
+    Move the long branch address space to the bottom of the long
+    branch stub. This allows uninterrupted disassembly until the
+    last 8 bytes. Exclude these last bytes from the overall
+    program length to prevent failure in assembly generation.
 
-Fixes: 620c266f3949 ("fhandle: relax open_by_handle_at() permission checks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260603-vfs-fhandle-uaf-fix-v2-1-d05db76a5084@google.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/fhandle.c   | 16 ++++++++++++++--
- fs/mount.h     | 10 +++++++++-
- fs/namespace.c |  6 +++---
- 3 files changed, 26 insertions(+), 6 deletions(-)
+    Following is disassembler output for same test program with moved down
+    dummy_tramp_addr field:
+    .....
+    .....
+    pc:68    left:44     a6 03 08 7c  :  mtlr 0
+    pc:72    left:40     bc ff ff 4b  :  b .-68
+    pc:76    left:36     a6 02 68 7d  :  mflr 11
+    pc:80    left:32     05 00 9f 42  :  bcl 20, 31, .+4
+    pc:84    left:28     a6 02 88 7d  :  mflr 12
+    pc:88    left:24     14 00 8c e9  :  ld 12, 20(12)
+    pc:92    left:20     a6 03 89 7d  :  mtctr 12
+    pc:96    left:16     a6 03 68 7d  :  mtlr 11
+    pc:100   left:12     20 04 80 4e  :  bctr
+    pc:104   left:8      c0 34 1d 00  :
 
-diff --git a/fs/fhandle.c b/fs/fhandle.c
-index 38d803a28ab916..bbb5857c77b9b1 100644
---- a/fs/fhandle.c
-+++ b/fs/fhandle.c
-@@ -242,6 +242,19 @@ static int do_handle_to_path(struct file_handle *handle, struct path *path,
- 	return 0;
- }
- 
-+static bool capable_wrt_mount(struct mount *mount)
-+{
-+	struct mnt_namespace *mnt_ns;
-+
-+	/*
-+	 * For ->mnt_ns access.
-+	 * The following READ_ONCE() is semantically rcu_dereference().
-+	 */
-+	guard(rcu)();
-+	mnt_ns = READ_ONCE(mount->mnt_ns);
-+	return ns_capable(mnt_ns->user_ns, CAP_SYS_ADMIN);
-+}
-+
- /*
-  * Allow relaxed permissions of file handles if the caller has the
-  * ability to mount the filesystem or create a bind-mount of the
-@@ -273,8 +286,7 @@ static inline bool may_decode_fh(struct handle_to_path_ctx *ctx,
- 	if (ns_capable(root->mnt->mnt_sb->s_user_ns, CAP_SYS_ADMIN))
- 		ctx->flags = HANDLE_CHECK_PERMS;
- 	else if (is_mounted(root->mnt) &&
--		 ns_capable(real_mount(root->mnt)->mnt_ns->user_ns,
--			    CAP_SYS_ADMIN) &&
-+		 capable_wrt_mount(real_mount(root->mnt)) &&
- 		 !has_locked_children(real_mount(root->mnt), root->dentry))
- 		ctx->flags = HANDLE_CHECK_PERMS | HANDLE_CHECK_SUBTREE;
- 	else
-diff --git a/fs/mount.h b/fs/mount.h
-index 179f690a0c7223..c3987f1d174982 100644
---- a/fs/mount.h
-+++ b/fs/mount.h
-@@ -58,7 +58,15 @@ struct mount {
- 	struct list_head mnt_slave_list;/* list of slave mounts */
- 	struct list_head mnt_slave;	/* slave list entry */
- 	struct mount *mnt_master;	/* slave is on master->mnt_slave_list */
--	struct mnt_namespace *mnt_ns;	/* containing namespace */
-+	/*
-+	 * Containing namespace (active or deactivating, non-refcounted).
-+	 * Normally protected by namespace_sem.
-+	 * Can also be accessed locklessly under RCU. RCU readers can't rely on
-+	 * the namespace still being active, but implicitly hold a passive
-+	 * reference (because an RCU delay happens between a namespace being
-+	 * deactivated and the corresponding passive refcount drop).
-+	 */
-+	struct mnt_namespace *mnt_ns;
- 	struct mountpoint *mnt_mp;	/* where is it mounted */
- 	union {
- 		struct hlist_node mnt_mp_list;	/* list mounts with the same mountpoint */
-diff --git a/fs/namespace.c b/fs/namespace.c
-index df6d6a2c6b89cc..94c06c84290236 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -1132,7 +1132,7 @@ static void mnt_add_to_ns(struct mnt_namespace *ns, struct mount *mnt)
- 	struct rb_node *parent = NULL;
- 
- 	WARN_ON(mnt_ns_attached(mnt));
--	mnt->mnt_ns = ns;
-+	WRITE_ONCE(mnt->mnt_ns, ns);
- 	while (*link) {
- 		parent = *link;
- 		if (mnt->mnt_id_unique < node_to_mount(parent)->mnt_id_unique)
-@@ -1493,7 +1493,7 @@ EXPORT_SYMBOL(mntget);
- void mnt_make_shortterm(struct vfsmount *mnt)
- {
- 	if (mnt)
--		real_mount(mnt)->mnt_ns = NULL;
-+		WRITE_ONCE(real_mount(mnt)->mnt_ns, NULL);
- }
- 
- /**
-@@ -1805,7 +1805,7 @@ static void umount_tree(struct mount *mnt, enum umount_tree_flags how)
- 			ns->nr_mounts--;
- 			__touch_mnt_namespace(ns);
- 		}
--		p->mnt_ns = NULL;
-+		WRITE_ONCE(p->mnt_ns, NULL);
- 		if (how & UMOUNT_SYNC)
- 			p->mnt.mnt_flags |= MNT_SYNC_UMOUNT;
- 
+    Failure log:
+    Can't disasm instruction at offset 104: c0 34 1d 00 00 00 00 c0
+    ---------------------------------------
+    Disassembly logic can truncate at 104, ignoring last 8 bytes.
+
+    Update the dummy_tramp_addr field offset calculation from the end
+    of the program to reflect its new location, for bpf_arch_text_poke()
+    to update the actual trampoline's address in this field.
+
+    [1] https://lore.kernel.org/all/20241030070850.1361304-18-hbathini@linux.ibm.com
+
+v7->v8:
+  Fixed bot identified issues of alt_exit_addr and BPF_EXIT
+  Fixed 32-bit ppc function signature mismatch
+
+v6->v7:
+  Fixed JIT buffer overflow in case of large BPF progs
+  Addressed remaining bot comments
+
+v5->v6:
+  Changed alignment NOP emittion dependency on fimage layout
+  Adjust tail truncate length for 32-bit ppc
+  Addressed few minor bot comments
+
+v4->v5:
+  Handled alignment NOP emit logic and corresponding stub offsets
+  Handled image buffer overflow problem in last pass
+  Above changes took care of other bot reviews
+  Included LLVMDisposeMessage() for graceful freeing
+  Adjusted parameters in bpf_jit_build_fentry_stubs for ppc32
+  Adjusted expected JIT inst. in tailcall test for
+CONFIG_PPC_KERNEL_PCREL config
+  Added fix patch at last for inaccurate use of cmplwi inst. 
+
+v3->v4:
+  Changed logic for emitting alignment NOP
+
+v2->v3:
+  Removed fixed NOP from bottom of long branch stub
+  Rebased on top of bpf-next
+
+v1->v2:
+  Added fix-patch to correct memory alignment in-place
+  Moved the optional alignmnet NOP before OOL stub
+
+[v1]: https://lore.kernel.org/bpf/20260225013627.22098-1-adubey@linux.ibm.com
+[v2]: https://lore.kernel.org/bpf/20260403004011.44417-1-adubey@linux.ibm.com
+[v3]: https://lore.kernel.org/bpf/20260411221413.44304-1-adubey@linux.ibm.com
+[v4]: https://lore.kernel.org/bpf/20260517214043.12975-1-adubey@linux.ibm.com
+[v5]: https://lore.kernel.org/bpf/20260519233812.18787-1-adubey@linux.ibm.com
+[v6]: https://lore.kernel.org/bpf/20260529015855.364704-1-adubey@linux.ibm.com
+[v7]: https://lore.kernel.org/bpf/20260611153826.31187-1-adubey@linux.ibm.com
+
+Abhishek Dubey (7):
+  powerpc/bpf: fix alignment of long branch trampoline address
+  powerpc/bpf: Move out dummy_tramp_addr after Long branch stub
+  selftest/bpf: Fixing powerpc JIT disassembly failure
+  selftest/bpf: Enable verifier selftest for powerpc64
+  powerpc64/bpf: fix compare instruction emitted for tailcall
+  selftest/bpf: Add tailcall verifier selftest for powerpc64
+  powerpc/bpf: fix buffer overflow in JIT for large BPF programs
+
+ arch/powerpc/net/bpf_jit.h                    | 13 +++-
+ arch/powerpc/net/bpf_jit_comp.c               | 75 +++++++++++++------
+ arch/powerpc/net/bpf_jit_comp32.c             |  7 +-
+ arch/powerpc/net/bpf_jit_comp64.c             | 15 ++--
+ .../selftests/bpf/jit_disasm_helpers.c        | 27 ++++++-
+ tools/testing/selftests/bpf/progs/bpf_misc.h  |  1 +
+ .../bpf/progs/verifier_tailcall_jit.c         | 69 +++++++++++++++++
+ tools/testing/selftests/bpf/test_loader.c     |  5 ++
+ 8 files changed, 176 insertions(+), 36 deletions(-)
+
 -- 
-2.53.0
+2.52.0
 
 
