@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id HmplNE2BMWqDlAUAu9opvQ
-	(envelope-from <stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:01 +0200
+	id z8TOH+hsMWoPjAUAu9opvQ
+	(envelope-from <stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D23E692A7C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561FA69126F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jSFowmBY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264995-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=se4o1ayp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264011-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBC2F30DC338
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1942930604AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C447647AF5F;
-	Tue, 16 Jun 2026 16:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1854518859B;
+	Tue, 16 Jun 2026 15:27:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A5F169AD2;
-	Tue, 16 Jun 2026 16:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C10D43DA2C;
+	Tue, 16 Jun 2026 15:27:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628960; cv=none; b=DnWpMqONcR5aOyg3yIwsVU8l1aaVpDHfiZqHsPsWfl59iTvuMNjuWCuo5JJIOcRyaVa6OPOtB1sI2S+nq2Ignxe+i+mIRxVoCw1cIqxSkFMDXV4XMWeskh01wITLFc3HYMSvqp38lcBYvDE/8uB9A1sVm2ALlUjJCcFPUnhjrIE=
+	t=1781623655; cv=none; b=VslE5REhF0LYkFdsNf3n16T0cTEabktUhcFnGID7tdzUrgpBxvaYIADuP0GZEOavlq3R95FXIgcFdExEbfPvGitm7XH5m3doUPKQrnhq21TMYWRuGdz4hCMvmSiHDkuAXNKMrwF70zShVT6wi06HFzYjYjAR1Fgzxd2jSOWZFig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628960; c=relaxed/simple;
-	bh=jBuim/tnwAJwnhBHhdx8y8PLr9yYtmFCTm0s5kVWPG4=;
+	s=arc-20240116; t=1781623655; c=relaxed/simple;
+	bh=9ODJL55irshWtOSSHpqaZA5nAHi3YLnM0mCNc7jgWOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AV9l1TYYm0QRTBQ9vNemz/9y2DThK1xH2z03nUiWnDQS5AzK3HVHdEsDo5uelb/uVvX4r2fJRS8aOE1mXDPXN4KKA6vSpx3p9QkZ+YvDXyeD5H12kzMTLUiZTMPzCrjM6Nn08br0+UxmkQVakJSJWscodlPhLRGBkKbznlpx804=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSFowmBY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AA61F000E9;
-	Tue, 16 Jun 2026 16:55:58 +0000 (UTC)
+	 MIME-Version; b=abgXyHk4NaY3eqmgrhxWWXtAGV44xhLgq0+MHucWV5CzhJ3zfCj+QNJoxD5acbT6QGu3cLqndneb2Yoc9IAOgj2vSo4TuHAUeLBqqdTqoM6YjALD961kv104BLQuFdmID0YW+REhQ8s/LCgYXushjJsCld34s+W0UBCra2DClT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se4o1ayp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BBE1F000E9;
+	Tue, 16 Jun 2026 15:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628959;
-	bh=iWM3KWpStvbZ+EemuG3nvQVos0ucbNWQ1ZhdEcuq6t4=;
+	s=korg; t=1781623654;
+	bh=MkloERE88vPO7bQKPxIT+JqW9LiGCAu+na2InM3rr/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jSFowmBYgNakSGiP0DafbFTlinRAP7w0s43RrgOQjOdCB9VphTuevD3Ktm8lPp3Te
-	 CM7UzU4t1Tv0/GPenc4YtI+RsiAreJg43tdDBOapUYSbvkHdxkoBKp+72oEqWNoXrh
-	 sWuqFZeY9rlVBkevWnW3ISVhsyoRvbhl4NFuphMk=
+	b=se4o1aypFYUU0+nhFVtsImH2bt/ID0K10SFcoIVhte9iFK6uwGpFu0/vSsGtL4faV
+	 Cw4M95wDdqj2cNUbQvaX2m1MM4kabdF1Tlpj/ajiFpe8hg2G2tPShJHuhn7GngGZoQ
+	 NAU10u1vBn+Nyl/nMx2ie854GSMQq4izuPt8en+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/452] USB: serial: digi_acceleport: fix memory corruption with small endpoints
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 7.0 191/378] rust: kasan/kbuild: fix rustc-option when cross-compiling
 Date: Tue, 16 Jun 2026 20:27:02 +0530
-Message-ID: <20260616145128.070723428@linuxfoundation.org>
+Message-ID: <20260616145120.433180599@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,21 +71,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264995-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264011-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,75 +97,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5D23E692A7C
+X-Rspamd-Queue-Id: 561FA69126F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
 
-commit cb3560e8eab1dfa1cac1ed52631adf8ec6ff2cd5 upstream.
+commit 4a44b17406cb5a93f90af3df9392b3a45eb336fb upstream.
 
-Add the missing bulk-out buffer size sanity checks to avoid
-out-of-bounds memory accesses or slab corruption should a malicious
-device report smaller buffers than expected.
+The Makefile version of rustc-option currently checks whether the option
+exists for the host target instead of the target actually being compiled
+for. It was done this way in commit 46e24a545cdb ("rust: kasan/kbuild:
+fix missing flags on first build") to avoid a circular dependency on
+target.json. However, because of this, rustc-option currently does not
+function when cross-compiling from x86_64 to aarch64 if
+CONFIG_SHADOW_CALL_STACK is enabled. This is because KBUILD_RUSTFLAGS
+contains -Zfixed-x18 under this configuration. Since that flag does not
+exist on the host target, rustc-option runs into a compilation failure
+every time, leading to all flags being rejected as unsupported.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+To fix this, update rustc-option to pass a --target parameter so that
+the host target is not used. For targets using target.json, use a
+built-in target that is as close as possible to the target created with
+target.json to avoid the circular dependency on target.json.
+
+One scenario where this causes a boot failure:
+* Cross-compiled from x86_64 to aarch64.
+* With CONFIG_SHADOW_CALL_STACK=y
+* With CONFIG_KASAN_SW_TAGS=y
+* With CONFIG_KASAN_INLINE=n
+Then the resulting kernel image will fail to boot when it first calls
+into Rust code with a crash along the lines of "Unable to handle kernel
+paging request at virtual address 0ffffffc08541796". This is because the
+call threshold is not specified, so rustc will inline kasan operations,
+but the kasan shadow offset is not specified, which leads to the inlined
+kasan instructions being incorrect.
+
+Note that the -Zsanitizer=kernel-hwaddress parameter itself does not
+lead to a rustc-option failure despite being aarch64-specific because
+RUSTFLAGS_KASAN has not yet been added to KBUILD_RUSTFLAGS when
+rustc-option is evaluated by the kasan Makefile.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 46e24a545cdb ("rust: kasan/kbuild: fix missing flags on first build")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260507-rustc-option-cross-v2-1-2f650a49c2b5@google.com
+[ Edited slightly:
+    - Reset variable to avoid using the environment.
+    - Use a simply expanded variable flavor for simplicity.
+    - Export variable so that behavior in sub-`make`s is consistent.
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+  This matches other variables. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
- drivers/usb/serial/digi_acceleport.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ Makefile                  |    3 ++-
+ arch/x86/Makefile         |    4 ++++
+ arch/x86/Makefile.um      |    8 ++++++++
+ scripts/Makefile.compiler |    2 +-
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/serial/digi_acceleport.c b/drivers/usb/serial/digi_acceleport.c
-index d1dea38505762c..5eac99407c1611 100644
---- a/drivers/usb/serial/digi_acceleport.c
-+++ b/drivers/usb/serial/digi_acceleport.c
-@@ -1231,15 +1231,34 @@ static int digi_port_init(struct usb_serial_port *port, unsigned port_num)
- static int digi_startup(struct usb_serial *serial)
- {
- 	struct digi_serial *serial_priv;
-+	int oob_port_num;
- 	int ret;
-+	int i;
+--- a/Makefile
++++ b/Makefile
+@@ -606,6 +606,7 @@ KBUILD_RUSTFLAGS := $(rust_common_flags)
+ 		    -Crelocation-model=static \
+ 		    -Zfunction-sections=n \
+ 		    -Wclippy::float_arithmetic
++KBUILD_RUSTFLAGS_OPTION_CHKS :=
+ 
+ KBUILD_AFLAGS_KERNEL :=
+ KBUILD_CFLAGS_KERNEL :=
+@@ -642,7 +643,7 @@ export KBUILD_USERCFLAGS KBUILD_USERLDFL
+ 
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
+ export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
+-export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
++export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE KBUILD_RUSTFLAGS_OPTION_CHKS
+ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+ export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -81,6 +81,10 @@ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-none
 +
-+	/*
-+	 * The port bulk-out buffers must be large enough for header and
-+	 * buffered data.
-+	 */
-+	for (i = 0; i < serial->type->num_ports; i++) {
-+		if (serial->port[i]->bulk_out_size < DIGI_OUT_BUF_SIZE + 2)
-+			return -EINVAL;
-+	}
+ #
+ # CFLAGS for compiling floating point code inside the kernel.
+ #
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -14,6 +14,14 @@ endif
+ 
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++ifeq ($(CONFIG_X86_32),y)
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=i686-unknown-linux-gnu
++else
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-linux-gnu
++endif
 +
-+	/*
-+	 * The OOB port bulk-out buffer must be large enough for the two
-+	 * commands in digi_set_modem_signals().
-+	 */
-+	oob_port_num = serial->type->num_ports;
-+	if (serial->port[oob_port_num]->bulk_out_size < 8)
-+		return -EINVAL;
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
  
- 	serial_priv = kzalloc(sizeof(*serial_priv), GFP_KERNEL);
- 	if (!serial_priv)
- 		return -ENOMEM;
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+ 	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+-	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
++	$(1) --sysroot=/dev/null $(KBUILD_RUSTFLAGS_OPTION_CHKS) $(filter-out --sysroot=/dev/null --target=%target.json,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
  
- 	spin_lock_init(&serial_priv->ds_serial_lock);
--	serial_priv->ds_oob_port_num = serial->type->num_ports;
--	serial_priv->ds_oob_port = serial->port[serial_priv->ds_oob_port_num];
-+	serial_priv->ds_oob_port_num = oob_port_num;
-+	serial_priv->ds_oob_port = serial->port[oob_port_num];
- 
- 	ret = digi_port_init(serial_priv->ds_oob_port,
- 						serial_priv->ds_oob_port_num);
--- 
-2.53.0
-
+ # rustc-option
 
 
 
