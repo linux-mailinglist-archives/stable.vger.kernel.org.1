@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id g0OaGeqOMWqhmgUAu9opvQ
-	(envelope-from <stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:06 +0200
+	id 3aULDdWXMWq5ngUAu9opvQ
+	(envelope-from <stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F199B693AE9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB48694457
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bXdmcLpa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265739-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lmy5Z2/S";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CC4A7303ECC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 45A413036E8E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E65477E51;
-	Tue, 16 Jun 2026 17:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56983DF007;
+	Tue, 16 Jun 2026 18:37:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB50F47A0B2;
-	Tue, 16 Jun 2026 17:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5141E169AD2;
+	Tue, 16 Jun 2026 18:37:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632743; cv=none; b=q4jjrWYWkJ5QG3evoEK8A0ZL66tGzDh2ipqji/jq9hUCmmmyXGxsVPZloFQdubx/BusstwH5PGsK7noIHrwlPRlVUlqGczzWqhAd53lRGnGQR1Z6L2z5K/GbWLv10NYMhbXSxd8/zsaxgMGceZKR1oUYxBRIUiWx5LpPXz5jnIU=
+	t=1781635025; cv=none; b=T1IQg6UuwJfyQMbqBQhIJagZvGrNklyliH9IF0f7vfjrF4urTYqP3GMTN1BYnGHLqLaqAVo4BzBmpUqNJpgNYhvTdneByDhKOrutp3vpGdyIyrc2SuIPCHADjyBj+KPbIu+dMI1tlZ5NGDC/BWLX9TIlo5dPFH2Zo2qSFsvFEHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632743; c=relaxed/simple;
-	bh=y5D9Rw1W+QEIR2UGqAfIBJNyArw9zmKX2wce2ULY5SE=;
+	s=arc-20240116; t=1781635025; c=relaxed/simple;
+	bh=YB40+RCh2xDsdcXY50eoo+RodEGQLJLHcaIYCsIU5u4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYpLPXM+eu1moF8Ldo66Nr6/cOWTlVJegw7Q1jsqXQ/ErlKV6ZaqnTR7hL7OitB5Pug+1jWsmuAgPLX0dwSrEQElOcRZyHyf/t4TVUXz5fjrs/nDESGH6NxXoS+aHH7Um6sgSXwi1cZizSRFa2ZPPSouTmxmqyTvUjoWHFj+hpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXdmcLpa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA37D1F00A3A;
-	Tue, 16 Jun 2026 17:59:01 +0000 (UTC)
+	 MIME-Version; b=fW30TpJ2aGKiwFoZFKB84CZ+2n1htYtC1JLvIH0dvWXKYGDqJqCBuKhRSO7NtDnVKJc0/VOimjPmaRCud5H9K39J/kPqDmcJEQRG4RKLGVmOSLa1n2GoRUwAsLQfmo4cyaTv5+c0ngOsGbgERvF3WOsnii36tAjaAh1gTQ1fLEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmy5Z2/S; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E09A1F000E9;
+	Tue, 16 Jun 2026 18:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632742;
-	bh=ur39Jw9Wf4G3pgE7AADiwhZdQ43Bx5pNhcQHNWjfYs0=;
+	s=korg; t=1781635024;
+	bh=UUU2ZHUm66XxhIYMQ77wuC5pdCz+nb3q2umDrZCZ84I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bXdmcLpaD0GKTPOyYatSY0M/H3l2lMCqJagVwKWQutANxFAIGqpa2TG9wN27ricFU
-	 flUloAo+8ZXAI20l14UusRbu0FShj0+l0EGJJ5PRJCMbi3QSc+joCJa0DYgIMiy7Yi
-	 rUS8198GmApITXyI0L0iNu+yBnX/EOUcsn0qtEpo=
+	b=lmy5Z2/S2jTPf3mL550cRHOBc6xbXmu0IboMnW+c8EkV2PjLkysmGgrIIvKQ4Axc5
+	 5UjV8qCRi9ZwwwT0Asokt2IOpdZNDdGipJq4XcoQlaKlI8BRfzaG/r1kBHS7stMPfZ
+	 6h0DrSzYc3XfQrF7LMJnJ+e8lAR+wkbPjS+rZO5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 468/522] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
+Subject: [PATCH 5.15 377/411] scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf
 Date: Tue, 16 Jun 2026 20:30:15 +0530
-Message-ID: <20260616145147.758427869@linuxfoundation.org>
+Message-ID: <20260616145121.337377361@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,122 +68,242 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265739-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sashiko.dev:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F199B693AE9
+X-Rspamd-Queue-Id: CBB48694457
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 ]
+[ Upstream commit bf33e01f88388c43e285492a63e539df6ffed64c ]
 
-Sashiko identified a deadlock when the console flow is engaged [1].
+iscsi_encode_text_output() concatenates "key=value\0" records into
+login->rsp_buf, an 8192-byte kzalloc(MAX_KEY_VALUE_PAIRS) buffer
+allocated in iscsit_alloc_login_setup_buffer(). The three sprintf() call
+sites in this function (lines 1398, 1411, 1424 in v7.1-rc2) never check
+the remaining buffer capacity:
 
-When console flow control is enabled (UPF_CONS_FLOW),
-s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
-s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
+	*length += sprintf(output_buf, "%s=%s", er->key, er->value);
+	*length += 1;
+	output_buf = textbuf + *length;
 
-The serial core framework invokes the .stop_tx() and .start_tx()
-callbacks with the port->lock spinlock already held. Furthermore, all
-internal driver paths that invoke stop_tx (such as the DMA TX
-completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
-handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
-calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
-serial core).
+The 8192-byte ceiling at iscsi_target_check_login_request() bounds the
+*input* Login PDU payload, but a single PDU can carry up to 2048 minimal
+four-byte "a=b\0" pairs, each unknown key expanding to a 16-byte
+"a=NotUnderstood\0" output record via iscsi_add_notunderstood_response().
+2048 * 16 = 32 KiB of output into an 8 KiB buffer, producing a ~24 KiB
+heap overrun in the kmalloc-8k slab.
 
-However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
-unconditionally attempt to acquire port->lock again using
-uart_port_lock_irqsave(). Since spinlocks are not recursive, this
-causes a deadlock on the same CPU when console flow control is engaged.
+The fix introduces a static iscsi_encode_text_record() helper that uses
+snprintf() with a per-call bounds check against the remaining buffer,
+and threads a u32 textbuf_size parameter through
+iscsi_encode_text_output(). Both call sites in
+iscsi_target_handle_csg_zero() (PHASE_SECURITY) and
+iscsi_target_handle_csg_one() (PHASE_OPERATIONAL) pass
+MAX_KEY_VALUE_PAIRS. On overflow the encoder logs the condition, calls
+iscsi_release_extra_responses() to drop queued records, and returns -1;
+both caller sites now emit ISCSI_STATUS_CLS_INITIATOR_ERR /
+ISCSI_LOGIN_STATUS_INIT_ERR via iscsit_tx_login_rsp() before returning,
+so the initiator sees an explicit failed-login response rather than a
+silent connection drop. (Prior to this patch only the PHASE_OPERATIONAL
+caller did that; the PHASE_SECURITY caller is converted to the same
+shape.)
 
-Remove the redundant lock acquisition from both rx helper functions.
-
-Cc: stable <stable@kernel.org>
-Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
-Reported-by: John Ogness <john.ogness@linutronix.de>
-Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Tested-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/target/iscsi/iscsi_target_nego.c       |    7 ++
+ drivers/target/iscsi/iscsi_target_parameters.c |   62 +++++++++++++++++++------
+ drivers/target/iscsi/iscsi_target_parameters.h |    2 
+ 3 files changed, 55 insertions(+), 16 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -247,12 +247,9 @@ static int s3c24xx_serial_txempty_nofifo
- static void s3c24xx_serial_rx_enable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	int count = 10000;
- 	u32 ucon, ufcon;
+--- a/drivers/target/iscsi/iscsi_target_nego.c
++++ b/drivers/target/iscsi/iscsi_target_nego.c
+@@ -870,10 +870,14 @@ static int iscsi_target_handle_csg_zero(
+ 			SENDER_TARGET,
+ 			login->rsp_buf,
+ 			&login->rsp_length,
++			MAX_KEY_VALUE_PAIRS,
+ 			conn->param_list,
+ 			conn->tpg->tpg_attrib.login_keys_workaround);
+-	if (ret < 0)
++	if (ret < 0) {
++		iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_INITIATOR_ERR,
++				ISCSI_LOGIN_STATUS_INIT_ERR);
+ 		return -1;
++	}
  
--	uart_port_lock_irqsave(port, &flags);
--
- 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
- 		udelay(100);
- 
-@@ -265,23 +262,18 @@ static void s3c24xx_serial_rx_enable(str
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 1;
--	uart_port_unlock_irqrestore(port, flags);
+ 	if (!iscsi_check_negotiated_keys(conn->param_list)) {
+ 		if (conn->tpg->tpg_attrib.authentication &&
+@@ -941,6 +945,7 @@ static int iscsi_target_handle_csg_one(s
+ 			SENDER_TARGET,
+ 			login->rsp_buf,
+ 			&login->rsp_length,
++			MAX_KEY_VALUE_PAIRS,
+ 			conn->param_list,
+ 			conn->tpg->tpg_attrib.login_keys_workaround);
+ 	if (ret < 0) {
+--- a/drivers/target/iscsi/iscsi_target_parameters.c
++++ b/drivers/target/iscsi/iscsi_target_parameters.c
+@@ -1419,19 +1419,42 @@ free_buffer:
+ 	return -1;
  }
  
- static void s3c24xx_serial_rx_disable(struct uart_port *port)
++/*
++ * Append "key=value" plus a trailing NUL into @textbuf at *@length.
++ * Returns 0 on success and advances *@length, or -EMSGSIZE if the
++ * record (including the NUL) would not fit in the remaining buffer.
++ */
++static int iscsi_encode_text_record(char *textbuf, u32 *length,
++				    u32 textbuf_size,
++				    const char *key, const char *value)
++{
++	int n;
++	u32 avail;
++
++	if (*length >= textbuf_size)
++		return -EMSGSIZE;
++
++	avail = textbuf_size - *length;
++	n = snprintf(textbuf + *length, avail, "%s=%s", key, value);
++	if (n < 0 || (u32)n + 1 > avail)
++		return -EMSGSIZE;
++
++	*length += n + 1;
++	return 0;
++}
++
+ int iscsi_encode_text_output(
+ 	u8 phase,
+ 	u8 sender,
+ 	char *textbuf,
+ 	u32 *length,
++	u32 textbuf_size,
+ 	struct iscsi_param_list *param_list,
+ 	bool keys_workaround)
  {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	u32 ucon;
- 
--	uart_port_lock_irqsave(port, &flags);
+-	char *output_buf = NULL;
+ 	struct iscsi_extra_response *er;
+ 	struct iscsi_param *param;
 -
- 	ucon = rd_regl(port, S3C2410_UCON);
- 	ucon &= ~S3C2410_UCON_RXIRQMODE;
- 	wr_regl(port, S3C2410_UCON, ucon);
+-	output_buf = textbuf + *length;
++	int ret;
  
- 	ourport->rx_enabled = 0;
--	uart_port_unlock_irqrestore(port, flags);
+ 	if (iscsi_enforce_integrity_rules(phase, param_list) < 0)
+ 		return -1;
+@@ -1443,10 +1466,12 @@ int iscsi_encode_text_output(
+ 		    !IS_PSTATE_RESPONSE_SENT(param) &&
+ 		    !IS_PSTATE_REPLY_OPTIONAL(param) &&
+ 		    (param->phase & phase)) {
+-			*length += sprintf(output_buf, "%s=%s",
+-				param->name, param->value);
+-			*length += 1;
+-			output_buf = textbuf + *length;
++			ret = iscsi_encode_text_record(textbuf, length,
++						       textbuf_size,
++						       param->name,
++						       param->value);
++			if (ret < 0)
++				goto err_overflow;
+ 			SET_PSTATE_RESPONSE_SENT(param);
+ 			pr_debug("Sending key: %s=%s\n",
+ 				param->name, param->value);
+@@ -1456,10 +1481,12 @@ int iscsi_encode_text_output(
+ 		    !IS_PSTATE_ACCEPTOR(param) &&
+ 		    !IS_PSTATE_PROPOSER(param) &&
+ 		    (param->phase & phase)) {
+-			*length += sprintf(output_buf, "%s=%s",
+-				param->name, param->value);
+-			*length += 1;
+-			output_buf = textbuf + *length;
++			ret = iscsi_encode_text_record(textbuf, length,
++						       textbuf_size,
++						       param->name,
++						       param->value);
++			if (ret < 0)
++				goto err_overflow;
+ 			SET_PSTATE_PROPOSER(param);
+ 			iscsi_check_proposer_for_optional_reply(param,
+ 							        keys_workaround);
+@@ -1469,14 +1496,21 @@ int iscsi_encode_text_output(
+ 	}
+ 
+ 	list_for_each_entry(er, &param_list->extra_response_list, er_list) {
+-		*length += sprintf(output_buf, "%s=%s", er->key, er->value);
+-		*length += 1;
+-		output_buf = textbuf + *length;
++		ret = iscsi_encode_text_record(textbuf, length, textbuf_size,
++					       er->key, er->value);
++		if (ret < 0)
++			goto err_overflow;
+ 		pr_debug("Sending key: %s=%s\n", er->key, er->value);
+ 	}
+ 	iscsi_release_extra_responses(param_list);
+ 
+ 	return 0;
++
++err_overflow:
++	pr_err("iSCSI login response buffer (%u bytes) exhausted, dropping login.\n",
++	       textbuf_size);
++	iscsi_release_extra_responses(param_list);
++	return -1;
  }
  
- static void s3c24xx_serial_stop_tx(struct uart_port *port)
+ int iscsi_check_negotiated_keys(struct iscsi_param_list *param_list)
+--- a/drivers/target/iscsi/iscsi_target_parameters.h
++++ b/drivers/target/iscsi/iscsi_target_parameters.h
+@@ -46,7 +46,7 @@ extern struct iscsi_param *iscsi_find_pa
+ extern int iscsi_extract_key_value(char *, char **, char **);
+ extern int iscsi_update_param_value(struct iscsi_param *, char *);
+ extern int iscsi_decode_text_input(u8, u8, char *, u32, struct iscsi_conn *);
+-extern int iscsi_encode_text_output(u8, u8, char *, u32 *,
++extern int iscsi_encode_text_output(u8, u8, char *, u32 *, u32,
+ 			struct iscsi_param_list *, bool);
+ extern int iscsi_check_negotiated_keys(struct iscsi_param_list *);
+ extern void iscsi_set_connection_parameters(struct iscsi_conn_ops *,
 
 
 
