@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d1fwCqR3MWpPkAUAu9opvQ
-	(envelope-from <stable+bounces-264412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:48 +0200
+	id xFisK0ePMWrcmgUAu9opvQ
+	(envelope-from <stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A410E691F15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C124693B8B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KBYijrVg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264412-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264412-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=phHe7iaY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265755-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 484A430EC007
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:02:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D156D3018637
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA92A44CF44;
-	Tue, 16 Jun 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBB43C5842;
+	Tue, 16 Jun 2026 18:00:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C434508F2;
-	Tue, 16 Jun 2026 16:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3873D45E5;
+	Tue, 16 Jun 2026 18:00:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625749; cv=none; b=UxYAOG1ledvaRYfskKk218tJHmzxlswcoy511r1rcLhMT09piDC72W9LDTaRSgkKjzoatu4eWpYYik2WHJXSh9Nq0pzFvq+4H3g4WhnSSrmRlUGDeIspUSm5N7/LUIh9Qd+Zc+s67Csolu9unzPJHB32jgGxitvTNhWuHS8Z3hc=
+	t=1781632819; cv=none; b=i64DwtPo9Ni7jXDsx2gs2NXbjEA/MeiAqEKuzE47Cvjf5OUopC5G44siG1UUcJDcp7Sfq5GB0mxIl7FzaotppFuW0X2Jr0YG0l/m/Q5fv/JlhnYq7VjA05lUul7Lg3EXjNc8POHjWlQaVLXRXk8R7JJ0AYV/We0Ag7SUIlSY/gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625749; c=relaxed/simple;
-	bh=Fcr9huVC7TkNWTKP8OjxhnBtWgr9GAgB1gKzmctVCRc=;
+	s=arc-20240116; t=1781632819; c=relaxed/simple;
+	bh=eQDddtEZrh7UQEFJ/fP46Y0FQ6QPCoUrJKvIvcCbhdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FvKdJMeoygGvpvIiqvyoxXY7b/1fBU/HsZMjajKHSR5FVVOfn2jZ2tKwmx4dLhKycLJk1w3F2dvMnQfPN9GkqLxcfuj8pCDYox5dFCuvq31EpqntRyEi0mgA5PMYQT5L0FTTDOMVZrCv2pgGEUTmRT3IofYQEMlIQZkgtG8mcbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBYijrVg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0031F000E9;
-	Tue, 16 Jun 2026 16:02:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TIuqK0IHZMCd4meivj1eAb/akZfAToj7qb2pJBmcni1LUg1vC7DxMuNpz69mdliiSZ04UFpEPIXEaJaE4AtsxZLkhQVhhawT6l2AZff5GT3UuZFabRmGHV/waNgRaEKnFWGgruRsWUkO74LEvXOt1ZKH3JQAC8SdA8BV3375pk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phHe7iaY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FAF1F00A3A;
+	Tue, 16 Jun 2026 18:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625748;
-	bh=U6VmfmUJ08O2cAXmbSqGtyqdUsjwG9kCPObezwymIhs=;
+	s=korg; t=1781632817;
+	bh=amu7NAi03w8UUTxilBvdCUWhIdy12dxA3M0jXYueicE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KBYijrVgLrex9zZqNTWLOx19rHsMsoqhfxUhAkmfWcy1NG6r/pFaqBd0w/+81i2Ns
-	 eFyVRjEHNc/AVJhWXQq1MoRPaKATObA8kJRtwP0W7nyDqQ+RgmU4dwcGiQXFdrZqkY
-	 om+k0cmHErGJ4nsFOSLlnqGZUVTyRu+YnZE4vpbI=
+	b=phHe7iaY9WjVsUT9VlKVqqNWw3HzCtQrXKaRlLwIBlfod4sgE0aasYcO/GgzgwKao
+	 FE6wN92CRx0av0eFXEeFn1k4PzXe7I+2ssdWC+c5PYLa1+Gact58dBmZm02MFO+t3H
+	 QNZ5nSjfVlJrzT8BXM47dNK4i1bjQLVYluNRFXkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 200/325] mptcp: sockopt: set sockopt on all subflows
+	"David E. Box" <david.e.box@linux.intel.com>,
+	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 449/522] platform/x86/intel/vsec: Make driver_data info const
 Date: Tue, 16 Jun 2026 20:29:56 +0530
-Message-ID: <20260616145107.957650330@linuxfoundation.org>
+Message-ID: <20260616145146.926597147@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +66,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264412-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265755-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david.e.box@linux.intel.com,m:michael.j.ruhl@intel.com,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A410E691F15
+X-Rspamd-Queue-Id: 1C124693B8B
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: "David E. Box" <david.e.box@linux.intel.com>
 
-commit 7690137e70ab0fb1f8b5a30e6f087f8ee908b680 upstream.
+[ Upstream commit 9577c74c96f88d807d1ba005adbf5952e7127e55 ]
 
-The mptcp_setsockopt_all_sf(), currently used only with TCP_MAXSEG,
-stopped when one subflow returned an error.
+Treat PCI id->driver_data (intel_vsec_platform_info) as read-only by making
+vsec_priv->info a const pointer and updating all function signatures to
+accept const intel_vsec_platform_info *.
 
-Even if it is not wrong, this is different from the other helpers trying
-to set the option on all subflows, and then returning an error if at
-least one of them had an issue.
+This improves const-correctness and clarifies that the platform info data
+from the driver_data table is not meant to be modified at runtime.
 
-Follow this behaviour, for a question of uniformity.
+No functional changes intended.
 
-Fixes: 51c5fd09e1b4 ("mptcp: add TCP_MAXSEG sockopt support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-8-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+Link: https://patch.msgid.link/20260313015202.3660072-3-david.e.box@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 348ccc754d89 ("platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/vsec.c |   16 ++++++++--------
+ drivers/platform/x86/intel/vsec.h |    2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -811,10 +811,11 @@ static int mptcp_setsockopt_all_sf(struc
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -74,7 +74,7 @@ static enum intel_vsec_id intel_vsec_all
+ };
  
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		int err;
+ struct vsec_priv {
+-	struct intel_vsec_platform_info *info;
++	const struct intel_vsec_platform_info *info;
+ };
  
--		ret = tcp_setsockopt(ssk, level, optname, optval, optlen);
--		if (ret)
--			break;
-+		err = tcp_setsockopt(ssk, level, optname, optval, optlen);
-+		if (err < 0 && ret == 0)
-+			ret = err;
- 	}
+ static const char *intel_vsec_name(enum intel_vsec_id id)
+@@ -203,7 +203,7 @@ int intel_vsec_add_aux(struct pci_dev *p
+ EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, INTEL_VSEC);
  
- 	if (!ret)
+ static int intel_vsec_add_dev(struct pci_dev *pdev, struct intel_vsec_header *header,
+-			      struct intel_vsec_platform_info *info)
++			      const struct intel_vsec_platform_info *info)
+ {
+ 	struct intel_vsec_device *intel_vsec_dev;
+ 	struct resource *res, *tmp;
+@@ -263,7 +263,7 @@ static int intel_vsec_add_dev(struct pci
+ }
+ 
+ static bool intel_vsec_walk_header(struct pci_dev *pdev,
+-				   struct intel_vsec_platform_info *info)
++				   const struct intel_vsec_platform_info *info)
+ {
+ 	struct intel_vsec_header **header = info->capabilities;
+ 	bool have_devices = false;
+@@ -282,7 +282,7 @@ static bool intel_vsec_walk_header(struc
+ }
+ 
+ static bool intel_vsec_walk_dvsec(struct pci_dev *pdev,
+-				  struct intel_vsec_platform_info *info)
++				  const struct intel_vsec_platform_info *info)
+ {
+ 	bool have_devices = false;
+ 	int pos = 0;
+@@ -332,7 +332,7 @@ static bool intel_vsec_walk_dvsec(struct
+ }
+ 
+ static bool intel_vsec_walk_vsec(struct pci_dev *pdev,
+-				 struct intel_vsec_platform_info *info)
++				 const struct intel_vsec_platform_info *info)
+ {
+ 	bool have_devices = false;
+ 	int pos = 0;
+@@ -377,7 +377,7 @@ static bool intel_vsec_walk_vsec(struct
+ }
+ 
+ static bool intel_vsec_get_features(struct pci_dev *pdev,
+-				    struct intel_vsec_platform_info *info)
++				    const struct intel_vsec_platform_info *info)
+ {
+ 	bool found = false;
+ 
+@@ -403,7 +403,7 @@ static bool intel_vsec_get_features(stru
+ 
+ static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
+-	struct intel_vsec_platform_info *info;
++	const struct intel_vsec_platform_info *info;
+ 	struct vsec_priv *priv;
+ 	int ret;
+ 
+@@ -412,7 +412,7 @@ static int intel_vsec_pci_probe(struct p
+ 		return ret;
+ 
+ 	pci_save_state(pdev);
+-	info = (struct intel_vsec_platform_info *)id->driver_data;
++	info = (const struct intel_vsec_platform_info *)id->driver_data;
+ 	if (!info)
+ 		return -EINVAL;
+ 
+--- a/drivers/platform/x86/intel/vsec.h
++++ b/drivers/platform/x86/intel/vsec.h
+@@ -36,7 +36,7 @@ struct intel_vsec_device {
+ 	struct pci_dev *pcidev;
+ 	struct resource *resource;
+ 	struct ida *ida;
+-	struct intel_vsec_platform_info *info;
++	const struct intel_vsec_platform_info *info;
+ 	int num_resources;
+ 	int id; /* xa */
+ 	void *priv_data;
 
 
 
