@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id txEqENJ5MWpJkQUAu9opvQ
-	(envelope-from <stable+bounces-264393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:06 +0200
+	id jxQ6KxSeMWqNoQUAu9opvQ
+	(envelope-from <stable+bounces-266478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54B366921EF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7970D694B43
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LGuezqdH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264393-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264393-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NPpdSxl2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266478-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266478-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D08B30DC591
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E709B30320A6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830B4466B4C;
-	Tue, 16 Jun 2026 16:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A07E34751B;
+	Tue, 16 Jun 2026 19:03:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470EC44103A;
-	Tue, 16 Jun 2026 16:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376683DA5A8;
+	Tue, 16 Jun 2026 19:03:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625651; cv=none; b=RbEy/SI8OeWYH/Fwg0hyUXit/WO3ZVF3XOljOlMBk+1EZ1EMZkf4b52QrBdC1LASQCQ7/o6ZdmVLcB+XwAA/PltvAuhHi3u0BZN8ZW6Ey9KypO5fpndRKWEVVjHXQ+tvbJqw5AKQUtiXQiuAWJhinkLBb5psLsufSqsbA2UZgf4=
+	t=1781636625; cv=none; b=ExgsJRoYAJKGJ8roH4LmyERJByUaDVplC5EQfJrQ21oGGzPEW1G9gkizZQtmCQ2bb+MxfHY4IBRa6kQUeK4p5RodxW4mnJkRu/tCfOeu5DTEFPFHb6TE2ZCSYu6l32G8PBXzutLlmcfKvmDGEPUfSuG1N+gYvjVhuV4Nmr7w5Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625651; c=relaxed/simple;
-	bh=83Anj1u6BGP28mlpO8TW5yA745cM6w1jf8psEDqxA/A=;
+	s=arc-20240116; t=1781636625; c=relaxed/simple;
+	bh=aZQqabOqN93zbIizO4iGaeDpn63GMe/eSrsJWTpZrqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmZhAvAtPJNjr/kVXzc7X+C7Je9hGVNmUqjXdhAV9qRxygbewYyZ/uhK7C18/rGtdGytz8HQhRR+vD1xWpip//MNZDbA49ERdAULPBV8GuUocl0NnjTRcuZ79XptgcqIM1xrgYCeJNyk+ati+DZTJQgLw80mdbkoqKKqQQTcnpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGuezqdH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB621F000E9;
-	Tue, 16 Jun 2026 16:00:49 +0000 (UTC)
+	 MIME-Version; b=V0Nn+MPnr1hfXwKNS4JJ0dRF9RKjrFzlvNzVD0YbDTUskYL0RmCYFPa6agl998Ouo8epfW6YdVubDUm1PLfATng7uskptaAE6nBBxBciE7iJOBPGNCzem39ETVHYf5WZF3/VeOXNj0czXl0fbk389J9E05mNlqhJlujZHroQGYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPpdSxl2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0677F1F00A3A;
+	Tue, 16 Jun 2026 19:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625650;
-	bh=pmin3lPGbJXe2KcT2tIg0ihe6UiTH9V2/qrMKa5Xwho=;
+	s=korg; t=1781636623;
+	bh=acsP8i+OUH2lg3jAdL3Xt8UfB6/qBSGtybCVAWQo7qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LGuezqdHTOMATDsilnwTPbz2Fqhtxy0QTySi2mIEBP1Ii03fCYIpjp3E9b+2Gs2WM
-	 +KaTOkdpLRPkc+LYEEkBh1yQIP+1D4dtJ0H6f1alJKYw+uqOssFT+4PuJlgLWVQe5S
-	 9f8db+Yn+X3thNPY6IRaMNxXifQXj9PyM7Vkchto=
+	b=NPpdSxl2et5dQvRRRzjBVLJePfoHpVWbOT9q+vZu0qe81u+4LmgHoDHWkRWiBSGMV
+	 NgghG+a1cNiXufK7SWZSVvbzEKicVnbj257wtTlOB0+2mKlR2n8jHXZcZRk4zqyA3d
+	 ROXXhutVvcv4iXA81b2KPWa+K1sD+8+NtTkTF7P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Korwel <adriank20047@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 174/325] USB: serial: io_ti: fix heap overflow in get_manuf_info()
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 274/342] mptcp: pm: ADD_ADDR rtx: fix potential data-race
 Date: Tue, 16 Jun 2026 20:29:30 +0530
-Message-ID: <20260616145106.522033932@linuxfoundation.org>
+Message-ID: <20260616145101.115492808@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,90 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264393-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:adriank20047@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266478-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 54B366921EF
+X-Rspamd-Queue-Id: 7970D694B43
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Korwel <adriank20047@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 183c1076eca43bbb3e7bdf597456f91d81c73e74 upstream.
+[ Upstream commit 5cd6e0ad79d2615264f63929f8b457ad97ae550d ]
 
-get_manuf_info() reads le16_to_cpu(rom_desc->Size) bytes from the
-device I2C EEPROM into a buffer allocated with kmalloc_obj(), which
-is sizeof(struct edge_ti_manuf_descriptor) = 10 bytes.
+This mptcp_pm_add_timer() helper is executed as a timer callback in
+softirq context. To avoid any data races, the socket lock needs to be
+held with bh_lock_sock().
 
-The Size field comes from the device and is only validated (in
-check_i2c_image()) to make sure the descriptor fits within
-TI_MAX_I2C_SIZE (16384 bytes), not against the destination buffer size.
-A malicious USB device can therefore set Size to any value up to 16377,
-causing a heap overflow of up to 16367 bytes when plugged into a host
-running this driver.
+If the socket is in use, retry again soon after, similar to what is done
+with the keepalive timer.
 
-valid_csum() is called after read_rom() and also iterates
-buffer[0..Size-1], compounding the out-of-bounds access.
-
-Fix by rejecting descriptors with unexpected length before calling
-read_rom().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Korwel <adriank20047@gmail.com>
-[ johan: amend commit message; also check for short descriptors ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-3-fca8091060a4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ relocated change from net/mptcp/pm.c to net/mptcp/pm_netlink.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/io_ti.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/mptcp/pm_netlink.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/serial/io_ti.c
-+++ b/drivers/usb/serial/io_ti.c
-@@ -773,6 +773,12 @@ static int get_manuf_info(struct edgepor
- 	}
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -226,6 +226,13 @@ static void mptcp_pm_add_timer(struct ti
+ 	if (!entry->addr.id)
+ 		return;
  
- 	/* Read the descriptor data */
-+	if (le16_to_cpu(rom_desc->Size) != sizeof(struct edge_ti_manuf_descriptor)) {
-+		dev_err(dev, "unexpected Edge descriptor length: %u\n",
-+			le16_to_cpu(rom_desc->Size));
-+		status = -EINVAL;
-+		goto exit;
++	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		/* Try again later. */
++		sk_reset_timer(sk, timer, jiffies + HZ / 20);
++		goto out;
 +	}
- 	status = read_rom(serial, start_address+sizeof(struct ti_i2c_desc),
- 					le16_to_cpu(rom_desc->Size), buffer);
- 	if (status)
++
+ 	if (mptcp_pm_should_add_signal(msk)) {
+ 		sk_reset_timer(sk, timer, jiffies + TCP_RTO_MAX / 8);
+ 		goto out;
+@@ -245,6 +252,7 @@ static void mptcp_pm_add_timer(struct ti
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+ out:
++	bh_unlock_sock(sk);
+ 	__sock_put(sk);
+ }
+ 
 
 
 
