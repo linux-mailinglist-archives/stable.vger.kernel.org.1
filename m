@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-264621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3QPiEPl5MWpZkQUAu9opvQ
-	(envelope-from <stable+bounces-264621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:45 +0200
+	id Yqd5HvOVMWrynQUAu9opvQ
+	(envelope-from <stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4D6692227
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFE56942B2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nM6oDgMc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264621-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264621-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="z/WpLSQ+";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266078-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05DF430166D2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:21:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A275F315812A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1537D466B57;
-	Tue, 16 Jun 2026 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382ED477E33;
+	Tue, 16 Jun 2026 18:29:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42A143E4BA;
-	Tue, 16 Jun 2026 16:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D167E43CEC7;
+	Tue, 16 Jun 2026 18:29:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626867; cv=none; b=EZM8j5brgLyl+eDKIA1zpoA6TMARD8CV0hs8fqCRAENuJAv+iws4P54jk+qOr5MzmmHgMwuaP0whGAzp7eEyDMJq4GeUbilqBAOVX/9uLgq+rVGVp60ANJj3EcVNgZP7MUNGuOkFQ6Lqi2j1j/iM4HO1Uqacxx+WJrcRd9H9ejA=
+	t=1781634545; cv=none; b=Wildgjmi8VIBmzDxls8ZnvblqnuOetLf6/5yMUktzE1iCQaTjMSyZNK910oNJasJGpuDZGkgAp/t2mbUcKLv/vX+93SdX/lwvFxzJJXMh32asBUzf2yW61q94jvpIB4UssRfPhLSoVwPpyiN7r/EDFs5YXQcYkOYPMkIUdsJ7zE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626867; c=relaxed/simple;
-	bh=c9FTHb1GmQD8SnD3PkwqCu5zAXvmsuajUqzvSp9iunA=;
+	s=arc-20240116; t=1781634545; c=relaxed/simple;
+	bh=sDzYeqI6wGXxfmac8HkJ941LTLWBUP+1a2ZNGKi9UUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZozaar7wqfqsLxbkc+62VNn6k+kgFqGlrKeFkHfBM3rcRI1J/qwclQLkqoKfo54s9AS+QA/SHYMtmmWFGE4iKRJ+8fcSF0sZ5zNcFKtdLiQKJ6jbls3RwEc3KeZP1GAuIPModISNiA86WhTiajRLA8p5allSO9kHLrXgiKFhv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nM6oDgMc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7671F000E9;
-	Tue, 16 Jun 2026 16:21:04 +0000 (UTC)
+	 MIME-Version; b=FgdP/H3gkMMjYtkqTExm7OvrmeiB+2eravUTERsa5BpCLvjnByo8o9ZoiIZp7rvwGFOXE1owsimreuiYaKaYoFwCqCnti3gQQhIrJGYjQMPeXaInXoyJ7jHyH3WVnblMjz9PAfJVN0Ox4ouumuGiQ5J/6+ziHvUvAlxoe/bHMrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/WpLSQ+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A661C1F000E9;
+	Tue, 16 Jun 2026 18:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626866;
-	bh=pkFTnejS5Dok2+AahbS0BFGtzlcpJg5XXE84+fdUyRs=;
+	s=korg; t=1781634543;
+	bh=vzVBhQbdHIPJWkwwg5DM/chiteG8MWi/Gczm69PD7RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nM6oDgMch0khxz4gWPuhe4ZfUJaSXASYfkrtnOtzTmR6P5QhQcXpcEoV44jEy0cJo
-	 be54RNImK4YROwYEO1mnjcy7A2HBMwndn7q1rMfB7l8kJVgN83G6JZgWHLl94i8AHj
-	 DR4XkDLNdhVXU44NHWfcibVxNMHU/lamG7iRe828=
+	b=z/WpLSQ+4slWAyZjy8OqCufiSoA27OhgDEsG8e4TrOVQPWUnNMxJ3klmz4yR2/qa2
+	 NpzjuiNFGGCi3eFR+KZa9f7wnes8lkjwgk90s7pF3O5IQ47PDeheZD4PEw3kkpIYR9
+	 V//ABNe/FkP/Ic51HIoD4fpYNLXNUIZeeLLBOz3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/261] net/mlx5: Fix slab-out-of-bounds in mlx5_query_nic_vport_mac_list
+Subject: [PATCH 5.15 285/411] hfsplus: fix uninit-value by validating catalog record size
 Date: Tue, 16 Jun 2026 20:28:43 +0530
-Message-ID: <20260616145048.992422559@linuxfoundation.org>
+Message-ID: <20260616145116.308476551@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,261 +69,228 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264621-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,dubeyko.com,posteo.net,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266078-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dtatulea@nvidia.com,m:cjubran@nvidia.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com,m:slava@dubeyko.com,m:charmitro@posteo.net,m:kartikey406@gmail.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email]
+	TAGGED_RCPT(0.00)[stable,d80abb5b890d39261e72];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,posteo.net:email,syzkaller.appspot.com:url,appspotmail.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD4D6692227
+X-Rspamd-Queue-Id: CDFE56942B2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 894e036a24a26a6dd7b17d8d3fb5c53ab48a6074 ]
+[ Upstream commit b6b592275aeff184aa82fcf6abccd833fb71b393 ]
 
-mlx5_query_nic_vport_mac_list() sizes its firmware command buffer using
-the PF's log_max_current_uc/mc_list capabilities. When querying a VF
-vport with a larger configured max (via devlink), the firmware response
-can overflow this buffer:
+Syzbot reported a KMSAN uninit-value issue in hfsplus_strcasecmp(). The
+root cause is that hfs_brec_read() doesn't validate that the on-disk
+record size matches the expected size for the record type being read.
 
- BUG: KASAN: slab-out-of-bounds in mlx5_query_nic_vport_mac_list+0x453/0x4c0 [mlx5_core]
- Read of size 4 at addr ff1100013ffc8a12 by task kworker/u96:2/385
+When mounting a corrupted filesystem, hfs_brec_read() may read less data
+than expected. For example, when reading a catalog thread record, the
+debug output showed:
 
- CPU: 12 UID: 0 PID: 385 Comm: kworker/u96:2 Not tainted 7.0.0-rc6+ #1 PREEMPT
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
- Workqueue: mlx5_esw_wq esw_vport_change_handler [mlx5_core]
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x69/0xa0
-  print_report+0x176/0x4e4
-  kasan_report+0xc8/0x100
-  mlx5_query_nic_vport_mac_list+0x453/0x4c0 [mlx5_core]
-  esw_update_vport_addr_list+0x2e3/0xda0 [mlx5_core]
-  esw_vport_change_handle_locked+0xa1f/0x1060 [mlx5_core]
-  esw_vport_change_handler+0x6a/0x90 [mlx5_core]
-  process_one_work+0x87f/0x15e0
-  worker_thread+0x62b/0x1020
-  kthread+0x375/0x490
-  ret_from_fork+0x4dc/0x810
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
+  HFSPLUS_BREC_READ: rec_len=520, fd->entrylength=26
+  HFSPLUS_BREC_READ: WARNING - entrylength (26) < rec_len (520) - PARTIAL READ!
 
-Fix by querying the vport's own HCA caps to size the buffer correctly.
-Refactor the function to allocate and return the MAC list internally,
-removing the caller's dependency on knowing the correct max.
+hfs_brec_read() only validates that entrylength is not greater than the
+buffer size, but doesn't check if it's less than expected. It successfully
+reads 26 bytes into a 520-byte structure and returns success, leaving 494
+bytes uninitialized.
 
-Fixes: e16aea2744ab ("net/mlx5: Introduce access functions to modify/query vport mac lists")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260604135849.458060-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This uninitialized data in tmp.thread.nodeName then gets copied by
+hfsplus_cat_build_key_uni() and used by hfsplus_strcasecmp(), triggering
+the KMSAN warning when the uninitialized bytes are used as array indices
+in case_fold().
+
+Fix by introducing hfsplus_brec_read_cat() wrapper that:
+1. Calls hfs_brec_read() to read the data
+2. Validates the record size based on the type field:
+   - Fixed size for folder and file records
+   - Variable size for thread records (depends on string length)
+3. Returns -EIO if size doesn't match expected
+
+For thread records, check against HFSPLUS_MIN_THREAD_SZ before reading
+nodeName.length to avoid reading uninitialized data at call sites that
+don't zero-initialize the entry structure.
+
+Also initialize the tmp variable in hfsplus_find_cat() as defensive
+programming to ensure no uninitialized data even if validation is
+bypassed.
+
+Reported-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d80abb5b890d39261e72
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Tested-by: syzbot+d80abb5b890d39261e72@syzkaller.appspotmail.com
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Suggested-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Link: https://lore.kernel.org/all/20260120051114.1281285-1-kartikey406@gmail.com/ [v1]
+Link: https://lore.kernel.org/all/20260121063109.1830263-1-kartikey406@gmail.com/ [v2]
+Link: https://lore.kernel.org/all/20260212014233.2422046-1-kartikey406@gmail.com/ [v3]
+Link: https://lore.kernel.org/all/20260214002100.436125-1-kartikey406@gmail.com/T/ [v4]
+Link: https://lore.kernel.org/all/20260221061626.15853-1-kartikey406@gmail.com/T/ [v5]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20260307010302.41547-1-kartikey406@gmail.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Stable-dep-of: 90c500e4fd83 ("hfsplus: fix held lock freed on hfsplus_fill_super()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 13 +---
- .../net/ethernet/mellanox/mlx5/core/vport.c   | 72 ++++++++++++++-----
- include/linux/mlx5/vport.h                    |  4 +-
- 3 files changed, 59 insertions(+), 30 deletions(-)
+ fs/hfsplus/bfind.c      |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/hfsplus/catalog.c    |    4 +--
+ fs/hfsplus/dir.c        |    2 -
+ fs/hfsplus/hfsplus_fs.h |    9 ++++++++
+ fs/hfsplus/super.c      |    2 -
+ 5 files changed, 64 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 864e88f0577145..383ca082e8419d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -533,23 +533,16 @@ static void esw_update_vport_addr_list(struct mlx5_eswitch *esw,
- 				       struct mlx5_vport *vport, int list_type)
- {
- 	bool is_uc = list_type == MLX5_NVPRT_LIST_TYPE_UC;
--	u8 (*mac_list)[ETH_ALEN];
-+	u8 (*mac_list)[ETH_ALEN] = NULL;
- 	struct l2addr_node *node;
- 	struct vport_addr *addr;
- 	struct hlist_head *hash;
- 	struct hlist_node *tmp;
--	int size;
-+	int size = 0;
- 	int err;
- 	int hi;
- 	int i;
- 
--	size = is_uc ? MLX5_MAX_UC_PER_VPORT(esw->dev) :
--		       MLX5_MAX_MC_PER_VPORT(esw->dev);
--
--	mac_list = kcalloc(size, ETH_ALEN, GFP_KERNEL);
--	if (!mac_list)
--		return;
--
- 	hash = is_uc ? vport->uc_list : vport->mc_list;
- 
- 	for_each_l2hash_node(node, tmp, hash, hi) {
-@@ -561,7 +554,7 @@ static void esw_update_vport_addr_list(struct mlx5_eswitch *esw,
- 		goto out;
- 
- 	err = mlx5_query_nic_vport_mac_list(esw->dev, vport->vport, list_type,
--					    mac_list, &size);
-+					    &mac_list, &size);
- 	if (err)
- 		goto out;
- 	esw_debug(esw->dev, "vport[%d] context update %s list size (%d)\n",
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index b04024d0ae676c..fdee284835e001 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -250,35 +250,63 @@ int mlx5_modify_nic_vport_mtu(struct mlx5_core_dev *mdev, u16 mtu)
+--- a/fs/hfsplus/bfind.c
++++ b/fs/hfsplus/bfind.c
+@@ -287,3 +287,54 @@ out:
+ 	fd->bnode = bnode;
+ 	return res;
  }
- EXPORT_SYMBOL_GPL(mlx5_modify_nic_vport_mtu);
- 
-+static int mlx5_vport_max_mac_list_size(struct mlx5_core_dev *dev, u16 vport,
-+					enum mlx5_list_type list_type)
++
++/**
++ * hfsplus_brec_read_cat - read and validate a catalog record
++ * @fd: find data structure
++ * @entry: pointer to catalog entry to read into
++ *
++ * Reads a catalog record and validates its size matches the expected
++ * size based on the record type.
++ *
++ * Returns 0 on success, or negative error code on failure.
++ */
++int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry)
 +{
-+	void *query_ctx, *hca_caps;
-+	int ret = 0;
++	int res;
++	u32 expected_size;
 +
-+	if (!vport && !mlx5_core_is_ecpf(dev))
-+		return list_type == MLX5_NVPRT_LIST_TYPE_UC ?
-+			1 << MLX5_CAP_GEN(dev, log_max_current_uc_list) :
-+			1 << MLX5_CAP_GEN(dev, log_max_current_mc_list);
++	res = hfs_brec_read(fd, entry, sizeof(hfsplus_cat_entry));
++	if (res)
++		return res;
 +
-+	query_ctx = kzalloc(MLX5_ST_SZ_BYTES(query_hca_cap_out), GFP_KERNEL);
-+	if (!query_ctx)
-+		return -ENOMEM;
++	/* Validate catalog record size based on type */
++	switch (be16_to_cpu(entry->type)) {
++	case HFSPLUS_FOLDER:
++		expected_size = sizeof(struct hfsplus_cat_folder);
++		break;
++	case HFSPLUS_FILE:
++		expected_size = sizeof(struct hfsplus_cat_file);
++		break;
++	case HFSPLUS_FOLDER_THREAD:
++	case HFSPLUS_FILE_THREAD:
++		/* Ensure we have at least the fixed fields before reading nodeName.length */
++		if (fd->entrylength < HFSPLUS_MIN_THREAD_SZ) {
++			pr_err("thread record too short (got %u)\n", fd->entrylength);
++			return -EIO;
++		}
++		expected_size = hfsplus_cat_thread_size(&entry->thread);
++		break;
++	default:
++		pr_err("unknown catalog record type %d\n",
++		       be16_to_cpu(entry->type));
++		return -EIO;
++	}
 +
-+	ret = mlx5_vport_get_other_func_general_cap(dev, vport, query_ctx);
-+	if (ret)
-+		goto out;
++	if (fd->entrylength != expected_size) {
++		pr_err("catalog record size mismatch (type %d, got %u, expected %u)\n",
++		       be16_to_cpu(entry->type), fd->entrylength, expected_size);
++		return -EIO;
++	}
 +
-+	hca_caps = MLX5_ADDR_OF(query_hca_cap_out, query_ctx, capability);
-+	ret = list_type == MLX5_NVPRT_LIST_TYPE_UC ?
-+		1 << MLX5_GET(cmd_hca_cap, hca_caps, log_max_current_uc_list) :
-+		1 << MLX5_GET(cmd_hca_cap, hca_caps, log_max_current_mc_list);
-+
-+out:
-+	kfree(query_ctx);
-+
-+	return ret;
++	return 0;
++}
+--- a/fs/hfsplus/catalog.c
++++ b/fs/hfsplus/catalog.c
+@@ -194,12 +194,12 @@ static int hfsplus_fill_cat_thread(struc
+ int hfsplus_find_cat(struct super_block *sb, u32 cnid,
+ 		     struct hfs_find_data *fd)
+ {
+-	hfsplus_cat_entry tmp;
++	hfsplus_cat_entry tmp = {0};
+ 	int err;
+ 	u16 type;
+ 
+ 	hfsplus_cat_build_key_with_cnid(sb, fd->search_key, cnid);
+-	err = hfs_brec_read(fd, &tmp, sizeof(hfsplus_cat_entry));
++	err = hfsplus_brec_read_cat(fd, &tmp);
+ 	if (err)
+ 		return err;
+ 
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -49,7 +49,7 @@ static struct dentry *hfsplus_lookup(str
+ 	if (unlikely(err < 0))
+ 		goto fail;
+ again:
+-	err = hfs_brec_read(&fd, &entry, sizeof(entry));
++	err = hfsplus_brec_read_cat(&fd, &entry);
+ 	if (err) {
+ 		if (err == -ENOENT) {
+ 			hfs_find_exit(&fd);
+--- a/fs/hfsplus/hfsplus_fs.h
++++ b/fs/hfsplus/hfsplus_fs.h
+@@ -533,6 +533,15 @@ int hfsplus_submit_bio(struct super_bloc
+ 		       void **data, int op, int op_flags);
+ int hfsplus_read_wrapper(struct super_block *sb);
+ 
++static inline u32 hfsplus_cat_thread_size(const struct hfsplus_cat_thread *thread)
++{
++	return offsetof(struct hfsplus_cat_thread, nodeName) +
++	       offsetof(struct hfsplus_unistr, unicode) +
++	       be16_to_cpu(thread->nodeName.length) * sizeof(hfsplus_unichr);
 +}
 +
- int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
- 				  u16 vport,
- 				  enum mlx5_list_type list_type,
--				  u8 addr_list[][ETH_ALEN],
--				  int *list_size)
-+				  u8 (**addr_list)[ETH_ALEN],
-+				  int *addr_list_size)
- {
- 	u32 in[MLX5_ST_SZ_DW(query_nic_vport_context_in)] = {0};
-+	int allowed_list_size;
- 	void *nic_vport_ctx;
- 	int max_list_size;
--	int req_list_size;
- 	int out_sz;
- 	void *out;
- 	int err;
- 	int i;
- 
--	req_list_size = *list_size;
-+	if (!addr_list || !addr_list_size)
-+		return -EINVAL;
- 
--	max_list_size = list_type == MLX5_NVPRT_LIST_TYPE_UC ?
--		1 << MLX5_CAP_GEN(dev, log_max_current_uc_list) :
--		1 << MLX5_CAP_GEN(dev, log_max_current_mc_list);
-+	*addr_list = NULL;
-+	*addr_list_size = 0;
- 
--	if (req_list_size > max_list_size) {
--		mlx5_core_warn(dev, "Requested list size (%d) > (%d) max_list_size\n",
--			       req_list_size, max_list_size);
--		req_list_size = max_list_size;
--	}
-+	max_list_size = mlx5_vport_max_mac_list_size(dev, vport, list_type);
-+	if (max_list_size < 0)
-+		return max_list_size;
- 
- 	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_out) +
--			req_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
-+			max_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
- 
- 	out = kvzalloc(out_sz, GFP_KERNEL);
- 	if (!out)
-@@ -297,16 +325,24 @@ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
- 
- 	nic_vport_ctx = MLX5_ADDR_OF(query_nic_vport_context_out, out,
- 				     nic_vport_context);
--	req_list_size = MLX5_GET(nic_vport_context, nic_vport_ctx,
--				 allowed_list_size);
-+	allowed_list_size = MLX5_GET(nic_vport_context, nic_vport_ctx,
-+				     allowed_list_size);
-+	if (!allowed_list_size)
-+		goto out;
++int hfsplus_brec_read_cat(struct hfs_find_data *fd, hfsplus_cat_entry *entry);
 +
-+	*addr_list = kcalloc(allowed_list_size, ETH_ALEN, GFP_KERNEL);
-+	if (!*addr_list) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
- 
--	*list_size = req_list_size;
--	for (i = 0; i < req_list_size; i++) {
-+	for (i = 0; i < allowed_list_size; i++) {
- 		u8 *mac_addr = MLX5_ADDR_OF(nic_vport_context,
- 					nic_vport_ctx,
- 					current_uc_mac_address[i]) + 2;
--		ether_addr_copy(addr_list[i], mac_addr);
-+		ether_addr_copy((*addr_list)[i], mac_addr);
- 	}
-+	*addr_list_size = allowed_list_size;
- out:
- 	kvfree(out);
- 	return err;
-diff --git a/include/linux/mlx5/vport.h b/include/linux/mlx5/vport.h
-index c36cc6d829267e..80992c370fb074 100644
---- a/include/linux/mlx5/vport.h
-+++ b/include/linux/mlx5/vport.h
-@@ -95,8 +95,8 @@ int mlx5_query_hca_vport_node_guid(struct mlx5_core_dev *dev,
- int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
- 				  u16 vport,
- 				  enum mlx5_list_type list_type,
--				  u8 addr_list[][ETH_ALEN],
--				  int *list_size);
-+				  u8 (**mac_list)[ETH_ALEN],
-+				  int *mac_list_size);
- int mlx5_modify_nic_vport_mac_list(struct mlx5_core_dev *dev,
- 				   enum mlx5_list_type list_type,
- 				   u8 addr_list[][ETH_ALEN],
--- 
-2.53.0
-
+ /*
+  * time helpers: convert between 1904-base and 1970-base timestamps
+  *
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -541,7 +541,7 @@ static int hfsplus_fill_super(struct sup
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+ 	if (unlikely(err < 0))
+ 		goto out_put_root;
+-	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
++	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+ 			err = -EIO;
 
 
 
