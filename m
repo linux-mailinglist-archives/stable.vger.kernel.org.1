@@ -1,177 +1,208 @@
-Return-Path: <stable+bounces-264099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wIjDJqxuMWrFjAUAu9opvQ
-	(envelope-from <stable+bounces-264099-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:32 +0200
+	id NGyRIRVvMWrqjAUAu9opvQ
+	(envelope-from <stable+bounces-264127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206BB6914B3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C0A169153A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=none;
-	dmarc=none;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264099-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264099-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmx.de header.s=s31663417 header.b=qRXudxOw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264127-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264127-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=gmx.de;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF43C31AA807
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86C9030B0824
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319C444BC94;
-	Tue, 16 Jun 2026 15:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C542134889F;
+	Tue, 16 Jun 2026 15:37:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DA943DA2C;
-	Tue, 16 Jun 2026 15:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64EC3AB267;
+	Tue, 16 Jun 2026 15:37:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624119; cv=none; b=TMA/0vSZ9b6iCVmy6LUb5tXGVGMPOYu0gxkPu75Bjg4uhEEhdPgviHW6bqqyRnfYpabG3iFnqHyUZNx0GjnKNfC1hADGMJTbKsTldQyPjxu1c7Db0ewEtI259RXq3Ms5TJPxCD9eDd47u7IlKPZ/Tz12euLWh+MZ5HcjtjVXofQ=
+	t=1781624269; cv=none; b=NT5OeTdmg5V3GT92nyhRovKjn2YPXngCmyw1U78jLAwAIL2ZGL/DpioqwqT2KOcXStSEDk35nnQ8DGpz5uWsqahTrKJDXsNmoeZGc7NTahZGELEavDTsMoj57VQsJX4p2prvxaR4S7I+AGJITm1X6bp8SIPNej7EufoTN+HxTj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624119; c=relaxed/simple;
-	bh=4yAVF82rBtjl5/KYDPf/gXf+TFBoOLYlbSssuGJpaW4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uPuLMntZfuGs2/HRN+sEvVQJaFQVwUdkIXOO2jX8KkqR47Zz3qciA0mxseIV87onhaP3Me97xBd/EJ++U6za5bUhvK6YU50UIzPGN3bSQ3U1YEA2lIXsOGwAVcVfnJ2HwUtU5sOKzlWVgxRh3jkDF6onMC+DSqby9sQZtwlppC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAD3Z+subTFqAR3GEw--.19654S2;
-	Tue, 16 Jun 2026 23:35:10 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: lijo.lazar@amd.com,
-	aurabindo.pillai@amd.com,
-	superm1@kernel.org,
-	xiaogang.chen@amd.com,
-	chongli2@amd.com,
-	pierre-eric.pelloux-prayer@amd.com,
-	Victor.Zhao@amd.com,
-	Jesse.Zhang@amd.com,
-	lang.yu@amd.com,
-	vulab@iscas.ac.cn,
-	Jack.Xiao@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/amdgpu: fix fence reference leak in amdgpu_gfx_run_cleaner_shader_job
-Date: Tue, 16 Jun 2026 15:35:06 +0000
-Message-Id: <20260616153506.1713376-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781624269; c=relaxed/simple;
+	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XINpAnqjT0bpcPv3ockuTFATtJHTvjQxcwe8fFOQg/mW/chTDU0lkSmn3YYi2J2yG0D2QkoXnCej5DVKHxC5QKK0ICVgU0Dq70IR02ZzuUBWucsa5kqf+/zY5EG4DZ6QvLU1/Nb+ViGQhruEXuhKXYak6x1eKZQucN3E0jEz6Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=qRXudxOw; arc=none smtp.client-ip=212.227.17.20
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1781624257; x=1782229057; i=rwarsow@gmx.de;
+	bh=1PO3YHl+btPykbwTM16jfcwADiOLFguz3RVcskKvjrA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=qRXudxOwgLbn/RaEyoNriTupwQKH5sqKJfUX8wn1bed3jOywFfIPisbDATevhkaN
+	 +9HJrewig+N2s1cgDnggz9TLbtSiCNW7iPKYBHav3/wgsaayrgWYIcFaIzzoITeTb
+	 kows4jkh8IvkbBlghIOYoIRNiC6wKYRz9nkYUqia3SQiZouCOqB0FNbPed0NknqKh
+	 8CtJLAt8AKHFhNPqfOIH0RhDNtfRNd4+vhzIl6MKVdgDBLRIibz32QoaFPWLSaEJB
+	 5M5JaLfcdDKV7nVD/b5ao6ElaEHuqIIahnTcQA/WuUp+yycr5u0EtWcfllJ1lRh5O
+	 J3UO8qnwctWazBpaAw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N33Ib-1xKYRg1Ji1-00uwFv; Tue, 16
+ Jun 2026 17:37:37 +0200
+Message-ID: <0ecdda63-7ebc-4018-954a-a163ed6a177a@gmx.de>
+Date: Tue, 16 Jun 2026 17:37:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD3Z+subTFqAR3GEw--.19654S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr13AFWUur43Cr45Ar18Krg_yoW8AF4xpF
-	s3Kry3tr48Za17K347A3Wjqa409w13XFy8WrnFya4I93Z8JFn8Jr15JayFqF1kurWkCa17
-	Kryqg3y5X3Z0kF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUFdgAUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgoAA2oxZbUPKgABsg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 000/378] 7.0.13-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260616145109.744539446@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:f+Q8W4YrKdd5BZFbk09ZtPvwZ+CxmmFuWuFgT1lFB1uGbdRkiMF
+ bb2Nz1f871dqtSnd1uxyi6KhofxCyEJrFh0BJlhRO1TLS/21PiwBJ2CQS9ZBQwfyJd9HG5m
+ HDAKvf0bSJxXrrRJ7/fM7zrJIUUaNM9Y0IUDwL4AzXYY8rQQ2DCtNE277CoshRyxWddBPNp
+ aPWy06vyJOPMXMr5TMwjA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:YAmcvobl+LI=;H4OwzhY4cJuldTIejZzyAvDLClG
+ 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
+ FT
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	TAGGED_FROM(0.00)[bounces-264127-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:stable@vger.kernel.org,m:patches@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:torvalds@linux-foundation.org,m:akpm@linux-foundation.org,m:linux@roeck-us.net,m:shuah@kernel.org,m:patches@kernelci.org,m:lkft-triage@lists.linaro.org,m:pavel@nabladev.com,m:jonathanh@nvidia.com,m:f.fainelli@gmail.com,m:sudipm.mukherjee@gmail.com,m:conor@kernel.org,m:hargar@microsoft.com,m:broonie@kernel.org,m:achill@achill.org,m:sr@sladewatkins.com,m:ffainelli@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alexander.deucher@amd.com,m:christian.koenig@amd.com,m:airlied@gmail.com,m:simona@ffwll.ch,m:lijo.lazar@amd.com,m:aurabindo.pillai@amd.com,m:superm1@kernel.org,m:xiaogang.chen@amd.com,m:chongli2@amd.com,m:pierre-eric.pelloux-prayer@amd.com,m:Victor.Zhao@amd.com,m:Jesse.Zhang@amd.com,m:lang.yu@amd.com,m:vulab@iscas.ac.cn,m:Jack.Xiao@amd.com,m:amd-gfx@lists.freedesktop.org,m:dri-devel@lists.freedesktop.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264099-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[amd.com,gmail.com,ffwll.ch];
+	FREEMAIL_FROM(0.00)[gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmx.de:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,iscas.ac.cn:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,gmx.de:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 206BB6914B3
+X-Rspamd-Queue-Id: 2C0A169153A
 
-In amdgpu_gfx_run_cleaner_shader_job(), amdgpu_job_submit() returns a
-dma_fence with an elevated reference count. The function correctly
-releases this reference on the success path after dma_fence_wait().
-However, if dma_fence_wait() fails (though with infinite timeout and
-non-interruptible it never does), the code jumps to the error label
-without calling dma_fence_put(), resulting in a reference leak.
+Hi
 
-Fix the potential leak by adding dma_fence_put(f) before the goto err
-when dma_fence_wait() returns an error.
+kernel build / boot test on x86_64.
 
-Fixes: 559a285816af ("drm/amdgpu: Replace 'amdgpu_job_submit_direct' with 'drm_sched_entity' in cleaner shader")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
-v2: Also cleanup the scheduler entity and simplify error handling paths.
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+No regressions here.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index b8ca876694ff..be13ce6ce377 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -1658,7 +1658,7 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
- 				  &sched, 1, NULL);
- 	if (r) {
- 		dev_err(adev->dev, "Failed setting up GFX kernel entity.\n");
--		goto err;
-+		return r;
- 	}
- 
- 	/*
-@@ -1686,16 +1686,13 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
- 	f = amdgpu_job_submit(job);
- 
- 	r = dma_fence_wait(f, false);
--	if (r)
--		goto err;
-+	goto err;
- 
- 	dma_fence_put(f);
- 
-+err:
- 	/* Clean up the scheduler entity */
- 	drm_sched_entity_destroy(&entity);
--	return 0;
--
--err:
- 	return r;
- }
- 
--- 
-2.34.1
+Thanks
 
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
