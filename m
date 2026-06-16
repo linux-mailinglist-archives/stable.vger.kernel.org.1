@@ -1,235 +1,198 @@
-Return-Path: <stable+bounces-265771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hbv3CaCPMWr8mgUAu9opvQ
-	(envelope-from <stable+bounces-265771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:08 +0200
+	id vkIQNFeSMWo1nAUAu9opvQ
+	(envelope-from <stable+bounces-265897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:43 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6EF693BDA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53CF7693EB8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:13:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=nokia.com header.s=selector1 header.b=gKxyzKO3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265771-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265771-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=nokia.com;
-	arc=reject ("cv is fail on i=2")
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oWvIo0Hc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265897-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265897-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F18113093C10
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7790430AB2A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444462EE611;
-	Tue, 16 Jun 2026 18:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CD847CC80;
+	Tue, 16 Jun 2026 18:12:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010012.outbound.protection.outlook.com [52.101.56.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569313D525E;
-	Tue, 16 Jun 2026 18:01:35 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632897; cv=fail; b=jKRw0nLngazxE6vJuj9TDeccRGBE5ieAsTzRvnU4T36Kr+tkDlxzaqnjlVIffVbV5x3Qu/Wk0lc3xWJkmPOVnliO2jrcIrgcH+GzKq4sASFBt4v+dhGxR9ZUT17WV3padTi26v2Xx54P1OQNUcLxwrb4rLcPbj942JF+zftbKIg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632897; c=relaxed/simple;
-	bh=h4JZp6cbAH0YObXePmyfBKKRjeOJtaIwI6VULW9z32E=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=l7VUvxr+gV+mG9ww5dC1F07ZI1Fgm+ec7ghrb+4pmTtyrELP1eIjEXoClrzIyTDm3slFsWtlpDYnzWD0YAYyibwhzQoK0CYn2L4b7JKSvnEIitK7oDNM17Qsawdbs5kPQt/nZtbnQE/pDhVSjhFNMrKqudIXYojx4ZaHTwuTSc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com; spf=fail smtp.mailfrom=nokia.com; dkim=pass (2048-bit key) header.d=nokia.com header.i=@nokia.com header.b=gKxyzKO3; arc=fail smtp.client-ip=52.101.56.12
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZIjywIemDMxiPQarjUUwOfQA/QL7dJBZk/TBx/IxZvDXBWnKHhHhyiCPeM9QVIfv1M9uPQOd8cJNw7T3ytuV9bBOVcEneId/FAKmuoiIOPrMXKBUnDX53rvHV6Eoz+h/dxI4lmlI1c2iRPscA64gVmNY8szJcbvgKZofdxFc8A/yX/nhAHpd1l4ZQirOZydq73ot7QtFzSve4ynZ/Ha36jlCZWX33kyPcfGKu/XJD9Bakcsy/DV7Ccy92rZQ4+5htEypUGliV0uAx+xIa7phalZu6G4+UyYCLeeXsAYYegVUdrFjt1oYlUqsFpXG5UCHH7WebIanAf3XutQlNPryOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xBu0ZPDJBy0+2mu5zx2KdQS7SPIs5BXd6weq4EcvdiY=;
- b=chFeN0R28qSUoYKpWXvBMxQh09yv5/KJtBf2Ent13rV9Xqw7HLFfz7ZP5tpnKjAnC2AjxEG5M3dCHk6LQFwF/KwFhWphR1lrLGl7RuTdiqN7ug/7PdBliAYSVxcw7REOmk2UprrslwtvGZtIKEFOTFDqPBspvUZDa818Z4MNB6ePaVduB4mxerDOPEnE5crWYWOdKC3X9+WSGlXSaDIAVZa1YS18YYegrEN5f+roJzex9tDvwDw1BwO/y77XACVL+D5NWlkhj7lZwcsjavNnTZwuO0rCK9ZDGrCfuMkWm8WBPD6G4hKgOGk4f6KFiQVgiLt1gqEK/oSPWjk6cCcirw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nokia.com; dmarc=pass action=none header.from=nokia.com;
- dkim=pass header.d=nokia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xBu0ZPDJBy0+2mu5zx2KdQS7SPIs5BXd6weq4EcvdiY=;
- b=gKxyzKO3jgcdaInGQosIxBi/YtA69ReeX0wd/YazaGOqhfc8WRyRKlg/rNa3cjFlTG7nqNvnvFRTFVxoAi0H2RScFJK+UUCHqhH+drgrXBl5vBB9269c6saOiG/QrSlY4PJdQQzEoC6wJIZP4V1+4DODg1X75K/pWpo9fC21LZ4j7gOxj2uoitW0vOtju48ekgakkIC3xMPjhaaX8YmZyykR1jIwRFsC2BGfkFf1pcBrdwv+5YWfEsX8JjFVfU8qe3zZPudJ8w9be5Rv96C8qlEC4Ec8uz4W8KjEsORbFvmaYWMqKJakWu4+pdLWb9LtBITzZNsdRhySFAs9hbFPsg==
-Received: from BN0PR08MB6951.namprd08.prod.outlook.com (2603:10b6:408:128::14)
- by BY5PR08MB6181.namprd08.prod.outlook.com (2603:10b6:a03:1e2::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
- 2026 18:01:32 +0000
-Received: from BN0PR08MB6951.namprd08.prod.outlook.com
- ([fe80::4dd1:e1e:56b0:b178]) by BN0PR08MB6951.namprd08.prod.outlook.com
- ([fe80::4dd1:e1e:56b0:b178%6]) with mapi id 15.21.0113.015; Tue, 16 Jun 2026
- 18:01:32 +0000
-From: Anthony Pighin <anthony.pighin@nokia.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	kvm@vger.kernel.org
-Subject: [PATCH] vfio: Request THP-aligned mmap for device fds
-Date: Tue, 16 Jun 2026 14:01:29 -0400
-Message-ID: <20260616180129.160016-1-anthony.pighin@nokia.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH2PR07CA0045.namprd07.prod.outlook.com
- (2603:10b6:610:5b::19) To BN0PR08MB6951.namprd08.prod.outlook.com
- (2603:10b6:408:128::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79A73D88F0
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 18:12:55 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781633577; cv=none; b=Yz1wE8C7rlKEzGNSwU9VhODSe8s87pTWKj3g1Le7KZnDgYf9g2+DVgptbnWEpnTrVRJzs51q5EalnuKP/F07k4QDHZGL6lX38a2yYG/8232dP1foLpSDdO2/c72yw4Mq2gOfcLV60IkHU3w3zbq1jPyh+yVAOyVCHH+GFtgpjcU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781633577; c=relaxed/simple;
+	bh=p3rzxF0uYdPZbVvU5s/vULcaTm/bIqRnUxzNNp5+2go=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=q0iy7WD8GraeTESqMSj30NbA7IWST5YmfEMh3Wd5L2Czzz5H4f66OVgQTxdRiUoYX4tlRybdQrHW5HuRCQ0czIIOVLP5yQNeXXwciIsxMzsB28FhBUKwFX4pk3kugd/HOyvbkO3ZjTuFbccF8m+QtMccSoY7kHsTAY+GGJyCRwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oWvIo0Hc; arc=none smtp.client-ip=209.85.216.52
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-36b8e1760ccso3053855a91.0
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781633575; x=1782238375; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
+        b=oWvIo0HczpqhcQaIJUeyQ5YKFBZ0ntaT/nGq75FMDOEPHanmcZabzMj75zw5KVioSV
+         gp/PQruedkWSVm1/XIfQZiau0IkBYNh+BepiRVpFymMJI8vPXqyjtVCYVu/r6aylIu3R
+         hK9cFnC0lpkXkXd/UOrRw4HYDPTX7mZtyHJQvAdvm53fXCdwV5GoMmetlb1vFzaET8BS
+         zQ0BXhk7OTxTqdaEDvgzxysRyLF4Z0ByXVcD7PtQC/mYwCj21591NOV85GdNB2YzVA3f
+         VAyYquHh0pMCUfKPWPOYCs4Fd8rFncy+zbjMaKH+kvHPaVFZZzG5MvZ5UJOh2ltWUf2w
+         svEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781633575; x=1782238375;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HfqVrP82kq5rv5P4+q1AH7lRylWPBjjSEnRhd+rTAto=;
+        b=O661NizeeYZTmE+0UJLhmCdZwZWbf3MYS/09xrgVJjbAuD9JVoYsPU34FOngteEWsi
+         k/U+I92m3H6btmYFh5q3ouXQqtFFT8wUTvoPFwDXl6nWLR1bIw19iv7Iqhjeit1HdzZj
+         HcTZbBdsbr1P1R7DBA6qsWCEVphlUFyI6qeODk65F6MCezbTsMHfjeRFYTc3qpDf74ou
+         UxCc+HtsP6fwQ+J2ZjSWG8iZYFwCe7nvjD1/7WJF/E66yzMjazx/68O7yN93LHFTVOFj
+         eFxWQMdaa3sIhAuryQxKgaRqlhKOWNHlT1cgTGwlNMzgD6dMQZ13MuUNvgUtShWD5LXJ
+         /Y5g==
+X-Forwarded-Encrypted: i=1; AFNElJ+HGU6vhec6AOR22XwO80HLDiePyAvvHUlmkh/maFCneyEb7OhVLd/6U1z++lWNHbdmZe49lK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVkd0/p4wyFPm7rtfQOQ1eB2jn5fs7EnwmpBSd9KLR+jYRNUUR
+	v21sOxiW8uFLyGmUa1rla+T9qgSVWBJGSr3EJOeHLWpcRoU5ZEVaHkX3kDUyeg==
+X-Gm-Gg: Acq92OFwDED6XgDE51Haob0+GVMZQCrctPvlivz5XpVpH7PcBRybM2Y/UFLtcPBY3Kw
+	+fXjG+6DCAmsqdzXwBM8Ie4CIMJJLZEbfAXIBgC9WayJ5jTrkJvdgZVVoRT5cY5g1ZPfuxc0xig
+	8mdtqRqPJoYrclWCrZ4l7ayHre7aQJRzVmn1Rrlxm1bej/VUkHxtd2cCfUPgCeyB/O2dYsPuiFu
+	zQXNdNXdkSKrhVaTefN/B+YasXMbUdOkhjLPtFepXLkliostkHM+ka2HR5oK2lDUkw8gTEypoDL
+	w849Rtwr/6BkZx0nP3omiyYQungEgl7bHj4jxi0w5LKpNxETh8FYVWTaAcKXe4OYoGRdFmAp757
+	sb4FGtFw24zJOKpr9ka6f/WepnhT1/zHXwVE+Qqk4JVV6h0vCWg1IWBYUDVqYuZO0iamgwrh5IH
+	Mw7dy1UqyO7NMl81zGLeiFSmej4w==
+X-Received: by 2002:a17:90b:390f:b0:375:2a38:1d40 with SMTP id 98e67ed59e1d1-37c9369f042mr546951a91.20.1781633575059;
+        Tue, 16 Jun 2026 11:12:55 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37c5228eb5bsm3519929a91.12.2026.06.16.11.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 11:12:54 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <20260616163405.96962-1-amachhiw@linux.ibm.com>
+Date: Tue, 16 Jun 2026 23:37:53 +0530
+Message-ID: <7bnye4ue.ritesh.list@gmail.com>
+References: <20260616163405.96962-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR08MB6951:EE_|BY5PR08MB6181:EE_
-X-MS-Office365-Filtering-Correlation-Id: bac2d303-d1ff-4db9-ec37-08decbd14c41
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|1800799024|6133799003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	ruTqh3ZBA282f1YBCBHB7V8Q1bq0m5StysBBKl2gr4zesuakno0PKtR1VsmX0vGIDjqXbyz/Xsk1WK4vFKhWs4hF6+f1/Pe44W+3RPPwxIAthnjX0pk/xpI1ZUBQ/hWZYgndn4HE5sfMacz1InT0BA4hzJJfHMkMrNmwt0xC1W0G823rKE079QEmraZO0vUXIKBB5Hlcaws7tJ2qHFwRptq3hEi29UqrdrjSY7HA97cqN2bhb5rOnmkbDW0pwDzokiqp18MvzyO06ZuhErcnD6IHPrt8GTwzsqfP0AvuWP/E4Tl3s+VPffvrk7lVHVOmx41zLoYZ4mkXh1JvCFTpKZHUD7lKoFackz4MjfUNh7L2R5En6g3AQWjZSz4GCvCD8F/6mStspJ2Q65Ma0ZS9M+KtARnLzXSV0+EMKjV6PLXU3DmW9A6T7qkjptBn5/XSeUHMcjxou3oK7+60mymkbnDkDEhrV3S5BKz9vMsMOv5496LxbtU1pybYhq0GDWjz2TkUD10P8kihGIHMyd/vikP1Xve7g9eK8NyEPK2njgiX1z+ZPaV2YHAJHihgXsO2JxShu5W/+S4SeGe5mhKipM5Mk0akDJGR0k/PAlzjmS63hvuEmPRHMBl06pwhO3r7EJVb4IhI+bZZ1oG7JjNR7w0pUm63ekZXTdcoV3vuLjO4rkap+UhWtLuThGdH7xyq
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR08MB6951.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(6133799003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?en3XM9jzVcNQ4QFumZzthfaKAGB1+Y57+Op0LG0QuLBzK8l0SKH4yDVzcEsv?=
- =?us-ascii?Q?N3as2dNkNe6l8p5E3qL8jtiKNT65VaZVLdPGG2EqubruY019v2/mxYFtg8D0?=
- =?us-ascii?Q?d5qlbjTlyF+Z68aEGrsE5icWc1QivBEEH+7H3l+QH1JMOrR3NxvcBOrftK57?=
- =?us-ascii?Q?kiCTqXtOBgZk7MT9Vln2FmQuWC+yZVeWOUMEWq6j+Kf+LU+kSataGwH/eTyF?=
- =?us-ascii?Q?+lL7GYvErKcm1GXOcIqOW22Ib/MJYfcZnv6Fm3patamNiBSU0N5IETkn52cS?=
- =?us-ascii?Q?uAj2e78EIpcKX2Zm7Fu0DYPN86yHSFwb+x7Wv7QsTTxVxIqcZDzo6p0QGhSX?=
- =?us-ascii?Q?bSuJGHrOAf7qDEYaByXinkR2WazU9860GoEsu9U227vohZMbWbKnlwbzNOF2?=
- =?us-ascii?Q?mU4hID8L7Rft671f1Y4RWhdr4D2af2/awGXYG6JXBkVHu7pF5U2UGjUe642G?=
- =?us-ascii?Q?CZNQo/vzzQfJCsCivvoEAt6/emthnM1Y7bDyKMMyNwv4VlHXjuQv4qp8RXqB?=
- =?us-ascii?Q?+nSWsHJbTIpP746eVn8Yr/FgVAbNvzX4EC660E4le7mJDkfst18BjTU3NSZU?=
- =?us-ascii?Q?ZBWgYDfZpzpCIQn+z/lLVYlUqOUGGNrthqigl4oLTd/lK0zW1zvUiODwlI19?=
- =?us-ascii?Q?9uJIJTLy3mvLjU9KHsnP0lHHuyQiaGyXoIKqdotYe1W+uj4LplsEju5paQ89?=
- =?us-ascii?Q?yyQPd2vvnqOkzenrtTIIeElJQVmMxi5Z9Jfl+7ShladlFVQ6UGtR8WmrwiYZ?=
- =?us-ascii?Q?hcofHAwStAlljhaPBBn4h+ErS2xyoKtFr3O2X+LTk8EFGItYyvuhk6NIy3cu?=
- =?us-ascii?Q?AzVHp5Nl2rrT2DRUiLDnpsuE+3EKIxMfutndEt8sjsTRYraa2HTaUieyfUvK?=
- =?us-ascii?Q?cfnGId7lJRzXlRDZar5frRmbruuUN/7HU1l1e3uZOxuGLLDl5ht3ctfDnbqy?=
- =?us-ascii?Q?jaccRAKV8pmRa2i1dx8sde06SqMz71ojUuOe6IFJEKQec/2V4uBc4uNVEpe8?=
- =?us-ascii?Q?3RwjuSJQ4zJ6A5r9axB6U35Y0PDKmcu7vJfn7PsHuFgpbXvkBZVda9gIwAlQ?=
- =?us-ascii?Q?BHRMJKL3ww2sHMlh+pMrbi9Vtgxw/mn4xGA//Y44OcwJlmBVCd1gWirx31gy?=
- =?us-ascii?Q?PwWgEomv4Y0q7+VZAyL1rDTaTQ2v5MLH2J3xIjemoytd4I7Yy48FvG4brmvi?=
- =?us-ascii?Q?JpTtQ6yR7A+0jPDzv59pvVecQp8+0vMt2VH6t4jqHNL65RqSCP/oFGoPebjZ?=
- =?us-ascii?Q?XvgzS8GxGXHy2nhO/g+nSQGxRoQlSH6P97D+wwvOPXn8O+6H5F/oi+CxrAHo?=
- =?us-ascii?Q?YGAeqy9fsAIwhqAd08VnidMjHOd1ZzscDYHKtcQ+dDlT/EmGXtJoOiVhjY8T?=
- =?us-ascii?Q?SzPPzftCEewKlfwP4DdMI0IIYEOdgD2U0CHA5B/RSV05in+M/pMChaQr3DwT?=
- =?us-ascii?Q?eIxJr0WGxZiTADx+/RWZ0yErE9GcTt0Gs9d6KBN9WxVc1Ra1R5ZVYO0pWp5H?=
- =?us-ascii?Q?X7GDzWFWESLVNZsmRkBGUBEh45tUpBLMlkDKevZrgu/BfZfVd302maxbgxiT?=
- =?us-ascii?Q?Q8FQ+RlvmF2BSPJw7gj3yurX6jrUb29VRfYx1IRqnWT1eqABkd0jcdfBcCNL?=
- =?us-ascii?Q?JbuyHV0cnw1hPk/7c5efZYe/65GyVPxmlIFFLYgstbTliTTYgdEa3MJHFvP0?=
- =?us-ascii?Q?D7tz0JLOnAaJ3hPMKErU0yvpHWBjTrXAhiET1B/cWOHz9rcYQb8P6wpoEK74?=
- =?us-ascii?Q?H60o2kvW2Q=3D=3D?=
-X-OriginatorOrg: nokia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bac2d303-d1ff-4db9-ec37-08decbd14c41
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR08MB6951.namprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 18:01:32.3267
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 21fJy2LJvKUiK7KwwUPaXZwEZVUxu7Kt4onSSfuNMFLuIJUyitH+BDjlQ5IDGhOQ//obFH/e5QhWGytRQ48nARMWXzv7puBXH9vvd29w9M4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR08MB6181
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nokia.com,reject];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[nokia.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265897-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[linux.ibm.com,gmail.com,ellerman.id.au,kernel.org,redhat.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:alex@shazbot.org,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:wangkefeng.wang@huawei.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:kvm@vger.kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[anthony.pighin@nokia.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nokia.com:+];
+	FORGED_RECIPIENTS(0.00)[m:amachhiw@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:vaibhav@linux.ibm.com,m:harshpb@linux.ibm.com,m:anushree.mathur@linux.ibm.com,m:gautam@linux.ibm.com,m:mkchauras@gmail.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:thuth@redhat.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[anthony.pighin@nokia.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,shazbot.org:email,huawei.com:email,linux-foundation.org:email,vger.kernel.org:from_smtp,nokia.com:dkim,nokia.com:email,nokia.com:mid,nokia.com:from_mime]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D6EF693BDA
+X-Rspamd-Queue-Id: 53CF7693EB8
 
-VFIO PCI devices support PMD-sized page table entries for BAR mappings
-via their huge_fault handler (vfio_pci_mmap_huge_fault).  However, the
-VFIO device file_operations never provided a get_unmapped_area callback
-to request PMD-aligned virtual address placement from the mmap address
-allocator.
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-Before commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-get_unmapped_area"), this was masked by a bug introduced in commit
-ed48e87c7df3 ("thp: add thp_get_unmapped_area_vmflags()") which
-inadvertently applied THP alignment to all file-backed mappings,
-regardless of whether they provided a get_unmapped_area callback.
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+>
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+>
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_GUEST_SET_STATE is invoked with a Power11 Logical PVR, the
+> hypervisor rejects the request, leading to a late guest boot failure:
+>
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+>
+> This situation should be detected earlier and rejected by KVM. Without
+> proper validation, if userspace ignores the error, the guest may continue
+> to boot in Power11 raw mode on a Power10 compatibility host, which should
+> not be allowed.
+>
+> Introduce a validation mechanism that detects unsupported arch_compat
+> values early in the guest initialization path. When an unsupported
+> arch_compat is requested (e.g., Power11 on a Power10 compatibility mode
+> host), kvmppc_set_arch_compat() uses cpu_has_feature(CPU_FTR_P11_PVR) to
+> detect the mismatch and sets arch_compat to PVR_ARCH_INVALID (0xffffffff).
+> This sentinel value is architecturally safe: PAPR specifies that valid
+> logical PVR values must have 0x0f as the first byte, ensuring 0xffffffff
+> lies permanently outside the specification-defined range. Setting this
+> value triggers kvmppc_sanity_check() to mark the vCPU as invalid by
+> setting vcpu->arch.sane to false. On the next vCPU run, kvmppc_vcpu_run_hv()
+> checks this flag and returns -EINVAL, preventing the guest from running
+> with an invalid processor compatibility configuration.
+>
+> With this, when a Power11 arch_compat is requested on a Power10
+> compatibility mode host, the guest fails early during boot with:
+>
+>   error: kvm run failed Invalid argument
+>
+> This provides a much clearer failure mode compared to the previous
+> behavior where the guest could boot in Power11 raw mode (if userspace
+> ignored the error) or fail late during H_GUEST_SET_STATE.
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Acked-by: Gautam Menghani <gautam@linux.ibm.com>
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+> Testing: Both Anushree and I have tested the below scenarios:
+> 1. P11 guest on P11 host - Works
+> 2. P10 compat guest on P11 host - Works
+> 3. P11 guest on compat-P10 host - Correctly fails with "Invalid argument"
+> 4. P10 guest on compat-P10 host - Works
+>
 
-When commit 34d7cf637c43 ("mm: don't try THP alignment for FS without
-get_unmapped_area") correctly restricted THP alignment to anonymous
-mappings and files that explicitly opt in via get_unmapped_area, VFIO BAR
-mappings lost their PMD-aligned placement.  Since the huge_fault handler
-requires both the VMA start address and the physical PFN to be
-PMD-aligned, unaligned VMAs force a fallback to 4KB page faults.
+Thanks for incorporating all the changes and adding the test result
+matrix in the changelog.
 
-For example, a 2GiB BAR results in 524,288 individual page faults
-instead of 1,024 PMD-sized faults, increasing the VFIO_IOMMU_MAP_DMA
-pinning time by orders of magnitude -- a regression directly visible to
-KVM guests during PCI device initialization.
-
-Fix this by providing a get_unmapped_area callback in vfio_device_fops,
-following the same pattern used by ext4, xfs, btrfs, fuse, and other
-subsystems that benefit from THP-aligned placement.
-
-Fixes: 34d7cf637c43 ("mm: don't try THP alignment for FS without get_unmapped_area")
-Cc: stable@vger.kernel.org
-Cc: Alex Williamson <alex@shazbot.org>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: kvm@vger.kernel.org
-Signed-off-by: Anthony Pighin <anthony.pighin@nokia.com>
----
- drivers/vfio/vfio_main.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index 6222376ab6ab..2dbb1a84dbac 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -40,6 +40,7 @@
- #include <linux/interval_tree.h>
- #include <linux/iova_bitmap.h>
- #include <linux/iommufd.h>
-+#include <linux/huge_mm.h>
- #include "vfio.h"
- 
- #define DRIVER_VERSION	"0.3"
-@@ -1461,6 +1462,7 @@ const struct file_operations vfio_device_fops = {
- 	.unlocked_ioctl	= vfio_device_fops_unl_ioctl,
- 	.compat_ioctl	= compat_ptr_ioctl,
- 	.mmap		= vfio_device_fops_mmap,
-+	.get_unmapped_area = thp_get_unmapped_area,
- #ifdef CONFIG_PROC_FS
- 	.show_fdinfo	= vfio_device_show_fdinfo,
- #endif
--- 
-2.43.0
+The changes looks good, feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 
