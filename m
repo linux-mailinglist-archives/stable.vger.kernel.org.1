@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-263840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sskWE4dpMWroigUAu9opvQ
-	(envelope-from <stable+bounces-263840-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:35 +0200
+	id /YaWFW6JMWrwlwUAu9opvQ
+	(envelope-from <stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B920690EAD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE1B6934A0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qBC0vcoS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263840-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263840-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PW84jy0T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265402-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC64A317F46A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:12:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5FAA130A2D41
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D578543CEF7;
-	Tue, 16 Jun 2026 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9AC47AF67;
+	Tue, 16 Jun 2026 17:30:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619042EED7;
-	Tue, 16 Jun 2026 15:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079F2355F5F;
+	Tue, 16 Jun 2026 17:30:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622750; cv=none; b=ImCnoPrQ4wmipP4cIBD4Cs/eckfnNLPoKJpYIwmv5mR+SeNemb8tXZSTavEPDJoXH4C0Y4PwS2k1K8iBQgjWQl8M6hQz6ZEmpVtvvHE/VRWjitMi9Pz27fisoMdd3bjWcgxcfrqxXwPuGNBo+4ABJXyFapZSVAsLIY4MQGLjvsk=
+	t=1781631017; cv=none; b=RdfFFG3R+/4BPkDf81C6Zkx54Z9MSET6PMZf+L+qAUdrNSKBI1/7Lbxvr3C3HyxAyhm/4KHwZ0kMKdhgoZo9PT2FZhDap2CR5VibYv83xDOrxXcBRkOeZZobjiy2+cQIXvosa2x2BHRpwmr6qOqUHybUXJ40J5En9CFVe92M+Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622750; c=relaxed/simple;
-	bh=jmrA1oWT4QnYFlh7LRs6b9MQy4PDDvgFGNeil5rReEs=;
+	s=arc-20240116; t=1781631017; c=relaxed/simple;
+	bh=MC0sudR9Bx4yf0t7bPZwF+21bR/q9Q6y7oVBFmbIIjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7fjN103oK1fpRIcdqg+Ybl3QRMwtRq9YgRfWTOphGtdHpONYZYEXtmKH8ezfVE0ELf71nJCURlckvBIMB0066SuJQX+OOcvHzkt+cW5EPNFSExVDsmewx08XBZ7QcL2U55gY9weaUDcAEi6+IdeoOjqziPe6p5sW7jgGQm29iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBC0vcoS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863FF1F000E9;
-	Tue, 16 Jun 2026 15:12:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ipcZERsiCmHT5PAxFWjKoun6PyZLCcvojDShjlpw2l+bCpSTdLT5HD6MsnROms/hi+aDftekEFwTWvg03KPufGoAz50JtxzA7tf3BPhzM1vYxvs8S8/2TADcrWZ+AsieDOKXj1lqTj2xLNzkp1W/aVM1Q44a0QQImw3KegF7/C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW84jy0T; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A631F000E9;
+	Tue, 16 Jun 2026 17:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622749;
-	bh=5LtgJPTLNZlGMuFIDreLH5sYhG30GUdypSjtlRmeyJ8=;
+	s=korg; t=1781631016;
+	bh=v0hcNhSOOJ5W/8POYL7jlcsFM2gu9LetXaGNfiLhM/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qBC0vcoSuua1+C/IgC9UlgcM70cy8PUZpqP6uvl/X0TzhroKICyL6vCoCey3+SabR
-	 Q+09CY9Rj3Pa+Gk3zVGZlVzFRYUbOK9Wu/OfwZcW8f/Lt810PYz+grAu7JHtJhLbUb
-	 vflthmxmNIuF8qp/vRWrIoJ3dpDK3yluB0UYQG2U=
+	b=PW84jy0Ti8NMPnEsJerko8R0Q2uNm1cVxhGQNAG6HHhGeZhbu9xxuPXajkeP3ESrj
+	 N6ZpRYTVS2m+vsKwVuhD49WwJAycvJlnNvm1AZf5+vpx2l3EBFELmzMJLIBFosHccG
+	 4hZ2kPB5/qg/qR202VKsJTo8x0G9eGGGPKx9HRIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 022/378] netfilter: conntrack_irc: fix possible out-of-bounds read
-Date: Tue, 16 Jun 2026 20:24:13 +0530
-Message-ID: <20260616145110.997551211@linuxfoundation.org>
+	Salah Triki <salah.triki@gmail.com>,
+	Joshua Crofts <joshua.crofts1@gmail.com>,
+	Maxwell Doose <m32285159@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.1 107/522] iio: adc: viperboard: Fix error handling in vprbrd_iio_read_raw
+Date: Tue, 16 Jun 2026 20:24:14 +0530
+Message-ID: <20260616145130.947838117@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +68,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263840-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:fmancera@suse.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-265402-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,vger.kernel.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:salah.triki@gmail.com,m:joshua.crofts1@gmail.com,m:m32285159@gmail.com,m:nuno.sa@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:salahtriki@gmail.com,m:joshuacrofts1@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,netfilter.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sashiko.dev:url,strlen.de:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9B920690EAD
+X-Rspamd-Queue-Id: BAE1B6934A0
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Salah Triki <salah.triki@gmail.com>
 
-[ Upstream commit 66eba0ffce3b7e11449946b4cbbef8ea36112f56 ]
+commit 422b5bbf333f75fb486855ad0eedc23cf21f3277 upstream.
 
-When parsing fails after we've matched the command string we
-should bail out instead of trying to match a different command.
+The driver proceeds to the reception phase even if the preceding
+transmission fails.
 
-This helper should be deprecated, given prevalence of TLS I doubt it has
-any relevance in 2026.
+This uses a goto error label for an early bail out and ensures the mutex is
+properly unlocked in case of failure.
 
-Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
-Closes: https://sashiko.dev/#/patchset/20260525182924.28456-1-fw%40strlen.de
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ffd8a6e7a778 ("iio: adc: Add viperboard adc driver")
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Reviewed-by: Joshua Crofts <joshua.crofts1@gmail.com>
+Reviewed-by: Maxwell Doose <m32285159@gmail.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_irc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/viperboard_adc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
-index b8e6d724acd155..064df01953ebf7 100644
---- a/net/netfilter/nf_conntrack_irc.c
-+++ b/net/netfilter/nf_conntrack_irc.c
-@@ -209,7 +209,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
- 			if (parse_dcc(data, data_limit, &dcc_ip,
- 				       &dcc_port, &addr_beg_p, &addr_end_p)) {
- 				pr_debug("unable to parse dcc command\n");
--				continue;
-+				goto out;
- 			}
+--- a/drivers/iio/adc/viperboard_adc.c
++++ b/drivers/iio/adc/viperboard_adc.c
+@@ -70,8 +70,10 @@ static int vprbrd_iio_read_raw(struct ii
+ 			VPRBRD_USB_TYPE_OUT, 0x0000, 0x0000, admsg,
+ 			sizeof(struct vprbrd_adc_msg), VPRBRD_USB_TIMEOUT_MS);
+ 		if (ret != sizeof(struct vprbrd_adc_msg)) {
+-			dev_err(&iio_dev->dev, "usb send error on adc read\n");
++			mutex_unlock(&vb->lock);
+ 			error = -EREMOTEIO;
++			dev_err(&iio_dev->dev, "usb send error on adc read\n");
++			goto error;
+ 		}
  
- 			pr_debug("DCC bound ip/port: %pI4:%u\n",
-@@ -223,7 +223,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
- 				net_warn_ratelimited("Forged DCC command from %pI4: %pI4:%u\n",
- 						     &tuple->src.u3.ip,
- 						     &dcc_ip, dcc_port);
--				continue;
-+				goto out;
- 			}
- 
- 			exp = nf_ct_expect_alloc(ct);
--- 
-2.53.0
-
+ 		ret = usb_control_msg(vb->usb_dev,
 
 
 
