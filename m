@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KsbjDHd4MWqvkAUAu9opvQ
-	(envelope-from <stable+bounces-264490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:19 +0200
+	id 1roWL6x+MWpOkwUAu9opvQ
+	(envelope-from <stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E566692031
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00916927CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="AcNm/1Fb";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264490-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264490-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ecH+hYPA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F44E3234CD0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97DE5305B290
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4650D4534B9;
-	Tue, 16 Jun 2026 16:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFDB4779B9;
+	Tue, 16 Jun 2026 16:36:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A78C3C6A2B;
-	Tue, 16 Jun 2026 16:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB0C45BD6F;
+	Tue, 16 Jun 2026 16:36:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626169; cv=none; b=jii5OLAnkWZgnJQottLoXWs0zqG4bqoJI6cEz01BjBxomJiXDEYNFHzAfgmm7fnzWS1gNDyShSxRNc6EpB9Er6bIB8ao5GGM3fQrKEvmgtBnKTdGKmrEUY/rdHipl+ApIHYKQ1SqTT6UTPTeEmHyRgBdCnI0BV6qRmQBRyHBwEM=
+	t=1781627819; cv=none; b=aRP2rNKEkvT2VC1V1IqeTN6eVJKfbnj91cwoMf/EcIP7mCU0m4c9qE1W2xBy7y1DAa2nB3tUKfYlewk3gAXM24t2xRVOHbxxfUWjMxuclcd6wUittZvcJxqJ0F61BnbULgucHqTXcu/NPy0nBoMSOVQHQuhoGP2ernWnK4Izs8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626169; c=relaxed/simple;
-	bh=tLqa/Pa6mQAYijU69DP84bdtfguF2X4lBK7THBJkj24=;
+	s=arc-20240116; t=1781627819; c=relaxed/simple;
+	bh=zsMPzBeimjk0LRBxZcdKTuyFy1Z2KCrVNmjDHUag5/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeC3i53NpruyggsOH7C+sBe7Dh9HZ1drbCYIzWlBlOWQwkqn4QWVSaRVqLmYSHpUYWp2e7lML9hibug5SPMQ8FZ1+kuqyK9QE0gIZpiqQf16J1YdFA8mjRQtZK9rf0ULFlcwcqvRAzf4RmfenHJbifN0PBMdvNr/pBO1HznrJSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AcNm/1Fb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68A61F00A3A;
-	Tue, 16 Jun 2026 16:09:26 +0000 (UTC)
+	 MIME-Version; b=fNTpBxV/MEfDv+cgjdp53QkvcpOAK7AbXQg3+TsKbXwhuQ5esMZiVsHIrdyljnOb2LR897/1GFT3vE8v4QaK6rZhdtG+3uGDXwdo1QLGrf+AUu5RhHJ4zVLGjpe85g1D55W+lxfD//GBZJmO+QNf+01m66Q6nEZv357pEmo56EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecH+hYPA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0B61F000E9;
+	Tue, 16 Jun 2026 16:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626167;
-	bh=bppxtiP8ulfS3G/E2IUJ7RrtYzKe7jJH9/ukW8QPV0o=;
+	s=korg; t=1781627818;
+	bh=0IwPab4tN4Z/R7Qsehp6lLoJfbjFyLy77z0olP+aJ9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AcNm/1FbhJmFg03oM/TIsUt1MZOIreIgripIlI8Com1QE7JgXPtBICcFujpTRid+j
-	 prFyXln6Zd+sY+6LEnoY6Vba2zDPJIrunViccZyGgG54kW03F4QtZmBSEy+UrosYTu
-	 TAIuT21TpS3SZAfo64g5yZ/CWghscvRsaKv1kcl4=
+	b=ecH+hYPAW7gWaHHBzLtvbercwg68VPyiGZ0IgAXvQpp7z+TP3zVP3PGRnju5EJru3
+	 VtuAU3j3Qs3hkCplkA7y/s6E9Z91RDdcdNurUtmWrEpECSxsXxvjCmvPC5lkJPBykh
+	 H/GwHd0aBHESx5Kw03j7B82LoKzTeAdSL/FmykoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 275/325] slimbus: qcom-ngd-ctrl: Fix up platform_driver registration
+	Matt Fleming <mfleming@cloudflare.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 233/261] sched_ext: Dont warn on NULL cgrp_moving_from in scx_cgroup_move_task()
 Date: Tue, 16 Jun 2026 20:31:11 +0530
-Message-ID: <20260616145112.422030719@linuxfoundation.org>
+Message-ID: <20260616145055.846440038@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264490-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264774-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mfleming@cloudflare.com,m:tj@kernel.org,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,103 +99,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cloudflare.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8E566692031
+X-Rspamd-Queue-Id: D00916927CC
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit 8663e8334d7b6007f5d8a4e5dd270246f35107a6 upstream.
+[ Upstream commit 02e545c4297a26dbbc41df81b831e7f605bcd306 ]
 
-Device drivers should not invoke platform_driver_register()/unregister()
-in their probe and remove paths. They should further not rely on
-platform_driver_unregister() as their only means of "deleting" their
-child devices.
+A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
+its own subtree_control while a sched_ext scheduler is loaded:
 
-Introduce a helper to unregister the child device and move the
-platform_driver_register()/unregister() to module_init()/exit().
+  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
+   scx_cgroup_move_task+0xa8/0xb0
+   sched_move_task+0x134/0x290
+   cpu_cgroup_attach+0x39/0x70
+   cgroup_migrate_execute+0x37d/0x450
+   cgroup_update_dfl_csses+0x1e3/0x270
+   cgroup_subtree_control_write+0x3e7/0x440
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-3-srini@kernel.org
+scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
+cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
+through this sequence:
+
+  Step                               Result
+  ---------------------------------  ----------------------------------
+  1. cpu enabled on cgroup G         cpu css = A
+  2. cpu toggled off then on for G   A killed, B created (same cgroup)
+  3. an exiting task keeps A alive   migration skips it, A now stale
+  4. +memory migrates G              stale A vs current B pulls cpu in
+  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
+  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
+
+The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
+while migration drives the move on css identity, so a NULL cgrp_moving_from
+here is a legitimate css-only migration, not a missing prep.
+
+The call is already gated on cgrp_moving_from, so just drop the warning.
+ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
+
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |   36 +++++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
+ kernel/sched/ext.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1566,6 +1566,13 @@ static int of_qcom_slim_ngd_register(str
- 	return -ENODEV;
- }
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4069,10 +4069,13 @@ void scx_cgroup_move_task(struct task_st
+ 		return;
  
-+static void qcom_slim_ngd_unregister(struct qcom_slim_ngd_ctrl *ctrl)
-+{
-+	struct qcom_slim_ngd *ngd = ctrl->ngd;
-+
-+	platform_device_del(ngd->pdev);
-+}
-+
- static int qcom_slim_ngd_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1668,7 +1675,6 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 		goto err_pdr_lookup;
- 	}
- 
--	platform_driver_register(&qcom_slim_ngd_driver);
- 	return of_qcom_slim_ngd_register(dev, ctrl);
- 
- err_pdr_alloc:
-@@ -1682,7 +1688,9 @@ err_pdr_lookup:
- 
- static void qcom_slim_ngd_ctrl_remove(struct platform_device *pdev)
- {
--	platform_driver_unregister(&qcom_slim_ngd_driver);
-+	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
-+
-+	qcom_slim_ngd_unregister(ctrl);
- }
- 
- static void qcom_slim_ngd_remove(struct platform_device *pdev)
-@@ -1758,6 +1766,28 @@ static struct platform_driver qcom_slim_
- 	},
- };
- 
--module_platform_driver(qcom_slim_ngd_ctrl_driver);
-+static int qcom_slim_ngd_init(void)
-+{
-+	int ret;
-+
-+	ret = platform_driver_register(&qcom_slim_ngd_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&qcom_slim_ngd_ctrl_driver);
-+	if (ret)
-+		platform_driver_unregister(&qcom_slim_ngd_driver);
-+
-+	return ret;
-+}
-+
-+static void qcom_slim_ngd_exit(void)
-+{
-+	platform_driver_unregister(&qcom_slim_ngd_ctrl_driver);
-+	platform_driver_unregister(&qcom_slim_ngd_driver);
-+}
-+
-+module_init(qcom_slim_ngd_init);
-+module_exit(qcom_slim_ngd_exit);
- MODULE_LICENSE("GPL v2");
- MODULE_DESCRIPTION("Qualcomm SLIMBus NGD controller");
+ 	/*
+-	 * @p must have ops.cgroup_prep_move() called on it and thus
+-	 * cgrp_moving_from set.
++	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
++	 * cgroup changes. Migration keys off css rather than cgroup identity,
++	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
++	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
++	 * keep prep_move and move paired.
+ 	 */
+-	if (SCX_HAS_OP(cgroup_move) && !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
++	if (SCX_HAS_OP(cgroup_move) && p->scx.cgrp_moving_from)
+ 		SCX_CALL_OP_TASK(SCX_KF_UNLOCKED, cgroup_move, p,
+ 			p->scx.cgrp_moving_from, tg_cgrp(task_group(p)));
+ 	p->scx.cgrp_moving_from = NULL;
 
 
 
