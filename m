@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-263951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kst8HlpsMWrViwUAu9opvQ
-	(envelope-from <stable+bounces-263951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:38 +0200
+	id jLlrBtSZMWrQnwUAu9opvQ
+	(envelope-from <stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D4D6911A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B667694727
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dXFOGC88;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263951-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-263951-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hAaYUKqH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D1A33098614
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E01B3098F39
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCD838B135;
-	Tue, 16 Jun 2026 15:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B3147B425;
+	Tue, 16 Jun 2026 18:45:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA4426B0A9;
-	Tue, 16 Jun 2026 15:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0024B47D923;
+	Tue, 16 Jun 2026 18:45:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623355; cv=none; b=fFGlMJZwYgGQ9mz5EXK66+MOLSCFQnbNYLqErAAYYqrwH1XHjp6E9+KjjJRQK/8/p60s+77o2ddNVQbLLra+m2Zj7G7g7T9wwCzjCZKTfyHND4ks6TZc1JYuF3Z391dZ6lAwDPJhm0atFoQq31TEKGWUd3aNiuHIZF81xf/EN5c=
+	t=1781635536; cv=none; b=VbNgsuxWH4XMw1m4IZr07fzMCJ3YW0Esah81QkKUvomB+m8axOH1snTwowFbZnqD5wIq8wAeNmt06vSySO1/PO+Z8TfZBvMiKe3KSkhiDBV6c+zKd42zSO/Jog7CUDV/g6K+64CdpGqGMz2KcodylO/J8BXwrt887cFiWUYSJds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623355; c=relaxed/simple;
-	bh=A9V3m0wil2NNibyOYcqMDRbtKjapCDIDe2iVMb9yvSI=;
+	s=arc-20240116; t=1781635536; c=relaxed/simple;
+	bh=BZBI1/0o2gp0lB6buHRLdCM8/uiYkC7bRbSvwvo5EJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPidsWexy4CDkxuu913nGut1ep+hmcqrtROIQ7CSHnXhJ5DqrySHgV/rTubwVcZ0MeqoSxTCejMXYtUuvDl0g/AHp55tGSwXY244/oYlMQaQxQFIqliY7SRGDzWJlP4chXy/AXBod6heBtEFPnDrQCoLUxDVKILFQqxkbKbVgpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXFOGC88; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1731F000E9;
-	Tue, 16 Jun 2026 15:22:32 +0000 (UTC)
+	 MIME-Version; b=UhtNelFs+bNPoGf0mPtEYQVvyY6Pmjp+QMCZw0YHuWsN9zfIX8N3wb324wZ0orCHeT//vSqCW1AakL0XRKy8zh6UrU1k21G9qSLEkAw6/qEk90NBgxFUfqVKAq+BqUgXzgutEuR0EmePn5bywzH3Ko1mB1QPcHQdw+H9MPFnMNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAaYUKqH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F25D1F000E9;
+	Tue, 16 Jun 2026 18:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623354;
-	bh=ByHo3awRnJW+Uu9y5Kb9qwtB9epjKuDFEDeuWx9H8DU=;
+	s=korg; t=1781635530;
+	bh=6S87i8PXX23z9mLWMRCUBBOn1YImpmt9i0Zrf0xE2Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dXFOGC888b9m9vf2Wdl1/HWlU0Y2KilOdLVMU0owkE6o0GjIzycGDKpSljEjLs+4f
-	 4aye2Csu6AM6QCFjCS8nBMuxIPqE5lK36CC8o3p2A6RU47/pZO1E7SAhexlhKi5jP6
-	 WdKjyVaN162d5EGa38D98/XMJ90945Cq2CwKpoEs=
+	b=hAaYUKqHZNxzRDTZabty+pvajycx4C5RS1l4bz1kqswyyChxqjapTS1Sp0WL1LjcS
+	 SMMdpLIYp/S0/roPY/K1RfPWp8UYTuPONLppcAzqyxKehQjeTw1gbXaej2O/UvO4tU
+	 oPAd+5PT3O+TH7Xrg6Tt6ksr8yxqqDv9MFXuh6GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 132/378] ip6_vti: set netns_immutable on the fallback device.
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 067/342] Input: elan_i2c - validate firmware size before use
 Date: Tue, 16 Jun 2026 20:26:03 +0530
-Message-ID: <20260616145117.258480602@linuxfoundation.org>
+Message-ID: <20260616145051.371504537@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263951-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:noamr@ssd-disclosure.com,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266267-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 11D4D6911A8
+X-Rspamd-Queue-Id: 7B667694727
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit d289d5307762d1838aaece22c6b6fcad9e8865f9 ]
+commit 76b0d0baa9ae9c60e726bbe1b6ff0bec2c993634 upstream.
 
-john1988 and Noam Rathaus reported that vti6_init_net() does not set the
-netns_immutable flag on the per-netns fallback tunnel device (ip6_vti0).
+Ensure that the firmware file is large enough to contain the expected
+number of pages and the signature (which resides at the end of the
+firmware blob) before accessing them to prevent potential out-of-bounds
+reads.
 
-Other similar tunnel drivers (like ip6_tunnel, sit, ip6_gre, and ip_tunnel)
-correctly set this flag during their fallback device initialization to
-prevent them from being moved to another network namespace.
-
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20260608155918.787644-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/ae2dOgiFvXRm4BHo@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_vti.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/mouse/elan_i2c_core.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index df793c8bfffb0a..d2b74a6f2cf62d 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -1159,6 +1159,7 @@ static int __net_init vti6_init_net(struct net *net)
- 		goto err_alloc_dev;
- 	dev_net_set(ip6n->fb_tnl_dev, net);
- 	ip6n->fb_tnl_dev->rtnl_link_ops = &vti6_link_ops;
-+	ip6n->fb_tnl_dev->netns_immutable = true;
+--- a/drivers/input/mouse/elan_i2c_core.c
++++ b/drivers/input/mouse/elan_i2c_core.c
+@@ -608,6 +608,11 @@ static ssize_t elan_sysfs_update_fw(stru
+ 		return error;
+ 	}
  
- 	err = vti6_fb_tnl_dev_init(ip6n->fb_tnl_dev);
- 	if (err < 0)
--- 
-2.53.0
-
++	if (fw->size < data->fw_signature_address + sizeof(signature)) {
++		dev_err(dev, "firmware file too small\n");
++		return -EBADF;
++	}
++
+ 	/* Firmware file must match signature data */
+ 	fw_signature = &fw->data[data->fw_signature_address];
+ 	if (memcmp(fw_signature, signature, sizeof(signature)) != 0) {
 
 
 
