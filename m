@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-264747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y7OTKkJ7MWrTkQUAu9opvQ
-	(envelope-from <stable+bounces-264747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:14 +0200
+	id 1ywBEK+YMWoWnwUAu9opvQ
+	(envelope-from <stable+bounces-266212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0136923A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F6D694522
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RgSR5ux0;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264747-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264747-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=leNimAZk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266212-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266212-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D427303ECD8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E2A13038E2F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BCD4779BB;
-	Tue, 16 Jun 2026 16:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE043DF007;
+	Tue, 16 Jun 2026 18:40:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816462F745E;
-	Tue, 16 Jun 2026 16:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F9138C437;
+	Tue, 16 Jun 2026 18:40:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627673; cv=none; b=sM3IM145l9u6i3WSk9jR7D2teJoI94fuXT6JgRoEnK+6L+ccAGlz/cMazLVQ8P/YR2zOcOQccqSX8aPzwe81KlkMdpROoKpRtLVDcUkp9F0B0g9jFOr1AWH5u9EiETCiKn+GSBRvP7EAPr6/QkVFlatgzIqlJQcv5SgOKtVm/YQ=
+	t=1781635243; cv=none; b=ZmexvTPot5ssyrweWAC7Q6P3/zdBiknF9XQeRsdbhoDWKhmAnqPNBNPWlC1NJEO72nwjAidNN6yXjs17JNwjvVm/1w78tfP1Kx3XaDHlh8YCAEnNwlWH/RNIJiiAsU17yaDpShUMbS8K4LdOKYUL9r/w4zxo0Ot/9b1VVm5jwM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627673; c=relaxed/simple;
-	bh=sjkr17lOEohB/jjSabGmyuKEivuJravWNX1/ah6E8Bk=;
+	s=arc-20240116; t=1781635243; c=relaxed/simple;
+	bh=f1Vsv7ZsJ+t2awavpSU9OykL3Tk68RtFnk27ng8HPoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9u7SpdlrfkeV7aFEKWPXsaKTASR9pPWyoYL1iemphIfzQdD0jjUBF2JXWqi89WAPFfgW6Pv20RS5Pi+eceMkNoC88XCrT/NzLF1XKDp2mSs3opZOjxePseaV64+r5QBIjQhMaQjz8Oo3+MX03U8R6VNO0NovR0o4F6zmui8k8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgSR5ux0; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EEB1F000E9;
-	Tue, 16 Jun 2026 16:34:31 +0000 (UTC)
+	 MIME-Version; b=UYOu97pzHG4DOx09eBykSJQr4qLeHIZYZ16MK8gHSLZexgKYykHIAO6dtFgQcKnELQelOMxuA+5ZCWpCQkUF+khrDOrXTOPuWhOdbvKaJHJliFdgXTa2+l57YeVajZQrepJg2EhhqMDxpCvvF8XpOlazDDD2s3cKoEgoWaQmmJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leNimAZk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51061F00AC4;
+	Tue, 16 Jun 2026 18:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627672;
-	bh=P0eKm3ATBvp9+XWPoojDdhlkE6Og/Fa+BMWEQqk9S/Q=;
+	s=korg; t=1781635241;
+	bh=9hMeam5SD3OfNrSmQnxZS4O8Gd4mxGvNHqlqE3nmQuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RgSR5ux0qa419iKl5c3YANrjbbYLCEeM+nqVbrjRQHAqmalvXcKFKA2JJ9KXHyZf2
-	 0vig5zsIFZ1WMp5xCWhnKTwAbUGfpeHu2Iw5Buz0j/mrsjXm8gSLkHZ9sIChwIy3Gd
-	 bqVkThe+zDIUtoY8tqt/ICeFSXpktahCjOTV6Nas=
+	b=leNimAZkc2213IQ+Clivw6Fh3dN+W63WOQ4YRnVkUAX9EoReLnR7zDARsbyDIXTSP
+	 asOj7QEFebku9wGackCGb7uzwqDwJGY89+6TtagSSV2xxFxP7bpyoeN/e28fc0J6pu
+	 yU3zhFh9Eu72Oegx39Rz/izyxCO+5bQvaE3twIiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 207/261] slimbus: qcom-ngd-ctrl: fix OF node refcount
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 5.15 407/411] arm64: errata: Mitigate TLBI errata on Microsoft Azure Cobalt 100 CPU
 Date: Tue, 16 Jun 2026 20:30:45 +0530
-Message-ID: <20260616145054.639603625@linuxfoundation.org>
+Message-ID: <20260616145122.780024960@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,12 +76,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264747-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266212-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -97,48 +97,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5B0136923A1
+X-Rspamd-Queue-Id: D3F6D694522
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Will Deacon <will@kernel.org>
 
-commit 120134fe75c6b0ae38f14eb8b548ad1e5761f912 upstream.
+commit 1940e70a8144bf75e6df26bf6f600862ea7f7ea1 upstream.
 
-Platform devices created with platform_device_alloc() call
-platform_device_release() when the last reference to the device's
-kobject is dropped. This function calls of_node_put() unconditionally.
-This works fine for devices created with platform_device_register_full()
-but users of the split approach (platform_device_alloc() +
-platform_device_add()) must bump the reference of the of_node they
-assign manually. Add the missing call to of_node_get().
+Commit fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
+Neoverse N2 errata") states that Microsoft Azure Cobalt 100 CPU "is a
+Microsoft implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and
+therefore suffers from all the same errata.".
 
-Cc: stable@vger.kernel.org
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-2-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So enable the workaround for the latest broadcast TLB invalidation bug
+on these parts.
+
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v5.15.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                     |    1 +
+ arch/arm64/kernel/cpu_errata.c         |    1 +
+ 3 files changed, 4 insertions(+)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1547,7 +1547,7 @@ static int of_qcom_slim_ngd_register(str
- 			of_node_put(node);
- 			return ret;
- 		}
--		ngd->pdev->dev.of_node = node;
-+		ngd->pdev->dev.of_node = of_node_get(node);
- 		ctrl->ngd = ngd;
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -291,3 +291,5 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #4193789        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -929,6 +929,7 @@ config ARM64_ERRATUM_4118414
+ 	  * ARM Neoverse-V2 erratum 4193787
+ 	  * ARM Neoverse-V3 erratum 4193784
+ 	  * ARM Neoverse-V3AE erratum 4193784
++	  * Microsoft Azure Cobalt 100 4193789
+ 	  * NVIDIA Olympus erratum T410-OLY-1029
  
- 		ret = platform_device_add(ngd->pdev);
+ 	  On affected cores, some memory accesses might not be completed by
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -250,6 +250,7 @@ static const struct arm64_cpu_capabiliti
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
+ 			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
++			MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ 			{}
+ 		})),
+ 	},
 
 
 
