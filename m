@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264616-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gXJiBNduMWrVjAUAu9opvQ
-	(envelope-from <stable+bounces-264109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:15 +0200
+	id U1eJDch6MWqokQUAu9opvQ
+	(envelope-from <stable+bounces-264616-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1AB6914F5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943DF69232E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SKUXAU7f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264109-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264109-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LJnBoM+Z;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264616-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264616-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 773F430687DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED00C329B387
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF78743E9C6;
-	Tue, 16 Jun 2026 15:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7F646AF11;
+	Tue, 16 Jun 2026 16:20:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B496744BC94;
-	Tue, 16 Jun 2026 15:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136E743E4BA;
+	Tue, 16 Jun 2026 16:20:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624173; cv=none; b=IqcnaFLhgRnYDEgFBfPsvQo/7t2pjrs1F1oH9aQYUJjORh1lvnwDzFwqPGoI1rgcOCW06Ff5VAVSmW+eC+F5xjXS1zv87rMVM7fypFKRwWQ9FeIalXDajaJpM6K5I2c2epz3GPY3iF4rHgZVuSbSg01Hsz30ib7yDdf7zAkyvQY=
+	t=1781626841; cv=none; b=cGvYbXtDGawBxp9SzxmFQqrX1NEx8LpYrDJfJ+3cra/HV64b1dR67AuOsacM79BoHUFwDFclB2h14L/JNQRVUZuIjHucKtUBBx4tq9uZ06U9V/7QyHv1gdKjIoNYuyuFVFHc4dhnlCnyRZ51ZOO3/RNOdDHJacH3xSX7jdb5o7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624173; c=relaxed/simple;
-	bh=xfr85P9SGLdynyOGdX5YIVqQtu2deB0KM/RhHS2nOa0=;
+	s=arc-20240116; t=1781626841; c=relaxed/simple;
+	bh=I3kFYEj/WBizKX5ui1kA9WgCae5X8RlwkVhcKrzA8AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNnC5/6DYSFyF2vjVh8A0TSZeZSzqrAz03g9O4am7sFqXe0im86HfGZMznSEkZvpQFmdmp0up1oituwZiJ53uwyD8koQQQHAA7Ga40JHAoIyojtdITm0oZAYF3v1H1T3E2v6BranKBCv3aa/JgOa0nbfGpcaoZmZhGEFVz+XurQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKUXAU7f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DE51F000E9;
-	Tue, 16 Jun 2026 15:36:11 +0000 (UTC)
+	 MIME-Version; b=IAN7z8hXTgT0RqXngCBhGrtwLU3SFaIoPC1jGSemnZIAA9Z0m5sEJZ3VJWUbATo20XWGUEbh9ldWAIW0WZeUUS03Q9xn5JVMOSOYkXY9l75DyUIFNXtGoYcXcyDMzpaz2RnwgAzAm5AapfrwFYeD3cqttI69AjXMt2H26bI5Ndc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJnBoM+Z; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15D61F000E9;
+	Tue, 16 Jun 2026 16:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624172;
-	bh=W0gLRua9DQbishpJoHfqfMWrTgTpL1k3wZXV5DegsZk=;
+	s=korg; t=1781626839;
+	bh=k1b04kIU2LbQuWU1tYIc0kdsBYegINk633pi7o8Ltss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SKUXAU7fJYeDvKJ/P5rtDEPsNozQMr5XYjWHWyuOCpQbocyT5YB8B0n+PnCzFNZzr
-	 uPPlVZScnyzAurVJp76fCWsKG6YMMxwIdLXSIpTT8p7sB7DDc3ytji2yPX2OD16X+O
-	 BVWr9ToMX+CHTenNpWRDSfulvSS9vYt+zDun/T5k=
+	b=LJnBoM+ZnIVrRAuFaOGdkWYTnWyrOn3UkI0UVU5cIQfvCkyb6jq5QR9Gy/UU56dvA
+	 o27CPWVr3RjSEHTaQlEvpZ8JAucQQryrXiKIqrhtZ6UcuFqnGnw7gVNRXyxSYQ+lra
+	 4BwmvnY3HDGavFw1y80+gtWN6/zUCogS5q6d8bgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 7.0 286/378] firmware: samsung: acpm: Fix mailbox channel leak on probe error
-Date: Tue, 16 Jun 2026 20:28:37 +0530
-Message-ID: <20260616145125.143696949@linuxfoundation.org>
+	Yao Sang <sangyao@kylinos.cn>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 080/261] net/mlx4: avoid GCC 10 __bad_copy_from() false positive
+Date: Tue, 16 Jun 2026 20:28:38 +0530
+Message-ID: <20260616145048.783332786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,112 +70,99 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264109-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tudor.ambarus@linaro.org,m:krzk@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264616-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sangyao@kylinos.cn,m:jacob.e.keller@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sashiko.dev:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,kylinos.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F1AB6914F5
+X-Rspamd-Queue-Id: 943DF69232E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Yao Sang <sangyao@kylinos.cn>
 
-commit b66829b17f6385cc9ffbcbe2476d532d2e3121ad upstream.
+[ Upstream commit 2365343f4aad3e1b1e7a2e87e98cf66d5e590589 ]
 
-Sashiko identified the leak at [1].
+mlx4_init_user_cqes() fills a scratch buffer with the CQE
+initialization pattern and then copies from that buffer to userspace.
 
-The ACPM driver allocates hardware mailbox channels using
-`mbox_request_channel()` during `acpm_channels_init()`. However, the
-driver lacked a `.remove` callback and did not free these channels on
-subsequent error paths inside `acpm_probe()`.
+In the single-copy path, the copy length is array_size(entries,
+cqe_size), but the scratch buffer is allocated with PAGE_SIZE. GCC 10
+does not carry the branch invariant strongly enough through the object
+size checks and falsely triggers __bad_copy_from().
 
-Additionally, if `acpm_achan_alloc_cmds()` failed during the channel
-initialization loop, the function returned immediately, bypassing the
-manual cleanup and permanently leaking any channels successfully
-requested in previous loop iterations.
+Size the scratch buffer to the actual copy length for the active path,
+keep array_size() for the single-copy case, and retain a WARN_ON_ONCE()
+guard for the PAGE_SIZE invariant before allocating the buffer.
 
-Fix this by modifying `acpm_free_mbox_chans()` to match the `devres`
-action signature and registering it via `devm_add_action_or_reset()`.
-
-Cc: stable@vger.kernel.org
-Fixes: a88927b534ba ("firmware: add Exynos ACPM protocol driver")
-Closes: https://sashiko.dev/#/patchset/20260420-acpm-tmu-v3-0-3dc8e93f0b26%40linaro.org [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260505-acpm-fixes-sashiko-reports-v5-2-43b5ee7f1674@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f69bf5dee7ef ("net/mlx4: Use array_size() helper in copy_to_user()")
+Signed-off-by: Yao Sang <sangyao@kylinos.cn>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/samsung/exynos-acpm.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/cq.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/samsung/exynos-acpm.c
-+++ b/drivers/firmware/samsung/exynos-acpm.c
-@@ -526,10 +526,11 @@ static int acpm_achan_alloc_cmds(struct
- 
- /**
-  * acpm_free_mbox_chans() - free mailbox channels.
-- * @acpm:	pointer to driver data.
-+ * @data:	pointer to driver data.
-  */
--static void acpm_free_mbox_chans(struct acpm_info *acpm)
-+static void acpm_free_mbox_chans(void *data)
+diff --git a/drivers/net/ethernet/mellanox/mlx4/cq.c b/drivers/net/ethernet/mellanox/mlx4/cq.c
+index e130e7259275a3..5c55971abbf072 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/cq.c
++++ b/drivers/net/ethernet/mellanox/mlx4/cq.c
+@@ -290,6 +290,7 @@ static void mlx4_cq_free_icm(struct mlx4_dev *dev, int cqn)
+ static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
  {
-+	struct acpm_info *acpm = data;
+ 	int entries_per_copy = PAGE_SIZE / cqe_size;
++	size_t copy_bytes;
+ 	void *init_ents;
+ 	int err = 0;
  	int i;
- 
- 	for (i = 0; i < acpm->num_chans; i++)
-@@ -557,6 +558,10 @@ static int acpm_channels_init(struct acp
- 	if (!acpm->chans)
- 		return -ENOMEM;
- 
-+	ret = devm_add_action_or_reset(dev, acpm_free_mbox_chans, acpm);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to add mbox free action.\n");
+@@ -314,8 +315,14 @@ static int mlx4_init_user_cqes(void *buf, int entries, int cqe_size)
+ 			buf += PAGE_SIZE;
+ 		}
+ 	} else {
++		copy_bytes = array_size(entries, cqe_size);
++		if (WARN_ON_ONCE(copy_bytes > PAGE_SIZE)) {
++			err = -EINVAL;
++			goto out;
++		}
 +
- 	chans_shmem = acpm->sram_base + readl(&shmem->chans);
- 
- 	for (i = 0; i < acpm->num_chans; i++) {
-@@ -578,10 +583,8 @@ static int acpm_channels_init(struct acp
- 		cl->dev = dev;
- 
- 		achan->chan = mbox_request_channel(cl, 0);
--		if (IS_ERR(achan->chan)) {
--			acpm_free_mbox_chans(acpm);
-+		if (IS_ERR(achan->chan))
- 			return PTR_ERR(achan->chan);
--		}
+ 		err = copy_to_user((void __user *)buf, init_ents,
+-				   array_size(entries, cqe_size)) ?
++				   copy_bytes) ?
+ 			-EFAULT : 0;
  	}
  
- 	return 0;
+-- 
+2.53.0
+
 
 
 
