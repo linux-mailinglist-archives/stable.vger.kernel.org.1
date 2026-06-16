@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 99VPDo5yMWpZjgUAu9opvQ
-	(envelope-from <stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:06 +0200
+	id qfudMplzMWrAjgUAu9opvQ
+	(envelope-from <stable+bounces-264411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44552691923
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F49691A3E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:28 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="P/T1BoBW";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nkf6PE3v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264411-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264411-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A642A303810A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 206933012B2F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF0145BD41;
-	Tue, 16 Jun 2026 15:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2DE44CF44;
+	Tue, 16 Jun 2026 16:02:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2455B4534A4;
-	Tue, 16 Jun 2026 15:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37CB3C0628;
+	Tue, 16 Jun 2026 16:02:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624602; cv=none; b=X1dtiFaB8mSOsObYzSr35Rvq1qr2kyEVDnUpCDE4wM44qIPPBSL+Zlz/w8bOg2n4binBu2MjiTxhBjsglljRIX0gz3l3aR59xqRLszmIRZQDbgC1GniafpT1afS0kxHKWyVbaH46agxloLFtqt+46sPMkq/EdXSPQ70+15ABf8k=
+	t=1781625744; cv=none; b=VSiXYFqHPSKG0kP7+2VQb+MN6VJtBqFPhrXRfHBKxGlQQCkvbvA3ZU51OgQFdnrIpZQD3U7noifY7w9NjAEy563SH22XUdyb30VaaDmbJ5b4ZMGXCircDWLT/iq8593i1Uvmg1+Fa2fSAw4254ZiERDLOMWzIRyUaBlnW1ftn54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624602; c=relaxed/simple;
-	bh=mXsZO0maZsjVwTQ2L9HRG24PVWNg6SO0+ugr6J0SxD8=;
+	s=arc-20240116; t=1781625744; c=relaxed/simple;
+	bh=hbIkY1uNDDewiAZvBnyr/Q0oRY381Z+7pKrit9DnDWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atKoTWGfpucH6IrClc5MBxJf47yMexsVmNIrVpTNrm+7aYkw4wF9gTcsHmRx6RZac2PLp2PB/YCDNR9XKaH/5Ri0ZaN968g0ZIhnohAZc0XWwfraNNupldOny+PBxXB2zcycc/E++sYSDUJRvfXWZna1ej/jFxTJFPmhT6pGLR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/T1BoBW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41711F000E9;
-	Tue, 16 Jun 2026 15:43:19 +0000 (UTC)
+	 MIME-Version; b=l1FtmZyk4WT5RzLgQ0U8QrEWQAh4nJdXfe1swDI2Zav7jHQnhU+yPQcEOhNMym9J1xzFL+0/+w6LBsuEmyFpSa6H7o8UXvimtoldYydaWvTEKvwSpeo7vBC7eimbOIfe0gjL3JZkyli3HXfkJTPtcx7EVpY4+esMVHL8ybUY+0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkf6PE3v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0032B1F000E9;
+	Tue, 16 Jun 2026 16:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624600;
-	bh=SaNa5b4vRXVvTP2KSElht8DvJVW6s6YpN8jiQB8meEA=;
+	s=korg; t=1781625743;
+	bh=LORu9xOIvM7ynjbSArjs/Yu7LjopxDt+6gGI5IHzJuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P/T1BoBW75ASstl1YZfJY6U0O4b9m1s9U/vbIKLEB1m8pBhLbMC+54IXRFtdjkeks
-	 QupVLDCErRbIUzx7Xm9NZ8bEuaZ6eqHLfZmyuNZ2wWr9I6IQrkewHiQ9/rJV7vsWF8
-	 NDeVy5eHWMKhbjkXD0WgtYRr29B9Bsp1hcTyaIKw=
+	b=nkf6PE3vIE/Aqc2Nf4NjP5CISPc8NRqaR3oe+kZhNfW4GiVVntkFtzJurusHTFD4r
+	 fqk+Di3kxARc/AW2YGz+OfZs58EKyZh/f0eT0bvI9p901RWSAlFVxf8Ev9GankDcBu
+	 UY8qHz7srDhEWcSXDRTHeFBvJbrpvSkpzcbyWJno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 364/378] sched_ext: Dont warn on NULL cgrp_moving_from in scx_cgroup_move_task()
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 199/325] mptcp: sockopt: check timestamping ret value
 Date: Tue, 16 Jun 2026 20:29:55 +0530
-Message-ID: <20260616145129.299608035@linuxfoundation.org>
+Message-ID: <20260616145107.906929987@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,112 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264189-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mfleming@cloudflare.com,m:tj@kernel.org,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264411-lists,stable=lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willemdebruijn.kernel@gmail.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:willemdebruijnkernel@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_EMAILBL_FAIL(0.00)[willemdebruijnkernel.gmail.com:query timed out];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cloudflare.com:email,nvidia.com:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 44552691923
+X-Rspamd-Queue-Id: A8F49691A3E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 02e545c4297a26dbbc41df81b831e7f605bcd306 ]
+commit 57132affbc89c02e1bf73fdf5724311bdc9a29da upstream.
 
-A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
-its own subtree_control while a sched_ext scheduler is loaded:
+sock_set_timestamping() can fail for different reasons. The returned
+value should then be checked.
 
-  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
-   scx_cgroup_move_task+0xa8/0xb0
-   sched_move_task+0x134/0x290
-   cpu_cgroup_attach+0x39/0x70
-   cgroup_migrate_execute+0x37d/0x450
-   cgroup_update_dfl_csses+0x1e3/0x270
-   cgroup_subtree_control_write+0x3e7/0x440
+If sock_set_timestamping() fails for at least one subflow, the first
+error is now reported to the userspace, similar to what is done with
+other socket options.
 
-scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
-cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
-through this sequence:
-
-  Step                               Result
-  ---------------------------------  ----------------------------------
-  1. cpu enabled on cgroup G         cpu css = A
-  2. cpu toggled off then on for G   A killed, B created (same cgroup)
-  3. an exiting task keeps A alive   migration skips it, A now stale
-  4. +memory migrates G              stale A vs current B pulls cpu in
-  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
-  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
-
-The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
-while migration drives the move on css identity, so a NULL cgrp_moving_from
-here is a legitimate css-only migration, not a missing prep.
-
-The call is already gated on cgrp_moving_from, so just drop the warning.
-ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
-
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
+Cc: stable@vger.kernel.org
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Closes: https://lore.kernel.org/willemdebruijn.kernel.178a41a53d041@gmail.com
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-7-856831229976@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mptcp/sockopt.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -3402,11 +3402,13 @@ void scx_cgroup_move_task(struct task_st
- 		return;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -235,15 +235,19 @@ static int mptcp_setsockopt_sol_socket_t
  
- 	/*
--	 * @p must have ops.cgroup_prep_move() called on it and thus
--	 * cgrp_moving_from set.
-+	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
-+	 * cgroup changes. Migration keys off css rather than cgroup identity,
-+	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
-+	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
-+	 * keep prep_move and move paired.
- 	 */
--	if (SCX_HAS_OP(sch, cgroup_move) &&
--	    !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
-+	if (SCX_HAS_OP(sch, cgroup_move) && p->scx.cgrp_moving_from)
- 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, cgroup_move, task_rq(p),
- 				 p, p->scx.cgrp_moving_from,
- 				 tg_cgrp(task_group(p)));
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err;
+ 
+ 		lock_sock(ssk);
+-		sock_set_timestamping(ssk, optname, timestamping);
++		err = sock_set_timestamping(ssk, optname, timestamping);
+ 		release_sock(ssk);
++
++		if (err < 0 && ret == 0)
++			ret = err;
+ 	}
+ 
+ 	release_sock(sk);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int mptcp_setsockopt_sol_socket_linger(struct mptcp_sock *msk, sockptr_t optval,
 
 
 
