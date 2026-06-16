@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ms7cJFt7MWrmkQUAu9opvQ
-	(envelope-from <stable+bounces-264655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:39 +0200
+	id +JgIA8mdMWpCoQUAu9opvQ
+	(envelope-from <stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93526923CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9286A694ADA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="KiwE/VB3";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264655-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264655-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IAPk0EbV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266464-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 363DA325A8BC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0BEE530386E6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FC846AF1B;
-	Tue, 16 Jun 2026 16:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE923DBD76;
+	Tue, 16 Jun 2026 19:02:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C7943E4BA;
-	Tue, 16 Jun 2026 16:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8668349CF0;
+	Tue, 16 Jun 2026 19:02:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627095; cv=none; b=I3K62yIUHCOG2GnlORWDaRAsru+Pc5pOWMVSCoADssQA9ow6k05jhP80q5B67Ul+s1+Q1z6fJ37yQmFTxLNUebL45HuzvUcLmLyHyI06g/giwe42XralXuLQmxue2stnTveAkUlmo+fFItusCqL8u8Sq3yUt/zvqFqXt0XNL8hM=
+	t=1781636550; cv=none; b=ev4383jogof/0ULhIBvX3UtVblcHiWKIAVxs2zFDPn6lRdg99A8TPJf5F6JMif/hsMrDVDZctX2pusZ3gdZK4uviNcrEEpC2punZdcRRguucUwshXVpwJQXIaLRUMoy+5mT4YBwUhoW00m9t5w0qu6kvDV98nJM7v0/raqChgaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627095; c=relaxed/simple;
-	bh=6dtBOF36sVse/C6KzLTMC2Cyn585+QZQTlpt8KiZdzI=;
+	s=arc-20240116; t=1781636550; c=relaxed/simple;
+	bh=cG2AmIooLNinCg37jun76/7nyqE89hX+BtFuYg7qqfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m/ROyzO+K/MrnaPZQrq804d3tZFd8y92pydyrnax13V+CVQiMAh/vBMji9omo4GvUdDBeikIz3etu4hfGIXKEYurCrLEvhLOjWL6uQhhRr0Ft32XG8OzTcyvJYnLpeQKQapBT9ky3z/itT4OEuwvas/hNSZKHflBey8o1HZamdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiwE/VB3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6389A1F000E9;
-	Tue, 16 Jun 2026 16:24:53 +0000 (UTC)
+	 MIME-Version; b=U7lTqFEFvjoh8HRMbJEPUav0Jetb7sg2ORMaUOShT5c8ORK8aYeZEtKSdGMDAKb/89iCSNLRdQLjrnTgExYOa1YX4L8OTozuGY0JkBGTc2io35YqhXOlaTmAYpDgNt1pUj4bXulTfo4FywG1k6UJvD3BM/lY37Hhx8sF3pAPBZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAPk0EbV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA721F000E9;
+	Tue, 16 Jun 2026 19:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627094;
-	bh=YwCTaIrl3HC3yrWM3PDAFf0jvQOtr8cGifHxByOWS9o=;
+	s=korg; t=1781636549;
+	bh=BLK5pApShqzUq1OXjHCB2NxWP08jpjM9mhkOoazCVtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KiwE/VB3ljcUjwfKfuIqG0MIE1vb8i8Lm32TqBsXwBd2ugEL5cQI8O0DFANjZEt8X
-	 gGFecc3KtP+QjC8svkhDP48tUdv/qrAwnRsCRAnSiYbBFVtoqlZQhEAhC9NQMPuXvG
-	 AzJGXEVfqX0G+iZlYU+GiaAzDAoppPihW2DXA89o=
+	b=IAPk0EbVEr7wviJ7Mtnvxy9Fu1HgzIqv3YSDtj93bjloZw4be1Ly1Sa/RM8PNhyZe
+	 gE4QQKC5XtpMPbLYG2ven8x/EQ1DuUMM+xk+Wk9ppN4NHYZU7ukQi8xP0McvyZG523
+	 65UOmmJCca99LNZqzumukCjX+iOgjBJSipdJnkE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Matthew Brost <matthew.brost@intel.com>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 119/261] drm/xe: fix refcount leak in xe_range_fence_insert()
+Subject: [PATCH 5.10 261/342] spi: tegra20-sflash: fix controller deregistration
 Date: Tue, 16 Jun 2026 20:29:17 +0530
-Message-ID: <20260616145050.568811387@linuxfoundation.org>
+Message-ID: <20260616145100.415084516@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +70,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264655-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:matthew.brost@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266464-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jg1.han@samsung.com,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,samsung.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D93526923CD
+X-Rspamd-Queue-Id: 9286A694ADA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit ba36786b21d19082e696eda85bfcd49e7071944a ]
+[ Upstream commit ad7310e983327f939dd6c4e801eab13238992572 ]
 
-xe_range_fence_insert() acquires a reference on fence via
-dma_fence_get() and stores it in rfence->fence.  It then calls
-dma_fence_add_callback() and handles two cases: when the callback
-is successfully registered (err == 0) the fence is transferred to
-the tree for later cleanup; when the fence is already signaled
-(err == -ENOENT) it manually drops the extra reference with
-dma_fence_put(fence).
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-However, dma_fence_add_callback() can fail with other errors
-(e.g. -EINVAL) and in that case the code falls through to the free:
-label without releasing the acquired reference, leaking it.
-
-Fix the leak by adding an else branch that calls dma_fence_put()
-before jumping to free: for any error other than -ENOENT.
-
-Fixes: 845f64bdbfc9 ("drm/xe: Introduce a range-fence utility")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260610172705.3450560-1-matthew.brost@intel.com
-(cherry picked from commit 98c4a4201290823c2c5c7ba21692bd9a64b61021)
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260410081757.503099-23-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ renamed spi_controller/host APIs to spi_master/master equivalents and switched devm_spi_register_master to spi_register_master ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_range_fence.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-tegra20-sflash.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_range_fence.c b/drivers/gpu/drm/xe/xe_range_fence.c
-index 372378e89e9892..3d8fa194a7b0eb 100644
---- a/drivers/gpu/drm/xe/xe_range_fence.c
-+++ b/drivers/gpu/drm/xe/xe_range_fence.c
-@@ -77,6 +77,8 @@ int xe_range_fence_insert(struct xe_range_fence_tree *tree,
- 	} else if (err == 0) {
- 		xe_range_fence_tree_insert(rfence, &tree->root);
- 		return 0;
-+	} else {
-+		dma_fence_put(fence);
- 	}
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -508,7 +508,7 @@ static int tegra_sflash_probe(struct pla
+ 	pm_runtime_put(&pdev->dev);
  
- free:
--- 
-2.53.0
-
+ 	master->dev.of_node = pdev->dev.of_node;
+-	ret = devm_spi_register_master(&pdev->dev, master);
++	ret = spi_register_master(master);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to master err %d\n", ret);
+ 		goto exit_pm_disable;
+@@ -531,12 +531,18 @@ static int tegra_sflash_remove(struct pl
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct tegra_sflash_data	*tsd = spi_master_get_devdata(master);
+ 
++	spi_master_get(master);
++
++	spi_unregister_master(master);
++
+ 	free_irq(tsd->irq, tsd);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_sflash_runtime_suspend(&pdev->dev);
+ 
++	spi_master_put(master);
++
+ 	return 0;
+ }
+ 
 
 
 
