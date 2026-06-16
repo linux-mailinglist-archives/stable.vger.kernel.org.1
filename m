@@ -1,62 +1,65 @@
-Return-Path: <stable+bounces-264350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZcA4B2NzMWqvjgUAu9opvQ
-	(envelope-from <stable+bounces-264350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:39 +0200
+	id OjZ5Ns5xMWrmjQUAu9opvQ
+	(envelope-from <stable+bounces-264161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD456691A0D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:33 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC476917FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PUnVK7j9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264350-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264350-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pDC14v5b;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264161-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264161-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC65C3007F74
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:57:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C686F302C5D2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6548344DB6D;
-	Tue, 16 Jun 2026 15:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB3544DB7D;
+	Tue, 16 Jun 2026 15:40:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410984418DF;
-	Tue, 16 Jun 2026 15:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0B644CF52;
+	Tue, 16 Jun 2026 15:40:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625424; cv=none; b=Ao1SoKSzfE6HTtu/mtqrQQHhQuz0fDchLkQBOJiqO5uTRZ5s08rLK3koSmaf54hM8WDBauSYmi7q1u6BvvxNJN6NG006WQdS5q2kRw16mxPqgO1VMhreBZveg7sxc9Mq5K/ElajFO5qzw1EuEZEdz3Mr2lTNXTYgiWMtcOnz97s=
+	t=1781624444; cv=none; b=K6Z9xEBX9Hl8hoq3dnvZOFUF0t+BS3Tm55ysI5uaUCFKFde+psIk2ChSS5j8MlRXUSwhyQv8ip3pRElKunUcQJ9nFNDBBgG+7DgqeEzmk565YfqyPEnfY3pgUqL3XBT1b+7ZfjbsAlfB0kvnj/G2ua3NPLfyXXEMUIDV7M8cfro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625424; c=relaxed/simple;
-	bh=3mxjlQ9rEyCUlOnc/yUD3Mi5OUhEuRobBRfz6I0GPPw=;
+	s=arc-20240116; t=1781624444; c=relaxed/simple;
+	bh=De92+8TcrcaEkvxv2GyesLIvnx3BP1sM5QZw910CiTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/8YqKMuFjYV1qmCWDA8ImYw+Kn6PAxkhA87DRU3q2pL3L07E6RaNqMykXwepTIKDeOZ2DqRmx03Pzds/uInTdtzMI5OOGaLqWk6sLEUkTziHp6ANs+Bt6CaN8/oAgGccTEvI2k1H6rHgNpQYcCftWyPx0YOZNbyJ6WHA4GLR9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUnVK7j9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FE21F000E9;
-	Tue, 16 Jun 2026 15:57:01 +0000 (UTC)
+	 MIME-Version; b=LhcpYDrvpVNPD2ymY3QmliPusKbfmeVzW48rQTgeky+JcIBZgYwDJHmmFobD2DZpecKsBlOg4r++V+B0bUEUD47q3T6D4g4DClc0Nzh3oEe3VSSisxntVRSzJc8FlMuVWWNUMAEu2rW2j26kNWhxGJLuEXAsmjxtOkGX42tfxi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDC14v5b; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185B41F000E9;
+	Tue, 16 Jun 2026 15:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625423;
-	bh=mQIWLX2x/fVpileqFX7eR41vf425x5UUezuxSqJ+HZ4=;
+	s=korg; t=1781624443;
+	bh=rqa8hurC/LdTTkg7yeoHqh7QdAVjm+YLm2yfF8ZMR74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PUnVK7j9E9mODeC11UyB/3W4W8/u8DVKbCb9MPByCoEg3SgHxnLCEwEg5XvLgU+c6
-	 rDcTYuiJc0aF33iTiiPmzCxyBk0YtQFJA7y47f0+ZmOSbVe6GMxH101qQqpkBOIuIH
-	 yKHhg/piFmJX56YdvGE8MpSzApq9hoNNwARyw/YU=
+	b=pDC14v5bRxJmfzrCL0yYsxiffFSUCkWdboZg/JBwIHU+b4f9pc8VROhwVqUQ9tDt8
+	 Xe7J91YOcrSe8xXiGf/3bGVTi0tI985NlqUGyVCD50FijwZNt9BIpUhLgDw106uVsD
+	 KHtxL814WVOs8wQA62eja1CFCYfu3llZckKpFdp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 139/325] clk: qcom: x1e80100-dispcc: Stop disp_cc_mdss_mdp_clk_src from getting parked
+	David Carlier <devnexen@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	yuehaibing <yuehaibing@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 304/378] mm/hugetlb: restore reservation on error in hugetlb folio copy paths
 Date: Tue, 16 Jun 2026 20:28:55 +0530
-Message-ID: <20260616145104.655867492@linuxfoundation.org>
+Message-ID: <20260616145126.156282487@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +76,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264350-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,google.com,suse.de,huawei.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-264161-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:muchun.song@linux.dev,m:david@kernel.org,m:almasrymina@google.com,m:osalvador@suse.de,m:yuehaibing@huawei.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:johannes.goede@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[dmitry.baryshkov.oss.qualcomm.com:query timed out];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,56 +100,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux-foundation.org:email,suse.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: AD456691A0D
+X-Rspamd-Queue-Id: EEC476917FE
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit bc27dbefae6ed11376d991a2921eff806ffef67c ]
+commit 40c81856e622a9dc59294a90d169ac07ea25b0b0 upstream.
 
-Parking disp_cc_mdss_mdp_clk_src at 19.2MHz causing the EFI GOP framebuffer
-to stop functioning. The EFI GOP framebuffer should keep working until
-the msm display driver loads, to help with boot debugging and to ensure
-display output when the msm module is not in the initramfs.
+Two sites in mm/hugetlb.c allocate a hugetlb folio via
+alloc_hugetlb_folio() (consuming a VMA reservation) and then call
+copy_user_large_folio(), which became int-returning in commit 1cb9dc4b475c
+("mm: hwpoison: support recovery from HugePage copy-on-write faults") and
+can now fail (e.g.  -EHWPOISON on a hwpoisoned source page).  On the
+failure path, folio_put() restores the global hugetlb pool count through
+free_huge_folio(), but the per-VMA reservation map entry is left marked
+consumed:
 
-Switch disp_cc_mdss_mdp_clk_src over to clk_rcg2_shared_no_init_park_ops
-to keep the EFI GOP working after binding the x1e80100-dispcc driver.
+  - hugetlb_mfill_atomic_pte() resubmission path (UFFDIO_COPY)
+  - copy_hugetlb_page_range() fork-time CoW path when
+    hugetlb_try_dup_anon_rmap() fails (rare: pinned hugetlb anon
+    folio under fork)
 
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
-Link: https://lore.kernel.org/r/20260425123351.6292-1-johannes.goede@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+User-visible effect: on UFFDIO_COPY into a private hugetlb VMA where the
+resubmission copy fails, the reservation for that address is leaked from
+the VMA's reserve map.  A subsequent fault at the same address takes the
+no-reservation path, and under hugetlb pool pressure the task is SIGBUSed
+at an address it had previously reserved.  The fork-time CoW path leaks
+the same way in the child VMA's reserve map, though it requires the much
+rarer combination of pinned hugetlb anon page + hwpoisoned source.
+
+Add the missing restore_reserve_on_error() call before folio_put() on both
+error paths.
+
+Link: https://lore.kernel.org/20260520044912.6751-1-devnexen@gmail.com
+Fixes: 1cb9dc4b475c ("mm: hwpoison: support recovery from HugePage copy-on-write faults")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: yuehaibing <yuehaibing@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/dispcc-x1e80100.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/hugetlb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-x1e80100.c b/drivers/clk/qcom/dispcc-x1e80100.c
-index 40069eba41f241..5c00a0f8448931 100644
---- a/drivers/clk/qcom/dispcc-x1e80100.c
-+++ b/drivers/clk/qcom/dispcc-x1e80100.c
-@@ -580,7 +580,7 @@ static struct clk_rcg2 disp_cc_mdss_mdp_clk_src = {
- 		.parent_data = disp_cc_parent_data_6,
- 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_6),
- 		.flags = CLK_SET_RATE_PARENT,
--		.ops = &clk_rcg2_shared_ops,
-+		.ops = &clk_rcg2_shared_no_init_park_ops,
- 	},
- };
- 
--- 
-2.53.0
-
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4996,6 +4996,7 @@ again:
+ 							    addr, dst_vma);
+ 				folio_put(pte_folio);
+ 				if (ret) {
++					restore_reserve_on_error(h, dst_vma, addr, new_folio);
+ 					folio_put(new_folio);
+ 					break;
+ 				}
+@@ -6292,6 +6293,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		folio_put(*foliop);
+ 		*foliop = NULL;
+ 		if (ret) {
++			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+ 			folio_put(folio);
+ 			goto out;
+ 		}
 
 
 
