@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265046-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Uq8nEs+MMWqJmQUAu9opvQ
-	(envelope-from <stable+bounces-265590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:07 +0200
+	id UtlmFwKEMWqAlQUAu9opvQ
+	(envelope-from <stable+bounces-265046-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F9E69385F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A961692DA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g4S3dnNh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265590-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265590-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I8OUMAlI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265046-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7B4931ADE5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B9828304AD5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E22F3C3C1E;
-	Tue, 16 Jun 2026 17:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE94E466B5E;
+	Tue, 16 Jun 2026 17:00:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554892F12AE;
-	Tue, 16 Jun 2026 17:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953E647A0C0;
+	Tue, 16 Jun 2026 17:00:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631968; cv=none; b=r/8Vr8MlyCnQtabIcLgtkZapR91H6ZN6acKMNtVY5iUX8AkukjbRke8qtESr11ywsfFqA60gglocGFQqhUbF4QnnwK2DKf39w3EkucLqrHu+QwcsgYJYTBpQ5YUZpxZwkaJHOa8M1k3yFu+L7N/WoJh82pqTc/WsXOUA/Yt7M6g=
+	t=1781629205; cv=none; b=jjD/wf6Tlf7cD/dejJqJrqo/is+AW/warazVuF+b+1qH/AdLJmJU6ImN/4tf/5TFD5F9aTZoP+mCCIK0OEQIGfc5hHlA8ewttNVakgaIbLtPN/M/s0Vw2aw8apuZZC2iL+gD30T8FM9iZAM7RNQJ2PSPEp88uU64MxpVyMRb8+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631968; c=relaxed/simple;
-	bh=YTLisOWibQMV/+f1pqVzxugSUzrRKHW7W0rL9VLbAp8=;
+	s=arc-20240116; t=1781629205; c=relaxed/simple;
+	bh=SBeA+MPhiicaFKb9RqmTAE0C59EVpXIVpMg3HIs11Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzMNMDhwlUuXPJBuOIGjM9P2RytLx8j3f2qPQ5NW8SF7GpOlQJX2L85/LlmsqZIdmp7cojjVvKYbn4LBG8ZzC9Z506y0pdRAhBNtzsSphx0tIsPONJ429GFYLgyoNzFWtKJDaQ8jK8YbzzPCkT6x+TAthXyq1KAxM+2UyQXilx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4S3dnNh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF3D1F000E9;
-	Tue, 16 Jun 2026 17:46:05 +0000 (UTC)
+	 MIME-Version; b=NKOeWLofHOFJGckKpY0umb0N3FOHg5u8yjZYwXhYVnzf3hyY6PsTBDPwlDnn/RGqYa+IDoK4cu8dPrH2bMP9PAjIBNGhSzd5wngvNRuzLOuYFdGoksq/241ZBHWtIWl/bEqtyNe37oJiMolJu3zKEyd2HRgDyhxmQ44G5bFpmVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8OUMAlI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FBB1F00A3A;
+	Tue, 16 Jun 2026 17:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631967;
-	bh=WMNKfNX4ExS6bDdSw5R2yFdNVfEr7GqQEViC5KO8kqU=;
+	s=korg; t=1781629204;
+	bh=FhF5XB13kkl45c3MXNY8209MFlehBWYngPM3ZE4ZMiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g4S3dnNh8gFmVc7CtTpY0R0jOSwHHZfBnndECxXQ3BQ2DTrSNs6PTnrLHQMRaIiu7
-	 KThFsH12nbJBxM0l86/A7YGUeVnUU6iuE+SF0uKijmnzfYdqWYjXF7BNXUiB6zu7no
-	 UItcxTknt+iBopS4haXL7egjDiY2mP9cwLXLfSfE=
+	b=I8OUMAlI4KX8DFxSB0mm5N7Betdqup/PJBqEELDlCvn3wo8GK3zZoU66lGajSUWtK
+	 beo/8CT0NGkhdBcroVzhEnHjYCWEonex81U/klRElXlbTYH6UPyXiLsyoTlyXMyV4n
+	 35r6I4iInU/ACr46HGUKeg6HrCoriutPXDvQSNTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.1 321/522] slimbus: qcom-ngd-ctrl: Avoid ABBA on tx_lock/ctrl->lock
+	Naveen Mamindlapalli <naveenm@marvell.com>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 241/452] octeontx2-af: npc: Fix CPT channel mask in npc_install_flow
 Date: Tue, 16 Jun 2026 20:27:48 +0530
-Message-ID: <20260616145140.869979826@linuxfoundation.org>
+Message-ID: <20260616145130.345527069@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +71,157 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265590-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265046-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveenm@marvell.com,m:ndabilpuram@marvell.com,m:rkannoth@marvell.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D0F9E69385F
+X-Rspamd-Queue-Id: 5A961692DA6
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Nithin Dabilpuram <ndabilpuram@marvell.com>
 
-commit 55f2ea9ff83cc27a85526b14bc9b32f96a08d6ec upstream.
+[ Upstream commit 1d31eb27e570daa04f5373345f9ac98c95863be9 ]
 
-During the SSR/PDR down notification the tx_lock is taken with the
-intent to provide synchronization with active DMA transfers.
+Use the CPT-aware NIX channel mask in the npc_install_flow path so that
+when the host PF installs steering rules in kernel for a VF used from
+userspace (e.g. DPDK), MCAM entries see the same channel mask semantics as
+other RX paths.
 
-But during this period qcom_slim_ngd_down() is invoked, which ends up in
-slim_report_absent(), which takes the slim_controller lock. In multiple
-other codepaths these two locks are taken in the opposite order (i.e.
-slim_controller then tx_lock).
-
-The result is a lockdep splat, and a possible deadlock:
-
-  rprocctl/449 is trying to acquire lock:
-  ffff00009793e620 (&ctrl->lock){+.+.}-{4:4}, at: slim_report_absent (drivers/slimbus/core.c:322) slimbus
-
-  but task is already holding lock:
-  ffff00009793fb50 (&ctrl->tx_lock){+.+.}-{4:4}, at: qcom_slim_ngd_ssr_pdr_notify (drivers/slimbus/qcom-ngd-ctrl.c:1475) slim_qcom_ngd_ctrl
-
-  which lock already depends on the new lock.
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&ctrl->tx_lock);
-                                lock(&ctrl->lock);
-                                lock(&ctrl->tx_lock);
-   lock(&ctrl->lock);
-
-The assumption is that the comment refers to the desire to not call
-qcom_slim_ngd_exit_dma() while we have an ongoing DMA TX transaction.
-But any such transaction is initiated and completed within a single
-qcom_slim_ngd_xfer_msg().
-
-Prior to calling qcom_slim_ngd_exit_dma() the slim_controller is torn
-down, all child devices are notified that the slimbus is gone and the
-child devices are removed.
-
-Stop taking the tx_lock in qcom_slim_ngd_ssr_pdr_notify() to avoid the
-deadlock.
-
-Fixes: a899d324863a ("slimbus: qcom-ngd-ctrl: add Sub System Restart support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-9-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56bcef528bd8 ("octeontx2-af: Use npc_install_flow API for promisc and broadcast entries")
+Cc: Naveen Mamindlapalli <naveenm@marvell.com>
+Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Link: https://patch.msgid.link/20260602045853.1558530-1-rkannoth@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    3 ---
- 1 file changed, 3 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  1 +
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 32 +++++++++----------
+ .../marvell/octeontx2/af/rvu_npc_fs.c         |  2 +-
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1394,15 +1394,12 @@ static int qcom_slim_ngd_ssr_pdr_notify(
- 	switch (action) {
- 	case QCOM_SSR_BEFORE_SHUTDOWN:
- 	case SERVREG_SERVICE_STATE_DOWN:
--		/* Make sure the last dma xfer is finished */
--		mutex_lock(&ctrl->tx_lock);
- 		if (ctrl->state != QCOM_SLIM_NGD_CTRL_DOWN) {
- 			pm_runtime_get_noresume(ctrl->ctrl.dev);
- 			ctrl->state = QCOM_SLIM_NGD_CTRL_DOWN;
- 			qcom_slim_ngd_down(ctrl);
- 			qcom_slim_ngd_exit_dma(ctrl);
- 		}
--		mutex_unlock(&ctrl->tx_lock);
- 		break;
- 	case QCOM_SSR_AFTER_POWERUP:
- 	case SERVREG_SERVICE_STATE_UP:
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 9fbc071ef29b0c..11d25404d57166 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -933,6 +933,7 @@ int rvu_cpt_lf_teardown(struct rvu *rvu, u16 pcifunc, int blkaddr, int lf,
+ 			int slot);
+ int rvu_cpt_ctx_flush(struct rvu *rvu, u16 pcifunc);
+ int rvu_cpt_init(struct rvu *rvu);
++u32 rvu_get_cpt_chan_mask(struct rvu *rvu);
+ 
+ #define NDC_AF_BANK_MASK       GENMASK_ULL(7, 0)
+ #define NDC_AF_BANK_LINE_MASK  GENMASK_ULL(31, 16)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 9b8a6046e6dff0..65ad7476e60983 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -609,6 +609,19 @@ static u64 npc_get_mcam_action(struct rvu *rvu, struct npc_mcam *mcam,
+ 			  NPC_AF_MCAMEX_BANKX_ACTION(index, bank));
+ }
+ 
++u32 rvu_get_cpt_chan_mask(struct rvu *rvu)
++{
++	/* For cn10k the upper two bits of the channel number are
++	 * cpt channel number. with masking out these bits in the
++	 * mcam entry, same entry used for NIX will allow packets
++	 * received from cpt for parsing.
++	 */
++	if (!is_rvu_otx2(rvu))
++		return NIX_CHAN_CPT_X2P_MASK;
++	else
++		return 0xFFFu;
++}
++
+ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
+ 				 int nixlf, u64 chan, u8 *mac_addr)
+ {
+@@ -652,7 +665,7 @@ void rvu_npc_install_ucast_entry(struct rvu *rvu, u16 pcifunc,
+ 	eth_broadcast_addr((u8 *)&req.mask.dmac);
+ 	req.features = BIT_ULL(NPC_DMAC);
+ 	req.channel = chan;
+-	req.chan_mask = 0xFFFU;
++	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 	req.intf = pfvf->nix_rx_intf;
+ 	req.op = action.op;
+ 	req.hdr.pcifunc = 0; /* AF is requester */
+@@ -722,11 +735,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
+ 	 * mcam entry, same entry used for NIX will allow packets
+ 	 * received from cpt for parsing.
+ 	 */
+-	if (!is_rvu_otx2(rvu)) {
+-		req.chan_mask = NIX_CHAN_CPT_X2P_MASK;
+-	} else {
+-		req.chan_mask = 0xFFFU;
+-	}
++	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 
+ 	if (chan_cnt > 1) {
+ 		if (!is_power_of_2(chan_cnt)) {
+@@ -915,16 +924,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 	ether_addr_copy(req.mask.dmac, mac_addr);
+ 	req.features = BIT_ULL(NPC_DMAC);
+ 
+-	/* For cn10k the upper two bits of the channel number are
+-	 * cpt channel number. with masking out these bits in the
+-	 * mcam entry, same entry used for NIX will allow packets
+-	 * received from cpt for parsing.
+-	 */
+-	if (!is_rvu_otx2(rvu))
+-		req.chan_mask = NIX_CHAN_CPT_X2P_MASK;
+-	else
+-		req.chan_mask = 0xFFFU;
+-
++	req.chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 	req.channel = chan;
+ 	req.intf = pfvf->nix_rx_intf;
+ 	req.entry = index;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+index 0f4e462d39c2ea..b0ec4757b10835 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+@@ -1354,7 +1354,7 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+ 
+ 	/* ignore chan_mask in case pf func is not AF, revisit later */
+ 	if (!is_pffunc_af(req->hdr.pcifunc))
+-		req->chan_mask = 0xFFF;
++		req->chan_mask = rvu_get_cpt_chan_mask(rvu);
+ 
+ 	err = npc_check_unsupported_flows(rvu, req->features, req->intf);
+ 	if (err)
+-- 
+2.53.0
+
 
 
 
