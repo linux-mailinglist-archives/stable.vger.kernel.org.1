@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3UsDGAJvMWrijAUAu9opvQ
-	(envelope-from <stable+bounces-264057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:58 +0200
+	id QvOKNrl5MWpCkQUAu9opvQ
+	(envelope-from <stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52F2691527
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5754A6921DF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xH1gr75W;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264057-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264057-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZolpSfGC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 989B23098F18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 792493102460
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D7A44CAF7;
-	Tue, 16 Jun 2026 15:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D390F43E4BA;
+	Tue, 16 Jun 2026 16:19:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B4644CAF8;
-	Tue, 16 Jun 2026 15:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A665346AF1B;
+	Tue, 16 Jun 2026 16:19:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623892; cv=none; b=ibnvLDoNm+9/y4POLSYHMX2EuOUGqYK9FjXhZQ/6bF0tRTIMCGFgg8LPij/4+GyJkXYhRGvIKLfuOjJbF6/13vtEs+WuWmJ8Db6AaSzUUDs9DoFKOmSARL0CPfXJ12pe7Z6baYj85EUaWUzROex9PVG+H7P5r7qtW5zpztopiFo=
+	t=1781626749; cv=none; b=MEVARGLOrtBGBPBGVBnlG4XlqKj+RwPxjzrtdXVES1l0XGtwMoHd0YNS1136px/b8qkOa/FKejWmSEWJ32DBw1LGiYWLKJ6QUZfi7OfTFBGfHMpBgp5u/8IbDJnuSFxVRsB3g76Ew6+lTKLZGY3vmdvJxgxiSuZLwIuWvdlBqag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623892; c=relaxed/simple;
-	bh=dau2Hjo2o1vDuzSs8KWPbugi2K6eoiCxCFBgwBGumDk=;
+	s=arc-20240116; t=1781626749; c=relaxed/simple;
+	bh=talDKiKxHZ0QJtQYeyOsn7MixkeMvCt1fY7CrCV7rOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLlSghPELHGJMmfCqoPwF94dxdRQagxI3K7n/hEiHsnph4E8hfyMoc9aH0UofTifNg5SE8dfNIpCep6pgHRehBY2ICJr1Ia1l7RP+dM4VipYtlUQJ2/LAKEfHjE+5xGjT0/gb/30Mp9V8GshcIRZVTJO9Cxv1PyvBYK0bMZ36kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xH1gr75W; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351F21F000E9;
-	Tue, 16 Jun 2026 15:31:29 +0000 (UTC)
+	 MIME-Version; b=ansfTeDbnYi1rlx5EyXK1lp0+gYrgTJX/mna5jA7NRxdMVOjhH8dqH4m21OT3iLrA+ST8fDVmCe/iaaT7zpkpp2jc1QiX3vPTpxbzwNQC+YughvLMyrBln3V6pY+fEHfvR1QhbQF+1VyTvPUihC8gOITXWoPjgdG8ExQteaGRU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZolpSfGC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA01F000E9;
+	Tue, 16 Jun 2026 16:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623891;
-	bh=5IlGzjv+FxJNmL5syoeBRwDifn0+jOwJhlKkfAkWsE8=;
+	s=korg; t=1781626748;
+	bh=VKJoOQ6P6AmtEEapDchl9THwKyfzVoa9dlmTJylmASI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xH1gr75WIAPRBlg2wsJn156gwWB8yLPQUL8I3nTli5ckQL03m6/Y9TqZeyeQ9d5Xj
-	 8v8K7efxu//uhstJmSuQ7u7o71tmO43VxGBv121sCZ3EvluL2glx/TD/Mb4aUov4WY
-	 /4Qzt3pULLrHwjYMDx2epmVZqWVTS01U0m8VUCaQ=
+	b=ZolpSfGCb2nt8LsdfH3MIiqIw680g1ria0oF75NRWQcFn+jX49qgDUsxCy1DSmrzH
+	 BQLslIj6IVQWZtjjUJIKVxCZm0CuoF345CxorKUHNHPoEvD/d/BmJ+w7RyybVRJAiq
+	 z6GCRo/SL19QYNKRjSfkDA7bpNzS1ZUe2df7Y+sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 236/378] mptcp: sockopt: check timestamping ret value
+	Yicong Hui <yiconghui@gmail.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 029/261] drm/imx: Fix three kernel-doc warnings in dcss-scaler.c
 Date: Tue, 16 Jun 2026 20:27:47 +0530
-Message-ID: <20260616145122.659837967@linuxfoundation.org>
+Message-ID: <20260616145046.406127932@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,28 +68,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264057-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willemdebruijn.kernel@gmail.com,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:willemdebruijnkernel@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.nxp.com,nxp.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264598-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiconghui@gmail.com,m:laurentiu.palcu@oss.nxp.com,m:victor.liu@nxp.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,66 +96,66 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,nxp.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E52F2691527
+X-Rspamd-Queue-Id: 5754A6921DF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Yicong Hui <yiconghui@gmail.com>
 
-commit 57132affbc89c02e1bf73fdf5724311bdc9a29da upstream.
+[ Upstream commit ae0383e5a9a4b12d68c76c4769857def4665deff ]
 
-sock_set_timestamping() can fail for different reasons. The returned
-value should then be checked.
+Fix the following W=1 kerneldoc warnings by adding the missing parameter
+descriptions for @phase0_identity and @nn_interpolation in
+dcss_scaler_filter_design() and @phase0_identity in
+dcss_scaler_gaussian_filter()
 
-If sock_set_timestamping() fails for at least one subflow, the first
-error is now reported to the userspace, similar to what is done with
-other socket options.
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:173 function parameter 'phase0_identity' not described in 'dcss_scaler_gaussian_filter'
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'phase0_identity' not described in 'dcss_scaler_filter_design'
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'nn_interpolation' not described in 'dcss_scaler_filter_design'
 
-Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
-Cc: stable@vger.kernel.org
-Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Closes: https://lore.kernel.org/willemdebruijn.kernel.178a41a53d041@gmail.com
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-7-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+Signed-off-by: Yicong Hui <yiconghui@gmail.com>
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Link: https://patch.msgid.link/20260406180013.2442096-1-yiconghui@gmail.com
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imx/dcss/dcss-scaler.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -235,15 +235,19 @@ static int mptcp_setsockopt_sol_socket_t
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+		int err;
- 
- 		lock_sock(ssk);
--		sock_set_timestamping(ssk, optname, timestamping);
-+		err = sock_set_timestamping(ssk, optname, timestamping);
- 		release_sock(ssk);
-+
-+		if (err < 0 && ret == 0)
-+			ret = err;
- 	}
- 
- 	release_sock(sk);
- 
--	return 0;
-+	return ret;
- }
- 
- static int mptcp_setsockopt_sol_socket_linger(struct mptcp_sock *msk, sockptr_t optval,
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-scaler.c b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
+index 825728c356ffbe..eb81a4a57905a7 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-scaler.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
+@@ -166,6 +166,7 @@ static int exp_approx_q(int x)
+  * dcss_scaler_gaussian_filter() - Generate gaussian prototype filter.
+  * @fc_q: fixed-point cutoff frequency normalized to range [0, 1]
+  * @use_5_taps: indicates whether to use 5 taps or 7 taps
++ * @phase0_identity: whether to override phase 0 coefficients with identity filter
+  * @coef: output filter coefficients
+  */
+ static void dcss_scaler_gaussian_filter(int fc_q, bool use_5_taps,
+@@ -262,7 +263,9 @@ static void dcss_scaler_nearest_neighbor_filter(bool use_5_taps,
+  * @src_length: length of input
+  * @dst_length: length of output
+  * @use_5_taps: 0 for 7 taps per phase, 1 for 5 taps
++ * @phase0_identity: whether to override phase 0 coefficients with identity filter
+  * @coef: output coefficients
++ * @nn_interpolation: whether to use nearest neighbor instead of gaussian filter
+  */
+ static void dcss_scaler_filter_design(int src_length, int dst_length,
+ 				      bool use_5_taps, bool phase0_identity,
+-- 
+2.53.0
+
 
 
 
