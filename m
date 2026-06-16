@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265795-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vRKOHpR4MWrGkAUAu9opvQ
-	(envelope-from <stable+bounces-264487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:48 +0200
+	id wD/LMgOQMWotmwUAu9opvQ
+	(envelope-from <stable+bounces-265795-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0557B692088
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF62693C42
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0anyc05S;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264487-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264487-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nNqaEdym;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265795-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265795-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC5D931798E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EABDD300D1D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC8D4657F3;
-	Tue, 16 Jun 2026 16:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A643CFF55;
+	Tue, 16 Jun 2026 18:03:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1275C45BD4B;
-	Tue, 16 Jun 2026 16:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AB23C5842;
+	Tue, 16 Jun 2026 18:03:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626153; cv=none; b=AeUpYDsTej1EGJZfZuz4hWZdPaBjtQvBENahflqAlI7tVQTSNzK/0HQmngz0ThlrKO+btaWXHQ4fAa6xCutpZvKO0KBDZ10deZq3waLJ+9zauXl1pZ46vZZYsuXeziEZq17P961HY5R3BbBJQW17kzKJFf+Rdh1dZIgI9R+7SZs=
+	t=1781633024; cv=none; b=sqwQUEekZcAZgflsJ+VTe17cIwU8Hat5V9YFlz0Q+6nZY8HUsTQl7naWANLg51u5EwWbPkfNyEVu1GwjQ7DFUkvHzv+bBAE3t4/YHOqHhiJUqa4tfy53x5vzpGBa5mv76Fi3hELjoXfIAerpCDIlNHPROXURgzIbAvM9JSsKmFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626153; c=relaxed/simple;
-	bh=nLtpxnrhWa9Gu0BsFEEfFJVBaNbXvcxcp1z7zRScJyc=;
+	s=arc-20240116; t=1781633024; c=relaxed/simple;
+	bh=3yCj4jDpjAozuU8CWYTU96A6wEO4rD1GbiMsGJQBYv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+BzO69kfmKZIiO8S0+SikHPdD9kWk1VD48yjHDB3Emk2yp9tnfJ7f8KxVjXfWYZLWbI2KA6ERjvBaSxU81pRSOnDtK+E0cFh1HkWs4oL5snL0jwEj4lsivjokMLhRFoMYrFHxXIhGIjVYa36qefe1Heff8Qg3Fkm9bKoM7kE4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0anyc05S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2210D1F000E9;
-	Tue, 16 Jun 2026 16:09:10 +0000 (UTC)
+	 MIME-Version; b=KsDcKej/sNREeAfZ9haxaffwHH5qakoB98kA4QWxFkLgSLhDgsiZPRkv2f1XfOt+m79NJvxv7x60MUIQn0IGZzOqnvJn+E67fdUiLqGaqQ8SgKhNP8QeBXCEi3zzJoVfaGz1S1qnSqDwZCK/qOrPi71HBHaymKPOuwJcuv0T9ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNqaEdym; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD62F1F000E9;
+	Tue, 16 Jun 2026 18:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626152;
-	bh=NmjJ0su5Rk2vqGf/oKo0lW0ITpeMFQ+txXfk10kytcw=;
+	s=korg; t=1781633023;
+	bh=ub5G/pKmPoH7gAcLtRSFWSXsyNQZX5kVgMIaURp77sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0anyc05Se3wtCejLw+tzRLyJMmVNji3w5QHxrCrU3Gg7cPkWyG62fPzeB+9Ikghny
-	 rSqFG+0/Q1KdpJImzUPOcbSOuAazF2F2vYIBkvT06j9+bXR/KQAGoz5Hnt6wCydN6A
-	 H7/qxYRmym9kCb7Pk9nTr+ZkvYUDd4Uqh5htrZIg=
+	b=nNqaEdymo0Y9zTNpYhwvczBkdrKeMjXe5+Dd/d6We+sPLYb7sVLUMXhx2JDAgBHkj
+	 tCwJu3gFaMkpmsU4ceNINoS4UXsb+Ra+DsX1t0hG1LPn+LviLVtn4HT4kktcG6lpvy
+	 IGmDG0KTx+ZFXgUxQJNhGLlg536lWxmkEnyFWrro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.18 273/325] thunderbolt: Limit XDomain response copy to actual frame size
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Ben Hutchings <benh@debian.org>
+Subject: [PATCH 6.1 522/522] x86/CPU/AMD: Move the Zen3 BTC_NO detection to the Zen3 init function
 Date: Tue, 16 Jun 2026 20:31:09 +0530
-Message-ID: <20260616145112.300901008@linuxfoundation.org>
+Message-ID: <20260616145150.126541553@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265795-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264487-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bp@alien8.de,m:nik.borisov@suse.com,m:benh@debian.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,alien8.de:email,suse.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0557B692088
+X-Rspamd-Queue-Id: 7AF62693C42
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 4db2bd2ed4785dbadaeeab9f4e346b21ac5fb8eb upstream.
+commit affc66cb96f865b3763a8e18add52e133d864f04 upstream.
 
-tb_xdomain_copy() copies req->response_size bytes from the received
-packet buffer regardless of the actual frame size.  When a short
-response arrives, this reads past the valid frame data in the DMA
-pool buffer into stale contents from previous transactions.
+No functional changes.
 
-Use the minimum of frame size and expected response size for the
-copy length.
-
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-4-bp@alien8.de
+Stable-dep-of: 7c81ad8e8bc2 ("x86/CPU/AMD: Rename init_amd_zn() to init_amd_zen_common()")
+[bwh: Adjusted to apply after backports of the above commit which actually
+ depended on this]
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/amd.c |   18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -123,7 +123,9 @@ static bool tb_xdomain_match(const struc
- static bool tb_xdomain_copy(struct tb_cfg_request *req,
- 			    const struct ctl_pkg *pkg)
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1087,14 +1087,6 @@ static void init_amd_zen1(struct cpuinfo
+ 		/* Erratum 1076: CPB feature bit not being set in CPUID. */
+ 		if (!cpu_has(c, X86_FEATURE_CPB))
+ 			set_cpu_cap(c, X86_FEATURE_CPB);
+-
+-		/*
+-		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
+-		 * Branch Type Confusion, but predate the allocation of the
+-		 * BTC_NO bit.
+-		 */
+-		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
+-			set_cpu_cap(c, X86_FEATURE_BTC_NO);
+ 	}
+ 
+ 	pr_notice_once("AMD Zen1 FPDSS bug detected, enabling mitigation.\n");
+@@ -1154,6 +1146,16 @@ static void init_amd_zen2(struct cpuinfo
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
  {
--	memcpy(req->response, pkg->buffer, req->response_size);
-+	size_t len = min_t(size_t, pkg->frame.size, req->response_size);
+ 	init_amd_zen_common();
 +
-+	memcpy(req->response, pkg->buffer, len);
- 	req->result.err = 0;
- 	return true;
++	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
++		/*
++		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
++		 * Branch Type Confusion, but predate the allocation of the
++		 * BTC_NO bit.
++		 */
++		if (!cpu_has(c, X86_FEATURE_BTC_NO))
++			set_cpu_cap(c, X86_FEATURE_BTC_NO);
++	}
  }
+ 
+ static void init_amd_zen4(struct cpuinfo_x86 *c)
 
 
 
