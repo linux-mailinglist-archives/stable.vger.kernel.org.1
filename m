@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1roWL6x+MWpOkwUAu9opvQ
-	(envelope-from <stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:48 +0200
+	id zCEsInaFMWoulgUAu9opvQ
+	(envelope-from <stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00916927CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44987692FBF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ecH+hYPA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264774-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dIi8bjx3;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265265-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97DE5305B290
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B70FC3004907
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFDB4779B9;
-	Tue, 16 Jun 2026 16:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC6B47A0B5;
+	Tue, 16 Jun 2026 17:18:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB0C45BD6F;
-	Tue, 16 Jun 2026 16:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991803A5E91;
+	Tue, 16 Jun 2026 17:18:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627819; cv=none; b=aRP2rNKEkvT2VC1V1IqeTN6eVJKfbnj91cwoMf/EcIP7mCU0m4c9qE1W2xBy7y1DAa2nB3tUKfYlewk3gAXM24t2xRVOHbxxfUWjMxuclcd6wUittZvcJxqJ0F61BnbULgucHqTXcu/NPy0nBoMSOVQHQuhoGP2ernWnK4Izs8E=
+	t=1781630324; cv=none; b=MXg2h0J+gWwP1yhol6HxiH38XCh1V1HkVAt7ebrYZTr4Mj48w6y0uysDIGXdqA+EnyVVUKPzO835TPJnXMB6C5aSFZoUF/3S6o13bGE0zlzIdZu/Hla7T+/8eCto3+mTTVojBLFyi6NKyTIVzT4BsbnoLzSv/J73oWMsQIokc2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627819; c=relaxed/simple;
-	bh=zsMPzBeimjk0LRBxZcdKTuyFy1Z2KCrVNmjDHUag5/4=;
+	s=arc-20240116; t=1781630324; c=relaxed/simple;
+	bh=AFIeTVCL8XI/GhzSDRNPiKSHcF28UHMUkB7olckWxHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNTpBxV/MEfDv+cgjdp53QkvcpOAK7AbXQg3+TsKbXwhuQ5esMZiVsHIrdyljnOb2LR897/1GFT3vE8v4QaK6rZhdtG+3uGDXwdo1QLGrf+AUu5RhHJ4zVLGjpe85g1D55W+lxfD//GBZJmO+QNf+01m66Q6nEZv357pEmo56EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecH+hYPA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E0B61F000E9;
-	Tue, 16 Jun 2026 16:36:57 +0000 (UTC)
+	 MIME-Version; b=BafMS9IicAfFnFz+iC7rfPRYVOYt3u41HE5BBxjqyneeV72EAgwkB3HeMc21wqqhaLxQibW1v6IvUtEIpNR1NFd32zyn3JOWCgYTlEWALVsjrvRGiIzskNk3/XBInMCHXY7Q6gv47oy/SCm9JYKDJ9LN+anhASgsXL4xWeHAbAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIi8bjx3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D82A1F000E9;
+	Tue, 16 Jun 2026 17:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627818;
-	bh=0IwPab4tN4Z/R7Qsehp6lLoJfbjFyLy77z0olP+aJ9c=;
+	s=korg; t=1781630323;
+	bh=rPIn8zLa+vpu3+oGfeLmfZGRbTSZkUcyGvIAnpSOfIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ecH+hYPAW7gWaHHBzLtvbercwg68VPyiGZ0IgAXvQpp7z+TP3zVP3PGRnju5EJru3
-	 VtuAU3j3Qs3hkCplkA7y/s6E9Z91RDdcdNurUtmWrEpECSxsXxvjCmvPC5lkJPBykh
-	 H/GwHd0aBHESx5Kw03j7B82LoKzTeAdSL/FmykoI=
+	b=dIi8bjx3H20tLnVvqcP+jBkDiIndpTftKWRdLBXezBqsaiHZ8a0FC+Et4J6a3ETIU
+	 Bo843PEcTx6OzO2VHgvfIMEWDgTckaMSdC26ikn4h57TNxs/uoEdJ3a1+oA7Vt7wLa
+	 XIJpP+2rtKKok6kCfeXM0IIOuM/vxGxKs9NLCbKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Fleming <mfleming@cloudflare.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrea Righi <arighi@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/261] sched_ext: Dont warn on NULL cgrp_moving_from in scx_cgroup_move_task()
-Date: Tue, 16 Jun 2026 20:31:11 +0530
-Message-ID: <20260616145055.846440038@linuxfoundation.org>
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 6.6 445/452] arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
+Date: Tue, 16 Jun 2026 20:31:12 +0530
+Message-ID: <20260616145139.912775978@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264774-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265265-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mfleming@cloudflare.com,m:tj@kernel.org,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,80 +99,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cloudflare.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D00916927CC
+X-Rspamd-Queue-Id: 44987692FBF
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit 02e545c4297a26dbbc41df81b831e7f605bcd306 ]
+commit ec7216f92e4ebd485b1c6dc6aa3f6064b71a5768 upstream.
 
-A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
-its own subtree_control while a sched_ext scheduler is loaded:
+NVIDIA Olympus cores are affected by the TLBI completion issue tracked as
+CVE-2025-10263. The existing ARM64_ERRATUM_4118414 handling already uses
+ARM64_WORKAROUND_REPEAT_TLBI to issue an additional broadcast TLBI;DSB
+sequence and ensure affected memory write effects are globally observed.
 
-  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
-   scx_cgroup_move_task+0xa8/0xb0
-   sched_move_task+0x134/0x290
-   cpu_cgroup_attach+0x39/0x70
-   cgroup_migrate_execute+0x37d/0x450
-   cgroup_update_dfl_csses+0x1e3/0x270
-   cgroup_subtree_control_write+0x3e7/0x440
+Add MIDR_NVIDIA_OLYMPUS to the repeat-TLBI match list so the same
+mitigation is enabled on affected Olympus systems. Also document the
+NVIDIA Olympus erratum in the arm64 silicon errata table and list it in
+the Kconfig help text.
 
-scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
-cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
-through this sequence:
-
-  Step                               Result
-  ---------------------------------  ----------------------------------
-  1. cpu enabled on cgroup G         cpu css = A
-  2. cpu toggled off then on for G   A killed, B created (same cgroup)
-  3. an exiting task keeps A alive   migration skips it, A now stale
-  4. +memory migrates G              stale A vs current B pulls cpu in
-  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
-  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
-
-The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
-while migration drives the move on css identity, so a NULL cgrp_moving_from
-here is a legitimate css-only migration, not a missing prep.
-
-The call is already gated on cgrp_moving_from, so just drop the warning.
-ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
-
-Fixes: 819513666966 ("sched_ext: Add cgroup support")
-Cc: stable@vger.kernel.org # v6.12+
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v6.6.y]
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                          |    3 ++-
+ arch/arm64/kernel/cpu_errata.c              |    1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4069,10 +4069,13 @@ void scx_cgroup_move_task(struct task_st
- 		return;
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -274,6 +274,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
+ +----------------+-----------------+-----------------+-----------------------------+
++| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1121,7 +1121,7 @@ config ARM64_ERRATUM_4193714
+ 	  If unsure, say Y.
  
- 	/*
--	 * @p must have ops.cgroup_prep_move() called on it and thus
--	 * cgrp_moving_from set.
-+	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
-+	 * cgroup changes. Migration keys off css rather than cgroup identity,
-+	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
-+	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
-+	 * keep prep_move and move paired.
- 	 */
--	if (SCX_HAS_OP(cgroup_move) && !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
-+	if (SCX_HAS_OP(cgroup_move) && p->scx.cgrp_moving_from)
- 		SCX_CALL_OP_TASK(SCX_KF_UNLOCKED, cgroup_move, p,
- 			p->scx.cgrp_moving_from, tg_cgrp(task_group(p)));
- 	p->scx.cgrp_moving_from = NULL;
+ config ARM64_ERRATUM_4118414
+-	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
++	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
+ 	default y
+ 	select ARM64_WORKAROUND_REPEAT_TLBI
+ 	help
+@@ -1148,6 +1148,7 @@ config ARM64_ERRATUM_4118414
+ 	  * ARM Neoverse-V2 erratum 4193787
+ 	  * ARM Neoverse-V3 erratum 4193784
+ 	  * ARM Neoverse-V3AE erratum 4193784
++	  * NVIDIA Olympus erratum T410-OLY-1029
+ 
+ 	  On affected cores, some memory accesses might not be completed by
+ 	  broadcast TLB invalidation.
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -265,6 +265,7 @@ static const struct arm64_cpu_capabiliti
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
++			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
+ 			{}
+ 		})),
+ 	},
 
 
 
