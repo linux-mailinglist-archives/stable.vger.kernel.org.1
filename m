@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-263927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MJbPAHxqMWo2iwUAu9opvQ
-	(envelope-from <stable+bounces-263927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:40 +0200
+	id 6K+TMvORMWr8mwUAu9opvQ
+	(envelope-from <stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A989B690FB1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:23:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2A3693E13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YtTWLHNh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263927-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263927-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EFNOwZ/c";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265859-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 201493065812
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4ACEA320FBD4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE3243E9FE;
-	Tue, 16 Jun 2026 15:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3D3D525E;
+	Tue, 16 Jun 2026 18:09:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7419F43E4B4;
-	Tue, 16 Jun 2026 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9743D75AA;
+	Tue, 16 Jun 2026 18:09:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623222; cv=none; b=qd5LLV4oKC8qZSo4PJZSqtQsNND+RGgRuBPBk+VlNN/LZnRSFgHoozgCNUseg4iPU5d8rYTXjmu+nVtUXvxMK3ao54aYYD0PF4IoCE4oKTSmpcnFKEiA2P9W/QnQtnqnSJCRePzUGf2r4zakm6i+m3dHIZ1P4nDF+YqswkPkcPw=
+	t=1781633378; cv=none; b=jGhbLYfjsxK9Z6tUcamSkF7nnMqbdRThTEhJXRqS73OrR/SNj1mzsj146a7I2Z3vDYPIOGlwr8l3igLEpIAWHHGfdjJ6hBQNGcpucRKxCFGCfDXu4XrYGnr9lKilgHudtrMeOP1bvc/MP+h77oWGrC9e1XRLdrgoeGTIu36OlQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623222; c=relaxed/simple;
-	bh=slmnKi+QoFcCTLzPZvRmtP6ozWjQk9HeEtNEIS/pOXw=;
+	s=arc-20240116; t=1781633378; c=relaxed/simple;
+	bh=N+AXtiSIt5+73KQp2fnvxGKXvqiuLUlSytbFMKUFsKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYp1hDAUY9m1DnIaVpRWQ0d45OgcRjv5NWxrUW4L2oF/GQHMgj/3fa58fY23f80VtaUZjkntliQ/QFCsDj1ok9UW3ctbgr17G5L4eFQN4Jp3dIAHskC1nvi4pmmYNLHofaOrjBPdK4erwEai9TwC2pQLuvgZIhSymBa/9Z/xVx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtTWLHNh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A471F000E9;
-	Tue, 16 Jun 2026 15:20:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wiq4IjlKUx+xEJAWGtTXdB8UX/7dkWWbH5Z4zPd6Zs2eC8rtwpEl5lSpQdjX1MZfm6hojgj9aackf3aNVgHveZgIj3KezX16+KF+lkV8FgjNRUCMPyFoICARQ/nRAAQn65PaavZEwFvuI9dWgBZph3x2ZJoI4gPO6QLqPhAI4+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFNOwZ/c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C5B1F000E9;
+	Tue, 16 Jun 2026 18:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623221;
-	bh=NFllaglBHsE1A1hpHaIz1/03noaURSHfKxhIbzbVvrw=;
+	s=korg; t=1781633377;
+	bh=yyLpLMBi3JbLUobClJ1JVJXeN3oZe4B5gLSSl3HhxOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YtTWLHNhzvtfBpyx9TOJOznxpc7aECxbwmZ209iGSRPxUeRtT9u+qifgns90AVk/N
-	 FYbvG2lhlBxnE8jXotUNdX1lCXEsIAwlnk9vxh4ZbsFzwKh9e/PmjXt1LnG4V2X2Kj
-	 OKkMDdVXeAmRkzPY4wcxJI0oaAG2URh83/d0i9ns=
+	b=EFNOwZ/cGQR4A/460mciKs61vbsP/Pu2yTZvZoyZ6j6mAeaCX012oJe72CgBQXmMH
+	 iqC7qn6xHHYVs+Gy6vLkAyUawSrnuYt3pwL1cB9oONaBG1bL00oaPr/qFi686v9NNt
+	 OsQsNulA6WNcNrSio35SEeIPPBbBfe7fvpIh5twQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 075/378] Drivers: hv: vmbus: Provide option to skip VMBus unload on panic
+	Christofer Jonason <christofer.jonason@guidelinegeo.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Salih Erim <salih.erim@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 068/411] iio: adc: xilinx-xadc: Fix sequencer mode in postdisable for dual mux
 Date: Tue, 16 Jun 2026 20:25:06 +0530
-Message-ID: <20260616145114.103834132@linuxfoundation.org>
+Message-ID: <20260616145103.897168621@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,172 +67,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,microsoft.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263927-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265859-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christofer.jonason@guidelinegeo.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:salih.erim@amd.com,m:Jonathan.Cameron@huawei.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,outlook.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,intel.com:email,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A989B690FB1
+X-Rspamd-Queue-Id: 2D2A3693E13
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Christofer Jonason <christofer.jonason@guidelinegeo.com>
 
-[ Upstream commit c5c3ef8d49e15d2fc1cec4ad7c91d81b99977440 ]
+commit 852534744c2d35626a604f128ff0b8ec12805591 upstream.
 
-Currently, VMBus code initiates a VMBus unload in the panic path so
-that if a kdump kernel is loaded, it can start fresh in setting up its
-own VMBus connection. However, a driver for the VMBus virtual frame
-buffer may need to flush dirty portions of the frame buffer back to
-the Hyper-V host so that panic information is visible in the graphics
-console. To support such flushing, provide exported functions for the
-frame buffer driver to specify that the VMBus unload should not be
-done by the VMBus driver, and to initiate the VMBus unload itself.
-Together these allow a frame buffer driver to delay the VMBus unload
-until after it has completed the flush.
+xadc_postdisable() unconditionally sets the sequencer to continuous
+mode. For dual external multiplexer configurations this is incorrect:
+simultaneous sampling mode is required so that ADC-A samples through
+the mux on VAUX[0-7] while ADC-B simultaneously samples through the
+mux on VAUX[8-15]. In continuous mode only ADC-A is active, so
+VAUX[8-15] channels return incorrect data.
 
-Ideally, the VMBus driver could use its own panic-path callback to do
-the unload after all frame buffer drivers have finished. But DRM frame
-buffer drivers use the kmsg dump callback, and there are no callbacks
-after that in the panic path. Hence this somewhat messy approach to
-properly sequencing the frame buffer flush and the VMBus unload.
+Since postdisable is also called from xadc_probe() to set the initial
+idle state, the wrong sequencer mode is active from the moment the
+driver loads.
 
-Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The preenable path already uses xadc_get_seq_mode() which returns
+SIMULTANEOUS for dual mux. Fix postdisable to do the same.
+
+Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christofer Jonason <christofer.jonason@guidelinegeo.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Salih Erim <salih.erim@amd.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/channel_mgmt.c |  1 +
- drivers/hv/hyperv_vmbus.h |  1 -
- drivers/hv/vmbus_drv.c    | 25 ++++++++++++++++++-------
- include/linux/hyperv.h    |  3 +++
- 4 files changed, 22 insertions(+), 8 deletions(-)
+ drivers/iio/adc/xilinx-xadc-core.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
-index 7c77ada12b2e94..327d05ccf41683 100644
---- a/drivers/hv/channel_mgmt.c
-+++ b/drivers/hv/channel_mgmt.c
-@@ -944,6 +944,7 @@ void vmbus_initiate_unload(bool crash)
- 	else
- 		vmbus_wait_for_unload();
- }
-+EXPORT_SYMBOL_GPL(vmbus_initiate_unload);
- 
- static void vmbus_setup_channel_state(struct vmbus_channel *channel,
- 				      struct vmbus_channel_offer_channel *offer)
-diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
-index 7bd8f8486e858c..592a16303b3bed 100644
---- a/drivers/hv/hyperv_vmbus.h
-+++ b/drivers/hv/hyperv_vmbus.h
-@@ -440,7 +440,6 @@ void hv_vss_deinit(void);
- int hv_vss_pre_suspend(void);
- int hv_vss_pre_resume(void);
- void hv_vss_onchannelcallback(void *context);
--void vmbus_initiate_unload(bool crash);
- 
- static inline void hv_poll_channel(struct vmbus_channel *channel,
- 				   void (*cb)(void *))
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 3d2827477f0a54..59fc09d73a05d0 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -70,19 +70,29 @@ bool vmbus_is_confidential(void)
- }
- EXPORT_SYMBOL_GPL(vmbus_is_confidential);
- 
-+static bool skip_vmbus_unload;
-+
-+/*
-+ * Allow a VMBus framebuffer driver to specify that in the case of a panic,
-+ * it will do the VMbus unload operation once it has flushed any dirty
-+ * portions of the framebuffer to the Hyper-V host.
-+ */
-+void vmbus_set_skip_unload(bool skip)
-+{
-+	skip_vmbus_unload = skip;
-+}
-+EXPORT_SYMBOL_GPL(vmbus_set_skip_unload);
-+
- /*
-  * The panic notifier below is responsible solely for unloading the
-  * vmbus connection, which is necessary in a panic event.
-- *
-- * Notice an intrincate relation of this notifier with Hyper-V
-- * framebuffer panic notifier exists - we need vmbus connection alive
-- * there in order to succeed, so we need to order both with each other
-- * [see hvfb_on_panic()] - this is done using notifiers' priorities.
-  */
- static int hv_panic_vmbus_unload(struct notifier_block *nb, unsigned long val,
- 			      void *args)
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -819,6 +819,7 @@ static int xadc_postdisable(struct iio_d
  {
--	vmbus_initiate_unload(true);
-+	if (!skip_vmbus_unload)
-+		vmbus_initiate_unload(true);
+ 	struct xadc *xadc = iio_priv(indio_dev);
+ 	unsigned long scan_mask;
++	int seq_mode;
+ 	int ret;
+ 	int i;
+ 
+@@ -826,6 +827,12 @@ static int xadc_postdisable(struct iio_d
+ 	for (i = 0; i < indio_dev->num_channels; i++)
+ 		scan_mask |= BIT(indio_dev->channels[i].scan_index);
+ 
++	/*
++	 * Use the correct sequencer mode for the idle state: simultaneous
++	 * mode for dual external mux configurations, continuous otherwise.
++	 */
++	seq_mode = xadc_get_seq_mode(xadc, scan_mask);
 +
- 	return NOTIFY_DONE;
+ 	/* Enable all channels and calibration */
+ 	ret = xadc_write_adc_reg(xadc, XADC_REG_SEQ(0), scan_mask & 0xffff);
+ 	if (ret)
+@@ -836,11 +843,11 @@ static int xadc_postdisable(struct iio_d
+ 		return ret;
+ 
+ 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_SEQ_MASK,
+-		XADC_CONF1_SEQ_CONTINUOUS);
++				  seq_mode);
+ 	if (ret)
+ 		return ret;
+ 
+-	return xadc_power_adc_b(xadc, XADC_CONF1_SEQ_CONTINUOUS);
++	return xadc_power_adc_b(xadc, seq_mode);
  }
- static struct notifier_block hyperv_panic_vmbus_unload_block = {
-@@ -2903,7 +2913,8 @@ static void hv_crash_handler(struct pt_regs *regs)
- {
- 	int cpu;
  
--	vmbus_initiate_unload(true);
-+	if (!skip_vmbus_unload)
-+		vmbus_initiate_unload(true);
- 	/*
- 	 * In crash handler we can't schedule synic cleanup for all CPUs,
- 	 * doing the cleanup for current CPU only. This should be sufficient
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index dfc516c1c7193f..b0502a336eb3a5 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1334,6 +1334,9 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
- 			bool fb_overlap_ok);
- void vmbus_free_mmio(resource_size_t start, resource_size_t size);
- 
-+void vmbus_initiate_unload(bool crash);
-+void vmbus_set_skip_unload(bool skip);
-+
- /*
-  * GUID definitions of various offer types - services offered to the guest.
-  */
--- 
-2.53.0
-
+ static int xadc_preenable(struct iio_dev *indio_dev)
 
 
 
