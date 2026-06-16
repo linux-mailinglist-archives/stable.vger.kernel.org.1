@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CLDTF5FxMWrVjQUAu9opvQ
-	(envelope-from <stable+bounces-264207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:53 +0200
+	id 05Z4GQ6HMWrglgUAu9opvQ
+	(envelope-from <stable+bounces-265224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B146917BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C27E6931C7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YkTUSLSN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264207-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264207-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BKFFxwdN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265224-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265224-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 796D4304B343
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:46:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C1DD303399C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D3A466B6C;
-	Tue, 16 Jun 2026 15:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F99477E36;
+	Tue, 16 Jun 2026 17:15:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71A844E03B;
-	Tue, 16 Jun 2026 15:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41180478E26;
+	Tue, 16 Jun 2026 17:15:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624697; cv=none; b=rZrRbgwqdkm9qlwPDMCZK15G8YYcL7GQPauur4Okqe2VEIAbLIYO2voI3krJ9Xje3jCtBLkW0qvWN9pPcLo9RVQDA7lL8KXCvjJstOqd0thuGJlzv9M2U6ec+Nl994VPkWMjWCo8q9h1y2kV7WwiZBL6ht+9Q2Lrg44tydT20n0=
+	t=1781630112; cv=none; b=FFtOqDF/qyTmWzSSBzNoNi8onAmQmI1AC+l5WpOLZZGAgy4ikL2yXWIUigb4F2s6kQvh7dMuK0zaHiBEFbzWIQye1uiz8yMjTKoB9HGC0OYi0ZcLRD4sMMTiR2WPMOmSmfGHWEpHuDUgdAdIeBWDAoJOAPASAHT8/koI6jlP1fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624697; c=relaxed/simple;
-	bh=TEnagMSbNAB4Y/hfjLuIkrcr4xWnz8+3h7owVThrWI4=;
+	s=arc-20240116; t=1781630112; c=relaxed/simple;
+	bh=Er3op0gv+F/gseBM4adZ2K9vpWSsdHjUYJi/B4dq3qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ST0vK2R4BpIy0qSbz8RkT4rBLoxWp6o7dtBDJF29xPKMM8pfFM5OAy+lFoe5iNCzkLCcpH+4TN+kbwFO5OBJIK3r/h3kYLMo2/5/PUHPQqFhUDSuTCqbLYJAohNVgfzkDvs1DxrcAz8kqThAIL8EezkaCw+pz3P+uA+qWGTK/wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YkTUSLSN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0C21F000E9;
-	Tue, 16 Jun 2026 15:44:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jEuwVk3JNowUlUTx5L7YFlTiTgj5V2EgtvDa3+LAHT/4SvfR8ev9Eaai62VId/qgZhkuqJSABr+syg2QU7epmpd6ukAcptg74BraSo+9aXTdrpZt5TJ8JciCrP0KNwQTjYr6u49bcwpxDu/3PDVPd/9v2x+OUKYcGtwa/8uIUSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKFFxwdN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487381F000E9;
+	Tue, 16 Jun 2026 17:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624693;
-	bh=4Xw+h8Ryz8fRpTlX4zLOcav0dLa9V9RYKrN6m4lBlPs=;
+	s=korg; t=1781630111;
+	bh=LCOPL5vnOycLXMF493m7R3y3zdByUCm1fXR2PyDGsh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YkTUSLSNhcm2WN2FHt3C3UM6jRHhO5TFePjpcNdP+UCz8GbYDLqUDRDeSA443d+uY
-	 4nBdcHqjAP8EBTKmi4eTo31e+kAKEmi6UsPnChRPdDl9AF10U3YiRdwXRV/kpHrkbf
-	 Qk/6MOO42gPVnGR6ZUOqe5aqoJKIS/cI6uIkpE2k=
+	b=BKFFxwdNyhKQiUAJYvRumvFql4VtFa5kbkoPd/9H7vDNj5xPr2sO00dmgjDwy3k7O
+	 1EMC15iAvLwHcOBCzK0FYygsGbwtydWZFMHJp3fB8CQKfa6kChA2AlitqfDumxl/e9
+	 QwVMcHqGwRrugjMu2TXPiLSsJ+5I3FAq75YA+up0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 7.0 376/378] arm64: errata: Mitigate TLBI errata on various Arm CPUs
+	Lukas Wunner <lukas@wunner.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 380/452] platform/x86/intel/vsec: Fix enable_cnt imbalance on PCIe error recovery
 Date: Tue, 16 Jun 2026 20:30:07 +0530
-Message-ID: <20260616145129.873067650@linuxfoundation.org>
+Message-ID: <20260616145136.919190550@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,299 +65,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264207-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lukas@wunner.de,m:ilpo.jarvinen@linux.intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265224-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,wunner.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F1B146917BA
+X-Rspamd-Queue-Id: 7C27E6931C7
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit cfd391e74134db664feb499d43af286380b10ba8 upstream.
+[ Upstream commit 348ccc754d8939e21ca5956ff45720b81d6e407f ]
 
-A number of CPUs developed by Arm suffer from errata whereby a broadcast
-TLBI;DSB sequence may complete before the global observation of writes
-which are translated by an affected TLB entry.
+After a PCIe Uncorrectable Error has been reported by a device with
+Intel Vendor Specific Extended Capabilities and has been recovered
+through a Secondary Bus Reset, its driver calls intel_vsec_pci_probe()
+to rescan and reinitialize VSECs.
 
-These errata ONLY affect the completion of memory accesses which have
-been translated by an invalidated TLB entry, and these errata DO NOT
-affect the actual invalidation of TLB entries. TLB entries are removed
-correctly.
+intel_vsec_pci_probe() invokes pcim_enable_device() and thereby adds
+another devm action which calls pcim_disable_device() on driver unbind.
 
-This issue has been assigned CVE ID CVE-2025-10263.
+So once the driver unbinds, pcim_disable_device() will be called as many
+times as an Uncorrectable Error occurred, plus one.  This will lead to
+an enable_cnt imbalance on driver unbind.
 
-To mitigate this issue, Arm recommends that software follows any
-affected TLBI;DSB sequence with an additional TLBI;DSB, which will
-ensure that all memory write effects affected by the first TLBI have
-been globally observed. The additional TLBI can use any operation that
-is broadcast to affected CPUs, and the additional DSB can use any option
-that is sufficient to complete the additional TLBI.
+Additionally, since commit dc957ab6aa05 ("platform/x86/intel/vsec: Add
+private data for per-device data"), a devm_kzalloc() allocation is
+leaked on every Uncorrectable Error.
 
-The ARM64_WORKAROUND_REPEAT_TLBI workaround is sufficient to mitigate
-the issue. Enable this workaround for affected CPUs, and update the
-silicon errata documentation accordingly.
+Avoid by splitting the VSEC rescan out of intel_vsec_pci_probe() into a
+separate helper and calling that on PCIe error recovery.
 
-Note that due to the manner in which Arm develops IP and tracks errata,
-some CPUs share a common erratum number.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v7.0.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fixes: 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery support to Intel PMT")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org  # v6.0+
+Link: https://patch.msgid.link/bd594d09fa866dc51dddc9a447c3b23f9b1402cc.1778736835.git.lukas@wunner.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst |   44 ++++++++++++++++++++++++++++
- arch/arm64/Kconfig                          |   36 ++++++++++++++++++++++
- arch/arm64/kernel/cpu_errata.c              |   32 +++++++++++++++++++-
- 3 files changed, 110 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/vsec.c |   34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -128,16 +128,28 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76      | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76AE    | #4193801        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1491015        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1508412        | ARM64_ERRATUM_1508412       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #3324348        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A77      | #4193798        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78      | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78      | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78AE    | #4193793        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78C     | #3324346,3324347| ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78C     | #4193794        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #2054223        | ARM64_ERRATUM_2054223       |
-@@ -146,6 +158,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A710     | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A715     | #2645198        | ARM64_ERRATUM_2645198       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
-@@ -158,20 +172,32 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1       | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1       | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1C      | #3324346        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1C      | #4193792        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2224489        | ARM64_ERRATUM_2224489       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X2       | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X3       | #4193786        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X4       | #4118414        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X925     | #4193781        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
-@@ -182,6 +208,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N1     | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
-@@ -190,18 +218,34 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N2     | #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #1619801        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V1     | #4193790        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V2     | #4193787        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3     | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3AE   | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Premium      | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Pro          | #4193714        | ARM64_ERRATUM_4193714       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Ultra        | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | ARM_SMMU_MMU_500_CPRE_ERRATA|
- |                |                 | #562869,1047329 |                             |
- +----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1176,6 +1176,42 @@ config ARM64_ERRATUM_4311569
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -358,20 +358,10 @@ static bool intel_vsec_walk_vsec(struct
+ 	return have_devices;
+ }
  
- 	  If unsure, say Y.
+-static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static int intel_vsec_pci_init(struct pci_dev *pdev,
++			       struct intel_vsec_platform_info *info)
+ {
+-	struct intel_vsec_platform_info *info;
+ 	bool have_devices = false;
+-	int ret;
+-
+-	ret = pcim_enable_device(pdev);
+-	if (ret)
+-		return ret;
+-
+-	pci_save_state(pdev);
+-	info = (struct intel_vsec_platform_info *)id->driver_data;
+-	if (!info)
+-		return -EINVAL;
  
-+config ARM64_ERRATUM_4118414
-+	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	default y
-+	select ARM64_WORKAROUND_REPEAT_TLBI
-+	help
-+	  This option adds a workaround for the following errata:
-+
-+	  * ARM C1-Premium erratum 4193780
-+	  * ARM C1-Ultra erratum 4193780
-+	  * ARM Cortex-A76 erratum 4193800
-+	  * ARM Cortex-A76AE erratum 4193801
-+	  * ARM Cortex-A77 erratum 4193798
-+	  * ARM Cortex-A78 erratum 4193791
-+	  * ARM Cortex-A78AE erratum 4193793
-+	  * ARM Cortex-A78C erratum 4193794
-+	  * ARM Cortex-A710 erratum 4193788
-+	  * ARM Cortex-X1 erratum 4193791
-+	  * ARM Cortex-X1C erratum 4193792
-+	  * ARM Cortex-X2 erratum 4193788
-+	  * ARM Cortex-X3 erratum 4193786
-+	  * ARM Cortex-X4 erratum 4118414
-+	  * ARM Cortex-X925 erratum 4193781
-+	  * ARM Neoverse-N1 erratum 4193800
-+	  * ARM Neoverse-N2 erratum 4193789
-+	  * ARM Neoverse-V1 erratum 4193790
-+	  * ARM Neoverse-V2 erratum 4193787
-+	  * ARM Neoverse-V3 erratum 4193784
-+	  * ARM Neoverse-V3AE erratum 4193784
-+
-+	  On affected cores, some memory accesses might not be completed by
-+	  broadcast TLB invalidation.
-+
-+	  This issue is also known as CVE-2025-10263.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -339,7 +339,35 @@ static const struct arm64_cpu_capabiliti
- 		ERRATA_MIDR_RANGE(MIDR_CORTEX_A510, 0, 0, 1, 1),
- 	},
- #endif
--	{},
-+#ifdef CONFIG_ARM64_ERRATUM_4118414
-+	{
-+		ERRATA_MIDR_RANGE_LIST(((const struct midr_range[]) {
-+			MIDR_ALL_VERSIONS(MIDR_C1_PREMIUM),
-+			MIDR_ALL_VERSIONS(MIDR_C1_ULTRA),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			{}
-+		})),
-+	},
-+#endif
-+	{}
- };
- #endif
+ 	if (intel_vsec_walk_dvsec(pdev, info))
+ 		have_devices = true;
+@@ -389,6 +379,23 @@ static int intel_vsec_pci_probe(struct p
+ 	return 0;
+ }
  
-@@ -675,7 +703,7 @@ const struct arm64_cpu_capabilities arm6
- #endif
- #ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
- 	{
--		.desc = "Qualcomm erratum 1009, or ARM erratum 1286807, 2441009",
-+		.desc = "Broken broadcast TLBI completion",
- 		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 		.matches = cpucap_multi_entry_cap_matches,
++static int intel_vsec_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct intel_vsec_platform_info *info;
++	int ret;
++
++	ret = pcim_enable_device(pdev);
++	if (ret)
++		return ret;
++
++	pci_save_state(pdev);
++	info = (struct intel_vsec_platform_info *)id->driver_data;
++	if (!info)
++		return -EINVAL;
++
++	return intel_vsec_pci_init(pdev, info);
++}
++
+ /* DG1 info */
+ static struct intel_vsec_header dg1_header = {
+ 	.length = 0x10,
+@@ -492,10 +499,9 @@ static pci_ers_result_t intel_vsec_pci_s
+ 		devm_release_action(&pdev->dev, intel_vsec_remove_aux,
+ 				    &intel_vsec_dev->auxdev);
+ 	}
+-	pci_disable_device(pdev);
+ 	pci_restore_state(pdev);
+ 	pci_dev_id = pci_match_id(intel_vsec_pci_ids, pdev);
+-	intel_vsec_pci_probe(pdev, pci_dev_id);
++	intel_vsec_pci_init(pdev, (struct intel_vsec_platform_info *)pci_dev_id->driver_data);
+ 
+ out:
+ 	return status;
 
 
 
