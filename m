@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-265375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1sikLDuJMWrXlwUAu9opvQ
-	(envelope-from <stable+bounces-265375-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:51 +0200
+	id a0CwEKx+MWpNkwUAu9opvQ
+	(envelope-from <stable+bounces-264831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5EAF69345C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A816927CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ie9tCCeY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265375-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265375-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wzwSh40h;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264831-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264831-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EEB19303B562
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2D09305DA84
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC3847B425;
-	Tue, 16 Jun 2026 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC083472777;
+	Tue, 16 Jun 2026 16:41:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC76F47AF5D;
-	Tue, 16 Jun 2026 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB974508E4;
+	Tue, 16 Jun 2026 16:41:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630877; cv=none; b=lM0qPQpksp+f1y43dNYXmN5tb4yvdYHtFkloptZVmuxxr3f4Mtgo4ol6KP75tnKK6wcNH4aJdMhwEtLNNVd4nnyQK2Hg32oHiDw+72yLQDXcr/QzIDd+RbEn8Z3bpNCQJnuqPzbuLwZZ5jq/pFp9pAyy+9U3z8eyQwBx4nP+/uY=
+	t=1781628118; cv=none; b=C2fhCgFmWAsTeZ8q0KnRl2/fo/nFA+myZblbLpHNpDMln0Qa129xgUX8MBuK5kYDTFiq8xoDceoESiHDd0l8zFzLSPGSeSmNdzJX2yam+fo2lnX6ofNSoP1THUNQPRVw9AxxNQZGsAiVDUtOoCECKmEmXxiQwteCg0yjzs2IJbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630877; c=relaxed/simple;
-	bh=3sZdDhvSvNfO3i/p0SRYFeRAWpm4hhJrsUt7bjaIcvI=;
+	s=arc-20240116; t=1781628118; c=relaxed/simple;
+	bh=LpAx6SNZuNLsOMOmIs77ZRY2TXETXPDfZpUzqcOY0ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3OWqusLe7ze7ln7ygGyBBlURZz4Wtf6yozyN81pOmvf6WO1717KyZKbswIQdDaimzMnjyRXhcV9aPvI7XjTfZoYWqoUVS9bqRStAe5xLDjob92SCZyCjcYmmGbVicRas+cMIwUMx5cF6pkxCYEWcuOI0nOKlnP8EavPqjZbzpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie9tCCeY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C5C1F000E9;
-	Tue, 16 Jun 2026 17:27:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nGj868ssCse61++ZWB3/mqELYIh7zmU2k/nYqt5JgfWlxc7V79pOqBwjM+FtcFX1vfGdG4Us6wyPh5y/py1NL8xcwLzWO5uzrrf8ORWH8Hw7E13zjxsxsjHDqiyG5lcWVnRQocImija5tB/9d46PJYGXQg/6go/wl7WByMt7IEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzwSh40h; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2E61F000E9;
+	Tue, 16 Jun 2026 16:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630874;
-	bh=549RcJ+J4fP89oBBvfMmzZxfF1u7j/4GgGj4FHYt9Is=;
+	s=korg; t=1781628117;
+	bh=nkR3NkxVb4TnqNgjBzAXCayNm5LVQ8DG3A696lVBo4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ie9tCCeYWMsYWVI4kvI0zqwfKb4qMmSzUV5nmbNwUIdRz7j4MOLbopfeEhtN9bpjb
-	 0qe3Ih55ZaNA7XR2QvyTM0mzFsrclsj6lrE+t74ZP+MKNIVRe3SzvTjDkoIrnOHw5X
-	 KGTykWMIoY1M+DgYJ2xTd5S3dlU5eKHiMMOhMrp8=
+	b=wzwSh40he54RxM7I3cciX3GhAZTOHb+X87kcf9eD9hyFVtiGQ67OLUAx1LgRXrsFK
+	 TPVDBq06GVxPYxMGGMVo2L0nx/4bO+hUNwLsbPu6cK+Z07tyzvySB1pXPQNcBRBge7
+	 /ItWrObRb1M/f7DdPiFxVfLWrF7psf1zKvHlsDRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 114/522] USB: serial: omninet: fix memory corruption with small endpoint
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/452] ASoC: codecs: simple-mux: Fix enum control bounds check
 Date: Tue, 16 Jun 2026 20:24:21 +0530
-Message-ID: <20260616145131.291418306@linuxfoundation.org>
+Message-ID: <20260616145119.719050660@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265375-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264831-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cassiogabrielcontato@gmail.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B5EAF69345C
+X-Rspamd-Queue-Id: A7A816927CB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-commit 60df93d30f9bdd27db17c4d80ed80ef718d7226b upstream.
+[ Upstream commit f63ad68e18d774a5d15cd7e405ead63f6b322679 ]
 
-Make sure that the bulk-out buffers are at least as large as the
-hardcoded transfer size to avoid user-controlled slab corruption should
-a malicious device report a smaller endpoint max packet size than
-expected.
+simple_mux_control_put() rejects values greater than e->items, but
+enum control values are zero based. For the two-entry mux used by this
+driver, valid values are 0 and 1, so value 2 must be rejected as well.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Accepting e->items can store an invalid mux state, pass it to the GPIO
+setter, and pass it on to the DAPM mux update path where it is used as
+an index into the enum text array.
+
+Use the same >= e->items check used by the ASoC enum helpers.
+
+Fixes: 342fbb7578d1 ("ASoC: add simple-mux")
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Link: https://patch.msgid.link/20260527-asoc-simple-mux-enum-bounds-v1-1-3f805b9fc671@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/omninet.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/codecs/simple-mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/omninet.c
-+++ b/drivers/usb/serial/omninet.c
-@@ -30,6 +30,10 @@
- /* This one seems to be a re-branded ZyXEL device */
- #define BT_IGNITIONPRO_ID	0x2000
+diff --git a/sound/soc/codecs/simple-mux.c b/sound/soc/codecs/simple-mux.c
+index bf67de12d20b7f..02ccaa4c9a0804 100644
+--- a/sound/soc/codecs/simple-mux.c
++++ b/sound/soc/codecs/simple-mux.c
+@@ -40,7 +40,7 @@ static int simple_mux_control_put(struct snd_kcontrol *kcontrol,
+ 	struct snd_soc_component *c = snd_soc_dapm_to_component(dapm);
+ 	struct simple_mux *priv = snd_soc_component_get_drvdata(c);
  
-+#define OMNINET_HEADERLEN	4
-+#define OMNINET_BULKOUTSIZE	64
-+#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
-+
- /* function prototypes */
- static void omninet_process_read_urb(struct urb *urb);
- static int omninet_prepare_write_buffer(struct usb_serial_port *port,
-@@ -55,6 +59,7 @@ static struct usb_serial_driver zyxel_om
- 	.description =		"ZyXEL - omni.net usb",
- 	.id_table =		id_table,
- 	.num_bulk_out =		2,
-+	.bulk_out_size =	OMNINET_BULKOUTSIZE,
- 	.calc_num_ports =	omninet_calc_num_ports,
- 	.port_probe =		omninet_port_probe,
- 	.port_remove =		omninet_port_remove,
-@@ -131,10 +136,6 @@ static void omninet_port_remove(struct u
- 	kfree(od);
- }
+-	if (ucontrol->value.enumerated.item[0] > e->items)
++	if (ucontrol->value.enumerated.item[0] >= e->items)
+ 		return -EINVAL;
  
--#define OMNINET_HEADERLEN	4
--#define OMNINET_BULKOUTSIZE	64
--#define OMNINET_PAYLOADSIZE	(OMNINET_BULKOUTSIZE - OMNINET_HEADERLEN)
--
- static void omninet_process_read_urb(struct urb *urb)
- {
- 	struct usb_serial_port *port = urb->context;
+ 	if (priv->mux == ucontrol->value.enumerated.item[0])
+-- 
+2.53.0
+
 
 
 
