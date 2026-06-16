@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-266170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2frkHtqXMWq9ngUAu9opvQ
-	(envelope-from <stable+bounces-266170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:14 +0200
+	id jTT7AEGfMWrzoQUAu9opvQ
+	(envelope-from <stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1782A69445A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5CB694C7B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SU4n7Kn6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266170-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266170-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="Ufr/SlU4";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266537-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88CDF30386D3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37955308DBB3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9BE169AD2;
-	Tue, 16 Jun 2026 18:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2DF3DE45B;
+	Tue, 16 Jun 2026 19:08:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290CC3DC4D9;
-	Tue, 16 Jun 2026 18:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B933DD851;
+	Tue, 16 Jun 2026 19:08:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635030; cv=none; b=hR7+Pyd17OSNRiDYUjWWL1s4oCyvPpoeTpSWahWh3c67xhQUAnbEQcscJJAuAcJpTYCW1bZfZP2axa5ZPtvcFRivnr2pV4L3zWdTimAv0/kUHeSH0b9GyGhXQL/f5BMLoaOaEJ5wln+6/mG5NK0cfquVmZhn3lznk/Yz9YLAGLk=
+	t=1781636904; cv=none; b=ILWoPXFg2TD8bEB1NW4bwKBtCn7lffshYGi9veSqC0r3CrgdQ5B6iVxj1Ya8yEPfkxbkS/uLEcnBCfIZTqImY+vB+yGC9TXkxQY8A3+8kIDfEdvf+CcWkRg8QhwpEX77zVKHW4AjxRsaJct2dO8iJOc90IYMsXDpCneS+9CvFVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635030; c=relaxed/simple;
-	bh=M7yH6lwml+A0PybFDAMLEjlnIf8sTXAkJDfm5v64OH4=;
+	s=arc-20240116; t=1781636904; c=relaxed/simple;
+	bh=DhGBUJe5wD1AmL1hqAe3+A98cW0XGM3m9L4n6F6dHmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QgHNzOv7P0iR+SQlDXR9otJ2GZnGgWC0WhQe3aVYIsOoJtnGpICG+c3BmvEupNOe6oHbggCn9DmlgvCMCuqoMptthIgLNkp9xUoskXghdx+M42txkNRbs4M3wcXirmrUNLjFMy+bZbvky0yK/hZtaPQ52jJFgAf3xx7IU6ybjpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SU4n7Kn6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B551F000E9;
-	Tue, 16 Jun 2026 18:37:07 +0000 (UTC)
+	 MIME-Version; b=cPvDwklyfdApldPoMNo949o9kUhfCjtIgHVIX8XAA3SLZkGWKDnXTQzGLRsYW2r7xVadRBQkpmO3X42SI6NTeTwQWi+1fBBkiNWvbc+8JUenSI3W0hrdnhdatoK0wIzbuCr7NHJT2jRz59/gREthtzrtyAJB4wHQkqpbSDxwzH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufr/SlU4; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321381F000E9;
+	Tue, 16 Jun 2026 19:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635029;
-	bh=ez3927RCbjVAud8RXAEHJ92TwTWniRpZu24mdxgp0RE=;
+	s=korg; t=1781636903;
+	bh=M4i3Z6hid9SULvLBqJs91IyrThiJW4qAbeVmcQBbbkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SU4n7Kn6oH3SL2NxpqZBPU/vE80DenfxaF2V0mAUucIEQOLPFulm5Bheyb9S/HUTA
-	 IX5RXV+Co7+5sCCkfsRH8Oqv6NR4DvUueRDvx6tugV8RA60+1OSjNKCGwUp9YoW1M8
-	 R+D7fEwYTHakKRc6jQ9A60eKjav3mAb9OWtbXHsQ=
+	b=Ufr/SlU4gtPDgvl0GFq0QY2qDFg5Rds29hrKnzpxHb3njIQUCB8ZyX3epaI5QC5E0
+	 i2j4OAUPwl2OhidhmlcNj/QCfreZHL3+vV+sOg6ouxFbvMfVmxdPT+XBb4lHFI9EuH
+	 iEtT3u1DgxJtPesu6W89etnjiaID5Cc1iXKB5iDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 5.15 378/411] usb: typec: ucsi: Check if power role change actually happened before handling
+	Peter Chen <peter.chen@kernel.org>,
+	Yongchao Wu <yongchao.wu@autochips.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 320/342] usb: cdns3: gadget: fix request skipping after clearing halt
 Date: Tue, 16 Jun 2026 20:30:16 +0530
-Message-ID: <20260616145121.383888719@linuxfoundation.org>
+Message-ID: <20260616145103.462766973@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266170-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266537-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:yongchao.wu@autochips.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,78 +96,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:url,chromium.org:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1782A69445A
+X-Rspamd-Queue-Id: 8A5CB694C7B
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Yongchao Wu <yongchao.wu@autochips.com>
 
-[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
+[ Upstream commit c8778ff817a7047d6848fefba99dcb27b1bf01fe ]
 
-The CrOS EC may send a connector status change event with the power
-direction changed flag set even if the power direction hasn't actually
-changed after initiating a SET_PDR command internally [1]. In practice
-this happens on every system suspend due to other changes performed by
-the EC [2][3][4], causing suspend to fail.
+According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+causes the DMA engine to reposition its internal pointer to the next
+Transfer Descriptor (TD) if it was already processing one.
 
-Fix this by checking if the power role change actually happened before
-handling it.
+This issue is consistently observed during the ADB identification
+process on macOS hosts, where the host issues a Clear_Halt. Although
+commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
+endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+trace logs show that on certain hosts like macOS, the DMA pointer
+(EP_TRADDR) still shifts after EPRST:
 
-[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
-[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+  cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+  cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
+  cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
 
+As shown above, the DMA pointer jumped to the next TD, causing
+the controller to skip the initial TRBs of the request. This leads to
+data misalignment and ADB protocol hangs on macOS.
+
+Fix this by manually restoring the EP_TRADDR register to the starting
+physical address of the current request after the EPRST operation is
+complete.
+
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
 Cc: stable <stable@kernel.org>
-Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
+Cc: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260513160012.2547894-1-yongchao.wu@autochips.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/gadget.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -669,7 +669,7 @@ static void ucsi_handle_connector_change
- 	struct ucsi *ucsi = con->ucsi;
- 	struct ucsi_connector_status pre_ack_status;
- 	struct ucsi_connector_status post_ack_status;
--	enum typec_role role;
-+	enum typec_role role, prev_role;
- 	enum usb_role u_role = USB_ROLE_NONE;
- 	u16 inferred_changes;
- 	u16 changed_flags;
-@@ -706,6 +706,8 @@ static void ucsi_handle_connector_change
- 	 * short transitional changes.
- 	 */
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -2798,9 +2798,19 @@ int __cdns3_gadget_ep_clear_halt(struct
+ 	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
  
-+	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
+ 	if (request) {
+-		if (trb)
++		if (trb) {
+ 			*trb = trb_tmp;
+ 
++			/*
++			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
++			 * Manually reset EP_TRADDR to the current TRB to prevent
++			 * the hardware from skipping the interrupted request.
++			 */
++			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
++						priv_req->start_trb * TRB_SIZE),
++						&priv_dev->regs->ep_traddr);
++		}
 +
- 	/* 1. First UCSI_GET_CONNECTOR_STATUS */
- 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
- 	ret = ucsi_send_command(ucsi, command, &pre_ack_status,
-@@ -783,7 +785,8 @@ static void ucsi_handle_connector_change
- 		ucsi_port_psy_changed(con);
+ 		cdns3_rearm_transfer(priv_ep, 1);
  	}
  
--	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
-+	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) &&
-+	    role != prev_role) {
- 		typec_set_pwr_role(con->port, role);
- 
- 		/* Complete pending power role swap */
 
 
 
