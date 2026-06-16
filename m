@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6GDVIKufMWozogUAu9opvQ
-	(envelope-from <stable+bounces-266492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:35 +0200
+	id BE+1IPh0MWowjwUAu9opvQ
+	(envelope-from <stable+bounces-264383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01864694D57
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D29F1691B7D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:23 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QJZZpinF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266492-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266492-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TRX+k6nv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264383-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264383-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50BB331D73BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D203D30B76DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E84B3DD51C;
-	Tue, 16 Jun 2026 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD57C466B74;
+	Tue, 16 Jun 2026 15:59:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5F53D810C;
-	Tue, 16 Jun 2026 19:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860F446AEDF;
+	Tue, 16 Jun 2026 15:59:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636700; cv=none; b=j9ovDHiCI8RxrTmx7bk00HKpzQYuhZ9H05JCLS/IH0lr8gyJ5aiUt8QI5iSt9Wz6OHSAOHL9k9iDUi4slH/wAKLhen8ltG+HAWcukUsnKWH2RLg/7O2JWxglCP+7o+G0fw+onUJMx/oBKSbDyimfaHkoIoMGTs/Rp/UhVB2PK54=
+	t=1781625597; cv=none; b=g1CVjqImnk4pKpyk8jleB+3Om3FmSbjyFoygf+cDrIG6Pl32p4aIsunU4KkC32sxcqE3XqvymDyp3TJans+AuXBGpXZQP1CcGNpMBtapgtFaSRuMPO1bccAvtBhd3gnWGhjsVMHGHQSjOVG914kGQ0S92Gc9j6WtMqlprwdUnAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636700; c=relaxed/simple;
-	bh=tJG/cmFWWruoSFajVeZ9Ivu33u4IfEy70G6/b9WGg7w=;
+	s=arc-20240116; t=1781625597; c=relaxed/simple;
+	bh=PP/AkbTM3Oj/KkUJ8QJhTgHFm1MkUL0IATYKxI1TQnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qw8RbjeruI7sLNbZGhWJFDrC7jnoIVVVpQGvc86Afe0n3N8Ur+eodxUEaN936j6QceOiJD2DOeqjMEM1GSWT/JumZ080pF/gL7Fx/nkH2qWYEkM/vMw5y/zcDA8IcwqoWwNhKmbgTsHV6IlGBY6FQ+9P729GDP2buNXTCLYhPfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJZZpinF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06C01F000E9;
-	Tue, 16 Jun 2026 19:04:58 +0000 (UTC)
+	 MIME-Version; b=qKN5LClqQFcsCFH2HPmZyk7KVxcDVnRE30+PCsCVV8k6yNZE2LaA7aJFeLJc1Uw2SFTgr8OV/0gdC8hQII+sfMnFy3yHWj59V3A47XOwuO1V8EweQJ7HOBnRsCiF7XdHggpgzsoYWLH3Vw52YEQUSU+VwT6s33VD3Plel5RwSs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRX+k6nv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6F81F000E9;
+	Tue, 16 Jun 2026 15:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636699;
-	bh=NhbuBQ38YFgonQsQgvY5mSPweQohB7KCVqdzWOYtqB8=;
+	s=korg; t=1781625596;
+	bh=g7QVX3YGxhvFYuPx0/HHSVMB7VYjI9YfovAQ2SZDUDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QJZZpinFr7r27dBzsxg6D8z3HvKYTywAdItcCdK0A3pfUM232ntM6ukyoMHUurYJE
-	 h2ZiF3yE6gfFdTaY+l2KJjx5oir0bvK/GqaNlXwE03J5KQSvKBSaQcc1hA92tLjfR6
-	 JiV9T+/HIW1/Xb5qUaXWE7w6qmn7amr1WAVU5Jt0=
+	b=TRX+k6nvuvnswi9WMNk1KTCJNBdSi55XnNW8Hg6ZiQx1jPEluqWgxe6baOQlcfGdC
+	 wlf7NOgUMf/lSDKxIgJWaSZisJ/kr7Y0MU5oJ3nNQg+6WUX1s43MgtBdhvoRhMSZ26
+	 Khf+fxKnWnSZkoJSnA040xpu5ekVe5cPJvnhU+n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahisa Kojima <masahisa.kojima@linaro.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/342] spi: syncuacer: fix controller deregistration
+	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>
+Subject: [PATCH 6.18 156/325] accel/ivpu: Fix signed integer truncation in IPC receive
 Date: Tue, 16 Jun 2026 20:29:12 +0530
-Message-ID: <20260616145100.178735483@linuxfoundation.org>
+Message-ID: <20260616145105.513153963@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +68,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266492-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264383-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:masahisa.kojima@linaro.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrzej.kacprowski@linux.intel.com,m:karol.wachowski@linux.intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01864694D57
+X-Rspamd-Queue-Id: D29F1691B7D
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
 
-[ Upstream commit 75d849c3452e9611de031db45b3149ba9a99035f ]
+commit d9faef564438d1e4579c692c046603e7ada7bdf4 upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Fix potential buffer overflow where firmware-supplied data_size is cast
+to signed int before being used in min_t(). Large unsigned values
+(>= 0x80000000) become negative, causing unsigned wraparound and
+oversized memcpy operations that can overflow the stack buffer.
 
-Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
-Cc: stable@vger.kernel.org	# 5.3
-Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-21-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ renamed spi_controller/host to spi_master/master and kept int return type with `return 0;` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Change min_t(int, ...) to min() as both values are unsigned and can be
+handled by min() without explicit cast.
+
+Fixes: 3b434a3445ff ("accel/ivpu: Use threaded IRQ to handle JOB done messages")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Link: https://patch.msgid.link/20260601161643.229342-1-andrzej.kacprowski@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-synquacer.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_ipc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -719,7 +719,7 @@ static int synquacer_spi_probe(struct pl
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
+--- a/drivers/accel/ivpu/ivpu_ipc.c
++++ b/drivers/accel/ivpu/ivpu_ipc.c
+@@ -276,7 +276,7 @@ int ivpu_ipc_receive(struct ivpu_device
+ 	if (ipc_buf)
+ 		memcpy(ipc_buf, rx_msg->ipc_hdr, sizeof(*ipc_buf));
+ 	if (rx_msg->jsm_msg) {
+-		u32 size = min_t(int, rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
++		u32 size = min(rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
  
--	ret = devm_spi_register_master(sspi->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -740,10 +740,16 @@ static int synquacer_spi_remove(struct p
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct synquacer_spi *sspi = spi_master_get_devdata(master);
- 
-+	spi_master_get(master);
-+
-+	spi_unregister_master(master);
-+
- 	pm_runtime_disable(sspi->dev);
- 
- 	clk_disable_unprepare(sspi->clk);
- 
-+	spi_master_put(master);
-+
- 	return 0;
- }
- 
+ 		if (rx_msg->jsm_msg->result != VPU_JSM_STATUS_SUCCESS) {
+ 			ivpu_err(vdev, "IPC resp result error: %d\n", rx_msg->jsm_msg->result);
 
 
 
