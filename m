@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-264106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BqOtGVhvMWoIjQUAu9opvQ
-	(envelope-from <stable+bounces-264106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:24 +0200
+	id EyY0N9NzMWrTjgUAu9opvQ
+	(envelope-from <stable+bounces-264361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F306915A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC70691A5E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G1zSrHiS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264106-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264106-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q43qeiTb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264361-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264361-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C929730F15E6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:36:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 578D331CA6D0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE6E4418FF;
-	Tue, 16 Jun 2026 15:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC28E44E04C;
+	Tue, 16 Jun 2026 15:57:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B5E357D14;
-	Tue, 16 Jun 2026 15:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E18936E46C;
+	Tue, 16 Jun 2026 15:57:58 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624156; cv=none; b=WBCEYRVqhIByJFAUoFxjmEM1ikVx2ic/oSCLsxsJvRvzHjb5bx/ARiVvFqtmg9dC1sUVsUDaK9ZTtoK/addpYpjYcZ5lSx38h5I2k8KvSGNZ6yD2IO5Rr60XTi821bzso7qWaEhdbsnVXkycs8yAnAFZai3lcCwvP5k8NZhEpPg=
+	t=1781625479; cv=none; b=m3FgEdGDJu3ZqMRSQadE8wxPgkz42niG1zTwaPHVKSSKz6DBDjaA+zhW3m2LaTQhC7nwJg1vjKhynFJMNbAfNHIi0+3UknLLGotiz25AVgw/Wwvnx+qIOHUN/7YjirWAkmGMj/dIzzzzzt6Q0fTmouzkeR7KO49kJZaaKo0OfCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624156; c=relaxed/simple;
-	bh=e5cCA36LPult7/hlYEXDgwfjyIOUkbHlU04bIP9B24A=;
+	s=arc-20240116; t=1781625479; c=relaxed/simple;
+	bh=YdvF9tyj9WL2Mjbaqg+liOKjKVWYqh3ZVIMzYpBDL4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LJni2xLZcK7GOpj21DYVPZcesv2id4H8REB8YvM2an+U4DwJ/ablVDRAMiAiB5y/aGlJqBunman1l3ysXNcIFz8AYyFcNvPbEX8gahOWxyqiymaAqyLwgK9U2SScDaOurr02kWsS2XrHNvuBJw0ad87aramlt0gmlczH6qi8GOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1zSrHiS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BAD1F000E9;
-	Tue, 16 Jun 2026 15:35:54 +0000 (UTC)
+	 MIME-Version; b=e6lH5En1ZrdGZSn5UNfEzdZ+nyew77fzlNI8BKMQlrT/R9keQOvmr4Sk/cDhp7VZVa1q/lR+s5J43PogsGzSSAoqNh9m4GjsKHZ3FXLpDejo8448+EDOMfMuF9EFuGN5cDiNKQfv0pj9q9pl4gVTAwi+tbOawmUxn3JlR+t5DAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q43qeiTb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4881F00A3A;
+	Tue, 16 Jun 2026 15:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624155;
-	bh=HPAjrMdqpZCb3G0UidmwxKBoOv7lcTzxx7ns8/n0Qok=;
+	s=korg; t=1781625478;
+	bh=bNbf6bQTPO8qI/DBVRGhtPEzHhFQkTPYJTEpygBZe9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G1zSrHiSCIRJNHpOK7V2Zyxzady/y6eZ9FUVOcvfMx09OwD/WA6C5ltXZELGWTfhJ
-	 fVIbnrPZe9QxHqBbOe61wF6Fr++pKCEWem3pR9FXehBNfLD7/9mDwsKc03i7mIcoIy
-	 wcFaOu1A0YAtBeQ3DjqxLdH9BHLtmwSBudDqvv/0=
+	b=Q43qeiTbr1lRaXJfwOn5eBFSNZUD61a4plEdmkjfcEZsonYay0uQQx828zTDNoO8f
+	 bCPkoE4QkjYdLO5tN43FXnFHctaBdBLZrBozJ6/KujqFNEyrUdp/S0uyJ9eJ4VCa/5
+	 3b6hAuDBEClaqhQWdtqkxpvOEqzWMF5ZVYXYbLFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghang Xiao <kipreyyy@gmail.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 7.0 283/378] misc: fastrpc: fix use-after-free race in fastrpc_map_create
+	Kyle Zeng <kylebot@openai.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 118/325] net: guard timestamp cmsgs to real error queue skbs
 Date: Tue, 16 Jun 2026 20:28:34 +0530
-Message-ID: <20260616145124.999378048@linuxfoundation.org>
+Message-ID: <20260616145103.590070652@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,124 +71,143 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264106-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kipreyyy@gmail.com,m:srini@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264361-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C8F306915A7
+X-Rspamd-Queue-Id: EAC70691A5E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenghang Xiao <kipreyyy@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit 07ebe87915d8accdaba20c4f88c5ae430fe62fbb upstream.
+[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
 
-fastrpc_map_lookup returns a raw pointer after releasing fl->lock. The
-caller fastrpc_map_create then calls fastrpc_map_get (kref_get_unless_zero)
-on this unprotected pointer. A concurrent MEM_UNMAP can free the map
-between the lock release and the kref operation, resulting in a
-use-after-free on the freed slab object.
+skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
+from sk_error_queue. That assumption is not true for AF_PACKET sockets:
+outgoing packet taps are also delivered to packet sockets with
+skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
+instead of struct sock_exterr_skb.
 
-Restore the take_ref parameter to fastrpc_map_lookup so the reference
-is acquired atomically under fl->lock before the pointer is exposed to
-the caller.
+If such an skb is received with timestamping enabled, the generic
+timestamp cmsg path can read AF_PACKET control-buffer state as
+sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
+counter overlaps opt_stats. An odd drop count makes the path emit
+SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
+skbs this copies past the linear head and can trigger hardened usercopy or
+disclose adjacent heap contents.
 
-Fixes: 10df039834f8 ("misc: fastrpc: Skip reference for DMA handles")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenghang Xiao <kipreyyy@gmail.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204528.116920-5-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Keep skb_is_err_queue() local to net/socket.c, but make it verify that
+the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
+installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
+receive ownership and no longer pass as error-queue skbs, while legitimate
+sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
+ownership.
+
+Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |   25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ include/net/sock.h |  1 +
+ net/core/skbuff.c  |  6 +++---
+ net/socket.c       | 11 ++++++-----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -388,7 +388,7 @@ static int fastrpc_map_get(struct fastrp
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 9540dcc5a0c012..5a26a3834ac68f 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1818,6 +1818,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
+ 			     gfp_t priority);
+ void skb_orphan_partial(struct sk_buff *skb);
+ void sock_rfree(struct sk_buff *skb);
++void sock_rmem_free(struct sk_buff *skb);
+ void sock_efree(struct sk_buff *skb);
+ #ifdef CONFIG_INET
+ void sock_edemux(struct sk_buff *skb);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 745bb0a67c6a4c..43dca2c045766f 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5399,7 +5399,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
+ }
+ EXPORT_SYMBOL_GPL(skb_cow_data);
  
- 
- static int fastrpc_map_lookup(struct fastrpc_user *fl, int fd,
--			    struct fastrpc_map **ppmap)
-+			    struct fastrpc_map **ppmap, bool take_ref)
+-static void sock_rmem_free(struct sk_buff *skb)
++void sock_rmem_free(struct sk_buff *skb)
  {
- 	struct fastrpc_map *map = NULL;
- 	struct dma_buf *buf;
-@@ -403,6 +403,12 @@ static int fastrpc_map_lookup(struct fas
- 		if (map->fd != fd || map->buf != buf)
- 			continue;
+ 	struct sock *sk = skb->sk;
  
-+		if (take_ref) {
-+			ret = fastrpc_map_get(map);
-+			if (ret)
-+				break;
-+		}
-+
- 		*ppmap = map;
- 		ret = 0;
- 		break;
-@@ -920,19 +926,10 @@ get_err:
- static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 			      u64 len, u32 attr, struct fastrpc_map **ppmap)
+@@ -5408,8 +5408,8 @@ static void sock_rmem_free(struct sk_buff *skb)
+ 
+ static void skb_set_err_queue(struct sk_buff *skb)
  {
--	struct fastrpc_session_ctx *sess = fl->sctx;
--	int err = 0;
-+	if (!fastrpc_map_lookup(fl, fd, ppmap, true))
-+		return 0;
+-	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
+-	 * So, it is safe to (mis)use it to mark skbs on the error queue.
++	/* The error-queue test in skb_is_err_queue() matches this marker
++	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
+ 	 */
+ 	skb->pkt_type = PACKET_OUTGOING;
+ 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
+diff --git a/net/socket.c b/net/socket.c
+index 2b6e11b085ebd7..4ce6ddd768fb46 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -792,12 +792,13 @@ EXPORT_SYMBOL(kernel_sendmsg);
  
--	if (!fastrpc_map_lookup(fl, fd, ppmap)) {
--		if (!fastrpc_map_get(*ppmap))
--			return 0;
--		dev_dbg(sess->dev, "%s: Failed to get map fd=%d\n",
--			__func__, fd);
--	}
--
--	err = fastrpc_map_attach(fl, fd, len, attr, ppmap);
--
--	return err;
-+	return fastrpc_map_attach(fl, fd, len, attr, ppmap);
+ static bool skb_is_err_queue(const struct sk_buff *skb)
+ {
+-	/* pkt_type of skbs enqueued on the error queue are set to
+-	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
+-	 * in recvmsg, since skbs received on a local socket will never
+-	 * have a pkt_type of PACKET_OUTGOING.
++	/* Error-queue skbs are marked as PACKET_OUTGOING in
++	 * skb_set_err_queue() and use the destructor installed by
++	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
++	 * AF_PACKET outgoing taps use the same pkt_type.
+ 	 */
+-	return skb->pkt_type == PACKET_OUTGOING;
++	return skb->pkt_type == PACKET_OUTGOING &&
++	       skb->destructor == sock_rmem_free;
  }
  
- /*
-@@ -1202,7 +1199,7 @@ cleanup_fdlist:
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
- 			break;
--		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap))
-+		if (!fastrpc_map_lookup(fl, (int)fdlist[i], &mmap, false))
- 			fastrpc_map_put(mmap);
- 	}
- 
+ /* On transmit, software and hardware timestamps are returned independently.
+-- 
+2.53.0
+
 
 
 
