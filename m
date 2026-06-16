@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xYOHIviSMWqJnAUAu9opvQ
-	(envelope-from <stable+bounces-265933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:24 +0200
+	id 0jVtLtaLMWodmQUAu9opvQ
+	(envelope-from <stable+bounces-265510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A077693F98
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:16:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34819693754
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u8ejGSpj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265933-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265933-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NSh3lrWA;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265510-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265510-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3FA9308131C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F364B321D46A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0083D75CE;
-	Tue, 16 Jun 2026 18:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B77C47AF5F;
+	Tue, 16 Jun 2026 17:39:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F44736A36C;
-	Tue, 16 Jun 2026 18:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F75847B432;
+	Tue, 16 Jun 2026 17:39:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633761; cv=none; b=ewBKJqJdgwbLvsYj8lIgDjR3IBskOmTRGVebHamEBGuOoPN4acc/cPBXKSb8BOOH65o596k/H9BSLuylbBW9PmcLDnYksivstdo3ZtB2098dv09tQbtpaOoP0cSsCQnDFW84MoFgy67+7Wew0XeLrMSCrcS8j7hJ6mKla2HZwNo=
+	t=1781631577; cv=none; b=X8nahCB7fP9//+tKzjul/z2wWcW4Kyu+LtaoP+MzyX+wh8g0HCFV9RbGmcnk/4CFW0j3q5fBux3u8b5vOw4jP598vicBldbUeNQ4FNYhjRm+1UakvvXzHWQbwec3XkVYuoN2Sj9dWy0ZcAbcvqg932U47d9nScSQt00uKsGRSgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633761; c=relaxed/simple;
-	bh=BpfMyVFQY09jln+nYmycJbPl/bXaHH/V2SWQ9Cd2wqQ=;
+	s=arc-20240116; t=1781631577; c=relaxed/simple;
+	bh=0DYOOJR4B1HlcxtCVEEF2madGsTkoFPUPRKOzpV51hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQE61WuO1H5WGuU7tuvnheU14KyvGxdVGxOrmBWlwHtDMwH/C8ViTRgqpP/WjwztLm1dZCEfYhhzmX4LgeqRWzG1+3sSEw99MndmxztAxVCUeiVt9vMfzym5vc7/l2pHKobK4KGyMstJqXiRplqW9i4l2ZcmK+clnVUNfh8VrcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8ejGSpj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE771F000E9;
-	Tue, 16 Jun 2026 18:15:59 +0000 (UTC)
+	 MIME-Version; b=lUwcX7qie0Hu/KUmJzV8O5OofqEitWRTVeXZ0f5ZR7hOJfjOxBvUG99NB/gMe+uKeq+ufmRAxInxX/E4nMgo5cC1s15nZ2GEFD9fbNVzwk+x/rNOL1MtF4s92oVHqIzer+ZwoUnrPB6SrJFjIyOJ4ywBPGsZcv+5st8XJovW1Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSh3lrWA; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9F51F000E9;
+	Tue, 16 Jun 2026 17:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633760;
-	bh=Y+8TefiocJZ3a/qqxHB3lG70n0Zgkt3jjbE9KtvK+nQ=;
+	s=korg; t=1781631576;
+	bh=BVDkBw3eQcz8lrYPoZw2pKEc/lFf1giArVYDSNWVFXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u8ejGSpjlfxO/w+LLd/ac8RrjsKDLTx3+BfIqDc2OZaecd93XVXAOiAkKFD93Aaky
-	 t+6lRJkHxZz9ia6Na/DCFwscYA+IDOpL0otPO6NirFm1O71hdv5sgZn+fYnX1iZuK4
-	 fJk1ycU74rygq/rEkvnMbgPKc6VU9/LVr2C7qmjI=
+	b=NSh3lrWAIHyKM9ltXGNuH47bFklnwB+ylHj/2YK8SPfvo0gxSpF+m500sNU948+rB
+	 mdZ9clJIdKklpf7wyyZqC+6s4JymMcnbJhf7lf4zvV34LxWZwNAaM7wnPZ5FCueJYt
+	 XVYooiKdiZ54BBIs/f7uel1FmQTIn8LX7u5OzRkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Michael Bommarito <michael.bommarito@gmail.com>
-Subject: [PATCH 5.15 123/411] usb: gadget: f_fs: copy only received bytes on short ep0 read
+	Muhammad Bilal <meatuni001@gmail.com>,
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 214/522] Bluetooth: RFCOMM: validate skb length in MCC handlers
 Date: Tue, 16 Jun 2026 20:26:01 +0530
-Message-ID: <20260616145106.863168280@linuxfoundation.org>
+Message-ID: <20260616145136.054152187@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,121 +68,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265933-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michael.bommarito@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265510-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:suunj1331@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3A077693F98
+X-Rspamd-Queue-Id: 34819693754
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit 4e036c10e7f4df5d951c69cc3697bc8e209c6d02 upstream.
+[ Upstream commit 23882b828c3c8c51d0c946446a396b10abb3b16b ]
 
-ffs_ep0_read() allocates its control-OUT data buffer with
-kmalloc() (not kzalloc) at the Length value from the Setup
-packet, then copies that full len to userspace regardless of
-how many bytes were actually received:
+The RFCOMM MCC handlers cast skb->data to protocol-specific structs
+without validating skb->len first. A malicious remote device can send
+truncated MCC frames and trigger out-of-bounds reads in these handlers.
 
-    data = kmalloc(len, GFP_KERNEL);
-    ...
-    ret = __ffs_ep0_queue_wait(ffs, data, len);
-    if ((ret > 0) && (copy_to_user(buf, data, len)))
-            ret = -EFAULT;
+Fix this by using skb_pull_data() to validate and access the required
+data before dereferencing it.
 
-__ffs_ep0_queue_wait() returns req->actual, which on a short
-control OUT transfer is strictly less than len.  The
-copy_to_user() call still copies len bytes, so on a short OUT
-the last (len - ret) bytes of the kmalloc() buffer --
-uninitialised slab residue -- are delivered to the FunctionFS
-daemon.
+rfcomm_recv_rpn() requires special handling since ETSI TS 07.10 allows
+1-byte RPN requests. Handle this by validating only the DLCI byte first,
+and validating the full struct only when len > 1.
 
-Short ep0 OUT completions are specified USB control-transfer
-behavior and are produced by in-tree UDCs:
-
-  * dwc2 continues on req->actual < req->length for ep0 DATA OUT
-    (short-not-ok is the only ep0-OUT stall path).
-  * aspeed_udc ends ep0 OUT on rx_len < ep->ep.maxpacket.
-  * renesas_usbf logs "ep0 short packet" and completes the
-    request.
-  * dwc3 stalls on short IN but not on short OUT.
-
-A short ep0 OUT is therefore not evidence of a broken UDC; it is
-a normal condition f_fs has to cope with.  The sibling gadgetfs
-implementation in drivers/usb/gadget/legacy/inode.c already does
-this correctly via min(len, dev->req->actual) before
-copy_to_user().  This patch brings f_fs.c to the same safe
-pattern rather than trimming at a defensive layer.
-
-The bug is reached from the FunctionFS device node, which in
-real deployments is owned by the privileged gadget daemon
-(adbd, UMS, composite gadget services, etc.); it is not
-reachable from unprivileged userspace.  Linux host stacks
-normally reject short-wLength control OUTs before they reach
-the gadget, so reproducing this required a build that
-bypasses that host-side check.  With the bypass in place, a
-1-byte payload on a 64-byte Setup produces 63 bytes of
-non-canary slab residue in the daemon's read buffer.
-
-Fix by copying only ret (actually received) bytes to
-userspace.
-
-Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
-Cc: stable <stable@kernel.org>
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://patch.msgid.link/20260419160359.1577270-1-michael.bommarito@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/rfcomm/core.c | 67 +++++++++++++++++++++++++++----------
+ 1 file changed, 49 insertions(+), 18 deletions(-)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -592,7 +592,7 @@ static ssize_t ffs_ep0_read(struct file
+diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
+index 4f54c7df3a94f8..374187def190da 100644
+--- a/net/bluetooth/rfcomm/core.c
++++ b/net/bluetooth/rfcomm/core.c
+@@ -1427,10 +1427,15 @@ static int rfcomm_apply_pn(struct rfcomm_dlc *d, int cr, struct rfcomm_pn *pn)
  
- 		/* unlocks spinlock */
- 		ret = __ffs_ep0_queue_wait(ffs, data, len);
--		if ((ret > 0) && (copy_to_user(buf, data, len)))
-+		if ((ret > 0) && (copy_to_user(buf, data, ret)))
- 			ret = -EFAULT;
- 		goto done_mutex;
+ static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ {
+-	struct rfcomm_pn *pn = (void *) skb->data;
++	struct rfcomm_pn *pn;
+ 	struct rfcomm_dlc *d;
+-	u8 dlci = pn->dlci;
++	u8 dlci;
++
++	pn = skb_pull_data(skb, sizeof(*pn));
++	if (!pn)
++		return -EILSEQ;
  
++	dlci = pn->dlci;
+ 	BT_DBG("session %p state %ld dlci %d", s, s->state, dlci);
+ 
+ 	if (!dlci)
+@@ -1479,8 +1484,8 @@ static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ 
+ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_buff *skb)
+ {
+-	struct rfcomm_rpn *rpn = (void *) skb->data;
+-	u8 dlci = __get_dlci(rpn->dlci);
++	struct rfcomm_rpn *rpn;
++	u8 dlci;
+ 
+ 	u8 bit_rate  = 0;
+ 	u8 data_bits = 0;
+@@ -1491,15 +1496,16 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 	u8 xoff_char = 0;
+ 	u16 rpn_mask = RFCOMM_RPN_PM_ALL;
+ 
+-	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
+-		dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
+-		rpn->xon_char, rpn->xoff_char, rpn->param_mask);
++	if (len == 1) {
++		rpn = skb_pull_data(skb, 1);
++		if (!rpn)
++			return -EILSEQ;
+ 
+-	if (!cr)
+-		return 0;
++		dlci = __get_dlci(rpn->dlci);
++
++		if (!cr)
++			return 0;
+ 
+-	if (len == 1) {
+-		/* This is a request, return default (according to ETSI TS 07.10) settings */
+ 		bit_rate  = RFCOMM_RPN_BR_9600;
+ 		data_bits = RFCOMM_RPN_DATA_8;
+ 		stop_bits = RFCOMM_RPN_STOP_1;
+@@ -1510,6 +1516,19 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 		goto rpn_out;
+ 	}
+ 
++	rpn = skb_pull_data(skb, sizeof(*rpn));
++	if (!rpn)
++		return -EILSEQ;
++
++	dlci = __get_dlci(rpn->dlci);
++
++	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
++	       dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
++	       rpn->xon_char, rpn->xoff_char, rpn->param_mask);
++
++	if (!cr)
++		return 0;
++
+ 	/* Check for sane values, ignore/accept bit_rate, 8 bits, 1 stop bit,
+ 	 * no parity, no flow control lines, normal XON/XOFF chars */
+ 
+@@ -1585,9 +1604,14 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 
+ static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ {
+-	struct rfcomm_rls *rls = (void *) skb->data;
+-	u8 dlci = __get_dlci(rls->dlci);
++	struct rfcomm_rls *rls;
++	u8 dlci;
+ 
++	rls = skb_pull_data(skb, sizeof(*rls));
++	if (!rls)
++		return -EILSEQ;
++
++	dlci = __get_dlci(rls->dlci);
+ 	BT_DBG("dlci %d cr %d status 0x%x", dlci, cr, rls->status);
+ 
+ 	if (!cr)
+@@ -1604,10 +1628,15 @@ static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb
+ 
+ static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ {
+-	struct rfcomm_msc *msc = (void *) skb->data;
++	struct rfcomm_msc *msc;
+ 	struct rfcomm_dlc *d;
+-	u8 dlci = __get_dlci(msc->dlci);
++	u8 dlci;
++
++	msc = skb_pull_data(skb, sizeof(*msc));
++	if (!msc)
++		return -EILSEQ;
+ 
++	dlci = __get_dlci(msc->dlci);
+ 	BT_DBG("dlci %d cr %d v24 0x%x", dlci, cr, msc->v24_sig);
+ 
+ 	d = rfcomm_dlc_get(s, dlci);
+@@ -1640,17 +1669,19 @@ static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb
+ 
+ static int rfcomm_recv_mcc(struct rfcomm_session *s, struct sk_buff *skb)
+ {
+-	struct rfcomm_mcc *mcc = (void *) skb->data;
++	struct rfcomm_mcc *mcc;
+ 	u8 type, cr, len;
+ 
++	mcc = skb_pull_data(skb, sizeof(*mcc));
++	if (!mcc)
++		return -EILSEQ;
++
+ 	cr   = __test_cr(mcc->type);
+ 	type = __get_mcc_type(mcc->type);
+ 	len  = __get_mcc_len(mcc->len);
+ 
+ 	BT_DBG("%p type 0x%x cr %d", s, type, cr);
+ 
+-	skb_pull(skb, 2);
+-
+ 	switch (type) {
+ 	case RFCOMM_PN:
+ 		rfcomm_recv_pn(s, cr, skb);
+-- 
+2.53.0
+
 
 
 
