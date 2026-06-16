@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W1bDG3BxMWq/jQUAu9opvQ
-	(envelope-from <stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:20 +0200
+	id SqpDJYqeMWq4oQUAu9opvQ
+	(envelope-from <stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CE869177D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C86B694BCD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x4l9QXHT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264182-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qji0gmgS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9F5D30BD7CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:44:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA6A3306C702
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667BB3B840B;
-	Tue, 16 Jun 2026 15:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA85349CF0;
+	Tue, 16 Jun 2026 19:05:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FF144CF44;
-	Tue, 16 Jun 2026 15:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BE63DBD76;
+	Tue, 16 Jun 2026 19:05:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624560; cv=none; b=kgQTAlZVeFMxWov+o3MCd+oN4Ioao4Ni6M10+wa3TVN8sT99U6jHrNdkx7PDuD8fT6pASj6zO4ORh/emKQMgHmDkfALWWjaDm738gwhs/ewXdqB9WmflBocHGoRfXc0pXZ8x7+spWJRKjkOmJn8kakwIm7lBH7jZyuC9D+x0DpA=
+	t=1781636721; cv=none; b=Y3DHyUFCMyiNwWDaO85Hkqm/wWXd0aWxoucV7qdEehKMrd2hUOpbWmJfHQMv10PLPN3wFjHAdFTGqGU2PPoqz0RrNdPelQUcESiSJia3NitNI6oC5BOrDc8zEG4AnVXBH4BLKlpUMz3ia0wkndU4j+qevmk78IexwSGMywmNfII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624560; c=relaxed/simple;
-	bh=3N5ZVKGx/+pEtQwOZeioll6aMksYXiGE9ZFP+LvFKxM=;
+	s=arc-20240116; t=1781636721; c=relaxed/simple;
+	bh=XyHJpVibneMaRBtsYKDmTBklbL/bc6eJ1LpA9O6pWZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1X2F9Nv82k9teXo8G9auoRXaWAoOYQ9K0BbT66PcEyBwVlvlsEy/weSV4eSjPXHsKCHaGbakeaRBXbvtImzOYR5YORXNx+bMAe/MgDXSB1XTzivsPhZS3bl6zWYHh0PBCUamzE7LhBl4o/n3dQyqnQ50ANsk8MAff25+NgIP/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4l9QXHT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5021F00A3A;
-	Tue, 16 Jun 2026 15:42:37 +0000 (UTC)
+	 MIME-Version; b=CeN1iwjwO4VIGLxAaUNE2q7LmRoBc/P0JSFwz1V1aTHZjj0X2Tzaysg6p/1qsP8U/XdbzezOktsBaWfLhDhTMMk5LeTPvO6PLX452RQzeCUvLeTCSzmUKExXhKGE77+pKfeB9PE8VgS7t80ThgOHDWKXQJwr8B6ZcnOc/tfk4m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qji0gmgS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2936E1F000E9;
+	Tue, 16 Jun 2026 19:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624559;
-	bh=wIv3bCO7koGVOiCKPPLMc0im4ueljunDGQgmGnFPqTg=;
+	s=korg; t=1781636720;
+	bh=QnvMU++g56Lyd/envMKqf8kMHKF+4BqPhZwMG43nEKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x4l9QXHThnmEjj16lgib7zMr5c6htOAInvIcIaZhgxzXtibkFLa5VEctVqoEgVmE1
-	 Y9sE5k0Jx+nHJhA38WNlK3K5fGPTz7fQUxXNMtA5BFLD5uOH1liYRaY3FtHQ5Rgz3W
-	 mXEkW6N3Ya47mMRJgSR1YB6pVRXdkIyTNOvFM8yo=
+	b=Qji0gmgStDBbb4a6m2KkrYB9hO/IejLn2chudsXYvZN+kOH7eX64KSdWtqA+xoaxe
+	 b/WIiAKwO6fVmh2gXjuL8xKMnsZxeTgDHH1fyy15lZECuFqe9Ok2PrgSoXnSmYPX4U
+	 M5DnoMIXnKAl/bBo10WCf1ZPyzZx5+eqPH6tQJF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 7.0 358/378] drm/amd/display: Use krealloc_array() in dal_vector_reserve()
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	Sai Krishna <saikrishnag@marvell.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 293/342] octeontx2-af: Add validation for lmac type
 Date: Tue, 16 Jun 2026 20:29:49 +0530
-Message-ID: <20260616145128.991808370@linuxfoundation.org>
+Message-ID: <20260616145102.069841196@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +74,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264182-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266496-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hkelam@marvell.com,m:sgoutham@marvell.com,m:saikrishnag@marvell.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,58 +98,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,davemloft.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C8CE869177D
+X-Rspamd-Queue-Id: 0C86B694BCD
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit da48bc4461b8a5ebfb9264c9b191a701d8e99009 upstream.
+[ Upstream commit cb5edce271764524b88b1a6866b3e626686d9a33 ]
 
-[Why & How]
-dal_vector_reserve() computes the allocation size as
-"capacity * vector->struct_size" using uint32_t arithmetic, which can
-silently wrap to a small value on overflow. This would cause krealloc to
-return a smaller buffer than expected, leading to heap overflows on
-subsequent vector appends.
+Upon physical link change, firmware reports to the kernel about the
+change along with the details like speed, lmac_type_id, etc.
+Kernel derives lmac_type based on lmac_type_id received from firmware.
 
-Replace krealloc() with krealloc_array() which performs an internal
-overflow check and returns NULL on wrap, preventing the issue.
+In a few scenarios, firmware returns an invalid lmac_type_id, which
+is resulting in below kernel panic. This patch adds the missing
+validation of the lmac_type_id field.
 
-Fixes: 2004f45ef83f ("drm/amd/display: Use kernel alloc/free")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 37668568641ccc4cc1dbca4923d0a16609dd5707)
-Cc: stable@vger.kernel.org
+Internal error: Oops: 96000005 [#1] PREEMPT SMP
+[   35.321595] Modules linked in:
+[   35.328982] CPU: 0 PID: 31 Comm: kworker/0:1 Not tainted
+5.4.210-g2e3169d8e1bc-dirty #17
+[   35.337014] Hardware name: Marvell CN103XX board (DT)
+[   35.344297] Workqueue: events work_for_cpu_fn
+[   35.352730] pstate: 40400089 (nZcv daIf +PAN -UAO)
+[   35.360267] pc : strncpy+0x10/0x30
+[   35.366595] lr : cgx_link_change_handler+0x90/0x180
+
+Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: c0bf0a4f3f1f ("octeontx2-af: CGX: add bounds check to cgx_speed_mbps index")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/basics/vector.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c  |   15 +++++++++++----
+ drivers/net/ethernet/marvell/octeontx2/af/mbox.h |    1 +
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/basics/vector.c
-+++ b/drivers/gpu/drm/amd/display/dc/basics/vector.c
-@@ -288,8 +288,8 @@ bool dal_vector_reserve(struct vector *v
- 	if (capacity <= vector->capacity)
- 		return true;
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -669,15 +669,22 @@ static inline void link_status_user_form
+ 					   struct cgx_link_user_info *linfo,
+ 					   struct cgx *cgx, u8 lmac_id)
+ {
+-	char *lmac_string;
+-
+ 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
+ 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
+ 	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
++	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
+ 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
+ 	linfo->lmac_type_id = cgx_get_lmac_type(cgx, lmac_id);
+-	lmac_string = cgx_lmactype_string[linfo->lmac_type_id];
+-	strncpy(linfo->lmac_type, lmac_string, LMACTYPE_STR_LEN - 1);
++
++	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
++		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
++			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
++		strncpy(linfo->lmac_type, "Unknown", LMACTYPE_STR_LEN - 1);
++		return;
++	}
++
++	strncpy(linfo->lmac_type, cgx_lmactype_string[linfo->lmac_type_id],
++		LMACTYPE_STR_LEN - 1);
+ }
  
--	new_container = krealloc(vector->container,
--				 capacity * vector->struct_size, GFP_KERNEL);
-+	new_container = krealloc_array(vector->container,
-+				       capacity, vector->struct_size, GFP_KERNEL);
- 
- 	if (new_container) {
- 		vector->container = new_container;
+ /* Hardware event handlers */
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -369,6 +369,7 @@ struct cgx_link_user_info {
+ 	uint64_t full_duplex:1;
+ 	uint64_t lmac_type_id:4;
+ 	uint64_t speed:20; /* speed in Mbps */
++	uint64_t an:1;		/* AN supported or not */
+ 	uint64_t fec:2;	 /* FEC type if enabled else 0 */
+ #define LMACTYPE_STR_LEN 16
+ 	char lmac_type[LMACTYPE_STR_LEN];
 
 
 
