@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U7RqL4iNMWoEmgUAu9opvQ
-	(envelope-from <stable+bounces-265632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:12 +0200
+	id pBg9KfecMWr4oAUAu9opvQ
+	(envelope-from <stable+bounces-266422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B43693967
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:53:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412CB694A1C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="C/PqBm1B";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265632-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265632-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hfeUk6hy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266422-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266422-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 797DA302712E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF668302A40A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD303D669A;
-	Tue, 16 Jun 2026 17:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C655347CC7E;
+	Tue, 16 Jun 2026 18:59:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA2C466B4B;
-	Tue, 16 Jun 2026 17:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C503CEBBD;
+	Tue, 16 Jun 2026 18:59:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632184; cv=none; b=q491q+UXVQmEQUQXebyGw7ePU1nTixPhdFRb1EFam0Edv6Bjm74AOSNiJOvSkfVqAICEGInMdlGuRp2Rhm3j09NHkw8Xj9Q0vdz1hgghhn150HRhM/yv6ifLHOID8QUONEx0fBbGVYDiCA0THZoxV6qKLuJHQzmJNC7CYSlV2Qw=
+	t=1781636341; cv=none; b=ErQMckNih4uqeWj4BJaKzE5yNqlZC9822T1iI4FswuhRrqtkpVA3QmfTsnERWd7wwZCBs9c8gw3BTeQyiBvuPRT7aJjdP7Bg0JekR0SzVzZLeNVn9tO+QG9u1VMw/0MJJmGBWyGDk+HrBjqGO0KdhKjXvcLsHG14oH4bi0bSSCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632184; c=relaxed/simple;
-	bh=jM4CAOyPsMdk5xlao+2oJ0JTBH9Q94jDrTsnU5sDMOM=;
+	s=arc-20240116; t=1781636341; c=relaxed/simple;
+	bh=R/YZi5BD7pb6aKkzpzRQzW54VQvMVnSXP6jKN1r/J20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZF/CbrrFLH/4xG0M+DXUYCEX5qOiwBwyh2f2saOVs2V24ww0nYmZJAPf4LWazdkf7iuQX6WSgFoWaahtu17uWMOf7N8Cn0emxYHHFy73HTO5rQsdwoTUhHHJWE/g8ixy+f/jt7YG4/H9uLN3DB5l51pzPredgBbiE71QRfS0QlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/PqBm1B; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51021F000E9;
-	Tue, 16 Jun 2026 17:49:41 +0000 (UTC)
+	 MIME-Version; b=UC+kFzpDWoqEAtTWL1CRGNCKUUUIgZAivR6c693n8vjmTvi/2chlF/86j3cVuUv+2qNGtGU31pE6a0JkczEigKVM59EcONxzUnLihIgM43Wumg1gFb3eusdh9MbPB5lowk5/7sDCDXC3ywg0TU/87X3J/r2TGP4q5yWx2ZSsXfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfeUk6hy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F401F000E9;
+	Tue, 16 Jun 2026 18:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632183;
-	bh=MNWYaQbbi8ybLXnfoTQ1zUMJI/hmzazqqVo3NLPmONw=;
+	s=korg; t=1781636340;
+	bh=UrD+hxBd1XRMO8s4TSkaNMv+edQGG7P4Oo7W6RrjXc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C/PqBm1BgH37iXWhikRBRWvnXUHB2CRz/O3D+G91/IE7iR0oFkP9lPmq+T2NbbyY9
-	 KAYqgXik6I4RWxPu4Yj7OK4F0R/ZasCXSsU4fMUQoSZ6LSkuPVViS9LLPp975qcVmn
-	 5h5EaFKuSd/y3B0N+V6ptwRMq1MkmdqwouL6G52I=
+	b=hfeUk6hySmV2vDBlOdYdBsi0t3eNPvtHKdjjMpCHksMFgUuH2v9CIpcob6PPir9iT
+	 K/suc7LGaIg75yjixHGd1FDZTzYS5EkoVJxmgmKct/y5DAIECn2bJwoONP5RsXSlzi
+	 m4iK4S+pl3P9rjtL5oOTyb2YWkyzhyFb2btaV9j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 362/522] crypto: nx - Migrate to scomp API
+	Jeff Layton <jlayton@kernel.org>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 5.10 213/342] fs/fcntl: fix SOFTIRQ-unsafe lock order in fasync signaling
 Date: Tue, 16 Jun 2026 20:28:29 +0530
-Message-ID: <20260616145142.725942595@linuxfoundation.org>
+Message-ID: <20260616145058.104592959@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265632-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266422-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ardb@kernel.org,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:25181214217@stu.xidian.edu.cn,m:brauner@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,285 +98,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 22B43693967
+X-Rspamd-Queue-Id: 412CB694A1C
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-[ Upstream commit 980b5705f4e73f567e405cd18337cc32fd51cf79 ]
+commit 00633c4683828acd5256fa8d5163f440d74bbe71 upstream.
 
-The only remaining user of 842 compression has been migrated to the
-acomp compression API, and so the NX hardware driver has to follow suit,
-given that no users of the obsolete 'comp' API remain, and it is going
-to be removed.
+A SOFTIRQ-safe to SOFTIRQ-unsafe lock order deadlock can occur in
+send_sigio() and send_sigurg() when a process group receives a signal.
 
-So migrate the NX driver code to scomp. These will be wrapped and
-exposed as acomp implementation via the crypto subsystem's
-acomp-to-scomp adaptation layer.
+When FASYNC is configured for a process group (PIDTYPE_PGID), both
+functions use read_lock(&tasklist_lock) to traverse the task list.
+However, they are frequently called from softirq context:
+- send_sigio() via input_inject_event -> kill_fasync
+- send_sigurg() via tcp_check_urg -> sk_send_sigurg (NET_RX_SOFTIRQ)
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: adb3faf2db1a ("crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The deadlock is caused by the rwlock writer fairness mechanism:
+1. CPU 0 (process context) holds read_lock(&tasklist_lock) in do_wait().
+2. CPU 1 (process context) attempts write_lock(&tasklist_lock) in
+   fork() or exit() and spins, which blocks all new readers.
+3. CPU 0 is interrupted by a softirq (e.g., TCP URG packet reception).
+4. The softirq calls send_sigurg() and attempts to acquire
+   read_lock(&tasklist_lock), deadlocking because CPU 1 is waiting.
+
+Since PID hashing and do_each_pid_task() traversals are already
+RCU-protected, the read_lock on tasklist_lock is no longer strictly
+required for safe traversal. Fix this by replacing tasklist_lock with
+rcu_read_lock(), aligning the process group signaling path with the
+single-PID path. This also mitigates a potential remote denial of
+service vector via TCP URG packets.
+
+Lockdep splat:
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+[...]
+Chain exists of:
+  &dev->event_lock --> &f_owner->lock --> tasklist_lock
+
+Possible interrupt unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(tasklist_lock);
+                           local_irq_disable();
+                           lock(&dev->event_lock);
+                           lock(&f_owner->lock);
+  <Interrupt>
+    lock(&dev->event_lock);
+
+*** DEADLOCK ***
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Link: https://patch.msgid.link/20260523135210.590928-1-w15303746062@163.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c            |   33 +++++++++++++++++++--------------
- drivers/crypto/nx/nx-842.h            |   14 ++++++++------
- drivers/crypto/nx/nx-common-powernv.c |   31 +++++++++++++++----------------
- drivers/crypto/nx/nx-common-pseries.c |   33 ++++++++++++++++-----------------
- 4 files changed, 58 insertions(+), 53 deletions(-)
+ fs/fcntl.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -101,9 +101,13 @@ static int update_param(struct nx842_cry
- 	return 0;
- }
- 
--int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver)
-+void *nx842_crypto_alloc_ctx(struct nx842_driver *driver)
- {
--	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
-+	struct nx842_crypto_ctx *ctx;
-+
-+	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return ERR_PTR(-ENOMEM);
- 
- 	spin_lock_init(&ctx->lock);
- 	ctx->driver = driver;
-@@ -114,22 +118,23 @@ int nx842_crypto_init(struct crypto_tfm
- 		kfree(ctx->wmem);
- 		free_page((unsigned long)ctx->sbounce);
- 		free_page((unsigned long)ctx->dbounce);
--		return -ENOMEM;
-+		kfree(ctx);
-+		return ERR_PTR(-ENOMEM);
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -800,11 +800,11 @@ void send_sigio(struct fown_struct *fown
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
  	}
- 
--	return 0;
-+	return ctx;
- }
--EXPORT_SYMBOL_GPL(nx842_crypto_init);
-+EXPORT_SYMBOL_GPL(nx842_crypto_alloc_ctx);
- 
--void nx842_crypto_exit(struct crypto_tfm *tfm)
-+void nx842_crypto_free_ctx(void *p)
- {
--	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
-+	struct nx842_crypto_ctx *ctx = p;
- 
- 	kfree(ctx->wmem);
- 	free_page((unsigned long)ctx->sbounce);
- 	free_page((unsigned long)ctx->dbounce);
- }
--EXPORT_SYMBOL_GPL(nx842_crypto_exit);
-+EXPORT_SYMBOL_GPL(nx842_crypto_free_ctx);
- 
- static void check_constraints(struct nx842_constraints *c)
- {
-@@ -246,11 +251,11 @@ nospc:
- 	return update_param(p, slen, dskip + dlen);
- }
- 
--int nx842_crypto_compress(struct crypto_tfm *tfm,
-+int nx842_crypto_compress(struct crypto_scomp *tfm,
- 			  const u8 *src, unsigned int slen,
--			  u8 *dst, unsigned int *dlen)
-+			  u8 *dst, unsigned int *dlen, void *pctx)
- {
--	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
-+	struct nx842_crypto_ctx *ctx = pctx;
- 	struct nx842_crypto_header *hdr =
- 				container_of(&ctx->header,
- 					     struct nx842_crypto_header, hdr);
-@@ -431,11 +436,11 @@ usesw:
- 	return update_param(p, slen + padding, dlen);
- }
- 
--int nx842_crypto_decompress(struct crypto_tfm *tfm,
-+int nx842_crypto_decompress(struct crypto_scomp *tfm,
- 			    const u8 *src, unsigned int slen,
--			    u8 *dst, unsigned int *dlen)
-+			    u8 *dst, unsigned int *dlen, void *pctx)
- {
--	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
-+	struct nx842_crypto_ctx *ctx = pctx;
- 	struct nx842_crypto_header *hdr;
- 	struct nx842_crypto_param p;
- 	struct nx842_constraints c = *ctx->driver->constraints;
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -101,6 +101,8 @@
- #define LEN_ON_SIZE(pa, size)	((size) - ((pa) & ((size) - 1)))
- #define LEN_ON_PAGE(pa)		LEN_ON_SIZE(pa, PAGE_SIZE)
- 
-+struct crypto_scomp;
-+
- static inline unsigned long nx842_get_pa(void *addr)
- {
- 	if (!is_vmalloc_addr(addr))
-@@ -179,13 +181,13 @@ struct nx842_crypto_ctx {
- 	struct nx842_driver *driver;
- };
- 
--int nx842_crypto_init(struct crypto_tfm *tfm, struct nx842_driver *driver);
--void nx842_crypto_exit(struct crypto_tfm *tfm);
--int nx842_crypto_compress(struct crypto_tfm *tfm,
-+void *nx842_crypto_alloc_ctx(struct nx842_driver *driver);
-+void nx842_crypto_free_ctx(void *ctx);
-+int nx842_crypto_compress(struct crypto_scomp *tfm,
- 			  const u8 *src, unsigned int slen,
--			  u8 *dst, unsigned int *dlen);
--int nx842_crypto_decompress(struct crypto_tfm *tfm,
-+			  u8 *dst, unsigned int *dlen, void *ctx);
-+int nx842_crypto_decompress(struct crypto_scomp *tfm,
- 			    const u8 *src, unsigned int slen,
--			    u8 *dst, unsigned int *dlen);
-+			    u8 *dst, unsigned int *dlen, void *ctx);
- 
- #endif /* __NX_842_H__ */
---- a/drivers/crypto/nx/nx-common-powernv.c
-+++ b/drivers/crypto/nx/nx-common-powernv.c
-@@ -9,6 +9,7 @@
- 
- #include "nx-842.h"
- 
-+#include <crypto/internal/scompress.h>
- #include <linux/timer.h>
- 
- #include <asm/prom.h>
-@@ -1034,23 +1035,21 @@ static struct nx842_driver nx842_powernv
- 	.decompress =	nx842_powernv_decompress,
- };
- 
--static int nx842_powernv_crypto_init(struct crypto_tfm *tfm)
-+static void *nx842_powernv_crypto_alloc_ctx(void)
- {
--	return nx842_crypto_init(tfm, &nx842_powernv_driver);
-+	return nx842_crypto_alloc_ctx(&nx842_powernv_driver);
- }
- 
--static struct crypto_alg nx842_powernv_alg = {
--	.cra_name		= "842",
--	.cra_driver_name	= "842-nx",
--	.cra_priority		= 300,
--	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
--	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
--	.cra_module		= THIS_MODULE,
--	.cra_init		= nx842_powernv_crypto_init,
--	.cra_exit		= nx842_crypto_exit,
--	.cra_u			= { .compress = {
--	.coa_compress		= nx842_crypto_compress,
--	.coa_decompress		= nx842_crypto_decompress } }
-+static struct scomp_alg nx842_powernv_alg = {
-+	.base.cra_name		= "842",
-+	.base.cra_driver_name	= "842-nx",
-+	.base.cra_priority	= 300,
-+	.base.cra_module	= THIS_MODULE,
-+
-+	.alloc_ctx		= nx842_powernv_crypto_alloc_ctx,
-+	.free_ctx		= nx842_crypto_free_ctx,
-+	.compress		= nx842_crypto_compress,
-+	.decompress		= nx842_crypto_decompress,
- };
- 
- static __init int nx_compress_powernv_init(void)
-@@ -1110,7 +1109,7 @@ static __init int nx_compress_powernv_in
- 		nx842_powernv_exec = nx842_exec_vas;
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
+@@ -841,11 +841,11 @@ int send_sigurg(struct fown_struct *fown
+ 			send_sigurg_to_task(p, fown, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigurg_to_task(p, fown, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
  	}
- 
--	ret = crypto_register_alg(&nx842_powernv_alg);
-+	ret = crypto_register_scomp(&nx842_powernv_alg);
- 	if (ret) {
- 		nx_delete_coprocs();
- 		return ret;
-@@ -1131,7 +1130,7 @@ static void __exit nx_compress_powernv_e
- 	if (!nx842_ct)
- 		vas_unregister_api_powernv();
- 
--	crypto_unregister_alg(&nx842_powernv_alg);
-+	crypto_unregister_scomp(&nx842_powernv_alg);
- 
- 	nx_delete_coprocs();
- }
---- a/drivers/crypto/nx/nx-common-pseries.c
-+++ b/drivers/crypto/nx/nx-common-pseries.c
-@@ -11,6 +11,7 @@
- #include <asm/vio.h>
- #include <asm/hvcall.h>
- #include <asm/vas.h>
-+#include <crypto/internal/scompress.h>
- 
- #include "nx-842.h"
- #include "nx_csbcpb.h" /* struct nx_csbcpb */
-@@ -1006,23 +1007,21 @@ static struct nx842_driver nx842_pseries
- 	.decompress =	nx842_pseries_decompress,
- };
- 
--static int nx842_pseries_crypto_init(struct crypto_tfm *tfm)
-+static void *nx842_pseries_crypto_alloc_ctx(void)
- {
--	return nx842_crypto_init(tfm, &nx842_pseries_driver);
-+	return nx842_crypto_alloc_ctx(&nx842_pseries_driver);
- }
- 
--static struct crypto_alg nx842_pseries_alg = {
--	.cra_name		= "842",
--	.cra_driver_name	= "842-nx",
--	.cra_priority		= 300,
--	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
--	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
--	.cra_module		= THIS_MODULE,
--	.cra_init		= nx842_pseries_crypto_init,
--	.cra_exit		= nx842_crypto_exit,
--	.cra_u			= { .compress = {
--	.coa_compress		= nx842_crypto_compress,
--	.coa_decompress		= nx842_crypto_decompress } }
-+static struct scomp_alg nx842_pseries_alg = {
-+	.base.cra_name		= "842",
-+	.base.cra_driver_name	= "842-nx",
-+	.base.cra_priority	= 300,
-+	.base.cra_module	= THIS_MODULE,
-+
-+	.alloc_ctx		= nx842_pseries_crypto_alloc_ctx,
-+	.free_ctx		= nx842_crypto_free_ctx,
-+	.compress		= nx842_crypto_compress,
-+	.decompress		= nx842_crypto_decompress,
- };
- 
- static int nx842_probe(struct vio_dev *viodev,
-@@ -1070,7 +1069,7 @@ static int nx842_probe(struct vio_dev *v
- 	if (ret)
- 		goto error;
- 
--	ret = crypto_register_alg(&nx842_pseries_alg);
-+	ret = crypto_register_scomp(&nx842_pseries_alg);
- 	if (ret) {
- 		dev_err(&viodev->dev, "could not register comp alg: %d\n", ret);
- 		goto error;
-@@ -1118,7 +1117,7 @@ static void nx842_remove(struct vio_dev
- 	if (caps_feat)
- 		sysfs_remove_group(&viodev->dev.kobj, &nxcop_caps_attr_group);
- 
--	crypto_unregister_alg(&nx842_pseries_alg);
-+	crypto_unregister_scomp(&nx842_pseries_alg);
- 
- 	spin_lock_irqsave(&devdata_mutex, flags);
- 	old_devdata = rcu_dereference_check(devdata,
-@@ -1250,7 +1249,7 @@ static void __exit nx842_pseries_exit(vo
- 
- 	vas_unregister_api_pseries();
- 
--	crypto_unregister_alg(&nx842_pseries_alg);
-+	crypto_unregister_scomp(&nx842_pseries_alg);
- 
- 	spin_lock_irqsave(&devdata_mutex, flags);
- 	old_devdata = rcu_dereference_check(devdata,
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
 
 
 
