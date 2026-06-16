@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-265922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MdbeKc6SMWp7nAUAu9opvQ
-	(envelope-from <stable+bounces-265922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:42 +0200
+	id 91cjJw2aMWrnnwUAu9opvQ
+	(envelope-from <stable+bounces-266264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134BD693F6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005B8694754
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=r5aRpaKZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265922-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265922-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cYhteKi2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266264-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266264-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C2233098F15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 697FA31E3136
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8197146AF1E;
-	Tue, 16 Jun 2026 18:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859B047CC81;
+	Tue, 16 Jun 2026 18:45:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C53D88F2;
-	Tue, 16 Jun 2026 18:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D647D95B;
+	Tue, 16 Jun 2026 18:45:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633704; cv=none; b=cIMLakZWkv1Bd4KikC7RhVYuY4+fNFHsy1RUFTaVz3mTb7htGGVaarqC1MfbpevKmwzV0uqUhVzg5BWkAmRzjXMKqVto44D0zj13mUz+koBOpbOzNvrkhmxRA9sE0dEPtLbVv4XErpS+m+/KvWdrXg6YgrD4fn+wBXESdGTODGM=
+	t=1781635517; cv=none; b=fsDa9m5tp2KMZSN9/rjBz9v4k1HxYoFtEv7SzDkLEpNfxvDWu66X5VPWbda851x28EwOlZXwsKFZGoLe34Wj1mSJdRJajHXXvLzW7PwCjFg20DJq2vI91RIX6JN2L/0ZyYvfiJnz3p5IgPx5tT19Xp0vfn02zEl0F/BdCdMJRu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633704; c=relaxed/simple;
-	bh=LkUBZeS4Uue6RpjehinfpK5Ev3UAssqDVAt/LvEpGoM=;
+	s=arc-20240116; t=1781635517; c=relaxed/simple;
+	bh=UCZEgxHtbxuzMpyycgcFoK6gduP98AFzcmjkpjkZAYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERKiLqs7KxRKM9MgPHK2ldAxtw+Tvld44ViekjPG7kJano/3bwxjSBc43Sm2drefXAVAtVqb1F344XNHPg5lep0TKptnCeQHnsI9hySa5Kij5LY56t32wwqlAYzfK2Hgxv3XrRJLsQCR4o+KouxaguhWcwcK8RST0UaeOPTvBFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5aRpaKZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA451F000E9;
-	Tue, 16 Jun 2026 18:15:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dFVBCblZiAbqKhNYxD7yPy1sExdCZcywDPr/Em/dge2VnPSVTp2Ike17n083m67uJDMa4X7FOxoaNpOtx3qQ7kBzC6cZSjtcQUIaAIx3ucWvt3HMRiT6u29WNBsEMMtFq9SSw1cXrKGBfRl2mc/0QXd92NyJbM93+6aRzRv+Mo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYhteKi2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3C11F000E9;
+	Tue, 16 Jun 2026 18:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633703;
-	bh=hVFsG7vv6y6Pe5JrU0l/MjDz5KBq+PAf1rE4KdGeDqE=;
+	s=korg; t=1781635514;
+	bh=gXKMs45v7vfftdK7M0HZXYZRT+l+nBJCs+VKRlygx3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=r5aRpaKZtGJcS/yxtuH1CCdKnIMUYgBMxDAzkAQRtckSgPoql/qwC+TBp23xsIRzw
-	 uCMthFLiT2JT2m7Wn/WiaZaJJPheIno9Pggdk49hUduavggLAaLSKaPRjArYxWdlCZ
-	 7ivOD/9MOsy8hEV1h7bGBumm7KxXH2x/XArHtgWA=
+	b=cYhteKi2hz1c1yRxzWjT+AOUneXMnTT4Z9iHj+G8shM+BBj/Lkmv34HLHHbfpoAyL
+	 DjY1ik61B4K9UIYdm9RS0A1Xbli1J1BaxMDNtBqYaB8HugKiCUV4qbUlPZNwwV+cvB
+	 1BXSUL6Tz7nRCb0lqpwBEU0xCvm6pPmZeqm6f2xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Seungjin Bae <eeodqql09@gmail.com>
-Subject: [PATCH 5.15 122/411] usb: gadget: dummy_hcd: Reject hub port requests for non-existent ports
+	sashiko <sashiko-bot@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Maxwell Doose <m32285159@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.10 064/342] iio: buffer: hw-consumer: fix use-after-free in error path
 Date: Tue, 16 Jun 2026 20:26:00 +0530
-Message-ID: <20260616145106.809739702@linuxfoundation.org>
+Message-ID: <20260616145051.236668615@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +69,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265922-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:stern@rowland.harvard.edu,m:eeodqql09@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266264-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,intel.com,analog.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,rowland.harvard.edu,gmail.com];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sashiko-bot@kernel.org,m:ustc.gu@gmail.com,m:andriy.shevchenko@intel.com,m:nuno.sa@analog.com,m:m32285159@gmail.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:ustcgu@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,harvard.edu:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,analog.com:email,sashiko.dev:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 134BD693F6F
+X-Rspamd-Queue-Id: 005B8694754
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 7d9633528dd40e33964d2dc74a5abbf5c4d116ce upstream.
+commit 6f5ed4f2c7c83f33344e0ba179f72a12e5dad4a4 upstream.
 
-The `dummy_hub_control()` function handles USB hub class requests
-to the virtual root hub. The `GetPortStatus` case returns -EPIPE for
-requests with `wIndex != 1`, since the virtual root hub has only a
-single port. However, the `ClearPortFeature` and `SetPortFeature`
-cases lack the same check.
+In the err_put_buffers cleanup path of iio_hw_consumer_alloc(), the code
+was using list_for_each_entry() to iterate through buffers while calling
+iio_buffer_put() which can free the current buffer if refcount drops to 0.
+The list_for_each_entry() loop macro then evaluates buf->head.next to
+continue iteration, accessing the freed buffer.
 
-Fix this by extending the `wIndex != 1` rejection to both cases,
-matching the existing behavior of `GetPortStatus`.
+Fix this by using list_for_each_entry_safe().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20260518234314.1889396-1-eeodqql09@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 48b66f8f936f ("iio: Add hardware consumer buffer support")
+Reported-by: sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260427-iio_buf-v1-1-2bbdac844647%40gmail.com
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Maxwell Doose <m32285159@gmail.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/buffer/industrialio-hw-consumer.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -2122,6 +2122,8 @@ static int dummy_hub_control(
- 	case ClearHubFeature:
- 		break;
- 	case ClearPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_SUSPEND:
- 			if (hcd->speed == HCD_USB3) {
-@@ -2236,6 +2238,8 @@ static int dummy_hub_control(
- 		retval = -EPIPE;
- 		break;
- 	case SetPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_LINK_STATE:
- 			if (hcd->speed != HCD_USB3) {
+--- a/drivers/iio/buffer/industrialio-hw-consumer.c
++++ b/drivers/iio/buffer/industrialio-hw-consumer.c
+@@ -82,7 +82,7 @@ static struct hw_consumer_buffer *iio_hw
+  */
+ struct iio_hw_consumer *iio_hw_consumer_alloc(struct device *dev)
+ {
+-	struct hw_consumer_buffer *buf;
++	struct hw_consumer_buffer *buf, *tmp;
+ 	struct iio_hw_consumer *hwc;
+ 	struct iio_channel *chan;
+ 	int ret;
+@@ -113,7 +113,7 @@ struct iio_hw_consumer *iio_hw_consumer_
+ 	return hwc;
+ 
+ err_put_buffers:
+-	list_for_each_entry(buf, &hwc->buffers, head)
++	list_for_each_entry_safe(buf, tmp, &hwc->buffers, head)
+ 		iio_buffer_put(&buf->buffer);
+ 	iio_channel_release_all(hwc->channels);
+ err_free_hwc:
 
 
 
