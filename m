@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263943-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sPcYC0N/MWqDkwUAu9opvQ
-	(envelope-from <stable+bounces-264925-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:19 +0200
+	id bZzuHDtsMWrLiwUAu9opvQ
+	(envelope-from <stable+bounces-263943-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB00569287F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6758669117F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mV8VCo8X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264925-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264925-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fL6MA39B;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263943-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263943-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35E63303DB7D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:50:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7933C3080C76
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2709347AF68;
-	Tue, 16 Jun 2026 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869AF43E486;
+	Tue, 16 Jun 2026 15:21:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EE847AF4D;
-	Tue, 16 Jun 2026 16:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF6843E48C;
+	Tue, 16 Jun 2026 15:21:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628610; cv=none; b=GtU5udJfgEzveYOGXoH7h/Iaw0pn6ZKyI0IOX4xBfZjBete5Bv5jHp/uIhvDqSwmNbDdoSCjsrp5OrIz3MwsRzTO4SqeR9/EfSuy6aCnmIdvRSVXHt0S42q+WLapt6NPx0FV6Lt0TeaCIdeZFm7VSl7XHsNIv94vQIJFY1IBT8U=
+	t=1781623313; cv=none; b=l3h7nY+Homn3AnaeHzQsqXL7HE2WPL/XaaIaghQJnZDwbcCk8nw75yrjeJM1uuMkYTYMoDNeR5JZNpeO7qCC91mylPUE+XPMPuymz67/kAxBtTWt28sFl0x835u+lUMBwq9GmseZ2KLF3J/ps4rr0cBgpC1pxmGBBuNz/hDXQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628610; c=relaxed/simple;
-	bh=nUBZ6bVG1JiJPu2iNYvaum/3YbG9pLiVDc5Hk+lTBdY=;
+	s=arc-20240116; t=1781623313; c=relaxed/simple;
+	bh=Nw0YhlRmnPM6MAtFVDLNWIpgEsQ51xXFvBykaqgdVfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz4zpkTOxHT4fH4DkgfehTCxWSRBsVvtHA74wlUJV1Jyq8P9zPBUe+JYr+A/T9pcF30cvLeVyob00N/qRx3HisloT5hqK/hN5B5SpeBacE4sOWWwb0zspbtkAOBf3XBGjdC4ZTQkVPhwY6wicO7ZjMdOYn5jCfJtILiqz+ia6cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mV8VCo8X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34671F00A3D;
-	Tue, 16 Jun 2026 16:50:08 +0000 (UTC)
+	 MIME-Version; b=KBr6W+McQBozN/wjtXfv8a7xr3F9IEcQ6bSjugk3hVqOS1IYdD5P/kVR6ZKdcblPxDCOjsLPHMNcaH0Q7HVES+tXOrzhfGd9Ahsgz1mPaJx++hvpCc5MYhQlqkZcyWgijI4q0Y2qYNLXaiyQB/jwQRPdwIdOOQlm/KT+wbs6SW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fL6MA39B; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9671F000E9;
+	Tue, 16 Jun 2026 15:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628609;
-	bh=JYVy9Smyl3HMWqIlvi8gAjBFrqbEJ7ybW3pq1gcf2mk=;
+	s=korg; t=1781623312;
+	bh=tKn8DhnZl7R8emm2XDI2JFvaX60FDafDp1r5Nx/p6d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mV8VCo8XRy9zpsUSIHK1wSGroCQccl3kKkr4FXvXY8+I0ksF2m53OyGpS4iGCjl2I
-	 UCZDT0eVdetxuYvxH6ti+UAskeL557i7CXgdexDHE/GMU1bx5vX0Lv6QaP2oo8Merx
-	 TEFUQXlSaIUt4CpZJD21hzW4lpwgDkm5S2/UBQTw=
+	b=fL6MA39Bzzv3/i5xEabJaD1zj6d2vb3OOtUJxjA1WqtOK0rhpKNeBzWYbFK48VEHU
+	 Mg/5k5h/5aP46040OfimEyXdIhPDarRYVkFlssF8hlN3qxAexHlOcd5T7mYDfR1/NV
+	 jEhTphtFJBaPQqIBG31dn4AN6RNEvHnoZTUsWvho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.6 111/452] iio: dac: ad5686: acquire lock when doing powerdown control
+	Yun Zhou <yun.zhou@windriver.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 107/378] gpio: mvebu: fix NULL pointer dereference in suspend/resume
 Date: Tue, 16 Jun 2026 20:25:38 +0530
-Message-ID: <20260616145123.569127066@linuxfoundation.org>
+Message-ID: <20260616145116.003217713@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264925-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263943-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yun.zhou@windriver.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,72 +98,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,analog.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,qualcomm.com:email,msgid.link:url,windriver.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DB00569287F
+X-Rspamd-Queue-Id: 6758669117F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+From: Yun Zhou <yun.zhou@windriver.com>
 
-commit 5237c3175cae5ab05f18878cec3301a04403859e upstream.
+[ Upstream commit b9ad50d7505ebd48282ec3630258dc820fc85c81 ]
 
-Protect access of pwr_down_mode and pwr_down_mask fields with existing
-mutex lock. Each channel exposes their own attributes for controlling
-powerdown modes and powerdown state. This fixes potential race conditions
-as those the write functions perform non-atomic read-modify-write
-operations to those pwr_down_* fields. This issue exists since the ad5686
-driver was first introduced.
+mvebu_pwm_suspend() and mvebu_pwm_resume() are called for all GPIO
+banks during suspend/resume, but not all banks have PWM functionality.
+GPIO banks without PWM have mvchip->mvpwm set to NULL.
 
-Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
-Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Calling mvebu_pwm_suspend() with mvpwm == NULL causes a NULL pointer
+dereference when it tries to access mvpwm->blink_select.
+
+  Unable to handle kernel NULL pointer dereference at virtual address 00000020 when write
+  [00000020] *pgd=00000000
+  Internal error: Oops: 815 [#1] PREEMPT ARM
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 406 Comm: sh Not tainted 6.12.74-rt12-yocto-standard-g4e96f98fb7db-dirty #353
+  Hardware name: Marvell Armada 370/XP (Device Tree)
+  PC is at regmap_mmio_read+0x38/0x54
+  LR is at regmap_mmio_read+0x38/0x54
+  pc : [<c05fd2ac>]    lr : [<c05fd2ac>]    psr: 200f0013
+  sp : f0c11d10  ip : 00000000  fp : c100d2f0
+  r10: c14fb854  r9 : 00000000  r8 : 00000000
+  r7 : c1799c00  r6 : 00000020  r5 : 00000020  r4 : c179c7c0
+  r3 : f0a231a0  r2 : 00000020  r1 : 00000020  r0 : 00000000
+  Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+  Control: 10c5387d  Table: 135ec059  DAC: 00000051
+  Call trace:
+   regmap_mmio_read from _regmap_bus_reg_read+0x78/0xac
+   _regmap_bus_reg_read from _regmap_read+0x60/0x154
+   _regmap_read from regmap_read+0x3c/0x60
+   regmap_read from mvebu_gpio_suspend+0xa4/0x14c
+   mvebu_gpio_suspend from dpm_run_callback+0x54/0x180
+   dpm_run_callback from device_suspend+0x124/0x630
+   device_suspend from dpm_suspend+0x124/0x270
+   dpm_suspend from dpm_suspend_start+0x64/0x6c
+   dpm_suspend_start from suspend_devices_and_enter+0x140/0x8e8
+   suspend_devices_and_enter from pm_suspend+0x2fc/0x308
+   pm_suspend from state_store+0x6c/0xc8
+   state_store from kernfs_fop_write_iter+0x10c/0x1f8
+   kernfs_fop_write_iter from vfs_write+0x270/0x468
+   vfs_write from ksys_write+0x70/0xf0
+   ksys_write from ret_fast_syscall+0x0/0x54
+
+Add a NULL check for mvchip->mvpwm before calling the PWM
+suspend/resume functions.
+
+Fixes: 757642f9a584 ("gpio: mvebu: Add limited PWM support")
+Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Link: https://patch.msgid.link/20260608084334.2960803-1-yun.zhou@windriver.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5686.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpio/gpio-mvebu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/dac/ad5686.c
-+++ b/drivers/iio/dac/ad5686.c
-@@ -30,6 +30,8 @@ static int ad5686_get_powerdown_mode(str
- {
- 	struct ad5686_state *st = iio_priv(indio_dev);
+diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
+index 22c36b79e249ff..c030d1f00abcae 100644
+--- a/drivers/gpio/gpio-mvebu.c
++++ b/drivers/gpio/gpio-mvebu.c
+@@ -996,7 +996,7 @@ static int mvebu_gpio_suspend(struct platform_device *pdev, pm_message_t state)
+ 		BUG();
+ 	}
  
-+	guard(mutex)(&st->lock);
-+
- 	return ((st->pwr_down_mode >> (chan->channel * 2)) & 0x3) - 1;
- }
+-	if (IS_REACHABLE(CONFIG_PWM))
++	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
+ 		mvebu_pwm_suspend(mvchip);
  
-@@ -39,6 +41,8 @@ static int ad5686_set_powerdown_mode(str
- {
- 	struct ad5686_state *st = iio_priv(indio_dev);
+ 	return 0;
+@@ -1048,7 +1048,7 @@ static int mvebu_gpio_resume(struct platform_device *pdev)
+ 		BUG();
+ 	}
  
-+	guard(mutex)(&st->lock);
-+
- 	st->pwr_down_mode &= ~(0x3 << (chan->channel * 2));
- 	st->pwr_down_mode |= ((mode + 1) << (chan->channel * 2));
+-	if (IS_REACHABLE(CONFIG_PWM))
++	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
+ 		mvebu_pwm_resume(mvchip);
  
-@@ -57,6 +61,8 @@ static ssize_t ad5686_read_dac_powerdown
- {
- 	struct ad5686_state *st = iio_priv(indio_dev);
- 
-+	guard(mutex)(&st->lock);
-+
- 	return sysfs_emit(buf, "%d\n", !!(st->pwr_down_mask &
- 				       (0x3 << (chan->channel * 2))));
- }
-@@ -77,6 +83,8 @@ static ssize_t ad5686_write_dac_powerdow
- 	if (ret)
- 		return ret;
- 
-+	guard(mutex)(&st->lock);
-+
- 	if (readin)
- 		st->pwr_down_mask |= (0x3 << (chan->channel * 2));
- 	else
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
