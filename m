@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fjGUFQKLMWqhmAUAu9opvQ
-	(envelope-from <stable+bounces-265472-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:26 +0200
+	id SHDrC8FqMWpMiwUAu9opvQ
+	(envelope-from <stable+bounces-263910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00AE693637
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB71E690FFF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:24:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yrDclyIh;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265472-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265472-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AvCzLFqy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263910-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263910-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADEB23080563
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7E05312E886
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:18:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5C547A0A9;
-	Tue, 16 Jun 2026 17:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0588F43DA2C;
+	Tue, 16 Jun 2026 15:18:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B02E335081;
-	Tue, 16 Jun 2026 17:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD33E43C05C;
+	Tue, 16 Jun 2026 15:18:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631371; cv=none; b=EgKUIr1Bw3WXo6HOL5XT3iCFWkifuK6BD8m9CdckeTYb/SpAP7EdPn6X/HddHEm8que2k0bXAaqPyhZBKw1NMuj1vMo2+OY1v1a2188tDo31QkHMMOh4FavdNnrEgFj80eSePIta3xj/2W40LKSc94BwwxAJ9WJqtXzvhfyMbu8=
+	t=1781623120; cv=none; b=suwdsTSc5NHOXzrPhT2rXaDXwEk5WvSdNO6l8FZ+pPoWcIF37eDL7Avpyj66yFGLRNzE9p9Ftu+2SwXaBF/tNJc+duVS6KharzQyEFXvbNpwDTPfQs/+mB3/XGjBgYjq6OaiMR5qGyUv5FyIIjIcQMQaC0XhOH29FeEALQfRNdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631371; c=relaxed/simple;
-	bh=0Nf/V7DiuCHNdMBINvuB9wHaa4c7AV0KoXPSOXL4VHs=;
+	s=arc-20240116; t=1781623120; c=relaxed/simple;
+	bh=Aqi3UFgj1bIhPbhnYjIOzOG1uZtLp8iajTSNNl3q+Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBPAAK+ebXgsls3A7Xo2bagvBdxrI4ZLKi9BSirBcwwwq41M9hMMsmH1woytJ15oG330iNrGQCvyDjqws6RgFl9Z8iXNyVVk8y9wx4lcFbI4gIzebgl8YEnFYGtaKzi7g/rOf/9DWhw+o8SkHDONdZp49ihRUBZfcJt5HdIFp7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrDclyIh; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2F81F000E9;
-	Tue, 16 Jun 2026 17:36:08 +0000 (UTC)
+	 MIME-Version; b=E4NarFyS51u+TdufABILzsLqVkKYSekfdLN0T4F0bQh+s3uk++LJCaDLiyroqHwhIdbEQpKrtqMMdV5Ofw7udAIccyBLtellxiMwr0KFp9rh65kVsWPWj2xsS9KDsjeZqR0B4uuIQN9gsWXP8odX6lvbV5VNtTFGgy14mNNg7Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvCzLFqy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD481F000E9;
+	Tue, 16 Jun 2026 15:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631370;
-	bh=kQxowTJVsmHuM7Ngj4kuLyUdWKHNjGczNmBnTG8x23Y=;
+	s=korg; t=1781623119;
+	bh=+Lkh6DoC/NNzCzvzZGsdbVkbM5eq6kpknuGJ9fa76nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yrDclyIhbH3DvnX0zMTy/JQ95in1YUN9+RFrckE9BUdKZiL2c1T82q5sowNAZYzgV
-	 xk3qAT8TxMeUyWglmPJMFt42IEUGhoAgfWv+17jRZ+tHrUYxU2R/cQPdyBMayHEjNN
-	 JFLbEx3wzENIJmIjnz/XmR0SXkz27VqCS6ISRSg8=
+	b=AvCzLFqyV6lCKxwO2V7SjQXUx+Vl/32fBTxA7FIYBZvpd9julFRRcOcAtyNvcbCGh
+	 9ibYda8lxAN5U1IAnt660M3Xnx6X+nK/flIw2I2RIaCl95FwCKCDEXVORaZYN8gdCp
+	 2mmSUpEjTbahLbtQDnn1ZZ6eRZ6RcfPaIRb+mLuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Francis <David.Francis@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 175/522] drm/amdkfd: Check for pdd drm file first in CRIU restore path
+	Nam Cao <namcao@linutronix.de>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 091/378] tools/rv: Fix substring match bug in monitor name search
 Date: Tue, 16 Jun 2026 20:25:22 +0530
-Message-ID: <20260616145134.331708622@linuxfoundation.org>
+Message-ID: <20260616145115.061161460@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265472-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263910-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:David.Francis@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,61 +98,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C00AE693637
+X-Rspamd-Queue-Id: AB71E690FFF
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Francis <David.Francis@amd.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-commit 6842b6a4b72da9b2906ffc5ca9d846ace2c54c14 upstream.
+[ Upstream commit a963fbf3166f2e178ac38b6c3c186a0c98092fb9 ]
 
-CRIU restore ioctls are meant to be called by CRIU with no
-existing drm file. There's an error path
-for if the drm file unexpectedly exists. It was positioned so
-it was missing a fput(drm_file).
+__ikm_find_monitor_name() relies on strstr() to find a monitor by name,
+which fails if the target monitor is a substring of a previously listed
+monitor.
 
-Do that check earlier, as soon as we have the pdd.
+Fix it by tokenizing the available_monitors file and matching full
+tokens instead.
 
-Signed-off-by: David Francis <David.Francis@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2bab781dac78916c5cc8de76345a4102449267d7)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eba321a16fc6 ("tools/rv: Add support for nested monitors")
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/20260514152055.229162-2-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/verification/rv/src/in_kernel.c | 48 ++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -2171,6 +2171,11 @@ static int criu_restore_devices(struct k
- 			ret = -EINVAL;
- 			goto exit;
- 		}
-+
-+		if (pdd->drm_file) {
-+			ret = -EINVAL;
-+			goto exit;
-+		}
- 		pdd->user_gpu_id = device_buckets[i].user_gpu_id;
+diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
+index d324538249d3ab..95eac9ab148468 100644
+--- a/tools/verification/rv/src/in_kernel.c
++++ b/tools/verification/rv/src/in_kernel.c
+@@ -58,38 +58,40 @@ static int __ikm_read_enable(char *monitor_name)
+  */
+ static int __ikm_find_monitor_name(char *monitor_name, char *out_name)
+ {
+-	char *available_monitors, container[MAX_DA_NAME_LEN+1], *cursor, *end;
+-	int retval = 1;
++	char *available_monitors, *cursor, *line;
++	int len = strlen(monitor_name);
++	int found = 0;
  
- 		drm_file = fget(device_buckets[i].drm_fd);
-@@ -2180,11 +2185,6 @@ static int criu_restore_devices(struct k
- 			ret = -EINVAL;
- 			goto exit;
- 		}
+ 	available_monitors = tracefs_instance_file_read(NULL, "rv/available_monitors", NULL);
+ 	if (!available_monitors)
+ 		return -1;
+ 
+-	cursor = strstr(available_monitors, monitor_name);
+-	if (!cursor) {
+-		retval = 0;
+-		goto out_free;
+-	}
++	config_is_container = 0;
++	cursor = available_monitors;
++	while ((line = strsep(&cursor, "\n"))) {
++		char *colon = strchr(line, ':');
+ 
+-	for (; cursor > available_monitors; cursor--)
+-		if (*(cursor-1) == '\n')
+-			break;
+-	end = strstr(cursor, "\n");
+-	memcpy(out_name, cursor, end-cursor);
+-	out_name[end-cursor] = '\0';
 -
--		if (pdd->drm_file) {
--			ret = -EINVAL;
--			goto exit;
--		}
+-	cursor = strstr(out_name, ":");
+-	if (cursor)
+-		*cursor = '/';
+-	else {
+-		sprintf(container, "%s:", monitor_name);
+-		if (strstr(available_monitors, container))
+-			config_is_container = 1;
++		if (strcmp(line, monitor_name) && (!colon || strcmp(colon + 1, monitor_name)))
++			continue;
++
++		strncpy(out_name, line, 2 * MAX_DA_NAME_LEN);
++		out_name[2 * MAX_DA_NAME_LEN - 1] = '\0';
++
++		if (colon) {
++			out_name[colon - line] = '/';
++		} else {
++			/* If there are children, they are on the next line. */
++			line = strsep(&cursor, "\n");
++			if (line && !strncmp(line, monitor_name, len) && line[len] == ':')
++				config_is_container = 1;
++		}
++
++		found = 1;
++		break;
+ 	}
  
- 		/* create the vm using render nodes for kfd pdd */
- 		if (kfd_process_device_init_vm(pdd, drm_file)) {
+-out_free:
+ 	free(available_monitors);
+-	return retval;
++	return found;
+ }
+ 
+ /*
+-- 
+2.53.0
+
 
 
 
