@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id oKqCHI6GMWqglgUAu9opvQ
-	(envelope-from <stable+bounces-265231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:26 +0200
+	id mRqzGPx9MWoGkwUAu9opvQ
+	(envelope-from <stable+bounces-264750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2007693113
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:23:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63560692722
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BY8lFSWW;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265231-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265231-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F9IGpcqR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264750-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264750-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 865CB31E91FF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4D6BF3022D0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E742F478E55;
-	Tue, 16 Jun 2026 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BA9478E39;
+	Tue, 16 Jun 2026 16:34:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C5E35CB87;
-	Tue, 16 Jun 2026 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9546477E33;
+	Tue, 16 Jun 2026 16:34:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630147; cv=none; b=pfuNI/tQWy4jIv/4eNUCObJqHn9Cd/dlk2ejv870mt8d95GZiLj5ffthgoPFIEJfyh3hxK8EAKyzy44ubxCMOgW0A4spkAR1ac6dez9NaGBTsu8MFAl5bXMiXdFh/Zw5hWidiRvaZxTkDUW96+WMaORVdc1Io8yHaQDMqOQgNZY=
+	t=1781627686; cv=none; b=FLweB8hDczzzcqflMn+AOwvSAPgYRkBVgkzY/gBJ8xgz3ktKEiMGF1wr+sv30UfH6fLscYowACXEK4dwYACJq6nrBnvyPb+4xRcC6zG7KsfkK5c+oGbG6OVwdPYruDLKjrBEyBGAWF3iOfeTK9qXkMzDHI1cwABJlT7bdI1pzq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630147; c=relaxed/simple;
-	bh=k5pvRq4waWK6u5Y4rL9ndd6XmNe3cDyvvUnvtH39CRo=;
+	s=arc-20240116; t=1781627686; c=relaxed/simple;
+	bh=YRRliNOP94JyJZdgvQ4K/8wQP0qzonx37Eazvmc1AdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6QoyVqfJAj+NYuVKSriaEPNG4NHfXXyZlTGcqAm0JpySSQxxcpkFxPnhXCJ3FnMv3dmcEHIrzg4Mg+wwroxaQYaLcJhqTd8M4dV0BHptl6RYbPx5l24vMgh4jSrhfqPl/6lQDBR76++yHBqsoDr/NJX3sb1L9Em6rxB2wAnxjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BY8lFSWW; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2111F000E9;
-	Tue, 16 Jun 2026 17:15:45 +0000 (UTC)
+	 MIME-Version; b=OIUhYflvXfJSxUcIvgl8aWV3k9+VJ5j+ImQ5eko6rck+lkAS/knjokkP3LQ6kHak20xN5tvtdHke+nMjnfZ7PakZqCpXVaQc5tHbHhE/RmKpw6AqtJRAodrMGe/I8p7JXzZusDlPmuWdvERkk7BFi1ge87o+493H8NmfSdL7JTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9IGpcqR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6B41F000E9;
+	Tue, 16 Jun 2026 16:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630146;
-	bh=K/d7gg1919HD0azZ9eonI/0hYq3RN0vwAOiLDeFkuRM=;
+	s=korg; t=1781627685;
+	bh=16cii+JOTD005UfKfClPAY0NQUuiexmjqzoU2tUuDrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BY8lFSWWsydZ9TeqNJgMCRR4HWa8mKHDyPBl9FJt0N7nPQIX1aivRBMb45yaCqrAO
-	 lMm3655pfFeT8UTygcXJBjiJivs5YaZtb6EkjGplCh+Ud9Hg1KT7IurgtZjSaDsLNg
-	 cgNL8MPiEPhQUI7UQFwfT3TMIr559RRxEU+dpQKI=
+	b=F9IGpcqRrbT1erxAPus9jmPl03YFCOoIJwcFmrcemtT8MiYYdTzz/3j07KYs/NpZ3
+	 aoMPfDL/3JtjIpPkosZIrRa62yWqXq5H3rKxUHHkXY/gV5hia+HaTgP90lL1aMdBb3
+	 qmu9ZlABsVLYKBAUs5z5ksaQPjw/Flq/9cTb0X1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 420/452] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 209/261] slimbus: qcom-ngd-ctrl: Fix probe error path ordering
 Date: Tue, 16 Jun 2026 20:30:47 +0530
-Message-ID: <20260616145138.819049052@linuxfoundation.org>
+Message-ID: <20260616145054.731149338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,128 +70,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265231-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Thinh.Nguyen@synopsys.com,m:radhey.shyam.pandey@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264750-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,synopsys.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E2007693113
+X-Rspamd-Queue-Id: 63560692722
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit c1a0ecbf32c4b397353204e2ec94c5bb9f3300ed ]
+commit 2c22ff152d380ec3d3af099fa05d0ac5ca9b4c1e upstream.
 
-Fix error handling and resource cleanup i.e remove invalid
-phy_exit() after failed phy_init(), route failures through
-proper cleanup paths and return 0 explicitly on success.
+qcom_slim_ngd_ctrl_probe() first registers the SSR callback then
+allocates the PDR context, as such the error path needs to come in
+opposite order to allow us to unroll each step.
 
-Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
+Fixes: 16f14551d0df ("slimbus: qcom-ngd: cleanup in probe error path")
 Cc: stable@vger.kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://patch.msgid.link/20260519115529.2980421-1-radhey.shyam.pandey@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-4-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c |   26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |   11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -170,15 +170,13 @@ static int dwc3_xlnx_init_zynqmp(struct
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1666,22 +1666,21 @@ static int qcom_slim_ngd_ctrl_probe(stru
+ 	if (IS_ERR(ctrl->pdr)) {
+ 		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr),
+ 				    "Failed to init PDR handle\n");
+-		goto err_pdr_alloc;
++		goto err_unregister_ssr;
  	}
  
- 	ret = phy_init(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
-+	if (ret < 0)
- 		goto err;
--	}
- 
- 	ret = reset_control_deassert(apbrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release APB reset\n");
--		goto err;
-+		goto err_phy_exit;
+ 	pds = pdr_add_lookup(ctrl->pdr, "avs/audio", "msm/adsp/audio_pd");
+ 	if (IS_ERR(pds) && PTR_ERR(pds) != -EALREADY) {
+ 		ret = dev_err_probe(dev, PTR_ERR(pds), "pdr add lookup failed\n");
+-		goto err_pdr_lookup;
++		goto err_pdr_release;
  	}
  
- 	/* Set PIPE Power Present signal in FPD Power Present Register*/
-@@ -190,27 +188,25 @@ static int dwc3_xlnx_init_zynqmp(struct
- 	ret = reset_control_deassert(crst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release core reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
+ 	return of_qcom_slim_ngd_register(dev, ctrl);
  
- 	ret = reset_control_deassert(hibrst);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to release hibernation reset\n");
--		goto err;
-+		goto err_phy_exit;
- 	}
+-err_pdr_alloc:
+-	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+-
+-err_pdr_lookup:
++err_pdr_release:
+ 	pdr_handle_release(ctrl->pdr);
++err_unregister_ssr:
++	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
  
- 	ret = phy_power_on(priv_data->usb3_phy);
--	if (ret < 0) {
--		phy_exit(priv_data->usb3_phy);
--		goto err;
--	}
-+	if (ret < 0)
-+		goto err_phy_exit;
- 
- skip_usb3_phy:
- 	/* ulpi reset via gpio-modepin or gpio-framework driver */
- 	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset_gpio)) {
--		return dev_err_probe(dev, PTR_ERR(reset_gpio),
--				     "Failed to request reset GPIO\n");
-+		ret = PTR_ERR(reset_gpio);
-+		goto err_phy_power_off;
- 	}
- 
- 	if (reset_gpio) {
-@@ -230,6 +226,12 @@ skip_usb3_phy:
- 		writel(reg, priv_data->regs + XLNX_USB_TRAFFIC_ROUTE_CONFIG);
- 	}
- 
-+	return 0;
-+
-+err_phy_power_off:
-+	phy_power_off(priv_data->usb3_phy);
-+err_phy_exit:
-+	phy_exit(priv_data->usb3_phy);
- err:
  	return ret;
  }
 
