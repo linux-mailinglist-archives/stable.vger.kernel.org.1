@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U1qoAcuDMWpwlQUAu9opvQ
-	(envelope-from <stable+bounces-265120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:39 +0200
+	id xBPfL0CdMWocoQUAu9opvQ
+	(envelope-from <stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C6DD692D64
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:11:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE21694A69
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WWX+EXnJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265120-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265120-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KxpfgL9q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266436-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D13673045CA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55670304966D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCE4376A19;
-	Tue, 16 Jun 2026 17:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96AB3DDDC3;
+	Tue, 16 Jun 2026 19:00:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F93328610;
-	Tue, 16 Jun 2026 17:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D63DDDA0;
+	Tue, 16 Jun 2026 19:00:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629568; cv=none; b=Qa2C0oM+U3CRhDSOes+jpKvR1b++xpaNZqyvLRw/kMm8VSx/uSHjtAmqRTc2/SvMx3rz4v3cfFpysVBFpEwh7hEAnZXHNiFK2e1IELe1x1FJZdZCWFdOMbk42TE+UBPxvT/Ej6N+I2p6dzOZDyW7Sl8VEMSduJJqK+3ebo5pOCE=
+	t=1781636414; cv=none; b=OlaSfjnXRwETHTHSgL6Jr9nKWK6X06jccI6nkELUaI81rZB4VVDU+JumXjLvs+tD+NTXE6lYQe9Yk8bIgDrgoukS8GXkdbtIcJGYfLHQ9/xzzHQQmM/Qd+iy79G2BB3qT9mg6o9M12MKRTo03Vv3u3BUEir5IlLF6cJs0FNt+28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629568; c=relaxed/simple;
-	bh=RNEs/v+e7OhOHQA6ZSO6rI1XtrKdH7MhcpOwF8S+TFY=;
+	s=arc-20240116; t=1781636414; c=relaxed/simple;
+	bh=CpMeTqx4jGE/nVzUNGtw44QB40V/twVUn8+SEHEgr48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUhaEtCnP7+D9x5Bo5Z2Yfgw0l/XfR2v27Siium8Hw4NR+/GsgzjPVEazMcHkQ6Bq2PWJhDw7JAURMlmEYhFzFjiB++iM/5h927E7fAhMtG7J+1xajbCAKskF6h3bNdjMeG1xRAVnv6hAF+2L7HtNNBDyAzWJgDCexkybpJ/MHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWX+EXnJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95341F000E9;
-	Tue, 16 Jun 2026 17:06:06 +0000 (UTC)
+	 MIME-Version; b=jBYdAsb0kM9DXCUDAnOTk5wcH23qPVui5SUF6tAzxoeTOnk+gGJHwruQjr112MG3Oj+9uAYKwGaaB/6ZoQZVld8xio4Yc6eOABaYjsiBdTC+vRIZ3hKoQge7P9BgO7S3NEZOy9An+yDQJUmDvPVhmYVRGBtzI6ViybflYinE+Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxpfgL9q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9891F000E9;
+	Tue, 16 Jun 2026 19:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629567;
-	bh=ZcrfSrKipOjv4zTEiLEFVL6HMckgN1/bYhDSTRAGiOo=;
+	s=korg; t=1781636413;
+	bh=srlf/+/ix78n/uiu51HatcIJL3WRoKbFuM82kG6/BOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WWX+EXnJ/JJPrgdpG3OW3xQ4Oj815f/6XCXVM1RxpsYBlgQemGOwdFoLrM0V5+XGq
-	 sAMAdX229GpiPHRAkQcwVmX9+FHRkfmmx+pLUz8JVE+nI85PzzMKtdNfK37JyRt3mq
-	 +e1ue6pbqZ72dkyf3h4AaUj/6yCJa64inD2uw+hI=
+	b=KxpfgL9qHIy1KHvdcdnIIV54W7C6EXBeClBe+wGEgkSjGSK4kVwA0UOykIaxM8F30
+	 VdXZE0fBdqniBYPFXhq+s4pwH+Dmy9mAyVutKymx5XoditWg7Kha6kJv+60UiRKL6s
+	 wYX4q9q6XjGShjWyrMv5g2A+L1HsJ/MJKyvs9DZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HyeongJun An <sammiee5311@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 303/452] USB: serial: kl5kusb105: fix bulk-out buffer overflow
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 234/342] net: qrtr: ns: Limit the maximum number of lookups
 Date: Tue, 16 Jun 2026 20:28:50 +0530
-Message-ID: <20260616145133.425532628@linuxfoundation.org>
+Message-ID: <20260616145059.100980140@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,97 +72,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266436-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265120-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sammiee5311@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C6DD692D64
+X-Rspamd-Queue-Id: 4DE21694A69
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HyeongJun An <sammiee5311@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 96d47e40bf9db4a9efd5c8fb53287a508d165f14 upstream.
+[ Upstream commit 5640227d9a21c6a8be249a10677b832e7f40dc55 ]
 
-klsi_105_prepare_write_buffer() is called by the generic write path
-with the bulk-out buffer and its size (bulk_out_size, 64 bytes). It
-stores a two-byte length header at the start of the buffer and copies
-the payload from the write fifo starting at buf + KLSI_HDR_LEN, but
-passes the full buffer size as the number of bytes to copy:
+Current code does no bound checking on the number of lookups a client can
+perform. Though the code restricts the lookups to local clients, there is
+still a possibility of a malicious local client sending a flood of
+NEW_LOOKUP messages over the same socket.
 
-  count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
-                           size, &port->lock);
+Fix this issue by limiting the maximum number of lookups to 64 globally.
+Since the nameserver allows only atmost one local observer, this global
+lookup count will ensure that the lookups stay within the limit.
 
-When the fifo holds at least size bytes, size bytes are copied starting
-two bytes into the size-byte buffer, writing KLSI_HDR_LEN bytes past its
-end. Copy at most size - KLSI_HDR_LEN bytes instead, leaving room for
-the header as safe_serial already does.
+Note that, limit of 64 is chosen based on the current platform
+requirements. If requirement changes in the future, this limit can be
+increased.
 
-Writing bulk_out_size or more bytes to the tty triggers a slab
-out-of-bounds write, observed with KASAN by emulating the device with
-dummy_hcd and raw-gadget:
-
-  BUG: KASAN: slab-out-of-bounds in kfifo_copy_out+0x83/0xc0
-  Write of size 64 at addr ffff888112c62202 by task python3
-   kfifo_copy_out
-   klsi_105_prepare_write_buffer [kl5kusb105]
-   usb_serial_generic_write_start [usbserial]
-  Allocated by task 139:
-   usb_serial_probe [usbserial]
-  The buggy address is located 2 bytes inside of allocated 64-byte region
-
-The out-of-bounds write no longer occurs with this change applied.
-
-Fixes: 60b3013cdaf3 ("USB: kl5usb105: reimplement using generic framework")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: HyeongJun An <sammiee5311@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260409-qrtr-fix-v3-2-00a8a5ff2b51@oss.qualcomm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted comment block to only mention QRTR_NS_MAX_LOOKUPS and kept kzalloc() instead of kzalloc_obj() due to missing prerequisite commits ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/kl5kusb105.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/qrtr/ns.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/usb/serial/kl5kusb105.c
-+++ b/drivers/usb/serial/kl5kusb105.c
-@@ -331,8 +331,8 @@ static int klsi_105_prepare_write_buffer
- 	unsigned char *buf = dest;
- 	int count;
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -21,6 +21,7 @@ static struct {
+ 	struct socket *sock;
+ 	struct sockaddr_qrtr bcast_sq;
+ 	struct list_head lookups;
++	u32 lookup_count;
+ 	struct workqueue_struct *workqueue;
+ 	struct work_struct work;
+ 	void (*saved_data_ready)(struct sock *sk);
+@@ -69,6 +70,11 @@ struct qrtr_node {
+ 	struct radix_tree_root servers;
+ };
  
--	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN, size,
--								&port->lock);
-+	count = kfifo_out_locked(&port->write_fifo, buf + KLSI_HDR_LEN,
-+				 size - KLSI_HDR_LEN, &port->lock);
- 	put_unaligned_le16(count, buf);
++/* Max lookup limit is chosen based on the current platform requirements. If the
++ * requirement changes in the future, this value can be increased.
++ */
++#define QRTR_NS_MAX_LOOKUPS 64
++
+ static struct qrtr_node *node_get(unsigned int node_id)
+ {
+ 	struct qrtr_node *node;
+@@ -457,6 +463,7 @@ static int ctrl_cmd_del_client(struct so
  
- 	return count + KLSI_HDR_LEN;
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ 
+ 	/* Remove the server belonging to this port but don't broadcast
+@@ -598,6 +605,11 @@ static int ctrl_cmd_new_lookup(struct so
+ 	if (from->sq_node != qrtr_ns.local_node)
+ 		return -EINVAL;
+ 
++	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
++		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
++		return -ENOSPC;
++	}
++
+ 	lookup = kzalloc(sizeof(*lookup), GFP_KERNEL);
+ 	if (!lookup)
+ 		return -ENOMEM;
+@@ -606,6 +618,7 @@ static int ctrl_cmd_new_lookup(struct so
+ 	lookup->service = service;
+ 	lookup->instance = instance;
+ 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
++	qrtr_ns.lookup_count++;
+ 
+ 	memset(&filter, 0, sizeof(filter));
+ 	filter.service = service;
+@@ -672,6 +685,7 @@ static void ctrl_cmd_del_lookup(struct s
+ 
+ 		list_del(&lookup->li);
+ 		kfree(lookup);
++		qrtr_ns.lookup_count--;
+ 	}
+ }
+ 
 
 
 
