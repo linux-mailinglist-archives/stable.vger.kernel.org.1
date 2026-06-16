@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ryNTJbOeMWrFoQUAu9opvQ
-	(envelope-from <stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:27 +0200
+	id xkGtGB+XMWqHngUAu9opvQ
+	(envelope-from <stable+bounces-266135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C39694BFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D736943F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zobC8bC5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="EF/3ZJqq";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266135-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266135-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27BD1300531E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCF96307275D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200813DE422;
-	Tue, 16 Jun 2026 19:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421A44418D7;
+	Tue, 16 Jun 2026 18:34:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800673DD51C;
-	Tue, 16 Jun 2026 19:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F60169AD2;
+	Tue, 16 Jun 2026 18:34:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636773; cv=none; b=jMUspuEocB3uhvhrH3yAs9wLCkSpDac/XHrIkG9rGnxJ8VCtqGjbHTNpsWCY3f/Z7N9qDlgiP+qPCAWD2WKaBoqS/2U0B4HAzp9AbUnHOcqjuDVKK9m1IuPARMbbm/VANlcA3A50LhZc+BWkIupELoAEd6GVAoMrdazLT6lVu1Q=
+	t=1781634845; cv=none; b=gD7VGQfr88r+KA47A1SX5LIHVTuIprSVqrJ4hUQfMKmBm8jbErwN/kFTZihvn60fjNCgZGB84P8XhZaRAGq//+cY+2duXH4DR/HPEz1pOwk5f3QtOe7kE1Kons0HOy21pu2Vem8TMUVqV2ogz0bIqrWfba8kRvEjk9Tet0VVdX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636773; c=relaxed/simple;
-	bh=x2EkrbdnC5AjLGo1lchO1smrrbSOXgNHuNxMoLBosdk=;
+	s=arc-20240116; t=1781634845; c=relaxed/simple;
+	bh=X+kDlXRuy+5xFMauwEakLaLtSnEUAr6IpLRU4ZtMK34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c++LSrnY/6vw/3/aeauTiJs3VcFhyJ3Co1st4lzcCMnMTN609aIu6z6TgWW8tQKXAW/aWqJddJ0f2nFmwQZtIMo0llTB8Y2Q/3oigcoiqalgi6LqKD3TdaXmOolO81PiHBRso/5vyATgXa8B+vqotfSgFKrJ34FARRjsBqzAPtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zobC8bC5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DEA1F000E9;
-	Tue, 16 Jun 2026 19:06:11 +0000 (UTC)
+	 MIME-Version; b=mky8Gh0ORAaCp3UwcixxEuKD3/7cxATOPctwgZjvqKSJblN8NyyZ+IDzlNg0V0+9Klmy+FdZkVP81Sfk1AupYkTXxf5lwpaQj1Wvsp4nTChBXBI+w9L+0RTgng1Z/wlA1az7mcLptpbme27SApGYuXSilMeFpNe1U+2t5WpQamY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EF/3ZJqq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602951F000E9;
+	Tue, 16 Jun 2026 18:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636772;
-	bh=9VbOwgRxOi/gVD395v4YCFmTr8aTn3Ulp0KLSPov4/A=;
+	s=korg; t=1781634844;
+	bh=iYfcNt5Z19oNMWSaQLbVVZvaw1DXoz0RH84IWOwUHzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zobC8bC50BK3L9r/vjb1xFLzxMr6pSOEJ++HK6dulPlIMiiD6n0GWKWROVcbZgtle
-	 tEfC3EClEDxIm2eRVD1bMFgilg6c/De2MvFAViBrXipkSBS9v7q8fCND3Rv/LzAdvh
-	 VZ+j7G3g9rA6bJOUUdK61htZUgPG4K+2L3KKlBN8=
+	b=EF/3ZJqqu5xbbg5uB74+ssiRwCoCOkYxh9cppShNPtfqIGCpgwvGv+xb6oKB+f+B6
+	 juLDXkWmRsQzphvyJSroXb70Nq35q0vHSVLWIP6MdLEPsRdk3mWMAqDnQuXeAxPO6z
+	 B/eWDlMCQ1qldci1ET3W5meo/ATEfVU9Z6a2oFSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 285/342] Bluetooth: Init sk_peer_* on bt_sock_alloc
+Subject: [PATCH 5.15 343/411] qed: Use the bitmap API to simplify some functions
 Date: Tue, 16 Jun 2026 20:29:41 +0530
-Message-ID: <20260616145101.685199363@linuxfoundation.org>
+Message-ID: <20260616145119.479837855@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,171 +72,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266511-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266135-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christophe.jaillet@wanadoo.fr,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,davemloft.net,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3C39694BFB
+X-Rspamd-Queue-Id: D1D736943F9
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 464c702fb9374ff8f3f816f24fb7ac719dd20e1e ]
+[ Upstream commit 5e6c7ccd3ea4b25dd6b4b0363859913f315deacb ]
 
-This makes sure peer information is always available via sock when using
-bt_sock_alloc.
+'cid_map' is a bitmap. So use 'bitmap_zalloc()' to simplify code,
+improve the semantic and avoid some open-coded arithmetic in allocator
+arguments.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: e83f5e24da74 ("Bluetooth: serialize accept_q access")
+Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
+consistency.
+
+Also change some 'memset()' into 'bitmap_zero()' to keep consistency. This
+is also much less verbose.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2bccfb8476ca ("qed: fix double free in qed_cxt_tables_alloc()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |   24 ++++++++++++++++++++++++
- net/bluetooth/hidp/sock.c    |   10 +---------
- net/bluetooth/l2cap_sock.c   |   19 -------------------
- 3 files changed, 25 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c |   24 +++++-------------------
+ 1 file changed, 5 insertions(+), 19 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -155,6 +155,14 @@ struct sock *bt_sock_alloc(struct net *n
- 	sk->sk_protocol = proto;
- 	sk->sk_state    = BT_OPEN;
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -1037,12 +1037,12 @@ static void qed_cid_map_free(struct qed_
+ 	u32 type, vf;
  
-+	/* Init peer information so it can be properly monitored */
-+	if (!kern) {
-+		spin_lock(&sk->sk_peer_lock);
-+		sk->sk_peer_pid  = get_pid(task_tgid(current));
-+		sk->sk_peer_cred = get_current_cred();
-+		spin_unlock(&sk->sk_peer_lock);
-+	}
-+
- 	return sk;
- }
- EXPORT_SYMBOL(bt_sock_alloc);
-@@ -177,6 +185,9 @@ EXPORT_SYMBOL(bt_sock_unlink);
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+-		kfree(p_mngr->acquired[type].cid_map);
++		bitmap_free(p_mngr->acquired[type].cid_map);
+ 		p_mngr->acquired[type].max_count = 0;
+ 		p_mngr->acquired[type].start_cid = 0;
  
- void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+-			kfree(p_mngr->acquired_vf[type][vf].cid_map);
++			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
+ 			p_mngr->acquired_vf[type][vf].max_count = 0;
+ 			p_mngr->acquired_vf[type][vf].start_cid = 0;
+ 		}
+@@ -1055,15 +1055,10 @@ qed_cid_map_alloc_single(struct qed_hwfn
+ 			 u32 cid_start,
+ 			 u32 cid_count, struct qed_cid_acquired_map *p_map)
  {
-+	const struct cred *old_cred;
-+	struct pid *old_pid;
-+
- 	BT_DBG("parent %p, sk %p", parent, sk);
+-	u32 size;
+-
+ 	if (!cid_count)
+ 		return 0;
  
- 	sock_hold(sk);
-@@ -189,6 +200,19 @@ void bt_accept_enqueue(struct sock *pare
- 	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
- 	bt_sk(sk)->parent = parent;
- 
-+	/* Copy credentials from parent since for incoming connections the
-+	 * socket is allocated by the kernel.
-+	 */
-+	spin_lock(&sk->sk_peer_lock);
-+	old_pid = sk->sk_peer_pid;
-+	old_cred = sk->sk_peer_cred;
-+	sk->sk_peer_pid = get_pid(parent->sk_peer_pid);
-+	sk->sk_peer_cred = get_cred(parent->sk_peer_cred);
-+	spin_unlock(&sk->sk_peer_lock);
-+
-+	put_pid(old_pid);
-+	put_cred(old_cred);
-+
- 	if (bh)
- 		bh_unlock_sock(sk);
- 	else
---- a/net/bluetooth/hidp/sock.c
-+++ b/net/bluetooth/hidp/sock.c
-@@ -255,21 +255,13 @@ static int hidp_sock_create(struct net *
- 	if (sock->type != SOCK_RAW)
- 		return -ESOCKTNOSUPPORT;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &hidp_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &hidp_proto, protocol, GFP_ATOMIC, kern);
- 	if (!sk)
+-	size = DIV_ROUND_UP(cid_count,
+-			    sizeof(unsigned long) * BITS_PER_BYTE) *
+-	       sizeof(unsigned long);
+-	p_map->cid_map = kzalloc(size, GFP_KERNEL);
++	p_map->cid_map = bitmap_zalloc(cid_count, GFP_KERNEL);
+ 	if (!p_map->cid_map)
  		return -ENOMEM;
  
--	sock_init_data(sock, sk);
--
- 	sock->ops = &hidp_sock_ops;
--
- 	sock->state = SS_UNCONNECTED;
+@@ -1217,7 +1212,6 @@ void qed_cxt_mngr_setup(struct qed_hwfn
+ 	struct qed_cid_acquired_map *p_map;
+ 	struct qed_conn_type_cfg *p_cfg;
+ 	int type;
+-	u32 len;
  
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = protocol;
--	sk->sk_state	= BT_OPEN;
--
- 	bt_sock_link(&hidp_sk_list, sk);
+ 	/* Reset acquired cids */
+ 	for (type = 0; type < MAX_CONN_TYPES; type++) {
+@@ -1226,11 +1220,7 @@ void qed_cxt_mngr_setup(struct qed_hwfn
+ 		p_cfg = &p_mngr->conn_cfg[type];
+ 		if (p_cfg->cid_count) {
+ 			p_map = &p_mngr->acquired[type];
+-			len = DIV_ROUND_UP(p_map->max_count,
+-					   sizeof(unsigned long) *
+-					   BITS_PER_BYTE) *
+-			      sizeof(unsigned long);
+-			memset(p_map->cid_map, 0, len);
++			bitmap_zero(p_map->cid_map, p_map->max_count);
+ 		}
  
- 	return 0;
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -177,21 +177,6 @@ done:
- 	return err;
- }
+ 		if (!p_cfg->cids_per_vf)
+@@ -1238,11 +1228,7 @@ void qed_cxt_mngr_setup(struct qed_hwfn
  
--static void l2cap_sock_init_pid(struct sock *sk)
--{
--	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
--
--	/* Only L2CAP_MODE_EXT_FLOWCTL ever need to access the PID in order to
--	 * group the channels being requested.
--	 */
--	if (chan->mode != L2CAP_MODE_EXT_FLOWCTL)
--		return;
--
--	spin_lock(&sk->sk_peer_lock);
--	sk->sk_peer_pid = get_pid(task_tgid(current));
--	spin_unlock(&sk->sk_peer_lock);
--}
--
- static int l2cap_sock_connect(struct socket *sock, struct sockaddr *addr,
- 			      int alen, int flags)
- {
-@@ -267,8 +252,6 @@ static int l2cap_sock_connect(struct soc
- 	    chan->mode != L2CAP_MODE_EXT_FLOWCTL)
- 		chan->mode = L2CAP_MODE_LE_FLOWCTL;
- 
--	l2cap_sock_init_pid(sk);
--
- 	err = l2cap_chan_connect(chan, la.l2_psm, __le16_to_cpu(la.l2_cid),
- 				 &la.l2_bdaddr, la.l2_bdaddr_type);
- 	if (err)
-@@ -324,8 +307,6 @@ static int l2cap_sock_listen(struct sock
- 		goto done;
+ 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
+ 			p_map = &p_mngr->acquired_vf[type][vf];
+-			len = DIV_ROUND_UP(p_map->max_count,
+-					   sizeof(unsigned long) *
+-					   BITS_PER_BYTE) *
+-			      sizeof(unsigned long);
+-			memset(p_map->cid_map, 0, len);
++			bitmap_zero(p_map->cid_map, p_map->max_count);
+ 		}
  	}
- 
--	l2cap_sock_init_pid(sk);
--
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_ack_backlog = 0;
- 
+ }
 
 
 
