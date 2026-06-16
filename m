@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-264059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266023-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PpnFKyhuMWqKjAUAu9opvQ
-	(envelope-from <stable+bounces-264059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:20 +0200
+	id FRQbDNSUMWp5nQUAu9opvQ
+	(envelope-from <stable+bounces-266023-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047126913E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9661694192
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1Wa7TpUr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264059-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264059-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oebZYj2R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266023-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266023-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C23CC3048177
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F8F63006812
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB06C4418FF;
-	Tue, 16 Jun 2026 15:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ECD466B64;
+	Tue, 16 Jun 2026 18:24:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96431449EAB;
-	Tue, 16 Jun 2026 15:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A923D8105;
+	Tue, 16 Jun 2026 18:24:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623903; cv=none; b=ZC+nTUqrb7vy0u3DEpqY6fhSzu4Bhqyo7h2q/v8uWfjefBT52ib9PnFcWenjqqlx28oQvJgBu/6DV9cXAmwoBdNJkL0Q0yBMyCBRbAPD9zZrRpO36epbMWG9vSJRDg76Fx6Xt4VbWySBAqMtyUxjWjqnIPGqPG5QWrWmoYprEyA=
+	t=1781634254; cv=none; b=Mg7NYInnBytAY/A1cOuBsfhMOW1KqlLYxRH9Okm2XBQIVUHw+LTXSQ7BW5x09hlR2vHCLb/b3oq91mCF1xoF34dG+IGj9i5Un5AqD4wsLyILk272J0M9DAbZihtufQWVZ+MAFDENCs2DaQNvmGlTnkLGOZtcM/NHH+FW01MEU60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623903; c=relaxed/simple;
-	bh=KHp2bYdZWaD/VOgNiSozfu90otSaqVpGYw1SkYt5Zcc=;
+	s=arc-20240116; t=1781634254; c=relaxed/simple;
+	bh=rtHNOHeSChdYI4XjFL60OwVoeyV55IA/SOzyBcQwaJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBPugzGVMeQorOtrPdY0Kz8a1VCjvGPcA4SZxahv5gydLhz2z8FkGCll63C+65sFqW1s4QIQI1d0BLmcAj03L6nuYPHD/FckGKufEq0yRcAYdzDAc6+fQbAuIlQwZJnGXq3CKMfUhYcBmAk5bTnAdONvYUayNaorrc1BkSw0tgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Wa7TpUr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227DA1F000E9;
-	Tue, 16 Jun 2026 15:31:40 +0000 (UTC)
+	 MIME-Version; b=mpZkdmV9syeryqPE78t2QUgI4xCZA85WK96KyHS7w33T61fviaTQfl2HJsSYMqyszVFePuAP7Ok9KszIt3f+eTR4uENPQXEh2Vs1TxgWhQxCPNlUsqjMdlibRXmFj7XEGwUzBMyVtyf+grrzyRYLqVFCHJsDoVod9MxByZDvNsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oebZYj2R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7272E1F000E9;
+	Tue, 16 Jun 2026 18:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623902;
-	bh=lyqegWc+yhyQq4QSfic8r1FoW4GPH19kb7mGPrCouyM=;
+	s=korg; t=1781634253;
+	bh=EaxynOV+pWp/obnbCi6+K7p5Ihr7DbZHVm9hLPlfyiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1Wa7TpUrfdmhGQ6pbnFX1S9YGPIILOxTQNYlYIr3ow1EYJL8erLPChBwMN51D0sTU
-	 br/QZagCPmJ3kgkhdEbgTr+bFhGgqic0NGzlGihx12J8iUts80KDz9UCUhGPNhhWth
-	 jouaOkv9CGFA6iMN25+bz/uRCViDtQIeZarxqW2U=
+	b=oebZYj2RUAkhNHT60zfANmiqN8N38CsRXWBqw8GUc2MoniqBQkD4bP5qI/Jz9NmhQ
+	 3Ky5IVluM173SHYSKSCdc6xrncfrWs6CZQRxSbaiEfUjCToUmQkS6Km3MLG6cqbBDJ
+	 y3NTTFfaoRgd4IsY+AdsEsviSIAiliX3kK9AWCBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Cui <cuitao@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Allison Henderson <achender@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 238/378] selftests: mptcp: add test for extra_subflows underflow on userspace PM
+Subject: [PATCH 5.15 231/411] net: rds: clear i_sends on setup unwind
 Date: Tue, 16 Jun 2026 20:27:49 +0530
-Message-ID: <20260616145122.757899592@linuxfoundation.org>
+Message-ID: <20260616145113.106948285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,73 +77,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264059-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
+	TAGGED_FROM(0.00)[bounces-266023-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:achender@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,kylinos.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,lenovo.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 047126913E3
+X-Rspamd-Queue-Id: D9661694192
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Yuqi Xu <xuyq21@lenovo.com>
 
-commit 06fd2bec7aebf393288e4b78924482fe170caabc upstream.
+commit 20cf0fb715c41111469577e85e35d15f099473e0 upstream.
 
-Add a test to verify that when userspace PM fails to create a subflow
-(e.g. using an unreachable address), the extra_subflows counter is not
-decremented below zero.
+The RDS IB connection teardown path is written so it can run during
+partial startup and on repeated shutdown attempts. It uses NULL
+pointers to distinguish resources that are still owned from resources
+that have already been released.
 
-Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-6-856831229976@kernel.org
+When rds_ib_setup_qp() fails after allocating i_sends but before
+allocating i_recvs, the sends_out path frees i_sends without clearing
+the pointer. A later shutdown pass can still treat that stale pointer
+as a live send ring allocation.
+
+Clear i_sends after vfree() in the error unwind path so the existing
+shutdown logic continues to use the correct ownership state.
+
+Fixes: 3b12f73a5c29 ("rds: ib: add error handle")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/rds/ib_cm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -4069,6 +4069,10 @@ userspace_tests()
- 		chk_rm_nr 0 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-+		# check counters are not affected by errors at creation time
-+		userspace_pm_add_sf $ns2 10.0.12.2 10 2>/dev/null
-+		chk_mptcp_info subflows 0 subflows 0
-+		chk_subflows_total 1 1
- 		kill_events_pids
- 		mptcp_lib_kill_group_wait $tests_pid
- 	fi
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -656,6 +656,7 @@ static int rds_ib_setup_qp(struct rds_co
+ 
+ sends_out:
+ 	vfree(ic->i_sends);
++	ic->i_sends = NULL;
+ 
+ ack_dma_out:
+ 	rds_dma_hdr_free(rds_ibdev->dev, ic->i_ack, ic->i_ack_dma,
 
 
 
