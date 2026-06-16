@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OE6tLOmOMWqgmgUAu9opvQ
-	(envelope-from <stable+bounces-265738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:05 +0200
+	id j4b3Hb+fMWo6ogUAu9opvQ
+	(envelope-from <stable+bounces-266560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B475D693AE0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327C4694D73
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:10:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=utYg2+yk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265738-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265738-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wckrU+tp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266560-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266560-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7FD93006939
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CFBD30500C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD82247A0B0;
-	Tue, 16 Jun 2026 17:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C003DDDA1;
+	Tue, 16 Jun 2026 19:10:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A9C478E55;
-	Tue, 16 Jun 2026 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819EE34751B;
+	Tue, 16 Jun 2026 19:10:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632738; cv=none; b=DIBN01ukiQQxoZ5eY9lIqGzPY32bhkxExZmbePiwVv4uFvVymEFEK67qP+SzT9rYc7G/EM0E21dhSm8jJiP+026Vfgeb5sbBzWRN90H5r6ytxq7YHHNC0bSo9HT8Wz0ewue4tP9GLSt7vUzeh0nXRSdh+91pSnzALMzUd//cDyI=
+	t=1781637024; cv=none; b=ZNXfexRtKW5DUv/O/ANvzKbS1xTixuMAiiKXgKeY+FkSTS1zzLidN+0w2rdpRC+lZnAhPolHi/7fqx3dTFeWf3dz19NJCozbei8h97ATr8SLCekcVHBsVaJCNkTQVwXy+9wKIoJsSBZ+e7aIMQRPoPJDs1kKS6IlBtz5Bf8Blxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632738; c=relaxed/simple;
-	bh=2paS+3aUubI/Utka8xjNw4o9VkO0P6QfmzgzuWOGC/c=;
+	s=arc-20240116; t=1781637024; c=relaxed/simple;
+	bh=mMbkWyM9eS4cr9qejCTvonZIoT8UWJbRBjzDEE0Ntag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiLIxBJtpqjCrb9VUbver//NJVWkFmpBh7qNMla0k+mHowSz997Hv62EN0bdaPZk1+KydYVzG+AUA8bWBLUu4MYDAteifmkHgnjM73/Xqosk2fb1GZ2Pe78ascKyARdU9k4ZaKY0Rv6pHJsbAdWsqhp3OSNUzL6aahfh522sBx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utYg2+yk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9A71F000E9;
-	Tue, 16 Jun 2026 17:58:55 +0000 (UTC)
+	 MIME-Version; b=mGAaj4GRnn74hP/SP6D9+Ck/iiAGyL1n1iYHVjkq+WhniMGPzKz/Psh8TaZ5z86omNqxGbD+iZ28EF2nXT8CVgY2SWimXcks+vF9MRISh38Hkm5Ge7WVqwRrXRcNxwTpydPdKtHK3wA/5wRjRR79NOkWXSD4ng5kdJfwGCEktzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wckrU+tp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1BE1F00A3A;
+	Tue, 16 Jun 2026 19:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632737;
-	bh=4xNh93vEyimVo/4dr/k2fSmjR8ei6bhN9TvJqNJ1uX8=;
+	s=korg; t=1781637023;
+	bh=0Zag5D9tJgoasGYtIWPQgepxbGs890VDC95iWsiQsTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=utYg2+yk+/9sBOjHESOhx+/cvKstsMTwGbhPP5wrV15aM+5zcOwmvGaw1FdeDyJid
-	 iUBBoHj4pWxN/MF/hHMywxfJ2pr/9rvQpBv0FSYG4swqD6lvF4s4z8/B6929gZ8cDb
-	 fa5/8AL0OOwsJo1dPb+EzoQvrCVDdgBoAkoA/nLg=
+	b=wckrU+tpEC1CvSW8y+JFl2DUXzamWvJ+gbugI+DWRm3U0OIkAyb6j81pXWwMmCeDu
+	 i8+Mol7SezF3lgLd2kHdp0zrsh33xvjaqv/cqfTDUrg0egr3Af4MJlCCA4SE3mSzf6
+	 DcZblrFp/FxXGaNV1jqb5EAF9XGsesSamuwwSTC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 467/522] tty: serial: samsung: use u32 for register interactions
-Date: Tue, 16 Jun 2026 20:30:14 +0530
-Message-ID: <20260616145147.715334752@linuxfoundation.org>
+Subject: [PATCH 5.10 319/342] iio: adc: npcm: fix unbalanced clk_disable_unprepare()
+Date: Tue, 16 Jun 2026 20:30:15 +0530
+Message-ID: <20260616145103.405506972@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,386 +74,153 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265738-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:semen.protsenko@linaro.org,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,vger.kernel.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266560-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B475D693AE0
+X-Rspamd-Queue-Id: 327C4694D73
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 032a725c16add79332d774348d7ad7d0d4b86479 ]
+[ Upstream commit 0d42e2c0bd6ceb89e44c6e065f9bdf9b1df3ef0c ]
 
-All registers of the IP have 32 bits. Use u32 variables when reading
-or writing from/to the registers. The purpose of those variables becomes
-clearer.
+The driver acquired the ADC clock with devm_clk_get() and read its
+rate, but never called clk_prepare_enable(). The probe error path and
+npcm_adc_remove() both called clk_disable_unprepare() unconditionally,
+causing the clk framework's enable/prepare counts to underflow on
+probe failure or module unbind.
 
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/20240119104526.1221243-9-tudor.ambarus@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: a3bb136bff5e ("tty: serial: samsung: Remove redundant port lock acquisition in rx helpers")
+The issue went unnoticed because NPCM BMC firmware leaves the ADC
+clock enabled at boot, so the driver happened to work in practice.
+
+Switch to devm_clk_get_enabled() so the clock is properly enabled
+during probe and automatically released by the device-managed
+cleanup, and drop the now-redundant clk_disable_unprepare() from
+both the probe error path and remove().
+
+While at it, drop the duplicate error message on devm_request_irq()
+failure since the IRQ core already logs it.
+
+Fixes: 9bf85fbc9d8f ("iio: adc: add NPCM ADC driver")
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |   80 +++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
+ drivers/iio/adc/npcm_adc.c |   26 ++++++++------------------
+ 1 file changed, 8 insertions(+), 18 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -202,7 +202,7 @@ static void wr_reg(const struct uart_por
- /* Byte-order aware bit setting/clearing functions. */
+--- a/drivers/iio/adc/npcm_adc.c
++++ b/drivers/iio/adc/npcm_adc.c
+@@ -180,7 +180,6 @@ static int npcm_adc_probe(struct platfor
+ 	u32 reg_con;
+ 	struct npcm_adc *info;
+ 	struct iio_dev *indio_dev;
+-	struct device *dev = &pdev->dev;
  
- static inline void s3c24xx_set_bit(const struct uart_port *port, int idx,
--				   unsigned int reg)
-+				   u32 reg)
- {
- 	unsigned long flags;
- 	u32 val;
-@@ -215,7 +215,7 @@ static inline void s3c24xx_set_bit(const
- }
+ 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*info));
+ 	if (!indio_dev)
+@@ -197,7 +196,7 @@ static int npcm_adc_probe(struct platfor
+ 	if (IS_ERR(info->reset))
+ 		return PTR_ERR(info->reset);
  
- static inline void s3c24xx_clear_bit(const struct uart_port *port, int idx,
--				     unsigned int reg)
-+				     u32 reg)
- {
- 	unsigned long flags;
- 	u32 val;
-@@ -248,8 +248,8 @@ static void s3c24xx_serial_rx_enable(str
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ucon, ufcon;
- 	int count = 10000;
-+	u32 ucon, ufcon;
+-	info->adc_clk = devm_clk_get(&pdev->dev, NULL);
++	info->adc_clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(info->adc_clk)) {
+ 		dev_warn(&pdev->dev, "ADC clock failed: can't read clk\n");
+ 		return PTR_ERR(info->adc_clk);
+@@ -210,17 +209,13 @@ static int npcm_adc_probe(struct platfor
+ 	info->adc_sample_hz = clk_get_rate(info->adc_clk) / ((div + 1) * 2);
  
- 	uart_port_lock_irqsave(port, &flags);
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq <= 0) {
+-		ret = -EINVAL;
+-		goto err_disable_clk;
+-	}
++	if (irq <= 0)
++		return -EINVAL;
  
-@@ -272,7 +272,7 @@ static void s3c24xx_serial_rx_disable(st
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ucon;
-+	u32 ucon;
+ 	ret = devm_request_irq(&pdev->dev, irq, npcm_adc_isr, 0,
+ 			       "NPCM_ADC", indio_dev);
+-	if (ret < 0) {
+-		dev_err(dev, "failed requesting interrupt\n");
+-		goto err_disable_clk;
+-	}
++	if (ret < 0)
++		return ret;
  
- 	uart_port_lock_irqsave(port, &flags);
- 
-@@ -597,7 +597,7 @@ static inline const struct s3c2410_uartc
- }
- 
- static int s3c24xx_serial_rx_fifocnt(const struct s3c24xx_uart_port *ourport,
--				     unsigned long ufstat)
-+				     u32 ufstat)
- {
- 	const struct s3c24xx_uart_info *info = ourport->info;
- 
-@@ -669,7 +669,7 @@ static void s3c64xx_start_rx_dma(struct
- static void enable_rx_dma(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	/* set Rx mode to DMA mode */
- 	ucon = rd_regl(port, S3C2410_UCON);
-@@ -692,7 +692,7 @@ static void enable_rx_dma(struct s3c24xx
- static void enable_rx_pio(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	/* set Rx mode to DMA mode */
- 	ucon = rd_regl(port, S3C2410_UCON);
-@@ -717,13 +717,14 @@ static void s3c24xx_serial_rx_drain_fifo
- 
- static irqreturn_t s3c24xx_serial_rx_chars_dma(void *dev_id)
- {
--	unsigned int utrstat, received;
- 	struct s3c24xx_uart_port *ourport = dev_id;
- 	struct uart_port *port = &ourport->port;
- 	struct s3c24xx_uart_dma *dma = ourport->dma;
- 	struct tty_struct *tty = tty_port_tty_get(&ourport->port.state->port);
- 	struct tty_port *t = &port->state->port;
- 	struct dma_tx_state state;
-+	unsigned int received;
-+	u32 utrstat;
- 
- 	utrstat = rd_regl(port, S3C2410_UTRSTAT);
- 	rd_regl(port, S3C2410_UFSTAT);
-@@ -765,9 +766,10 @@ finish:
- static void s3c24xx_serial_rx_drain_fifo(struct s3c24xx_uart_port *ourport)
- {
- 	struct uart_port *port = &ourport->port;
--	unsigned int ufcon, ch, flag, ufstat, uerstat;
- 	unsigned int fifocnt = 0;
- 	int max_count = port->fifosize;
-+	u32 ufcon, ufstat, uerstat;
-+	u8 ch, flag;
- 
- 	while (max_count-- > 0) {
- 		/*
-@@ -951,7 +953,7 @@ static irqreturn_t s3c64xx_serial_handle
- {
- 	const struct s3c24xx_uart_port *ourport = id;
- 	const struct uart_port *port = &ourport->port;
--	unsigned int pend = rd_regl(port, S3C64XX_UINTP);
-+	u32 pend = rd_regl(port, S3C64XX_UINTP);
- 	irqreturn_t ret = IRQ_HANDLED;
- 
- 	if (pend & S3C64XX_UINTM_RXD_MSK) {
-@@ -970,7 +972,7 @@ static irqreturn_t apple_serial_handle_i
- {
- 	const struct s3c24xx_uart_port *ourport = id;
- 	const struct uart_port *port = &ourport->port;
--	unsigned int pend = rd_regl(port, S3C2410_UTRSTAT);
-+	u32 pend = rd_regl(port, S3C2410_UTRSTAT);
- 	irqreturn_t ret = IRQ_NONE;
- 
- 	if (pend & (APPLE_S5L_UTRSTAT_RXTHRESH | APPLE_S5L_UTRSTAT_RXTO)) {
-@@ -989,8 +991,8 @@ static irqreturn_t apple_serial_handle_i
- static unsigned int s3c24xx_serial_tx_empty(struct uart_port *port)
- {
- 	const struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ufstat = rd_regl(port, S3C2410_UFSTAT);
--	unsigned long ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ufstat = rd_regl(port, S3C2410_UFSTAT);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
- 
- 	if (ufcon & S3C2410_UFCON_FIFOMODE) {
- 		if ((ufstat & info->tx_fifomask) != 0 ||
-@@ -1005,7 +1007,7 @@ static unsigned int s3c24xx_serial_tx_em
- /* no modem control lines */
- static unsigned int s3c24xx_serial_get_mctrl(struct uart_port *port)
- {
--	unsigned int umstat = rd_reg(port, S3C2410_UMSTAT);
-+	u32 umstat = rd_reg(port, S3C2410_UMSTAT);
- 
- 	if (umstat & S3C2410_UMSTAT_CTS)
- 		return TIOCM_CAR | TIOCM_DSR | TIOCM_CTS;
-@@ -1015,8 +1017,8 @@ static unsigned int s3c24xx_serial_get_m
- 
- static void s3c24xx_serial_set_mctrl(struct uart_port *port, unsigned int mctrl)
- {
--	unsigned int umcon = rd_regl(port, S3C2410_UMCON);
--	unsigned int ucon = rd_regl(port, S3C2410_UCON);
-+	u32 umcon = rd_regl(port, S3C2410_UMCON);
-+	u32 ucon = rd_regl(port, S3C2410_UCON);
- 
- 	if (mctrl & TIOCM_RTS)
- 		umcon |= S3C2410_UMCOM_RTS_LOW;
-@@ -1036,7 +1038,7 @@ static void s3c24xx_serial_set_mctrl(str
- static void s3c24xx_serial_break_ctl(struct uart_port *port, int break_state)
- {
- 	unsigned long flags;
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	uart_port_lock_irqsave(port, &flags);
- 
-@@ -1217,7 +1219,7 @@ static void apple_s5l_serial_shutdown(st
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	ucon = rd_regl(port, S3C2410_UCON);
- 	ucon &= ~(APPLE_S5L_UCON_TXTHRESH_ENA_MSK |
-@@ -1285,7 +1287,7 @@ static int s3c64xx_serial_startup(struct
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ufcon;
-+	u32 ufcon;
- 	int ret;
- 
- 	wr_regl(port, S3C64XX_UINTM, 0xf);
-@@ -1330,7 +1332,7 @@ static int apple_s5l_serial_startup(stru
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
- 	unsigned long flags;
--	unsigned int ufcon;
-+	u32 ufcon;
- 	int ret;
- 
- 	wr_regl(port, S3C2410_UTRSTAT, APPLE_S5L_UTRSTAT_ALL_FLAGS);
-@@ -1415,7 +1417,7 @@ static void s3c24xx_serial_pm(struct uar
- static inline int s3c24xx_serial_getsource(struct uart_port *port)
- {
- 	const struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	if (info->num_clks == 1)
- 		return 0;
-@@ -1429,7 +1431,7 @@ static void s3c24xx_serial_setsource(str
- 			unsigned int clk_sel)
- {
- 	const struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned int ucon;
-+	u32 ucon;
- 
- 	if (info->num_clks == 1)
- 		return;
-@@ -1548,9 +1550,8 @@ static void s3c24xx_serial_set_termios(s
- 	struct clk *clk = ERR_PTR(-EINVAL);
- 	unsigned long flags;
- 	unsigned int baud, quot, clk_sel = 0;
--	unsigned int ulcon;
--	unsigned int umcon;
- 	unsigned int udivslot = 0;
-+	u32 ulcon, umcon;
- 
- 	/*
- 	 * We don't support modem control lines.
-@@ -1857,7 +1858,7 @@ static void s3c24xx_serial_resetport(str
- 				     const struct s3c2410_uartcfg *cfg)
- {
- 	const struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ucon = rd_regl(port, S3C2410_UCON);
-+	u32 ucon = rd_regl(port, S3C2410_UCON);
- 
- 	ucon &= (info->clksel_mask | info->ucon_mask);
- 	wr_regl(port, S3C2410_UCON, ucon | cfg->ucon);
-@@ -2100,7 +2101,7 @@ static int s3c24xx_serial_init_port(stru
- 		wr_regl(port, S3C64XX_UINTSP, 0xf);
- 		break;
- 	case TYPE_APPLE_S5L: {
--		unsigned int ucon;
-+		u32 ucon;
- 
- 		ucon = rd_regl(port, S3C2410_UCON);
- 		ucon &= ~(APPLE_S5L_UCON_TXTHRESH_ENA_MSK |
-@@ -2312,7 +2313,7 @@ static int s3c24xx_serial_resume_noirq(s
- 		/* restore IRQ mask */
- 		switch (ourport->info->type) {
- 		case TYPE_S3C6400: {
--			unsigned int uintm = 0xf;
-+			u32 uintm = 0xf;
- 
- 			if (ourport->tx_enabled)
- 				uintm &= ~S3C64XX_UINTM_TXD_MSK;
-@@ -2328,7 +2329,7 @@ static int s3c24xx_serial_resume_noirq(s
- 			break;
+ 	reg_con = ioread32(info->regs + NPCM_ADCCON);
+ 	info->vref = devm_regulator_get_optional(&pdev->dev, "vref");
+@@ -228,7 +223,7 @@ static int npcm_adc_probe(struct platfor
+ 		ret = regulator_enable(info->vref);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "Can't enable ADC reference voltage\n");
+-			goto err_disable_clk;
++			return ret;
  		}
- 		case TYPE_APPLE_S5L: {
--			unsigned int ucon;
-+			u32 ucon;
- 			int ret;
  
- 			ret = clk_prepare_enable(ourport->clk);
-@@ -2391,10 +2392,10 @@ static const struct dev_pm_ops s3c24xx_s
- static struct uart_port *cons_uart;
+ 		iowrite32(reg_con & ~NPCM_ADCCON_REFSEL,
+@@ -238,10 +233,8 @@ static int npcm_adc_probe(struct platfor
+ 		 * Any error which is not ENODEV indicates the regulator
+ 		 * has been specified and so is a failure case.
+ 		 */
+-		if (PTR_ERR(info->vref) != -ENODEV) {
+-			ret = PTR_ERR(info->vref);
+-			goto err_disable_clk;
+-		}
++		if (PTR_ERR(info->vref) != -ENODEV)
++			return PTR_ERR(info->vref);
  
- static int
--s3c24xx_serial_console_txrdy(struct uart_port *port, unsigned int ufcon)
-+s3c24xx_serial_console_txrdy(struct uart_port *port, u32 ufcon)
- {
- 	const struct s3c24xx_uart_info *info = s3c24xx_port_to_info(port);
--	unsigned long ufstat, utrstat;
-+	u32 ufstat, utrstat;
+ 		/* Use internal reference */
+ 		iowrite32(reg_con | NPCM_ADCCON_REFSEL,
+@@ -280,8 +273,6 @@ err_iio_register:
+ 	iowrite32(reg_con & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-err_disable_clk:
+-	clk_disable_unprepare(info->adc_clk);
  
- 	if (ufcon & S3C2410_UFCON_FIFOMODE) {
- 		/* fifo mode - check amount of data in fifo registers... */
-@@ -2410,7 +2411,7 @@ s3c24xx_serial_console_txrdy(struct uart
+ 	return ret;
  }
+@@ -298,7 +289,6 @@ static int npcm_adc_remove(struct platfo
+ 	iowrite32(regtemp & ~NPCM_ADCCON_ADC_EN, info->regs + NPCM_ADCCON);
+ 	if (!IS_ERR(info->vref))
+ 		regulator_disable(info->vref);
+-	clk_disable_unprepare(info->adc_clk);
  
- static bool
--s3c24xx_port_configured(unsigned int ucon)
-+s3c24xx_port_configured(u32 ucon)
- {
- 	/* consider the serial port configured if the tx/rx mode set */
- 	return (ucon & 0xf) != 0;
-@@ -2425,7 +2426,7 @@ s3c24xx_port_configured(unsigned int uco
- static int s3c24xx_serial_get_poll_char(struct uart_port *port)
- {
- 	const struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned int ufstat;
-+	u32 ufstat;
- 
- 	ufstat = rd_regl(port, S3C2410_UFSTAT);
- 	if (s3c24xx_serial_rx_fifocnt(ourport, ufstat) == 0)
-@@ -2437,8 +2438,8 @@ static int s3c24xx_serial_get_poll_char(
- static void s3c24xx_serial_put_poll_char(struct uart_port *port,
- 		unsigned char c)
- {
--	unsigned int ufcon = rd_regl(port, S3C2410_UFCON);
--	unsigned int ucon = rd_regl(port, S3C2410_UCON);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ucon = rd_regl(port, S3C2410_UCON);
- 
- 	/* not possible to xmit on unconfigured port */
- 	if (!s3c24xx_port_configured(ucon))
-@@ -2454,7 +2455,7 @@ static void s3c24xx_serial_put_poll_char
- static void
- s3c24xx_serial_console_putchar(struct uart_port *port, unsigned char ch)
- {
--	unsigned int ufcon = rd_regl(port, S3C2410_UFCON);
-+	u32 ufcon = rd_regl(port, S3C2410_UFCON);
- 
- 	while (!s3c24xx_serial_console_txrdy(port, ufcon))
- 		cpu_relax();
-@@ -2465,7 +2466,7 @@ static void
- s3c24xx_serial_console_write(struct console *co, const char *s,
- 			     unsigned int count)
- {
--	unsigned int ucon = rd_regl(cons_uart, S3C2410_UCON);
-+	u32 ucon = rd_regl(cons_uart, S3C2410_UCON);
- 	unsigned long flags;
- 	bool locked = true;
- 
-@@ -2492,11 +2493,9 @@ s3c24xx_serial_get_options(struct uart_p
- 			   int *parity, int *bits)
- {
- 	struct clk *clk;
--	unsigned int ulcon;
--	unsigned int ucon;
--	unsigned int ubrdiv;
- 	unsigned long rate;
- 	unsigned int clk_sel;
-+	u32 ulcon, ucon, ubrdiv;
- 	char clk_name[MAX_CLK_NAME_LENGTH];
- 
- 	ulcon  = rd_regl(port, S3C2410_ULCON);
-@@ -3010,7 +3009,8 @@ static int samsung_early_read(struct con
- {
- 	struct earlycon_device *dev = con->data;
- 	const struct samsung_early_console_data *data = dev->port.private_data;
--	int ch, ufstat, num_read = 0;
-+	int num_read = 0;
-+	u32 ch, ufstat;
- 
- 	while (num_read < n) {
- 		ufstat = rd_regl(&dev->port, S3C2410_UFSTAT);
+ 	return 0;
+ }
 
 
 
