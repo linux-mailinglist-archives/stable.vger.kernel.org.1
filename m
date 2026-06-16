@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AYykA5GOMWp7mgUAu9opvQ
-	(envelope-from <stable+bounces-265722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:37 +0200
+	id YNyBGC50MWrwjgUAu9opvQ
+	(envelope-from <stable+bounces-264193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F86E693A7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5B7691AB7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R5Hq+Lks;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265722-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265722-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uUC53rpM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264193-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264193-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 89848303CF04
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4DE4A3039A13
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8E2478E55;
-	Tue, 16 Jun 2026 17:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F18244102D;
+	Tue, 16 Jun 2026 15:43:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECA3043C8;
-	Tue, 16 Jun 2026 17:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6B44DB62;
+	Tue, 16 Jun 2026 15:43:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632653; cv=none; b=q5ZdnARn1ZKP4S1PEqjrdYphWm/DrVsNnKaHcMbGeS8ZswISYYPmgoeobwbWKiw7LtfLVNFP/5zDHFnQy0Rg5WQXMF59zliqbFTqABPtnj6JodUTwyMmPTJCxEYXi/hOAOCveHB4SbmYiu1NVfU6Uc69MtHVNomFk6L//v0rebI=
+	t=1781624623; cv=none; b=o04CGnt4FtpSt6lBMRWT52bK+YpaR9K1ws2OABuS/VKdjYtL6eGq47D4VCOy+xvTy0N2OycX5ruUfz0drtmi1dxZdBZrEK5oO+zLifJoRKsKp7/K3YGiKFzlYN3HnDL4m46WHG/yxbq3rrEfm0Z3QLXzSUsnKrLVwG7l/iBYEz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632653; c=relaxed/simple;
-	bh=HnjWzl2UmEuTXtMmQQQGsLNI9UA9uw+ym0wJQnZfSLk=;
+	s=arc-20240116; t=1781624623; c=relaxed/simple;
+	bh=hqawkhlGTmLmZ0rIjgLiywGCtPMOpPGNzJmPEH/OYcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmEF6fCfc4dPl554JJKWcx8bszYWYBK1jl1dM63PrNk0cKbzKfp3ouYQdxtxFqfm1fpw5Yw9qjfBJOKZ+Wet1MOpxteseUiZ+G7vBnyW8qkSc133CYAu2ZsX3BinA0m0eB856s4NkH7Mb/7w5EDfFWM0HzSIeYfJMkHVWwDpgU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5Hq+Lks; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A59E1F00A3A;
-	Tue, 16 Jun 2026 17:57:30 +0000 (UTC)
+	 MIME-Version; b=ksqSre4QgW6PNll99vfAMDWivAQVila8WXtxycUFk/AyDnDp7M/C9p2XSq/Tzup15BFqCDMXm1HqsRPqAQs0NNQ6VdSquxufSu36ueZTAgm3mbnAQNUO2/5w4Em5lTZAzjqznlyt0gfVQrXa6NaiZfGFDCzZQC7hTpYeOcplWww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUC53rpM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C261F000E9;
+	Tue, 16 Jun 2026 15:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632651;
-	bh=bUOlMu3Jw4LREFr6PT1ebznYAUxkZTSbgH5E5dCPCiA=;
+	s=korg; t=1781624621;
+	bh=socGF88EFX8COO7kqBTYHwg6FBG0RFUiRmiGJaT8nqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R5Hq+LksmysKCOPFpsqUyvXZpipyRY2UnG18qfe/j2sYNUR59OoPHGYZC3602xA9Y
-	 +cc7RX1cyMulbYtpAi/Ypu5fubYBRhu1s7puLS2pc8UYgFW/+1w8h65eRDVgB2Qew4
-	 JJXbrNKhNVzW2dQB8OqFGCDGTipENhBUQJOfV3PI=
+	b=uUC53rpMZFNgk4jMt48gl9syAzOx06hoUEK1jv0RXA0+aT7jFr+jT+RGfq7OTlMAL
+	 lUKSLzRBAyUvbgndw1YO4MegDMPs4UddRuHckjt0QGeoXKLAsy+VcZm3LpuHt0RaFK
+	 nUunHzGwx9aoXINsTo5N+38+cEfzGNGwe/rlul2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 452/522] spi: qup: switch to use modern name
+Subject: [PATCH 7.0 368/378] RDMA: Move DMA block iterator logic into dedicated files
 Date: Tue, 16 Jun 2026 20:29:59 +0530
-Message-ID: <20260616145147.059350542@linuxfoundation.org>
+Message-ID: <20260616145129.497144174@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265722-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264193-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yangyingliang@huawei.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leonro@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,469 +97,529 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7F86E693A7A
+X-Rspamd-Queue-Id: 5E5B7691AB7
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 597442ff4f6226206b7cc28b86eb2be0ae9c6418 ]
+[ Upstream commit 6094ea64c69520ed1e770e7c79c43412de202bfa ]
 
-Change legacy name master to modern name host or controller.
+The DMA iterator logic was mixed into verbs and umem-specific code,
+forcing all users to include rdma/ib_umem.h. Move the block iterator
+logic into iter.c and rdma/iter.h so that rdma/ib_umem.h and
+rdma/ib_verbs.h can be separated in a follow-up patch.
 
-No functional changed.
-
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20230818093154.1183529-10-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: a7e8f3efd50a ("spi: qup: fix error pointer deref after DMA setup failure")
+Link: https://patch.msgid.link/20260213-refactor-umem-v1-1-f3be85847922@nvidia.com
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-qup.c |  168 +++++++++++++++++++++++++-------------------------
- 1 file changed, 84 insertions(+), 84 deletions(-)
+ drivers/infiniband/core/Makefile             |    2 
+ drivers/infiniband/core/iter.c               |   43 +++++++++++++
+ drivers/infiniband/core/verbs.c              |   38 -----------
+ drivers/infiniband/hw/bnxt_re/qplib_res.c    |    2 
+ drivers/infiniband/hw/cxgb4/mem.c            |    2 
+ drivers/infiniband/hw/efa/efa_verbs.c        |    2 
+ drivers/infiniband/hw/erdma/erdma_verbs.c    |    2 
+ drivers/infiniband/hw/hns/hns_roce_alloc.c   |    2 
+ drivers/infiniband/hw/ionic/ionic_ibdev.h    |    2 
+ drivers/infiniband/hw/irdma/main.h           |    2 
+ drivers/infiniband/hw/mana/mana_ib.h         |    2 
+ drivers/infiniband/hw/mlx4/mr.c              |    1 
+ drivers/infiniband/hw/mlx5/mem.c             |    1 
+ drivers/infiniband/hw/mlx5/umr.c             |    1 
+ drivers/infiniband/hw/mthca/mthca_provider.c |    2 
+ drivers/infiniband/hw/ocrdma/ocrdma_verbs.c  |    2 
+ drivers/infiniband/hw/qedr/verbs.c           |    2 
+ drivers/infiniband/hw/vmw_pvrdma/pvrdma.h    |    2 
+ include/rdma/ib_umem.h                       |   32 ---------
+ include/rdma/ib_verbs.h                      |   48 --------------
+ include/rdma/iter.h                          |   88 +++++++++++++++++++++++++++
+ 21 files changed, 147 insertions(+), 131 deletions(-)
+ create mode 100644 drivers/infiniband/core/iter.c
+ create mode 100644 include/rdma/iter.h
 
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -386,20 +386,20 @@ static void spi_qup_write(struct spi_qup
- 	} while (remainder);
- }
+--- a/drivers/infiniband/core/Makefile
++++ b/drivers/infiniband/core/Makefile
+@@ -12,7 +12,7 @@ ib_core-y :=			packer.o ud_header.o verb
+ 				roce_gid_mgmt.o mr_pool.o addr.o sa_query.o \
+ 				multicast.o mad.o smi.o agent.o mad_rmpp.o \
+ 				nldev.o restrack.o counters.o ib_core_uverbs.o \
+-				trace.o lag.o
++				trace.o lag.o iter.o
  
--static int spi_qup_prep_sg(struct spi_master *master, struct scatterlist *sgl,
-+static int spi_qup_prep_sg(struct spi_controller *host, struct scatterlist *sgl,
- 			   unsigned int nents, enum dma_transfer_direction dir,
- 			   dma_async_tx_callback callback)
- {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	unsigned long flags = DMA_PREP_INTERRUPT | DMA_PREP_FENCE;
- 	struct dma_async_tx_descriptor *desc;
- 	struct dma_chan *chan;
- 	dma_cookie_t cookie;
- 
- 	if (dir == DMA_MEM_TO_DEV)
--		chan = master->dma_tx;
-+		chan = host->dma_tx;
- 	else
--		chan = master->dma_rx;
-+		chan = host->dma_rx;
- 
- 	desc = dmaengine_prep_slave_sg(chan, sgl, nents, dir, flags);
- 	if (IS_ERR_OR_NULL(desc))
-@@ -413,13 +413,13 @@ static int spi_qup_prep_sg(struct spi_ma
- 	return dma_submit_error(cookie);
- }
- 
--static void spi_qup_dma_terminate(struct spi_master *master,
-+static void spi_qup_dma_terminate(struct spi_controller *host,
- 				  struct spi_transfer *xfer)
- {
- 	if (xfer->tx_buf)
--		dmaengine_terminate_all(master->dma_tx);
-+		dmaengine_terminate_all(host->dma_tx);
- 	if (xfer->rx_buf)
--		dmaengine_terminate_all(master->dma_rx);
-+		dmaengine_terminate_all(host->dma_rx);
- }
- 
- static u32 spi_qup_sgl_get_nents_len(struct scatterlist *sgl, u32 max,
-@@ -446,8 +446,8 @@ static int spi_qup_do_dma(struct spi_dev
- 			  unsigned long timeout)
- {
- 	dma_async_tx_callback rx_done = NULL, tx_done = NULL;
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	struct scatterlist *tx_sgl, *rx_sgl;
- 	int ret;
- 
-@@ -482,20 +482,20 @@ static int spi_qup_do_dma(struct spi_dev
- 			return ret;
- 		}
- 		if (rx_sgl) {
--			ret = spi_qup_prep_sg(master, rx_sgl, rx_nents,
-+			ret = spi_qup_prep_sg(host, rx_sgl, rx_nents,
- 					      DMA_DEV_TO_MEM, rx_done);
- 			if (ret)
- 				return ret;
--			dma_async_issue_pending(master->dma_rx);
-+			dma_async_issue_pending(host->dma_rx);
- 		}
- 
- 		if (tx_sgl) {
--			ret = spi_qup_prep_sg(master, tx_sgl, tx_nents,
-+			ret = spi_qup_prep_sg(host, tx_sgl, tx_nents,
- 					      DMA_MEM_TO_DEV, tx_done);
- 			if (ret)
- 				return ret;
- 
--			dma_async_issue_pending(master->dma_tx);
-+			dma_async_issue_pending(host->dma_tx);
- 		}
- 
- 		if (!wait_for_completion_timeout(&qup->done, timeout))
-@@ -514,8 +514,8 @@ static int spi_qup_do_dma(struct spi_dev
- static int spi_qup_do_pio(struct spi_device *spi, struct spi_transfer *xfer,
- 			  unsigned long timeout)
- {
--	struct spi_master *master = spi->master;
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_controller *host = spi->controller;
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	int ret, n_words, iterations, offset = 0;
- 
- 	n_words = qup->n_words;
-@@ -659,7 +659,7 @@ static irqreturn_t spi_qup_qup_irq(int i
- /* set clock freq ... bits per word, determine mode */
- static int spi_qup_io_prep(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	int ret;
- 
- 	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
-@@ -680,9 +680,9 @@ static int spi_qup_io_prep(struct spi_de
- 
- 	if (controller->n_words <= (controller->in_fifo_sz / sizeof(u32)))
- 		controller->mode = QUP_IO_M_MODE_FIFO;
--	else if (spi->master->can_dma &&
--		 spi->master->can_dma(spi->master, spi, xfer) &&
--		 spi->master->cur_msg_mapped)
-+	else if (spi->controller->can_dma &&
-+		 spi->controller->can_dma(spi->controller, spi, xfer) &&
-+		 spi->controller->cur_msg_mapped)
- 		controller->mode = QUP_IO_M_MODE_BAM;
- 	else
- 		controller->mode = QUP_IO_M_MODE_BLOCK;
-@@ -693,7 +693,7 @@ static int spi_qup_io_prep(struct spi_de
- /* prep qup for another spi transaction of specific type */
- static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
-+	struct spi_qup *controller = spi_controller_get_devdata(spi->controller);
- 	u32 config, iomode, control;
- 	unsigned long flags;
- 
-@@ -841,11 +841,11 @@ static int spi_qup_io_config(struct spi_
- 	return 0;
- }
- 
--static int spi_qup_transfer_one(struct spi_master *master,
-+static int spi_qup_transfer_one(struct spi_controller *host,
- 			      struct spi_device *spi,
- 			      struct spi_transfer *xfer)
- {
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	unsigned long timeout, flags;
- 	int ret;
- 
-@@ -879,21 +879,21 @@ static int spi_qup_transfer_one(struct s
- 	spin_unlock_irqrestore(&controller->lock, flags);
- 
- 	if (ret && spi_qup_is_dma_xfer(controller->mode))
--		spi_qup_dma_terminate(master, xfer);
-+		spi_qup_dma_terminate(host, xfer);
- 
- 	return ret;
- }
- 
--static bool spi_qup_can_dma(struct spi_master *master, struct spi_device *spi,
-+static bool spi_qup_can_dma(struct spi_controller *host, struct spi_device *spi,
- 			    struct spi_transfer *xfer)
- {
--	struct spi_qup *qup = spi_master_get_devdata(master);
-+	struct spi_qup *qup = spi_controller_get_devdata(host);
- 	size_t dma_align = dma_get_cache_alignment();
- 	int n_words;
- 
- 	if (xfer->rx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->rx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_rx))
-+		    IS_ERR_OR_NULL(host->dma_rx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->in_blk_sz))
- 			return false;
-@@ -901,7 +901,7 @@ static bool spi_qup_can_dma(struct spi_m
- 
- 	if (xfer->tx_buf) {
- 		if (!IS_ALIGNED((size_t)xfer->tx_buf, dma_align) ||
--		    IS_ERR_OR_NULL(master->dma_tx))
-+		    IS_ERR_OR_NULL(host->dma_tx))
- 			return false;
- 		if (qup->qup_v1 && (xfer->len % qup->out_blk_sz))
- 			return false;
-@@ -914,30 +914,30 @@ static bool spi_qup_can_dma(struct spi_m
- 	return true;
- }
- 
--static void spi_qup_release_dma(struct spi_master *master)
-+static void spi_qup_release_dma(struct spi_controller *host)
- {
--	if (!IS_ERR_OR_NULL(master->dma_rx))
--		dma_release_channel(master->dma_rx);
--	if (!IS_ERR_OR_NULL(master->dma_tx))
--		dma_release_channel(master->dma_tx);
-+	if (!IS_ERR_OR_NULL(host->dma_rx))
-+		dma_release_channel(host->dma_rx);
-+	if (!IS_ERR_OR_NULL(host->dma_tx))
-+		dma_release_channel(host->dma_tx);
- }
- 
--static int spi_qup_init_dma(struct spi_master *master, resource_size_t base)
-+static int spi_qup_init_dma(struct spi_controller *host, resource_size_t base)
- {
--	struct spi_qup *spi = spi_master_get_devdata(master);
-+	struct spi_qup *spi = spi_controller_get_devdata(host);
- 	struct dma_slave_config *rx_conf = &spi->rx_conf,
- 				*tx_conf = &spi->tx_conf;
- 	struct device *dev = spi->dev;
- 	int ret;
- 
- 	/* allocate dma resources, if available */
--	master->dma_rx = dma_request_chan(dev, "rx");
--	if (IS_ERR(master->dma_rx))
--		return PTR_ERR(master->dma_rx);
--
--	master->dma_tx = dma_request_chan(dev, "tx");
--	if (IS_ERR(master->dma_tx)) {
--		ret = PTR_ERR(master->dma_tx);
-+	host->dma_rx = dma_request_chan(dev, "rx");
-+	if (IS_ERR(host->dma_rx))
-+		return PTR_ERR(host->dma_rx);
+ ib_core-$(CONFIG_SECURITY_INFINIBAND) += security.o
+ ib_core-$(CONFIG_CGROUP_RDMA) += cgroup.o
+--- /dev/null
++++ b/drivers/infiniband/core/iter.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
++/* Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. */
 +
-+	host->dma_tx = dma_request_chan(dev, "tx");
-+	if (IS_ERR(host->dma_tx)) {
-+		ret = PTR_ERR(host->dma_tx);
- 		goto err_tx;
- 	}
- 
-@@ -952,13 +952,13 @@ static int spi_qup_init_dma(struct spi_m
- 	tx_conf->dst_addr = base + QUP_OUTPUT_FIFO;
- 	tx_conf->dst_maxburst = spi->out_blk_sz;
- 
--	ret = dmaengine_slave_config(master->dma_rx, rx_conf);
-+	ret = dmaengine_slave_config(host->dma_rx, rx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure RX channel\n");
- 		goto err;
- 	}
- 
--	ret = dmaengine_slave_config(master->dma_tx, tx_conf);
-+	ret = dmaengine_slave_config(host->dma_tx, tx_conf);
- 	if (ret) {
- 		dev_err(dev, "failed to configure TX channel\n");
- 		goto err;
-@@ -967,9 +967,9 @@ static int spi_qup_init_dma(struct spi_m
- 	return 0;
- 
- err:
--	dma_release_channel(master->dma_tx);
-+	dma_release_channel(host->dma_tx);
- err_tx:
--	dma_release_channel(master->dma_rx);
-+	dma_release_channel(host->dma_rx);
- 	return ret;
++#include <linux/export.h>
++#include <rdma/iter.h>
++
++void __rdma_block_iter_start(struct ib_block_iter *biter,
++			     struct scatterlist *sglist, unsigned int nents,
++			     unsigned long pgsz)
++{
++	memset(biter, 0, sizeof(struct ib_block_iter));
++	biter->__sg = sglist;
++	biter->__sg_nents = nents;
++
++	/* Driver provides best block size to use */
++	biter->__pg_bit = __fls(pgsz);
++}
++EXPORT_SYMBOL(__rdma_block_iter_start);
++
++bool __rdma_block_iter_next(struct ib_block_iter *biter)
++{
++	unsigned int block_offset;
++	unsigned int delta;
++
++	if (!biter->__sg_nents || !biter->__sg)
++		return false;
++
++	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
++	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
++	delta = BIT_ULL(biter->__pg_bit) - block_offset;
++
++	while (biter->__sg_nents && biter->__sg &&
++	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
++		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
++		biter->__sg_advance = 0;
++		biter->__sg = sg_next(biter->__sg);
++		biter->__sg_nents--;
++	}
++	biter->__sg_advance += delta;
++
++	return true;
++}
++EXPORT_SYMBOL(__rdma_block_iter_next);
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -3154,44 +3154,6 @@ int rdma_init_netdev(struct ib_device *d
  }
+ EXPORT_SYMBOL(rdma_init_netdev);
  
-@@ -979,7 +979,7 @@ static void spi_qup_set_cs(struct spi_de
- 	u32 spi_ioc;
- 	u32 spi_ioc_orig;
+-void __rdma_block_iter_start(struct ib_block_iter *biter,
+-			     struct scatterlist *sglist, unsigned int nents,
+-			     unsigned long pgsz)
+-{
+-	memset(biter, 0, sizeof(struct ib_block_iter));
+-	biter->__sg = sglist;
+-	biter->__sg_nents = nents;
+-
+-	/* Driver provides best block size to use */
+-	biter->__pg_bit = __fls(pgsz);
+-}
+-EXPORT_SYMBOL(__rdma_block_iter_start);
+-
+-bool __rdma_block_iter_next(struct ib_block_iter *biter)
+-{
+-	unsigned int block_offset;
+-	unsigned int delta;
+-
+-	if (!biter->__sg_nents || !biter->__sg)
+-		return false;
+-
+-	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
+-	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
+-	delta = BIT_ULL(biter->__pg_bit) - block_offset;
+-
+-	while (biter->__sg_nents && biter->__sg &&
+-	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
+-		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
+-		biter->__sg_advance = 0;
+-		biter->__sg = sg_next(biter->__sg);
+-		biter->__sg_nents--;
+-	}
+-	biter->__sg_advance += delta;
+-
+-	return true;
+-}
+-EXPORT_SYMBOL(__rdma_block_iter_next);
+-
+ /**
+  * rdma_alloc_hw_stats_struct - Helper function to allocate dynamic struct
+  *   for the drivers.
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -46,7 +46,7 @@
+ #include <linux/if_vlan.h>
+ #include <linux/vmalloc.h>
+ #include <rdma/ib_verbs.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
  
--	controller = spi_master_get_devdata(spi->master);
-+	controller = spi_controller_get_devdata(spi->controller);
- 	spi_ioc = readl_relaxed(controller->base + SPI_IO_CONTROL);
- 	spi_ioc_orig = spi_ioc;
- 	if (!val)
-@@ -993,7 +993,7 @@ static void spi_qup_set_cs(struct spi_de
+ #include "roce_hsi.h"
+ #include "qplib_res.h"
+--- a/drivers/infiniband/hw/cxgb4/mem.c
++++ b/drivers/infiniband/hw/cxgb4/mem.c
+@@ -32,9 +32,9 @@
  
- static int spi_qup_probe(struct platform_device *pdev)
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+-#include <rdma/ib_umem.h>
+ #include <linux/atomic.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ 
+ #include "iw_cxgb4.h"
+ 
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -9,9 +9,9 @@
+ #include <linux/log2.h>
+ 
+ #include <rdma/ib_addr.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ #define UVERBS_MODULE_NAME efa_ib
+ #include <rdma/uverbs_named_ioctl.h>
+--- a/drivers/infiniband/hw/erdma/erdma_verbs.c
++++ b/drivers/infiniband/hw/erdma/erdma_verbs.c
+@@ -12,7 +12,7 @@
+ #include <linux/vmalloc.h>
+ #include <net/addrconf.h>
+ #include <rdma/erdma-abi.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include "erdma.h"
+--- a/drivers/infiniband/hw/hns/hns_roce_alloc.c
++++ b/drivers/infiniband/hw/hns/hns_roce_alloc.c
+@@ -32,7 +32,7 @@
+  */
+ 
+ #include <linux/vmalloc.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
+ #include "hns_roce_device.h"
+ 
+ void hns_roce_buf_free(struct hns_roce_dev *hr_dev, struct hns_roce_buf *buf)
+--- a/drivers/infiniband/hw/ionic/ionic_ibdev.h
++++ b/drivers/infiniband/hw/ionic/ionic_ibdev.h
+@@ -4,9 +4,9 @@
+ #ifndef _IONIC_IBDEV_H_
+ #define _IONIC_IBDEV_H_
+ 
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_pack.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include <rdma/ionic-abi.h>
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -37,8 +37,8 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/iw_cm.h>
+ #include <rdma/ib_user_verbs.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ #include "osdep.h"
+ #include "defs.h"
+--- a/drivers/infiniband/hw/mana/mana_ib.h
++++ b/drivers/infiniband/hw/mana/mana_ib.h
+@@ -8,7 +8,7 @@
+ 
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_mad.h>
+-#include <rdma/ib_umem.h>
++#include <rdma/iter.h>
+ #include <rdma/mana-abi.h>
+ #include <rdma/uverbs_ioctl.h>
+ #include <linux/dmapool.h>
+--- a/drivers/infiniband/hw/mlx4/mr.c
++++ b/drivers/infiniband/hw/mlx4/mr.c
+@@ -33,6 +33,7 @@
+ 
+ #include <linux/slab.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ 
+ #include "mlx4_ib.h"
+ 
+--- a/drivers/infiniband/hw/mlx5/mem.c
++++ b/drivers/infiniband/hw/mlx5/mem.c
+@@ -31,6 +31,7 @@
+  */
+ 
+ #include <rdma/ib_umem_odp.h>
++#include <rdma/iter.h>
+ #include "mlx5_ib.h"
+ 
+ /*
+--- a/drivers/infiniband/hw/mlx5/umr.c
++++ b/drivers/infiniband/hw/mlx5/umr.c
+@@ -2,6 +2,7 @@
+ /* Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. */
+ 
+ #include <rdma/ib_umem_odp.h>
++#include <rdma/iter.h>
+ #include "mlx5_ib.h"
+ #include "umr.h"
+ #include "wr.h"
+--- a/drivers/infiniband/hw/mthca/mthca_provider.c
++++ b/drivers/infiniband/hw/mthca/mthca_provider.c
+@@ -35,8 +35,8 @@
+  */
+ 
+ #include <rdma/ib_smi.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_user_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include <linux/sched.h>
+--- a/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
++++ b/drivers/infiniband/hw/ocrdma/ocrdma_verbs.c
+@@ -45,9 +45,9 @@
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/iw_cm.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include "ocrdma.h"
+--- a/drivers/infiniband/hw/qedr/verbs.c
++++ b/drivers/infiniband/hw/qedr/verbs.c
+@@ -39,9 +39,9 @@
+ #include <rdma/ib_verbs.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/iw_cm.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_addr.h>
+ #include <rdma/ib_cache.h>
++#include <rdma/iter.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+ #include <linux/qed/common_hsi.h>
+--- a/drivers/infiniband/hw/vmw_pvrdma/pvrdma.h
++++ b/drivers/infiniband/hw/vmw_pvrdma/pvrdma.h
+@@ -53,8 +53,8 @@
+ #include <linux/pci.h>
+ #include <linux/semaphore.h>
+ #include <linux/workqueue.h>
+-#include <rdma/ib_umem.h>
+ #include <rdma/ib_verbs.h>
++#include <rdma/iter.h>
+ #include <rdma/vmw_pvrdma-abi.h>
+ 
+ #include "pvrdma_ring.h"
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -76,38 +76,6 @@ static inline size_t ib_umem_num_pages(s
  {
--	struct spi_master *master;
-+	struct spi_controller *host;
- 	struct clk *iclk, *cclk;
- 	struct spi_qup *controller;
- 	struct resource *res;
-@@ -1029,34 +1029,34 @@ static int spi_qup_probe(struct platform
- 		return -ENXIO;
- 	}
- 
--	master = spi_alloc_master(dev, sizeof(struct spi_qup));
--	if (!master) {
--		dev_err(dev, "cannot allocate master\n");
-+	host = spi_alloc_host(dev, sizeof(struct spi_qup));
-+	if (!host) {
-+		dev_err(dev, "cannot allocate host\n");
- 		return -ENOMEM;
- 	}
- 
- 	/* use num-cs unless not present or out of range */
- 	if (of_property_read_u32(dev->of_node, "num-cs", &num_cs) ||
- 	    num_cs > SPI_NUM_CHIPSELECTS)
--		master->num_chipselect = SPI_NUM_CHIPSELECTS;
-+		host->num_chipselect = SPI_NUM_CHIPSELECTS;
- 	else
--		master->num_chipselect = num_cs;
-+		host->num_chipselect = num_cs;
- 
--	master->use_gpio_descriptors = true;
--	master->max_native_cs = SPI_NUM_CHIPSELECTS;
--	master->bus_num = pdev->id;
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
--	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
--	master->max_speed_hz = max_freq;
--	master->transfer_one = spi_qup_transfer_one;
--	master->dev.of_node = pdev->dev.of_node;
--	master->auto_runtime_pm = true;
--	master->dma_alignment = dma_get_cache_alignment();
--	master->max_dma_len = SPI_MAX_XFER;
-+	host->use_gpio_descriptors = true;
-+	host->max_native_cs = SPI_NUM_CHIPSELECTS;
-+	host->bus_num = pdev->id;
-+	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
-+	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-+	host->max_speed_hz = max_freq;
-+	host->transfer_one = spi_qup_transfer_one;
-+	host->dev.of_node = pdev->dev.of_node;
-+	host->auto_runtime_pm = true;
-+	host->dma_alignment = dma_get_cache_alignment();
-+	host->max_dma_len = SPI_MAX_XFER;
- 
--	platform_set_drvdata(pdev, master);
-+	platform_set_drvdata(pdev, host);
- 
--	controller = spi_master_get_devdata(master);
-+	controller = spi_controller_get_devdata(host);
- 
- 	controller->dev = dev;
- 	controller->base = base;
-@@ -1064,16 +1064,16 @@ static int spi_qup_probe(struct platform
- 	controller->cclk = cclk;
- 	controller->irq = irq;
- 
--	ret = spi_qup_init_dma(master, res->start);
-+	ret = spi_qup_init_dma(host, res->start);
- 	if (ret == -EPROBE_DEFER)
- 		goto error;
- 	else if (!ret)
--		master->can_dma = spi_qup_can_dma;
-+		host->can_dma = spi_qup_can_dma;
- 
- 	controller->qup_v1 = (uintptr_t)of_device_get_match_data(dev);
- 
- 	if (!controller->qup_v1)
--		master->set_cs = spi_qup_set_cs;
-+		host->set_cs = spi_qup_set_cs;
- 
- 	spin_lock_init(&controller->lock);
- 	init_completion(&controller->done);
-@@ -1151,7 +1151,7 @@ static int spi_qup_probe(struct platform
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
--	ret = devm_spi_register_master(dev, master);
-+	ret = devm_spi_register_controller(dev, host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -1163,17 +1163,17 @@ error_clk:
- 	clk_disable_unprepare(cclk);
- 	clk_disable_unprepare(iclk);
- error_dma:
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
- error:
--	spi_master_put(master);
-+	spi_controller_put(host);
- 	return ret;
+ 	return ib_umem_num_dma_blocks(umem, PAGE_SIZE);
  }
+-
+-static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
+-						struct ib_umem *umem,
+-						unsigned long pgsz)
+-{
+-	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
+-				umem->sgt_append.sgt.nents, pgsz);
+-	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
+-	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
+-}
+-
+-static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
+-{
+-	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
+-}
+-
+-/**
+- * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
+- * @umem: umem to iterate over
+- * @biter: block iterator variable
+- * @pgsz: Page size to split the list into
+- *
+- * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
+- * returned DMA blocks will be aligned to pgsz and span the range:
+- * ALIGN_DOWN(umem->address, pgsz) to ALIGN(umem->address + umem->length, pgsz)
+- *
+- * Performs exactly ib_umem_num_dma_blocks() iterations.
+- */
+-#define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
+-	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
+-	     __rdma_umem_block_iter_next(biter);)
+-
+ #ifdef CONFIG_INFINIBAND_USER_MEM
  
- #ifdef CONFIG_PM
- static int spi_qup_pm_suspend_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
+ struct ib_umem *ib_umem_get(struct ib_device *device, unsigned long addr,
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2959,22 +2959,6 @@ struct ib_client {
+ 	u8 no_kverbs_req:1;
+ };
  
- 	/* Enable clocks auto gaiting */
-@@ -1189,8 +1189,8 @@ static int spi_qup_pm_suspend_runtime(st
+-/*
+- * IB block DMA iterator
+- *
+- * Iterates the DMA-mapped SGL in contiguous memory blocks aligned
+- * to a HW supported page size.
+- */
+-struct ib_block_iter {
+-	/* internal states */
+-	struct scatterlist *__sg;	/* sg holding the current aligned block */
+-	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
+-	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
+-	unsigned int __sg_nents;	/* number of SG entries */
+-	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
+-	unsigned int __pg_bit;		/* alignment of current block */
+-};
+-
+ struct ib_device *_ib_alloc_device(size_t size, struct net *net);
+ #define ib_alloc_device(drv_struct, member)                                    \
+ 	container_of(_ib_alloc_device(sizeof(struct drv_struct) +              \
+@@ -3003,38 +2987,6 @@ void ib_unregister_device_queued(struct
+ int ib_register_client   (struct ib_client *client);
+ void ib_unregister_client(struct ib_client *client);
  
- static int spi_qup_pm_resume_runtime(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	u32 config;
- 	int ret;
- 
-@@ -1215,8 +1215,8 @@ static int spi_qup_pm_resume_runtime(str
- #ifdef CONFIG_PM_SLEEP
- static int spi_qup_suspend(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	if (pm_runtime_suspended(device)) {
-@@ -1224,7 +1224,7 @@ static int spi_qup_suspend(struct device
- 		if (ret)
- 			return ret;
- 	}
--	ret = spi_master_suspend(master);
-+	ret = spi_controller_suspend(host);
- 	if (ret)
- 		return ret;
- 
-@@ -1239,8 +1239,8 @@ static int spi_qup_suspend(struct device
- 
- static int spi_qup_resume(struct device *device)
- {
--	struct spi_master *master = dev_get_drvdata(device);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(device);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = clk_prepare_enable(controller->iclk);
-@@ -1257,7 +1257,7 @@ static int spi_qup_resume(struct device
- 	if (ret)
- 		goto disable_clk;
- 
--	ret = spi_master_resume(master);
-+	ret = spi_controller_resume(host);
- 	if (ret)
- 		goto disable_clk;
- 
-@@ -1272,8 +1272,8 @@ disable_clk:
- 
- static int spi_qup_remove(struct platform_device *pdev)
- {
--	struct spi_master *master = dev_get_drvdata(&pdev->dev);
--	struct spi_qup *controller = spi_master_get_devdata(master);
-+	struct spi_controller *host = dev_get_drvdata(&pdev->dev);
-+	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
- 	ret = pm_runtime_get_sync(&pdev->dev);
-@@ -1291,7 +1291,7 @@ static int spi_qup_remove(struct platfor
- 			 ERR_PTR(ret));
- 	}
- 
--	spi_qup_release_dma(master);
-+	spi_qup_release_dma(host);
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+-void __rdma_block_iter_start(struct ib_block_iter *biter,
+-			     struct scatterlist *sglist,
+-			     unsigned int nents,
+-			     unsigned long pgsz);
+-bool __rdma_block_iter_next(struct ib_block_iter *biter);
+-
+-/**
+- * rdma_block_iter_dma_address - get the aligned dma address of the current
+- * block held by the block iterator.
+- * @biter: block iterator holding the memory block
+- */
+-static inline dma_addr_t
+-rdma_block_iter_dma_address(struct ib_block_iter *biter)
+-{
+-	return biter->__dma_addr & ~(BIT_ULL(biter->__pg_bit) - 1);
+-}
+-
+-/**
+- * rdma_for_each_block - iterate over contiguous memory blocks of the sg list
+- * @sglist: sglist to iterate over
+- * @biter: block iterator holding the memory block
+- * @nents: maximum number of sg entries to iterate over
+- * @pgsz: best HW supported page size to use
+- *
+- * Callers may use rdma_block_iter_dma_address() to get each
+- * blocks aligned DMA address.
+- */
+-#define rdma_for_each_block(sglist, biter, nents, pgsz)		\
+-	for (__rdma_block_iter_start(biter, sglist, nents,	\
+-				     pgsz);			\
+-	     __rdma_block_iter_next(biter);)
+-
+ /**
+  * ib_get_client_data - Get IB client context
+  * @device:Device to get context for
+--- /dev/null
++++ b/include/rdma/iter.h
+@@ -0,0 +1,88 @@
++/* SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB */
++/* Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. */
++
++#ifndef _RDMA_ITER_H_
++#define _RDMA_ITER_H_
++
++#include <linux/scatterlist.h>
++#include <rdma/ib_umem.h>
++
++/**
++ * IB block DMA iterator
++ *
++ * Iterates the DMA-mapped SGL in contiguous memory blocks aligned
++ * to a HW supported page size.
++ */
++struct ib_block_iter {
++	/* internal states */
++	struct scatterlist *__sg;	/* sg holding the current aligned block */
++	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
++	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
++	unsigned int __sg_nents;	/* number of SG entries */
++	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
++	unsigned int __pg_bit;		/* alignment of current block */
++};
++
++void __rdma_block_iter_start(struct ib_block_iter *biter,
++			     struct scatterlist *sglist,
++			     unsigned int nents,
++			     unsigned long pgsz);
++bool __rdma_block_iter_next(struct ib_block_iter *biter);
++
++/**
++ * rdma_block_iter_dma_address - get the aligned dma address of the current
++ * block held by the block iterator.
++ * @biter: block iterator holding the memory block
++ */
++static inline dma_addr_t
++rdma_block_iter_dma_address(struct ib_block_iter *biter)
++{
++	return biter->__dma_addr & ~(BIT_ULL(biter->__pg_bit) - 1);
++}
++
++/**
++ * rdma_for_each_block - iterate over contiguous memory blocks of the sg list
++ * @sglist: sglist to iterate over
++ * @biter: block iterator holding the memory block
++ * @nents: maximum number of sg entries to iterate over
++ * @pgsz: best HW supported page size to use
++ *
++ * Callers may use rdma_block_iter_dma_address() to get each
++ * blocks aligned DMA address.
++ */
++#define rdma_for_each_block(sglist, biter, nents, pgsz)		\
++	for (__rdma_block_iter_start(biter, sglist, nents,	\
++				     pgsz);			\
++	     __rdma_block_iter_next(biter);)
++
++static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
++						struct ib_umem *umem,
++						unsigned long pgsz)
++{
++	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
++				umem->sgt_append.sgt.nents, pgsz);
++	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
++	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
++}
++
++static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
++{
++	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
++}
++
++/**
++ * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
++ * @umem: umem to iterate over
++ * @pgsz: Page size to split the list into
++ *
++ * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
++ * returned DMA blocks will be aligned to pgsz and span the range:
++ * ALIGN_DOWN(umem->address, pgsz) to ALIGN(umem->address + umem->length, pgsz)
++ *
++ * Performs exactly ib_umem_num_dma_blocks() iterations.
++ */
++#define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
++	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
++	     __rdma_umem_block_iter_next(biter);)
++
++#endif /* _RDMA_ITER_H_ */
 
 
 
