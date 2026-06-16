@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id J7aNK2yEMWqwlQUAu9opvQ
-	(envelope-from <stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:20 +0200
+	id JvcNOVJ2MWrDjwUAu9opvQ
+	(envelope-from <stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D60692E55
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2AA691D67
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n60l2SZL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TpgpqqGx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264316-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A6B2324B881
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 53CA6302B9D9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5AD47A0C0;
-	Tue, 16 Jun 2026 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125D037C912;
+	Tue, 16 Jun 2026 15:54:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819B9478E41;
-	Tue, 16 Jun 2026 17:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEB244D022;
+	Tue, 16 Jun 2026 15:54:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629426; cv=none; b=qDzS3jhN2wni0f/SSl0TP1nIcChskdcd4wpv1ftJse/8Y2ltw6coNy4d98wvw8ymCfslBKdC/Ysqg/yYRZQrK0WSVl2/L8FH6CdD9YUOZ4iQoQVabNZpWy21j1SpF2XIGwh/60QkAcYcUM/YAh6EeQgCOsWHUSfqpBKCUxjJ1q0=
+	t=1781625290; cv=none; b=ofiC+7ApznaM4BeRS6CbBdJopr+nP5MGlVzbAaVQ41gsTZop+jC6rqtU0pV5dT512GMqinTz1A+kkYM6zOsD4wj3pPuJAeMz5R/KHU6ZSlEoyT/Mo2+xC86a/Siqyn12RPB4xE2Wf6J5Pv8nlwRmMUq39c5QDCJGz9+UbKU8+yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629426; c=relaxed/simple;
-	bh=6s8C5XNiwbb6RHDfBvbDjWXntojlsKJ2MOcBEOBvfgU=;
+	s=arc-20240116; t=1781625290; c=relaxed/simple;
+	bh=rzveqxFP9abPzbRLJkrJJ5XXdPOvbAIhXjxtBxg4Nck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAW2aU8Q4FoBS7R1MWJppPlYH5cp1MSTuVk4cyRPVcdS3Q8rCgQh4zvo04lkDW6QNrwf7h0EQraQadBRf26ZA3Nh2nZ3e8sa3f3CefDluStS6OVto83sw7LmP52bJjnS/Jxr2A6rj5Jay5BjpLhH0ADiHeq19cV8en8KTbo+O4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n60l2SZL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8634E1F00A3A;
-	Tue, 16 Jun 2026 17:03:44 +0000 (UTC)
+	 MIME-Version; b=e954TP2cD/J4Y42e260Ljh6ePFN6jhcY+/h4jemDlJ7X35//GcyYDKrGSOurwZuqhNBZDgok8frpPZ6OOZFklZtOUVW5mFhIPLkGg6oG2OPXARu2OCsoxUWRz35xJXdnWqrUcu7PkK9o6jYKZfsGhBCc9OIBFih+MtHXl7GfBF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpgpqqGx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B831F000E9;
+	Tue, 16 Jun 2026 15:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629425;
-	bh=QQp4iJRn2VWYAWMDD79kUMKmzw7o5/0Qqi9sexFpEvA=;
+	s=korg; t=1781625288;
+	bh=wYRYb1//isifMd7lwwTKHLolKJdbp0zpn3pWVmDAnUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n60l2SZLTh1mgNhFhRZngkxclIlZcfJAgVJB4BTpRxDOtGMXtvJ5LKiax9eiJXhY4
-	 1LX5U1akBUido33GRkxonqd/w7dzzG5viC7e21l+KUIRcEzXm7cAZhACk3824UYNXd
-	 +r0y29lCTO3gOo1s2+WWdhUO7ZMjx5o6jFkrGv1M=
+	b=TpgpqqGxUM04dsn0XjBkLWCsO3YrgfSuRGoDv9qPc+ebMfBQT9GnGcwUiLjRI2tz1
+	 SHLo4FrNKVczJbSq3xaVzaCbWl7IvXz/vbeo64yj5JKdw+hKhjXQlJhelboMnsl3y6
+	 2ihiVG0XEwK1b9+8fkMY+A4fj8bR+0j2yOCYB0lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Til Kaiser <mail@tk154.de>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 281/452] net: mvpp2: sync RX data at the hardware packet offset
+Subject: [PATCH 6.18 112/325] net: mctp: usb: fix race between urb completion and rx_retry cancellation
 Date: Tue, 16 Jun 2026 20:28:28 +0530
-Message-ID: <20260616145132.390222135@linuxfoundation.org>
+Message-ID: <20260616145103.284449686@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265091-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jk@codeconstruct.com.au,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,57 +98,140 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tk154.de:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 02D60692E55
+X-Rspamd-Queue-Id: DD2AA691D67
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Til Kaiser <mail@tk154.de>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
+[ Upstream commit 54665dce982689e2fd99b32e9a0dcc204fda8a51 ]
 
-mvpp2 programs the RX queue packet offset, so hardware writes received
-data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
-dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
-unused headroom and misses the same number of bytes at the packet tail.
+It's possible that sequencing between setting ->stopped and cancelling
+the rx_retry work (in ndo_stop) could leave us with an urb queued:
 
-On non-coherent DMA systems this can leave the CPU reading stale cache
-contents for the end of the received frame.
+    T1: ndo_stop                  T2: rx_retry_work
+    ------------                  ----------------
+                                  LD: ->stopped => false
+    ST: ->stopped <= true
+    usb_kill_urb()
+                                  mctp_usb_rx_queue()
+                                    usb_submit_urb()
+    cancel_delayed_work_sync()
 
-Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
-offset so the sync covers the Marvell header and packet data actually
-written by hardware.
+That urb completion can then re-schedule rx_retry_work.
 
-Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
-Signed-off-by: Til Kaiser <mail@tk154.de>
-Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
+Strenghen the sequencing between the stop (preventing another requeue)
+and the cancel by updating both atomically under a new rx lock. After
+setting ->rx_stopped, and cancelling pending work, we know that the
+requeue cannot occur, so all that's left is killing any pending urb.
+
+Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Link: https://patch.msgid.link/20260608-dev-mctp-usb-rx-requeue-v2-1-29a3aa507609@codeconstruct.com.au
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/mctp/mctp-usb.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 410c9dea4fa2ef..af10654f655674 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -3948,9 +3948,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
- 			dma_dir = DMA_FROM_DEVICE;
- 		}
+diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
+index 3b5dff14417747..cf6f6a93a45112 100644
+--- a/drivers/net/mctp/mctp-usb.c
++++ b/drivers/net/mctp/mctp-usb.c
+@@ -22,7 +22,6 @@
+ struct mctp_usb {
+ 	struct usb_device *usbdev;
+ 	struct usb_interface *intf;
+-	bool stopped;
  
--		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
--					rx_bytes + MVPP2_MH_SIZE,
--					dma_dir);
-+		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
-+					      MVPP2_SKB_HEADROOM,
-+					      rx_bytes + MVPP2_MH_SIZE,
-+					      dma_dir);
+ 	struct net_device *netdev;
  
- 		/* Buffer header not supported */
- 		if (rx_status & MVPP2_RXD_BUF_HDR)
+@@ -32,6 +31,9 @@ struct mctp_usb {
+ 	struct urb *tx_urb;
+ 	struct urb *rx_urb;
+ 
++	/* enforces atomic access to rx_stopped and requeuing the retry work */
++	spinlock_t rx_lock;
++	bool rx_stopped;
+ 	struct delayed_work rx_retry_work;
+ };
+ 
+@@ -122,6 +124,7 @@ static const unsigned long RX_RETRY_DELAY = HZ / 4;
+ 
+ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
+ {
++	unsigned long flags;
+ 	struct sk_buff *skb;
+ 	int rc;
+ 
+@@ -147,7 +150,10 @@ static int mctp_usb_rx_queue(struct mctp_usb *mctp_usb, gfp_t gfp)
+ 	return rc;
+ 
+ err_retry:
+-	schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
++	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
++	if (!mctp_usb->rx_stopped)
++		schedule_delayed_work(&mctp_usb->rx_retry_work, RX_RETRY_DELAY);
++	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
+ 	return rc;
+ }
+ 
+@@ -248,9 +254,6 @@ static void mctp_usb_rx_retry_work(struct work_struct *work)
+ 	struct mctp_usb *mctp_usb = container_of(work, struct mctp_usb,
+ 						 rx_retry_work.work);
+ 
+-	if (READ_ONCE(mctp_usb->stopped))
+-		return;
+-
+ 	mctp_usb_rx_queue(mctp_usb, GFP_KERNEL);
+ }
+ 
+@@ -258,7 +261,7 @@ static int mctp_usb_open(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
+ 
+-	WRITE_ONCE(mctp_usb->stopped, false);
++	WRITE_ONCE(mctp_usb->rx_stopped, false);
+ 
+ 	netif_start_queue(dev);
+ 
+@@ -268,17 +271,21 @@ static int mctp_usb_open(struct net_device *dev)
+ static int mctp_usb_stop(struct net_device *dev)
+ {
+ 	struct mctp_usb *mctp_usb = netdev_priv(dev);
++	unsigned long flags;
+ 
+ 	netif_stop_queue(dev);
+ 
+ 	/* prevent RX submission retry */
+-	WRITE_ONCE(mctp_usb->stopped, true);
++	spin_lock_irqsave(&mctp_usb->rx_lock, flags);
++	mctp_usb->rx_stopped = true;
++	cancel_delayed_work(&mctp_usb->rx_retry_work);
++	spin_unlock_irqrestore(&mctp_usb->rx_lock, flags);
++
++	flush_delayed_work(&mctp_usb->rx_retry_work);
+ 
+ 	usb_kill_urb(mctp_usb->rx_urb);
+ 	usb_kill_urb(mctp_usb->tx_urb);
+ 
+-	cancel_delayed_work_sync(&mctp_usb->rx_retry_work);
+-
+ 	return 0;
+ }
+ 
+@@ -331,6 +338,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
+ 	dev->netdev = netdev;
+ 	dev->usbdev = interface_to_usbdev(intf);
+ 	dev->intf = intf;
++	spin_lock_init(&dev->rx_lock);
+ 	usb_set_intfdata(intf, dev);
+ 
+ 	dev->ep_in = ep_in->bEndpointAddress;
 -- 
 2.53.0
 
