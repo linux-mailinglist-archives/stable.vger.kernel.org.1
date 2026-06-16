@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QvOKNrl5MWpCkQUAu9opvQ
-	(envelope-from <stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:41 +0200
+	id j0SbBi6dMWoPoQUAu9opvQ
+	(envelope-from <stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5754A6921DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898D9694A50
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZolpSfGC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264598-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rXBakt9V;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 792493102460
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:19:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79FD13288AC1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D390F43E4BA;
-	Tue, 16 Jun 2026 16:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D25C472798;
+	Tue, 16 Jun 2026 18:54:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A665346AF1B;
-	Tue, 16 Jun 2026 16:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862847B435;
+	Tue, 16 Jun 2026 18:54:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626749; cv=none; b=MEVARGLOrtBGBPBGVBnlG4XlqKj+RwPxjzrtdXVES1l0XGtwMoHd0YNS1136px/b8qkOa/FKejWmSEWJ32DBw1LGiYWLKJ6QUZfi7OfTFBGfHMpBgp5u/8IbDJnuSFxVRsB3g76Ew6+lTKLZGY3vmdvJxgxiSuZLwIuWvdlBqag=
+	t=1781636076; cv=none; b=BJfX//SNLfiY+ZnpQlxw2FWkZNjXNE/3H+XIY5zgQmiH5GMW/p/9W76GUrm5CJfPUiYejodvZOTNbkD5WnxpOsCSzgu4jZAhj3YgCFG92wtYJF3/roCVlXx84Ol8Sakk/gHoqemrp7upRB6GufcgFW3Z0KoZOq94r2Xl1HYV78s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626749; c=relaxed/simple;
-	bh=talDKiKxHZ0QJtQYeyOsn7MixkeMvCt1fY7CrCV7rOs=;
+	s=arc-20240116; t=1781636076; c=relaxed/simple;
+	bh=IknOLq4BDohLSB3wyVVIvvFG0eaLGTBJXVWYO4ZgjHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ansfTeDbnYi1rlx5EyXK1lp0+gYrgTJX/mna5jA7NRxdMVOjhH8dqH4m21OT3iLrA+ST8fDVmCe/iaaT7zpkpp2jc1QiX3vPTpxbzwNQC+YughvLMyrBln3V6pY+fEHfvR1QhbQF+1VyTvPUihC8gOITXWoPjgdG8ExQteaGRU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZolpSfGC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA01F000E9;
-	Tue, 16 Jun 2026 16:19:07 +0000 (UTC)
+	 MIME-Version; b=q9a3tBANiz3LYVy7D7c+qzlNjDO+Vy0BxJmW0iDxQmdR+7i4gKSPZO0z3Q2IRNTkg4CyOfT9KZILU7ExNZYU+DN2nTDhCPkkw3cpo+VpT4+7y6q4hfGDBX07XZ6ET490fqaHPw1igqhkr3ezIopH2OqRDcrlwK/jJtILQ8IbQxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXBakt9V; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE48D1F000E9;
+	Tue, 16 Jun 2026 18:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626748;
-	bh=VKJoOQ6P6AmtEEapDchl9THwKyfzVoa9dlmTJylmASI=;
+	s=korg; t=1781636075;
+	bh=uEBaUEa0Kc1Z694Qz8jSVSpC7cTbHup+UmAbrWGaFDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZolpSfGCb2nt8LsdfH3MIiqIw680g1ria0oF75NRWQcFn+jX49qgDUsxCy1DSmrzH
-	 BQLslIj6IVQWZtjjUJIKVxCZm0CuoF345CxorKUHNHPoEvD/d/BmJ+w7RyybVRJAiq
-	 z6GCRo/SL19QYNKRjSfkDA7bpNzS1ZUe2df7Y+sg=
+	b=rXBakt9VJDdEz9jzth5BLSVk47bLfmAmFcWadq0AzBFQ6nONs/B/UDvkJpzDR3r2r
+	 y71gL9enu1cQJfZQriOpBIgJyunLyMo3ebWkhmOjxATd2yunbGN7x5K7z8TqOuiCaU
+	 /+4r3250lapDpCXwugGhGKhZYSp/KC70LKphtjuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Hui <yiconghui@gmail.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Liu Ying <victor.liu@nxp.com>,
+	Kyle Zeng <kylebot@openai.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/261] drm/imx: Fix three kernel-doc warnings in dcss-scaler.c
+Subject: [PATCH 5.10 171/342] net: guard timestamp cmsgs to real error queue skbs
 Date: Tue, 16 Jun 2026 20:27:47 +0530
-Message-ID: <20260616145046.406127932@linuxfoundation.org>
+Message-ID: <20260616145056.167734574@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,89 +71,140 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.nxp.com,nxp.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264598-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiconghui@gmail.com,m:laurentiu.palcu@oss.nxp.com,m:victor.liu@nxp.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266372-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,nxp.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5754A6921DF
+X-Rspamd-Queue-Id: 898D9694A50
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Hui <yiconghui@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-[ Upstream commit ae0383e5a9a4b12d68c76c4769857def4665deff ]
+[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
 
-Fix the following W=1 kerneldoc warnings by adding the missing parameter
-descriptions for @phase0_identity and @nn_interpolation in
-dcss_scaler_filter_design() and @phase0_identity in
-dcss_scaler_gaussian_filter()
+skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
+from sk_error_queue. That assumption is not true for AF_PACKET sockets:
+outgoing packet taps are also delivered to packet sockets with
+skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
+instead of struct sock_exterr_skb.
 
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:173 function parameter 'phase0_identity' not described in 'dcss_scaler_gaussian_filter'
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'phase0_identity' not described in 'dcss_scaler_filter_design'
-Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'nn_interpolation' not described in 'dcss_scaler_filter_design'
+If such an skb is received with timestamping enabled, the generic
+timestamp cmsg path can read AF_PACKET control-buffer state as
+sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
+counter overlaps opt_stats. An odd drop count makes the path emit
+SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
+skbs this copies past the linear head and can trigger hardened usercopy or
+disclose adjacent heap contents.
 
-Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
-Signed-off-by: Yicong Hui <yiconghui@gmail.com>
-Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Link: https://patch.msgid.link/20260406180013.2442096-1-yiconghui@gmail.com
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Keep skb_is_err_queue() local to net/socket.c, but make it verify that
+the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
+installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
+receive ownership and no longer pass as error-queue skbs, while legitimate
+sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
+ownership.
+
+Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/dcss/dcss-scaler.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/net/sock.h |  1 +
+ net/core/skbuff.c  |  6 +++---
+ net/socket.c       | 11 ++++++-----
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/dcss/dcss-scaler.c b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-index 825728c356ffbe..eb81a4a57905a7 100644
---- a/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-+++ b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
-@@ -166,6 +166,7 @@ static int exp_approx_q(int x)
-  * dcss_scaler_gaussian_filter() - Generate gaussian prototype filter.
-  * @fc_q: fixed-point cutoff frequency normalized to range [0, 1]
-  * @use_5_taps: indicates whether to use 5 taps or 7 taps
-+ * @phase0_identity: whether to override phase 0 coefficients with identity filter
-  * @coef: output filter coefficients
-  */
- static void dcss_scaler_gaussian_filter(int fc_q, bool use_5_taps,
-@@ -262,7 +263,9 @@ static void dcss_scaler_nearest_neighbor_filter(bool use_5_taps,
-  * @src_length: length of input
-  * @dst_length: length of output
-  * @use_5_taps: 0 for 7 taps per phase, 1 for 5 taps
-+ * @phase0_identity: whether to override phase 0 coefficients with identity filter
-  * @coef: output coefficients
-+ * @nn_interpolation: whether to use nearest neighbor instead of gaussian filter
-  */
- static void dcss_scaler_filter_design(int src_length, int dst_length,
- 				      bool use_5_taps, bool phase0_identity,
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 4e5386cdb09cd5..f0e391afb511d2 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1779,6 +1779,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
+ 			     gfp_t priority);
+ void skb_orphan_partial(struct sk_buff *skb);
+ void sock_rfree(struct sk_buff *skb);
++void sock_rmem_free(struct sk_buff *skb);
+ void sock_efree(struct sk_buff *skb);
+ #ifdef CONFIG_INET
+ void sock_edemux(struct sk_buff *skb);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index f7100f5af37ca7..b2cd853ecb7e7b 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4633,7 +4633,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
+ }
+ EXPORT_SYMBOL_GPL(skb_cow_data);
+ 
+-static void sock_rmem_free(struct sk_buff *skb)
++void sock_rmem_free(struct sk_buff *skb)
+ {
+ 	struct sock *sk = skb->sk;
+ 
+@@ -4642,8 +4642,8 @@ static void sock_rmem_free(struct sk_buff *skb)
+ 
+ static void skb_set_err_queue(struct sk_buff *skb)
+ {
+-	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
+-	 * So, it is safe to (mis)use it to mark skbs on the error queue.
++	/* The error-queue test in skb_is_err_queue() matches this marker
++	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
+ 	 */
+ 	skb->pkt_type = PACKET_OUTGOING;
+ 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
+diff --git a/net/socket.c b/net/socket.c
+index 2a48aa89c035b6..d105beeb15e118 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -740,12 +740,13 @@ EXPORT_SYMBOL(kernel_sendmsg_locked);
+ 
+ static bool skb_is_err_queue(const struct sk_buff *skb)
+ {
+-	/* pkt_type of skbs enqueued on the error queue are set to
+-	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
+-	 * in recvmsg, since skbs received on a local socket will never
+-	 * have a pkt_type of PACKET_OUTGOING.
++	/* Error-queue skbs are marked as PACKET_OUTGOING in
++	 * skb_set_err_queue() and use the destructor installed by
++	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
++	 * AF_PACKET outgoing taps use the same pkt_type.
+ 	 */
+-	return skb->pkt_type == PACKET_OUTGOING;
++	return skb->pkt_type == PACKET_OUTGOING &&
++	       skb->destructor == sock_rmem_free;
+ }
+ 
+ /* On transmit, software and hardware timestamps are returned independently.
 -- 
 2.53.0
 
