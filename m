@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-264631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1rBDCxd6MWphkQUAu9opvQ
-	(envelope-from <stable+bounces-264631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:15 +0200
+	id BuKOKyxlMWrViQUAu9opvQ
+	(envelope-from <stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3E8692249
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EAC690B96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Hr0gvyp1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264631-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264631-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=quDhgxlm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263776-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1E7CC30409CF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:22:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 009583022E71
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D93A472764;
-	Tue, 16 Jun 2026 16:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBA826CE05;
+	Tue, 16 Jun 2026 15:00:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4FD1E8320;
-	Tue, 16 Jun 2026 16:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B641840DFC5;
+	Tue, 16 Jun 2026 15:00:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626918; cv=none; b=RzosiVJzfDIPgKBTEVBiAIsm4kRdZTm+Xto8On5A9XwDm6WU4v0Nu+k3J0Pj6cVCzvvVSzPLm9aPUgOEVavosquM66lcqsj2DiitPzqY2qvXnyZi/1lJAzOPjs/BLs4r65Bp6OjGACud/iOQzMwwh02oh5y4MvOCsGWsPKDQYZ8=
+	t=1781622051; cv=none; b=uD6w7gyviKSGxt6mP6BC2w61uMzJqv6v2gCtgrf/O9yvpRXYEwTvdZz7hnEJWEjXSCxqzwt6GH6gk8P7u6P5qvwCmxPchLf7S5vHdXQrJri51pDjoFGZ4X/KfrxWcN8rC95gVDNx6K+WfM2Sbq3coMza+6zs6jONzKN3tdaxp90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626918; c=relaxed/simple;
-	bh=US27ut8tYyuqxgmp2R7gBHXwDZ53cAqDHtVK5k7aBb4=;
+	s=arc-20240116; t=1781622051; c=relaxed/simple;
+	bh=vumr9g0aNbfpz5hgHijuoQyAJETBRqzPw/j4X9tNIEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBzTkWIVkjN/YUSXkrbGMcxazrfExMgEyjBfGiLXrXWnLJT8NagmviT2aUtPlZu+NCKGa4UqBQl06uTArOVUl1/uO16+TkiRJH0gtgJ0+hTLvtQ+GidyVvv5LFOLTaxVw8BYXrZQgorGRph0oNXsEp9ntybCPKDvqfBg/RlEMNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hr0gvyp1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCF71F000E9;
-	Tue, 16 Jun 2026 16:21:56 +0000 (UTC)
+	 MIME-Version; b=nERML/d9zudX6Fg5x44m0BLXQ8GjbgE6KAPnqWAoXZfe9AbhWy9zPUzR4ASW2E4DXdTfPPTOdNocjlyXMdNvk29PKVYxceW7ve1H2US52LDLV2G9nOtpelEi9cn0D2Yzg2YzdvBJlF6ZHsoZebNPo6+zGdACw6scgRvcc7gVCgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quDhgxlm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE401F000E9;
+	Tue, 16 Jun 2026 15:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626917;
-	bh=xj8T/mxDgf8axL65yk2dshmrCyIki5eAjYonMQ8jKDo=;
+	s=korg; t=1781622050;
+	bh=GyvVHZhzghSQOKEdN/01p8Unf9HMUkrMUd6tT9HJLEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Hr0gvyp1f9WE7serUycLtrQbnBSqXaQdyIs8XBKlTrtwa8CJkHeDBV/jRM89TwE8f
-	 BBld6UuYgUNdHcAoNSmcDRs36XcQ4yckVXRBzFu24y51kas57kgaSEGW02R9I3oiGW
-	 fhxNXRzZ/Flqapjm4T1NodJ/8c0gVHYZUyZY4w/Q=
+	b=quDhgxlmX2jlfdaa6RgkyMcAjdLOj9wUtxZGtiFjfQ3/D52yEw8N+u0eSi5V3YODh
+	 ia2KSY8WQpAMoIIJ99cBNHJMrl2rO0v2lNkGnlxU5ZHHGBGnQHlKhs9VOV/BVx7uxW
+	 2y5TZ3arDGaf5KBRKtmQGQcaDU/StJoZpyr6T2PY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/261] net/rds: fix NULL deref in rds_ib_send_cqe_handler() on masked atomic completion
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 7.1 7/8] arm64: errata: Mitigate TLBI errata on NVIDIA Olympus CPU
 Date: Tue, 16 Jun 2026 20:28:52 +0530
-Message-ID: <20260616145049.401285347@linuxfoundation.org>
+Message-ID: <20260616145523.556104993@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,21 +73,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264631-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263776-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:catalin.marinas@arm.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[arm.com:query timed out];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,79 +97,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[asu.edu:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nvidia.com:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C3E8692249
+X-Rspamd-Queue-Id: 88EAC690B96
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Shanker Donthineni <sdonthineni@nvidia.com>
 
-[ Upstream commit 34080db3e70ddf94c38512ad2331e3c3afca6cc1 ]
+commit ec7216f92e4ebd485b1c6dc6aa3f6064b71a5768 upstream.
 
-rds_ib_xmit_atomic() always programs a masked atomic opcode
-(IB_WR_MASKED_ATOMIC_CMP_AND_SWP or IB_WR_MASKED_ATOMIC_FETCH_AND_ADD)
-for every RDS atomic cmsg.  But the completion-side switch in
-rds_ib_send_unmap_op() only handles the non-masked opcodes, so a masked
-atomic completion falls through to default and returns rm == NULL while
-send->s_op is left set.  rds_ib_send_cqe_handler() then dereferences the
-NULL rm via rm->m_final_op, oopsing in softirq context.  An unprivileged
-AF_RDS sendmsg() of an atomic cmsg over an active RDS/IB connection
-triggers it; on hardware that natively accepts masked atomics (mlx4,
-mlx5) no extra setup is needed.
+NVIDIA Olympus cores are affected by the TLBI completion issue tracked as
+CVE-2025-10263. The existing ARM64_ERRATUM_4118414 handling already uses
+ARM64_WORKAROUND_REPEAT_TLBI to issue an additional broadcast TLBI;DSB
+sequence and ensure affected memory write effects are globally observed.
 
-  RDS/IB: rds_ib_send_unmap_op: unexpected opcode 0xd in WR!
-  Oops: general protection fault [#1] SMP KASAN
-  KASAN: null-ptr-deref in range [0x0000000000000190-0x0000000000000197]
-  RIP: rds_ib_send_cqe_handler+0x25c/0xb10 (net/rds/ib_send.c:282)
-  Call Trace:
-   <IRQ>
-   rds_ib_send_cqe_handler (net/rds/ib_send.c:282)
-   poll_scq (net/rds/ib_cm.c:274)
-   rds_ib_tasklet_fn_send (net/rds/ib_cm.c:294)
-   tasklet_action_common (kernel/softirq.c:943)
-   handle_softirqs (kernel/softirq.c:573)
-   run_ksoftirqd (kernel/softirq.c:479)
-   </IRQ>
-  Kernel panic - not syncing: Fatal exception in interrupt
+Add MIDR_NVIDIA_OLYMPUS to the repeat-TLBI match list so the same
+mitigation is enabled on affected Olympus systems. Also document the
+NVIDIA Olympus erratum in the arm64 silicon errata table and list it in
+the Kconfig help text.
 
-Handle the masked atomic opcodes in the same case as the non-masked
-ones: they map to the same struct rds_message.atomic union member, so
-the existing container_of()/rds_ib_send_unmap_atomic() body is correct
-for them.
-
-Fixes: 20c72bd5f5f9 ("RDS: Implement masked atomic operations")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/20260606192447.1179255-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v7.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib_send.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/arch/arm64/silicon-errata.rst |    2 ++
+ arch/arm64/Kconfig                          |    3 ++-
+ arch/arm64/kernel/cpu_errata.c              |    1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/rds/ib_send.c b/net/rds/ib_send.c
-index 4190b90ff3b18a..1909cd440a4b66 100644
---- a/net/rds/ib_send.c
-+++ b/net/rds/ib_send.c
-@@ -170,6 +170,8 @@ static struct rds_message *rds_ib_send_unmap_op(struct rds_ib_connection *ic,
- 		break;
- 	case IB_WR_ATOMIC_FETCH_AND_ADD:
- 	case IB_WR_ATOMIC_CMP_AND_SWP:
-+	case IB_WR_MASKED_ATOMIC_FETCH_AND_ADD:
-+	case IB_WR_MASKED_ATOMIC_CMP_AND_SWP:
- 		if (send->s_op) {
- 			rm = container_of(send->s_op, struct rds_message, atomic);
- 			rds_ib_send_unmap_atomic(ic, send->s_op, wc_status);
--- 
-2.53.0
-
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -298,6 +298,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | Carmel Core     | N/A             | NVIDIA_CARMEL_CNP_ERRATUM   |
+ +----------------+-----------------+-----------------+-----------------------------+
++| NVIDIA         | Olympus core    | T410-OLY-1029   | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | T241 GICv3/4.x  | T241-FABRIC-4   | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | NVIDIA         | T241 MPAM       | T241-MPAM-1     | N/A                         |
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1155,7 +1155,7 @@ config ARM64_ERRATUM_4193714
+ 	  If unsure, say Y.
+ 
+ config ARM64_ERRATUM_4118414
+-	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
++	bool "Various: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
+ 	default y
+ 	select ARM64_WORKAROUND_REPEAT_TLBI
+ 	help
+@@ -1182,6 +1182,7 @@ config ARM64_ERRATUM_4118414
+ 	  * ARM Neoverse-V2 erratum 4193787
+ 	  * ARM Neoverse-V3 erratum 4193784
+ 	  * ARM Neoverse-V3AE erratum 4193784
++	  * NVIDIA Olympus erratum T410-OLY-1029
+ 
+ 	  On affected cores, some memory accesses might not be completed by
+ 	  broadcast TLB invalidation.
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -364,6 +364,7 @@ static const struct arm64_cpu_capabiliti
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
++			MIDR_ALL_VERSIONS(MIDR_NVIDIA_OLYMPUS),
+ 			{}
+ 		})),
+ 	},
 
 
 
