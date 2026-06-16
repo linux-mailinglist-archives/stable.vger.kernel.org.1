@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-266387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MaUIInSdMWoqoQUAu9opvQ
-	(envelope-from <stable+bounces-266387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:08 +0200
+	id cDHKAMB5MWpEkQUAu9opvQ
+	(envelope-from <stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C233694A90
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2B56921E7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tHvHVMQ6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266387-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266387-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yAOuULCa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264553-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0161731165BB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5EC23254D34
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CDB47B435;
-	Tue, 16 Jun 2026 18:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF9946AF21;
+	Tue, 16 Jun 2026 16:15:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABD43CC303;
-	Tue, 16 Jun 2026 18:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA1D46AF02;
+	Tue, 16 Jun 2026 16:15:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636156; cv=none; b=N0hpEh6LrnXCAFnApLWj7ZS0P06Ncry/+Eg1hr/TMOpYLX2aaFjfFJtOV5TlYlSws+V4pvS7hlA3IUma14LmaVul9oaYmpJDi9tDF4H0aIkYmHXBNSM7HKQwqdR5bq5N/RhxZfRi0gdhL2A+aG+ipx+su5eZTtKfEpkuNrXrZ60=
+	t=1781626531; cv=none; b=GiKtDtvLTlTfBoToJoUCIL4uWuGC3Mz85BDJtq8BvaKd2thUa6fE6z1JONTq6QOpzU9toCrtIAdT86CKu2wcXYl8HZ+E3Bjv1nPMxXYrf+r/886U3IU9tQVxivwFFMZvtC47pYDlPTcTafvNaBz9/zSs0I7KCyO+6FCOOFOm8ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636156; c=relaxed/simple;
-	bh=TI2zK2qpnLnlgbqWQomMNmA2wp7Tn5blNcG3r7B1tyg=;
+	s=arc-20240116; t=1781626531; c=relaxed/simple;
+	bh=faW+20ag12lB0SEhvQLvwvPnuenIIR8tmwm7s0khbZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVlPKyj4o1eZRwyDWwR0RMzlO2fJA+im+fJTwB2y/uVa7eTmz0TJjrXiDM391KUh9QRLOnLZxbSQ5uYk7UC/DvMyK9o7DQ8WPmRa55ODXNHBDefUPt1dtL8W6hxLNmpr6mlOUB/Ip/T49hueSmaG4hdPiHlPeoCXYXk/wJ7uVvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHvHVMQ6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303521F000E9;
-	Tue, 16 Jun 2026 18:55:53 +0000 (UTC)
+	 MIME-Version; b=oB8AEkP2zCLqJfgX9wtL8R8VvfM0J9zMo65dFWit4upd6bR3kYgfcULZIKpVxdMgS40qgdMLru3kZDgTQ211mb1smsAGeuIjTsZ8Rma9w5gRKbsNEw7iTnLr8B0RCa5Ldt84IlY8+JJkGdDiZekM5EM5IfvDDEZ5EosUQbDK4R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAOuULCa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109071F00A3A;
+	Tue, 16 Jun 2026 16:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636155;
-	bh=PRNZjDVu/vrgB9yh57LLQrIceBUdwmUguia7YGU9l6o=;
+	s=korg; t=1781626530;
+	bh=tGzRvyubN63PDDi7NGn+T37WBEaldA0iSTHySrepHt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tHvHVMQ6JrJ/pJnPmKM0Nb418NQSbzKV+bYdIthPt8W7mJ0SpZuJi1nTFutn8+DAB
-	 4NgEjWAn3zBh1GJ/Bxj+Z8MIKaJJd6MD5rEZbuIx/8qYMO5yiUsrOM8XXerFUlNlYi
-	 poteLZL+13pfKhdKJNd8OudnsTYnv1fYaRx00Lww=
+	b=yAOuULCa2MA0JQcHgsSquWYzQ1FbgADRw/nkYvxPrtJTexJcQaopP0hCvy/WeRbpJ
+	 xL8O++F/Cxe0hcBsuaeOlP5LM7UtcTNpxZXHNx1fW9kPc2SRmJ7b1czGj0vWtnBi34
+	 BbN2bh/RMPhmfrV4jneBT3d/GjmwXmqPqsobo4iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/342] KVM: arm64: Remove VPIPT I-cache handling
+Subject: [PATCH 6.12 020/261] netfilter: synproxy: add mutex to guard hook reference counting
 Date: Tue, 16 Jun 2026 20:27:38 +0530
-Message-ID: <20260616145055.720009025@linuxfoundation.org>
+Message-ID: <20260616145045.939754622@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,10 +79,10 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266387-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264553-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuzenghui@huawei.com,m:anshuman.khandual@arm.com,m:maz@kernel.org,m:mark.rutland@arm.com,m:will@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -98,129 +96,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:email,vger.kernel.org:from_smtp,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.de:email,vger.kernel.org:from_smtp,netfilter.org:email,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9C233694A90
+X-Rspamd-Queue-Id: 5D2B56921E7
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit ced242ba9d7cb3571f6e0f165f643cb832d52148 upstream.
+[ Upstream commit 2fcba19caaeb2a33017459d3430f057967bb91b6 ]
 
-We have some special handling for VPIPT I-cache in critical parts
-of the cache and TLB maintenance. Remove it.
+As the synproxy infrastructure register netfilter hooks on-demand when a
+user adds the first iptables target or nftables expression, if done
+concurrently they can race each other.
 
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20231204143606.1806432-2-maz@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: Backport to v5.10.y. VPIPT HW was never built; this is all dead code]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Introduce a mutex to serialize the refcount control blocks access from
+both frontends. While a per namespace mutex might be more efficient, it
+is not needed for target/expression like SYNPROXY.
+
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/kvm_mmu.h |  4 ++--
- arch/arm64/kvm/hyp/nvhe/tlb.c    | 35 --------------------------------
- arch/arm64/kvm/hyp/vhe/tlb.c     | 13 ------------
- 3 files changed, 2 insertions(+), 50 deletions(-)
+ net/netfilter/nf_synproxy_core.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
-index 47dafd6ab3a30a..c700bf9241fce3 100644
---- a/arch/arm64/include/asm/kvm_mmu.h
-+++ b/arch/arm64/include/asm/kvm_mmu.h
-@@ -162,8 +162,8 @@ static inline void __invalidate_icache_guest_page(kvm_pfn_t pfn,
- 	if (icache_is_aliasing()) {
- 		/* any kind of VIPT cache */
- 		__flush_icache_all();
--	} else if (is_kernel_in_hyp_mode() || !icache_is_vpipt()) {
--		/* PIPT or VPIPT at EL2 (see comment in __kvm_tlb_flush_vmid_ipa) */
-+	} else {
-+		/* PIPT */
- 		void *va = page_address(pfn_to_page(pfn));
+diff --git a/net/netfilter/nf_synproxy_core.c b/net/netfilter/nf_synproxy_core.c
+index 6a851ac4dd048f..a277b2bd3275dc 100644
+--- a/net/netfilter/nf_synproxy_core.c
++++ b/net/netfilter/nf_synproxy_core.c
+@@ -21,6 +21,8 @@
+ #include <net/netfilter/nf_conntrack_zones.h>
+ #include <net/netfilter/nf_synproxy.h>
  
- 		invalidate_icache_range((unsigned long)va,
-diff --git a/arch/arm64/kvm/hyp/nvhe/tlb.c b/arch/arm64/kvm/hyp/nvhe/tlb.c
-index 229b06748c2084..435d0a54ab9a25 100644
---- a/arch/arm64/kvm/hyp/nvhe/tlb.c
-+++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
-@@ -82,28 +82,6 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm_s2_mmu *mmu,
- 	dsb(ish);
- 	isb();
++static DEFINE_MUTEX(synproxy_mutex);
++
+ unsigned int synproxy_net_id;
+ EXPORT_SYMBOL_GPL(synproxy_net_id);
  
--	/*
--	 * If the host is running at EL1 and we have a VPIPT I-cache,
--	 * then we must perform I-cache maintenance at EL2 in order for
--	 * it to have an effect on the guest. Since the guest cannot hit
--	 * I-cache lines allocated with a different VMID, we don't need
--	 * to worry about junk out of guest reset (we nuke the I-cache on
--	 * VMID rollover), but we do need to be careful when remapping
--	 * executable pages for the same guest. This can happen when KSM
--	 * takes a CoW fault on an executable page, copies the page into
--	 * a page that was previously mapped in the guest and then needs
--	 * to invalidate the guest view of the I-cache for that page
--	 * from EL1. To solve this, we invalidate the entire I-cache when
--	 * unmapping a page from a guest if we have a VPIPT I-cache but
--	 * the host is running at EL1. As above, we could do better if
--	 * we had the VA.
--	 *
--	 * The moral of this story is: if you have a VPIPT I-cache, then
--	 * you should be running with VHE enabled.
--	 */
--	if (icache_is_vpipt())
--		__flush_icache_all();
--
- 	__tlb_switch_to_host(&cxt);
- }
+@@ -768,26 +770,31 @@ static const struct nf_hook_ops ipv4_synproxy_ops[] = {
  
-@@ -142,18 +120,5 @@ void __kvm_flush_vm_context(void)
+ int nf_synproxy_ipv4_init(struct synproxy_net *snet, struct net *net)
  {
- 	dsb(ishst);
- 	__tlbi(alle1is);
--
--	/*
--	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
--	 * is necessary across a VMID rollover.
--	 *
--	 * VPIPT caches constrain lookup and maintenance to the active VMID,
--	 * so we need to invalidate lines with a stale VMID to avoid an ABA
--	 * race after multiple rollovers.
--	 *
--	 */
--	if (icache_is_vpipt())
--		asm volatile("ic ialluis");
--
- 	dsb(ish);
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref4 == 0) {
+ 		err = nf_register_net_hooks(net, ipv4_synproxy_ops,
+ 					    ARRAY_SIZE(ipv4_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref4++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
  }
-diff --git a/arch/arm64/kvm/hyp/vhe/tlb.c b/arch/arm64/kvm/hyp/vhe/tlb.c
-index 66f17349f0c369..67047feb306876 100644
---- a/arch/arm64/kvm/hyp/vhe/tlb.c
-+++ b/arch/arm64/kvm/hyp/vhe/tlb.c
-@@ -146,18 +146,5 @@ void __kvm_flush_vm_context(void)
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_init);
+ 
+ void nf_synproxy_ipv4_fini(struct synproxy_net *snet, struct net *net)
  {
- 	dsb(ishst);
- 	__tlbi(alle1is);
--
--	/*
--	 * VIPT and PIPT caches are not affected by VMID, so no maintenance
--	 * is necessary across a VMID rollover.
--	 *
--	 * VPIPT caches constrain lookup and maintenance to the active VMID,
--	 * so we need to invalidate lines with a stale VMID to avoid an ABA
--	 * race after multiple rollovers.
--	 *
--	 */
--	if (icache_is_vpipt())
--		asm volatile("ic ialluis");
--
- 	dsb(ish);
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref4--;
+ 	if (snet->hook_ref4 == 0)
+ 		nf_unregister_net_hooks(net, ipv4_synproxy_ops,
+ 					ARRAY_SIZE(ipv4_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
  }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv4_fini);
+ 
+@@ -1192,27 +1199,32 @@ static const struct nf_hook_ops ipv6_synproxy_ops[] = {
+ int
+ nf_synproxy_ipv6_init(struct synproxy_net *snet, struct net *net)
+ {
+-	int err;
++	int err = 0;
+ 
++	mutex_lock(&synproxy_mutex);
+ 	if (snet->hook_ref6 == 0) {
+ 		err = nf_register_net_hooks(net, ipv6_synproxy_ops,
+ 					    ARRAY_SIZE(ipv6_synproxy_ops));
+ 		if (err)
+-			return err;
++			goto out;
+ 	}
+ 
+ 	snet->hook_ref6++;
+-	return 0;
++out:
++	mutex_unlock(&synproxy_mutex);
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_init);
+ 
+ void
+ nf_synproxy_ipv6_fini(struct synproxy_net *snet, struct net *net)
+ {
++	mutex_lock(&synproxy_mutex);
+ 	snet->hook_ref6--;
+ 	if (snet->hook_ref6 == 0)
+ 		nf_unregister_net_hooks(net, ipv6_synproxy_ops,
+ 					ARRAY_SIZE(ipv6_synproxy_ops));
++	mutex_unlock(&synproxy_mutex);
+ }
+ EXPORT_SYMBOL_GPL(nf_synproxy_ipv6_fini);
+ #endif /* CONFIG_IPV6 */
 -- 
 2.53.0
 
