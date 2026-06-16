@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id T6uJE1mfMWoCogUAu9opvQ
-	(envelope-from <stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:13 +0200
+	id yMQWNgOHMWrZlgUAu9opvQ
+	(envelope-from <stable+bounces-265218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88DE694CA8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BEC6931B8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:25:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BWGCMS+n;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wr0qn1z5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265218-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265218-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C028B304BCC8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B072830283E4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1523DE425;
-	Tue, 16 Jun 2026 19:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA513AE71F;
+	Tue, 16 Jun 2026 17:14:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342883DD851;
-	Tue, 16 Jun 2026 19:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575FD4418D7;
+	Tue, 16 Jun 2026 17:14:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636946; cv=none; b=cMSzwVnnaA3vhtwEVfKPhoGo1P+bC00xcg0gUOt0V+rt/BEn/euQ+4ai5xlX6wf+Ir8MYtQCaES0bO9TfvTLFX/Oc1uiBuIaN+VThFsVIihSIr7RKax6UwjghQT5KPpzPsLoMlfHqSOCotlgxCG9WdyEaAqel6WvzcvtP8yK84Q=
+	t=1781630080; cv=none; b=OFEzTgry7cMMHzvgAh3vwA6rNKTb0BQ7wzoNj1m2JQnfZyR7Gmi7qkVtM0KJZ41qpIhknnfOWTKA5Ef5tM0W4d8l7DOr9p3Zy3p11jwXkLezJIn59L0yfKL0vxIuwJsPS4n/CtmKVseAKHl0atqyqDTIWBcsn5oDLujvn4NTu4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636946; c=relaxed/simple;
-	bh=dFEKNVXgfjt0oWuKXKC0dxp44CoZdV76jzJP3wC9SvI=;
+	s=arc-20240116; t=1781630080; c=relaxed/simple;
+	bh=cRWU+JODcB3Xd9Gn31IEeU7Fn4Cd5hnP15wfXkF0gmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=le5S3GH+R+DKERs79lDY7v0aPSFdvpP/z+jjXdqS9mWDSRbzStYAfMA3NPtpM2NPwovWsibasnfvr3hbR1HK1pu7CHElzUH2AN3/vJNqMNKyYQWlWcd7HalOGuzVu2sr29PrsaTxjAZOhpOaxxJnnPi7MRWF9MLgC1sHz2xSjeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWGCMS+n; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376C41F000E9;
-	Tue, 16 Jun 2026 19:09:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qkRCtshRIWXoo3+5AXyT3oyv26W9rffcyl/SxhiEbQQswaqfOrpsMF5NcTExw9+Jy9eBo0LpWHR17oRMoLsYCeqF4ZEd2zW/NThqAfM396RFXkp0DF3KRG40bBm2hc5Hbiw+F4cZqRkam2OmC1iwadO3t9a7V46ceAu1KgTYSrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wr0qn1z5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACBE1F000E9;
+	Tue, 16 Jun 2026 17:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636945;
-	bh=q1720dwiV33bHM0rS6vlOdDNK1x6UxGaMkq9iWfl+4o=;
+	s=korg; t=1781630079;
+	bh=JZZtLdcyoTHBveXlOFuItnPB5c+DYj95zJs85X0FJgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BWGCMS+nbsF0wFF2uvW5Y+nVs5e7p8tBL9AHab91JgssyQFttbcbiRbCMGoNtrR8N
-	 IXkrZZ8dL7HlM3BWD5s83H6n/YTiY4YOstR6FJScIujyluSgGOivw5/9sx20YmC66C
-	 MQddfrd9RB9bVopGFLrTaw0BhJ0MeMFiSxnCWP0o=
+	b=wr0qn1z5mHewV3ctApzfZZZ3Do4bT0l/+EDTABSfyjrwpndXY08CGN4xf9BnKPgsR
+	 8IKelNhx6WWayaQKE5Hqp4bfLsW+1AEH9QG5AztPk57DmRowWyoVnNNnXTV2JUZYqJ
+	 mk2HyDiM/UQ0zwVVs9KDG3JYKtxVEaM10eAjr4sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 336/342] arm64: cputype: Add C1-Premium definitions
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 405/452] serdev: Provide a bustype shutdown function
 Date: Tue, 16 Jun 2026 20:30:32 +0530
-Message-ID: <20260616145104.281537375@linuxfoundation.org>
+Message-ID: <20260616145138.097610084@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +64,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266545-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@baylibre.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265218-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:url,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A88DE694CA8
+X-Rspamd-Queue-Id: 63BEC6931B8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
+[ Upstream commit 6d71c62b13c33ea858ab298fe20beaec5736edc7 ]
 
-Add cputype definitions for C1-Premium. These will be used for errata
-detection in subsequent patches.
+To prepare serdev driver to migrate away from struct device_driver::shutdown
+(and then eventually remove that callback) create a serdev driver shutdown
+callback and migration code to keep the existing behaviour. Note this
+introduces a warning for each driver at register time that isn't converted
+yet to that callback.
 
-These values can be found in the C1-Premium TRM:
-
-  https://developer.arm.com/documentation/109416/0100/
-
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v5.10.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://patch.msgid.link/ab518883e3ed0976a19cb5b5b5faf42bd3a655b7.1765526117.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 375ba7484132 ("Bluetooth: hci_qca: Convert timeout from jiffies to ms")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serdev/core.c |   21 +++++++++++++++++++++
+ include/linux/serdev.h    |    1 +
+ 2 files changed, 22 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -99,6 +99,7 @@
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
-+#define ARM_CPU_PART_C1_PREMIUM		0xD90
+--- a/drivers/tty/serdev/core.c
++++ b/drivers/tty/serdev/core.c
+@@ -441,11 +441,21 @@ static void serdev_drv_remove(struct dev
+ 	dev_pm_domain_detach(dev, true);
+ }
  
- #define APM_CPU_PART_POTENZA		0x000
++static void serdev_drv_shutdown(struct device *dev)
++{
++	const struct serdev_device_driver *sdrv =
++		to_serdev_device_driver(dev->driver);
++
++	if (dev->driver && sdrv->shutdown)
++		sdrv->shutdown(to_serdev_device(dev));
++}
++
+ static const struct bus_type serdev_bus_type = {
+ 	.name		= "serial",
+ 	.match		= serdev_device_match,
+ 	.probe		= serdev_drv_probe,
+ 	.remove		= serdev_drv_remove,
++	.shutdown	= serdev_drv_shutdown,
+ };
  
-@@ -169,6 +170,7 @@
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
-+#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ /**
+@@ -839,6 +849,14 @@ void serdev_controller_remove(struct ser
+ }
+ EXPORT_SYMBOL_GPL(serdev_controller_remove);
+ 
++static void serdev_legacy_shutdown(struct serdev_device *serdev)
++{
++	struct device *dev = &serdev->dev;
++	struct device_driver *driver = dev->driver;
++
++	driver->shutdown(dev);
++}
++
+ /**
+  * __serdev_device_driver_register() - Register client driver with serdev core
+  * @sdrv:	client driver to be associated with client-device.
+@@ -855,6 +873,9 @@ int __serdev_device_driver_register(stru
+ 	/* force drivers to async probe so I/O is possible in probe */
+         sdrv->driver.probe_type = PROBE_PREFER_ASYNCHRONOUS;
+ 
++	if (!sdrv->shutdown && sdrv->driver.shutdown)
++		sdrv->shutdown = serdev_legacy_shutdown;
++
+ 	return driver_register(&sdrv->driver);
+ }
+ EXPORT_SYMBOL_GPL(__serdev_device_driver_register);
+--- a/include/linux/serdev.h
++++ b/include/linux/serdev.h
+@@ -65,6 +65,7 @@ struct serdev_device_driver {
+ 	struct device_driver driver;
+ 	int	(*probe)(struct serdev_device *);
+ 	void	(*remove)(struct serdev_device *);
++	void	(*shutdown)(struct serdev_device *);
+ };
+ 
+ static inline struct serdev_device_driver *to_serdev_device_driver(struct device_driver *d)
 
 
 
