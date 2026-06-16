@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ke7qHhd3MWoSkAUAu9opvQ
-	(envelope-from <stable+bounces-264356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:27 +0200
+	id ljNcLvhvMWo0jQUAu9opvQ
+	(envelope-from <stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9870D691E5A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5123669160C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:04 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ch5VSGRq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264356-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264356-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zX6rrNut;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264132-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5823530790ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:57:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C17ED314D47F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3C9450906;
-	Tue, 16 Jun 2026 15:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F6B44CAF9;
+	Tue, 16 Jun 2026 15:38:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A14744CF44;
-	Tue, 16 Jun 2026 15:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201D544CAE0;
+	Tue, 16 Jun 2026 15:38:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625453; cv=none; b=JGVIsq668lxBPTJ+2ueBWr0uTQPzu1xBd+Z5If+powm0XAuTEEOpGgrVdfsIXQUiMfLrcufW9d26UrHs2kZq037BgEuz7JjwT2HFxO4YbLwtJdJc4pcCmyhnt2klEV1SsAVunLCNtTQr0Mu/ULv40giHzGBFkBICYfnxmGCcC3M=
+	t=1781624295; cv=none; b=R1+y2TJuVDUSB4wnR+08g7Uu3Ph5dcpqAZUL483ZwfwW4ctwX2UUmd3kGSdofNgyW5tLWc2RjGIGra68fgA0/3YZaMyM6xO3LB39nXbu4IK2r8bi56RmOGjjaugl22CziFhQznxL2vlC5AKymCb1quSuZebGbIzT3frpb4z5lVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625453; c=relaxed/simple;
-	bh=6lrYXw6ZiEw9QnpttbDiAUflSXEuEvXNKuedETH/e0s=;
+	s=arc-20240116; t=1781624295; c=relaxed/simple;
+	bh=HndvdQadL2BOVDlxA492qgXoBd0irZYz/j5mVVVQroY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lk3bhOcOlA8TssCgkrbn+zO5+SJuzRcNyBC0tMfRsKN3ifG7E3gOw52a7yBbO5IV9KSi+7qor41ohxEWcqVPoQlakmoWOTZC+sivUM1RmQ/nGfOoydt67/C44b2xbPxtQUvo8wWesHkkZnlnmTUztx22sn+fLicNnqgUtfGNmKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch5VSGRq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EF81F00ADF;
-	Tue, 16 Jun 2026 15:57:31 +0000 (UTC)
+	 MIME-Version; b=W6IVIJiXF+HyJ/sIyP1HcvN4VocdODsAlFET/vIZTzYTL+T8TIvpX4Hu6RiBZiFePm/XGgtFEU+QF9iRW6ZZBvdClajDVzY0V3IapH5cJJ9cARRHEUJWoKbcsVYcO+rImKz+s1SUIwqRr6t9sUPLXw8Hw2VIiNSonm50LMx9Q4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zX6rrNut; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21591F000E9;
+	Tue, 16 Jun 2026 15:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625452;
-	bh=bdqbvJL0hg86fMsIKmL8SCWfCS2pZvF8Z33Li4E8NY8=;
+	s=korg; t=1781624293;
+	bh=zzzMFKCv735k4uXaq+jMx9M2op7ZEvxe2J6NYk21+To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ch5VSGRqGV9pw3gzLX+Pbs7Bwq+cIxJSvOcsN8h2Q19iz6UhRrexgaMj5WWM8Yilm
-	 lvvpZ/93JT4O6cwtw5lrA44U6/3dq91qMr5CPPP1gdQ30N7numgEeVyFqm9DQCF8rr
-	 nUYmyBWcRuUPbbWszaOvI9hFohZIoQdnsz3zqkFA=
+	b=zX6rrNutGz0OP/AnZtwEopYixkHELfy/qWEzg6PaQ4VDpAJNKkd1j649pHtbbPWhj
+	 ZfeW68DQGvWaai47zHmW2WDUW0fGe0LmXCEWjZg4cej2jjeLReUCq/1445fSF5J5e3
+	 2mDtbBhJyBH4zUl7/eZalgoMkNnyxWZ2cti+ORYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alexander A. Klimov" <grandmaster@al2klimov.de>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 144/325] drm/vc4: fix krealloc() memory leak
+	Inochi Amaoto <inochiama@gmail.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 7.0 309/378] mmc: litex_mmc: Set mandatory idle clocks before CMD0
 Date: Tue, 16 Jun 2026 20:29:00 +0530
-Message-ID: <20260616145104.904426736@linuxfoundation.org>
+Message-ID: <20260616145126.467397097@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +65,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:grandmaster@al2klimov.de,m:mcanal@igalia.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264356-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264132-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9870D691E5A
+X-Rspamd-Queue-Id: 5123669160C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander A. Klimov <grandmaster@al2klimov.de>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit 5d563a5da8717629ae72f9eadf1e0e340bd1658b ]
+commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
 
-Don't just overwrite the original pointer passed to krealloc()
-with its return value without checking latter:
+The litex_mmc driver assumes the card is already probed in the BIOS
+and skip the phy initialization. This will cause the command fail
+like the following when the old card is unplugged and then insert
+a new card:
 
-    MEM = krealloc(MEM, SZ, GFP);
+[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
+[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
 
-If krealloc() returns NULL, that erases the pointer
-to the still allocated memory, hence leaks this memory.
-Instead, use a temporary variable, check it's not NULL
-and only then assign it to the original pointer:
+Add required clock settings and initialization for the CMD 0, so it can
+probe the new card.
 
-    TMP = krealloc(MEM, SZ, GFP);
-    if (!TMP) return;
-    MEM = TMP;
-
-While on it, use krealloc_array().
-
-Fixes: 6d45c81d229d ("drm/vc4: Add support for branching in shader validation.")
-Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patch.msgid.link/20260606123817.37222-1-grandmaster@al2klimov.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_validate_shaders.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_validate_shaders.c b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-index 2d74e786914cb3..7ce3ec0906c33b 100644
---- a/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-+++ b/drivers/gpu/drm/vc4/vc4_validate_shaders.c
-@@ -288,15 +288,16 @@ static bool require_uniform_address_uniform(struct vc4_validated_shader_info *va
- {
- 	uint32_t o = validated_shader->num_uniform_addr_offsets;
- 	uint32_t num_uniforms = validated_shader->uniforms_size / 4;
-+	u32 *offsets;
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -69,6 +69,9 @@
+ #define SD_SLEEP_US       5
+ #define SD_TIMEOUT_US 20000
  
--	validated_shader->uniform_addr_offsets =
--		krealloc(validated_shader->uniform_addr_offsets,
--			 (o + 1) *
--			 sizeof(*validated_shader->uniform_addr_offsets),
--			 GFP_KERNEL);
--	if (!validated_shader->uniform_addr_offsets)
-+	offsets = krealloc_array(validated_shader->uniform_addr_offsets,
-+				 o + 1,
-+				 sizeof(*validated_shader->uniform_addr_offsets),
-+				 GFP_KERNEL);
-+	if (!offsets)
- 		return false;
++#define SD_INIT_DELAY_US  1000
++#define SD_INIT_CLK_HZ    400000
++
+ #define SDIRQ_CARD_DETECT    1
+ #define SDIRQ_SD_TO_MEM_DONE 2
+ #define SDIRQ_MEM_TO_SD_DONE 4
+@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
+ 	struct litex_mmc_host *host = mmc_priv(mmc);
  
-+	validated_shader->uniform_addr_offsets = offsets;
- 	validated_shader->uniform_addr_offsets[o] = num_uniforms;
- 	validated_shader->num_uniform_addr_offsets++;
- 
--- 
-2.53.0
-
+ 	/*
++	 * The SD specification requires at least 74 idle clocks before CMD0.
++	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
++	 */
++	if (ios->chip_select == MMC_CS_HIGH) {
++		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
++		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
++		fsleep(SD_INIT_DELAY_US);
++		return;
++	}
++
++	/*
+ 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
+ 	 * the mmc core sends its own acmd6 bus-width change notification,
+ 	 * which is redundant since we snoop on the command flow and inject
 
 
 
