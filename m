@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-264237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /vqPIjFyMWoNjgUAu9opvQ
-	(envelope-from <stable+bounces-264237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:33 +0200
+	id rZ0AIjmcMWqkoAUAu9opvQ
+	(envelope-from <stable+bounces-266341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B3D691875
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E80A1694951
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=p8oyFc08;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264237-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264237-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MXR3rU0o;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266341-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266341-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BADD8308D146
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A41D323AB16
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932B4361651;
-	Tue, 16 Jun 2026 15:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6BA47CC7A;
+	Tue, 16 Jun 2026 18:51:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B81543D4FB;
-	Tue, 16 Jun 2026 15:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A6E34FF79;
+	Tue, 16 Jun 2026 18:51:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624860; cv=none; b=oSNb4AwmtdvERNwonTCB2MeWjGPdKS/+YwT41OxOhiGoZ8loQM0tooQdjUgyZB+Tpq9MiXgdsWPt/tbt32i0EGApfuItwaGAxv2UvNxVfteW427grFjVLUxes3NN055ISZMmBDxcLFMtQWYGwRHR1ovbMmJtONkFRAkAWer1yCg=
+	t=1781635914; cv=none; b=Dg7u/H77wVm3Qd7Cs1xmOr8sGOPfv8ExkIKhypTC3TVwMsIVxDqsIKynB/jmfiKGZrKhJIsK5JU3m4XIl13JiIxfZ3IhqYgOQeMU6f7hB86dNN/K5quhXx+GZLmYHJ9qPcwEqYEtUrOf9tzT/okO3qUxyttSwXfjBZMBe/NzKNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624860; c=relaxed/simple;
-	bh=3AZAxJRRWmFNU1R8Rg1bFouxxGr1k/SixjBc01vHWlo=;
+	s=arc-20240116; t=1781635914; c=relaxed/simple;
+	bh=tsUkCCjXvt1MnLCzN7IFB89dSbfY+TR+h4vwNnJrOqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTJsA5uH0zow1CuuP/CXasuDHhNWfk/1vmhcORj2VkeIjk3SDIGnKq/N9u/fRXGXHYOWF0IEMs7hk5lyqkS+u7AlUtadKRGrK9xkYnMaJK3iY/b4EUYeuZTGrdsB1IgO1rdIkIJ09IrfOvciRlp6zonR9ziyRvq/co62TEBUHco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8oyFc08; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CBA1F00A3A;
-	Tue, 16 Jun 2026 15:47:37 +0000 (UTC)
+	 MIME-Version; b=rg9uTcFL2N3qaXk/Eu4ShXqxcCCLfzS/sOT0OAKXCcLcxc1bGBRDmUnwj2NSeody3EyqpgsT8vQxJRFW+hpfQHcoyBDXUef1atovZhi8GeNjCFLzJSvNXH1kK/RwOgp7MLPaXPTSbUeUf+zrC53pkWPOtpl0VnLw84jTN/Ggs5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXR3rU0o; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C558D1F000E9;
+	Tue, 16 Jun 2026 18:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624859;
-	bh=0OPcPYIlw7qxdrVpWSc/7llcdCpTAgGc7B4eI/xJ7Po=;
+	s=korg; t=1781635913;
+	bh=PkkSnaygBLb3MFz1SGYfefhUtKG+15QjmXl7TrGBhA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=p8oyFc08n12ARJsQyjM/gpoAI3aQDLqTDP4Y52fJ+n/zevwrzPx1ReydSNMoJ/m09
-	 wzz614Ca564mgUxb62fGKVH9XlaeIxKbMIXnscMxzUpjuvisVpLLYVreqP+NhapUhK
-	 yE2YyyONKPglTIZcW+4ihbOVP7OiV3Tm72FihGJo=
+	b=MXR3rU0ov2PstAO4oSChOcSVN1Ef8SufLtaucVMxssn8WcPWApy4JNXhIMbF7b3LZ
+	 fZjtjyhcl8O0nTvwcm+2Fe1N4puRJJQvRah1SC/Hv6+8Ik8ho93YScA5lLEds6yMCH
+	 VADPWpxmvjAFYLK5PIVBTgLM142BfH9Rn6bX3nTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yicong Hui <yiconghui@gmail.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Liu Ying <victor.liu@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 040/325] ipv6: anycast: insert aca into global hash under idev->lock
+Subject: [PATCH 5.10 140/342] drm/imx: Fix three kernel-doc warnings in dcss-scaler.c
 Date: Tue, 16 Jun 2026 20:27:16 +0530
-Message-ID: <20260616145059.729462880@linuxfoundation.org>
+Message-ID: <20260616145054.709777906@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,26 +68,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.nxp.com,nxp.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266341-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264237-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com,m:kuniyu@google.com,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yiconghui@gmail.com,m:laurentiu.palcu@oss.nxp.com,m:victor.liu@nxp.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,133 +97,62 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,819eb928d120d2bdad0e];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,appspotmail.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,syzkaller.appspot.com:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 26B3D691875
+X-Rspamd-Queue-Id: E80A1694951
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Yicong Hui <yiconghui@gmail.com>
 
-[ Upstream commit f723ccaff2fb72b71ae8a9fd283f0dee4d9ae7a3 ]
+[ Upstream commit ae0383e5a9a4b12d68c76c4769857def4665deff ]
 
-syzbot reported a splat [1]: a slab-use-after-free in
-ipv6_chk_acast_addr(), which walks the global inet6_acaddr_lst[] hash
-under RCU and dereferences a struct ifacaddr6 that has already been
-freed while still linked in the hash, so a later reader walks into a
-dangling node.
+Fix the following W=1 kerneldoc warnings by adding the missing parameter
+descriptions for @phase0_identity and @nn_interpolation in
+dcss_scaler_filter_design() and @phase0_identity in
+dcss_scaler_gaussian_filter()
 
-In __ipv6_dev_ac_inc() the aca is allocated with refcount 1, then
-aca_get() bumps it to 2 to keep it alive across the unlocked region.
-It is published to idev->ac_list under idev->lock, but
-ipv6_add_acaddr_hash() runs after write_unlock_bh(). A concurrent
-teardown (ipv6_ac_destroy_dev() from addrconf_ifdown(), under RTNL)
-can slip into that window:
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:173 function parameter 'phase0_identity' not described in 'dcss_scaler_gaussian_filter'
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'phase0_identity' not described in 'dcss_scaler_filter_design'
+Warning: drivers/gpu/drm/imx/dcss/dcss-scaler.c:270 function parameter 'nn_interpolation' not described in 'dcss_scaler_filter_design'
 
-  CPU0 __ipv6_dev_ac_inc           CPU1 ipv6_ac_destroy_dev (RTNL)
-  ------------------------------   ------------------------------------
-  aca_alloc()              refcnt 1
-  aca_get()               refcnt 2
-  write_lock_bh(idev->lock)
-    add aca to ac_list
-  write_unlock_bh(idev->lock)
-                                   write_lock_bh(idev->lock)
-                                     pull aca off ac_list
-                                   write_unlock_bh(idev->lock)
-                                   ipv6_del_acaddr_hash(aca)
-                                     hlist_del_init_rcu() is a no-op,
-                                     aca is not in the hash yet
-                                   aca_put()           refcnt 2->1
-  ipv6_add_acaddr_hash(aca)
-    aca now inserted into the hash
-  aca_put()                refcnt 1->0
-    call_rcu(aca_free_rcu) -> kfree(aca)
-
-The hash removal becomes a no-op because the insertion has not
-happened yet, so once CPU0 inserts and drops the last reference, the
-aca is freed while still linked in inet6_acaddr_lst[], and readers
-dereference freed memory after the slab slot is reused.
-
-This window opened once RTNL stopped serializing the join path against
-device teardown. Move ipv6_add_acaddr_hash() inside the idev->lock
-section so the ac_list and hash insertions are atomic with respect to
-teardown: a racing remover now either misses the aca entirely or finds
-it in both lists.
-
-acaddr_hash_lock is now nested under idev->lock, which is acquired in
-softirq context, so switch all acaddr_hash_lock sites to spin_lock_bh()
-to avoid the irq lock inversion reported in [2].
-
-[1] https://syzkaller.appspot.com/bug?extid=a01df04303c131efbf3a
-[2] https://lore.kernel.org/netdev/6a194ef7.ba3b1513.1890b4.0000.GAE@google.com/
-
-Reported-by: syzbot+819eb928d120d2bdad0e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6a191f87.ce022c6e.138e56.0003.GAE@google.com/T/
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Fixes: eb1ac9ff6c4a ("ipv6: anycast: Don't hold RTNL for IPV6_JOIN_ANYCAST.")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260529152219.235475-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
+Signed-off-by: Yicong Hui <yiconghui@gmail.com>
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Link: https://patch.msgid.link/20260406180013.2442096-1-yiconghui@gmail.com
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/anycast.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/imx/dcss/dcss-scaler.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/anycast.c b/net/ipv6/anycast.c
-index 52599584422bf4..819c4ff10997e0 100644
---- a/net/ipv6/anycast.c
-+++ b/net/ipv6/anycast.c
-@@ -243,16 +243,16 @@ static void ipv6_add_acaddr_hash(struct net *net, struct ifacaddr6 *aca)
- {
- 	unsigned int hash = inet6_acaddr_hash(net, &aca->aca_addr);
- 
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	hlist_add_head_rcu(&aca->aca_addr_lst, &inet6_acaddr_lst[hash]);
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
- 
- static void ipv6_del_acaddr_hash(struct ifacaddr6 *aca)
- {
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	hlist_del_init_rcu(&aca->aca_addr_lst);
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
- 
- static void aca_get(struct ifacaddr6 *aca)
-@@ -371,10 +371,10 @@ int __ipv6_dev_ac_inc(struct inet6_dev *idev, const struct in6_addr *addr)
- 	aca->aca_next = idev->ac_list;
- 	rcu_assign_pointer(idev->ac_list, aca);
- 
--	write_unlock_bh(&idev->lock);
--
- 	ipv6_add_acaddr_hash(net, aca);
- 
-+	write_unlock_bh(&idev->lock);
-+
- 	ip6_ins_rt(net, f6i);
- 
- 	addrconf_join_solict(idev->dev, &aca->aca_addr);
-@@ -649,8 +649,8 @@ void ipv6_anycast_cleanup(void)
- {
- 	int i;
- 
--	spin_lock(&acaddr_hash_lock);
-+	spin_lock_bh(&acaddr_hash_lock);
- 	for (i = 0; i < IN6_ADDR_HSIZE; i++)
- 		WARN_ON(!hlist_empty(&inet6_acaddr_lst[i]));
--	spin_unlock(&acaddr_hash_lock);
-+	spin_unlock_bh(&acaddr_hash_lock);
- }
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-scaler.c b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
+index cd21905de580ff..d156cc60c3f4aa 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-scaler.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-scaler.c
+@@ -164,6 +164,7 @@ static int exp_approx_q(int x)
+  * dcss_scaler_gaussian_filter() - Generate gaussian prototype filter.
+  * @fc_q: fixed-point cutoff frequency normalized to range [0, 1]
+  * @use_5_taps: indicates whether to use 5 taps or 7 taps
++ * @phase0_identity: whether to override phase 0 coefficients with identity filter
+  * @coef: output filter coefficients
+  */
+ static void dcss_scaler_gaussian_filter(int fc_q, bool use_5_taps,
+@@ -249,7 +250,9 @@ static void dcss_scaler_gaussian_filter(int fc_q, bool use_5_taps,
+  * @src_length: length of input
+  * @dst_length: length of output
+  * @use_5_taps: 0 for 7 taps per phase, 1 for 5 taps
++ * @phase0_identity: whether to override phase 0 coefficients with identity filter
+  * @coef: output coefficients
++ * @nn_interpolation: whether to use nearest neighbor instead of gaussian filter
+  */
+ static void dcss_scaler_filter_design(int src_length, int dst_length,
+ 				      bool use_5_taps, bool phase0_identity,
 -- 
 2.53.0
 
