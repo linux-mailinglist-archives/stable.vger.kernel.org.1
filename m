@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TurULMR2MWrujwUAu9opvQ
-	(envelope-from <stable+bounces-264460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:04 +0200
+	id g1rsM6SFMWo/lgUAu9opvQ
+	(envelope-from <stable+bounces-265194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F46691DE3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D69692FF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E1SaX1PJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264460-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264460-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NWfcvp3N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265194-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265194-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91391327EC19
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 864D03090323
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035874508F2;
-	Tue, 16 Jun 2026 16:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BB8449EA8;
+	Tue, 16 Jun 2026 17:12:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07653A8746;
-	Tue, 16 Jun 2026 16:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C613AE71F;
+	Tue, 16 Jun 2026 17:12:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625999; cv=none; b=S9bRjilxxdTT652RtgXoKfeoAXcJzDo+0vldoim5HiLfyr6ZRNrjOGp5AOb3+klcr6hWwZZYX2hevnbJ3u5EX2BvYv6ZHrYuiqf1AXcjNfaBX5nXYBXFWo9E/0hhX57zI3zr1cVFkmKcBmhsvRv03s41XMLZigeDoMo/sCKufIU=
+	t=1781629947; cv=none; b=rzVitHPg4OmtE1fPhJq8+K3ESQaMo7BpQu/GbT72Fsl3Pxg8qhz1kR7Ec9HDsUcOD0W2BkM3t+iHwoJLENbFoU8oimE9TFOMfHiDaPMD/dSKkaYYnOOUWXdaSD+uETdz96KOCDKnxWuWrDkl5nInWZcQ5jK7vmMWdmcjfxImISw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625999; c=relaxed/simple;
-	bh=nxjOoIXGOOalfvK6M+mdGabgxa7pgHzn16iguoiOXac=;
+	s=arc-20240116; t=1781629947; c=relaxed/simple;
+	bh=2fhC/YYC7xnONXeHtB9W0yJ1qInO2Xq5aPPovFyIVzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgE2UUwxxDV1zSPUFCwkZ6HEJBvmEUjPNy2nEm2l9yLzC1rujqVQwzLJ/xbWwCIO/2ZjoKT2sEQqOraZrIAxUTf1sWW66epfggseCh1DWhbQjESInYZPWUBqKcJn99nJXFzJGztDUui+hiE9181edgRSpSoLGklVpCOu87vMRdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1SaX1PJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB3301F000E9;
-	Tue, 16 Jun 2026 16:06:37 +0000 (UTC)
+	 MIME-Version; b=ViVCCHC2PbixTqijjD1fVoQGlFhyXRgnHAiLeZO61UPfGBEvcXjgDIiNN76PAgTPHwnGUCy4cyt1XyHWt9aKBiS7S30Y7BtvPMX+/65yff/hi0+hRzydUFcPeoIFQDEwH4Q0WwVULmYPA8pYkv9vUL1jnEaccT0jYrmVjGJDwCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NWfcvp3N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F65A1F000E9;
+	Tue, 16 Jun 2026 17:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625998;
-	bh=fjjmtFVtx/p8yCzlbR2WD5APdDkKKlZZrp9AG51efhY=;
+	s=korg; t=1781629946;
+	bh=odkbs2nd2Bd4hUSjxF//da3JVe9ZVYaLWTcFncMQwWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E1SaX1PJSE0fPTjNmz55WU/JOc8tkWq946RFPGCJtCsi+HDkU2tZF5xB8YscTEcZ3
-	 xS7k/j54k7Y1/tEzqlb8w1jkdrjI6BpBjaOg9o/48jjmFNt5yz5ZaKTIxSvwfQ7Efv
-	 epC6sevBM4gQfcoZGztsRlGG7PNPKWjmgkap4wE0=
+	b=NWfcvp3NNtXXKS74DIAJatJLd2xtVA6K0oPEQrrHN5dqLn2H7vsFKtv65XpOoJNGl
+	 a4IIuJ+1Tp9rCcStP81b5xHPYQ53VQnAWxR9g4E7pWRkT43/EXluP0VRuUErDPfo5Q
+	 UyNYK1xy6OuIPC6JmSfUgsgThJtYiE0VcaxM25Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 214/325] inet: frags: fix use-after-free caused by the fqdir_pre_exit() flush
+	Mat Martineau <martineau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 383/452] mptcp: use plain bool instead of custom binary enum
 Date: Tue, 16 Jun 2026 20:30:10 +0530
-Message-ID: <20260616145108.790962804@linuxfoundation.org>
+Message-ID: <20260616145137.052442612@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,109 +70,144 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264460-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:imv4bel@gmail.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265194-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:pabeni@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 10F46691DE3
+X-Rspamd-Queue-Id: 45D69692FF3
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 32594b09854970d7ba83eb2dc8c69a2edd158c8e upstream.
+[ Upstream commit f1f26512a9bf18f7a4c0d59df113a49f39d7d4b6 ]
 
-On netns teardown, fqdir_pre_exit() walks the fqdir rhashtable and
-flushes every fragment queue that is not yet complete using
-inet_frag_queue_flush(). That helper frees all the skbs queued on the
-fragment queue but does not set INET_FRAG_COMPLETE, and leaves
-q->fragments_tail and q->last_run_head pointing at the freed skbs.
-The queue itself stays in the rhashtable.
+The 'data_avail' subflow field is already used as plain boolean,
+drop the custom binary enum type and switch to bool.
 
-fqdir_pre_exit() first lowers high_thresh to 0 to stop new queue lookups,
-but it cannot stop a fragment that already obtained the queue through
-inet_frag_find() earlier and stalled just before taking the queue lock.
-Once that fragment resumes after the flush and takes the queue lock,
-it passes the INET_FRAG_COMPLETE check and then dereferences the freed
-fragments_tail. inet_frag_queue_insert() reads FRAG_CB() and ->len of
-that pointer and, on the append path, writes ->next_frag, causing a
-slab use-after-free. IPv6, nf_conntrack_reasm6 and 6lowpan reassembly
-share the same flush path and are affected as well.
+No functional changed intended.
 
-Reset rb_fragments, fragments_tail and last_run_head in
-inet_frag_queue_flush() so a flushed queue no longer points at the
-freed skbs. A fragment that resumes after the flush and takes the
-queue lock then finds an empty queue and starts a new run instead of
-dereferencing the freed fragments_tail. ip_frag_reinit() already
-performed this reset after its own flush, so drop the now duplicate
-code there.
-
-Cc: stable@vger.kernel.org
-Fixes: 006a5035b495 ("inet: frags: flush pending skbs in fqdir_pre_exit()")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Link: https://patch.msgid.link/ah6ukYq5G98LshdA@v4bel
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231023-send-net-next-20231023-2-v1-3-9dc60939d371@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0981f90e1a05 ("mptcp: reset rcv wnd on disconnect")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_fragment.c |    3 +++
- net/ipv4/ip_fragment.c   |    3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/mptcp/protocol.h |    7 +------
+ net/mptcp/subflow.c  |   12 ++++++------
+ 2 files changed, 7 insertions(+), 12 deletions(-)
 
---- a/net/ipv4/inet_fragment.c
-+++ b/net/ipv4/inet_fragment.c
-@@ -328,6 +328,9 @@ void inet_frag_queue_flush(struct inet_f
- 	reason = reason ?: SKB_DROP_REASON_FRAG_REASM_TIMEOUT;
- 	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
- 	sub_frag_mem_limit(q->fqdir, sum);
-+	q->rb_fragments = RB_ROOT;
-+	q->fragments_tail = NULL;
-+	q->last_run_head = NULL;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -451,11 +451,6 @@ mptcp_subflow_rsk(const struct request_s
+ 	return (struct mptcp_subflow_request_sock *)rsk;
  }
- EXPORT_SYMBOL(inet_frag_queue_flush);
  
---- a/net/ipv4/ip_fragment.c
-+++ b/net/ipv4/ip_fragment.c
-@@ -250,9 +250,6 @@ static int ip_frag_reinit(struct ipq *qp
- 	qp->q.flags = 0;
- 	qp->q.len = 0;
- 	qp->q.meat = 0;
--	qp->q.rb_fragments = RB_ROOT;
--	qp->q.fragments_tail = NULL;
--	qp->q.last_run_head = NULL;
- 	qp->iif = 0;
- 	qp->ecn = 0;
+-enum mptcp_data_avail {
+-	MPTCP_SUBFLOW_NODATA,
+-	MPTCP_SUBFLOW_DATA_AVAIL,
+-};
+-
+ struct mptcp_delegated_action {
+ 	struct napi_struct napi;
+ 	struct list_head head;
+@@ -513,7 +508,7 @@ struct mptcp_subflow_context {
+ 		is_mptfo : 1,	    /* subflow is doing TFO */
+ 		close_event_done : 1,       /* has done the post-closed part */
+ 		__unused : 9;
+-	enum mptcp_data_avail data_avail;
++	bool	data_avail;
+ 	bool	scheduled;
+ 	bool	pm_listener;	    /* a listener managed by the kernel PM? */
+ 	u32	remote_nonce;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1303,7 +1303,7 @@ static bool subflow_check_data_avail(str
+ 	struct sk_buff *skb;
  
+ 	if (!skb_peek(&ssk->sk_receive_queue))
+-		WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_NODATA);
++		WRITE_ONCE(subflow->data_avail, false);
+ 	if (subflow->data_avail)
+ 		return true;
+ 
+@@ -1337,7 +1337,7 @@ static bool subflow_check_data_avail(str
+ 			continue;
+ 		}
+ 
+-		WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_DATA_AVAIL);
++		WRITE_ONCE(subflow->data_avail, true);
+ 		break;
+ 	}
+ 	return true;
+@@ -1358,7 +1358,7 @@ fallback:
+ 				subflow->reset_reason = MPTCP_RST_EMIDDLEBOX;
+ 				goto reset;
+ 			}
+-			WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_DATA_AVAIL);
++			WRITE_ONCE(subflow->data_avail, true);
+ 			return true;
+ 		}
+ 
+@@ -1375,7 +1375,7 @@ reset:
+ 			while ((skb = skb_peek(&ssk->sk_receive_queue)))
+ 				sk_eat_skb(ssk, skb);
+ 			tcp_send_active_reset(ssk, GFP_ATOMIC);
+-			WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_NODATA);
++			WRITE_ONCE(subflow->data_avail, false);
+ 			return false;
+ 		}
+ 	}
+@@ -1385,7 +1385,7 @@ reset:
+ 	subflow->map_seq = READ_ONCE(msk->ack_seq);
+ 	subflow->map_data_len = skb->len;
+ 	subflow->map_subflow_seq = tcp_sk(ssk)->copied_seq - subflow->ssn_offset;
+-	WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_DATA_AVAIL);
++	WRITE_ONCE(subflow->data_avail, true);
+ 	return true;
+ }
+ 
+@@ -1397,7 +1397,7 @@ bool mptcp_subflow_data_available(struct
+ 	if (subflow->map_valid &&
+ 	    mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len) {
+ 		subflow->map_valid = 0;
+-		WRITE_ONCE(subflow->data_avail, MPTCP_SUBFLOW_NODATA);
++		WRITE_ONCE(subflow->data_avail, false);
+ 
+ 		pr_debug("Done with mapping: seq=%u data_len=%u\n",
+ 			 subflow->map_subflow_seq,
 
 
 
