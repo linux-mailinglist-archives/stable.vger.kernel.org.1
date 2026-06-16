@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vBqKHoJ3MWpHkAUAu9opvQ
-	(envelope-from <stable+bounces-264454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:14 +0200
+	id 2oXAAU+YMWrxngUAu9opvQ
+	(envelope-from <stable+bounces-266194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D88691EF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7113A6944CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HgIXRpHC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264454-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264454-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="ewNU/FLb";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266194-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266194-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BBB231F0AAF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 62CAC3093C00
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7569E44E038;
-	Tue, 16 Jun 2026 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6729A478E5E;
+	Tue, 16 Jun 2026 18:39:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E6244CF40;
-	Tue, 16 Jun 2026 16:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423203DC4D9;
+	Tue, 16 Jun 2026 18:39:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625968; cv=none; b=tlHlsx6rfDD5aIVNopVY91BITAgwqkrFyGEQFD+EpNx4rT5qm+4Xy6JjKp6jY5F1X6YFSWaEMKMrPdXbCzslN0bwTUDojctUfRpxEfLbm9TZXkn3WAqc5vMaKwyylPIXNeUJ6WsIW284pL9UFo4TFpGYk7dY1pSGBvtSKm8tPWE=
+	t=1781635147; cv=none; b=fmcYrfbr+C2OZJ70/umPxhQjdG1FYGrbMS4YTBvGTRR4PO1c61I5BY0N0ASlm+uBHsH2HKiB+EM7RxBrFOLSPlh5u3TXlYKiRNOdfsLxJ77MD+vJOw+PVZ+7xy7F29cJFj0BSnH1LIfVM+znQQN3VV7+pbPEN+vBakD0hN9pVs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625968; c=relaxed/simple;
-	bh=ds81sy/sYEBqnaWpwsAQSZaoXb3myyOgLCkefXw/+To=;
+	s=arc-20240116; t=1781635147; c=relaxed/simple;
+	bh=yMmM9YTH1MdsbCJ9HS5uEDA8qxWvlNnFvFaXFZemKLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XCBpSvh0YJc3eAKQAnsWfp6EIyNKk8RZ7ui8Xn+x5WyKWHKrVdgLP3bsOu+t955YMTtovIpKj5eH1YkoT70HMJkTEhkUcrcTNYm43ZC4dWva48upleyKeMWlKeosAxZucACX8aDDpSz6M8SwXrVtIjqD+ZgEdtQVvhudKj4DDfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgIXRpHC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1171F000E9;
-	Tue, 16 Jun 2026 16:06:05 +0000 (UTC)
+	 MIME-Version; b=m3ZyDEUOhw2AvSTl5LjBOZ0d/63I5F5ERIPrIRVduY0nUS2dVFSOCB5fTbHdbwvWqaTJ+iW4ZkFxVD+CSPewa/UCwv6V01P4KWZfWk7NY1DXFOrNl5Fcf9NclxAKmhbmYLjN2Hnan5WPRauZtvektCCdDqVfJCvmIB8l/emcyuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewNU/FLb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A851F000E9;
+	Tue, 16 Jun 2026 18:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625967;
-	bh=Y9aWdw/qaakTSDX8Q12wOl53fNdh7mpIug8TJqNXWGQ=;
+	s=korg; t=1781635146;
+	bh=g6Z/UdE6MNukNRuFAVCv2pv1Dozo16e944k78xhW8Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HgIXRpHCd0ASVgv9AJDsj7Y1lyOR4/t5EegV/6XEJcNuq7JPrFNB2wlC+aPua6k5m
-	 MzNIiSss2ngd610er4emtIMStdZqd7fLGHSVyqk55ApLBbH2P8dSoXuxrkgsCDK4ID
-	 FXGVkPYvyPA7RZt7LHvurYspZ57ksSTrfJdw+lvA=
+	b=ewNU/FLbc/sfWthad/LdxxMuEBBZqH2PmVfRppDTGYKnEwuInWTtEB5q2PRN2S8BI
+	 a60ayIttkoPVA3unSDrCqVkPVq4s8lokZwUUn6r8eEJWfmP2iZjsbVc735yQkbviAt
+	 ts5fgz383qcvc3zWnGrUpQ/isXPWwVeHsoCRJE1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Santosh Kalluri <santosh.kalluri129@gmail.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <remi@remlab.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 240/325] net: phonet: free phonet_device after RCU grace period
+	Eric Biggers <ebiggers@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 398/411] ksmbd: Compare MACs in constant time
 Date: Tue, 16 Jun 2026 20:30:36 +0530
-Message-ID: <20260616145110.410120616@linuxfoundation.org>
+Message-ID: <20260616145122.350625413@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +65,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264454-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,remlab.net,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:santosh.kalluri129@gmail.com,m:remi@remlab.net,m:horms@kernel.org,m:kuba@kernel.org,m:santoshkalluri129@gmail.com,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266194-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ebiggers@kernel.org,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,remlab.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5D88691EF2
+X-Rspamd-Queue-Id: 7113A6944CB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Santosh Kalluri <santosh.kalluri129@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 71de0177b28da751f407581a4515cf4d762f6296 upstream.
+commit c5794709bc9105935dbedef8b9cf9c06f2b559fa upstream.
 
-phonet_device_destroy() removes a phonet_device from the per-net device
-list with list_del_rcu(), but frees it immediately. RCU readers walking
-the same list can still hold a pointer to the object after it has been
-removed, leading to a slab-use-after-free.
+To prevent timing attacks, MAC comparisons need to be constant-time.
+Replace the memcmp() with the correct function, crypto_memneq().
 
-Use kfree_rcu(), matching the lifetime rule already used by
-phonet_address_del() for the same object type.
-
-Fixes: eeb74a9d45f7 ("Phonet: convert devices list to RCU")
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Signed-off-by: Santosh Kalluri <santosh.kalluri129@gmail.com>
-Acked-by: Rémi Denis-Courmont <remi@remlab.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pn_dev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ksmbd/auth.c    |    4 +++-
+ fs/ksmbd/smb2pdu.c |    5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/net/phonet/pn_dev.c
-+++ b/net/phonet/pn_dev.c
-@@ -108,7 +108,7 @@ static void phonet_device_destroy(struct
- 		for_each_set_bit(addr, pnd->addrs, 64)
- 			phonet_address_notify(net, RTM_DELADDR, ifindex, addr);
+--- a/fs/ksmbd/auth.c
++++ b/fs/ksmbd/auth.c
+@@ -13,6 +13,7 @@
+ #include <linux/xattr.h>
+ #include <crypto/hash.h>
+ #include <crypto/aead.h>
++#include <crypto/algapi.h>
+ #include <linux/random.h>
+ #include <linux/scatterlist.h>
  
--		kfree(pnd);
-+		kfree_rcu(pnd, rcu);
+@@ -281,7 +282,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn
+ 		goto out;
  	}
- }
  
+-	if (memcmp(ntlmv2->ntlmv2_hash, ntlmv2_rsp, CIFS_HMAC_MD5_HASH_SIZE) != 0)
++	if (crypto_memneq(ntlmv2->ntlmv2_hash, ntlmv2_rsp,
++			  CIFS_HMAC_MD5_HASH_SIZE))
+ 		rc = -EINVAL;
+ out:
+ 	if (ctx)
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -4,6 +4,7 @@
+  *   Copyright (C) 2018 Samsung Electronics Co., Ltd.
+  */
+ 
++#include <crypto/algapi.h>
+ #include <linux/inetdevice.h>
+ #include <net/addrconf.h>
+ #include <linux/syscalls.h>
+@@ -8440,7 +8441,7 @@ int smb2_check_sign_req(struct ksmbd_wor
+ 				signature))
+ 		return 0;
+ 
+-	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
++	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
+ 		pr_err("bad smb2 signature\n");
+ 		return 0;
+ 	}
+@@ -8528,7 +8529,7 @@ int smb3_check_sign_req(struct ksmbd_wor
+ 	if (ksmbd_sign_smb3_pdu(conn, signing_key, iov, 1, signature))
+ 		return 0;
+ 
+-	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
++	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
+ 		pr_err("bad smb2 signature\n");
+ 		return 0;
+ 	}
 
 
 
