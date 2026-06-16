@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 4hamOVqQMWpamwUAu9opvQ
-	(envelope-from <stable+bounces-265811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:14 +0200
+	id Q3pnElKHMWr9lgUAu9opvQ
+	(envelope-from <stable+bounces-265359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BE2693CA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:05:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3A4693214
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:26:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="XG/QrsdI";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265811-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265811-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bvlf0ORz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265359-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265359-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 03C5D301651F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F052C3012CD6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBF23CEBBD;
-	Tue, 16 Jun 2026 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6310A47A0B2;
+	Tue, 16 Jun 2026 17:26:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8F82F12AE;
-	Tue, 16 Jun 2026 18:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D41305688;
+	Tue, 16 Jun 2026 17:26:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633111; cv=none; b=LZbEogORJ4hu2JjpswcuKSBUBgGaBLCqatgGngWOpt1NswHPLZe5zOnv6eHPsBbGKsnPeLpZKvGtzGsKbbDmu5qs3npNC5OnQoQjQ59jlsT5NXC+diliCAf4QRXjzs9XgKzNPe37QhRNNPf4C+0R5X+I5DhIJ25p2Zxaer8XLA4=
+	t=1781630798; cv=none; b=j31jUxD6v1o27lBiZoXgJ2B7DE5lOQWkbL/08Gumxluzg/ebztohx+ddAh/05EfDHVKKvot83VxU5LCCKfNRfeokuTEMuYR7akrhgbt8J50Z7KmwlFUcEzCpPYN6p4AqIf6B2JO03IL/Mg2aTV3fZ+60KxqMoVxZO3CJhMdfXiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633111; c=relaxed/simple;
-	bh=hifhXj/Xhu5ZwYS7HCtMRx0PpCIlHpVQN4wwey/sB20=;
+	s=arc-20240116; t=1781630798; c=relaxed/simple;
+	bh=ZCnryxmQIOfsoxKVec/dZgA0+y9kHWgYNf8HPPHaxpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAyEmdNjN36j/3podQZcmFhjaA6fWvOHoa7mebX/T1Revfi8oHE/o0T+OTe09HKvl+PZ2owQj0d98oikQs8VV8JDwLkp72ykVe4HUQGLuXE+SfpramonySo7BuRYOhQsFT6Uek5FY/YgjulHWUWElWaaQOn3qUvaSJOgBYysez4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XG/QrsdI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6221F000E9;
-	Tue, 16 Jun 2026 18:05:08 +0000 (UTC)
+	 MIME-Version; b=nfXxVz9PTmCCO2Xr/jNmhX2+j7syRWGKeOMBjr/5zDChWIWArNfJtOycPB8AOMbNEF8fvQwwwLZPuepGzfrOH7HBR5xgECTMNy7GJXzZwj5SklfWmGAngYa159oArdLccdRLyzXsLTgXM4g0R7xcPykLpRA84b4br5l0tZ42z1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvlf0ORz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEE61F000E9;
+	Tue, 16 Jun 2026 17:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633110;
-	bh=t1vk2XuJy6m5Uxd2HPCqQAcqLLZr/z+vKcKyhjxh34g=;
+	s=korg; t=1781630797;
+	bh=bCLIZbkSY5jai6IgN80wz8jMhFmXKgib69V36kDI7Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XG/QrsdIRjKowoJ85QQ0G+0PwgGITxnt7hvsDEbsD4tnhxRwjepdeOL2rKC3OqlMI
-	 TspzlKKN+lO0l1naW6JuVGTDubJwDW/jk0rDdeQ4lit78c+sPloywH/BUnkX/+phC+
-	 QJe/yS8wMCteTxBcCmvswggTPwTCnjsmomaTx5sQ=
+	b=bvlf0ORzRGEaSXPsnBnR8JZAn5n9GSHHZwteGDlnzAaBJB6NJnBexblr3vR/tT0Ag
+	 PhUIILqDYziKpeJo1VMgpbTFXy1NHWS4ATfhxyMzE/fdObU3EucLmF9HAZHhJHSqiO
+	 RYdfx5FyuhzXhBxwij68vZ9D3a96aLd1pfEJWSQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Wenshan Lan <jetlan9@163.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/411] dmaengine: idxd: Fix not releasing workqueue on .release()
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 097/522] Bluetooth: HIDP: fix missing length checks in hidp_input_report()
 Date: Tue, 16 Jun 2026 20:24:04 +0530
-Message-ID: <20260616145100.702231067@linuxfoundation.org>
+Message-ID: <20260616145130.437224757@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,89 +71,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-265811-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dave.jiang@intel.com,m:vinicius.gomes@intel.com,m:vkoul@kernel.org,m:jetlan9@163.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265359-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 59BE2693CA6
+X-Rspamd-Queue-Id: ED3A4693214
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit 3d33de353b1ff9023d5ec73b9becf80ea87af695 ]
+commit 2a3ac9ee11dbb9845f3947cef4a79dba658cf6f6 upstream.
 
-The workqueue associated with an DSA/IAA device is not released when
-the object is freed.
+hidp_input_report() reads keyboard and mouse payload data from an skb
+without first verifying that skb->len contains enough data.
 
-Fixes: 47c16ac27d4c ("dmaengine: idxd: fix idxd conf_dev 'struct device' lifetime")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-7-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Remove destroy_workqueue(idxd->wq) from the function idxd_remove() to
-avoid the workqueue is released twice. ]
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+hidp_recv_intr_frame() pulls the 1-byte HIDP header before dispatching
+to hidp_input_report(). If a paired device sends a truncated packet,
+the handler reads beyond the valid skb data, resulting in an
+out-of-bounds read of skb data. The OOB bytes may be interpreted as
+phantom key presses or spurious mouse movement.
+
+Replace the open-coded length tracking and pointer arithmetic with
+skb_pull_data() calls. skb_pull_data() returns NULL if the requested
+bytes are not present, eliminating the need for a manual size variable
+and the separate skb->len guard.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/init.c  | 1 -
- drivers/dma/idxd/sysfs.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hidp/core.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index f2d27c6ec1ce88..698387103da738 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -829,7 +829,6 @@ static void idxd_remove(struct pci_dev *pdev)
- 	pci_iounmap(pdev, idxd->reg_base);
- 	iommu_dev_disable_feature(&pdev->dev, IOMMU_DEV_FEAT_SVA);
- 	pci_disable_device(pdev);
--	destroy_workqueue(idxd->wq);
- 	perfmon_pmu_remove(idxd);
- 	put_device(idxd_confdev(idxd));
- }
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index 489a9d8850764b..ee208dfdd0cb51 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1271,6 +1271,7 @@ static void idxd_conf_device_release(struct device *dev)
+--- a/net/bluetooth/hidp/core.c
++++ b/net/bluetooth/hidp/core.c
+@@ -179,12 +179,21 @@ static void hidp_input_report(struct hid
  {
- 	struct idxd_device *idxd = confdev_to_idxd(dev);
+ 	struct input_dev *dev = session->input;
+ 	unsigned char *keys = session->keys;
+-	unsigned char *udata = skb->data + 1;
+-	signed char *sdata = skb->data + 1;
+-	int i, size = skb->len - 1;
++	unsigned char *udata;
++	signed char *sdata;
++	u8 *hdr;
++	int i;
++
++	hdr = skb_pull_data(skb, 1);
++	if (!hdr)
++		return;
  
-+	destroy_workqueue(idxd->wq);
- 	kfree(idxd->groups);
- 	kfree(idxd->wqs);
- 	kfree(idxd->engines);
--- 
-2.53.0
-
+-	switch (skb->data[0]) {
++	switch (*hdr) {
+ 	case 0x01:	/* Keyboard report */
++		udata = skb_pull_data(skb, 8);
++		if (!udata)
++			break;
++
+ 		for (i = 0; i < 8; i++)
+ 			input_report_key(dev, hidp_keycode[i + 224], (udata[0] >> i) & 1);
+ 
+@@ -213,6 +222,10 @@ static void hidp_input_report(struct hid
+ 		break;
+ 
+ 	case 0x02:	/* Mouse report */
++		sdata = skb_pull_data(skb, 3);
++		if (!sdata)
++			break;
++
+ 		input_report_key(dev, BTN_LEFT,   sdata[0] & 0x01);
+ 		input_report_key(dev, BTN_RIGHT,  sdata[0] & 0x02);
+ 		input_report_key(dev, BTN_MIDDLE, sdata[0] & 0x04);
+@@ -222,7 +235,7 @@ static void hidp_input_report(struct hid
+ 		input_report_rel(dev, REL_X, sdata[1]);
+ 		input_report_rel(dev, REL_Y, sdata[2]);
+ 
+-		if (size > 3)
++		if (skb->len > 0)
+ 			input_report_rel(dev, REL_WHEEL, sdata[3]);
+ 		break;
+ 	}
 
 
 
