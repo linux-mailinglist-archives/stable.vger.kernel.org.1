@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Hy3FCxSGMWpglgUAu9opvQ
-	(envelope-from <stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:24 +0200
+	id nKQ4Dt59MWr6kgUAu9opvQ
+	(envelope-from <stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9159B69305D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13016926FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jFk1ic4E;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265268-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bkl15EEN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264778-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66ECC3016D3E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F4E0304920E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F388B47A0B0;
-	Tue, 16 Jun 2026 17:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B01F47798F;
+	Tue, 16 Jun 2026 16:37:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05991A6803;
-	Tue, 16 Jun 2026 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DB02F745E;
+	Tue, 16 Jun 2026 16:37:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630340; cv=none; b=l16vx8L//Zpm+jl8usHjm5+/uCcWfFvKzK/TKNbrk3F+iueqBHIZFeCk8Toz3eKu5h/AXMg4sHnm+nvgNIXSlGp/y+kvgx48sWPI+xjvFZgHnGwHxWL4fp6A6JDdkjIWK9NSBDTmGd39mJVHW0T13iUMpSUKQFdAZDBLHhfIAlg=
+	t=1781627840; cv=none; b=QdjNkmiHvLcxM5bNEiHg0V+3dMANOuahvWhg969IW1mVdaWKaYuSlpLcB+L8bVgLacnpdfQ9rhz7gysZ3OjGLnewN0Zcre39DQqepkbQB0EQKsz1n5ZY5pLaMD0icsLAOBR+UmXFOj6mpLpTgL2j7Kn9PKU/c62V8N5jo0ubZBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630340; c=relaxed/simple;
-	bh=H/vFCcePDB8yosbWgVimqAd+EfSu0EBwprM0Pze0mjE=;
+	s=arc-20240116; t=1781627840; c=relaxed/simple;
+	bh=Ty5b+v+B6KyxFfDsn2y8bshQ2A6/vcBM3NxiBV6IrIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dk4ROtTPzmgE09NDiIfCFsil/PTA9URHYqF+c7U9A6KfGr4U9cMA2TryuhHmALCCIWGS5N93NWk82e5SZP6cvTjobLC/gSDwZudIPSRSYGiiuJ4uhrUN07tsvLQgNiRXS+8HJsxtj36yG1mNn9FbSx+7j7e+fpuvpELi+3rYTvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFk1ic4E; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994081F000E9;
-	Tue, 16 Jun 2026 17:18:58 +0000 (UTC)
+	 MIME-Version; b=tEsa7Fr2al7dp6/Xs0P/rN2hym/cv7wjWr6us62pb+8N3IdxkZGLH/pXgGDaO8P9nr8b6SuIXJ8Zxr1WO8h8MLyP3FTXhMM9wrErUscoQGHEx20aWo5VGM1YHL8XsqpmE4oTJZEFZV5BbD6A6E/AEbdOppXmwSJTbY/l0DQOiT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkl15EEN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BF31F000E9;
+	Tue, 16 Jun 2026 16:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630339;
-	bh=7V2soz66x4Y6Iq+UMLVRVeh7vG6affnAjzJSBbiDPvo=;
+	s=korg; t=1781627839;
+	bh=MtuQXm9SIbwzgbGhWKH6+TezxsYd7n4apDlVaKQJdyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jFk1ic4EPUAU7rtZl8OGZCcy2aFLF/5L4GmKxdO8Q5HhzaZOxp0EWfEtgTzgttcas
-	 Ehxdal/UwVE2hnsSkGRsviV0kIYfXtit8dn0H5oApNeS3gjlFl9jjL0ZCt3yIVZ4g1
-	 zVWVcgbiu0LZDA0HlG4f68psWfNwbR+JmPg6mX78=
+	b=bkl15EENywhOq10gJLLUIRTwGBtfnMIdjnmJLaCoShRqSnerEcqST1MAFUq32kEyl
+	 7fvYVMGOp4azBjsYV2H+m47e6tQKqZ/ANfEd0EIVnEGjrn3AEmuUYkJRrvltcIATbZ
+	 puUnEIeEP4cyZ+Yo0i+7VLxA5sUgRHLqaRvhX8iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 448/452] mptcp: fix missing wakeups in edge scenarios
+Subject: [PATCH 6.12 237/261] RDMA/umem: Move umem dmabuf revoke logic into helper function
 Date: Tue, 16 Jun 2026 20:31:15 +0530
-Message-ID: <20260616145140.046013792@linuxfoundation.org>
+Message-ID: <20260616145056.050169143@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +69,103 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265268-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264778-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmoroni@google.com,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9159B69305D
+X-Rspamd-Queue-Id: B13016926FA
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
+[ Upstream commit 797291a66ce346c96114b72222fc290d402da005 ]
 
-The mptcp_recvmsg() can fill MPTCP socket receive queue via
-mptcp_move_skbs(), but currently does not try to wakeup any listener,
-because the same process is going to check the receive queue soon.
+This same logic will eventually be reused from within the
+invalidate_mappings callback which already has the dma_resv_lock
+held, so break it out into a separate function so it can be reused.
 
-When multiple threads are reading from the same fd, the above can
-cause stall. Add the missing wakeup.
-
-Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Link: https://patch.msgid.link/20260305170826.3803155-3-jmoroni@google.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: badad6fad60d ("RDMA: During rereg_mr ensure that REREG_ACCESS is compatible")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/umem_dmabuf.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2205,7 +2205,11 @@ static bool __mptcp_move_skbs(struct mpt
- 	}
- 	if (ret)
- 		mptcp_check_data_fin((struct sock *)msk);
--	return !skb_queue_empty(&msk->receive_queue);
-+
-+	ret = !skb_queue_empty(&msk->receive_queue);
-+	if (ret && mptcp_epollin_ready(sk))
-+		sk->sk_data_ready(sk);
-+	return ret;
- }
+--- a/drivers/infiniband/core/umem_dmabuf.c
++++ b/drivers/infiniband/core/umem_dmabuf.c
+@@ -198,6 +198,22 @@ static struct dma_buf_attach_ops ib_umem
+ 	.move_notify = ib_umem_dmabuf_unsupported_move_notify,
+ };
  
- static unsigned int mptcp_inq_hint(const struct sock *sk)
++static void ib_umem_dmabuf_revoke_locked(struct dma_buf_attachment *attach)
++{
++	struct ib_umem_dmabuf *umem_dmabuf = attach->importer_priv;
++
++	dma_resv_assert_held(attach->dmabuf->resv);
++
++	if (umem_dmabuf->revoked)
++		return;
++	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
++	if (umem_dmabuf->pinned) {
++		dma_buf_unpin(umem_dmabuf->attach);
++		umem_dmabuf->pinned = 0;
++	}
++	umem_dmabuf->revoked = 1;
++}
++
+ static struct ib_umem_dmabuf *
+ ib_umem_dmabuf_get_pinned_and_lock(struct ib_device *device,
+ 				   struct device *dma_device,
+@@ -265,15 +281,7 @@ void ib_umem_dmabuf_revoke(struct ib_ume
+ 	struct dma_buf *dmabuf = umem_dmabuf->attach->dmabuf;
+ 
+ 	dma_resv_lock(dmabuf->resv, NULL);
+-	if (umem_dmabuf->revoked)
+-		goto end;
+-	ib_umem_dmabuf_unmap_pages(umem_dmabuf);
+-	if (umem_dmabuf->pinned) {
+-		dma_buf_unpin(umem_dmabuf->attach);
+-		umem_dmabuf->pinned = 0;
+-	}
+-	umem_dmabuf->revoked = 1;
+-end:
++	ib_umem_dmabuf_revoke_locked(umem_dmabuf->attach);
+ 	dma_resv_unlock(dmabuf->resv);
+ }
+ EXPORT_SYMBOL(ib_umem_dmabuf_revoke);
 
 
 
