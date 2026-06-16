@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q3PhNpiIMWqNlwUAu9opvQ
-	(envelope-from <stable+bounces-265340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:08 +0200
+	id MhRXKdBmMWodigUAu9opvQ
+	(envelope-from <stable+bounces-263789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA9B6933AC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:32:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F598690C66
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:08:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2vHOGckw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265340-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265340-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="iX1/YGE+";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263789-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263789-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4B02315F13A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:25:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18B9A31D720D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FF047A0B0;
-	Tue, 16 Jun 2026 17:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D665A3F65FB;
+	Tue, 16 Jun 2026 15:04:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED35E478E50;
-	Tue, 16 Jun 2026 17:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A377937C912;
+	Tue, 16 Jun 2026 15:04:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630706; cv=none; b=QWskL/rDpkuB6399C9XlzQN1zjypEEGMuhG3QOEhuZ/Gxh1vVq++uWQwmtVv/IWqiiLtr5DhEp4kUsUJ5KpqA2s2aJFSZ7w3v9XsUyz8Hkm4/96wNDZModpRva8lj8S76SZSi4uzs3Eq8TkEjqnHMqKvGWBSUkiQVUvmzV925Qs=
+	t=1781622264; cv=none; b=WaysNgtIodqBArcuAwVFItCvy1GBWc7pBbq6vDL6VzU0jIs5ONg5vf1GMW245sX1IXnrHpVVvkp2L+kFSvSduxPTaDrbgPXNv7ijlPSaXWJgy4xbzBGUM4d3NHRbNx1ADFryt95zTQBLF6vBO+iEiYsNZvPIHeDdNLGqyPVbNm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630706; c=relaxed/simple;
-	bh=IymF/z7anwXhW4OXggEIg1AiHeVlKwdnL+Yh2tcspOo=;
+	s=arc-20240116; t=1781622264; c=relaxed/simple;
+	bh=1Y3NVUVbiI5CvvAGNgnyBkM1P/IpKDJDcvwc5G91jcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLVurddRbNJzzHRc/nyE+YthAY+Xts4xE8o9Bjlji034Zix6UTYww1SFIv0oWWFsALBGVSGYVJSncAt+aRk6+r5J57QWqlYknxBq3EA1N+DpoHnIYXt36nJnJOjSPgehmEq53MY1pP8vKQEoUxRxj/NJQN3jJoa+cDz0nb+CPSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vHOGckw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D1B1F000E9;
-	Tue, 16 Jun 2026 17:25:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FT3knmrO+Gl/morWCkfpaEkIjifBhwCvSK4b6xDAW1CQSucVaMMWaswRSFiI5pkpx6x5IBu+y3jX2ltemgEB9k+sNAY3PD/R+AGPeBNxXKcfkI9vWYHPKws3S7olfFyEVhDpkPjSOBhSxbu0IIMgFE6ry/zNTaJdV1MpPBtpa6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX1/YGE+; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543D61F000E9;
+	Tue, 16 Jun 2026 15:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630704;
-	bh=K9JbaHdd2ht+hzwUQMD69UAe/WLvJEOO0ly2Yg9wbQk=;
+	s=korg; t=1781622263;
+	bh=LX2o7zh53erOvkFBhEavuIdZBIJdhW+HBBBiCRk1EsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=2vHOGckwT14NIes/0oYRseKva8dYRewJhOFgnocpp8ZGmr7YGph0ZVaCntqaJxeCh
-	 ILD6oLHITSgVW3LAfS7uRUtOIUpTsCJcPdPKpF4+PWQerY9G2IuX3wXDWRpPn6U9M7
-	 4yiew44QU44VxoY7oggoFh+UYEtuSxVzUP0SJ0q0=
+	b=iX1/YGE+y0xuD/KSN+YNb9R//cOv2A4Q0WwI7zIC30/hnbmSR2ctR2qSL6WKNctsG
+	 K723EaXaZLKdmIHj4mATMHPtHZ11VNsKrfiHYheTZ1cVpsSLJMqXn9vvAsn9k2hF2+
+	 BDuq6UO4o11exmCeRM5lntHu5GC2A0unYsEstyu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/522] hwmon: (pmbus/adm1266) serialize NVMEM blackbox read with pmbus_lock
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 001/452] Input: usbtouchscreen - clamp NEXIO data_len/x_len to URB buffer size
 Date: Tue, 16 Jun 2026 20:23:48 +0530
-Message-ID: <20260616145129.653311159@linuxfoundation.org>
+Message-ID: <20260616145117.873019671@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265340-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263789-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:stable@kernel.org,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nexthop.ai:email,roeck-us.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DA9B6933AC
+X-Rspamd-Queue-Id: 3F598690C66
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 9f1dd8f9491eb840cbea7ffdf4cad031e25f8ae0 ]
+commit 2905281cbda52ec9df540113b35b835feb5fafd3 upstream.
 
-adm1266_nvmem_read() is the reg_read callback the NVMEM core invokes
-when userspace reads /sys/bus/nvmem/devices/.../nvmem on this chip.
-On the first byte of every read it does a memset of data->dev_mem,
-walks the device blackbox through adm1266_nvmem_read_blackbox()
-(which issues a chain of PMBus block transactions), and then memcpys
-the refreshed buffer out to userspace.  None of that runs under
-pmbus_lock today.
+nexio_read_data() pulls data_len and x_len from a packed __be16 header
+in the device's interrupt packet and then walks packet->data[0..x_len)
+and packet->data[x_len..data_len) comparing each byte against a
+threshold.
 
-Two consequences:
+Both fields are 16-bit on the wire (max 65535).  The existing
+adjustments shave at most 0x100 / 0x80 off, so the loop bound can still
+reach roughly 0xfeff.  The URB transfer buffer for NEXIO is rept_size
+(1024) bytes from usb_alloc_coherent(), with the first 7 occupied by the
+packed header — so packet->data[] has 1017 valid bytes.  read_data()
+callbacks are not given urb->actual_length, and nothing else bounds the
+walk.
 
-  - The PMBus traffic the refresh issues is not serialised against
-    pmbus_core's own multi-step PAGE+register sequences.  A paged
-    hwmon attribute read from another thread can land between a
-    PAGE write and the paged read in either direction and corrupt
-    one side's view of the device state machine.
+A device that lies about its length can get a ~64 KiB out-of-bounds read
+past the coherent DMA allocation.  The first index whose byte exceeds
+NEXIO_THRESHOLD lands in begin_x / begin_y and from there into the
+reported touch coordinates, so adjacent kernel memory contents leak to
+userspace as ABS_X / ABS_Y events.  Far enough out, the read can also
+hit an unmapped page and fault.
 
-  - The NVMEM core does not serialise concurrent reg_read calls, so
-    two userspace readers racing at offset 0 can interleave the
-    memset of data->dev_mem with another reader's
-    adm1266_nvmem_read_blackbox() refill or memcpy out, returning
-    torn data to userspace.
+Fix this all by clamping data_len to the buffer's data[] capacity and
+x_len to data_len.
 
-Take pmbus_lock at the top of adm1266_nvmem_read() via the
-scope-based guard().  Patch 5 of this series moves
-adm1266_config_nvmem() past pmbus_do_probe() so the lock is
-guaranteed to be live before the callback is reachable from
-userspace.
-
-Fixes: 15609d189302 ("hwmon: (pmbus/adm1266) read blackbox")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
-Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-7-e425e4f88139@nexthop.ai
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[ adapted `guard(pmbus_lock)(data->client)` to manual `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 5197424cdccc ("Input: usbtouchscreen - add NEXIO (or iNexio) support")
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026042026-chlorine-epidermis-fd6d@gregkh
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/adm1266.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/input/touchscreen/usbtouchscreen.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
-index b212aafae1dc4b..0f1cc0dbfc157b 100644
---- a/drivers/hwmon/pmbus/adm1266.c
-+++ b/drivers/hwmon/pmbus/adm1266.c
-@@ -430,18 +430,25 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
- 	if (offset + bytes > data->nvmem_config.size)
- 		return -EINVAL;
+--- a/drivers/input/touchscreen/usbtouchscreen.c
++++ b/drivers/input/touchscreen/usbtouchscreen.c
+@@ -1061,6 +1061,11 @@ static int nexio_read_data(struct usbtou
+ 	if (x_len > 0xff)
+ 		x_len -= 0x80;
  
-+	ret = pmbus_lock_interruptible(data->client);
-+	if (ret)
-+		return ret;
++	if (data_len > usbtouch->data_size - sizeof(*packet))
++		data_len = usbtouch->data_size - sizeof(*packet);
++	if (x_len > data_len)
++		x_len = data_len;
 +
- 	if (offset == 0) {
- 		memset(data->dev_mem, 0, data->nvmem_config.size);
- 
- 		ret = adm1266_nvmem_read_blackbox(data, data->dev_mem);
- 		if (ret) {
- 			dev_err(&data->client->dev, "Could not read blackbox!");
-+			pmbus_unlock(data->client);
- 			return ret;
- 		}
- 	}
- 
- 	memcpy(val, data->dev_mem + offset, bytes);
- 
-+	pmbus_unlock(data->client);
-+
- 	return 0;
- }
- 
--- 
-2.53.0
-
+ 	/* send ACK */
+ 	ret = usb_submit_urb(priv->ack, GFP_ATOMIC);
+ 	if (ret)
 
 
 
