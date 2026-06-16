@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-266350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Q3+XAXubMWpkoAUAu9opvQ
-	(envelope-from <stable+bounces-266350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:43 +0200
+	id 5PukKGmLMWrsmAUAu9opvQ
+	(envelope-from <stable+bounces-265565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934F26948A5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423396936C7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="s9laFdW/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266350-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266350-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jIKe39vy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265565-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265565-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 091F1303BA83
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4ADF3304ADC1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAEE47B435;
-	Tue, 16 Jun 2026 18:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4765E47AF6E;
+	Tue, 16 Jun 2026 17:44:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE3746AEE1;
-	Tue, 16 Jun 2026 18:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1A8478E5B;
+	Tue, 16 Jun 2026 17:44:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635960; cv=none; b=VkIdeAJCgsha85vCe0mFZLSZpzB5nOQA/OOn831mGyJZi6ISKjvhu4Fy3BqC5Xt2JNAKNQ2hpmHwIoLJXna1Zo74K1p+dpZ0MgJNMfIk4+VeXx96V81iSn3s7CNwvZa9pg7cN1+Q0gDWxCpVBERRv79IBsZLqyXwJXDeqhYJrfg=
+	t=1781631845; cv=none; b=uaIFFFiIPSSvizSQT6qapbHIqp9yrf2lBEdwOp8EtyjvxYaaY8aqufp+4opQdFhRkAAV6cpf1bYd3SbhOuBtahbax8fctbgt3uWcKOxEsKqs2gf55+HZe5OUwx7Eb/pSQu6DcMB2j/a+avKPMvQsMnIjC1qOmBoLa+Lj2uD5P2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635960; c=relaxed/simple;
-	bh=3hv2XPksymUnRZCokGumVkp6B/K8ga4eXjjWObxLip0=;
+	s=arc-20240116; t=1781631845; c=relaxed/simple;
+	bh=WOo7U5wpktLB2NcJNdO8UQrP9QdsYKff43qskUDWaD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2tPPgd9v6S28v0OZo/i86MubFjn+MlmDAP7mjxvKHuwzQbeozWfC6MtPhH2d6OnsYfIdQlPT56cxjrM/MqB9Vheg4G2tlmwamLIHjbV9YtRG5vctYXVE5JruBz7Sjhi9J/gepGyd7XljS/Iap8fu+E02RDMpltCj8nJppby+Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9laFdW/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8BD1F000E9;
-	Tue, 16 Jun 2026 18:52:38 +0000 (UTC)
+	 MIME-Version; b=Wy4WOkY4NjNibNGqTyt0yuOp1VTSNhqLd5JwhVkJQ3n2yedtRsriw5JUOx1+0S9RMuKfa8Rx7zYa6EzK+QHOguhIGb5exSRGz7AhGaxSjejUsxxdYYHYUUMmxurkmJc5qZQxgSihToi3v4Nuo37Wz6JND4ktewFR0x7JELEjIVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIKe39vy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FDF1F000E9;
+	Tue, 16 Jun 2026 17:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635959;
-	bh=vBcWKKZNwBfcGjgir53woF0eyU5h3Wxpyn35lX7MtoQ=;
+	s=korg; t=1781631843;
+	bh=FeQ7ppCjVxgI785Yj9EMHj2T9wB4nZDe1qbZfNQY9qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=s9laFdW/LtpDPDx57BMxFKKcPadNVTqm+pw24sk+/VVI+UTEcDovwtp8Tqf+KDZfx
-	 9gbL5lR/MYgl9NQns2bcr3zG+UPA2aaxbZkljWnPU03bxeFXOhDwGj8Mclm24FanDK
-	 lFlBiznf1OaXWhkSqxmxy8jaECB9IgoPMRra1elA=
+	b=jIKe39vyUYC2GduzzWlry4Im0nIzrJDHrr5YSuc8yipdbRpeCAwLPPCQl4Adgb8TA
+	 AQoy0NSpBAmS3rCZkwOESO7gMwgkL2EXRRjfZLBLCfH8OvnqBBvr2qONwF3rdarG/e
+	 e+YBIGs+gXxQTxe091f24OqL8822iseCW8pujcWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/342] net/802/mrp: fix vector attribute parsing in mrp_pdu_parse_vecattr
+	Akhil R <akhilrajeev@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 297/522] i2c: tegra: Fix NOIRQ suspend/resume
 Date: Tue, 16 Jun 2026 20:27:24 +0530
-Message-ID: <20260616145055.065952993@linuxfoundation.org>
+Message-ID: <20260616145139.806105228@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,115 +72,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266350-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265565-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akhilrajeev@nvidia.com,m:jonathanh@nvidia.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,tsinghua.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 934F26948A5
+X-Rspamd-Queue-Id: 423396936C7
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit 7561c7fbc694308da73300f036719e63e42bf0b4 ]
+commit 656646b3847ac6a21b074a813223feef2aadd6e2 upstream.
 
-In mrp_pdu_parse_vecattr(), vector attribute events are encoded three
-per byte and valen tracks the number of events left to process.
+The Tegra I2C driver relies on runtime PM to wake up the controller before
+each transfer. However, runtime PM is disabled between the system suspend
+and NOIRQ suspend. If an I2C device initiates a transfer during this
+window, the I2C controller fails to wake up and the transfer fails. To
+handle this, the controller must be kept available for this period to
+allow transfers.
 
-The parser decrements valen after processing the first and second events
-from each event byte, but not after processing the third one. When valen
-is exactly a multiple of three, the loop continues after the last valid
-event and consumes the next byte as a new event byte, applying a
-spurious event to the MRP applicant state.
+Rework the I2C controller's system PM callbacks such that the controller
+is resumed from runtime suspend during system suspend and it stays
+RPM_ACTIVE throughout the suspend-resume cycle until it is runtime
+suspended back in the system resume. The clocks are disabled in NOIRQ
+suspend and enabled back in NOIRQ resume by calling the controller's
+runtime PM functions directly.
 
-Additionally, when valen is zero the parser unconditionally consumes
-attrlen bytes as FirstValue and advances the offset, even though per
-IEEE 802.1ak a VectorAttribute with only a LeaveAllEvent has valen of
-zero and no FirstValue or Vector fields. This corrupts the offset for
-subsequent PDU parsing.
-
-Also, when valen exceeds three the loop crosses byte boundaries but
-the attribute value is not incremented between the last event of one
-byte and the first event of the next. This causes the first event of
-the next byte to use the same attribute value as the third event
-rather than the next consecutive value.
-
-Decrement valen after processing the third event, skip FirstValue
-consumption when valen is zero, and increment the attribute value at
-the end of each loop iteration.
-
-Fixes: febf018d2234 ("net/802: Implement Multiple Registration Protocol (MRP)")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Link: https://patch.msgid.link/20260603060016.21522-1-zhaoyz24@mails.tsinghua.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8ebf15e9c869 ("i2c: tegra: Move suspend handling to NOIRQ phase")
+Assisted-by: Cursor:claude-4.6-opus
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.4+
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20260518114013.62065-5-akhilrajeev@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/802/mrp.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/i2c/busses/i2c-tegra.c |   53 +++++++++++++++++++++++------------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
-diff --git a/net/802/mrp.c b/net/802/mrp.c
-index c10a432a5b4351..017839c141841f 100644
---- a/net/802/mrp.c
-+++ b/net/802/mrp.c
-@@ -702,6 +702,12 @@ static int mrp_pdu_parse_vecattr(struct mrp_applicant *app,
- 	valen = be16_to_cpu(get_unaligned(&mrp_cb(skb)->vah->lenflags) &
- 			    MRP_VECATTR_HDR_LEN_MASK);
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1918,28 +1918,37 @@ static int __maybe_unused tegra_i2c_runt
  
-+	/* If valen is 0, only a LeaveAllEvent is present; FirstValue and
-+	 * Vector fields are absent per IEEE 802.1ak.
+ static int __maybe_unused tegra_i2c_suspend(struct device *dev)
+ {
++	/*
++	 * Bring the controller up and hold a usage count so it stays
++	 * available until the noirq phase.
 +	 */
-+	if (valen == 0)
-+		return 0;
++	return pm_runtime_resume_and_get(dev);
++}
 +
- 	/* The VectorAttribute structure in a PDU carries event information
- 	 * about one or more attributes having consecutive values. Only the
- 	 * value for the first attribute is contained in the structure. So
-@@ -752,6 +758,9 @@ static int mrp_pdu_parse_vecattr(struct mrp_applicant *app,
- 		vaevents %= __MRP_VECATTR_EVENT_MAX;
- 		vaevent = vaevents;
- 		mrp_pdu_parse_vecattr_event(app, skb, vaevent);
-+		valen--;
-+		mrp_attrvalue_inc(mrp_cb(skb)->attrvalue,
-+				  mrp_cb(skb)->mh->attrlen);
- 	}
++static int __maybe_unused tegra_i2c_suspend_noirq(struct device *dev)
++{
+ 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+-	int err;
+ 
+ 	i2c_mark_adapter_suspended(&i2c_dev->adapter);
+ 
+-	if (!pm_runtime_status_suspended(dev)) {
+-		err = tegra_i2c_runtime_suspend(dev);
+-		if (err)
+-			return err;
+-	}
+-
+-	return 0;
++	/*
++	 * Runtime PM is already disabled at this point, so invoke the
++	 * runtime_suspend callback directly to put the controller down.
++	 */
++	return tegra_i2c_runtime_suspend(dev);
+ }
+ 
+-static int __maybe_unused tegra_i2c_resume(struct device *dev)
++static int __maybe_unused tegra_i2c_resume_noirq(struct device *dev)
+ {
+ 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+ 	int err;
+ 
+ 	/*
+-	 * We need to ensure that clocks are enabled so that registers can be
+-	 * restored in tegra_i2c_init().
++	 * Runtime PM is still disabled at this point, so invoke the
++	 * runtime_resume callback directly to bring the controller back up
++	 * before re-initializing the hardware. The adapter is then marked
++	 * resumed so that consumers can issue transfers from their own
++	 * resume_noirq() handlers and onwards.
+ 	 */
+ 	err = tegra_i2c_runtime_resume(dev);
+ 	if (err)
+@@ -1949,24 +1958,22 @@ static int __maybe_unused tegra_i2c_resu
+ 	if (err)
+ 		return err;
+ 
+-	/*
+-	 * In case we are runtime suspended, disable clocks again so that we
+-	 * don't unbalance the clock reference counts during the next runtime
+-	 * resume transition.
+-	 */
+-	if (pm_runtime_status_suspended(dev)) {
+-		err = tegra_i2c_runtime_suspend(dev);
+-		if (err)
+-			return err;
+-	}
+-
+ 	i2c_mark_adapter_resumed(&i2c_dev->adapter);
+ 
  	return 0;
  }
--- 
-2.53.0
-
+ 
++static int __maybe_unused tegra_i2c_resume(struct device *dev)
++{
++	pm_runtime_put(dev);
++
++	return 0;
++}
++
+ static const struct dev_pm_ops tegra_i2c_pm = {
+-	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
++	SET_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
++	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend_noirq,
++				      tegra_i2c_resume_noirq)
+ 	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
+ 			   NULL)
+ };
 
 
 
