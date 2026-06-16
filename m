@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ePMZLv6dMWpXoQUAu9opvQ
-	(envelope-from <stable+bounces-266474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:26 +0200
+	id AvT2CjmXMWqTngUAu9opvQ
+	(envelope-from <stable+bounces-266139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562F6694B1C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:26 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EDF69440A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=taow77Vr;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266474-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266474-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hBjr0fJU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266139-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266139-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3EF83038CEF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3035C3003733
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFCE3DBD76;
-	Tue, 16 Jun 2026 19:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E8E43CEC7;
+	Tue, 16 Jun 2026 18:34:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114243DA5A8;
-	Tue, 16 Jun 2026 19:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADEE169AD2;
+	Tue, 16 Jun 2026 18:34:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636604; cv=none; b=Dbpv5Dj3iGe7h46d3bndBxRlra7URv5MjaRkUET7Ryckh4ZkYFmiTjwKBIV9CZY0QEk/L6ueiQt4ZnTIopxONzIW6XYeufQAPaWf1ZO2nK8ufWRmESXB7SbTVaW37iYYVgyRblb/w3i3nbVntNJPL5cmkTJ6HQJiClkahtuR9Vc=
+	t=1781634865; cv=none; b=p6YAIOGM3S+TxlKvWQ7ZfLIQVc4Yqt2UzNMJKQ+ENMRqXMyTk1eHJcqQ+jSJMyd2AFxjyw/hzemBEIGxOTheZBh1WC1DiYM892gGONPdLjTxOWbgHMmmvz9hcE0uaiSG0WYPGVA2XbGdhuHa9Ffi6/+iQl3RHHp+1ECgf43QFeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636604; c=relaxed/simple;
-	bh=6vJwcIiWCPw8VWfMldVMJE8HVGtamxU+cu8US5O/6aw=;
+	s=arc-20240116; t=1781634865; c=relaxed/simple;
+	bh=Ax3gXDMV/2xnn2OL4JBk4J3ear1EiMMUTHi0KH4skFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5nQy/39uMeAZvmJOnky6vZ4WNt2BydgZnhVJkWf6Hr/A2E7VyLSssZTnHr8mL7PNkTdBv/3s1fC2Ep6dJE9gIZ9HDKAaEII99xthzlvwPuEq5NdfPXg777EyWf5FN/7Db8WdqLAiFI1/WLGXHfoVIGoJric1T6dKhDvaO6x3XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taow77Vr; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E39E1F000E9;
-	Tue, 16 Jun 2026 19:03:21 +0000 (UTC)
+	 MIME-Version; b=Qaii18cL8ZECBqbDaWv8+VrrxxMvRdPGh1C9AcqT0dl+TkAq2RXg9+fmRvyOlRARe8Liq7utzGJplOkB2gl8XRK+1zwFoj4BOEk5taEhkxDREvcERGE83bWUqC5ivwafeav8Ap3+3fMr2BLrj56LKNuz6rjIJgTPmPL48nfwR4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBjr0fJU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE3F1F000E9;
+	Tue, 16 Jun 2026 18:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636603;
-	bh=shIvjgOOQfM5pOZJTaPwa6iZvBSQA3itl/uwIAHXjQE=;
+	s=korg; t=1781634864;
+	bh=5fGrF0W1W37/dlIUlOY97Mgy+Qf95UhDWGcEzkwv0YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=taow77Vr0stbbpNYrmEhQXCmNUzPNGNKnZltn9QFtsNZeIvD3Z1fNrHR1UgnQPfko
-	 QuUH/NvOliNY4kH1XCcFEar9ywsEci8kyja7P1NY/u7NLWGjh7zvMaEMaL82qCuM37
-	 bnhQOvZCH/cfGkw+6tnQ4T/EDdtOdOlDJtggmEDQ=
+	b=hBjr0fJUutFuLR2owGp7A3j3KyMUFF5FOFA2w/Sn92goHZD0B2GxcP9RcT8JtBNuX
+	 ead1nIukW2wwigcwAQXY/4WmkS8NodPUYcK2MM3//gFtfRV6yf/SezsHXvhqMSSOcW
+	 lJcnR92bsw8OSP+S4LFMBuryJYlohT9h72BVKH7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Thornber <ejt@redhat.com>,
-	Mike Snitzer <snitzer@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Colin Ian King <colin.king@canonical.com>
-Subject: [PATCH 5.10 270/342] dm btree: improve btree residency
-Date: Tue, 16 Jun 2026 20:29:26 +0530
-Message-ID: <20260616145100.901476921@linuxfoundation.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	Piyush Sachdeva <psachdeva@microsoft.com>,
+	Piyush Sachdeva <s.piyush1024@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 329/411] smb: client: Use FullSessionKey for AES-256 encryption key derivation
+Date: Tue, 16 Jun 2026 20:29:27 +0530
+Message-ID: <20260616145118.639549984@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,659 +69,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266474-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266139-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ejt@redhat.com,m:snitzer@redhat.com,m:sashal@kernel.org,m:colin.king@canonical.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bharathsm@microsoft.com,m:psachdeva@microsoft.com,m:s.piyush1024@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:spiyush1024@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,canonical.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 562F6694B1C
+X-Rspamd-Queue-Id: 23EDF69440A
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Thornber <ejt@redhat.com>
+From: Piyush Sachdeva <s.piyush1024@gmail.com>
 
-[ Upstream commit 4eafdb1515a708d97e4659bd488ddac19f274c4f ]
+[ Upstream commit 5be7a0cef3229fb3b63a07c0d289daf752545424 ]
 
-This commit improves the residency of btrees built in the metadata for
-dm-thin and dm-cache.
+When Kerberos authentication is used with AES-256 encryption (AES-256-CCM
+or AES-256-GCM), the SMB3 encryption and decryption keys must be derived
+using the full session key (Session.FullSessionKey) rather than just the
+first 16 bytes (Session.SessionKey).
 
-When inserting a new entry into a full btree node the current code
-splits the node into two.  This can result in very many half full nodes,
-particularly if the insertions are occurring in an ascending order (as
-happens in dm-thin with large writes).
+Per MS-SMB2 section 3.2.5.3.1, when Connection.Dialect is "3.1.1" and
+Connection.CipherId is AES-256-CCM or AES-256-GCM, Session.FullSessionKey
+must be set to the full cryptographic key from the GSS authentication
+context. The encryption and decryption key derivation (SMBC2SCipherKey,
+SMBS2CCipherKey) must use this FullSessionKey as the KDF input. The
+signing key derivation continues to use Session.SessionKey (first 16
+bytes) in all cases.
 
-With this commit, when we insert into a full node we first try and move
-some entries to a neighbouring node that has space, failing that it
-tries to split two neighbouring nodes into three.
+Previously, generate_key() hardcoded SMB2_NTLMV2_SESSKEY_SIZE (16) as the
+HMAC-SHA256 key input length for all derivations. When Kerberos with
+AES-256 provides a 32-byte session key, the KDF for encryption/decryption
+was using only the first 16 bytes, producing keys that did not match the
+server's, causing mount failures with sec=krb5 and require_gcm_256=1.
 
-Results are given below.  'Residency' is how full nodes are on average
-as a percentage.  Average instruction counts for the operations
-are given to show the extra processing has little overhead.
+Add a full_key_size parameter to generate_key() and pass the appropriate
+size from generate_smb3signingkey():
+ - Signing: always SMB2_NTLMV2_SESSKEY_SIZE (16 bytes)
+ - Encryption/Decryption: ses->auth_key.len when AES-256, otherwise 16
 
-                         +--------------------------+--------------------------+
-                         |         Before           |         After            |
-+------------+-----------+-----------+--------------+-----------+--------------+
-|    Test    |   Phase   | Residency | Instructions | Residency | Instructions |
-+------------+-----------+-----------+--------------+-----------+--------------+
-| Ascending  | insert    |        50 |         1876 |        96 |         1930 |
-|            | overwrite |        50 |         1789 |        96 |         1746 |
-|            | lookup    |        50 |          778 |        96 |          778 |
-| Descending | insert    |        50 |         3024 |        96 |         3181 |
-|            | overwrite |        50 |         1789 |        96 |         1746 |
-|            | lookup    |        50 |          778 |        96 |          778 |
-| Random     | insert    |        68 |         3800 |        84 |         3736 |
-|            | overwrite |        68 |         4254 |        84 |         3911 |
-|            | lookup    |        68 |          779 |        84 |          779 |
-| Runs       | insert    |        63 |         2546 |        82 |         2815 |
-|            | overwrite |        63 |         2013 |        82 |         1986 |
-|            | lookup    |        63 |          778 |        82 |          779 |
-+------------+-----------+-----------+--------------+-----------+--------------+
+Also fix cifs_dump_full_key() to report the actual session key length for
+AES-256 instead of hardcoded CIFS_SESS_KEY_SIZE, so that userspace tools
+like Wireshark receive the correct key for decryption.
 
-   Ascending - keys are inserted in ascending order.
-   Descending - keys are inserted in descending order.
-   Random - keys are inserted in random order.
-   Runs - keys are split into ascending runs of ~20 length.  Then
-          the runs are shuffled.
-
-Signed-off-by: Joe Thornber <ejt@redhat.com>
-Signed-off-by: Colin Ian King <colin.king@canonical.com> # contains_key() fix
-Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-Stable-dep-of: 09a65adc7d8b ("dm-thin: fix metadata refcount underflow")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Piyush Sachdeva <psachdeva@microsoft.com>
+Signed-off-by: Piyush Sachdeva <s.piyush1024@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ adapted to legacy crypto_shash API and ses->binding boolean instead of upstream's hmac_sha256 helpers and chan_lock machinery ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/persistent-data/dm-btree.c               |  451 ++++++++++++++++++--
- drivers/md/persistent-data/dm-transaction-manager.c |    9 
- drivers/md/persistent-data/dm-transaction-manager.h |   10 
- 3 files changed, 439 insertions(+), 31 deletions(-)
+ fs/cifs/ioctl.c         |    2 +-
+ fs/cifs/smb2transport.c |   36 ++++++++++++++++++++++++++----------
+ 2 files changed, 27 insertions(+), 11 deletions(-)
 
---- a/drivers/md/persistent-data/dm-btree.c
-+++ b/drivers/md/persistent-data/dm-btree.c
-@@ -502,6 +502,122 @@ out:
+--- a/fs/cifs/ioctl.c
++++ b/fs/cifs/ioctl.c
+@@ -262,7 +262,7 @@ search_end:
+ 		break;
+ 	case SMB2_ENCRYPTION_AES256_CCM:
+ 	case SMB2_ENCRYPTION_AES256_GCM:
+-		out.session_key_length = CIFS_SESS_KEY_SIZE;
++		out.session_key_length = ses->auth_key.len;
+ 		out.server_in_key_length = out.server_out_key_length = SMB3_GCM256_CRYPTKEY_SIZE;
+ 		break;
+ 	default:
+--- a/fs/cifs/smb2transport.c
++++ b/fs/cifs/smb2transport.c
+@@ -291,7 +291,8 @@ out:
+ }
  
- EXPORT_SYMBOL_GPL(dm_btree_lookup_next);
- 
-+/*----------------------------------------------------------------*/
-+
-+/*
-+ * Copies entries from one region of a btree node to another.  The regions
-+ * must not overlap.
-+ */
-+static void copy_entries(struct btree_node *dest, unsigned dest_offset,
-+			 struct btree_node *src, unsigned src_offset,
-+			 unsigned count)
-+{
-+	size_t value_size = le32_to_cpu(dest->header.value_size);
-+	memcpy(dest->keys + dest_offset, src->keys + src_offset, count * sizeof(uint64_t));
-+	memcpy(value_ptr(dest, dest_offset), value_ptr(src, src_offset), count * value_size);
-+}
-+
-+/*
-+ * Moves entries from one region fo a btree node to another.  The regions
-+ * may overlap.
-+ */
-+static void move_entries(struct btree_node *dest, unsigned dest_offset,
-+			 struct btree_node *src, unsigned src_offset,
-+			 unsigned count)
-+{
-+	size_t value_size = le32_to_cpu(dest->header.value_size);
-+	memmove(dest->keys + dest_offset, src->keys + src_offset, count * sizeof(uint64_t));
-+	memmove(value_ptr(dest, dest_offset), value_ptr(src, src_offset), count * value_size);
-+}
-+
-+/*
-+ * Erases the first 'count' entries of a btree node, shifting following
-+ * entries down into their place.
-+ */
-+static void shift_down(struct btree_node *n, unsigned count)
-+{
-+	move_entries(n, 0, n, count, le32_to_cpu(n->header.nr_entries) - count);
-+}
-+
-+/*
-+ * Moves entries in a btree node up 'count' places, making space for
-+ * new entries at the start of the node.
-+ */
-+static void shift_up(struct btree_node *n, unsigned count)
-+{
-+	move_entries(n, count, n, 0, le32_to_cpu(n->header.nr_entries));
-+}
-+
-+/*
-+ * Redistributes entries between two btree nodes to make them
-+ * have similar numbers of entries.
-+ */
-+static void redistribute2(struct btree_node *left, struct btree_node *right)
-+{
-+	unsigned nr_left = le32_to_cpu(left->header.nr_entries);
-+	unsigned nr_right = le32_to_cpu(right->header.nr_entries);
-+	unsigned total = nr_left + nr_right;
-+	unsigned target_left = total / 2;
-+	unsigned target_right = total - target_left;
-+
-+	if (nr_left < target_left) {
-+		unsigned delta = target_left - nr_left;
-+		copy_entries(left, nr_left, right, 0, delta);
-+		shift_down(right, delta);
-+	} else if (nr_left > target_left) {
-+		unsigned delta = nr_left - target_left;
-+		if (nr_right)
-+			shift_up(right, delta);
-+		copy_entries(right, 0, left, target_left, delta);
-+	}
-+
-+	left->header.nr_entries = cpu_to_le32(target_left);
-+	right->header.nr_entries = cpu_to_le32(target_right);
-+}
-+
-+/*
-+ * Redistribute entries between three nodes.  Assumes the central
-+ * node is empty.
-+ */
-+static void redistribute3(struct btree_node *left, struct btree_node *center,
-+			  struct btree_node *right)
-+{
-+	unsigned nr_left = le32_to_cpu(left->header.nr_entries);
-+	unsigned nr_center = le32_to_cpu(center->header.nr_entries);
-+	unsigned nr_right = le32_to_cpu(right->header.nr_entries);
-+	unsigned total, target_left, target_center, target_right;
-+
-+	BUG_ON(nr_center);
-+
-+	total = nr_left + nr_right;
-+	target_left = total / 3;
-+	target_center = (total - target_left) / 2;
-+	target_right = (total - target_left - target_center);
-+
-+	if (nr_left < target_left) {
-+		unsigned left_short = target_left - nr_left;
-+		copy_entries(left, nr_left, right, 0, left_short);
-+		copy_entries(center, 0, right, left_short, target_center);
-+		shift_down(right, nr_right - target_right);
-+
-+	} else if (nr_left < (target_left + target_center)) {
-+		unsigned left_to_center = nr_left - target_left;
-+		copy_entries(center, 0, left, target_left, left_to_center);
-+		copy_entries(center, left_to_center, right, 0, target_center - left_to_center);
-+		shift_down(right, nr_right - target_right);
-+
-+	} else {
-+		unsigned right_short = target_right - nr_right;
-+		shift_up(right, right_short);
-+		copy_entries(right, 0, left, nr_left - right_short, right_short);
-+		copy_entries(center, 0, left, target_left, nr_left - target_left);
-+	}
-+
-+	left->header.nr_entries = cpu_to_le32(target_left);
-+	center->header.nr_entries = cpu_to_le32(target_center);
-+	right->header.nr_entries = cpu_to_le32(target_right);
-+}
-+
- /*
-  * Splits a node by creating a sibling node and shifting half the nodes
-  * contents across.  Assumes there is a parent node, and it has room for
-@@ -532,12 +648,10 @@ EXPORT_SYMBOL_GPL(dm_btree_lookup_next);
-  *
-  * Where A* is a shadow of A.
-  */
--static int btree_split_sibling(struct shadow_spine *s, unsigned parent_index,
--			       uint64_t key)
-+static int split_one_into_two(struct shadow_spine *s, unsigned parent_index,
-+			      struct dm_btree_value_type *vt, uint64_t key)
+ static int generate_key(struct cifs_ses *ses, struct kvec label,
+-			struct kvec context, __u8 *key, unsigned int key_size)
++			struct kvec context, __u8 *key, unsigned int key_size,
++			unsigned int full_key_size)
  {
- 	int r;
--	size_t size;
--	unsigned nr_left, nr_right;
- 	struct dm_block *left, *right, *parent;
- 	struct btree_node *ln, *rn, *pn;
- 	__le64 location;
-@@ -551,36 +665,18 @@ static int btree_split_sibling(struct sh
- 	ln = dm_block_data(left);
- 	rn = dm_block_data(right);
- 
--	nr_left = le32_to_cpu(ln->header.nr_entries) / 2;
--	nr_right = le32_to_cpu(ln->header.nr_entries) - nr_left;
--
--	ln->header.nr_entries = cpu_to_le32(nr_left);
--
- 	rn->header.flags = ln->header.flags;
--	rn->header.nr_entries = cpu_to_le32(nr_right);
-+	rn->header.nr_entries = cpu_to_le32(0);
- 	rn->header.max_entries = ln->header.max_entries;
- 	rn->header.value_size = ln->header.value_size;
--	memcpy(rn->keys, ln->keys + nr_left, nr_right * sizeof(rn->keys[0]));
--
--	size = le32_to_cpu(ln->header.flags) & INTERNAL_NODE ?
--		sizeof(uint64_t) : s->info->value_type.size;
--	memcpy(value_ptr(rn, 0), value_ptr(ln, nr_left),
--	       size * nr_right);
-+	redistribute2(ln, rn);
- 
--	/*
--	 * Patch up the parent
--	 */
-+	/* patch up the parent */
- 	parent = shadow_parent(s);
--
- 	pn = dm_block_data(parent);
--	location = cpu_to_le64(dm_block_location(left));
--	__dm_bless_for_disk(&location);
--	memcpy_disk(value_ptr(pn, parent_index),
--		    &location, sizeof(__le64));
- 
- 	location = cpu_to_le64(dm_block_location(right));
- 	__dm_bless_for_disk(&location);
--
- 	r = insert_at(sizeof(__le64), pn, parent_index + 1,
- 		      le64_to_cpu(rn->keys[0]), &location);
- 	if (r) {
-@@ -588,6 +684,7 @@ static int btree_split_sibling(struct sh
- 		return r;
+ 	unsigned char zero = 0x0;
+ 	__u8 i[4] = {0, 0, 0, 1};
+@@ -312,7 +313,7 @@ static int generate_key(struct cifs_ses
  	}
  
-+	/* patch up the spine */
- 	if (key < le64_to_cpu(rn->keys[0])) {
- 		unlock_block(s->info, right);
- 		s->nodes[1] = left;
-@@ -600,6 +697,121 @@ static int btree_split_sibling(struct sh
- }
- 
- /*
-+ * We often need to modify a sibling node.  This function shadows a particular
-+ * child of the given parent node.  Making sure to update the parent to point
-+ * to the new shadow.
-+ */
-+static int shadow_child(struct dm_btree_info *info, struct dm_btree_value_type *vt,
-+			struct btree_node *parent, unsigned index,
-+			struct dm_block **result)
-+{
-+	int r, inc;
-+	dm_block_t root;
-+	struct btree_node *node;
-+
-+	root = value64(parent, index);
-+
-+	r = dm_tm_shadow_block(info->tm, root, &btree_node_validator,
-+			       result, &inc);
-+	if (r)
-+		return r;
-+
-+	node = dm_block_data(*result);
-+
-+	if (inc)
-+		inc_children(info->tm, node, vt);
-+
-+	*((__le64 *) value_ptr(parent, index)) =
-+		cpu_to_le64(dm_block_location(*result));
-+
-+	return 0;
-+}
-+
-+/*
-+ * Splits two nodes into three.  This is more work, but results in fuller
-+ * nodes, so saves metadata space.
-+ */
-+static int split_two_into_three(struct shadow_spine *s, unsigned parent_index,
-+                                struct dm_btree_value_type *vt, uint64_t key)
-+{
-+	int r;
-+	unsigned middle_index;
-+	struct dm_block *left, *middle, *right, *parent;
-+	struct btree_node *ln, *rn, *mn, *pn;
-+	__le64 location;
-+
-+	parent = shadow_parent(s);
-+	pn = dm_block_data(parent);
-+
-+	if (parent_index == 0) {
-+		middle_index = 1;
-+		left = shadow_current(s);
-+		r = shadow_child(s->info, vt, pn, parent_index + 1, &right);
-+		if (r)
-+			return r;
-+	} else {
-+		middle_index = parent_index;
-+		right = shadow_current(s);
-+		r = shadow_child(s->info, vt, pn, parent_index - 1, &left);
-+		if (r)
-+			return r;
-+	}
-+
-+	r = new_block(s->info, &middle);
-+	if (r < 0)
-+		return r;
-+
-+	ln = dm_block_data(left);
-+	mn = dm_block_data(middle);
-+	rn = dm_block_data(right);
-+
-+	mn->header.nr_entries = cpu_to_le32(0);
-+	mn->header.flags = ln->header.flags;
-+	mn->header.max_entries = ln->header.max_entries;
-+	mn->header.value_size = ln->header.value_size;
-+
-+	redistribute3(ln, mn, rn);
-+
-+	/* patch up the parent */
-+	pn->keys[middle_index] = rn->keys[0];
-+	location = cpu_to_le64(dm_block_location(middle));
-+	__dm_bless_for_disk(&location);
-+	r = insert_at(sizeof(__le64), pn, middle_index,
-+		      le64_to_cpu(mn->keys[0]), &location);
-+	if (r) {
-+		if (shadow_current(s) != left)
-+			unlock_block(s->info, left);
-+
-+		unlock_block(s->info, middle);
-+
-+		if (shadow_current(s) != right)
-+			unlock_block(s->info, right);
-+
-+	        return r;
-+	}
-+
-+
-+	/* patch up the spine */
-+	if (key < le64_to_cpu(mn->keys[0])) {
-+		unlock_block(s->info, middle);
-+		unlock_block(s->info, right);
-+		s->nodes[1] = left;
-+	} else if (key < le64_to_cpu(rn->keys[0])) {
-+		unlock_block(s->info, left);
-+		unlock_block(s->info, right);
-+		s->nodes[1] = middle;
-+	} else {
-+		unlock_block(s->info, left);
-+		unlock_block(s->info, middle);
-+		s->nodes[1] = right;
-+	}
-+
-+	return 0;
-+}
-+
-+/*----------------------------------------------------------------*/
-+
-+/*
-  * Splits a node by creating two new children beneath the given node.
-  *
-  * Before:
-@@ -692,6 +904,186 @@ static int btree_split_beneath(struct sh
- 	return 0;
- }
- 
-+/*----------------------------------------------------------------*/
-+
-+/*
-+ * Redistributes a node's entries with its left sibling.
-+ */
-+static int rebalance_left(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			  unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct dm_block *sib;
-+	struct btree_node *left, *right, *parent = dm_block_data(shadow_parent(s));
-+
-+	r = shadow_child(s->info, vt, parent, parent_index - 1, &sib);
-+	if (r)
-+		return r;
-+
-+	left = dm_block_data(sib);
-+	right = dm_block_data(shadow_current(s));
-+	redistribute2(left, right);
-+	*key_ptr(parent, parent_index) = right->keys[0];
-+
-+	if (key < le64_to_cpu(right->keys[0])) {
-+		unlock_block(s->info, s->nodes[1]);
-+		s->nodes[1] = sib;
-+	} else {
-+		unlock_block(s->info, sib);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Redistributes a nodes entries with its right sibling.
-+ */
-+static int rebalance_right(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			   unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct dm_block *sib;
-+	struct btree_node *left, *right, *parent = dm_block_data(shadow_parent(s));
-+
-+	r = shadow_child(s->info, vt, parent, parent_index + 1, &sib);
-+	if (r)
-+		return r;
-+
-+	left = dm_block_data(shadow_current(s));
-+	right = dm_block_data(sib);
-+	redistribute2(left, right);
-+	*key_ptr(parent, parent_index + 1) = right->keys[0];
-+
-+	if (key < le64_to_cpu(right->keys[0])) {
-+		unlock_block(s->info, sib);
-+	} else {
-+		unlock_block(s->info, s->nodes[1]);
-+		s->nodes[1] = sib;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Returns the number of spare entries in a node.
-+ */
-+static int get_node_free_space(struct dm_btree_info *info, dm_block_t b, unsigned *space)
-+{
-+	int r;
-+	unsigned nr_entries;
-+	struct dm_block *block;
-+	struct btree_node *node;
-+
-+	r = bn_read_lock(info, b, &block);
-+	if (r)
-+		return r;
-+
-+	node = dm_block_data(block);
-+	nr_entries = le32_to_cpu(node->header.nr_entries);
-+	*space = le32_to_cpu(node->header.max_entries) - nr_entries;
-+
-+	unlock_block(info, block);
-+	return 0;
-+}
-+
-+/*
-+ * Make space in a node, either by moving some entries to a sibling,
-+ * or creating a new sibling node.  SPACE_THRESHOLD defines the minimum
-+ * number of free entries that must be in the sibling to make the move
-+ * worth while.  If the siblings are shared (eg, part of a snapshot),
-+ * then they are not touched, since this break sharing and so consume
-+ * more space than we save.
-+ */
-+#define SPACE_THRESHOLD 8
-+static int rebalance_or_split(struct shadow_spine *s, struct dm_btree_value_type *vt,
-+			      unsigned parent_index, uint64_t key)
-+{
-+	int r;
-+	struct btree_node *parent = dm_block_data(shadow_parent(s));
-+	unsigned nr_parent = le32_to_cpu(parent->header.nr_entries);
-+	unsigned free_space;
-+	int left_shared = 0, right_shared = 0;
-+
-+	/* Should we move entries to the left sibling? */
-+	if (parent_index > 0) {
-+		dm_block_t left_b = value64(parent, parent_index - 1);
-+		r = dm_tm_block_is_shared(s->info->tm, left_b, &left_shared);
-+		if (r)
-+			return r;
-+
-+		if (!left_shared) {
-+			r = get_node_free_space(s->info, left_b, &free_space);
-+			if (r)
-+				return r;
-+
-+			if (free_space >= SPACE_THRESHOLD)
-+				return rebalance_left(s, vt, parent_index, key);
-+		}
-+	}
-+
-+	/* Should we move entries to the right sibling? */
-+	if (parent_index < (nr_parent - 1)) {
-+		dm_block_t right_b = value64(parent, parent_index + 1);
-+		r = dm_tm_block_is_shared(s->info->tm, right_b, &right_shared);
-+		if (r)
-+			return r;
-+
-+		if (!right_shared) {
-+			r = get_node_free_space(s->info, right_b, &free_space);
-+			if (r)
-+				return r;
-+
-+			if (free_space >= SPACE_THRESHOLD)
-+				return rebalance_right(s, vt, parent_index, key);
-+		}
-+	}
-+
-+	/*
-+	 * We need to split the node, normally we split two nodes
-+	 * into three.	But when inserting a sequence that is either
-+	 * monotonically increasing or decreasing it's better to split
-+	 * a single node into two.
-+	 */
-+	if (left_shared || right_shared || (nr_parent <= 2) ||
-+	    (parent_index == 0) || (parent_index + 1 == nr_parent)) {
-+		return split_one_into_two(s, parent_index, vt, key);
-+	} else {
-+		return split_two_into_three(s, parent_index, vt, key);
-+	}
-+}
-+
-+/*
-+ * Does the node contain a particular key?
-+ */
-+static bool contains_key(struct btree_node *node, uint64_t key)
-+{
-+	int i = lower_bound(node, key);
-+
-+	if (i >= 0 && le64_to_cpu(node->keys[i]) == key)
-+		return true;
-+
-+	return false;
-+}
-+
-+/*
-+ * In general we preemptively make sure there's a free entry in every
-+ * node on the spine when doing an insert.  But we can avoid that with
-+ * leaf nodes if we know it's an overwrite.
-+ */
-+static bool has_space_for_insert(struct btree_node *node, uint64_t key)
-+{
-+	if (node->header.nr_entries == node->header.max_entries) {
-+		if (le32_to_cpu(node->header.flags) & LEAF_NODE) {
-+			/* we don't need space if it's an overwrite */
-+			return contains_key(node, key);
-+		}
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static int btree_insert_raw(struct shadow_spine *s, dm_block_t root,
- 			    struct dm_btree_value_type *vt,
- 			    uint64_t key, unsigned *index)
-@@ -721,17 +1113,18 @@ static int btree_insert_raw(struct shado
- 
- 		node = dm_block_data(shadow_current(s));
- 
--		if (node->header.nr_entries == node->header.max_entries) {
-+		if (!has_space_for_insert(node, key)) {
- 			if (top)
- 				r = btree_split_beneath(s, key);
- 			else
--				r = btree_split_sibling(s, i, key);
-+				r = rebalance_or_split(s, vt, i, key);
- 
- 			if (r < 0)
- 				return r;
--		}
- 
--		node = dm_block_data(shadow_current(s));
-+			/* making space can cause the current node to change */
-+			node = dm_block_data(shadow_current(s));
-+		}
- 
- 		i = lower_bound(node, key);
- 
---- a/drivers/md/persistent-data/dm-transaction-manager.c
-+++ b/drivers/md/persistent-data/dm-transaction-manager.c
-@@ -379,6 +379,15 @@ int dm_tm_ref(struct dm_transaction_mana
- 	return dm_sm_get_count(tm->sm, b, result);
- }
- 
-+int dm_tm_block_is_shared(struct dm_transaction_manager *tm, dm_block_t b,
-+			  int *result)
-+{
-+	if (tm->is_clone)
-+		return -EWOULDBLOCK;
-+
-+	return dm_sm_count_is_more_than_one(tm->sm, b, result);
-+}
-+
- struct dm_block_manager *dm_tm_get_bm(struct dm_transaction_manager *tm)
+ 	rc = crypto_shash_setkey(server->secmech.hmacsha256,
+-		ses->auth_key.response, SMB2_NTLMV2_SESSKEY_SIZE);
++		ses->auth_key.response, full_key_size);
+ 	if (rc) {
+ 		cifs_server_dbg(VFS, "%s: Could not set with session key\n", __func__);
+ 		goto smb3signkey_ret;
+@@ -393,10 +394,9 @@ static int
+ generate_smb3signingkey(struct cifs_ses *ses,
+ 			const struct derivation_triplet *ptriplet)
  {
- 	return tm->bm;
---- a/drivers/md/persistent-data/dm-transaction-manager.h
-+++ b/drivers/md/persistent-data/dm-transaction-manager.h
-@@ -103,8 +103,14 @@ void dm_tm_inc(struct dm_transaction_man
+-	int rc;
+-#ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
++	unsigned int full_key_size = SMB2_NTLMV2_SESSKEY_SIZE;
+ 	struct TCP_Server_Info *server = ses->server;
+-#endif
++	int rc;
  
- void dm_tm_dec(struct dm_transaction_manager *tm, dm_block_t b);
+ 	/*
+ 	 * All channels use the same encryption/decryption keys but
+@@ -412,30 +412,46 @@ generate_smb3signingkey(struct cifs_ses
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  cifs_ses_binding_channel(ses)->signkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
+ 	} else {
+ 		rc = generate_key(ses, ptriplet->signing.label,
+ 				  ptriplet->signing.context,
+ 				  ses->smb3signingkey,
+-				  SMB3_SIGN_KEY_SIZE);
++				  SMB3_SIGN_KEY_SIZE,
++				  SMB2_NTLMV2_SESSKEY_SIZE);
+ 		if (rc)
+ 			return rc;
  
--int dm_tm_ref(struct dm_transaction_manager *tm, dm_block_t b,
--	      uint32_t *result);
-+int dm_tm_ref(struct dm_transaction_manager *tm, dm_block_t b, uint32_t *result);
++		/*
++		 * Per MS-SMB2 3.2.5.3.1, signing key always uses Session.SessionKey
++		 * (first 16 bytes). Encryption/decryption keys use
++		 * Session.FullSessionKey when dialect is 3.1.1 and cipher is
++		 * AES-256-CCM or AES-256-GCM, otherwise Session.SessionKey.
++		 */
 +
-+/*
-+ * Finds out if a given block is shared (ie. has a reference count higher
-+ * than one).
-+ */
-+int dm_tm_block_is_shared(struct dm_transaction_manager *tm, dm_block_t b,
-+			  int *result);
++		if (server->dialect == SMB311_PROT_ID &&
++		    (server->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
++		     server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
++			full_key_size = ses->auth_key.len;
++
+ 		memcpy(ses->chans[0].signkey, ses->smb3signingkey,
+ 		       SMB3_SIGN_KEY_SIZE);
  
- struct dm_block_manager *dm_tm_get_bm(struct dm_transaction_manager *tm);
- 
+ 		rc = generate_key(ses, ptriplet->encryption.label,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+-				  SMB3_ENC_DEC_KEY_SIZE);
++				  SMB3_ENC_DEC_KEY_SIZE,
++				  full_key_size);
+ 		if (rc)
+ 			return rc;
+ 	}
+@@ -450,7 +466,7 @@ generate_smb3signingkey(struct cifs_ses
+ 			&ses->Suid);
+ 	cifs_dbg(VFS, "Cipher type   %d\n", server->cipher_type);
+ 	cifs_dbg(VFS, "Session Key   %*ph\n",
+-		 SMB2_NTLMV2_SESSKEY_SIZE, ses->auth_key.response);
++		 (int)ses->auth_key.len, ses->auth_key.response);
+ 	cifs_dbg(VFS, "Signing Key   %*ph\n",
+ 		 SMB3_SIGN_KEY_SIZE, ses->smb3signingkey);
+ 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
 
 
 
