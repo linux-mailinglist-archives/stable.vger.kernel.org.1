@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fIegE2qKMWpcmAUAu9opvQ
-	(envelope-from <stable+bounces-265513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:54 +0200
+	id CAPRGqmSMWppnAUAu9opvQ
+	(envelope-from <stable+bounces-265910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B7E693588
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:39:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035FD693F41
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SFmuutDn;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265513-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265513-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dM0PROcx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265910-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265910-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C0323036BD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 49DD33099D10
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE6747AF5F;
-	Tue, 16 Jun 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F3F3D75CE;
+	Tue, 16 Jun 2026 18:14:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040AC47A0CD;
-	Tue, 16 Jun 2026 17:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAF43D5656;
+	Tue, 16 Jun 2026 18:14:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631592; cv=none; b=HN+fsMH+c2J7NHpzKeilFjQmR+UhtrCkL9eCClxlMj3OqYp4rQYnK6F6F1ZoYOQpam+3t7UUUimLbpU7ac3r9Mx8tQTbuWJO3W2iM7xwciZX434I7NETbSH0T1k/eM/qy4kRpgtPPU0lp1aEBVhuQUDaKPRIvTT0BzqOtQQyoYM=
+	t=1781633642; cv=none; b=R2TwngXwNY51ETh0+OCGHIuF3YMPeO/WXCEN8Nj+V8FTuK/dlvtm31vSck30A7mZq7mhLwlKlNP2Zdaosy+LflFj2ns4+jekehjY2j+qd6QADrNBvzuP9o6Uk5VS0mKxLy8lK9z2RL0Gf6O9IPZ3pLMj+tAEFDig9q8AeuSwkic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631592; c=relaxed/simple;
-	bh=jFbiGCLB0ua/nTPltSAAHbq+x862qNnbZotasOp7x6s=;
+	s=arc-20240116; t=1781633642; c=relaxed/simple;
+	bh=0irLk/tSY6dQuF1QnRwMp/hDAxr2vqh7R3HT91AyExU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZ/m970x8xnQakjnndvjt6smb1nvYJc4NtACflx+7ll0GiG6xxNxCHCPI7Ko4/BHzpy4sq891A6TYaDSroGlUkRtkcu4SY7vV+X4ybHxzCSK9VsOLHp/g52qGtX++UCts+FobN1z5olMgcdfDfP9uCW5mxQ5udfR+w8yUZbrm5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFmuutDn; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085051F000E9;
-	Tue, 16 Jun 2026 17:39:49 +0000 (UTC)
+	 MIME-Version; b=FdHXdF0JtP9e3KExOMWRIgHKAvAH3N7tupXnOG6IupvArV2IHMizMGFRtD8PeQJmIOI7+FWnF3CxokCgZvXHiriYx4ZyMIj+sLpmX3VgbiYMHnh3T/JAiNkWlqXgqawdCWVdFvkcFXw2WWc1h0eBCG23MqLISNdhVrEP0CI4skw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dM0PROcx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F85A1F000E9;
+	Tue, 16 Jun 2026 18:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631590;
-	bh=JywA4c2ZQw4vIoB8l3YNKtwaOPW7OnJTblxp4A8lBgQ=;
+	s=korg; t=1781633641;
+	bh=d3NQ2B9tt6MsttF+uduu335r8oA7Xjd1b+fnqJIO+S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SFmuutDnoxO5vNuzRQ+KMNkJntAEJ0dKWfhX8UZ7dmWBu6qz9dCqWvSselju91Q8r
-	 dXxI4PQdL5B+/mWkYiz7+8LmyK39iYulPXh/LKnvwWxUn9Lolca0nGECECbn1KB+TM
-	 88Hbd1Tg0VGxsUDIZ/fpYR14Djezla3p40Medwyo=
+	b=dM0PROcx1NO5QB5/ygh/yM/YzBmnrlzq8P1bMy9vh9lAPJJwv/YZD1pb786oqXCB7
+	 onHYW9VhbRyTMSFoM9D2BeQsf9hYOx6uYcgZm40sugUMRfgNQzyBVhLSMxpcf3AZJx
+	 b0YuWLUqbJvpSzPSdaRGBLirZmZXXy+MKOygIzO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oscar Maes <oscmaes92@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/522] pcnet32: stop holding device spin lock during napi_complete_done
+	Zhang Cen <rollkingzzc@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 116/411] USB: serial: belkin_sa: validate interrupt status length
 Date: Tue, 16 Jun 2026 20:25:54 +0530
-Message-ID: <20260616145135.748228459@linuxfoundation.org>
+Message-ID: <20260616145106.469684611@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,94 +71,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265513-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265910-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lunn.ch:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D6B7E693588
+X-Rspamd-Queue-Id: 035FD693F41
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oscar Maes <oscmaes92@gmail.com>
+From: Zhang Cen <rollkingzzc@gmail.com>
 
-[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
+commit 4ce058df2ee02cc2a0f0fd5cd64ce6f1482a0b65 upstream.
 
-napi_complete_done may call gro_flush_normal (though not currently, as GRO
-is unsupported at the moment), which may result in packet TX. This will
-eventually result in calling pcnet32_start_xmit - resulting in a deadlock
-while trying to re-acquire the already locked spin lock.
+The Belkin interrupt callback treats interrupt data as a four-byte
+status report and reads LSR/MSR fields at offsets 2 and 3. The
+interrupt-in buffer length is derived from endpoint wMaxPacketSize, and
+short interrupt transfers may complete successfully with a smaller
+actual_length.
 
-It is safe to split the spinlock block into two, because the hardware
-registers are still protected from concurrent access, and the two blocks
-perform unrelated operations that don't need to happen atomically.
+Check the completed interrupt packet length before parsing status
+fields so short interrupt endpoints and short successful packets are
+ignored instead of causing out-of-bounds or stale status-byte reads.
 
-Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KASAN report as below:
+
+BUG: KASAN: slab-out-of-bounds in belkin_sa_read_int_callback()
+Read of size 1
+Call trace:
+  belkin_sa_read_int_callback() (drivers/usb/serial/belkin_sa.c:202)
+  __usb_hcd_giveback_urb() (drivers/usb/core/hcd.c:1630)
+  dummy_timer() (?:?)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: Codex:gpt-5.5
+Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pcnet32.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/serial/belkin_sa.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
-index 72db9f9e7beeae..81cb83caf62a15 100644
---- a/drivers/net/ethernet/amd/pcnet32.c
-+++ b/drivers/net/ethernet/amd/pcnet32.c
-@@ -1403,8 +1403,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
- 		pcnet32_restart(dev, CSR0_START);
- 		netif_wake_queue(dev);
- 	}
-+	spin_unlock_irqrestore(&lp->lock, flags);
+--- a/drivers/usb/serial/belkin_sa.c
++++ b/drivers/usb/serial/belkin_sa.c
+@@ -194,6 +194,9 @@ static void belkin_sa_read_int_callback(
  
- 	if (work_done < budget && napi_complete_done(napi, work_done)) {
-+		spin_lock_irqsave(&lp->lock, flags);
- 		/* clear interrupt masks */
- 		val = lp->a->read_csr(ioaddr, CSR3);
- 		val &= 0x00ff;
-@@ -1412,9 +1414,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 	usb_serial_debug_data(&port->dev, __func__, urb->actual_length, data);
  
- 		/* Set interrupt enable. */
- 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
-+		spin_unlock_irqrestore(&lp->lock, flags);
- 	}
++	if (urb->actual_length < BELKIN_SA_MSR_INDEX + 1)
++		goto exit;
++
+ 	/* Handle known interrupt data */
+ 	/* ignore data[0] and data[1] */
  
--	spin_unlock_irqrestore(&lp->lock, flags);
- 	return work_done;
- }
- 
--- 
-2.53.0
-
 
 
 
