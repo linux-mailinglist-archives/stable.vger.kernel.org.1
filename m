@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id f3PQHBmLMWqomAUAu9opvQ
-	(envelope-from <stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:49 +0200
+	id ulkOHoWaMWoSoAUAu9opvQ
+	(envelope-from <stable+bounces-266303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBBE69364A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:42:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C526947CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:48:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VmliKXpV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265549-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DxgTFe/5";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266303-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266303-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B171301706F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 96D85303988D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610774779B9;
-	Tue, 16 Jun 2026 17:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E513D8125;
+	Tue, 16 Jun 2026 18:48:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA16F477E57;
-	Tue, 16 Jun 2026 17:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793522C0261;
+	Tue, 16 Jun 2026 18:48:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631765; cv=none; b=be4stMm6HDfCQbyZOXTFg8y9lWeKiLh8/Jxd5wdqou3vEJTYrCn8VRhjM5Ws8/frL8iPnNYp5UPXZUXEmVfMMPyjS14WXZVu9ZV46DKYBupKVDVNCJGqHjmQNMbiLcaMRs4vD2xUwm9/JpcQvTBIPyJI1IOAYIS9A5yrDFESigU=
+	t=1781635715; cv=none; b=JB+CRYn5hsFZHwR7rH+EnqfpA3PiWMs45WAeIHVROzYYWhoqhz/glbI4k1G5pLF2pMCkl6gIi/asT2hXPjilAQOrzGSgi7eDzTT4algg9ARS04/Bpm707Nwfqq1xjvc+0sJRZ2u6yuhEjFCRFl+rhBzEN6wcuiLT3aQKP9r+YI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631765; c=relaxed/simple;
-	bh=D51MsWQstVpPJESnld4qTgpXhBm/dAe9YptY4S16+2s=;
+	s=arc-20240116; t=1781635715; c=relaxed/simple;
+	bh=HlWwExrm2Ak7XLcRDXatw5YQjDUm7aouY5B+/3XMyt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0IXYcD6hnc8BIPHKA0hXiwcskQGOJjWnoUS/6XViDYbP4rTHabx5qCCCMDE4zPr0Q6o6BDKFPrNyi6srYvqCPd4k8wA3hkV4eX9sZvj4JWnil/gZTlA5oDHLeQVyy69iCA51LUaeqb9VTer8SRqr5ldFTeokBUwORsG1Zwn/NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmliKXpV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2D41F000E9;
-	Tue, 16 Jun 2026 17:42:41 +0000 (UTC)
+	 MIME-Version; b=U2A86LSjmzKAdk5iyfHlcfBz2jH8WiEY6Rptf8IaZI2o9OwOyXk4yFfeYBvzfb+ztU1L/lg40wQXeUe1Rzyn1IWBtvC4di9Vgxk6KltMHQd5NN9PjshNHCilceKcx3U8AKavtr8tvKFfKVCuxvM+iYfdM2KlWO18BAfR2ID9S7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxgTFe/5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B54B1F000E9;
+	Tue, 16 Jun 2026 18:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631762;
-	bh=3RZ2SB1hXUxdATIQd3R5TCbYyPVC1dSvI9MPBFEidxY=;
+	s=korg; t=1781635714;
+	bh=PQcTxdrrAFUH6VhUiaXVZEGuiWJxUShWBozt5yvpnH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VmliKXpVSmStKHzRcaNMuBwuOz5QGO5EqxvsfSloEs31H+vqQIiFDWfJZge5/wQQD
-	 rQC38+cM+RCitoFpvekSwJMAcHMh20l38SmcUAtT+2ZHsCgkUPJ9Vt7exkOyCd4gmF
-	 VBcUs8JURXgMoHsO6ivuhxE1jjcR155+QTCNgDC0=
+	b=DxgTFe/5I2AISeHi3SKmVgrsY6Se1ZIaGxBYNZoQR6tKPMbLwsX3d7Co+0+cTBABJ
+	 3j/T1Plnu8ryOLZsPHVw8aUi2yoFvJ0qG04QMLfgmJ5oB+1wA8SZFcsuf03A0dAwcb
+	 peJWc9qVPxS+9UA05mlNIXxNxnPXmMdX9jzSv4ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 251/522] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
+	Andrew Lunn <andrew@lunn.ch>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 102/342] USB: serial: mxuport: fix memory corruption with small endpoint
 Date: Tue, 16 Jun 2026 20:26:38 +0530
-Message-ID: <20260616145137.712469584@linuxfoundation.org>
+Message-ID: <20260616145052.980413560@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,102 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265549-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-266303-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,lunn.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FBBE69364A
+X-Rspamd-Queue-Id: 29C526947CB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f8373d7090b745728de66308deeecc67e8d319ce ]
+commit 4085f0dbb1ce2251c9a5938d693de6593f0ab2bd upstream.
 
-__sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
-chunk can hold the ADDIP header and a parameter header, then calls
-af->from_addr_param(), which reads the full address (16 bytes for IPv6)
-trusting the parameter's declared length.
+Make sure that the bulk-out endpoint max packet size is at least eight
+bytes to avoid user-controlled slab corruption should a malicious device
+report a smaller size.
 
-An unauthenticated peer can send a truncated trailing ASCONF chunk that
-declares an IPv6 address parameter but stops after the 4-byte parameter
-header; reached from the no-association lookup path, from_addr_param() then
-reads uninitialized bytes past the parameter.
-
-Impact: an unauthenticated SCTP peer makes the receive path read up to 16
-bytes of uninitialized memory past a truncated ASCONF address parameter.
-
-The sibling __sctp_rcv_init_lookup() bounds parameters with
-sctp_walk_params(); this path open-codes the fetch and omits the bound.
-Verify the whole address parameter lies within the chunk before
-from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
-("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
-
-Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF chunks as well")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260608122234.459098-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee467a1f2066 ("USB: serial: add Moxa UPORT 12XX/14XX/16XX driver")
+Cc: stable@vger.kernel.org	# 3.14
+Cc: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/input.c | 8 ++++++++
+ drivers/usb/serial/mxuport.c |    8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 182898cb754a52..70530cbe57d0a7 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -1197,6 +1197,14 @@ static struct sctp_association *__sctp_rcv_asconf_lookup(
- 	/* Skip over the ADDIP header and find the Address parameter */
- 	param = (union sctp_addr_param *)(asconf + 1);
+--- a/drivers/usb/serial/mxuport.c
++++ b/drivers/usb/serial/mxuport.c
+@@ -969,6 +969,14 @@ static int mxuport_calc_num_ports(struct
+ 	 */
+ 	BUILD_BUG_ON(ARRAY_SIZE(epds->bulk_out) < 16);
  
-+	/* The whole address parameter must lie within the chunk before
-+	 * af->from_addr_param() reads the variable-length address; otherwise a
-+	 * truncated trailing ASCONF chunk lets it read uninitialized bytes past
-+	 * the parameter.
++	/*
++	 * The bulk-out buffers must be large enough for the four-byte header
++	 * (and following data), but assume anything smaller than eight bytes
++	 * is broken.
 +	 */
-+	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
-+		return NULL;
++	if (usb_endpoint_maxp(epds->bulk_out[0]) < 8)
++		return -EINVAL;
 +
- 	af = sctp_get_af_specific(param_type2af(param->p.type));
- 	if (unlikely(!af))
- 		return NULL;
--- 
-2.53.0
-
+ 	for (i = 1; i < num_ports; ++i)
+ 		epds->bulk_out[i] = epds->bulk_out[0];
+ 
 
 
 
