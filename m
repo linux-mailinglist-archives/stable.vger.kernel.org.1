@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LHNUArGaMWoboAUAu9opvQ
-	(envelope-from <stable+bounces-266311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:21 +0200
+	id aKIRJhdtMWohjAUAu9opvQ
+	(envelope-from <stable+bounces-263995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB986947F0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:20 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529D86912AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pbwwNNIm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266311-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266311-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pDOeHd1O;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263995-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263995-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 09228303BEF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4379A30160F7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B56F3D8100;
-	Tue, 16 Jun 2026 18:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271DC43E49A;
+	Tue, 16 Jun 2026 15:26:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F33AE1A2;
-	Tue, 16 Jun 2026 18:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5E934889F;
+	Tue, 16 Jun 2026 15:26:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635758; cv=none; b=hMe4vMGMneA3qnDWRXDJ2hq3bHJ18S8/MwGhPpySiS1xrZ6nJ23qSJS/RrUDyq3NHdBzCrXhO84JUTsuRarRpgSag9nX1AdbQjs1Wi9UrYOm35IhuXN+zNtn/tklbJ5Axkzu5IutEzOWbr8ah5q7Nc/lg3Yq5WdD5SRlIpgzfA4=
+	t=1781623578; cv=none; b=qHcO0sce/wws1UNx7zICM8YssGhTfigDixKFKqn9G/XhjySJuqZUE7YT857Ar4Kqz52YlQNTNKs8lBJFOYSy9GKMNy9e7eZbtxo0xA+BTZBsv3u4OubienpJ8aV9eK3E2KSLzf73NNNZEG23mqryGFoCFXaDCzThSjUg6C+Gm3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635758; c=relaxed/simple;
-	bh=YCxjCCk+od0D0xC6xsfdPR5DiJG2IbB1r7mdor2b2Bg=;
+	s=arc-20240116; t=1781623578; c=relaxed/simple;
+	bh=HUAVVyplTx+m9FAHSx3Ka+bAyGgUofouNnCClGk5FUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlKqeae0YcZ7DVHoE80IDdDeTB0hYQtwjrE9DTO0cP4UPTovCHitUmwS3vP+uXhVBMcGw+z0w65yYa7TEg1sO9g28+r3JMljnkPk+jek3mz+ZWlloVLYcMj8ImjTwVbK5Hh6HZCqbCBkMgCySzND7WEDwfWMe2pg376a8yO9S/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbwwNNIm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D626A1F000E9;
-	Tue, 16 Jun 2026 18:49:16 +0000 (UTC)
+	 MIME-Version; b=ONcn0LayUbVYOTX09U7ExJzKns8Bz6Owq9e/1orYUWSf5szuWG/bLhqqhJMwgg78583/qJTJUYd1lQJNZKJassl/i7DGiWlXv3vFaQAVCe2vv9ik1Von0QtPZc4beXlk8xgBNCis4VP3f3sj/M85YUJJNpAmwM7LjCG7BaFLkx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDOeHd1O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E821F000E9;
+	Tue, 16 Jun 2026 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635757;
-	bh=6ci9IeSx5QeSRKFdkJBg/g9RANlKEMyMRWNgdU3FO/c=;
+	s=korg; t=1781623577;
+	bh=McpqjAJxixaHbpDLOvB4o9P7KptXKcBnm0SqoIyBzy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pbwwNNIm9+aENLR399ZHY7X+BpeOYvzwRCI9ufYeKKf1KQrEBncmdUJHTVzYeZDDh
-	 8o/vnpFJ055aMzhadVEdVpTdZUdB9rop+T7TlyWarQJ9zT51JJBE4OKsXINSL2/s3Y
-	 7smYk2lHW57yBSA0UZhKwzb753FuM8Wd16W0qos4=
+	b=pDOeHd1Ol+MEYKxP57L7BzCE9LO4Jmvy/csYvwWtjGNbO2vymnWAM/vET6T4WVWKO
+	 OmSy8KXCeTuoZAqPAvEO2I0f7cyJiWbRYHZE9JgjEjIY5CkiqlK8S4VX+oYaiwKWQw
+	 AFDRpt11eGm0fdPdPrRFiLHZdHlX9rjgqU9IQCwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Hongling Zeng <zenghongling@kylinos.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 5.10 109/342] serial: sh-sci: fix memory region release in error path
+	Sumit Garg <sumit.garg@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 7.0 174/378] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
 Date: Tue, 16 Jun 2026 20:26:45 +0530
-Message-ID: <20260616145053.303732446@linuxfoundation.org>
+Message-ID: <20260616145119.506141338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +67,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,gmail.com,kylinos.cn,glider.be];
-	TAGGED_FROM(0.00)[bounces-266311-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:lkp@intel.com,m:error27@gmail.com,m:zenghongling@kylinos.cn,m:geert+renesas@glider.be,m:geert@glider.be,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-263995-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kylinos.cn:email,intel.com:email,glider.be:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8CB986947F0
+X-Rspamd-Queue-Id: 529D86912AE
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongling Zeng <zenghongling@kylinos.cn>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-commit 92b1ea22454b08a39baef3a7290fb3ec50366616 upstream.
+commit d922113ef91e6e7e8065e9070f349365341ba32e upstream.
 
-The sci_request_port() function uses request_mem_region() to reserve
-I/O memory, but in the error path when sci_remap_port() fails, it
-incorrectly calls release_resource() instead of release_mem_region().
+The current platform driver design causes probe ordering races with
+consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
+probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
+with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
+be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
+driver probe has failed due to above reasons or it is waiting for the SCM
+driver.
 
-This mismatch can cause resource accounting issues. Fix it by using
-the correct release function, consistent with sci_release_port().
+Moreover, there is no devlink dependency between ICE and consumer drivers
+as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
+have no idea of when the ICE driver is going to probe.
 
-Fixes: e2651647080930a1 ("serial: sh-sci: Handle port memory region reservations.")
-Cc: stable <stable@kernel.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202604032356.SzEjYkBC-lkp@intel.com/
-Signed-off-by: Hongling Zeng <zenghongling@kylinos.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260421065737.724187-1-zenghongling@kylinos.cn
+To address these issues, store the error pointer in a global xarray with
+ice node phandle as a key during probe in addition to the valid ice pointer
+and synchronize both qcom_ice_probe() and of_qcom_ice_get() using a mutex.
+
+If the xarray entry is NULL, then it implies that the driver is not
+probed yet, so return -EPROBE_DEFER. If it has any error pointer, return
+that error pointer directly. Otherwise, add the devlink as usual and return
+the valid pointer to the consumer.
+
+Xarray is used instead of platform drvdata, since driver core frees the
+drvdata during probe failure. So it cannot be used to pass the error
+pointer to the consumers.
+
+Note that this change only fixes the standalone ICE DT node bindings and
+not the ones with 'ice' range embedded in the consumer nodes, where there
+is no issue.
+
+Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
+Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
+Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Cc: stable@vger.kernel.org # 6.4
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-1-2a595382185b@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/ice.c |   38 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 31 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -2781,7 +2781,7 @@ static int sci_request_port(struct uart_
+--- a/drivers/soc/qcom/ice.c
++++ b/drivers/soc/qcom/ice.c
+@@ -16,6 +16,7 @@
+ #include <linux/of.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/xarray.h>
  
- 	ret = sci_remap_port(port);
- 	if (unlikely(ret != 0)) {
--		release_resource(res);
-+		release_mem_region(port->mapbase, sport->reg_size);
- 		return ret;
+ #include <linux/firmware/qcom/qcom_scm.h>
+ 
+@@ -114,6 +115,9 @@ struct qcom_ice {
+ 	u8 hwkm_version;
+ };
+ 
++static DEFINE_XARRAY(ice_handles);
++static DEFINE_MUTEX(ice_mutex);
++
+ static bool qcom_ice_check_supported(struct qcom_ice *ice)
+ {
+ 	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
+@@ -644,6 +648,8 @@ static struct qcom_ice *of_qcom_ice_get(
+ 		return qcom_ice_create(&pdev->dev, base);
  	}
  
++	guard(mutex)(&ice_mutex);
++
+ 	/*
+ 	 * If the consumer node does not provider an 'ice' reg range
+ 	 * (legacy DT binding), then it must at least provide a phandle
+@@ -660,12 +666,13 @@ static struct qcom_ice *of_qcom_ice_get(
+ 		return ERR_PTR(-ENODEV);
+ 	}
+ 
+-	ice = platform_get_drvdata(pdev);
+-	if (!ice) {
+-		dev_err(dev, "Cannot get ice instance from %s\n",
+-			dev_name(&pdev->dev));
++	ice = xa_load(&ice_handles, pdev->dev.of_node->phandle);
++	if (IS_ERR_OR_NULL(ice)) {
+ 		platform_device_put(pdev);
+-		return ERR_PTR(-EPROBE_DEFER);
++		if (!ice)
++			return ERR_PTR(-EPROBE_DEFER);
++		else
++			return ice;
+ 	}
+ 
+ 	link = device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_SUPPLIER);
+@@ -729,24 +736,40 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
+ 
+ static int qcom_ice_probe(struct platform_device *pdev)
+ {
++	unsigned long phandle = pdev->dev.of_node->phandle;
+ 	struct qcom_ice *engine;
+ 	void __iomem *base;
+ 
++	guard(mutex)(&ice_mutex);
++
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base)) {
+ 		dev_warn(&pdev->dev, "ICE registers not found\n");
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, (__force void *)base, GFP_KERNEL);
+ 		return PTR_ERR(base);
+ 	}
+ 
+ 	engine = qcom_ice_create(&pdev->dev, base);
+-	if (IS_ERR(engine))
++	if (IS_ERR(engine)) {
++		/* Store the error pointer for devm_of_qcom_ice_get() */
++		xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 		return PTR_ERR(engine);
++	}
+ 
+-	platform_set_drvdata(pdev, engine);
++	xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
+ 
+ 	return 0;
+ }
+ 
++static void qcom_ice_remove(struct platform_device *pdev)
++{
++	unsigned long phandle = pdev->dev.of_node->phandle;
++
++	guard(mutex)(&ice_mutex);
++	xa_store(&ice_handles, phandle, NULL, GFP_KERNEL);
++}
++
+ static const struct of_device_id qcom_ice_of_match_table[] = {
+ 	{ .compatible = "qcom,inline-crypto-engine" },
+ 	{ },
+@@ -755,6 +778,7 @@ MODULE_DEVICE_TABLE(of, qcom_ice_of_matc
+ 
+ static struct platform_driver qcom_ice_driver = {
+ 	.probe	= qcom_ice_probe,
++	.remove	= qcom_ice_remove,
+ 	.driver = {
+ 		.name = "qcom-ice",
+ 		.of_match_table = qcom_ice_of_match_table,
 
 
 
