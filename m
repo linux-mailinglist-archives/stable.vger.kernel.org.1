@@ -1,62 +1,75 @@
-Return-Path: <stable+bounces-264591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TXF5OKF5MWovkQUAu9opvQ
-	(envelope-from <stable+bounces-264591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:17 +0200
+	id I0rqKdCdMWpGoQUAu9opvQ
+	(envelope-from <stable+bounces-266399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB406921BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BCE694AEA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lijeUqDq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264591-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264591-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OMH4jZGz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266399-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266399-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 65A7830EB0EA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:18:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF6623237373
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4CF46AEFE;
-	Tue, 16 Jun 2026 16:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD96A47D929;
+	Tue, 16 Jun 2026 18:57:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7680533688F;
-	Tue, 16 Jun 2026 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8235547B435;
+	Tue, 16 Jun 2026 18:57:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626724; cv=none; b=KNSo7u7J0+3U5TbY46r/Y1Di/OCRiVmz7v9r6sydb1DH/SFru/ad3KltAVWq/gEOcURMvE+femLXY2HCUFaUWgegYy1HYGDYN+FXj1x3oqy4K7bQGAPnCxfyKCnjZ+rH43Oo3wtg33v+Rb2aACxC7l++GOax/MSYA0IL6ZhEDjg=
+	t=1781636222; cv=none; b=cLoNNFNYHlly0RuM0MVutBhyupSF3yoFG2Lmi8wSdTPXE9voOTClQTTLnGx5Sr7ZLg8zQFqU6xv8AFQ4lbcW/nDEZLuvjZ4bie2V0tVYumLE/HZ24uXggY9eYLyC4YUhWQm1UJm9MluMDZ+Rp7IiRyZl7EnY/QshSZfLSrG5oDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626724; c=relaxed/simple;
-	bh=EzEGQv89A6csECx+/nFRYznaz9E74C1WaAAeoovpokc=;
+	s=arc-20240116; t=1781636222; c=relaxed/simple;
+	bh=kkSexJCUaXd+Cd0yna0+p5uSkKNLWI1CQUOHjqmWXpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIYmNktT6NsIrYTn4HUVJSFSbEsrOjYjP23xg0yoHzMEFJ8sxrIK1m99gL3+YbDswwsIYjkekQV1OI7cDbxEWT9cdy9FBZYZ2/yTA1c7wgpslK3niby3Lpz5eWCyHx6oD7E8sYKfFSNykNHOibfwqHD/eGamuoxDZlPuQ9Ri9Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lijeUqDq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB501F000E9;
-	Tue, 16 Jun 2026 16:18:41 +0000 (UTC)
+	 MIME-Version; b=h6oTdjCwsbc+t2hyQU3+otGQp0kuF421P9G1fgQs37PLcFnkEmcWgCXpyyIWZmx3VDXowLSoA44lRgoqjzF2olo1olCHF3aNGvRgPgAxFLFInHIjKEUBOtUTG2TJVZJrlECxHCZxog7NiArhxvMejLA8m1C3T4H+TW1P9l+dEYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMH4jZGz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C10B1F000E9;
+	Tue, 16 Jun 2026 18:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626723;
-	bh=wbK4hqLmsXUfxraTQmz+IQoMk5AUX/mDqNarW7evRDQ=;
+	s=korg; t=1781636221;
+	bh=iIm5NRtziFMlH7OuInG0AT1ZPrY6OgSFSYIS79X59Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lijeUqDqGeOmnAWbCSDi5QLXO1x65bpzde1tDw0rM+KdzCjf68Og7STWPg3yIAHGi
-	 6SoJOKDLaYQ0v9sHI3iOjgE6/I1hQPZWvPvj4a3pAoV/5GLmewgI8TAntfodEOa0QR
-	 NkF3JP//LLac8HOIvqcHXxz4Osn3hRTMDas8oN8c=
+	b=OMH4jZGzTdZ1Xp5yK0emRPy3MSKaVnusUyVWR+U2/p/AzUvQDNtRRSKnT0SsYvE2t
+	 FWOcwjNXn2kI00tjn/h9kWjiWjiUgJnK+hxhCGTmGGcTApLz4tb//OLUc5wOAiJxO4
+	 2Lecu3cWvHDycc+g/bEv4Ob7OD7XqFu0FNRQ/ZwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Roulin <aroulin@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/261] vxlan: vnifilter: fix spurious notification on VNI update
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yilin Zhu <zylzyl2333@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Christian Brauner <brauner@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Kees Cook <kees@kernel.org>,
+	Liam Howlett <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Serge Hallyn <sergeh@kernel.org>,
+	Vasiliy Kulikov <segoon@openwall.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Serge Hallyn <serge@hallyn.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 198/342] ipc/shm: serialize orphan cleanup with shm_nattch updates
 Date: Tue, 16 Jun 2026 20:28:14 +0530
-Message-ID: <20260616145047.753432827@linuxfoundation.org>
+Message-ID: <20260616145057.420999235@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,93 +83,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-266399-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:zylzyl2333@gmail.com,m:n05ec@lzu.edu.cn,m:brauner@kernel.org,m:aha310510@gmail.com,m:kees@kernel.org,m:liam@infradead.org,m:ljs@kernel.org,m:sergeh@kernel.org,m:segoon@openwall.com,m:dave@stgolabs.net,m:oleg@redhat.com,m:serge@hallyn.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264591-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,infradead.org,openwall.com,stgolabs.net,redhat.com,hallyn.com,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6BB406921BA
+X-Rspamd-Queue-Id: F1BCE694AEA
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Yilin Zhu <zylzyl2333@gmail.com>
 
-[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
+commit 2e5c6f4fd4001562781e99bbfc7f1f0127187542 upstream.
 
-When a VNI is re-added with the same attributes (e.g. same group or no
-group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
-even though nothing changed.
+shm_destroy_orphaned() walks the shm idr under shm_ids(ns).rwsem, but that
+does not serialize all fields tested by shm_may_destroy().  In particular,
+shm_nattch is updated while holding shm_perm.lock, and attach paths can do
+that without holding the rwsem.
 
-The bug is that 'if (changed)' tests whether the pointer is non-NULL,
-not the bool value it points to. Since every caller passes a valid
-pointer, the condition is always true and the notification fires
-unconditionally.
+Do not decide that an orphaned segment is unused before taking the object
+lock.  Move the shm_may_destroy() check under shm_perm.lock, matching the
+other destroy paths, and unlock the segment when it no longer qualifies
+for removal.
 
-Fix by dereferencing the pointer: 'if (*changed)'.
-
-Reproducer:
-
- # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
-      nolearning external vnifilter
- # ip link set vxlan100 up
- # bridge monitor vni &
- # bridge vni add vni 1000 dev vxlan100
- # bridge vni add vni 1000 dev vxlan100  # spurious notification
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/9d97cc1031de2d0bace0edf3a668818aa2f4eca6.1777410234.git.zylzyl2333@gmail.com
+Fixes: 4c677e2eefdb ("shm: optimize locking and ipc_namespace getting")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Yilin Zhu <zylzyl2333@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Serge Hallyn <sergeh@kernel.org>
+Cc: Vasiliy Kulikov <segoon@openwall.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ipc/shm.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 1ab78a8bb9e011..272fa31ef07454 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -671,7 +671,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
- 	if (ret)
- 		return ret;
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -402,15 +402,17 @@ static int shm_try_destroy_orphaned(int
+ 	 * We want to destroy segments without users and with already
+ 	 * exit'ed originating process.
+ 	 *
+-	 * As shp->* are changed under rwsem, it's safe to skip shp locking.
++	 * shm_nattch can be changed under shm_perm.lock without holding the
++	 * rwsem, so take the object lock before checking shm_may_destroy().
+ 	 */
+ 	if (!list_empty(&shp->shm_clist))
+ 		return 0;
  
--	if (changed)
-+	if (*changed)
- 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
- 
+-	if (shm_may_destroy(shp)) {
+-		shm_lock_by_ptr(shp);
++	shm_lock_by_ptr(shp);
++	if (shm_may_destroy(shp))
+ 		shm_destroy(ns, shp);
+-	}
++	else
++		shm_unlock(shp);
  	return 0;
--- 
-2.53.0
-
+ }
+ 
 
 
 
