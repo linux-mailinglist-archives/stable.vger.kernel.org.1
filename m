@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EIm4IjSaMWr5nwUAu9opvQ
-	(envelope-from <stable+bounces-266274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:16 +0200
+	id guKXAF1tMWo+jAUAu9opvQ
+	(envelope-from <stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A4C694782
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CE7691309
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:56 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZRu+46u+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266274-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266274-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="G/GnQisI";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31EE431A89EC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D15F30696DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593D93AE1A2;
-	Tue, 16 Jun 2026 18:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988C844105C;
+	Tue, 16 Jun 2026 15:23:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279823D75CE;
-	Tue, 16 Jun 2026 18:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FA34D90C;
+	Tue, 16 Jun 2026 15:23:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635569; cv=none; b=cfR9zlOdjf/E7w9bUxnJ5dJS0ksQnPenpoRpGxMcwes9qAvrjrdS2ruQWu2Al8DQp/w2L4Lq2MVeg+niI9MrXGAD6mQA6lc7+HnfWw8S5iIU6BUdOkaz2GaZjC87t1ahbc8WEKu+j33FU7XbZEbk/JvGaIfTQoHHOidwIGDSK6o=
+	t=1781623393; cv=none; b=XFXqp7t/mVO18owqd5LUt/XWXMOhoKw9lxhulwascamlVzW1Q9g0dWaoEI6CQiLra8Fuxaovd5gFz3EtmcO25F5Zs0IYys99gm0WY60PjuXwjofszDgxGg3e255RG+Zz6EZRQyJhQgukmTBHcPfHb1N+IeAJ/iWOvn/qhi4QTBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635569; c=relaxed/simple;
-	bh=BHzIdCcqYwChEyCIBkzqlrZU0Hv/r5D6uOtemn6iCmw=;
+	s=arc-20240116; t=1781623393; c=relaxed/simple;
+	bh=SfRJqp6S9mFZlLbkshzXM7H2wt2OAQTptudOvP9KnfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQzL1WY0iL3uR42T7YDs+C+l1Y1wt72H5mrbVKMCIil5ToPQGnWKC3+w1n7c8CmZI89ExYXJUFwsyRi1SCPcQxtst3/lRByv8IvnB4ulFek606vOZxrCjvSEl+d6LykcS50xwCEb2yDkzmTFMbZU02tAHrMxJ+5k3XLGupH7Hho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRu+46u+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45731F000E9;
-	Tue, 16 Jun 2026 18:46:06 +0000 (UTC)
+	 MIME-Version; b=KB3/3mrni7R9AROj7XWQnCrRRrMPjw3A+gbK7M2pU/EqOsJHLUTAePmHHrsrTkxaNvOP93ReprcZIKFSLWXfg+Rpxvm565qSt7MvesU7hVorav+eQmWYUATVYynC0A053/VzS2FZ3E7ueyCqwa+UYG6yoB5ESHFJEIFkmQnSqmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/GnQisI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADE51F000E9;
+	Tue, 16 Jun 2026 15:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635567;
-	bh=SNcaryhRU9dBDjvlE53Z9DUa2CEFKmiSbUOXu+c+ebs=;
+	s=korg; t=1781623392;
+	bh=VkWYeqpLE7G8Qu2CEvw2tHBqdt60UBSzxZXFgtD7iAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZRu+46u++4OrONUdZIHwZctqDnokQxwONrJJE+TWQ6ED6rGfpAnWWDK7HBkYxyysO
-	 h4FnAXzrhS1SU06VezsXjLbSbK8OqTqgUSbjza4yqFdwYlyFAgz81PmFf8EG5ZP/24
-	 UlEYLWO1uwbPNnyisjlZwVtXTy300qXhg2cR0JD4=
+	b=G/GnQisI/72CbMhDeR2AF9xMb42NtRsdPNGrmHfnOti0yw+z1656dwpRRTHr84Vzc
+	 4kM5MwVGv7s/h+mOQaQVMbeexNK1zW24awRtFVSQWTLm7SWDnXNgqyn6awXQpchZCw
+	 MwUKjvqDvwJgCfWvd14LBB1TSOlFz7rstLlVjPvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Maoyi Xie <maoyixie.tju@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 073/342] ip6: vti: Use ip6_tnl.net in vti6_siocdevprivate().
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 138/378] ip6_vti: fix incorrect tunnel matching in vti6_tnl_lookup()
 Date: Tue, 16 Jun 2026 20:26:09 +0530
-Message-ID: <20260616145051.645951708@linuxfoundation.org>
+Message-ID: <20260616145117.549369528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,130 +69,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,redhat.com];
-	TAGGED_FROM(0.00)[bounces-266274-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:shaw.leon@gmail.com,m:maoyixie.tju@gmail.com,m:pabeni@redhat.com,m:shawleon@gmail.com,m:maoyixietju@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263958-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,6wind.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08A4C694782
+X-Rspamd-Queue-Id: 73CE7691309
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maoyi Xie <maoyixie.tju@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 8b484efd5cb4eeef9021a661e198edc5349dacf6 upstream.
+[ Upstream commit a5c0359f5cbc51a2e2b114d6041e0f3c73f903e9 ]
 
-After patch 1/2 in this series, vti6_update() unlinks and relinks
-the tunnel through t->net. vti6_siocdevprivate() still uses
-dev_net(dev) for the collision lookup. For a tunnel moved through
-IFLA_NET_NS_FD, dev_net(dev) is the new netns, not t->net.
+In vti6_tnl_lookup(), when an exact match for a tunnel fails,
+the code falls back to searching for wildcard tunnels:
 
-SIOCCHGTUNNEL on a migrated tunnel then runs:
+- Tunnels matching the packet's local address, with any remote address
+  wildcard remote).
 
-  net = dev_net(dev)                    /* migrated netns */
-  t   = vti6_locate(net, &p1, false)    /* misses target in t->net */
-  ...
-  t   = netdev_priv(dev)
-  vti6_update(t, &p1, false)            /* mutates t->net's hash */
+- Tunnels matching the packet's remote address, with any local address
+  (wildcard local).
 
-A caller in the migrated netns picks params that match a tunnel
-in the creation netns. The lookup in dev_net(dev) finds nothing.
-vti6_update() prepends the migrated tunnel at the head of the
-creation netns hash bucket for those params. Later lookups in
-the creation netns resolve to the migrated device. xfrm receive
-delivers the matched packets through a device the caller controls.
+However, vti6 stores all these different types of tunnels in the same
+hash table (ip6n->tnls_r_l) prone to hash collisions.
 
-Reachable from an unprivileged user namespace (unshare --user
---map-root-user --net). Cross tenant scope on container hosts.
+The bug is that the fallback search loops in vti6_tnl_lookup() were
+missing checks to ensure that the candidate tunnel actually has
+a wildcard address.
 
-Switch the SIOCCHGTUNNEL path on a non fallback device to use
-t->net for the lookup. The lookup now matches the netns
-vti6_update() operates on.
-
-Also add ns_capable(self->net->user_ns, CAP_NET_ADMIN) before
-the lookup. The check at the top of the case is against
-dev_net(dev)->user_ns, which after migration is the attacker's
-netns. A caller there can pick params absent from self->net,
-the lookup returns NULL, t becomes self, and vti6_update()
-inserts the device into the creation netns hash. The new check
-requires CAP_NET_ADMIN in the creation netns user_ns too.
-
-SIOCADDTUNNEL and SIOCCHGTUNNEL on the fallback device keep
-dev_net(dev), which equals init_net there.
-
-Fixes: 61220ab34948 ("vti6: Enable namespace changing")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Xiao Liang <shaw.leon@gmail.com>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyixie.tju@gmail.com>
-Link: https://patch.msgid.link/20260521130555.3421684-3-maoyixie.tju@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fbe68ee87522 ("vti6: Add a lookup method for tunnels with wildcard endpoints.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://patch.msgid.link/20260608164613.933023-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_vti.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/ipv6/ip6_vti.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index d2b74a6f2cf62d..d871cab6938d36 100644
 --- a/net/ipv6/ip6_vti.c
 +++ b/net/ipv6/ip6_vti.c
-@@ -836,17 +836,24 @@ vti6_ioctl(struct net_device *dev, struc
- 		if (p.proto != IPPROTO_IPV6  && p.proto != 0)
- 			break;
- 		vti6_parm_from_user(&p1, &p);
--		t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
- 		if (dev != ip6n->fb_tnl_dev && cmd == SIOCCHGTUNNEL) {
-+			struct ip6_tnl *self = netdev_priv(dev);
-+
-+			err = -EPERM;
-+			if (!ns_capable(self->net->user_ns, CAP_NET_ADMIN))
-+				break;
-+			t = vti6_locate(self->net, &p1, false);
- 			if (t) {
- 				if (t->dev != dev) {
- 					err = -EEXIST;
- 					break;
- 				}
- 			} else
--				t = netdev_priv(dev);
-+				t = self;
- 
- 			err = vti6_update(t, &p1, false);
-+		} else {
-+			t = vti6_locate(net, &p1, cmd == SIOCADDTUNNEL);
- 		}
- 		if (t) {
- 			err = 0;
+@@ -106,6 +106,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
+ 	hash = HASH(&any, local);
+ 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+ 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
++		    ipv6_addr_any(&t->parms.raddr) &&
+ 		    (t->dev->flags & IFF_UP))
+ 			return t;
+ 	}
+@@ -113,6 +114,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
+ 	hash = HASH(remote, &any);
+ 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
+ 		if (ipv6_addr_equal(remote, &t->parms.raddr) &&
++		    ipv6_addr_any(&t->parms.laddr) &&
+ 		    (t->dev->flags & IFF_UP))
+ 			return t;
+ 	}
+-- 
+2.53.0
+
 
 
 
