@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DiuHC655MWo2kQUAu9opvQ
-	(envelope-from <stable+bounces-264595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:30 +0200
+	id xDHLCdOLMWobmQUAu9opvQ
+	(envelope-from <stable+bounces-265587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B908D6921C6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB28B69374C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iChn2nGH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264595-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264595-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=osmC2wdP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265587-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265587-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C2EA30F67E4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:19:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31C4B303BA8F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAE04508E4;
-	Tue, 16 Jun 2026 16:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC2B3C65F2;
+	Tue, 16 Jun 2026 17:45:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC5F35AC1E;
-	Tue, 16 Jun 2026 16:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5283E2F12AE;
+	Tue, 16 Jun 2026 17:45:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626739; cv=none; b=JfLWMjIoWGYP01Ubu0Ex1+qLHOjHRIsOHopNvvFk2rd7SbtqxcMEIjDLWBd5dq66y8vsIe368HF3x3tudsubnRowVKRD++jIXLzEXIwv4QMLbYFyiKbqChMNELrrykWIrJXD+crRKC7hzsC8bLdnz5ia8lrr/f1Th5qexC1F9Qc=
+	t=1781631952; cv=none; b=UNOQPth2L+kAeKrFht4f4Iz4hnDgOS6FXFgxDTheX1LEIFH5zlItknSIPyrmd+zOkU7UAmlrVgxv+YFe45mP64R3LxBONK7E4kdHIfrxTwARW7t41Dy35hUweIFV+NHBflG9Rm5heaZqXSm2w7BuhbMptUVOmR0gzrLYY+T7L0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626739; c=relaxed/simple;
-	bh=W/sWEt7kKhSr06iP9NFlP7aO9k6sz6vj2ijV+CXWUx4=;
+	s=arc-20240116; t=1781631952; c=relaxed/simple;
+	bh=k1DyQI1kwHdf48gyO7nHFeXRldKbuedt5bIR4f8HFI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQ6vVkUh5kV3BpszuER3Fq26L9kiStBoSl69f1IcPqRC3vcC/OJQsuZD6eoMnkUM7LOyLQTo2YxXsqErUczfhBEC/XvzIqv/V+hTiybbDEI+EKpY3v6bRqxCaVJ6uO0hOB+cDyiymPv+0vzRbNdjWH01uaMeKQmtdOLsYmIM/xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iChn2nGH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB3A1F000E9;
-	Tue, 16 Jun 2026 16:18:57 +0000 (UTC)
+	 MIME-Version; b=hLoPg8B1/rTSYRrLFg/NP+1qAv9dui+Z3udRRTwraOpcJGYgch34QekJNgpgoUtxqFMuiDXKjr+/1577EQYwGR6TBb3EzHwvMnTYRjUR/TBwisSmKql8a4Cw7UMry8wD6uZ+hWT7Qr876Nf5oYO/wg9Wzhv6q3aU98C7is3T/Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osmC2wdP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F71C1F000E9;
+	Tue, 16 Jun 2026 17:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626738;
-	bh=xFDY7iBLV75PnZsLyXqq9ZOnHrEkUfpWN/G0FsBWUwI=;
+	s=korg; t=1781631951;
+	bh=mYP68NT1eZl3uy0crsopTcDSBR3Qy+DkimxzsJtURHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iChn2nGHaVY2JdBhWq40iLFMWBWldxUxvTL6N8mb/03MfenxIQPhCQz+skc8DcuEH
-	 K5a7rjW3szScRVmqb6VYsU6kw4roVKA1ghn4ZPgXVex4w3J6egkaQT2uDh6NjDl437
-	 LQ5Y+G5qgJvyiFYVPbFG1YZyXbzcbK+coZSJTLAY=
+	b=osmC2wdPBJ/Xz5m/s+I5KbRGh68wWt/qDxSr717x9LssHH9Lgc/RnFXT8b6uhU9ba
+	 bToFhJ0HH2FGmXAdwY10y8zViy1xcyCanxU9VqZBIRNJyfCTRE3qr7N5jpSGaSyqvR
+	 GZ+xtj4qb5o7mPxSIjcF+yJUsHBtVTu2gTfr9irw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/261] l2tp: pppol2tp: hold reference to session in pppol2tp_ioctl()
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 318/522] thunderbolt: Validate XDomain request packet size before type cast
 Date: Tue, 16 Jun 2026 20:27:45 +0530
-Message-ID: <20260616145046.321457884@linuxfoundation.org>
+Message-ID: <20260616145140.730322272@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,216 +66,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264595-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265587-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B908D6921C6
+X-Rspamd-Queue-Id: BB28B69374C
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Jones <lee@kernel.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit a213a8950414c684999dcf03edeea6c46ede172e ]
+commit a504b9f2797b739e0304d537e8aa4ce883ecce39 upstream.
 
-pppol2tp_ioctl() read sock->sk->sk_user_data directly without any
-locks or reference counting.  If a controllable sleep was induced during
-copy_from_user() (e.g. via a userfaultfd page fault sleep), a concurrent
-socket close could trigger pppol2tp_session_close() asynchronously.  This
-frees the l2tp_session structure via the l2tp_session_del_work workqueue.
-Upon resuming, the ioctl thread dereferences the stale session pointer,
-resulting in a Use-After-Free (UAF).
+tb_xdp_handle_request() casts the received packet buffer to
+protocol-specific structs without verifying that the allocation
+is large enough for the target type.  A peer can send a minimal
+XDomain packet that passes the generic header length check but is
+shorter than the struct accessed after the cast, causing out-of-
+bounds reads from the kmemdup allocation.
 
-Fix this by securely fetching the session reference using the RCU-safe,
-refcounted helper pppol2tp_sock_to_session(sk) on entry.  This locks the
-session's refcount across the sleep.  We structured the function to exit
-via standard err breaks, guaranteeing that l2tp_session_put() is cleanly
-called on all return paths to drop the reference.
+Plumb the packet length through xdomain_request_work and validate
+it against the expected struct size before each cast.
 
-To preserve existing behavior we validate the session and its magic
-signature only for the specific L2TP commands that require it.  This
-ensures that generic/unknown ioctls called on an unconnected socket
-still return -ENOIOCTLCMD and correctly fall back to generic handlers
-(e.g. in sock_do_ioctl()).
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Fixes: fd558d186df2 ("l2tp: Split pppol2tp patch into separate l2tp and ppp parts")
-Link: https://patch.msgid.link/20260527133630.2120612-1-lee@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_ppp.c | 82 +++++++++++++++++++++++++++------------------
- 1 file changed, 50 insertions(+), 32 deletions(-)
+ drivers/thunderbolt/xdomain.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 16c514f628eaca..bf78edee1ef8a7 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1043,64 +1043,76 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- {
- 	struct pppol2tp_ioc_stats stats;
- 	struct l2tp_session *session;
-+	int err = 0;
-+
-+	session = pppol2tp_sock_to_session(sock->sk);
+--- a/drivers/thunderbolt/xdomain.c
++++ b/drivers/thunderbolt/xdomain.c
+@@ -54,6 +54,7 @@ static const char * const state_names[]
+ struct xdomain_request_work {
+ 	struct work_struct work;
+ 	struct tb_xdp_header *pkg;
++	size_t pkg_len;
+ 	struct tb *tb;
+ };
  
-+	/* Validate session presence and magic integrity ONLY for commands
-+	 * that belong to L2TP and require a valid session.
-+	 */
- 	switch (cmd) {
- 	case PPPIOCGMRU:
- 	case PPPIOCGFLAGS:
--		session = sock->sk->sk_user_data;
-+	case PPPIOCSMRU:
-+	case PPPIOCSFLAGS:
-+	case PPPIOCGL2TPSTATS:
- 		if (!session)
- 			return -ENOTCONN;
+@@ -732,6 +733,7 @@ static void tb_xdp_handle_request(struct
+ 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
+ 	const struct tb_xdp_header *pkg = xw->pkg;
+ 	const struct tb_xdomain_header *xhdr = &pkg->xd_hdr;
++	size_t pkg_len = xw->pkg_len;
+ 	struct tb *tb = xw->tb;
+ 	struct tb_ctl *ctl = tb->ctl;
+ 	struct tb_xdomain *xd;
+@@ -763,7 +765,7 @@ static void tb_xdp_handle_request(struct
+ 	switch (pkg->type) {
+ 	case PROPERTIES_REQUEST:
+ 		tb_dbg(tb, "%llx: received XDomain properties request\n", route);
+-		if (xd) {
++		if (xd && pkg_len >= sizeof(struct tb_xdp_properties)) {
+ 			ret = tb_xdp_properties_response(tb, ctl, xd, sequence,
+ 				(const struct tb_xdp_properties *)pkg);
+ 		}
+@@ -817,7 +819,8 @@ static void tb_xdp_handle_request(struct
+ 		tb_dbg(tb, "%llx: received XDomain link state change request\n",
+ 		       route);
  
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
-+		if (session->magic != L2TP_SESSION_MAGIC) {
-+			l2tp_session_put(session);
- 			return -EBADF;
-+		}
-+		break;
-+	default:
-+		break;
-+	}
+-		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH) {
++		if (xd && xd->state == XDOMAIN_STATE_BONDING_UUID_HIGH &&
++		    pkg_len >= sizeof(struct tb_xdp_link_state_change)) {
+ 			const struct tb_xdp_link_state_change *lsc =
+ 				(const struct tb_xdp_link_state_change *)pkg;
  
-+	switch (cmd) {
-+	case PPPIOCGMRU:
-+	case PPPIOCGFLAGS:
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (put_user(0, (int __user *)arg))
--			return -EFAULT;
-+		if (put_user(0, (int __user *)arg)) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCSMRU:
- 	case PPPIOCSFLAGS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Not defined for tunnels */
--		if (!session->session_id && !session->peer_session_id)
--			return -ENOSYS;
-+		if (!session->session_id && !session->peer_session_id) {
-+			err = -ENOSYS;
-+			break;
-+		}
- 
--		if (!access_ok((int __user *)arg, sizeof(int)))
--			return -EFAULT;
-+		if (!access_ok((int __user *)arg, sizeof(int))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	case PPPIOCGL2TPSTATS:
--		session = sock->sk->sk_user_data;
--		if (!session)
--			return -ENOTCONN;
--
--		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
--			return -EBADF;
--
- 		/* Session 0 represents the parent tunnel */
- 		if (!session->session_id && !session->peer_session_id) {
- 			u32 session_id;
--			int err;
- 
- 			if (copy_from_user(&stats, (void __user *)arg,
--					   sizeof(stats)))
--				return -EFAULT;
-+					   sizeof(stats))) {
-+				err = -EFAULT;
-+				break;
-+			}
- 
- 			session_id = stats.session_id;
- 			err = pppol2tp_tunnel_copy_stats(&stats,
- 							 session->tunnel);
- 			if (err < 0)
--				return err;
-+				break;
- 
- 			stats.session_id = session_id;
- 		} else {
-@@ -1110,15 +1122,21 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
- 		stats.tunnel_id = session->tunnel->tunnel_id;
- 		stats.using_ipsec = l2tp_tunnel_uses_xfrm(session->tunnel);
- 
--		if (copy_to_user((void __user *)arg, &stats, sizeof(stats)))
--			return -EFAULT;
-+		if (copy_to_user((void __user *)arg, &stats, sizeof(stats))) {
-+			err = -EFAULT;
-+			break;
-+		}
- 		break;
- 
- 	default:
--		return -ENOIOCTLCMD;
-+		err = -ENOIOCTLCMD;
-+		break;
+@@ -869,6 +872,7 @@ tb_xdp_schedule_request(struct tb *tb, c
+ 		kfree(xw);
+ 		return false;
  	}
++	xw->pkg_len = size;
+ 	xw->tb = tb_domain_get(tb);
  
--	return 0;
-+	if (session)
-+		l2tp_session_put(session);
-+
-+	return err;
- }
- 
- /*****************************************************************************
--- 
-2.53.0
-
+ 	schedule_work(&xw->work);
 
 
 
