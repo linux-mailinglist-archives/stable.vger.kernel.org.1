@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cT2CBd9xMWrtjQUAu9opvQ
-	(envelope-from <stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:11 +0200
+	id bttGILmAMWpKlAUAu9opvQ
+	(envelope-from <stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEA669181B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164866929FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FrOX6zjq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264216-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oP9llEhI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264987-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D1F930696D0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EEAC4304E178
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA0F47798F;
-	Tue, 16 Jun 2026 15:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49B633A9EB;
+	Tue, 16 Jun 2026 16:55:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A450361651;
-	Tue, 16 Jun 2026 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D85169AD2;
+	Tue, 16 Jun 2026 16:55:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624743; cv=none; b=IPLHOXh2u6HrX7wJ5Fi6X1rYIH5IzmvW0l1wBEsHU7WKPvcFFtI+FIbgTaB7n566314zzotNAgT5g1/flVxKkwQtFg3I8wpokH4Q+Rt1YEP54KArbPcNhdhn91+C+r0aOo24INNJEzJA/fQrQ4cj52n+1oVltUy+iG48gZf0Bug=
+	t=1781628934; cv=none; b=myUvJo16wGNnAbOilJVHBM/6r5t0ZO0xeyON7bSlmrQxFzaSV1OWnfgouUhBFimQ855wJjJ1xnTbgbL8cfLYTo5HVerosKBreBoXQ5weRZdYNzEmSjgxmqicLQH2uEQnOr/5OhOfnY1Qv/ra4s0mVTYeQyVNGFgIH8OcOeyd29o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624743; c=relaxed/simple;
-	bh=FIaTrvYL6E3x9JP22WTM0lYu6kyGZcfp/G7W6ySmlrA=;
+	s=arc-20240116; t=1781628934; c=relaxed/simple;
+	bh=f0eBdeCD8HlxBgDCqojFOc1OBcEb5TrlAMFR7I/3QCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/Jtz8VQy402ZETYzhYlZAHWUVAqiJ5+9GnZnKYFYWvnd0pR0nVbkEu+i032YrOldxvjdxs+cWVb0HY9PECVKtyVpROUFaDlzo66e0SUMHopS0POej6t3CSiVj4vLGAkPlVHbAgQjJYJh4sqajSS9GPQYIBRzIdx0fIh602vFgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrOX6zjq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CA31F000E9;
-	Tue, 16 Jun 2026 15:45:39 +0000 (UTC)
+	 MIME-Version; b=q09zJ7I+4okho20We6z/nz5OM1w3h1KBL7JJdXcPDRJzBI+IcVhE/MBZi5k/v2eIatoed+ath+q51zKuyyauJaM/kdHNmEvuZbE7GWeCOFtoW0CNMUHaxHv/2FYnOySzRQAz/zfJxag0P/XpriA2Y0k7w8JXQKYUfeQsqQfnTJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP9llEhI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E241F000E9;
+	Tue, 16 Jun 2026 16:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624740;
-	bh=DJ/JJngHQP7CiRVkzqBaqkfH5PAEk/EylES5fcDvmww=;
+	s=korg; t=1781628933;
+	bh=H3987/hhCYqTif3i6ClDkrkKPePcttRL0i65CtYBTQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FrOX6zjqT1hvFjKWhuuGZ3Pkhx0jLMvLb9titzAwjI0ExUxICMXZfM1ClMRts1Een
-	 AlWBNe0JC152k0MMARYRScnvEiD9sTjK4etAKSsKAPu4LO5mE8HWAWc2Zl9e2n323J
-	 kTA+iCJEpRvU86/lHJjG57ZaHsbp9D2tqTYk4V3g=
+	b=oP9llEhIXDRfsduJogS4E0/+xwVNlmwkl5i0ZhuNsGg3eoyK8QRcO/NEzTY+feyZc
+	 /1qUL2RgKnk2HfigDXZGybAyaX2mCk4wlI2u6uBqCWDQ8bSudDVwu1Ztyw6yzitdxe
+	 nOPhjiQeCvj0X/ITzZ29vt2erQ7B+wpamUgYrb/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/325] netfilter: xt_NFQUEUE: prefer raw_smp_processor_id
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 6.6 190/452] serial: zs: Switch to using channel reset
 Date: Tue, 16 Jun 2026 20:26:57 +0530
-Message-ID: <20260616145058.842061688@linuxfoundation.org>
+Message-ID: <20260616145127.817911269@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,79 +67,127 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264216-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264987-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fmancera@suse.de,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,strlen.de:email,netfilter.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,orcam.me.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9BEA669181B
+X-Rspamd-Queue-Id: 164866929FA
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit c6c5327dd18bec1e1bbf139b2cf5ae53608a9d30 ]
+commit 8572955630f30948837088aa98bcbe0532d1ceac upstream.
 
-With PREEMPT_RCU this triggers a splat because smp_processor_id() can be
-preempted while inside a RCU critical section. If xt_NFQUEUE target is
-invoked via nft_compat_eval() path, we are inside a RCU critical
-section.
+Switch the driver to using the channel reset rather than hardware reset,
+simplifying handling by removing an interference between channels that
+causes the other channel to become uninitialised afterwards.
 
-Just use the raw version instead.
+There is little difference between the two kinds of reset in terms of
+register settings that result, and we initialise the whole register set
+right away anyway.  However this prevents a hang from happening should
+the console output handler in the firmware try to access the other port
+whose transmitter has been disabled and line parameters messed up.
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example this will happen if the keyboard port (port A) is chosen for
+the system console, unusually but not insanely for a headless system, as
+the port is wired to a standard DA-15 connector and an adapter can be
+easily made.  Or with the next change in place this would happen for the
+regular console port (port B), since the keyboard port (port A) will be
+initialised first.
+
+Just remove the unnecessary complication then, a channel reset is good
+enough.  We still need the initialisation marker, now per channel rather
+than per SCC, as for the console port zs_reset() will be called twice:
+once early on via zs_serial_console_init() for the console setup only,
+and then again via zs_config_port() as the port is associated with a TTY
+device.
+
+Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.23+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062323430.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_NFQUEUE.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/zs.c |    7 ++++---
+ drivers/tty/serial/zs.h |    2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/xt_NFQUEUE.c b/net/netfilter/xt_NFQUEUE.c
-index 466da23e36ff47..b32d153e3a1862 100644
---- a/net/netfilter/xt_NFQUEUE.c
-+++ b/net/netfilter/xt_NFQUEUE.c
-@@ -91,7 +91,7 @@ nfqueue_tg_v3(struct sk_buff *skb, const struct xt_action_param *par)
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -831,21 +831,22 @@ static void zs_shutdown(struct uart_port
  
- 	if (info->queues_total > 1) {
- 		if (info->flags & NFQ_FLAG_CPU_FANOUT) {
--			int cpu = smp_processor_id();
-+			int cpu = raw_smp_processor_id();
+ static void zs_reset(struct zs_port *zport)
+ {
++	struct zs_port *zport_a = &zport->scc->zport[ZS_CHAN_A];
+ 	struct zs_scc *scc = zport->scc;
+ 	int irq;
+ 	unsigned long flags;
  
- 			queue = info->queuenum + cpu % info->queues_total;
- 		} else {
--- 
-2.53.0
-
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 	irq = !irqs_disabled_flags(flags);
+-	if (!scc->initialised) {
++	if (!zport->initialised) {
+ 		/* Reset the pointer first, just in case...  */
+ 		read_zsreg(zport, R0);
+ 		/* And let the current transmission finish.  */
+ 		zs_line_drain(zport, irq);
+-		write_zsreg(zport, R9, FHWRES);
++		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
+ 		udelay(10);
+ 		write_zsreg(zport, R9, 0);
+-		scc->initialised = 1;
++		zport->initialised = 1;
+ 	}
+ 	load_zsregs(zport, zport->regs, irq);
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+--- a/drivers/tty/serial/zs.h
++++ b/drivers/tty/serial/zs.h
+@@ -22,6 +22,7 @@
+ struct zs_port {
+ 	struct zs_scc	*scc;			/* Containing SCC.  */
+ 	struct uart_port port;			/* Underlying UART.  */
++	int		initialised;		/* For the console port.  */
+ 
+ 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
+ 
+@@ -41,7 +42,6 @@ struct zs_scc {
+ 	struct zs_port	zport[2];
+ 	spinlock_t	zlock;
+ 	atomic_t	irq_guard;
+-	int		initialised;
+ };
+ 
+ #endif /* __KERNEL__ */
 
 
 
