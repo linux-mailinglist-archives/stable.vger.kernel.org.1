@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9BO4Er+cMWrXoAUAu9opvQ
-	(envelope-from <stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:07 +0200
+	id GlKzDo1tMWpRjAUAu9opvQ
+	(envelope-from <stable+bounces-264051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C5D6949D2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D4F69134E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cLE67Xa6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jJKwTD3c;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264051-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264051-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7A713276DF7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AEF7304892C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9536F47CC96;
-	Tue, 16 Jun 2026 18:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5292F3CBE8B;
+	Tue, 16 Jun 2026 15:31:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01547D93F;
-	Tue, 16 Jun 2026 18:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A94B38837F;
+	Tue, 16 Jun 2026 15:31:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635971; cv=none; b=twdvD9+kLt3afSMyQfEQSG5GWzfuIPv9EzL/he0PprbJNYhGEsYM2BaCzUHj4jSZZd/xQCxTDUK5WMxFScAnbQGDNNHXsdU5O9EEKKMZM7Lapde/ItH98GBm0hO0b8mENtBYbfulam0eTJ9L6tUkF+h9fIaW4O7woT0sbCTtGn8=
+	t=1781623866; cv=none; b=SOG0+gCSQXAoPigkDE5ECW8GqGx0BIRAj01Z825sgx28qdNXJyGcTWcEosDfJtJnKjo1TbjXdhuMfT/9YrKvg+fNUJnKHX9Fa71ty9wNkDi31hvzHW7Nn3b8TDC9FzUkhL1vFOlBNPuemDM0olg4Z27pt2Ncms2nnoeK2ORljnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635971; c=relaxed/simple;
-	bh=DTqRYDS38bGvqyy3O5GH35cpuxmrX+AFEHrRX5+6h1A=;
+	s=arc-20240116; t=1781623866; c=relaxed/simple;
+	bh=HD3qu6pcu/ur9zRDxNxW9vIkhH2EKMABuvwP6dWF7zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i0kY/urB7V0X7vlp5I1dsDOkU0i8RL01/YV9FlMKhwwIKplxJNy27LzlFN5+VScpHkP6yr2t6PmTgx4FnXI8tmHJYMb/fruUC9yUYwUjxqJ2i6B5ZBvtmjcJfpZNETLmMW2xxtn5IpUq7RZxrUhQQK/hopgkzCw+AKKw9gs7qQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLE67Xa6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336F41F000E9;
-	Tue, 16 Jun 2026 18:52:48 +0000 (UTC)
+	 MIME-Version; b=tj70/3AWzo5I+PNCq7Hybs8xZkY/JS5plBbjkXQJgGCQBu3eEwvymvkPdsUpesXYmrCiEST6ymPvEnu0p+eKfjYW5xvKIL1LSSb3IZ4KXaFEjWLMpMCxi0Rjnko21kdAk2cRNxIFe3H1mggwUNIk4GrDJsGw+AJo8cVaOWfgE68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJKwTD3c; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4211F000E9;
+	Tue, 16 Jun 2026 15:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635970;
-	bh=w3GrJji58w6ubq23/WYoVnXSZIKeGYRQTVvunpPXdEo=;
+	s=korg; t=1781623865;
+	bh=LF/cz+Jidc4TzUjj6WiVUW3hacT23hnEbgsWzek9XMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cLE67Xa6O8w8IoHR/r7Ej6AlwTpOLxgBjZoe0MDV2g8F3iZgQn0YsYQrP2nr7aIy5
-	 EQtaBBzinlkKxpMjvTzC14zK1lyYT/6g3Poi9Paq8E56YXB2PdvfgdlpFnIt65Uxxq
-	 DpN4VZuS4rrv+aBn6m7iGBMMI0xXKnhWdCwXrvHg=
+	b=jJKwTD3cdu47tPUWvEm7X2KsCSrMidHQ4chF1XMMnzsu5yqd0brh6WmwOCJ+wGI4P
+	 z1QN1UAtU+Vz2jSNiUHTpUqjYKsrD1vEdQl/YudMmRAmMxC3p563wghaN7QWPliI7M
+	 LG1GPDuT5zXbA1QhBDbK5v0vzA1memYwZl0pO7us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
-	Aleksandr Nogikh <nogikh@google.com>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/342] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
-Date: Tue, 16 Jun 2026 20:27:26 +0530
-Message-ID: <20260616145055.156750706@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PATCH 7.0 216/378] drm/virtio: fix dma_fence refcount leak on error in virtio_gpu_dma_fence_wait()
+Date: Tue, 16 Jun 2026 20:27:27 +0530
+Message-ID: <20260616145121.704394887@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -78,103 +75,77 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266352-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264051-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vulab@iscas.ac.cn,m:dmitry.osipenko@collabora.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,vger.kernel.org:from_smtp,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iscas.ac.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 49C5D6949D2
+X-Rspamd-Queue-Id: A5D4F69134E
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
+commit 3f26bb732cc136ab20176697c92f32c9c84cb125 upstream.
 
-When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
-do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
-threads and sets signal->group_stop_count to the number of threads. If
-one of the threads concurrently calls execve(), de_thread() invokes
-zap_other_threads() to kill all other threads. zap_other_threads()
-aborts the pending group stop by resetting signal->group_stop_count to 0
-and clears the JOBCTL_PENDING_MASK for all other threads. However, it
-fails to clear the job control flags for the calling thread.
+dma_fence_unwrap_for_each() internally calls dma_fence_unwrap_first()
+which does cursor->chain = dma_fence_get(head), taking an extra
+reference. On normal loop completion, dma_fence_unwrap_next()
+releases this via dma_fence_chain_walk() -> dma_fence_put().
 
-When execve() completes, the calling thread returns to user mode and
-checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
-it calls do_signal_stop(), which invokes task_participate_group_stop().
-Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
-already-zero signal->group_stop_count, triggering a warning:
+When virtio_gpu_do_fence_wait() fails and the function returns early
+from inside the loop, the cursor->chain reference is never released.
+This is the only caller in the entire kernel that does an early return
+inside dma_fence_unwrap_for_each.
 
-sig->group_stop_count == 0
-WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
-task_participate_group_stop+0x215/0x2d0
-Call Trace:
- <TASK>
- do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
- get_signal+0xa8c/0x1330 kernel/signal.c:2884
- arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
- do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+Add dma_fence_put(itr.chain) before the early return.
 
-Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
-calling thread in zap_other_threads(), ensuring it does not retain any
-stale job control state after the thread group is destroyed. This aligns
-with other functions that tear down a thread group and abort group
-stops, such as zap_process() and complete_signal(), which correctly
-clear these flags for all threads including the current one.
-
-Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
-Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
-Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
-Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: eba57fb5498f ("drm/virtio: Wait for each dma-fence of in-fence array individually")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patch.msgid.link/20260607090303.92423-1-vulab@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/signal.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/virtio/virtgpu_submit.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 7a9af6d4f2b01e..463b798651b6a6 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1351,6 +1351,7 @@ int zap_other_threads(struct task_struct *p)
- 	int count = 0;
+--- a/drivers/gpu/drm/virtio/virtgpu_submit.c
++++ b/drivers/gpu/drm/virtio/virtgpu_submit.c
+@@ -65,8 +65,10 @@ static int virtio_gpu_dma_fence_wait(str
  
- 	p->signal->group_stop_count = 0;
-+	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
+ 	dma_fence_unwrap_for_each(f, &itr, fence) {
+ 		err = virtio_gpu_do_fence_wait(submit, f);
+-		if (err)
++		if (err) {
++			dma_fence_put(itr.chain);
+ 			return err;
++		}
+ 	}
  
- 	while_each_thread(p, t) {
- 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
--- 
-2.53.0
-
+ 	return 0;
 
 
 
