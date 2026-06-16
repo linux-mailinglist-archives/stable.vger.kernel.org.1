@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id M3v7JCSZMWpRnwUAu9opvQ
-	(envelope-from <stable+bounces-266188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:44 +0200
+	id 0K9NIMyeMWrNoQUAu9opvQ
+	(envelope-from <stable+bounces-266517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF28E6945C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5DF694C19
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hYoiYJRf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266188-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266188-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zb4PQW4M;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266517-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266517-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A39531A59DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AF2C9301AB46
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04384779B0;
-	Tue, 16 Jun 2026 18:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376223DDDBD;
+	Tue, 16 Jun 2026 19:06:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C693D169AD2;
-	Tue, 16 Jun 2026 18:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B7D3DDDA1;
+	Tue, 16 Jun 2026 19:06:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635116; cv=none; b=GS3BQv0HO21s9bLpggpvYy6QMRO124cEKF4Bj6jTKwo1kpfChEsoO5fyRvhYBxW/qEzkrOwByU4OJF1QUisxHtESwWLM3WxmObLWn5aDDCc0xRYoYWXlmQYGUHhs6ubjT0xEW/m4A/th3r+fLqIxW2MXnwpHWN8UskBj4WwNmKg=
+	t=1781636806; cv=none; b=PdAcxuRvuaTomRuaw+IggIZB9ZWkmfEUPyuSjwiR+Ero6+B39HZVEO3mzyrookQhEu1Bs9YSCJW473FSG0GhKvm41eQGWpefEnDMFQOvm5ODk4FCV1KO6FOA1KfnO0zA3PiPIm5jC9093JX1OIr7Eh97YoO4LijHGW/Fc6f6nVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635116; c=relaxed/simple;
-	bh=kCjodx5rnAF73DKLTHeI5++55/1TBQBvn+sgqePOcco=;
+	s=arc-20240116; t=1781636806; c=relaxed/simple;
+	bh=wUT2j33Pw6L7iXb9P+fqmTydknEBUC46haLj+6Swbo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jTukwRcEb9QRLG6pSlyeGvGuEdGkKByremAjlXn16wx7m+lzOvc8vipCwk4Ic3c0Go8Z//pkXjV9weX5RBvYFznCufmAPAl0w4YEZKDevB3LrVgvtJMOXmkcYxnwjPvwYKPgHwoS0zvaPyyGHiKlHZmVca/dypJN7xSHlWrhF5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYoiYJRf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A119A1F000E9;
-	Tue, 16 Jun 2026 18:38:34 +0000 (UTC)
+	 MIME-Version; b=t894JAvMQmIaCOisKuj3P0fD1+VnadSfEy/UCJrXbmlwM4dZJ1vxJnsFEHPpPm4Twyha8r14Inu6Ec+flSdIlPyiNALGRx6g+0U133AxOGBQ4x4zakMBDa9vCeCmNHrD4srGAJXdiUFuGDGjlL3E+DsCDYKRoCrLNkCwjZbkfKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zb4PQW4M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F4B1F000E9;
+	Tue, 16 Jun 2026 19:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635115;
-	bh=SHVHQgj14GIDws6lRlwReuzrvIEkkI3jIHaqFY8JDyw=;
+	s=korg; t=1781636805;
+	bh=hsUFhTvaDNnxrpZun9CpMPah7W5YEldU/7RuS075zXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hYoiYJRfKHSrJtfR0+J5yZu7/glpl4P39YbuE7pKrFGMb76XFrzMkal/vJ4QRQn8O
-	 hghxMgDm9FjS9LkgzizQCMhV4hvomfJs0eqRrTjrXwjG0KRiXIqTOvfaK5Hx0m74ov
-	 xhSgEs0D7mrdIvIkNapSMAK54jj5ken7PW29bFX0=
+	b=Zb4PQW4MMAEKLqI/jaGd2mr3TylZnrUxn/u25SPtNzt4JSs0qMnJb6UbShEvWDH5u
+	 bWepy/BcGUpqtySPoPTBEIKNQd+s1bQfNBurcXPJtcyJ1gTiM7JVMrP4xgC+wT5Xhh
+	 HDLv6Du206k/zhrinw1AkMi8/MkuN6oimg6V6EF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
+	stable <stable@kernel.org>,
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 366/411] iio: chemical: scd30: fix division by zero in write_raw
+Subject: [PATCH 5.10 308/342] serial: altera_jtaguart: handle uart_add_one_port() failures
 Date: Tue, 16 Jun 2026 20:30:04 +0530
-Message-ID: <20260616145120.788086459@linuxfoundation.org>
+Message-ID: <20260616145102.803571111@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,73 +70,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266188-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-266517-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:ae878000@gmail.com,m:mhun512@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF28E6945C5
+X-Rspamd-Queue-Id: 7B5DF694C19
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Myeonghun Pak <mhun512@gmail.com>
 
-[ Upstream commit 5aba4f94b225617a55fed442a70329b2ee19c0a5 ]
+[ Upstream commit ea66be25f0e934f49d24cd0c5845d13cdba3520b ]
 
-Add a zero check for val2 before using it as a divisor when setting the
-sampling frequency. A user writing a zero fractional part to the
-sampling_frequency sysfs attribute triggers a division by zero in the
-kernel.
+altera_jtaguart_probe() maps the register window before registering the
+UART port, but it ignores failures from uart_add_one_port(). If port
+registration fails, probe still returns success and the mapping remains
+live until a later remove path that is not part of probe failure cleanup.
 
-Fixes: 64b3d8b1b0f5 ("iio: chemical: scd30: add core driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Return the uart_add_one_port() error and unmap the register window on
+that failure path.
+
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
+
+Fixes: 5bcd601049c6 ("serial: Add driver for the Altera JTAG UART")
+Cc: stable <stable@kernel.org>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Link: https://patch.msgid.link/20260512065837.79528-1-mhun512@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/scd30_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/altera_jtaguart.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/chemical/scd30_core.c
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -257,7 +257,7 @@ static int scd30_write_raw(struct iio_de
- 	guard(mutex)(&state->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		if (val)
-+		if (val || !val2)
- 			return -EINVAL;
+--- a/drivers/tty/serial/altera_jtaguart.c
++++ b/drivers/tty/serial/altera_jtaguart.c
+@@ -423,6 +423,7 @@ static int altera_jtaguart_probe(struct
+ 	struct resource *res_mem;
+ 	int i = pdev->id;
+ 	int irq;
++	int ret;
  
- 		val = 1000000000 / val2;
+ 	/* -1 emphasizes that the platform must have one port, no .N suffix */
+ 	if (i == -1)
+@@ -462,7 +463,11 @@ static int altera_jtaguart_probe(struct
+ 	port->flags = UPF_BOOT_AUTOCONF;
+ 	port->dev = &pdev->dev;
+ 
+-	uart_add_one_port(&altera_jtaguart_driver, port);
++	ret = uart_add_one_port(&altera_jtaguart_driver, port);
++	if (ret) {
++		iounmap(port->membase);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 
 
 
