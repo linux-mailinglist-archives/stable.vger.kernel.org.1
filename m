@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lJeSOyygMWpUogUAu9opvQ
-	(envelope-from <stable+bounces-266539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:12:45 +0200
+	id en6YGQ2ZMWpEnwUAu9opvQ
+	(envelope-from <stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9AF694DCC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:12:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B296945A7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ylVhSwRe;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266539-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266539-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=utvOELmr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266183-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FA7C3025717
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5660B303CE96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EB13DDDAE;
-	Tue, 16 Jun 2026 19:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9380C46AF3C;
+	Tue, 16 Jun 2026 18:38:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC73DD851;
-	Tue, 16 Jun 2026 19:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60ECC169AD2;
+	Tue, 16 Jun 2026 18:38:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636914; cv=none; b=T5GXCCJRjmqgSGZo5vBqJZySqFU15CRE0PaWl16HWnrBpT7J6zkswl38sAcMiQ34YkfEMF3hG4CoaHP7fjcJpl2DVi6bQdzJ9gwqPqACP5sgzJcuowmkETIwK1PYCpZX0a4wyGem5BKzoqyu3JGBxZFs87e+NxhqG6N4JEffz0s=
+	t=1781635089; cv=none; b=rvwSRZn8/tYfVP6EfSc0VehIqhbmO2b3sFWRsfwOiLdSQYEFINdV0OcYr6LZRNgOau3SjMk1FOQlNOlWho0+etvTVfCvZrrqxcBbApuw1hmfxrQ095noxDVYbYrhGCQ6QgF4O+6PAliGhQ2hT598N9a32JC5NJJlYI5BkrtOJhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636914; c=relaxed/simple;
-	bh=kbNPx//kKnvorTTXZ11GhmczXMpzLQ5RiHPYtRTGdrY=;
+	s=arc-20240116; t=1781635089; c=relaxed/simple;
+	bh=sXC66G3Q3paW2JS3LEd4uh0gUQSKqFuRRobazS9hCos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsEwJEne/1gcAxRA7KnCThqsPfGN4D1b4LqAKNEsXBDs0//8dP1Vnp3IomVEtLNh0s/skLa+r5juhF0uvfF6Yk7t24+aAZHDV2SAXKACn019NRIvUKwZpQXGDMhzFBdoq+eBSv83Hd1yNYfpoyILYCJOMvSRziSuwjcHYJ4c0w8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylVhSwRe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25451F000E9;
-	Tue, 16 Jun 2026 19:08:32 +0000 (UTC)
+	 MIME-Version; b=dVnWGQYin9DwPhQqWJ34iRVVuD39fNm3DpDszVlHjCGOEC0Alxl24a6tWDTngZTYp8TaR68Uj4vYOdCxhy8tdfVlknONYh0/Bi/L7ljVksrUOzdD8GbOFyJELYcIwM1AJ+YlylnHWhBFQJYfPNKh9VrX5P68tIkdhowMrlcQAJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utvOELmr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369281F000E9;
+	Tue, 16 Jun 2026 18:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636913;
-	bh=maTdGr5MIISv5cTfb+R5j2zY5RfxdSEzycWPBLH7D5M=;
+	s=korg; t=1781635088;
+	bh=wY5Hh1gRI7H1biQF0V8f3+/OHy3PFlDDShbnCnNF1g4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ylVhSwRebF0azQRfWwRAJ32tlBUXKsbuA/LoWEnxZv6IAYhJfaTuc27vs4Foa1yOx
-	 VNWXxv2wxaNTDFbusvRsrCkCki3BDbd/EjtBYKV4pIzNYF9Xz89fWcEuBdddkv/gqV
-	 NgXNt/YIobCtumgjhQgp9hqvfu3s5DxgFlNZ6Y/U=
+	b=utvOELmrbKsnSrAYSDEg1Gv/Cuhgq6siLzhZiV2fh636EHQga9T2tkXfEJ6cRsozf
+	 cUiA6VL6Ajb9v65RtymmDJImjZzdeNddR6ryCVw2tOBEw0C51FuWuFbS2Kn2QxjoQq
+	 l2amoG4ZU3Q6QZlYqnl8Jo6QIrnymBk12TrtEXas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	John Keeping <john@metanate.com>,
+	Anton Leontev <leontyevantony@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 330/342] usb: gadget: f_hid: tidy error handling in hidg_alloc
+Subject: [PATCH 5.15 388/411] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
 Date: Tue, 16 Jun 2026 20:30:26 +0530
-Message-ID: <20260616145103.970610358@linuxfoundation.org>
+Message-ID: <20260616145121.869726654@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +69,128 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266183-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266539-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:andrzej.p@collabora.com,m:john@metanate.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,metanate.com:email,collabora.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4F9AF694DCC
+X-Rspamd-Queue-Id: D1B296945A7
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <john@metanate.com>
+From: Anton Leontev <leontyevantony@gmail.com>
 
-[ Upstream commit 944fe915d00d3cb1bacb1e77cabfb6dc82e6f8b8 ]
+[ Upstream commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af ]
 
-Unify error handling at the end of the function, reducing the risk of
-missing something on one of the error paths.
+netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
+send buffer using phys_to_virt() on the entry PFN. Entries for the
+RNDIS header and the skb linear data come from kmalloc'd memory and
+are always in the kernel direct map, but entries for skb fragments
+reference page cache or user pages, which on 32-bit x86 with
+CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
+phys_to_virt() returns an address outside the direct map and the
+subsequent memcpy() faults on the transmit softirq path, which is
+fatal.
 
-Moving the increment of opts->refcnt later means there is no need to
-decrement it on the error path and is safe as this is guarded by
-opts->lock which is held for this entire section.
+Map the pages with kmap_local_page() instead, handling two properties
+of the page buffer entries:
 
-Tested-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Signed-off-by: John Keeping <john@metanate.com>
-Link: https://lore.kernel.org/r/20221122123523.3068034-4-john@metanate.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 4f88d65def6f ("usb: gadget: f_hid: fix device reference leak in hidg_alloc()")
+ - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
+   not a native PFN. Reconstruct the physical address first and derive
+   the native page from it, so the mapping stays correct where
+   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
+
+ - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
+   grouping in the page buffer array"), an entry describes a full
+   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
+   while kmap_local_page() maps a single page. Copy page by page,
+   splitting at native page boundaries.
+
+The copy path only handles packets smaller than the send section size
+(6144 bytes by default); larger packets take the cp_partial path where
+only the RNDIS header is copied. So entries here are bounded by the
+section size and a copy is split at most once on 4K-page systems. On
+!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
+no mapping work is added.
+
+Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
+Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ adapted `phys_to_page(paddr)` to `pfn_to_page(PHYS_PFN(paddr))` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1265,7 +1265,6 @@ static struct usb_function *hidg_alloc(s
- 	opts = container_of(fi, struct f_hid_opts, func_inst);
- 
- 	mutex_lock(&opts->lock);
--	++opts->refcnt;
- 
- 	spin_lock_init(&hidg->write_spinlock);
- 	spin_lock_init(&hidg->read_spinlock);
-@@ -1278,11 +1277,8 @@ static struct usb_function *hidg_alloc(s
- 	hidg->dev.class = hidg_class;
- 	hidg->dev.devt = MKDEV(major, opts->minor);
- 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
--	if (ret) {
--		--opts->refcnt;
--		mutex_unlock(&opts->lock);
--		return ERR_PTR(ret);
--	}
-+	if (ret)
-+		goto err_unlock;
- 
- 	hidg->bInterfaceSubClass = opts->subclass;
- 	hidg->bInterfaceProtocol = opts->protocol;
-@@ -1293,14 +1289,13 @@ static struct usb_function *hidg_alloc(s
- 					    opts->report_desc_length,
- 					    GFP_KERNEL);
- 		if (!hidg->report_desc) {
--			put_device(&hidg->dev);
--			--opts->refcnt;
--			mutex_unlock(&opts->lock);
--			return ERR_PTR(-ENOMEM);
-+			ret = -ENOMEM;
-+			goto err_put_device;
- 		}
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -12,6 +12,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -956,12 +957,22 @@ static void netvsc_copy_to_send_buf(stru
  	}
- 	hidg->use_out_ep = !opts->no_out_endpoint;
  
-+	++opts->refcnt;
- 	mutex_unlock(&opts->lock);
+ 	for (i = 0; i < page_count; i++) {
+-		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
+-		u32 offset = pb[i].offset;
++		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
++				    pb[i].offset;
+ 		u32 len = pb[i].len;
  
- 	hidg->func.name    = "hid";
-@@ -1315,6 +1310,12 @@ static struct usb_function *hidg_alloc(s
- 	hidg->qlen	   = 4;
- 
- 	return &hidg->func;
+-		memcpy(dest, (src + offset), len);
+-		dest += len;
++		while (len) {
++			struct page *page = pfn_to_page(PHYS_PFN(paddr));
++			u32 off = offset_in_page(paddr);
++			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
++			char *src = kmap_local_page(page);
 +
-+err_put_device:
-+	put_device(&hidg->dev);
-+err_unlock:
-+	mutex_unlock(&opts->lock);
-+	return ERR_PTR(ret);
- }
++			memcpy(dest, src + off, chunk);
++			kunmap_local(src);
++			dest += chunk;
++			paddr += chunk;
++			len -= chunk;
++		}
+ 	}
  
- DECLARE_USB_FUNCTION_INIT(hid, hidg_alloc_inst, hidg_alloc);
+ 	if (padding)
 
 
 
