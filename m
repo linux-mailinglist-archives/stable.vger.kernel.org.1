@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RSriC2KLMWrgmAUAu9opvQ
-	(envelope-from <stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:02 +0200
+	id wf2ZGLWZMWq/nwUAu9opvQ
+	(envelope-from <stable+bounces-266260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D746936B2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E936F6946E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ghO4Na9R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265490-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fCkXIMAT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266260-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266260-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C19CF31B07FC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C4B0830A2F46
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0485146AF3C;
-	Tue, 16 Jun 2026 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CA347D923;
+	Tue, 16 Jun 2026 18:44:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDDC332EC1;
-	Tue, 16 Jun 2026 17:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06BF478E3E;
+	Tue, 16 Jun 2026 18:44:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631467; cv=none; b=cVt1Ad4ONDMkdXryzEenkK3GCOtX5fGpdrU06zeNKAMWDaDXz0Ifl2k1DjBfmI/jaP5TlpnNhnfNCgl8F6qex8JJeELQImdL6u3tqMsSCAutigzLpjiR3/vvVlDATve7+Se9etwDzxLPEPkefHV+oCsfwNv+7Dq2o4NBa1YrsVE=
+	t=1781635495; cv=none; b=r4ofCY71DBgJwulo9iNlbkRPegubjX89eCNbB91LzIxR1KbkBXxD7+hFRaddT9ID53ttwueQnmf6Mq4ATv4flYAEwa8tc4+bMhNv19x+YECxF3z9eWmdp47w9CBtrL1byfLF9s0OBJ2V0m92hc17yidatcI/JITNwNN021JSGqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631467; c=relaxed/simple;
-	bh=RxmJAIOWsvBmDI1HNrDEdBLR0bIsx1hDC5i1kAfUXSQ=;
+	s=arc-20240116; t=1781635495; c=relaxed/simple;
+	bh=hk/jfiU4nIa7vrXz8zaeEJ+5sGBr3LH3gXO05wSGDQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcCy6Ezc0b0ar9aowKhIDA0mVK0gpmnHu4eE1+1UqwxDZPCOB3C+SCjqIvjoq32eYK6jej8Wo5jhENLqgG3xUUs3foLNor7wO8PtXWpt+Mb6YgB5vs2FMZri/kQcpbHVWWWBFOBgsRUFkTQ+IYfR/yi9LU1nIx8G8vX2kWozRL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghO4Na9R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757C11F000E9;
-	Tue, 16 Jun 2026 17:37:45 +0000 (UTC)
+	 MIME-Version; b=Z9boE/VEssX/pRI5GvrpGoEeb7cFyscE+zY0buR2ca9lKuRhQo4/UAosrLSuPM/oC0rF34AKplL4lDlOSiIsm1y46iFkE9m4hjQ5bMJTHfjUYzaVzvE7IjDGmQzuW+cRa4I7lkZkCQGDeWO7QGVHTP3TQsz3neJTNq4NRHSrXgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCkXIMAT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E811F00A3D;
+	Tue, 16 Jun 2026 18:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631466;
-	bh=1C4cOaqo+xHCg9MEh9T0Iog9uFlcOFih/TymDIIBJb0=;
+	s=korg; t=1781635493;
+	bh=NpUQnfE9UlZK2kx4fCHPzkCWzt1mLsJG5U/hwnapQsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ghO4Na9R3v6dK1PQs/Og3aWj6jk2JGzY7lR6RTW+gjMSBpFORgEwFQx0FMHJj6DQp
-	 v5akUkTrsZmlQ06mfe/RGpxVpX9tKW2FoNkFRS4YwDRqAyR4SI9mT5HodrNO6qUCo9
-	 cbHTX+dhfx05KMowRzGPs+QmBIg2AYOnW1oELJLs=
+	b=fCkXIMATGONqJih2pRuhMUzxLI6OnQmiWW02opR6WVEyQIJR+YCY3yH7nK66MeqMY
+	 8/fLnscGfhk19GUzPeYvaDKRKPhkLGWKp7Ac5CEg76CZRhmCx7a3Npu0/P2lCeg+5A
+	 61qe5flE9polL+qgkLcxB+T+2Y9wbGr+SF8YVd7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
-	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
-	Ao Wang <wangao@seu.edu.cn>,
-	Xuewei Feng <fengxw06@126.com>,
-	Qi Li <qli01@tsinghua.edu.cn>,
-	Ke Xu <xuke@tsinghua.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 209/522] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
+	David Carlier <devnexen@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.10 060/342] iio: gyro: itg3200: fix i2c read into the wrong stack location
 Date: Tue, 16 Jun 2026 20:25:56 +0530
-Message-ID: <20260616145135.836795232@linuxfoundation.org>
+Message-ID: <20260616145051.056871951@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-265490-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266260-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -101,71 +95,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A4D746936B2
+X-Rspamd-Queue-Id: E936F6946E9
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+From: David Carlier <devnexen@gmail.com>
 
-[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
+commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
 
-The receive-side GARP attribute parser computes dlen with reversed
-operands:
+itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
+fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
+parameter (a pointer), `&buf' is the address of the local pointer
+slot on the stack of itg3200_read_all_channels(), not the address
+of the caller's scan buffer. The (char *) cast hides the type
+mismatch.
 
-        dlen = sizeof(*ga) - ga->len;
+i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
+= 8 bytes into the parameter's stack slot, which is discarded when
+the function returns. The caller's scan buffer in
+itg3200_trigger_handler() is never written to, so
+iio_push_to_buffers_with_timestamp() pushes uninitialised stack
+contents to userspace via /dev/iio:deviceX every scan -- both a
+functional bug (no actual gyroscope or temperature data is
+delivered through the triggered buffer) and an information leak.
 
-ga->len is the on-wire attribute length and includes the GARP attribute
-header. For normal attributes with data, ga->len is larger than
-sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
+The non-buffered read_raw() path is unaffected: it goes through
+itg3200_read_reg_s16() which uses `&out' on a local s16 value,
+where that is correct.
 
-The resulting value is later passed to garp_attr_lookup(), whose length
-argument is u8. After truncation, the parsed data length usually no
-longer matches the length stored for locally registered attributes, so
-received Join/Leave events are ignored. This breaks the GARP receive path
-for common attributes, such as GVRP VLAN registration attributes.
+Drop the spurious `&' so the i2c read writes into the caller's
+buffer.
 
-Compute the data length as the attribute length minus the header length.
-
-Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
-Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
-Reported-by: Ao Wang <wangao@seu.edu.cn>
-Reported-by: Xuewei Feng <fengxw06@126.com>
-Reported-by: Qi Li <qli01@tsinghua.edu.cn>
-Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
-Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Carlier <devnexen@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/802/garp.c | 2 +-
+ drivers/iio/gyro/itg3200_buffer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/802/garp.c b/net/802/garp.c
-index fc9eb02a912f81..f8037227e6dd66 100644
---- a/net/802/garp.c
-+++ b/net/802/garp.c
-@@ -452,7 +452,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
- 	if (!pskb_may_pull(skb, ga->len))
- 		return -1;
- 	skb_pull(skb, ga->len);
--	dlen = sizeof(*ga) - ga->len;
-+	dlen = ga->len - sizeof(*ga);
+--- a/drivers/iio/gyro/itg3200_buffer.c
++++ b/drivers/iio/gyro/itg3200_buffer.c
+@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
+ 			.addr = i2c->addr,
+ 			.flags = i2c->flags | I2C_M_RD,
+ 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
+-			.buf = (char *)&buf,
++			.buf = (char *)buf,
+ 		},
+ 	};
  
- 	if (attrtype > app->app->maxattr)
- 		return 0;
--- 
-2.53.0
-
 
 
 
