@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-265183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nE2cKXSFMWotlgUAu9opvQ
-	(envelope-from <stable+bounces-265183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:44 +0200
+	id jAuuIC5xMWqxjQUAu9opvQ
+	(envelope-from <stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA75692FB7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7081691748
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:52:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Sa7Vy4l9;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265183-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265183-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wniR7lM5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264177-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B319315CE77
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:11:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0990D308C891
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F259C43D4E9;
-	Tue, 16 Jun 2026 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798044534A5;
+	Tue, 16 Jun 2026 15:42:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4A83AE71F;
-	Tue, 16 Jun 2026 17:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BF445107D;
+	Tue, 16 Jun 2026 15:42:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629900; cv=none; b=rvYsAbSF5w/zFuXZMInPR9U6IzLNpmMjJKDPu4Ushc474dErZfXv4/haAGkf7cBNbA2t5tHSoALv+SvLaAJXJNHVnibROpF77DbKixU39ybOK34iDsVCyaqG0Cctw/LGqqqAqDQrs+bXSH6h4aOo8PddkJpCFBiVmWgWJ5to8LU=
+	t=1781624526; cv=none; b=MU3MMIgV4TjR3K6dGxHitGkwceZy4ZUF3zaBb4r5k7NBElObH8LTE+cMf+9krBBxAaVKOZDPsbnd1FFwWe448nXzrkAagASNxfzRhZH1+D9GvKVP/JFHuQ/EjYE49ySS6u2ajK48Pmt2gDXzOTujEEj1aU/Rea4bXhZyAVxxuWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629900; c=relaxed/simple;
-	bh=KvAsx9+DGPbH5EByVMH4231ChWV2ERHsliFPYHX6TV8=;
+	s=arc-20240116; t=1781624526; c=relaxed/simple;
+	bh=2UwTMCcefVmsKnU9uryUbQIZK3Kv/twe3OvpKn1K/6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/w3iyDCSJXPElQDEnyaRqAe5pmNYf2nItfytv2XIx4x5eoee8y/2c+rgoCZgGAotKHPAqfvJqDQx2mkrrgp10o8jwtSDfw/9r7Y3cM1RN2zNXme7bab5T8y//MWUSnTeibNAVMR4MqPEEjauCxi4yLfsWpSSUvpT87xFo9bk4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sa7Vy4l9; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64261F000E9;
-	Tue, 16 Jun 2026 17:11:38 +0000 (UTC)
+	 MIME-Version; b=V5hGbIwXBsbc79CK2/JyGl5WP0nl+MdUNMA7L8qWrXRqL7qyDMhcd7z3kSNXi0yYEdOGkf5NgTO8Pm8L3FMMiqVMj69IbTAxBPfECAzNVzIth8t/KYBaZtJsrK4x1WsuwAugy/TC6cClu+9/G3YWS7kzOhwTihMRfsh52cF+TC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wniR7lM5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC4B61F000E9;
+	Tue, 16 Jun 2026 15:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629899;
-	bh=/qviQX9LPI/873NeCuOVi+vdkqOR3ni6z4peQBlhrBk=;
+	s=korg; t=1781624524;
+	bh=AqxbF55NUW6arnm5/OkxLiMsck4cmKH3KgTHOB/ZHpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Sa7Vy4l9jsg4Vy/5DuwBEn723iEizYpBk9gIz2Amd651TUr2aSVxI10z+cam3+t15
-	 KBZDjDCzVq5BbeqpmtzNhFD0WwKwkSocwrYkZgdHNkETHzNB/2FMzlaFzsZagOb6+t
-	 KC66P+80vN4RYcgxokvZN1JwfqnAu5CuYDUlmzNg=
+	b=wniR7lM5GUHgx7h7wRjVCdf0UaKHOkdDaOXQMNqWiJ5ZX0Kv5qNrsBnVbU7aKxqyB
+	 P/jY0HD7ZRl59DtaGcbP5mBm0+vpfKr0UlsvCUns4SbhT2/dwCUSyOauWqIL6c+nU8
+	 v29gyrBrnjrqPxPNKQ2aTzPisOOXfv8zaS2YPdRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Allison Henderson <achender@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 340/452] net: rds: clear i_sends on setup unwind
+	Andrew Martin <andrew.martin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 336/378] drm/amdkfd: Fix buffer overflow in SDMA queue checkpoint/restore on GFX11
 Date: Tue, 16 Jun 2026 20:29:27 +0530
-Message-ID: <20260616145135.159253184@linuxfoundation.org>
+Message-ID: <20260616145127.900277952@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,83 +71,153 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,lenovo.com];
-	TAGGED_FROM(0.00)[bounces-265183-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264177-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:achender@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew.martin@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lzu.edu.cn:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lenovo.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EBA75692FB7
+X-Rspamd-Queue-Id: E7081691748
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuqi Xu <xuyq21@lenovo.com>
+From: Andrew Martin <andrew.martin@amd.com>
 
-commit 20cf0fb715c41111469577e85e35d15f099473e0 upstream.
+commit 352ea59028ea48a6fff77f19ae28f98f71946a80 upstream.
 
-The RDS IB connection teardown path is written so it can run during
-partial startup and on repeated shutdown attempts. It uses NULL
-pointers to distinguish resources that are still owned from resources
-that have already been released.
+The v11 MQD manager incorrectly assigned the CP-compute variants of
+checkpoint_mqd/restore_mqd for KFD_MQD_TYPE_SDMA queues. These functions
+use sizeof(struct v11_compute_mqd) (2048 bytes) instead of sizeof(struct
+v11_sdma_mqd) (512 bytes), causing a 1536-byte overflow.
 
-When rds_ib_setup_qp() fails after allocating i_sends but before
-allocating i_recvs, the sends_out path frees i_sends without clearing
-the pointer. A later shutdown pass can still treat that stale pointer
-as a live send ring allocation.
+During CRIU checkpoint of an SDMA queue on Navi3x:
+- checkpoint_mqd() reads 2048 bytes from a 512-byte SDMA MQD buffer,
+  leaking 1536 bytes of adjacent GTT memory to userspace
 
-Clear i_sends after vfree() in the error unwind path so the existing
-shutdown logic continues to use the correct ownership state.
+During CRIU restore:
+- restore_mqd() writes 2048 bytes into a 512-byte SDMA MQD buffer,
+  corrupting 1536 bytes of adjacent GTT memory (often the ring buffer
+  or neighboring MQDs)
 
-Fixes: 3b12f73a5c29 ("rds: ib: add error handle")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Yuqi Xu <xuyq21@lenovo.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Allison Henderson <achender@kernel.org>
-Link: https://patch.msgid.link/5a0f7624bb9845a7b67d26166a150b59e7f394ce.1779632468.git.xuyq21@lenovo.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is a copy-paste regression unique to v11. All other ASIC backends
+(cik, vi, v9, v10, v12) correctly use the SDMA-specific variants.
+
+Add checkpoint_mqd_sdma() and restore_mqd_sdma() functions that properly
+handle the smaller v11_sdma_mqd structure, matching the pattern used in
+other MQD managers.
+
+Fixes: cc009e613de6 ("drm/amdkfd: Add KFD support for soc21 v3")
+Assisted-by: Claude:Sonnet 4-5
+Signed-off-by: Andrew Martin <andrew.martin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6fa41db7ffdec97d62433adf03b7b9b759af8c2c)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/ib_cm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c |   49 +++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 8 deletions(-)
 
---- a/net/rds/ib_cm.c
-+++ b/net/rds/ib_cm.c
-@@ -656,6 +656,7 @@ static int rds_ib_setup_qp(struct rds_co
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -320,8 +320,7 @@ static void checkpoint_mqd(struct mqd_ma
  
- sends_out:
- 	vfree(ic->i_sends);
-+	ic->i_sends = NULL;
+ static void restore_mqd(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+-			struct queue_properties *qp,
+-			const void *mqd_src,
++			struct queue_properties *qp, const void *mqd_src,
+ 			const void *ctl_stack_src, const u32 ctl_stack_size)
+ {
+ 	uint64_t addr;
+@@ -337,14 +336,48 @@ static void restore_mqd(struct mqd_manag
+ 		*gart_addr = addr;
  
- ack_dma_out:
- 	rds_dma_hdr_free(rds_ibdev->dev, ic->i_ack, ic->i_ack_dma,
+ 	m->cp_hqd_pq_doorbell_control =
+-		qp->doorbell_off <<
+-			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
+-	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
+-			m->cp_hqd_pq_doorbell_control);
++		qp->doorbell_off << CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
++	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n", m->cp_hqd_pq_doorbell_control);
+ 
+ 	qp->is_active = 0;
+ }
+ 
++static void checkpoint_mqd_sdma(struct mqd_manager *mm,
++				void *mqd,
++				void *mqd_dst,
++				void *ctl_stack_dst)
++{
++	struct v11_sdma_mqd *m;
++
++	m = get_sdma_mqd(mqd);
++
++	memcpy(mqd_dst, m, sizeof(struct v11_sdma_mqd));
++}
++
++static void restore_mqd_sdma(struct mqd_manager *mm, void **mqd,
++			     struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
++			     struct queue_properties *qp,
++			     const void *mqd_src,
++			     const void *ctl_stack_src,
++			     const u32 ctl_stack_size)
++{
++	uint64_t addr;
++	struct v11_sdma_mqd *m;
++
++	m = (struct v11_sdma_mqd *) mqd_mem_obj->cpu_ptr;
++	addr = mqd_mem_obj->gpu_addr;
++
++	memcpy(m, mqd_src, sizeof(*m));
++
++	m->sdmax_rlcx_doorbell_offset =
++		qp->doorbell_off << SDMA0_QUEUE0_DOORBELL_OFFSET__OFFSET__SHIFT;
++
++	*mqd = m;
++	if (gart_addr)
++		*gart_addr = addr;
++
++	qp->is_active = 0;
++}
+ 
+ static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+@@ -529,8 +562,8 @@ struct mqd_manager *mqd_manager_init_v11
+ 		mqd->update_mqd = update_mqd_sdma;
+ 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
+ 		mqd->is_occupied = kfd_is_occupied_sdma;
+-		mqd->checkpoint_mqd = checkpoint_mqd;
+-		mqd->restore_mqd = restore_mqd;
++		mqd->checkpoint_mqd = checkpoint_mqd_sdma;
++		mqd->restore_mqd = restore_mqd_sdma;
+ 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
+ 		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
 
 
 
