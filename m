@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yKTdMaKKMWprmAUAu9opvQ
-	(envelope-from <stable+bounces-265457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:50 +0200
+	id +ObYJ3ZtMWpJjAUAu9opvQ
+	(envelope-from <stable+bounces-263963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C21E6935BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A861691331
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QjpMd6Qg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265457-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265457-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fdsAPxnh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263963-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263963-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B23B3048DD1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D5343183038
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A537043D4ED;
-	Tue, 16 Jun 2026 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E494418CA;
+	Tue, 16 Jun 2026 15:23:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8AA3A3E78;
-	Tue, 16 Jun 2026 17:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7E644BC93;
+	Tue, 16 Jun 2026 15:23:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631299; cv=none; b=YHKbH86+dmHqlY9c16TnDFNBQjPhU16yCo/mabyHiIriGB6wIEV1L2EgH3vDEsREOvveYRbP8ZQOlM2PllroDQdds3XAmppktH4NVJ5nyLRrj4ClH4XZUXTwvRdOcWWnym7F/94LZs6imR/FHonMwggo3wSywXXi4qvgnsjOEv0=
+	t=1781623413; cv=none; b=ZBCyHRDaFwupbBovuzRQwlQIDa98CGu3CiTABw5ByaUHhGxJZFLtcEudAqD+R7igJukvRfTJKK4Giae6T4CMvmJxpHPYQeGQ8X6GqyQRD1amX/8omRAaQlbEYo1vIjuQjtc/NhwOM6tSp25PG1EFZXz8yeA+T57yjgpOhQa5d04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631299; c=relaxed/simple;
-	bh=nhug6SHQ199U+MNnLUqpQ92i1Ztek0ynBZ8ucEAkB1c=;
+	s=arc-20240116; t=1781623413; c=relaxed/simple;
+	bh=w9Ri3Fvr1SpHeSfX5m1j/EUGxq6cKi1cmnUeLrPX+nM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjF7SDaCY5FgWfCxR5GPN5/RFGAwtX3FYh+a3Ptgp51akPGWG70ing/SDsi/wajHsv5+ofljSGW4DRrTU9/oSrOQ+0o9oqEkqCFfaRkGNqSSjW66kED56fMKmiaHEtJzOCcXn7k1BmdWfJESbT7KJQHAabpiUGq+EBDmhWBE+SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjpMd6Qg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A31F000E9;
-	Tue, 16 Jun 2026 17:34:57 +0000 (UTC)
+	 MIME-Version; b=FX6KNOgjoeV+zGfj7hu7mlgir8x+fVN/js7e6WQflHipdynlc85pJwaPsvGq2Epeph/9ikPpPAYPlvncmx/QDkauWJmenNSUgP98cAu3+b4t3oTPQ8k9YgduqAWEUcCwmMNtfUeG9K6sJuIYbuCli/zCCJtS1NzMH50X2WHEGa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdsAPxnh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A671F000E9;
+	Tue, 16 Jun 2026 15:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631298;
-	bh=ESzwgtSPIgZLuyTYK5sWkB5IK7eyMgsA7s0Zz9fXb2Y=;
+	s=korg; t=1781623412;
+	bh=rn4+izzixdQOXvEdP/ie2RGNG8PzSV8Bf28m/mAtMCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QjpMd6QgFLqtLosHirO01SdYiCR97CEqff+OeqkhNBaTGIOVqxeIipV6hRKDl0L8R
-	 ejHX1xiNE5HX66D1CPaIEIgjCcw1n88alWOrUlAs4VBgbxLA9/J937LoFILT6/M5gT
-	 0b4UeW3RC57vVgg2emfgKDjOdfz5c9Fb26WZ110c=
+	b=fdsAPxnhfOtfUkPYVSGrWD8xz5X1dPCUTWqU+jz3UVMQgWBGaVoMpPWvAMUMu15eu
+	 OF/8wmNFIXW3pSXvYzcy7JPvvLa3+XR19Ell6Vq5veEvUTfVnPZ/Nf0sKXpo1YkvCi
+	 t2d5WOrQUekWThrkflGiqF19oXLGnQJNpFgS0eEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.1 194/522] i2c: dev: prevent integer overflow in I2C_TIMEOUT ioctl
+	HanQuan <eilaimemedsnaimel@gmail.com>,
+	MingXuan <bwnie0730@outlook.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 110/378] net: add pskb_may_pull() to skb_gro_receive_list()
 Date: Tue, 16 Jun 2026 20:25:41 +0530
-Message-ID: <20260616145135.176792006@linuxfoundation.org>
+Message-ID: <20260616145116.163339600@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +69,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265457-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:25181214217@stu.xidian.edu.cn,m:wsa+renesas@sang-engineering.com,m:wsa@sang-engineering.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263963-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:bwnie0730@outlook.com,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sang-engineering.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,xidian.edu.cn:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C21E6935BD
+X-Rspamd-Queue-Id: 0A861691331
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+From: HanQuan <eilaimemedsnaimel@gmail.com>
 
-commit 617eb7c0961a8dfcfc811844a6396e406b2923ea upstream.
+[ Upstream commit f2bb3434544454099a5b6dec213567267b05d79d ]
 
-While fuzzing with Syzkaller, a persistent `schedule_timeout: wrong
-timeout value` warning was observed, accompanied by SMBus controller
-state machine corruption.
+skb_gro_receive_list() calls skb_pull(skb, skb_gro_offset(skb)) without
+first ensuring the data is in the linear area via pskb_may_pull(). When
+the skb arrives via napi_gro_frags(), skb_headlen can be 0 (all data in
+page fragments) while skb_gro_offset is non-zero (after IP+TCP header
+parsing). The skb_pull() then decrements skb->len by skb_gro_offset
+but skb->data_len stays unchanged, hitting BUG_ON(skb->len < skb->data_len)
+in __skb_pull().
 
-The I2C_TIMEOUT ioctl accepts a user-provided timeout in multiples of
-10 ms. The user argument is checked against INT_MAX, but it is
-subsequently multiplied by 10 before being passed to msecs_to_jiffies().
+The UDP fraglist GRO path already contains this guard at
+udp_offload.c:749. Adding it to skb_gro_receive_list() itself provides
+centralized protection for all callers (TCP, UDP, and any future
+protocols), and ensures the precondition of skb_pull() is satisfied
+before it is called.
 
-A malicious user can pass a large value (e.g., 429496729) that passes
-the `arg > INT_MAX` check but overflows when multiplied by 10. This
-results in a truncated 32-bit unsigned value that bypasses the
-internal `(int)m < 0` check in `msecs_to_jiffies()`.
+On pskb_may_pull() failure, set NAPI_GRO_CB(skb)->flush = 1 so the
+skb is not held as a new GRO head and is instead delivered through the
+normal receive path, matching the UDP handling.
 
-The truncated value is then assigned to `client->adapter->timeout`
-(a signed 32-bit int), which is reinterpreted as a negative number.
-When passed to wait_for_completion_timeout(), this negative value
-undergoes sign extension to a 64-bit unsigned long, triggering the
-`schedule_timeout` warning and causing premature returns. This leaves
-the SMBus state machine in an unrecoverable state, constituting a
-local Denial of Service (DoS).
-
-Fix this by bounding the user argument to `INT_MAX / 10`.
-
-Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
-[wsa: move the comment as well]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
+Reported-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Reported-by: MingXuan <bwnie0730@outlook.com>
+Signed-off-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-dev.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/core/gro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -476,12 +476,13 @@ static long i2cdev_ioctl(struct file *fi
- 		client->adapter->retries = arg;
- 		break;
- 	case I2C_TIMEOUT:
--		if (arg > INT_MAX)
-+		/*
-+		 * For historical reasons, user-space sets the timeout value in
-+		 * units of 10 ms.
-+		 */
-+		if (arg > INT_MAX / 10)
- 			return -EINVAL;
+diff --git a/net/core/gro.c b/net/core/gro.c
+index a847539834679c..35f2f708f01052 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -232,6 +232,11 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+ 	if (unlikely(p->len + skb->len >= 65536))
+ 		return -E2BIG;
  
--		/* For historical reasons, user-space sets the timeout
--		 * value in units of 10 ms.
--		 */
- 		client->adapter->timeout = msecs_to_jiffies(arg * 10);
- 		break;
- 	default:
++	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
++		NAPI_GRO_CB(skb)->flush = 1;
++		return -ENOMEM;
++	}
++
+ 	if (NAPI_GRO_CB(p)->last == p)
+ 		skb_shinfo(p)->frag_list = skb;
+ 	else
+-- 
+2.53.0
+
 
 
 
