@@ -1,158 +1,172 @@
-Return-Path: <stable+bounces-264345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id q2ddA1BzMWqnjgUAu9opvQ
-	(envelope-from <stable+bounces-264345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:20 +0200
+	id PCMrCSJ6MWpmkQUAu9opvQ
+	(envelope-from <stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75F26919FC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFC0692254
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=XAEwYunC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264345-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264345-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	dkim=pass header.d=seu.edu.cn header.s=default header.b=Zth6olDn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264418-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=seu.edu.cn;
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B14D30D4AC6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 831E6308BEA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ED344D6B2;
-	Tue, 16 Jun 2026 15:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448C5450915;
+	Tue, 16 Jun 2026 16:03:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7640144DB64
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:56:41 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625402; cv=pass; b=Gr+OiW1ClmEhmCkLGkvGVBBFuYP18yvpNoUqXZ2vscc2Z7XPS1Ypl5v0hFGoyuOKd3+2dESBRHkfucuytnJ0vrMVY6YISMgkOL4J4K759Vglxl9/B9DdKoUSqqo9LJj2xRbMPLQF2GVakvSXb6K5Pw5b6PaVS21TFg2wfeDz908=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625402; c=relaxed/simple;
-	bh=Ggk0IEUcB0t7DeeS8cYHkKKJc4ICub7E45+rBcxQiGA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y11F42wtaDH0DmiCWMkgYfwLkf+rjOJ7uf0MyjmrBAlKv2SRTIiCGw7tbTfV5DdWlqJlzHgmWE6p9fbx5eKNFEKVI07QKPTNyxHcRLzp9o4JVVupSiDfpf7MIGzb12JxIpX6GcLmyJ5LksNe4SI4rp07wtdTFV5OvwAX3rBhld8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XAEwYunC; arc=pass smtp.client-ip=209.85.167.50
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aa68d9d4a3so5349261e87.2
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:56:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781625400; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Gf3m9z7COH2MM06eZvnplhS5iqT6sXCOm+LZcptSeVxDWZ6ljCO4Gvys7aL2RK9ZAs
-         mJzM1rWnvWtPKDtLxUTLpG1ON94GIAE8/9YC3zaf3U99UcaGfJcIMaJPg+hc4Jcn42a0
-         bVOK6QiK+HEaOZ5781v3jJNtsRILnrtYITW2WDfD4yF2XmgP6Gae5OtWfL09VoQvBwAW
-         /4s4glTjizlr2n/bXqa5b5oOcoAY5uR+QoaXvTWfQdo83g8NEBeDrC9MU/oUzWY4m1IV
-         0gYz+OZ3UqWDflv7jO1OjIAZ/TOFzHmH2aC5WlqVvAqIz5kIX9j3Y2Ei1K5jtSj7JH7f
-         r8pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Ggk0IEUcB0t7DeeS8cYHkKKJc4ICub7E45+rBcxQiGA=;
-        fh=Ok8i7Y0FMyq7FLpK4rTIMa2Xbnf/JNj6pYwhbFhcTiA=;
-        b=QWEHyzwuq7+xRcjy+0RmaG6unhQfb1vr81zINFABalhqbrxZH7gNbdfy+UuX3Iyvi9
-         wm4YytXs7e+Gd6e92WxfDhPMQKfmnTvTjCrGBxTblYgLHLKPJc0yjX+tVWTOjkuqEtYX
-         iXVGhnPeOTQyRxAyaBm9H+SB+eDi/sPtW0kD9qbvv29tfwTLCHqYAuuaFoWJlJyRkcxQ
-         sGlCxgnACCmhTa2+uA+IkRXLHbA/iqa/XPC023ZffUCDcw/iWhDT9HTFFrU6sVwjFmOy
-         mpZKoGAVe/BBZaIjaJ7pKCSPGakhWd7b/yyk2xM206G81vn2jkZmnv/++I0JixEJZoEj
-         yGSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781625400; x=1782230200; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ggk0IEUcB0t7DeeS8cYHkKKJc4ICub7E45+rBcxQiGA=;
-        b=XAEwYunC1iiArXkfTfHfuCSCZvl+WeQIMxs++Z/O/60BeIxbgFTki+gKrQwvTqhEIH
-         IChiGu7scCK6/BUSTajXpwLbZJ79aqKxWND+HlvgalaM2/m6vEjx71hLQfAq++YYEmCJ
-         aHlE3bCbG5f4YRLOJLsJ6/uLJMcTfofDZr3iGd0HFYlK1mziF0D2tKUDWMPn4vBscgMl
-         JtZ/P2BSRylX/+Vv/hUewQTMG4Ymph4uqKdPxbYZqhg6tGQbnuJ7L/76Tjn1Sn5OnriE
-         vIj0jihQ162nVppt3T2xDRcZ0dsh+IgqzetwpY4iYv2eZX/jQDrml1iLDVVaXvco46XV
-         e8Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781625400; x=1782230200;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ggk0IEUcB0t7DeeS8cYHkKKJc4ICub7E45+rBcxQiGA=;
-        b=Agsz9WnW27V9Zd82paeHoHCBno79bfLps4V9hdUYjBXPcU6meltm+W6El/9wie4FwV
-         uMnjyuO0czY3+LZqmS5kZHrdcOr6XASyhqCX/zBWrCWOLZQcYWD8rHGNTXNVHnQXMTwr
-         KB6tFQ2Jd5ZTdh4oXc14wFqvglsYFj+rWDX+rLyk0oosdojZwmk07IUuZfzc57lzUSae
-         cjBonfIPZCCQUvuXjv1DnQp0sz/loA29wp7EM9Y84VtGUKGVkS3AioF6ahSSlIsJiHgx
-         eSe+KHdrnt2cuLls7ESes3h5DfqNWFruH1dsqSjzJq3/MSqx1wOlbgy4trGphLiNMWTM
-         c/JA==
-X-Forwarded-Encrypted: i=1; AFNElJ8v8UP0PiPyZEM6Pb1sjKO9TLD06TV5QAERa4rJebJDY1bBqeHPmux+qKQ0W6Q1guxZI/Pmi8Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8VWFV4rrUBmuyUFRI20kFjqXJeHOOmFUE6QUR54AZq3q/r40H
-	s6zwWF+Xd1Kja12R1Puhjm/hfTI6//Qsj4e4sbwX4TrnV7uAdS5qpRqhnzZhtWMpCDRtpQ1CEVF
-	5D43j4pXvaTwhr8GQDiLuVWW1DvrentiPT7tjb39d
-X-Gm-Gg: Acq92OGJZBNzCeebs887EFzVQbLThFmwdHv5+OalsUgptLL18ICbm2hNrmvVHVorgo7
-	c/BLhN8gB2SfmbImm71LkbOmUesgjCPER5y6NBs3A4Z5yJVCjykpLkX6YYRk+HWaF+SUHLB6xa7
-	qnEtumgd0Y8+EHlU0dbNClcFZqxj/MyviHEcAgafYuD0vLBpzzK2Wr3pB3hPcuUVYFuftepJJ6w
-	GsKEYPl3Aw8DFsWHx/Y6yifkfal2+3b96CDYgcZWNF99ZA5jNye2nDb8FZzzhXNU+P+/JFVuzsG
-	xFbAig==
-X-Received: by 2002:ac2:5b0a:0:b0:5aa:6c7c:65d4 with SMTP id
- 2adb3069b0e04-5ad46fa7795mr23623e87.10.1781625399173; Tue, 16 Jun 2026
- 08:56:39 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166A0450903;
+	Tue, 16 Jun 2026 16:02:57 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781625783; cv=none; b=GK++a7eAjMV4CmcwgrcBP/M2rwMwwWCERkk7e1A68T5i5uK2ti+aZzWA5S+TWf4z7Rj3NYOBnmQbBg9DetJjbCtlz+TbtMoLgU2vWOw5wXVUd+y7tebw6QmEwLrkXVY8GZnNWry+e4XDP42N6YMOnuVHB/nUS8+IWk1mQARSAx0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781625783; c=relaxed/simple;
+	bh=CscwrQpvjj+N4uM5G00PJLqObAJAFGeM4PUVlMY4a/Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b5TK4KsEfeT2fuox6KV2COoSyz/sCcyy3uZitc6xYdw2ILH/wo678jGYaXzYWfUMncP/zt4FZ5oUFAFNJIEzURIiEuXr0WggB9JzfXgZrW6bEE9iukHKHCi3i2yz7kzcGMmJGVddBkWq7g7HEcKiH89AeY1ipXxoHQchPfcNZyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Zth6olDn; arc=none smtp.client-ip=45.254.49.198
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [221.228.238.82])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 429e07efd;
+	Tue, 16 Jun 2026 23:57:45 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ice: fix memory leak in ice_lbtest_prepare_rings()
+Date: Tue, 16 Jun 2026 23:57:42 +0800
+Message-Id: <20260616155742.4052021-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPpSM+TbMOPL93CkWtrYjYW+T+Q+iWuo+ZhfutYNFOuOCBU5fQ@mail.gmail.com>
- <20260506202842.1788682-1-kpberry@google.com> <20260506202842.1788682-2-kpberry@google.com>
- <2026061617-flyable-civic-a986@gregkh> <CAMAJAJE+w+vYwcEzkZoNDwoAC3PzJ54sGGr7s+5edBW3JJFKHQ@mail.gmail.com>
- <2026061614-trunks-outcast-6684@gregkh> <CAMAJAJG3Ox-GPz+t05On6F6pJt5rFAvo2AcMW9jJmG1O4EGOLA@mail.gmail.com>
- <2026061640-crunchy-patio-be38@gregkh>
-In-Reply-To: <2026061640-crunchy-patio-be38@gregkh>
-From: Kevin Berry <kpberry@google.com>
-Date: Tue, 16 Jun 2026 11:56:27 -0400
-X-Gm-Features: AVVi8Ccvvi5jdMNw15Ph2AdcmkT0fO5wbhhO7X5IAXrT-my8bt4vZMh-F7c9G-4
-Message-ID: <CAMAJAJFaFteMuN6ZmJ4iERM8ivYb380tbbScEEn9F3s0JWC8OA@mail.gmail.com>
-Subject: Re: [PATCH] net: bonding: fix use-after-free in bond_xmit_broadcast()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: xmei5@asu.edu, bestswngs@gmail.com, chenglongtang@google.com, 
-	joneslee@google.com, pabeni@redhat.com, rnj@google.com, 
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ed127289903a2kunm68ae6ddd4b895
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSx8fVkpJHUwYGRlJHUJNTVYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUpVSUlDVUlIQ1VDSVlXWRYaDxIVHRRZQVlPS0hVSktISk
+	9ITFVKS0tVSkJLS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=Zth6olDn4pHnkHSYvSKvAJ+GMYqXvoyBC/nK4iBIFPu5OMaNLkNkpBk+4DNuVqwK0J+OEVAOv3rZ9QsQNaS6A+3+KoL8cIzxkV/jCJt9NuOwkxEpyg2jwT6v/b92TfSYPvOgEwkaLMi1oBLezu17n9/fyYWUPZPSf+TMAF7mLpU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=nvoZVV9gxYlV8gdYEFEmCBm8zHB/8MAJLgD2t4vMXMc=;
+	h=date:mime-version:subject:message-id:from;
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264345-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:stable@vger.kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[asu.edu,gmail.com,google.com,redhat.com,vger.kernel.org,kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:anthony.l.nguyen@intel.com,m:przemyslaw.kitszel@intel.com,m:andrew+netdev@lunn.ch,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:intel-wired-lan@lists.osuosl.org,m:netdev@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:jianhao.xu@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:stable@vger.kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264418-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,mail.gmail.com:mid,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,seu.edu.cn:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B75F26919FC
+X-Rspamd-Queue-Id: 1BFC0692254
 
-> Please send a patch series that does this to make sure I get it correct.
+ice_lbtest_prepare_rings() frees Rx rings only when
+ice_vsi_start_all_rx_rings() fails. If ice_vsi_setup_rx_rings() fails
+after allocating some descriptors, or if ice_vsi_cfg_lan() fails after
+the Rx rings were prepared, the function reaches the Tx cleanup path
+without releasing the initialized Rx resources.
 
-Done, sent as a new patch series.
+Fix this by adding separate unwind paths for Rx setup failure and LAN
+configuration failure. The Rx setup failure path releases the partially
+prepared Rx rings before freeing Tx rings, while later failures first
+undo the LAN Tx configuration and then release the Rx rings in reverse
+setup order.
 
-Thanks,
--Kevin
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still
+present in v7.1-rc7.
+
+An x86_64 allyesconfig build showed no new warnings. As we do not have an
+Intel E800 Series adapter available to run the ethtool offline loopback
+selftest, no runtime testing was able to be performed.
+
+Fixes: 0e674aeb0b77 ("ice: Add handler for ethtool selftest")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+Changes in v2:
+- Fix cleanup order
+
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index f28416a707d7..10a4abc66974 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -1069,18 +1069,18 @@ static int ice_lbtest_prepare_rings(struct ice_vsi *vsi)
+ 
+ 	status = ice_vsi_cfg_lan(vsi);
+ 	if (status)
+-		goto err_setup_rx_ring;
++		goto err_cfg_lan;
+ 
+ 	status = ice_vsi_start_all_rx_rings(vsi);
+ 	if (status)
+-		goto err_start_rx_ring;
++		goto err_cfg_lan;
+ 
+ 	return 0;
+ 
+-err_start_rx_ring:
+-	ice_vsi_free_rx_rings(vsi);
+-err_setup_rx_ring:
++err_cfg_lan:
+ 	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
++err_setup_rx_ring:
++	ice_vsi_free_rx_rings(vsi);
+ err_setup_tx_ring:
+ 	ice_vsi_free_tx_rings(vsi);
+ 
+-- 
+2.34.1
 
