@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-263760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9GSQDodeMWrFiAUAu9opvQ
-	(envelope-from <stable+bounces-263760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:39 +0200
+	id FVNQDIlcMWpSiAUAu9opvQ
+	(envelope-from <stable+bounces-263761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABCE690888
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAE969070A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=O6MOoDND;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263760-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263760-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jxTC35Rg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263761-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263761-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linux.dev;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67B6F32E971D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:17:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1AA33093EE1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFA9384CFF;
-	Tue, 16 Jun 2026 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C0B36403D;
+	Tue, 16 Jun 2026 14:16:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCA7379EFC
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2353E3368A7
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 14:16:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781619379; cv=none; b=jW5qTG1zPxFU28MI/+VGjDYs2zz8z7ib5cObQxA37WlEtjmYY6uvRtN/TrA4o4KQnv7thEnVKcgnqET89fCL7unsalchxH5ML6CSR3W0cUCEHJtqFkNE0DQ9rP7G+AipFz8G/p8H0te4SlBvJhrC+8oDYBOYFGqbs8+SUrJpqYA=
+	t=1781619410; cv=none; b=gKJ4ksespIC6mIi/NppspEE9OwzZkf3n+GOMgkCda99NucC7U8hVAcswfrtEQc40gWsSJgUCSduou4bZJEcNNXQvsf2f5bw/x+HMpFt4Hwu8eYvueWZaQd/b3AjZFt2rioa38tLJQx4j0cvxNWT1v3xClmgBLyqh5bkqChkDX04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781619379; c=relaxed/simple;
-	bh=MVCtyfAmHP+tCWl4X6qpjB0hvAOfROEwoYvmoMY6LH4=;
+	s=arc-20240116; t=1781619410; c=relaxed/simple;
+	bh=o7bdVEsbt6KGhe9AJO7W7f3l30ifqiWb4W+Pvo6TkC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H71kZmeuxJ1KGDYYVH0s2nftFHc+cCJsrjh0pot7JdUmn5Icx50zMA1mIiGHtd5YoQwCycwwvlODThEDxM/tmnjSOKPzZ3FUe5YVMuFJYV2D4l6J7mI1W+Ua87ANUoz92G5vXevlN3huDGUMQmwWZ9q7+ltbX4dmHRAqoAkUkF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O6MOoDND; arc=none smtp.client-ip=91.218.175.171
+	 MIME-Version; b=C+hz4P0kc/k+NPT+zYNFfrJshXB+oHynq7h1skq+bWW5krVjssvYcaXHHLEaNzVhFx0g1LnXdkbQ9uPbInxyUBNhd0RPwbZZI2vb9GuCbNTH722MKgV6u9mQOG92sWKb7PBJat1zlMFGbdN7bbz0ns1gilXFU819s7Adt/P6jJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jxTC35Rg; arc=none smtp.client-ip=95.215.58.181
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781619374;
+	t=1781619397;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+d8yIEBEDqcbYiBBajCXV/8Pg50pBSzJlMnixHKyM4M=;
-	b=O6MOoDNDZkEuBsP+7cYr3hYdGYlsVhvrID+NOnEHElhFRtKVUTC8XfrLxMHthascKFRO4F
-	v3td8v0R79f6nnQtdCMmOlQhR95VlzwGp22nzqH78OuoecpRhurJq4LqmGPexizjJ5JPc8
-	b21nIgj4uBmTdBpOIQwgKubE8wM3YKY=
+	bh=ZN8C+9GRlvXNc1Ra52cny7qtJJM6e8aPGn6zNCjDFHI=;
+	b=jxTC35RgtFx1z86cthtWkocpazcQLXzUOYgQ62gYPVPEK2MhctnL1RvS1OWvfXcgo8J9Pu
+	n4PMCDAx5qfYZJzl2+cLg3eUGpMYReCywXVzdQTsRuiuM1Estu65IgUkX0O7y4CLxQLJIn
+	my5kcbkjkz5ov6hGyVVwcjc3IYuEDA4=
 From: Usama Arif <usama.arif@linux.dev>
 To: axboe@kernel.dk,
 	linux-block@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: shakeel.butt@linux.dev,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] kernel/fork: clear PF_BLOCK_TS in copy_process()
-Date: Tue, 16 Jun 2026 07:15:17 -0700
-Message-ID: <20260616141604.328820-2-usama.arif@linux.dev>
+Subject: [PATCH 2/2] block: invalidate cached plug timestamp after task switch
+Date: Tue, 16 Jun 2026 07:15:18 -0700
+Message-ID: <20260616141604.328820-3-usama.arif@linux.dev>
 In-Reply-To: <20260616141604.328820-1-usama.arif@linux.dev>
 References: <20260616141604.328820-1-usama.arif@linux.dev>
 Precedence: bulk
@@ -84,14 +84,14 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[19];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263760-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263761-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS(0.00)[m:axboe@kernel.dk,m:linux-block@vger.kernel.org,m:bsegall@google.com,m:dietmar.eggemann@arm.com,m:juri.lelli@redhat.com,m:kprateek.nayak@amd.com,m:linux-kernel@vger.kernel.org,m:mgorman@suse.de,m:mingo@redhat.com,m:peterz@infradead.org,m:rostedt@goodmis.org,m:vincent.guittot@linaro.org,m:vschneid@redhat.com,m:shakeel.butt@linux.dev,m:hannes@cmpxchg.org,m:riel@surriel.com,m:kernel-team@meta.com,m:usama.arif@linux.dev,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -109,40 +109,111 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linux.dev:dkim,linux.dev:email,linux.dev:mid,linux.dev:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9ABCE690888
+X-Rspamd-Queue-Id: 2EAE969070A
 
-PF_BLOCK_TS is only set in blk_time_get_ns() when current->plug is
-non-NULL, and blk_finish_plug() clears it via __blk_flush_plug()
-before NULLing the plug pointer.  copy_process() breaks the
-invariant by inheriting PF_BLOCK_TS from the parent while resetting
-the child's plug to NULL.
+blk_time_get_ns() caches ktime_get_ns() in current->plug->cur_ktime
+and marks the task with PF_BLOCK_TS. That cache is only valid while the
+task keeps running; if the task is switched out, wall-clock time
+advances and the cached value must not be reused when the task runs again.
 
-Clear PF_BLOCK_TS alongside that assignment so callers can rely on
-"PF_BLOCK_TS set implies current->plug != NULL" and dereference
-current->plug unguarded.
+The existing invalidation covers explicit plug flushes through
+__blk_flush_plug(), and the schedule() / rtmutex paths through
+sched_update_worker(). It does not cover in-kernel preemption paths such
+as preempt_schedule(), preempt_schedule_notrace(), and
+preempt_schedule_irq(), which enter __schedule(SM_PREEMPT) directly and
+return without calling sched_update_worker().
+
+As a result, a task preempted while holding a plug with PF_BLOCK_TS set
+can reuse a stale plug->cur_ktime after it is scheduled back in. blk-iocost
+then consumes that stale timestamp through ioc_now(), producing stale vnow
+values for throttle decisions, and through ioc_rqos_done(), inflating
+on-queue time and feeding false missed-QoS samples into vrate
+adjustment.
+
+Move the schedule-side invalidation to finish_task_switch(), which runs
+for the scheduled-in task after every actual context switch regardless
+of which schedule entry point was used. Keep __blk_flush_plug() as the
+explicit flush/finish-plug invalidation path, and remove only the
+PF_BLOCK_TS handling from sched_update_worker().
 
 Fixes: 06b23f92af87 ("block: update cached timestamp post schedule/preemption")
 Cc: stable@vger.kernel.org
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- kernel/fork.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/blkdev.h | 16 ++++++----------
+ kernel/sched/core.c    | 12 ++++++++----
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 892a95214c54..13e38e89a1f3 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2338,6 +2338,7 @@ __latent_entropy struct task_struct *copy_process(
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 57e84d59a642..c285a4d9837d 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1216,16 +1216,12 @@ static inline void blk_flush_plug(struct blk_plug *plug, bool async)
+ 		__blk_flush_plug(plug, async);
+ }
  
- #ifdef CONFIG_BLOCK
- 	p->plug = NULL;
-+	p->flags &= ~PF_BLOCK_TS;
- #endif
- 	futex_init_task(p);
+-/*
+- * tsk == current here
+- */
+-static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
++static __always_inline void blk_plug_invalidate_ts(void)
+ {
+-	struct blk_plug *plug = tsk->plug;
+-
+-	if (plug)
+-		plug->cur_ktime = 0;
+-	current->flags &= ~PF_BLOCK_TS;
++	if (unlikely(current->flags & PF_BLOCK_TS)) {
++		current->plug->cur_ktime = 0;
++		current->flags &= ~PF_BLOCK_TS;
++	}
+ }
  
+ int blkdev_issue_flush(struct block_device *bdev);
+@@ -1251,7 +1247,7 @@ static inline void blk_flush_plug(struct blk_plug *plug, bool async)
+ {
+ }
+ 
+-static inline void blk_plug_invalidate_ts(struct task_struct *tsk)
++static inline void blk_plug_invalidate_ts(void)
+ {
+ }
+ 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8b791e9e9f67..e97e98c33be5 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5368,6 +5368,12 @@ static struct rq *finish_task_switch(struct task_struct *prev)
+ 	 */
+ 	kmap_local_sched_in();
+ 
++	/*
++	 * Any cached block-layer timestamp (plug->cur_ktime) is stale now,
++	 * invalidate it.
++	 */
++	blk_plug_invalidate_ts();
++
+ 	fire_sched_in_preempt_notifiers(current);
+ 	/*
+ 	 * When switching through a kernel thread, the loop in
+@@ -7290,12 +7296,10 @@ static inline void sched_submit_work(struct task_struct *tsk)
+ 
+ static void sched_update_worker(struct task_struct *tsk)
+ {
+-	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER | PF_BLOCK_TS)) {
+-		if (tsk->flags & PF_BLOCK_TS)
+-			blk_plug_invalidate_ts(tsk);
++	if (tsk->flags & (PF_WQ_WORKER | PF_IO_WORKER)) {
+ 		if (tsk->flags & PF_WQ_WORKER)
+ 			wq_worker_running(tsk);
+-		else if (tsk->flags & PF_IO_WORKER)
++		else
+ 			io_wq_worker_running(tsk);
+ 	}
+ }
 -- 
 2.53.0-Meta
 
