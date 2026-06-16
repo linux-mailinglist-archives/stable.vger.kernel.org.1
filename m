@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WmvGH/6CMWoFlQUAu9opvQ
-	(envelope-from <stable+bounces-265042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:14 +0200
+	id wwLTEK50MWoSjwUAu9opvQ
+	(envelope-from <stable+bounces-264266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D29692C29
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C66691B36
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IyqFw+eK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265042-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265042-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SVjSfuZy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264266-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264266-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B6A93293FF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:59:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 247B7309436C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2353466B4B;
-	Tue, 16 Jun 2026 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7090E44B68E;
+	Tue, 16 Jun 2026 15:50:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C11332637;
-	Tue, 16 Jun 2026 16:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299302EEE68;
+	Tue, 16 Jun 2026 15:50:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629184; cv=none; b=qQXKiW1WzaGCtn9GKkyY7jPfbjx2LjmctmBf5B7wF7j/s5XNIF+nr1sWP+OHWW8o0r6qJctacxgwBnppr3HvBdC3W8aakij7jG/N95vIxuuR3TFZB4wVBOXjNFj2Jqd800e63aB2QDqrtp8vNSAca9Ohmjjmg1Sar4eJwVQMjJg=
+	t=1781625048; cv=none; b=mu/ablv5s+JCwt6qbiNBjK46HB3Hg0oek3L/ZNt6+IbTJGIwmDoiEnAJwh1ofOOJ5sg0JoWaPI/a5yD3Y6XZKzIPfcSxB6gOTGxjcHv8VKkXf7lH7kzYKs6fF1TrC0Xeqkx10Hq0Qr6yTYUw6xDbNEXUezZ5/ZLgI+OnrgwdckY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629184; c=relaxed/simple;
-	bh=wZva46B6aQy0zgmU8CTFkvsWKLeQLswFfY+OGTpzkTQ=;
+	s=arc-20240116; t=1781625048; c=relaxed/simple;
+	bh=elLZcBVC8LWOgI5IihS9ay+fOZla7Y8z7g6B2O+DR6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Imi6qNekbyYbjTKXIZg3foW/NvNxqFKTUWnA0EJObunYo9CVZldL+PSvVK8srJtSJUG1YhKxjP/D/BYCsUDrZtujEVV+mEkOTzyJAYHleXT0s5AJ7+5KiN6REKuqFJxwMqR/4zvMDuzTfMo1RBzq7R/oZgCyTo5a/9yCqCBBujQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyqFw+eK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38211F000E9;
-	Tue, 16 Jun 2026 16:59:42 +0000 (UTC)
+	 MIME-Version; b=aSUlVEaLyX4IKq+P1tQMSv2xa+/waKtKL2qDXPAZTQ5VwdXytS5YbLn9/3JvAX2YAHDv8dToQksBKImlkI3C2A1teStyFERdKo+8kE1ZOyE1LyBpFVHDisSN2Fl467QlZgw8lJ+uej0SK5naea6p9EFxSzFh7c1FfneECuZWFCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVjSfuZy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AA61F000E9;
+	Tue, 16 Jun 2026 15:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629183;
-	bh=6dhEglt2abbX+ia8EpqsMR322JLODtP3v13DB4f8VNI=;
+	s=korg; t=1781625047;
+	bh=+P7FRdcziC7zBUrWtDXhHxQLvVg6YBvl8nVwPUOIAJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IyqFw+eKxqNcaaK1S0eJthJ9JP2QPyXAooJhGLircjCQru1PV/mohD47focc1LuzH
-	 IItkwCZsU28y3Ewla41MfekrucOx2M7/SMlZwuUKjEIstFvXfvlp85couFFbZG3/Oq
-	 3mvpYk5y4pZVobJgi5QBJDBTRkpDOXYyZDgHmTBQ=
+	b=SVjSfuZyTWrIQUsSBgrdtPF6D01sPgG5A5IU/nKbNoiyV0qfoODg+6MMkYzusDLkG
+	 a+nI+ZkxImnm/n1wdMQoM9BVC4q7xnMH4W8NVo9EW0SDe4ULcScU1aiAPvnAh5pnNp
+	 neMPZtJ84FUm1uyJWBw3u6yfsmvTZ85TwaardJ+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/452] Bluetooth: MGMT: Fix backward compatibility with userspace
-Date: Tue, 16 Jun 2026 20:27:44 +0530
-Message-ID: <20260616145130.137028573@linuxfoundation.org>
+Subject: [PATCH 6.18 069/325] Drivers: hv: vmbus: Provide option to skip VMBus unload on panic
+Date: Tue, 16 Jun 2026 20:27:45 +0530
+Message-ID: <20260616145101.143088075@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,75 +73,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265042-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264266-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhklinux@outlook.com,m:longli@microsoft.com,m:wei.liu@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0D29692C29
+X-Rspamd-Queue-Id: F1C66691B36
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 149324fc762c2a7acef9c26790566f81f475e51f ]
+[ Upstream commit c5c3ef8d49e15d2fc1cec4ad7c91d81b99977440 ]
 
-bluetoothd has a bug with makes it send extra bytes as part of
-MGMT_OP_ADD_EXT_ADV_DATA which are now being checked to be the
-exact the expected length, relax this so only when the expected
-length is greater than the data length to cause an error since
-that would result in accessing invalid memory, otherwise just
-ignore the extra bytes.
+Currently, VMBus code initiates a VMBus unload in the panic path so
+that if a kdump kernel is loaded, it can start fresh in setting up its
+own VMBus connection. However, a driver for the VMBus virtual frame
+buffer may need to flush dirty portions of the frame buffer back to
+the Hyper-V host so that panic information is visible in the graphics
+console. To support such flushing, provide exported functions for the
+frame buffer driver to specify that the VMBus unload should not be
+done by the VMBus driver, and to initiate the VMBus unload itself.
+Together these allow a frame buffer driver to delay the VMBus unload
+until after it has completed the flush.
 
-Link: https://lore.kernel.org/linux-bluetooth/20260602204749.210857-1-luiz.dentz@gmail.com/T/#u
-Fixes: d3f7d17960ed ("Bluetooth: MGMT: validate Add Extended Advertising Data length")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Ideally, the VMBus driver could use its own panic-path callback to do
+the unload after all frame buffer drivers have finished. But DRM frame
+buffer drivers use the kmsg dump callback, and there are no callbacks
+after that in the panic path. Hence this somewhat messy approach to
+properly sequencing the frame buffer flush and the VMBus unload.
+
+Fixes: 3671f3777758 ("drm/hyperv: Add support for drm_panic")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hv/channel_mgmt.c |  1 +
+ drivers/hv/hyperv_vmbus.h |  1 -
+ drivers/hv/vmbus_drv.c    | 25 ++++++++++++++++++-------
+ include/linux/hyperv.h    |  3 +++
+ 4 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 7b86e287b12d64..88f44cb36e241e 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -9144,8 +9144,9 @@ static int add_ext_adv_data(struct sock *sk, struct hci_dev *hdev, void *data,
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 65dd299e2944bd..fd1d675ae37a4f 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -944,6 +944,7 @@ void vmbus_initiate_unload(bool crash)
+ 	else
+ 		vmbus_wait_for_unload();
+ }
++EXPORT_SYMBOL_GPL(vmbus_initiate_unload);
  
- 	BT_DBG("%s", hdev->name);
+ static void vmbus_setup_channel_state(struct vmbus_channel *channel,
+ 				      struct vmbus_channel_offer_channel *offer)
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 4a01797d485139..34943de7d6ac46 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -376,7 +376,6 @@ void hv_vss_deinit(void);
+ int hv_vss_pre_suspend(void);
+ int hv_vss_pre_resume(void);
+ void hv_vss_onchannelcallback(void *context);
+-void vmbus_initiate_unload(bool crash);
  
--	expected_len = struct_size(cp, data, cp->adv_data_len + cp->scan_rsp_len);
--	if (expected_len != data_len)
-+	expected_len = struct_size(cp, data, cp->adv_data_len +
-+				   cp->scan_rsp_len);
-+	if (expected_len > data_len)
- 		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_ADD_EXT_ADV_DATA,
- 				       MGMT_STATUS_INVALID_PARAMS);
+ static inline void hv_poll_channel(struct vmbus_channel *channel,
+ 				   void (*cb)(void *))
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 6d2bf7a96aa638..8a090e2a28f928 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -69,19 +69,29 @@ bool vmbus_is_confidential(void)
+ }
+ EXPORT_SYMBOL_GPL(vmbus_is_confidential);
  
++static bool skip_vmbus_unload;
++
++/*
++ * Allow a VMBus framebuffer driver to specify that in the case of a panic,
++ * it will do the VMbus unload operation once it has flushed any dirty
++ * portions of the framebuffer to the Hyper-V host.
++ */
++void vmbus_set_skip_unload(bool skip)
++{
++	skip_vmbus_unload = skip;
++}
++EXPORT_SYMBOL_GPL(vmbus_set_skip_unload);
++
+ /*
+  * The panic notifier below is responsible solely for unloading the
+  * vmbus connection, which is necessary in a panic event.
+- *
+- * Notice an intrincate relation of this notifier with Hyper-V
+- * framebuffer panic notifier exists - we need vmbus connection alive
+- * there in order to succeed, so we need to order both with each other
+- * [see hvfb_on_panic()] - this is done using notifiers' priorities.
+  */
+ static int hv_panic_vmbus_unload(struct notifier_block *nb, unsigned long val,
+ 			      void *args)
+ {
+-	vmbus_initiate_unload(true);
++	if (!skip_vmbus_unload)
++		vmbus_initiate_unload(true);
++
+ 	return NOTIFY_DONE;
+ }
+ static struct notifier_block hyperv_panic_vmbus_unload_block = {
+@@ -2862,7 +2872,8 @@ static void hv_crash_handler(struct pt_regs *regs)
+ {
+ 	int cpu;
+ 
+-	vmbus_initiate_unload(true);
++	if (!skip_vmbus_unload)
++		vmbus_initiate_unload(true);
+ 	/*
+ 	 * In crash handler we can't schedule synic cleanup for all CPUs,
+ 	 * doing the cleanup for current CPU only. This should be sufficient
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index dfc516c1c7193f..b0502a336eb3a5 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1334,6 +1334,9 @@ int vmbus_allocate_mmio(struct resource **new, struct hv_device *device_obj,
+ 			bool fb_overlap_ok);
+ void vmbus_free_mmio(resource_size_t start, resource_size_t size);
+ 
++void vmbus_initiate_unload(bool crash);
++void vmbus_set_skip_unload(bool skip);
++
+ /*
+  * GUID definitions of various offer types - services offered to the guest.
+  */
 -- 
 2.53.0
 
