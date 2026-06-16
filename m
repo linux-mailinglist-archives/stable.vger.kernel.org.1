@@ -1,72 +1,60 @@
-Return-Path: <stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XzjgI/qMMWqkmQUAu9opvQ
-	(envelope-from <stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:50 +0200
+	id t0x6OntuMWqtjAUAu9opvQ
+	(envelope-from <stable+bounces-264076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052AD69389E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C164691468
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GSzwUd0R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iTcCQiTz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264076-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264076-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD7DA308D37E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1749320FBDE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD1232A3C9;
-	Tue, 16 Jun 2026 17:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5418944BC94;
+	Tue, 16 Jun 2026 15:33:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB0343D4E9;
-	Tue, 16 Jun 2026 17:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2486943D504;
+	Tue, 16 Jun 2026 15:33:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632225; cv=none; b=fgiVLoJGp7fKIk7OTqFYi/qza3pxweY2ggVH+OlmOZk0wKQIhvWFoZfCHQYN+FjKOPCK0iBw8dZ5Q0rKRjYO4LlmKyKMISn4ZkH1RvkxWVRJRa0tDsSWGDfk4C+RQiYUu3rXZ8o3lqffD6I0alyzQEOZtqjk+AwdJfgFqDJkZiE=
+	t=1781624000; cv=none; b=WJDwa8MJIdhgqYkw4zzRIeBh9h5fQTtzvHWHM/EfAb4GxwBpzQRtd/cpcN6yHKRhi7mZhcwJwh3H0/1N3R8yf19A72LDC9l5Mmrm4RAwa0tt5TWH7/8DCWTwH6+19VyTYm8S7kKQr0h03phSC/yJ97nF3ZHGpyqkpKNrNn9ZJgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632225; c=relaxed/simple;
-	bh=lxrhS2ShOP2IQpMQnVqZhk8LAIUNFhgVMwBsk0cBj1o=;
+	s=arc-20240116; t=1781624000; c=relaxed/simple;
+	bh=MyWVs7NFa0QqPuubOW3Og/uBAI8RtS1LpLVlyU6yXQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPOyBkxHdkO8LHwfD026qLjhLku57W+qrYLWeWQZbXUpP5d7V7Y8R04PcbaghLWVK9kcJ4V0uPNfqW8fo0YxVGoZBxOyreiVeAvOvPyj04uYDQ5FTeNfAD6++M5VZ2+tsaUORMtMGPAO/RrYZkLYrcjBvOjccgOTGUo+h5tp6GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSzwUd0R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF04E1F000E9;
-	Tue, 16 Jun 2026 17:50:22 +0000 (UTC)
+	 MIME-Version; b=dSLKMKVW1YqHR9npzGpvzSBs+TiLU8tZy3kxuxKtcbjbpk/4v7EyesmcKnlQW4/epkhpFjJOZXs1dEZyK4AzTd5p7/xCZJTcDoa1Fn4EQXkAdNjL3T3zPg2lTqWqk6QN53Hf0iE22KihjJp4uJQXhcp2p1XKbLLYMNTRB8tZZec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTcCQiTz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9B51F000E9;
+	Tue, 16 Jun 2026 15:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632223;
-	bh=7wYX0L7dIsmSwgDKSfeVw2Kp2xUq1KfHYdmuWPCGln0=;
+	s=korg; t=1781623999;
+	bh=sIPhXFyCzpwTXdHYXgmaWcoeNYz3rBo01rbJgzoH+I4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GSzwUd0R+mRZI5eYFiorFy6yMhO4T7kg91aZP47HrHlAKFdU8PewdY8Wao93hxYAK
-	 ePu3koH/17rfL0zri7z5JnZCf+hpx0kVTk0IZmj55GvcRp3vm7sh+/Rh+6lG6vPRxd
-	 qxu+0zn6SvcZw0U47CXua4TGMnhYZnlHyj1mpoqI=
+	b=iTcCQiTz1hGhR91YLuq1hdKeV8CXEjlyNY9hvtrlwDsCaUSBOeXKVWtFSTLAQtt91
+	 IeEjFNExz1ykGyyOpJaKcgABV5cJIr4OOHQnbiLL8Zwzlt5pi1/Gm1NFULhyTcsuRw
+	 7gXdZaGKA6ao+QsmmYKhlgspentCcTEr8mYWWVNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alistair Popple <apopple@nvidia.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>,
-	Balbir Singh <balbirs@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 338/522] lib: test_hmm: evict device pages on file close to avoid use-after-free
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 7.0 254/378] IB/isert: Reject login PDUs shorter than ISER_HEADERS_LEN
 Date: Tue, 16 Jun 2026 20:28:05 +0530
-Message-ID: <20260616145141.629673656@linuxfoundation.org>
+Message-ID: <20260616145123.504997338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,207 +66,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265640-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:zenghui.yu@linux.dev,m:balbirs@nvidia.com,m:david@kernel.org,m:jgg@ziepe.ca,m:leon@kernel.org,m:liam.howlett@oracle.com,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264076-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 052AD69389E
+X-Rspamd-Queue-Id: 6C164691468
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alistair Popple <apopple@nvidia.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 744dd97752ef1076a8d8672bb0d8aa2c7abc1144 ]
+commit 29e7b925ae6df64894e82ab6419994dc25580a8a upstream.
 
-Patch series "Minor hmm_test fixes and cleanups".
+In drivers/infiniband/ulp/isert/ib_isert.c, isert_login_recv_done()
+computes the login request payload length as wc->byte_len minus
+ISER_HEADERS_LEN with no lower bound, and login_req_len is a signed int.
+A remote iSER initiator can post a login Send work request carrying
+fewer than ISER_HEADERS_LEN (76) bytes, so the subtraction underflows
+and login_req_len becomes negative.
 
-Two bugfixes a cleanup for the HMM kernel selftests.  These were mostly
-reported by Zenghui Yu with special thanks to Lorenzo for analysing and
-pointing out the problems.
+isert_rx_login_req() then reads that negative length back into a signed
+int, takes size = min(rx_buflen, MAX_KEY_VALUE_PAIRS), and because the
+min() is signed it keeps the negative value; the value is then passed as
+the memcpy() length and sign-extended to a multi-gigabyte size_t. The
+copy into the 8192-byte login->req_buf runs far out of bounds and
+faults, crashing the target node. The login phase precedes iSCSI
+authentication, so no credentials are required to reach this path.
 
-This patch (of 3):
+Reject any login PDU shorter than ISER_HEADERS_LEN before the
+subtraction, mirroring the existing early return on a failed work
+completion, so login_req_len can never go negative. The upper bound was
+already safe: a posted login buffer cannot deliver more than
+ISER_RX_PAYLOAD_SIZE, so the difference stays at or below
+MAX_KEY_VALUE_PAIRS and the existing min() clamps it; only the missing
+lower bound needs to be added.
 
-When dmirror_fops_release() is called it frees the dmirror struct but
-doesn't migrate device private pages back to system memory first.  This
-leaves those pages with a dangling zone_device_data pointer to the freed
-dmirror.
-
-If a subsequent fault occurs on those pages (eg.  during coredump) the
-dmirror_devmem_fault() callback dereferences the stale pointer causing a
-kernel panic.  This was reported [1] when running mm/ksft_hmm.sh on arm64,
-where a test failure triggered SIGABRT and the resulting coredump walked
-the VMAs faulting in the stale device private pages.
-
-Fix this by calling dmirror_device_evict_chunk() for each devmem chunk in
-dmirror_fops_release() to migrate all device private pages back to system
-memory before freeing the dmirror struct.  The function is moved earlier
-in the file to avoid a forward declaration.
-
-Link: https://lore.kernel.org/20260331063445.3551404-1-apopple@nvidia.com
-Link: https://lore.kernel.org/20260331063445.3551404-2-apopple@nvidia.com
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Tested-by: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ kept the existing simpler `dmirror_device_evict_chunk()` body instead of the upstream compound-folio version ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b8d26b3be8b3 ("iser-target: Add iSCSI Extensions for RDMA (iSER) target driver")
+Link: https://patch.msgid.link/r/20260602194642.2273217-1-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_hmm.c |   86 ++++++++++++++++++++++++++++++++-------------------------
- 1 file changed, 49 insertions(+), 37 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -183,11 +183,60 @@ static int dmirror_fops_open(struct inod
- 	return 0;
- }
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -1383,6 +1383,12 @@ isert_login_recv_done(struct ib_cq *cq,
+ 	ib_dma_sync_single_for_cpu(ib_dev, isert_conn->login_desc->dma_addr,
+ 			ISER_RX_SIZE, DMA_FROM_DEVICE);
  
-+static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
-+{
-+	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
-+	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
-+	unsigned long npages = end_pfn - start_pfn + 1;
-+	unsigned long i;
-+	unsigned long *src_pfns;
-+	unsigned long *dst_pfns;
-+
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+
-+	migrate_device_range(src_pfns, start_pfn, npages);
-+	for (i = 0; i < npages; i++) {
-+		struct page *dpage, *spage;
-+
-+		spage = migrate_pfn_to_page(src_pfns[i]);
-+		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
-+			continue;
-+
-+		if (WARN_ON(!is_device_private_page(spage) &&
-+			    !is_device_coherent_page(spage)))
-+			continue;
-+		spage = BACKING_PAGE(spage);
-+		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
-+		lock_page(dpage);
-+		copy_highpage(dpage, spage);
-+		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
-+		if (src_pfns[i] & MIGRATE_PFN_WRITE)
-+			dst_pfns[i] |= MIGRATE_PFN_WRITE;
-+	}
-+	migrate_device_pages(src_pfns, dst_pfns, npages);
-+	migrate_device_finalize(src_pfns, dst_pfns, npages);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
-+}
-+
- static int dmirror_fops_release(struct inode *inode, struct file *filp)
- {
- 	struct dmirror *dmirror = filp->private_data;
-+	struct dmirror_device *mdevice = dmirror->mdevice;
-+	int i;
- 
- 	mmu_interval_notifier_remove(&dmirror->notifier);
-+
-+	if (mdevice->devmem_chunks) {
-+		for (i = 0; i < mdevice->devmem_count; i++) {
-+			struct dmirror_chunk *devmem =
-+				mdevice->devmem_chunks[i];
-+
-+			dmirror_device_evict_chunk(devmem);
-+		}
++	if (unlikely(wc->byte_len < ISER_HEADERS_LEN)) {
++		isert_dbg("login request length %u is too short\n",
++			  wc->byte_len);
++		return;
 +	}
 +
- 	xa_destroy(&dmirror->pt);
- 	kfree(dmirror);
- 	return 0;
-@@ -1223,43 +1272,6 @@ static int dmirror_snapshot(struct dmirr
- 	return ret;
- }
+ 	isert_conn->login_req_len = wc->byte_len - ISER_HEADERS_LEN;
  
--static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
--{
--	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
--	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
--	unsigned long npages = end_pfn - start_pfn + 1;
--	unsigned long i;
--	unsigned long *src_pfns;
--	unsigned long *dst_pfns;
--
--	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
--	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
--
--	migrate_device_range(src_pfns, start_pfn, npages);
--	for (i = 0; i < npages; i++) {
--		struct page *dpage, *spage;
--
--		spage = migrate_pfn_to_page(src_pfns[i]);
--		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
--			continue;
--
--		if (WARN_ON(!is_device_private_page(spage) &&
--			    !is_device_coherent_page(spage)))
--			continue;
--		spage = BACKING_PAGE(spage);
--		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
--		lock_page(dpage);
--		copy_highpage(dpage, spage);
--		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
--		if (src_pfns[i] & MIGRATE_PFN_WRITE)
--			dst_pfns[i] |= MIGRATE_PFN_WRITE;
--	}
--	migrate_device_pages(src_pfns, dst_pfns, npages);
--	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kvfree(src_pfns);
--	kvfree(dst_pfns);
--}
--
- /* Removes free pages from the free list so they can't be re-allocated */
- static void dmirror_remove_free_pages(struct dmirror_chunk *devmem)
- {
+ 	if (isert_conn->conn) {
 
 
 
