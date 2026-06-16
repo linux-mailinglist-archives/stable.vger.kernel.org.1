@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-264086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fQ8JIZNuMWq6jAUAu9opvQ
-	(envelope-from <stable+bounces-264086-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:07 +0200
+	id 3dq7JZZuMWq8jAUAu9opvQ
+	(envelope-from <stable+bounces-264087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E28691493
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 218E269149B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:10 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=P+WgbXKi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264086-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264086-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mz1VXdJ5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264087-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264087-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6DEA631480D0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25BCB31737EE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F6E449EAB;
-	Tue, 16 Jun 2026 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB10C357D14;
+	Tue, 16 Jun 2026 15:34:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DEF43E4A1;
-	Tue, 16 Jun 2026 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9B443E4A1;
+	Tue, 16 Jun 2026 15:34:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624052; cv=none; b=VJ7exsf2U1gXvD8wvkGwCuucv+VvFuupeHt908bFUdZiLoUVHe1MmaEAfCN1rBPfKTQR41ZIzdo/O8NXMeQmHbgUXVGjxiJ7vBwqqMSjJjkANDGr6HhF92uR4uHDmT8l0cMO+iydlhMLXySRD09QIlYzQXSkA7Rr3WhfXqVnedA=
+	t=1781624057; cv=none; b=L91iNsSxMkKPinEH8ABUTjsJV1o50zWUjhttBqFhudiRsg2xEoz+eCPBPtYv2SEtS0EXOMw8yZCT5jOrZ93pvAHOEvsS+17h6BvNzTMfw1b3Ne3llDUs4AdLzOy7cqCisUqKKcMbi2dnlozWGggDVs4e9i4faudhEJO7v+EI+Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624052; c=relaxed/simple;
-	bh=5PYkhAdpBr1DdfVvsfCB3CUcVR+kQMTNforUfPyey6s=;
+	s=arc-20240116; t=1781624057; c=relaxed/simple;
+	bh=fk0nI++z9zA2W7mrXMuTSf2dYOcVyhFkN6EX/YUcAO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq7Q0tNOJEKEKURJNkZZ5cSM/wjCsAOboQQZBYsbwLpmiE1skKEhEB0yVeOrAW5rUtYytZ3CRY4UnDBwPO2E9zWtyStk4BVzs7w33bBI1R1tNpELi3IfVADtZLAs2jRhR/NTLCl1KLILu6B/5xTLvbCAWr4rNaYjI8Sme+MLAkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+WgbXKi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112011F00A3A;
-	Tue, 16 Jun 2026 15:34:09 +0000 (UTC)
+	 MIME-Version; b=dz1MaodAZgpdR+UeMc5wnMQNfoa6/+iVoUHBk7PHql+VlGxUfPcqa0oBAcfOLQKgagULKHi2Mx/S9gHJRLjuBou/Vg+FhbigU5eIB7igEJsWibAxj6aM9uMj37+ElOYg3BFyamBUn5ynTwyX+boR6nu9jX1F05ivuNoRGo1viIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz1VXdJ5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E65D1F000E9;
+	Tue, 16 Jun 2026 15:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624051;
-	bh=CwmdDriVwNhOX98OBKsE7dak5OO3giV50RYvf+q8XJw=;
+	s=korg; t=1781624056;
+	bh=XBdYSq7UZNe7V4/tBuQfbQLNKSNdO1t2qJosLASfftk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P+WgbXKixhyDue0zdmr7rZGjVk/Se6+1mFKAC0gNo6l7U87C/clLVKVT6+uxs/zAm
-	 uIvBGhtJ2L2N7jLCzzrVnpx5gVQ6EuB6plJL/4k9xulxiCPd0OrHRrLIwc/NWxeoIb
-	 9cJAUrLWnFOXUMRj/JcvHTUaFkXW7FLLQRjUd2ME=
+	b=mz1VXdJ5TQEB4ykVLuou73gEVQ1ttTiwm2v7+fW6eA5GYyv0ZyyGw+UBpAf+Vf+vF
+	 fkM8js+zl7o25olSHs5pBi4iPJRRxa7bX+tvqfpZMG3kvqDH7ljDtoVk7sHhfrF6S0
+	 Llc0wvYQot1pHguGge1yEL7T+Wn345k5K/YdShR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 230/378] mptcp: fix missing wakeups in edge scenarios
-Date: Tue, 16 Jun 2026 20:27:41 +0530
-Message-ID: <20260616145122.372455143@linuxfoundation.org>
+Subject: [PATCH 7.0 231/378] mptcp: fix retransmission loop when csum is enabled
+Date: Tue, 16 Jun 2026 20:27:42 +0530
+Message-ID: <20260616145122.424610934@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
 References: <20260616145109.744539446@linuxfoundation.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264086-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264087-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -100,7 +100,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1E28691493
+X-Rspamd-Queue-Id: 218E269149B
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,21 +108,22 @@ X-Rspamd-Queue-Id: C1E28691493
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 upstream.
+commit d1918b36edcaed0ec4ef6888b2358c6b1ddcff47 upstream.
 
-The mptcp_recvmsg() can fill MPTCP socket receive queue via
-mptcp_move_skbs(), but currently does not try to wakeup any listener,
-because the same process is going to check the receive queue soon.
+Sashiko noted that retransmission with csum enabled can actually
+transmit new data, but currently the relevant code does not update
+accordingly snd_nxt.
 
-When multiple threads are reading from the same fd, the above can
-cause stall. Add the missing wakeup.
+The may cause incoming ack drop and an endless retransmission loop.
 
-Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+Address the issue incrementing snd_nxt as needed.
+
+Fixes: 4e14867d5e91 ("mptcp: tune re-injections for csum enabled mode")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
+Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-2-856831229976@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -131,16 +132,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -2256,6 +2256,10 @@ static bool mptcp_move_skbs(struct sock
- 		mptcp_backlog_spooled(sk, moved, &skbs);
- 	}
- 	mptcp_data_unlock(sk);
+@@ -2852,6 +2852,10 @@ static void __mptcp_retrans(struct sock
+ 	msk->bytes_retrans += len;
+ 	dfrag->already_sent = max(dfrag->already_sent, len);
+ 
++	/* With csum enabled retransmission can send new data. */
++	if (after64(dfrag->already_sent + dfrag->data_seq, msk->snd_nxt))
++		WRITE_ONCE(msk->snd_nxt, dfrag->already_sent + dfrag->data_seq);
 +
-+	if (enqueued && mptcp_epollin_ready(sk))
-+		sk->sk_data_ready(sk);
-+
- 	return enqueued;
- }
+ reset_timer:
+ 	mptcp_check_and_set_pending(sk);
  
 
 
