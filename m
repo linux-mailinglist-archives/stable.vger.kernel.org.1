@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SaypN916MWqvkQUAu9opvQ
-	(envelope-from <stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:33 +0200
+	id ibeKNSqZMWpTnwUAu9opvQ
+	(envelope-from <stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B52469234D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B3E6945CD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x7sJdWyi;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ArDIotzx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F00A830454E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37D1E31AA81A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA1D477993;
-	Tue, 16 Jun 2026 16:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEC33DC4D9;
+	Tue, 16 Jun 2026 18:38:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3EC4502F;
-	Tue, 16 Jun 2026 16:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B664169AD2;
+	Tue, 16 Jun 2026 18:38:46 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627561; cv=none; b=ibeMFpmdfzY+twdAx3BkJFfkF9m3JFP+UWA2fwPElloBEPohVycOKkmu5GrOt9HdG32oHSYLAsn77t7r5g+4RHynNgbKUemMl4J90NW0ygH/E4DfC8y0b/m/m4WDPc+QaK3aY6tZH3QHsUpuXib8sKxN5BVZAOOjHVLOzmh4i6U=
+	t=1781635127; cv=none; b=OM0cXwkdOXXAHxaEptbwXAlnPTgYO9eO7BNlJgJR9uxR225G99B59DJKa8IhI4giXVDfKQ2H2JLWnCLL8aU722AEL+u1qwXY0Ct28G6MG9RukJwnnS6tg7eb2mWs+Ao0OUTY/KVxRzPudO6MlzNMFK4Zxf/BAUi3uUzW+Q6rlVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627561; c=relaxed/simple;
-	bh=ZW9PrIuO9k3J3UhjPhTxDdEb2f/BXPZtVNmLCQRTdhY=;
+	s=arc-20240116; t=1781635127; c=relaxed/simple;
+	bh=pq3BzsMoE3FehVi9/qkvJdOnUAij9rRyZjHDaNcYDXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fa9bEtJtoN7V52H8fgKaiIatkk2QfgDGBAvdlop2xaL1fCrNPfYUlmUVnHhKXnq1CLK13q+Ysz7AIu+1crXnO0JwWIX0wqxqffYByV4WM4v6i+rW6W8p5LIl8XBYTuO4fVT87VkR+lRudnxY7+5sh9iiZL7pn4MkRFPjyzoigXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7sJdWyi; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D8A1F000E9;
-	Tue, 16 Jun 2026 16:32:37 +0000 (UTC)
+	 MIME-Version; b=K5lddxqxg19VA2mAoa7Nvts/RWhSNB2dQjjUUaGbk351PGXoPCgrNNYavejVJv4bwdw2XipYO/G3o+dlawtnHJbPE3Twt+BSUsElVbr8soJnXdPj7vvGyZRsu7VocXfwvvFTJtFY+AIWgE09AVumpPUU5W31dFQCZUuCD3mlhyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArDIotzx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C521F000E9;
+	Tue, 16 Jun 2026 18:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627560;
-	bh=ji70dKrK2fgvdzFhqeR2EFOnE/pCRaqiVkNdiN6P6oQ=;
+	s=korg; t=1781635126;
+	bh=cEsmPmNtyCOz40yosx4PPOB0ZfFkqINwEogbdcUIJD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x7sJdWyi7XWepwx2KvOSg+p4B6DF7EdGw0cWClgO7Y0Ypl0aDE4tlh6tnX8fBloS9
-	 TPAx9z+iqU4J8DU0Jw3VQvZm+N5PgnnLldn7gyAJNvJ6KQHRmjIcc3j7raypzYDtXQ
-	 Wew67ZHr+28zFLhQD3FQME0KA+4/Papvfte1wOj4=
+	b=ArDIotzxWhISKrnxEYpgAvpX3SGwZzjI0zCHqaIc+B7a/qVTRQVWHYYnsEFwNit1Z
+	 vkWeDszmg4eWmjKxjC/mkgerIvjzDwvBvxd6b2+yUv37qP9MPkz98+gjvcXOkPERhe
+	 nsDa/9+57Du+dxOTaCsbrgxjCQpzYZeIklk9QL/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulfh@kernel.org>
-Subject: [PATCH 6.12 193/261] mmc: dw_mmc-rockchip: Add missing private data for very old controllers
-Date: Tue, 16 Jun 2026 20:30:31 +0530
-Message-ID: <20260616145054.007145798@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 5.15 394/411] blk-cgroup: Fix NULL deref caused by blkg_policy_data being installed before init
+Date: Tue, 16 Jun 2026 20:30:32 +0530
+Message-ID: <20260616145122.161051319@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,104 +73,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264730-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heiko@sntech.de,m:shawn.lin@rock-chips.com,m:ulfh@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,kernel.dk,163.com];
+	TAGGED_FROM(0.00)[bounces-266190-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj@kernel.org,m:leitao@debian.org,m:axboe@kernel.dk,m:rob_garcia@163.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sntech.de:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B52469234D
+X-Rspamd-Queue-Id: 39B3E6945CD
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Tejun Heo <tj@kernel.org>
 
-commit 1e9a4850afa0ceb63984fb1a9f3e86d0fc4fd18f upstream.
+commit ec14a87ee1999b19d8b7ed0fa95fea80644624ae upstream.
 
-The really old controllers (rk2928, rk3066, rk3188) do not support UHS
-speeds at all, and thus never handled phase data.
+blk-iocost sometimes causes the following crash:
 
-For that reason it never had a parse_dt callback and no driver private
-data at all.
+  BUG: kernel NULL pointer dereference, address: 00000000000000e0
+  ...
+  RIP: 0010:_raw_spin_lock+0x17/0x30
+  Code: be 01 02 00 00 e8 79 38 39 ff 31 d2 89 d0 5d c3 0f 1f 00 0f 1f 44 00 00 55 48 89 e5 65 ff 05 48 d0 34 7e b9 01 00 00 00 31 c0 <f0> 0f b1 0f 75 02 5d c3 89 c6 e8 ea 04 00 00 5d c3 0f 1f 84 00 00
+  RSP: 0018:ffffc900023b3d40 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 00000000000000e0 RCX: 0000000000000001
+  RDX: ffffc900023b3d20 RSI: ffffc900023b3cf0 RDI: 00000000000000e0
+  RBP: ffffc900023b3d40 R08: ffffc900023b3c10 R09: 0000000000000003
+  R10: 0000000000000064 R11: 000000000000000a R12: ffff888102337000
+  R13: fffffffffffffff2 R14: ffff88810af408c8 R15: ffff8881070c3600
+  FS:  00007faaaf364fc0(0000) GS:ffff88842fdc0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00000000000000e0 CR3: 00000001097b1000 CR4: 0000000000350ea0
+  Call Trace:
+   <TASK>
+   ioc_weight_write+0x13d/0x410
+   cgroup_file_write+0x7a/0x130
+   kernfs_fop_write_iter+0xf5/0x170
+   vfs_write+0x298/0x370
+   ksys_write+0x5f/0xb0
+   __x64_sys_write+0x1b/0x20
+   do_syscall_64+0x3d/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Commit ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating
-support") makes the private data sort of mandatory, because the init
-function checks whether phases are configured internally or through the
-clock controller.
+This happens because iocg->ioc is NULL. The field is initialized by
+ioc_pd_init() and never cleared. The NULL deref is caused by
+blkcg_activate_policy() installing blkg_policy_data before initializing it.
 
-This results in the old SoCs then experiencing NULL-pointer dereferences
-when they try to access that private-data struct.
+blkcg_activate_policy() was doing the following:
 
-While we could have if (priv) conditionals in all places, it's way less
-cluttery to just give the old types their private-data struct.
+1. Allocate pd's for all existing blkg's and install them in blkg->pd[].
+2. Initialize all pd's.
+3. Online all pd's.
 
-Fixes: ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+blkcg_activate_policy() only grabs the queue_lock and may release and
+re-acquire the lock as allocation may need to sleep. ioc_weight_write()
+grabs blkcg->lock and iterates all its blkg's. The two can race and if
+ioc_weight_write() runs during #1 or between #1 and #2, it can encounter a
+pd which is not initialized yet, leading to crash.
+
+The crash can be reproduced with the following script:
+
+  #!/bin/bash
+
+  echo +io > /sys/fs/cgroup/cgroup.subtree_control
+  systemd-run --unit touch-sda --scope dd if=/dev/sda of=/dev/null bs=1M count=1 iflag=direct
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+  bash -c "echo '8:0 enable=1' > /sys/fs/cgroup/io.cost.qos" &
+  sleep .2
+  echo 100 > /sys/fs/cgroup/system.slice/io.weight
+
+with the following patch applied:
+
+> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+> index fc49be622e05..38d671d5e10c 100644
+> --- a/block/blk-cgroup.c
+> +++ b/block/blk-cgroup.c
+> @@ -1553,6 +1553,12 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
+> 		pd->online = false;
+> 	}
+>
+> +       if (system_state == SYSTEM_RUNNING) {
+> +               spin_unlock_irq(&q->queue_lock);
+> +               ssleep(1);
+> +               spin_lock_irq(&q->queue_lock);
+> +       }
+> +
+> 	/* all allocated, init in the same order */
+> 	if (pol->pd_init_fn)
+> 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+
+I don't see a reason why all pd's should be allocated, initialized and
+onlined together. The only ordering requirement is that parent blkgs to be
+initialized and onlined before children, which is guaranteed from the
+walking order. Let's fix the bug by allocating, initializing and onlining pd
+for each blkg and holding blkcg->lock over initialization and onlining. This
+ensures that an installed blkg is always fully initialized and onlined
+removing the the race window.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: Breno Leitao <leitao@debian.org>
+Fixes: 9d179b865449 ("blkcg: Fix multiple bugs in blkcg_activate_policy()")
+Link: https://lore.kernel.org/r/ZN0p5_W-Q9mAHBVY@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/dw_mmc-rockchip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ block/blk-cgroup.c |   32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
---- a/drivers/mmc/host/dw_mmc-rockchip.c
-+++ b/drivers/mmc/host/dw_mmc-rockchip.c
-@@ -433,6 +433,22 @@ static int dw_mci_common_parse_dt(struct
- 	return 0;
- }
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -1337,7 +1337,7 @@ int blkcg_activate_policy(struct request
+ retry:
+ 	spin_lock_irq(&q->queue_lock);
  
-+static int dw_mci_rk2928_parse_dt(struct dw_mci *host)
-+{
-+	struct dw_mci_rockchip_priv_data *priv;
-+	int err;
-+
-+	err = dw_mci_common_parse_dt(host);
-+	if (err)
-+		return err;
-+
-+	priv = host->priv;
-+
-+	priv->internal_phase = false;
-+
-+	return 0;
-+}
-+
- static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
- {
- 	struct dw_mci_rockchip_priv_data *priv;
-@@ -506,6 +522,7 @@ static int dw_mci_rockchip_init(struct d
+-	/* blkg_list is pushed at the head, reverse walk to allocate parents first */
++	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
+ 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		struct blkg_policy_data *pd;
  
- static const struct dw_mci_drv_data rk2928_drv_data = {
- 	.init			= dw_mci_rockchip_init,
-+	.parse_dt		= dw_mci_rk2928_parse_dt,
- };
+@@ -1375,21 +1375,20 @@ retry:
+ 				goto enomem;
+ 		}
  
- static const struct dw_mci_drv_data rk3288_drv_data = {
+-		blkg->pd[pol->plid] = pd;
++		spin_lock(&blkg->blkcg->lock);
++
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
+-		pd->online = false;
+-	}
++		blkg->pd[pol->plid] = pd;
+ 
+-	/* all allocated, init in the same order */
+-	if (pol->pd_init_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+-			pol->pd_init_fn(blkg->pd[pol->plid]);
++		if (pol->pd_init_fn)
++			pol->pd_init_fn(pd);
+ 
+-	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
+ 		if (pol->pd_online_fn)
+-			pol->pd_online_fn(blkg->pd[pol->plid]);
+-		blkg->pd[pol->plid]->online = true;
++			pol->pd_online_fn(pd);
++		pd->online = true;
++
++		spin_unlock(&blkg->blkcg->lock);
+ 	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+@@ -1406,14 +1405,19 @@ out:
+ 	return ret;
+ 
+ enomem:
+-	/* alloc failed, nothing's initialized yet, free everything */
++	/* alloc failed, take down everything */
+ 	spin_lock_irq(&q->queue_lock);
+ 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
+ 		struct blkcg *blkcg = blkg->blkcg;
++		struct blkg_policy_data *pd;
+ 
+ 		spin_lock(&blkcg->lock);
+-		if (blkg->pd[pol->plid]) {
+-			pol->pd_free_fn(blkg->pd[pol->plid]);
++		pd = blkg->pd[pol->plid];
++		if (pd) {
++			if (pd->online && pol->pd_offline_fn)
++				pol->pd_offline_fn(pd);
++			pd->online = false;
++			pol->pd_free_fn(pd);
+ 			blkg->pd[pol->plid] = NULL;
+ 		}
+ 		spin_unlock(&blkcg->lock);
 
 
 
