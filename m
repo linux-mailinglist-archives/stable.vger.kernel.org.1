@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-264023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rggbCkNtMWoxjAUAu9opvQ
-	(envelope-from <stable+bounces-264023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:31 +0200
+	id HC7AIUhtMWo2jAUAu9opvQ
+	(envelope-from <stable+bounces-264024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D4E6912DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A00D6912E7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BIX9Sld3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264023-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264023-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DSfnVjqz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264024-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264024-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0694430361E4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:28:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 386153036756
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C87837C912;
-	Tue, 16 Jun 2026 15:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FC137C912;
+	Tue, 16 Jun 2026 15:28:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8563290AD;
-	Tue, 16 Jun 2026 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC20F30C360;
+	Tue, 16 Jun 2026 15:28:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623717; cv=none; b=fBkyfCMN6IjXehgJd9NKUXfebolY2GCeCKDzw+6hzseNagWAlJjbbJcNliIJHjmp1M+o1kySCGCpHKRwr8RY1LmBOKaPwZs6fqlV/v8s6znA1RPijVwy/ZVTegdQZ69q/fIu1JJoLwkwjmmWOtGnnXM47P2Uf5dy6nDnitMlcPg=
+	t=1781623722; cv=none; b=Ujm+0dt+TBu5vapzf+DQDw5BbJkZCTt7UdbE492HXlGeXXlvtcweLndJw4Bz5HmBdbD+0zPwyg7r6jmYlL62E1GjJV7G68FUF1utSt/SWGCX0DN2gND/cmEypKoX9LL7AwPwsczhYnUG8M7zan6P2162286XmB5oOOxjuuZCme0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623717; c=relaxed/simple;
-	bh=AO2OfowXtIv023dRXVwtzVE2nk+8q8qhrF4r5m9g2/8=;
+	s=arc-20240116; t=1781623722; c=relaxed/simple;
+	bh=FuMd/IXq3zFJkVve9Y0EgRrpgyrS5jKGSZ9LOB46DNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATVz6AMTLYH/7kCbq6NfvmPRURLhVQIk87ecWtL6nvmKNrQvnAKODPS9brSn8jVjXpmQPPdtbl3VgcB6Rp6v/NxtFY02/+PQrk+aFp7G53I/5ajm7A6SiRqrZtmIPKJCOPQ3znC6bMkA/dFksPwAkNTRyENSnipdNbQ5rrKYGcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIX9Sld3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425301F000E9;
-	Tue, 16 Jun 2026 15:28:35 +0000 (UTC)
+	 MIME-Version; b=Lzi4NWiuQSrtzcPoVGm2ZqmE16Y3C4VoYJdni6Jf2aqP5WhLJOkAMYRGsDlAvFKVzoFUpvAY1AVLRXaUMW7lauNa1M+UD9/tequ2dNkJ06xIj1RC+k8YG1CWn3qwgYKSHruX84dFqOta4ywM6qfctSkm0+o2QbXTadySWKEmstw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSfnVjqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B076F1F000E9;
+	Tue, 16 Jun 2026 15:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623716;
-	bh=8NPZ5k7gAi0kFixJqo1xd70jQcq7Pvd/4F0eYO7RPMg=;
+	s=korg; t=1781623721;
+	bh=XD+3QjWoTYyIKmd6U2w6AdsKw/rggvYWjImOexT9p0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BIX9Sld3PHInqz/QZAz1cY3k7guZPr3i4YYhu9mFK0vQG2UK1ETDTrByn37jPs0bd
-	 RcucbL+lSpLMXoEQ45upnqUTe8QsPomWRzxhYpO8xXopnuOi2N/WZuLkU7Que2vZfQ
-	 cXNkTQ5GcbrLHD/WsJP1cKkQcbhpnHbj/OKHo82Q=
+	b=DSfnVjqzavc4yFyse/vSyM6gWeMATCdNLKXmz/B+GosGo4Ci3bMFGUWlf9q8HM3fm
+	 17K1ZyclTRJwWYSVWAth//sL5S8xMaDqbLHngnBosz8xrNXnEmtU+vzRSmq8YEHHOR
+	 yMpHRU3wrIc1BIa8ouPDFD4FDp9FaiXBQO9vBSKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>
-Subject: [PATCH 7.0 183/378] accel/ivpu: Fix signed integer truncation in IPC receive
-Date: Tue, 16 Jun 2026 20:26:54 +0530
-Message-ID: <20260616145120.012538590@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 7.0 184/378] tracing: Fix CFI violation in probestub being called by tprobes
+Date: Tue, 16 Jun 2026 20:26:55 +0530
+Message-ID: <20260616145120.068262222@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
 References: <20260616145109.744539446@linuxfoundation.org>
@@ -76,17 +77,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264023-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrzej.kacprowski@linux.intel.com,m:karol.wachowski@linux.intel.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mhiramat@kernel.org,m:eva.kurchatova@virtuozzo.com,m:rostedt@goodmis.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,48 +98,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,virtuozzo.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 13D4E6912DF
+X-Rspamd-Queue-Id: 9A00D6912E7
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
 
-commit d9faef564438d1e4579c692c046603e7ada7bdf4 upstream.
+commit 0652a3daa78723f955b1ebeb621665ce72bec53e upstream.
 
-Fix potential buffer overflow where firmware-supplied data_size is cast
-to signed int before being used in min_t(). Large unsigned values
-(>= 0x80000000) become negative, causing unsigned wraparound and
-oversized memcpy operations that can overflow the stack buffer.
+The probestub is a function to allow tprobes to hook to a tracepoint to
+gain access to its parameters. The function itself is only referenced by
+the tracepoint structure which lives in the __tracepoint section. objtool
+explicitly ignores that section and when processing functions in the
+kernel, if it detects one that has no references it will seal it to have
+its ENDBR stripped on boot up.
 
-Change min_t(int, ...) to min() as both values are unsigned and can be
-handled by min() without explicit cast.
+This means when a tprobe is attached to the sched_wakeup tracepoint, when it
+is triggered it will call __probestub_sched_wakeup and due to the missing
+ENDBR on a CFI-enabled machine it will take a #CP exception.
 
-Fixes: 3b434a3445ff ("accel/ivpu: Use threaded IRQ to handle JOB done messages")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Andrzej Kacprowski <andrzej.kacprowski@linux.intel.com>
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/20260601161643.229342-1-andrzej.kacprowski@linux.intel.com
+Fix this by adding CFI_NOSEAL annotation to probestub declaration.
+
+Cc: stable@vger.kernel.org
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://patch.msgid.link/20260603153147.573589-1-eva.kurchatova@virtuozzo.com
+Fixes: d5173f753750 ("objtool: Exclude __tracepoints data from ENDBR checks")
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+[ Updated change log ]
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_ipc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/tracepoint.h |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_ipc.c
-+++ b/drivers/accel/ivpu/ivpu_ipc.c
-@@ -276,7 +276,7 @@ int ivpu_ipc_receive(struct ivpu_device
- 	if (ipc_buf)
- 		memcpy(ipc_buf, rx_msg->ipc_hdr, sizeof(*ipc_buf));
- 	if (rx_msg->jsm_msg) {
--		u32 size = min_t(int, rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
-+		u32 size = min(rx_msg->ipc_hdr->data_size, sizeof(*jsm_msg));
+--- a/include/linux/tracepoint.h
++++ b/include/linux/tracepoint.h
+@@ -20,6 +20,7 @@
+ #include <linux/rcupdate_trace.h>
+ #include <linux/tracepoint-defs.h>
+ #include <linux/static_call.h>
++#include <linux/cfi.h>
  
- 		if (rx_msg->jsm_msg->result != VPU_JSM_STATUS_SUCCESS) {
- 			ivpu_err(vdev, "IPC resp result error: %d\n", rx_msg->jsm_msg->result);
+ struct module;
+ struct tracepoint;
+@@ -380,6 +381,13 @@ static inline struct tracepoint *tracepo
+ 	void __probestub_##_name(void *__data, proto)			\
+ 	{								\
+ 	}								\
++	/*								\
++	 * Annotate the probestub 'CFI_NOSEAL' to stop objtool from	\
++	 * requesting the kernel remove the ENDBR, because the only	\
++	 * references to the function are in the __tracepoint section,	\
++	 * that objtool doesn't scan.					\
++	 */								\
++	CFI_NOSEAL(__probestub_##_name);				\
+ 	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);	\
+ 	DEFINE_RUST_DO_TRACE(_name, TP_PROTO(proto), TP_ARGS(args))
+ 
 
 
 
