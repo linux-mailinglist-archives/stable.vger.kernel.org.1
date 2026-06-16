@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eT2OFm1yMWpHjgUAu9opvQ
-	(envelope-from <stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:33 +0200
+	id mo6DADqMMWpFmQUAu9opvQ
+	(envelope-from <stable+bounces-265606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10746918ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:32 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042986937C0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gJwr1d3O;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yDa2T1nn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265606-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265606-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF2F43067455
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 115263000BB1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F6F44CAE6;
-	Tue, 16 Jun 2026 15:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129E53CC33F;
+	Tue, 16 Jun 2026 17:47:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB551684BE;
-	Tue, 16 Jun 2026 15:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5833C3C1E;
+	Tue, 16 Jun 2026 17:47:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624944; cv=none; b=qtjdvnU9sPweGll9xWOONFaVDydlt8Cj9stDjqov23UsDnJaJIfMVtLhLOqQJ2mkyL2vglBLZB/lJWtqtxFX59eTZCfac841juyUQXCcYJV7EnJBpb3jsaKGZVcCh7MzIhO/TgJ1mlYwoW+nxY6AIu0DpspfbXd1CpC9nATGBWM=
+	t=1781632052; cv=none; b=oTmE8xBqXWBh2g/S9MOi/92YgTBP4wu2nYQEBbPihDAHvuVnT0yGOP/gmRCgo6khb+yd70gYIVS7rirzQkJHqkDpefKiCfPRuRZ8NWRn4zLeRlaVU0wf/GCRKW4qYrjMzPGribuN974Wzd5K2SJU2UP3YBqeDBIy7v2rgGBzkAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624944; c=relaxed/simple;
-	bh=nNaDPu/TMN1HA8zJmDbXpzUuYCzFRMwcQ5sI++7JPh4=;
+	s=arc-20240116; t=1781632052; c=relaxed/simple;
+	bh=q0X6o+FnIXBn6LFAekxvP41fNk/58gQ3r5TyBxv6DX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y3EmO8u8Adgkhun5EQgKl9VEsf4ga4Txeq/XnTncndD2HD8cG0KYq1wpo4O4JuGshplvbihqJPlZaZRai+nQox4PxkcoKtgUhNe9q2cSwR8bYAtXRzXbVi8LRADzFyGJy9PV9BjDcHyupr3MLYlqrWYWKDDfCfnWj8OsMY5x7ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJwr1d3O; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84521F000E9;
-	Tue, 16 Jun 2026 15:49:01 +0000 (UTC)
+	 MIME-Version; b=NjR1Pkuopg45HkFW1v7yni90tdm99cXm8RuipkFMOU3UbK1RMavpnGFZKLgiJWcm8Hsm1B1Jhe7EQsQuDI/ExetIPBckDp+2oTOx4VfX9JwSLB4SIOjJjLF+n40r5lncP1aO5TQ3OXIjicZhO9BDecB5h7AUQNRd8eCn9p/k+ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDa2T1nn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A1E1F000E9;
+	Tue, 16 Jun 2026 17:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624943;
-	bh=zOqb917tQoSImqVJD7M/pJMd6d1KXmtxZydrJOWVvng=;
+	s=korg; t=1781632051;
+	bh=bJwEV2k8Wkullli2am+AaDN9/MTtZtTwES+kIJ7rSYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gJwr1d3Oy4zAofiT5LfQqlyRVwA2Ho58l0TEsNKVlLRDLyUEsdSuInNLeIVzR3RLL
-	 DCsKfulzkVpFRkGI8a9Gy1paxFctXc+XVOOxWsrv5vyakQn9TB6ulsUtpVWC1RhK2u
-	 nd9YeIJ7VmahouJcyaTEhjxA+t0Auj5vciXxs4vc=
+	b=yDa2T1nnlh1GL6sC6zDxho6ERBQOtCO7aCoWZ1AaWbwQaY9dxg8GhA4Wxz7KGEWTB
+	 KeL1KBbnEmV+v2Iy265ikChzHM1oogGykvlHw7pRcLV7Lz0xUapM0tJlZev+PYDlOi
+	 JmgVmn86C+LWR0Y23t+zrlnkq04vencyTkhoRg38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianyu Li <jianyu.li@mediatek.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 055/325] af_unix: Fix inq_len update problem in partial read
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Md Haris Iqbal <haris.iqbal@linux.dev>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 304/522] net/mlx5: Reorder completion before putting command entry in cmd_work_handler
 Date: Tue, 16 Jun 2026 20:27:31 +0530
-Message-ID: <20260616145100.435440804@linuxfoundation.org>
+Message-ID: <20260616145140.108962155@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264251-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265606-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kniv@yandex-team.ru,m:haris.iqbal@linux.dev,m:moshe@nvidia.com,m:tariqt@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jianyu.li@mediatek.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,72 +97,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,yandex-team.ru:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E10746918ED
+X-Rspamd-Queue-Id: 042986937C0
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianyu Li <jianyu.li@mediatek.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit c1f07a7f2d47aeb9878301e7bb36bc1c2bc2be8e ]
+commit 02896a7fa4cd3ec61d60ba30136841e4f04bdeac upstream.
 
-Currently inq_len is updated only when the whole skb is consumed.
-If only part of the data is read, following SIOCINQ query would
-get value greater than what actually left.
+Assuming callback != NULL && !page_queue, cmd_work_handler takes
+command entry with refcnt == 1 from mlx5_cmd_invoke.
+If either semaphore timeout or index allocation error happens,
+it does final cmd_ent_put(ent). To avoid access to freed memory,
+notify slotted completion before cmd_ent_put.
 
-This change update inq_len timely in unix_stream_read_generic(),
-and adjust unix_stream_read_skb() accordingly to prevent
-repetitive update.
+This is theoretical issue found by Svace static analyser.
 
-Fixes: f4e1fb04c123 ("af_unix: Use cached value for SOCK_STREAM in unix_inq_len().")
-Signed-off-by: Jianyu Li <jianyu.li@mediatek.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260601113640.231897-2-jianyu.li@mediatek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 485d65e135712 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
+Fixes: 0e2909c6bec90 ("net/mlx5: Fix variable not being completed when function returns")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@linux.dev>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260526162932.501584-1-kniv@yandex-team.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index faf04d1b6c013c..b339f83caf036e 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2891,7 +2891,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 		return -EAGAIN;
- 	}
- 
--	WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
-+	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
- 
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
- 	if (skb == u->oob_skb) {
-@@ -3065,11 +3065,12 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 				unix_detach_fds(&scm, skb);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -986,12 +986,13 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EBUSY, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EBUSY;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
  			}
- 
--			if (unix_skb_len(skb))
--				break;
--
- 			spin_lock(&sk->sk_receive_queue.lock);
--			WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
-+			WRITE_ONCE(u->inq_len, u->inq_len - chunk);
-+			if (unix_skb_len(skb)) {
-+				spin_unlock(&sk->sk_receive_queue.lock);
-+				break;
-+			}
- 			__skb_unlink(skb, &sk->sk_receive_queue);
- 			spin_unlock(&sk->sk_receive_queue.lock);
- 
--- 
-2.53.0
-
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 		alloc_ret = cmd_alloc_index(cmd, ent);
+@@ -1001,13 +1002,14 @@ static void cmd_work_handler(struct work
+ 				ent->callback(-EAGAIN, ent->context);
+ 				mlx5_free_cmd_msg(dev, ent->out);
+ 				free_msg(dev, ent->in);
++				complete(&ent->slotted);
+ 				cmd_ent_put(ent);
+ 			} else {
+ 				ent->ret = -EAGAIN;
+ 				complete(&ent->done);
++				complete(&ent->slotted);
+ 			}
+ 			up(&cmd->vars.sem);
+-			complete(&ent->slotted);
+ 			return;
+ 		}
+ 	} else {
 
 
 
