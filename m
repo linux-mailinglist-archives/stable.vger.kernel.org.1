@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AXMsIJKEMWrAlQUAu9opvQ
-	(envelope-from <stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:58 +0200
+	id I7hUB/x0MWoxjwUAu9opvQ
+	(envelope-from <stable+bounces-264459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D92692E91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC24A691B83
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e3LPEEiR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265193-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tKja7VZZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264459-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264459-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE8E9303F002
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C552F3041C65
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FB844DB64;
-	Tue, 16 Jun 2026 17:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0934A466B59;
+	Tue, 16 Jun 2026 16:06:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C23AE71F;
-	Tue, 16 Jun 2026 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C6A4534B3;
+	Tue, 16 Jun 2026 16:06:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629942; cv=none; b=KzJZ8FbTyC2JuTJcNTyDNl8WwLrU83KOqfdROaZWM+ORiQRYaWFNxrpwK5LWyyOWyCZwbq549vW0I/0DUTxnQM7T+4Q7Wpp0vqAjVrG01tOFLUnHyN4kIm5PGyA4VEq32taW9Ix/BKb6g4KjKlC8n+1djqMWg39lFL/KosZSyXE=
+	t=1781625994; cv=none; b=TVpD7+q9eQ6GoR4+9O96ZRh/TsOjLP7E2/hrCIcYr+V/FD9CY9dMXWf7lrnF9KFTnMRuM5Tm4gn2AUbIBX5k36kUOncOfkEB4LP2SkM85vXVGbMuNqFnO49q/C/IUFsTR8ZYYJYXK9ng1+I2nIqrbhE2XxdcVKrG0UQOrgcLUBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629942; c=relaxed/simple;
-	bh=NLLr70/uNjGphFmTiqABfGAimwCdVbFhiwGgdZqjoJE=;
+	s=arc-20240116; t=1781625994; c=relaxed/simple;
+	bh=bmofMgK/jIUC9n6iob/nwHbUfLDS/2CtsA8M+FtwSfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BxMFB+XZQ9IFXTDm5JY3HserwCaBB3YnPH1jlGlt+3w9vw6mXx9TeYhSnuhiZtk+EP4XzqnEkGwlj3KPiLRVTE0K/rm92VVxC+fCBhj4Hfyy91qW2RoaQM0pcMlkP2AUDVvKHwPMctzqZWxqBPOlbTsysekQVA9zijL6U0iMtvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3LPEEiR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617F51F000E9;
-	Tue, 16 Jun 2026 17:12:20 +0000 (UTC)
+	 MIME-Version; b=Qh3GNn/f9/xBjLyp67WKYkG1b50ajCg2wbTDHF0Y8kukjUkvbyvLVPHV24syXbZNqy2U52VcB+9lvJJTpXEPvs2XWQM/N7XK9ZWWK4Th5mmEYUrPn8OgKQMBnC8WSqNHy+wxnBO4JmJ+5QwPy/YWif+bkG7KJb7DoYyoCXt/y90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKja7VZZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CAF1F000E9;
+	Tue, 16 Jun 2026 16:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629941;
-	bh=7WAo3vrAYY/yg2C8EK1XjQf6engIT5O3zu8sUcGs28k=;
+	s=korg; t=1781625993;
+	bh=IDu8K5vgBUQ37nrgeJO6bLEzrdW8rhRqQP6sBvZZ9kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=e3LPEEiRU/fIsI4HCvfOyG3+x+gRML8xXgxCV7FwcPt8rRW7dS795aCcn08dkOt9p
-	 pbCsiomOphHkBMRJDZlGHpUI3xvwaN66SZ56FLtqffkmRFm+aB/Hd5zWzDpXQj4ji/
-	 BJrr07mmyF3pgTjJ5zgwxe9jyWuwxN8NYrDPiZrc=
+	b=tKja7VZZek5R2gjlzN6sHoHAeAOR9AClqCcAyD3AsvPd/IElnWpFsn5jOUuE69xJv
+	 PEv1F/6YnR6iHnQSay/5GOVhjGuAJOglOpuY+3EwQ9qU55Au41qtJ2EVK4+wt1y3sY
+	 3669h5qm8SUjaGq6nj9oU2gIVxF/geqUJzY+NryQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	stable <stable@kernel.org>,
-	Sam Daly <sam@samdaly.ie>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 382/452] octeontx2-af: CGX: add bounds check to cgx_speed_mbps index
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.18 213/325] IB/isert: Reject login PDUs shorter than ISER_HEADERS_LEN
 Date: Tue, 16 Jun 2026 20:30:09 +0530
-Message-ID: <20260616145137.009392238@linuxfoundation.org>
+Message-ID: <20260616145108.726212116@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,97 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265193-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sgoutham@marvell.com,m:lcherian@marvell.com,m:gakula@marvell.com,m:hkelam@marvell.com,m:sbhatta@marvell.com,m:andrew+netdev@lunn.ch,m:stable@kernel.org,m:sam@samdaly.ie,m:kuba@kernel.org,m:sashal@kernel.org,m:andrew@lunn.ch,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264459-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:jgg@nvidia.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,lunn.ch:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,marvell.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E6D92692E91
+X-Rspamd-Queue-Id: AC24A691B83
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Daly <sam@samdaly.ie>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit c0bf0a4f3f1f5f57aa83e1400ba4f56f0abfd542 ]
+commit 29e7b925ae6df64894e82ab6419994dc25580a8a upstream.
 
-cgx_speed_mbps has 13 elements but RESP_LINKSTAT_SPEED can yield values
-0-15. If it returns a value >= 13, this causes an out-of-bounds array
-access. Add a bounds check and default to speed 0 if the index is out of
-range.
+In drivers/infiniband/ulp/isert/ib_isert.c, isert_login_recv_done()
+computes the login request payload length as wc->byte_len minus
+ISER_HEADERS_LEN with no lower bound, and login_req_len is a signed int.
+A remote iSER initiator can post a login Send work request carrying
+fewer than ISER_HEADERS_LEN (76) bytes, so the subtraction underflows
+and login_req_len becomes negative.
 
-Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
-Cc: Sunil Goutham <sgoutham@marvell.com>
-Cc: Linu Cherian <lcherian@marvell.com>
-Cc: Geetha sowjanya <gakula@marvell.com>
-Cc: hariprasad <hkelam@marvell.com>
-Cc: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sam Daly <sam@samdaly.ie>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026051352-refined-demise-e88d@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+isert_rx_login_req() then reads that negative length back into a signed
+int, takes size = min(rx_buflen, MAX_KEY_VALUE_PAIRS), and because the
+min() is signed it keeps the negative value; the value is then passed as
+the memcpy() length and sign-extended to a multi-gigabyte size_t. The
+copy into the 8192-byte login->req_buf runs far out of bounds and
+faults, crashing the target node. The login phase precedes iSCSI
+authentication, so no credentials are required to reach this path.
+
+Reject any login PDU shorter than ISER_HEADERS_LEN before the
+subtraction, mirroring the existing early return on a failed work
+completion, so login_req_len can never go negative. The upper bound was
+already safe: a posted login buffer cannot deliver more than
+ISER_RX_PAYLOAD_SIZE, so the difference stays at or below
+MAX_KEY_VALUE_PAIRS and the existing min() clamps it; only the missing
+lower bound needs to be added.
+
+Fixes: b8d26b3be8b3 ("iser-target: Add iSCSI Extensions for RDMA (iSER) target driver")
+Link: https://patch.msgid.link/r/20260602194642.2273217-1-michael.bommarito@gmail.com
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/isert/ib_isert.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1286,13 +1286,18 @@ static inline void link_status_user_form
- 					   struct cgx_link_user_info *linfo,
- 					   struct cgx *cgx, u8 lmac_id)
- {
-+	unsigned int speed;
-+
- 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
- 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
--	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
- 	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
- 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
- 	linfo->lmac_type_id = FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, lstat);
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -1385,6 +1385,12 @@ isert_login_recv_done(struct ib_cq *cq,
+ 	ib_dma_sync_single_for_cpu(ib_dev, isert_conn->login_desc->dma_addr,
+ 			ISER_RX_SIZE, DMA_FROM_DEVICE);
  
-+	speed = FIELD_GET(RESP_LINKSTAT_SPEED, lstat);
-+	linfo->speed = speed < ARRAY_SIZE(cgx_speed_mbps) ?
-+		       cgx_speed_mbps[speed] : 0;
++	if (unlikely(wc->byte_len < ISER_HEADERS_LEN)) {
++		isert_dbg("login request length %u is too short\n",
++			  wc->byte_len);
++		return;
++	}
 +
- 	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
- 		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
- 			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
+ 	isert_conn->login_req_len = wc->byte_len - ISER_HEADERS_LEN;
+ 
+ 	if (isert_conn->conn) {
 
 
 
