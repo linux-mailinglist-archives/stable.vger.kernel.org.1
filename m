@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +NRkOjpvMWr5jAUAu9opvQ
-	(envelope-from <stable+bounces-264097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:54 +0200
+	id 08VpK7CMMWp6mQUAu9opvQ
+	(envelope-from <stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7625069156B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6B6693845
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=W4BmAyE8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264097-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264097-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pa+vlEMg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7EC430BE30D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66DFA306C6DD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A3743E48C;
-	Tue, 16 Jun 2026 15:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E50C43D4E9;
+	Tue, 16 Jun 2026 17:49:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AB238837F;
-	Tue, 16 Jun 2026 15:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BF73D34AD;
+	Tue, 16 Jun 2026 17:49:31 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624110; cv=none; b=ZepuwEADXR5y8YZBmLusTKGbCjJtlg+LHGeDL/lRch6+DBMpV1EwANo/ZZHX7+2ZFRsN+cPycEThe5JAuDqiTTCgfb3fX3+YVmBtQ4mypMxjNEzQvMLUzXBd2NBa9nTlEiE74muLx7VKr1lEjrdDCi9jiUkbzoDJ3fOMRCQjLzU=
+	t=1781632172; cv=none; b=UJy0fZA0Z1MR/iLdPZC3wgvieqllxkUyMXVUv7s3qJ3bqfZUZx5qJRZRUoFGWeSjSs6oDzwkVqGgePBzb6txrAB2y0xYqrT5N5deNTXYESMIpz8CtB7fjZzJvhOM8MOboctXmxTdJ3a6LeBfVPQFMaYIcSYdwQfkuYpd/woIt7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624110; c=relaxed/simple;
-	bh=onOvCiI8C73U3DEeLK44Zb/fly7XdxqenXX+WBhUXSQ=;
+	s=arc-20240116; t=1781632172; c=relaxed/simple;
+	bh=OZyfNbKbqqihu8Ob8khTIb3LSQlKXmdsJAAmKJzGMrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFmemRIpNbW1fCbk43gkIbaj3Rno8Kk17tCQiA+xUb72ShPLh5Ow1ZP9OLtilITxtt6yqyqkFPEF26VgfSpu27td+TRaXW2M2NecFoT8DaNKPO5BsXVCI1qNXulIQZWsgC2sZnDXMOrk/FFpx+LfBPmJGOgygDffGxmmIaTNa3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4BmAyE8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21631F00A3A;
-	Tue, 16 Jun 2026 15:35:07 +0000 (UTC)
+	 MIME-Version; b=rI5awFEBPYWeo7WRON5tIXfUH28Eha9qAj6ybxsoPYJHANH0nnT5B2V6TqGmHhGguF+wf9aD5X5q95B8DGjY1tTi8yjvv7r9yPPtDDhXcnSf55CcPH1si21eKS10stI2alkScXEDRPUcd7pZANThT8i8Cf9UTcxygggUJ3sB/m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pa+vlEMg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2430E1F00A3A;
+	Tue, 16 Jun 2026 17:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624109;
-	bh=tZLLx95HJaiRxFhIe6O9zOceRtHIsW00VPWY3ubRl+k=;
+	s=korg; t=1781632171;
+	bh=ymwhCjvUtq1TF2FfnvtuPG3IUelqknuBfaoGIjVjF0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=W4BmAyE8ekFVWvCY27Geavl8DYzfSYKS/yxR4TPH23vgRiTCEvtbY/gORYx/rBXYo
-	 K2dpHHQi1+zUHL7YJ8bjs6e/pvQJjqpqHb33K6+HrZVWzuh9qVLkSwNNP+kXSgFlVN
-	 DWwFTXDLIoI2tmiplqKyK3J/laJIHQS3rrXd5mLI=
+	b=pa+vlEMgMHFAUwAdRu7F6zSQgMgJrBh68g0O5f4UP9xuOWdukb28U7M7rkenjVf/z
+	 woMK20/gsHDbnKA9WwiVn92P5CgzLLuTtGWYLPc+dJUSDdxZJNBURx8TPA0DdQAkkF
+	 ib2fwhtQzvmIhnptmr2cyklYiechZIqrpscEyypY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>
-Subject: [PATCH 7.0 276/378] iomap: avoid potential null folio->mapping deref during error reporting
+	Zilin Guan <zilin@seu.edu.cn>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 360/522] hfsplus: fix held lock freed on hfsplus_fill_super()
 Date: Tue, 16 Jun 2026 20:28:27 +0530
-Message-ID: <20260616145124.638380142@linuxfoundation.org>
+Message-ID: <20260616145142.635023777@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,117 +76,170 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264097-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265630-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:samsun1006219@gmail.com,m:joannelkoong@gmail.com,m:djwong@kernel.org,m:brauner@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:slava@dubeyko.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7625069156B
+X-Rspamd-Queue-Id: 5E6B6693845
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joanne Koong <joannelkoong@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 2eea7f44b9c8b42fd7d3a1a87c06a7cd1b99c327 upstream.
+[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
 
-When a buffered read fails, iomap_finish_folio_read() reports the error
-with fserror_report_io(folio->mapping->host, ...). This is called after
-ifs->read_bytes_pending has been decremented by the bytes attempted to
-be read.
+hfsplus_fill_super() calls hfs_find_init() to initialize a search
+structure, which acquires tree->tree_lock. If the subsequent call to
+hfsplus_cat_build_key() fails, the function jumps to the out_put_root
+error label without releasing the lock. The later cleanup path then
+frees the tree data structure with the lock still held, triggering a
+held lock freed warning.
 
-For a folio split across multiple read completions, the folio is only
-guaranteed to stay locked while read_bytes_pending > 0. Once
-iomap_finish_folio_read() decrements read_bytes_pending, another
-in-flight read can complete and end the read on the folio, which unlocks
-it. This allows truncate logic to run and detach the folio (set
-folio->mapping to NULL). The error reporting path then can dereference a
-NULL folio->mapping. As reported by Sam Sun, this is the race that can
-occur:
+Fix this by adding the missing hfs_find_exit(&fd) call before jumping
+to the out_put_root error label. This ensures that tree->tree_lock is
+properly released on the error path.
 
-CPU0: failed completion      CPU1: final completion     CPU2: truncate
------------------------      ----------------------     --------------
-read_bytes_pending -= len
-finished = false
-/* preempted before
-   fserror_report_io() */
-			     read_bytes_pending -= len
-			     finished = true
-			     folio_end_read()
-							truncate clears
-							folio->mapping
-fserror_report_io(
-  folio->mapping->host, ...)
-	      ^ NULL deref
+The bug was originally detected on v6.13-rc1 using an experimental
+static analysis tool we are developing, and we have verified that the
+issue persists in the latest mainline kernel. The tool is specifically
+designed to detect memory management issues. It is currently under active
+development and not yet publicly available.
 
-Fix this by reporting the error first before decrementing
-ifs->read_bytes_pending.
+We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
+lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
+used GDB to dynamically shrink the max_unistr_len parameter to 1 before
+hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
+return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
+exercises the faulty error path. The following warning was observed
+during mount:
 
-Fixes: a9d573ee88af ("iomap: report file I/O errors to the VFS")
-Cc: stable@vger.kernel.org
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/linux-fsdevel/CAEkJfYPhWdd59RKmuNLJg-bkypHz7xiOwaWyNVu3A8CUqQCnvg@mail.gmail.com/
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-Link: https://patch.msgid.link/20260604011858.2297561-1-joannelkoong@gmail.com
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+	=========================
+	WARNING: held lock freed!
+	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
+	-------------------------
+	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
+	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+	2 locks held by mount/174:
+	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
+	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+
+	stack backtrace:
+	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	Call Trace:
+	<TASK>
+	dump_stack_lvl+0x82/0xd0
+	debug_check_no_locks_freed+0x13a/0x180
+	kfree+0x16b/0x510
+	? hfsplus_fill_super+0xcb4/0x18a0
+	hfsplus_fill_super+0xcb4/0x18a0
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x65f/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? pointer+0x4ce/0xbf0
+	? trace_contention_end+0x11c/0x150
+	? __pfx_pointer+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x79b/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? vsnprintf+0x6da/0x1270
+	? srso_return_thunk+0x5/0x5f
+	? __mutex_unlock_slowpath+0x157/0x740
+	? __pfx_vsnprintf+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? mark_held_locks+0x49/0x80
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? irqentry_exit+0x17b/0x5e0
+	? trace_irq_disable.constprop.0+0x116/0x150
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	get_tree_bdev_flags+0x302/0x580
+	? __pfx_get_tree_bdev_flags+0x10/0x10
+	? vfs_parse_fs_qstr+0x129/0x1a0
+	? __pfx_vfs_parse_fs_qstr+0x3/0x10
+	vfs_get_tree+0x89/0x320
+	fc_mount+0x10/0x1d0
+	path_mount+0x5c5/0x21c0
+	? __pfx_path_mount+0x10/0x10
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? kmem_cache_free+0x307/0x540
+	? user_path_at+0x51/0x60
+	? __x64_sys_mount+0x212/0x280
+	? srso_return_thunk+0x5/0x5f
+	__x64_sys_mount+0x212/0x280
+	? __pfx___x64_sys_mount+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	do_syscall_64+0x111/0x680
+	entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7ffacad55eae
+	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
+	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
+	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
+	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
+	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
+	</TASK>
+
+After applying this patch, the warning no longer appears.
+
+Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/hfsplus/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d7b648421a70..d55b936e6986 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -400,6 +400,11 @@ void iomap_finish_folio_read(struct folio *folio, size_t off, size_t len,
- 	bool uptodate = !error;
- 	bool finished = true;
- 
-+	if (error)
-+		fserror_report_io(folio->mapping->host, FSERR_BUFFERED_READ,
-+				  folio_pos(folio) + off, len, error,
-+				  GFP_ATOMIC);
-+
- 	if (ifs) {
- 		unsigned long flags;
- 
-@@ -411,11 +416,6 @@ void iomap_finish_folio_read(struct folio *folio, size_t off, size_t len,
- 		spin_unlock_irqrestore(&ifs->state_lock, flags);
- 	}
- 
--	if (error)
--		fserror_report_io(folio->mapping->host, FSERR_BUFFERED_READ,
--				  folio_pos(folio) + off, len, error,
--				  GFP_ATOMIC);
--
- 	if (finished)
- 		folio_end_read(folio, uptodate);
- }
--- 
-2.54.0
-
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -539,8 +539,10 @@ static int hfsplus_fill_super(struct sup
+ 	if (err)
+ 		goto out_put_root;
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0))
++	if (unlikely(err < 0)) {
++		hfs_find_exit(&fd);
+ 		goto out_put_root;
++	}
+ 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 
 
 
