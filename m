@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LeGwMJeSMWpdnAUAu9opvQ
-	(envelope-from <stable+bounces-265905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:47 +0200
+	id UxRoKKxrMWqaiwUAu9opvQ
+	(envelope-from <stable+bounces-263937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E58693F20
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED8B691101
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TE754Kqx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265905-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265905-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XJPXkILw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263937-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263937-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 405863090F97
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E83C31B2F34
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF333D566F;
-	Tue, 16 Jun 2026 18:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B53F3A8746;
+	Tue, 16 Jun 2026 15:21:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167183CEBBD;
-	Tue, 16 Jun 2026 18:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033381E8320;
+	Tue, 16 Jun 2026 15:21:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633616; cv=none; b=qPyooOD77uOgJYvcwJnGl37q9XQexjhu/xAGRFgE1D3CWVRcCWiqTdu0D2rJ0H3AHmNcrueK/OiPZmM5u7Ef0jST2/L1VV7KaNfLeNsYTLJFSlrpnl6X/26eT7ihYHCDLPpwoJ6GgLUUBTwo0mECKiebNEOkN89BkRpe0QY4GaA=
+	t=1781623280; cv=none; b=T5dgeoJWhSVv55dgwst76iMCsqqq6Qh9tDpGtFXLfa9qJ8S63wwffqlkag6/BFuwalXcaxjuEMYbNH3q78yj/tEQgB5Pw4ro5ciB5hmGm4TcxaNkBKJZoUlGRSFE1eAruXAu89wmxEKp62SO8FE87XBofUUrbWAE88eWBCDqUIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633616; c=relaxed/simple;
-	bh=wAja/Ylu2S42Q7j3V0Qu4cNCM2gEN2Cnww6MRbhfJJM=;
+	s=arc-20240116; t=1781623280; c=relaxed/simple;
+	bh=q8eOQdG5ku0XxewhwbaMReeVmnEWpfA5CCCjsxlpsfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4kwl6p1l7SNJbfmlarrGBqvRD1so1LmcZl4Wbl7U6D5kh+yczj8GKir/Fpj3Ae5rt3AZ2xR6bQXiGBLDARAMQExKNO4NN8bOap814FCW2L3IVaINnh1f/kAHTCmVUa9m6rXRzXiEF1E8QuE2l7FzL7hotNcXkOgQaeLPvkSHuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE754Kqx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40781F000E9;
-	Tue, 16 Jun 2026 18:13:33 +0000 (UTC)
+	 MIME-Version; b=r3lgUeJGyHhg8J6br3XFtidmRII72DD22tcFLeEuTSlFMTmeX6cgWy4dpE6aVbfUdyOxxWDaASCTbO0IjvXbDLMg/DdKASXXYv51hhPPESq8A6OC7hJaN+jYWvoEpJO+m/VszM7ambBrAXA28bnFIIT/2UwOdlqVeIQnSWJJOpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJPXkILw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E272F1F000E9;
+	Tue, 16 Jun 2026 15:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633614;
-	bh=7h7cVvy+91bvXiwLgeT2VR/IsxUadzY4j4RIZR4y1dE=;
+	s=korg; t=1781623278;
+	bh=9QZciJWxpTDWOwO2hvk28+K+kb3qvUxh9bE35Jd38T8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TE754KqxZ8K4E6tQV2PxZV2qEG1OkWIK94nyH49tXrNad0f8NvzZ+44BxfOFQj+ki
-	 bJEOpBYxgIcHeiu8JG0jxjQat12IWlYSVdaW0zGo6lZQbpl4AqN++n6iFAHl7ZjplP
-	 WBb4WjgVVkyYk2qIc3SPcBUuCtliW3dPFg2RbqU0=
+	b=XJPXkILw+YM7WCj8ZY22s3pGTWZ7yLvSnHUcuBGjHRFV0ZzfkCQ9kSKaWfDNQgB7c
+	 elMtYcH7XsYH9rlh/U/EsgA89OwAdFqe+HRBJ2UaBx0pkwiJvnSh0DmnGurMJQlmsV
+	 UDek1dlb4FGSsz9KzaH7rEPvfbzMhwID70lMQw0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Heitor Alves de Siqueira <halves@igalia.com>
-Subject: [PATCH 5.15 112/411] usb: usbtmc: check URB actual_length for interrupt-IN notifications
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 119/378] net/mlx5: Fix slab-out-of-bounds in mlx5_query_nic_vport_mac_list
 Date: Tue, 16 Jun 2026 20:25:50 +0530
-Message-ID: <20260616145106.245184849@linuxfoundation.org>
+Message-ID: <20260616145116.622636591@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,91 +69,261 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,igalia.com];
-	TAGGED_FROM(0.00)[bounces-265905-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com,m:stable@kernel.org,m:michal.pecio@gmail.com,m:halves@igalia.com,m:syzbot@syzkaller.appspotmail.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263937-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dtatulea@nvidia.com,m:cjubran@nvidia.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,abbfd103085885cf16a2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,syzkaller.appspot.com:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 71E58693F20
+X-Rspamd-Queue-Id: 1ED8B691101
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heitor Alves de Siqueira <halves@igalia.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 52f2ad3f7e5eb3b5908e1d685d4342519dc9cfcd upstream.
+[ Upstream commit 894e036a24a26a6dd7b17d8d3fb5c53ab48a6074 ]
 
-USBTMC devices can use an optional interrupt endpoint for notification
-messages. These typically contain two-byte headers indicating the
-payload format, but the driver does not check if these headers are
-present before accessing the data buffers. In cases where the URB
-actual_length is not enough to fit these headers, the driver will either
-cause an out-of-bounds read, or consume stale leftover data from a
-previous notification.
+mlx5_query_nic_vport_mac_list() sizes its firmware command buffer using
+the PF's log_max_current_uc/mc_list capabilities. When querying a VF
+vport with a larger configured max (via devlink), the firmware response
+can overflow this buffer:
 
-Fix by checking if actual_data contains enough bytes for the headers,
-otherwise resubmit URB to the interrupt endpoint.
+ BUG: KASAN: slab-out-of-bounds in mlx5_query_nic_vport_mac_list+0x453/0x4c0 [mlx5_core]
+ Read of size 4 at addr ff1100013ffc8a12 by task kworker/u96:2/385
 
-Fixes: dbf3e7f654c0 ("Implement an ioctl to support the USMTMC-USB488 READ_STATUS_BYTE operation.")
-Reported-by: syzbot+abbfd103085885cf16a2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=abbfd103085885cf16a2
-Cc: stable <stable@kernel.org>
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
-Link: https://patch.msgid.link/20260505-usbtmc-iin-size-v3-1-a36113f62db7@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ CPU: 12 UID: 0 PID: 385 Comm: kworker/u96:2 Not tainted 7.0.0-rc6+ #1 PREEMPT
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
+ Workqueue: mlx5_esw_wq esw_vport_change_handler [mlx5_core]
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x69/0xa0
+  print_report+0x176/0x4e4
+  kasan_report+0xc8/0x100
+  mlx5_query_nic_vport_mac_list+0x453/0x4c0 [mlx5_core]
+  esw_update_vport_addr_list+0x2e3/0xda0 [mlx5_core]
+  esw_vport_change_handle_locked+0xa1f/0x1060 [mlx5_core]
+  esw_vport_change_handler+0x6a/0x90 [mlx5_core]
+  process_one_work+0x87f/0x15e0
+  worker_thread+0x62b/0x1020
+  kthread+0x375/0x490
+  ret_from_fork+0x4dc/0x810
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+
+Fix by querying the vport's own HCA caps to size the buffer correctly.
+Refactor the function to allocate and return the MAC list internally,
+removing the caller's dependency on knowing the correct max.
+
+Fixes: e16aea2744ab ("net/mlx5: Introduce access functions to modify/query vport mac lists")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260604135849.458060-1-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 13 +---
+ .../net/ethernet/mellanox/mlx5/core/vport.c   | 72 ++++++++++++++-----
+ include/linux/mlx5/vport.h                    |  4 +-
+ 3 files changed, 59 insertions(+), 30 deletions(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -2310,6 +2310,14 @@ static void usbtmc_interrupt(struct urb
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 7c8311f4123237..236f89a6483af1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -533,23 +533,16 @@ static void esw_update_vport_addr_list(struct mlx5_eswitch *esw,
+ 				       struct mlx5_vport *vport, int list_type)
+ {
+ 	bool is_uc = list_type == MLX5_NVPRT_LIST_TYPE_UC;
+-	u8 (*mac_list)[ETH_ALEN];
++	u8 (*mac_list)[ETH_ALEN] = NULL;
+ 	struct l2addr_node *node;
+ 	struct vport_addr *addr;
+ 	struct hlist_head *hash;
+ 	struct hlist_node *tmp;
+-	int size;
++	int size = 0;
+ 	int err;
+ 	int hi;
+ 	int i;
  
- 	switch (status) {
- 	case 0: /* SUCCESS */
-+		/* ensure at least two bytes of headers were transferred */
-+		if (urb->actual_length < 2) {
-+			dev_warn(dev,
-+				"actual length %d not sufficient for interrupt headers\n",
-+				urb->actual_length);
-+			goto exit;
-+		}
+-	size = is_uc ? MLX5_MAX_UC_PER_VPORT(esw->dev) :
+-		       MLX5_MAX_MC_PER_VPORT(esw->dev);
+-
+-	mac_list = kcalloc(size, ETH_ALEN, GFP_KERNEL);
+-	if (!mac_list)
+-		return;
+-
+ 	hash = is_uc ? vport->uc_list : vport->mc_list;
+ 
+ 	for_each_l2hash_node(node, tmp, hash, hi) {
+@@ -561,7 +554,7 @@ static void esw_update_vport_addr_list(struct mlx5_eswitch *esw,
+ 		goto out;
+ 
+ 	err = mlx5_query_nic_vport_mac_list(esw->dev, vport->vport, list_type,
+-					    mac_list, &size);
++					    &mac_list, &size);
+ 	if (err)
+ 		goto out;
+ 	esw_debug(esw->dev, "vport[%d] context update %s list size (%d)\n",
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index 4effe37fd4552e..d63b0e8806b544 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -324,35 +324,63 @@ int mlx5_modify_nic_vport_mtu(struct mlx5_core_dev *mdev, u16 mtu)
+ }
+ EXPORT_SYMBOL_GPL(mlx5_modify_nic_vport_mtu);
+ 
++static int mlx5_vport_max_mac_list_size(struct mlx5_core_dev *dev, u16 vport,
++					enum mlx5_list_type list_type)
++{
++	void *query_ctx, *hca_caps;
++	int ret = 0;
 +
- 		/* check for valid STB notification */
- 		if (data->iin_buffer[0] > 0x81) {
- 			data->bNotify1 = data->iin_buffer[0];
++	if (!vport && !mlx5_core_is_ecpf(dev))
++		return list_type == MLX5_NVPRT_LIST_TYPE_UC ?
++			1 << MLX5_CAP_GEN(dev, log_max_current_uc_list) :
++			1 << MLX5_CAP_GEN(dev, log_max_current_mc_list);
++
++	query_ctx = kzalloc(MLX5_ST_SZ_BYTES(query_hca_cap_out), GFP_KERNEL);
++	if (!query_ctx)
++		return -ENOMEM;
++
++	ret = mlx5_vport_get_other_func_general_cap(dev, vport, query_ctx);
++	if (ret)
++		goto out;
++
++	hca_caps = MLX5_ADDR_OF(query_hca_cap_out, query_ctx, capability);
++	ret = list_type == MLX5_NVPRT_LIST_TYPE_UC ?
++		1 << MLX5_GET(cmd_hca_cap, hca_caps, log_max_current_uc_list) :
++		1 << MLX5_GET(cmd_hca_cap, hca_caps, log_max_current_mc_list);
++
++out:
++	kfree(query_ctx);
++
++	return ret;
++}
++
+ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
+ 				  u16 vport,
+ 				  enum mlx5_list_type list_type,
+-				  u8 addr_list[][ETH_ALEN],
+-				  int *list_size)
++				  u8 (**addr_list)[ETH_ALEN],
++				  int *addr_list_size)
+ {
+ 	u32 in[MLX5_ST_SZ_DW(query_nic_vport_context_in)] = {0};
++	int allowed_list_size;
+ 	void *nic_vport_ctx;
+ 	int max_list_size;
+-	int req_list_size;
+ 	int out_sz;
+ 	void *out;
+ 	int err;
+ 	int i;
+ 
+-	req_list_size = *list_size;
++	if (!addr_list || !addr_list_size)
++		return -EINVAL;
+ 
+-	max_list_size = list_type == MLX5_NVPRT_LIST_TYPE_UC ?
+-		1 << MLX5_CAP_GEN(dev, log_max_current_uc_list) :
+-		1 << MLX5_CAP_GEN(dev, log_max_current_mc_list);
++	*addr_list = NULL;
++	*addr_list_size = 0;
+ 
+-	if (req_list_size > max_list_size) {
+-		mlx5_core_warn(dev, "Requested list size (%d) > (%d) max_list_size\n",
+-			       req_list_size, max_list_size);
+-		req_list_size = max_list_size;
+-	}
++	max_list_size = mlx5_vport_max_mac_list_size(dev, vport, list_type);
++	if (max_list_size < 0)
++		return max_list_size;
+ 
+ 	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_out) +
+-			req_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
++			max_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
+ 
+ 	out = kvzalloc(out_sz, GFP_KERNEL);
+ 	if (!out)
+@@ -371,16 +399,24 @@ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
+ 
+ 	nic_vport_ctx = MLX5_ADDR_OF(query_nic_vport_context_out, out,
+ 				     nic_vport_context);
+-	req_list_size = MLX5_GET(nic_vport_context, nic_vport_ctx,
+-				 allowed_list_size);
++	allowed_list_size = MLX5_GET(nic_vport_context, nic_vport_ctx,
++				     allowed_list_size);
++	if (!allowed_list_size)
++		goto out;
++
++	*addr_list = kcalloc(allowed_list_size, ETH_ALEN, GFP_KERNEL);
++	if (!*addr_list) {
++		err = -ENOMEM;
++		goto out;
++	}
+ 
+-	*list_size = req_list_size;
+-	for (i = 0; i < req_list_size; i++) {
++	for (i = 0; i < allowed_list_size; i++) {
+ 		u8 *mac_addr = MLX5_ADDR_OF(nic_vport_context,
+ 					nic_vport_ctx,
+ 					current_uc_mac_address[i]) + 2;
+-		ether_addr_copy(addr_list[i], mac_addr);
++		ether_addr_copy((*addr_list)[i], mac_addr);
+ 	}
++	*addr_list_size = allowed_list_size;
+ out:
+ 	kvfree(out);
+ 	return err;
+diff --git a/include/linux/mlx5/vport.h b/include/linux/mlx5/vport.h
+index dfa2fe32217af0..282ed54422826d 100644
+--- a/include/linux/mlx5/vport.h
++++ b/include/linux/mlx5/vport.h
+@@ -102,8 +102,8 @@ int mlx5_query_hca_vport_node_guid(struct mlx5_core_dev *dev,
+ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
+ 				  u16 vport,
+ 				  enum mlx5_list_type list_type,
+-				  u8 addr_list[][ETH_ALEN],
+-				  int *list_size);
++				  u8 (**mac_list)[ETH_ALEN],
++				  int *mac_list_size);
+ int mlx5_modify_nic_vport_mac_list(struct mlx5_core_dev *dev,
+ 				   enum mlx5_list_type list_type,
+ 				   u8 addr_list[][ETH_ALEN],
+-- 
+2.53.0
+
 
 
 
