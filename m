@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id j0SbBi6dMWoPoQUAu9opvQ
-	(envelope-from <stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:58 +0200
+	id SPNqN8qMMWqImQUAu9opvQ
+	(envelope-from <stable+bounces-265589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898D9694A50
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E0869385B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rXBakt9V;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266372-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LFgKaKaP;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265589-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265589-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79FD13288AC1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EEDF31AAE19
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D25C472798;
-	Tue, 16 Jun 2026 18:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E2A3CF032;
+	Tue, 16 Jun 2026 17:46:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D862847B435;
-	Tue, 16 Jun 2026 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F783A5E91;
+	Tue, 16 Jun 2026 17:46:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636076; cv=none; b=BJfX//SNLfiY+ZnpQlxw2FWkZNjXNE/3H+XIY5zgQmiH5GMW/p/9W76GUrm5CJfPUiYejodvZOTNbkD5WnxpOsCSzgu4jZAhj3YgCFG92wtYJF3/roCVlXx84Ol8Sakk/gHoqemrp7upRB6GufcgFW3Z0KoZOq94r2Xl1HYV78s=
+	t=1781631962; cv=none; b=fvdFS1W961OilTpzsrvBtR8vU5TAukgZrOY9l3HgxrZVoiCUCtPwMtZ2sqfW79ZlqhegS1pWlELAhPd/xWXMhvuVVyVau2vV1LP/NaJTWKO29iz5nG53KoWXMBM1U2GFobq+fo0yUrquRvB31A52E0FBbw641xrBQNlsXBPyCtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636076; c=relaxed/simple;
-	bh=IknOLq4BDohLSB3wyVVIvvFG0eaLGTBJXVWYO4ZgjHo=;
+	s=arc-20240116; t=1781631962; c=relaxed/simple;
+	bh=qW4OGd5B/YyIGK5QuLAM6UT6gGWo9TnatxCnyQMBAxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9a3tBANiz3LYVy7D7c+qzlNjDO+Vy0BxJmW0iDxQmdR+7i4gKSPZO0z3Q2IRNTkg4CyOfT9KZILU7ExNZYU+DN2nTDhCPkkw3cpo+VpT4+7y6q4hfGDBX07XZ6ET490fqaHPw1igqhkr3ezIopH2OqRDcrlwK/jJtILQ8IbQxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rXBakt9V; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE48D1F000E9;
-	Tue, 16 Jun 2026 18:54:34 +0000 (UTC)
+	 MIME-Version; b=sHprkshb0F/+9UEQIDDkMN0QX0pa1ANFGsqpwfgUE7Qw2W937N77Ia3BVxFX4wBx6q/lu46b6RXjj4nwASl9If1nlv3BlHbNPTLhnNOs7myYTarRTbm65PYKVLUCsyIFz6M/UMruXbo+KK0FSdhUT/gVpuXX1T35HT5rbWj1nIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFgKaKaP; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1701F000E9;
+	Tue, 16 Jun 2026 17:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636075;
-	bh=uEBaUEa0Kc1Z694Qz8jSVSpC7cTbHup+UmAbrWGaFDg=;
+	s=korg; t=1781631961;
+	bh=Gfe+AoL6MusDWtik4657ZpWd/LEDUcpRXGSreRkaXM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rXBakt9VJDdEz9jzth5BLSVk47bLfmAmFcWadq0AzBFQ6nONs/B/UDvkJpzDR3r2r
-	 y71gL9enu1cQJfZQriOpBIgJyunLyMo3ebWkhmOjxATd2yunbGN7x5K7z8TqOuiCaU
-	 /+4r3250lapDpCXwugGhGKhZYSp/KC70LKphtjuA=
+	b=LFgKaKaPjnEvIABKRRSiqMeKTxn/izWHv8xmDdLM/9LUkbx+6njo1arsCkmY5DCVf
+	 XGjMaU3cqY7BS6Plc3G2FivDE1n5hxvpqtt1tc6DrnBzLA28DtTZ65WA9flcG886r1
+	 AIYXZW09QTLKAwvOFIH+i8l7eFyL582bp5VoczM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 171/342] net: guard timestamp cmsgs to real error queue skbs
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.1 320/522] slimbus: qcom-ngd-ctrl: fix OF node refcount
 Date: Tue, 16 Jun 2026 20:27:47 +0530
-Message-ID: <20260616145056.167734574@linuxfoundation.org>
+Message-ID: <20260616145140.826653999@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,143 +68,77 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266372-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265589-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,openai.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 898D9694A50
+X-Rspamd-Queue-Id: 32E0869385B
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
+commit 120134fe75c6b0ae38f14eb8b548ad1e5761f912 upstream.
 
-skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
-from sk_error_queue. That assumption is not true for AF_PACKET sockets:
-outgoing packet taps are also delivered to packet sockets with
-skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
-instead of struct sock_exterr_skb.
+Platform devices created with platform_device_alloc() call
+platform_device_release() when the last reference to the device's
+kobject is dropped. This function calls of_node_put() unconditionally.
+This works fine for devices created with platform_device_register_full()
+but users of the split approach (platform_device_alloc() +
+platform_device_add()) must bump the reference of the of_node they
+assign manually. Add the missing call to of_node_get().
 
-If such an skb is received with timestamping enabled, the generic
-timestamp cmsg path can read AF_PACKET control-buffer state as
-sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
-counter overlaps opt_stats. An odd drop count makes the path emit
-SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
-skbs this copies past the linear head and can trigger hardened usercopy or
-disclose adjacent heap contents.
-
-Keep skb_is_err_queue() local to net/socket.c, but make it verify that
-the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
-installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
-receive ownership and no longer pass as error-queue skbs, while legitimate
-sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
-ownership.
-
-Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h |  1 +
- net/core/skbuff.c  |  6 +++---
- net/socket.c       | 11 ++++++-----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ drivers/slimbus/qcom-ngd-ctrl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 4e5386cdb09cd5..f0e391afb511d2 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1779,6 +1779,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
- 			     gfp_t priority);
- void skb_orphan_partial(struct sk_buff *skb);
- void sock_rfree(struct sk_buff *skb);
-+void sock_rmem_free(struct sk_buff *skb);
- void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index f7100f5af37ca7..b2cd853ecb7e7b 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4633,7 +4633,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
- }
- EXPORT_SYMBOL_GPL(skb_cow_data);
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1472,7 +1472,7 @@ static int of_qcom_slim_ngd_register(str
+ 			of_node_put(node);
+ 			return ret;
+ 		}
+-		ngd->pdev->dev.of_node = node;
++		ngd->pdev->dev.of_node = of_node_get(node);
+ 		ctrl->ngd = ngd;
  
--static void sock_rmem_free(struct sk_buff *skb)
-+void sock_rmem_free(struct sk_buff *skb)
- {
- 	struct sock *sk = skb->sk;
- 
-@@ -4642,8 +4642,8 @@ static void sock_rmem_free(struct sk_buff *skb)
- 
- static void skb_set_err_queue(struct sk_buff *skb)
- {
--	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
--	 * So, it is safe to (mis)use it to mark skbs on the error queue.
-+	/* The error-queue test in skb_is_err_queue() matches this marker
-+	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
- 	 */
- 	skb->pkt_type = PACKET_OUTGOING;
- 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
-diff --git a/net/socket.c b/net/socket.c
-index 2a48aa89c035b6..d105beeb15e118 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -740,12 +740,13 @@ EXPORT_SYMBOL(kernel_sendmsg_locked);
- 
- static bool skb_is_err_queue(const struct sk_buff *skb)
- {
--	/* pkt_type of skbs enqueued on the error queue are set to
--	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
--	 * in recvmsg, since skbs received on a local socket will never
--	 * have a pkt_type of PACKET_OUTGOING.
-+	/* Error-queue skbs are marked as PACKET_OUTGOING in
-+	 * skb_set_err_queue() and use the destructor installed by
-+	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
-+	 * AF_PACKET outgoing taps use the same pkt_type.
- 	 */
--	return skb->pkt_type == PACKET_OUTGOING;
-+	return skb->pkt_type == PACKET_OUTGOING &&
-+	       skb->destructor == sock_rmem_free;
- }
- 
- /* On transmit, software and hardware timestamps are returned independently.
--- 
-2.53.0
-
+ 		ret = platform_device_add(ngd->pdev);
 
 
 
