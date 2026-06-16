@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WM3nHRyQMWo0mwUAu9opvQ
-	(envelope-from <stable+bounces-265799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:12 +0200
+	id Y0dBLkZ8MWpEkgUAu9opvQ
+	(envelope-from <stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D2D693C5B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 598F56924F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="byZMPQ/Z";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265799-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265799-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="V/ZD0lhi";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264765-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E01CF3040C78
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7EC9F306306E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1DD3CEBBD;
-	Tue, 16 Jun 2026 18:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585CC477E51;
+	Tue, 16 Jun 2026 16:36:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2C63C09E1;
-	Tue, 16 Jun 2026 18:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE07347A0DA;
+	Tue, 16 Jun 2026 16:36:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633048; cv=none; b=pD0PbeoMG0DdyDAqfjYa0PD1UpdgLpQv0Ajn0CRAHfPbFTcmhiNEktMDKfIQVysLhusECSH7YbVeNqZxrzxnVGFbcx4iRJREChctz+w3U770dNEJHv9nnugVk8Cr/PX/UVgwifQrqQ/1keH8zH+Wo4k32tu3n4R53kud3BVbXUA=
+	t=1781627773; cv=none; b=UVK+qAnftNNd++/Rz0lXSuvFD+p/aQ59WemMmZnnB+sZY3akSe8cYGgJI/qyS75cMoIihTX/3BdIHsYzYe7/yZqiNNWPFssRYnDXqjv75y/yfqYI2hUCXGBTM354y2hsn4gwpiscaDuMDPbx/G6nd7jbhgq49/4RUU9B+OnVAVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633048; c=relaxed/simple;
-	bh=mWt23VGMB5SSYBszUeXHqvdoQLdZUBfi1bB//SOKqX8=;
+	s=arc-20240116; t=1781627773; c=relaxed/simple;
+	bh=+41kNmzGuOvO+Ia4csl9NrWF9+/Vvp/bnpFOqMeUa+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmjfzGpX4o5ZtNAGwSLgHDtyVxDiLH5hJ50KF/YXTsPsjXXxwGmCuGtOW5NG8AlmRQoQAUK3xE8ENhLV6UH2g0vfgIiP4ihbYdzLEZ2DTLJLYoECkJrBFRJxcf8a+XsHQfGvjeWGiGGvwze2PNaduNxkWOG7aBIrM46AHSXMai8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byZMPQ/Z; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C6C1F000E9;
-	Tue, 16 Jun 2026 18:04:05 +0000 (UTC)
+	 MIME-Version; b=PASEERbsXdAv+67OnZ4cGV/+KrUVyAVa81oVVm2iaUHHf/gmKPVe/hougJC1e+FdqDuCtv5ll+6aKaKKDp+ffyVNpd6swvCjUsO6g2pWLoGnuIdmibDOgOtmXPhdTKTCDT6P9WVRGMDyCPPb+G1SWjdhyq55fTX8tIhuj1iGp2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/ZD0lhi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62171F000E9;
+	Tue, 16 Jun 2026 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633046;
-	bh=kN34wf3qhqt9qiQO6uTRlulWPimQoN+VQ/eUHylomKE=;
+	s=korg; t=1781627771;
+	bh=Ltl4+6577Cr5S6+6d+5EjIOFtWr7FmWp3+uvrpsyZZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=byZMPQ/ZPU/JSQ0W5QkAJ2rajOXW1CsX54deJGvE6iD4/8uEZpjKbGnQIPmk1JUXM
-	 WB+0u6WLhZUAqOoMlmGrRniqBVOmSu7xVQZufl82Hbg2UevGofbZBEVNblsReucEMz
-	 8tFNHJ3VH/uf1kmarlzvzUy3hOBPqSwOimhS5Z1I=
+	b=V/ZD0lhiVc26lWv0YWFLxT3R7ILrIY0Sf9ADzyk2mwCkZmfvD3ULfNXIKnGFyN+6Y
+	 md3A93nNz1YhTaygVsKq7OJPRKuEgMck4AtofJ5aZvwMx8/KwkRiOfhFSkZ8fueqvq
+	 Z+MhGM3bk0QusydQtyEUjiyjfl4Z51+NPA3rPNG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 516/522] arm64: errata: Mitigate TLBI errata on various Arm CPUs
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 225/261] drm/amd/display: Clamp VBIOS HDMI retimer register count to array size
 Date: Tue, 16 Jun 2026 20:31:03 +0530
-Message-ID: <20260616145149.865392161@linuxfoundation.org>
+Message-ID: <20260616145055.455467512@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,301 +71,226 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265799-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264765-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4D2D693C5B
+X-Rspamd-Queue-Id: 598F56924F1
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-commit cfd391e74134db664feb499d43af286380b10ba8 upstream.
+commit fb0707ce00eef4e2d60c3020e1c0432739703e4a upstream.
 
-A number of CPUs developed by Arm suffer from errata whereby a broadcast
-TLBI;DSB sequence may complete before the global observation of writes
-which are translated by an affected TLB entry.
+[Why & How]
+The VBIOS integrated info tables (v1_11 and v2_1) contain HdmiRegNum and
+Hdmi6GRegNum fields that are used as loop bounds when copying retimer I2C
+register settings into fixed-size arrays (dp*_ext_hdmi_reg_settings[9]
+and dp*_ext_hdmi_6g_reg_settings[3]). These u8 fields are not validated
+before use, so a malformed VBIOS can specify values up to 255, causing an
+out-of-bounds heap write during driver probe.
 
-These errata ONLY affect the completion of memory accesses which have
-been translated by an invalidated TLB entry, and these errata DO NOT
-affect the actual invalidation of TLB entries. TLB entries are removed
-correctly.
+Clamp each register count to the destination array size using min_t()
+before the copy loops, in both get_integrated_info_v11() and
+get_integrated_info_v2_1().
 
-This issue has been assigned CVE ID CVE-2025-10263.
-
-To mitigate this issue, Arm recommends that software follows any
-affected TLBI;DSB sequence with an additional TLBI;DSB, which will
-ensure that all memory write effects affected by the first TLBI have
-been globally observed. The additional TLBI can use any operation that
-is broadcast to affected CPUs, and the additional DSB can use any option
-that is sufficient to complete the additional TLBI.
-
-The ARM64_WORKAROUND_REPEAT_TLBI workaround is sufficient to mitigate
-the issue. Enable this workaround for affected CPUs, and update the
-silicon errata documentation accordingly.
-
-Note that due to the manner in which Arm develops IP and tracks errata,
-some CPUs share a common erratum number.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.1.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Assisted-by: GitHub Copilot:claude-opus-4.6
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5a7f0ef90195940c54b0f5bb85b87da55f038c69)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst |   42 ++++++++++++++++++++++++++++
- arch/arm64/Kconfig                     |   48 +++++++++++++++++++++++++++++++++
- arch/arm64/kernel/cpu_errata.c         |   32 ++++++++++++++++++++--
- 3 files changed, 120 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c |   48 ++++++++++++++-------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -111,14 +111,26 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A76      | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76      | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A76AE    | #4193801        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #1508412        | ARM64_ERRATUM_1508412       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A77      | #3324348        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A77      | #4193798        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78      | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78      | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78AE    | #4193793        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A78C     | #3324346,3324347| ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A78C     | #4193794        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2051678        | ARM64_ERRATUM_2051678       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2077057        | ARM64_ERRATUM_2077057       |
-@@ -135,6 +147,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-A710     | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A720     | #3456091        | ARM64_ERRATUM_3194386       |
-@@ -143,20 +157,32 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1       | #3324344        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1       | #4193791        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X1C      | #3324346        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X1C      | #4193792        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2119858        | ARM64_ERRATUM_2119858       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #2224489        | ARM64_ERRATUM_2224489       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X2       | #4193788        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X3       | #4193786        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X4       | #4118414        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Cortex-X925     | #4193781        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #1349291        | N/A                         |
-@@ -165,6 +191,8 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N1     | #3324349        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N1     | #4193800        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
-@@ -173,16 +201,30 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-N2     | #4193789        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V1     | #4193790        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V2     | #4193787        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3     | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
- +----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | Neoverse-V3AE   | #4193784        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Premium      | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| ARM            | C1-Ultra        | #4193780        | ARM64_ERRATUM_4118414       |
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-500         | #841119,826419  | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | MMU-600         | #1076982,1209401| N/A                         |
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1041,6 +1041,54 @@ config ARM64_ERRATUM_3194386
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -2591,14 +2591,16 @@ static enum bp_result get_integrated_inf
+ 	info_v11->extdispconninfo.checksum;
  
- 	  If unsure, say Y.
+ 	info->dp0_ext_hdmi_slv_addr = info_v11->dp0_retimer_set.HdmiSlvAddr;
+-	info->dp0_ext_hdmi_reg_num = info_v11->dp0_retimer_set.HdmiRegNum;
++	info->dp0_ext_hdmi_reg_num = min_t(u8, info_v11->dp0_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp0_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp0_ext_hdmi_reg_num; i++) {
+ 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v11->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp0_ext_hdmi_6g_reg_num = info_v11->dp0_retimer_set.Hdmi6GRegNum;
++	info->dp0_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp0_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp0_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp0_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp0_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2607,14 +2609,16 @@ static enum bp_result get_integrated_inf
+ 	}
  
-+config ARM64_ERRATUM_4193714
-+	bool "C1-Pro: 4193714: SME DVMSync early acknowledgement"
-+	depends on ARM64_SME
-+	default y
-+	help
-+	  Enable workaround for C1-Pro acknowledging the DVMSync before
-+	  the SME memory accesses are complete. This will cause TLB
-+	  maintenance for processes using SME to also issue an IPI to
-+	  the affected CPUs.
-+
-+	  If unsure, say Y.
-+
-+config ARM64_ERRATUM_4118414
-+	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
-+	default y
-+	select ARM64_WORKAROUND_REPEAT_TLBI
-+	help
-+	  This option adds a workaround for the following errata:
-+
-+	  * ARM C1-Premium erratum 4193780
-+	  * ARM C1-Ultra erratum 4193780
-+	  * ARM Cortex-A76 erratum 4193800
-+	  * ARM Cortex-A76AE erratum 4193801
-+	  * ARM Cortex-A77 erratum 4193798
-+	  * ARM Cortex-A78 erratum 4193791
-+	  * ARM Cortex-A78AE erratum 4193793
-+	  * ARM Cortex-A78C erratum 4193794
-+	  * ARM Cortex-A710 erratum 4193788
-+	  * ARM Cortex-X1 erratum 4193791
-+	  * ARM Cortex-X1C erratum 4193792
-+	  * ARM Cortex-X2 erratum 4193788
-+	  * ARM Cortex-X3 erratum 4193786
-+	  * ARM Cortex-X4 erratum 4118414
-+	  * ARM Cortex-X925 erratum 4193781
-+	  * ARM Neoverse-N1 erratum 4193800
-+	  * ARM Neoverse-N2 erratum 4193789
-+	  * ARM Neoverse-V1 erratum 4193790
-+	  * ARM Neoverse-V2 erratum 4193787
-+	  * ARM Neoverse-V3 erratum 4193784
-+	  * ARM Neoverse-V3AE erratum 4193784
-+
-+	  On affected cores, some memory accesses might not be completed by
-+	  broadcast TLB invalidation.
-+
-+	  This issue is also known as CVE-2025-10263.
-+
-+	  If unsure, say Y.
-+
- config CAVIUM_ERRATUM_22375
- 	bool "Cavium erratum 22375, 24313"
- 	default y
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -241,7 +241,35 @@ static const struct arm64_cpu_capabiliti
- 		ERRATA_MIDR_RANGE(MIDR_CORTEX_A510, 0, 0, 1, 1),
- 	},
- #endif
--	{},
-+#ifdef CONFIG_ARM64_ERRATUM_4118414
-+	{
-+		ERRATA_MIDR_RANGE_LIST(((const struct midr_range[]) {
-+			MIDR_ALL_VERSIONS(MIDR_C1_PREMIUM),
-+			MIDR_ALL_VERSIONS(MIDR_C1_ULTRA),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
-+			MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
-+			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
-+			{}
-+		})),
-+	},
-+#endif
-+	{}
- };
- #endif
+ 	info->dp1_ext_hdmi_slv_addr = info_v11->dp1_retimer_set.HdmiSlvAddr;
+-	info->dp1_ext_hdmi_reg_num = info_v11->dp1_retimer_set.HdmiRegNum;
++	info->dp1_ext_hdmi_reg_num = min_t(u8, info_v11->dp1_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp1_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp1_ext_hdmi_reg_num; i++) {
+ 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v11->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp1_ext_hdmi_6g_reg_num = info_v11->dp1_retimer_set.Hdmi6GRegNum;
++	info->dp1_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp1_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp1_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp1_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp1_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2623,14 +2627,16 @@ static enum bp_result get_integrated_inf
+ 	}
  
-@@ -547,7 +575,7 @@ const struct arm64_cpu_capabilities arm6
- #endif
- #ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
- 	{
--		.desc = "Qualcomm erratum 1009, or ARM erratum 1286807, 2441009",
-+		.desc = "Broken broadcast TLBI completion",
- 		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
- 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
- 		.matches = cpucap_multi_entry_cap_matches,
+ 	info->dp2_ext_hdmi_slv_addr = info_v11->dp2_retimer_set.HdmiSlvAddr;
+-	info->dp2_ext_hdmi_reg_num = info_v11->dp2_retimer_set.HdmiRegNum;
++	info->dp2_ext_hdmi_reg_num = min_t(u8, info_v11->dp2_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp2_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp2_ext_hdmi_reg_num; i++) {
+ 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v11->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp2_ext_hdmi_6g_reg_num = info_v11->dp2_retimer_set.Hdmi6GRegNum;
++	info->dp2_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp2_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp2_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp2_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp2_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2639,14 +2645,16 @@ static enum bp_result get_integrated_inf
+ 	}
+ 
+ 	info->dp3_ext_hdmi_slv_addr = info_v11->dp3_retimer_set.HdmiSlvAddr;
+-	info->dp3_ext_hdmi_reg_num = info_v11->dp3_retimer_set.HdmiRegNum;
++	info->dp3_ext_hdmi_reg_num = min_t(u8, info_v11->dp3_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp3_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp3_ext_hdmi_reg_num; i++) {
+ 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v11->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp3_ext_hdmi_6g_reg_num = info_v11->dp3_retimer_set.Hdmi6GRegNum;
++	info->dp3_ext_hdmi_6g_reg_num = min_t(u8, info_v11->dp3_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp3_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp3_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp3_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v11->dp3_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2796,14 +2804,16 @@ static enum bp_result get_integrated_inf
+ 	info->ext_disp_conn_info.checksum =
+ 		info_v2_1->extdispconninfo.checksum;
+ 	info->dp0_ext_hdmi_slv_addr = info_v2_1->dp0_retimer_set.HdmiSlvAddr;
+-	info->dp0_ext_hdmi_reg_num = info_v2_1->dp0_retimer_set.HdmiRegNum;
++	info->dp0_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp0_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp0_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp0_ext_hdmi_reg_num; i++) {
+ 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp0_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v2_1->dp0_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp0_ext_hdmi_6g_reg_num = info_v2_1->dp0_retimer_set.Hdmi6GRegNum;
++	info->dp0_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp0_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp0_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp0_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp0_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2811,14 +2821,16 @@ static enum bp_result get_integrated_inf
+ 				info_v2_1->dp0_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
+ 	}
+ 	info->dp1_ext_hdmi_slv_addr = info_v2_1->dp1_retimer_set.HdmiSlvAddr;
+-	info->dp1_ext_hdmi_reg_num = info_v2_1->dp1_retimer_set.HdmiRegNum;
++	info->dp1_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp1_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp1_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp1_ext_hdmi_reg_num; i++) {
+ 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp1_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v2_1->dp1_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp1_ext_hdmi_6g_reg_num = info_v2_1->dp1_retimer_set.Hdmi6GRegNum;
++	info->dp1_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp1_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp1_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp1_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp1_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2826,14 +2838,16 @@ static enum bp_result get_integrated_inf
+ 				info_v2_1->dp1_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
+ 	}
+ 	info->dp2_ext_hdmi_slv_addr = info_v2_1->dp2_retimer_set.HdmiSlvAddr;
+-	info->dp2_ext_hdmi_reg_num = info_v2_1->dp2_retimer_set.HdmiRegNum;
++	info->dp2_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp2_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp2_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp2_ext_hdmi_reg_num; i++) {
+ 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp2_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v2_1->dp2_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp2_ext_hdmi_6g_reg_num = info_v2_1->dp2_retimer_set.Hdmi6GRegNum;
++	info->dp2_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp2_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp2_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp2_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp2_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
+@@ -2841,14 +2855,16 @@ static enum bp_result get_integrated_inf
+ 				info_v2_1->dp2_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegVal;
+ 	}
+ 	info->dp3_ext_hdmi_slv_addr = info_v2_1->dp3_retimer_set.HdmiSlvAddr;
+-	info->dp3_ext_hdmi_reg_num = info_v2_1->dp3_retimer_set.HdmiRegNum;
++	info->dp3_ext_hdmi_reg_num = min_t(u8, info_v2_1->dp3_retimer_set.HdmiRegNum,
++					    ARRAY_SIZE(info->dp3_ext_hdmi_reg_settings));
+ 	for (i = 0; i < info->dp3_ext_hdmi_reg_num; i++) {
+ 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegIndex;
+ 		info->dp3_ext_hdmi_reg_settings[i].i2c_reg_val =
+ 				info_v2_1->dp3_retimer_set.HdmiRegSetting[i].ucI2cRegVal;
+ 	}
+-	info->dp3_ext_hdmi_6g_reg_num = info_v2_1->dp3_retimer_set.Hdmi6GRegNum;
++	info->dp3_ext_hdmi_6g_reg_num = min_t(u8, info_v2_1->dp3_retimer_set.Hdmi6GRegNum,
++					       ARRAY_SIZE(info->dp3_ext_hdmi_6g_reg_settings));
+ 	for (i = 0; i < info->dp3_ext_hdmi_6g_reg_num; i++) {
+ 		info->dp3_ext_hdmi_6g_reg_settings[i].i2c_reg_index =
+ 				info_v2_1->dp3_retimer_set.Hdmi6GhzRegSetting[i].ucI2cRegIndex;
 
 
 
