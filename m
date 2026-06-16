@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LLxZA+poMWq1igUAu9opvQ
-	(envelope-from <stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:58 +0200
+	id mwdHKlx/MWqKkwUAu9opvQ
+	(envelope-from <stable+bounces-264825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEA1690E11
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:57 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC69969289E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mRr1bVSM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=a3dyZduJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264825-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264825-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02E3D3065BFD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:12:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 631473053587
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3A843C047;
-	Tue, 16 Jun 2026 15:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF2847799B;
+	Tue, 16 Jun 2026 16:41:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1238C437;
-	Tue, 16 Jun 2026 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1EF472777;
+	Tue, 16 Jun 2026 16:41:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622760; cv=none; b=dJ6tkHAC+RUzZRHs5mWDpRxe79BAXxQQ7u7DThsVNLLBFeVZ8w08EzP5WJ+/TR8Jf43eVj7bro0TycX8kSVRDD6yxe41mjGlbRlmJ8gWyD3atXsPXomJ00xMUSiPPp5M/D4vlEwF2BvjHtaVrAf9M/rM8MtbbV6KT9LVcIb6GAc=
+	t=1781628087; cv=none; b=bPMzglNMVZyZDpMQ5S0VCD7ygDLnydoTyv1F8HCSTP1HSrFV69Or4PfTP9//2iBBfjmn1sirJ2G4CTDHdfHxaLKlRMXd0vNP4K4B4+9r/8GOg7/A+9nW/gGtPQ4ZIlplfwnwb4dAgrwcumkG9NscunAtJvv3aSTb5gj4pFAwIsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622760; c=relaxed/simple;
-	bh=XhtOVlYsY3pmOEAOh5/yq019rRuwu/zu4x88bO5YJkU=;
+	s=arc-20240116; t=1781628087; c=relaxed/simple;
+	bh=vxGjvxe28by+0BVqEcLv+UCwrElcHK/ixvT97Ztt9Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzAkaVRhGNZbR6Fhguw3JTUyEV9kib7JV5+CQaIosMLq3vHWjtIhiRA8+p2mq20tCgBue+DPtNnk2rOysbn112Mi5jQsOrMy8V6fdRXV7D+Phz5lVNSyq/NjCQZwUCHSJdcFNsUf72mAvUCg+2cmBYV2LjM2sVuUhnGdok3WZHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRr1bVSM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56EC1F000E9;
-	Tue, 16 Jun 2026 15:12:38 +0000 (UTC)
+	 MIME-Version; b=oOmQoTLG98HDp6RKJ8gKFWLyhHPH7luPPSME83LjliNulrjlxJL8zQFr0RnD67G/TM+sLOYDuFxolTgYJGI6UVZKYKKWAAn5kTtvwNOw5IUwq2vf/dcqrE9HlRCMFYg8UFhEufHtQlVzLhCpPP/vqHlzSgNKqmbT24NmZE+9t70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3dyZduJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4E61F000E9;
+	Tue, 16 Jun 2026 16:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622759;
-	bh=CttxsJV/a8Vt5KBTcImcKEptXhJ1U1RWeokWxznhv2s=;
+	s=korg; t=1781628086;
+	bh=wklumsmGeMqfXQ4zA+kGRe1hx7Io78H7db87MI+MSQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mRr1bVSMtZ0cA+tg7F46bpVvchY9sE1IxT9rp7DH92oKn12qdVdyO0VHBsAYnQgKy
-	 EvLiltAQjOdwl0Sg0mlH2KkACTjKGNgobRUNmnrwDalx2VdeFDQl5yzX40OROYNf5N
-	 1XQyarXPEqsCi8rKx8FNcheC6fY7zAkC331u9N9s=
+	b=a3dyZduJwzsZnSprb5+GemGxWK5oc25cm7sGtrHE/5ZfKDz5KVeUjR3BNeBuMf8vp
+	 9PkrVbOe/RPqukbRWJkXslZS/EDzgeNMcX8aGxsZScyVBghg+8NVrg59CA7ju7/os3
+	 a2p6sZgppIn2VAfuY1RhvB7jzr7k5uFBr3b+3Z+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 024/378] netfilter: bridge: make ebt_snat ARP rewrite writable
+Subject: [PATCH 6.6 028/452] net: hsr: fix potential OOB access in supervision frame handling
 Date: Tue, 16 Jun 2026 20:24:15 +0530
-Message-ID: <20260616145111.114267721@linuxfoundation.org>
+Message-ID: <20260616145119.349891242@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +70,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263842-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264825-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luka.gejak@linux.dev,m:fmancera@suse.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,strlen.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,msgid.link:url,suse.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7DEA1690E11
+X-Rspamd-Queue-Id: BC69969289E
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yiming Qian <yimingqian591@gmail.com>
+From: Luka Gejak <luka.gejak@linux.dev>
 
-[ Upstream commit 67ba971ae02514d85818fe0c32549ab4bfa3bf49 ]
+[ Upstream commit f229426072fc865654a60978bb7fda790a051ff3 ]
 
-The ebtables SNAT target keeps the Ethernet source address rewrite
-behind skb_ensure_writable(skb, 0).  This is intentional: at the bridge
-ebtables hooks the Ethernet header is addressed through
-skb_mac_header()/eth_hdr(), while skb->data points at the Ethernet
-payload.  Asking skb_ensure_writable() for ETH_HLEN bytes would check
-the payload, not the Ethernet header, and would reintroduce the small
-packet regression fixed by commit 63137bc5882a.
+Ensure the entire TLV header is linearized before access by adding
+sizeof(struct hsr_sup_tlv) to the pskb_may_pull() calls. Without this,
+a truncated frame could cause an out-of-bounds access.
 
-However, the optional ARP sender hardware address rewrite is different.
-It writes through skb_store_bits() at an offset relative to skb->data:
-
-        skb_store_bits(skb, sizeof(struct arphdr), info->mac, ETH_ALEN)
-
-skb_header_pointer() only safely reads the ARP header; it does not make
-the later sender hardware address range writable.  If that range is
-still held in a nonlinear skb fragment backed by a splice-imported file
-page, skb_store_bits() maps the frag page and copies the new MAC address
-directly into it.
-
-Ensure the ARP SHA range is writable before reading the ARP header and
-before calling skb_store_bits().
-
-Fixes: 63137bc5882a ("netfilter: ebtables: Fixes dropping of small packets in bridge nat")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
+Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20260523130330.61880-1-luka.gejak@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/ebt_snat.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/hsr/hsr_forward.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/netfilter/ebt_snat.c b/net/bridge/netfilter/ebt_snat.c
-index 7dfbcdfc30e5d2..c9e229af0366b8 100644
---- a/net/bridge/netfilter/ebt_snat.c
-+++ b/net/bridge/netfilter/ebt_snat.c
-@@ -31,6 +31,9 @@ ebt_snat_tg(struct sk_buff *skb, const struct xt_action_param *par)
- 		const struct arphdr *ap;
- 		struct arphdr _ah;
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 3852fd99509f04..7a596c4f603e2d 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -84,7 +84,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
  
-+		if (skb_ensure_writable(skb, sizeof(_ah) + ETH_ALEN))
-+			return EBT_DROP;
-+
- 		ap = skb_header_pointer(skb, 0, sizeof(_ah), &_ah);
- 		if (ap == NULL)
- 			return EBT_DROP;
+ 	/* Get next tlv */
+ 	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
+-	if (!pskb_may_pull(skb, total_length))
++	if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+ 		return false;
+ 	skb_pull(skb, total_length);
+ 	hsr_sup_tlv = (struct hsr_sup_tlv *)skb->data;
+@@ -100,7 +100,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
+ 
+ 		/* make sure another tlv follows */
+ 		total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tlv->HSR_TLV_length;
+-		if (!pskb_may_pull(skb, total_length))
++		if (!pskb_may_pull(skb, total_length + sizeof(struct hsr_sup_tlv)))
+ 			return false;
+ 
+ 		/* get next tlv */
 -- 
 2.53.0
 
