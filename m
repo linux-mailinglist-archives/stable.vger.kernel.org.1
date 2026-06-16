@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tM3tLm1/MWqRkwUAu9opvQ
-	(envelope-from <stable+bounces-264876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:01 +0200
+	id KI4LEruQMWp/mwUAu9opvQ
+	(envelope-from <stable+bounces-265827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08806928B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7CB693CF1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CsbgBwwc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264876-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264876-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O3jhyd6a;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265827-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265827-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D99303072F66
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:45:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 539D93007BAA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6027C3AA4E0;
-	Tue, 16 Jun 2026 16:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418293D091A;
+	Tue, 16 Jun 2026 18:06:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD271A6803;
-	Tue, 16 Jun 2026 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922A2F12AE;
+	Tue, 16 Jun 2026 18:06:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628355; cv=none; b=jnkTisdDsPSr1R4HuItmFX+AalO6cq89BYgi6CE2v5ex3NVFKQdDtgbKMEV9yDAnyTiADWClBPfjuVQBfs2/cXm5H7GGTmo0Qo1AQM7at3EkMZHrj1YJrfExr/JzSv3e3vZvOeS3xl//JgB/iva7u4a8n+YBrXfA7mdKmnSOVok=
+	t=1781633209; cv=none; b=ot5pk33a6IOcCUoLuircccLtbGKy2UdJ/kCIP4OtEvddBobYWtB9PiL2kpWSF3pP9dpZWYFdZTriqKjyNJ3z5wkLdMQ/KO1od3wIBbpqaXBRapUG3h7SItidTyCY0vsUlWj8GlgpDMPEX+K+rhhAAE6VrIZDoYIvfeCOASxjSc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628355; c=relaxed/simple;
-	bh=xP65VsI00YADUrgQDhy3X3Jm+YgPBt+ri5T5sjNqCCs=;
+	s=arc-20240116; t=1781633209; c=relaxed/simple;
+	bh=DuxImpDKq4ll8ETU9pmCGGEsD/IaFrK0LMcJCrk3z2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abpFIJI3SqS7pAj2hfrITYjM3Ae/dyjBJC0xYrtmJpKqRul9I4xysizr7U8bx7Jvi856VU8pEZPkSqE1atl54wcnjo6toQDJ4Ttzr8sKSuxF+opiOPFgFDPm3guIQOLhhEEjIJ1Jkr28RHpXyaTQFAl/+gnHhU7NDT7GWP9exXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsbgBwwc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5641F000E9;
-	Tue, 16 Jun 2026 16:45:52 +0000 (UTC)
+	 MIME-Version; b=ebkQyuq+RhwJPMMdN4Lw4LuEM3fEzzroTrBFNoBfh4OXEil+lBVAG7cQ0gwlYljR/GGEAJuiPFcoYfDM31P2+6IyjrnjQIZfT1H/k3dsDcI6GMveMjXrUqXKGx27uHvCg9hVaCkn8RmI30GVWzvdcrEnTAqMCsmYKWCRjk3+3O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3jhyd6a; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C87F1F000E9;
+	Tue, 16 Jun 2026 18:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628354;
-	bh=bH7C9KqTeLiUhoDVxk8n06zsxsQi+eMJWDsepaoJigc=;
+	s=korg; t=1781633207;
+	bh=PW9whPGm+ZQObXZ+Y9kwOlJKcuyoXsSHlMq9GuUOvyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CsbgBwwc6I+MNB01kF83O/aNKhyVO2TjKpod+fS3uTJiO0hh3duVxIouMBR0dU7cY
-	 hZq/AYID0Eko0nJQ8kKMHp4BaI7aYi+jQeohIVvKS/1WEtoSDOvkcoGIXmqCzJhnIt
-	 fl31E+LxsyHabIqA5PeERygqcpGNL7BwhwiOGyQY=
+	b=O3jhyd6aKBOhqFSyR0q0IVmSxmQrLYlvpma72SoG4mJ5cOKvffPE1NDOQQEBdzqjh
+	 yAWMj7ABr835sz1xd7Lflt18K1Kb6tM76a6mVqczXFPSMJ/L9ltZpoAYo0F2yoHo6J
+	 FHVV2nIQlygB6sz3rgN6vR4GAHYJ81vKJ5+W6mFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	stable@kernel.org,
+	Sven Eckelmann <sven@narfation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/452] ipv6: fix possible infinite loop in rt6_fill_node()
-Date: Tue, 16 Jun 2026 20:24:33 +0530
-Message-ID: <20260616145120.354944538@linuxfoundation.org>
+Subject: [PATCH 5.15 036/411] batman-adv: tvlv: abort OGM send on tvlv append failure
+Date: Tue, 16 Jun 2026 20:24:34 +0530
+Message-ID: <20260616145102.239926919@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +69,231 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264876-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265827-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiayuan.chen@linux.dev,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,sashiko.dev:url,msgid.link:url,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F08806928B4
+X-Rspamd-Queue-Id: DA7CB693CF1
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 9f72412bcf60144f252b0d6205106abf14344abc ]
+commit 501368506563e151b322c8c3f228b796e615b90d upstream.
 
-Sashiko reported this issue [1]. Apply the same fix as
-commit f8d8ce1b515a ("ipv6: fix possible infinite loop in fib6_info_uses_dev()").
+batadv_tvlv_container_ogm_append() could fail in two ways: a memory
+allocation failure when resizing the packet buffer, or the tvlv data
+exceeding U16_MAX bytes. In both cases the function previously returned the
+old (now stale) tvlv_value_len rather than signalling an error, causing the
+OGM/OGM2 send path to transmit a packet whose TVLV length field no longer
+matched the actual buffer contents. And because it also didn't fill in the
+new TVLV data, sending either uninitialized or corrupted data on the wire.
 
-Writers holding tb6_lock can list_del_rcu(&rt->fib6_siblings)
-without waiting for RCU readers; rt->fib6_siblings.next then still
-points into the old ring and this softirq-side walker never reaches
-&rt->fib6_siblings, causing a CPU stall. fib6_del_route() always
-WRITE_ONCE()s rt->fib6_nsiblings to 0 before list_del_rcu(), so an
-inside-loop check is a reliable detach signal.
+All errors in batadv_tvlv_container_ogm_append() must be forwarded to the
+caller. And the caller must abort the send of the OGM2. For B.A.T.M.A.N.
+IV, it is currently not allowed to abort the send. The non-TVLV part of the
+OGM must be queued up instead.
 
-[1] https://sashiko.dev/#/patchset/20260526020227.4857-1-jiayuan.chen%40linux.dev
-
-Fixes: d9ccb18f83ea ("ipv6: Fix soft lockups in fib6_select_path under high next hop churn")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260527053133.180695-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@kernel.org
+Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
+[ Context ]
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/route.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/bat_iv_ogm.c | 16 +++++++++++++---
+ net/batman-adv/bat_v_ogm.c  | 26 ++++++++++++++------------
+ net/batman-adv/tvlv.c       | 17 ++++++++++++-----
+ net/batman-adv/tvlv.h       |  2 +-
+ 4 files changed, 40 insertions(+), 21 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index c5b71baf95e7b3..69659f2a6aea96 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -5797,6 +5797,8 @@ static int rt6_fill_node(struct net *net, struct sk_buff *skb,
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 58c18e22603d12..bc8685ffcb7100 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -782,6 +782,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 	u32 seqno;
+ 	u16 tvlv_len = 0;
+ 	unsigned long send_time;
++	int ret;
  
- 				goto nla_put_failure;
- 			}
-+			if (!READ_ONCE(rt->fib6_nsiblings))
-+				break;
- 		}
+ 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
  
- 		rcu_read_unlock();
+@@ -805,9 +806,18 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
+ 		 * appended as it may alter the tt tvlv container
+ 		 */
+ 		batadv_tt_local_commit_changes(bat_priv);
+-		tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
+-							    ogm_buff_len,
+-							    BATADV_OGM_HLEN);
++		ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++						       ogm_buff_len,
++						       BATADV_OGM_HLEN);
++		if (ret < 0) {
++			/* OGMs must be queued even when the buffer allocation for
++			 * TVLVs failed. just fall back to the non-TVLV version
++			 */
++			ret = 0;
++			*ogm_buff_len = BATADV_OGM_HLEN;
++		}
++
++		tvlv_len = ret;
+ 	}
+ 
+ 	batadv_ogm_packet = (struct batadv_ogm_packet *)(*ogm_buff);
+diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
+index 74295915653336..63337e02cf2f11 100644
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -272,9 +272,9 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	struct batadv_hard_iface *hard_iface;
+ 	struct batadv_ogm2_packet *ogm_packet;
+ 	struct sk_buff *skb, *skb_tmp;
+-	unsigned char *ogm_buff;
+-	int ogm_buff_len;
+-	u16 tvlv_len = 0;
++	unsigned char **ogm_buff;
++	int *ogm_buff_len;
++	u16 tvlv_len;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&bat_priv->bat_v.ogm_buff_mutex);
+@@ -282,25 +282,27 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
+ 	if (atomic_read(&bat_priv->mesh_state) == BATADV_MESH_DEACTIVATING)
+ 		goto out;
+ 
+-	ogm_buff = bat_priv->bat_v.ogm_buff;
+-	ogm_buff_len = bat_priv->bat_v.ogm_buff_len;
++	ogm_buff = &bat_priv->bat_v.ogm_buff;
++	ogm_buff_len = &bat_priv->bat_v.ogm_buff_len;
++
+ 	/* tt changes have to be committed before the tvlv data is
+ 	 * appended as it may alter the tt tvlv container
+ 	 */
+ 	batadv_tt_local_commit_changes(bat_priv);
+-	tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, &ogm_buff,
+-						    &ogm_buff_len,
+-						    BATADV_OGM2_HLEN);
++	ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
++					       ogm_buff_len,
++					       BATADV_OGM2_HLEN);
++	if (ret < 0)
++		goto reschedule;
+ 
+-	bat_priv->bat_v.ogm_buff = ogm_buff;
+-	bat_priv->bat_v.ogm_buff_len = ogm_buff_len;
++	tvlv_len = ret;
+ 
+-	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + ogm_buff_len);
++	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + *ogm_buff_len);
+ 	if (!skb)
+ 		goto reschedule;
+ 
+ 	skb_reserve(skb, ETH_HLEN);
+-	skb_put_data(skb, ogm_buff, ogm_buff_len);
++	skb_put_data(skb, *ogm_buff, *ogm_buff_len);
+ 
+ 	ogm_packet = (struct batadv_ogm2_packet *)skb->data;
+ 	ogm_packet->seqno = htonl(atomic_read(&bat_priv->bat_v.ogm_seqno));
+diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
+index 992773376e51d4..4812137439708f 100644
+--- a/net/batman-adv/tvlv.c
++++ b/net/batman-adv/tvlv.c
+@@ -7,6 +7,7 @@
+ #include "main.h"
+ 
+ #include <linux/byteorder/generic.h>
++#include <linux/errno.h>
+ #include <linux/etherdevice.h>
+ #include <linux/gfp.h>
+ #include <linux/if_ether.h>
+@@ -306,9 +307,10 @@ static bool batadv_tvlv_realloc_packet_buff(unsigned char **packet_buff,
+  * The ogm packet might be enlarged or shrunk depending on the current size
+  * and the size of the to-be-appended tvlv containers.
+  *
+- * Return: size of all appended tvlv containers in bytes.
++ * Return: size of all appended tvlv containers in bytes (max U16_MAX), negative
++ *  if operation failed
+  */
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len)
+ {
+@@ -316,6 +318,7 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 	struct batadv_tvlv_hdr *tvlv_hdr;
+ 	u16 tvlv_value_len;
+ 	void *tvlv_value;
++	int tvlv_len_ret;
+ 	bool ret;
+ 
+ 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
+@@ -323,9 +326,12 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
+ 					      packet_min_len, tvlv_value_len);
+-
+-	if (!ret)
++	if (!ret) {
++		tvlv_len_ret = -ENOMEM;
+ 		goto end;
++	}
++
++	tvlv_len_ret = tvlv_value_len;
+ 
+ 	if (!tvlv_value_len)
+ 		goto end;
+@@ -344,7 +350,8 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 
+ end:
+ 	spin_unlock_bh(&bat_priv->tvlv.container_list_lock);
+-	return tvlv_value_len;
++
++	return tvlv_len_ret;
+ }
+ 
+ /**
+diff --git a/net/batman-adv/tvlv.h b/net/batman-adv/tvlv.h
+index 54f2a35653d0f1..ffbc93f78688e5 100644
+--- a/net/batman-adv/tvlv.h
++++ b/net/batman-adv/tvlv.h
+@@ -15,7 +15,7 @@
+ void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
+ 				    u8 type, u8 version,
+ 				    void *tvlv_value, u16 tvlv_value_len);
+-u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
++int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 				     unsigned char **packet_buff,
+ 				     int *packet_buff_len, int packet_min_len);
+ void batadv_tvlv_ogm_receive(struct batadv_priv *bat_priv,
 -- 
 2.53.0
 
