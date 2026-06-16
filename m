@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-263856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MLxPOltoMWqQigUAu9opvQ
-	(envelope-from <stable+bounces-263856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:35 +0200
+	id 66w6LD2QMWpImwUAu9opvQ
+	(envelope-from <stable+bounces-265805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DDB690D9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BA7693C86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FwIqSU7r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263856-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263856-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N9AotZB0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265805-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265805-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BBD233028DC9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE5C4300E920
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54DC43CEC7;
-	Tue, 16 Jun 2026 15:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79FB3CE4BA;
+	Tue, 16 Jun 2026 18:04:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7653642B738;
-	Tue, 16 Jun 2026 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936C73CFF55;
+	Tue, 16 Jun 2026 18:04:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622833; cv=none; b=H7iZQalISMWMwHomYRTWK1rXe7YnCcH6SbtrTkOtN6xMAGswizA7uFtvnC6Jd1DRaj9HMEmJCZ/YyPd4V6GQ2rCjrktIiJbkjSHRZ47Ks/tKmhwr6sKRPDMCVo8gHPF8pzRa3YbMaj8d5L0YGtcX8nAw9nmymNXWP0I2ZIte9X0=
+	t=1781633078; cv=none; b=J5kDY6/WQtCcnF9zpfpZuQmtqbVjaj51Vj747i9CsBPaCMZWzQ5UY/QoJy9rgqxsfO86XPex4ICtW9MkIs6Im4vgZF40gn3rhtVEdHEiKbY9pJkx8hgx6eIqRger5RlkjMD81Tu0aPhSMxy/CGLxVuRhBwfG846jGC0vchJ8F0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622833; c=relaxed/simple;
-	bh=n08eyZPpxhUL4+eA1l7MU/0EIjasq/QfMkAhEyWXbPs=;
+	s=arc-20240116; t=1781633078; c=relaxed/simple;
+	bh=N0BPnj6045ixAw9KjPL9yMrz5Xl31dWMu4ixdVCbEK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWxiPlfk2V76GyTvb6+A85UDjoMLUjxqC7tnO7KHdrEUxH/43gkhfOABKPYVBxC3ZDzMnsBTWvhJ+HRjh76qav0qQBD9g7ljUFWOsF5Yubv/bRMcxpbRMms1xMWMTxZTkQccb4ZzWZo9TVO0t1YTRT4n8eXUajiJPPk0UYI1tSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwIqSU7r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7836F1F000E9;
-	Tue, 16 Jun 2026 15:13:51 +0000 (UTC)
+	 MIME-Version; b=aniYXWdQrDBCho2pZ8QtZlrkHHbyqWprJ+1Qd7fOVPl5PnHccduOY4pNg3vMMbdd9pcnNvVFJ3ToOM2mt3Hg6sc0p6hpgI/fpJyHsduLdnna52Jxlh9Lzf/t3EL6tza7hlGMvsLBdJdtbdWZYPtU38Amv9Tvg8V/Vbj8ndEwDzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9AotZB0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AA31F000E9;
+	Tue, 16 Jun 2026 18:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622832;
-	bh=nnDIF1D6OhYW+8ttsrSvfQVkwyhJpXbGuHtCsKygaZc=;
+	s=korg; t=1781633077;
+	bh=3ZQ0DR90CBo1M++HLnno2LInh+U2Fvz8E7iB+QyZc1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FwIqSU7rRJHJBjpMOoi6YT03iiZA6lBWh5RiRgda1ErZuE7d0i8FM15OggvTDudg7
-	 aClu8VfE/c3Q6Po/lfu8aXL6LTztAuPSlPkP9pKQAv2+7fjIegf9uN6jOxkhXRTIS0
-	 C0Elk3V7ZU9bdD+aBcNXwE9FkDpSf2f8T/OvjxnI=
+	b=N9AotZB0bjT9wGy75r+hxgAa0p8G3SdyoqOUXPSMHXdzwN58p5+fsoRh8OPj1UZbC
+	 tehqnWdsjFb9LItNaalLnUPCrkOcU1B91h+2HB5ErUbqm6sjJx/oeGiBNchmeKRn7A
+	 liPwufKCqALrpDZJchWH4PpYcZmMUcu3N33lOJq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Polensky <japo@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 014/378] s390/bug: Always emit format word in __BUG_ENTRY
+Subject: [PATCH 5.15 007/411] net: cpsw_new: Fix potential unregister of netdev that has not been registered yet
 Date: Tue, 16 Jun 2026 20:24:05 +0530
-Message-ID: <20260616145110.553232031@linuxfoundation.org>
+Message-ID: <20260616145100.755647772@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +69,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263856-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-265805-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:japo@linux.ibm.com,m:hca@linux.ibm.com,m:agordeev@linux.ibm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:haokexin@gmail.com,m:alexander.sverdlin@gmail.com,m:kuba@kernel.org,m:jetlan9@163.com,m:sashal@kernel.org,m:alexandersverdlin@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 89DDB690D9F
+X-Rspamd-Queue-Id: C4BA7693C86
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Polensky <japo@linux.ibm.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit 3daad7f60aa92d0307fa2b2edd38c886a09902f2 ]
+[ Upstream commit 9d724b34fbe13b71865ad0906a4be97571f19cf5 ]
 
-When CONFIG_DEBUG_BUGVERBOSE is disabled, the s390 __BUG_ENTRY() macro
-omits the format string pointer, so the generated __bug_table entry no
-longer matches struct bug_entry.
+If an error occurs during register_netdev() for the first MAC in
+cpsw_register_ports(), even though cpsw->slaves[0].ndev is set to NULL,
+cpsw->slaves[1].ndev would remain unchanged. This could later cause
+cpsw_unregister_ports() to attempt unregistering the second MAC.
+To address this, add a check for ndev->reg_state before calling
+unregister_netdev(). With this change, setting cpsw->slaves[i].ndev
+to NULL becomes unnecessary and can be removed accordingly.
 
-With HAVE_ARCH_BUG_FORMAT enabled, the generic BUG infrastructure reads
-bug_entry::format via bug_get_format(). If the format word is missing,
-subsequent fields are read from the wrong offset, which may:
-- Misinterpret flags (BUG vs WARN classification errors)
-- Fault when dereferencing a misread format pointer
-
-The root cause is that __BUG_ENTRY() delegates format word emission to
-__BUG_ENTRY_VERBOSE(), which is conditional on CONFIG_DEBUG_BUGVERBOSE.
-
-Fix this by moving the format field emission directly into __BUG_ENTRY()
-so it is always emitted unconditionally. Remove the format parameter from
-__BUG_ENTRY_VERBOSE() and keep only file/line emission conditional on
-CONFIG_DEBUG_BUGVERBOSE.
-
-Fixes: 2b71b8ab9718 ("s390/bug: Use BUG_FORMAT for DEBUG_BUGVERBOSE_DETAILED")
-Signed-off-by: Jan Polensky <japo@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-2-6e58bae6b299@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/bug.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/ti/cpsw_new.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
-index 59017fd3d9358d..50a270edb02035 100644
---- a/arch/s390/include/asm/bug.h
-+++ b/arch/s390/include/asm/bug.h
-@@ -12,12 +12,11 @@
- #if defined(CONFIG_BUG) && defined(CONFIG_CC_HAS_ASM_IMMEDIATE_STRINGS)
+diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
+index 9d52b949ae3f95..bef2c71b905972 100644
+--- a/drivers/net/ethernet/ti/cpsw_new.c
++++ b/drivers/net/ethernet/ti/cpsw_new.c
+@@ -1447,7 +1447,8 @@ static void cpsw_unregister_ports(struct cpsw_common *cpsw)
+ 	int i = 0;
  
- #ifdef CONFIG_DEBUG_BUGVERBOSE
--#define __BUG_ENTRY_VERBOSE(format, file, line)				\
--	"	.long	" format " - .	# bug_entry::format\n"		\
-+#define __BUG_ENTRY_VERBOSE(file, line)					\
- 	"	.long	" file " - .	# bug_entry::file\n"		\
- 	"	.short	" line "	# bug_entry::line\n"
- #else
--#define __BUG_ENTRY_VERBOSE(format, file, line)
-+#define __BUG_ENTRY_VERBOSE(file, line)
- #endif
+ 	for (i = 0; i < cpsw->data.slaves; i++) {
+-		if (!cpsw->slaves[i].ndev)
++		if (!cpsw->slaves[i].ndev ||
++		    cpsw->slaves[i].ndev->reg_state != NETREG_REGISTERED)
+ 			continue;
  
- #ifdef CONFIG_DEBUG_BUGVERBOSE_DETAILED
-@@ -28,9 +27,10 @@
- 
- #define __BUG_ENTRY(format, file, line, flags, size)			\
- 		"	.section __bug_table,\"aw\"\n"			\
--		"1:	.long	0b - .	# bug_entry::bug_addr\n"	\
--		__BUG_ENTRY_VERBOSE(format, file, line)			\
--		"	.short	"flags"	# bug_entry::flags\n"		\
-+		"1:	.long	0b - .		# bug_entry::bug_addr\n"\
-+		"	.long	" format " - .	# bug_entry::format\n"	\
-+		__BUG_ENTRY_VERBOSE(file, line)				\
-+		"	.short	"flags"		# bug_entry::flags\n"	\
- 		"	.org	1b+"size"\n"				\
- 		"	.previous"
- 
+ 		unregister_netdev(cpsw->slaves[i].ndev);
+@@ -1467,7 +1468,6 @@ static int cpsw_register_ports(struct cpsw_common *cpsw)
+ 		if (ret) {
+ 			dev_err(cpsw->dev,
+ 				"cpsw: err registering net device%d\n", i);
+-			cpsw->slaves[i].ndev = NULL;
+ 			break;
+ 		}
+ 	}
 -- 
 2.53.0
 
