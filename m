@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7C24N2BxMWq7jQUAu9opvQ
-	(envelope-from <stable+bounces-264199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:04 +0200
+	id B2GIIWCOMWptmgUAu9opvQ
+	(envelope-from <stable+bounces-265697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8688869176D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AD6693A61
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=abkOjNAy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264199-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264199-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UjYW6fmJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265697-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265697-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAA9430A4A8F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 783F83169CBD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D2A45BD6C;
-	Tue, 16 Jun 2026 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593ED3A5E89;
+	Tue, 16 Jun 2026 17:55:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5384B44CAF9;
-	Tue, 16 Jun 2026 15:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E229257827;
+	Tue, 16 Jun 2026 17:55:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624653; cv=none; b=M2D2OiLEMHpgxXzAmll/Aj+Xg2BHhWKX6/ty/wvTxUBKnPKsJMKt39vPv5oC47JFDDOvE8CdokB7sz2ZRyIjULzdjWEBIsFh6vgjWRDImt0wYR1ZEcJgfmqE5pTKCGA3MPlhnm8AveYAFLm5qccwK+nSC5dihwT/FHXwbWo57fM=
+	t=1781632520; cv=none; b=lzYtYA/ltTphYgKIcuKIOVov2GmKXrl6R9X5iYvxoOj+kN8eSoWlyfqnBKwXdfFwpvMzGzkNCS5MIQ2d3OXgfwJTmoFML7ygCJEOONe6yQHlCsj2pFOBUiOELxZZkltunvp3O7+s0xeM9Ud5hDWmQcsliiDm8P2Fa+ED0SbyAOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624653; c=relaxed/simple;
-	bh=z8jDmDk77hqEPI7bs1v0govlB8/qi38dmpCgHaZCj/k=;
+	s=arc-20240116; t=1781632520; c=relaxed/simple;
+	bh=y+B0tmh6D6mGRhVxwtHvzYPKhW7ZmmdCzsEIl7hg7YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i0oaBHZCfQyM/qykuV0pPXhKVIIgInyQwhDqigxEIBPUVth/LUABRQ/Ouoeyw7ltrAVg8ycEioQlH4kpt59JbVgMtXjJNjMU5SI0Hn7fE29dhkcLjNMf5nMN4Ktx/yLWcgOCISxtmHMJ+qwWpmEi1J43mFTbG8ZGN1pDP6zOiGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abkOjNAy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE741F000E9;
-	Tue, 16 Jun 2026 15:44:10 +0000 (UTC)
+	 MIME-Version; b=qGiDHj5BjFSgq/SN8dWqkHhXc1ydsohbI4vFUFvXgvkgWK+EIPhupfQpit2bbNJ7/QjxzWIpFm6gKsoqT+HrBrTNWuHIeYtiA33EY52Je4l/tUSwhEJv2l+wCtrrdMo+cFj/LemhvALixVr7yCw9ReQ3AxTYEtUoyLu3rtPthuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjYW6fmJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CE91F000E9;
+	Tue, 16 Jun 2026 17:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624652;
-	bh=7kJgmWnMAA5I5s+AgLgp1eArJu5Hb52L1gbL0mnhYUA=;
+	s=korg; t=1781632519;
+	bh=aJiAn0VDAEgjEoIquYcC57FZbL0ie29bR8nT70cwrrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=abkOjNAymCLrVXQKKhSqAWkQ+H6jZY71f73eNSPqd3S8S7NDebkT++ZpcwiEHjdcw
-	 hm3fo7cdGaO6/alsMIbojr5suV5toCAYmmAeofl2r+ulovN+ZhpvLgUnKtDDcWKGER
-	 mUtjJaf8pNZe/nARvddh/JVkoQ245hM5GGU73z0Q=
+	b=UjYW6fmJIAZKb9/7+BsiMXw99JyR1gsf3owdtS+BBydHaXaMOHNNtr2d9o7dekQEq
+	 9obkGKRbebui8ReO2VBg9vMvRTsqbCXKb6/+uugqbOci3qaynyyjuorlVDGzqf6HEO
+	 I4G+/lWCnpakyqnEOIhyQVXV4cprkD8OXpS+2OVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 7.0 342/378] drm/v3d: Fix vaddr leak when indirect CSD has zeroed workgroups
+	stable@kernel.org,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 426/522] f2fs: fix incorrect file address mapping when inline inode is unwritten
 Date: Tue, 16 Jun 2026 20:29:33 +0530
-Message-ID: <20260616145128.189617449@linuxfoundation.org>
+Message-ID: <20260616145145.913009526@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +67,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jmcasanova@igalia.com,m:itoral@igalia.com,m:mcanal@igalia.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264199-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265697-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yangyongpeng@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,xiaomi.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8688869176D
+X-Rspamd-Queue-Id: 02AD6693A61
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-commit ae7676952790f421c40918e2586a2c9f12a682b6 upstream.
+[ Upstream commit 68a0178981a0f493295afa29f8880246e561494c ]
 
-v3d_rewrite_csd_job_wg_counts_from_indirect() maps both the indirect
-buffer and the workgroup buffer and is expected to release them before
-returning. When any of the workgroup counts read from the buffer is zero,
-the function bailed out early and skipped the cleanup, leaking the vaddr
-mappings of both BOs.
+When `fileinfo->fi_flags` does not have the `FIEMAP_FLAG_SYNC` bit set
+and inline data has not been persisted yet, the physical address of the
+extent is calculated incorrectly for unwritten inline inodes.
 
-Jump to the cleanup path instead of returning directly, so the mappings
-are always dropped.
+root@vm:/mnt/f2fs# dd if=/dev/zero of=data.3k bs=3k count=1
+root@vm:/mnt/f2fs# f2fs_io fiemap 0 100 data.3k
+Fiemap: offset = 0 len = 100
+	logical addr.    physical addr.   length           flags
+0	0000000000000000 00000ffffffff16c 0000000000000c00 00000301
 
-Cc: stable@vger.kernel.org
-Fixes: 18b8413b25b7 ("drm/v3d: Create a CPU job extension for a indirect CSD job")
-Suggested-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patch.msgid.link/20260602-v3d-fix-indirect-csd-v4-1-654309e32bc0@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+This patch fixes the issue by checking if the inode's address is valid.
+If the inline inode is unwritten, set the physical address to 0 and
+mark the extent with `FIEMAP_EXTENT_UNKNOWN | FIEMAP_EXTENT_DELALLOC`
+flags.
+
+Cc: stable@kernel.org
+Fixes: 67f8cf3cee6f ("f2fs: support fiemap for inline_data")
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ renamed `ifolio` to `ipage` in `inline_data_addr()` and `F2FS_INODE()` calls ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/inline.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -429,7 +429,7 @@ v3d_rewrite_csd_job_wg_counts_from_indir
- 	wg_counts = (uint32_t *)(bo->vaddr + indirect_csd->offset);
+--- a/fs/f2fs/inline.c
++++ b/fs/f2fs/inline.c
+@@ -774,7 +774,7 @@ int f2fs_read_inline_dir(struct file *fi
+ int f2fs_inline_data_fiemap(struct inode *inode,
+ 		struct fiemap_extent_info *fieinfo, __u64 start, __u64 len)
+ {
+-	__u64 byteaddr, ilen;
++	__u64 byteaddr = 0, ilen;
+ 	__u32 flags = FIEMAP_EXTENT_DATA_INLINE | FIEMAP_EXTENT_NOT_ALIGNED |
+ 		FIEMAP_EXTENT_LAST;
+ 	struct node_info ni;
+@@ -807,9 +807,14 @@ int f2fs_inline_data_fiemap(struct inode
+ 	if (err)
+ 		goto out;
  
- 	if (wg_counts[0] == 0 || wg_counts[1] == 0 || wg_counts[2] == 0)
--		return;
-+		goto unmap_bo;
- 
- 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
-@@ -454,6 +454,7 @@ v3d_rewrite_csd_job_wg_counts_from_indir
- 		}
- 	}
- 
-+unmap_bo:
- 	v3d_put_bo_vaddr(indirect);
- 	v3d_put_bo_vaddr(bo);
- }
+-	byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
+-	byteaddr += (char *)inline_data_addr(inode, ipage) -
+-					(char *)F2FS_INODE(ipage);
++	if (__is_valid_data_blkaddr(ni.blk_addr)) {
++		byteaddr = (__u64)ni.blk_addr << inode->i_sb->s_blocksize_bits;
++		byteaddr += (char *)inline_data_addr(inode, ipage) -
++						(char *)F2FS_INODE(ipage);
++	} else {
++		f2fs_bug_on(F2FS_I_SB(inode), ni.blk_addr != NEW_ADDR);
++		flags |= FIEMAP_EXTENT_DELALLOC | FIEMAP_EXTENT_UNKNOWN;
++	}
+ 	err = fiemap_fill_next_extent(fieinfo, start, byteaddr, ilen, flags);
+ 	trace_f2fs_fiemap(inode, start, byteaddr, ilen, flags, err);
+ out:
 
 
 
