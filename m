@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-264968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Lw0RL36AMWoxlAUAu9opvQ
-	(envelope-from <stable+bounces-264968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:34 +0200
+	id bBI/NYyTMWrmnAUAu9opvQ
+	(envelope-from <stable+bounces-265960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939396929CF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7661C694057
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="VjsS/api";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264968-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264968-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uOtkbann;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265960-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265960-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F25E730400DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F254931932F4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3813876CF;
-	Tue, 16 Jun 2026 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F0B3D45CB;
+	Tue, 16 Jun 2026 18:18:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E870F4502F;
-	Tue, 16 Jun 2026 16:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4078336A36C;
+	Tue, 16 Jun 2026 18:18:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628837; cv=none; b=rxWJ7dLjPlj4bwjBP+SHjAAvMybbY9ykhkZhExqXjmM8JR/EVcjsmW9k8WlVYmVrqqmfE0jBsFj+k1EO6Wtx9orX+V5PzMhppQUgQyI7GGpKCxXJIl+c0OhQLuS94r5p2OU5E5clDmhdSmIIxhhWUIgEMv9Zjy1rSb0+5rDBXCo=
+	t=1781633903; cv=none; b=MO4Voh5mNucYnntiR+l3OzwFh8MxTGYuN3eZQdzqk2hgMN9kjr2WwRuApk5qe0Kd2N0nAxgFSfh4950HhtZBHuEu6U1fCivUIgVyRr9QT7x/R5CKXxVZqkYAUAqGg4EM7RhvEUecVpA4qTvKXDlaA14gMCpaRwHGYFHD9h9+EXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628837; c=relaxed/simple;
-	bh=hHxiL71WB90IE/NDsR3Usz6bE7DwP3NhsDKvk/i4zhw=;
+	s=arc-20240116; t=1781633903; c=relaxed/simple;
+	bh=KpwdCiSTSDJszqEtYwA7AifqZWknqZtLo76yDjv2HKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aP5N7amPFdqVbRgE+Ya1knUH5VZ3yJjD3B9izY6hkZ/peJepVX74DHaqTjxjEaL7T1GWq2HtFX8yJWVfC0j2lHi1k8jJkRafhkKn1iFabaSMFG7nA8qHvk7UPt0pXRnLe2/F/FuA6r+p9pGmh4l7tQA8+1Y1IsE9RXJUb5lkido=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjsS/api; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD62D1F000E9;
-	Tue, 16 Jun 2026 16:53:55 +0000 (UTC)
+	 MIME-Version; b=SA0VWtkvJM+9KE9HMSC0/CZBQaI+Qw2GIg3TKT0QKE6QwSMHs9M8n1qYu+1ql8WYiucCy1/vIcI9pQv7Q7nYVHhxdRdy9v2qx6RModhEp+BzOfPOXBgLow19PQIvCvoFjD7wr8dSzcQzwFoiYdwuvD03736l16D5pQ1Tn+NnaXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOtkbann; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC371F000E9;
+	Tue, 16 Jun 2026 18:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628836;
-	bh=pyEoPJmI6hEuhc1xLhfJRptDbgpRAPgglMc0XCfJeF4=;
+	s=korg; t=1781633902;
+	bh=EP6IGHjMevZPdW/Q3FSu1+avuxi5Gx95G9thzeUZ5Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VjsS/apiZbd1dOhw7W+tX71pXQU9IKFKzfzKcXg1nv3vaww8UzDkwFWfrqBkQyj7T
-	 9pf1/BV+yK+LtAfloCiptio+vBGmiFMw41vm482U+MEOPIUfeKSL5Z5D0BWpfbDUPJ
-	 yD9xSZW3bQS3wrD0zi850z79/TKwiUi5zXlzvF28=
+	b=uOtkbannrwmtP4/vtFa+yAi2HgaymMTJLuNyvjt/PZrVte6o8qgJ2fpyLl+6UmDoV
+	 MbCKcLwIYeCTWlyAZCEP1PLL99Q76deF6iGdac2kHhKmtd0ORq5vSOLPugNJOC4X5x
+	 YPJkaAZys7XCBxQWGDrwDlMMsMjzQ088Ue8nt6GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 171/452] thunderbolt: property: Reject dir_len < 4 to prevent size_t underflow
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 160/411] net: garp: fix unsigned integer underflow in garp_pdu_parse_attr
 Date: Tue, 16 Jun 2026 20:26:38 +0530
-Message-ID: <20260616145126.875564127@linuxfoundation.org>
+Message-ID: <20260616145109.002081675@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,28 +73,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264968-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-265960-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,88 +101,71 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 939396929CF
+X-Rspamd-Queue-Id: 7661C694057
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-commit de21b59c29e31c5108ddc04210631bbfab81b997 upstream.
+[ Upstream commit 16e408e607a94b646fb14a2a98422c6877ae4b3c ]
 
-On the non-root path, __tb_property_parse_dir() takes dir_len from
-entry->length (u16 widened to size_t).  Two distinct OOB conditions
-follow when entry->length < 4:
+The receive-side GARP attribute parser computes dlen with reversed
+operands:
 
-1. The non-root path begins with kmemdup(&block[dir_offset],
-   sizeof(*dir->uuid), ...) which always reads 4 dwords from
-   dir_offset.  tb_property_entry_valid() only enforces
-   dir_offset + entry->length <= block_len, so a crafted entry
-   with dir_offset close to the end of the property block and
-   entry->length in 0..3 passes that gate but lets the UUID copy
-   run off the block (e.g. dir_offset = 497, dir_len = 3 in a
-   500-dword block reads block[497..501]).
+        dlen = sizeof(*ga) - ga->len;
 
-2. After the kmemdup, content_len = dir_len - 4 underflows size_t
-   to ~SIZE_MAX, nentries becomes SIZE_MAX / 4, and the entry
-   walk runs OOB on each iteration until an entry fails
-   validation or the kernel oopses on an unmapped page.
+ga->len is the on-wire attribute length and includes the GARP attribute
+header. For normal attributes with data, ga->len is larger than
+sizeof(*ga), so the subtraction underflows in unsigned arithmetic.
 
-Reject dir_len < 4 on the non-root path *before* the UUID kmemdup,
-which closes both holes.
+The resulting value is later passed to garp_attr_lookup(), whose length
+argument is u8. After truncation, the parsed data length usually no
+longer matches the length stored for locally registered attributes, so
+received Join/Leave events are ignored. This breaks the GARP receive path
+for common attributes, such as GVRP VLAN registration attributes.
 
-Also move INIT_LIST_HEAD(&dir->properties) up to immediately after
-the dir allocation so the new error-return path (and the existing
-uuid-alloc failure path) calling tb_property_free_dir() sees a
-walkable list rather than the zero-initialized NULL next/prev that
-list_for_each_entry_safe() would oops on.
+Compute the data length as the attribute length minus the header length.
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eca9ebac651f ("net: Add GARP applicant-only participant")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260527083200.42861-1-zhaoyz24@mails.tsinghua.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/property.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/802/garp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/property.c
-+++ b/drivers/thunderbolt/property.c
-@@ -174,10 +174,16 @@ static struct tb_property_dir *__tb_prop
- 	if (!dir)
- 		return NULL;
+diff --git a/net/802/garp.c b/net/802/garp.c
+index f6012f8e59f005..2c456b362621e6 100644
+--- a/net/802/garp.c
++++ b/net/802/garp.c
+@@ -452,7 +452,7 @@ static int garp_pdu_parse_attr(struct garp_applicant *app, struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, ga->len))
+ 		return -1;
+ 	skb_pull(skb, ga->len);
+-	dlen = sizeof(*ga) - ga->len;
++	dlen = ga->len - sizeof(*ga);
  
-+	INIT_LIST_HEAD(&dir->properties);
-+
- 	if (is_root) {
- 		content_offset = dir_offset + 2;
- 		content_len = dir_len;
- 	} else {
-+		if (dir_len < 4) {
-+			tb_property_free_dir(dir);
-+			return NULL;
-+		}
- 		dir->uuid = kmemdup(&block[dir_offset], sizeof(*dir->uuid),
- 				    GFP_KERNEL);
- 		if (!dir->uuid) {
-@@ -191,8 +197,6 @@ static struct tb_property_dir *__tb_prop
- 	entries = (const struct tb_property_entry *)&block[content_offset];
- 	nentries = content_len / (sizeof(*entries) / 4);
- 
--	INIT_LIST_HEAD(&dir->properties);
--
- 	for (i = 0; i < nentries; i++) {
- 		struct tb_property *property;
- 
+ 	if (attrtype > app->app->maxattr)
+ 		return 0;
+-- 
+2.53.0
+
 
 
 
