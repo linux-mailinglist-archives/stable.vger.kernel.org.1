@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JLrwOVl+MWopkwUAu9opvQ
-	(envelope-from <stable+bounces-264759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:25 +0200
+	id tpq0FTaQMWpGmwUAu9opvQ
+	(envelope-from <stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEF8692776
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0FCC693C7E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CQwqHRvU;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264759-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264759-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bCLg7RLs;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265804-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E11AF3046326
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C8494306406A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E495F477995;
-	Tue, 16 Jun 2026 16:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BEE3CF97E;
+	Tue, 16 Jun 2026 18:04:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859044779BB;
-	Tue, 16 Jun 2026 16:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0B03C09E1;
+	Tue, 16 Jun 2026 18:04:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627746; cv=none; b=glmxqLSMZLNyQTUb4XWGpLrmie5zxClUcf4EEIT0V7xUHpShmeHa8E3BGGQjiDIGrz2cshQnjM9VNAKXyGtrEzJJNb2JQx4NtOqsnAOMyxpt67nyRqczJyC4eNHKuEdytzxAsEwosBfhEIRVQFrkUSTsaAtyKEndQA4QL4oPar0=
+	t=1781633073; cv=none; b=FybwJpR5SDiYAzg/yV5sblFJnm/HY7v+4+qR8+3R0x+FcDRKE6YjTo0tYZ6M0CYThxWrAP9gSa3i4Npw8fSd3Ge4Ogvr2N5/XP22IyzDzTKds/rYccuuZNYXaI+LdxGFUMPu3CWHLMuDojBewqF4NKOBkqx8O7zvhIxfzE9XPVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627746; c=relaxed/simple;
-	bh=q8bmkkW5qTWP1Of8p4ZBqT//Rqb87xrHjCmAKBenMuk=;
+	s=arc-20240116; t=1781633073; c=relaxed/simple;
+	bh=EACEtypqy9ly9EpS4ZxR5xO3K8Xdx2LTiqYnLfj5SBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4rxYFNNmOs8kkDI6uJ/6aPiFBqwe+/mTLrV5E4l6d4LbLZuUxCT5qpI7RtzIggcW6rVetjueQuxyBFdswyMisjiewL2lTyWk7wFw72DP7KhQgmfAEUedGWUFNTl/a1YkLQAPrpgLoACO0bN3Ei8T3Kj/5eOO5S7906klr2LVQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQwqHRvU; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F411F000E9;
-	Tue, 16 Jun 2026 16:35:44 +0000 (UTC)
+	 MIME-Version; b=fmZ8r9cKxFQwIUCFGFA4R+T9P628Vq3wa1k7qXo2nw24r+UM4xQwTdypE+ZJrGKw6V2gZzuZhJip8o10ddg+XlkhQxwFvFlbpGm+IbWkP2GLsqFF0YDbtE5UkfqhaKD20/5T9SQtfJPkkWGaSU+4PFxhpMuwfA9fRKIIgwnt6U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCLg7RLs; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF2D1F000E9;
+	Tue, 16 Jun 2026 18:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627745;
-	bh=cbP2Nlxb9ViV+zsickKph2fPhYW8utio8l9SyunPS0E=;
+	s=korg; t=1781633072;
+	bh=jqDIh5Q2Q3ljcDWIE7B5H+Sm1j55PpN5CxwEy+a+HAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CQwqHRvUTkT6rcOMF9JoCuntBTFVBOTb/8xSbBhDSjUUbVoNYHb8W/HnnIUr/taGi
-	 9KX3HpjrGekNC7YBZ3aMQ6lm0U5Lssq4QFcOs80PTP6THiX1upBaBZKTXqYc8Ob8zd
-	 +5isz4Kok/+lNGul/ZQVNXZJqk3jI+K3DHXMDKb0=
+	b=bCLg7RLsE4KKDa52PR07PZxSxvZLParBbLH9+hFbXrErD0tBaqbvshg3R2OFtiMYh
+	 26gYvq0ahysb7anrW9YBekfeyuo16L2dKq77goPG0bOI8MTNSRx3LfiC3cHoml6Y9L
+	 ct6ePi3xZaVFf1Owo/ezFv7lbPIEN4f6sr/txYuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 220/261] drm/amd/pm: fix smu13 power limit default/cap calculation
+	Liew Rui Yan <aethernet65535@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 511/522] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
 Date: Tue, 16 Jun 2026 20:30:58 +0530
-Message-ID: <20260616145055.219477044@linuxfoundation.org>
+Message-ID: <20260616145149.645860070@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,200 +69,272 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265804-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aethernet65535@gmail.com,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264759-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:kenneth.feng@amd.com,m:lijo.lazar@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,gitlab.freedesktop.org:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ECEF8692776
+X-Rspamd-Queue-Id: C0FCC693C7E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit bb204f19e4a115f094a6a3c4d82fcf48862d0766 upstream.
+commit 64a140afa5ed1c6f5ba6d451512cbdbbab1ba339 upstream.
 
-smu_v13_0_0_get_power_limit() and smu_v13_0_7_get_power_limit() mix
-runtime power_limit with PP table limits when reporting default/min/max.
+Patch series "mm/damon/modules: detect and use fresh status", v3.
 
-When current power limit query succeeds, default_power_limit was set to the
-runtime value instead of the PP table default, and min/max could be derived
-from inconsistent bases (MsgLimits/runtime), leading to incorrect cap info.
+DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+commonly expose the kdamond running status via their parameters.  Under
+certain scenarios including wrong user inputs and memory allocation
+failures, those parameter values can be stale.  It can confuse users.  For
+DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable to be
+restarted before the system reboot.
 
-Use SocketPowerLimitAc/Dc as the PP default base (pp_limit), keep
-current_power_limit as runtime value, and derive min/max from pp_limit with
-OD percentages.
+The problem comes from the fact that there are multiple events for the
+status changes and it is difficult to follow up all the scenarios.  Fix
+the issue by detecting and using the status on demand, instead of using a
+cached status that is difficult to be updated.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5227
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1eaf26db95901ca70737503a89b831dd763c8453)
-Cc: stable@vger.kernel.org
+Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+in the order.
+
+
+This patch (of 3):
+
+DAMON_RECLAIM updates 'enabled' and 'kdamond_pid' parameter values, which
+represents the running status of its kdamond, when the user explicitly
+requests start/stop of the kdamond.  The kdamond can, however, be stopped
+in events other than the explicit user request in the following three
+events.
+
+1. ctx->regions_score_histogram allocation failure at beginning of the
+   execution,
+2. damon_commit_ctx() failure due to invalid user input, and
+3. damon_commit_ctx() failure due to its internal allocation failures.
+
+Hence, if the kdamond is stopped by the above three events, the values of
+the status parameters can be stale.  Users could show the stale values and
+be confused.  This is already bad, but the real consequence is worse.
+DAMON_RECLAIM avoids unnecessary damon_start() and damon_stop() calls
+based on the 'enabled' parameter value.  And the update of 'enabled'
+parameter value depends on the damon_start() and damon_stop() call
+results.  Hence, once the kdamond has stopped by the unintentional events,
+the user cannot restart the kdamond before the system reboot.  For
+example, the issue can be reproduced via below steps.
+
+    # cd /sys/module/damon_reclaim/parameters
+    #
+    # # start DAMON_RECLAIM
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
+    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # commit wrong input to stop kdamond withou explicit stop request
+    # echo 3 > addr_unit
+    # echo Y > commit_inputs
+    bash: echo: write error: Invalid argument
+    #
+    # # confirm kdamond is stopped
+    # ps -ef | grep kdamond
+    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
+    #
+    # # users casn now show stable status
+    # cat enabled
+    Y
+    # cat kdamond_pid
+    806
+    #
+    # # even after fixing the wrong parameter,
+    # # kdamond cannot be restarted.
+    # echo 1 > addr_unit
+    # echo Y > enabled
+    # ps -ef | grep kdamond
+    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
+
+The problem will only rarely happen in real and common setups for the
+following reasons.  The allocation failures are unlikely in such setups
+since those allocations are arguably too small to fail.  Also sane users
+on real production environments may not commit wrong input parameters.
+But once it happens, the consequence is quite bad.  And the bug is a bug.
+
+The issue stems from the fact that there are multiple events that can
+change the status, and following all the events is challenging.
+Dynamically detect and use the fresh status for the parameters when those
+are requested.
+
+Link: https://lore.kernel.org/20260419161003.79176-1-sj@kernel.org
+Link: https://lore.kernel.org/20260419161003.79176-2-sj@kernel.org
+Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
+Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.19.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 ++++++++++---------
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   32 ++++++++++---------
- 2 files changed, 35 insertions(+), 29 deletions(-)
+ mm/damon/reclaim.c |   84 +++++++++++++++++++++++++++++++++++------------------
+ 1 file changed, 56 insertions(+), 28 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2383,28 +2383,30 @@ static int smu_v13_0_0_enable_mgpu_fan_b
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -100,15 +100,6 @@ module_param(monitor_region_start, ulong
+ static unsigned long monitor_region_end __read_mostly;
+ module_param(monitor_region_end, ulong, 0600);
+ 
+-/*
+- * PID of the DAMON thread
+- *
+- * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
+- * Else, -1.
+- */
+-static int kdamond_pid __read_mostly = -1;
+-module_param(kdamond_pid, int, 0400);
+-
+ static struct damos_stat damon_reclaim_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
+ 		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
+@@ -184,37 +175,32 @@ static int damon_reclaim_turn(bool on)
+ {
+ 	int err;
+ 
+-	if (!on) {
+-		err = damon_stop(&ctx, 1);
+-		if (!err)
+-			kdamond_pid = -1;
+-		return err;
+-	}
++	if (!on)
++		return damon_stop(&ctx, 1);
+ 
+ 	err = damon_reclaim_apply_parameters();
+ 	if (err)
+ 		return err;
+ 
+-	err = damon_start(&ctx, 1, true);
+-	if (err)
+-		return err;
+-	kdamond_pid = ctx->kdamond->pid;
+-	return 0;
++	return damon_start(&ctx, 1, true);
++}
++
++static bool damon_reclaim_enabled(void)
++{
++	if (!ctx)
++		return false;
++	return damon_is_running(ctx);
  }
  
- static int smu_v13_0_0_get_power_limit(struct smu_context *smu,
--						uint32_t *current_power_limit,
--						uint32_t *default_power_limit,
--						uint32_t *max_power_limit,
--						uint32_t *min_power_limit)
-+				       uint32_t *current_power_limit,
-+				       uint32_t *default_power_limit,
-+				       uint32_t *max_power_limit,
-+				       uint32_t *min_power_limit)
+ static struct delayed_work damon_reclaim_timer;
+ static void damon_reclaim_timer_fn(struct work_struct *work)
  {
- 	struct smu_table_context *table_context = &smu->smu_table;
- 	struct smu_13_0_0_powerplay_table *powerplay_table =
- 		(struct smu_13_0_0_powerplay_table *)table_context->power_play_table;
- 	PPTable_t *pptable = table_context->driver_pptable;
- 	SkuTable_t *skutable = &pptable->SkuTable;
--	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
--	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
--
--	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
--		power_limit = smu->adev->pm.ac_power ?
-+	uint32_t pp_limit = smu->adev->pm.ac_power ?
- 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
- 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
-+	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
-+	int ret;
-+
-+	if (current_power_limit) {
-+		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
-+		if (ret)
-+			*current_power_limit = pp_limit;
-+	}
+-	static bool last_enabled;
+ 	bool now_enabled;
  
--	if (current_power_limit)
--		*current_power_limit = power_limit;
- 	if (default_power_limit)
--		*default_power_limit = power_limit;
-+		*default_power_limit = pp_limit;
+ 	now_enabled = enabled;
+-	if (last_enabled != now_enabled) {
+-		if (!damon_reclaim_turn(now_enabled))
+-			last_enabled = now_enabled;
+-		else
+-			enabled = last_enabled;
+-	}
++	if (damon_reclaim_enabled() != now_enabled)
++		return;
++	damon_reclaim_turn(now_enabled);
+ }
+ static DECLARE_DELAYED_WORK(damon_reclaim_timer, damon_reclaim_timer_fn);
  
- 	if (powerplay_table) {
- 		if (smu->od_enabled &&
-@@ -2418,15 +2420,15 @@ static int smu_v13_0_0_get_power_limit(s
- 	}
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
--					od_percent_upper, od_percent_lower, power_limit);
-+		od_percent_upper, od_percent_lower, pp_limit);
- 
- 	if (max_power_limit) {
--		*max_power_limit = msg_limit * (100 + od_percent_upper);
-+		*max_power_limit = pp_limit * (100 + od_percent_upper);
- 		*max_power_limit /= 100;
- 	}
- 
- 	if (min_power_limit) {
--		*min_power_limit = power_limit * (100 - od_percent_lower);
-+		*min_power_limit = pp_limit * (100 - od_percent_lower);
- 		*min_power_limit /= 100;
- 	}
- 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -2344,28 +2344,32 @@ static int smu_v13_0_7_enable_mgpu_fan_b
+@@ -236,15 +222,57 @@ static int damon_reclaim_enabled_store(c
+ 	return 0;
  }
  
- static int smu_v13_0_7_get_power_limit(struct smu_context *smu,
--						uint32_t *current_power_limit,
--						uint32_t *default_power_limit,
--						uint32_t *max_power_limit,
--						uint32_t *min_power_limit)
-+				       uint32_t *current_power_limit,
-+				       uint32_t *default_power_limit,
-+				       uint32_t *max_power_limit,
-+				       uint32_t *min_power_limit)
- {
- 	struct smu_table_context *table_context = &smu->smu_table;
- 	struct smu_13_0_7_powerplay_table *powerplay_table =
- 		(struct smu_13_0_7_powerplay_table *)table_context->power_play_table;
- 	PPTable_t *pptable = table_context->driver_pptable;
- 	SkuTable_t *skutable = &pptable->SkuTable;
--	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
--	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
--
--	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
--		power_limit = smu->adev->pm.ac_power ?
-+	uint32_t pp_limit = smu->adev->pm.ac_power ?
- 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
- 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
-+	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
-+	int ret;
++static int damon_reclaim_enabled_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
++}
 +
-+	if (current_power_limit) {
-+		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
-+		if (ret)
-+			power_limit = pp_limit;
+ static const struct kernel_param_ops enabled_param_ops = {
+ 	.set = damon_reclaim_enabled_store,
+-	.get = param_get_bool,
++	.get = damon_reclaim_enabled_load,
+ };
  
--	if (current_power_limit)
- 		*current_power_limit = power_limit;
+ module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
+ MODULE_PARM_DESC(enabled,
+ 	"Enable or disable DAMON_RECLAIM (default: disabled)");
+ 
++static int damon_reclaim_kdamond_pid_store(const char *val,
++		const struct kernel_param *kp)
++{
++	/*
++	 * kdamond_pid is read-only, but kernel command line could write it.
++	 * Do nothing here.
++	 */
++	return 0;
++}
++
++static int damon_reclaim_kdamond_pid_load(char *buffer,
++		const struct kernel_param *kp)
++{
++	int kdamond_pid = -1;
++
++	if (ctx) {
++		kdamond_pid = damon_kdamond_pid(ctx);
++		if (kdamond_pid < 0)
++			kdamond_pid = -1;
 +	}
++	return sprintf(buffer, "%d\n", kdamond_pid);
++}
 +
- 	if (default_power_limit)
--		*default_power_limit = power_limit;
-+		*default_power_limit = pp_limit;
- 
- 	if (powerplay_table) {
- 		if (smu->od_enabled &&
-@@ -2379,15 +2383,15 @@ static int smu_v13_0_7_get_power_limit(s
- 	}
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
--					od_percent_upper, od_percent_lower, power_limit);
-+		od_percent_upper, od_percent_lower, pp_limit);
- 
- 	if (max_power_limit) {
--		*max_power_limit = msg_limit * (100 + od_percent_upper);
-+		*max_power_limit = pp_limit * (100 + od_percent_upper);
- 		*max_power_limit /= 100;
- 	}
- 
- 	if (min_power_limit) {
--		*min_power_limit = power_limit * (100 - od_percent_lower);
-+		*min_power_limit = pp_limit * (100 - od_percent_lower);
- 		*min_power_limit /= 100;
- 	}
- 
++static const struct kernel_param_ops kdamond_pid_param_ops = {
++	.set = damon_reclaim_kdamond_pid_store,
++	.get = damon_reclaim_kdamond_pid_load,
++};
++
++/*
++ * PID of the DAMON thread
++ *
++ * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
++ * Else, -1.
++ */
++module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
++
+ static int damon_reclaim_handle_commit_inputs(void)
+ {
+ 	int err;
 
 
 
