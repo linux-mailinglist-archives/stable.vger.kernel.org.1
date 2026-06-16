@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264084-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id VsgeK4+VMWq7nQUAu9opvQ
-	(envelope-from <stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:27 +0200
+	id Fw1CArhuMWrLjAUAu9opvQ
+	(envelope-from <stable+bounces-264084-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A4C694222
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8746914CC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ptAZXUQJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zz8ZCtKN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264084-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264084-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 42CE23096608
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 35F3F3027E43
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8175C47A0A9;
-	Tue, 16 Jun 2026 18:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A524449EB8;
+	Tue, 16 Jun 2026 15:34:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BD7477E33;
-	Tue, 16 Jun 2026 18:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A7844103D;
+	Tue, 16 Jun 2026 15:34:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634387; cv=none; b=TFFG72LooMqSidfyhsDBLN7jJ8myiyZlNKAzClpWdKCOKDSlez9CVIVzomsSydTKUdlELfC/yNRLbCvrz20B3/8xpZ5KfYyMy1X+6E5cEZRi0wM0D7JCwq6wAoPVrwwZ1bygBLOMw3QKJFK8Qclwpdak0lt8qtAT6wpOKSI0Jw8=
+	t=1781624041; cv=none; b=kFckPzny2++Q0JNHLhe1EitdYbEcV8ikuynb0INiefK8wOgqAfNDN9GoG/TLKrAGZDIbDjGaWiqMXkp6m6TwMI8ROt63F8sj2F2WVK8ugw48u7MHt2TVTi58UOO0GomJXuEwssxOGLqtcoujCK/10qZezFDd8ZPHo9GMl+nRUbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634387; c=relaxed/simple;
-	bh=yt1ZQB69riPbuiSglgOJm9EyGd126rWaCbJzUTvA3KY=;
+	s=arc-20240116; t=1781624041; c=relaxed/simple;
+	bh=sPUisYzHzQnGa7mpr/6pLvzRcsq2WZ3GaUvY3+QMqF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qI57K3Uh9r/0OO3XtDa/VvP7dRizglmmH8zjJbVyIvXFCpkqH3khz2kqJvb3r53KNhObaVsVYeTT83jEt+qxRCwq0ftX3ZXeZega+/g1Ss8CvC0D2CKFkx1nJpGKqHkZyLygxwa0fkOFUl/Y8v9E7JSP8f177WwV61ty4Jdzc6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptAZXUQJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF81F000E9;
-	Tue, 16 Jun 2026 18:26:24 +0000 (UTC)
+	 MIME-Version; b=copO809dP4mJu4etR+D6ARTWtl4Kt/TbWGc50GZb58RPpo165NTPUkeIY31FgieJrPUz8g7b7a5AVciwP5XxhWl8icrNv7hhLEKHFPUqobPG6JmDI2hvxi6+xTgpJ7n22qdND5hdsTVqtX42yDfw3cK8lpUGjsTngi6k9zn8HP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zz8ZCtKN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3E61F000E9;
+	Tue, 16 Jun 2026 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634386;
-	bh=IoS5hS/31zmDQDa8EbocSvYpuPMtAoivkV8noBX8jDM=;
+	s=korg; t=1781624040;
+	bh=pUILRBKow2w3XypTcST4gqdzaV2cJX0nAvMB6ddJC9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ptAZXUQJ+hjwDX7/wauL5g/3LmtSm/mdD3GG5TfsaIooMtC+F96wz/3JmfOx0Un8+
-	 gjiIgIPos6NkHSQtj12MALIMNVsyCDIlLCgj7grRqHBECDb2pW4IzrjPO7jkhachLD
-	 CEJ1DICJ48AqgR06ylUbpftusEdSz7nTE9kafrc4=
+	b=Zz8ZCtKNfj0PWfPbHaiPyqP74Vhx32Ziu6eaqtsM0fQFePcZFhxB+fRw87dTNB3Xy
+	 wLwgyroha3HJ4MmjV9RwZ+CZV7LodlxtGjw+Wjq/obWf58WzF9csNn37o54k4oWBZ4
+	 jvbRcUUuPHprkeSED9Cnmek0wc/E8fFQt4t2jil0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 254/411] smb: server: fix max_connections off-by-one in tcp accept path
+	Muhammad Bilal <meatuni001@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 7.0 261/378] accel/ethosu: fix wrong weight index in NPU_SET_SCALE1_LENGTH on U85
 Date: Tue, 16 Jun 2026 20:28:12 +0530
-Message-ID: <20260616145114.498480169@linuxfoundation.org>
+Message-ID: <20260616145123.830130420@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,89 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-266048-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:charsyam@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264084-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:robh@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 52A4C694222
+X-Rspamd-Queue-Id: 1C8746914CC
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit ce23158bfe584bd90d1918f279fdf9de57802012 ]
+commit e703843f242b28e35ac79408de571ae110c740b5 upstream.
 
-The global max_connections check in ksmbd's TCP accept path counts
-the newly accepted connection with atomic_inc_return(), but then
-rejects the connection when the result is greater than or equal to
-server_conf.max_connections.
+On non-U65 hardware (e.g. U85), opcode 0x4093 is NPU_SET_WEIGHT2_LENGTH.
+The BASE handler for the same opcode correctly assigns to
+st.weight[2].base, but the LENGTH handler mistakenly assigns cmds[1]
+to st.weight[1].length instead of st.weight[2].length.
 
-That makes the effective limit one smaller than configured. For
-example:
+This leaves weight[2].length at its initialised sentinel value of
+0xffffffff and corrupts weight[1].length with the user-supplied value,
+breaking the software bounds-check state for both weight buffers on U85.
 
-- max_connections=1 rejects the first connection
-- max_connections=2 allows only one connection
+Fix the index to match the BASE handler.
 
-The per-IP limit in the same function uses <= correctly because it
-counts only pre-existing connections. The global limit instead checks
-the post-increment total, so it should reject only when that total
-exceeds the configured maximum.
-
-Fix this by changing the comparison from >= to >, so exactly
-max_connections simultaneous connections are allowed and the next one
-is rejected. This matches the documented meaning of max_connections
-in fs/smb/server/ksmbd_netlink.h as the "Number of maximum simultaneous
-connections".
-
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
+Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Link: https://patch.msgid.link/20260523210840.92039-3-meatuni001@gmail.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_tcp.c |    2 +-
+ drivers/accel/ethosu/ethosu_gem.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -248,7 +248,7 @@ static int ksmbd_kthread_fn(void *p)
- 		}
- 
- 		if (server_conf.max_connections &&
--		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
-+		    atomic_inc_return(&active_num_conn) > server_conf.max_connections) {
- 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
- 					    atomic_read(&active_num_conn));
- 			atomic_dec(&active_num_conn);
+--- a/drivers/accel/ethosu/ethosu_gem.c
++++ b/drivers/accel/ethosu/ethosu_gem.c
+@@ -601,7 +601,7 @@ static int ethosu_gem_cmdstream_copy_and
+ 			if (ethosu_is_u65(edev))
+ 				st.scale[1].length = cmds[1];
+ 			else
+-				st.weight[1].length = cmds[1];
++				st.weight[2].length = cmds[1];
+ 			break;
+ 		case NPU_SET_WEIGHT3_BASE:
+ 			st.weight[3].base = addr;
 
 
 
