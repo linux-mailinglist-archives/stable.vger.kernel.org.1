@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-264910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QGxOFu9+MWpvkwUAu9opvQ
-	(envelope-from <stable+bounces-264910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:55 +0200
+	id MgVeA/eRMWr9mwUAu9opvQ
+	(envelope-from <stable+bounces-265862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BF269282F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FED693E18
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:12:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bbO3mn53;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264910-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264910-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sv6rjfzp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265862-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265862-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 419D1304945F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:50:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FC16316095F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C3A47AF68;
-	Tue, 16 Jun 2026 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A154F3D566F;
+	Tue, 16 Jun 2026 18:09:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C9C47DF95;
-	Tue, 16 Jun 2026 16:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B73D091A;
+	Tue, 16 Jun 2026 18:09:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628532; cv=none; b=TlNaancbcyyhPQNz62COWFK6TOgqTesV/D2IZSs2fnJLM6SEe1LY5VNacfysgc4DoDolSj81SPRg+Rmy4NeF6gDislDe9avEZu/lcn+zujx9InIsCJ9Hwawi0DMfFejCJrijZ/zVw7lH1aSNuO9NAVYCg67nureCDzZRsUc9I7Y=
+	t=1781633393; cv=none; b=MA+Mv1L08Edu8gESQluK9W+2gjoEyVfH+S8JUWjEIp9yaOvBIyt4uV9D0I/LS+BV/3UJXWdZFXu0IsYqMqUt2myCkECvbmhNjeXCt+3UaWrA1SjeUCKzpwjirQIp3Cpuy/qYS586Pntu51XUJX8AzIR7DISRzcYXt+NjLeWVDWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628532; c=relaxed/simple;
-	bh=dxrSY/GQOX/V+RYVhUjOFMaZtCSzzyrv/VQDfOJWD1g=;
+	s=arc-20240116; t=1781633393; c=relaxed/simple;
+	bh=Y1bmhfTzomNWzp/P2RHsaIbKo4yHM1EzANOF9zt5li0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1ZrgBKDZvPEIOnnEFUQUFdh2eydIq0399PYnIvAZSw9YyGUDDD3D9GNrCxnYwRN17gkGeSVFb1Fi/fQ9CXObAzlAAjZV3ZnP7praXKLZ/kbJUXlgfy2NpwmgAFZQWtAX9UTi7udkh+SEhM+6/5Y16Fxrt3B0rtOPv8SaMh6Iyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbO3mn53; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A489E1F00A3E;
-	Tue, 16 Jun 2026 16:48:50 +0000 (UTC)
+	 MIME-Version; b=uLYe5oDQ5mfJoIIs1EjDrqOWSkrN30541AjZ6Ooi0u/a+D/C37R2F+fpcdj69Ab5MVZ6Bz2kQhHL49j20Hhcr0jUKGKTRWDRuT4w1qAwzSJ44xSAU/rT4/Yg1qobWdS90OhVARQKS+IUPUBd8P0PiGTd94DucyRMBVToqSbc+2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sv6rjfzp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BC81F000E9;
+	Tue, 16 Jun 2026 18:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628531;
-	bh=wqUzMWIUsLjoynO1uc0qT2Qahi8NpN/PkFEppTp8DEE=;
+	s=korg; t=1781633392;
+	bh=EZh1eYgKCLK8ZE1W8gDNcQpoHug3i097T52twBMBSGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bbO3mn53eMmvubsv4mtm93fLXIkmHC39qwGlBElazfLJybE2Bx1QZA282fO5T5Phl
-	 X/Cdb8GDRKVaZODRXVu/YFOTrmbDQ7niFhA+o9H4TfbrUuVVDbN8voUHFpoBZNlmqX
-	 C6pIdO4FL/yVvYlxBs9xLvDqdwII7+GE4f4E2zRA=
+	b=sv6rjfzp4wLgxXrbzkCa0qY/URd0AEpQTSztyqYC0depSrSKKCJBlekyC/0kAConc
+	 MgdNWkFz+Y0+3059OXmJcvF1+23sUJkbeQR4/C8KB+Mxnn8M7MPGi1maAKYcQncM7Y
+	 QA0PfE7P04w88paFXTiJQTD85DkQS0/QrsVorBlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petlozu Pravareshwar <petlozup@nvidia.com>,
-	Prathamesh Shete <pshete@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/452] soc/tegra: pmc: Fix unsafe generic_handle_irq() call
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 5.15 070/411] iio: dac: ad5686: fix input raw value check
 Date: Tue, 16 Jun 2026 20:25:08 +0530
-Message-ID: <20260616145122.136139354@linuxfoundation.org>
+Message-ID: <20260616145104.003676711@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,246 +70,73 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,163.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264910-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:petlozup@nvidia.com,m:pshete@nvidia.com,m:jonathanh@nvidia.com,m:treding@nvidia.com,m:rob_garcia@163.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265862-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,analog.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5BF269282F
+X-Rspamd-Queue-Id: 60FED693E18
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathamesh Shete <pshete@nvidia.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit e6d96073af681780820c94079b978474a8a44413 ]
+commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
 
-Currently, when resuming from system suspend on Tegra platforms,
-the following warning is observed:
+Fix range check for input raw value, which is off by one, i.e., for a
+10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
+passes the previous check, allowing an out-of-range write. The issue
+exists since the ad5686 driver was first introduced.
 
-WARNING: CPU: 0 PID: 14459 at kernel/irq/irqdesc.c:666
-Call trace:
- handle_irq_desc+0x20/0x58 (P)
- tegra186_pmc_wake_syscore_resume+0xe4/0x15c
- syscore_resume+0x3c/0xb8
- suspend_devices_and_enter+0x510/0x540
- pm_suspend+0x16c/0x1d8
-
-The warning occurs because generic_handle_irq() is being called from
-a non-interrupt context which is considered as unsafe.
-
-Fix this warning by deferring generic_handle_irq() call to an IRQ work
-which gets executed in hard IRQ context where generic_handle_irq()
-can be called safely.
-
-When PREEMPT_RT kernels are used, regular IRQ work (initialized with
-init_irq_work) is deferred to run in per-CPU kthreads in preemptible
-context rather than hard IRQ context. Hence, use the IRQ_WORK_INIT_HARD
-variant so that with PREEMPT_RT kernels, the IRQ work is processed in
-hardirq context instead of being deferred to a thread which is required
-for calling generic_handle_irq().
-
-On non-PREEMPT_RT kernels, both init_irq_work() and IRQ_WORK_INIT_HARD()
-execute in IRQ context, so this change has no functional impact for
-standard kernel configurations.
-
-Signed-off-by: Petlozu Pravareshwar <petlozup@nvidia.com>
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-[treding@nvidia.com: miscellaneous cleanups]
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/tegra/pmc.c | 104 ++++++++++++++++++++++++++++------------
- 1 file changed, 74 insertions(+), 30 deletions(-)
+ drivers/iio/dac/ad5686.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
-index 1306e3b8b5c04b..4cb47c29dc6b95 100644
---- a/drivers/soc/tegra/pmc.c
-+++ b/drivers/soc/tegra/pmc.c
-@@ -28,6 +28,7 @@
- #include <linux/iopoll.h>
- #include <linux/irqdomain.h>
- #include <linux/irq.h>
-+#include <linux/irq_work.h>
- #include <linux/kernel.h>
- #include <linux/of_address.h>
- #include <linux/of_clk.h>
-@@ -467,6 +468,10 @@ struct tegra_pmc {
- 	unsigned long *wake_sw_status_map;
- 	unsigned long *wake_cntrl_level_map;
- 	struct syscore_ops syscore;
-+
-+	/* Pending wake IRQ processing */
-+	struct irq_work wake_work;
-+	u32 *wake_status;
- };
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
  
- static struct tegra_pmc *pmc = &(struct tegra_pmc) {
-@@ -1940,6 +1945,50 @@ static int tegra_pmc_parse_dt(struct tegra_pmc *pmc, struct device_node *np)
- 	return 0;
- }
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		if (val > (1 << chan->scan_type.realbits) || val < 0)
++		if (val >= (1 << chan->scan_type.realbits) || val < 0)
+ 			return -EINVAL;
  
-+/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
-+static void tegra186_pmc_wake_handler(struct irq_work *work)
-+{
-+	struct tegra_pmc *pmc = container_of(work, struct tegra_pmc, wake_work);
-+	unsigned int i, wake;
-+
-+	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
-+		unsigned long status = pmc->wake_status[i];
-+
-+		for_each_set_bit(wake, &status, 32) {
-+			irq_hw_number_t hwirq = wake + (i * 32);
-+			struct irq_desc *desc;
-+			unsigned int irq;
-+
-+			irq = irq_find_mapping(pmc->domain, hwirq);
-+			if (!irq) {
-+				dev_warn(pmc->dev,
-+					 "No IRQ found for WAKE#%lu!\n",
-+					 hwirq);
-+				continue;
-+			}
-+
-+			dev_dbg(pmc->dev,
-+				"Resume caused by WAKE#%lu mapped to IRQ#%u\n",
-+				hwirq, irq);
-+
-+			desc = irq_to_desc(irq);
-+			if (!desc) {
-+				dev_warn(pmc->dev,
-+					 "No descriptor found for IRQ#%u\n",
-+					 irq);
-+				continue;
-+			}
-+
-+			if (!desc->action || !desc->action->name)
-+				continue;
-+
-+			generic_handle_irq(irq);
-+		}
-+
-+		pmc->wake_status[i] = 0;
-+	}
-+}
-+
- static int tegra_pmc_init(struct tegra_pmc *pmc)
- {
- 	if (pmc->soc->max_wake_events > 0) {
-@@ -1958,6 +2007,18 @@ static int tegra_pmc_init(struct tegra_pmc *pmc)
- 		pmc->wake_cntrl_level_map = bitmap_zalloc(pmc->soc->max_wake_events, GFP_KERNEL);
- 		if (!pmc->wake_cntrl_level_map)
- 			return -ENOMEM;
-+
-+		pmc->wake_status = kcalloc(pmc->soc->max_wake_vectors, sizeof(u32), GFP_KERNEL);
-+		if (!pmc->wake_status)
-+			return -ENOMEM;
-+
-+		/*
-+		 * Initialize IRQ work for processing wake IRQs. Must use
-+		 * HARD_IRQ variant to run in hard IRQ context on PREEMPT_RT
-+		 * because we call generic_handle_irq() which requires hard
-+		 * IRQ context.
-+		 */
-+		pmc->wake_work = IRQ_WORK_INIT_HARD(tegra186_pmc_wake_handler);
- 	}
- 
- 	if (pmc->soc->init)
-@@ -3156,47 +3217,30 @@ static void wke_clear_wake_status(struct tegra_pmc *pmc)
- 	}
- }
- 
--/* translate sc7 wake sources back into IRQs to catch edge triggered wakeups */
--static void tegra186_pmc_process_wake_events(struct tegra_pmc *pmc, unsigned int index,
--					     unsigned long status)
--{
--	unsigned int wake;
--
--	dev_dbg(pmc->dev, "Wake[%d:%d]  status=%#lx\n", (index * 32) + 31, index * 32, status);
--
--	for_each_set_bit(wake, &status, 32) {
--		irq_hw_number_t hwirq = wake + 32 * index;
--		struct irq_desc *desc;
--		unsigned int irq;
--
--		irq = irq_find_mapping(pmc->domain, hwirq);
--
--		desc = irq_to_desc(irq);
--		if (!desc || !desc->action || !desc->action->name) {
--			dev_dbg(pmc->dev, "Resume caused by WAKE%ld, IRQ %d\n", hwirq, irq);
--			continue;
--		}
--
--		dev_dbg(pmc->dev, "Resume caused by WAKE%ld, %s\n", hwirq, desc->action->name);
--		generic_handle_irq(irq);
--	}
--}
--
- static void tegra186_pmc_wake_syscore_resume(void)
- {
--	u32 status, mask;
- 	unsigned int i;
-+	u32 mask;
- 
- 	for (i = 0; i < pmc->soc->max_wake_vectors; i++) {
- 		mask = readl(pmc->wake + WAKE_AOWAKE_TIER2_ROUTING(i));
--		status = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
--
--		tegra186_pmc_process_wake_events(pmc, i, status);
-+		pmc->wake_status[i] = readl(pmc->wake + WAKE_AOWAKE_STATUS_R(i)) & mask;
- 	}
-+
-+	/* Schedule IRQ work to process wake IRQs (if any) */
-+	irq_work_queue(&pmc->wake_work);
- }
- 
- static int tegra186_pmc_wake_syscore_suspend(void)
- {
-+	unsigned int i;
-+
-+	/* Check if there are unhandled wake IRQs */
-+	for (i = 0; i < pmc->soc->max_wake_vectors; i++)
-+		if (pmc->wake_status[i])
-+			dev_warn(pmc->dev,
-+				 "Unhandled wake IRQs pending vector[%u]: 0x%x\n",
-+				 i, pmc->wake_status[i]);
- 	wke_read_sw_wake_status(pmc);
- 
- 	/* flip the wakeup trigger for dual-edge triggered pads
--- 
-2.53.0
-
+ 		mutex_lock(&st->lock);
 
 
 
