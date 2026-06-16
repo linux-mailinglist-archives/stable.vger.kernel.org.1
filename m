@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YoUpBseJMWohmAUAu9opvQ
-	(envelope-from <stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:11 +0200
+	id DOfaKzlrMWpwiwUAu9opvQ
+	(envelope-from <stable+bounces-263926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF2F69350F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C576691077
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Dq99FJFc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265420-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mB9Es6iq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263926-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263926-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6213310EFCC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D164D3222B2A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353EA47A0DA;
-	Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CD243E4BE;
+	Tue, 16 Jun 2026 15:20:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10802478E41;
-	Tue, 16 Jun 2026 17:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA30D1E8320;
+	Tue, 16 Jun 2026 15:20:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631111; cv=none; b=rTGHqQLLisOgxruT9z6s3J7N5tMSpIR3hMlSWjnvCJ0WhCDLXUqBnuydyOYFjGBDLWSqgPpPAt8nFo9yEXk2h0Y+k7flmxdCgjvmVeTrIdIiAnO4JQO0FCq+rdhuOPMOoI74NuOTNoTDm91r/bfDXs2sgHac8Bwn7dpMFK63AyY=
+	t=1781623217; cv=none; b=oExlLQ/aYpoDQyEyUgCNcGQqqSz2m6CRf966ecJB0C49UNtzrJ2HIykCnQF1Z0S9xsqt1emCCAs/4onBRnngwgy++GrZJmjVrryCMCRkmldzob4wwCgbh5bW6q9l7Vm4aecS0AioLMUlZu23cT9Wsiw4CqbF0bEIG1ogxi7CohQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631111; c=relaxed/simple;
-	bh=ubisNW+mGIjO1ECwq4cStsE+b5D/0iDX6jo+RwJ65eU=;
+	s=arc-20240116; t=1781623217; c=relaxed/simple;
+	bh=WSUc4Yz0pynm+BG7c+SAD1dz3aYI6yb83qdYeapine0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQ60PNLvQmYiHLUkfGvD7fw7b26mu08i2kZBcY6sVqizoNlr/I9rX/b7JnAd8ACjt8mMNPI88q13/vYM9lojwKCY7n7aHtNFpXNRP1ot0Syqw7qzMhLhWhpIo1JZjL8K4cPa3CR9vCjVLgVOBEtwdIhWglhhv5+nuDT+4Cch9kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dq99FJFc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A641F000E9;
-	Tue, 16 Jun 2026 17:31:48 +0000 (UTC)
+	 MIME-Version; b=W9XiMjSWbW2rQcLNx41IDBt8WabD/aNO/FctrceNXDJoJEAA59CE8PlFVa2GF2kO4Owb47i2q1g08K+xR83HaRE8dVgwBqXtpp3/UoP9mS6e1qd0jdShUjuLcUEz1SD/WSgjR6V7z2IRuBvch8acmlTFQ6AEud01Xhcgl3fqCaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mB9Es6iq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB9A1F000E9;
+	Tue, 16 Jun 2026 15:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631109;
-	bh=Hmlo8Y05tMrt61lO7R7j7yY9iawLSm/MNF/K6SvGDho=;
+	s=korg; t=1781623215;
+	bh=SZSR9BVpKlGLwsEoIgc25VgZRTuN0CzUknt6+196BqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Dq99FJFcJnkQ6qhC42tceW3EN2w77mBycUcctKMXn9FpDlDWeykBxEmMOEZqa3BkU
-	 M0ewOJXqqi+pfWPX/j1whOI1NqdPdB3DmCzrzZhv3Fmledmk1HxRlQ4u6OZmJ1bWfd
-	 xrj2EpxjOS6EVwEaIs3VIu/kxNX2QcblkIiTjIOU=
+	b=mB9Es6iqKJgT/g37KUaPpN1CAbrd9DDCVbEQj8JvnA4YAH3EUH3NEsKHDD/aJSVlM
+	 g1Drjf83mA9ysX0AVucjCeClbSYl2vuXn1OF9VlIo0X/wTIzRAeZIIYl8dTKSrvluQ
+	 wwipaqO4DNZWE6vlqgLOZGkKjdqQVm1Cr4Clap8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Seungjin Bae <eeodqql09@gmail.com>
-Subject: [PATCH 6.1 158/522] usb: gadget: dummy_hcd: Reject hub port requests for non-existent ports
+	Breno Leitao <leitao@debian.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 074/378] Reapply "bnxt_en: bring back rtnl_lock() in the bnxt_open() path"
 Date: Tue, 16 Jun 2026 20:25:05 +0530
-Message-ID: <20260616145133.504037019@linuxfoundation.org>
+Message-ID: <20260616145114.048575922@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,89 +71,207 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265420-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:stern@rowland.harvard.edu,m:eeodqql09@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,rowland.harvard.edu,gmail.com];
+	TAGGED_FROM(0.00)[bounces-263926-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:sdf@fomichev.me,m:michael.chan@broadcom.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,harvard.edu:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,broadcom.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,fomichev.me:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8EF2F69350F
+X-Rspamd-Queue-Id: 1C576691077
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 7d9633528dd40e33964d2dc74a5abbf5c4d116ce upstream.
+[ Upstream commit b6197b386677ae5268d4702e23849d9ad53051ad ]
 
-The `dummy_hub_control()` function handles USB hub class requests
-to the virtual root hub. The `GetPortStatus` case returns -EPIPE for
-requests with `wIndex != 1`, since the virtual root hub has only a
-single port. However, the `ClearPortFeature` and `SetPortFeature`
-cases lack the same check.
+This reverts commit 850d9248d2eac662f869c766a598c877690c74e5.
+This reapplies commit 325eb217e41f ("bnxt_en: bring back rtnl_lock()
+in the bnxt_open() path").
 
-Fix this by extending the `wIndex != 1` rejection to both cases,
-matching the existing behavior of `GetPortStatus`.
+Breno reports a lockdep warning in bnxt. During FW reset the driver
+may end up calling netif_set_real_num_tx_queues() (if queue count
+changes), so calls to bnxt_open() still require rtnl_lock.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://patch.msgid.link/20260518234314.1889396-1-eeodqql09@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  net/sched/sch_generic.c:1416 suspicious rcu_dereference_protected() usage!
+
+   dev_qdisc_change_real_num_tx+0x54/0xe0
+   netif_set_real_num_tx_queues+0x4ed/0xa80
+   __bnxt_open_nic+0x9cb/0x3490
+   bnxt_open+0x1cb/0x370
+   bnxt_fw_reset_task+0x80d/0x1e80
+   process_scheduled_works+0x9c1/0x13b0
+
+The reverted commit was just an optimization / experiment
+so let's go back to taking the lock.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/ah726OtFX-Qw3U-R@gmail.com
+Fixes: 850d9248d2ea ("Revert "bnxt_en: bring back rtnl_lock() in the bnxt_open() path"")
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20260603195845.2574426-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/dummy_hcd.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 36 ++++++++++++++++++-----
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/gadget/udc/dummy_hcd.c
-+++ b/drivers/usb/gadget/udc/dummy_hcd.c
-@@ -2133,6 +2133,8 @@ static int dummy_hub_control(
- 	case ClearHubFeature:
- 		break;
- 	case ClearPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_SUSPEND:
- 			if (hcd->speed == HCD_USB3) {
-@@ -2247,6 +2249,8 @@ static int dummy_hub_control(
- 		retval = -EPIPE;
- 		break;
- 	case SetPortFeature:
-+		if (wIndex != 1)
-+			goto error;
- 		switch (wValue) {
- 		case USB_PORT_FEAT_LINK_STATE:
- 			if (hcd->speed != HCD_USB3) {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 86e45352cec105..ff5501999b4df1 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -14290,13 +14290,28 @@ static void bnxt_unlock_sp(struct bnxt *bp)
+ 	netdev_unlock(bp->dev);
+ }
+ 
++/* Same as bnxt_lock_sp() with additional rtnl_lock */
++static void bnxt_rtnl_lock_sp(struct bnxt *bp)
++{
++	clear_bit(BNXT_STATE_IN_SP_TASK, &bp->state);
++	rtnl_lock();
++	netdev_lock(bp->dev);
++}
++
++static void bnxt_rtnl_unlock_sp(struct bnxt *bp)
++{
++	set_bit(BNXT_STATE_IN_SP_TASK, &bp->state);
++	netdev_unlock(bp->dev);
++	rtnl_unlock();
++}
++
+ /* Only called from bnxt_sp_task() */
+ static void bnxt_reset(struct bnxt *bp, bool silent)
+ {
+-	bnxt_lock_sp(bp);
++	bnxt_rtnl_lock_sp(bp);
+ 	if (test_bit(BNXT_STATE_OPEN, &bp->state))
+ 		bnxt_reset_task(bp, silent);
+-	bnxt_unlock_sp(bp);
++	bnxt_rtnl_unlock_sp(bp);
+ }
+ 
+ /* Only called from bnxt_sp_task() */
+@@ -14304,9 +14319,9 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
+ {
+ 	int i;
+ 
+-	bnxt_lock_sp(bp);
++	bnxt_rtnl_lock_sp(bp);
+ 	if (!test_bit(BNXT_STATE_OPEN, &bp->state)) {
+-		bnxt_unlock_sp(bp);
++		bnxt_rtnl_unlock_sp(bp);
+ 		return;
+ 	}
+ 	/* Disable and flush TPA before resetting the RX ring */
+@@ -14345,7 +14360,7 @@ static void bnxt_rx_ring_reset(struct bnxt *bp)
+ 	}
+ 	if (bp->flags & BNXT_FLAG_TPA)
+ 		bnxt_set_tpa(bp, true);
+-	bnxt_unlock_sp(bp);
++	bnxt_rtnl_unlock_sp(bp);
+ }
+ 
+ static void bnxt_fw_fatal_close(struct bnxt *bp)
+@@ -15255,15 +15270,17 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 		bp->fw_reset_state = BNXT_FW_RESET_STATE_OPENING;
+ 		fallthrough;
+ 	case BNXT_FW_RESET_STATE_OPENING:
+-		while (!netdev_trylock(bp->dev)) {
++		while (!rtnl_trylock()) {
+ 			bnxt_queue_fw_reset_work(bp, HZ / 10);
+ 			return;
+ 		}
++		netdev_lock(bp->dev);
+ 		rc = bnxt_open(bp->dev);
+ 		if (rc) {
+ 			netdev_err(bp->dev, "bnxt_open() failed during FW reset\n");
+ 			bnxt_fw_reset_abort(bp, rc);
+ 			netdev_unlock(bp->dev);
++			rtnl_unlock();
+ 			goto ulp_start;
+ 		}
+ 
+@@ -15283,6 +15300,7 @@ static void bnxt_fw_reset_task(struct work_struct *work)
+ 			bnxt_dl_health_fw_status_update(bp, true);
+ 		}
+ 		netdev_unlock(bp->dev);
++		rtnl_unlock();
+ 		bnxt_ulp_start(bp);
+ 		bnxt_reenable_sriov(bp);
+ 		netdev_lock(bp->dev);
+@@ -16272,7 +16290,7 @@ static int bnxt_queue_start(struct net_device *dev,
+ 		   rc);
+ 	napi_enable_locked(&bnapi->napi);
+ 	bnxt_db_nq_arm(bp, &cpr->cp_db, cpr->cp_raw_cons);
+-	bnxt_reset_task(bp, true);
++	netif_close(dev);
+ 	return rc;
+ }
+ 
+@@ -17116,6 +17134,7 @@ static int bnxt_resume(struct device *device)
+ 	struct bnxt *bp = netdev_priv(dev);
+ 	int rc = 0;
+ 
++	rtnl_lock();
+ 	netdev_lock(dev);
+ 	rc = pci_enable_device(bp->pdev);
+ 	if (rc) {
+@@ -17160,6 +17179,7 @@ static int bnxt_resume(struct device *device)
+ 
+ resume_exit:
+ 	netdev_unlock(bp->dev);
++	rtnl_unlock();
+ 	if (!rc) {
+ 		bnxt_ulp_start(bp);
+ 		bnxt_reenable_sriov(bp);
+@@ -17326,6 +17346,7 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+ 	int err;
+ 
+ 	netdev_info(bp->dev, "PCI Slot Resume\n");
++	rtnl_lock();
+ 	netdev_lock(netdev);
+ 
+ 	err = bnxt_hwrm_func_qcaps(bp);
+@@ -17343,6 +17364,7 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+ 		netif_device_attach(netdev);
+ 
+ 	netdev_unlock(netdev);
++	rtnl_unlock();
+ 	if (!err) {
+ 		bnxt_ulp_start(bp);
+ 		bnxt_reenable_sriov(bp);
+-- 
+2.53.0
+
 
 
 
