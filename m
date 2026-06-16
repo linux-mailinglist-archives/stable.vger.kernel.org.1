@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-264252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id K13yBC50MWrvjgUAu9opvQ
-	(envelope-from <stable+bounces-264252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:02 +0200
+	id pVwwAnCCMWrXlAUAu9opvQ
+	(envelope-from <stable+bounces-265028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C27B691AB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4FA692B76
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="iYLuE/SN";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264252-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264252-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BforkuJR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265028-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265028-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3B6F318B968
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 901E73004C12
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7A543E9CE;
-	Tue, 16 Jun 2026 15:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C61466B4B;
+	Tue, 16 Jun 2026 16:58:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2530C364024;
-	Tue, 16 Jun 2026 15:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718CC478E2B;
+	Tue, 16 Jun 2026 16:58:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624951; cv=none; b=JlH1W1+qHgZbyoj07XwaBHx84Ae5HIJudQNA8+qzYmDmdcAK3JiGj+OEIVLORxPl3vDS/OQA2ywDyA+exfaF6gqn/JOeTjewBkbxQVZvbOKkUiGzwTFxtpOCgsB9IpUi8HDwCXIGs2/ZSFd4k2VOZ/x6ZEwylIs8xZbD+sluQu0=
+	t=1781629117; cv=none; b=iVn0PfkFb0llmFvPVoFsrYwLJb1mKk/MvJXrt7MYGGk/ieM3l78+McQ34bFCtt05wPlpB0183GMB5layeH5ubzKv5sxTVZC3wuudP4mSILFIete79xplxSwtRkVKE7dHT64g+onpyDNUMxV4Uo3ZICXn0kicIsvhXevdLEi1tc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624951; c=relaxed/simple;
-	bh=HBM57hLqGOs2CBDnoD6yHUsbVMerqQ7KtLYoeGJpS6g=;
+	s=arc-20240116; t=1781629117; c=relaxed/simple;
+	bh=04YELkSSg3o3q/1X9+Xe9kMM9FMTJwTGpOTthVKKhhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cDcoKlpDclTWmMfohSaH3NmofBZJxpCMo3zxgSPfOxzhilUECCk26Na4bHTsOyXvaXtJE6H3YcUFi/Ebj2hbpTXNPAzbb3iR6phiwQgb7NTxRHznBhlEVVxzIPlSp+X5R29praEU0jor+bwQDaDEO/YBR2APtZtrWR87UDzY/pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYLuE/SN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E2C1F00A3A;
-	Tue, 16 Jun 2026 15:49:08 +0000 (UTC)
+	 MIME-Version; b=JkJQqdKJ1Ak1oP1TWH5kcGpUJoBrAiXARsZ88GMwwWlcgaBK1rBhVyV2qS2UN3TpuuDoV0GmMD4MmQGrktkMpzDNdQC2of/jZ9XU+14vLZkRV579yub5vVQLs2B9o3A2237DJ6EiJcATQbqigxrvM3MLiLY25ZFIE8lNG7RbmIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BforkuJR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C641F000E9;
+	Tue, 16 Jun 2026 16:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624950;
-	bh=vP1Y/z4Thf3qVd4L8CeUvzjXS0hKsTCH2n09v+ixPRA=;
+	s=korg; t=1781629116;
+	bh=PyBRkrn/iA96KKUP4QOqXhS/gkqz5HWsMkg8ns4y2oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iYLuE/SN3RxZk/PLsNmjU3y5wn6MjSvZGueaz/m5M+vMfYaEp/TM0xtzn3LuJMvkx
-	 ZcUzRtr6eEkcLM5GJc6G38x8fgTZfKR69ozJHDfmvSYzroVUlhKkrLUA1smmVwQWoG
-	 2SWWzw0j1YIlNRq6LZd4NzIVuXeV2UE96XoT4CKI=
+	b=BforkuJRBH6k5XlfKEWWhL5x6+IWY35Iu9hOuP7XGx8kntNkY57kN4fUjuemviPnd
+	 b9N0MMr0cwLQhEn3AdCHx08Z2nkvdnpNA93JActQfT6VlSvXdSfhFvPiezwxHWrVbj
+	 2SXeMAlbKEKVw1e5VStXRLIgpJ7oxfJO775t1nLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Shahar <tamirthesis@gmail.com>,
-	Amit Klein <aksecurity@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 056/325] ipv4: restrict IPOPT_SSRR and IPOPT_LSRR options
+Subject: [PATCH 6.6 225/452] pcnet32: stop holding device spin lock during napi_complete_done
 Date: Tue, 16 Jun 2026 20:27:32 +0530
-Message-ID: <20260616145100.481176855@linuxfoundation.org>
+Message-ID: <20260616145129.564107992@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,11 +79,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,nvidia.com];
-	TAGGED_FROM(0.00)[bounces-264252-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265028-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:edumazet@google.com,m:dsahern@kernel.org,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -100,63 +98,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,lunn.ch:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C27B691AB8
+X-Rspamd-Queue-Id: 8E4FA692B76
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit d3915a1f5a4bc0ac911032903c3c6ab8df9fcc7c ]
+[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
 
-This patch restricts setting Loose Source and Record Route (LSRR)
-and Strict Source and Record Route (SSRR) IP options to users
-with CAP_NET_RAW capability.
+napi_complete_done may call gro_flush_normal (though not currently, as GRO
+is unsupported at the moment), which may result in packet TX. This will
+eventually result in calling pcnet32_start_xmit - resulting in a deadlock
+while trying to re-acquire the already locked spin lock.
 
-This prevents unprivileged applications from forcing packets to route
-through attacker-controlled nodes to leak TCP ISN and possibly other
-protocol information.
+It is safe to split the spinlock block into two, because the hardware
+registers are still protected from concurrent access, and the two blocks
+perform unrelated operations that don't need to happen atomically.
 
-While LSRR and SSRR are commonly filtered in many network environments,
-they may still be supported and forwarded along some network paths.
-
-RFC 7126 (Recommendations on Filtering of IPv4 Packets Containing
-IPv4 Options) recommend to drop these options in 4.3 and 4.4.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Tamir Shahar <tamirthesis@gmail.com>
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260602161547.2642155-1-edumazet@google.com
+Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_options.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/amd/pcnet32.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index be8815ce3ac242..09d745112c1526 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -530,6 +530,10 @@ int ip_options_get(struct net *net, struct ip_options_rcu **optp,
- 		kfree(opt);
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
+index 72db9f9e7beeae..81cb83caf62a15 100644
+--- a/drivers/net/ethernet/amd/pcnet32.c
++++ b/drivers/net/ethernet/amd/pcnet32.c
+@@ -1403,8 +1403,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 		pcnet32_restart(dev, CSR0_START);
+ 		netif_wake_queue(dev);
  	}
-+	if (opt->opt.srr && !ns_capable(net->user_ns, CAP_NET_RAW)) {
-+		kfree(opt);
-+		return -EPERM;
-+	}
- 	kfree(*optp);
- 	*optp = opt;
- 	return 0;
++	spin_unlock_irqrestore(&lp->lock, flags);
+ 
+ 	if (work_done < budget && napi_complete_done(napi, work_done)) {
++		spin_lock_irqsave(&lp->lock, flags);
+ 		/* clear interrupt masks */
+ 		val = lp->a->read_csr(ioaddr, CSR3);
+ 		val &= 0x00ff;
+@@ -1412,9 +1414,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 
+ 		/* Set interrupt enable. */
+ 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
++		spin_unlock_irqrestore(&lp->lock, flags);
+ 	}
+ 
+-	spin_unlock_irqrestore(&lp->lock, flags);
+ 	return work_done;
+ }
+ 
 -- 
 2.53.0
 
