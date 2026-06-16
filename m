@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7NqONYeRMWrOmwUAu9opvQ
-	(envelope-from <stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:15 +0200
+	id Y+nVImJpMWrXigUAu9opvQ
+	(envelope-from <stable+bounces-263899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47046693DAF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:10:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24ED1690E77
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F+1lsBuu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265865-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vJEaoX6n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263899-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263899-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C000308A069
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13939302C811
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5147D3D5656;
-	Tue, 16 Jun 2026 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F3D43E490;
+	Tue, 16 Jun 2026 15:17:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DC43D45CB;
-	Tue, 16 Jun 2026 18:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C736A35201E;
+	Tue, 16 Jun 2026 15:17:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633409; cv=none; b=XEBAXO8hSizF/uJhIwOv6YkLt3wR17G1xaaDPRnvUF8ImQpneYcJ9XNS9O10ym+zCxvpXddBrwPLGX0A/oJD6x4iVRdeX4MXrt36jxdUX9me8gddt9gXEzTAvLdHVb4kRMUM1XUlVobbZk0OM3sOHP2FfTqyJ5wrskERRyaHtjs=
+	t=1781623061; cv=none; b=rh6g03nuRcOAfjT+1k/sykO07JLMTu0n4qgcLuQqPr99Jzv6NXqBzTuayU94isO44TJ2zIDuqK37anJ53VGtCbYtZk6Khi+KPhPaplMzEPph2mmuQxPCFEwxaV/DhVKTfS1NFajM463bn6UsidyWJH2dlmSEQzwTFukpuT0g/Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633409; c=relaxed/simple;
-	bh=DFCRS+walDy4alBcIO1z/9PKdhPTvHuDzkRbaEn2iFI=;
+	s=arc-20240116; t=1781623061; c=relaxed/simple;
+	bh=BgG1REilJP2lL+/41Rokd777JubccItw4yr4irKsWkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHpRlkPKXsan4q+ThK3ekJhEhMOAuX7XvBYrFcWCDuQ17oCO0rHtnr/OovdrPPytB9w6iNG0DMY85IeyFBtt+BVN0MYNRFYTS4Le+G0fo26HKWLOcmF5VnvuazKaitTjaJcenuNZjjYwlqj/iXu5RAGB72gPJ6hIoMax+cWN008=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+1lsBuu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016F51F000E9;
-	Tue, 16 Jun 2026 18:10:06 +0000 (UTC)
+	 MIME-Version; b=MVhh7Acygjgloj74eO0BdNe73XF3+vpwwygfrg0lXCj1Tnm1w/nqf1/Sqt0Qf+xDDSRG87Eb7yd9rX9WFXooG3zXf+rkBjesbcZR1J8L8uNkIQmxupViWRzOHmlnauO9EXGp2yqWZtOb8EPoR83cGnoXY6J0ZszK8teyccOMQwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJEaoX6n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775D41F000E9;
+	Tue, 16 Jun 2026 15:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633408;
-	bh=8ZFReDuDQXc/98EaBoxLs1ESGibrL9zqR+wzoUnyvXI=;
+	s=korg; t=1781623060;
+	bh=F1H7jxVqGtbYQMRG6Nh6FhB9ZKrrHCy7FOouLwNkNmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F+1lsBuuUySVXlBbghZ4nhiWNfmZTY7YJo/jjNGA4kKhpYFvDS0zeIR14+MD/gafk
-	 jcZ/InZIpH458NJEd8uNl3UQh+cpOe0DXeGsxF8ZRLGZsUCpfl8kMqS6R3ViOos54c
-	 +ij9vNhpURkx0aCtXtvVpbjcGDa/1oLb2ucRhzHM=
+	b=vJEaoX6nJHavHD1KZc9SNV5Czdl9MxGKKZ4fBb/qsC7nh3jDN1AvKyhuZ6tniZnt7
+	 b+E/T1MEAREWuSHFBnKGGDqkNkL6RAMlPzKYxZqUJbfE+NuzQmKpS2thwZvCS1zG3L
+	 0A8WHwfafqhFk9tOeiNthOxtXd5IwOFVIFnjs3cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 5.15 073/411] iio: gyro: itg3200: fix i2c read into the wrong stack location
-Date: Tue, 16 Jun 2026 20:25:11 +0530
-Message-ID: <20260616145104.157660248@linuxfoundation.org>
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@hammerspace.com>,
+	Jori Koolstra <jkoolstra@xs4all.nl>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 081/378] VFS: fix possible failure to unlock in nfsd4_create_file()
+Date: Tue, 16 Jun 2026 20:25:12 +0530
+Message-ID: <20260616145114.474240217@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,89 +75,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265865-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,brown.name,kernel.org,hammerspace.com,xs4all.nl];
+	TAGGED_FROM(0.00)[bounces-263899-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:neil@brown.name,m:jlayton@kernel.org,m:bcodding@hammerspace.com,m:jkoolstra@xs4all.nl,m:brauner@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ownmail.net:email,xs4all.nl:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 47046693DAF
+X-Rspamd-Queue-Id: 24ED1690E77
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: NeilBrown <neilb@ownmail.net>
 
-commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
+[ Upstream commit e824bbd4d224cce4b5fb59cc9dcd3447fe0b7e44 ]
 
-itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
-fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
-parameter (a pointer), `&buf' is the address of the local pointer
-slot on the stack of itg3200_read_all_channels(), not the address
-of the caller's scan buffer. The (char *) cast hides the type
-mismatch.
+atomic_create() in fs/namei.c drops the reference to the dentry
+when it returns an error.
+This behaviour was imported into dentry_create() so that it
+will drop the reference if an error is returned from atomic_create(),
+though not if vfs_create() returns an error (in the case where
+->atomic_create is not supported).
 
-i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
-= 8 bytes into the parameter's stack slot, which is discarded when
-the function returns. The caller's scan buffer in
-itg3200_trigger_handler() is never written to, so
-iio_push_to_buffers_with_timestamp() pushes uninitialised stack
-contents to userspace via /dev/iio:deviceX every scan -- both a
-functional bug (no actual gyroscope or temperature data is
-delivered through the triggered buffer) and an information leak.
+The caller - nfsd4_create_file() - is made aware of this by checking
+path->dentry, which will either be a counted reference to a dentry, or
+an error pointer.
 
-The non-buffered read_raw() path is unaffected: it goes through
-itg3200_read_reg_s16() which uses `&out' on a local s16 value,
-where that is correct.
+However the change to use start_creating()/end_creating() (which landed
+shortly before the dentry_create() change landed, though was likely
+developed around the same time) means that nfsd4_create_file() *needs* a
+valid dentry so that it can unlock the parent.
 
-Drop the spurious `&' so the i2c read writes into the caller's
-buffer.
+The net result is that if NFSD exports a filesystem which uses
+->atomic_create, and if a call to ->atomic_create returns an error, then
+nfsd4_create_file() will pass an error pointer to end_creating()
+and the parent will not be unlocked.
 
-Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by changing dentry_create() to make sure path->dentry is always
+a valid dentry, never an error-pointer.  The actual error is already
+returned a different way.
+
+Note that if ->atomic_create() returns a different dentry (which may not
+be possible in practice) we are guaranteed (because it is only ever
+provided by d_spliace_alias()) that it will have the same d_parent and
+so it will have the same effect when passed to end_creating().
+
+Fixes: 64a989dbd144 ("VFS/knfsd: Teach dentry_create() to use atomic_open()")
+Signed-off-by: NeilBrown <neil@brown.name>
+Link: https://patch.msgid.link/177969022571.3379282.16448744624428323496@noble.neil.brown.name
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@hammerspace.com>
+Reviewed-by: Jori Koolstra <jkoolstra@xs4all.nl>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/itg3200_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/namei.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/iio/gyro/itg3200_buffer.c
-+++ b/drivers/iio/gyro/itg3200_buffer.c
-@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
- 			.addr = i2c->addr,
- 			.flags = i2c->flags | I2C_M_RD,
- 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
--			.buf = (char *)&buf,
-+			.buf = (char *)buf,
- 		},
- 	};
+diff --git a/fs/namei.c b/fs/namei.c
+index 9e5500dad14f59..d615cd62885198 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -5002,6 +5002,7 @@ struct file *dentry_create(struct path *path, int flags, umode_t mode,
+ {
+ 	struct file *file __free(fput) = NULL;
+ 	struct dentry *dentry = path->dentry;
++	struct dentry *orig_dentry = dentry;
+ 	struct dentry *dir = dentry->d_parent;
+ 	struct inode *dir_inode = d_inode(dir);
+ 	struct mnt_idmap *idmap;
+@@ -5021,9 +5022,18 @@ struct file *dentry_create(struct path *path, int flags, umode_t mode,
+ 		if (create_error)
+ 			flags &= ~O_CREAT;
  
++		/* atomic_open will dput(dentry) on error */
++		dget(orig_dentry);
+ 		dentry = atomic_open(path, dentry, file, flags, mode);
+ 		error = PTR_ERR_OR_ZERO(dentry);
+ 
++		if (IS_ERR(dentry))
++			/* keep the original */
++			dentry = orig_dentry;
++		else
++			/* Drop the extra reference */
++			dput(orig_dentry);
++
+ 		if (unlikely(create_error) && error == -ENOENT)
+ 			error = create_error;
+ 
+-- 
+2.53.0
+
 
 
 
