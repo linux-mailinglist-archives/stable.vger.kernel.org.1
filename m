@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-263498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2MOTMt2aMGoMVAUAu9opvQ
-	(envelope-from <stable+bounces-263498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:37:49 +0200
+	id QKmfOTmaMGqwUwUAu9opvQ
+	(envelope-from <stable+bounces-263499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:35:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1908468AF86
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:37:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568BF68AF50
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 02:35:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g8PKPYbT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263498-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263498-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ke1lrxP2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263499-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263499-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 99A7B316E88F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 00:33:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37716301B4C9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 00:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507621A316E;
-	Tue, 16 Jun 2026 00:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6192A189F20;
+	Tue, 16 Jun 2026 00:35:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258ED243376
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 00:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDAA18C933
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 00:35:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781570037; cv=none; b=WKuue3nRCRgsM8IUkkL/ImFveKNmgth+yFYrOjp7V4MRsymaJ+nK/GZr5MpRYSAgXhf0a2TwgllWss/Nq+ox33fQfn9sJM+jdFxqKthlc/uONbsMwyMBN6tjS8RJUxZIJ9wTm/qq8xc+G54+udK1WzUtmynWkadqi21dGXzP+j4=
+	t=1781570103; cv=none; b=PfY9zagCyMFZQEtlpOyX1wW56nygbu9ycwLI564T9v0vst62KXbaPWYp1/PIZnnYsI0wDIsF+7FTecO2YShfoNikhFOkEXZZ1D0c4xl1Ldqp8eM76EEzUqHQrVi5nIPxJWZzREe3BWzUNxKJxr5w89kv6bzqWNUWpmUfByILHvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781570037; c=relaxed/simple;
-	bh=dhG0qTmxRJCFeDxS2zULR97K9iw81i0kKqjbWCkeJTU=;
+	s=arc-20240116; t=1781570103; c=relaxed/simple;
+	bh=TWow9wPNCG1NJkVn0Uk+JDq/aWSkjCamk5dvA3DvYDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfUg1qxeK4zjBrePzH0MUE/dyFcA5rEeq4R8vQmyeY7ExXanDunlD4INlF37bXeisCWetn/WWI0qBYI04oUS2iu4f0W+1uin1kKUTW7UUXo91TBdiVt37NBj/UBjZitzZjxAISoBoOVS/ula7K6gO8jVQYDprVYuHNViSsIa3OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8PKPYbT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3771F000E9;
-	Tue, 16 Jun 2026 00:33:55 +0000 (UTC)
+	 MIME-Version; b=OwnmbMPY5mzspAJ53z3fk6VFYYblR0gQAYVz1jat4BT8H/f3i33GpDcAjmS332mqIqDAumi+1IHUhOeDmF/1KQTaBh1ao0xBtUH5i8PcpUny5uqm3UqCZ5h1dEWVhIsFvL8h8WgPYWxWgXKPTFcn961SZUDvm+1T16VZ1O2uRrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ke1lrxP2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E077A1F000E9;
+	Tue, 16 Jun 2026 00:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781570036;
-	bh=RC5cz7R8sad6+KQpxwVwOduOOhcwydpgcJc3JovOP84=;
+	s=k20260515; t=1781570102;
+	bh=w0ciJiSgNQtbspvr3JpKmV19BPfa38r1Y2PO0Fc3aDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g8PKPYbTgYCPastN3gvC4Unv51An6mB+b0rCw9FTkDKC6+RhdfBKYzMktvccs1YQU
-	 zRtMFsLa40pP40cXYw4s/ifLFMFDqMZg8TcjW1Ku3bRYlZyKTHnqEEtp/GuSlCTe6J
-	 JPA9RvqbYpfUqr4Hl7K5V+SBUgxz3ikWN2ycetOEj2jhYYW8+U50C49LFInQbSeYrP
-	 toGfSgaRxIU8BAh+libXjRNlK0beRjS/ERULanhg84kRws5H5Id5ZAXOkuZ7RFf8he
-	 JBvN8tw4dtO/Na0ERQeD3gvga/3Y0wig5Ovrofjz2WSJT0Hj4RSA7hOIqIc+hPzePs
-	 y0k9ABtwPmVSg==
+	b=ke1lrxP2ROShj6WCk0Or+nv717N3dLrVU5Tf7+YroT+oQhXvGW+Rc1/bufk/rPp7e
+	 f6oL5qazEKwzkpHjdfjRzjFBaXPc+/63Tzx21zlNMu0zpGMf4JjRnYdNCGfDfT6piQ
+	 GDwkDaQXc108Zp3dfb5SQ87U0snKubiXmo0IxEm1Kmpi5j7xuflUkDJ75X15OHTl2X
+	 6PxMUZyi1Pj0UycKZG8cZZ5sRT/EJ2nnu6HjgaacjnmnaVihLFfxKwy2YLE30FIVzu
+	 s3+XgXAGXOWhyp5MVGM+L/A7uutaiOG6zEjs6cgGX6RBMD4xEOUOlXElFCEFEwaqH8
+	 pbJCjC88p3aNw==
 From: SeongJae Park <sj@kernel.org>
 To: Sasha Levin <sashal@kernel.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -54,11 +54,11 @@ Cc: SeongJae Park <sj@kernel.org>,
 	Leonard Foerster <foersleo@amazon.de>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.1.y] mm/damon/ops-common: call folio_test_lru() after folio_get()
-Date: Mon, 15 Jun 2026 17:33:45 -0700
-Message-ID: <20260616003346.141166-1-sj@kernel.org>
+Subject: Re: [PATCH 5.15.y] mm/damon/ops-common: call folio_test_lru() after folio_get()
+Date: Mon, 15 Jun 2026 17:34:52 -0700
+Message-ID: <20260616003453.141287-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260615190329.2368312-1-sashal@kernel.org>
+In-Reply-To: <20260615193731.2389762-1-sashal@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,19 +75,19 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263498-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263499-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:sj@kernel.org,m:stable@vger.kernel.org,m:sieberf@amazon.com,m:foersleo@amazon.de,m:shakeel.butt@linux.dev,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,11 +100,11 @@ X-Spamd-Result: default: False [-3.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux-foundation.org:email,amazon.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1908468AF86
+X-Rspamd-Queue-Id: 568BF68AF50
 
-On Mon, 15 Jun 2026 15:03:29 -0400 Sasha Levin <sashal@kernel.org> wrote:
+On Mon, 15 Jun 2026 15:37:31 -0400 Sasha Levin <sashal@kernel.org> wrote:
 
 > From: SeongJae Park <sj@kernel.org>
 > 
