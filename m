@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SnaFDh19MWq0kgUAu9opvQ
-	(envelope-from <stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:09 +0200
+	id JuYTC2qHMWoHlwUAu9opvQ
+	(envelope-from <stable+bounces-265270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88978692612
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:08 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE63693230
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UtaGpOqy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264780-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vaqEddm2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265270-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265270-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF1D5302C916
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 421EA306B347
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B05647798F;
-	Tue, 16 Jun 2026 16:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F0B47A0C0;
+	Tue, 16 Jun 2026 17:19:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6286466B4B;
-	Tue, 16 Jun 2026 16:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE31478E26;
+	Tue, 16 Jun 2026 17:19:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627851; cv=none; b=eo2kncUo7BXzNJWmMygdZnM2Qudb/DJsLQ/55CmTxDdn4oiib/36kvZOfC7UV6suwEezqzpcRStwBkIAniS5e4ZcxgWxkDieYUH0LiTxuNYicp2yO58jyyU1suEfkRszsTgTNaJfWPCNFskmjcTxqYOFDTq/gzT+ZlLnzXY1on4=
+	t=1781630350; cv=none; b=Z8bmmxtznQjUyCmcKYdB6BSvfYs//qJGQ/FsybX+E4qCCcba9As4dM6wDVNTBWrV49dNcuFE5Z2MtwhtGDTQIq6U+IhhgOg4KL9UB7WYgUVOQTHXmW7207dv9+kvPjACML0Dz3mWAHHhtuVdBFcG5Z6s9ioMvUe6jf5dHrXgjDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627851; c=relaxed/simple;
-	bh=GA8VOQsX/LovcdOb9/XYtOMMBiTnyVcBCixocVMWYN0=;
+	s=arc-20240116; t=1781630350; c=relaxed/simple;
+	bh=uhVUp8UkkO/zAT7M1JcNeYK5wL9tLgRx9YxqoR9I+Iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeRREAY4tyEMSLHc5Dp0PFyK9U2ddAdylVGBZ7ryq4zIzdWpZQu5hYV4Aq/jUeukU9+T/oRkjNvkkKEg0mCwaaVSH2DxhSupkn6hRh2yC/TWmKhWYXVE9TI0+3BPD0cPksizvIfAXVd1zC3csJuX0531M8GCXyNGIjzDqUCkasw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtaGpOqy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53F11F000E9;
-	Tue, 16 Jun 2026 16:37:29 +0000 (UTC)
+	 MIME-Version; b=NSz+BLbhJoGXHDhj6wrgtYw28/+5RV2Cf2J5tS5ig+LvcQTYSEKVK75h8kcmhPIeqRxa4U9er6oehKHdRedf92De7CYDe8vEO39/dT+6GPMUb8IfiqjZSU1gU/uhzRjZoX1aHGIO0N/ediRyJotsTO+XB6iFldzQQDW/J6t9o5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaqEddm2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBED1F000E9;
+	Tue, 16 Jun 2026 17:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627850;
-	bh=kjfjdE/9PwWNLCIIIoImH+5xW+BUB0X4Lld4IHxZFRI=;
+	s=korg; t=1781630349;
+	bh=YpUMdXaL57/VHKYIGGPHtR7FR4A7GOb7pz1wISBW6Do=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UtaGpOqywfr6tadFCXJ33kveit96ht1Rx4Y2H0C3jNjKOEo3y3t68C9V7A5C/UbQL
-	 wIDeX8E/+WAr4kilk71sKcKTcZHxiemubYkxFDVsWpe/P74VNCv+G6aE8LLFM1B4qh
-	 pjwj/qk5u14WSBq2RYDr9rRtOalALjBRPFTygfiY=
+	b=vaqEddm2uLRIsjFN38zmUvJQryekEBOuY58enmwnJiC54WgW8fIMVlNVbqac+dB2b
+	 qRmsGUcu46t8km1Mkh/gLRrAshN2UYoZesib3BkGWSeEQhMug2VIzXji2IQrqKDSCJ
+	 /hbYHI6e8Z0e72cdnEmQbKUgRD+LCBPyy6jOiyL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Tsukerman <philiptsukerman@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/261] RDMA: During rereg_mr ensure that REREG_ACCESS is compatible
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.6 450/452] x86/CPU/AMD: Move the Zen3 BTC_NO detection to the Zen3 init function
 Date: Tue, 16 Jun 2026 20:31:17 +0530
-Message-ID: <20260616145056.147514825@linuxfoundation.org>
+Message-ID: <20260616145140.135302444@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,190 +71,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265270-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264780-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:philiptsukerman@gmail.com,m:jgg@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bp@alien8.de,m:nik.borisov@suse.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,alien8.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 88978692612
+X-Rspamd-Queue-Id: 9DE63693230
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit badad6fad60def1b9805559dd81dbab3d97b82aa ]
+commit affc66cb96f865b3763a8e18add52e133d864f04 upstream.
 
-If IB_MR_REREG_ACCESS changes from RO to RW then the umem has to be
-re-evaluated to ensure it is properly pinned as RW. Since the umem is
-hidden inside each driver's mr struct add a ib_umem_check_rereg() function
-that each driver has to call before processing IB_MR_REREG_ACCESS.
+No functional changes.
 
-mlx4 has to retain its duplicate ib_access_writable check because it
-implements IB_MR_REREG_ACCESS | IB_MR_REREG_TRANS by changing both items
-in place sequentially while the MR is live, so it will continue to not
-support this combination.
-
-Cc: stable@vger.kernel.org
-Fixes: b40656aa7d55 ("RDMA/umem: remove FOLL_FORCE usage")
-Link: https://patch.msgid.link/r/0-v1-06fb1a2d6cf5+107-rereg_access_jgg@nvidia.com
-Reported-by: Philip Tsukerman <philiptsukerman@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: http://lore.kernel.org/r/20231120104152.13740-4-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem.c          |   16 ++++++++++++++++
- drivers/infiniband/hw/hns/hns_roce_mr.c |    4 ++++
- drivers/infiniband/hw/irdma/verbs.c     |    4 ++++
- drivers/infiniband/hw/mlx4/mr.c         |    4 ++++
- drivers/infiniband/hw/mlx5/mr.c         |    4 ++++
- drivers/infiniband/sw/rxe/rxe_verbs.c   |    5 +++++
- include/rdma/ib_umem.h                  |    8 ++++++++
- 7 files changed, 45 insertions(+)
+ arch/x86/kernel/cpu/amd.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -326,3 +326,19 @@ int ib_umem_copy_from(void *dst, struct
- 		return 0;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1090,14 +1090,6 @@ static void init_amd_zen1(struct cpuinfo
+ 		/* Erratum 1076: CPB feature bit not being set in CPUID. */
+ 		if (!cpu_has(c, X86_FEATURE_CPB))
+ 			set_cpu_cap(c, X86_FEATURE_CPB);
+-
+-		/*
+-		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
+-		 * Branch Type Confusion, but predate the allocation of the
+-		 * BTC_NO bit.
+-		 */
+-		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
+-			set_cpu_cap(c, X86_FEATURE_BTC_NO);
+ 	}
+ 
+ 	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
+@@ -1173,6 +1165,15 @@ static void init_amd_zen2(struct cpuinfo
+ 
+ static void init_amd_zen3(struct cpuinfo_x86 *c)
+ {
++	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
++		/*
++		 * Zen3 (Fam19 model < 0x10) parts are not susceptible to
++		 * Branch Type Confusion, but predate the allocation of the
++		 * BTC_NO bit.
++		 */
++		if (!cpu_has(c, X86_FEATURE_BTC_NO))
++			set_cpu_cap(c, X86_FEATURE_BTC_NO);
++	}
  }
- EXPORT_SYMBOL(ib_umem_copy_from);
-+
-+/*
-+ * Called during rereg mr if the driver is able to re-use a umem for
-+ * IB_MR_REREG_ACCESS.
-+ */
-+int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags)
-+{
-+	if (!umem)
-+		return 0;
-+
-+	if ((flags & IB_MR_REREG_ACCESS) && !(flags & IB_MR_REREG_TRANS))
-+		if (ib_access_writable(new_access_flags) && !umem->writable)
-+			return -EACCES;
-+	return 0;
-+}
-+EXPORT_SYMBOL(ib_umem_check_rereg);
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -292,6 +292,10 @@ struct ib_mr *hns_roce_rereg_user_mr(str
- 		goto err_out;
- 	}
  
-+	ret = ib_umem_check_rereg(mr->pbl_mtr.umem, flags, mr_access_flags);
-+	if (ret)
-+		goto err_out;
-+
- 	mailbox = hns_roce_alloc_cmd_mailbox(hr_dev);
- 	ret = PTR_ERR_OR_ZERO(mailbox);
- 	if (ret)
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -3245,6 +3245,10 @@ static struct ib_mr *irdma_rereg_user_mr
- 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-+	ret = ib_umem_check_rereg(iwmr->region, flags, new_access);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	ret = irdma_hwdereg_mr(ib_mr);
- 	if (ret)
- 		return ERR_PTR(ret);
---- a/drivers/infiniband/hw/mlx4/mr.c
-+++ b/drivers/infiniband/hw/mlx4/mr.c
-@@ -466,6 +466,10 @@ struct ib_mr *mlx4_ib_rereg_user_mr(stru
- 	struct mlx4_mpt_entry **pmpt_entry = &mpt_entry;
- 	int err;
- 
-+	err = ib_umem_check_rereg(mmr->umem, flags, mr_access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	/* Since we synchronize this call and mlx4_ib_dereg_mr via uverbs,
- 	 * we assume that the calls can't run concurrently. Otherwise, a
- 	 * race exists.
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -1829,6 +1829,10 @@ struct ib_mr *mlx5_ib_rereg_user_mr(stru
- 	if (flags & ~(IB_MR_REREG_TRANS | IB_MR_REREG_PD | IB_MR_REREG_ACCESS))
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-+	err = ib_umem_check_rereg(mr->umem, flags, new_access_flags);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	if (!(flags & IB_MR_REREG_ACCESS))
- 		new_access_flags = mr->access_flags;
- 	if (!(flags & IB_MR_REREG_PD))
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -1312,6 +1312,7 @@ static struct ib_mr *rxe_rereg_user_mr(s
- 	struct rxe_mr *mr = to_rmr(ibmr);
- 	struct rxe_pd *old_pd = to_rpd(ibmr->pd);
- 	struct rxe_pd *pd = to_rpd(ibpd);
-+	int err;
- 
- 	/* for now only support the two easy cases:
- 	 * rereg_pd and rereg_access
-@@ -1321,6 +1322,10 @@ static struct ib_mr *rxe_rereg_user_mr(s
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
- 
-+	err = ib_umem_check_rereg(mr->umem, flags, access);
-+	if (err)
-+		return ERR_PTR(err);
-+
- 	if (flags & IB_MR_REREG_PD) {
- 		rxe_put(old_pd);
- 		rxe_get(pd);
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -163,6 +163,8 @@ void ib_umem_dmabuf_revoke_lock(struct i
- void ib_umem_dmabuf_revoke_unlock(struct ib_umem_dmabuf *umem_dmabuf);
- void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf);
- 
-+int ib_umem_check_rereg(struct ib_umem *umem, int flags, int new_access_flags);
-+
- #else /* CONFIG_INFINIBAND_USER_MEM */
- 
- #include <linux/err.h>
-@@ -225,5 +227,11 @@ static inline void ib_umem_dmabuf_revoke
- static inline void ib_umem_dmabuf_revoke_unlock(struct ib_umem_dmabuf *umem_dmabuf) {}
- static inline void ib_umem_dmabuf_revoke(struct ib_umem_dmabuf *umem_dmabuf) {}
- 
-+static inline int ib_umem_check_rereg(struct ib_umem *umem, int flags,
-+				      int new_access_flags)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif /* CONFIG_INFINIBAND_USER_MEM */
- #endif /* IB_UMEM_H */
+ static void init_amd_zen4(struct cpuinfo_x86 *c)
 
 
 
