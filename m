@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vlGHGXh1MWppjwUAu9opvQ
-	(envelope-from <stable+bounces-264495-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:32 +0200
+	id HbMmA46FMWo4lgUAu9opvQ
+	(envelope-from <stable+bounces-265269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF8A691C3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B74AD692FD4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0Hs8A5y5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264495-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264495-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=aiaWs6Nh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265269-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265269-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84D29302CE2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2F4133015849
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AA044E045;
-	Tue, 16 Jun 2026 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3069147A0C0;
+	Tue, 16 Jun 2026 17:19:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4444444CAF7;
-	Tue, 16 Jun 2026 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0A41A6803;
+	Tue, 16 Jun 2026 17:19:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626194; cv=none; b=hvDqZ+hpPSbi7c8yV+1cFCgpjPjFCkpJZ9aQprKCVPdL7Js3nKmAz1AHr3vOklV3RNgwsoiBfS5FSWgiToKmKgEiTCaHdUTWh+REQHns4sWAOX3tQXdLXcXreexTkYx4VQvlFjHIiDvra/vNZvSf44ccoC8yh6kSTj5YK/ydftE=
+	t=1781630346; cv=none; b=ZyLVppt5sucL/l7FdLTRswxx7pBsV5ep7SvDRojzuMVGj6WfY1FeCPiJ5zo6gL4Bfsu/35PChfCGaXz5GNDsdLuwEGqrzwVv2xfJVs4r/ZukocJ8tTYPXbGyCQF1gIPjtFdAoADfvYqGSFvYEvxbFCSiksjgUgvG67vpHUYpOyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626194; c=relaxed/simple;
-	bh=wHOuQsCgu4cv+cGeRhy22wqyjPGYVxgzuWK07YDEyiA=;
+	s=arc-20240116; t=1781630346; c=relaxed/simple;
+	bh=VMz59u9qr+uLGOhxZMs+hzQ8oYSYiXodTfzCs/MqKAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMZkLbNT3cnKUlvmY++cUhfrKrjz+w9ehmhUtzj3Ashx6lM3Ixe6LqbGnxWoNscJzXqJZeGHGYH5aPyXUX5yEmNakMKZB3J9qmp5peknpRTFgC2LB9GVu8warfKgOA8egSzcKfaz06jVXiKh3Gcee7zC6AjBs6byVIIgABplhKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hs8A5y5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063F11F000E9;
-	Tue, 16 Jun 2026 16:09:51 +0000 (UTC)
+	 MIME-Version; b=e0C1NEQY5mdlRybIHsfjfim8CO8ToWLaDdaETr8OGQT0THNOHNjL6E34wMWWa4J7su8pIU+eMnviHg7RirHUUwiDrjpyHStF+9uPXGLAeWtfmtyz0r5s+mbFHAu5+q47v3OqJburoczOHVxJuB7Ka0EC62d7v1Z7a5T5TbJAonw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiaWs6Nh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47591F000E9;
+	Tue, 16 Jun 2026 17:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626192;
-	bh=seJSoM+hmPT9pDFLai358oKffAF7cOFLXYF10Rvkoak=;
+	s=korg; t=1781630344;
+	bh=YGh6/0292/Nvi76esiYi3okM3ZfBrUTVGe7jbPB9Mg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0Hs8A5y5fbtGFYaYTiz0avfBvBlovhQohG8LHpeJ80V4UG35Akysha/7kQ99Qlssc
-	 9rJT5hfK0u8klF4FpUA8GF29LHxI5K2vNmfn15zHL45MU53UZX5qtPyrSlcKgYN+A+
-	 ZhrPAAoJXiiV5UGIrXentqsCd4f8m9lZxXlldw6c=
+	b=aiaWs6NhMYTaGY/k5lZC0MlNn4dG2pa9BSZQ+FPhZxZhskzXTIhJ8DduEGE8SHxu0
+	 QM4ePO+Kss4phVK7WwJokr9cF80Vkm0amiQXFw2QeHnrm+LJf4WJymL2JsaGOH4vbf
+	 O7dkS1lzx2+cFLnoMaBNCfR2T8IhP8XOBb+DR36M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.18 280/325] slimbus: qcom-ngd-ctrl: Balance pm_runtime enablement for NGD
+	Yong Wang <yongwang@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>
+Subject: [PATCH 6.6 449/452] Revert "selftest/ptp: update ptp selftest to exercise the gettimex options"
 Date: Tue, 16 Jun 2026 20:31:16 +0530
-Message-ID: <20260616145112.677413386@linuxfoundation.org>
+Message-ID: <20260616145140.090304896@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264495-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265269-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:sashal@kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yongwang@nvidia.com,m:petrm@nvidia.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,54 +98,150 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FF8A691C3D
+X-Rspamd-Queue-Id: B74AD692FD4
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Petr Machata <petrm@nvidia.com>
 
-commit 6a003446b725c44b9e3ffa111b0effbaa2d43085 upstream.
+This reverts commit 4f3c8c7f4e1bda9c802873f3b937427dfb61301d, which is
+commit 3d07b691ee707c00afaf365440975e81bb96cd9b upstream.
 
-The pm_runtime_enable() and pm_runtime_use_autosuspend() calls are
-supposed to be balanced on exit, add these calls.
+The cited commit allows testptp to set a configurable clock_id. That is
+done via a PTP_SYS_OFFSET_EXTENDED ioctl call, whose argument is struct
+ptp_sys_offset_extended, where the clock_id is set. However, this Linux
+version does not support the ptp_sys_offset_extended.clockid field, and
+the test case cannot be built against this tree's own UAPI headers.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-8-srini@kernel.org
+The reverted commit was introduced to resolve a missing dependency of
+commit c6dc458227a3 ("testptp: Add option to open PHC in readonly mode"),
+which is 76868642e427 upstream. My suspicion is that the only conflict
+between the two is the getopt string, and there is otherwise no direct
+dependency between the two.
+
+This patch therefore reverts the cited commit, with hand-resolving the
+getopt string to include 'r' (as introduced by c6dc458227a3), but not
+'y' (introduced by 06954f715deb).
+
+Reported-by: Yong Wang <yongwang@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/ptp/testptp.c |   62 ++--------------------------------
+ 1 file changed, 5 insertions(+), 57 deletions(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1588,8 +1588,11 @@ static int qcom_slim_ngd_probe(struct pl
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_noresume(dev);
- 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
--	if (ret)
-+	if (ret) {
- 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
-+		pm_runtime_dont_use_autosuspend(dev);
-+		pm_runtime_disable(dev);
-+	}
- 
- 	return ret;
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -147,7 +147,6 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
+-		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
  }
-@@ -1702,6 +1705,7 @@ static void qcom_slim_ngd_remove(struct
- {
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+@@ -192,7 +191,6 @@ int main(int argc, char *argv[])
+ 	int readonly = 0;
+ 	int settime = 0;
+ 	int channel = -1;
+-	clockid_t ext_clockid = CLOCK_REALTIME;
  
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -202,7 +200,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -285,21 +283,6 @@ int main(int argc, char *argv[])
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
+-		case 'y':
+-			if (!strcasecmp(optarg, "realtime"))
+-				ext_clockid = CLOCK_REALTIME;
+-			else if (!strcasecmp(optarg, "monotonic"))
+-				ext_clockid = CLOCK_MONOTONIC;
+-			else if (!strcasecmp(optarg, "monotonic-raw"))
+-				ext_clockid = CLOCK_MONOTONIC_RAW;
+-			else {
+-				fprintf(stderr,
+-					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
+-					optarg);
+-				return -1;
+-			}
+-			break;
+-
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -592,7 +575,6 @@ int main(int argc, char *argv[])
+ 		}
+ 
+ 		soe->n_samples = getextended;
+-		soe->clockid = ext_clockid;
+ 
+ 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
+ 			perror("PTP_SYS_OFFSET_EXTENDED");
+@@ -601,46 +583,12 @@ int main(int argc, char *argv[])
+ 			       getextended);
+ 
+ 			for (i = 0; i < getextended; i++) {
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("sample #%2d: real time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("sample #%2d: monotonic time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
+-					       i, soe->ts[i][0].sec,
+-					       soe->ts[i][0].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("sample #%2d: system time before: %lld.%09u\n",
++				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
+ 				printf("            phc time: %lld.%09u\n",
+ 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
+-				switch (ext_clockid) {
+-				case CLOCK_REALTIME:
+-					printf("            real time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC:
+-					printf("            monotonic time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				case CLOCK_MONOTONIC_RAW:
+-					printf("            monotonic-raw time after: %lld.%09u\n",
+-					       soe->ts[i][2].sec,
+-					       soe->ts[i][2].nsec);
+-					break;
+-				default:
+-					break;
+-				}
++				printf("            system time after: %lld.%09u\n",
++				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
+ 			}
+ 		}
+ 
 
 
 
