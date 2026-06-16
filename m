@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-265592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uAsxEPCLMWolmQUAu9opvQ
-	(envelope-from <stable+bounces-265592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:24 +0200
+	id BayIBAeEMWqClQUAu9opvQ
+	(envelope-from <stable+bounces-265048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C55F693771
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B78692DAC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="I/E1Y4Lg";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265592-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265592-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xxvVRK6M;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265048-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265048-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 902F6306A952
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6694031E76BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F52F44E045;
-	Tue, 16 Jun 2026 17:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E824779B1;
+	Tue, 16 Jun 2026 17:00:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716AC3C3C1E;
-	Tue, 16 Jun 2026 17:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28A74657CF;
+	Tue, 16 Jun 2026 17:00:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631979; cv=none; b=lRiQnAZaN+tfMHk4YRm86B4qyRt6esdmGe7DuWqb5hXIdy6XJqIjbf4NawTsDvJ+kRa0ATmQgbrcmEsmnAlJ2aXFIpIEn+F29ruMh8ClZT+EE/crapqwFlF1s8ZhDV0E6pmM37G9A4vEAAaSkw+s0G1sCK4Jw9yUMtP4P0eG1D8=
+	t=1781629216; cv=none; b=nmafty9lCULaqji/m69A/p0uai6Q/mzLcE8TIJ/Vmval2YE3xtvT8BBpgbg30dHEMy4WRsma9IB1E7L1xsLCa4FJMbnb4Jl83eeRZb14H8mOhDWWcZtXd3XY4rs4jJWsxiiWT77x8mFLVOhscjfRCtXvHAJbk9lyZKRU8mv+YtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631979; c=relaxed/simple;
-	bh=95KUR8MjpssyEDorr5ALAkaA/HxFAerYMsplIR7IqlI=;
+	s=arc-20240116; t=1781629216; c=relaxed/simple;
+	bh=w3g18Q8pNAdhjDQNqUCw1rekszMJz+YJkjuUxG3OZuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWr3wrhI0RKFJZhCOOHp5deXvUSXWDEDKUIklzbdHvk53oMLrDVBX/TsLOcp2oWqukB6n6SG54QxM4OoD9HtPK0iMYoKOIWyZzbT+LlLe+sJGSiGbUAoylv0upMlSVVN2RM6vjt3GMslLGVx59mxHcILoVyFgUa7f0FwAwJ47W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/E1Y4Lg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEFE1F00A3A;
-	Tue, 16 Jun 2026 17:46:16 +0000 (UTC)
+	 MIME-Version; b=ACmfEi2LyjsZmCD7xcljBJhH/0giOC56SgvK9JcUa3Nr5eov4HM2GDdomrxEozuk5JxyYRTH/ZMpJQa9wvJCdbv3bQCnTsdSOaxId1er+KEVNRPo46u5hJe8nmwnLV/vUH0TGFO/lULBHe4UOhj5Og1O/JdYQNRlnLPVzSGHYNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxvVRK6M; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30D41F000E9;
+	Tue, 16 Jun 2026 17:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631978;
-	bh=V/Y+1UVBL/5EpcHc4Pt4MB2Ix34Ey0iwua9eaU6pnnA=;
+	s=korg; t=1781629215;
+	bh=UCrlKJhEGSOUNg/L780FcMlGExjruyFx+T4xwr4Z63s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I/E1Y4LghbP64WlKMdlz7RhAMKTBfShMm7Rdo+FiyTnJUt4Ma0C/Emfd9khecXUs2
-	 fxy7OfeyjAea13l22jfS7HudE+vCEyWonT/m291cgZpOPUqC79u0jgS6dBrE4eDwzF
-	 GmGR/5a9Pb0Jx4Anb3tH037uh77hIkncuqVEdrK8=
+	b=xxvVRK6MD/9+HO6Gu8VQfa2vqVwn0GgTJuzoVYyNWIylEWEbhtIaL8FcBeNiIq8bk
+	 4cuuhx3w1mDxDC9RoecrlNt13ksB6bPqSpngmB09XWhzUvLMcOfbDSIkj2AEPtVl3c
+	 s7KoI9uGFs/eNqPvZa+B1uwnEkNmGYL56KQRBfpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 323/522] drm/amd/display: Clamp HDMI HDCP2 rx_id_list read to buffer size
+	Andy Roulin <aroulin@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 243/452] vxlan: vnifilter: fix spurious notification on VNI update
 Date: Tue, 16 Jun 2026 20:27:50 +0530
-Message-ID: <20260616145140.958690263@linuxfoundation.org>
+Message-ID: <20260616145130.437722236@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265592-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265048-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,59 +96,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8C55F693771
+X-Rspamd-Queue-Id: 92B78692DAC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Andy Roulin <aroulin@nvidia.com>
 
-commit f0f3981c43b32cadfe373d636d9e9ca522bb3702 upstream.
+[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
 
-[Why & How]
-During HDCP 2.x repeater authentication over HDMI, the driver reads the
-sink's RxStatus register and extracts a 10-bit message size field (max
-value 1023). This value is used as the read length for the ReceiverID
-list without being clamped to the size of the destination buffer
-rx_id_list[177]. A malicious HDMI repeater could advertise a message
-size larger than the buffer, causing an out-of-bounds write during the
-I2C read.
+When a VNI is re-added with the same attributes (e.g. same group or no
+group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
+even though nothing changed.
 
-Clamp the read length in mod_hdcp_read_rx_id_list() to the size of the
-rx_id_list buffer, matching the approach already used in the DP branch.
+The bug is that 'if (changed)' tests whether the pointer is non-NULL,
+not the bool value it points to. Since every caller passes a valid
+pointer, the condition is always true and the notification fires
+unconditionally.
 
-Fixes: eff682f83c9c ("drm/amd/display: Add DDC handles for HDCP2.2")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 229212219e4247d9486f8ba41ef087358490be09)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by dereferencing the pointer: 'if (*changed)'.
+
+Reproducer:
+
+ # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
+      nolearning external vnifilter
+ # ip link set vxlan100 up
+ # bridge monitor vni &
+ # bridge vni add vni 1000 dev vxlan100
+ # bridge vni add vni 1000 dev vxlan100  # spurious notification
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -533,7 +533,8 @@ enum mod_hdcp_status mod_hdcp_read_rx_id
- 	} else {
- 		status = read(hdcp, MOD_HDCP_MESSAGE_ID_READ_REPEATER_AUTH_SEND_RECEIVERID_LIST,
- 				hdcp->auth.msg.hdcp2.rx_id_list,
--				hdcp->auth.msg.hdcp2.rx_id_list_size);
-+				MIN(hdcp->auth.msg.hdcp2.rx_id_list_size,
-+				    sizeof(hdcp->auth.msg.hdcp2.rx_id_list)));
- 	}
- 	return status;
- }
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 1ab78a8bb9e011..272fa31ef07454 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -671,7 +671,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (changed)
++	if (*changed)
+ 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
+ 
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
