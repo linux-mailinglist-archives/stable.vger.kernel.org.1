@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m10ZAZF+MWpEkwUAu9opvQ
-	(envelope-from <stable+bounces-264821-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:21 +0200
+	id fUiFGiKIMWpglwUAu9opvQ
+	(envelope-from <stable+bounces-265400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C816927A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE4369332B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E9BrCZk+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264821-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264821-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2tUC9x9G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265400-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265400-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E68C30D5DD9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:41:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E35A303017A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BD5477E57;
-	Tue, 16 Jun 2026 16:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CABE477E2B;
+	Tue, 16 Jun 2026 17:30:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4D946AED1;
-	Tue, 16 Jun 2026 16:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E06E477E57;
+	Tue, 16 Jun 2026 17:30:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628067; cv=none; b=S8/sLyCgNRUIBySoySACnCBxaxO/1yUcSv4juyItQVc6XUj+NZ+uEGQRq7yqohrIYfjgkn5+2GM46ogwElpDTXeOWoFMcM1eeost25FMlHKpem6SDG7nx8kuAQmaBiiWlZ6JI4/h5fFQow+RMmevO6nabANApOd3ww3qtoolnaU=
+	t=1781631008; cv=none; b=T3qOBx5SblNtfq7LlXObzdvV1xI1S2YkAs3Dl2VotPI/2y2AdM18IHH3IfKXSUAdLrSRmqBtsw1IbqXeXDn7auC/Ch8Du3Xyp/aZBgxoCtjl1aRmte5jE2AZ89Bx5MuSwmmSHWFFWlHlpieWoAjfufbbIb/ei4z2UIwkwXjz9Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628067; c=relaxed/simple;
-	bh=tDXT5XrWWjH+26fHYYwGx0Cv24lypdu6QjqFd4VT4lY=;
+	s=arc-20240116; t=1781631008; c=relaxed/simple;
+	bh=54knzH0eh9rjHQJ98P2Iuajpiqy5aU6nOAYOPkEoNSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0F+Itokv+voKYopn20ZsjSt5vFz9B/ctZe/h93nNKS7q606IXu+f5TBAjZV4/iQqXwqPtgAJx86TRccpebmPNYFVGoW3tmMc9g66gONvXm86JJLjetpLr2Pk7N9noTjyTRVJcVUbPfTZNrEeQZ/NiR0yALRIIf9Zk6x9wV4cM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9BrCZk+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB7E1F000E9;
-	Tue, 16 Jun 2026 16:41:04 +0000 (UTC)
+	 MIME-Version; b=dZ6QoY8/SIbvEyHsqB/IvfOgetN85fL7oyyPVzHjh9RHk1nmYKKwmTinKDQY7ao0IgPv6dDgVdp3/LW3iGclRfzf9aO2Q0J3R232ePFOb34gEupHLx01F955FWptdRrk4YLCZvjXEzpnP7bB1PFpYCizaJctH6HYRFhErcjekEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tUC9x9G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579CD1F000E9;
+	Tue, 16 Jun 2026 17:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628066;
-	bh=ZoOyGimHNHl4w8aA9QscWXkZCkxtEfNBW+L4VCtwyek=;
+	s=korg; t=1781631007;
+	bh=5gr1LMWWy2LZxmhKtlTYgVhx3PyexkxRgCn1M8IB+pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E9BrCZk+cjZH4+mbgH4Kbt92gx7MFcm+0e+tmbBEpgFHLpauKk8/JeQFoY4XeYp7h
-	 oiSGKM/XA2Fb05nqu39DecUaIIVKQaNQbg+as6TYymWEoAFbLZHFNgSls9D7mRZRcw
-	 AgXUzNA1zHBXAjQs6eyjiuKvz9wx0oO+FyVUhSGg=
+	b=2tUC9x9GlDdRGRTOWIgw6txn7k5fSge+64gHlKtDPmueg8FEyDiFh8srxE9bn7D8v
+	 BtD5HqpFlKukQWutyEB2iR14klpg3yOKzta9CKCYSD7faYdkOjPakNAQGV31CozS1t
+	 RdqZY1KWCdiooOQ/lDDvnK3yBAJFtbaQdpDdKWRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/452] scsi: core: Run queues for all non-SDEV_DEL devices from scsi_run_host_queues
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Rodrigo Alencar <rodrigo.alencar@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH 6.1 105/522] iio: dac: ad5686: fix input raw value check
 Date: Tue, 16 Jun 2026 20:24:12 +0530
-Message-ID: <20260616145119.171163150@linuxfoundation.org>
+Message-ID: <20260616145130.850341647@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264821-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265400-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:djeffery@redhat.com,m:bvanassche@acm.org,m:martin.petersen@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andriy.shevchenko@intel.com,m:rodrigo.alencar@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,88 +99,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,acm.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,analog.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 66C816927A4
+X-Rspamd-Queue-Id: EDE4369332B
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Rodrigo Alencar <rodrigo.alencar@analog.com>
 
-[ Upstream commit 7205b58702273baf21d6ba7992e6ba15852325f7 ]
+commit d01220ee5e43c65a206df827b39bf5cf5f7b9dce upstream.
 
-While a SCSI host is in a recovery state, scsi_mq_requeue_cmd() will not
-set the requeue list for a requeued command to be kicked in the future.
-The expectation is a call to scsi_run_host_queues() will kick all SCSI
-devices once the recovery state is cleared.
+Fix range check for input raw value, which is off by one, i.e., for a
+10-bit DAC the max valid value is 1023, but 1 << 10 equals 1024, which
+passes the previous check, allowing an out-of-range write. The issue
+exists since the ad5686 driver was first introduced.
 
-However, scsi_run_host_queues() uses shost_for_each_device() which uses
-scsi_device_get() and so will ignore devices in a partially removed
-state like SDEV_CANCEL. But these devices may also have requeued
-requests, leaving their requests stuck from not being kicked and causing
-the removal process of the device to hang.
-
-scsi_run_host_queues() needs to run against more devices than the macro
-shost_for_each_device() allows. Instead of using the too limiting
-scsi_device_get() state checks, only ignore devices in SDEV_DEL state or
-when unable to acquire a reference. Attempt to run the queues for all
-other devices when scsi_run_host_queues() is called.
-
-Fixes: 8b566edbdbfb ("scsi: core: Only kick the requeue list if necessary")
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260515180941.9698-1-djeffery@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c2f37c8dcadc ("iio: dac: New driver for AD5686R, AD5685R, AD5684R Digital to analog converters")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_lib.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+ drivers/iio/dac/ad5686.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index efd1f1d6e4e9b0..2268e540f28ae6 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -474,10 +474,33 @@ void scsi_requeue_run_queue(struct work_struct *work)
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -154,7 +154,7 @@ static int ad5686_write_raw(struct iio_d
  
- void scsi_run_host_queues(struct Scsi_Host *shost)
- {
--	struct scsi_device *sdev;
-+	struct scsi_device *sdev, *prev = NULL;
-+	unsigned long flags;
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		if (val > (1 << chan->scan_type.realbits) || val < 0)
++		if (val >= (1 << chan->scan_type.realbits) || val < 0)
+ 			return -EINVAL;
  
--	shost_for_each_device(sdev, shost)
-+	spin_lock_irqsave(shost->host_lock, flags);
-+	__shost_for_each_device(sdev, shost) {
-+		/*
-+		 * Only skip devices so deep into removal they will never need
-+		 * another kick to their queues. Thus scsi_device_get() cannot
-+		 * be used as it would skip devices in SDEV_CANCEL state which
-+		 * may need a queue kick.
-+		 */
-+		if (sdev->sdev_state == SDEV_DEL ||
-+		    !get_device(&sdev->sdev_gendev))
-+			continue;
-+		spin_unlock_irqrestore(shost->host_lock, flags);
-+
-+		if (prev)
-+			put_device(&prev->sdev_gendev);
- 		scsi_run_queue(sdev->request_queue);
-+
-+		prev = sdev;
-+
-+		spin_lock_irqsave(shost->host_lock, flags);
-+	}
-+	spin_unlock_irqrestore(shost->host_lock, flags);
-+	if (prev)
-+		put_device(&prev->sdev_gendev);
- }
- 
- static void scsi_uninit_cmd(struct scsi_cmnd *cmd)
--- 
-2.53.0
-
+ 		mutex_lock(&st->lock);
 
 
 
