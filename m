@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-265803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7fJbLjOQMWpFmwUAu9opvQ
-	(envelope-from <stable+bounces-265803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:35 +0200
+	id halnI3V9MWrckgUAu9opvQ
+	(envelope-from <stable+bounces-264769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16C0693C79
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6FB692696
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WPwzJP54;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265803-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265803-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QRqQc5RX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264769-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264769-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C93E63002B69
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 44BFD3040D86
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DF93CEBBD;
-	Tue, 16 Jun 2026 18:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F014E478E57;
+	Tue, 16 Jun 2026 16:36:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705603C09E1;
-	Tue, 16 Jun 2026 18:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B8C477E33;
+	Tue, 16 Jun 2026 16:36:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633068; cv=none; b=pwzITr0Wc+I2N7j72ylVZ0HkQMmFrxQzJTtO/+xb9FOOB11c7y2uu5iFQ4j10f68AgdNjcKDwdhrwGKszUY6NqEe4V1V2TAQrqZE3INEfFNYaASN0PAgIZaCVkNsal2lo74B5t/5102kH1jh2vWU5yFY+p1IIT/7j7ZN56YukII=
+	t=1781627793; cv=none; b=hwlhtvLOXsYgxKWWyBOYJkD50JaCkBC00Qya50dpWLMphUoyLnpFkK17OVRiqIKjDVRYBV034OJOLz9pQyeG4McpXpIQHgnGsuM+y0To37mLEQu+GMvsR+lDtAKX+PdvfFeB/ZVr3NSZs/5YUkXvwuwno3JTidNYhEwschqxk/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633068; c=relaxed/simple;
-	bh=oCfvSNY7mAgLvUTeVcrZ6PxJLsP3YT1Buygso2OqCRI=;
+	s=arc-20240116; t=1781627793; c=relaxed/simple;
+	bh=F7k/eD0s4zCnfvylgiGkRH4z5OC8ltQ08tK1c5BvIF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgST591/eexvfyHJwIVA1S0LUpuIMm1sjSmQVFv2w6fiQj+dmiEHgwGzHK/rLUeoMDy0+prvpVcLGC9NSt7iFZkbsTncaZ8Eo9upOfOUI1O92/Sglo//sAM7vL7ZnV/T0bXQ30ZsCAjvG/zYJLHdbrXJVSZ6zxdH0off9l4HK/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPwzJP54; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8631F000E9;
-	Tue, 16 Jun 2026 18:04:26 +0000 (UTC)
+	 MIME-Version; b=S1709HI019YOZfdXl4Hanvk+npan2L9pGfBQhZ0tvTEGuoGPzlumDo5V109sbqDc27UvtCmR5Hnil6nxl0KiTv63LsFXw9b+kXh/Ebru7zQR/N9sp5XDYp8FTxnb6p4TQWKgMc/gCRFIfk8JBM/0tSKkRwN4r5jORWF1EYqhf3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRqQc5RX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C861F000E9;
+	Tue, 16 Jun 2026 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633067;
-	bh=896ggkoYY2g/r76ALX9SU08WbofWDlfp0GgFDnAcS9U=;
+	s=korg; t=1781627792;
+	bh=W+L0KQn1hJrWQ0xQHCvV6d9zaxjeDSH2Q/TFrE7c8AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WPwzJP54wWCDDGpx/sv+6XMY31NWx74I6bYKfhfoHS5o6blzvkWBq0IcD3XWTUePG
-	 XcGwUrVftxWVu4RQyVXju0BemvPn0Uu+gu8+0U+fK5+P2utqz8T1WQbLOZjgqJxM60
-	 wNuH29oJCRo0QNssul9FrU74tIdC4p6K3DooQAlE=
+	b=QRqQc5RXMRKBNljtbyrfEVvlflMDdNYUBe90p4oq8js98caxCUeOC833kkQZcD53H
+	 1NCXYinTtHhOES/UgQYX0ksveyXKyYGjR7PMJ6RwQnDpkERY/qNnfw0SKvxeJdH0GG
+	 YRLB3bLfzZU4hD3Y3ua9HiHOA4uVfj8t/jC5fafk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <benh@debian.org>
-Subject: [PATCH 6.1 520/522] fbdev: vt8500lcdfb: Fix dma_free_coherent() cpu_addr parameter
+	Jeff Layton <jlayton@kernel.org>,
+	Mingyu Wang <25181214217@stu.xidian.edu.cn>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>
+Subject: [PATCH 6.12 229/261] fs/fcntl: fix SOFTIRQ-unsafe lock order in fasync signaling
 Date: Tue, 16 Jun 2026 20:31:07 +0530
-Message-ID: <20260616145150.038498380@linuxfoundation.org>
+Message-ID: <20260616145055.643527796@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,68 +72,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265803-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264769-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:benh@debian.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jlayton@kernel.org,m:25181214217@stu.xidian.edu.cn,m:brauner@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,xidian.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B16C0693C79
+X-Rspamd-Queue-Id: 1F6FB692696
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Mingyu Wang <25181214217@stu.xidian.edu.cn>
 
-Before commit 63a11adaceb8 "fbdev/vt8500lcdfb: Initialize fb_ops with
-fbdev macros", the virtual address of the screen buffer was stored in
-the fb_info::screen_base field and not fb_info::screen_buffer.  The
-backport of commit 88b3b9924337 ("fbdev: vt8500lcdfb: fix missing
-dma_free_coherent()") did not take that into account.
+commit 00633c4683828acd5256fa8d5163f440d74bbe71 upstream.
 
-Change the cpu_addr parameter to dma_free_coherent() accordingly.
+A SOFTIRQ-safe to SOFTIRQ-unsafe lock order deadlock can occur in
+send_sigio() and send_sigurg() when a process group receives a signal.
 
-Fixes: 778f31be5b8c ("fbdev: vt8500lcdfb: fix missing dma_free_coherent()")
-Signed-off-by: Ben Hutchings <benh@debian.org>
+When FASYNC is configured for a process group (PIDTYPE_PGID), both
+functions use read_lock(&tasklist_lock) to traverse the task list.
+However, they are frequently called from softirq context:
+- send_sigio() via input_inject_event -> kill_fasync
+- send_sigurg() via tcp_check_urg -> sk_send_sigurg (NET_RX_SOFTIRQ)
+
+The deadlock is caused by the rwlock writer fairness mechanism:
+1. CPU 0 (process context) holds read_lock(&tasklist_lock) in do_wait().
+2. CPU 1 (process context) attempts write_lock(&tasklist_lock) in
+   fork() or exit() and spins, which blocks all new readers.
+3. CPU 0 is interrupted by a softirq (e.g., TCP URG packet reception).
+4. The softirq calls send_sigurg() and attempts to acquire
+   read_lock(&tasklist_lock), deadlocking because CPU 1 is waiting.
+
+Since PID hashing and do_each_pid_task() traversals are already
+RCU-protected, the read_lock on tasklist_lock is no longer strictly
+required for safe traversal. Fix this by replacing tasklist_lock with
+rcu_read_lock(), aligning the process group signaling path with the
+single-PID path. This also mitigates a potential remote denial of
+service vector via TCP URG packets.
+
+Lockdep splat:
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+[...]
+Chain exists of:
+  &dev->event_lock --> &f_owner->lock --> tasklist_lock
+
+Possible interrupt unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(tasklist_lock);
+                           local_irq_disable();
+                           lock(&dev->event_lock);
+                           lock(&f_owner->lock);
+  <Interrupt>
+    lock(&dev->event_lock);
+
+*** DEADLOCK ***
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Mingyu Wang <25181214217@stu.xidian.edu.cn>
+Link: https://patch.msgid.link/20260523135210.590928-1-w15303746062@163.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/vt8500lcdfb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fcntl.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/vt8500lcdfb.c
-+++ b/drivers/video/fbdev/vt8500lcdfb.c
-@@ -434,7 +434,7 @@ failed_free_palette:
- 			  fbi->palette_cpu, fbi->palette_phys);
- failed_free_mem_virt:
- 	dma_free_coherent(&pdev->dev, fbi->fb.fix.smem_len,
--			  fbi->fb.screen_buffer, fbi->fb.fix.smem_start);
-+			  fbi->fb.screen_base, fbi->fb.fix.smem_start);
- failed_free_io:
- 	iounmap(fbi->regbase);
- failed_free_res:
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -923,11 +923,11 @@ void send_sigio(struct fown_struct *fown
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigio_to_task(p, fown, fd, band, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
+ 	}
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
+@@ -969,11 +969,11 @@ int send_sigurg(struct file *file)
+ 			send_sigurg_to_task(p, fown, type);
+ 		rcu_read_unlock();
+ 	} else {
+-		read_lock(&tasklist_lock);
++		rcu_read_lock();
+ 		do_each_pid_task(pid, type, p) {
+ 			send_sigurg_to_task(p, fown, type);
+ 		} while_each_pid_task(pid, type, p);
+-		read_unlock(&tasklist_lock);
++		rcu_read_unlock();
+ 	}
+  out_unlock_fown:
+ 	read_unlock_irqrestore(&fown->lock, flags);
 
 
 
