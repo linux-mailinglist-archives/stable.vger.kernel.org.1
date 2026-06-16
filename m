@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MecgBh+cMWqdoAUAu9opvQ
-	(envelope-from <stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:27 +0200
+	id ezOXFPFzMWrfjgUAu9opvQ
+	(envelope-from <stable+bounces-264231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE05694936
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE51C691A75
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TZru+7w4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266336-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gNpaAv8n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264231-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264231-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2092E322C98E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F64B3201205
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380E547CC9A;
-	Tue, 16 Jun 2026 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A2F3B840B;
+	Tue, 16 Jun 2026 15:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E47332E13B;
-	Tue, 16 Jun 2026 18:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C453C414F;
+	Tue, 16 Jun 2026 15:47:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635889; cv=none; b=VVR0F3BOIKXG4UCOjOL0/7rWip5xjhpEzJuDusOnZndq5evF+/tP1mDGOa2kWfJJo5nFOUfhTA+OW44D+QvbIDe67ozm1g/TwWWUP1MWV5K1USEd1Fp0BYgAyg4/RVlQcnJJy+yR3G6lkGw5kaCnUVKdx33BxUMIho1uXPZLGC0=
+	t=1781624822; cv=none; b=FPe3uySKs1D2qZw2fH8WHkXpE9xPucBLauLtc27cZhxF10MtXwXJfI7LupeIkJREvHfsFkLTc4yesHUywUTdbzmA6qIEH7EczBEBceAICkik51BQn6Fzrh31a9PS1qFr4KX0znesDr9QJIeyd2dkiJlrKf96nP15WD/IPaXvwcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635889; c=relaxed/simple;
-	bh=iMVJMcMDjrftob5qVg+MlE50qbpCeWpGu5pAadcPeRA=;
+	s=arc-20240116; t=1781624822; c=relaxed/simple;
+	bh=SD71RHezCZZ1N1Hf7KDOa96mj/2VoERZ3pw8S2868rY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+Ly530WqW0MQCHwaq40fGPXmDYAnC4GnjkofH3KPPAyYtYPv+wnDWykDeoDHk1kp40b8/SdTeKruEx3qsDU0GNfsrh5c6U0j8ItTIODtJ4KQgIWCe+/M45UwqfJgChBY3LRuuPSMwoSX5FFTBXyx1F9ALINTznhdgFxa1lqFFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZru+7w4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A6F1F00A3A;
-	Tue, 16 Jun 2026 18:51:25 +0000 (UTC)
+	 MIME-Version; b=nVo1YsmtJKCCtdyGU+3Eq69lzLjBWlfHEUuMQgYhciFdPUnq2YHXYGLtl3pfvkoJlRzGz2leyvuiG0P+88wUKt7fbxjc4f0tMgrYvaSq1JXmIgIXnJpjfFlAPJv75eYSeC8gSbfpb+Rj6JX6bwtlC2yNXXER5rvImIj4I8dAr/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNpaAv8n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129B11F000E9;
+	Tue, 16 Jun 2026 15:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635886;
-	bh=ctIhuwKMx/fVdJDfyvUGhvIxvoH/X9sQry3esgCFOrQ=;
+	s=korg; t=1781624821;
+	bh=cNWHhbbICN98A3pP1l/Lr2qrYjoEvWttb+D8V5hqhXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TZru+7w4wlek//F7iYl6g+IF82Vo4x6pP2HAh5H732i9LfvjkKCsl2qNevHs6hFfJ
-	 mV1LjCZkpXv6xMeDEg4HXZhlqqQxqqkFfpLvjoStwrW1crxvFGoCl1ksD18mALZkfg
-	 le/IW9LO9WdiIxOQydvu/HgwnE/vpVxjaHWgb2w0=
+	b=gNpaAv8nIxKWWk3x/geUUKyKP594EyuRmiDVygw6iTCWZ9q7XsJuBzIWd8kWOxBP2
+	 0qE5ejpMJPmcEdXWcsNzFmzpiXZU3S7fD5YqbbcWbt3qOszkcH+JnIUWKDwbAIZPf5
+	 lXb4bRfkduCiBgKEDT23pl5AfR60o7Yd9nkzQ6j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/342] netfilter: conntrack_irc: fix possible out-of-bounds read
+Subject: [PATCH 6.18 035/325] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
 Date: Tue, 16 Jun 2026 20:27:11 +0530
-Message-ID: <20260616145054.480151376@linuxfoundation.org>
+Message-ID: <20260616145059.490824729@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266336-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264231-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:fmancera@suse.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,56 +99,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,sashiko.dev:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,cloudflare.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5EE05694936
+X-Rspamd-Queue-Id: DE51C691A75
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 66eba0ffce3b7e11449946b4cbbef8ea36112f56 ]
+[ Upstream commit b748765019fe9e9234660327090fc1a9665cdbdd ]
 
-When parsing fails after we've matched the command string we
-should bail out instead of trying to match a different command.
+UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
+only for UDP_CORK / MSG_MORE sendmsg().
 
-This helper should be deprecated, given prevalence of TLS I doubt it has
-any relevance in 2026.
+Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
+rewrites sk->sk_write_space().
 
-Fixes: 869f37d8e48f ("[NETFILTER]: nf_conntrack/nf_nat: add IRC helper port")
-Closes: https://sashiko.dev/#/patchset/20260525182924.28456-1-fw%40strlen.de
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
+
+Note that the write side is annotated by commit 2ef2b20cf4e0
+("net: annotate data-races around sk->sk_{data_ready,write_space}").
+
+Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://patch.msgid.link/20260529193941.3897256-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_irc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/sock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
-index 65b5b05fe38d37..24533bee001b7d 100644
---- a/net/netfilter/nf_conntrack_irc.c
-+++ b/net/netfilter/nf_conntrack_irc.c
-@@ -199,7 +199,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
- 			if (parse_dcc(data, data_limit, &dcc_ip,
- 				       &dcc_port, &addr_beg_p, &addr_end_p)) {
- 				pr_debug("unable to parse dcc command\n");
--				continue;
-+				goto out;
- 			}
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 5a38837a583843..82470f59fa5c50 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2654,8 +2654,12 @@ void sock_wfree(struct sk_buff *skb)
+ 	bool free;
  
- 			pr_debug("DCC bound ip/port: %pI4:%u\n",
-@@ -213,7 +213,7 @@ static int help(struct sk_buff *skb, unsigned int protoff,
- 				net_warn_ratelimited("Forged DCC command from %pI4: %pI4:%u\n",
- 						     &tuple->src.u3.ip,
- 						     &dcc_ip, dcc_port);
--				continue;
-+				goto out;
- 			}
- 
- 			exp = nf_ct_expect_alloc(ct);
+ 	if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
++		void (*sk_write_space)(struct sock *sk);
++
++		sk_write_space = READ_ONCE(sk->sk_write_space);
++
+ 		if (sock_flag(sk, SOCK_RCU_FREE) &&
+-		    sk->sk_write_space == sock_def_write_space) {
++		    sk_write_space == sock_def_write_space) {
+ 			rcu_read_lock();
+ 			free = refcount_sub_and_test(len, &sk->sk_wmem_alloc);
+ 			sock_def_write_space_wfree(sk);
+@@ -2670,7 +2674,7 @@ void sock_wfree(struct sk_buff *skb)
+ 		 * after sk_write_space() call
+ 		 */
+ 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
+-		sk->sk_write_space(sk);
++		sk_write_space(sk);
+ 		len = 1;
+ 	}
+ 	/*
 -- 
 2.53.0
 
