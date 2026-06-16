@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-264091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hHOhHChvMWrxjAUAu9opvQ
-	(envelope-from <stable+bounces-264091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:36 +0200
+	id rVejGQmEMWqElQUAu9opvQ
+	(envelope-from <stable+bounces-265044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD1B691551
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83537692DB4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X9xizgLl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264091-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264091-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zjNJqjXw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265044-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265044-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D06A130AFC47
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C21323049F91
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471AF357D14;
-	Tue, 16 Jun 2026 15:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96F5466B4B;
+	Tue, 16 Jun 2026 16:59:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B8D43E4A1;
-	Tue, 16 Jun 2026 15:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE92E47279B;
+	Tue, 16 Jun 2026 16:59:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624079; cv=none; b=Z04e92LUkQBvE84z/FjADvAFwZvdZduocI3SYBpkYdx5HX5ROkhSiIDNEz1bnc3P5ZXcbI6eBftXvkOWYa1+NRuyR/euLG2xBrbe0GlNTe97ilMhvf9F4ZJKpHfGspCzPIKSxzl728AsBnCu397uLZyavYcyM8PaiLRbOmHa7ts=
+	t=1781629195; cv=none; b=hSpToEYVpOugaKxSVprfdnrhjFWjbmuc+wfti2kIdZyuh2Ax5RIDWcI2JDCWZCHAk/2aub3ggmNkHYpkNUCj/68FY5a+6pO8bZIKCrYfOF7zwRKwVxcqN3P4Om36o37ligWu4jmxS4QjvQlAl2XOM9/6hdpgG9RF0MEOSGtFmog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624079; c=relaxed/simple;
-	bh=LwXuOlZjAkxbHh1a2CnjnUD8zrwKRnN6hybca9/s2lg=;
+	s=arc-20240116; t=1781629195; c=relaxed/simple;
+	bh=VH1Ir9MyiLsaUG3HwnGjRgUAQJF4QBR+YoLFrJu7XLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkH3/+4EIhuTTySxJ2c39F87/XgJxoRwqBHmkz3F5HWIeICMKn4bkoLLXyp8ULKbd0DD+d4cCo+724fWhil/JetDAcKR70Ztj1PCiU05B5L25MXLIHLcs8vLdDzKpeCz39h4d7oA/+f0nY4d+yVuwOw/Oo+ivZgDtNIhu9mPZVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9xizgLl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B3F1F000E9;
-	Tue, 16 Jun 2026 15:34:36 +0000 (UTC)
+	 MIME-Version; b=YvFKMjllbqwdnzG09NFIfRhpIuZ6szdspUoEQ0swmTRiUu6RgaOMUEwD23Q+E3bPKvGVDDW4xuGTG/ZWXk18d4J2oPKwnl3sBXphEZ5LMdXUJWSgqIWRe+ZY4CeSB9kt6hmhQ4omLJec+IjIO4a3bPNNSssJrn47NOJWkdyTQXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjNJqjXw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A9E1F000E9;
+	Tue, 16 Jun 2026 16:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624078;
-	bh=w6EHnXSsePTQ2+6ghgCfKAUhzZYl4Xmm0CtD4sx7GtA=;
+	s=korg; t=1781629194;
+	bh=F03JBo65n6vVCQrUGq06pEula2HjC9OX4awmD7Dz/jA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=X9xizgLlCGIc7O8ggrXjlcb/4WbG0oRHziv/X5bQAH6BsWmhJNrbU5jTXWN+dRhQC
-	 ASnZ7vu7Y+v/QIIjq91hMcExBnqy7yCZjhh7yvyCgaG+Ldh+ImOtz37NMVXNmfCMxi
-	 Pr+Mn4lzNEY46sopth2TOVVjihvvTh0ZHcyXrSKw=
+	b=zjNJqjXwixvE9Pun7j/ErGbYiRlLSxyuYcVvHPcGyW0p3OK5n9t8BSTSjiEBM8SIz
+	 V2Tzzg74glND83b0pL7oPZ/Wo0DSBhc3HalVZOkGjz8MZMHDvGf4QUCgdOidtcnoQD
+	 m/cGvnIyPfXX9uMTEDzG+zZtqqLdQCp5KsN0M86U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 235/378] mptcp: check desc->count in read_sock
+	Florian Zeitz <florian.zeitz@schettke.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 239/452] ptp: vclock: Switch from RCU to SRCU
 Date: Tue, 16 Jun 2026 20:27:46 +0530
-Message-ID: <20260616145122.613275555@linuxfoundation.org>
+Message-ID: <20260616145130.250051387@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264091-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265044-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:geliang@kernel.org,m:yangang@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.zeitz@schettke.com,m:kurt@linutronix.de,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,56 +97,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linutronix.de:email,schettke.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: BAD1B691551
+X-Rspamd-Queue-Id: 83537692DB4
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-commit c378b1a6f8dd3e02eb08661f4d5d50f236eead03 upstream.
+[ Upstream commit 672bd0519e27c357c43b7f8c0d653fce3817d06e ]
 
-__tcp_read_sock() checks desc->count after each skb is consumed and
-breaks the loop when it reaches 0. The MPTCP variant lacks this check.
+The usage of PTP vClocks leads immediately to the following issues with
+ptp4l with LOCKDEP and DEBUG_ATOMIC_SLEEP enabled: "BUG: sleeping function
+called from invalid context".
 
-This is a functional bug, other subsystems also rely on this check:
-TLS strparser sets desc->count to 0 once a full TLS record is assembled
-and depends on this break to stop reading.
+ptp_convert_timestamp() acquires a mutex_t within a RCU read section.  This
+is illegal, because acquiring a mutex_t can result in voluntary scheduling
+request which is not allowed within a RCU read section.
 
-Add the same desc->count check to __mptcp_read_sock(), mirroring
-__tcp_read_sock().
+Replace the RCU usage with SRCU where sleeping is allowed.
 
-Fixes: 250d9766a984 ("mptcp: implement .read_sock")
-Cc: stable@vger.kernel.org
-Co-developed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-9-856831229976@kernel.org
+Reported-by: Florian Zeitz <florian.zeitz@schettke.com>
+Closes: https://lore.kernel.org/all/00a8cce8-410e-4038-98af-49be6d93d7bd@schettke.com/
+Fixes: 67d93ffc0f3c ("ptp: vclock: use mutex to fix "sleep on atomic" bug")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20260529-vclock_rcu-v2-1-02a5531fab92@linutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ptp/ptp_vclock.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -4411,6 +4411,8 @@ static int __mptcp_read_sock(struct sock
- 		}
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index 7d08ff3b30fc27..a88c4245937321 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -19,6 +19,8 @@ static DEFINE_SPINLOCK(vclock_hash_lock);
  
- 		mptcp_eat_recv_skb(sk, skb);
-+		if (!desc->count)
-+			break;
+ static DEFINE_READ_MOSTLY_HASHTABLE(vclock_hash, 8);
+ 
++DEFINE_STATIC_SRCU(vclock_srcu);
++
+ static void ptp_vclock_hash_add(struct ptp_vclock *vclock)
+ {
+ 	spin_lock(&vclock_hash_lock);
+@@ -37,7 +39,7 @@ static void ptp_vclock_hash_del(struct ptp_vclock *vclock)
+ 
+ 	spin_unlock(&vclock_hash_lock);
+ 
+-	synchronize_rcu();
++	synchronize_srcu(&vclock_srcu);
+ }
+ 
+ static int ptp_vclock_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+@@ -276,14 +278,16 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ {
+ 	unsigned int hash = vclock_index % HASH_SIZE(vclock_hash);
+ 	struct ptp_vclock *vclock;
+-	u64 ns;
+ 	u64 vclock_ns = 0;
++	int srcu_idx;
++	u64 ns;
+ 
+ 	ns = ktime_to_ns(*hwtstamp);
+ 
+-	rcu_read_lock();
++	srcu_idx = srcu_read_lock(&vclock_srcu);
+ 
+-	hlist_for_each_entry_rcu(vclock, &vclock_hash[hash], vclock_hash_node) {
++	hlist_for_each_entry_srcu(vclock, &vclock_hash[hash], vclock_hash_node,
++				  srcu_read_lock_held(&vclock_srcu)) {
+ 		if (vclock->clock->index != vclock_index)
+ 			continue;
+ 
+@@ -294,7 +298,7 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+ 		break;
  	}
  
- 	if (noack)
+-	rcu_read_unlock();
++	srcu_read_unlock(&vclock_srcu, srcu_idx);
+ 
+ 	return ns_to_ktime(vclock_ns);
+ }
+-- 
+2.53.0
+
 
 
 
