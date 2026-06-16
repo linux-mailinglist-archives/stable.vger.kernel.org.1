@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id sF4ZIGyLMWrumAUAu9opvQ
-	(envelope-from <stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:12 +0200
+	id bGS1BoiAMWo1lAUAu9opvQ
+	(envelope-from <stable+bounces-264979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAD86936CF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:11 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BEF6929E3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:57:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YBCgua4f;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vVnr6tq2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264979-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264979-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C7A431E4C15
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CA28307F277
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B76477E57;
-	Tue, 16 Jun 2026 17:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06C2477E36;
+	Tue, 16 Jun 2026 16:54:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAC3A9627;
-	Tue, 16 Jun 2026 17:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A275B18871F;
+	Tue, 16 Jun 2026 16:54:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631483; cv=none; b=t87DNGBu1mRkwzBwdEtTr4G+xVoQDMavFCVWBJxJs0LwPj4Kl9OmLkJ9/Ua1oSgDKDtLqJndNWACC2CFU81wNJgcUBGFE9ZOymquZ4MVwMtK3Dl0SiQoZ8185eWnBOlEobW9n3G8ldB1pQhKXVKj3hx0rVyL+F/6rrnTp50uRIA=
+	t=1781628897; cv=none; b=I/QWkPc2NEGAdKJDGO+U8INjKqrOotTNR/t3qjM75wJYRiNdCriDP3nzJ7XVHiBK37JO39yx3vD6/ajspOYztme7+OpOEtf/bHPcGPzKP2NqURTv5LUPIaaQi9ntInJJMnOE5c/GDDx4oKC9bOHcZSD1RldwUZ/Lsgl1WfEO+5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631483; c=relaxed/simple;
-	bh=oPC2XwLmu/YnXZ8MufVDIO91ap3JTZoRwqEZqgJI9A0=;
+	s=arc-20240116; t=1781628897; c=relaxed/simple;
+	bh=OLjMju1mSWEMY3tOvaoaGlEmkk7PP01b4d9owXIEyBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UaaTMhHsXIItFbPFEzs9tMNx4BUSAsPipjZuVz8ybPJGktZhF1Wd4ASuFreKSN4u5SXJMRko0PDv0eI0WA3nrY/W4MA1mn4DjyuUy7H2XYBmZQCXllxbakSDl34DIuk9PgpQo7qqW6CugfzigSLqGojjchkwxOcXsItLwytNNoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBCgua4f; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916911F000E9;
-	Tue, 16 Jun 2026 17:38:01 +0000 (UTC)
+	 MIME-Version; b=mJldtJo4866Uaj7c/ZF6sMDdIOZo2iASQfLVYr5iJ79AURfzmVyCMjg1FX3cjG42yCFMslzT9DnRFn1eeq4kUItgPpDzjS3XRl0cjDy8/G3FuJ7WjYV75DfiqqAohqRM1Vd/oau6pGnCFS2MDYSfSTnFAHQ9BBlr8bVsEDeyObY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVnr6tq2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650B01F000E9;
+	Tue, 16 Jun 2026 16:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631482;
-	bh=rKYMtdPRBSsENhF6JuT3l7h+AYMTTC6T83RrKdzHC44=;
+	s=korg; t=1781628896;
+	bh=idJTrW4zuGYmhWVdl8aZq4iBuFbqLE5WsG0qeBBFNwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YBCgua4f0UVYehU5A1/JFhRE1VixFvaCj5pMUzcaQk17JT1yFPsZadrGHWi1rGBbv
-	 izhpPtoX3GkpaAp35tIwnz+g79wUkJQr5ZJqn9Qmj5RaOE8pxGRFvtlVMyy/i5g7Sy
-	 v3dJVSQf0ulJmIHRqNqW5dhLbZzy4iVbHfen9rpg=
+	b=vVnr6tq2bE07FOwm+XbNHGIa/IqLFFF8qFLrcV+JsSDbn9OsFaxr5HYEKMdI8hK6q
+	 44yiU8swOwkCxmBn9DHR2F0S5d6PDbFCeWNuGZTq4xxtci9EObtPWjUnFl+ffDkOn4
+	 rv5U80kE+ttIlXaRRSFnNLDpTLWOhscQWVQizvSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Kumar Chaudhary <naveen.osdev@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 229/522] time: Fix off-by-one in settimeofday() usec validation
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.6 149/452] counter: Fix refcount leak in counter_alloc() error path
 Date: Tue, 16 Jun 2026 20:26:16 +0530
-Message-ID: <20260616145136.714629147@linuxfoundation.org>
+Message-ID: <20260616145125.532610693@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +66,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	TAGGED_FROM(0.00)[bounces-265493-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen.osdev@gmail.com,m:tglx@kernel.org,m:jstultz@google.com,m:sashal@kernel.org,m:naveenosdev@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264979-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lgs201920130244@gmail.com,m:wbg@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CAAD86936CF
+X-Rspamd-Queue-Id: 97BEF6929E3
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit ce4abda5e12622f33450159e76c8f56d28d7f03d ]
+commit d9eeb0ea0d2de658663bfaa9c26eccdd8fd64440 upstream.
 
-The validation check uses '>' instead of '>=' when comparing tv_usec
-against USEC_PER_SEC, allowing the value 1000000 through. After
-conversion to nanoseconds (*= 1000), this produces tv_nsec ==
-NSEC_PER_SEC, violating the timespec invariant that tv_nsec must be
-less than NSEC_PER_SEC.
+After device_initialize(), the lifetime of the embedded struct device
+is expected to be managed through the device core reference counting.
 
-Use '>=' to reject tv_usec values that are not in the valid range of
-0 to 999999.
+In counter_alloc(), if dev_set_name() fails after device_initialize(),
+the error path removes the chrdev, frees the ID, and frees the backing
+allocation directly instead of releasing the device reference with
+put_device(). This bypasses the normal device lifetime rules and may
+leave the reference count of the embedded struct device unbalanced,
+resulting in a refcount leak.
 
-Fixes: 5e0fb1b57bea ("y2038: time: avoid timespec usage in settimeofday()")
-Signed-off-by: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/4rikk44zew3s6577dugmx4jyblz7o5c57niuap6ct3td5yfm6w@gh7pcumg7qor
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue was identified by a static analysis tool I developed and
+confirmed by manual review.
+
+Fix this by using put_device() in the dev_set_name() failure path and
+let counter_device_release() handle the final cleanup.
+
+Fixes: 4da08477ea1f ("counter: Set counter device name")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Link: https://lore.kernel.org/r/20260413134604.2861772-1-lgs201920130244@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/counter-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 170f1f8a0046ce..0e0b54fb34905e 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -207,7 +207,7 @@ SYSCALL_DEFINE2(settimeofday, struct __kernel_old_timeval __user *, tv,
- 		    get_user(new_ts.tv_nsec, &tv->tv_usec))
- 			return -EFAULT;
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -123,7 +123,8 @@ struct counter_device *counter_alloc(siz
  
--		if (new_ts.tv_nsec > USEC_PER_SEC || new_ts.tv_nsec < 0)
-+		if (new_ts.tv_nsec >= USEC_PER_SEC || new_ts.tv_nsec < 0)
- 			return -EINVAL;
+ err_dev_set_name:
  
- 		new_ts.tv_nsec *= NSEC_PER_USEC;
--- 
-2.53.0
-
+-	counter_chrdev_remove(counter);
++	put_device(dev);
++	return NULL;
+ err_chrdev_add:
+ 
+ 	ida_free(&counter_ida, dev->id);
 
 
 
