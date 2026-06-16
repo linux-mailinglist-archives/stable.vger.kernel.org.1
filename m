@@ -1,60 +1,72 @@
-Return-Path: <stable+bounces-266416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s0PwFOCcMWrsoAUAu9opvQ
-	(envelope-from <stable+bounces-266416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:40 +0200
+	id XzjgI/qMMWqkmQUAu9opvQ
+	(envelope-from <stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A86A6949F7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052AD69389E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DkErcDtk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266416-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266416-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GSzwUd0R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265640-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E37A300E90E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD7DA308D37E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E000247D935;
-	Tue, 16 Jun 2026 18:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD1232A3C9;
+	Tue, 16 Jun 2026 17:50:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF04472798;
-	Tue, 16 Jun 2026 18:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB0343D4E9;
+	Tue, 16 Jun 2026 17:50:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636310; cv=none; b=WEWtjVoPPLQ3Y6771fFksLCbIr6IMpTbMptjAFImtInM37vVJprsOpkpuPAeRphuEUiCyFW5i8ixzbJbQe+vVYBZYx0fDJOJPjQnJS9CEo2wRxt5W+jF8daiXYS8wmuop/uPVtc0uHbFEEP5qhrfpAb2hcoKxMmAsNx23Ab34p4=
+	t=1781632225; cv=none; b=fgiVLoJGp7fKIk7OTqFYi/qza3pxweY2ggVH+OlmOZk0wKQIhvWFoZfCHQYN+FjKOPCK0iBw8dZ5Q0rKRjYO4LlmKyKMISn4ZkH1RvkxWVRJRa0tDsSWGDfk4C+RQiYUu3rXZ8o3lqffD6I0alyzQEOZtqjk+AwdJfgFqDJkZiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636310; c=relaxed/simple;
-	bh=pBjUARdXejcwjGQXaRqoE4C8pLzReQsQq/1t/vt32/k=;
+	s=arc-20240116; t=1781632225; c=relaxed/simple;
+	bh=lxrhS2ShOP2IQpMQnVqZhk8LAIUNFhgVMwBsk0cBj1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RbxiGTl2eksIDBYgC/IvEnoqzgJYT8Nv7RAEyI9Zm7xhwcLks+LK6UkBeeVIi46TyieRxO8wYeKoe/jivBN2BS2QVcWJJkI4+SArv0WK04QL9ukom5RBCRJoJ+flA0ZYglmuxnZd7k1vhViYmEAqmRhHUKDB2y2WRx0B/shBfvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkErcDtk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0871F000E9;
-	Tue, 16 Jun 2026 18:58:28 +0000 (UTC)
+	 MIME-Version; b=TPOyBkxHdkO8LHwfD026qLjhLku57W+qrYLWeWQZbXUpP5d7V7Y8R04PcbaghLWVK9kcJ4V0uPNfqW8fo0YxVGoZBxOyreiVeAvOvPyj04uYDQ5FTeNfAD6++M5VZ2+tsaUORMtMGPAO/RrYZkLYrcjBvOjccgOTGUo+h5tp6GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSzwUd0R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF04E1F000E9;
+	Tue, 16 Jun 2026 17:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636309;
-	bh=ky5mGugtF4lfWe2yLNRLpFteYoPnrYFRMiqodO7RxG0=;
+	s=korg; t=1781632223;
+	bh=7wYX0L7dIsmSwgDKSfeVw2Kp2xUq1KfHYdmuWPCGln0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DkErcDtkd6vlFT/iweEvJZ8V0QXSr+xwosTozF0OuhyhPbzdFNVyBeB/b+DjMLJLY
-	 BrNMyFXD+yQKHIhsvvzc1sS7VbYCzVOpMPQioDzsDZ+B0hGall2lDnrBAGjGT/aC+s
-	 NI0Q2xiA9/vp0g7kzW9uugTuIDYgMXqbnIA1asyg=
+	b=GSzwUd0R+mRZI5eYFiorFy6yMhO4T7kg91aZP47HrHlAKFdU8PewdY8Wao93hxYAK
+	 ePu3koH/17rfL0zri7z5JnZCf+hpx0kVTk0IZmj55GvcRp3vm7sh+/Rh+6lG6vPRxd
+	 qxu+0zn6SvcZw0U47CXua4TGMnhYZnlHyj1mpoqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.10 189/342] ARM: socfpga: Fix OF node refcount leak in SMP setup
+	Alistair Popple <apopple@nvidia.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Balbir Singh <balbirs@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 338/522] lib: test_hmm: evict device pages on file close to avoid use-after-free
 Date: Tue, 16 Jun 2026 20:28:05 +0530
-Message-ID: <20260616145056.982016976@linuxfoundation.org>
+Message-ID: <20260616145141.629673656@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,75 +83,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266416-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265640-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:zenghui.yu@linux.dev,m:balbirs@nvidia.com,m:david@kernel.org,m:jgg@ziepe.ca,m:leon@kernel.org,m:liam.howlett@oracle.com,m:ljs@kernel.org,m:mhocko@suse.com,m:rppt@kernel.org,m:surenb@google.com,m:matthew.brost@intel.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2A86A6949F7
+X-Rspamd-Queue-Id: 052AD69389E
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
+[ Upstream commit 744dd97752ef1076a8d8672bb0d8aa2c7abc1144 ]
 
-socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
-of_find_compatible_node(), which returns a node reference that must be
-released with of_node_put().
+Patch series "Minor hmm_test fixes and cleanups".
 
-The function maps the SCU registers and then returns without dropping
-that reference, leaking the node on both the success path and the
-of_iomap() failure path.
+Two bugfixes a cleanup for the HMM kernel selftests.  These were mostly
+reported by Zenghui Yu with special thanks to Lorenzo for analysing and
+pointing out the problems.
 
-Drop the reference once the mapping attempt is complete. The returned
-MMIO mapping does not depend on keeping the device node reference held.
+This patch (of 3):
 
-Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+When dmirror_fops_release() is called it frees the dmirror struct but
+doesn't migrate device private pages back to system memory first.  This
+leaves those pages with a dangling zone_device_data pointer to the freed
+dmirror.
+
+If a subsequent fault occurs on those pages (eg.  during coredump) the
+dmirror_devmem_fault() callback dereferences the stale pointer causing a
+kernel panic.  This was reported [1] when running mm/ksft_hmm.sh on arm64,
+where a test failure triggered SIGABRT and the resulting coredump walked
+the VMAs faulting in the stale device private pages.
+
+Fix this by calling dmirror_device_evict_chunk() for each devmem chunk in
+dmirror_fops_release() to migrate all device private pages back to system
+memory before freeing the dmirror struct.  The function is moved earlier
+in the file to avoid a forward declaration.
+
+Link: https://lore.kernel.org/20260331063445.3551404-1-apopple@nvidia.com
+Link: https://lore.kernel.org/20260331063445.3551404-2-apopple@nvidia.com
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ kept the existing simpler `dmirror_device_evict_chunk()` body instead of the upstream compound-folio version ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-socfpga/platsmp.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/test_hmm.c |   86 ++++++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 49 insertions(+), 37 deletions(-)
 
---- a/arch/arm/mach-socfpga/platsmp.c
-+++ b/arch/arm/mach-socfpga/platsmp.c
-@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
- 	}
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -183,11 +183,60 @@ static int dmirror_fops_open(struct inod
+ 	return 0;
+ }
  
- 	socfpga_scu_base_addr = of_iomap(np, 0);
-+	of_node_put(np);
- 	if (!socfpga_scu_base_addr)
- 		return;
- 	scu_enable(socfpga_scu_base_addr);
++static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
++{
++	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
++	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
++	unsigned long npages = end_pfn - start_pfn + 1;
++	unsigned long i;
++	unsigned long *src_pfns;
++	unsigned long *dst_pfns;
++
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++
++	migrate_device_range(src_pfns, start_pfn, npages);
++	for (i = 0; i < npages; i++) {
++		struct page *dpage, *spage;
++
++		spage = migrate_pfn_to_page(src_pfns[i]);
++		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
++			continue;
++
++		if (WARN_ON(!is_device_private_page(spage) &&
++			    !is_device_coherent_page(spage)))
++			continue;
++		spage = BACKING_PAGE(spage);
++		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
++		lock_page(dpage);
++		copy_highpage(dpage, spage);
++		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
++		if (src_pfns[i] & MIGRATE_PFN_WRITE)
++			dst_pfns[i] |= MIGRATE_PFN_WRITE;
++	}
++	migrate_device_pages(src_pfns, dst_pfns, npages);
++	migrate_device_finalize(src_pfns, dst_pfns, npages);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
++}
++
+ static int dmirror_fops_release(struct inode *inode, struct file *filp)
+ {
+ 	struct dmirror *dmirror = filp->private_data;
++	struct dmirror_device *mdevice = dmirror->mdevice;
++	int i;
+ 
+ 	mmu_interval_notifier_remove(&dmirror->notifier);
++
++	if (mdevice->devmem_chunks) {
++		for (i = 0; i < mdevice->devmem_count; i++) {
++			struct dmirror_chunk *devmem =
++				mdevice->devmem_chunks[i];
++
++			dmirror_device_evict_chunk(devmem);
++		}
++	}
++
+ 	xa_destroy(&dmirror->pt);
+ 	kfree(dmirror);
+ 	return 0;
+@@ -1223,43 +1272,6 @@ static int dmirror_snapshot(struct dmirr
+ 	return ret;
+ }
+ 
+-static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+-{
+-	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
+-	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
+-	unsigned long npages = end_pfn - start_pfn + 1;
+-	unsigned long i;
+-	unsigned long *src_pfns;
+-	unsigned long *dst_pfns;
+-
+-	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-
+-	migrate_device_range(src_pfns, start_pfn, npages);
+-	for (i = 0; i < npages; i++) {
+-		struct page *dpage, *spage;
+-
+-		spage = migrate_pfn_to_page(src_pfns[i]);
+-		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
+-			continue;
+-
+-		if (WARN_ON(!is_device_private_page(spage) &&
+-			    !is_device_coherent_page(spage)))
+-			continue;
+-		spage = BACKING_PAGE(spage);
+-		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
+-		lock_page(dpage);
+-		copy_highpage(dpage, spage);
+-		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
+-		if (src_pfns[i] & MIGRATE_PFN_WRITE)
+-			dst_pfns[i] |= MIGRATE_PFN_WRITE;
+-	}
+-	migrate_device_pages(src_pfns, dst_pfns, npages);
+-	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kvfree(src_pfns);
+-	kvfree(dst_pfns);
+-}
+-
+ /* Removes free pages from the free list so they can't be re-allocated */
+ static void dmirror_remove_free_pages(struct dmirror_chunk *devmem)
+ {
 
 
 
