@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-265161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Phf1CA+EMWqIlQUAu9opvQ
-	(envelope-from <stable+bounces-265161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:47 +0200
+	id h2wnEEV8MWpDkgUAu9opvQ
+	(envelope-from <stable+bounces-264718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C9F692DC7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDED6924EE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=djZIpcWx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265161-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265161-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=o8d1EXI2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264718-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264718-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BFA0730454E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22CEB31FBD48
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C613B44E045;
-	Tue, 16 Jun 2026 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F0004779A3;
+	Tue, 16 Jun 2026 16:31:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8949443D4E8;
-	Tue, 16 Jun 2026 17:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0F846AF15;
+	Tue, 16 Jun 2026 16:31:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629783; cv=none; b=i+23G5y6HhdE85Y0jID50jNMLD6j/mDJ711XMXlh9y/6sDplUdp9xq6dqeYikrA5xfnhAa62JYArDz/fGzUvW1Vf1vlZeOoJI+JYmszc/X+R8zddnSdmFh/YydlmGHqtcZRctqHSBXhxW6oBhzZ0WFzrDbixLEqIzbJWwn3Dv9E=
+	t=1781627496; cv=none; b=mO+fmfcIp+LebhcjyZksxDRq76JkNxXoswVz5cbTCj1J7FdEvQ3yWcalwFIf5yqrW/JDQqyk+E+9lvKUdMbV78kyA/Eyco7hqEyeg0fLLrPrvZItqWt3ixP4U85I3H2Q1aXMDOS288bH0ni7VNqSE+wraeu+wZqaj4FxCQ/7/8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629783; c=relaxed/simple;
-	bh=z1DSnJk0rwwDyjGxK0xs/z/92HzQjOEbfY27S/uN+To=;
+	s=arc-20240116; t=1781627496; c=relaxed/simple;
+	bh=HYu9x8IkZ8hORLdgDLRtXvQqw5cMjKQOcYpPjucmJcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gLFXZOf2BMiA95TUmt2EWlg5qyT23Kp3YqxuVENAnrmdEznPmoUe+dDBIpscGuccGeqD/HETe6A0JH0AMeD62hsWayDXQG+Xl5A41wy6HsEfVlIeON/z40kQpsdQ+KloFhPyfV18vcRuUFBBMO9EXaSOYnWtqy3/w1S4aVVRvCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djZIpcWx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547E01F000E9;
-	Tue, 16 Jun 2026 17:09:41 +0000 (UTC)
+	 MIME-Version; b=W8AGq7LC+s/d7fM8G5/BkwUcSkiHEYYM+S1qoLnrU7iQzeeQIqYSQgIyREI+Wpm45s4JgnCk1BvhsHGiPTsnVUy1rLhke2f+M5bNWdRa6DgJSqf6VHU8qNkRuXoHiN4Tg8VWlCnqX2yL/zTFUGUJA6a5A558H9+NAUHiJNDewug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8d1EXI2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A1E1F00A3A;
+	Tue, 16 Jun 2026 16:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629782;
-	bh=Tq1p5OH2KoeJyrUPU1566y8mvpNnjSLjrr0oURxt7uQ=;
+	s=korg; t=1781627495;
+	bh=Yd2LRCQiPRZIXJuRElutGO35d4iVKuHMIRZC12x5eF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=djZIpcWxfgC453BorAdp9vmZalm1AbaO9/1UAfhz1E9h8ALc3Z0E8MOiDLRYYkWbz
-	 XE8FSQP2xbug8ySLrjUlTvZQWIYPMEz3dqSIqp0ZzCYku16jBn/3lcC1hzaVZv/3TP
-	 V7cUlTjeajOVzTpYv0l3Sz0vMFx/yyhr1hz9qCnI=
+	b=o8d1EXI2RtdJjd3LJzZuq2ZMHIjvPTux6YYsS048GLH3N7DYG5Y4wnbn5EfC3KiIj
+	 KMG9V1jNXWTkDpaPkDTvA4pE/WYT1JphKSDyYihp4EzFvn1+u9jfT52IOv+ee4Gg/r
+	 mXyHFShqmd2/6I409e+1zOsT7Y1kT0eP4H9NcEcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhao Zhang <zzhan461@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 352/452] sctp: diag: reject stale associations in dump_one path
+	Jack Wu <jackbb_wu@compal.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 141/261] USB: serial: option: add usb-id for Dell Wireless DW5826e-m
 Date: Tue, 16 Jun 2026 20:29:39 +0530
-Message-ID: <20260616145135.681642203@linuxfoundation.org>
+Message-ID: <20260616145051.616214549@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,120 +66,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265161-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264718-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jackbb_wu@compal.com,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,ucr.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,compal.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B4C9F692DC7
+X-Rspamd-Queue-Id: ABDED6924EE
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Zhang <zzhan461@ucr.edu>
+From: Jack Wu <jackbb_wu@compal.com>
 
-commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
+commit 1938fb9fe38c4f04a3f30bea44f8071c80a63be4 upstream.
 
-The SCTP exact sock_diag lookup can hold a transport reference, block on
-lock_sock(sk), and then resume after sctp_association_free() has marked
-the association dead and freed its bind address list.
+Add support for Dell DW5826e-m with USB-id 0x413c:0x81ea
 
-When that happens, inet_assoc_attr_size() and
-inet_diag_msg_sctpasoc_fill() can still dereference association state
-that is no longer valid for reporting. In particular,
-inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
-real sctp_sockaddr_entry and trigger an out-of-bounds read from
-unrelated association memory.
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=413c ProdID=81ea Rev= 5.04
+S:  Manufacturer=DELL
+S:  Product=DW5826e-m Qualcomm Snapdragon X12 Global LTE-A
+S:  SerialNumber=358988870177734
+C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Reject the association after taking the socket lock if it has been
-reaped or detached from the endpoint, and report the lookup as stale.
-This keeps the exact dump-one path from formatting torn association
-state.
-
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jack Wu <jackbb_wu@compal.com>
+Reviewed-by: Lars Melin <larsm17@gmail>
+Cc: stable@vger.kernel.org
+[ johan: reserve also interface 4 ]
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -202,6 +202,7 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5821E_ESIM			0x81e0
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
++#define DELL_PRODUCT_5826E_ESIM			0x81ea
  
- 	lock_sock(sk);
- 
--	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
--	if (!rep) {
--		release_sock(sk);
--		return -ENOMEM;
-+	if (ep != assoc->ep || assoc->base.dead) {
-+		err = -ESTALE;
-+		goto out_unlock;
- 	}
- 
--	if (ep != assoc->ep) {
--		err = -EAGAIN;
--		goto out;
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		err = -ENOMEM;
-+		goto out_unlock;
- 	}
- 
- 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
- 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
--	release_sock(sk);
- 	kfree_skb(rep);
-+out_unlock:
-+	release_sock(sk);
- 	return err;
- }
- 
+ #define DELL_PRODUCT_FM101R_ESIM		0x8213
+ #define DELL_PRODUCT_FM101R			0x8215
+@@ -1123,6 +1124,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(6) },
+ 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
+ 	  .driver_info = RSVD(0) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_5826E_ESIM, 0xff),
++	  .driver_info = RSVD(1) | RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
 
 
 
