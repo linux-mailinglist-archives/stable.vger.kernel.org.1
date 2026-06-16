@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-264834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263851-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EeYtJpJ9MWrokgUAu9opvQ
-	(envelope-from <stable+bounces-264834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:06 +0200
+	id 4+AOKEBpMWrIigUAu9opvQ
+	(envelope-from <stable+bounces-263851-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EF76926C9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F122690E45
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ca6SqOxl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264834-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264834-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=erDJu3A7;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263851-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263851-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6BA33036603
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:42:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16F2730D5204
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD51947884F;
-	Tue, 16 Jun 2026 16:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A0743C05C;
+	Tue, 16 Jun 2026 15:13:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617BD4779B3;
-	Tue, 16 Jun 2026 16:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FE943D50E;
+	Tue, 16 Jun 2026 15:13:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628134; cv=none; b=lN3LXVbq46ytHeEKw8qkCEbvrUBYbqbdhALlmb2kLzPLEHwd1le6EZcCjqsFNaihkBYtgP4473Q3KaIELQDh/ZJp8GZw0KzEiI6lPiQS+BJJoxLp+R0iMwsFxJGAvec5/M/kMPB+NOPWNGvGCJP1zDteSqdZ/s9ZEAM7zVn1r9A=
+	t=1781622808; cv=none; b=ma2V2WhCW6fT/ADMg2pC6JT4Kn2n9NLkGoGvNrg4+mSaibmXTay5b4RcND4ilpW9Pxc9EA06ZgDGxjoKcDBWgqZw1aVUWvHC5LzvGUL+HYu4FK8dWo11EXlOmPRGiXgN/Mt6PhrdhOTabA9QeGWPuwvhNeXWX7e4u1q6UJ4R1Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628134; c=relaxed/simple;
-	bh=rdNGmf7HLpSBEZGDOkSz7f7Uq6Bzc9rP0nQnAtH3yRE=;
+	s=arc-20240116; t=1781622808; c=relaxed/simple;
+	bh=WyELncBS7Gl0RF+cjzOfauL8BsAwI66gxTwdbR8tZqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwmPK+W6B99TP4a+TEmwN+eveI7KWH9rPwgl2S5gce+0FvKFeTmJPDVJepYAUqGJBF/LPKvaXboI0/cmjROLpUrNY8goXA4Z4ULaasaTcXVhPDu1405Vy05xCYODg8PS4q9MPqBTKQ2n6axBdrsXIdfufgp4M1qftxd9E2tU5WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca6SqOxl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083761F000E9;
-	Tue, 16 Jun 2026 16:42:11 +0000 (UTC)
+	 MIME-Version; b=X7DhBYMWi35AS8U8Ac7MmTeF9qTJeYyXKGnyl9QaGuOJP2m8MG/rdBZG+jbFZ4TjChyf8tow3xiAXZVJlgs8zyeefmJ4JYQWNoSuaNd4N0bgcyP/CFI3q9B6vT2mSBIxure1Eu4ZY2vrt7sZoyQ2vcmv8+UYCdTFBFo6BzLQnSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erDJu3A7; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDCE1F000E9;
+	Tue, 16 Jun 2026 15:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628133;
-	bh=zqRGBJmHErhjEQPlfaGrQo5Of7BZ/nmdQ6oYG96F3Cc=;
+	s=korg; t=1781622806;
+	bh=qTZlxl4bHTtw1Y/5eU54fBnyc5rPdGd291hjSVabNhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Ca6SqOxlXEzkqsBHxv3iJDIWzbyT5bpDtjKjq3WrUbBVVgNpfCGnY78c09Ad6rmXo
-	 yF4nwUBb10fHU3aAMtamy9r0f6YUQM1Zllt9ueweBZjn7eti4zJdQTE/yMgcAIXy2N
-	 wsYRy9HjosEi4G7LWV3hQ5yyVgC7Tq1TR5BKqPnI=
+	b=erDJu3A7BdxJk3DFM8wKy5zZkC10S9KvNDuRvarS70ASiPeGId6v7pnUFHljRKZRx
+	 qdseq+b67zNXa2zrRU8phFbqoKJ8qjdK6yCssjnnNM1kiPPQgF9yzBXw7u2CpLbMg4
+	 KO1tpMhy9PSgbwrHgvUhhbsSzDXLQjd3E+bzbDYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/452] bonding: refuse to enslave CAN devices
+Subject: [PATCH 7.0 032/378] pcnet32: stop holding device spin lock during napi_complete_done
 Date: Tue, 16 Jun 2026 20:24:23 +0530
-Message-ID: <20260616145119.833827119@linuxfoundation.org>
+Message-ID: <20260616145111.560506768@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,26 +69,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263851-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264834-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com,m:socketcan@hartkopp.net,m:jv@jvosburgh.net,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -100,81 +100,65 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8ed98cbd0161632bce95];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[jvosburgh.net:email,vger.kernel.org:from_smtp,msgid.link:url,hartkopp.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,lunn.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5EF76926C9
+X-Rspamd-Queue-Id: 1F122690E45
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 8ba68464e4787b6a7ec938826e16124df20fd23d ]
+[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
 
-syzbot reported a kernel paging request crash in
-can_rx_unregister() inside net/can/af_can.c. The crash occurs
-because a virtual CAN device (vxcan) is being enslaved to a
-bonding master.
+napi_complete_done may call gro_flush_normal (though not currently, as GRO
+is unsupported at the moment), which may result in packet TX. This will
+eventually result in calling pcnet32_start_xmit - resulting in a deadlock
+while trying to re-acquire the already locked spin lock.
 
-During the enslavement process, the bonding driver mutates
-and modifies the network device states to fit an Ethernet-like
-aggregation model. However, CAN devices operate on a completely
-different Layer 2 architecture, relying on the CAN mid-layer
-private data structure (can_ml_priv) instead of standard
-Ethernet structures. Since bonding does not initialize or
-maintain these CAN structures, subsequent operations on the
-half-enslaved interface (such as closing associated sockets
-via isotp_release) lead to a null-pointer dereference when
-accessing the CAN receiver lists.
+It is safe to split the spinlock block into two, because the hardware
+registers are still protected from concurrent access, and the two blocks
+perform unrelated operations that don't need to happen atomically.
 
-Bonding CAN interfaces is architecturally invalid as CAN lacks
-MAC addresses, ARP capabilities, and standard Ethernet
-link-layer mechanisms. While generic loopback devices are
-blocked globally in net/core/dev.c, virtual CAN devices
-bypass this check because they do not carry the IFF_LOOPBACK
-flag, despite acting as local software-loopbacks.
-
-Fix this by explicitly blocking network devices of type
-ARPHRD_CAN from being enslaved at the very beginning of
-bond_enslave(). This prevents illegal state mutations,
-eliminates the resulting KASAN crashes, and avoids potential
-memory leaks from incomplete socket cleanups.
-
-As the CAN support has been added a long time after bonding
-the Fixes-tag points to the introduction of ARPHRD_CAN that
-would have needed a specific handling in bonding_main.c.
-
-Fixes: cd05acfe65ed ("[CAN]: Allocate protocol numbers for PF_CAN")
-Reported-by: syzbot+8ed98cbd0161632bce95@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8ed98cbd0161632bce95
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20260526-bonding-candev-v1-1-ba1df400918a@hartkopp.net
+Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/amd/pcnet32.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 029a7f001dd8a0..7732f7023033ed 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1889,6 +1889,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	int link_reporting;
- 	int res = 0, i;
+diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
+index 911808ab13a79d..4f3076d4ea34eb 100644
+--- a/drivers/net/ethernet/amd/pcnet32.c
++++ b/drivers/net/ethernet/amd/pcnet32.c
+@@ -1407,8 +1407,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 		pcnet32_restart(dev, CSR0_START);
+ 		netif_wake_queue(dev);
+ 	}
++	spin_unlock_irqrestore(&lp->lock, flags);
  
-+	if (slave_dev->type == ARPHRD_CAN) {
-+		BOND_NL_ERR(bond_dev, extack,
-+			    "CAN devices cannot be enslaved");
-+		return -EPERM;
-+	}
-+
- 	if (slave_dev->flags & IFF_MASTER &&
- 	    !netif_is_bond_master(slave_dev)) {
- 		BOND_NL_ERR(bond_dev, extack,
+ 	if (work_done < budget && napi_complete_done(napi, work_done)) {
++		spin_lock_irqsave(&lp->lock, flags);
+ 		/* clear interrupt masks */
+ 		val = lp->a->read_csr(ioaddr, CSR3);
+ 		val &= 0x00ff;
+@@ -1416,9 +1418,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 
+ 		/* Set interrupt enable. */
+ 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
++		spin_unlock_irqrestore(&lp->lock, flags);
+ 	}
+ 
+-	spin_unlock_irqrestore(&lp->lock, flags);
+ 	return work_done;
+ }
+ 
 -- 
 2.53.0
 
