@@ -1,66 +1,68 @@
-Return-Path: <stable+bounces-266226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id TvvxH/mYMWo7nwUAu9opvQ
-	(envelope-from <stable+bounces-266226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:01 +0200
+	id MEfxK71/MWq4kwUAu9opvQ
+	(envelope-from <stable+bounces-264892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44B0694590
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF2C692905
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZO2Rwgd8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266226-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266226-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NFGV4Evv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264892-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264892-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C6DA300C033
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67FF03068E88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8057F4418D7;
-	Tue, 16 Jun 2026 18:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB7344D014;
+	Tue, 16 Jun 2026 16:47:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F36E13777E;
-	Tue, 16 Jun 2026 18:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858A535DA6A;
+	Tue, 16 Jun 2026 16:47:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635316; cv=none; b=VF34MWtAgsss+6zh0LHxUYflnZUkoh80zzOXpICpvUsApV/oyNb4SjHAnhv2kFCw61lfLxG27LnmbaSZqPt5uYzg5OCBV5teLW/bWMwG3EUCEsDTK58nAeaZhJcV2mheXS0fuMW9kRNC+eZvkiRCx52JoWjjD6NLmpqNMYOfHoY=
+	t=1781628439; cv=none; b=gLbBQ2fBD5SAOfsOMatvyKvjQjRtzjztJPkvCZCJqNaA/IuNz1hxm6gBh5/lWqlSYEMWWbgYmSEGu1Bqox7vCV8UpgQaDSr8gLEOZr3mSSju+MGjba4IVepVofuKO1p2u8bms9ABG5U1MnCxJUCvxxMAiqAAL0tMrbWbxRptQZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635316; c=relaxed/simple;
-	bh=yx1HpeLTRxcTfsp5McpnFxQrMPzcTrctVu9RosfqiZk=;
+	s=arc-20240116; t=1781628439; c=relaxed/simple;
+	bh=X1dLWY2EfYd67JgQI6c8JQpYksMHFqAxOxOizodmhds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaLEwUoNf7F38/Rr8vukHKPPu2njPA6/YgGPx4vARq0iqveV+0b3BWkRybaevGmNTun5B76zvelpD41smD9oNGUsFw8xpCt/B8sbRvRQDf/tc8KD9fq2GNUq2UB/nUZYJw+1yEVrZV4uZVBYABwhiI29OsNIlImbWbOzwxfmt+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZO2Rwgd8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC1E1F000E9;
-	Tue, 16 Jun 2026 18:41:53 +0000 (UTC)
+	 MIME-Version; b=Dj2bZHNc48VLSwMbAO1G/i7ojF4mX8ewHKHfLfs8xfArHaU4yveywzz4WTgqzbqN6cbHCzyvnqV0hcnB4vte9lik7/xXGeD2hBjmW4eOevO1KqXVd7uo/NA8QxooyXuPNr418yqytpRhhiwDFfX3nvlxgAm/jFkCZv2zNhT2D2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFGV4Evv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B101F000E9;
+	Tue, 16 Jun 2026 16:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635315;
-	bh=nUwWsFoTfoSyg896OypkHQFkKdUtINxwPNho0nu2VDU=;
+	s=korg; t=1781628438;
+	bh=DTSb6PIXmeAJjfMnBVBMCQOeCSnWDdUEtz81BundnnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZO2Rwgd8aQdrrY9F64bzqwSH3vsF3lHFL+CnqZH5yECX7QFdczAUneGHIv1vsWml0
-	 4LOw62J4ffPCp8Xgr/EPjG1k0xBMrQDsPb9QJxuGH2bpGh6gHFUm2LgqZ1j+5AtqLs
-	 5dySEg4H2qcBt2YZy1i8nJPITI5B5dU71aRTV9q0=
+	b=NFGV4EvvoJu+U+mstCKkeV9FZSgj/MhsmNMHQOKUeOKIh6V/N98YPqZU2OYqHMB8g
+	 jhiTwV3sak2ekdVDhIieLw18j+pGrVznll4BjpQU5L6KHp0u9ht7+WxXu0BBLV8yNU
+	 GH/d99hkHdtNufzWEumf4dap1yojIR8z2h8sLNEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ji-Soo Chung <jschung2@proton.me>,
-	Gerlinde <lrGerlinde@mailfence.com>,
-	zyc zyc <zyc199902@zohomail.cn>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/342] net/sched: Revert "net/sched: Restrict conditions for adding duplicating netems to qdisc tree"
+	Linpu Yu <linpu5433@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Kees Cook <kees@kernel.org>,
+	Stanislav Kinsbursky <skinsbursky@parallels.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 095/452] ipc: limit next_id allocation to the valid ID range
 Date: Tue, 16 Jun 2026 20:25:22 +0530
-Message-ID: <20260616145049.479421675@linuxfoundation.org>
+Message-ID: <20260616145122.804397890@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,137 +79,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,mailfence.com,zohomail.cn,gmail.com,networkplumber.org,mojatatu.com,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266226-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jschung2@proton.me,m:lrGerlinde@mailfence.com,m:zyc199902@zohomail.cn,m:ghandatmanas@gmail.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-264892-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linpu5433@gmail.com,m:n05ec@lzu.edu.cn,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:kees@kernel.org,m:skinsbursky@parallels.com,m:dave@stgolabs.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,parallels.com,stgolabs.net,linux-foundation.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,mojatatu.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,proton.me:email,zohomail.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,stgolabs.net:email,parallels.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D44B0694590
+X-Rspamd-Queue-Id: 1BF2C692905
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Linpu Yu <linpu5433@gmail.com>
 
-[ Upstream commit eda0b7f203bb166c98d1418b204135bd566ac83b ]
+commit fa0b9b2b7ae3539908d69c2b9ac0d144d9bc5139 upstream.
 
-This reverts commit ec8e0e3d7adef940cdf9475e2352c0680189d14e.
+The checkpoint/restore sysctl path can request the next SysV IPC id
+through ids->next_id.  ipc_idr_alloc() currently forwards that request to
+idr_alloc() with an open-ended upper bound.
 
-The original patch rejects any tree containing two netems when
-either has duplication set, even when they sit on unrelated classes
-of the same classful parent. That broke configurations that have
-worked since netem was introduced.
+If the valid tail of the SysV IPC id space is full, the allocation can
+spill beyond ipc_mni.  The returned SysV IPC id still uses the normal
+index encoding, so later lookup and removal can target the wrong slot.
+This leaves the real IDR entry behind and breaks the IDR state for the
+object.
 
-The re-entrancy problem the original commit was trying to solve is
-handled by later patch using tc_depth flag.
+The bug is in ipc_idr_alloc() in the checkpoint/restore path.
 
-Doing this revert will (re)expose the original bug with multiple
-netem duplication. When this patch is backported make sure
-and get the full series.
+1. ids->next_id is passed to:
 
-Fixes: ec8e0e3d7ade ("net/sched: Restrict conditions for adding duplicating netems to qdisc tree")
-Reported-by: Ji-Soo Chung <jschung2@proton.me>
-Reported-by: Gerlinde <lrGerlinde@mailfence.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220774
-Reported-by: zyc zyc <zyc199902@zohomail.cn>
-Closes: https://lore.kernel.org/all/19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn/
-Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
-Closes: https://lore.kernel.org/netdev/f69b2c8f-8325-4c2e-a011-6dbc089f30e4@gmail.com/
-Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260525122556.973584-3-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id), 0, ...)
+
+2. The zero upper bound makes the allocation effectively open-ended.
+   Once the valid SysV IPC tail is occupied, idr_alloc() can spill past
+   ipc_mni and allocate an entry beyond the valid IPC id range.
+
+3. The new object id is still encoded with the narrower SysV IPC index
+   width:
+
+       new->id = (new->seq << ipcmni_seq_shift()) + idx
+
+4. Later removal goes through ipc_rmid(), which uses:
+
+       ipcid_to_idx(ipcp->id)
+
+   That truncates the real IDR index. An object actually stored at a
+   high index can then be removed as if it lived at a low in-range
+   index.
+
+5. For shared memory, shm_destroy() frees the current object anyway, but
+   the real high IDR slot is left behind as a dangling pointer.
+
+6. A subsequent walk of /proc/sysvipc/shm reaches the stale IDR entry
+   and dereferences freed memory.
+
+Prevent this by bounding the requested allocation to ipc_mni so the
+checkpoint/restore path fails once the valid range is exhausted.
+
+Link: https://lore.kernel.org/cover.1778336914.git.linpu5433@gmail.com
+Link: https://lore.kernel.org/2eebe949bfa7d1f6e13b5be6a92c64c850ce9d45.1778336914.git.linpu5433@gmail.com
+Fixes: 03f595668017 ("ipc: add sysctl to specify desired next object id")
+Signed-off-by: Linpu Yu <linpu5433@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Stanislav Kinsbursky <skinsbursky@parallels.com>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 40 ----------------------------------------
- 1 file changed, 40 deletions(-)
+ ipc/util.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index 3e3bced82c564d..3dc6411b0a33c7 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -985,41 +985,6 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
- 	return 0;
- }
- 
--static const struct Qdisc_class_ops netem_class_ops;
--
--static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
--			       struct netlink_ext_ack *extack)
--{
--	struct Qdisc *root, *q;
--	unsigned int i;
--
--	root = qdisc_root_sleeping(sch);
--
--	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
--		if (duplicates ||
--		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
--			goto err;
--	}
--
--	if (!qdisc_dev(root))
--		return 0;
--
--	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
--		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
--			if (duplicates ||
--			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
--				goto err;
--		}
--	}
--
--	return 0;
--
--err:
--	NL_SET_ERR_MSG(extack,
--		       "netem: cannot mix duplicating netems with other netems in tree");
--	return -EINVAL;
--}
--
- /* Parse netlink message to set options */
- static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 			struct netlink_ext_ack *extack)
-@@ -1087,11 +1052,6 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
- 	q->gap = qopt->gap;
- 	q->counter = 0;
- 	q->loss = qopt->loss;
--
--	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
--	if (ret)
--		goto unlock;
--
- 	q->duplicate = qopt->duplicate;
- 
- 	/* for compatibility with earlier versions.
--- 
-2.53.0
-
+--- a/ipc/util.c
++++ b/ipc/util.c
+@@ -253,7 +253,7 @@ static inline int ipc_idr_alloc(struct i
+ 	} else {
+ 		new->seq = ipcid_to_seqx(next_id);
+ 		idx = idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id),
+-				0, GFP_NOWAIT);
++				ipc_mni, GFP_NOWAIT);
+ 	}
+ 	if (idx >= 0)
+ 		new->id = (new->seq << ipcmni_seq_shift()) + idx;
 
 
 
