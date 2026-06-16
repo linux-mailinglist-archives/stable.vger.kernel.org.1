@@ -1,206 +1,440 @@
-Return-Path: <stable+bounces-265356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SyEyD9uIMWqllwUAu9opvQ
-	(envelope-from <stable+bounces-265356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:15 +0200
+	id 2qiOM+aIMWqulwUAu9opvQ
+	(envelope-from <stable+bounces-265436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7BF6933EB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FEE76933FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ze34NRz1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265356-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265356-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OuET7uwm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265436-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265436-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=2")
+	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 876203036750
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73A363038CFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5723D47A0C4;
-	Tue, 16 Jun 2026 17:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0947CC6C;
+	Tue, 16 Jun 2026 17:33:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC8447A0B0
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:26:22 +0000 (UTC)
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630784; cv=pass; b=gV1dd9GtRAbW+bUQAN/VKd1u/3xGpbIikZ+1kluEhfdyQWxZizAZmw6UVsqLijwfnKdIZJBhu+vmr5fzjP0/8+uRQx0qfG74zwjmiKu9TztCKV7d2nogC8PUYvjrUe9AgxsUlhIP83j4Y4JPiH67jkfd+I0sT89d5bx4Hs6lokU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630784; c=relaxed/simple;
-	bh=bK60+35u5sVRCOWvP8FgSZ7dX+YgxPLpyqqeNvY8WcM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kMfaVBywe1nCWNgd0oVJHA0Ho9J9VHuGhcEC7UJaA1gwipGAsXRvTzZ4TE5R8IzT9Sr7uTjQLJ4Zayp11i8Fx293YqNU7d8yn78qBXKh/WJsbhbV5yFgoH1ya17fFDtVY8+n2CKnkb2Dt2q0EBQwpdJ87bZ5WLKl9exdWseAftM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ze34NRz1; arc=pass smtp.client-ip=209.85.218.44
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bec450b950dso697267166b.2
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:26:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781630781; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LOCHPvuay8S5kvaoQrMhO2yEIvc5P26FbaqNJpZKJmbmfzOHw43fHtSAgotJhna0vB
-         CXwO70TrH/JeIDKwAM12eJV6TGJ350LWeLmOwxoyT3ke68a3zl18BxT4DK6TYFlhetDT
-         rfRg6v15cTVbWHZlLP7IXNkN/hU6aiFkJqvQNxvXsDqnlsGhuHBx2yrNGXMmkcvJJPJR
-         EuT4uWBXCD/J3Hnns/66ue5HwOe+RthEKS1V4cqIUQlkqaJGBgQGdGTHtaKFwBHbtVvM
-         a/886badiDLzrD0D5mT1eNttvu8ZYP7scK3F17dmYyPPoePDphiWa4hBdVTYQSljnmxv
-         S3Cg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bK60+35u5sVRCOWvP8FgSZ7dX+YgxPLpyqqeNvY8WcM=;
-        fh=g0ByiT3NkC99NdiYlLxnO8cS0a2ugWpc/c07VbZOyKI=;
-        b=YbZ3dBweu60lk2nYjT3SyNfYhzpK5xjSZKURF9PJ0L3fuAmZLnL8oIfp1xBRixs2E7
-         w5Dlpy9KU0zDOId2Nb0LJWYuBqb7Fqhh1BNFRmh0YoeNGj66VO8GMypqudO+8+xHyg71
-         Kdygl9yPM0/kvxWK5lyGKcl3boBopB+Xh2K6AfthDBQgWfrN+JE0GBtZ/j8DzGP2fiMa
-         VqZ3uvteYXJ1MgYcosAzz4iFH9wn6op/ORY5NoF9L6SesLK3amMwbPlXNdwZpPp+g8FY
-         sl8hMoG+KfjNWTWSAUvebSVmLQPg6qgJK7piJs3Bout4NoxvOpOPOKFbfYyvijTdll3Z
-         mq/g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B747AF5F
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 17:33:10 +0000 (UTC)
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781631193; cv=none; b=AijAW58F5Rmq/yCmddxsHJtkt4B+zfx6MKVcpm/sAou1acaWP6pIvOKhRIw9pdxijX6a8D1Sa5Lvcwvid7aPBZrFZPZCgQPZfbZyYOQEP1TyqGYexJX9JiSMSs7ddqNAlAWkPm7XNVhVMxbaFcekXZ1+820mXkd+0aNprF2W+s0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781631193; c=relaxed/simple;
+	bh=mbt6N7ha+a3fKF4v72gcffAXw1EdCVfHxhDpsUYhjug=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MtoYDrwuV62sT1HAxV4snLJZxt4KHOQG8ULTS9KmXxerymzsBM3Fr9E2TvK8mA9P0/K9fmj7tKYbJSe+hIXhtO+kD4MZwpjVm8wHkUUQ7QuKkKZtNWHlie6998GfPOyonanUPQvjmKQNZsVL+c/syQTKNtJZy3bGq4TeDHq2F2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OuET7uwm; arc=none smtp.client-ip=74.125.82.171
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-30bc871ecdfso229280eec.1
+        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 10:33:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781630781; x=1782235581; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781631189; x=1782235989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bK60+35u5sVRCOWvP8FgSZ7dX+YgxPLpyqqeNvY8WcM=;
-        b=Ze34NRz1VnCdeaYHx8BPAtd0fPvqQ592vlKs03OTtBxOHS0p+J1BMb5ouEV0NiO3s5
-         GfbqAK0jQ1do2YDUIA9X1xIEnbGbBNYAGSGSmmHWW6p+2kG1lm4lvxSBiI2P5fZMr5P5
-         c0vxUVz42QRFzgaloBqwbwc4bGQlTBm6fXsYtS9PX/6SJcc1fAM+FuEchMd0JVm2uQvy
-         xrDaJYPlr3AwlRS0YdDJ/MdA2xAbyCTFGDNsV3Mg0Gs4wrPuMXlHSgPiferWS/8syqFn
-         x+ibd2xVgM2VyAATqPlsfr0+FaNtcwarowweFn38pQG39AsOuN/oRBJgas67jsUlKJ2Y
-         KQDg==
+        bh=c9RdJUIM+VglWzfrXeQP+sYvPkbyB0OOU/7Tej3EuTU=;
+        b=OuET7uwmDA//Pld42RWbLEPt44CYGUM6UxE7L3ILhhJW6/rvDWexJ3tByn3HyUyg+C
+         EKkvd0A+7sOU0Yqr2/UenCphh2CWF/nEmbQI3x1Yo6QRrUzfrEqKC9fZo/5h647ZZgY2
+         abmbqpZrq2vSvUESSLrT5VbSyEENE31K1B2l3bZ8wKRlQdz7+NA7AMt7609BIvxcrv6s
+         9k5VWn/hMXPdkV15GtxxkmQWr59v7GUam1e6dPCGneRUk4zwInW7HKH3g4r1hGfbCYhS
+         /CinyWMO2dTOYmemNEpVOd5oi4bHkf1DzDvZ3Pa421V2uk/P6n2eIWR3Q8ypT1FCvR6G
+         o6lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781630781; x=1782235581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1781631189; x=1782235989;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bK60+35u5sVRCOWvP8FgSZ7dX+YgxPLpyqqeNvY8WcM=;
-        b=NcDmYkAGAFuzDWhN+PeJ9b3WVbwc+JFPMmXEvTDvar14hVITvr9oOWeMNB8gLVcNJo
-         01FlOgKzbMb/ur3QEnHzx+jp4j7zsmUrDy0QLt5zHInvWln/nrvA+ZagTQrbMiXe6pCO
-         Ym0C7G05Q95kYXw+vzpdoiAGnzTV8Y3nDEZs39cupPsdtp3uu2MPy7rkpLYgCy9h43Uf
-         CwRLVywTVebFGDG9rCOEQbzWzsIlaKMpOEJRuXTwzZ0EaR4kFhrNe+pknYWY5Jppc8DT
-         Qbx3yxxQxQLXOWaZzx0mTWEQmhdu1Q9auV98aEEwqTKnSiT4cgPGUMibhaOn+AQBE+lv
-         rDdA==
-X-Forwarded-Encrypted: i=1; AFNElJ9WaSj/Nc/0wQw884hKeDWhgJ18nwMGcIBaUmVm68EnD7owZL4AwyAQjxCWSA1H346tAZqX7UQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiFtgOo73hTjwMiO66COSu9m69pO5fBUeFzPvQGm5A5XMMSVEq
-	3qH442HCV+Ac4T9YepMN4I0PK6pxwlgrHiXDGJkq7QSjnP2q4JuoUQYi7dTQAqltq9OEV+Q9vGj
-	fWF4nEKYrQvrTl5hbyOIyGAzk67JMOsQ=
-X-Gm-Gg: Acq92OG7cy74CYmxwc8Tl96fkMJ9SmaFjf6fnVNdXEGw1DDeShHadAYYLZKB/CDj7tm
-	HJPHPmh9re7boe2/tAKMT+i9hnTnhmkojQEhd0NohUbE8HxgguKbokHAPpqvY9j4np+TjrRhpXc
-	J5H99WGMsDTjNmZ9e1VoaFwL/DNJ1SyBmLhhlmMWrECzLInHOfOiTig39m05HZbOeJcUT/eEcWz
-	JYXbbpjfpzIcZTARCmdbtpP28aD4LTN320VrnD0wKrDjJ2kCN/ruUNn46WljQ/cis07b97I9Dzi
-	qd4Uw0yTux8TNgpzGSFHVwlGDM0TJsDezGFJ0IfYGVn43t2FlOjf++FJjElLA0y5O11mKrcATWJ
-	qccZ6uDkyqhO9xF8qKPv8bW4SkMYniRubLv1b
-X-Received: by 2002:a17:907:741:b0:bfe:ed06:565f with SMTP id
- a640c23a62f3a-c05a591069amr40389766b.52.1781630780974; Tue, 16 Jun 2026
- 10:26:20 -0700 (PDT)
+        bh=c9RdJUIM+VglWzfrXeQP+sYvPkbyB0OOU/7Tej3EuTU=;
+        b=Pn9ubHCJRcb6U/X8RYCbpYCuSuzPyiMuyqEk5PRbrZvPHnSW7ZnesNi4ykp6fST2s/
+         Ch59/wOLSHEYw9e7LCVmhFWY3LR7pleOaaogMqjHwQFjYdGX4fZ67JurFgIOYLbnG3Z2
+         t6QK8yyKDUIvzPyz4lpQ4GKKECON+aodgs1EyUwPmab53gFx++O34JNNqXc/6lJEKh/q
+         68De4mTlBNTfdBK1soT0OlvA0/x2sDB6lo2fDdDMNI5N0J8TT71gtx4sIkUefxSn69r0
+         k4csyppzUvripEhKDo6qbfergVStc5EBAxN2PLOx3tZg+iiF13hWs/wy2itOOJ/y8Eoy
+         tP8Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/+Y7Q/zt68mOzv7Tb314TDEfvyiPkIuXgForRSBTWpCaB504flvF9GJTDmuJRenRD29h1xg3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfQxtbVYq1tnlITm7cxE6N+HW1voojaa1t4jN+wFwhgUPYpPjV
+	oAyPVII+wK3J7znSsqC4ULf4G29RrlYzyjhjhm0GB7rTkDzwGroC1amN
+X-Gm-Gg: Acq92OFJ8boecdMu+mnvrj6gSltGmPBcJzPizM85RSKB31yARdHstWaD7wZEY6ft4Uy
+	3T6DVHt368gk37HymDLCfkeZmoA0QWDCewS/cctp1h6z2bNMwD2fb1SQnRvx2AqGO+Vsgavm2Dz
+	QFg+aPOM3vsDozA+urXuggBskts5WSC21bqjzbEE0UZ6i+o25eQMYB+3W+FbTebC/BtTAhuH2tK
+	LBastGPj5xobk13bgVkE4esJsUhC2DmPJfsUwu7XHtdO3q4cEKLfSSPvil6QNhX0adStKqczco8
+	jtlNIkoowDeN6PO5k4U/ItSxkD5UJViCmLZVoBYQ/al0ymkSqNEOIs51g0j+/av8TIh1WRaFqqZ
+	GOrO5+H0y40zPEK0qAFMVBJh+ZiT83kl19YANPClBQSSLH1OGp6jOOkIhj/N4pKLgg2yIXcFA4y
+	Ke3fnf7vT0srK265R8DUmIOfjT9GHPNA4dlTpsI0BAqSfGyIy8lf2e8eG/nIXpvYxXKXaB
+X-Received: by 2002:a05:7300:3081:b0:2d9:6373:ad24 with SMTP id 5a478bee46e88-30bca090d72mr176470eec.26.1781631189193;
+        Tue, 16 Jun 2026 10:33:09 -0700 (PDT)
+Received: from fx.tailc0aff1.ts.net ([206.206.192.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ba6b7f840sm5431554eec.19.2026.06.16.10.33.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jun 2026 10:33:08 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: "Starke, Daniel" <daniel.starke@siemens.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	linux-serial@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Weiming Shi <bestswngs@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] tty: n_gsm: fix use-after-free in gsm_queue() control frame dispatch
+Date: Tue, 16 Jun 2026 10:32:39 -0700
+Message-ID: <20260616173240.3665059-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260616173240.3665059-1-bestswngs@gmail.com>
+References: <20260616173240.3665059-1-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250322143418.216654-1-pchelkin@ispras.ru> <aisAxyXVxf4wql2u@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <20260612233110.2-1-sashal@kernel.org> <ajBQPNuKCruxhkXX@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ajD3Gb-vQkGU0N6b@nidhogg.toxiclabs.cc> <ajFQPY2m2A6ltvTH@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ajFabPtI8UGfkyix@nidhogg.toxiclabs.cc>
-In-Reply-To: <ajFabPtI8UGfkyix@nidhogg.toxiclabs.cc>
-From: Leah Rumancik <leah.rumancik@gmail.com>
-Date: Tue, 16 Jun 2026 10:26:08 -0700
-X-Gm-Features: AVVi8CfS3ONFPuCMea8gmdSN-_pkFprQUMtGX9P4DftlzqFTx6aNlYFAra-1gXI
-Message-ID: <CACzhbgS59uCYhjX80__+nPjEx=N8mKUsYyFS1+aRDpMA-b-VXQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 0/4] fix kernel crash for xfs/235 test
-To: Carlos Maiolino <cem@kernel.org>
-Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, Sasha Levin <sashal@kernel.org>, 
-	Fedor Pchelkin <pchelkin@ispras.ru>, stable@vger.kernel.org, xfs-stable@lists.linux.dev, 
-	"Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, 
-	Catherine Hoang <catherine.hoang@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, lvc-project@linuxtesting.org, 
-	linux-xfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:cem@kernel.org,m:hamzamahfooz@linux.microsoft.com,m:sashal@kernel.org,m:pchelkin@ispras.ru,m:stable@vger.kernel.org,m:xfs-stable@lists.linux.dev,m:djwong@kernel.org,m:hch@lst.de,m:catherine.hoang@oracle.com,m:gregkh@linuxfoundation.org,m:lvc-project@linuxtesting.org,m:linux-xfs@vger.kernel.org,s:lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265356-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER(0.00)[leahrumancik@gmail.com,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[siemens.com,asu.edu,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265436-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gregkh@linuxfoundation.org,m:jirislaby@kernel.org,m:shuah@kernel.org,m:daniel.starke@siemens.com,m:xmei5@asu.edu,m:linux-serial@vger.kernel.org,m:linux-kselftest@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:bestswngs@gmail.com,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[bestswngs@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bestswngs@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leahrumancik@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mail.gmail.com:mid,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,asu.edu:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8D7BF6933EB
+X-Rspamd-Queue-Id: 8FEE76933FE
 
-I have changed teams so I no longer work on kernel and I don't believe
-my xfs maintenance work was backfilled ;(
+The receive worker (flush_to_ldisc -> gsmld_receive_buf -> gsm0_receive/
+gsm1_receive -> gsm_queue) reads gsm->dlci[address] and dispatches the
+frame via dlci->data() without holding gsm->mutex.  The control handlers
+reached through dlci->data() then re-read gsm->dlci[]: gsm_control_reply()
+re-reads gsm->dlci[0], while gsm_control_modem() (MSC), gsm_control_rls()
+(RLS) and gsm_control_negotiation() (PN) re-read gsm->dlci[addr] for the
+DLCI named in the command - a different channel from the one the frame
+was addressed to.
 
-On Tue, Jun 16, 2026 at 7:19=E2=80=AFAM Carlos Maiolino <cem@kernel.org> wr=
-ote:
->
-> On Tue, Jun 16, 2026 at 09:31:41AM -0400, Hamza Mahfooz wrote:
-> > Cc: linux-xfs@vger.kernel.org
-> >
-> > On Tue, Jun 16, 2026 at 09:13:45AM +0200, Carlos Maiolino wrote:
-> > > On Mon, Jun 15, 2026 at 03:19:24PM -0400, Hamza Mahfooz wrote:
-> > > > Cc: Carlos Maiolino <cem@kernel.org>
-> > >
-> > > FWIW I don't maintain the stable trees I really don't have time for
-> > > that. Darrick/Leah have been doing a best effort case for that, but
-> > > again, this is mostly a best effort so we shouldn't expect them to be
-> > > looking/picking up every single possible patch suggested for stable.
-> > >
-> >
-> > Now that you mention it, the xfs-stable mailing list seems to be pretty
-> > much dead (i.e. the last time fixes from it were merged into stable was
-> > almost a year ago). I guess no one is really working on it anymore?
->
-> IIRC Darrick started it, I personally never worked on it, but I didn't
-> follow the evolution there.
->
-> >
-> > > >
-> > > > On Fri, Jun 12, 2026 at 08:20:34PM -0400, Sasha Levin wrote:
-> > > > > On Wed, Jun 11, 2026 at 02:39:03PM -0400, Hamza Mahfooz wrote:
-> > > > > > Any idea what happened to this series? It resolves an issue tha=
-t I've
-> > > > > > hit in a production environment FWIW.
-> > > > > >
-> > > > > > Series is:
-> > > > > >
-> > > > > > Tested-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-> > > > >
-> > > > > Thanks for the nudge, and thanks Fedor for putting the backport t=
-ogether.
-> > > > >
-> > > > > We generally don't take XFS backports without a maintainer signin=
-g off on them,
-> > > > > so right now we're waiting for one to do so :)
-> > > > >
-> > > > > --
-> > > > > Thanks,
-> > > > > Sasha
+Concurrently GSMIOC_SETCONF -> gsm_config() -> gsm_cleanup_mux() takes
+gsm->mutex and releases every DLCI via gsm_dlci_release() -> dlci_put().
+When the last reference is dropped the destructor gsm_dlci_free() clears
+gsm->dlci[addr] and frees the object.  If the worker dereferences one of
+those DLCIs while it is being freed, it touches freed memory.
+
+A peer that drives DLCI 0 control frames (e.g. CMD_TEST) while the mux
+owner reconfigures the line discipline with GSMIOC_SETCONF can therefore
+trigger a use-after-free:
+
+  BUG: KASAN: slab-use-after-free in gsm_control_reply.isra.0
+  Read of size 8 at addr ffff888029ae9000 by task kworker/u16:2/46
+  Workqueue: events_unbound flush_to_ldisc
+  Call Trace:
+   gsm_control_reply.isra.0 (drivers/tty/n_gsm.c:1494)
+   gsm_dlci_command (drivers/tty/n_gsm.c:2477)
+   gsmld_receive_buf (drivers/tty/n_gsm.c:3616)
+   tty_ldisc_receive_buf (drivers/tty/tty_buffer.c:398)
+   tty_port_default_receive_buf (drivers/tty/tty_port.c:37)
+   flush_to_ldisc (drivers/tty/tty_buffer.c:502)
+   process_one_work
+   worker_thread
+   kthread
+
+  Freed by task 5110:
+   kfree
+   gsm_cleanup_mux (drivers/tty/n_gsm.c:3161)
+   gsmld_ioctl (drivers/tty/n_gsm.c:3415)
+   tty_ioctl
+
+Pin each DLCI across the dereference with its existing tty_port reference.
+gsm_dlci_open_get() looks gsm->dlci[addr] up under gsm->mutex and, if
+present, takes a dlci_get() reference before dropping the mutex; the
+caller releases it with gsm_dlci_unget() once it is done.  While the
+reference is held the kref cannot reach zero, so gsm_dlci_free() cannot
+run: the object stays live and gsm->dlci[addr] is not cleared.  gsm_queue()
+pins the addressed DLCI for the UI/UIH dispatch, and gsm_control_modem(),
+gsm_control_rls() and gsm_control_negotiation() each pin the DLCI they
+operate on.
+
+The reference is taken only under the mutex, around the lookup; the mutex
+is released before dlci->data() and before the data-path work
+(gsm_process_modem(), tty_flip_buffer_push(), gsm_data_queue(), ...), so
+the receive/transmit path is not serialised by gsm->mutex and its timing
+is unaffected.
+
+Because a pinned DLCI can outlive the gsm_cleanup_mux() that released it,
+a subsequent GSMIOC_SETCONF may re-create a DLCI at the same address
+before the worker drops its reference.  Make gsm_dlci_free() clear the
+slot only if it still points at the DLCI being freed, so the late
+destructor cannot wipe a freshly installed DLCI:
+
+	cmpxchg(&dlci->gsm->dlci[dlci->addr], dlci, NULL);
+
+Attaching the n_gsm line discipline requires CAP_NET_ADMIN (gsmld_open()
+uses capable(), not ns_capable()), so this is a local denial of service
+for a privileged mux owner whose control channel is driven by an
+untrusted peer on the serial link while it reconfigures; harden the
+receive path regardless.
+
+Fixes: e1eaea46bb40 ("tty: n_gsm line discipline")
+Cc: stable@vger.kernel.org
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Link: https://lore.kernel.org/all/DJ7OKN8EMAK8.22CE0B8NZXD73@gmail.com/
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ drivers/tty/n_gsm.c | 105 ++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 96 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/tty/n_gsm.c b/drivers/tty/n_gsm.c
+index c13e050de..e1ab3a08f 100644
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -453,6 +453,8 @@ static const u8 gsm_fcs8[256] = {
+ #define GOOD_FCS	0xCF
+ 
+ static void gsm_dlci_close(struct gsm_dlci *dlci);
++static struct gsm_dlci *gsm_dlci_open_get(struct gsm_mux *gsm, unsigned int addr);
++static void gsm_dlci_unget(struct gsm_dlci *dlci);
+ static int gsmld_output(struct gsm_mux *gsm, u8 *data, int len);
+ static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk);
+ static struct gsm_msg *gsm_data_alloc(struct gsm_mux *gsm, u8 addr, int len,
+@@ -1694,10 +1696,8 @@ static void gsm_control_modem(struct gsm_mux *gsm, const u8 *data, int clen)
+ 		return;
+ 
+ 	addr >>= 1;
+-	/* Closed port, or invalid ? */
+-	if (addr == 0 || addr >= NUM_DLCI || gsm->dlci[addr] == NULL)
++	if (addr == 0)
+ 		return;
+-	dlci = gsm->dlci[addr];
+ 
+ 	/* Must be at least one byte following the EA */
+ 	if ((cl - len) < 1)
+@@ -1711,12 +1711,23 @@ static void gsm_control_modem(struct gsm_mux *gsm, const u8 *data, int clen)
+ 	if (len < 1)
+ 		return;
+ 
++	/*
++	 * Pin the addressed DLCI across the dereference: a concurrent
++	 * GSMIOC_SETCONF -> gsm_cleanup_mux() can free it otherwise. Pinning
++	 * (not gsm->mutex over the whole handler) keeps the data path lock
++	 * free.
++	 */
++	dlci = gsm_dlci_open_get(gsm, addr);
++	if (dlci == NULL)
++		return;
++
+ 	tty = tty_port_tty_get(&dlci->port);
+ 	gsm_process_modem(tty, dlci, modem, cl);
+ 	if (tty) {
+ 		tty_wakeup(tty);
+ 		tty_kref_put(tty);
+ 	}
++	gsm_dlci_unget(dlci);
+ 	gsm_control_reply(gsm, CMD_MSC, data, clen);
+ }
+ 
+@@ -1746,15 +1757,26 @@ static void gsm_control_negotiation(struct gsm_mux *gsm, unsigned int cr,
+ 	/* Invalid DLCI? */
+ 	params = (struct gsm_dlci_param_bits *)data;
+ 	addr = FIELD_GET(PN_D_FIELD_DLCI, params->d_bits);
+-	if (addr == 0 || addr >= NUM_DLCI || !gsm->dlci[addr]) {
++	if (addr == 0) {
++		gsm->open_error++;
++		return;
++	}
++
++	/*
++	 * Pin the addressed DLCI across the negotiation; see gsm_control_modem()
++	 * for why. Unlike MSC/RLS this DLCI need not be open, so pin first and
++	 * check the state afterwards.
++	 */
++	dlci = gsm_dlci_open_get(gsm, addr);
++	if (dlci == NULL) {
+ 		gsm->open_error++;
+ 		return;
+ 	}
+-	dlci = gsm->dlci[addr];
+ 
+ 	/* Too late for parameter negotiation? */
+ 	if ((!cr && dlci->state == DLCI_OPENING) || dlci->state == DLCI_OPEN) {
+ 		gsm->open_error++;
++		gsm_dlci_unget(dlci);
+ 		return;
+ 	}
+ 
+@@ -1765,6 +1787,7 @@ static void gsm_control_negotiation(struct gsm_mux *gsm, unsigned int cr,
+ 			pr_info("%s PN failed\n", __func__);
+ 		gsm->open_error++;
+ 		gsm_dlci_close(dlci);
++		gsm_dlci_unget(dlci);
+ 		return;
+ 	}
+ 
+@@ -1785,6 +1808,7 @@ static void gsm_control_negotiation(struct gsm_mux *gsm, unsigned int cr,
+ 			pr_info("%s PN in invalid state\n", __func__);
+ 		gsm->open_error++;
+ 	}
++	gsm_dlci_unget(dlci);
+ }
+ 
+ /**
+@@ -1800,6 +1824,7 @@ static void gsm_control_negotiation(struct gsm_mux *gsm, unsigned int cr,
+ 
+ static void gsm_control_rls(struct gsm_mux *gsm, const u8 *data, int clen)
+ {
++	struct gsm_dlci *dlci;
+ 	struct tty_port *port;
+ 	unsigned int addr = 0;
+ 	u8 bits;
+@@ -1816,15 +1841,21 @@ static void gsm_control_rls(struct gsm_mux *gsm, const u8 *data, int clen)
+ 	if (len <= 0)
+ 		return;
+ 	addr >>= 1;
+-	/* Closed port, or invalid ? */
+-	if (addr == 0 || addr >= NUM_DLCI || gsm->dlci[addr] == NULL)
++	if (addr == 0)
+ 		return;
+ 	/* No error ? */
+ 	bits = *dp;
+ 	if ((bits & 1) == 0)
+ 		return;
+ 
+-	port = &gsm->dlci[addr]->port;
++	/*
++	 * Pin the addressed DLCI across the dereference; see gsm_control_modem()
++	 * for why. gsm_cleanup_mux() can free it concurrently otherwise.
++	 */
++	dlci = gsm_dlci_open_get(gsm, addr);
++	if (dlci == NULL)
++		return;
++	port = &dlci->port;
+ 
+ 	if (bits & 2)
+ 		tty_insert_flip_char(port, 0, TTY_OVERRUN);
+@@ -1835,6 +1866,7 @@ static void gsm_control_rls(struct gsm_mux *gsm, const u8 *data, int clen)
+ 
+ 	tty_flip_buffer_push(port);
+ 
++	gsm_dlci_unget(dlci);
+ 	gsm_control_reply(gsm, CMD_RLS, data, clen);
+ }
+ 
+@@ -2694,7 +2726,14 @@ static void gsm_dlci_free(struct tty_port *port)
+ 	struct gsm_dlci *dlci = container_of(port, struct gsm_dlci, port);
+ 
+ 	timer_shutdown_sync(&dlci->t1);
+-	dlci->gsm->dlci[dlci->addr] = NULL;
++	/*
++	 * Only clear the slot if it still points at us. A receive worker can
++	 * pin this DLCI across gsm_queue() dispatch with dlci_get(); if a
++	 * concurrent GSMIOC_SETCONF tears the mux down and re-creates a DLCI
++	 * at the same address before the worker drops its reference, the slot
++	 * already refers to the new DLCI and must not be cleared here.
++	 */
++	cmpxchg(&dlci->gsm->dlci[dlci->addr], dlci, NULL);
+ 	kfifo_free(&dlci->fifo);
+ 	while ((dlci->skb = skb_dequeue(&dlci->skb_list)))
+ 		dev_kfree_skb(dlci->skb);
+@@ -2711,6 +2750,42 @@ static inline void dlci_put(struct gsm_dlci *dlci)
+ 	tty_port_put(&dlci->port);
+ }
+ 
++/**
++ *	gsm_dlci_open_get	-	look up a DLCI and pin it
++ *	@gsm: GSM mux
++ *	@addr: DLCI address
++ *
++ *	Look up gsm->dlci[addr] under gsm->mutex and, if present, take a
++ *	tty_port reference so it cannot be freed while a control-frame handler
++ *	dereferences it. A concurrent GSMIOC_SETCONF -> gsm_cleanup_mux()
++ *	releases DLCIs under the same mutex, so the lookup and the pin are
++ *	atomic with respect to the teardown. Returns the pinned DLCI or NULL.
++ *	The caller must release it with gsm_dlci_unget(). Callers that require
++ *	a particular state must check dlci->state themselves.
++ */
++static struct gsm_dlci *gsm_dlci_open_get(struct gsm_mux *gsm, unsigned int addr)
++{
++	struct gsm_dlci *dlci;
++
++	if (addr >= NUM_DLCI)
++		return NULL;
++	mutex_lock(&gsm->mutex);
++	dlci = gsm->dlci[addr];
++	if (dlci != NULL)
++		dlci_get(dlci);
++	mutex_unlock(&gsm->mutex);
++	return dlci;
++}
++
++/**
++ *	gsm_dlci_unget		-	drop a reference from gsm_dlci_open_get()
++ *	@dlci: DLCI to release
++ */
++static void gsm_dlci_unget(struct gsm_dlci *dlci)
++{
++	dlci_put(dlci);
++}
++
+ static void gsm_destroy_network(struct gsm_dlci *dlci);
+ 
+ /**
+@@ -2839,11 +2914,23 @@ static void gsm_queue(struct gsm_mux *gsm)
+ 	case UI|PF:
+ 	case UIH:
+ 	case UIH|PF:
++		/*
++		 * Pin the DLCI so a concurrent gsm_cleanup_mux() cannot free
++		 * it while dlci->data() and the handlers it reaches use it.
++		 * The mutex is dropped before the dispatch, so the data path
++		 * is not serialised.
++		 */
++		mutex_lock(&gsm->mutex);
++		dlci = gsm->dlci[address];
+ 		if (dlci == NULL || dlci->state != DLCI_OPEN) {
++			mutex_unlock(&gsm->mutex);
+ 			gsm_response(gsm, address, DM|PF);
+ 			return;
+ 		}
++		dlci_get(dlci);
++		mutex_unlock(&gsm->mutex);
+ 		dlci->data(dlci, gsm->buf, gsm->len);
++		dlci_put(dlci);
+ 		break;
+ 	default:
+ 		goto invalid;
+-- 
+2.43.0
+
 
