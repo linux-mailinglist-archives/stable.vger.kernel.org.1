@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-265783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id izC0KsCPMWoKmwUAu9opvQ
-	(envelope-from <stable+bounces-265783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:40 +0200
+	id LAdvG/V3MWpzkAUAu9opvQ
+	(envelope-from <stable+bounces-264471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349F5693BFB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF51D691F83
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n9PquIFG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265783-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265783-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=PVGfE7oo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264471-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264471-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A419B300D1D2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69DAE3251528
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F6A3C5842;
-	Tue, 16 Jun 2026 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DC045BD6F;
+	Tue, 16 Jun 2026 16:07:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AD13CE4BA;
-	Tue, 16 Jun 2026 18:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C86F44D031;
+	Tue, 16 Jun 2026 16:07:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632958; cv=none; b=oTpobq+l3KO94bKjUP1fsuqfazZ1LfhDZceaTjN8KU23nAsLROJYfrEXaRkhWbUscyM2J4iuHowCxoW7X2WhrllXPvJQUG6a+Ovf2sHw3rIg0FmGv9pLfv4mHkPR2n0J1JdRysA2/hr4+S1ettfr+BnVLBq7eS3xA1ip6lkQwCo=
+	t=1781626063; cv=none; b=IuboD+FgLcRdGe7PsPrhFoSl1zP7GgfPHOC4MjtDPcRqqk9UElEM2oa9J28KJ7DkTo1BYdyoOBTeIcy7Zb1sOzFeqtVG2fhfB3GqUXET9/X2cvB/Zk4nNT7ZEIC9WFwb9TOXlAq10Ja/hWBW3vBDUa7NVo9OPHBanTX+HMPLoco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632958; c=relaxed/simple;
-	bh=/+yPKQ6wWVaQJN4laaBSoUkVY154Gxd8/cjhH5S0pqY=;
+	s=arc-20240116; t=1781626063; c=relaxed/simple;
+	bh=MbK6jDcTCPP9P7TcGzV59caAkmNGFiN71iXA119ypYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ks+9hXAZKdRvK56zJMdhCoUPwDqvTLje9KXWkpCAaMBiq08q5/Hj0ie8EWViybOq44S4ENirIQIaZipoBDaAUc2X26D+le2nfT2yem5h43irK++Ir7fUuS47DagH3AZei7XX1BZ3/0TmO4WPocuk4JD4O8LRqWYwHHRuypWeuLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9PquIFG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B241F000E9;
-	Tue, 16 Jun 2026 18:02:36 +0000 (UTC)
+	 MIME-Version; b=rXDOlJLRjz6v2pNKPYKMYAxspOR94ZhnKJO8hAiKlg7QhbSaQ2EAY1ssU4fDFKYahRw7wgkJVV7nZgelMecbeOP+GnyiIB0HgnPbng//a6KZgw+b4PpeJV+efIvJAS/+yv1d/mgeIl+PPo+u33VreacqBs11SV9DxhJMKDDcryA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVGfE7oo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B561F000E9;
+	Tue, 16 Jun 2026 16:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632957;
-	bh=jnvROPG9x/gO8hB214Sejs161+3rEth5EsSfkClrAts=;
+	s=korg; t=1781626062;
+	bh=yzWtHZwRYmJtHnSgy/Lie3yFcnVoeZUybgDP/si5UqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n9PquIFGprUXqPHWTCNRiNRC4j3IYB2zF64Aknx39IDs0DERxZ+UTdBqYG6stM+kK
-	 xzjUEtLbRGi2H79NAemP3gvoquazk1MXedm/plERMbAvh9lj+JwY8w3XzLBYBMuE1X
-	 aLi0lni/W7JJ9hhVfztnq5pKSbksJ211Jou6t2mw=
+	b=PVGfE7ooZ1JnhkvAAzCAMoDFqr0l5Ee3YLk5O+rMu+xpGi8nrYnwVQMKXV3P9n6um
+	 UHmqkJH3eSNZEGC73PDKfUyMl+lteGE84EgxT76CHMacaqRqMlTtzVv0cJiO0TyG09
+	 6g1gJRTrfp2r0Fgk0ipA2rHhIveAaYw7C70iPjGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.1 508/522] ipmi:ssif: NULL thread on error
+	Inochi Amaoto <inochiama@gmail.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.18 259/325] mmc: litex_mmc: Set mandatory idle clocks before CMD0
 Date: Tue, 16 Jun 2026 20:30:55 +0530
-Message-ID: <20260616145149.512852593@linuxfoundation.org>
+Message-ID: <20260616145111.489016956@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,69 +72,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265783-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:corey@minyard.net,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264471-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,minyard.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 349F5693BFB
+X-Rspamd-Queue-Id: BF51D691F83
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-commit a8aebe93a4938c0ca1941eeaae821738f869be3d upstream.
+commit 99982b743e5ba72bd1f5de0e03e3b96ae70b1e51 upstream.
 
-Cleanup code was checking the thread for NULL, but it was possibly
-a PTR_ERR() in one spot.
+The litex_mmc driver assumes the card is already probed in the BIOS
+and skip the phy initialization. This will cause the command fail
+like the following when the old card is unplugged and then insert
+a new card:
 
-Spotted with static analysis.
+[   62.923593] litex-mmc f0004000.mmc: Command (cmd 8) error, status -110
+[   62.949717] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   62.976606] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.002516] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
+[   63.028442] litex-mmc f0004000.mmc: Command (cmd 55) error, status -110
 
-Link: https://sourceforge.net/p/openipmi/mailman/message/59324676/
-Fixes: 75c486cb1bca ("ipmi:ssif: Clean up kthread on errors")
-Cc: <stable@vger.kernel.org> # 91eb7ec72612: ipmi:ssif: Remove unnecessary indention
+Add required clock settings and initialization for the CMD 0, so it can
+probe the new card.
+
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/litex_mmc.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1886,6 +1886,7 @@ static int ssif_probe(struct i2c_client
- 					"kssif%4.4x", thread_num);
- 	if (IS_ERR(ssif_info->thread)) {
- 		rv = PTR_ERR(ssif_info->thread);
-+		ssif_info->thread = NULL;
- 		dev_notice(&ssif_info->client->dev,
- 			   "Could not start kernel thread: error %d\n",
- 			   rv);
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -69,6 +69,9 @@
+ #define SD_SLEEP_US       5
+ #define SD_TIMEOUT_US 20000
+ 
++#define SD_INIT_DELAY_US  1000
++#define SD_INIT_CLK_HZ    400000
++
+ #define SDIRQ_CARD_DETECT    1
+ #define SDIRQ_SD_TO_MEM_DONE 2
+ #define SDIRQ_MEM_TO_SD_DONE 4
+@@ -450,6 +453,17 @@ static void litex_mmc_set_ios(struct mmc
+ 	struct litex_mmc_host *host = mmc_priv(mmc);
+ 
+ 	/*
++	 * The SD specification requires at least 74 idle clocks before CMD0.
++	 * These dummy cycles is generated by writing LITEX_PHY_INITIALIZE.
++	 */
++	if (ios->chip_select == MMC_CS_HIGH) {
++		litex_mmc_setclk(host, SD_INIT_CLK_HZ);
++		litex_write8(host->sdphy + LITEX_PHY_INITIALIZE, 1);
++		fsleep(SD_INIT_DELAY_US);
++		return;
++	}
++
++	/*
+ 	 * NOTE: Ignore any ios->bus_width updates; they occur right after
+ 	 * the mmc core sends its own acmd6 bus-width change notification,
+ 	 * which is redundant since we snoop on the command flow and inject
 
 
 
