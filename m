@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id doPeK/WEMWr1lQUAu9opvQ
-	(envelope-from <stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:37 +0200
+	id EWtJN/OdMWpUoQUAu9opvQ
+	(envelope-from <stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08989692F30
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:16:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A10694B0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BeIoXz1L;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265164-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Df7QOMSu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266472-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BC2430F7793
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6A163038E2F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A369449EA8;
-	Tue, 16 Jun 2026 17:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDB83DA5A8;
+	Tue, 16 Jun 2026 19:03:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1AC1A6803;
-	Tue, 16 Jun 2026 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33F43DBD76;
+	Tue, 16 Jun 2026 19:03:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629799; cv=none; b=ELYuif7v69N81WUQ12XPN3R1y03njKSd2Gq+hxZN38KXAEY94XWcO9JQbwAIrlO0QeiroBE1IbMfU2KEgL63Qp95GTOEO9OtgIxtjMTmlF4PiQnw3vCTPYnh1p8qWxo1bu0Hc/tUVth0mxyDa8K8ynPTvG6ZjcCKCOqvJwpWn2s=
+	t=1781636593; cv=none; b=Ca6ojWbOMMdxWtppPZLfrLuOHb+h8mEWf/PTW3ozHZVJse7y3MQKV6qfvGzjZ2DoOIrsxRxHgzp85LmekHjeYTmaRjwLUMsJL2vQOgBwKiGD7+jzX648j/fBi6S3nNQ9sHe5zInBgKSKO/cxO2HD0hurjUr2cCI4e1ziLWV3MDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629799; c=relaxed/simple;
-	bh=lfyBDrVCB4sekq2iz044xATwWmU1/JBb2kjqH578MEU=;
+	s=arc-20240116; t=1781636593; c=relaxed/simple;
+	bh=EOU6rd79RgJCcSFZHpZCOS9CW8mLkvQD0bPm4/+PhGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=em0S3xZ95wHzn1Ce/S2djGU9+4FPJ1GkhqfnWZ28Wkhq/sjNfNWAgOPyOKn/tGR5WnS++Oe9EFYn+zMazGyOsO6wXeD0dBTZtEZjaXZZJmRZLv3IX72nViWW6aKkdvdh6/d9Z0eGjWuY/7BfoDvUCY4h6bfA1IhXQHqlOUEHYZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeIoXz1L; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC721F000E9;
-	Tue, 16 Jun 2026 17:09:56 +0000 (UTC)
+	 MIME-Version; b=C3D0oKOJWKd1+qfccqSujdo2tZrIIyyDFZmQVz5UlinOTjqteYve5vnZ10tz8FmwT98ylHWaAbOqAp6E4plX/tHdfu+H/p7wkf/QjV8U/YYf/F0tVeJ6d2H1n8dSZ3lj1HEdF5R3gjmIWk7S5H2wrQMa6xwJdOdCewMQRMD2DNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df7QOMSu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0821F00A3D;
+	Tue, 16 Jun 2026 19:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629797;
-	bh=L9LV+TJVu4yiYkipv9+GpQaqf+Upsn6l32176YhYiok=;
+	s=korg; t=1781636592;
+	bh=hrPqweF8hnlnrRMnXFdR5IA1lC8sRBycEPXEojmJYJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BeIoXz1LAC9HeN4GQkReQSXlJ/S0sbNF/b4EZT5Et+qLocFl8BK4o3Qh3wTznhIH4
-	 pXEx/On7he9OYhxYgzmH+IOXuIfuSwVAeRjZVuuXXzlEo2E0LZkrb7wMZ3kM0aTQ+V
-	 wJl6tMqpPnbbpw2nJJkBG22ZZ6GnIiPr9EjppIhw=
+	b=Df7QOMSurBjiQJ8G6//Lf41ae6lbPylRkeXkYo5N21aZlVyRrgTTLryBj2pYItVFD
+	 C6MGGLn1UxfVYSeZZWb9qwsbt1hvM/70tFCaCCuOAN1Dplw+ICJEf7sno7natMLrBW
+	 dtt/WOGGbgMNVavgt6OZ3LLrSvxLaZZAyiRQ+mxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Md Haris Iqbal <haris.iqbal@linux.dev>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 337/452] net/mlx5: Reorder completion before putting command entry in cmd_work_handler
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 268/342] tracing/probes: Limit size of event probe to 3K
 Date: Tue, 16 Jun 2026 20:29:24 +0530
-Message-ID: <20260616145135.029083358@linuxfoundation.org>
+Message-ID: <20260616145100.791811796@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265164-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266472-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kniv@yandex-team.ru,m:haris.iqbal@linux.dev,m:moshe@nvidia.com,m:tariqt@nvidia.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mathieu.desnoyers@efficios.com,m:mhiramat@kernel.org,m:rostedt@goodmis.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,76 +96,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,nvidia.com:email,vger.kernel.org:from_smtp,yandex-team.ru:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,goodmis.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08989692F30
+X-Rspamd-Queue-Id: 78A10694B0F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 02896a7fa4cd3ec61d60ba30136841e4f04bdeac upstream.
+[ Upstream commit b2aa3b4d64e460ac606f386c24e7d8a873ce6f1a ]
 
-Assuming callback != NULL && !page_queue, cmd_work_handler takes
-command entry with refcnt == 1 from mlx5_cmd_invoke.
-If either semaphore timeout or index allocation error happens,
-it does final cmd_ent_put(ent). To avoid access to freed memory,
-notify slotted completion before cmd_ent_put.
+There currently isn't a max limit an event probe can be. One could make an
+event greater than PAGE_SIZE, which makes the event useless because if
+it's bigger than the max event that can be recorded into the ring buffer,
+then it will never be recorded.
 
-This is theoretical issue found by Svace static analyser.
+A event probe should never need to be greater than 3K, so make that the
+max size. As long as the max is less than the max that can be recorded
+onto the ring buffer, it should be fine.
 
 Cc: stable@vger.kernel.org
-Fixes: 485d65e135712 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
-Fixes: 0e2909c6bec90 ("net/mlx5: Fix variable not being completed when function returns")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Reviewed-by: Md Haris Iqbal <haris.iqbal@linux.dev>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260526162932.501584-1-kniv@yandex-team.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 93ccae7a22274 ("tracing/kprobes: Support basic types on dynamic events")
+Link: https://patch.msgid.link/20260428122302.706610ba@gandalf.local.home
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/trace_probe.c |    5 +++++
+ kernel/trace/trace_probe.h |    4 +++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -989,12 +989,13 @@ static void cmd_work_handler(struct work
- 				ent->callback(-EBUSY, ent->context);
- 				mlx5_free_cmd_msg(dev, ent->out);
- 				free_msg(dev, ent->in);
-+				complete(&ent->slotted);
- 				cmd_ent_put(ent);
- 			} else {
- 				ent->ret = -EBUSY;
- 				complete(&ent->done);
-+				complete(&ent->slotted);
- 			}
--			complete(&ent->slotted);
- 			return;
- 		}
- 		alloc_ret = cmd_alloc_index(cmd, ent);
-@@ -1004,13 +1005,14 @@ static void cmd_work_handler(struct work
- 				ent->callback(-EAGAIN, ent->context);
- 				mlx5_free_cmd_msg(dev, ent->out);
- 				free_msg(dev, ent->in);
-+				complete(&ent->slotted);
- 				cmd_ent_put(ent);
- 			} else {
- 				ent->ret = -EAGAIN;
- 				complete(&ent->done);
-+				complete(&ent->slotted);
- 			}
- 			up(&cmd->vars.sem);
--			complete(&ent->slotted);
- 			return;
- 		}
- 	} else {
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -610,6 +610,11 @@ static int traceprobe_parse_probe_arg_bo
+ 	parg->offset = *size;
+ 	*size += parg->type->size * (parg->count ?: 1);
+ 
++	if (*size > MAX_PROBE_EVENT_SIZE) {
++		trace_probe_log_err(offset, EVENT_TOO_BIG);
++		return -E2BIG;
++	}
++
+ 	if (parg->count) {
+ 		len = strlen(parg->type->fmttype) + 6;
+ 		parg->fmt = kmalloc(len, GFP_KERNEL);
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -33,6 +33,7 @@
+ #define MAX_ARRAY_LEN		64
+ #define MAX_ARG_NAME_LEN	32
+ #define MAX_STRING_SIZE		PATH_MAX
++#define MAX_PROBE_EVENT_SIZE	3072
+ 
+ /* Reserved field names */
+ #define FIELD_STRING_IP		"__probe_ip"
+@@ -439,7 +440,8 @@ extern int traceprobe_define_arg_fields(
+ 	C(FAIL_REG_PROBE,	"Failed to register probe event"),\
+ 	C(DIFF_PROBE_TYPE,	"Probe type is different from existing probe"),\
+ 	C(DIFF_ARG_TYPE,	"Argument type or name is different from existing probe"),\
+-	C(SAME_PROBE,		"There is already the exact same probe event"),
++	C(SAME_PROBE,		"There is already the exact same probe event"),\
++	C(EVENT_TOO_BIG,	"Event too big (too many fields?)"),
+ 
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 
 
 
