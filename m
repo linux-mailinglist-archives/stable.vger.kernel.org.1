@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-266122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cXH2Gy2YMWrmngUAu9opvQ
-	(envelope-from <stable+bounces-266122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:37 +0200
+	id mlLMJUN7MWrUkQUAu9opvQ
+	(envelope-from <stable+bounces-264650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77806944B1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA20F6923A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NUnHGt5i;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266122-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266122-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kiL0W4w8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264650-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264650-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDDDD31AA80D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B5E5E3245ABC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FCB3D8902;
-	Tue, 16 Jun 2026 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521D446AF1B;
+	Tue, 16 Jun 2026 16:24:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3613DA7E1;
-	Tue, 16 Jun 2026 18:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51F53A8746;
+	Tue, 16 Jun 2026 16:24:27 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634780; cv=none; b=KgvYq4pjvGPXfZ6eTj1VICnrUzyAvvg5FxLyp941YfEUTVNP2QKCZtkg7LdoshDSmYblBtmeIQpXtx1wHSUhdQwFJ0Ti0N9P4txeskqP1Tv9dgN8xjE+KTvbpkVKS4ou8jO29DeCieQmynuJE8R5bx0ej0hj8ytpyXNe95BE6lM=
+	t=1781627069; cv=none; b=dIzmSAlc/NlBlp8M6ntnd/1z1X2YhYnZsPiflZC2MCrs8fnARwnTV4gZvhsXz3WGWbdAyIzHoou3EWgxjdFjz1RD51X/1TfQDICIRXTVoiGeu6bnWIoLJV1daz5we5DV9dzz9ymaJKE+bGia7wJbn2oR+69ydVL+tEPR7WKjpd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634780; c=relaxed/simple;
-	bh=kt/sYcQN8of6srmzCJ+rRO8oVMUMK5NyH8jLyGJEvyE=;
+	s=arc-20240116; t=1781627069; c=relaxed/simple;
+	bh=uO0KvMVUSYKsJ4ISK3bVyrbV0gCqicZIF79vQ4O4Kd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDGA1AaONLK5iX5S1Fz2gOS4pogwDW1goUrxFYhcWD0I/n/zk4ZNPn4hzciMhMRqltB3/Go9j+XX9tjhZpolgSPV6Gpmt1SS7sWwoLBaASeNZjVp+NQMQnQ1H4wuCCadUgSDHepoc1PjfsvIyXUfGFxL7yFyFx+AVE2bLq4Gy0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUnHGt5i; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48001F000E9;
-	Tue, 16 Jun 2026 18:32:57 +0000 (UTC)
+	 MIME-Version; b=AXYEkEMb26NgRBZV2JmWtUNXReEhS4DnBchcCy7n1oBVSXmOyqXwU56HMk+b9tVEHdupr1/3PV+L7KOChd0sstybx61SBkYKHAC8NkJmQJ0OvujE0dK34U0ERhbXmJ8hQ9v62w7fraI0sRpGq5aqDLQHu90yxtfBTatqgHGxiVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiL0W4w8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F420D1F000E9;
+	Tue, 16 Jun 2026 16:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634778;
-	bh=hgbntu6jrw+l54ltMeMunnNKhrbd1aAK3JfptAKp17I=;
+	s=korg; t=1781627067;
+	bh=2GjyZCyVf7iO96XdjM8uY2uzTYZdASwpzObOeQh5J5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NUnHGt5ia9f0gg8J1sTVfrFUUcvYuDo6lxC93P68GB+Ym1Wz2r68XWbfUYDH7zINK
-	 2VPUgcuW055u6iFcDJwqCuQQJOGXr0ZKbB35XCmgE9CvdycZcSLIhUoHu+HdSX8zsM
-	 RqcB7YB7+UMzX11DPMh12vqk7Od/l5VYJj8QMxlA=
+	b=kiL0W4w8H9HvCHkopgHX1tBJiNDrN9d5xUeDsy/3M8+/6RCk9RaPrk19ko2dOhCK+
+	 O2LqOudmEx2zI1B/hOFz8XjtF7HIOqJc6SrjoUG2JMsSGqvD4vagIZsPxR7AjvYeM/
+	 Q3FJ1mA1FNSMG5BRByE/5cgwxbuoMjlnAbOggTag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 297/411] sd: rename the scsi_disk.dev field
+Subject: [PATCH 6.12 097/261] netfilter: revalidate bridge ports
 Date: Tue, 16 Jun 2026 20:28:55 +0530
-Message-ID: <20260616145116.943119013@linuxfoundation.org>
+Message-ID: <20260616145049.534848482@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,158 +70,278 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266122-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264650-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hch@lst.de,m:bvanassche@acm.org,m:kch@nvidia.com,m:ming.lei@redhat.com,m:martin.petersen@oracle.com,m:axboe@kernel.dk,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,nvidia.com:email,oracle.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,acm.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C77806944B1
+X-Rspamd-Queue-Id: EA20F6923A8
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit fad45c3007a18064da759b4dba35eb722bc64e97 ]
+[ Upstream commit ccb9fd4b87538ccf19ccff78ee26700526d94867 ]
 
-dev is very hard to grep for.  Give the field a more descriptive name and
-documents its purpose.
+ebt_redirect_tg() dereferences br_port_get_rcu() return without a
+NULL check, causing a kernel panic when the bridge port has been
+removed between the original hook invocation and an NFQUEUE
+reinject.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20220308055200.735835-5-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 1e111c4b3a72 ("scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails")
+A mere NULL check isn't sufficient, however.  As sashiko review
+points out userspace can not only remove the port from the bridge,
+it could also place the device in a different virtual device, e.g.
+macvlan.
+
+If this happens, we must drop the packet, there is no way for us to
+reinject it into the bridge path.
+
+Switch to _upper API, we don't need the bridge port structure.
+Also, this fix keeps another bug intact:
+
+Both nfnetlink_log and nfnetlink_queue use CONFIG_BRIDGE_NETFILTER
+too aggressive, which prevents certain logging features when queueing
+in bridge family: NETFILTER_FAMILY_BRIDGE can be enabled while the old
+CONFIG_BRIDGE_NETFILTER cruft is off.
+
+Fixes tag is a common ancestor, this was always broken.
+
+Fixes: f350a0a87374 ("bridge: use rx_handler_data pointer to store net_bridge_port pointer")
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Assisted-by: Claude:claude-sonnet-4-6
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c |   22 +++++++++++-----------
- drivers/scsi/sd.h |    9 +++++++--
- 2 files changed, 18 insertions(+), 13 deletions(-)
+ net/bridge/netfilter/ebt_dnat.c     |  4 +-
+ net/bridge/netfilter/ebt_redirect.c | 16 +++++---
+ net/netfilter/nfnetlink_log.c       | 23 +++++++++--
+ net/netfilter/nfnetlink_queue.c     | 64 +++++++++++++++++++++++++----
+ 4 files changed, 89 insertions(+), 18 deletions(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -674,7 +674,7 @@ static struct scsi_disk *scsi_disk_get(s
- 	if (disk->private_data) {
- 		sdkp = scsi_disk(disk);
- 		if (scsi_device_get(sdkp->device) == 0)
--			get_device(&sdkp->dev);
-+			get_device(&sdkp->disk_dev);
- 		else
- 			sdkp = NULL;
- 	}
-@@ -687,7 +687,7 @@ static void scsi_disk_put(struct scsi_di
- 	struct scsi_device *sdev = sdkp->device;
+diff --git a/net/bridge/netfilter/ebt_dnat.c b/net/bridge/netfilter/ebt_dnat.c
+index 3fda71a8579d13..73f185cccd63df 100644
+--- a/net/bridge/netfilter/ebt_dnat.c
++++ b/net/bridge/netfilter/ebt_dnat.c
+@@ -39,7 +39,9 @@ ebt_dnat_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 			dev = xt_in(par);
+ 			break;
+ 		case NF_BR_PRE_ROUTING:
+-			dev = br_port_get_rcu(xt_in(par))->br->dev;
++			dev = netdev_master_upper_dev_get_rcu(xt_in(par));
++			if (!dev) /* bridge port removed? */
++				return EBT_DROP;
+ 			break;
+ 		default:
+ 			dev = NULL;
+diff --git a/net/bridge/netfilter/ebt_redirect.c b/net/bridge/netfilter/ebt_redirect.c
+index 307790562b4929..83486cd4d564b1 100644
+--- a/net/bridge/netfilter/ebt_redirect.c
++++ b/net/bridge/netfilter/ebt_redirect.c
+@@ -24,12 +24,18 @@ ebt_redirect_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 	if (skb_ensure_writable(skb, 0))
+ 		return EBT_DROP;
  
- 	mutex_lock(&sd_ref_mutex);
--	put_device(&sdkp->dev);
-+	put_device(&sdkp->disk_dev);
- 	scsi_device_put(sdev);
- 	mutex_unlock(&sd_ref_mutex);
- }
-@@ -3412,14 +3412,14 @@ static int sd_probe(struct device *dev)
- 					     SD_MOD_TIMEOUT);
- 	}
- 
--	device_initialize(&sdkp->dev);
--	sdkp->dev.parent = get_device(dev);
--	sdkp->dev.class = &sd_disk_class;
--	dev_set_name(&sdkp->dev, "%s", dev_name(dev));
-+	device_initialize(&sdkp->disk_dev);
-+	sdkp->disk_dev.parent = get_device(dev);
-+	sdkp->disk_dev.class = &sd_disk_class;
-+	dev_set_name(&sdkp->disk_dev, "%s", dev_name(dev));
- 
--	error = device_add(&sdkp->dev);
-+	error = device_add(&sdkp->disk_dev);
- 	if (error) {
--		put_device(&sdkp->dev);
-+		put_device(&sdkp->disk_dev);
- 		goto out;
- 	}
- 
-@@ -3461,7 +3461,7 @@ static int sd_probe(struct device *dev)
- 
- 	error = device_add_disk(dev, gd, NULL);
- 	if (error) {
--		put_device(&sdkp->dev);
-+		put_device(&sdkp->disk_dev);
- 		goto out;
- 	}
- 
-@@ -3511,7 +3511,7 @@ static int sd_remove(struct device *dev)
- 	sdkp = dev_get_drvdata(dev);
- 	scsi_autopm_get_device(sdkp->device);
- 
--	device_del(&sdkp->dev);
-+	device_del(&sdkp->disk_dev);
- 	del_gendisk(sdkp->disk);
- 	sd_shutdown(dev);
- 
-@@ -3519,7 +3519,7 @@ static int sd_remove(struct device *dev)
- 
- 	mutex_lock(&sd_ref_mutex);
- 	dev_set_drvdata(dev, NULL);
--	put_device(&sdkp->dev);
-+	put_device(&sdkp->disk_dev);
- 	mutex_unlock(&sd_ref_mutex);
- 
- 	return 0;
---- a/drivers/scsi/sd.h
-+++ b/drivers/scsi/sd.h
-@@ -70,7 +70,12 @@ enum {
- struct scsi_disk {
- 	struct scsi_driver *driver;	/* always &sd_template */
- 	struct scsi_device *device;
--	struct device	dev;
+-	if (xt_hooknum(par) != NF_BR_BROUTING)
+-		/* rcu_read_lock()ed by nf_hook_thresh */
+-		ether_addr_copy(eth_hdr(skb)->h_dest,
+-				br_port_get_rcu(xt_in(par))->br->dev->dev_addr);
+-	else
++	if (xt_hooknum(par) != NF_BR_BROUTING) {
++		const struct net_device *dev;
 +
-+	/*
-+	 * disk_dev is used to show attributes in /sys/class/scsi_disk/,
-+	 * but otherwise not really needed.  Do not use for refcounting.
-+	 */
-+	struct device	disk_dev;
- 	struct gendisk	*disk;
- 	struct opal_dev *opal_dev;
- #ifdef CONFIG_BLK_DEV_ZONED
-@@ -126,7 +131,7 @@ struct scsi_disk {
- 	unsigned	security : 1;
- 	unsigned	ignore_medium_access_errors : 1;
- };
--#define to_scsi_disk(obj) container_of(obj,struct scsi_disk,dev)
-+#define to_scsi_disk(obj) container_of(obj, struct scsi_disk, disk_dev)
++		dev = netdev_master_upper_dev_get_rcu(xt_in(par));
++		if (!dev)
++			return EBT_DROP;
++
++		ether_addr_copy(eth_hdr(skb)->h_dest, dev->dev_addr);
++	} else {
+ 		ether_addr_copy(eth_hdr(skb)->h_dest, xt_in(par)->dev_addr);
++	}
++
+ 	skb->pkt_type = PACKET_HOST;
+ 	return info->target;
+ }
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 3da32d2f68e092..cfd68bc005d26b 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -450,6 +450,23 @@ static int nfulnl_put_bridge(struct nfulnl_instance *inst, const struct sk_buff
+ 	return -1;
+ }
  
- static inline struct scsi_disk *scsi_disk(struct gendisk *disk)
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++static int nflog_put_master_ifindex(struct sk_buff *nlskb, int attr,
++				    const struct net_device *dev)
++{
++	const struct net_device *upper;
++
++	if (dev && !netif_is_bridge_port(dev))
++		return 0;
++
++	upper = netdev_master_upper_dev_get_rcu((struct net_device *)dev);
++	if (upper && nla_put_be32(nlskb, attr, htonl(upper->ifindex)))
++		return -EMSGSIZE;
++
++	return 0;
++}
++#endif
++
+ /* This is an inline function, we don't really care about a long
+  * list of arguments */
+ static inline int
+@@ -504,8 +521,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 			/* rcu_read_lock()ed by nf_hook_thresh or
+ 			 * nf_log_packet.
+ 			 */
+-			    nla_put_be32(inst->skb, NFULA_IFINDEX_INDEV,
+-					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
++			    nflog_put_master_ifindex(inst->skb, NFULA_IFINDEX_INDEV, indev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physinif;
+@@ -541,8 +557,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 			/* rcu_read_lock()ed by nf_hook_thresh or
+ 			 * nf_log_packet.
+ 			 */
+-			    nla_put_be32(inst->skb, NFULA_IFINDEX_OUTDEV,
+-					 htonl(br_port_get_rcu(outdev)->br->dev->ifindex)))
++			    nflog_put_master_ifindex(inst->skb, NFULA_IFINDEX_OUTDEV, outdev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			struct net_device *physoutdev;
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 8518b620ae50ed..1b517cd2bb58cc 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -426,10 +426,47 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry, bool *is_
+ 	return false;
+ }
+ 
++static bool nf_bridge_port_valid(const struct net_device *dev)
++{
++	if (!dev)
++		return true;
++
++	return netif_is_bridge_port(dev);
++}
++
++/* queued skbs leave rcu protection.  We bump device refcount so that
++ * the device cannot go away.  However, while packet was out the port
++ * could have been removed from the bridge.
++ *
++ * Ensure in+outdev are still part of a bridge at reinject time.
++ *
++ * The device rx_handler_data could even be pointing at data that is
++ * not a net_bridge_port structure.
++ */
++static bool nf_bridge_ports_valid(const struct nf_queue_entry *entry)
++{
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++	if (!nf_bridge_port_valid(entry->physin) ||
++	    !nf_bridge_port_valid(entry->physout))
++		return false;
++#endif
++	if (entry->state.pf != PF_BRIDGE)
++		return true;
++
++	if (!nf_bridge_port_valid(entry->state.in) ||
++	    !nf_bridge_port_valid(entry->state.out))
++		return false;
++
++	return true;
++}
++
+ static void nfqnl_reinject(struct nf_queue_entry *entry, unsigned int verdict)
  {
+ 	const struct nf_ct_hook *ct_hook;
+ 
++	if (!nf_bridge_ports_valid(entry))
++		verdict = NF_DROP;
++
+ 	if (verdict == NF_ACCEPT ||
+ 	    verdict == NF_REPEAT ||
+ 	    verdict == NF_STOP) {
+@@ -622,6 +659,23 @@ static int nf_queue_checksum_help(struct sk_buff *entskb)
+ 	return skb_checksum_help(entskb);
+ }
+ 
++#if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
++static int nfqnl_put_master_ifindex(struct sk_buff *nlskb, int attr,
++				    const struct net_device *dev)
++{
++	const struct net_device *upper;
++
++	if (dev && !netif_is_bridge_port(dev))
++		return 0;
++
++	upper = netdev_master_upper_dev_get_rcu((struct net_device *)dev);
++	if (upper && nla_put_be32(nlskb, attr, htonl(upper->ifindex)))
++		return -EMSGSIZE;
++
++	return 0;
++}
++#endif
++
+ static struct sk_buff *
+ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			   struct nf_queue_entry *entry,
+@@ -755,10 +809,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			 * netfilter_bridge) */
+ 			if (nla_put_be32(skb, NFQA_IFINDEX_PHYSINDEV,
+ 					 htonl(indev->ifindex)) ||
+-			/* this is the bridge group "brX" */
+-			/* rcu_read_lock()ed by __nf_queue */
+-			    nla_put_be32(skb, NFQA_IFINDEX_INDEV,
+-					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
++			    nfqnl_put_master_ifindex(skb, NFQA_IFINDEX_INDEV, indev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physinif;
+@@ -789,10 +840,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
+ 			 * netfilter_bridge) */
+ 			if (nla_put_be32(skb, NFQA_IFINDEX_PHYSOUTDEV,
+ 					 htonl(outdev->ifindex)) ||
+-			/* this is the bridge group "brX" */
+-			/* rcu_read_lock()ed by __nf_queue */
+-			    nla_put_be32(skb, NFQA_IFINDEX_OUTDEV,
+-					 htonl(br_port_get_rcu(outdev)->br->dev->ifindex)))
++			    nfqnl_put_master_ifindex(skb, NFQA_IFINDEX_OUTDEV, outdev))
+ 				goto nla_put_failure;
+ 		} else {
+ 			int physoutif;
+-- 
+2.53.0
+
 
 
 
