@@ -1,99 +1,59 @@
-Return-Path: <stable+bounces-263542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id spkmDBLaMGraXwUAu9opvQ
-	(envelope-from <stable+bounces-263542-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:07:30 +0200
+	id MdZ1KH7bMGoOYAUAu9opvQ
+	(envelope-from <stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:13:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814F268C032
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:07:29 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFF468C0AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:13:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kroah.com header.s=fm1 header.b=PQ1dbdnm;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=G+xbG0bZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263542-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263542-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=kroah.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="x/wPNSxe";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE209302A2F8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:06:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C82033008C9B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3522E3CD8AF;
-	Tue, 16 Jun 2026 05:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77463CE48E;
+	Tue, 16 Jun 2026 05:13:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC503CD8A8
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8AC3CE481
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:13:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781586413; cv=none; b=Y7gllX5U/6APl48znJjm7WQ4/vDz0W6BFka6JrinIz4eivyqfmSIhsMn6A8gbThEDPpzOrhfk+fNQXlTiD0BfQlGzrp+kSTOR86+xXPd3R0haz06tWhcVDjtGgcANuV03IVcJ3mbnCmRsjLNMbQ63ef5NDx0uca0B/VJIkDBxuk=
+	t=1781586809; cv=none; b=CzkSaCTkeBQ0BiGBbyqc39BpbhcBiYxGvnrhPmRHIX8UJrTQLr1VJf4iOy9u5DSbO3tFOqmtIGp9qwuzPMSsI5Pf6StbcczyPlxXkzemkDx/TjDjoyHYu5T66NDULWfrO11naBkrTTPhjvFOT08h5nWHECSSlJglRujUo+pL7Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781586413; c=relaxed/simple;
-	bh=GqYOMS0tQ/zUf2ktF51zEA9/nsonMHVzRp3KK8Tnxvw=;
+	s=arc-20240116; t=1781586809; c=relaxed/simple;
+	bh=zN+JkfaBed6t14OOxabTV2baYgaRMMqHq5HxTke4brY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6nlY46M+gSS1GtkVTL6toVL2CBrM2wdAG6wrnsglacSqrIDrLRdGkyvjG3SKxUdWS+0RsbzJq2aAZ7QphehJv5zWOpwHIBEJynf2D6DYmQFvojkboasn3dlX03QPQDEp7sxBOBQUATRQZLT7DNS9gsf2xT324r2jaCmBIa9ghI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=PQ1dbdnm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=G+xbG0bZ; arc=none smtp.client-ip=202.12.124.149
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 661DF1D00172;
-	Tue, 16 Jun 2026 01:06:51 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 16 Jun 2026 01:06:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1781586411; x=1781672811; bh=h4gPK3FZ6b
-	63Jyfr6Z/suOoSJEvo2X3t8RLqUz9KcA8=; b=PQ1dbdnm+pQgs5f5kTl6KSz+ft
-	eaUZDsNJGJK3YztBcenK/Zu9hy4wRSncXPTCXHpye4jzHa4/OnXAYMNaoIqKh1nr
-	NzErS/2ZHIfH/x90iPSoSblWF5ZuVhg+8XwlA7tr8HBR7ggn1GZiUc57zKSHnD6L
-	oxbKWqFcPMZnXd6z7qKxeNvwIBhPHhkgGUYe5nGvwM59WbC7JInDQSub0Fyqi3F1
-	w0flBypf/78vbWlSDAfE8+ovyaB+kFlbFu7088DOwUJG9ugoNb7be+FFxu4UYbq1
-	TJhUifDBTbWVSOdV0ABhck/qXiN2p5qazch1Qv8lmVoXmTJAxs8jxPiMQZOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1781586411; x=1781672811; bh=h4gPK3FZ6b63Jyfr6Z/suOoSJEvo2X3t8RL
-	qUz9KcA8=; b=G+xbG0bZPw2oyg2t1TYuRvnlTvk/gRiA1F12DM6vnsllfAaOda3
-	4Yb+Zsr20kLVC+mPLllqwgeq/ikuthfNZvQQH7rJGVMHmpovI6bobDybmjKOUUY8
-	rSrvwxfYSNaCv+mjJt+GDdfNbPzMcpunlg6Xx+ueMWyKQtIV9F24eCHl0G/j7LYk
-	n8oH1966mcLrAPaee92NUPgc/bxuCwzPqcINKJS3sbboxhUBtUVOvjJ+avuLxm8K
-	eySQQuftneJHue3Rw0gifQEQdFMwuWtZNMnfyu+TvefKuvDRu+8DniSXGjhTtdG/
-	+SARuW1DAYfcst8GWiZS/YMCMNvlHSi4LWw==
-X-ME-Sender: <xms:6tkwaoaK62zh_YQVFIoyStCIAqu3COMbjJbeDze6E2syWpCrMC-CYg>
-    <xme:6tkwatZ8L1samA_u5CePOG1KOXayBBlziYUwpFWnZDAoifIsRzAG-hl6s3R7_agYJ
-    idWxLvMx7VIq-amDQGldP9UM4dLTj7U76KShlZcRhlxa4HE>
-X-ME-Received: <xmr:6tkwapn55k5lWWpVpPd6kkI5rPJhNYwqFGXjWnNLuG_PB3xpIlvNRYho>
-X-ME-Proxy-Cause: dmFkZTF8J3kCHEzZJQ90lPsnhmT3IWK7e209v8VpFQC//OCwqkYdSlhrXdu3YuT+NPplhg
-    iBMz0zEz3dMylz1GVVDvIxnTLHpZoGg1DmRjwnZZIhzIR7oP/ZhX4AiHYm+PjYPbdfS/6f
-    puTzfiHkOHPW5j3wfLnMqvtpAS9Z/G4fPAzly2W0FnWj/UxsACH+fXG7S1mV3670P+KYel
-    h7dbv+3OpfOYiO7vxk95ulnh4CKibaiLpzaZbA56agLeKsr7BuSjZvql9pTRzzusEw9QNt
-    vqoSOp4D8z5gUeKMGobL6FMzSKaPcInq6XYY6JpxvWmiQ93Cbh61j+KhokxTnPOY5u97nB
-    Ne8sONMvHOFaCOKKL3i8dGx1QFwxtDGgUfQgEiVYVQwF1ktZS6xdQ3mbmNoPMeDGOZ67ui
-    kxXMaOCTA2kEZJFRcdH01GYCVLDrCNOjpsRtmx516hx8R7+MslK6Aa2IcpzVYXH2mXk4gO
-    5GRhjk8nPIGDd9oZeCZUhU2m3jx90QYe8mojVF5sA1NDbr/Gt2wMFDSD8YhJou6gyop1B1
-    6+ia+ogXZyymbrGmNcqoK8HOTQZCeVJMRTuz6DgQbSlEaqLeeJ5Kk7Ks9osGkT6xYKzdmC
-    ywQxjTToVGJrBYEi/daZngN6QxtZjaLcndM418OlxxFZpCRfHAfvwTOhClhw
-X-ME-Proxy: <xmx:6tkwag26W8S2XwGYHkuW5-wDVKuyfAH6C0apP9EwY6uPhEU_U76CvA>
-    <xmx:6tkwah029VB5nX60Wx2_hbmEUoHPRBvi4C4mj9Hzg-nC5owyH4n5uQ>
-    <xmx:6tkwaqr4dQKHe9omp2MqLG5Y5WBBs9wbrT-Oy6pe5l7KPfhxqq6cTg>
-    <xmx:6tkwalhxeTmyZsBgkcAAqHe-jXcOXePNRla1IS9gactI_AMqv4NfKw>
-    <xmx:69kwapSaM8_wUZ0n3efCKYjlohW0YYq0QahJw4P3bjhURLY3LcCalT5M>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 16 Jun 2026 01:06:49 -0400 (EDT)
-Date: Tue, 16 Jun 2026 10:35:45 +0530
-From: Greg KH <greg@kroah.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Rodrigo Alencar <rodrigo.alencar@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 6.6.y] iio: dac: ad5686: fix powerdown control on
- dual-channel devices
-Message-ID: <2026061638-struggle-enforced-f8d7@gregkh>
-References: <2026060441-corrosive-musky-8357@gregkh>
- <20260604161903.3777464-1-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTb6dIv5le/EX+46tndKf9YXw5WgK1Kl5j+EHvi+CW0kXSJ8HWLwL+55Gq1viHGIpueOAOrCVdAj2+exRmn5qb3YdJUGgGkfnA90f4ISOC82hx4wsjK3X2X5pb153SzCm0YEBwHvkR6ERFDXA1hfo7XKfd3Etf0fW6H8vkgaOuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/wPNSxe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0874B1F00A3A;
+	Tue, 16 Jun 2026 05:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1781586807;
+	bh=+DZga0xTEhJ3ren6f5+cf9c00RoQor9hdjEuv50XnTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=x/wPNSxeKjbIKaWIISn0triVl7/J/BqXcJDWf25bwL6Up2sXw5fYTpKS7euWXTGgn
+	 4/AVWeMjjd9jdaFBZY+Y3R5MIOPpjkuR4JBdZsEhg1D/nrxtjZpKoq2jbWlHA94J0g
+	 mkQpze6xh9Fd+ykR7+VI84urYsYL7OPdrOQsWi7w=
+Date: Tue, 16 Jun 2026 10:42:23 +0530
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Kevin Berry <kpberry@google.com>
+Cc: xmei5@asu.edu, bestswngs@gmail.com, chenglongtang@google.com,
+	joneslee@google.com, pabeni@redhat.com, rnj@google.com,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] net: bonding: fix use-after-free in bond_xmit_broadcast()
+Message-ID: <2026061617-flyable-civic-a986@gregkh>
+References: <CAPpSM+TbMOPL93CkWtrYjYW+T+Q+iWuo+ZhfutYNFOuOCBU5fQ@mail.gmail.com>
+ <20260506202842.1788682-1-kpberry@google.com>
+ <20260506202842.1788682-2-kpberry@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,69 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604161903.3777464-1-sashal@kernel.org>
+In-Reply-To: <20260506202842.1788682-2-kpberry@google.com>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-263547-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263542-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[asu.edu,gmail.com,google.com,redhat.com,vger.kernel.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:sashal@kernel.org,m:stable@vger.kernel.org,m:rodrigo.alencar@analog.com,m:jic23@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:kpberry@google.com,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:stable@vger.kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,messagingengine.com:dkim,kroah.com:dkim,kroah.com:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime,asu.edu:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 814F268C032
+X-Rspamd-Queue-Id: 9AFF468C0AB
 
-On Thu, Jun 04, 2026 at 12:19:03PM -0400, Sasha Levin wrote:
-> From: Rodrigo Alencar <rodrigo.alencar@analog.com>
+On Wed, May 06, 2026 at 08:28:42PM +0000, Kevin Berry wrote:
+> From: Xiang Mei <xmei5@asu.edu>
 > 
-> [ Upstream commit 8aeaf25a85263a7a43357e16ad78ab969f6f8aeb ]
+> commit 2884bf72fb8f03409e423397319205de48adca16 upstream.
 > 
-> Fix powerdown control by using a proper bit shift for the powerdown mask
-> values. During initialization, powerdown bits are initialized so that
-> unused bits are set to 1 and the correct bit shift is used. Dual-channel
-> devices use one-hot encoding in the address and that reflects on the
-> position of the powerdown bits, which are not channel-index based
-> for that case. Quad-channel devices also use one-hot encoding for the
-> channel address but the result of log2(address) coincides with the channel
-> index value. Mask as 0x3U is used rather than 0x3, because shift can reach
-> value of 30 (last channel of a 16-channel device), which would mess with
-> the sign bit. The issue was introduced when first adding support for
-> dual-channel devices, which overlooked powerdown control differences.
+> bond_xmit_broadcast() reuses the original skb for the last slave
+> (determined by bond_is_last_slave()) and clones it for others.
+> Concurrent slave enslave/release can mutate the slave list during
+> RCU-protected iteration, changing which slave is "last" mid-loop.
+> This causes the original skb to be double-consumed (double-freed).
 > 
-> Fixes: 7dc8faeab3e3 ("iio: dac: ad5686: add support for AD5338R")
-> Signed-off-by: Rodrigo Alencar <rodrigo.alencar@analog.com>
-> Cc: <Stable@vger.kernel.org>
-> Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+> Replace the racy bond_is_last_slave() check with a simple index
+> comparison (i + 1 == slaves_count) against the pre-snapshot slave
+> count taken via READ_ONCE() before the loop.  This preserves the
+> zero-copy optimization for the last slave while making the "last"
+> determination stable against concurrent list mutations.
+> 
+> The UAF can trigger the following crash:
+> 
+> ==================================================================
+> BUG: KASAN: slab-use-after-free in skb_clone
+> Read of size 8 at addr ffff888100ef8d40 by task exploit/147
+> 
+> CPU: 1 UID: 0 PID: 147 Comm: exploit Not tainted 7.0.0-rc3+ #4 PREEMPTLAZY
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl (lib/dump_stack.c:123)
+>  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+>  kasan_report (mm/kasan/report.c:597)
+>  skb_clone (include/linux/skbuff.h:1724 include/linux/skbuff.h:1792 include/linux/skbuff.h:3396 net/core/skbuff.c:2108)
+>  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5334)
+>  bond_start_xmit (drivers/net/bonding/bond_main.c:5567 drivers/net/bonding/bond_main.c:5593)
+>  dev_hard_start_xmit (include/linux/netdevice.h:5325 include/linux/netdevice.h:5334 net/core/dev.c:3871 net/core/dev.c:3887)
+>  __dev_queue_xmit (include/linux/netdevice.h:3601 net/core/dev.c:4838)
+>  ip6_finish_output2 (include/net/neighbour.h:540 include/net/neighbour.h:554 net/ipv6/ip6_output.c:136)
+>  ip6_finish_output (net/ipv6/ip6_output.c:208 net/ipv6/ip6_output.c:219)
+>  ip6_output (net/ipv6/ip6_output.c:250)
+>  ip6_send_skb (net/ipv6/ip6_output.c:1985)
+>  udp_v6_send_skb (net/ipv6/udp.c:1442)
+>  udpv6_sendmsg (net/ipv6/udp.c:1733)
+>  __sys_sendto (net/socket.c:730 net/socket.c:742 net/socket.c:2206)
+>  __x64_sys_sendto (net/socket.c:2209)
+>  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+>  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+>  </TASK>
+> 
+> Allocated by task 147:
+> 
+> Freed by task 147:
+> 
+> The buggy address belongs to the object at ffff888100ef8c80
+>  which belongs to the cache skbuff_head_cache of size 224
+> The buggy address is located 192 bytes inside of
+>  freed 224-byte region [ffff888100ef8c80, ffff888100ef8d60)
+> 
+> Memory state around the buggy address:
+>  ffff888100ef8c00: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+>  ffff888100ef8c80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> >ffff888100ef8d00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+>                                                     ^
+>  ffff888100ef8d80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+>  ffff888100ef8e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> ==================================================================
+> 
+> Fixes: 4e5bd03ae346 ("net: bonding: fix bond_xmit_broadcast return value error bug")
+> Reported-by: Weiming Shi <bestswngs@gmail.com>
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> Link: https://patch.msgid.link/20260326075553.3960562-1-xmei5@asu.edu
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Kevin Berry <kpberry@google.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
->  drivers/iio/dac/ad5686.c | 46 +++++++++++++++++++++++++++++++---------
->  1 file changed, 36 insertions(+), 10 deletions(-)
+>  drivers/net/bonding/bond_main.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index 114ebaa284da..6484ba1ab14c 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -5280,18 +5280,22 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
+>  				       struct net_device *bond_dev)
+>  {
+>  	struct bonding *bond = netdev_priv(bond_dev);
+> -	struct slave *slave = NULL;
+> -	struct list_head *iter;
+> +	struct bond_up_slave *slaves;
+>  	bool xmit_suc = false;
+>  	bool skb_used = false;
+> +	int slaves_count, i;
+>  
+> -	bond_for_each_slave_rcu(bond, slave, iter) {
+> +	slaves = rcu_dereference(bond->all_slaves);
+> +
+> +	slaves_count = slaves ? READ_ONCE(slaves->count) : 0;
+> +	for (i = 0; i < slaves_count; i++) {
+> +		struct slave *slave = slaves->arr[i];
+>  		struct sk_buff *skb2;
+>  
+>  		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
+>  			continue;
+>  
+> -		if (bond_is_last_slave(bond, slave)) {
+> +		if (i + 1 == slaves_count) {
+>  			skb2 = skb;
+>  			skb_used = true;
+>  		} else {
+> 
+> base-commit: 258cf62a6dfde3c6a39d120a56a298f2ed6a8901
+> -- 
+> 2.54.0.563.g4f69b47b94-goog
+> 
 > 
 
-Does not apply :(
+Does not apply at all :(
 
