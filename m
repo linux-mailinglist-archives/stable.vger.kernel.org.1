@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-266540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fkX3FEWfMWr0oQUAu9opvQ
-	(envelope-from <stable+bounces-266540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:53 +0200
+	id JV3+Mt6FMWpSlgUAu9opvQ
+	(envelope-from <stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FA2694C7E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:08:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6438269302D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oPghjM8Q;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266540-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266540-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VATQaD6G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265212-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F662300BEB4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:08:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 92FCA301624D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0A13DDDD5;
-	Tue, 16 Jun 2026 19:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2D425CEE;
+	Tue, 16 Jun 2026 17:14:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295AD318EDA;
-	Tue, 16 Jun 2026 19:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8675932B138;
+	Tue, 16 Jun 2026 17:14:07 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636920; cv=none; b=XfXoEGr0M2gxuWgklQEJ1Iw/FyKfyROgB1GeOganI5JXP9kaD3o8YPHwHXuGoJnUM73K7Qs/Es2Gq56hs6blIzqaDwZLFAoBLG179sk3523qWb/kLU5slnzb3SW8Pf0ii7vcfLkf+ebwtGSJtjyCZ2b9MVppdRZT5Ud0HxPD+a4=
+	t=1781630048; cv=none; b=hxFlgnWXwiFID84/YjkuhNqgw8aWaiFtMXQQyBa8m8YGZORJ7kWp1c2L4gT8gjK7UMrpWnzhC9RVzT5xrd5upl0XC9W8FG21egdddkcwhcNCJlymOP+Qw2TsRiP/wc8aUR9XtLWxQAK1vIb/7T70njR1fFSplhtMwBfIcbzGfvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636920; c=relaxed/simple;
-	bh=erDUTmeowwzJbWNwcainYAcvOZElMOvHfQDMtVzvFLU=;
+	s=arc-20240116; t=1781630048; c=relaxed/simple;
+	bh=h1OX+LjyAMdZIN+if3Oz2BpBW5ajK4RlkShhVuKT15s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EbvQK4CiE6N9m9y3PpbHPV/004rILjFHj9Fv5PhuEtBWtH3Ji1lCcPMGR0wJmqscP9lXszVM6iN+1LajqYvFMlGRtXrMO0r42GrV0r3psGWh8Snt7O9ZuI53mQ9vrT3cQ/FShckQi7bEiXLZ940jcrl2VhiprrsN3RrHtUEuGxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPghjM8Q; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124301F000E9;
-	Tue, 16 Jun 2026 19:08:37 +0000 (UTC)
+	 MIME-Version; b=sqYVvS8/6DrSeOcMQQiOBC/F8ApKCpXm1vq4Z7+NRLwLHeDG2I442n8p9ZQijhPULe7HQK2pPVse6+yCiqQLRKZrTXaYZrYrH2tiWcfyAvTyyRalNLT5Hg3v3OltZHXUThyR0SGvvZxZ/FbUSpy6oTiT4Zjd99dAWOQFUaqExJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VATQaD6G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F611F000E9;
+	Tue, 16 Jun 2026 17:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636919;
-	bh=G0ogQNKzHdgbBfg5QepRAGfGDAA/W84YV0FOEX1IvZY=;
+	s=korg; t=1781630047;
+	bh=fCHEZUD+LHFsM8lIeuau1cHdn0CB7MkZhnNT5IsHTXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oPghjM8Qyvr1+cGkZ3/A6/CGUSbUpBqJniCOOHukljnl49Q4xjQ+jIjde91tQ3M66
-	 XkObdVpvAZ7xt4g/E3irH7QaYb7LvDZ5y9MmZPyNdL4aX4+jZ5kTzDNsV38vlOFqaB
-	 8ihc119JBo4OCNhbmYaCvQnlB1akpeeHSLuYLP1A=
+	b=VATQaD6GwHbos7JROjTu+0fXqS69+sYzAAFApxRU5KpidXkSjiaEXyWvmA4qjh9Ba
+	 nPWDmOWR8MpdlCWjiTyhPm0ZsioM8u4mLtAGpLIlxifsCpX89poKBLz1CeQpfoUklz
+	 kGHx4CE0bQzF8i5Fzd0nk3GsMaPuAyFqZvk953QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 331/342] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
+Subject: [PATCH 6.6 400/452] mptcp: introduce the mptcp_init_skb helper
 Date: Tue, 16 Jun 2026 20:30:27 +0530
-Message-ID: <20260616145104.020283500@linuxfoundation.org>
+Message-ID: <20260616145137.869246842@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,94 +71,154 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-266540-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265212-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matttbe@kernel.org,m:pabeni@redhat.com,m:geliang@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 64FA2694C7E
+X-Rspamd-Queue-Id: 6438269302D
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 ]
+[ Upstream commit 9a0afe0db46720ce1a009c7dac168aa0584bd732 ]
 
-hidg_alloc() initializes hidg->dev with device_initialize() before
-calling dev_set_name(). If dev_set_name() fails, the function currently
-jumps to err_unlock and returns without calling put_device().
+Factor out all the skb initialization step in a new helper and
+use it. Note that this change moves the MPTCP CB initialization
+earlier: we can do such step as soon as the skb leaves the
+subflow socket receive queues.
 
-This leaves the device reference unbalanced and prevents hidg_release()
-from being called. Calling put_device() here is also safe, since
-hidg_release() only frees resources owned by hidg.
-
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
-
-Route the dev_set_name() failure path through err_put_device so the
-device reference is dropped properly.
-
-Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Johan Hovold johan@kernel.org
-Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Tested-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250927-net-next-mptcp-rcv-path-imp-v1-4-5da266aa9c1a@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 50c2d91c5dfa ("mptcp: do not drop partial packets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/protocol.c |   50 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1278,7 +1278,7 @@ static struct usb_function *hidg_alloc(s
- 	hidg->dev.devt = MKDEV(major, opts->minor);
- 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
- 	if (ret)
--		goto err_unlock;
-+		goto err_put_device;
- 
- 	hidg->bInterfaceSubClass = opts->subclass;
- 	hidg->bInterfaceProtocol = opts->protocol;
-@@ -1313,7 +1313,6 @@ static struct usb_function *hidg_alloc(s
- 
- err_put_device:
- 	put_device(&hidg->dev);
--err_unlock:
- 	mutex_unlock(&opts->lock);
- 	return ERR_PTR(ret);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -323,7 +323,7 @@ end:
+ 	mptcp_set_owner_r(skb, sk);
  }
+ 
+-static bool mptcp_rmem_schedule(struct sock *sk, struct sock *ssk, int size)
++static bool mptcp_rmem_schedule(struct sock *sk, int size)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	int amt, amount;
+@@ -341,27 +341,11 @@ static bool mptcp_rmem_schedule(struct s
+ 	return true;
+ }
+ 
+-static bool __mptcp_move_skb(struct mptcp_sock *msk, struct sock *ssk,
+-			     struct sk_buff *skb, unsigned int offset,
+-			     size_t copy_len)
++static void mptcp_init_skb(struct sock *ssk, struct sk_buff *skb, int offset,
++			   int copy_len)
+ {
+-	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+-	struct sock *sk = (struct sock *)msk;
+-	struct sk_buff *tail;
+-	bool has_rxtstamp;
+-
+-	__skb_unlink(skb, &ssk->sk_receive_queue);
+-
+-	skb_ext_reset(skb);
+-	skb_orphan(skb);
+-
+-	/* try to fetch required memory from subflow */
+-	if (!mptcp_rmem_schedule(sk, ssk, skb->truesize)) {
+-		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+-		goto drop;
+-	}
+-
+-	has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
++	const struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
++	bool has_rxtstamp = TCP_SKB_CB(skb)->has_rxtstamp;
+ 
+ 	/* the skb map_seq accounts for the skb offset:
+ 	 * mptcp_subflow_get_mapped_dsn() is based on the current tp->copied_seq
+@@ -373,6 +357,25 @@ static bool __mptcp_move_skb(struct mptc
+ 	MPTCP_SKB_CB(skb)->has_rxtstamp = has_rxtstamp;
+ 	MPTCP_SKB_CB(skb)->cant_coalesce = 0;
+ 
++	__skb_unlink(skb, &ssk->sk_receive_queue);
++
++	skb_ext_reset(skb);
++	skb_dst_drop(skb);
++}
++
++static bool __mptcp_move_skb(struct sock *sk, struct sk_buff *skb)
++{
++	u64 copy_len = MPTCP_SKB_CB(skb)->end_seq - MPTCP_SKB_CB(skb)->map_seq;
++	struct mptcp_sock *msk = mptcp_sk(sk);
++	struct sk_buff *tail;
++
++	/* try to fetch required memory from subflow */
++	if (!mptcp_rmem_schedule(sk, skb->truesize)) {
++		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
++		mptcp_drop(sk, skb);
++		return false;
++	}
++
+ 	if (MPTCP_SKB_CB(skb)->map_seq == msk->ack_seq) {
+ 		/* in sequence */
+ 		msk->bytes_received += copy_len;
+@@ -393,7 +396,6 @@ static bool __mptcp_move_skb(struct mptc
+ 	 * will retransmit as needed, if needed.
+ 	 */
+ 	MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_DUPDATA);
+-drop:
+ 	mptcp_drop(sk, skb);
+ 	return false;
+ }
+@@ -720,7 +722,9 @@ static bool __mptcp_move_skbs_from_subfl
+ 			if (tp->urg_data)
+ 				done = true;
+ 
+-			if (__mptcp_move_skb(msk, ssk, skb, offset, len))
++			mptcp_init_skb(ssk, skb, offset, len);
++			skb_orphan(skb);
++			if (__mptcp_move_skb(sk, skb))
+ 				moved += len;
+ 			seq += len;
+ 
 
 
 
