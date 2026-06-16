@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +lDoLwGUMWoWnQUAu9opvQ
-	(envelope-from <stable+bounces-265981-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:49 +0200
+	id ZNTaDwtyMWoGjgUAu9opvQ
+	(envelope-from <stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475696940CC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:49 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1211769185D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1s3jo7HY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265981-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265981-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wiMvQZF8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264226-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A646B3097246
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3AED303680F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B5A3D45CB;
-	Tue, 16 Jun 2026 18:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12D8466B5B;
+	Tue, 16 Jun 2026 15:46:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0597C36A36C;
-	Tue, 16 Jun 2026 18:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9778D45107A;
+	Tue, 16 Jun 2026 15:46:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634034; cv=none; b=higbjd3bruHccBfq4IKHLjX7xVMTNJawlXmS+O+Q3oCq9juPt9oSD5fLZy3LUf4KBini2TICu53hImb83f0Pha6Z3umSJOwcmDpSZCxEDC7rLsfyeYFILPwGZhE0cHT5YCRL926QAk7LR7MFARRQppOpckpHPQHQRpZneblvveM=
+	t=1781624796; cv=none; b=Dlx11h0r8rHuyAwy5U79i7gWdDBHaRm4s8O/fGlYavbE5kwH1QPy3RTRYYvDzi9pKPJJNZiI/Wrc9NFoYJuN7HhQzoPjfWG8tO6Q9JKwwVE37t37WOqwWSA8jJVBFvRtP5Kru0DSR1lZxprYmAaBVvMA+FGNWy7a+NWES2sONbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634034; c=relaxed/simple;
-	bh=agwTz32qFb4co7yDp+OoVXwNqfRzkzIq4EsmkicwZQg=;
+	s=arc-20240116; t=1781624796; c=relaxed/simple;
+	bh=AsYgbmtz1Z+9FPUIKNScMDTEmA31Bb0oScDlu/oAE7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLD2im+0aLD3aGDHnLRJAeOmTRMC9Hz6ENZuPUcmKHxMnOAbEqAlvIdHQOVwr4K25rBRjjIvEFVV/kFWR/+mx5sfXp452lZWAC+yrPTENyiGu+j+uKxdeaXW8RHNxWCkGDeYV2zv2IY2gZ5uMqRuX2nKtj9xD6ADfK04OSulKpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s3jo7HY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA371F000E9;
-	Tue, 16 Jun 2026 18:20:31 +0000 (UTC)
+	 MIME-Version; b=Om+TaV0hWgqtWKTyUKIWzrjCfdQCMM9hvtleXrgpe8UF5Jk3EduzxBiOH64MGf4IJJsGAhFZ2UfpZnG2qb7wGdYis2rH66iIrnmEJPFdqpznfasuUKe9V7RIJno/S0uUt6PI4+vOfqIKfmd0fnIqyYS6wbazEp9PAum/vc4rAGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiMvQZF8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCF31F000E9;
+	Tue, 16 Jun 2026 15:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634032;
-	bh=rdFodYKGAY9MzP9rh1GnhS8sFqNi8FpQudbpXRWpzp0=;
+	s=korg; t=1781624793;
+	bh=0oF3t8rkrcIYkSlQQJPThEwXl5lwCBOyEFgJ0SuVbtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1s3jo7HYeh44TnuxPmwvC0xqRAkPT0zVsETr+ajnm0FauDpgBPIYyA52E7ZOyvm7A
-	 LGzidnpklVjDDBM8YSRycBdXvrHArLTnQz+sgu/MGECa/J25HDBnMUJayAxdUvciDa
-	 bHQp+xwON7Sp3DUnREGLwklC34lQY5NNnwxzL1jU=
+	b=wiMvQZF8XjF8kF6SY8vfTOEFnK4Yv27ezPWnArkrxmyTi7uLASSlAIoRlA61sBAQg
+	 9KhtFbOGNXlTDTSOeyqqmWWXw+3OUsTHOV0toq3u65js/t+CHHyH3POi+XSXIli2YX
+	 pngRLWelaRnC49cZYF1GV7PFDeWHmAhKDGaOe2wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Lee Jones <lee@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/411] net: guard timestamp cmsgs to real error queue skbs
+Subject: [PATCH 6.18 030/325] l2tp: pppol2tp: hold reference to session in pppol2tp_ioctl()
 Date: Tue, 16 Jun 2026 20:27:06 +0530
-Message-ID: <20260616145110.689573451@linuxfoundation.org>
+Message-ID: <20260616145059.260463258@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,140 +69,211 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265981-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264226-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,openai.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 475696940CC
+X-Rspamd-Queue-Id: 1211769185D
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
+[ Upstream commit a213a8950414c684999dcf03edeea6c46ede172e ]
 
-skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
-from sk_error_queue. That assumption is not true for AF_PACKET sockets:
-outgoing packet taps are also delivered to packet sockets with
-skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
-instead of struct sock_exterr_skb.
+pppol2tp_ioctl() read sock->sk->sk_user_data directly without any
+locks or reference counting.  If a controllable sleep was induced during
+copy_from_user() (e.g. via a userfaultfd page fault sleep), a concurrent
+socket close could trigger pppol2tp_session_close() asynchronously.  This
+frees the l2tp_session structure via the l2tp_session_del_work workqueue.
+Upon resuming, the ioctl thread dereferences the stale session pointer,
+resulting in a Use-After-Free (UAF).
 
-If such an skb is received with timestamping enabled, the generic
-timestamp cmsg path can read AF_PACKET control-buffer state as
-sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
-counter overlaps opt_stats. An odd drop count makes the path emit
-SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
-skbs this copies past the linear head and can trigger hardened usercopy or
-disclose adjacent heap contents.
+Fix this by securely fetching the session reference using the RCU-safe,
+refcounted helper pppol2tp_sock_to_session(sk) on entry.  This locks the
+session's refcount across the sleep.  We structured the function to exit
+via standard err breaks, guaranteeing that l2tp_session_put() is cleanly
+called on all return paths to drop the reference.
 
-Keep skb_is_err_queue() local to net/socket.c, but make it verify that
-the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
-installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
-receive ownership and no longer pass as error-queue skbs, while legitimate
-sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
-ownership.
+To preserve existing behavior we validate the session and its magic
+signature only for the specific L2TP commands that require it.  This
+ensures that generic/unknown ioctls called on an unconnected socket
+still return -ENOIOCTLCMD and correctly fall back to generic handlers
+(e.g. in sock_do_ioctl()).
 
-Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: fd558d186df2 ("l2tp: Split pppol2tp patch into separate l2tp and ppp parts")
+Link: https://patch.msgid.link/20260527133630.2120612-1-lee@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h |  1 +
- net/core/skbuff.c  |  6 +++---
- net/socket.c       | 11 ++++++-----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ net/l2tp/l2tp_ppp.c | 82 +++++++++++++++++++++++++++------------------
+ 1 file changed, 50 insertions(+), 32 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index ee9c398dd8f25e..962acf4a644da9 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1868,6 +1868,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
- 			     gfp_t priority);
- void skb_orphan_partial(struct sk_buff *skb);
- void sock_rfree(struct sk_buff *skb);
-+void sock_rmem_free(struct sk_buff *skb);
- void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index a8d09eff26f11c..1d3784480834bb 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4814,7 +4814,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index 5e12e7ce17d8a7..f388bf9abf378d 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1044,64 +1044,76 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
+ {
+ 	struct pppol2tp_ioc_stats stats;
+ 	struct l2tp_session *session;
++	int err = 0;
++
++	session = pppol2tp_sock_to_session(sock->sk);
+ 
++	/* Validate session presence and magic integrity ONLY for commands
++	 * that belong to L2TP and require a valid session.
++	 */
+ 	switch (cmd) {
+ 	case PPPIOCGMRU:
+ 	case PPPIOCGFLAGS:
+-		session = sock->sk->sk_user_data;
++	case PPPIOCSMRU:
++	case PPPIOCSFLAGS:
++	case PPPIOCGL2TPSTATS:
+ 		if (!session)
+ 			return -ENOTCONN;
+ 
+-		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
++		if (session->magic != L2TP_SESSION_MAGIC) {
++			l2tp_session_put(session);
+ 			return -EBADF;
++		}
++		break;
++	default:
++		break;
++	}
+ 
++	switch (cmd) {
++	case PPPIOCGMRU:
++	case PPPIOCGFLAGS:
+ 		/* Not defined for tunnels */
+-		if (!session->session_id && !session->peer_session_id)
+-			return -ENOSYS;
++		if (!session->session_id && !session->peer_session_id) {
++			err = -ENOSYS;
++			break;
++		}
+ 
+-		if (put_user(0, (int __user *)arg))
+-			return -EFAULT;
++		if (put_user(0, (int __user *)arg)) {
++			err = -EFAULT;
++			break;
++		}
+ 		break;
+ 
+ 	case PPPIOCSMRU:
+ 	case PPPIOCSFLAGS:
+-		session = sock->sk->sk_user_data;
+-		if (!session)
+-			return -ENOTCONN;
+-
+-		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
+-			return -EBADF;
+-
+ 		/* Not defined for tunnels */
+-		if (!session->session_id && !session->peer_session_id)
+-			return -ENOSYS;
++		if (!session->session_id && !session->peer_session_id) {
++			err = -ENOSYS;
++			break;
++		}
+ 
+-		if (!access_ok((int __user *)arg, sizeof(int)))
+-			return -EFAULT;
++		if (!access_ok((int __user *)arg, sizeof(int))) {
++			err = -EFAULT;
++			break;
++		}
+ 		break;
+ 
+ 	case PPPIOCGL2TPSTATS:
+-		session = sock->sk->sk_user_data;
+-		if (!session)
+-			return -ENOTCONN;
+-
+-		if (WARN_ON(session->magic != L2TP_SESSION_MAGIC))
+-			return -EBADF;
+-
+ 		/* Session 0 represents the parent tunnel */
+ 		if (!session->session_id && !session->peer_session_id) {
+ 			u32 session_id;
+-			int err;
+ 
+ 			if (copy_from_user(&stats, (void __user *)arg,
+-					   sizeof(stats)))
+-				return -EFAULT;
++					   sizeof(stats))) {
++				err = -EFAULT;
++				break;
++			}
+ 
+ 			session_id = stats.session_id;
+ 			err = pppol2tp_tunnel_copy_stats(&stats,
+ 							 session->tunnel);
+ 			if (err < 0)
+-				return err;
++				break;
+ 
+ 			stats.session_id = session_id;
+ 		} else {
+@@ -1111,15 +1123,21 @@ static int pppol2tp_ioctl(struct socket *sock, unsigned int cmd,
+ 		stats.tunnel_id = session->tunnel->tunnel_id;
+ 		stats.using_ipsec = l2tp_tunnel_uses_xfrm(session->tunnel);
+ 
+-		if (copy_to_user((void __user *)arg, &stats, sizeof(stats)))
+-			return -EFAULT;
++		if (copy_to_user((void __user *)arg, &stats, sizeof(stats))) {
++			err = -EFAULT;
++			break;
++		}
+ 		break;
+ 
+ 	default:
+-		return -ENOIOCTLCMD;
++		err = -ENOIOCTLCMD;
++		break;
+ 	}
+ 
+-	return 0;
++	if (session)
++		l2tp_session_put(session);
++
++	return err;
  }
- EXPORT_SYMBOL_GPL(skb_cow_data);
  
--static void sock_rmem_free(struct sk_buff *skb)
-+void sock_rmem_free(struct sk_buff *skb)
- {
- 	struct sock *sk = skb->sk;
- 
-@@ -4823,8 +4823,8 @@ static void sock_rmem_free(struct sk_buff *skb)
- 
- static void skb_set_err_queue(struct sk_buff *skb)
- {
--	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
--	 * So, it is safe to (mis)use it to mark skbs on the error queue.
-+	/* The error-queue test in skb_is_err_queue() matches this marker
-+	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
- 	 */
- 	skb->pkt_type = PACKET_OUTGOING;
- 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
-diff --git a/net/socket.c b/net/socket.c
-index f3d0a8d66cceee..cc7ba4702d1380 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -795,12 +795,13 @@ EXPORT_SYMBOL(kernel_sendmsg_locked);
- 
- static bool skb_is_err_queue(const struct sk_buff *skb)
- {
--	/* pkt_type of skbs enqueued on the error queue are set to
--	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
--	 * in recvmsg, since skbs received on a local socket will never
--	 * have a pkt_type of PACKET_OUTGOING.
-+	/* Error-queue skbs are marked as PACKET_OUTGOING in
-+	 * skb_set_err_queue() and use the destructor installed by
-+	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
-+	 * AF_PACKET outgoing taps use the same pkt_type.
- 	 */
--	return skb->pkt_type == PACKET_OUTGOING;
-+	return skb->pkt_type == PACKET_OUTGOING &&
-+	       skb->destructor == sock_rmem_free;
- }
- 
- /* On transmit, software and hardware timestamps are returned independently.
+ /*****************************************************************************
 -- 
 2.53.0
 
