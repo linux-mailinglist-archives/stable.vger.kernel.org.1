@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KqmAA1yDMWo6lQUAu9opvQ
-	(envelope-from <stable+bounces-265006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:48 +0200
+	id MrtbNRmUMWoknQUAu9opvQ
+	(envelope-from <stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C38692CC4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442D66940E5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hCGLzfP+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265006-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265006-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CHkDs8xB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265985-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 916C2337EA31
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6BDD3095468
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5F443E9FE;
-	Tue, 16 Jun 2026 16:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481E83D8114;
+	Tue, 16 Jun 2026 18:20:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B78B477995;
-	Tue, 16 Jun 2026 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAFF36A36C;
+	Tue, 16 Jun 2026 18:20:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629003; cv=none; b=uxRCiZ/GwFTwCDdO3yew3MFdszW9oksuo4jHC5Z1QzIQeRuxRgb2YOZvw4YtK7TRWdtemRH1+ESLZuxosJw3ZPGnmZuhjptGMtUj+ESwtwtg7rGhxlRlr18Ahpau6zWzfXs3HsDk4WKaxFwKHnU33ebUUtSvdl8AC4fZeakPQNI=
+	t=1781634054; cv=none; b=Idj2IYIBX6NQu37y1iEh3lVPMnUOqJfvBkeoYhknTWQr6fzJUwNFO5kK/rxH2z76S/QRFPI6kmhUYmcIZddqUoi6v+rPiKhTA/Kfs3Ux0RkD0SzUyoKNJ1owFtKbfRqUURFPM8hu+7ntt+mwVe3OBTi3kFUk+FNM7NNuE5kYcOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629003; c=relaxed/simple;
-	bh=L1UvTBCMcvDc0umpkddgoznzTxGscCUUH9ThMdXwJEA=;
+	s=arc-20240116; t=1781634054; c=relaxed/simple;
+	bh=pdDuz5x3/Zi/P6Gh678DmFEa51RwhxApvPyfxqBjjjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIi7evUwW9KjBIYt+V+1N6UXg6KCfCvLW1h4DsPBMwy8p6G2GQQUdHKsF0vYBzBD013lg0KQEKhyBb6eP0K/0a+op1CBft5MsCoO1bYtvYKyQlpJh29YdPIcuLft8V5ei6+2UR5eOU4AurIvmLOECN4YtW/zD9cmCzwEcthJkYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCGLzfP+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBAE1F00A3A;
-	Tue, 16 Jun 2026 16:56:39 +0000 (UTC)
+	 MIME-Version; b=amAr3UPla7ADT0CsTsxVOCsbkOXP4drWk5cXSr6sCXGY9lsG1xn3CuOWAWIWIyyZZneXfX5bnWEe3dYW47HgF8dfmqNkiSYFpa+XAGu/SMW6WG11+qSMAfr80Wqlc+kw4izESbywUI46/sm1sPn8h7UacA3uz2u/Lx9xoOJEVMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHkDs8xB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B251F00A3A;
+	Tue, 16 Jun 2026 18:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629001;
-	bh=jqe7mx+nV3JS4lDjiSsGsfxNPqGwo6x4lcf68Cme21I=;
+	s=korg; t=1781634053;
+	bh=7aJZtCloKiiTD6jk+rNzKfD1Ajamr9swigPeNZWr2pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hCGLzfP+e1PmdA/dBv9Ibj08MnfiGkh0UhAIo03sDzwUYdwF7qtm40Yc5NfE0F7UP
-	 C5h5fEyuQjxEHsHWnj3y2aAfPs81NYRwmeQXuPLlWAoBycsWRRvf4T2/d1tzORp0oj
-	 n6pmmOazZTpf4g28v3sWhjSGFapBuFREyHmw/luc=
+	b=CHkDs8xBT7G1wN3un51UEigkEAlrZmaNgc6dwCIX88CA3eZh/Q+2skKUb0YD+aMUr
+	 bO9ojZyqVlOM3OsKgY/pq+IdcjYDYukC6fFKQiqbdtTJ0WQ9fJBVO3N4x46IO9Nr8K
+	 MBwunNXSOajtBkay3vEQpvQaHYCiR+uV9SkbEwDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 202/452] HID: core: Fix size_t specifier in hid_report_raw_event()
+	Breno Leitao <leitao@debian.org>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 191/411] rds: mark snapshot pages dirty in rds_info_getsockopt()
 Date: Tue, 16 Jun 2026 20:27:09 +0530
-Message-ID: <20260616145128.428400451@linuxfoundation.org>
+Message-ID: <20260616145110.861896051@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265006-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265985-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ojeda@kernel.org,m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:lee@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,70 +99,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 71C38692CC4
+X-Rspamd-Queue-Id: 442D66940E5
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 upstream.
+[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
 
-When building for 32-bit platforms, for which 'size_t' is
-'unsigned int', there are warnings around using the incorrect format
-specifier to print bsize in hid_report_raw_event():
+rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+the RDS_INFO_* producers memcpy the snapshot into them through
+kmap_atomic(). Because that copy goes through the kernel direct map, the
+dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+pages without marking them dirty. A file-backed destination page can then
+be reclaimed without writeback, silently discarding the copied data.
 
-  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-        |                                                                                         ~~~
-        |                                                                                         %zu
-   2054 |                                      report->id, csize, bsize);
-        |                                                         ^~~~~
-  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-        |                                                                                          ~~~
-        |                                                                                          %zu
-   2076 |                                      report->id, rsize, bsize);
-        |                                                         ^~~~~
+Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
+pages are marked dirty before they are unpinned.
 
-Use the proper 'size_t' format specifier, '%zu', to clear up the
-warnings.
-
-Cc: stable@vger.kernel.org
-Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rds/info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2003,7 +2003,7 @@ int hid_report_raw_event(struct hid_devi
- 		return 0;
+diff --git a/net/rds/info.c b/net/rds/info.c
+index b6b46a8214a0a5..b3ee5f8238c44d 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
  
- 	if (unlikely(bsize < csize)) {
--		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
- 				     report->id, csize, bsize);
- 		return -EINVAL;
- 	}
-@@ -2025,7 +2025,7 @@ int hid_report_raw_event(struct hid_devi
- 		rsize = max_buffer_size;
+ out:
+ 	if (pages)
+-		unpin_user_pages(pages, nr_pages);
++		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+ 	kfree(pages);
  
- 	if (bsize < rsize) {
--		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
- 				     report->id, rsize, bsize);
- 		return -EINVAL;
- 	}
+ 	return ret;
+-- 
+2.53.0
+
 
 
 
