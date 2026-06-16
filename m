@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id XfWgJo18MWpokgUAu9opvQ
-	(envelope-from <stable+bounces-264737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:45 +0200
+	id ZOuPF1WFMWoblgUAu9opvQ
+	(envelope-from <stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283A0692549
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3CC692F96
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MHguuUHp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264737-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264737-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d9W0COPf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B885530A012D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:33:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7476C30065C4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DBC477994;
-	Tue, 16 Jun 2026 16:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411CB478E2B;
+	Tue, 16 Jun 2026 17:17:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03012477995;
-	Tue, 16 Jun 2026 16:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A7A3A5E91;
+	Tue, 16 Jun 2026 17:17:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627619; cv=none; b=b0qTGuvmZrpCUjUizEgjLXXeOIpOHkVemb4cKiRlLF7PTi7gQpjeiuK0u09YH1Uz7DDUtYJTrF3tHi4W6YkS7SNCoGyWZAMLxKhu1xu9Odn5YSGn+G12lYK3/t4MEvdjpkfQ1GrJ8QEeQ2riuUSXs6sayqr6w1rmGKErH6vJjd0=
+	t=1781630270; cv=none; b=LKQaxyp8SfiPL8ekqUm1IB2Dcf1so3eBgQ3PMdJE+boQWCBrS4kna5s7KFpwLNHJwrTZcEQ4hypfQjft/oiUnYHRidT9ScF9kHmiFrUgU8Zq+T/X53vBNl/xE/ZXOHN/ioapxNproPocCgc9QRyARhXGUl7BD2S4Jghz77yS+8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627619; c=relaxed/simple;
-	bh=a9u4pdQT5pc7tPr/xKyudgLSgQnaklRPLdau0JXlhA4=;
+	s=arc-20240116; t=1781630270; c=relaxed/simple;
+	bh=HvzUXSW+D6AR2TH1hjvDDLyuvO36v7nrDv9FAcBh2Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD1cUVT+H9uZ2vyYDC4W0gh1aHkZDZWG7Mv7qkob2IEpejJ6/dZJBiH8A61s74qcRvkhFA6XONI7i5vUIyoG+dZMPoVX72+9/DW6QnzGAmWQ+4Shn4ebCuA/Zwj5NQqGUkj7bHvPw5iMrPrfPM87gOuV5HQWuCk9xmkTsOGLA+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHguuUHp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926E71F00A3A;
-	Tue, 16 Jun 2026 16:33:36 +0000 (UTC)
+	 MIME-Version; b=upu70XWjDb40UQrF16f4j9RbBZnpCuiHpCvgXqmBX+wqd4BUiUuJaUdpLIWdaKd8g8RkyFSGl9pV0cIjF64EI53VvaDWIHKASjCoPhe32rRrIZaOWpb58duFIRwWcpt3AqhkTGLhJTPnk7Iua3gweU7Yo0BUG+Kihd0Fscz5tJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9W0COPf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091081F000E9;
+	Tue, 16 Jun 2026 17:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627617;
-	bh=1sIBX6MePmsPRuDc5cSFpnVUG402iY1vnzHLvECFiZI=;
+	s=korg; t=1781630268;
+	bh=CtSy1WeUY6r5F5DSWPZrHGPnSDA4qT7p61ZlRn80mqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MHguuUHp//y97f+NASrPh43mOzgSoB4Cp9Ehio00C15Gb+vSVIUFswL2AILndOKQB
-	 R2QWJRrbycUUg8BGqHSi6cvQHfevRbwgU8T6BG2hxNqRhBe0jCXUGhZAgqD5yomPJ1
-	 7sjDKTWM2rJ/KxioUASjMnOMO8MDfsaQa8pFIG38=
+	b=d9W0COPfw0ZdNq25uUWVZ4lEL4dxh8xLL9YyUwq3s9f9ygI76qH09QMrwf2rIaTZm
+	 nfuBBkK0iKJDCW6PMGcx4XoLloLKde8JBzxNoqzDGWtno0zS9jtDZrfvquGTjgx1KH
+	 1lMsWw4e1PLwbtddaQsQ3/mInt1RUvYMZKv0NvXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Lai <justinlai0215@realtek.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 199/261] rtase: Reset TX subqueue when clearing TX ring
+	David Lechner <dlechner@baylibre.com>,
+	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 410/452] iio: chemical: scd30: Use guard(mutex) to allow early returns
 Date: Tue, 16 Jun 2026 20:30:37 +0530
-Message-ID: <20260616145054.277659439@linuxfoundation.org>
+Message-ID: <20260616145138.329932977@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +70,213 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264737-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justinlai0215@realtek.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265255-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,realtek.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,baylibre.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 283A0692549
+X-Rspamd-Queue-Id: ED3CC692F96
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit ab1ecaabe74b7d86c38ab2ab44bd56cdcc33645a upstream.
+[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
 
-rtase_tx_clear() clears the TX ring and resets the ring indexes.
-However, the TX queue state and BQL accounting are not reset at
-the same time.
+Auto cleanup based release of the lock allows for simpler code flow in a
+few functions with large multiplexing style switch statements and no
+common operations following the switch.
 
-This may leave __QUEUE_STATE_STACK_XOFF asserted after
-rtase_sw_reset(), preventing new TX packets from being scheduled.
-
-Reset the TX subqueue when clearing the TX ring so the TX queue
-state and BQL accounting are restored together.
-
-Fixes: 5a2a2f15244c ("rtase: Implement the rtase_down function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Link: https://patch.msgid.link/20260602114659.12335-1-justinlai0215@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/chemical/scd30_core.c |   63 ++++++++++++++++----------------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index ef13109c49cf..6ccbefb5acf2 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -239,6 +239,8 @@ static void rtase_tx_clear(struct rtase_private *tp)
- 		rtase_tx_clear_range(ring, ring->dirty_idx, RTASE_NUM_DESC);
- 		ring->cur_idx = 0;
- 		ring->dirty_idx = 0;
-+
-+		netdev_tx_reset_subqueue(tp->dev, i);
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
+  */
+ #include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev
+ 			  int *val, int *val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 	u16 tmp;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		if (chan->output) {
+ 			*val = state->pressure_comp;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		}
+ 
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = scd30_read(state);
+ 		if (ret) {
+ 			iio_device_release_direct_mode(indio_dev);
+-			break;
++			return ret;
+ 		}
+ 
+ 		*val = state->meas[chan->address];
+ 		iio_device_release_direct_mode(indio_dev);
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		*val2 = 1;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = 0;
+ 		*val2 = 1000000000 / tmp;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = tmp;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
  	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
  }
  
--- 
-2.54.0
-
+ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 			   int val, int val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (val)
+-			break;
++			return -EINVAL;
+ 
+ 		val = 1000000000 / val2;
+ 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
+-			break;
++			return -EINVAL;
+ 
+ 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		state->meas_interval = val;
+-		break;
++		return 0;
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+ 		case IIO_PRESSURE:
+ 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
+ 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
+-				break;
++				return -EINVAL;
+ 
+ 			ret = scd30_command_write(state, CMD_START_MEAS, val);
+ 			if (ret)
+-				break;
++				return ret;
+ 
+ 			state->pressure_comp = val;
+-			break;
++			return 0;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
+-			break;
++			return -EINVAL;
+ 		/*
+ 		 * Manufacturer does not explicitly specify min/max sensible
+ 		 * values hence check is omitted for simplicity.
+ 		 */
+-		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
 
 
 
