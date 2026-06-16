@@ -1,225 +1,140 @@
-Return-Path: <stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SuhcGwNCMWpUfgUAu9opvQ
-	(envelope-from <stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:30:59 +0200
+	id pRe8D6ZCMWp1fgUAu9opvQ
+	(envelope-from <stable+bounces-263711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:33:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3289768F56A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:30:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988A868F5C7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:33:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BDLtvHYb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-263710-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linux.dev;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfihxwc1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263711-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263711-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E545302FA6F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:30:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99EAB3003507
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60619361650;
-	Tue, 16 Jun 2026 12:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC0C3148C2;
+	Tue, 16 Jun 2026 12:33:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCF4332EC8
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ABD18EB0
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:33:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613037; cv=none; b=AoFjaD9m1WW8mi9UHdo9AAVHHgYBYmBYt07fRu57kfpYYvBJyxQnQwX1QSKBVJIlNvx2d7qkQ5k4NwsgwuUoQyqjKUmIiVPBRv6E6atnU5quUeWPRjZyUYeGWvugNH2jcxzkK5+D7X5Tgpmm9K4hiwJasT6aBLiikMpcZaOFClU=
+	t=1781613217; cv=none; b=gzKYFZWI8wpDoVRbZZyJN1D+3kRZ+Hm48guEKWcpWr8KOCadvRJH1OIbFBUaFXFpgJSWNgHbXTQrauWVWslf077EszJNTlyIaWdn7Q7Okqsu22jm/LXhFx/NUz0mmK2s64z4xh0dkhJ0UyYAag+c0fAVfNQWzhFolkKkyysgsV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613037; c=relaxed/simple;
-	bh=YsKACnlHGhYMGIrNxKW8NtTOdQvRuWNhLEkjh8lv0mc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dnevjr0RuUhguDZ+m4qflxoZdd5dT/OFp4D2FXP5Ev4e1cegTqx5EqAvqLml945f4kEjAvmE3KTwmjl3xmibkHcNfTlsRNkta7AOsA5JpLrMGd8Eg+BrD/t1E7WymnXCBuMdn0ClD7u7mnvtR1pKY1m8QMOoZaCg/60lTvT+Les=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BDLtvHYb; arc=none smtp.client-ip=95.215.58.180
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781613032;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a7Yshx7diMX1O/OKyuwR/SBp/Kaw8zYRlyF2SsJvqRA=;
-	b=BDLtvHYbtbBl6jCK8W2J5U0MaZ+1oaEDCCnJQ5XN2nOHOb6aWrop/Ja302qc7D7mNgSFTC
-	JhIIPs9BWClMLzVyKktOsLn4D0CWfbprCz/ctP+BoNqWfwJ0yJmum4cSwIH2ADDPypw0OF
-	nlVgsdz7pcnHRW7oy9djaeQRtFiomBg=
-From: Lance Yang <lance.yang@linux.dev>
-To: richard.weiyang@gmail.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	balbirs@nvidia.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
-Date: Tue, 16 Jun 2026 20:30:01 +0800
-Message-Id: <20260616123001.6501-1-lance.yang@linux.dev>
-In-Reply-To: <20260616063436.20455-1-richard.weiyang@gmail.com>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
+	s=arc-20240116; t=1781613217; c=relaxed/simple;
+	bh=pP/6N83U74VjqkF4C5mfZhgqsr2GfrlZ9A/Wx1S1qSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B7dbYnDhvYqdqX3Emmr6u1HG+4r3bd3AD1FUODC0ZQ/p1yitgUxKx9yVc8xFBJk0MZboDB6gYQibTIZMKH/lTYS50W4cpn4LxvkrFsczmRhiByrraB0SPgJ2rq+ebDyQo4u9otR1lGER6GgJEBRD0BEWkE5pKmKe3+rBfQwdwPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfihxwc1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46211F000E9;
+	Tue, 16 Jun 2026 12:33:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781613216;
+	bh=Id9yBHu3CT8/NqxH8Dpt0XSrySuOcaeUeQN3N5/9EPE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nfihxwc1hlWeiFclq+ycdIvmoyvLmeoOwMJG0vMV8xYC5VJhDfxEnK+S8blApelPB
+	 65Yr/Qd2gEJB2rhY3E7GK17EK/SCRE3VReCsAnDmIZMk+ZCn+yM5WqoWZ54QGM9Sht
+	 wCcA9qx+ky+MBrQO6gORI5Yhz4g5fe9gwZa/i4ZuB2Rqddv0e+qY/7SQQIQg5pQ+Ro
+	 tTRaALLRIAvl0+JRreaO0CxyP55plozBLVsrD8rHqWb/c3oLnD+RIl1M14Vd6u1u9X
+	 Oob1+hCq82l2ak4K6/muiGCYp3XAByUUYoBry9CX+IaZUzyqkN/aZJdTwAZ1/KmI0X
+	 yMmmm3c7lPfAg==
+Date: Tue, 16 Jun 2026 08:33:34 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: stable@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 6.18.y 1/2] mptcp: fix missing wakeups in edge scenarios
+Message-ID: <ajFCnqgA-0upNshY@laps>
+References: <2026061533-ninja-scrabble-539d@gregkh>
+ <20260616001959.2587348-1-sashal@kernel.org>
+ <a511d4e7-3b0c-41f3-830e-b32e27f9fe5a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a511d4e7-3b0c-41f3-830e-b32e27f9fe5a@kernel.org>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-4.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:richard.weiyang@gmail.com,m:akpm@linux-foundation.org,m:david@kernel.org,m:ljs@kernel.org,m:riel@surriel.com,m:liam@infradead.org,m:vbabka@kernel.org,m:harry@kernel.org,m:jannh@google.com,m:balbirs@nvidia.com,m:ziy@nvidia.com,m:sj@kernel.org,m:linux-mm@kvack.org,m:lorenzo.stoakes@oracle.com,m:stable@vger.kernel.org,m:lance.yang@linux.dev,m:richardweiyang@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FORGED_SENDER(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-263711-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:matttbe@kernel.org,m:stable@vger.kernel.org,m:pabeni@redhat.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-263710-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:dkim,linux.dev:mid,linux.dev:from_mime]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3289768F56A
+X-Rspamd-Queue-Id: 988A868F5C7
 
-
-On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
-[...]
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index 2ccbabfb2cc1..21635fab209c 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -243,40 +243,28 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 		 */
-> 		pmde = pmdp_get_lockless(pvmw->pmd);
-> 
->-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->-			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-			pmde = *pvmw->pmd;
->-			if (!pmd_present(pmde)) {
->-				softleaf_t entry;
->-
->-				if (!thp_migration_supported() ||
->-				    !(pvmw->flags & PVMW_MIGRATION))
->-					return not_found(pvmw);
->-				entry = softleaf_from_pmd(pmde);
->-
->-				if (!softleaf_is_migration(entry) ||
->-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->-					return not_found(pvmw);
->-				return true;
->-			}
->-			if (likely(pmd_trans_huge(pmde))) {
->-				if (pvmw->flags & PVMW_MIGRATION)
->-					return not_found(pvmw);
->-				if (!check_pmd(pmd_pfn(pmde), pvmw))
->-					return not_found(pvmw);
->-				return true;
->-			}
->-			/* THP pmd was split under us: handle on pte level */
->-			spin_unlock(pvmw->ptl);
->-			pvmw->ptl = NULL;
->-		} else if (!pmd_present(pmde)) {
->-			const softleaf_t entry = softleaf_from_pmd(pmde);
->-
->-			if (softleaf_is_device_private(entry)) {
->-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->-				return true;
->-			}
->+		if (pmd_present(pmde)) {
->+			if (!pmd_leaf(pmde))
->+				goto pte_table;
->+			if (pvmw->flags & PVMW_MIGRATION)
->+				return not_found(pvmw);
->+			if (!check_pmd(pmd_pfn(pmde), pvmw))
->+				return not_found(pvmw);
->+		} else if (pmd_is_migration_entry(pmde)) {
->+			softleaf_t entry = softleaf_from_pmd(pmde);
->+
->+			if (!(pvmw->flags & PVMW_MIGRATION))
->+				return not_found(pvmw);
-
-Looked at history a bit, and I wonder if this changed something old
-here ...
-
-Since 616b8371539a ("mm: thp: enable thp migration in generic path"), PMD
-migration handling took PTL before doing PVMW_MIGRATION/PFN checks,
-including not_found() cases. So lockless PMD read was just a filter ...
-
-With this fix, true case gets final pmd_same() check, but this
-not_found() case happens before taking PTL.
-
-So a !PVMW_MIGRATION walker could race with someone, e.g.
-remove_migration_pmd(): we make the not_found() decision from old PMD
-value that still says "migration", while real *pvmw->pmd may already be
-present again. We return without ever taking PTL :)
-
-Not sure about practical fallout, but should these PMD-level not_found()
-cases also take PTL and restart if PMD changed?
-
->+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+				return not_found(pvmw);
->+		} else if (pmd_is_device_private_entry(pmde)) {
->+			softleaf_t entry = softleaf_from_pmd(pmde);
-> 
->+			if (pvmw->flags & PVMW_MIGRATION)
->+				return not_found(pvmw);
->+			if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->+				return not_found(pvmw);
->+		} else {
-> 			if ((pvmw->flags & PVMW_SYNC) &&
-> 			    thp_vma_suitable_order(vma, pvmw->address,
-> 						   PMD_ORDER) &&
->@@ -286,6 +274,15 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 			step_forward(pvmw, PMD_SIZE);
-> 			continue;
-> 		}
->+
->+		/* Double-check under PTL that the PMD didn't change. */
->+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->+		if (pmd_same(pmde, pmdp_get(pvmw->pmd)))
->+			return true;
->+		spin_unlock(pvmw->ptl);
->+		pvmw->ptl = NULL;
->+		goto restart;
->+pte_table:
-> 		if (!map_pte(pvmw, &pmde, &ptl)) {
-> 			if (!pvmw->pte)
-> 				goto restart;
->-- 
->2.34.1
+On Tue, Jun 16, 2026 at 01:01:34PM +0200, Matthieu Baerts wrote:
+>Hi Sasha,
 >
+>On 16/06/2026 02:19, Sasha Levin wrote:
+>> From: Paolo Abeni <pabeni@redhat.com>
+>>
+>> [ Upstream commit 9d8d28738f24b75616d6ca7a27cb4aed88520343 ]
+>>
+>> The mptcp_recvmsg() can fill MPTCP socket receive queue via
+>> mptcp_move_skbs(), but currently does not try to wakeup any listener,
+>> because the same process is going to check the receive queue soon.
+>>
+>> When multiple threads are reading from the same fd, the above can
+>> cause stall. Add the missing wakeup.
+>>
+>> Fixes: 6771bfd9ee24 ("mptcp: update mptcp ack sequence from work queue")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+>> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-1-856831229976@kernel.org
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>Thank you for this patch. The subject shows "1/2", suggesting a 2nd
+>patch is expected, but I don't see any, and it looks like no 2nd patch
+>is needed here to resolve conflicts.
+>
+>So just to be sure: no patch 2/2 expected, right?
 
-Cheers, Lance
+Yes, sorry, human error...
+
+-- 
+Thanks,
+Sasha
 
