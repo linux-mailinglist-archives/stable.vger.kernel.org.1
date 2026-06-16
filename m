@@ -1,219 +1,221 @@
-Return-Path: <stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MdZ1KH7bMGoOYAUAu9opvQ
-	(envelope-from <stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:13:34 +0200
+	id 2cI6AlDbMGoDYAUAu9opvQ
+	(envelope-from <stable+bounces-263543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:12:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFF468C0AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E47E068C095
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 07:12:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="x/wPNSxe";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263547-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ewWGhR8I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263543-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263543-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C82033008C9B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:13:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9A62300869A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77463CE48E;
-	Tue, 16 Jun 2026 05:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4063CEBB8;
+	Tue, 16 Jun 2026 05:12:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8AC3CE481
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9763CE48E
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:12:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781586809; cv=none; b=CzkSaCTkeBQ0BiGBbyqc39BpbhcBiYxGvnrhPmRHIX8UJrTQLr1VJf4iOy9u5DSbO3tFOqmtIGp9qwuzPMSsI5Pf6StbcczyPlxXkzemkDx/TjDjoyHYu5T66NDULWfrO11naBkrTTPhjvFOT08h5nWHECSSlJglRujUo+pL7Gg=
+	t=1781586762; cv=none; b=DJAdOJ03CHQwq0KCEdqMOruETbISubRTyliT8US+GXOGTj1zdTarWB70IQXJpo6Cvx2xhzFWMwQZDCUIbIaSp7q3ug3I6Bhh6H5YqDo/c4AfCfdVzKhxrU17bIEop20bjDD9KKBUk0NSfQMGBqKuEpsTuUTqVnxa76Bl8ox+TWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781586809; c=relaxed/simple;
-	bh=zN+JkfaBed6t14OOxabTV2baYgaRMMqHq5HxTke4brY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UTb6dIv5le/EX+46tndKf9YXw5WgK1Kl5j+EHvi+CW0kXSJ8HWLwL+55Gq1viHGIpueOAOrCVdAj2+exRmn5qb3YdJUGgGkfnA90f4ISOC82hx4wsjK3X2X5pb153SzCm0YEBwHvkR6ERFDXA1hfo7XKfd3Etf0fW6H8vkgaOuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/wPNSxe; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0874B1F00A3A;
-	Tue, 16 Jun 2026 05:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781586807;
-	bh=+DZga0xTEhJ3ren6f5+cf9c00RoQor9hdjEuv50XnTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=x/wPNSxeKjbIKaWIISn0triVl7/J/BqXcJDWf25bwL6Up2sXw5fYTpKS7euWXTGgn
-	 4/AVWeMjjd9jdaFBZY+Y3R5MIOPpjkuR4JBdZsEhg1D/nrxtjZpKoq2jbWlHA94J0g
-	 mkQpze6xh9Fd+ykR7+VI84urYsYL7OPdrOQsWi7w=
-Date: Tue, 16 Jun 2026 10:42:23 +0530
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kevin Berry <kpberry@google.com>
-Cc: xmei5@asu.edu, bestswngs@gmail.com, chenglongtang@google.com,
-	joneslee@google.com, pabeni@redhat.com, rnj@google.com,
-	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] net: bonding: fix use-after-free in bond_xmit_broadcast()
-Message-ID: <2026061617-flyable-civic-a986@gregkh>
-References: <CAPpSM+TbMOPL93CkWtrYjYW+T+Q+iWuo+ZhfutYNFOuOCBU5fQ@mail.gmail.com>
- <20260506202842.1788682-1-kpberry@google.com>
- <20260506202842.1788682-2-kpberry@google.com>
+	s=arc-20240116; t=1781586762; c=relaxed/simple;
+	bh=rANNsDQV7Y9xPKYr2MaoP+P4LqSIH4cyrTDkqqhOOEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lrgT5n+4Y3iQpnx9Ao437Y6YJehV1fKTnIBGavrfCTPFi9prjkS/HmL7aD6Itef/h+4I0+1T8DfHddcOuEB07oeawVr91Pjac8lEPa3du0oBkOBOPiVue6UKv0QgXgRmvTosfce0qD1al6vs/xn5UyxrPNu/eiWlw8iL7bNa5nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ewWGhR8I; arc=none smtp.client-ip=74.125.82.178
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-30b9e755555so1920709eec.1
+        for <stable@vger.kernel.org>; Mon, 15 Jun 2026 22:12:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781586760; x=1782191560; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=npOZ0JdHRj0qzq/T7JuKw3W720zNV5l12WuNHIU6TT8=;
+        b=ewWGhR8IO6ksCF+h+x+YHNa/HOY5Uh5v4e9AKuqngPuvlCeI6hLmz0O1DpYfROYpdH
+         MIEHs0MHij6VXq170sj4yRJSxpfkCPkoKRcDNLXohYQFYAaXik1I9yI45F+HS693P+nE
+         p0ZMhHdlV3+QZpYo2N4Qs5V9pfHv9TQrYmmPzWF7fQ1j+/N2WGgi1wSCtrTJ0OOy9MiQ
+         EHcw11XArAQTlUHS/D80dOPvyZHyMtDHFP2kiK1ecuw7kl/ndpP9RSoQU2mdBYSFS9Nz
+         BBfruOcl/oDv1kvxN3L42BEs5wd4IyYQMujP3EiGMjQBvHtom+C4OSAbZOldTpc0SeLK
+         HRlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781586760; x=1782191560;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=npOZ0JdHRj0qzq/T7JuKw3W720zNV5l12WuNHIU6TT8=;
+        b=ig+rPDQQ7Hht8YURO0ZColdnUDD/rtok0L8Acyrm2I3KlxoON4RVyovSViOHKjM/Et
+         rNkQU4wEjv5ExVBhjKcLjsvpWyMAazxyOZZHlJpe3hEQw1yU8HloRaOciyKTokOVTVLQ
+         GhJC9Fbs8MY/QI+ySOVi247qokLQfQ8bO2VjJg/mJNyt2tS9T95KWv2H2hoTSoZBEUx+
+         3tEUs6JDyigaPMA1t3Q4s19Z8rZDZ2l+A8Hf8uCOWul9DyPWz9gN9jcxXk0p2MZNVcCZ
+         wN4KsPEPd5ZTgIvkCs4kmmauVZcnGppFnBsz3hELrMzBd62t7PBrFt88bpqibwDiHPOT
+         V4LA==
+X-Forwarded-Encrypted: i=1; AFNElJ/EBH4bGVXM8iH/rsU6VwcV0tZSI/aDGKQP4lvwsOOE1t/1oVbhWpfUTtWu9BoPndDK0SqMkCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzphrC05GRZ1TRgQAjfAoJr9Ni66g4gsfXE8s3hcIAs48hhzyB+
+	OHagchundcJgW5FSK/V5HeW5CCLl8K6/N/njDT9MhdOGFflTt0A6o2QA
+X-Gm-Gg: Acq92OH2UqIScCaUPQeSiHo+Pxdm3frJJiGVubZ2pyOXADd49Obw0LSkrDO6suSb/dx
+	hnsrvECF4HHstVc+rr5xdadY+LxAAzG7BHsBjGVRJXsEE9D5gsuG4jiTDtpU1qoW77vuTXOOWEa
+	BGPD2qbdPbT5wJbjiKwR3V1gbPJ6RsaibS/oQazrC7zSWptQHmDGBw7DaU+3whxcTPZ4M13b1oh
+	xr+dukLxRbL8Bt0cMBnp5eX8me7pR2RS2oTz7BN8BAyP0bjsTYzbE8ME/HgyBU+0b3YPy0qTiXC
+	+SvVJTIEGyBBAuTQ9QIFumdZp+kc7Mex6q4rxG2UIICvQ1td7PsKKzLvq+zfXhYct+Izxwr5haI
+	49tSbA/8IkKcSBjmdWT7+yM1iVXjikzP2PdyVVhysfn5NjVNzWkXaW4KtJm0GtIpYfa3HMHGue0
+	ZVsln3Cq8DVAnQrEVrsqdo9iXf8eF0AFt96LTsU/z9/d8LFiSOCWtx8tRIC+eb+/mMjGHMf7iQX
+	wT3Ar6fq3Y6p5I=
+X-Received: by 2002:a05:7300:4304:b0:304:e58b:cccb with SMTP id 5a478bee46e88-3093816c7dbmr7715691eec.2.1781586759645;
+        Mon, 15 Jun 2026 22:12:39 -0700 (PDT)
+Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:3714:f5c2:9b83:3df1])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3081ea43b80sm16726052eec.21.2026.06.15.22.12.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Jun 2026 22:12:37 -0700 (PDT)
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Hans Verkuil <hverkuil@kernel.org>,
+	linux-input@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	sashiko-bot@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] Input: sur40 - fix input device registration ordering
+Date: Mon, 15 Jun 2026 22:12:29 -0700
+Message-ID: <20260616051235.1549517-1-dmitry.torokhov@gmail.com>
+X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506202842.1788682-2-kpberry@google.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263547-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[asu.edu,gmail.com,google.com,redhat.com,vger.kernel.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:kpberry@google.com,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:stable@vger.kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:hverkuil@kernel.org,m:linux-input@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:sashiko-bot@kernel.org,m:stable@vger.kernel.org,s:lists@lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263543-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:from_mime,asu.edu:email]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9AFF468C0AB
+X-Rspamd-Queue-Id: E47E068C095
 
-On Wed, May 06, 2026 at 08:28:42PM +0000, Kevin Berry wrote:
-> From: Xiang Mei <xmei5@asu.edu>
-> 
-> commit 2884bf72fb8f03409e423397319205de48adca16 upstream.
-> 
-> bond_xmit_broadcast() reuses the original skb for the last slave
-> (determined by bond_is_last_slave()) and clones it for others.
-> Concurrent slave enslave/release can mutate the slave list during
-> RCU-protected iteration, changing which slave is "last" mid-loop.
-> This causes the original skb to be double-consumed (double-freed).
-> 
-> Replace the racy bond_is_last_slave() check with a simple index
-> comparison (i + 1 == slaves_count) against the pre-snapshot slave
-> count taken via READ_ONCE() before the loop.  This preserves the
-> zero-copy optimization for the last slave while making the "last"
-> determination stable against concurrent list mutations.
-> 
-> The UAF can trigger the following crash:
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in skb_clone
-> Read of size 8 at addr ffff888100ef8d40 by task exploit/147
-> 
-> CPU: 1 UID: 0 PID: 147 Comm: exploit Not tainted 7.0.0-rc3+ #4 PREEMPTLAZY
-> Call Trace:
->  <TASK>
->  dump_stack_lvl (lib/dump_stack.c:123)
->  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
->  kasan_report (mm/kasan/report.c:597)
->  skb_clone (include/linux/skbuff.h:1724 include/linux/skbuff.h:1792 include/linux/skbuff.h:3396 net/core/skbuff.c:2108)
->  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5334)
->  bond_start_xmit (drivers/net/bonding/bond_main.c:5567 drivers/net/bonding/bond_main.c:5593)
->  dev_hard_start_xmit (include/linux/netdevice.h:5325 include/linux/netdevice.h:5334 net/core/dev.c:3871 net/core/dev.c:3887)
->  __dev_queue_xmit (include/linux/netdevice.h:3601 net/core/dev.c:4838)
->  ip6_finish_output2 (include/net/neighbour.h:540 include/net/neighbour.h:554 net/ipv6/ip6_output.c:136)
->  ip6_finish_output (net/ipv6/ip6_output.c:208 net/ipv6/ip6_output.c:219)
->  ip6_output (net/ipv6/ip6_output.c:250)
->  ip6_send_skb (net/ipv6/ip6_output.c:1985)
->  udp_v6_send_skb (net/ipv6/udp.c:1442)
->  udpv6_sendmsg (net/ipv6/udp.c:1733)
->  __sys_sendto (net/socket.c:730 net/socket.c:742 net/socket.c:2206)
->  __x64_sys_sendto (net/socket.c:2209)
->  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
->  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
->  </TASK>
-> 
-> Allocated by task 147:
-> 
-> Freed by task 147:
-> 
-> The buggy address belongs to the object at ffff888100ef8c80
->  which belongs to the cache skbuff_head_cache of size 224
-> The buggy address is located 192 bytes inside of
->  freed 224-byte region [ffff888100ef8c80, ffff888100ef8d60)
-> 
-> Memory state around the buggy address:
->  ffff888100ef8c00: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
->  ffff888100ef8c80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ffff888100ef8d00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
->                                                     ^
->  ffff888100ef8d80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
->  ffff888100ef8e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> ==================================================================
-> 
-> Fixes: 4e5bd03ae346 ("net: bonding: fix bond_xmit_broadcast return value error bug")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> Link: https://patch.msgid.link/20260326075553.3960562-1-xmei5@asu.edu
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> Signed-off-by: Kevin Berry <kpberry@google.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/net/bonding/bond_main.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index 114ebaa284da..6484ba1ab14c 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -5280,18 +5280,22 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_buff *skb,
->  				       struct net_device *bond_dev)
->  {
->  	struct bonding *bond = netdev_priv(bond_dev);
-> -	struct slave *slave = NULL;
-> -	struct list_head *iter;
-> +	struct bond_up_slave *slaves;
->  	bool xmit_suc = false;
->  	bool skb_used = false;
-> +	int slaves_count, i;
->  
-> -	bond_for_each_slave_rcu(bond, slave, iter) {
-> +	slaves = rcu_dereference(bond->all_slaves);
-> +
-> +	slaves_count = slaves ? READ_ONCE(slaves->count) : 0;
-> +	for (i = 0; i < slaves_count; i++) {
-> +		struct slave *slave = slaves->arr[i];
->  		struct sk_buff *skb2;
->  
->  		if (!(bond_slave_is_up(slave) && slave->link == BOND_LINK_UP))
->  			continue;
->  
-> -		if (bond_is_last_slave(bond, slave)) {
-> +		if (i + 1 == slaves_count) {
->  			skb2 = skb;
->  			skb_used = true;
->  		} else {
-> 
-> base-commit: 258cf62a6dfde3c6a39d120a56a298f2ed6a8901
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
-> 
+In sur40_probe(), input_register_device() was previously called early before
+the V4L2 video device and vb2_queue components were fully initialized. If
+userspace opened the input device immediately upon registration, sur40_open()
+would trigger and start the sur40_poll() worker thread. This worker thread
+invokes sur40_process_video() and accesses the uninitialized vb2_queue
+structure, leading to a data race and potential system crash.
 
-Does not apply at all :(
+Furthermore, if V4L2 or video registration failed after input_register_device()
+succeeded, the error path fell through to calling input_free_device() on a
+successfully registered device instead of input_unregister_device(), corrupting
+input core state.
+
+Move input_register_device() to the very end of sur40_probe(). This ensures
+the V4L2 and video queue structures are fully initialized before polling can
+start, and naturally resolves the error path bug since input_free_device()
+is now only called when input registration has not yet occurred.
+
+To maintain strict LIFO (Last-In, First-Out) teardown ordering, also move
+input_unregister_device() to the very beginning of sur40_disconnect(). This
+guarantees that the input polling worker thread is stopped before V4L2
+video components or control handlers are unregistered.
+
+Reported-by: sashiko-bot@kernel.org
+Cc: stable@vger.kernel.org
+Assisted-by: Antigravity:gemini-3.5-flash
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/input/touchscreen/sur40.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/input/touchscreen/sur40.c b/drivers/input/touchscreen/sur40.c
+index fe63d53d56db..8639ec3ad703 100644
+--- a/drivers/input/touchscreen/sur40.c
++++ b/drivers/input/touchscreen/sur40.c
+@@ -725,21 +725,13 @@ static int sur40_probe(struct usb_interface *interface,
+ 		goto err_free_input;
+ 	}
+ 
+-	/* register the polled input device */
+-	error = input_register_device(input);
+-	if (error) {
+-		dev_err(&interface->dev,
+-			"Unable to register polled input device.");
+-		goto err_free_buffer;
+-	}
+-
+ 	/* register the video master device */
+ 	snprintf(sur40->v4l2.name, sizeof(sur40->v4l2.name), "%s", DRIVER_LONG);
+ 	error = v4l2_device_register(sur40->dev, &sur40->v4l2);
+ 	if (error) {
+ 		dev_err(&interface->dev,
+ 			"Unable to register video master device.");
+-		goto err_unreg_v4l2;
++		goto err_free_buffer;
+ 	}
+ 
+ 	/* initialize the lock and subdevice */
+@@ -798,6 +790,14 @@ static int sur40_probe(struct usb_interface *interface,
+ 		goto err_unreg_video;
+ 	}
+ 
++	/* register the polled input device */
++	error = input_register_device(input);
++	if (error) {
++		dev_err(&interface->dev,
++			"Unable to register polled input device.");
++		goto err_unreg_video;
++	}
++
+ 	/* we can register the device now, as it is ready */
+ 	usb_set_intfdata(interface, sur40);
+ 	dev_dbg(&interface->dev, "%s is now attached\n", DRIVER_DESC);
+@@ -823,11 +823,12 @@ static void sur40_disconnect(struct usb_interface *interface)
+ {
+ 	struct sur40_state *sur40 = usb_get_intfdata(interface);
+ 
++	input_unregister_device(sur40->input);
++
+ 	v4l2_ctrl_handler_free(&sur40->hdl);
+ 	video_unregister_device(&sur40->vdev);
+ 	v4l2_device_unregister(&sur40->v4l2);
+ 
+-	input_unregister_device(sur40->input);
+ 	kfree(sur40->bulk_in_buffer);
+ 	kfree(sur40);
+ 
+-- 
+2.54.0.1136.gdb2ca164c4-goog
+
 
