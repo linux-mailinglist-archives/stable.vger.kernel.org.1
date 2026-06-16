@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QZzWF8SEMWrUlQUAu9opvQ
-	(envelope-from <stable+bounces-265106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:48 +0200
+	id Y2jaBSSdMWoNoQUAu9opvQ
+	(envelope-from <stable+bounces-266430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D10692ECF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28F4694A47
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="JCrfS/wS";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265106-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265106-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gkEZwPEO;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266430-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266430-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F131D31F0EB6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:05:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CB5B303209C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B624472767;
-	Tue, 16 Jun 2026 17:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C147CC9C;
+	Tue, 16 Jun 2026 18:59:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0FC328610;
-	Tue, 16 Jun 2026 17:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CBD3CEBBD;
+	Tue, 16 Jun 2026 18:59:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629503; cv=none; b=sz806TM3KFh3hT3v/bTSYLcC7OvHUx5fLNOo6p+tjGDgq55iPSG7mrbKxdO1YWQCs9JJkCn80u7z1yion0S6IFGmAeEvCM4xO/UwaeLFO6dSMKPXk268kF4tnJot97lwpHyNteuJpK675GyuXDNJ0sLZ9cb7KYt/s5wrAkrmpz0=
+	t=1781636384; cv=none; b=uhN742dKnU2boaELCo6SQHzYF0skYxBqehUVgtn5OkWFLYVo+eO4DPgXl7B0uLcmzzhp5DnsDSbqjrsVNcnDEfiTPpJlB8RxfgQFXwqRtiBptvjfQdHY69wZI0dQBdfwk9Lt6E0UfJgQ1X4QQJKHJ6ajYbwHOZMYueWXewytFbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629503; c=relaxed/simple;
-	bh=hDYXz0gpgeXUoHcYi+n/NriuFqnwKPIDRcCSFiHUuRI=;
+	s=arc-20240116; t=1781636384; c=relaxed/simple;
+	bh=UruRXTw9AFkIoxCBr/n2aA5XwA3CRxwEbStOpG08YS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDwMtO5OZudgaBQrJ0DE1Ye9ta6nbuRHVW7yPZNsxqryAiu4/WEpbN/5jpWpKhkvCEZfzLJQhJR2HKIsC7dKQreKl2csdZwznVGolUjonuKxymPtHTcOoCOMAh8gHBZC3JVjsZvI9+0fPH0PfrJn7gqJbQ9LkkhkuUplTwggCwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCrfS/wS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492A11F000E9;
-	Tue, 16 Jun 2026 17:05:00 +0000 (UTC)
+	 MIME-Version; b=WujcxgmnDWhET63gF3YXuXf6BEXD/cJQp4FKnll/fMcWI39bWKIcZzBeP93JLH4gTY0KskK3qxsGi5M4jBOS+yvofYPAVhLP9wlP/pgwxhNBjew3jgHzy8rZM85CFlexsJvcSTEaldNBfcxB+o0NV1Z8UPT2jy2dFUmirU0EInU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkEZwPEO; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E8A1F000E9;
+	Tue, 16 Jun 2026 18:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629502;
-	bh=F0sDbGl85376JtmNf4s/Ju/ifftQ8nrZU0n+T7FWIp4=;
+	s=korg; t=1781636383;
+	bh=B+3wtoHpvOcKD+Jt8AZkzbUIFN800iK1Bn6yzrNRtGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JCrfS/wS/IyCUWi+mRpMdckqUVLhQyX9xWGBKHC+IbWDZ2oP9RKG3xjK2d0BqN/IY
-	 A30pxhWJfMWu9xzWQnT8HXmgtVOuIvSlFrGtT/tdrQSauYc8Z+T6h2nF07Gmkcpor1
-	 BwOTKqrjcYRlRkOdsLU3+GhLx/J74VOsA7IPgFnM=
+	b=gkEZwPEOaWqdgXSjvOq6mjpXnI2uEWx0z7sobui+33am2WXgDaFMKCVBOmd/fyZbf
+	 4/ubQ8V2PBqpgH9aRzlLWERMjvQJ1610I1ufs2BNPR0lxkg0QAQ1eYDF0WdH9tljWu
+	 b6+PC1YQeDlEDBRH4INHFByv2wSNjxNM3hOuyqgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gil Portnoy <dddhkts1@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 298/452] ksmbd: fix use-after-free of a deferred file_lock on double SMB2_CANCEL
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 229/342] ALSA: aoa: Skip devices with no codecs in i2sbus_resume()
 Date: Tue, 16 Jun 2026 20:28:45 +0530
-Message-ID: <20260616145133.175049955@linuxfoundation.org>
+Message-ID: <20260616145058.865984631@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,105 +72,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266430-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265106-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dddhkts1@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thorsten.blum@linux.dev,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B5D10692ECF
+X-Rspamd-Queue-Id: A28F4694A47
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Portnoy <dddhkts1@gmail.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit f580d27e8928828693df44ba2db0fffdbe11dfea upstream.
+[ Upstream commit fd7df93013c5118812e63a52635dc6c3a805a1de ]
 
-A deferred byte-range lock (an SMB2_LOCK that blocks) registers an async work on
-conn->async_requests via setup_async_work(), with cancel_fn =
-smb2_remove_blocked_lock and cancel_argv[0] pointing at the struct file_lock.
+In i2sbus_resume(), skip devices with an empty codec list, which avoids
+using an uninitialized 'sysclock_factor' in the 32-bit format path in
+i2sbus_pcm_prepare().
 
-When the request is cancelled, the worker frees the file_lock with
-locks_free_lock() and takes the cancelled early-exit, which "goto out"s and never
-reaches release_async_work() -- the only site that unlinks the work from
-conn->async_requests and clears cancel_fn/cancel_argv. The work therefore stays
-matchable on async_requests with a live cancel_fn pointing at the freed file_lock,
-until connection teardown finally runs release_async_work().
+In i2sbus_pcm_prepare(), replace two list_for_each_entry() loops with a
+single list_first_entry() now that the codec list is guaranteed to be
+non-empty by all callers.
 
-smb2_cancel() fires cancel_fn unconditionally with no state guard, so a second
-SMB2_CANCEL for the same AsyncId, arriving in that window, re-runs
-smb2_remove_blocked_lock() on the freed file_lock -- a slab use-after-free:
-
-  BUG: KASAN: slab-use-after-free in __locks_delete_block
-    __locks_delete_block
-    locks_delete_block
-    ksmbd_vfs_posix_lock_unblock
-    smb2_remove_blocked_lock
-    smb2_cancel                 <- 2nd SMB2_CANCEL fires cancel_fn
-    handle_ksmbd_work
-  Allocated by ...: locks_alloc_lock <- smb2_lock
-  Freed by ...:     locks_free_lock  <- smb2_lock (cancelled branch)
-  ... cache file_lock_cache of size 192
-
-Reproduced on mainline with KASAN by an authenticated SMB client.
-
-Skip a work whose state is already KSMBD_WORK_CANCELLED so its cancel callback
-cannot be fired a second time.
-
+Fixes: f3d9478b2ce4 ("[ALSA] snd-aoa: add snd-aoa")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gil Portnoy <dddhkts1@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20260310102921.210109-3-thorsten.blum@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/aoa/soundbus/i2sbus/core.c |    3 +++
+ sound/aoa/soundbus/i2sbus/pcm.c  |   16 +++++-----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7191,6 +7191,17 @@ int smb2_cancel(struct ksmbd_work *work)
- 			    le64_to_cpu(hdr->Id.AsyncId))
- 				continue;
+--- a/sound/aoa/soundbus/i2sbus/core.c
++++ b/sound/aoa/soundbus/i2sbus/core.c
+@@ -411,6 +411,9 @@ static int i2sbus_resume(struct macio_de
+ 	int err, ret = 0;
  
-+			/*
-+			 * A cancelled deferred byte-range lock frees its
-+			 * file_lock and takes the smb2_lock() early-exit that
-+			 * skips release_async_work(), so the work stays on
-+			 * conn->async_requests with a live cancel_fn pointing
-+			 * at the freed file_lock.  Re-firing it on a second
-+			 * SMB2_CANCEL is a use-after-free.
-+			 */
-+			if (iter->state == KSMBD_WORK_CANCELLED)
-+				break;
+ 	list_for_each_entry(i2sdev, &control->list, item) {
++		if (list_empty(&i2sdev->sound.codec_list))
++			continue;
 +
- 			ksmbd_debug(SMB,
- 				    "smb2 with AsyncId %llu cancelled command = 0x%x\n",
- 				    le64_to_cpu(hdr->Id.AsyncId),
+ 		/* reset i2s bus format etc. */
+ 		i2sbus_pcm_prepare_both(i2sdev);
+ 
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -411,6 +411,9 @@ static int i2sbus_pcm_prepare(struct i2s
+ 	/* set stop command */
+ 	command->command = cpu_to_le16(DBDMA_STOP);
+ 
++	cii = list_first_entry(&i2sdev->sound.codec_list,
++			       struct codec_info_item, list);
++
+ 	/* ok, let's set the serial format and stuff */
+ 	switch (runtime->format) {
+ 	/* 16 bit formats */
+@@ -418,13 +421,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 	case SNDRV_PCM_FORMAT_U16_BE:
+ 		/* FIXME: if we add different bus factors we need to
+ 		 * do more here!! */
+-		bi.bus_factor = 0;
+-		list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-			bi.bus_factor = cii->codec->bus_factor;
+-			break;
+-		}
+-		if (!bi.bus_factor)
+-			return -ENODEV;
++		bi.bus_factor = cii->codec->bus_factor;
+ 		input_16bit = 1;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_BE:
+@@ -438,10 +435,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		return -EINVAL;
+ 	}
+ 	/* we assume all sysclocks are the same! */
+-	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+-		bi.sysclock_factor = cii->codec->sysclock_factor;
+-		break;
+-	}
++	bi.sysclock_factor = cii->codec->sysclock_factor;
+ 
+ 	if (clock_and_divisors(bi.sysclock_factor,
+ 			       bi.bus_factor,
 
 
 
