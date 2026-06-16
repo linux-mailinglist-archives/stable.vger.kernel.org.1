@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-266031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZgY8KfyUMWqHnQUAu9opvQ
-	(envelope-from <stable+bounces-266031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:00 +0200
+	id xgbIET11MWpPjwUAu9opvQ
+	(envelope-from <stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E9C6941C1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C524F691BE3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VyHNtr6v;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266031-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266031-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=meR+vXCj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264306-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 20D43307DD28
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC62630CF58D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA4546AF1B;
-	Tue, 16 Jun 2026 18:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0736D44D6B2;
+	Tue, 16 Jun 2026 15:54:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AE63BFE5A;
-	Tue, 16 Jun 2026 18:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C591A43D4F7;
+	Tue, 16 Jun 2026 15:54:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634296; cv=none; b=HXBjvwl7WqKcaFK6z2weIrEgpKNuQEXVOz+ElgO8zRavcSxlQwxU+ctTqzDU2VG3gPgFvAMdh/Lv/GcwcPwk8n4RLaPnpPi97k0OIqxvSBVXQuZkZEqF4LRoSBo87MAi6cpUxjNRJZlFwoVzV77QnuBFrB7K7cHoEDrJYlVqesI=
+	t=1781625263; cv=none; b=j+Jxn0pdi2n5I/pN2xFXZBvlvXaDnu4P/WuWbPWir8VrTSA43WzeHiRxCiIJH2UH1Z7VsCMfudZafQV65Qf5zBYEF/YQd6Srxoi4Qwp6n22Zg9CskdeoEr+iayiXhWv7Pc8g/Lo0KNYgh6W1/4O0hjnEvdK9j9EItZAIADbLxLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634296; c=relaxed/simple;
-	bh=EEESbb57RYYIaAOX03L8qmHCYLPPFa8adLrSO98mIt4=;
+	s=arc-20240116; t=1781625263; c=relaxed/simple;
+	bh=5xdRT7hCtoyT+wM5W8B6058XUA+sUZ5iogCIR04/eV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qet89EM42WQVbHSSiSLEvz7KDCveu+dBxmlY2lvE2Ji1bYUs+7DlJee+WhCeuqi10OQBxzwUogeFbNb0Uuw2mqKUOrfmusjZYqwB4m+inbBsa4yLLMlA2c0WLohmT6+Dqq7/fYI2EwYf13dvj96+OVm33KUSUsIQ6Cg99Jlh9EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyHNtr6v; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4193C1F000E9;
-	Tue, 16 Jun 2026 18:24:53 +0000 (UTC)
+	 MIME-Version; b=AJAkHDGQV+h5jjjKLmBPtNm/eU62hDBqm4lNyhMPENTIXWsPCw2+XE99tL6aWA/04Aq6NUNItzErcYGYQPNo+wARdoVwn3kmz1sLJLPoFhFV9n/bcR6DWgZjjG2lmdtv5HDEVL/VVWYdjRnqbwrQbAQ2JyzAm653D3iADQziJhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meR+vXCj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16EB1F000E9;
+	Tue, 16 Jun 2026 15:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634295;
-	bh=VBq6broAMIUQ8eucztyTHreQGvwi99mLjUe6tVqyCOE=;
+	s=korg; t=1781625262;
+	bh=lMoVLGy0C/CgX3MdPv+2qWWi4YqEr/01jqzgOy8xwt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VyHNtr6vOYquqKTxgJLv8AML3cfHBUG53YffZvcKNJ87doZpDyNE0qdYGizSxwvk+
-	 iihHKkDKYQES1ATHAwVvC/k9AEp/fIrRAh90AoRlG17/h1/ZRFA6BXifUAyYXIlAdn
-	 jROWcN/E/wihHOVR9Y3x5izI+c4xWlLJ7cmZdOro=
+	b=meR+vXCjHTs9NCt9txgeE0/+ukew89M/4g0uoJHRpFdPkVaI9XSpDM+f2ybkXY1nq
+	 lN4KXOdQkOxaJTZgT+MAlrJGR5hp9PuIDCx4kOJHyQAM/PmozyqVv85yZLAROx3vWY
+	 Dny8aCl/x0Rc7Nb+jS/PoBEP5HtyawiRNdvpUAds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.15 239/411] thunderbolt: Clamp XDomain response data copy to allocation size
+	Nam Cao <namcao@linutronix.de>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 081/325] tools/rv: Fix substring match when listing container monitors
 Date: Tue, 16 Jun 2026 20:27:57 +0530
-Message-ID: <20260616145113.576154497@linuxfoundation.org>
+Message-ID: <20260616145101.763159970@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,71 +76,79 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264306-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266031-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linutronix.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 19E9C6941C1
+X-Rspamd-Queue-Id: C524F691BE3
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
+[ Upstream commit ba0247c5aa3fcb2890a92a97a88c70fe5ce704a6 ]
 
-tb_xdp_properties_request() derives the per-packet copy length from
-the response header without checking that it fits in the previously
-allocated data buffer.  A malicious peer can set its length field
-larger than the declared data_length, causing memcpy to write past
-the kcalloc allocation.
+When listing monitors within a specific container (rv list <container>),
+the tool incorrectly matched monitors if the requested container name
+was only a prefix of the actual container (e.g., 'rv list sche' would
+incorrectly list monitors from 'sched:').
 
-Clamp the per-packet copy length so that the cumulative offset
-never exceeds data_len.
+Fix this by ensuring the container name is an exact match and is
+immediately followed by the ':' separator.
 
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eba321a16fc6 ("tools/rv: Add support for nested monitors")
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/20260514152055.229162-3-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/xdomain.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/verification/rv/src/in_kernel.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -370,6 +370,8 @@ static int tb_xdp_properties_request(str
- 			}
- 		}
- 
-+		if (req.offset + len > data_len)
-+			len = data_len - req.offset;
- 		memcpy(data + req.offset, res->data, len * 4);
- 		req.offset += len;
- 	} while (!data_len || req.offset < data_len);
+diff --git a/tools/verification/rv/src/in_kernel.c b/tools/verification/rv/src/in_kernel.c
+index 95eac9ab148468..e4f35940374f5a 100644
+--- a/tools/verification/rv/src/in_kernel.c
++++ b/tools/verification/rv/src/in_kernel.c
+@@ -193,8 +193,12 @@ static int ikm_fill_monitor_definition(char *name, struct monitor *ikm, char *co
+ 	nested_name = strstr(name, ":");
+ 	if (nested_name) {
+ 		/* it belongs in container if it starts with "container:" */
+-		if (container && strstr(name, container) != name)
+-			return 1;
++		if (container) {
++			int len = strlen(container);
++
++			if (strncmp(name, container, len) || name[len] != ':')
++				return 1;
++		}
+ 		*nested_name = '/';
+ 		++nested_name;
+ 		ikm->nested = 1;
+-- 
+2.53.0
+
 
 
 
