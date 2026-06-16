@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 24P9KxxvMWrwjAUAu9opvQ
-	(envelope-from <stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:24 +0200
+	id nBtUOBNxMWqqjQUAu9opvQ
+	(envelope-from <stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2276469154D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4537069172D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xDHpVIwV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264088-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jugQJubj;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 860F0309F946
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1D2F317FCA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A415B44105C;
-	Tue, 16 Jun 2026 15:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA3A44CF40;
+	Tue, 16 Jun 2026 15:50:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B21A44103D;
-	Tue, 16 Jun 2026 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14D642B738;
+	Tue, 16 Jun 2026 15:50:33 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624062; cv=none; b=akEuA7huSiKcBnDhFAvx63rpPURXZSXQkPXb8Jzxb95YoWxPE7F1LB8ITr8ek/UNzjfKkZOib9k3lb75ACsImuxslhYUmQ4FYY25ommfRNQ8bbUAizTRsfb1vE5aJn38JKL/b1ng4DUqzYWKBRw9O9W9/nabNAOuOiPhTEoyc9k=
+	t=1781625035; cv=none; b=NOmYPqkHvjqlIgCvmYq0cQk6f1P5aBUVJduGtgVcoPlU958ZtPW0KQZpDo9uZMBOF9b+tWiuN3M1T8wUQuaflvqyBOCyhp8Q/Y4zZXtwXHaa9PPWLkIXVM6GsztsuaMITi6cH5HuiHsP+wHwR9Ji+KQ0uS0V2AYVigl4zZZOT+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624062; c=relaxed/simple;
-	bh=YeWg3IT2aNFrh9mFcR6onekUkbALkq+8VM6VFVH9aFM=;
+	s=arc-20240116; t=1781625035; c=relaxed/simple;
+	bh=mPRXQ9jIbmCToOroam8ZFW6wQ6kGa4oJAq53/3Eo3d8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWX7zCoU9V6Fydn9EhO8ZMubltLyQlNX19ruBq8coEVaVbXUGb7hguGkpx/nfjKBQ3dVOyBxj1FfqgPT6YH2f0wcGkDMdY8BZ0v4o3b979YUrxXQg9hS24bmkbolfMSx/ohfcp1aEMyVuo2jFBVlEEFOWg+P3kDeyqLOgpVPrC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDHpVIwV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595951F00A3D;
-	Tue, 16 Jun 2026 15:34:20 +0000 (UTC)
+	 MIME-Version; b=f7qgwxn5A3DGXm5c5NFRvuKB01UnP0P8HW8dJzA8v9ay1SGD5LOuzkF/yNzVDzE222ihFKkwUXi0v4ZK0fCA+voOklGd7oFD7EXyOTYdBbxzJoZ0LHjw4Km1FiJFS53d40HmiUCC9VI0raTGPwDKlhHHWCqOXkeUEOHuq35jlFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jugQJubj; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7A91F000E9;
+	Tue, 16 Jun 2026 15:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624061;
-	bh=/LfHq1+5C+tfegnS0uoKBTjrRPjEt2sYYhd54++67ik=;
+	s=korg; t=1781625033;
+	bh=W/FgGoaaf59FMJQD3aL2XfOr4+Uygd4/3SqmxDWDMyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xDHpVIwV/OFUlvuTKu7vSuDY5ht1vBSzyJSte5SIgooVLwi7Tf2Pwysvnbp1v/aIu
-	 vsrLIt5jT5EOeQK5ymJm1UyA+iqr2wvmW/NidISGd+bQ/7RcRV4lN9ag4rCWZafdRQ
-	 hRbBr92VnC5BbsVUKsiXaYpGuY79jsU2O53SvjMY=
+	b=jugQJubj86/A9fLYn3yAw5+1nVW/f6OJLhBvPRLzl0dqWBxkr7uXRawoNcmHa6vYN
+	 2cEVa+NwcZhqB3uWWPH+x/87sN5JxEfF3K/3itMB9QBiDC7SI4mGEzrGngX8huerJ+
+	 oLsC/sUlqjNYDegjzX6yRcqkEq3rJbGYIFK02wek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 7.0 232/378] mptcp: close TOCTOU race while computing rcv_wnd
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 067/325] sctp: purge outqueue on stale COOKIE-ECHO handling
 Date: Tue, 16 Jun 2026 20:27:43 +0530
-Message-ID: <20260616145122.468964965@linuxfoundation.org>
+Message-ID: <20260616145101.041341065@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,165 +74,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264088-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pabeni@redhat.com,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264264-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lenovo.com:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2276469154D
+X-Rspamd-Queue-Id: 4537069172D
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 8ab24fdebc369c0dfb90f82c1650b1e66662bb45 upstream.
+[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
 
-The MPTCP output path access locklessly the MPTCP-level ack_seq
-in multiple times, using possibly different values for the data_ack
-in the DSS option and to compute the announced rcv wnd for the same
-packet.
+sctp_stream_update() is only invoked when the association is moved into
+COOKIE_WAIT during association setup/reconfiguration. In this path, the
+outbound stream scheduler state (stream->out_curr) is expected to be
+clean, since no user data should have been transmitted yet unless the
+state machine has already partially progressed.
 
-Refactor the cote to avoid inconsistencies which may confuse the
-peer. Also ensure that the MPTCP level rcv wnd is updated only when
-the egress packet actually contains a DSS ack.
+However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
+Stale Cookie ERROR is received, the association is rolled back from
+COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
+have been queued and even bundled with the COOKIE-ECHO chunk.
 
-Fixes: fa3fe2b15031 ("mptcp: track window announced to peer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-3-856831229976@kernel.org
+During the rollback, sctp_stream_update() frees the old stream table
+and installs a new one, but it does not invalidate stream->out_curr.
+As a result, out_curr may still point to a freed sctp_stream_out
+entry from the previous stream state.
+
+Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
+stream->out_curr->ext, which can lead to use-after-free once the old
+stream state has been released via sctp_stream_free().
+
+This results in crashes such as (reported by Yuqi):
+
+  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
+  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
+  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
+     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
+   sctp_sched_fcfs_dequeue+0x13a/0x140
+   sctp_outq_flush+0x1603/0x33e0
+   sctp_do_sm+0x31c9/0x5d30
+   sctp_assoc_bh_rcv+0x392/0x6f0
+   sctp_inq_push+0x1db/0x270
+   sctp_rcv+0x138d/0x3c10
+
+Fix this by fully purging the association outqueue when handling the
+Stale Cookie case. This ensures all pending transmit and retransmit
+state is dropped, and any scheduler cached pointers are invalidated,
+making it safe to rebuild stream state during COOKIE_WAIT restart.
+
+Updating only stream->out_curr would be insufficient, since queued
+and retransmittable data would still reference the old stream state and
+trigger later use-after-free in dequeue paths.
+
+Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reported-by: Yuqi Xu <xuyq21@lenovo.com>
+Reported-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c |   36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ net/sctp/sm_statefuns.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -570,7 +570,6 @@ static bool mptcp_established_options_ds
- 	struct mptcp_ext *mpext;
- 	unsigned int ack_size;
- 	bool ret = false;
--	u64 ack_seq;
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 8e89a870780c49..9b23c11cbb9ea4 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -2598,11 +2598,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+ 	 */
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
  
- 	opts->csum_reqd = READ_ONCE(msk->csum_enabled);
- 	mpext = skb ? mptcp_get_ext(skb) : NULL;
-@@ -601,14 +600,11 @@ static bool mptcp_established_options_ds
- 		return ret;
- 	}
+-	/* If we've sent any data bundled with COOKIE-ECHO we will need to
+-	 * resend
+-	 */
+-	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
+-			SCTP_TRANSPORT(asoc->peer.primary_path));
++	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
  
--	ack_seq = READ_ONCE(msk->ack_seq);
- 	if (READ_ONCE(msk->use_64bit_ack)) {
- 		ack_size = TCPOLEN_MPTCP_DSS_ACK64;
--		opts->ext_copy.data_ack = ack_seq;
- 		opts->ext_copy.ack64 = 1;
- 	} else {
- 		ack_size = TCPOLEN_MPTCP_DSS_ACK32;
--		opts->ext_copy.data_ack32 = (uint32_t)ack_seq;
- 		opts->ext_copy.ack64 = 0;
- 	}
- 	opts->ext_copy.use_ack = 1;
-@@ -1296,19 +1292,14 @@ bool mptcp_incoming_options(struct sock
- 	return true;
- }
- 
--static void mptcp_set_rwin(struct tcp_sock *tp, struct tcphdr *th)
-+static u64 mptcp_set_rwin(struct mptcp_sock *msk, struct tcp_sock *tp,
-+			  struct tcphdr *th, u64 ack_seq)
- {
- 	const struct sock *ssk = (const struct sock *)tp;
--	struct mptcp_subflow_context *subflow;
--	u64 ack_seq, rcv_wnd_old, rcv_wnd_new;
--	struct mptcp_sock *msk;
-+	u64 rcv_wnd_old, rcv_wnd_new;
- 	u32 new_win;
- 	u64 win;
- 
--	subflow = mptcp_subflow_ctx(ssk);
--	msk = mptcp_sk(subflow->conn);
--
--	ack_seq = READ_ONCE(msk->ack_seq);
- 	rcv_wnd_new = ack_seq + tp->rcv_wnd;
- 
- 	rcv_wnd_old = atomic64_read(&msk->rcv_wnd_sent);
-@@ -1360,7 +1351,7 @@ raise_win:
- 
- update_wspace:
- 	WRITE_ONCE(msk->old_wspace, tp->rcv_wnd);
--	subflow->rcv_wnd_sent = rcv_wnd_new;
-+	return rcv_wnd_new;
- }
- 
- static void mptcp_track_rwin(struct tcp_sock *tp)
-@@ -1472,13 +1463,25 @@ void mptcp_write_options(struct tcphdr *
- 		*ptr++ = mptcp_option(MPTCPOPT_DSS, len, 0, flags);
- 
- 		if (mpext->use_ack) {
-+			struct mptcp_sock *msk;
-+			u64 ack_seq;
-+
-+			/* DSS option is set only by mptcp_established_options,
-+			 * the caller is __tcp_transmit_skb() and ssk is always
-+			 * not NULL.
-+			 */
-+			subflow = mptcp_subflow_ctx(ssk);
-+			msk = mptcp_sk(subflow->conn);
-+			ack_seq = READ_ONCE(msk->ack_seq);
- 			if (mpext->ack64) {
--				put_unaligned_be64(mpext->data_ack, ptr);
-+				put_unaligned_be64(ack_seq, ptr);
- 				ptr += 2;
- 			} else {
--				put_unaligned_be32(mpext->data_ack32, ptr);
-+				put_unaligned_be32(ack_seq, ptr);
- 				ptr += 1;
- 			}
-+			subflow->rcv_wnd_sent = mptcp_set_rwin(msk, tp, th,
-+							       ack_seq);
- 		}
- 
- 		if (mpext->use_map) {
-@@ -1706,9 +1709,6 @@ mp_capable_done:
- 			i += 4;
- 		}
- 	}
--
--	if (tp)
--		mptcp_set_rwin(tp, th);
- }
- 
- __be32 mptcp_get_reset_option(const struct sk_buff *skb)
+ 	/* Cast away the const modifier, as we want to just
+ 	 * rerun it through as a sideffect.
+-- 
+2.53.0
+
 
 
 
