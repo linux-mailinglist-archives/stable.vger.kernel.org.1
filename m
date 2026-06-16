@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Ky5DAYWMMWpbmQUAu9opvQ
-	(envelope-from <stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:53 +0200
+	id QYCiCiqWMWoMngUAu9opvQ
+	(envelope-from <stable+bounces-266088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37355693801
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F316942E9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GWRknijC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265622-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CUvdMbfC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266088-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266088-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D31E306C2B5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:48:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 91CAA300E3ED
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545863CC33F;
-	Tue, 16 Jun 2026 17:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F2547A0CD;
+	Tue, 16 Jun 2026 18:29:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7F5169AD2;
-	Tue, 16 Jun 2026 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D868466B5E;
+	Tue, 16 Jun 2026 18:29:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632130; cv=none; b=Gq3ShYWyIGjxQzcLy+h3TDevAT2XBD5OvTppE2YXLNdMwt1mYToMw+2a4UPIKhDfmetuukpxsDop/23c0XqiR9IBKay9sKjSRtdNU/8wGws24kINin7seiMZgyS8qOQ4mzW2kYqawawWVqvmKwSyhlOKebU5rSYL0eqT3Mz816U=
+	t=1781634597; cv=none; b=tizOHDRPIIFz8JPzDTQ5ZmDyOc8dvObIn3hVb79MJ/PmkbgfaqNa84JEoIwIOfx2Cz2dxXqRwcJk4/b1Rh3pGZoKL7XTdw7ECJbmeHv+jVRuKbEba97OJ6Ikg590RyGSfhFq2cdeHbBdj7Uw1xXERPCBUXpho9LMutpWIUK6qx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632130; c=relaxed/simple;
-	bh=6+RW/tjJ2Q4PCJHiJydTTH+W5YpVmqOLyPfHU4kB6yo=;
+	s=arc-20240116; t=1781634597; c=relaxed/simple;
+	bh=SQvZniLSQOTbCKEkhLBpWGUCcOMfcYNEl2Z9MDoFnhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCF4x8OiIolNjOz33gpR2gzMVx1vFOKXXgIy1qe1H8pAeg4oUawAJ2yZqT3AYvMTDy4WRhkWo94JTY4yZFwNH8HXsn52T+dSpGBuXI6+lrOalWObK028SNN+ngyqiUyT6xdpQjHQEK6ZPiZlUiOrUffhElzkHtbaOfmADf7suRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWRknijC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D061F000E9;
-	Tue, 16 Jun 2026 17:48:47 +0000 (UTC)
+	 MIME-Version; b=PSd0UAJkh4LK2OfrQspZp/Ex1iF7ZgXVPqqLTqMqN0xNYTfqGVBVKPEVM11JqfCbKh+EgicUYIvZT/lCEkM6YY1OpBtwgpKoh8MH3cv+hyd2mHw9mFI2qHocuCzh8bWAnKtHkLM+jJAgfCbTcKdLNR4UtclNbNR0bPIA6o4vvtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CUvdMbfC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7ED21F000E9;
+	Tue, 16 Jun 2026 18:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632128;
-	bh=Xu+T77irdz0xcl5dEaGmHkUB+bijGCy0JJ878ikSm7g=;
+	s=korg; t=1781634596;
+	bh=nEBwFukvsRWS6YqM8gN+PT2uguPMqZavVW+f/e5nq40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GWRknijC4epjMr3fwx022nSC5OgwycLFEMnFlGpIniAN8xA9PpNAizXSolFv1Nsc4
-	 A38GNs2eCzaeewULXWeBWrKH9/dIm8So2CRvejkD7Pdn50xaHusPZ/lW2YqmDwWiI2
-	 D7UaykVnJRKRYsdxNsVMSh3jroM/nr19OsgZOLg8=
+	b=CUvdMbfCJdAjkZlKgX2bAkBgoloD20QIO6J8EOncypmOuAjJNCyITFApwVQ7spYH2
+	 oqv2MXD61uicfQq4YBRsjEq1ejvwS2VnmAm0Ldm3E8UducWzW0gevp4m8NrfNb54pD
+	 ysLXQPy5VDOMuYG2q/p3Gmlnh3oLqzSYhsioSpd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 353/522] net: qrtr: ns: Limit the total number of nodes
+Subject: [PATCH 5.15 262/411] thermal: core: Fix thermal zone governor cleanup issues
 Date: Tue, 16 Jun 2026 20:28:20 +0530
-Message-ID: <20260616145142.310613761@linuxfoundation.org>
+Message-ID: <20260616145114.964955587@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,17 +76,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265622-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266088-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:manivannan.sadhasivam@oss.qualcomm.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafael.j.wysocki@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,78 +97,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37355693801
+X-Rspamd-Queue-Id: 87F316942E9
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 27d5e84e810b0849d08b9aec68e48570461ce313 ]
+[ Upstream commit 41ff66baf81c6541f4f985dd7eac4494d03d9440 ]
 
-Currently, the nameserver doesn't limit the number of nodes it handles.
-This can be an attack vector if a malicious client starts registering
-random nodes, leading to memory exhaustion.
+If thermal_zone_device_register_with_trips() fails after adding
+a thermal governor to the thermal zone being registered, the
+governor is not removed from it as appropriate which may lead to
+a memory leak.
 
-Hence, limit the maximum number of nodes to 64. Note that, limit of 64 is
-chosen based on the current platform requirements. If requirement changes
-in the future, this limit can be increased.
+In turn, thermal_zone_device_unregister() calls thermal_set_governor()
+without acquiring the thermal zone lock beforehand which may race with
+a governor update via sysfs and may lead to a use-after-free in that
+case.
 
-Cc: stable@vger.kernel.org
-Fixes: 0c2204a4ad71 ("net: qrtr: Migrate nameservice to kernel from userspace")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260409-qrtr-fix-v3-4-00a8a5ff2b51@oss.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ dropped node_count-- hunk since ctrl_cmd_bye() has no delete_node ]
+Address these issues by adding two thermal_set_governor() calls, one to
+thermal_release() to remove the governor from the given thermal zone,
+and one to the thermal zone registration error path to cover failures
+preceding the thermal zone device registration.
+
+Fixes: e33df1d2f3a0 ("thermal: let governors have private data for each thermal zone")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5092923.31r3eYUQgx@rafael.j.wysocki
+[ adapted context for missing mutex_destroy/complete ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/thermal/thermal_core.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -75,6 +75,16 @@ struct qrtr_node {
-  */
- #define QRTR_NS_MAX_LOOKUPS 64
- 
-+/* Max nodes, server, lookup limits are chosen based on the current platform
-+ * requirements. If the requirement changes in the future, these values can be
-+ * increased.
-+ */
-+#define QRTR_NS_MAX_NODES   64
-+#define QRTR_NS_MAX_SERVERS 256
-+#define QRTR_NS_MAX_LOOKUPS 64
-+
-+static u8 node_count;
-+
- static struct qrtr_node *node_get(unsigned int node_id)
- {
- 	struct qrtr_node *node;
-@@ -83,6 +93,11 @@ static struct qrtr_node *node_get(unsign
- 	if (node)
- 		return node;
- 
-+	if (node_count >= QRTR_NS_MAX_NODES) {
-+		pr_err_ratelimited("QRTR clients exceed max node limit!\n");
-+		return NULL;
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -778,6 +778,7 @@ static void thermal_release(struct devic
+ 		     sizeof("thermal_zone") - 1)) {
+ 		tz = to_thermal_zone(dev);
+ 		thermal_zone_destroy_device_groups(tz);
++		thermal_set_governor(tz, NULL);
+ 		kfree(tz);
+ 	} else if (!strncmp(dev_name(dev), "cooling_device",
+ 			    sizeof("cooling_device") - 1)) {
+@@ -1260,8 +1261,10 @@ thermal_zone_device_register(const char
+ 	/* sys I/F */
+ 	/* Add nodes that are always present via .groups */
+ 	result = thermal_zone_create_device_groups(tz, mask);
+-	if (result)
++	if (result) {
++		thermal_set_governor(tz, NULL);
+ 		goto remove_id;
 +	}
-+
- 	/* If node didn't exist, allocate and insert it to the tree */
- 	node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
-@@ -96,6 +111,8 @@ static struct qrtr_node *node_get(unsign
- 		return NULL;
- 	}
  
-+	node_count++;
-+
- 	return node;
- }
+ 	/* A new thermal zone needs to be updated anyway. */
+ 	atomic_set(&tz->need_update, 1);
+@@ -1385,8 +1388,6 @@ void thermal_zone_device_unregister(stru
  
+ 	cancel_delayed_work_sync(&tz->poll_queue);
+ 
+-	thermal_set_governor(tz, NULL);
+-
+ 	thermal_remove_hwmon_sysfs(tz);
+ 	ida_simple_remove(&thermal_tz_ida, tz->id);
+ 	ida_destroy(&tz->ida);
 
 
 
