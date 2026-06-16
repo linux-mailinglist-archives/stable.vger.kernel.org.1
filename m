@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id s+d8H0eIMWprlwUAu9opvQ
-	(envelope-from <stable+bounces-265407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:47 +0200
+	id /th1Jb5/MWq7kwUAu9opvQ
+	(envelope-from <stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D22569334A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2B1692906
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=B05czxBJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265407-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265407-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=e4RbV1PF;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264864-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 890A5302972F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CC41B302B9C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B01847A0D8;
-	Tue, 16 Jun 2026 17:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABBE47279B;
+	Tue, 16 Jun 2026 16:44:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2759232ED55;
-	Tue, 16 Jun 2026 17:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8102F745E;
+	Tue, 16 Jun 2026 16:44:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631043; cv=none; b=ANpGNjF5y6SA3QHUqhMLZRyB1cbBeyIb0bleoenh1az2pfKMJ4wUfrn5nOWB8EYY4w7Zz7Y4phlIqf8Uk/31rL9Md9e2/wQA7G2d7Zo4X8TX9ZXP0gtrH4YD8DiuwxqDFK8T5Dbk4RhLheQvmDfpj4PrKLRBnlJa/+K2hUZV6gI=
+	t=1781628291; cv=none; b=ecnfnDu++ZGcGg5ICrEGjP/vSHnlIrKySRBitCI6Vv4Z4LnmHQsw5M4yWU4BMUKJwEO4bKE6qmMOeSzN/0qbQEqDBtdZAo/3s2VoxvtsSBMrQg/x38YcMPaJbSvq3PpXdLVXkd0BdqZ1MSdYanbr5aPJw973+xp9a7/fJrc4DYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631043; c=relaxed/simple;
-	bh=1zpMhg61DwNIiQil9sF6tTPyjmBOChSuHM1TtGOl96o=;
+	s=arc-20240116; t=1781628291; c=relaxed/simple;
+	bh=9Ms2/AOQJ21mnM0u/bZZF8bfcZ53zEh3oIvL++CZub4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=crzcH+P/K+9ylR7cRNbUnFLXEPQHV8cj2ZfNAkiXgSOGq/B8m3SXYNR6ymBqcsFZM575WevLi97sEDXsJ0g0/kf31nAldjnK3KBAZMLTUiTms1BwFdvm1jLBLAGovpSDqNt4UIiZ6+ptVZMo//6ssAp5YuOQRrwPxBd5QHskhJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B05czxBJ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5C81F000E9;
-	Tue, 16 Jun 2026 17:30:40 +0000 (UTC)
+	 MIME-Version; b=RHGtuhlhVR//2zipiS7B+oU1a4mCpfla6bIR1AmImspNKwh+41WKjEgNYDKQ2hFWb/IgpA5EZxmKzBcvnXTDFFF0Yge+9/ujaHy8mlAPUX4ewLDqDBTwUqHWHVmymWYA9oj5zaSrC/8vFy36b/CNKpvpy/Zy8pNLIHWA/+7T6yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4RbV1PF; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3D1F000E9;
+	Tue, 16 Jun 2026 16:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631042;
-	bh=DNTbtxKJCs6wLjVb5oJJpCD6PD3J5eysrz5akQpcQ1g=;
+	s=korg; t=1781628290;
+	bh=+GlUeeZcUnoLpYbYe2e6z4ODrLyfz7Xwlj+Ytn+q0EU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=B05czxBJKyMAyRkangikIwkAH7XvXPH3U6IiQUFjiOJ7fua+vkhSzGLeUeYK63PwT
-	 YCERiF1QG0dPNHHWwKS0H5ezDeroBG7ls6/J6zV6wH9mX5Jul80cNFezLu+sQYLqxK
-	 jdoMaAmzyIzZwHyEQtcn8yXlVCb0IfUHhD/BvJXs=
+	b=e4RbV1PFOMapKy5WelCdp0u79WcuHykLDgxOW7uoXtUSjG+X4Coaw9AB4Rlidbsak
+	 EcE/nCozNifJyxS2a5B8ElwfG/4tRAmN0/VdgGrKFaiIbxIBTPPt5LSdezGg3D9IlV
+	 ams/ev+WqQE3SngRGIrjQ405uceVEcsrYMgmsnao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Burkels <sam@1a38.nl>,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 146/522] usb: storage: Add quirks for PNY Elite Portable SSD
-Date: Tue, 16 Jun 2026 20:24:53 +0530
-Message-ID: <20260616145132.924183783@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/452] inet: frags: add inet_frag_queue_flush()
+Date: Tue, 16 Jun 2026 20:24:54 +0530
+Message-ID: <20260616145121.458781338@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +68,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[139.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265407-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-264864-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:kuba@kernel.org,m:681739313@139.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sam@1a38.nl,m:oneukum@suse.com,m:stable@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,suse.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,synopsys.com:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,139.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D22569334A
+X-Rspamd-Queue-Id: 8F2B1692906
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Burkels <sam@1a38.nl>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit b53ebb811e00be50a779ce4e7aee604178b4a825 upstream.
+[ Upstream commit 1231eec6994be29d6bb5c303dfa54731ed9fc0e6 ]
 
-The PNY Elite Portable SSD (USB ID 154b:f009) is a sibling of the
-already-quirked PNY Pro Elite SSDs (154b:f00b and 154b:f00d). Like its
-siblings, it uses a Phison-based USB-SATA bridge that exhibits
-firmware bugs when bound to the uas driver.
+Instead of exporting inet_frag_rbtree_purge() which requires that
+caller takes care of memory accounting, add a new helper. We will
+need to call it from a few places in the next patch.
 
-Without quirks, the device fails to complete READ CAPACITY commands
-when accessed over UAS on a SuperSpeed (USB 3) port. The device
-enumerates and reports as a SCSI direct-access device, but reports
-zero logical blocks and never finishes spin-up:
-
-    usb 2-3: new SuperSpeed USB device number 8 using xhci_hcd
-    usb 2-3: New USB device found, idVendor=154b, idProduct=f009
-    usb 2-3: Product: PNY ELITE PSSD
-    usb 2-3: Manufacturer: PNY
-    scsi host0: uas
-    scsi 0:0:0:0: Direct-Access     PNY      PNY ELITE PSSD   0
-    sd 0:0:0:0: [sda] Spinning up disk...
-    [...10+ seconds of polling, no progress...]
-    sd 0:0:0:0: [sda] Read Capacity(16) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] Read Capacity(10) failed: hostbyte=DID_ERROR
-    sd 0:0:0:0: [sda] 0 512-byte logical blocks: (0 B/0 B)
-
-Tested each individual quirk to find the minimum that fixes this:
-  - US_FL_NO_ATA_1X alone: device hangs on spin-up
-  - US_FL_NO_REPORT_OPCODES alone: works on USB 2.0, hangs on USB 3.0
-  - US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES: works on both
-
-With both quirks the device enumerates correctly while still using
-the uas driver, and delivers full UAS throughput (~281 MB/s
-sequential read on a USB 3.0 Gen 1 port).
-
-The existing PNY Pro Elite entries (f00b, f00d) only set NO_ATA_1X,
-but this device additionally chokes on REPORT OPCODES under
-SuperSpeed.
-
-Signed-off-by: Sam Burkels <sam@1a38.nl>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260501132346.86572-1-sam@1a38.nl
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251207010942.1672972-3-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ include/net/inet_frag.h  |  5 ++---
+ net/ipv4/inet_fragment.c | 15 ++++++++++++---
+ net/ipv4/ip_fragment.c   |  6 +-----
+ 3 files changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -132,6 +132,13 @@ UNUSUAL_DEV(0x152d, 0x0583, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_OPCODES),
+diff --git a/include/net/inet_frag.h b/include/net/inet_frag.h
+index 5af6eb14c5db15..94edc0e130d2c4 100644
+--- a/include/net/inet_frag.h
++++ b/include/net/inet_frag.h
+@@ -141,9 +141,8 @@ void inet_frag_kill(struct inet_frag_queue *q);
+ void inet_frag_destroy(struct inet_frag_queue *q);
+ struct inet_frag_queue *inet_frag_find(struct fqdir *fqdir, void *key);
  
-+/* Reported-by: Sam Burkels <sam@1a38.nl> */
-+UNUSUAL_DEV(0x154b, 0xf009, 0x0000, 0x9999,
-+		"PNY",
-+		"PNY ELITE PSSD",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X | US_FL_NO_REPORT_OPCODES),
+-/* Free all skbs in the queue; return the sum of their truesizes. */
+-unsigned int inet_frag_rbtree_purge(struct rb_root *root,
+-				    enum skb_drop_reason reason);
++void inet_frag_queue_flush(struct inet_frag_queue *q,
++			   enum skb_drop_reason reason);
+ 
+ static inline void inet_frag_put(struct inet_frag_queue *q)
+ {
+diff --git a/net/ipv4/inet_fragment.c b/net/ipv4/inet_fragment.c
+index 496308c0238485..1e390d24f11440 100644
+--- a/net/ipv4/inet_fragment.c
++++ b/net/ipv4/inet_fragment.c
+@@ -264,8 +264,8 @@ static void inet_frag_destroy_rcu(struct rcu_head *head)
+ 	kmem_cache_free(f->frags_cachep, q);
+ }
+ 
+-unsigned int inet_frag_rbtree_purge(struct rb_root *root,
+-				    enum skb_drop_reason reason)
++static unsigned int
++inet_frag_rbtree_purge(struct rb_root *root, enum skb_drop_reason reason)
+ {
+ 	struct rb_node *p = rb_first(root);
+ 	unsigned int sum = 0;
+@@ -285,7 +285,16 @@ unsigned int inet_frag_rbtree_purge(struct rb_root *root,
+ 	}
+ 	return sum;
+ }
+-EXPORT_SYMBOL(inet_frag_rbtree_purge);
 +
- /* Reported-by: Thinh Nguyen <thinhn@synopsys.com> */
- UNUSUAL_DEV(0x154b, 0xf00b, 0x0000, 0x9999,
- 		"PNY",
++void inet_frag_queue_flush(struct inet_frag_queue *q,
++			   enum skb_drop_reason reason)
++{
++	unsigned int sum;
++
++	sum = inet_frag_rbtree_purge(&q->rb_fragments, reason);
++	sub_frag_mem_limit(q->fqdir, sum);
++}
++EXPORT_SYMBOL(inet_frag_queue_flush);
+ 
+ void inet_frag_destroy(struct inet_frag_queue *q)
+ {
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index 484edc8513e4b7..7214d5bcc647e5 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -253,16 +253,12 @@ static int ip_frag_too_far(struct ipq *qp)
+ 
+ static int ip_frag_reinit(struct ipq *qp)
+ {
+-	unsigned int sum_truesize = 0;
+-
+ 	if (!mod_timer(&qp->q.timer, jiffies + qp->q.fqdir->timeout)) {
+ 		refcount_inc(&qp->q.refcnt);
+ 		return -ETIMEDOUT;
+ 	}
+ 
+-	sum_truesize = inet_frag_rbtree_purge(&qp->q.rb_fragments,
+-					      SKB_DROP_REASON_FRAG_TOO_FAR);
+-	sub_frag_mem_limit(qp->q.fqdir, sum_truesize);
++	inet_frag_queue_flush(&qp->q, SKB_DROP_REASON_FRAG_TOO_FAR);
+ 
+ 	qp->q.flags = 0;
+ 	qp->q.len = 0;
+-- 
+2.53.0
+
 
 
 
