@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iksxONaPMWoVmwUAu9opvQ
-	(envelope-from <stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:02 +0200
+	id sVxTL0t4MWqUkAUAu9opvQ
+	(envelope-from <stable+bounces-264473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F639693C1F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B53691FE8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=z2GHY2W5;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265785-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=seUdmLyh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264473-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264473-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 151AD300A7CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36D78308E122
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3292F3CEBBD;
-	Tue, 16 Jun 2026 18:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6334534A3;
+	Tue, 16 Jun 2026 16:07:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700E0352007;
-	Tue, 16 Jun 2026 18:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B866B3A16AC;
+	Tue, 16 Jun 2026 16:07:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632972; cv=none; b=Hrtvvqwtsmx/873YWbC/G1wfmOlvgQLOYU/YUvSqasTv0waS6vAcdlIhgm75yEMBIl29S/EzBxbe2Ji8wnoWoCNYqUpyrciTBU9JrkC3C7hMI9bb1dAP1OSohxI1e6X1PJ1rYrcJeZqMe39j2M4skElUuDHLhowbVJ66TnpImaE=
+	t=1781626076; cv=none; b=NBMwYI+UFEM4QXW2YKx50oN2wm9NHEwbfm5+EB8IxlERFuW/NKh54bPvQoFjrVkXoPd4ayEvblIaMnGHtruo0RsfLOCf2UP7EcfaLYdXPX0m5D8AzUPcQ7vcuTcibAPUKy/5syCL4PUcQy3onvLoDP/OX29zRzcIQoqU3fTQ8nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632972; c=relaxed/simple;
-	bh=0qEp+jdUKeCk1QlLPxapQjuYImFEAIikGCcE1UQuzm8=;
+	s=arc-20240116; t=1781626076; c=relaxed/simple;
+	bh=mo0w652rl6J7KRWNJCCtciZ6AQdusmc+pW55je7gg9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNnJYSIaR/khbp25wgI6pkbxjq59NCpn4lAleE1BMZWT9Fs4uDRjILRi4yVocIIN9QKVn6KF+6ZC4gk4bEopVdltmuiL/TbmrHsp/wLAy2tsNjhedo+qs0Ro9YI3VpTK/y4KbxpMwZvOpWU8yibHdj1js+Ss6V81BZQcZDaMSoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2GHY2W5; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563121F000E9;
-	Tue, 16 Jun 2026 18:02:48 +0000 (UTC)
+	 MIME-Version; b=LB/mc6FSC3p4Ct6zr4aS1plmZ7vnQ9gWnkTsMjj3BQgp22UnA3X0NUMnBqI5WiR2oeV4sCH/39m82qWvUgJVWksRVtFyiyG0vlQpaLyUfI1pgBsZVeMfID/Xut/UG9bVknWhG8JjrT85MLGjnMLxJk8WjbcEzNdTjoQgfZUMu4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seUdmLyh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7A71F000E9;
+	Tue, 16 Jun 2026 16:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632969;
-	bh=cToOLBGXaPr16aXcYow0K9QAIuY3KtAJmIp2FZsCvCQ=;
+	s=korg; t=1781626075;
+	bh=mVUWj46ofAUJKn/YVLKrVVhn8iMKVFiA3xj1oLw23Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=z2GHY2W5wchkOazu2NcEeUkwlOMl4tU+HuK9Zr1eL/kAbI5/GbGpmXw6pbCxz/P0O
-	 oOLvvS7+GiLazeM3LkUIPhmYzJnWfmBK7+BmXuwsrszig6+1/h2f3icYSVj3lHKFCb
-	 du636m6XDBjARUe/vaLcOK2mqMZk7nXebDpBp3+0=
+	b=seUdmLyhe17JXKCwX2f/7tLBV56coEyqJoBrRzvUGEcFAUhBSduLLWPkHwPRNGyPi
+	 RGXDPdXdcVF5wFkSL82XMALU7uwbJewqDOvXvfWyUvYijWiNaAgQasO+j9tnmNakPP
+	 mmu6Ay4c78bGd6/q5IRCFRekmkUEyT4BDSz5AD34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liew Rui Yan <aethernet65535@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 510/522] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+	Jisheng Zhang <jszhang@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.18 261/325] mmc: sdhci: add signal voltage switch in sdhci_resume_host
 Date: Tue, 16 Jun 2026 20:30:57 +0530
-Message-ID: <20260616145149.600964629@linuxfoundation.org>
+Message-ID: <20260616145111.600034418@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,285 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264473-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265785-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aethernet65535@gmail.com,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,linux-foundation.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jszhang@kernel.org,m:adrian.hunter@intel.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux-foundation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7F639693C1F
+X-Rspamd-Queue-Id: 46B53691FE8
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit b98b7ff6025ae82570d4915e083f0cbd8d48b3cf upstream.
+commit f595e8e77a51eee35e331f69321766593a845ef2 upstream.
 
-DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values, which
-represents the running status of its kdamond, when the user explicitly
-requests start/stop of the kdamond.  The kdamond can, however, be stopped
-in events other than the explicit user request in the following three
-events.
+I met one suspend/resume issue with sdr104 capable sdio wifi card (with
+"keep-power-in-suspend" set in DT property):
+After resuming from suspend to ram, the sdio wifi card stops working.
+Further debug shows that although ios shows the sdio card is at sdr104
+mode, the voltage is still at 3V3. This is due to missing the calling
+of ->start_signal_voltage_switch() in sdhci_resume_host().
 
-1. ctx->regions_score_histogram allocation failure at beginning of the
-   execution,
-2. damon_commit_ctx() failure due to invalid user input, and
-3. damon_commit_ctx() failure due to its internal allocation failures.
+Fix this issue by adding ->start_signal_voltage_switch() in
+sdhci_resume_host(). This also matches what we do for
+sdhci_runtime_resume_host().
 
-Hence, if the kdamond is stopped by the above three events, the values of
-the status parameters can be stale.  Users could show the stale values and
-be confused.  This is already bad, but the real consequence is worse.
-DAMON_LRU_SORT avoids unnecessary damon_start() and damon_stop() calls
-based on the 'enabled' parameter value.  And the update of 'enabled'
-parameter value depends on the damon_start() and damon_stop() call
-results.  Hence, once the kdamond has stopped by the unintentional events,
-the user cannot restart the kdamond before the system reboot.  For
-example, the issue can be reproduced via below steps.
+Then the question is: why this issue hasn't reported and fixed for so
+long time. IMHO, several reasons: Some host controllers just kick off
+the runtime resume for system resume, so they benefit from the well
+supported runtime pm code; Some platforms just use the old sdio wifi
+card which doesn't need signal voltage switch at all, the default
+voltage is 3v3 after resuming.
 
-    # cd /sys/module/damon_lru_sort/parameters
-    #
-    # # start DAMON_LRU_SORT
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
-    root         808     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # commit wrong input to stop kdamond withou explicit stop request
-    # echo 3 > addr_unit
-    # echo Y > commit_inputs
-    bash: echo: write error: Invalid argument
-    #
-    # # confirm kdamond is stopped
-    # ps -ef | grep kdamond
-    root         811     803  0 17:53 pts/4    00:00:00 grep kdamond
-    #
-    # # users casn now show stable status
-    # cat enabled
-    Y
-    # cat kdamond_pid
-    806
-    #
-    # # even after fixing the wrong parameter,
-    # # kdamond cannot be restarted.
-    # echo 1 > addr_unit
-    # echo Y > enabled
-    # ps -ef | grep kdamond
-    root         815     803  0 17:54 pts/4    00:00:00 grep kdamond
-
-The problem will only rarely happen in real and common setups for the
-following reasons.  The allocation failures are unlikely in such setups
-since those allocations are arguably too small to fail.  Also sane users
-on real production environments may not commit wrong input parameters.
-But once it happens, the consequence is quite bad.  And the bug is a bug.
-
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when those
-are requested.
-
-Link: https://lore.kernel.org/20260419161003.79176-3-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.0.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+Fixes: 6308d2905bd3 ("mmc: sdhci: add quirk for keeping card power during suspend")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/damon.h |    1 
- mm/damon/core.c       |   16 +++++++++
- mm/damon/lru_sort.c   |   84 +++++++++++++++++++++++++++++++++-----------------
- 3 files changed, 73 insertions(+), 28 deletions(-)
+ drivers/mmc/host/sdhci.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -572,6 +572,7 @@ static inline unsigned int damon_max_nr_
- 
- int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
- int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
-+bool damon_is_running(struct damon_ctx *ctx);
- int damon_kdamond_pid(struct damon_ctx *ctx);
- 
- int damon_set_region_biggest_system_ram_default(struct damon_target *t,
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -644,6 +644,22 @@ static bool damon_check_reset_time_inter
- }
- 
- /**
-+ * damon_is_running() - Returns if a given DAMON context is running.
-+ * @ctx:	The DAMON context to see if running.
-+ *
-+ * Return: true if @ctx is running, false otherwise.
-+ */
-+bool damon_is_running(struct damon_ctx *ctx)
-+{
-+	bool running;
-+
-+	mutex_lock(&ctx->kdamond_lock);
-+	running = ctx->kdamond != NULL;
-+	mutex_unlock(&ctx->kdamond_lock);
-+	return running;
-+}
-+
-+/**
-  * damon_kdamond_pid() - Return pid of a given DAMON context's worker thread.
-  * @ctx:	The DAMON context of the question.
-  *
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -113,15 +113,6 @@ module_param(monitor_region_start, ulong
- static unsigned long monitor_region_end __read_mostly;
- module_param(monitor_region_end, ulong, 0600);
- 
--/*
-- * PID of the DAMON thread
-- *
-- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
-- * Else, -1.
-- */
--static int kdamond_pid __read_mostly = -1;
--module_param(kdamond_pid, int, 0400);
--
- static struct damos_stat damon_lru_sort_hot_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
- 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
-@@ -249,37 +240,32 @@ static int damon_lru_sort_turn(bool on)
- {
- 	int err;
- 
--	if (!on) {
--		err = damon_stop(&ctx, 1);
--		if (!err)
--			kdamond_pid = -1;
--		return err;
--	}
-+	if (!on)
-+		return damon_stop(&ctx, 1);
- 
- 	err = damon_lru_sort_apply_parameters();
- 	if (err)
- 		return err;
- 
--	err = damon_start(&ctx, 1, true);
--	if (err)
--		return err;
--	kdamond_pid = ctx->kdamond->pid;
--	return 0;
-+	return damon_start(&ctx, 1, true);
-+}
-+
-+static bool damon_lru_sort_enabled(void)
-+{
-+	if (!ctx)
-+		return false;
-+	return damon_is_running(ctx);
- }
- 
- static struct delayed_work damon_lru_sort_timer;
- static void damon_lru_sort_timer_fn(struct work_struct *work)
- {
--	static bool last_enabled;
- 	bool now_enabled;
- 
- 	now_enabled = enabled;
--	if (last_enabled != now_enabled) {
--		if (!damon_lru_sort_turn(now_enabled))
--			last_enabled = now_enabled;
--		else
--			enabled = last_enabled;
--	}
-+	if (damon_lru_sort_enabled() == now_enabled)
-+		return;
-+	damon_lru_sort_turn(now_enabled);
- }
- static DECLARE_DELAYED_WORK(damon_lru_sort_timer, damon_lru_sort_timer_fn);
- 
-@@ -301,15 +287,57 @@ static int damon_lru_sort_enabled_store(
- 	return 0;
- }
- 
-+static int damon_lru_sort_enabled_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
-+}
-+
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_lru_sort_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_lru_sort_enabled_load,
- };
- 
- module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
- MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
- 
-+static int damon_lru_sort_kdamond_pid_store(const char *val,
-+		const struct kernel_param *kp)
-+{
-+	/*
-+	 * kdamond_pid is read-only, but kernel command line could write it.
-+	 * Do nothing here.
-+	 */
-+	return 0;
-+}
-+
-+static int damon_lru_sort_kdamond_pid_load(char *buffer,
-+		const struct kernel_param *kp)
-+{
-+	int kdamond_pid = -1;
-+
-+	if (ctx) {
-+		kdamond_pid = damon_kdamond_pid(ctx);
-+		if (kdamond_pid < 0)
-+			kdamond_pid = -1;
-+	}
-+	return sprintf(buffer, "%d\n", kdamond_pid);
-+}
-+
-+static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_lru_sort_kdamond_pid_store,
-+	.get = damon_lru_sort_kdamond_pid_load,
-+};
-+
-+/*
-+ * PID of the DAMON thread
-+ *
-+ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
-+ * Else, -1.
-+ */
-+module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
-+
- static int damon_lru_sort_handle_commit_inputs(void)
- {
- 	int err;
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -3836,6 +3836,7 @@ int sdhci_resume_host(struct sdhci_host
+ 		host->pwr = 0;
+ 		host->clock = 0;
+ 		host->reinit_uhs = true;
++		mmc->ops->start_signal_voltage_switch(mmc, &mmc->ios);
+ 		mmc->ops->set_ios(mmc, &mmc->ios);
+ 	} else {
+ 		sdhci_init(host, (mmc->pm_flags & MMC_PM_KEEP_POWER));
 
 
 
