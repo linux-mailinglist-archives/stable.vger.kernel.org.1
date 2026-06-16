@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id CMDLAX+KMWplmAUAu9opvQ
-	(envelope-from <stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:15 +0200
+	id ZuTbIjh+MWohkwUAu9opvQ
+	(envelope-from <stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3E96935A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:40:14 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BD692752
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QbeTAIyO;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265443-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FunFqjF8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264898-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AA0730416FB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8C1523028266
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343124611CF;
-	Tue, 16 Jun 2026 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3864E477E36;
+	Tue, 16 Jun 2026 16:47:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029A53A3E78;
-	Tue, 16 Jun 2026 17:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04477449EC3;
+	Tue, 16 Jun 2026 16:47:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631226; cv=none; b=U4nZbdvYWPj0gSIaL65Vc/wmuJry3vctNKjNOQh/RVGZhh3riEn+1RWcUDhc+m7qZhLx5w6hNy7FbSdNn+BLxrU8wRMsXzL6qsjnGvXQYbQOBXPJlRn9adz7GVOdFp8gOnBEm+XJGXeSX0nhn9BYHLvGd4DvMKmkw2eZm9ETC1M=
+	t=1781628470; cv=none; b=aP24BQso6hVkyRnsjh7JQvWNdJrdmm/Bdk4NAodZSUm1wMLT/TK42oBCr37dFe7zZSFuHNHU+r7++F+vZBYgP+zyf0fYpiuNaPg3oDQJdD8yUnTSDHREN2A6aFN17cmaeUnpOOYVMDoIqlHX9iqXo4efb3vND4fz13MpGuiqreQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631226; c=relaxed/simple;
-	bh=Sb3+/xhFiBEWs2oCAjktg86lkt8FzdQOowwfjG744RQ=;
+	s=arc-20240116; t=1781628470; c=relaxed/simple;
+	bh=Nn4+LfHQ6DaeYZlJCnd5zmnMT/DvhHxTAYBFqu52wpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTtN6ADVGAPUedi3Rb5A84OxLQbtEQCuWm1WHFmnnolMtPGAO9LY6QD714uDvi2mSaED+D23oaaLbRwFaExccPc/vfI1RKbGYDAfzjbL25PF+vCXvxa3BCEsjLEsx0h2MCMX1qcUFH5p2TS8OMrTaLPtM40LnwWOB52KjAcv/tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbeTAIyO; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B110C1F000E9;
-	Tue, 16 Jun 2026 17:33:43 +0000 (UTC)
+	 MIME-Version; b=LQQC7Vi1LcRUqTIyOYyvOecvhG+3MY3rawIyoe67KC+DqDoqj3wP8ypZsaV4m/aWS2Iwk6rGHG85XGpKR/30QEoyW67nwyX/rLjgL3SqHy6CZ0lj1ihBTYuMIMUUb02VJuA1KigKeW2ferBbsFdx0dAP7AwB1ULuBfcfb1IJDR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FunFqjF8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D521F000E9;
+	Tue, 16 Jun 2026 16:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631224;
-	bh=NUfIoEXwX0PdICovYY3cXnoWYI8vPdiGHEo5yo//Sjk=;
+	s=korg; t=1781628468;
+	bh=Hn6puAYzvB4PACiNrYZSkpLQ78qFVI9rwiOV2mzNpXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbeTAIyOlyaIv/yzGSq9bRyhfu5UW0NGciYfn3ghajZ4oHWHzGsvsxC6Qecw/EkQn
-	 M42uyfPkRjAMkFdUu9kSr++bi9ysKixjiQ91ybVrIyAiSa276AP+DRWKDkTt7Ev0y6
-	 5JIQjKxjC7b0lUXW09kimUtwahzFIyjueyewqbN8=
+	b=FunFqjF8ZkvKS/TyYt+PuB1AqHtDViIFsua3WCzfVLtdrwTBfCNcu7IWdn2fyupCF
+	 I0ia/Ir5yVjw/D4s0ThmverzowwlACGAz6eSaNdsbzHB/MRgwHNm/A9SKx40pwjH8r
+	 bmZH72JG8RqXeeHcZ+qMQEiPBRREshrEZ7kP7bws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/522] HID: core: Fix size_t specifier in hid_report_raw_event()
+	Muhammad Bilal <meatuni001@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 101/452] Bluetooth: ISO: serialize iso_sock_clear_timer with socket lock
 Date: Tue, 16 Jun 2026 20:25:28 +0530
-Message-ID: <20260616145134.597488491@linuxfoundation.org>
+Message-ID: <20260616145123.091353285@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,104 +68,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264898-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:luiz.von.dentz@intel.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265443-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ojeda@kernel.org,m:nathan@kernel.org,m:torvalds@linux-foundation.org,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B3E96935A4
+X-Rspamd-Queue-Id: 1D2BD692752
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Muhammad Bilal <meatuni001@gmail.com>
 
-[ Upstream commit 4d3a2a466b8d68d852a1f3bbf11204b718428dc4 ]
+commit 4b5f8e608749b7e8fa386c6e4301cf9272595859 upstream.
 
-When building for 32-bit platforms, for which 'size_t' is
-'unsigned int', there are warnings around using the incorrect format
-specifier to print bsize in hid_report_raw_event():
+iso_sock_close() calls iso_sock_clear_timer() before acquiring
+lock_sock(sk).
 
-  drivers/hid/hid-core.c:2054:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2053 |                 hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-        |                                                                                         ~~~
-        |                                                                                         %zu
-   2054 |                                      report->id, csize, bsize);
-        |                                                         ^~~~~
-  drivers/hid/hid-core.c:2076:29: error: format specifies type 'long' but the argument has type 'size_t' (aka 'unsigned int') [-Werror,-Wformat]
-   2075 |                 hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-        |                                                                                          ~~~
-        |                                                                                          %zu
-   2076 |                                      report->id, rsize, bsize);
-        |                                                         ^~~~~
+iso_sock_clear_timer() reads iso_pi(sk)->conn twice without the
+socket lock held:
 
-Use the proper 'size_t' format specifier, '%zu', to clear up the
-warnings.
+    if (!iso_pi(sk)->conn)
+        return;
+    cancel_delayed_work(&iso_pi(sk)->conn->timeout_work);
 
+Concurrently, iso_conn_del() executes under lock_sock(sk) and calls
+iso_chan_del(), which sets iso_pi(sk)->conn to NULL and may result in
+the final reference to the connection being dropped:
+
+    CPU0                         CPU1
+    ----                         ----
+    iso_sock_clear_timer()
+      if (conn != NULL) ...      lock_sock(sk)
+                                   iso_chan_del()
+                                   iso_pi(sk)->conn = NULL
+      cancel_delayed_work(conn)  /* NULL deref or UAF */
+
+iso_pi(sk)->conn is not stable across the unlock window, causing a
+NULL pointer dereference or use-after-free.
+
+Serialize iso_sock_clear_timer() with the socket lock by moving it
+inside lock_sock()/release_sock(), matching the pattern used in
+iso_conn_del() and all other call sites.
+
+Fixes: ccf74f2390d60a2f9a75ef496d2564abb478f46a ("Bluetooth: Add BTPROTO_ISO socket type")
 Cc: stable@vger.kernel.org
-Fixes: 2c85c61d1332 ("HID: pass the buffer size to hid_report_raw_event")
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://lore.kernel.org/20260516020430.110135-1-ojeda@kernel.org/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bluetooth/iso.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 2be5823002a3a4..2191205ce5b0bf 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2006,7 +2006,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		return 0;
- 
- 	if (unlikely(bsize < csize)) {
--		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d is incorrect (%d vs %zu)\n",
- 				     report->id, csize, bsize);
- 		return -EINVAL;
- 	}
-@@ -2028,7 +2028,7 @@ int hid_report_raw_event(struct hid_device *hid, enum hid_report_type type, u8 *
- 		rsize = max_buffer_size;
- 
- 	if (bsize < rsize) {
--		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %ld)\n",
-+		hid_warn_ratelimited(hid, "Event data for report %d was too short (%d vs %zu)\n",
- 				     report->id, rsize, bsize);
- 		return -EINVAL;
- 	}
--- 
-2.53.0
-
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -808,8 +808,8 @@ static void __iso_sock_close(struct sock
+ /* Must be called on unlocked socket. */
+ static void iso_sock_close(struct sock *sk)
+ {
+-	iso_sock_clear_timer(sk);
+ 	lock_sock(sk);
++	iso_sock_clear_timer(sk);
+ 	__iso_sock_close(sk);
+ 	release_sock(sk);
+ 	iso_sock_kill(sk);
 
 
 
