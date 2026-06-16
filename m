@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-265782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +5KWBQyQMWovmwUAu9opvQ
-	(envelope-from <stable+bounces-265782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:56 +0200
+	id TLY5H0J4MWqRkAUAu9opvQ
+	(envelope-from <stable+bounces-264470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627F8693C4B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FD7691FE3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=uM5cALDc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265782-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265782-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=McnMkGFw;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264470-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264470-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A46833170639
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 935393093C00
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3853CF97E;
-	Tue, 16 Jun 2026 18:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404CE45BD4B;
+	Tue, 16 Jun 2026 16:07:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AAE352007;
-	Tue, 16 Jun 2026 18:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26FC466B4C;
+	Tue, 16 Jun 2026 16:07:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632953; cv=none; b=F0GmiGGxnCpItN7dxPlGs0rT/KGI6PnSBbKWpH5G+S6apwckzCB3SG7TJOn4vjjRnCh6+XroUJiuYgaLDrMRSyv5OpG7khla5xpFdthc+PDBbui8vo/OXAEy3uyja0dSgNNSlR3iYwU1jjvdr0RDdaKgsA6QFObF08y5Mz6O2m4=
+	t=1781626058; cv=none; b=h/8UkyBSaqMo8BunC1zgr+U/9Txb51Msy02Ti+QqHXgC0Ff8hKtiE4W2f3B+UFwI6gVsTbsCn6c/dVnsxoB3KvpPcYx1mj9+UgBP9vC1kACyfZMt33vZyA+Kt981UtHJbO0GCK9NRQrpJ/J5hCW7qB1IIwG3OxaSJHH8GyhZERM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632953; c=relaxed/simple;
-	bh=fVhKCgtkrbtUlGLhkCAvq1UXy6e35m9skgLvYyyn0Q4=;
+	s=arc-20240116; t=1781626058; c=relaxed/simple;
+	bh=G7+gKCh5R5XxY6Fy1REdwWSMimFwqI8QiwXUarmJb0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zh1rlUFN/EoPYeJjEWFWVbnCCWwZyDaBAuaeyqIQgv8tjPB+2TwcBQ0Yvgsu23rFRfcNciM3w0iCKNd/qK0aIIMbdHHcOnXMu0Xvqz8XfIwsWqRv3yTOUjrNSjKW0udAI5t60VjZ8bfNsHU3lE3leqI4966wfg3pTHInIYVenLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM5cALDc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE2B1F000E9;
-	Tue, 16 Jun 2026 18:02:30 +0000 (UTC)
+	 MIME-Version; b=cefaJZJHLszvuNkpdjDKI/r7U+oJhSNCCSboWc3W1hONcAwkb03bDWO8EXpMD7tdZXKviV2sBia7Qqq2pL7UnF1y5zPMCWjooVxtUlT6LgfwkYzrITfk5DN4A1MkwtYk5OG/C5OyZWTXTQAPk7jjiq4Aa2UOctCV1SIJSEVd/Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McnMkGFw; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F0B1F000E9;
+	Tue, 16 Jun 2026 16:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632952;
-	bh=/dJi4s0oZdZaG5JvOtT9H+6tExV/GKrV4qVEgRECHWo=;
+	s=korg; t=1781626056;
+	bh=NnsomVzyB0hJHK+r2IQnL1jNxVObh0Q7x8OXrjkf4nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uM5cALDcCBlwN4nrj0+4YMWfxl4w6eqeWTLZs9ZSF01U05U3Pl76rITTihQ3mdpvx
-	 n21h7suFiL+g8z2HOWvT7FOobIhpSOIhkR7wVsrA4Q5j8z1ls7QEiihkcEAYV4BfF8
-	 LmOrY8CPn1JmUKGD9+GhCDy3aPt7dhk4NH3nU5I0=
+	b=McnMkGFwV74WQF47lac+dD66aS6IZmdjMEHTWoJ2mjQC+GbA1Vq3j/HcZ/eYZdrK0
+	 dsHZWYZDNTpixQf8B/zmedG/0sIButSmdDzxJZgknFu1PACbTbYt426IArwnjc+Whc
+	 67tDOQQmXmv865oLSU8hGwiHqewvcB6UDdgGPxQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <corey@minyard.net>
-Subject: [PATCH 6.1 507/522] ipmi:ssif: Remove unnecessary indention
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.18 258/325] mmc: dw_mmc-rockchip: Add missing private data for very old controllers
 Date: Tue, 16 Jun 2026 20:30:54 +0530
-Message-ID: <20260616145149.470087171@linuxfoundation.org>
+Message-ID: <20260616145111.434612416@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +72,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265782-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264470-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:corey@minyard.net,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heiko@sntech.de,m:shawn.lin@rock-chips.com,m:ulfh@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,minyard.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sntech.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 627F8693C4B
+X-Rspamd-Queue-Id: E8FD7691FE3
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Heiko Stuebner <heiko@sntech.de>
 
-commit 91eb7ec7261254b6875909df767185838598e21e upstream.
+commit 1e9a4850afa0ceb63984fb1a9f3e86d0fc4fd18f upstream.
 
-A section was in {} that didn't need to be, move the variable
-definition to the top and set th eindentino properly.
+The really old controllers (rk2928, rk3066, rk3188) do not support UHS
+speeds at all, and thus never handled phase data.
 
-Signed-off-by: Corey Minyard <corey@minyard.net>
+For that reason it never had a parse_dt callback and no driver private
+data at all.
+
+Commit ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating
+support") makes the private data sort of mandatory, because the init
+function checks whether phases are configured internally or through the
+clock controller.
+
+This results in the old SoCs then experiencing NULL-pointer dereferences
+when they try to access that private-data struct.
+
+While we could have if (priv) conditionals in all places, it's way less
+cluttery to just give the old types their private-data struct.
+
+Fixes: ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c |   28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ drivers/mmc/host/dw_mmc-rockchip.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1670,6 +1670,7 @@ static int ssif_probe(struct i2c_client
- 	int               len = 0;
- 	int               i;
- 	u8		  slave_addr = 0;
-+	unsigned int      thread_num;
- 	struct ssif_addr_info *addr_info = NULL;
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -434,6 +434,22 @@ static int dw_mci_common_parse_dt(struct
+ 	return 0;
+ }
  
- 	mutex_lock(&ssif_infos_mutex);
-@@ -1878,22 +1879,17 @@ static int ssif_probe(struct i2c_client
- 	ssif_info->handlers.request_events = request_events;
- 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
++static int dw_mci_rk2928_parse_dt(struct dw_mci *host)
++{
++	struct dw_mci_rockchip_priv_data *priv;
++	int err;
++
++	err = dw_mci_common_parse_dt(host);
++	if (err)
++		return err;
++
++	priv = host->priv;
++
++	priv->internal_phase = false;
++
++	return 0;
++}
++
+ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
+ {
+ 	struct dw_mci_rockchip_priv_data *priv;
+@@ -507,6 +523,7 @@ static int dw_mci_rockchip_init(struct d
  
--	{
--		unsigned int thread_num;
--
--		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
--			       << 8) |
--			      ssif_info->client->addr);
--		init_completion(&ssif_info->wake_thread);
--		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
--					       "kssif%4.4x", thread_num);
--		if (IS_ERR(ssif_info->thread)) {
--			rv = PTR_ERR(ssif_info->thread);
--			dev_notice(&ssif_info->client->dev,
--				   "Could not start kernel thread: error %d\n",
--				   rv);
--			goto out;
--		}
-+	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
-+		      ssif_info->client->addr);
-+	init_completion(&ssif_info->wake_thread);
-+	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
-+					"kssif%4.4x", thread_num);
-+	if (IS_ERR(ssif_info->thread)) {
-+		rv = PTR_ERR(ssif_info->thread);
-+		dev_notice(&ssif_info->client->dev,
-+			   "Could not start kernel thread: error %d\n",
-+			   rv);
-+		goto out;
- 	}
+ static const struct dw_mci_drv_data rk2928_drv_data = {
+ 	.init			= dw_mci_rockchip_init,
++	.parse_dt		= dw_mci_rk2928_parse_dt,
+ };
  
- 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
+ static const struct dw_mci_drv_data rk3288_drv_data = {
 
 
 
