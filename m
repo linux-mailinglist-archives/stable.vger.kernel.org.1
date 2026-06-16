@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m3J2DcidMWpAoQUAu9opvQ
-	(envelope-from <stable+bounces-266396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:32 +0200
+	id VsgeK4+VMWq7nQUAu9opvQ
+	(envelope-from <stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C9A694AD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A4C694222
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AsHxf5at;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266396-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266396-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ptAZXUQJ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266048-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2486F3234CF7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42CE23096608
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DED47CC96;
-	Tue, 16 Jun 2026 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8175C47A0A9;
+	Tue, 16 Jun 2026 18:26:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A49B3EB0F5;
-	Tue, 16 Jun 2026 18:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BD7477E33;
+	Tue, 16 Jun 2026 18:26:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636205; cv=none; b=syahigPnTk5eH00n2kRSib/+clYfbqQSlbdqCCn6kX9R/CixjbGcqN2w+ehH3cMWOHhY2IyBQC8O+Hr8pI539FBH1UGSGKxya1MdF69RyyXWSlqny1FLegw9h/MdQV0flnzVf6UXeXx3kciX1o2hDlhW9SRVmrzvC1AoYZRN5ZU=
+	t=1781634387; cv=none; b=TFFG72LooMqSidfyhsDBLN7jJ8myiyZlNKAzClpWdKCOKDSlez9CVIVzomsSydTKUdlELfC/yNRLbCvrz20B3/8xpZ5KfYyMy1X+6E5cEZRi0wM0D7JCwq6wAoPVrwwZ1bygBLOMw3QKJFK8Qclwpdak0lt8qtAT6wpOKSI0Jw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636205; c=relaxed/simple;
-	bh=vguewEml/X5I3B4T1QhxJnnkfIGAMoHoT0m8IoI7FGQ=;
+	s=arc-20240116; t=1781634387; c=relaxed/simple;
+	bh=yt1ZQB69riPbuiSglgOJm9EyGd126rWaCbJzUTvA3KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szDVICCcd1pHCXsAYQLrgBE/oJKi+ED+uSuBgpKFa44+2JDQekF9kA7zjIFYnPG69WZTv2zLFIFEnkZn5qV9W66b5udouokoVM/MWfcRqQr3h0bQPICnofR/n60cNFAYn+cvKnTQIgfTBLoHcsxcxlFX4Tk4KBtR7KfM+Ccsfns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsHxf5at; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1DC1F000E9;
-	Tue, 16 Jun 2026 18:56:43 +0000 (UTC)
+	 MIME-Version; b=qI57K3Uh9r/0OO3XtDa/VvP7dRizglmmH8zjJbVyIvXFCpkqH3khz2kqJvb3r53KNhObaVsVYeTT83jEt+qxRCwq0ftX3ZXeZega+/g1Ss8CvC0D2CKFkx1nJpGKqHkZyLygxwa0fkOFUl/Y8v9E7JSP8f177WwV61ty4Jdzc6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptAZXUQJ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DF81F000E9;
+	Tue, 16 Jun 2026 18:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636204;
-	bh=Z6G8C5AgRtW3LKcYa7V9BqyOT2uvJ9sA56zNJbMM5hU=;
+	s=korg; t=1781634386;
+	bh=IoS5hS/31zmDQDa8EbocSvYpuPMtAoivkV8noBX8jDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AsHxf5atOLIJgOaY7/LPcVAfsY5Sm2g3No4Z9HBgsqaF4mXot1x4tTqnDSbyQTeJ6
-	 zWWvkC+J51i+ucQL6eMVRwkcBHyFPlbKwKGIWrXo4z6evTcMY1nv9kytsZM0+WjIEF
-	 tKPdOh6JRf7dQgJgv33d0sQ5wNvVSKQD3+IqEOyU=
+	b=ptAZXUQJ+hjwDX7/wauL5g/3LmtSm/mdD3GG5TfsaIooMtC+F96wz/3JmfOx0Un8+
+	 gjiIgIPos6NkHSQtj12MALIMNVsyCDIlLCgj7grRqHBECDb2pW4IzrjPO7jkhachLD
+	 CEJ1DICJ48AqgR06ylUbpftusEdSz7nTE9kafrc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.10 195/342] i2c: tegra: Fix NOIRQ suspend/resume
-Date: Tue, 16 Jun 2026 20:28:11 +0530
-Message-ID: <20260616145057.265777342@linuxfoundation.org>
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 254/411] smb: server: fix max_connections off-by-one in tcp accept path
+Date: Tue, 16 Jun 2026 20:28:12 +0530
+Message-ID: <20260616145114.498480169@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,156 +73,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266396-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:akhilrajeev@nvidia.com,m:jonathanh@nvidia.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-266048-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:charsyam@gmail.com,m:linkinjeon@kernel.org,m:stfrench@microsoft.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A2C9A694AD2
+X-Rspamd-Queue-Id: 52A4C694222
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-commit 656646b3847ac6a21b074a813223feef2aadd6e2 upstream.
+[ Upstream commit ce23158bfe584bd90d1918f279fdf9de57802012 ]
 
-The Tegra I2C driver relies on runtime PM to wake up the controller before
-each transfer. However, runtime PM is disabled between the system suspend
-and NOIRQ suspend. If an I2C device initiates a transfer during this
-window, the I2C controller fails to wake up and the transfer fails. To
-handle this, the controller must be kept available for this period to
-allow transfers.
+The global max_connections check in ksmbd's TCP accept path counts
+the newly accepted connection with atomic_inc_return(), but then
+rejects the connection when the result is greater than or equal to
+server_conf.max_connections.
 
-Rework the I2C controller's system PM callbacks such that the controller
-is resumed from runtime suspend during system suspend and it stays
-RPM_ACTIVE throughout the suspend-resume cycle until it is runtime
-suspended back in the system resume. The clocks are disabled in NOIRQ
-suspend and enabled back in NOIRQ resume by calling the controller's
-runtime PM functions directly.
+That makes the effective limit one smaller than configured. For
+example:
 
-Fixes: 8ebf15e9c869 ("i2c: tegra: Move suspend handling to NOIRQ phase")
-Assisted-by: Cursor:claude-4.6-opus
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.4+
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260518114013.62065-5-akhilrajeev@nvidia.com
+- max_connections=1 rejects the first connection
+- max_connections=2 allows only one connection
+
+The per-IP limit in the same function uses <= correctly because it
+counts only pre-existing connections. The global limit instead checks
+the post-increment total, so it should reject only when that total
+exceeds the configured maximum.
+
+Fix this by changing the comparison from >= to >, so exactly
+max_connections simultaneous connections are allowed and the next one
+is rejected. This matches the documented meaning of max_connections
+in fs/smb/server/ksmbd_netlink.h as the "Number of maximum simultaneous
+connections".
+
+Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |   53 +++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 23 deletions(-)
+ fs/ksmbd/transport_tcp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -1873,28 +1873,37 @@ static int __maybe_unused tegra_i2c_runt
+--- a/fs/ksmbd/transport_tcp.c
++++ b/fs/ksmbd/transport_tcp.c
+@@ -248,7 +248,7 @@ static int ksmbd_kthread_fn(void *p)
+ 		}
  
- static int __maybe_unused tegra_i2c_suspend(struct device *dev)
- {
-+	/*
-+	 * Bring the controller up and hold a usage count so it stays
-+	 * available until the noirq phase.
-+	 */
-+	return pm_runtime_resume_and_get(dev);
-+}
-+
-+static int __maybe_unused tegra_i2c_suspend_noirq(struct device *dev)
-+{
- 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
--	int err;
- 
- 	i2c_mark_adapter_suspended(&i2c_dev->adapter);
- 
--	if (!pm_runtime_status_suspended(dev)) {
--		err = tegra_i2c_runtime_suspend(dev);
--		if (err)
--			return err;
--	}
--
--	return 0;
-+	/*
-+	 * Runtime PM is already disabled at this point, so invoke the
-+	 * runtime_suspend callback directly to put the controller down.
-+	 */
-+	return tegra_i2c_runtime_suspend(dev);
- }
- 
--static int __maybe_unused tegra_i2c_resume(struct device *dev)
-+static int __maybe_unused tegra_i2c_resume_noirq(struct device *dev)
- {
- 	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
- 	int err;
- 
- 	/*
--	 * We need to ensure that clocks are enabled so that registers can be
--	 * restored in tegra_i2c_init().
-+	 * Runtime PM is still disabled at this point, so invoke the
-+	 * runtime_resume callback directly to bring the controller back up
-+	 * before re-initializing the hardware. The adapter is then marked
-+	 * resumed so that consumers can issue transfers from their own
-+	 * resume_noirq() handlers and onwards.
- 	 */
- 	err = tegra_i2c_runtime_resume(dev);
- 	if (err)
-@@ -1904,24 +1913,22 @@ static int __maybe_unused tegra_i2c_resu
- 	if (err)
- 		return err;
- 
--	/*
--	 * In case we are runtime suspended, disable clocks again so that we
--	 * don't unbalance the clock reference counts during the next runtime
--	 * resume transition.
--	 */
--	if (pm_runtime_status_suspended(dev)) {
--		err = tegra_i2c_runtime_suspend(dev);
--		if (err)
--			return err;
--	}
--
- 	i2c_mark_adapter_resumed(&i2c_dev->adapter);
- 
- 	return 0;
- }
- 
-+static int __maybe_unused tegra_i2c_resume(struct device *dev)
-+{
-+	pm_runtime_put(dev);
-+
-+	return 0;
-+}
-+
- static const struct dev_pm_ops tegra_i2c_pm = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
-+	SET_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend_noirq,
-+				      tegra_i2c_resume_noirq)
- 	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
- 			   NULL)
- };
+ 		if (server_conf.max_connections &&
+-		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
++		    atomic_inc_return(&active_num_conn) > server_conf.max_connections) {
+ 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
+ 					    atomic_read(&active_num_conn));
+ 			atomic_dec(&active_num_conn);
 
 
 
