@@ -1,62 +1,75 @@
-Return-Path: <stable+bounces-265733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cGOzMcuOMWqRmgUAu9opvQ
-	(envelope-from <stable+bounces-265733-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:35 +0200
+	id FLi2KveeMWrdoQUAu9opvQ
+	(envelope-from <stable+bounces-266523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F071693ABB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D47B694C32
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FvVKyHYE;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265733-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265733-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ST26Uhfd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266523-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266523-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4ABA7306C6F9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A927E3083E0F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AC8478E55;
-	Tue, 16 Jun 2026 17:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3CE3DDDDA;
+	Tue, 16 Jun 2026 19:07:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC31477E51;
-	Tue, 16 Jun 2026 17:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844203DE42E;
+	Tue, 16 Jun 2026 19:07:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632711; cv=none; b=QujGRqQEpY87hoA/od+zTKE1rEhdOBvrGFcm7LuuWb6TiR4aUUeDD4hKJPZCAQoTvT3L2sWzLnnkodFO+iM3uiQV8xsQhmWxiT/UOsxf9sN/fRku257z9Xqlh+G80BWyyNdCNx1m23VpJLlwkS0CkR3mOnUtw6NmsN7nx2gKQUg=
+	t=1781636837; cv=none; b=lmr5szjt35ggvPDzGMSy2XeFSdhThj87soG4EfuzPyafD/FelOIWa5+PkqwqCT9N7jtUGBlMhf+nVuxtPpoA30DELseAtNaAATpCmYSjVUaB3JkxEPQc8Ip6l1yzjIefxjcAjS474ItF/77usP8m6ViIEe1ks8qEs8NRe9zdNoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632711; c=relaxed/simple;
-	bh=22aHu53qxIwg28Lqfsq9ageodCJnQPntWHi8w4EngiQ=;
+	s=arc-20240116; t=1781636837; c=relaxed/simple;
+	bh=oUUuzJ2gRKqf8V8da2fLRq8BYaMCcNA6xwkoL7/P0+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpf1S8M6XlM5sIyuOE1PLmpX5Z/ysop/J60KcleBYGk8C93yCSFZaN8IX8ha2suUbDrf2ZBZzLQNvs1hFEbs2K2xO32GgOpZ25iJp35y0MsW+n6kbT91sJkYTOdoLGc8fPpGDEs6n61mNr7+s8z/O3kL1z1sbkCcTYf2egSJEYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvVKyHYE; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5181F000E9;
-	Tue, 16 Jun 2026 17:58:28 +0000 (UTC)
+	 MIME-Version; b=WYSbJ1t7nvSuyy7GO9p5CG5slOcgetz4nXGw8Rf3pUfaSCsDwapw/1HRhDjd62125yR5hBFMsqlarf2qTFiP2SDcX4LmMeAaXcPUDC0ilPXKKNb7CY0N4Mdm2MHqB2h4cq+bsZccu0+lk4LNg1QzDV/waAB75Htb4sJIzA3R0EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ST26Uhfd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1471F00A3A;
+	Tue, 16 Jun 2026 19:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632710;
-	bh=mSTt4lKG5OnEf/q2vLV7zNv49eHdiy83UFde3DizuXM=;
+	s=korg; t=1781636836;
+	bh=UV8HNbpxV3YZ3Etj5seeNkIIEztXKh19inretdaY+s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FvVKyHYE4kUlwE1cwH2j/W57FB1jLlbvLxN5IfEk/bx2GxWt3jKmYKRGiTbadatYq
-	 bA+QH1gYAzRV9JUiuzowQv1+TGvXpgDnyq5J/ZPhFBNzAAFKcKTBiAOOPxiuoa4DD3
-	 mU57Q8HuBIPLyL2EU0lCaDvmrXCHKkCaRUTFtm9g=
+	b=ST26UhfdrrFUCPI1yvWMe/6yeTTTk66CMXRgluAp6GuVzb7iZrb8Ju3GDSyFTsthk
+	 QtHyV33ZEfTgBDzzMyWlGxLmw52CrKD6jsqIIj0+WPlYXEN6sPuR3EwCX9WNpNIOFD
+	 Z3b7+5ueMcjTufdS/apxTfP/r3AT4QBkcBuASnG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
+	Yin Tirui <yintirui@huawei.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	Chen Jun <chenjun102@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Yang Shi <yang.shi@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 462/522] iio: chemical: scd30: fix division by zero in write_raw
+Subject: [PATCH 5.10 313/342] mm/huge_memory: update file PMD counter before folio_put()
 Date: Tue, 16 Jun 2026 20:30:09 +0530
-Message-ID: <20260616145147.499514166@linuxfoundation.org>
+Message-ID: <20260616145103.075128390@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,73 +83,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265733-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266523-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:antoniu.miclaus@analog.com,m:Stable@vger.kernel.org,m:jic23@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,analog.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3F071693ABB
+X-Rspamd-Queue-Id: 1D47B694C32
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Yin Tirui <yintirui@huawei.com>
 
-[ Upstream commit 5aba4f94b225617a55fed442a70329b2ee19c0a5 ]
+[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
 
-Add a zero check for val2 before using it as a divisor when setting the
-sampling frequency. A user writing a zero fractional part to the
-sampling_frequency sysfs attribute triggers a division by zero in the
-kernel.
+__split_huge_pmd_locked() updates the file/shmem RSS counter after
+dropping the PMD mapping's folio reference.  If folio_put() drops the last
+reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-Fixes: 64b3d8b1b0f5 ("iio: chemical: scd30: add core driver")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
+Move the counter update before folio_put().
+
+Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
+Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/scd30_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/huge_memory.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/chemical/scd30_core.c
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -257,7 +257,7 @@ static int scd30_write_raw(struct iio_de
- 	guard(mutex)(&state->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		if (val)
-+		if (val || !val2)
- 			return -EINVAL;
- 
- 		val = 1000000000 / val2;
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2066,7 +2066,9 @@ static void __split_huge_pmd_locked(stru
+ 			if (!PageReferenced(page) && pmd_young(old_pmd))
+ 				SetPageReferenced(page);
+ 			page_remove_rmap(page, true);
++			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 			put_page(page);
++			return;
+ 		}
+ 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 		return;
 
 
 
