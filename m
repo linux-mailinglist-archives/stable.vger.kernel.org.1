@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-265607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 08VgCj+MMWpGmQUAu9opvQ
-	(envelope-from <stable+bounces-265607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:43 +0200
+	id 0tk3L+J2MWr6jwUAu9opvQ
+	(envelope-from <stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA706937C5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:47:42 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63864691E0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:34 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=L6hCMPho;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265607-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265607-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yMRpA9h2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264562-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 556BB3000BB1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 325F93030365
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F7A3CFF4B;
-	Tue, 16 Jun 2026 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3519B46AEFE;
+	Tue, 16 Jun 2026 16:16:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6AB169AD2;
-	Tue, 16 Jun 2026 17:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEAA46AEC5;
+	Tue, 16 Jun 2026 16:16:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632057; cv=none; b=EeUfaeb22uRrvx4+9YegrRZGfzhiZyALjMSmn+sitcQU9BIBumqI+XzkhscNjb7MPpI5i21PVsEd5Ir2rLAhTrhp4C17QvOGga6DRiPLtfulNnejq5mIPj5hHTCpA8KSrKksPN2RR3jf/n6wqX1D+/qbb5LXt13ZXm87hBGhQZk=
+	t=1781626578; cv=none; b=WXkP3dZJDUTULpO68YeAxD9x/fKqIQcTGxAzXTyKyMVPhlndNK7roSoIXyMokElnV6zhwndGXh0PNH0FnAhOcSK9qE1pejX6/sCFkNBvFLzrg22UC8/pVxcwsJ3t547orFkm5pyjj8Sb3vDVlaHo8tVX6XoBhIKxMN97XJQxYDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632057; c=relaxed/simple;
-	bh=UVa0SNQgSIhEtui1Qb0l5ZBaw1tncLJD7LFKfUk9m4A=;
+	s=arc-20240116; t=1781626578; c=relaxed/simple;
+	bh=FJyD4ZhEyoPmkQg/X1ux0qg9iQTKAW7h0j1Ss6xH3+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EikFcgLV9/aXZgv/cjrCK27yZIwQwwnvfGGviZh4aIbvzzPSb5T9+gTGR/XXiNl53sSWDI4OsE5Gw3QMBvR13bKvbcmJxtj8W3mn80iX+wPT98gM72p4HwMqHk/xq0WNhaooj+tosTaDLM3YXfpL08hBn5wBiOqMiZHu4AiKq24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6hCMPho; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26461F000E9;
-	Tue, 16 Jun 2026 17:47:35 +0000 (UTC)
+	 MIME-Version; b=L/9njpdYvVrpWDuWjR+rlpICRf/CRLbX/jUpqbjaZDEZZl4QiyznAfrWnmOSvqSdzaocy80jO0VKgNWZyBdcgrRzlqVBUzc6SyNEx6a1tg7AVyKrmqy1PKJQJIZpqB/Xn2u1KAD5ZmTjVzU8e2Lsw51O66VndT1JDjJCwN8P/CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMRpA9h2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3591F000E9;
+	Tue, 16 Jun 2026 16:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632056;
-	bh=L1Jgr5s42l94IGg46MI5pewWEza6oDv7wXItZm7CyeQ=;
+	s=korg; t=1781626576;
+	bh=0bKSuI9FLAhdnVHltZxb3cw3x8EQaFRuHekW7evcjpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L6hCMPhokQVv4SiDHpFPBI+x5m3/9zq/NI0eeVHNjF18unVXLwPmDE63bdHY+Xf27
-	 sa66ojw4BahAO1qUC0bgyzkHh3Dv2NM0HXXQSLerSIcyCmJgif4qP6evEpKbV+30I2
-	 c/pNQdGAQ1uQUyJZcoliM/q4La6/U1A6Olh3R7y4=
+	b=yMRpA9h2Hjlx4KhWAC8SbjG+H4iMtVr5L57mOnmlrlvL0oApHsnnBlnI1DSNQ6rRn
+	 1Utpvh60SUhXMj9bo9WZmnAgRKJzPo7r5MxDgob78BZoG0eL96mTqg9fuM2nBEwXP2
+	 zQDhlqD8+471m1zNDZYcVKybYWlvICtwsQwhk/cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoJinming <zhaojinming@uniontech.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 305/522] net: bonding: fix NULL pointer dereference in bond_do_ioctl()
+	Chunhai Guo <guochunhai@vivo.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 014/261] erofs: add sysfs node to drop internal caches
 Date: Tue, 16 Jun 2026 20:27:32 +0530
-Message-ID: <20260616145140.151217037@linuxfoundation.org>
+Message-ID: <20260616145045.681277847@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265607-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264562-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guochunhai@vivo.com,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,66 +98,128 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2FA706937C5
+X-Rspamd-Queue-Id: 63864691E0B
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoJinming <zhaojinming@uniontech.com>
+From: Chunhai Guo <guochunhai@vivo.com>
 
-commit a764b0e8317a863006e05732e1aefe821b9d8c2d upstream.
+[ Upstream commit db80b98305f73ca83891e4228ead5f0324118b00 ]
 
-In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
-can return NULL if the requested interface name does not exist. However,
-the subsequent slave_dbg() call is placed before the NULL check:
+Add a sysfs node to drop compression-related caches, currently used to
+drop in-memory pclusters and cached compressed folios.
 
-    slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
-    slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
-    if (!slave_dev)
-        return -ENODEV;
-
-The slave_dbg() macro expands to netdev_dbg(bond_dev, "(slave %s): " fmt,
-(slave_dev)->name, ...) which unconditionally dereferences slave_dev->name
-before the NULL check is performed. This results in a NULL pointer
-dereference kernel oops when a user calls bonding ioctl (e.g.
-SIOCBONDENSLAVE, SIOCBONDRELEASE, etc.) with a non-existent slave
-interface name.
-
-This is reachable from userspace via the bonding ioctl interface with
-CAP_NET_ADMIN capability, making it a potential local denial-of-service
-vector.
-
-Fix by moving the slave_dbg() call after the NULL check.
-
-Fixes: e2a7420df2e0 ("bonding/main: convert to using slave printk macros")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-Link: https://patch.msgid.link/20260601085649.4029067-1-zhaojinming@uniontech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241113041148.749129-1-guochunhai@vivo.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 1aee05e814d2 ("erofs: fix use-after-free on sbi->sync_decompress")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/ABI/testing/sysfs-fs-erofs | 11 +++++++++++
+ fs/erofs/internal.h                      |  2 ++
+ fs/erofs/sysfs.c                         | 17 +++++++++++++++++
+ fs/erofs/zdata.c                         |  1 -
+ 4 files changed, 30 insertions(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4623,11 +4623,11 @@ static int bond_do_ioctl(struct net_devi
- 
- 	slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
- 
--	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
--
- 	if (!slave_dev)
- 		return -ENODEV;
- 
-+	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
+diff --git a/Documentation/ABI/testing/sysfs-fs-erofs b/Documentation/ABI/testing/sysfs-fs-erofs
+index 284224d1b56fe1..b134146d735bc5 100644
+--- a/Documentation/ABI/testing/sysfs-fs-erofs
++++ b/Documentation/ABI/testing/sysfs-fs-erofs
+@@ -16,3 +16,14 @@ Description:	Control strategy of sync decompression:
+ 		  readahead on atomic contexts only.
+ 		- 1 (force on): enable for readpage and readahead.
+ 		- 2 (force off): disable for all situations.
 +
- 	switch (cmd) {
- 	case SIOCBONDENSLAVE:
- 		res = bond_enslave(bond_dev, slave_dev, NULL);
++What:		/sys/fs/erofs/<disk>/drop_caches
++Date:		November 2024
++Contact:	"Guo Chunhai" <guochunhai@vivo.com>
++Description:	Writing to this will drop compression-related caches,
++		currently used to drop in-memory pclusters and cached
++		compressed folios:
++
++		- 1 : invalidate cached compressed folios
++		- 2 : drop in-memory pclusters
++		- 3 : drop in-memory pclusters and cached compressed folios
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 1c003412677ef6..24e01d9135c60d 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -443,6 +443,8 @@ static inline void erofs_pagepool_add(struct page **pagepool, struct page *page)
+ void erofs_release_pages(struct page **pagepool);
+ 
+ #ifdef CONFIG_EROFS_FS_ZIP
++#define MNGD_MAPPING(sbi)	((sbi)->managed_cache->i_mapping)
++
+ extern atomic_long_t erofs_global_shrink_cnt;
+ void erofs_shrinker_register(struct super_block *sb);
+ void erofs_shrinker_unregister(struct super_block *sb);
+diff --git a/fs/erofs/sysfs.c b/fs/erofs/sysfs.c
+index 63cffd0fd26195..19d586273b7091 100644
+--- a/fs/erofs/sysfs.c
++++ b/fs/erofs/sysfs.c
+@@ -10,6 +10,7 @@
+ 
+ enum {
+ 	attr_feature,
++	attr_drop_caches,
+ 	attr_pointer_ui,
+ 	attr_pointer_bool,
+ };
+@@ -57,11 +58,13 @@ static struct erofs_attr erofs_attr_##_name = {			\
+ 
+ #ifdef CONFIG_EROFS_FS_ZIP
+ EROFS_ATTR_RW_UI(sync_decompress, erofs_mount_opts);
++EROFS_ATTR_FUNC(drop_caches, 0200);
+ #endif
+ 
+ static struct attribute *erofs_attrs[] = {
+ #ifdef CONFIG_EROFS_FS_ZIP
+ 	ATTR_LIST(sync_decompress),
++	ATTR_LIST(drop_caches),
+ #endif
+ 	NULL,
+ };
+@@ -163,6 +166,20 @@ static ssize_t erofs_attr_store(struct kobject *kobj, struct attribute *attr,
+ 			return -EINVAL;
+ 		*(bool *)ptr = !!t;
+ 		return len;
++#ifdef CONFIG_EROFS_FS_ZIP
++	case attr_drop_caches:
++		ret = kstrtoul(skip_spaces(buf), 0, &t);
++		if (ret)
++			return ret;
++		if (t < 1 || t > 3)
++			return -EINVAL;
++
++		if (t & 2)
++			z_erofs_shrink_scan(sbi, ~0UL);
++		if (t & 1)
++			invalidate_mapping_pages(MNGD_MAPPING(sbi), 0, -1);
++		return len;
++#endif
+ 	}
+ 	return 0;
+ }
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index a81b6e6aee59ad..8192eb9b23bc7b 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -109,7 +109,6 @@ static inline unsigned int z_erofs_pclusterpages(struct z_erofs_pcluster *pcl)
+ 	return PAGE_ALIGN(pcl->pclustersize) >> PAGE_SHIFT;
+ }
+ 
+-#define MNGD_MAPPING(sbi)	((sbi)->managed_cache->i_mapping)
+ static bool erofs_folio_is_managed(struct erofs_sb_info *sbi, struct folio *fo)
+ {
+ 	return fo->mapping == MNGD_MAPPING(sbi);
+-- 
+2.53.0
+
 
 
 
