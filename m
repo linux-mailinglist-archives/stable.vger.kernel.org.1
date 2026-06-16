@@ -1,73 +1,62 @@
-Return-Path: <stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fHN7NK5uMWrGjAUAu9opvQ
-	(envelope-from <stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:34 +0200
+	id eT2OFm1yMWpHjgUAu9opvQ
+	(envelope-from <stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9D96914B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10746918ED
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pmrijibm;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264040-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gJwr1d3O;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264251-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F6D030744B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF2F43067455
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE58F3C414F;
-	Tue, 16 Jun 2026 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F6F44CAE6;
+	Tue, 16 Jun 2026 15:49:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7303F4418DF;
-	Tue, 16 Jun 2026 15:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB551684BE;
+	Tue, 16 Jun 2026 15:49:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623807; cv=none; b=oa3ui0GQ8LOuvtwwGijnaflhiJOOMcypaq+SfkA7uChKswy3LJzqkh5uq8+BkrLUsC/S0XknP4zNFgQvQ5wKmbVIoVctYVukQbzZPnKHjn3WBMR/8a3oXyL2HsizEzTouDyg4J4/VMfMdYL0prQsEV45q1sBOJvLW9iTTCXUFCs=
+	t=1781624944; cv=none; b=qtjdvnU9sPweGll9xWOONFaVDydlt8Cj9stDjqov23UsDnJaJIfMVtLhLOqQJ2mkyL2vglBLZB/lJWtqtxFX59eTZCfac841juyUQXCcYJV7EnJBpb3jsaKGZVcCh7MzIhO/TgJ1mlYwoW+nxY6AIu0DpspfbXd1CpC9nATGBWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623807; c=relaxed/simple;
-	bh=0YvvWJioPThYDR26nfATSWGQuh2uezj5K21BVMRtGco=;
+	s=arc-20240116; t=1781624944; c=relaxed/simple;
+	bh=nNaDPu/TMN1HA8zJmDbXpzUuYCzFRMwcQ5sI++7JPh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qaurbhcS5oVPcKgjrcP0hyeb/dcXr76eDi0xD4Wad+fE+wopkBOxKtqh+SF/SAaeo72noZvCPod6jEy6UMRJ1XtMuKnOSyM8zDDkKuR8rLXyIIHPod+lGD3MEYuG1YM7+wqQmDJ3CBqWnVPnkjTtvQmeZFF+wcfI/1Y+mTOW/zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmrijibm; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321121F000E9;
-	Tue, 16 Jun 2026 15:30:05 +0000 (UTC)
+	 MIME-Version; b=Y3EmO8u8Adgkhun5EQgKl9VEsf4ga4Txeq/XnTncndD2HD8cG0KYq1wpo4O4JuGshplvbihqJPlZaZRai+nQox4PxkcoKtgUhNe9q2cSwR8bYAtXRzXbVi8LRADzFyGJy9PV9BjDcHyupr3MLYlqrWYWKDDfCfnWj8OsMY5x7ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJwr1d3O; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84521F000E9;
+	Tue, 16 Jun 2026 15:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623806;
-	bh=67kEeF5ZlTK4OhxQDLKB1chRFXRLRLFv5nwPN4s9Xq8=;
+	s=korg; t=1781624943;
+	bh=zOqb917tQoSImqVJD7M/pJMd6d1KXmtxZydrJOWVvng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pmrijibmLgUV8Lhjxr+MiR9cBhoctVi3s/5TmMrpL6vht4MU52XjeySybucaDOzVy
-	 H9OIcY3FWr6w2hSK1+dyH8HRGVELXomrhPxlkASqb/xqiLjM28XSYoUlkNLCR316G1
-	 OkUY+neWBtrL8DG5GsvCWKNgkToa8FrqWSucGxIU=
+	b=gJwr1d3Oy4zAofiT5LfQqlyRVwA2Ho58l0TEsNKVlLRDLyUEsdSuInNLeIVzR3RLL
+	 DCsKfulzkVpFRkGI8a9Gy1paxFctXc+XVOOxWsrv5vyakQn9TB6ulsUtpVWC1RhK2u
+	 nd9YeIJ7VmahouJcyaTEhjxA+t0Auj5vciXxs4vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 220/378] mm/huge_memory: update file PUD counter before folio_put()
+	Jianyu Li <jianyu.li@mediatek.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 055/325] af_unix: Fix inq_len update problem in partial read
 Date: Tue, 16 Jun 2026 20:27:31 +0530
-Message-ID: <20260616145121.893890619@linuxfoundation.org>
+Message-ID: <20260616145100.435440804@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,90 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264040-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:apopple@nvidia.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264251-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jianyu.li@mediatek.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4D9D96914B6
+X-Rspamd-Queue-Id: E10746918ED
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Tirui <yintirui@huawei.com>
+From: Jianyu Li <jianyu.li@mediatek.com>
 
-commit 40990c87a26e371594475acdc560c93cfae308a1 upstream.
+[ Upstream commit c1f07a7f2d47aeb9878301e7bb36bc1c2bc2be8e ]
 
-__split_huge_pud_locked() updates the file/shmem RSS counter after
-dropping the PUD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+Currently inq_len is updated only when the whole skb is consumed.
+If only part of the data is read, following SIOCINQ query would
+get value greater than what actually left.
 
-Move the counter update before folio_put().
+This change update inq_len timely in unix_stream_read_generic(),
+and adjust unix_stream_read_skb() accordingly to prevent
+repetitive update.
 
-Link: https://lore.kernel.org/20260526101355.1984244-1-yintirui@huawei.com
-Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f4e1fb04c123 ("af_unix: Use cached value for SOCK_STREAM in unix_inq_len().")
+Signed-off-by: Jianyu Li <jianyu.li@mediatek.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260601113640.231897-2-jianyu.li@mediatek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2913,9 +2913,9 @@ static void __split_huge_pud_locked(stru
- 	if (!folio_test_referenced(folio) && pud_young(old_pud))
- 		folio_set_referenced(folio);
- 	folio_remove_rmap_pud(folio, page, vma);
--	folio_put(folio);
- 	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
- 		-HPAGE_PUD_NR);
-+	folio_put(folio);
- }
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index faf04d1b6c013c..b339f83caf036e 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2891,7 +2891,7 @@ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 		return -EAGAIN;
+ 	}
  
- void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+-	WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
++	WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
+ 
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+ 	if (skb == u->oob_skb) {
+@@ -3065,11 +3065,12 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+ 				unix_detach_fds(&scm, skb);
+ 			}
+ 
+-			if (unix_skb_len(skb))
+-				break;
+-
+ 			spin_lock(&sk->sk_receive_queue.lock);
+-			WRITE_ONCE(u->inq_len, u->inq_len - skb->len);
++			WRITE_ONCE(u->inq_len, u->inq_len - chunk);
++			if (unix_skb_len(skb)) {
++				spin_unlock(&sk->sk_receive_queue.lock);
++				break;
++			}
+ 			__skb_unlink(skb, &sk->sk_receive_queue);
+ 			spin_unlock(&sk->sk_receive_queue.lock);
+ 
+-- 
+2.53.0
+
 
 
 
