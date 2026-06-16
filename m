@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 756XJkqOMWpcmgUAu9opvQ
-	(envelope-from <stable+bounces-265692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:26 +0200
+	id xqLTA7h7MWoJkgUAu9opvQ
+	(envelope-from <stable+bounces-264674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE0F693A49
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63294692440
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Tz3Wt1dI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265692-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265692-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zoJ4Mmub;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264674-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264674-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F1753012264
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4747B302DB77
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981AA4779B1;
-	Tue, 16 Jun 2026 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4047472762;
+	Tue, 16 Jun 2026 16:26:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FD73A9627;
-	Tue, 16 Jun 2026 17:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE839150B;
+	Tue, 16 Jun 2026 16:26:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632492; cv=none; b=qZbfmcQl4z+EnbW2QxXgDqz+R/XtYKdoVMer5XA9ibEhk5qQIuueM+K/fox6/LIAzTCzXEG1WwNBPcaoWMgTLBfN0OtAqPvqYb4+NIVVbt+19KKKVNp0+0QGrsLkWH3AxoVyAU0RfnZVzdPvJtEXaR5E6H1kUGfcbUu2GJBjSQY=
+	t=1781627218; cv=none; b=fs+ToTL6ZTh5YuBKsjspoy4ClOmHx2GaGFPNbZG8gnORRkaD5OjLUTpss6FfIdVcY3T1k61fPJxnAZ9i7qod/0SvXcgjKBE1AWOIqmXQ8abLqxKdFTGjZKM7sygz6UKWr44T07bAsrk6lvO/b6s8cYhfBzaeSDZSk2EwbbsCzRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632492; c=relaxed/simple;
-	bh=0K1Jh+1h/6mfhEf1BCa8RMhMi6GmOHHnia/3ohkRFyQ=;
+	s=arc-20240116; t=1781627218; c=relaxed/simple;
+	bh=oS1grt9c3Yfref0Ft9kjZ9gAvhDZWfvmObwLDdwkin8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLxzd1KHm+p8sl/raKrDdJBMEUnsy+Q1LvkR7zuc57F8lc01SbSyl1SwdvXszZI23cmky/QfZdy7VGQ2OR56fbO3m91RNG1xh9eiRWtz9c2ucl5l1x/48gj6t/qHjMRFhhygpg1lWqxR/HdOMA/gllLpZBegc990VfsKleHZUX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tz3Wt1dI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0621F000E9;
-	Tue, 16 Jun 2026 17:54:50 +0000 (UTC)
+	 MIME-Version; b=VMEgQDTzEY1b1T1FL7oY7wOJL6NIO2jVYnLWtBj62BUd0KswRiyyr3fCd4IvWtCG6zCLO98FqAaBRlJxQarD9McP5oAWREScgYpRL1GGU516G4PnKWDBUDrlPB4xfeQBLEwybOvhUIGFdQpPoaIC96dReBT5k8SmR+jM/ErYqeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoJ4Mmub; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D63B1F000E9;
+	Tue, 16 Jun 2026 16:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632491;
-	bh=ZeClAyka2nI37m5ZncSTDj6vK6312XtSgJJsGnTMMbk=;
+	s=korg; t=1781627217;
+	bh=JQbo0o1jaoME4hKMgPceY6dT2DImSYClDaAqo1xw1kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tz3Wt1dImOMa9nj+tkVBv3dRf+LE/q2+WWPknnjauLVPHhNj1fp/X8eybKmZIQbxs
-	 5I/kezw4odonDoSa/z6EsWHfimDtBRXc7EJCN8GZuvtauGspzacEwA3zJ4VEjUFkNK
-	 Dx0/TGhnNGv/HRjwRlYEzu/zLD7O4Tq+vtZUZP8Q=
+	b=zoJ4MmubxvRYwptoMbq5AFVj8hPBzdsd/6/KWhpc3w+p8GMAdFsw+3DoooyMAX8lz
+	 G5TT5hJJwhbRuAohQXlrEs6WwVgcEWZPo5ikyuC2KlUhRvftZ3KoZH8fNlHsIgLV3s
+	 nClGZ9fl93soBr50pFNbyOYEpwDhvORaMGeg8vtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 422/522] mptcp: pm: kernel: correctly retransmit ADD_ADDR ID 0
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 131/261] rust: kasan/kbuild: fix rustc-option when cross-compiling
 Date: Tue, 16 Jun 2026 20:29:29 +0530
-Message-ID: <20260616145145.736303409@linuxfoundation.org>
+Message-ID: <20260616145051.158922910@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +68,159 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265692-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264674-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:martineau@kernel.org,m:matttbe@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,addr.id:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EAE0F693A49
+X-Rspamd-Queue-Id: 63294692440
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit b12014d2d36eaed4e4bec5f1ac7e91110eeb100d ]
+commit 4a44b17406cb5a93f90af3df9392b3a45eb336fb upstream.
 
-When adding the ADD_ADDR to the list, the address including the IP, port
-and ID are copied. On the other hand, when the endpoint corresponds to
-the one from the initial subflow, the ID is set to 0, as specified by
-the MPTCP protocol.
+The Makefile version of rustc-option currently checks whether the option
+exists for the host target instead of the target actually being compiled
+for. It was done this way in commit 46e24a545cdb ("rust: kasan/kbuild:
+fix missing flags on first build") to avoid a circular dependency on
+target.json. However, because of this, rustc-option currently does not
+function when cross-compiling from x86_64 to aarch64 if
+CONFIG_SHADOW_CALL_STACK is enabled. This is because KBUILD_RUSTFLAGS
+contains -Zfixed-x18 under this configuration. Since that flag does not
+exist on the host target, rustc-option runs into a compilation failure
+every time, leading to all flags being rejected as unsupported.
 
-The issue is that the ID was reset after having copied the ID in the
-ADD_ADDR entry. So the retransmission was done, but using a different ID
-than the initial one.
+To fix this, update rustc-option to pass a --target parameter so that
+the host target is not used. For targets using target.json, use a
+built-in target that is as close as possible to the target created with
+target.json to avoid the circular dependency on target.json.
 
-Fixes: 8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
+One scenario where this causes a boot failure:
+* Cross-compiled from x86_64 to aarch64.
+* With CONFIG_SHADOW_CALL_STACK=y
+* With CONFIG_KASAN_SW_TAGS=y
+* With CONFIG_KASAN_INLINE=n
+Then the resulting kernel image will fail to boot when it first calls
+into Rust code with a crash along the lines of "Unable to handle kernel
+paging request at virtual address 0ffffffc08541796". This is because the
+call threshold is not specified, so rustc will inline kasan operations,
+but the kasan shadow offset is not specified, which leads to the inlined
+kasan instructions being incorrect.
+
+Note that the -Zsanitizer=kernel-hwaddress parameter itself does not
+lead to a rustc-option failure despite being aarch64-specific because
+RUSTFLAGS_KASAN has not yet been added to KBUILD_RUSTFLAGS when
+rustc-option is evaluated by the kasan Makefile.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260505-net-mptcp-pm-fixes-7-1-rc3-v1-1-fca8091060a4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ applied to net/mptcp/pm_netlink.c instead of upstream's pm_kernel.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 46e24a545cdb ("rust: kasan/kbuild: fix missing flags on first build")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260507-rustc-option-cross-v2-1-2f650a49c2b5@google.com
+[ Edited slightly:
+    - Reset variable to avoid using the environment.
+    - Use a simply expanded variable flavor for simplicity.
+    - Export variable so that behavior in sub-`make`s is consistent.
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/mptcp/pm_netlink.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -595,6 +595,8 @@ static void mptcp_pm_create_subflow_or_s
+  This matches other variables. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Makefile                  |    3 ++-
+ arch/x86/Makefile         |    4 ++++
+ arch/x86/Makefile.um      |    8 ++++++++
+ scripts/Makefile.compiler |    2 +-
+ 4 files changed, 15 insertions(+), 2 deletions(-)
+
+--- a/Makefile
++++ b/Makefile
+@@ -568,6 +568,7 @@ KBUILD_RUSTFLAGS := $(rust_common_flags)
+ 		    -Crelocation-model=static \
+ 		    -Zfunction-sections=n \
+ 		    -Wclippy::float_arithmetic
++KBUILD_RUSTFLAGS_OPTION_CHKS :=
  
- 	/* check first for announce */
- 	if (msk->pm.add_addr_signaled < add_addr_signal_max) {
-+		u8 endp_id;
+ KBUILD_AFLAGS_KERNEL :=
+ KBUILD_CFLAGS_KERNEL :=
+@@ -604,7 +605,7 @@ export KBUILD_USERCFLAGS KBUILD_USERLDFL
+ 
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
+ export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
+-export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
++export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE KBUILD_RUSTFLAGS_OPTION_CHKS
+ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+ export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -78,6 +78,10 @@ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-none
 +
- 		/* due to racing events on both ends we can reach here while
- 		 * previous add address is still running: if we invoke now
- 		 * mptcp_pm_announce_addr(), that will fail and the
-@@ -608,19 +610,20 @@ static void mptcp_pm_create_subflow_or_s
- 		if (!select_signal_address(pernet, msk, &local))
- 			goto subflow;
+ #
+ # CFLAGS for compiling floating point code inside the kernel.
+ #
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -14,6 +14,14 @@ endif
  
-+		/* Special case for ID0: set the correct ID */
-+		endp_id = local.addr.id;
-+		if (endp_id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++ifeq ($(CONFIG_X86_32),y)
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=i686-unknown-linux-gnu
++else
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-linux-gnu
++endif
 +
- 		/* If the alloc fails, we are on memory pressure, not worth
- 		 * continuing, and trying to create subflows.
- 		 */
- 		if (!mptcp_pm_alloc_anno_list(msk, &local.addr))
- 			return;
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
  
--		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+		__clear_bit(endp_id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+ 	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+-	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
++	$(1) --sysroot=/dev/null $(KBUILD_RUSTFLAGS_OPTION_CHKS) $(filter-out --sysroot=/dev/null --target=%target.json,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
  
--		/* Special case for ID0: set the correct ID */
--		if (local.addr.id == msk->mpc_endpoint_id)
--			local.addr.id = 0;
--
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
- 
+ # rustc-option
 
 
 
