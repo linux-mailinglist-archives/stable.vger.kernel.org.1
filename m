@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-266544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id KmNTETGgMWpVogUAu9opvQ
-	(envelope-from <stable+bounces-266544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:12:49 +0200
+	id SaypN916MWqvkQUAu9opvQ
+	(envelope-from <stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BCC694DD1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:12:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B52469234D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XxRdj569;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266544-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266544-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=x7sJdWyi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264730-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D8103067415
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F00A830454E5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131AB3DE425;
-	Tue, 16 Jun 2026 19:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA1D477993;
+	Tue, 16 Jun 2026 16:32:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F5534751B;
-	Tue, 16 Jun 2026 19:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3EC4502F;
+	Tue, 16 Jun 2026 16:32:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636940; cv=none; b=N8/rYTDSMyS3ZrBKJ/6wHBh87gSy0IzRkWVxauLIskChY7hcuLSRdTufoyZSpQfasJftRhkiuApNiq/+sFcE+Fcxs3c5x0Et+0vlNmOL4DawuB8zd6j3bj83xAdyWQDqWZVgiAi1miDDo3DTpWyqsYDkBIgzSe0NUkL+ubQJt2Q=
+	t=1781627561; cv=none; b=ibeMFpmdfzY+twdAx3BkJFfkF9m3JFP+UWA2fwPElloBEPohVycOKkmu5GrOt9HdG32oHSYLAsn77t7r5g+4RHynNgbKUemMl4J90NW0ygH/E4DfC8y0b/m/m4WDPc+QaK3aY6tZH3QHsUpuXib8sKxN5BVZAOOjHVLOzmh4i6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636940; c=relaxed/simple;
-	bh=VmBP+15TyN/VjT+wTLkAR8WBYfT6HshWB/DsrU1gcrA=;
+	s=arc-20240116; t=1781627561; c=relaxed/simple;
+	bh=ZW9PrIuO9k3J3UhjPhTxDdEb2f/BXPZtVNmLCQRTdhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqbONXRicDBw7joknFpcRQu5UvPYMg/58loPF+NrkIW6JSZ9wnp033EBE+sWPc2EhB26EF3EFZygZGFXhB+CnCEw5O890pxoO5/Sy2oWr697uSfLOs/BG9wSocwAgj3sq5hIH0HzYTlWdlGbPv4wApC7Ue6f6yoenKOqSR61JuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxRdj569; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2911F000E9;
-	Tue, 16 Jun 2026 19:08:58 +0000 (UTC)
+	 MIME-Version; b=fa9bEtJtoN7V52H8fgKaiIatkk2QfgDGBAvdlop2xaL1fCrNPfYUlmUVnHhKXnq1CLK13q+Ysz7AIu+1crXnO0JwWIX0wqxqffYByV4WM4v6i+rW6W8p5LIl8XBYTuO4fVT87VkR+lRudnxY7+5sh9iiZL7pn4MkRFPjyzoigXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7sJdWyi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D8A1F000E9;
+	Tue, 16 Jun 2026 16:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636939;
-	bh=YEz+qfypPyVFteES3xuvgz/gxbjEP6uwgk7eG+/IKC4=;
+	s=korg; t=1781627560;
+	bh=ji70dKrK2fgvdzFhqeR2EFOnE/pCRaqiVkNdiN6P6oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XxRdj569ZC6C1sscrd2swwyPloLSbnYpwAAqM0RY/cesKmIEVWf69WVGCchojGdKd
-	 QM6erMAaGciBVytmo5U8NmG01iKHlgWU2TI4Lz/yF2aAcRY6/DzUnJ/JcdpkPDKyNv
-	 RMCZraqr1QThkfLXgxVoalDcC5NHkuSsOGM7WPD8=
+	b=x7sJdWyi7XWepwx2KvOSg+p4B6DF7EdGw0cWClgO7Y0Ypl0aDE4tlh6tnX8fBloS9
+	 TPAx9z+iqU4J8DU0Jw3VQvZm+N5PgnnLldn7gyAJNvJ6KQHRmjIcc3j7raypzYDtXQ
+	 Wew67ZHr+28zFLhQD3FQME0KA+4/Papvfte1wOj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 335/342] arm64: cputype: Add C1-Ultra definitions
+	Heiko Stuebner <heiko@sntech.de>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 6.12 193/261] mmc: dw_mmc-rockchip: Add missing private data for very old controllers
 Date: Tue, 16 Jun 2026 20:30:31 +0530
-Message-ID: <20260616145104.229619044@linuxfoundation.org>
+Message-ID: <20260616145054.007145798@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266544-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264730-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:heiko@sntech.de,m:shawn.lin@rock-chips.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,56 +98,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,sntech.de:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A8BCC694DD1
+X-Rspamd-Queue-Id: 7B52469234D
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-commit 60349e64a6c65f9f0aa118af711b3c7e137f07ff upstream.
+commit 1e9a4850afa0ceb63984fb1a9f3e86d0fc4fd18f upstream.
 
-Add cputype definitions for C1-Ultra. These will be used for errata
-detection in subsequent patches.
+The really old controllers (rk2928, rk3066, rk3188) do not support UHS
+speeds at all, and thus never handled phase data.
 
-These values can be found in the C1-Ultra TRM:
+For that reason it never had a parse_dt callback and no driver private
+data at all.
 
-  https://developer.arm.com/documentation/108014/0100/
+Commit ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating
+support") makes the private data sort of mandatory, because the init
+function checks whether phases are configured internally or through the
+clock controller.
 
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
+This results in the old SoCs then experiencing NULL-pointer dereferences
+when they try to access that private-data struct.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v5.10.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+While we could have if (priv) conditionals in all places, it's way less
+cluttery to just give the old types their private-data struct.
+
+Fixes: ff6f0286c896 ("mmc: dw_mmc-rockchip: Add memory clock auto-gating support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/host/dw_mmc-rockchip.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -97,6 +97,7 @@
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
-+#define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -433,6 +433,22 @@ static int dw_mci_common_parse_dt(struct
+ 	return 0;
+ }
  
- #define APM_CPU_PART_POTENZA		0x000
-@@ -166,6 +167,7 @@
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
-+#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
++static int dw_mci_rk2928_parse_dt(struct dw_mci *host)
++{
++	struct dw_mci_rockchip_priv_data *priv;
++	int err;
++
++	err = dw_mci_common_parse_dt(host);
++	if (err)
++		return err;
++
++	priv = host->priv;
++
++	priv->internal_phase = false;
++
++	return 0;
++}
++
+ static int dw_mci_rk3288_parse_dt(struct dw_mci *host)
+ {
+ 	struct dw_mci_rockchip_priv_data *priv;
+@@ -506,6 +522,7 @@ static int dw_mci_rockchip_init(struct d
+ 
+ static const struct dw_mci_drv_data rk2928_drv_data = {
+ 	.init			= dw_mci_rockchip_init,
++	.parse_dt		= dw_mci_rk2928_parse_dt,
+ };
+ 
+ static const struct dw_mci_drv_data rk3288_drv_data = {
 
 
 
