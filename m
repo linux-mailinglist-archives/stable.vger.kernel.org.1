@@ -1,62 +1,68 @@
-Return-Path: <stable+bounces-263969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RcHvDIhsMWrgiwUAu9opvQ
-	(envelope-from <stable+bounces-263969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:24 +0200
+	id LWsSJruKMWp3mAUAu9opvQ
+	(envelope-from <stable+bounces-265489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6166911D3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7836935E1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:41:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u1+JjMex;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263969-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263969-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=2wNe0SvC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265489-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265489-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 834C230B717E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DCBDC30060BA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A547D449EB0;
-	Tue, 16 Jun 2026 15:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96866477E57;
+	Tue, 16 Jun 2026 17:37:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF9B44A701;
-	Tue, 16 Jun 2026 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED75332EC1;
+	Tue, 16 Jun 2026 17:37:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623445; cv=none; b=QqkiwKjh/SDL/5uS/Dd4uLzVM759MPJi38AUxqxR0/9cVvuTkZ8VdqYY9Zzi7LyriT8SF/vaD4bR9gCfbx40PiDuArEpwivaKZ1h8kGP33kEuNGDs4cQSOhRaHTH7CSzBZKFS+G+61xe/G3Obh7LtYh6LTGTg/iqe51aifq2cCA=
+	t=1781631462; cv=none; b=bhi+QjWlO/eKJEfQbWh+V9un3ShiC6bjEV4WmfGf2fHY4tSQW6kJ7yozKLmJTKOF/qnDAMTCuNnKvH6MJPfegbjNDkWeB8F4wQ9YirVMzsU4onjisxYZK6ZKt7napzPGyPIKBJ9n6sHbXdH4a8rFZ/CeGV319owZ9QI0SY1hQ7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623445; c=relaxed/simple;
-	bh=G5zofYfEIOLuYAVNtZ2igIybCbE7lbFdeh/Cc/n/4Bs=;
+	s=arc-20240116; t=1781631462; c=relaxed/simple;
+	bh=Rfim4QM77hG7918igRCN7Xqhr5yCeiuhZa1zoGJ2yAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIUvzECxI/31y5ttY8TaPR8Fdjv+AwimSK1OMOxlkFE73Ll5svdf0s8PRFadpBH4WWo9GRh2VfrSgtVj9AgoOYYLXqKPmrC4jlUfHqd9jPajjDioW3cxIsl3ZizOudVrX2BrdKp8zucaHGnHxxtPnPiBHa28dgaCGe/19Auy9Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1+JjMex; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEAA1F000E9;
-	Tue, 16 Jun 2026 15:24:02 +0000 (UTC)
+	 MIME-Version; b=BvbC4n1NZ3DIBy4kcnxQOs0Ut1EPAtIOPWSejryWAVcRz90+c0m1QrOAxrj/s8+kNdD36kmMNIzQtxxBx9f/P1nAdQtTlPseaiFruvHT9PJdpCRG8s2nWV7rF2T2oZ5+e4tbZsVyr0DkfIYGR+k0SbuxeDd1FZH0W52xgVV646c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wNe0SvC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118511F000E9;
+	Tue, 16 Jun 2026 17:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623444;
-	bh=v+jOJOUH0BSsqLKPbxqNBIlnAshxBBePW/9bIEhnY6k=;
+	s=korg; t=1781631461;
+	bh=fb/qhLHAsUIJ+o/1YbK/VmZXMVh//ghy5G2yTnyxbFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u1+JjMexWCxoQDW20gqRXMgHosVz3E1MnxDKtx1sO4eb1npSnrLfj49aQfBY7Fd5f
-	 FI2to8ZSpivjPkT4jlJiGFyblQkwzvCqVPKhebz47WC6o24VCLnkFG6zgnRtArwYVV
-	 /8Hjg5/0gR8bQqdeSsscPtp2ZoEmSxitqzG03cjo=
+	b=2wNe0SvCmkSgPaa1qX+3y1yrcf+YyEzg6aC5yocHDfNF9uyq11kqvPd5/iZ0IaIXo
+	 ICLR69yjkREWPSnE/v2i3NWofbYEpgRbsB8XFQJ68gXBrptCvXa3kjI0Rfr35OlbiU
+	 yazlFuGhQHfCHn7m4ukDW6LW7j+nTZ0DWan02bn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuqi Xu <xuyq21@lenovo.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 142/378] netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
+Subject: [PATCH 6.1 226/522] sctp: purge outqueue on stale COOKIE-ECHO handling
 Date: Tue, 16 Jun 2026 20:26:13 +0530
-Message-ID: <20260616145117.746966220@linuxfoundation.org>
+Message-ID: <20260616145136.582546578@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +74,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -77,178 +84,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263969-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265489-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,asu.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C6166911D3
+X-Rspamd-Queue-Id: BD7836935E1
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit c3009418f9fa1dcb3eb86f4d8c92583537b5faa3 ]
+[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
 
-NAT helpers such as nf_nat_h323 store a raw pointer to module text in
-exp->expectfn (e.g. ip_nat_q931_expect). nf_ct_helper_expectfn_unregister()
-only unlinks the callback descriptor and never walks the expectation table,
-so an expectation pending at module removal survives with a dangling
-exp->expectfn into freed module text.
+sctp_stream_update() is only invoked when the association is moved into
+COOKIE_WAIT during association setup/reconfiguration. In this path, the
+outbound stream scheduler state (stream->out_curr) is expected to be
+clean, since no user data should have been transmitted yet unless the
+state machine has already partially progressed.
 
-When the expected connection arrives, init_conntrack() invokes
-exp->expectfn(), now a stale pointer into the unloaded module. Reproduced
-on a KASAN build by loading the H.323 helpers, creating a Q.931
-expectation, unloading nf_nat_h323, then connecting to the expected port:
+However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
+Stale Cookie ERROR is received, the association is rolled back from
+COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
+have been queued and even bundled with the COOKIE-ECHO chunk.
 
- Oops: int3: 0000 [#1] SMP KASAN NOPTI
- RIP: 0010:0xffffffffa06102d1
-  init_conntrack.isra.0 (net/netfilter/nf_conntrack_core.c:1862)
-  nf_conntrack_in (net/netfilter/nf_conntrack_core.c:2049)
-  ipv4_conntrack_local (net/netfilter/nf_conntrack_proto.c:223)
-  nf_hook_slow (net/netfilter/core.c:619)
-  __ip_local_out (net/ipv4/ip_output.c:120)
-  __tcp_transmit_skb (net/ipv4/tcp_output.c:1715)
-  tcp_connect (net/ipv4/tcp_output.c:4374)
-  tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
-  __sys_connect (net/socket.c:2167)
- Modules linked in: nf_conntrack_h323 [last unloaded: nf_nat_h323]
+During the rollback, sctp_stream_update() frees the old stream table
+and installs a new one, but it does not invalidate stream->out_curr.
+As a result, out_curr may still point to a freed sctp_stream_out
+entry from the previous stream state.
 
-Reaching the dangling state requires CAP_SYS_MODULE in the initial user
-namespace to remove a NAT helper that still has live expectations, so this
-is a robustness fix; leaving an expectation pointing at freed text is wrong
-regardless.
+Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
+stream->out_curr->ext, which can lead to use-after-free once the old
+stream state has been released via sctp_stream_free().
 
-Add nf_ct_helper_expectfn_destroy(), which walks the expectation table and
-drops every expectation whose ->expectfn matches the descriptor being torn
-down. Call it from each NAT helper's exit path after the existing RCU grace
-period, so no expectation outlives the code it points at and no extra
-synchronize_rcu() is introduced. With the fix, the same reproducer runs to
-completion without the Oops.
+This results in crashes such as (reported by Yuqi):
 
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
+  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
+  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
+     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
+   sctp_sched_fcfs_dequeue+0x13a/0x140
+   sctp_outq_flush+0x1603/0x33e0
+   sctp_do_sm+0x31c9/0x5d30
+   sctp_assoc_bh_rcv+0x392/0x6f0
+   sctp_inq_push+0x1db/0x270
+   sctp_rcv+0x138d/0x3c10
+
+Fix this by fully purging the association outqueue when handling the
+Stale Cookie case. This ensures all pending transmit and retransmit
+state is dropped, and any scheduler cached pointers are invalidated,
+making it safe to rebuild stream state during COOKIE_WAIT restart.
+
+Updating only stream->out_curr would be insufficient, since queued
+and retransmittable data would still reference the old stream state and
+trigger later use-after-free in dequeue paths.
+
+Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reported-by: Yuqi Xu <xuyq21@lenovo.com>
+Reported-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_helper.h |  1 +
- net/ipv4/netfilter/nf_nat_h323.c            |  2 ++
- net/netfilter/nf_conntrack_helper.c         | 19 +++++++++++++++++++
- net/netfilter/nf_nat_core.c                 |  2 ++
- net/netfilter/nf_nat_sip.c                  |  1 +
- 5 files changed, 25 insertions(+)
+ net/sctp/sm_statefuns.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index de2f956abf3480..24cf3d2d97450f 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -155,6 +155,7 @@ void nf_ct_helper_log(struct sk_buff *skb, const struct nf_conn *ct,
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 1685f73602d5e3..f5dc7822d220f2 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -2599,11 +2599,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
+ 	 */
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
  
- void nf_ct_helper_expectfn_register(struct nf_ct_helper_expectfn *n);
- void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n);
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n);
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name);
- struct nf_ct_helper_expectfn *
-diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
-index faee20af485613..10e1b0837731b7 100644
---- a/net/ipv4/netfilter/nf_nat_h323.c
-+++ b/net/ipv4/netfilter/nf_nat_h323.c
-@@ -555,6 +555,8 @@ static void __exit nf_nat_h323_fini(void)
- 	nf_ct_helper_expectfn_unregister(&q931_nat);
- 	nf_ct_helper_expectfn_unregister(&callforwarding_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&q931_nat);
-+	nf_ct_helper_expectfn_destroy(&callforwarding_nat);
- }
+-	/* If we've sent any data bundled with COOKIE-ECHO we will need to
+-	 * resend
+-	 */
+-	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
+-			SCTP_TRANSPORT(asoc->peer.primary_path));
++	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
  
- /****************************************************************************/
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index b594cd244fe1d4..ea0cdb7ec91512 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -283,6 +283,25 @@ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n)
- }
- EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_unregister);
- 
-+static bool expect_iter_expectfn(struct nf_conntrack_expect *exp, void *data)
-+{
-+	const struct nf_ct_helper_expectfn *n = data;
-+
-+	/* Relies on registered expectfn descriptors having unique ->expectfn
-+	 * pointers, which holds for the in-tree NAT helpers.
-+	 */
-+	return exp->expectfn == n->expectfn;
-+}
-+
-+/* Destroy expectations still pointing at @n->expectfn; call after the
-+ * caller's RCU grace period so none outlives the (often modular) callback.
-+ */
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n)
-+{
-+	nf_ct_expect_iterate_destroy(expect_iter_expectfn, (void *)n);
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_destroy);
-+
- /* Caller should hold the rcu lock */
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name)
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index b30ca94c2bb7ff..4f41311b868b47 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -1347,6 +1347,7 @@ static int __init nf_nat_init(void)
- 		RCU_INIT_POINTER(nf_nat_hook, NULL);
- 		nf_ct_helper_expectfn_unregister(&follow_master_nat);
- 		synchronize_net();
-+		nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 		unregister_pernet_subsys(&nat_net_ops);
- 		kvfree(nf_nat_bysource);
- 	}
-@@ -1364,6 +1365,7 @@ static void __exit nf_nat_cleanup(void)
- 	RCU_INIT_POINTER(nf_nat_hook, NULL);
- 
- 	synchronize_net();
-+	nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 	kvfree(nf_nat_bysource);
- 	unregister_pernet_subsys(&nat_net_ops);
- }
-diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-index 9fbfc6bff0c221..00838c0cc5bb28 100644
---- a/net/netfilter/nf_nat_sip.c
-+++ b/net/netfilter/nf_nat_sip.c
-@@ -655,6 +655,7 @@ static void __exit nf_nat_sip_fini(void)
- 	RCU_INIT_POINTER(nf_nat_sip_hooks, NULL);
- 	nf_ct_helper_expectfn_unregister(&sip_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&sip_nat);
- }
- 
- static const struct nf_nat_sip_hooks sip_hooks = {
+ 	/* Cast away the const modifier, as we want to just
+ 	 * rerun it through as a sideffect.
 -- 
 2.53.0
 
