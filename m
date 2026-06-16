@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NoprJhl+MWoNkwUAu9opvQ
-	(envelope-from <stable+bounces-264807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:21 +0200
+	id wpDHH811MWqGjwUAu9opvQ
+	(envelope-from <stable+bounces-264508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023C269272E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF9B691CAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1e4kr27w;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264807-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264807-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=F8Z8xNSX;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264508-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264508-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECD523009560
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:39:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25E1B302A3A8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14108472777;
-	Tue, 16 Jun 2026 16:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A8144BCB8;
+	Tue, 16 Jun 2026 16:11:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D4547799E;
-	Tue, 16 Jun 2026 16:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE83A9627;
+	Tue, 16 Jun 2026 16:11:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627992; cv=none; b=jHHK+APMSzTr9G4j9wQRmBgYjUjogIIeJ2vzmFSxH36dyeChqzpkEIPobMCcjgUr/YcunDSDcPY8ZZxFH8KNQhOnKWaLfnYG94Ep3hgVpQzT5rhXUUpgTJKDJ8fTrLLnv2NM2qYffnpX7potjcTxY1jead0Feym+ZdQuY1sjvyU=
+	t=1781626263; cv=none; b=UcqTviq7GUT0Z3iIqnVWzOT5N21Z9ECi4v3e8vtJlxuwmARFgy4NYBaZQv/WXCvaaI49o/Qm4Swv2Sy9kOxphlvXEWmFoXLfNUlqAKFzkp1Q+ulJZ3sXsMNwdaibpa1YmiSRmjzzzqF1ZQfuJCRffFtGjD0oSf1CDMQ5OgO8w0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627992; c=relaxed/simple;
-	bh=Vuww+X4tj7yZJiO1eZ3acfJ9pzGzEbjzxZHhoT0HWnQ=;
+	s=arc-20240116; t=1781626263; c=relaxed/simple;
+	bh=YlVqYevady0+1uEjlM0QNiximOr3Cp/JqLqXM1WGZfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TF56AEF3B36zg9BT9kJoQElJHT6UYkr1KkmVrN00xlSMxPW607BSJmaukTYaoU01S/DnwOFOkRzqmZSIZzVbDhInXQzhcCBmBIrCHP5TK0KGkzoqOSO1TzWsQneoBcPvtFpPVg5R51P7mIi7XvpfQwhddUnu3pD6uMryBMKxqW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1e4kr27w; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AC31F000E9;
-	Tue, 16 Jun 2026 16:39:50 +0000 (UTC)
+	 MIME-Version; b=pJVnEsWzQvZUHt8fL/o6CbBACwpHo1g+SwoGRbGxrktO5TyAQ+M87qLa9UDug0ONoB1djDDXc6Vf2PR4+YZ945euBEWmljlciRpPhI4UiS3ZUIZo1Ik1QQwaTjFfFVJJJg9Gv9NScnGIbrczb7v/r1cR5i0QrnIZ0dle00EA22c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8Z8xNSX; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816A01F000E9;
+	Tue, 16 Jun 2026 16:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627991;
-	bh=EOkrzJ48DAVvp31R4HM1sPlbdLh/Lbl5DWCQDkzbih8=;
+	s=korg; t=1781626262;
+	bh=eVBLKhAtAjlWLBzygdLZUbhwEmLRliESfyjk9FcI3V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1e4kr27wutnlnkcRjRhBvye1Dtufi5eAK/mQw4rfFzsWgcgMgLkNtHTbYG2IW+Ezt
-	 xDV/1CZVAXab2K15NqXDl795LOYHZnnNvZr5dO1fShJH+TBeikp1INqLBRczv5NYMq
-	 RpLEjMu/c9XTghT41ka7SVHxHoQqwTpfAUTXIwzI=
+	b=F8Z8xNSXGA05a/X0Z4XY1uzP/l8soikyT0iXSd9ZmAa1XqFACG5q3tfenLABUOIfi
+	 6E+RXa418tyMdgTo1RUG3i4Xe6AXHQSYiyD0uRjEjoYfbQt56dCzr/zUI2nkCmuuQj
+	 SEP24hte+H/LpQ3qgCoonG8aQkKbXTyA1eahnkwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 253/261] arm64: cputype: Add C1-Premium definitions
+	Yang Wang <kevinyang.wang@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 295/325] drm/amd/pm: mark metrics.energy_accumulator is invalid for smu 14.0.2
 Date: Tue, 16 Jun 2026 20:31:31 +0530
-Message-ID: <20260616145056.797801175@linuxfoundation.org>
+Message-ID: <20260616145113.527686465@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264807-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264508-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:asad.kamal@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,56 +98,40 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,arm.com:url,arm.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 023C269272E
+X-Rspamd-Queue-Id: 3CF9B691CAB
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
+commit ee193c5bbd5e2b56bbeb54ef554414b43a6fc896 upstream.
 
-Add cputype definitions for C1-Premium. These will be used for errata
-detection in subsequent patches.
+EnergyAccumulator is unsupported on SMU 14.0.2, mark it invalid.
 
-These values can be found in the C1-Premium TRM:
-
-  https://developer.arm.com/documentation/109416/0100/
-
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v6.12.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 646b05043eeed04b51c14aad22a400a8250af4b7)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -99,6 +99,7 @@
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
-+#define ARM_CPU_PART_C1_PREMIUM		0xD90
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -2222,7 +2222,6 @@ static ssize_t smu_v14_0_2_get_gpu_metri
+ 					       metrics->Vcn1ActivityPercentage);
  
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -189,6 +190,7 @@
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
-+#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
+-	gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
+ 
+ 	if (metrics->AverageGfxActivity <= SMU_14_0_2_BUSY_THRESHOLD)
+ 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPostDs;
 
 
 
