@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 1NiNA+l7MWoikgUAu9opvQ
-	(envelope-from <stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:01 +0200
+	id AxXHEFiYMWr3ngUAu9opvQ
+	(envelope-from <stable+bounces-266130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:20 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFA569248C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C064D6944D8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xU6Ws5/e";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XI9T7UYE;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266130-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266130-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F12313218D44
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 79CB831F3411
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B331E46AF25;
-	Tue, 16 Jun 2026 16:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1099143D4E8;
+	Tue, 16 Jun 2026 18:33:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8224C425CEE;
-	Tue, 16 Jun 2026 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FBF3D8902;
+	Tue, 16 Jun 2026 18:33:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627268; cv=none; b=fCm6c6zwtMwbiWkn1TaOXux9zDZxcjjPp6QbDPqTquERtD2H5kAJNQUDQHhr3iTzIN3SL0nanrQRpG91I+zvZP6c7+id0Azwek0DfsAefxHm60dKVUB8osn9U/SVD9aY3rT8ZhAZjMQgZN8JBQnbhkDs8M9IkdBblsBe4JXqzTY=
+	t=1781634820; cv=none; b=jUciY1AJhQwD2u32wB62HRvZPJo8seAwT/P93tUCfx6QoYj9IePN1xjWixYoGcjThklYkJQtaxO8CxU9skJH42DSJJ5kGnsv/C+fMVw3CZd5uRf1DZbt/Q1thYWR06/Nov3Epv8wi4BgFvdJe4wOye5zrU6J29lWSDT2UFSNQ5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627268; c=relaxed/simple;
-	bh=Lhxa1oq8OHrOO2npTD1mKnhuJotkobs36diiDhaia0I=;
+	s=arc-20240116; t=1781634820; c=relaxed/simple;
+	bh=dN0breCfDOVhXFMQZfTraM/m2nRmgWjMrVHudGhbWWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ma90uf2InJN2RAWjBnlHrAPeWLKxH5/MIOaEc7H1RRbKlxsDNBfAfjDtiDgCeKlQtG2GxAdJA71+AqzMW77TMNGrQTyNdiMAATc5OWnZWMcM7EgSJ1I7qU9wTPqMC9Wk5v1EyhnyFQhZEcoVKmfZEL9JzeQNlgzvliFogHm2fr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU6Ws5/e; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2720D1F000E9;
-	Tue, 16 Jun 2026 16:27:44 +0000 (UTC)
+	 MIME-Version; b=dxoF946/RxK1DO5ezFRwwI0gtHvZKIo+BdThEZu0BSeHHiQsyDDmGvfIqypEkvNgjtdPk/qWNJ5aWfR96xOdua3MKyqbQvrJ8qgMUoYnqpgsV6cHtlrZafOj3I1p8nuPApVoQ7f46eXGtJAHgEZr1xPJZxaMyvJzIxs1GiLlqsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI9T7UYE; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906561F000E9;
+	Tue, 16 Jun 2026 18:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627267;
-	bh=WfF8NBsZ54vVYs5lRQ+XAYkT3GBc2vKslkLDE5MMqFk=;
+	s=korg; t=1781634819;
+	bh=P51RblIe5Ruh4fDKAMGYQw56hHbwpvOeO9CVgxTeHdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xU6Ws5/eUQUfP8BJpCZyEYSlJDc0qoBU66JlZd1Ugr4LkKd2ZXAcXGwHJIyg6eCIM
-	 x/ocRXCvjrjh7I5g22uLYZTblDzg7YV/Gxg2fU4lWo6gRm+5NR5shwOYBvGoO3e1Qp
-	 QeIBSdGCyv/RLebYqDfkjKS0fvXvqTVEzL9noILE=
+	b=XI9T7UYE7CRpW2UcqsMkMSRcBwgWFj0snmzJei2hsaywtzAmC2zGPNjnxPF01DAe2
+	 6ZRun42ksmJsNEB+LJK+X/15g00tGVU/CwMCkhEqlqozzm2ZAE4CLYQ57Z+KhdeiJ9
+	 pgec4Q9zanYQoFgno0WGV6QPphtc7/SgBo8XIf0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Wyatt Feng <bronzed_45_vested@icloud.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 138/261] xfrm: espintcp: do not reuse an in-progress partial send
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 338/411] smb: client: require net admin for CIFS SWN netlink
 Date: Tue, 16 Jun 2026 20:29:36 +0530
-Message-ID: <20260616145051.478521979@linuxfoundation.org>
+Message-ID: <20260616145119.167158381@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,7 +67,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -83,17 +78,17 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-264682-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com,secunet.com];
+	TAGGED_FROM(0.00)[bounces-266130-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -101,72 +96,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ACFA569248C
+X-Rspamd-Queue-Id: C064D6944D8
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wyatt Feng <bronzed_45_vested@icloud.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit c381039ade2e161ab08c0eda73c4f8b9a7115928 upstream.
+[ Upstream commit d1ebfce2c1d161186a82e77590bf7da2ea1bce91 ]
 
-espintcp keeps a single in-flight transmit in ctx->partial.
-Before building a new sk_msg, espintcp_sendmsg() first tries to flush
-that state through espintcp_push_msgs().
+CIFS_GENL_CMD_SWN_NOTIFY is the userspace witness-notify command.  The
+intended sender is the cifs.witness helper, but the generic-netlink
+operation currently has no capability flag, so any local process can send
+RESOURCE_CHANGE or CLIENT_MOVE notifications to the in-kernel witness
+handler.
 
-For blocking callers, espintcp_push_msgs() may return success even when
-the previous partial send is still pending. espintcp_sendmsg() would
-then reinitialize emsg->skmsg and reuse ctx->partial while the old
-transfer still owns that state.
+The same family exposes CIFS_GENL_MCGRP_SWN without multicast-group
+capability flags.  Register messages sent to that group include the witness
+registration id and, for NTLM-authenticated mounts, the username, domain,
+and password attributes copied from the CIFS session.  An unprivileged
+local process should not be able to join that group and receive those
+messages.
 
-Do not rebuild the send message when ctx->partial is still in progress.
-If espintcp_push_msgs() returns with emsg->len still set, fail the new
-send instead of overwriting the live partial state.
+Require CAP_NET_ADMIN for incoming SWN_NOTIFY commands with
+GENL_ADMIN_PERM, and require CAP_NET_ADMIN over the network namespace for
+joining the SWN multicast group with GENL_MCAST_CAP_NET_ADMIN.  The
+cifs.witness service runs with the privileges needed for both operations.
 
-This is a memory-safety fix: reusing the live partial-send state can
-leave a stale offset attached to a new sk_msg and lead to an out-of-
-bounds read in the send path.
-
-tcp_sendmsg_locked() already handles waiting for send buffer memory, so
-the fix here is just to preserve espintcp's one-message-at-a-time
-transmit state.
-
-Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Assisted-by: Codex:GPT-5.4
-Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: fed979a7e082 ("cifs: Set witness notification handler for messages from userspace daemon")
+Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/espintcp.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/cifs/netlink.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -349,6 +349,10 @@ static int espintcp_sendmsg(struct sock
- 			err = -ENOBUFS;
- 		goto unlock;
- 	}
-+	if (emsg->len) {
-+		err = -ENOBUFS;
-+		goto unlock;
-+	}
+--- a/fs/cifs/netlink.c
++++ b/fs/cifs/netlink.c
+@@ -33,13 +33,17 @@ static const struct nla_policy cifs_genl
+ static const struct genl_ops cifs_genl_ops[] = {
+ 	{
+ 		.cmd = CIFS_GENL_CMD_SWN_NOTIFY,
++		.flags = GENL_ADMIN_PERM,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = cifs_swn_notify,
+ 	},
+ };
  
- 	sk_msg_init(&emsg->skmsg);
- 	while (1) {
+ static const struct genl_multicast_group cifs_genl_mcgrps[] = {
+-	[CIFS_GENL_MCGRP_SWN] = { .name = CIFS_GENL_MCGRP_SWN_NAME },
++	[CIFS_GENL_MCGRP_SWN] = {
++		.name = CIFS_GENL_MCGRP_SWN_NAME,
++		.flags = GENL_MCAST_CAP_NET_ADMIN,
++	},
+ };
+ 
+ struct genl_family cifs_genl_family = {
 
 
 
