@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Xno2LgN8MWoqkgUAu9opvQ
-	(envelope-from <stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0200
+	id 3XaqFCSPMWrOmgUAu9opvQ
+	(envelope-from <stable+bounces-265721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121836924A1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92BE693B54
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:03 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oWoT9qS3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264695-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l6Hczzid;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265721-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265721-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A40C31FE811
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:29:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99B5831759DE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038344E037;
-	Tue, 16 Jun 2026 16:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47308477E51;
+	Tue, 16 Jun 2026 17:57:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27A84508F2;
-	Tue, 16 Jun 2026 16:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E9D2F12AE;
+	Tue, 16 Jun 2026 17:57:26 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627344; cv=none; b=I0+syHff7t/44YBEhXZa3rqn9srbuIhGPArpA7aSHSmxU8o0Pw74oOlSwm2QaKeYzeXKxBWsNlXEUEXsVgpa48IfVgcluw+yVonNmD6LkH9m0gsOyT2MClFfzkKL8ca63MZf9DzO26abt2Qy3IEkYIa80uOhzCvLyg+vj/8JX+8=
+	t=1781632647; cv=none; b=JcymLEMVlgjAIuMAEBBAJl8fWaC7jzfuAdsBECcrN7INV4gSX+gLJcRZo9nEt9cpn8ScEBKEtzdGjlOnfrIRwNnm7vIidkekWOlAIie5sT4JB0G2G6pQmuUB/pg9z4+05Nw6iyzzwhbYfvdn/bPPm99GpStBEQYRpKdTzlP0ttE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627344; c=relaxed/simple;
-	bh=g4rSZEku/ZcX9sFLDA1gPas7T2DLxnvs+81+vJxctIE=;
+	s=arc-20240116; t=1781632647; c=relaxed/simple;
+	bh=fjkvkJtVWuwVUiiiq8PnkZ19eq3E9zHJIqjU1r56/h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkCq8LYOorK2Hf1jleiDsahaDeb+pZh8GJan+cX4PFl36oTeJk/XKOzGF4wr9VLmduu4NegD55FY1H6Bnw8QikYwF2VBWwaNHkyBueYo5bGorwFaIkI0ykFkucE3zEr5bSXr8Rp6Heru/skm4PQfeYkwP1NW1PNSPBzurp+Ti40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWoT9qS3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6D1F000E9;
-	Tue, 16 Jun 2026 16:29:02 +0000 (UTC)
+	 MIME-Version; b=qaCF3E4NlkqIZaEvPueaBTs4ijdfki2j/lP3Cq0wFjusAgyGgq4211QMCp7bQ4f4Xrz07IDABxWpom83mynOR4Dy8qWn8qoXSQkx0VqMbH1AMBKwv/EIsvqBkQsOTNJBkHiydKXRRaovaF9GamNmud36j4mo2LkPiKvNW846D48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6Hczzid; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6DE1F000E9;
+	Tue, 16 Jun 2026 17:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627343;
-	bh=Z/sYUmt7XLV624FGYSzXYP/T2ft6O5wWz6vBPCLoiys=;
+	s=korg; t=1781632646;
+	bh=COcwN3ZDTU5KHqmnY9uniAz2+ik44BMQsuE6AmH1Grk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oWoT9qS3oDpFDlC9vtZq7etLhaboLqNKpFBTu2LGNE7XlPM2pkmdz1F59wRYGD8tg
-	 M+onAH/TI+DuG18izqo1yQNvAFw65QjMw24mC4CGXmx/UUZZW9SQ1PIFI5M7mqZhkk
-	 qY7LF7k6jauZM/JjGubme99KeNa0yRBoz+4Vt98g=
+	b=l6HczzidcM5h3W/caiGBlO1+7L7PTrqnJwj2uT4Mgy8W2BQS48uVMeSIGthk9e9Au
+	 ok0w4MJjQuOp6eqbnhBUfikvicBUYqyTLf20Ck9C2bwldm5yv/aCh9JN+Q8MS2uZ/S
+	 s5x/n4yE0MGo84T9oR4GyyzJmqiQitSSyuNy41w8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Cui <cuitao@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 160/261] selftests: mptcp: add test for extra_subflows underflow on userspace PM
+	Zilin Guan <zilin@seu.edu.cn>,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 451/522] octeontx2-pf: avoid double free of pool->stack on AQ init failure
 Date: Tue, 16 Jun 2026 20:29:58 +0530
-Message-ID: <20260616145052.487137180@linuxfoundation.org>
+Message-ID: <20260616145147.015004822@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +71,97 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264695-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cuitao@kylinos.cn,m:matttbe@kernel.org,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265721-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 121836924A1
+X-Rspamd-Queue-Id: A92BE693B54
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Cui <cuitao@kylinos.cn>
+From: Dawei Feng <dawei.feng@seu.edu.cn>
 
-commit 06fd2bec7aebf393288e4b78924482fe170caabc upstream.
+[ Upstream commit 9b244c242bec48b37e82b89787afd6a4c43457e1 ]
 
-Add a test to verify that when userspace PM fails to create a subflow
-(e.g. using an unreachable address), the extra_subflows counter is not
-decremented below zero.
+otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
+allocation fails, but leaves the pointer unchanged. Later,
+otx2_sq_aura_pool_init() unwinds the partial setup through
+otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
+cn20k_pool_aq_init() implementation has the same bug in
+its corresponding error path.
 
-Fixes: 77e4b94a3de6 ("mptcp: update userspace pm infos")
+Set pool->stack to NULL immediately after the local free so the shared
+cleanup path does not free the same stack again while cleaning up
+partially initialized pool state.
+
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available. Manual inspection confirms that the bug is still present in
+v7.1-rc3.
+
+Runtime validation was not performed because reproducing this path
+requires OcteonTX2/CN20K hardware.
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260602-net-mptcp-misc-fixes-7-1-rc7-v2-6-856831229976@kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260515151826.1005397-1-dawei.feng@seu.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3711,6 +3711,10 @@ userspace_tests()
- 		chk_rm_nr 0 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		chk_subflows_total 1 1
-+		# check counters are not affected by errors at creation time
-+		userspace_pm_add_sf $ns2 10.0.12.2 10 2>/dev/null
-+		chk_mptcp_info subflows 0 subflows 0
-+		chk_subflows_total 1 1
- 		kill_events_pids
- 		mptcp_lib_kill_group_wait $tests_pid
- 	fi
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1374,11 +1374,13 @@ int otx2_pool_init(struct otx2_nic *pfvf
+ 		err = otx2_sync_mbox_msg(&pfvf->mbox);
+ 		if (err) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return err;
+ 		}
+ 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
+ 		if (!aq) {
+ 			qmem_free(pfvf->dev, pool->stack);
++			pool->stack = NULL;
+ 			return -ENOMEM;
+ 		}
+ 	}
 
 
 
