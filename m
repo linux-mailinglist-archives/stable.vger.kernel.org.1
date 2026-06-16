@@ -1,130 +1,188 @@
-Return-Path: <stable+bounces-263533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jeV3KY7FMGr0XAUAu9opvQ
-	(envelope-from <stable+bounces-263533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:39:58 +0200
+	id rPfPEXHGMGoUXQUAu9opvQ
+	(envelope-from <stable+bounces-263534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:43:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0575668BB94
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:39:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC23F68BBAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 05:43:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I7dh4giw;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263533-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263533-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=gBryGv4T;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263534-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263534-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 638DF304C7DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:39:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21EA13065348
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 03:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44383C3443;
-	Tue, 16 Jun 2026 03:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B7D3C4576;
+	Tue, 16 Jun 2026 03:43:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C143C4166
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 03:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD25F282F1A
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 03:43:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781581159; cv=none; b=kQgsYhMnzqmt+1FSrIjFmqNqFM2ZMBgUyPhSjCWPtFnnNXMmVN8FTfNRxjN9KvBz0646FFuDr4DbJN/8x/jGoxV0xT5tG0C3/1hZNm/XT6AbNq/U1ikhlYUhQlzUcqMtrHmCuz6i/6YpGVVEaR4gK6mV10ZcGDTgGNmQyqc7M9I=
+	t=1781581421; cv=none; b=U2ZTA3PQ5LBDR+5fHeMA6WMm35MVa2T2xDDsebtrtKbqIumfZgW9yTxej+uxwfMkLDS+QutG/Tg7rC5wUxA/3OgIXEVLsTph6vTl0+bXqUAmPUIOAXU1gxeostxGdsV6qGBOkR2dV0KSCYVS6qXo17RdHQPGbtjFoNOu5o5Tjyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781581159; c=relaxed/simple;
-	bh=NdmJaaT95k/edNIX14vsuGNZZS9mIdS3WzO4V27ubkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGocrX7Ix4gRWAIkojBQtFDay5eBAn5UTqp698UaI6g6t8XurPrOEZNmpJIT6dOiWBNToolzr3UhAJglXi9/uS+8aJIDlXjUcOAKppXNnN6+9C5yMMaUdMGg4JBghUIH7R6zs6uC8o3+fheEuPRm+RBD4svW1O4B79SbDq4BMuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7dh4giw; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861941F000E9;
-	Tue, 16 Jun 2026 03:39:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781581158;
-	bh=IcsyuHjhRls5YZFdO/v9OywQHVefNRaJXQbt4Wrvs9g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=I7dh4giwaOOCLS2GMDro/3DwiOruX2TV/9NGWkHzsefOX1tZ8wKAkle4CRBYAffj8
-	 9g6PLLxAMI+zfbKlygnt0kJngX9pcGAoP2EKP4N9HTnQOUH0OlyyYKrSW5cIbmCM7y
-	 4mTUO7iC7DgJj2uQ4mO8Fx8GkM9FmWIwEjQRwaKY=
-Date: Tue, 16 Jun 2026 09:08:13 +0530
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ahmed Elaidy <elaidya225@gmail.com>
-Cc: stable@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
-	ljs@kernel.org, avagin@gmail.com
-Subject: Re: [PATCH 6.18.y v4 0/9] mm: backport sticky VMA flags and
- soft-dirty fix
-Message-ID: <2026061632-papaya-handwoven-d010@gregkh>
-References: <20260515124218.151966-2-elaidya225@gmail.com>
+	s=arc-20240116; t=1781581421; c=relaxed/simple;
+	bh=BTDFS4gTaHVWoh6hwS/AQaRpOJQVHiGArGDKeBKLm50=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=odamlp8fwgPtcqjSwVpgt2+jCNMm21ak9ODDSxBw0c8/8NbOTYDlnTbFc8Z61Ll8ZrsAT90Xjg0EtzfTiTYMAD0+84TNZxOGCKp5b99y0qibBVbSHcUhTRB5WuTPGVfBnNRgXcPZH79bU2ZLqX6CkH3f6brYVs29kCET3h7l7Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gBryGv4T; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781581419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LmtNVQPuL89Pr71FqVptC4fXxzFFeWwBvfXAYcEAgjQ=;
+	b=gBryGv4TZw7UDDd3xCwux7zGV8Kb0RvxocjCWlb7nrFjVg0AH10K+fr5vczRQPeP9oAWlo
+	uEMr244+qIrzQTkIJp3M9n4z8l0RZWFGWSRUtZOwU8YAiEnChGPS09aUK8vGMMtZxWRbcx
+	jIY/4bAisLTh9vHK2ZUwFaiO5SKNCJw=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-18-u_4hzlSgOOONoVCrChthMQ-1; Mon,
+ 15 Jun 2026 23:43:34 -0400
+X-MC-Unique: u_4hzlSgOOONoVCrChthMQ-1
+X-Mimecast-MFC-AGG-ID: u_4hzlSgOOONoVCrChthMQ_1781581411
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D69C91955DE3;
+	Tue, 16 Jun 2026 03:43:30 +0000 (UTC)
+Received: from [10.22.89.117] (unknown [10.22.89.117])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A51C19560AB;
+	Tue, 16 Jun 2026 03:43:26 +0000 (UTC)
+Message-ID: <c1495b1b-9dee-4cd5-ac8e-eeb7a2d968ed@redhat.com>
+Date: Mon, 15 Jun 2026 23:43:26 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260515124218.151966-2-elaidya225@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+From: Waiman Long <longman@redhat.com>
+To: Gregory Price <gourry@gourry.net>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Farhad Alemi <falemi@asu.edu>,
+ Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+Content-Language: en-US
+In-Reply-To: <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:elaidya225@gmail.com,m:stable@vger.kernel.org,m:linux-mm@kvack.org,m:akpm@linux-foundation.org,m:ljs@kernel.org,m:avagin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-263533-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263534-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:gourry@gourry.net,m:david@kernel.org,m:farhad.alemi@berkeley.edu,m:akpm@linux-foundation.org,m:falemi@asu.edu,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[berkeley.edu,linux-foundation.org,asu.edu,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kvack.org,linux-foundation.org,kernel.org,gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0575668BB94
+X-Rspamd-Queue-Id: DC23F68BBAB
 
-On Fri, May 15, 2026 at 03:42:10PM +0300, Ahmed Elaidy wrote:
-> This series backports the sticky VMA flags infrastructure and the
-> VM_SOFTDIRTY-on-merge fix to linux-6.18.y.
-> 
-> Motivation: CRIU incremental dump/restore can hit a missing-parent-pagemap
-> failure when VM_SOFTDIRTY is lost during VMA merge operations.
+On 6/15/26 10:26 PM, Waiman Long wrote:
+>
+> On 6/15/26 5:38 AM, Gregory Price wrote:
+>> On Mon, Jun 15, 2026 at 10:08:51AM +0200, David Hildenbrand (Arm) wrote:
+>>> On 6/14/26 15:25, Farhad Alemi wrote:
+>>>> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+>>>> --- a/kernel/cgroup/cpuset.c
+>>>> +++ b/kernel/cgroup/cpuset.c
+>>>> @@ -2649,7 +2649,7 @@ void cpuset_update_tasks_nodemask(struct 
+>>>> cpuset *cs)
+>>>>
+>>>>           migrate = is_memory_migrate(cs);
+>>>>
+>>>> -        mpol_rebind_mm(mm, &cs->mems_allowed);
+>>>> +        mpol_rebind_mm(mm, &cs->effective_mems);
+>>> God this is confusing.
+>>>
+>> All interactions between mempolicy and cpuset are horrible and
+>> confusing.  Much like Lorenzo's anon_vma work, I have to keep
+>> notes on how this whole thing doesn't just spew SIGBUS constantly.
+>>
+>> The short answer is: mempolicy is advisory and cpuset is strictly
+>> followed - in a dispute cpuset wins... except for file backed memory,
+>> then everyon loses and nothing is consistent.
+>
+> That is what I believe why mpol_rebind_mm() a bit differently from the 
+> others and it is historically done this way a long time ago before 
+> cgroup v2.
+>
+> For cgroup v1, mems_allowed can't be empty or you can't put any task 
+> into the cpuset. Also effective_mems is the same as mems_allowed. 
+> cgroup v2 is quite different in how it handles memory nodes and CPUs. 
+> Users can isn't forced to set mems_allowed and cpus_allowed as 
+> effective_mems and effective_cpus will inherit parent version if 
+> mems_allowed and cpus_allowed are not set. IOW, effective_mems will 
+> never be empty. Yes, it is a bug with the introduction of cpuset v2 
+> that we should have replaced mems_allowed by effective_mems at that 
+> time. With v2, effective_mems should contain only online nodes. The 
+> only exception is during the short transition period when a memory 
+> node hotunplug operation is in progress when a write to cpuset.mems is 
+> happening at the same time. With v1, it is theoretically possible that 
+> none of the nodes in mems_allowed is online.
+>
+> The reason why I am suggesting to use cs->effective_mems to keep the 
+> old cgroup v1 behavior. If the consensus is to use the output of 
+> guarantee_online_mems() for mpol_rebind_mm(), I will not be against 
+> that but it will be a slight change in user-visible behavior. 
 
-Ok, but what does that actually mean?  A crash?  Normal user
-triggerable or something else?
+BTW, I still prefer the v2 patch. If it is decided we should use the 
+guarantee_online_mems() value instead, it will have to be a separate 
+patch with changes in the relevant documentation like 
+Documentation/admin-guide/cgroup-v1/cpuset.rst.
 
-> Patch 8 is the target fix:
->   mm: propagate VM_SOFTDIRTY on merge
-> 
-> The preceding patches provide required dependencies on 6.18.y and are included
-> to preserve upstream behavior, as requested by maintainers for stable backports.
-> 
-> Changes since v3:
->   - Reverted to sending the full 9-patch series as requested by Greg KH and Lorenzo.
->   - Updated Lorenzo's email to ljs@kernel.org across all patches.
->   - Added Cc: stable@vger.kernel.org # 6.18.x to all patches.
->   - Added Fixes tag for soft-dirty merging in Patch 8.
+Cheers,
+Longman
 
-We need acks from the maintainers here before we can take these...
-
-thanks,
-
-greg k-h
 
