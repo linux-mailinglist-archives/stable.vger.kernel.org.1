@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lNe/FCCeMWqToQUAu9opvQ
-	(envelope-from <stable+bounces-266480-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:00 +0200
+	id e8apLNB7MWoWkgUAu9opvQ
+	(envelope-from <stable+bounces-264678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5518694B56
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:03:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A7C692463
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=U51F19yY;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266480-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266480-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WjCaPXK9;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264678-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264678-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EEEA03011C7C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:03:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 571AC31847F3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F7D3DBD76;
-	Tue, 16 Jun 2026 19:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B0647277E;
+	Tue, 16 Jun 2026 16:27:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F6334751B;
-	Tue, 16 Jun 2026 19:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714F7425CEE;
+	Tue, 16 Jun 2026 16:27:17 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636635; cv=none; b=dDV/PweJFKv2tHelzcCwyib8DXc284fkjYqowE+xp6ehKTyteOVrq9wWGUSMOdLJ6wq2CfmkJEWUahgZkhRfUyTrMTPQiwBCJpDo5S518TmHwaFRZQkysEnRnbiDDgirRugQDhHjwWRWy8j0UGOhZnumzsHWlPpIGMk3U2oUKE0=
+	t=1781627238; cv=none; b=SU3M1+ACTv/d0zJyRyHjUeoXBsERoU8qs1tnM+J0Lhl8AU2rrf66YiEhxatbLxW5D60lEeFggKqMSSCwwPThDyu81/Y2iR1aYhE8YG0ItJLdofPH3cfvXNbHr+C9gnJ2AmdoYN8GmE5oz8jfc/wOR7/98CkNOfhq2BhWpFTqolo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636635; c=relaxed/simple;
-	bh=nxuMTjzTRft1bQPUcqSi1dyOoRPYuiCGcqt/1Cr42fY=;
+	s=arc-20240116; t=1781627238; c=relaxed/simple;
+	bh=YgeJAsFhasyOoU8Dxl/toJsMdC9qNghb21mIaKLtJxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdOObIwiMe5vX35WcXof2Ro6tgudzmVCNHxYVf9mZ088BU+v+oFLt8+gk2JwjAgQIvfa/6jfsyyH1DyZA/SJuheuKXQMkd8W5kUvmRFXgyFHKzfofgvauJ5rfByjiMGOW3GJrzGz4BqeYrHuvB43PTT+QhejHymXvHpO5qC7pNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U51F19yY; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15321F000E9;
-	Tue, 16 Jun 2026 19:03:53 +0000 (UTC)
+	 MIME-Version; b=CEvS03MwunsIFSbN6B83foU/DD4tItE05iIO0ZJl2sFTV8Q5O8wX3X2ShUIy9Y5YSuqHbESbvQQhGgc1TZ9XvkTPmRJoDlcQjSehhwOTw1Aqqu8HTehQ+JjPdUDqscDImjRBeGurB7SD6hlbmLM8wPGLCZz70dZROIL/wmem0Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjCaPXK9; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6754C1F000E9;
+	Tue, 16 Jun 2026 16:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636634;
-	bh=iO04L7J8X0t6ThtJXlzgEmQwHwkW01+HmFiFsNkeKd4=;
+	s=korg; t=1781627237;
+	bh=1bkkJmEmEzIgLMD/e8KPdNDHm+SmWYC58if7cizpOxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U51F19yYBqMfyZtw1S+IBRTM32A8EpbXGPAALewxOuVaORvuz7ywgVAvE9hJSPhrM
-	 GzvTn8uUVf0llx4U056IIYRRudrykQiVpD202c3sslicalIoW4X9Xq9MOmPGrfj+ke
-	 1zI/WPO46Js+QueUclDSpZ7pLtoyi4EKXrO4vnZ0=
+	b=WjCaPXK96u4ZDEi923N8AJSYpqSoMI5kcXdQPNIH495y6v3o4/4twCu/17hzsqVZq
+	 cVdI7DOJDf9vchrqIWXWS3+GoJyExKnkT20NAhMV0ASJ7dRZYkEWqua71R4Y6WUipL
+	 KyAhkrmxIg7+o79PTO8AaubWZkPLh5BYAMKFxREI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/342] spi: st-ssc4: fix controller deregistration
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 134/261] KVM: SEV: Decouple the need to sync the GHCB SA from the need to free the SA
 Date: Tue, 16 Jun 2026 20:29:32 +0530
-Message-ID: <20260616145101.231752207@linuxfoundation.org>
+Message-ID: <20260616145051.292949092@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266480-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264678-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:thomas.lendacky@amd.com,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,62 +99,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5518694B56
+X-Rspamd-Queue-Id: 31A7C692463
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 19857374010d06ca6a2f7c2c53464122eb804df0 ]
+commit f041dc80de4abbdd0909d871bf64f3f87d2350ff upstream.
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Decouple synchronizing the GHCB SA from freeing/unpinning the SA, so that
+the free/unpin path can be reused when freeing a vCPU.
 
-Fixes: 9e862375c542 ("spi: Add new driver for STMicroelectronics' SPI Controller")
-Cc: stable@vger.kernel.org	# 4.0
-Cc: Lee Jones <lee@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260410081757.503099-18-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ changed spi_controller/host API calls to spi_master/master equivalents ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Opportunistically add a WARN to harden KVM against stomping over (and thus
+leaking) an already-allocated scratch area.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-17-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20260529183549.1104619-17-pbonzini@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-st-ssc4.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/sev.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -372,7 +372,7 @@ static int spi_st_probe(struct platform_
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -3451,20 +3451,17 @@ void sev_es_unmap_ghcb(struct vcpu_svm *
+ 	if (!svm->sev_es.ghcb)
+ 		return;
  
- 	platform_set_drvdata(pdev, master);
+-	if (svm->sev_es.ghcb_sa_free) {
+-		/*
+-		 * The scratch area lives outside the GHCB, so there is a
+-		 * buffer that, depending on the operation performed, may
+-		 * need to be synced, then freed.
+-		 */
+-		if (svm->sev_es.ghcb_sa_sync) {
+-			kvm_write_guest(svm->vcpu.kvm,
+-					svm->sev_es.sw_scratch,
+-					svm->sev_es.ghcb_sa,
+-					svm->sev_es.ghcb_sa_len);
+-			svm->sev_es.ghcb_sa_sync = false;
+-		}
++	/*
++	 * If the scratch area lives outside the GHCB, there's a buffer that,
++	 * depending on the operation performed, may need to be synced.
++	 */
++	if (svm->sev_es.ghcb_sa_sync) {
++		kvm_write_guest(svm->vcpu.kvm, svm->sev_es.sw_scratch,
++				svm->sev_es.ghcb_sa, svm->sev_es.ghcb_sa_len);
++		svm->sev_es.ghcb_sa_sync = false;
++	}
  
--	ret = devm_spi_register_master(&pdev->dev, master);
-+	ret = spi_register_master(master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to register master\n");
- 		goto rpm_disable;
-@@ -394,10 +394,16 @@ static int spi_st_remove(struct platform
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_master_get_devdata(master);
++	if (svm->sev_es.ghcb_sa_free) {
+ 		kvfree(svm->sev_es.ghcb_sa);
+ 		svm->sev_es.ghcb_sa = NULL;
+ 		svm->sev_es.ghcb_sa_free = false;
+@@ -3525,6 +3522,8 @@ static int setup_vmgexit_scratch(struct
+ 		goto e_scratch;
+ 	}
  
-+	spi_master_get(master);
++	WARN_ON_ONCE(svm->sev_es.ghcb_sa_sync || svm->sev_es.ghcb_sa_free);
 +
-+	spi_unregister_master(master);
-+
- 	pm_runtime_disable(&pdev->dev);
+ 	if ((scratch_gpa_beg & PAGE_MASK) == control->ghcb_gpa) {
+ 		/* Scratch area begins within GHCB */
+ 		ghcb_scratch_beg = control->ghcb_gpa +
+@@ -3546,6 +3545,8 @@ static int setup_vmgexit_scratch(struct
+ 		scratch_va = (void *)svm->sev_es.ghcb;
+ 		scratch_va += (scratch_gpa_beg - control->ghcb_gpa);
  
- 	clk_disable_unprepare(spi_st->clk);
- 
-+	spi_master_put(master);
-+
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
- 
- 	return 0;
++		svm->sev_es.ghcb_sa_sync = false;
++		svm->sev_es.ghcb_sa_free = false;
+ 		svm->sev_es.ghcb_sa_len = ghcb_scratch_end - scratch_gpa_beg;
+ 	} else {
+ 		/* GHCB v2 requires the scratch area to be within the GHCB. */
 
 
 
