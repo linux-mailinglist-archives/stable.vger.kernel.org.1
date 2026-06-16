@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JkqXG75xMWrjjQUAu9opvQ
-	(envelope-from <stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:38 +0200
+	id 6E0sNKx1MWp3jwUAu9opvQ
+	(envelope-from <stable+bounces-264376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653956917F1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE1E691C76
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XEZo3IQB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=E646wBVe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264376-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264376-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4F22430228AC
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9A0B329FD89
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD691450906;
-	Tue, 16 Jun 2026 15:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A4245BD4B;
+	Tue, 16 Jun 2026 15:59:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5EC4508E0;
-	Tue, 16 Jun 2026 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5059F44DB85;
+	Tue, 16 Jun 2026 15:59:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624413; cv=none; b=rK7/x+J9uSs4TGHV1wFfyFLN4GAtvsXnI6Y2oU7C9fsrgx7fIm3yylTmUGfmP+xZqLtamTXpHQzzBcBCvsZAUHgRmERXW/yRvx6Kw01iaU9kmZpQBOICj9VHCQZxMf9NVMoSZnno8nfSHy8tnE4q5bQBR/JksR6FfGExxAxEM0I=
+	t=1781625555; cv=none; b=VyaH/BVDvoOMB2Gvh14Z/QJzVWw+7Z0Q0o3C2063PhWqW/3klWG+yG19nVxUmbNAyzlPvBBsk2JGiQZEiQ0F/FaUZvzF6tP1TiYznLSpV20bNw8xu6jY0xEOclimYhxNbNNXzxbSXsQa/hjM8Yt+LlnBxWXy16Sv11TRJc9h3RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624413; c=relaxed/simple;
-	bh=5XQYkSq9tG+bV8L8SkEtDbrnB0NNj/dwtqZghp2/A+A=;
+	s=arc-20240116; t=1781625555; c=relaxed/simple;
+	bh=wHz3u9bUDE2Dc3NLv3AKiGrbjPOL+jsUo15LR3UwboM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQs9j3s00LEOwthFYkqUybUXM79mtdqqChxAPAqzPvuxj+VAteaIWhOOdOqN2OKpDZXCuTjxJDQw6BWst3QJtM+pFvOQlFsKnAoplHHv9Bx7Uu2E3SBKvM0fjAyy719b+3jtyYFAtzZ3SysjVSFzgSzku6uZNeLsYemnnLapxfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZo3IQB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B0B1F000E9;
-	Tue, 16 Jun 2026 15:40:11 +0000 (UTC)
+	 MIME-Version; b=UOw3sP18WUY/8F5GFphn0OcHGqTXxJH6hx5m1q6WqLqMne7Kr7EHmcYMdPyBv+/4GLFlrSJCqBh3P5+BrLDV5EVevdFEHsvIuIn52fBq+qv3BofdrX2qT/V5IiOk2/JgHUlP0gyGBjE/Hagre8ZjTFQA7WomlQ0WZYC8cGug9k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E646wBVe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADD61F000E9;
+	Tue, 16 Jun 2026 15:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624412;
-	bh=Ql8J89dND9mycU7mJD5b7bV0m+FZl4Y0wWPCpAboNjY=;
+	s=korg; t=1781625554;
+	bh=EygnMJfMWT7TsL33+Qd4aEm4huAcGxPOGnxG2Y7+1/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XEZo3IQBM0RZwbTvgspUMQnx4Zl32Nq/qjWcXaK/xsfljKU1QwiVqr7sYEAXHV4QH
-	 gDKX9+N/tWOn9f0hXvDDF71UIiUWsJAwx/iqmESJwG63CYCma0q8KryrlCB0tj8f3b
-	 x/KGQNPSMmhE7CBll3iajT14l56ktlLszGX/rrNc=
+	b=E646wBVeMTt6vhjnAKtMKV2isMsgxLxubKeE/YdmyZC7EeMs0QkuVhdFJGI9j/RSU
+	 3UxsQ65lbdPlsP4jERlGdt+x1xydYizQTqXQjpvdoTxyCpl60Sg3XLs56RUq/QM4CE
+	 QZDX9vSg77GMmgrlgUz+ro6BeC+Dy5x347gIEWX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 7.0 330/378] slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
+	Michael Roth <michael.roth@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 165/325] KVM: Dont WARN if memory is dirtied without a vCPU when the VM is dying
 Date: Tue, 16 Jun 2026 20:29:21 +0530
-Message-ID: <20260616145127.591321856@linuxfoundation.org>
+Message-ID: <20260616145106.011231791@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +69,101 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264155-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264376-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 653956917F1
+X-Rspamd-Queue-Id: 2FE1E691C76
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 960b53a3f76fa214c2fc493734ae7b3c5e713bbf upstream.
+commit 8618004d3e897c0f1b71d9a9ab860461289bb89a upstream.
 
-PDR and SSR callbacks are registred from the controller probe function,
-but currently released from the child device's remove function.
+When marking a page dirty, complain about not having a running/loaded vCPU
+if and only if the VM is still alive, i.e. its refcount is non-zero.  This
+will allow fixing a memory leak for x86 SEV-ES guests without hitting what
+is effectively a false positive on the WARN.
 
-The remove() function should only be unwinding what was done in the
-same device's probe() function.
+For some SEV-ES VM-Exits, KVM keeps a writable mapping of a guest page
+across an exit to userspace, and typically unmaps the page on the next
+KVM_RUN.  But if userspace never calls KVM_RUN after such an exit, then KVM
+needs to unmap the page when the vCPU is destroyed, which in turn triggers
+the WARN about not having a running vCPU.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
+Alternatively, SEV-ES could temporarily load the vCPU to suppress the WARN,
+as is done in nested_vmx_free_vcpu() (but for completely unrelated reasons;
+suppressing WARN from nested_put_vmcs12_pages() is pure happenstance).  But
+loading a vCPU during destruction is gross (ideally nVMX code would be
+cleaned up), risks complicating the SEV-ES code (KVM would need to ensure
+the temporarily load()+put() only runs when the vCPU isn't already loaded),
+and is ultimately pointless.
+
+The motivation for the WARN is to guard against KVM dirtying guest memory
+without pushing the corresponding GFN to the active vCPU's dirty ring, e.g.
+to ensure userspace doesn't miss a dirty page.  But for the VM's refcount
+to reach zero, there can't be _any_ userspace mappings to the dirty ring,
+as mapping the dirty ring requires doing mmap() on the vCPU FD.  I.e. if
+userspace had a valid mapping for the dirty ring, then the vCPU file and
+thus the owning VM would still be alive.  And so since userspace can't
+possibly reach the dirty ring, whether or not KVM technically "misses" a
+push to the dirty ring is irrelevant.
+
+Reported-by: Michael Roth <michael.roth@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-5-srini@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Michael Roth <michael.roth@amd.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20260501202250.2115252-15-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20260529183549.1104619-15-pbonzini@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ virt/kvm/kvm_main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1684,6 +1684,9 @@ static void qcom_slim_ngd_ctrl_remove(st
- {
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -3527,7 +3527,8 @@ void mark_page_dirty_in_slot(struct kvm
+ 	if (WARN_ON_ONCE(vcpu && vcpu->kvm != kvm))
+ 		return;
  
-+	pdr_handle_release(ctrl->pdr);
-+	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
-+
- 	qcom_slim_ngd_unregister(ctrl);
+-	WARN_ON_ONCE(!vcpu && !kvm_arch_allow_write_without_running_vcpu(kvm));
++	WARN_ON_ONCE(!vcpu && refcount_read(&kvm->users_count) &&
++		     !kvm_arch_allow_write_without_running_vcpu(kvm));
+ #endif
  
- 	destroy_workqueue(ctrl->mwq);
-@@ -1694,8 +1697,6 @@ static void qcom_slim_ngd_remove(struct
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
- 
- 	pm_runtime_disable(&pdev->dev);
--	pdr_handle_release(ctrl->pdr);
--	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
- 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
+ 	if (memslot && kvm_slot_dirty_track_enabled(memslot)) {
 
 
 
