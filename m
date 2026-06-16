@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-266433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RRYDBzOdMWoWoQUAu9opvQ
-	(envelope-from <stable+bounces-266433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:03 +0200
+	id KmHcHsidMWpBoQUAu9opvQ
+	(envelope-from <stable+bounces-266445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F51694A59
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0648694AD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kS1IVsva;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266433-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266433-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="uahVYI/E";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266445-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266445-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F4273045B31
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:00:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5913730BB206
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE29647CC96;
-	Tue, 16 Jun 2026 18:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D67F3CF943;
+	Tue, 16 Jun 2026 19:00:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FCB472798;
-	Tue, 16 Jun 2026 18:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962C3D7D9D;
+	Tue, 16 Jun 2026 19:00:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636398; cv=none; b=ifIjP3Y/V9DWhhy/NMQDtNybumEp0pZJgi4Nn/r2ZfqSNblRPiQl2j4poSGRsdCrm4KWN2J76ifefF59S4qc5sJGTTokc3k2Qu4Fx4RPRnlh+Rg5EaRPkEoRS26Dv7rVzT/O8F7REcqOPsBB1xQvLxVeQtxDcP7n2yAAgPiDwq4=
+	t=1781636458; cv=none; b=ph4kf9SU0xRn4ImFgzn26kPamP+l2C0LyhYt+3LreQJiaA7EDwEv6oMFk7vpjQWX828TZqgxZYuFdDq8KiLbvUi9SdUe3MaiOSUqj0yvZIx4AqhS+8BRzdbphgAnBxlHvyU6v5hqYwP983sXg4a77cRmWKL2LGccB9G6cfMJfkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636398; c=relaxed/simple;
-	bh=UACtSUDjlrYbM2OsKpTx/C30KQ6X2W0ULdkBPOMfxTU=;
+	s=arc-20240116; t=1781636458; c=relaxed/simple;
+	bh=cusyxUnnfP1VwGaXgOL3xtDts3rCwToNqsQgQK8DE6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odhAF37WU1ES5Uzu/B5ZEsQQJ6788Juelze5e/PldaOlT6G+jydNp9bvicWYeRwwlDi/vyWf1PkWZ2+dnHeLe5lPQFH2ar+nrFTSTamUPG7aqM6EBGC5O+eP7vU/rmft2eZ5WTcvrm9JFPXKhcxDGy2yMnUG3Fsd7MXBOROpG4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS1IVsva; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D3B1F000E9;
-	Tue, 16 Jun 2026 18:59:56 +0000 (UTC)
+	 MIME-Version; b=twRj4rWQxXMtu/S6PBBLL5D3V80szm0FD4/OR+Bme91IJhvYzJna9AqPxyTUtucH4E0ormA4X2LDpSpwMXB3YdBy8BggxWg5D6Xn9KwSmaLiFqDQhsu7qPIFJK6dH7wKzOoXL0OcbDH+qEwZRUR+CSoDpiS6Zp74j/KT3T1cA3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uahVYI/E; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A89D1F000E9;
+	Tue, 16 Jun 2026 19:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636397;
-	bh=PTQoYmxuADBnPi0ukGnrtDobUwlKsm8/DzoWH4FYV1o=;
+	s=korg; t=1781636456;
+	bh=So9XFKQAatxNd3AC1cI6U3QvApNi0O1kSK+DFcdQ0kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kS1IVsvaUF1dMcKz7bm/V5rT9+yyOHBJnh9lo/77qLIF4BqX4h9dFtfCSujPVMJZw
-	 vOwtxmA0kwtVcQMl/vdToQf0OG+2k9wRRG7SWgFUtWCuePI8R7sKtElpEz2qpFNFbi
-	 sxlorxJsUeDYQYYZKMkDdmSXXwKHzBoiS/Rzq83M=
+	b=uahVYI/E9A6B+MOuSgezIV0MRWiKFfqCioGPyMEM1JhvAlj4P34yTUiAcUCvZDEU2
+	 6rbKCTKtdGt5LfwXdyNjMmj57ARUn7NWPWujlIo+xB4RWz+Ne26Wt8Qmyj9E9CX4io
+	 xLtZpPz/oFaHV1H6ymBmfeIuFJhJLZRIqVvF65cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Longxuan Yu <ylong030@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 214/342] io_uring/poll: fix signed comparison in io_poll_get_ownership()
-Date: Tue, 16 Jun 2026 20:28:30 +0530
-Message-ID: <20260616145058.149589321@linuxfoundation.org>
+	Julian Anastasov <ja@ssi.bg>,
+	Florian Westphal <fw@strlen.de>,
+	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Subject: [PATCH 5.10 215/342] ipvs: skip ipv6 extension headers for csum checks
+Date: Tue, 16 Jun 2026 20:28:31 +0530
+Message-ID: <20260616145058.199021441@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
 References: <20260616145048.348037099@linuxfoundation.org>
@@ -73,8 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -84,17 +77,17 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266433-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:zcliangcn@gmail.com,m:ylong030@ucr.edu,m:n05ec@lzu.edu.cn,m:asml.silence@gmail.com,m:axboe@kernel.dk,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266445-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ja@ssi.bg,m:fw@strlen.de,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ssi.bg,strlen.de,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -102,65 +95,208 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,ucr.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,ssi.bg:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 63F51694A59
+X-Rspamd-Queue-Id: D0648694AD3
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longxuan Yu <ylong030@ucr.edu>
+From: Julian Anastasov <ja@ssi.bg>
 
-Commit 326941b22806cbf2df1fbfe902b7908b368cce42 usptream.
+commit 05cfe9863ef049d98141dc2969eefde72fb07625 upstream.
 
-io_poll_get_ownership() uses a signed comparison to check whether
-poll_refs has reached the threshold for the slowpath:
+Protocol checksum validation fails for IPv6 if there are extension
+headers before the protocol header. iph->len already contains its
+offset, so use it to fix the problem.
 
-    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
-
-atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
-(BIT(31)) is set in poll_refs, the value becomes negative in
-signed arithmetic, so the >= 128 comparison always evaluates to
-false and the slowpath is never taken.
-
-Fix this by casting the atomic_read() result to unsigned int
-before the comparison, so that the cancel flag is treated as a
-large positive value and correctly triggers the slowpath.
-
-Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 2906f66a5682 ("ipvs: SCTP Trasport Loadbalancing Support")
+Fixes: 0bbdd42b7efa ("IPVS: Extend protocol DNAT/SNAT and state handlers")
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_proto_sctp.c |   18 ++++++------------
+ net/netfilter/ipvs/ip_vs_proto_tcp.c  |   21 +++++++--------------
+ net/netfilter/ipvs/ip_vs_proto_udp.c  |   20 +++++++-------------
+ 3 files changed, 20 insertions(+), 39 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5378,7 +5378,7 @@ static bool io_poll_get_ownership_slowpa
-  */
- static inline bool io_poll_get_ownership(struct io_kiocb *req)
- {
--	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
-+	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
- 		return io_poll_get_ownership_slowpath(req);
- 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
+--- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+@@ -10,7 +10,8 @@
+ #include <net/ip_vs.h>
+ 
+ static int
+-sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++		unsigned int sctphoff);
+ 
+ static int
+ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -108,7 +109,7 @@ sctp_snat_handler(struct sk_buff *skb, s
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!sctp_csum_check(cp->af, skb, pp))
++		if (!sctp_csum_check(cp->af, skb, pp, sctphoff))
+ 			return 0;
+ 
+ 		/* Call application helper if needed */
+@@ -156,7 +157,7 @@ sctp_dnat_handler(struct sk_buff *skb, s
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!sctp_csum_check(cp->af, skb, pp))
++		if (!sctp_csum_check(cp->af, skb, pp, sctphoff))
+ 			return 0;
+ 
+ 		/* Call application helper if needed */
+@@ -185,19 +186,12 @@ sctp_dnat_handler(struct sk_buff *skb, s
  }
+ 
+ static int
+-sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++		unsigned int sctphoff)
+ {
+-	unsigned int sctphoff;
+ 	struct sctphdr *sh;
+ 	__le32 cmp, val;
+ 
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		sctphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		sctphoff = ip_hdrlen(skb);
+-
+ 	sh = (struct sctphdr *)(skb->data + sctphoff);
+ 	cmp = sh->checksum;
+ 	val = sctp_compute_cksum(skb, sctphoff);
+--- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
+@@ -29,7 +29,8 @@
+ #include <net/ip_vs.h>
+ 
+ static int
+-tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int tcphoff);
+ 
+ static int
+ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -166,7 +167,7 @@ tcp_snat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!tcp_csum_check(cp->af, skb, pp))
++		if (!tcp_csum_check(cp->af, skb, pp, tcphoff))
+ 			return 0;
+ 
+ 		/* Call application helper if needed */
+@@ -244,7 +245,7 @@ tcp_dnat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!tcp_csum_check(cp->af, skb, pp))
++		if (!tcp_csum_check(cp->af, skb, pp, tcphoff))
+ 			return 0;
+ 
+ 		/*
+@@ -301,17 +302,9 @@ tcp_dnat_handler(struct sk_buff *skb, st
+ 
+ 
+ static int
+-tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int tcphoff)
+ {
+-	unsigned int tcphoff;
+-
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		tcphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		tcphoff = ip_hdrlen(skb);
+-
+ 	switch (skb->ip_summed) {
+ 	case CHECKSUM_NONE:
+ 		skb->csum = skb_checksum(skb, tcphoff, skb->len - tcphoff, 0);
+@@ -322,7 +315,7 @@ tcp_csum_check(int af, struct sk_buff *s
+ 			if (csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 					    &ipv6_hdr(skb)->daddr,
+ 					    skb->len - tcphoff,
+-					    ipv6_hdr(skb)->nexthdr,
++					    IPPROTO_TCP,
+ 					    skb->csum)) {
+ 				IP_VS_DBG_RL_PKT(0, af, pp, skb, 0,
+ 						 "Failed checksum for");
+--- a/net/netfilter/ipvs/ip_vs_proto_udp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_udp.c
+@@ -25,7 +25,8 @@
+ #include <net/ip6_checksum.h>
+ 
+ static int
+-udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int udphoff);
+ 
+ static int
+ udp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -155,7 +156,7 @@ udp_snat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!udp_csum_check(cp->af, skb, pp))
++		if (!udp_csum_check(cp->af, skb, pp, udphoff))
+ 			return 0;
+ 
+ 		/*
+@@ -238,7 +239,7 @@ udp_dnat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!udp_csum_check(cp->af, skb, pp))
++		if (!udp_csum_check(cp->af, skb, pp, udphoff))
+ 			return 0;
+ 
+ 		/*
+@@ -297,17 +298,10 @@ udp_dnat_handler(struct sk_buff *skb, st
+ 
+ 
+ static int
+-udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int udphoff)
+ {
+ 	struct udphdr _udph, *uh;
+-	unsigned int udphoff;
+-
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		udphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		udphoff = ip_hdrlen(skb);
+ 
+ 	uh = skb_header_pointer(skb, udphoff, sizeof(_udph), &_udph);
+ 	if (uh == NULL)
+@@ -325,7 +319,7 @@ udp_csum_check(int af, struct sk_buff *s
+ 				if (csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 						    &ipv6_hdr(skb)->daddr,
+ 						    skb->len - udphoff,
+-						    ipv6_hdr(skb)->nexthdr,
++						    IPPROTO_UDP,
+ 						    skb->csum)) {
+ 					IP_VS_DBG_RL_PKT(0, af, pp, skb, 0,
+ 							 "Failed checksum for");
 
 
 
