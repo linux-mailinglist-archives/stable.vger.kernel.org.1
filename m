@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-265610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 6WnCCzeNMWrBmQUAu9opvQ
-	(envelope-from <stable+bounces-265610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:51 +0200
+	id oMmSMdl7MWoakgUAu9opvQ
+	(envelope-from <stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9630D6938DA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:51:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDC8692471
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=POUkT8Ho;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265610-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265610-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tWP3Gf+P;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264548-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4019130E3CF3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:47:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 93CFC305EDD7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAE13D091A;
-	Tue, 16 Jun 2026 17:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CF546AF02;
+	Tue, 16 Jun 2026 16:15:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C664169AD2;
-	Tue, 16 Jun 2026 17:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F0466B77;
+	Tue, 16 Jun 2026 16:15:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632073; cv=none; b=NIjTy0fuWfh6GsGMzREkUImSLPTBrO4LtWDdGjFv1Q4yU6XOpgS4YCw3zIinPZjICUr5llCdnh0kLHaZlq5WtMYJmJOCrjCjurF/LSm80go4jKcWVnZ+QhVLpv+TZWcT54+1BDbVFZRoe9C1VhsBiB0iyhKsrj2PJ3B9T/H0OZ4=
+	t=1781626505; cv=none; b=scgFVcOYM/OoZqzO05tR5LRawsc1r4a2axv7d2jFfE3xlfdurC2zjNBlTZ+7EiyCS4cY+xjW6QLfwfggZca68PFzwsbLj7cQid4/iLx8KguM9O/Kvds7RtoEWcNJj3MhvHC0VjnF2tOVI/1VXGc15kLACnzDeoz6dEzN5EF59IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632073; c=relaxed/simple;
-	bh=HDutT59nQYV7fK70uZ3TunaZ8zl1933V49I5DdNqn+4=;
+	s=arc-20240116; t=1781626505; c=relaxed/simple;
+	bh=ukjWm/nKZ710i3LG63NU81bvSy+RbcYtikEdGxrKG7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sC4ZPH3onxz8pVPdjT8qXeN4VXje1Oy6lmei067KXJs3pKls6LlhF+msxv8gA1gfmmb3kKbzcn2j1FI4UNuLLBJMUo3yzFFYOe3DB0uODcwPJ4lqJ3uPSmAjY26n6NtoxlDJ3uMMwbqXYzGcellgRUO6epgKpfVSTld7RPcOh9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POUkT8Ho; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2360F1F000E9;
-	Tue, 16 Jun 2026 17:47:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sOJuaIPuGKw7Lq4b8xOv6Rxlw3mMfMc61zma71kXRIs9QI6cJlRFbOypmzelOYqxFXYU33oI/HMU6vzyq2VpW5rUa++h1xIugxIpwjHBfOLpAJISxYJi8pAfIhtlhqmaVZG//ZCNeSAt4DhQYUujN2iITB5h8dfZ06qT0PTlFxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWP3Gf+P; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8208E1F000E9;
+	Tue, 16 Jun 2026 16:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632072;
-	bh=0tgnZ98HJj2hO7LhUxuTEnMFu8fktTxLzY+B2JMyqUg=;
+	s=korg; t=1781626504;
+	bh=9MWXL/lCT2QdEQVJxJOSkfdi4H8t+rkcZ3eVCj7cusQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=POUkT8HoBu8j80y8D3aQuFEfqpCUFHlzBeGQUfs+9pDUUcxAB5VtoGETskPcfNr9R
-	 GDRGy3S6or2ulIVxpxUj7/lR7v/h4MR3akg+3+hB3b/LiSax4e6nTuFAwTI47+m2Em
-	 Y49x1RJQuGgu8NOThww2aAC2tGmF3yzj45wcvgxw=
+	b=tWP3Gf+Per2AIYrQ4MBsouOB8pVyeWMJEvDkSapNFLKFM+tju4a4q0WnWvQ8YS3Yh
+	 Qe2AaLXZCyG8NvOV/z+8UA/fech4+7gZKrI3KtZpwMviNTRYiSqTOoyyFXq1++bxDf
+	 7Plixjg0g3HBLpiCpKVkhyLYPa9b+JTGUhwcuA9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeyu WANG <zeyu.thomas.wang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 298/522] Input: atkbd - add DMI quirk for Lenovo Yoga Air 14 (83QK)
+	Robert Marko <robert.marko@sartura.hr>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Jo=C3=ABl=20Esponde?= <joel.esponde@leroy-agon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 007/261] net: phy: micrel: fix LAN8814 QSGMII soft reset
 Date: Tue, 16 Jun 2026 20:27:25 +0530
-Message-ID: <20260616145139.851298681@linuxfoundation.org>
+Message-ID: <20260616145045.369235953@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +66,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-264548-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265610-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zeyu.thomas.wang@gmail.com,m:dmitry.torokhov@gmail.com,m:zeyuthomaswang@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:robert.marko@sartura.hr,m:kuba@kernel.org,m:joel.esponde@leroy-agon.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,sartura.hr:email,leroy-agon.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9630D6938DA
+X-Rspamd-Queue-Id: CCDC8692471
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeyu WANG <zeyu.thomas.wang@gmail.com>
+From: Robert Marko <robert.marko@sartura.hr>
 
-commit ad0979fe053e9f2db82da82188256ef6eb41095a upstream.
+[ Upstream commit e027c218c482c6a0ae1948129ccda3b0a2033368 ]
 
-The Lenovo Yoga Air 14 (83QK) laptop keyboard becomes unresponsive
-after the standard atkbd init sequence. Controlled testing on the
-actual hardware shows the F5 (ATKBD_CMD_RESET_DIS / deactivate)
-command specifically corrupts the EC state, causing zero IRQ1
-interrupts after init.
+LAN8814 QSGMII soft reset was moved into the probe function to avoid
+triggering it for each of 4 PHY-s in the package.
 
-Skipping only the deactivate command (while keeping F4 ENABLE)
-resolves the issue completely: both keystroke input and CapsLock
-LED toggle work correctly. The reverse test - skipping only F4
-while keeping F5 - makes the problem worse (zero keystroke
-interrupts), confirming F5 is the sole culprit.
+However, that broke QSGMII link between the MAC and PHY on most LAN8814
+PHY-s, specificaly for us on the Microchip LAN969x switch.
+Reading the QSGMII status registers it was visible that lanes were only
+partially synced.
 
-Add a DMI quirk entry for LENOVO/83QK using the existing
-atkbd_deactivate_fixup callback, consistent with the existing
-entries for LG Electronics and HONOR FMB-P that address the
-same EC F5 deactivate issue.
+It looks like the reset timing is crucial, so lets move the reset back
+into the .config_init function but guard it with phy_package_init_once()
+to avoid it being triggered on each of 4 PHY-s in the package.
+Change the probe function to use phy_package_probe_once() for coma and PtP
+setup.
 
-Signed-off-by: Zeyu WANG <zeyu.thomas.wang@gmail.com>
-Link: https://patch.msgid.link/20260602170909.14725-1-zeyu.thomas.wang@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 347bf638d39f ("net: phy: micrel: lan8814 fix reset of the QSGMII interface")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Link: https://patch.msgid.link/20260428134138.1741253-1-robert.marko@sartura.hr
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Joël Esponde <joel.esponde@leroy-agon.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/atkbd.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/phy/micrel.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -1924,6 +1924,14 @@ static const struct dmi_system_id atkbd_
- 		},
- 		.callback = atkbd_deactivate_fixup,
- 	},
-+	{
-+		/* Lenovo Yoga Air 14 (83QK) */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83QK"),
-+		},
-+		.callback = atkbd_deactivate_fixup,
-+	},
- 	{ }
- };
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index f0c068075322f9..2dca6e8a5fce5c 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4093,6 +4093,13 @@ static int lan8814_config_init(struct phy_device *phydev)
+ {
+ 	struct kszphy_priv *lan8814 = phydev->priv;
  
++	if (phy_package_init_once(phydev))
++		/* Reset the PHY */
++		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
++				       LAN8814_QSGMII_SOFT_RESET,
++				       LAN8814_QSGMII_SOFT_RESET_BIT,
++				       LAN8814_QSGMII_SOFT_RESET_BIT);
++
+ 	/* Disable ANEG with QSGMII PCS Host side */
+ 	lanphy_modify_page_reg(phydev, LAN8814_PAGE_PORT_REGS,
+ 			       LAN8814_QSGMII_PCS1G_ANEG_CONFIG,
+@@ -4177,13 +4184,7 @@ static int lan8814_probe(struct phy_device *phydev)
+ 	devm_phy_package_join(&phydev->mdio.dev, phydev,
+ 			      addr, sizeof(struct lan8814_shared_priv));
+ 
+-	if (phy_package_init_once(phydev)) {
+-		/* Reset the PHY */
+-		lanphy_modify_page_reg(phydev, LAN8814_PAGE_COMMON_REGS,
+-				       LAN8814_QSGMII_SOFT_RESET,
+-				       LAN8814_QSGMII_SOFT_RESET_BIT,
+-				       LAN8814_QSGMII_SOFT_RESET_BIT);
+-
++	if (phy_package_probe_once(phydev)) {
+ 		err = lan8814_release_coma_mode(phydev);
+ 		if (err)
+ 			return err;
+-- 
+2.53.0
+
 
 
 
