@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id guKXAF1tMWo+jAUAu9opvQ
-	(envelope-from <stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:57 +0200
+	id XQxFHSiAMWr7kwUAu9opvQ
+	(envelope-from <stable+bounces-264940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CE7691309
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:56 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146AC692966
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="G/GnQisI";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263958-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OFumuhSe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264940-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264940-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D15F30696DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:23:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 67E30305CB44
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988C844105C;
-	Tue, 16 Jun 2026 15:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3752347AF67;
+	Tue, 16 Jun 2026 16:51:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659FA34D90C;
-	Tue, 16 Jun 2026 15:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031404502F;
+	Tue, 16 Jun 2026 16:51:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623393; cv=none; b=XFXqp7t/mVO18owqd5LUt/XWXMOhoKw9lxhulwascamlVzW1Q9g0dWaoEI6CQiLra8Fuxaovd5gFz3EtmcO25F5Zs0IYys99gm0WY60PjuXwjofszDgxGg3e255RG+Zz6EZRQyJhQgukmTBHcPfHb1N+IeAJ/iWOvn/qhi4QTBs=
+	t=1781628689; cv=none; b=r1MCNOMWdXizGzzT6/8KCrQgrA4njyVk+S5RFXB7aIqj6zh+fFQMH3m5yjR165fWm8mIQwGLI3CD89dZ7YG5hti4F5HHZH5fJtROyjjLV/VkIpC3sXrOcLj71DZFvAFufMN8cb79LHlI8oUzSVyIL9DHojWdA8YGorzn6X5MuwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623393; c=relaxed/simple;
-	bh=SfRJqp6S9mFZlLbkshzXM7H2wt2OAQTptudOvP9KnfA=;
+	s=arc-20240116; t=1781628689; c=relaxed/simple;
+	bh=Tpe2QxTIPqGaMPj0jdiMXVbBSy91IFYilEsRS7sro3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KB3/3mrni7R9AROj7XWQnCrRRrMPjw3A+gbK7M2pU/EqOsJHLUTAePmHHrsrTkxaNvOP93ReprcZIKFSLWXfg+Rpxvm565qSt7MvesU7hVorav+eQmWYUATVYynC0A053/VzS2FZ3E7ueyCqwa+UYG6yoB5ESHFJEIFkmQnSqmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/GnQisI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ADE51F000E9;
-	Tue, 16 Jun 2026 15:23:10 +0000 (UTC)
+	 MIME-Version; b=iTeKTkasydAYhkue92ByCTYZqclOV4aaxao/vL8tbl2qMFGQmk+mI6a4y5JO4KcRuFbqTc6wLUxfyT/j+mQVuLzsIAx38nbLmh+oRFN328ZK/DK/gHwykaCLoB7ZL42p00WourR1z6iLPoZbj3bRUWeJDsBSS/zdYAzh+8wi8RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFumuhSe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFBE61F000E9;
+	Tue, 16 Jun 2026 16:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623392;
-	bh=VkWYeqpLE7G8Qu2CEvw2tHBqdt60UBSzxZXFgtD7iAI=;
+	s=korg; t=1781628687;
+	bh=mnZAQ1QcX6PGLgJ59rgrClcH4BOLE/jjflLjGsgdp9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G/GnQisI/72CbMhDeR2AF9xMb42NtRsdPNGrmHfnOti0yw+z1656dwpRRTHr84Vzc
-	 4kM5MwVGv7s/h+mOQaQVMbeexNK1zW24awRtFVSQWTLm7SWDnXNgqyn6awXQpchZCw
-	 MwUKjvqDvwJgCfWvd14LBB1TSOlFz7rstLlVjPvc=
+	b=OFumuhSepmKX+KaQPeawnccC4C6F8HEudqZjM+SD10B+pzeEBvBiSmpAWdbhhCvXk
+	 E3U8OQ8FbWDpj32y8X1LZ8vvYQZwahsgOg49nHmEEoIKYbEHeWvlw25057XJSEJkDn
+	 u26fcX7FjyPqswIH/qGA1pbcx8bC9OsUIW/qIKQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 138/378] ip6_vti: fix incorrect tunnel matching in vti6_tnl_lookup()
+	Qbeliw Tanaka <q.tanaka@gmx.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 142/452] Input: xpad - add "Nova 2 Lite" from GameSir
 Date: Tue, 16 Jun 2026 20:26:09 +0530
-Message-ID: <20260616145117.549369528@linuxfoundation.org>
+Message-ID: <20260616145125.169800965@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263958-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:steffen.klassert@secunet.com,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264940-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:q.tanaka@gmx.com,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,6wind.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,gmx.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73CE7691309
+X-Rspamd-Queue-Id: 146AC692966
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Qbeliw Tanaka <q.tanaka@gmx.com>
 
-[ Upstream commit a5c0359f5cbc51a2e2b114d6041e0f3c73f903e9 ]
+commit 1f6ac0f8441c48c4cc250141e1da8486c13512ba upstream.
 
-In vti6_tnl_lookup(), when an exact match for a tunnel fails,
-the code falls back to searching for wildcard tunnels:
+Add support for the gamepad "Nova 2 Lite" from GameSir, compatible with
+the Xbox 360 gamepad.
 
-- Tunnels matching the packet's local address, with any remote address
-  wildcard remote).
-
-- Tunnels matching the packet's remote address, with any local address
-  (wildcard local).
-
-However, vti6 stores all these different types of tunnels in the same
-hash table (ip6n->tnls_r_l) prone to hash collisions.
-
-The bug is that the fallback search loops in vti6_tnl_lookup() were
-missing checks to ensure that the candidate tunnel actually has
-a wildcard address.
-
-Fixes: fbe68ee87522 ("vti6: Add a lookup method for tunnels with wildcard endpoints.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20260608164613.933023-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Qbeliw Tanaka <q.tanaka@gmx.com>
+Link: https://patch.msgid.link/20260429.162040.930225048583399359.q.tanaka@gmx.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_vti.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index d2b74a6f2cf62d..d871cab6938d36 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -106,6 +106,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
- 	hash = HASH(&any, local);
- 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
- 		if (ipv6_addr_equal(local, &t->parms.laddr) &&
-+		    ipv6_addr_any(&t->parms.raddr) &&
- 		    (t->dev->flags & IFF_UP))
- 			return t;
- 	}
-@@ -113,6 +114,7 @@ vti6_tnl_lookup(struct net *net, const struct in6_addr *remote,
- 	hash = HASH(remote, &any);
- 	for_each_vti6_tunnel_rcu(ip6n->tnls_r_l[hash]) {
- 		if (ipv6_addr_equal(remote, &t->parms.raddr) &&
-+		    ipv6_addr_any(&t->parms.laddr) &&
- 		    (t->dev->flags & IFF_UP))
- 			return t;
- 	}
--- 
-2.53.0
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -414,6 +414,7 @@ static const struct xpad_device {
+ 	{ 0x3285, 0x0662, "Nacon Revolution5 Pro", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0663, "Nacon Evol-X", 0, XTYPE_XBOXONE },
+ 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
++	{ 0x3537, 0x100f, "GameSir Nova 2 Lite", 0, XTYPE_XBOX360 },
+ 	{ 0x3537, 0x1010, "GameSir G7 SE", 0, XTYPE_XBOXONE },
+ 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
+ 	{ 0x413d, 0x2104, "Black Shark Green Ghost Gamepad", 0, XTYPE_XBOX360 },
 
 
 
