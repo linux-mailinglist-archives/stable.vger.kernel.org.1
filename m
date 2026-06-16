@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cHuuC9B4MWrakAUAu9opvQ
-	(envelope-from <stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:48 +0200
+	id KpNjH1F1MWpVjwUAu9opvQ
+	(envelope-from <stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DE36920CA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C51691BFE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LBgXcK6M;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264653-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Eq+65mVC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264370-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5094C30322D4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:24:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25D0E3253DCF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903CD46AF14;
-	Tue, 16 Jun 2026 16:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5BB46AF10;
+	Tue, 16 Jun 2026 15:58:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF323BFE40;
-	Tue, 16 Jun 2026 16:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EE04534AE;
+	Tue, 16 Jun 2026 15:58:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627085; cv=none; b=Yz/eA5vzjNPX3dNdrtqZU+kPm06SochE91qyetprKUiMIizXc4Zn/YtkCT2Rne+j9LTOdsm/XSeYSbkKTjRTiooxshoCOdvQ85W/pFAfgqaFSXj/EnUwcPlqdJnYpvoA6QiqrAY2El03F6AzejN/n91VvpLmY9gD+e9Q45dn73Y=
+	t=1781625521; cv=none; b=uRfckZm7Rj5gYqbTunCbYEc4Mm8eHRHv6Bi9Zq+I/3ZduNhu4hUdz6R/SvxaW/VrUKM1djO9LNNlVO7Ht5rPUFHEiOJzLV3KH6JJDz89gxzN62MeKdsetCleKII1Ga1CLodDUSyRy7g18VMmA9OJ12qj1MM2VER4EdvgmV2yyxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627085; c=relaxed/simple;
-	bh=n/7yb4kxT4PU06RjwsiEzsTZndNP/dP38s0BlTc+f2c=;
+	s=arc-20240116; t=1781625521; c=relaxed/simple;
+	bh=252OxGtUWpKNBSQAQwvqiNKtpkC7ADoAmyZvufWugZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7FwZTynLq4qrzNsSMFV5go3wOrFL0its58NxdUUGOE8BpdbWHVF2pW01ZaVPV3DUuFvVgXsw29C+1nKH2euOUrp/z23IJFQqgq8CI6PL41pTg+Fin8YQAHErljd/H9C+cRDPohYxc0puz7K0DAmsSJpTWqqE4fT1jf52FMtFMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBgXcK6M; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1549D1F000E9;
-	Tue, 16 Jun 2026 16:24:42 +0000 (UTC)
+	 MIME-Version; b=djOsQKqMUFf5Nr3wiVlCVnk7fW722rnVxlLGwav3Uu9jTTCXm7eZYuUTC7D2uNJCtyOzKQ7qvKMkrk6vuI0vSHJLPHAovgwfsidddsBcO5c0u65DI0LN7YT46llbiE63nXudphIYWGXk1VsgvG8OfK8FSSqlOYACtnDPrUj+W10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eq+65mVC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EDE1F000E9;
+	Tue, 16 Jun 2026 15:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627084;
-	bh=IvSBqEygOxCbjwT2KkFbrpbU+qmOq7YvUDma1Z+37bI=;
+	s=korg; t=1781625519;
+	bh=aQqnGQUIAoayokgFF+52Uk8MIFG6V6j4BlwDZBUi/FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LBgXcK6MQ04gOsihUzUpjlkiznWF6rttBup3D2MblanntNUnojrs75+3dSXJrW3k+
-	 g5EkGH/jnLJHYVwiBZ/3lRWUhQrAXs0RcRnI7qIUz2eP3kfHEKXJfxr1UERuVGFCIH
-	 aO0ffQ4J18GhMdKwQrJAt3ZKzMV8pbPYBnYduvI8=
+	b=Eq+65mVCeScebH+Lqo94ZSgNUiCPDz59d31NTZuPNsuJJY50vl2JIVbqYEuKqAZ1L
+	 cOFKa7tUGt0dISEoMomVoGQzWT/Pj3z40ddF2wejS2rScfT/tMPuzQVtrFFwZp5/w2
+	 3pcTNz8K4e/vj4Ix/XqMzAke7i/zCph0uhC7ccEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 117/261] drm/virtio: Fix driver removal with disabled KMS
+	Ralf Jung <post@ralfj.de>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 159/325] rust: x86: support Rust >= 1.98.0 target spec
 Date: Tue, 16 Jun 2026 20:29:15 +0530
-Message-ID: <20260616145050.480694602@linuxfoundation.org>
+Message-ID: <20260616145105.677364917@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264653-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264370-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.osipenko@collabora.com,m:ryasuoka@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:post@ralfj.de,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,52 +98,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,collabora.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,ralfj.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1DE36920CA
+X-Rspamd-Queue-Id: C9C51691BFE
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit f329e8325e054bd6d84d10904f8dd51137281b92 ]
+commit 905b06d32a52afe32fcf5f30cf298c9ea6359f11 upstream.
 
-DRM atomic and modesetting aren't initialized if virtio-gpu driver built
-with disabled KMS, leading to access of uninitialized data on driver
-removal/unbinding and crashing kernel. Fix it by skipping shutting down
-atomic core with unavailable KMS.
+Starting with Rust 1.98.0 (expected 2026-08-20), the target spec will not
+support `x86-softfloat` anymore [1]. Instead, `softfloat` should be used,
+which is an alias. Otherwise, one gets:
 
-Fixes: 72122c69d717 ("drm/virtio: Add option to disable KMS support")
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Link: https://patch.msgid.link/20260604122743.13383-1-dmitry.osipenko@collabora.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    error: error loading target specification: rustc-abi: invalid rustc abi: 'x86-softfloat'. allowed values: 'x86-sse2', 'softfloat' at line 3 column 32
+      |
+      = help: run `rustc --print target-list` for a list of built-in targets
+
+Thus conditionally use one or the other depending on the version.
+
+The alias has existed since Rust 1.95.0 (released 2026-04-16) [2], but
+use the newer version instead to avoid changing how the build works for
+existing compilers, at least until more testing takes place.
+
+Cc: Ralf Jung <post@ralfj.de>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/157151 [1]
+Link: https://github.com/rust-lang/rust/pull/151154 [2]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260530114925.260754-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/generate_rust_target.rs |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index e5a2665e50eac4..44d99e89bb9b65 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -118,7 +118,10 @@ static void virtio_gpu_remove(struct virtio_device *vdev)
- 	struct drm_device *dev = vdev->priv;
- 
- 	drm_dev_unplug(dev);
--	drm_atomic_helper_shutdown(dev);
-+
-+	if (drm_core_check_feature(dev, DRIVER_ATOMIC))
-+		drm_atomic_helper_shutdown(dev);
-+
- 	virtio_gpu_deinit(dev);
- 	drm_dev_put(dev);
- }
--- 
-2.53.0
-
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -196,7 +196,9 @@ fn main() {
+         }
+     } else if cfg.has("X86_64") {
+         ts.push("arch", "x86_64");
+-        if cfg.rustc_version_atleast(1, 86, 0) {
++        if cfg.rustc_version_atleast(1, 98, 0) {
++            ts.push("rustc-abi", "softfloat");
++        } else if cfg.rustc_version_atleast(1, 86, 0) {
+             ts.push("rustc-abi", "x86-softfloat");
+         }
+         ts.push(
+@@ -236,7 +238,9 @@ fn main() {
+             panic!("32-bit x86 only works under UML");
+         }
+         ts.push("arch", "x86");
+-        if cfg.rustc_version_atleast(1, 86, 0) {
++        if cfg.rustc_version_atleast(1, 98, 0) {
++            ts.push("rustc-abi", "softfloat");
++        } else if cfg.rustc_version_atleast(1, 86, 0) {
+             ts.push("rustc-abi", "x86-softfloat");
+         }
+         ts.push(
 
 
 
