@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3SLtBIltMWpOjAUAu9opvQ
-	(envelope-from <stable+bounces-264050-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:41 +0200
+	id 9BO4Er+cMWrXoAUAu9opvQ
+	(envelope-from <stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:07 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E77691341
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C5D6949D2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BsdwAKib;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264050-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264050-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cLE67Xa6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266352-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B08DB301877D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:31:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7A713276DF7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF1244105C;
-	Tue, 16 Jun 2026 15:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9536F47CC96;
+	Tue, 16 Jun 2026 18:52:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EE443D504;
-	Tue, 16 Jun 2026 15:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A01547D93F;
+	Tue, 16 Jun 2026 18:52:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623860; cv=none; b=jjtUPlN65LHmpCYVwIt/FQS+loYgudUrphVdJfkTrBuBpO4zFR7kpyFS788hosNrSnMhdeTc3grCc1MiEKyqi63Yh3ALjlTHadKdirVCb2yhJsh8diPKf/5b9rZzcT7zwyle3cp2W6QhsSfgK3ofKVOM1ZkcHa1q7ZYs7g8DAHE=
+	t=1781635971; cv=none; b=twdvD9+kLt3afSMyQfEQSG5GWzfuIPv9EzL/he0PprbJNYhGEsYM2BaCzUHj4jSZZd/xQCxTDUK5WMxFScAnbQGDNNHXsdU5O9EEKKMZM7Lapde/ItH98GBm0hO0b8mENtBYbfulam0eTJ9L6tUkF+h9fIaW4O7woT0sbCTtGn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623860; c=relaxed/simple;
-	bh=MYxyCFKfwjPeP5M5WfUFM+IEnU+UrRKjJmd6d59vtPo=;
+	s=arc-20240116; t=1781635971; c=relaxed/simple;
+	bh=DTqRYDS38bGvqyy3O5GH35cpuxmrX+AFEHrRX5+6h1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WOs6WS/1okd5NmjmKRsyPZuMH//E3y1Bzo9AUMMtLR2Ww2DNKDAChNaqScoZNBjgXqa4F+YUkq/ec+6we3tV1zmHxdjOx0rFturZpEa5JtqX86vKuyc11Vw7YzGdwLTpTEt4Qq0FJ8bOOMWmmuSDneS0Ym9QuT5qfU/9qEevKus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsdwAKib; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7B51F000E9;
-	Tue, 16 Jun 2026 15:30:58 +0000 (UTC)
+	 MIME-Version; b=i0kY/urB7V0X7vlp5I1dsDOkU0i8RL01/YV9FlMKhwwIKplxJNy27LzlFN5+VScpHkP6yr2t6PmTgx4FnXI8tmHJYMb/fruUC9yUYwUjxqJ2i6B5ZBvtmjcJfpZNETLmMW2xxtn5IpUq7RZxrUhQQK/hopgkzCw+AKKw9gs7qQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLE67Xa6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336F41F000E9;
+	Tue, 16 Jun 2026 18:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623859;
-	bh=kiM+mOE/zcE0fm++HUR0TUNCJbVeQX+Kux64e7lU8II=;
+	s=korg; t=1781635970;
+	bh=w3GrJji58w6ubq23/WYoVnXSZIKeGYRQTVvunpPXdEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BsdwAKibKcYfaKjvGgoDCMxp2fuZCdJHCBesKjrxGOMOaCjJPvCVqnj7+WaEk612U
-	 WK94x0fohiu3Anj3eDqmlsPM4IPJvrRAa1vdQxoNnOF4HizPKNaKVMQ0sdLRqe1t2Q
-	 sKFAO4umhYfYLjkicCRI8QmQJqAT+JwMg/ZI+k8Q=
+	b=cLE67Xa6O8w8IoHR/r7Ej6AlwTpOLxgBjZoe0MDV2g8F3iZgQn0YsYQrP2nr7aIy5
+	 EQtaBBzinlkKxpMjvTzC14zK1lyYT/6g3Poi9Paq8E56YXB2PdvfgdlpFnIt65Uxxq
+	 DpN4VZuS4rrv+aBn6m7iGBMMI0xXKnhWdCwXrvHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@meta.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 7.0 215/378] io_uring/net: inherit IORING_CQE_F_BUF_MORE across bundle recv retries
+	syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,
+	Aleksandr Nogikh <nogikh@google.com>,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 150/342] signal: clear JOBCTL_PENDING_MASK for caller in zap_other_threads()
 Date: Tue, 16 Jun 2026 20:27:26 +0530
-Message-ID: <20260616145121.656894506@linuxfoundation.org>
+Message-ID: <20260616145055.156750706@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +66,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cleger@meta.com,m:axboe@kernel.dk,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264050-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266352-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com,m:nogikh@google.com,m:brauner@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable,b109633ea805cac54a61];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 62E77691341
+X-Rspamd-Queue-Id: 49C5D6949D2
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@meta.com>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-commit ed46f39c47eb5530a9c161481a2080d3a869cfaf upstream.
+[ Upstream commit 90918794a4e2c3b440f8fcf3847765a8b1d81b25 ]
 
-When a bundle recv retries inside io_recv_finish(), the merge logic OR
-the saved cflags from the previous iteration with the cflags returned by
-the new iteration:
-  cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+When a multi-threaded process receives a stop signal (e.g., SIGSTOP),
+do_signal_stop() sets JOBCTL_STOP_PENDING and JOBCTL_STOP_CONSUME on all
+threads and sets signal->group_stop_count to the number of threads. If
+one of the threads concurrently calls execve(), de_thread() invokes
+zap_other_threads() to kill all other threads. zap_other_threads()
+aborts the pending group stop by resetting signal->group_stop_count to 0
+and clears the JOBCTL_PENDING_MASK for all other threads. However, it
+fails to clear the job control flags for the calling thread.
 
-Bits listed in CQE_F_MASK are inherited from the new iteration, and all
-other bits (notably IORING_CQE_F_BUFFER and the buffer ID) come from the
-saved cflags. Before this change CQE_F_MASK covered only
-IORING_CQE_F_SOCK_NONEMPTY and IORING_CQE_F_MORE.
+When execve() completes, the calling thread returns to user mode and
+checks for pending signals. Seeing the stale JOBCTL_STOP_PENDING flag,
+it calls do_signal_stop(), which invokes task_participate_group_stop().
+Since JOBCTL_STOP_CONSUME is still set, it attempts to decrement the
+already-zero signal->group_stop_count, triggering a warning:
 
-When using provided buffer rings (IOU_PBUF_RING_INC) with incremental
-mode, and bundle recv, io_kbuf_inc_commit() can leave the head ring
-entry partially consumed, __io_put_kbufs() then sets
-IORING_CQE_F_BUF_MORE on the returned cflags so userspace knows the
-buffer ID will be reused for subsequent completions.
+sig->group_stop_count == 0
+WARNING: CPU: 1 PID: 6475 at kernel/signal.c:373
+task_participate_group_stop+0x215/0x2d0
+Call Trace:
+ <TASK>
+ do_signal_stop+0x3be/0x5c0 kernel/signal.c:2619
+ get_signal+0xa8c/0x1330 kernel/signal.c:2884
+ arch_do_signal_or_restart+0xbc/0x840 arch/x86/kernel/signal.c:337
+ exit_to_user_mode_loop+0x8c/0x4d0 kernel/entry/common.c:98
+ do_syscall_64+0x33e/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Because IORING_CQE_F_BUF_MORE was not in CQE_F_MASK, the merge above
-silently dropped it whenever the final retry iteration partially
-consumed the buffer, and the subsequent req->cqe.flags = cflags &
-~CQE_F_MASK save would have left a stale IORING_CQE_F_BUF_MORE in the
-carried-over cflags had one been present. Userspace would then
-wrongfully advance it ring head past an entry the kernel still uses.
+Fix this race condition by clearing the JOBCTL_PENDING_MASK for the
+calling thread in zap_other_threads(), ensuring it does not retain any
+stale job control state after the thread group is destroyed. This aligns
+with other functions that tear down a thread group and abort group
+stops, such as zap_process() and complete_signal(), which correctly
+clear these flags for all threads including the current one.
 
-Add IORING_CQE_F_BUF_MORE to CQE_F_MASK so it is both inherited from the
-new iteration into the user-visible CQE and stripped from the saved
-cflags between iterations.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Clément Léger <cleger@meta.com>
-Assisted-by: Claude:claude-opus-4.6
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://patch.msgid.link/20260604160715.2482972-1-cleger@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39efa3ef3a37 ("signal: Use GROUP_STOP_PENDING to stop once for a single group stop")
+Assisted-by: Gemini:gemini-3.1-pro-preview Gemini:gemini-3-flash-preview syzbot
+Reported-by: syzbot+b109633ea805cac54a61@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b109633ea805cac54a61
+Link: https://syzkaller.appspot.com/ai_job?id=d70208cc-862b-4fe3-bf02-3031e10cd0b3
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Link: https://patch.msgid.link/20260521142240.2973022-1-nogikh@google.com
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/signal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -838,7 +838,8 @@ int io_recvmsg_prep(struct io_kiocb *req
- }
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 7a9af6d4f2b01e..463b798651b6a6 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1351,6 +1351,7 @@ int zap_other_threads(struct task_struct *p)
+ 	int count = 0;
  
- /* bits to clear in old and inherit in new cflags on bundle retry */
--#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE)
-+#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE|\
-+			 IORING_CQE_F_BUF_MORE)
+ 	p->signal->group_stop_count = 0;
++	task_clear_jobctl_pending(p, JOBCTL_PENDING_MASK);
  
- /*
-  * Finishes io_recv and io_recvmsg.
+ 	while_each_thread(p, t) {
+ 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
+-- 
+2.53.0
+
 
 
 
