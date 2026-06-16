@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 60fyI3GLMWrzmAUAu9opvQ
-	(envelope-from <stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:17 +0200
+	id 9afcLyKaMWrynwUAu9opvQ
+	(envelope-from <stable+bounces-266283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97F16936D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523F2694775
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:46:58 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XkLzbaYT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265494-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HCpviRGY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266283-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266283-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C09BE31F184B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0A583035BB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B924611CF;
-	Tue, 16 Jun 2026 17:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DCA3D75CE;
+	Tue, 16 Jun 2026 18:46:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D409477E57;
-	Tue, 16 Jun 2026 17:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F2A34F492;
+	Tue, 16 Jun 2026 18:46:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631489; cv=none; b=JKF/uty8xkqixLtxC4ZqxeEzNWDhLnIwS5jVN4WpkaF2L2iUXcEk/NzoE4TXS/ONKlOlLYz+GQcvSxYZDCc9wDiPnGP6UBacb1zGXapdpVghmYAZAfTTBgGaWc2w3DM0IY04llI1pyUwrZQ671bw2DTzSt1+KjxMrz2KTkoLdGw=
+	t=1781635616; cv=none; b=j2TfYBiHwgDmi8eH3HBIpFV0xZAiQsF+MJPV0uSQlpRlgTLESwiSudxg0wXcnhSkEOI0xKu3oDhuqSiV/PMKdjMK6/nTW1Udd5qjfJx2xRpgAjKqnoFbCOMOSYeQyeuL8V+oEhl+i9S618QhuDiRrbGZZA3AkDLLCyjJas3OKIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631489; c=relaxed/simple;
-	bh=q8cv5hlTHUHfxjehT52Dcsgn1VR2Z85PvTH6x3n7BQc=;
+	s=arc-20240116; t=1781635616; c=relaxed/simple;
+	bh=ev7CWXUvSN8wlUAqHO3G5z9qT2VcETY4/ielrQMuzZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twYEoIsSzXVziHh5dbNyMOAfFSsoI9bO9cRVQ3FUujciXP+fXy2pcinm38wokwVWE2szTdLk4HDIcEIf8rk0RPRiwy1ExY+libzKAEuLRw8HvaLgkXD4eDO+Q3Ahw4FSH2XalfIDUifTho+rISIRE2llQxQV/QIDkHIjlf+Hx8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkLzbaYT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E861F000E9;
-	Tue, 16 Jun 2026 17:38:07 +0000 (UTC)
+	 MIME-Version; b=RhoeY+uHK8GNnRcs2mIqoRBJ6mklCtmOqLGjpAMOr+YCDbgVWjcd0SPGBQRWbtvL4QUXRznyDrXnRwknmC8f/EugG6QA8db8TlaiX3pn+P05JxPJmdOqziGSl7b4iQEkq49tygNwolxdQx+NBsOWHHXutqvvI0dR73F2zfV/LxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCpviRGY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF8E1F000E9;
+	Tue, 16 Jun 2026 18:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631488;
-	bh=sDjKQP31WqEyUZkZyRr7RA4esweLiyqaBAYRv7pVgss=;
+	s=korg; t=1781635615;
+	bh=4dATsjdGxH8OlcjuEHXSSz7u5oF/Nw94QGkVYz5oZ4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XkLzbaYTa7qi2OnDFclQGJocnjkapPUMSvLNttckn/SdutVVZqSpnQhG90xKvOlAB
-	 NUpShQyp+SXbtnGzgyZJD+RkF6k/DBViBjo717ULdFQPHioAXC9nlvdT4V+Gu4mh6F
-	 pK6Hc6KUvzaYGmGKtAScDhrR/1pvQlQJyUAf9jjE=
+	b=HCpviRGYwKZqJEIB98kI8D33TBBdVA2gXyyGDUYJ6wSZen0NG9H2KAMBqIz14qWgV
+	 5aFof3SJmqgEFg1dz7jrwI9w6cylqdzLqi9JtT+8V6scz13vsM9p2Ej5HCdoUC1Dkc
+	 klhknY3PcL765OxEVh+hHr/HOqWxACbmQWlqmdb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/522] ALSA: PCM: Fix wait queue list corruption in snd_pcm_drain() on linked streams
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.10 081/342] netfilter: conntrack: tcp: do not force CLOSE on invalid-seq RST without direction check
 Date: Tue, 16 Jun 2026 20:26:17 +0530
-Message-ID: <20260616145136.758365781@linuxfoundation.org>
+Message-ID: <20260616145052.017958276@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,101 +71,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266283-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265494-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hamzamahfooz@linux.microsoft.com,m:fw@strlen.de,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E97F16936D8
+X-Rspamd-Queue-Id: 523F2694775
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-[ Upstream commit 88fe2e3658726cb21ff2dcf9770bf672f9b9d31b ]
+commit bed6e04be8e6b9133d8b16d5a42d0e0ce674fa9a upstream.
 
-snd_pcm_drain() uses init_waitqueue_entry which does not clear
-entry.prev/next, and add_wait_queue with a conditional
-remove_wait_queue that is skipped when to_check is no longer
-in the group after concurrent UNLINK.  The orphaned wait entry
-remains on the unlinked substream sleep queue.  On the next
-drain iteration, add_wait_queue adds the entry to a new queue
-while still linked on the old one, corrupting both lists.  A
-subsequent wake_up dereferences NULL at the func pointer
-(mapped from the spinlock at offset 0 of the misinterpreted
-wait_queue_head_t), causing a kernel panic.
+An unintended behavior in the TCP conntrack state machine allows a
+connection to be forced into the CLOSE state using an RST packet with an
+invalid sequence number.
 
-Replace init_waitqueue_entry/add_wait_queue/conditional
-remove_wait_queue with init_wait_entry/prepare_to_wait/
-finish_wait.  init_wait_entry clears prev/next via
-INIT_LIST_HEAD on each iteration and sets
-autoremove_wake_function which auto-removes the entry on
-wake-up.  finish_wait safely handles both the already-removed
-and still-queued cases.
+Specifically, after a SYN packet is observed, an RST with an invalid SEQ
+can transition the conntrack entry to TCP_CONNTRACK_CLOSE, regardless of
+whether the RST corresponds to the expected reply direction. The relevant
+code path assumes the RST is a response to an outgoing SYN, but does not
+validate packet direction or ensure that a matching SYN was actually sent
+in the opposite direction.
 
-Fixes: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain")
-Signed-off-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Link: https://patch.msgid.link/20260604142559.3840881-1-eilaimemedsnaimel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, a crafted packet sequence consisting of a SYN followed by an
+invalid-sequence RST can prematurely terminate an active NAT entry. This
+makes connection teardown easier than intended.
+
+So, tighten the state transition logic to ensure that RST-triggered
+CLOSE transitions only occur when the RST is a valid response to a
+previously observed SYN in the correct direction.
+
+Cc: stable@vger.kernel.org
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_native.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_proto_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 7be5f25612b954..2ed9abb911a7aa 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -2178,9 +2178,8 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
- 		drain_no_period_wakeup = to_check->no_period_wakeup;
- 		drain_rate = to_check->rate;
- 		drain_bufsz = to_check->buffer_size;
--		init_waitqueue_entry(&wait, current);
--		set_current_state(TASK_INTERRUPTIBLE);
--		add_wait_queue(&to_check->sleep, &wait);
-+		init_wait_entry(&wait, 0);
-+		prepare_to_wait(&to_check->sleep, &wait, TASK_INTERRUPTIBLE);
- 		snd_pcm_stream_unlock_irq(substream);
- 		if (drain_no_period_wakeup)
- 			tout = MAX_SCHEDULE_TIMEOUT;
-@@ -2198,7 +2197,7 @@ static int snd_pcm_drain(struct snd_pcm_substream *substream,
- 		group = snd_pcm_stream_group_ref(substream);
- 		snd_pcm_group_for_each_entry(s, substream) {
- 			if (s->runtime == to_check) {
--				remove_wait_queue(&to_check->sleep, &wait);
-+				finish_wait(&to_check->sleep, &wait);
- 				break;
- 			}
+--- a/net/netfilter/nf_conntrack_proto_tcp.c
++++ b/net/netfilter/nf_conntrack_proto_tcp.c
+@@ -1083,7 +1083,8 @@ int nf_conntrack_tcp_packet(struct nf_co
+ 			new_state = old_state;
  		}
--- 
-2.53.0
-
+ 		if (((test_bit(IPS_SEEN_REPLY_BIT, &ct->status)
+-			 && ct->proto.tcp.last_index == TCP_SYN_SET)
++			 && ct->proto.tcp.last_index == TCP_SYN_SET
++			 && ct->proto.tcp.last_dir != dir)
+ 			|| (!test_bit(IPS_ASSURED_BIT, &ct->status)
+ 			    && ct->proto.tcp.last_index == TCP_ACK_SET))
+ 		    && ntohl(th->ack_seq) == ct->proto.tcp.last_end) {
 
 
 
