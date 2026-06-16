@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aLo1EbKJMWoSmAUAu9opvQ
-	(envelope-from <stable+bounces-265476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:50 +0200
+	id sbfKID9rMWpziwUAu9opvQ
+	(envelope-from <stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F33A6934EE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:36:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC01691085
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:26:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bkO8n4Ri;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265476-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265476-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=twsS4onr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263914-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C61B43030960
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:36:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4354130D9FDE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0FE43D4E9;
-	Tue, 16 Jun 2026 17:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E8043E486;
+	Tue, 16 Jun 2026 15:19:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED8526CE05;
-	Tue, 16 Jun 2026 17:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93F43C05C;
+	Tue, 16 Jun 2026 15:19:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631392; cv=none; b=VR+h5eOQKZV6flJGFhIpV6gLP728MNbnKjCNkb4SCBt1uHvmdbSs/z8SB6JZLazoACbfmHN6zrkPxHUN4RtXAisOz1ZUC/oQSjRHer8yox5e8s8JF2dR7HQi60GpK8MTnTkNF8AIZ4awdGRhJx5/HXeI6TPoRoPqD5Fv726pBDg=
+	t=1781623144; cv=none; b=uJf9hntdSa1EXzhWYNkU1+gapmTGU3jGPfXqejKvh4YZzIZoRLQmUBQY1fxmE5vbCf5rr10CyRHEM1dRtFzdaKKmbTyR3WmyntgeogIWJ+Nf6CbOxWpM9vEAuUDpbwboTbbrxXDAawNgNPQyBalEGZ3xKqPM8EuXUWS9Me7dcas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631392; c=relaxed/simple;
-	bh=bRtpTNc59MCfN2uhWSRma1ps2H8l8pHgNVeJ8wiL5Jw=;
+	s=arc-20240116; t=1781623144; c=relaxed/simple;
+	bh=pFz25esQru+2zYgtdSWBDAZrYgPsCkcLZ2Wa44RRsn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBhrYsnwffTPJIrCyO1+78ED9bCFvp+Mq2ixQ6XBtaNL9nyTCy8GcnjEnAtVAgJ8veuVMgVRPrqTFrHleyoBWdSPEV3FDPSpHBpoawnSqZqCwzt0QyRxwuWQBpJex0I5sKbmqG9fSb18I30l/6YVaPMceyPhpEU3LE+sUcBtQY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkO8n4Ri; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4878A1F000E9;
-	Tue, 16 Jun 2026 17:36:30 +0000 (UTC)
+	 MIME-Version; b=WLWbDhu2B9l4e8NJoFZ2nZKRn7Tq9IKlBz4Ie52tZbMYxBWqWnS5Fsuf/mpRavyEF85bBnzgOvH0bhQfTHtSb7bKYjbez171CmN3xcTzW3XLnGg9Z2V+BFWK4czK430vJB1S0yHwpgiWU6UMPGWjBOg/QD3e0rxmuMmOfNYWUFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twsS4onr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF51F000E9;
+	Tue, 16 Jun 2026 15:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631391;
-	bh=V0V4wP179+bXFPUnGKzh9cYccdDn3vBssONbHMhLFMc=;
+	s=korg; t=1781623143;
+	bh=tu08nH1X7DXQArVZZgn0bAPRnoSjW7jrDMdail15UnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bkO8n4RimYELCgMr01xoqe/sk4XbXP6XlnBt5qSiz8WUAiB/e9m67A/on2+91jLgT
-	 I+5FfH2MFWkz3mJd7aY35qNopfd2Yz1m4+tuy7YGp63r7GJgcZr1MD4ukA8Hne+3wz
-	 mLDGoaw5SCYlrgWAR4J1XsGx6b863WFCfwJUOyuc=
+	b=twsS4onrGxpa+gHpu0YxnMJKLhsd+klIr+blA+30wxE+qvoreMNYhwCtBBCqXNakH
+	 /VLj8KDTHzcqzt0MhUw7feGsKPIxjInc9l5FVXzVUmSgu0kLAzpz9FWKxkYL0imJfF
+	 PcRE6/mdf3Bqs3vG46Sda/2S9SNtRVX9MHFHv6Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Lee Jones <lee@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/522] HID: core: Add printk_ratelimited variants to hid_warn() etc
+Subject: [PATCH 7.0 095/378] verification/rvgen: Fix ltl2k writing True as a literal
 Date: Tue, 16 Jun 2026 20:25:26 +0530
-Message-ID: <20260616145134.510910448@linuxfoundation.org>
+Message-ID: <20260616145115.292148638@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265476-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263914-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vi@endrift.com,m:jkosina@suse.com,m:lee@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:namcao@linutronix.de,m:gmonaco@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.com:email,endrift.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9F33A6934EE
+X-Rspamd-Queue-Id: DEC01691085
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 1d64624243af8329b4b219d8c39e28ea448f9929 ]
+[ Upstream commit df996599cc69a9b74ff437c67751cf8a61f62e39 ]
 
-hid_warn_ratelimited() is needed. Add the others as part of the block.
+The rvgen parser for LTL stores literal true values in the python
+representation (capitalised True), this doesn't build in C.
+The Literal class should already handle this case but ASTNode skips its
+strigification method and converts the value (true/false) directly.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fix by delegating ASTNode stringification to the Literal and Variable
+classes instead of bypassing them.
+
+Fixes: 97ffa4ce6ab32 ("verification/rvgen: Add support for linear temporal logic")
+Reviewed-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/20260514152055.229162-8-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hid.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/verification/rvgen/rvgen/ltl2ba.py | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 6c3dc24acefc2d..058ba486fdcf87 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -1230,4 +1230,15 @@ do {									\
- #define hid_dbg_once(hid, fmt, ...)			\
- 	dev_dbg_once(&(hid)->dev, fmt, ##__VA_ARGS__)
+diff --git a/tools/verification/rvgen/rvgen/ltl2ba.py b/tools/verification/rvgen/rvgen/ltl2ba.py
+index f14e6760ac3db8..aada15ec83a3c2 100644
+--- a/tools/verification/rvgen/rvgen/ltl2ba.py
++++ b/tools/verification/rvgen/rvgen/ltl2ba.py
+@@ -121,10 +121,8 @@ class ASTNode:
+         return self.op.expand(self, node, node_set)
  
-+#define hid_err_ratelimited(hid, fmt, ...)			\
-+	dev_err_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_notice_ratelimited(hid, fmt, ...)			\
-+	dev_notice_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_warn_ratelimited(hid, fmt, ...)			\
-+	dev_warn_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_info_ratelimited(hid, fmt, ...)			\
-+	dev_info_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
-+#define hid_dbg_ratelimited(hid, fmt, ...)			\
-+	dev_dbg_ratelimited(&(hid)->dev, fmt, ##__VA_ARGS__)
+     def __str__(self):
+-        if isinstance(self.op, Literal):
+-            return str(self.op.value)
+-        if isinstance(self.op, Variable):
+-            return self.op.name.lower()
++        if isinstance(self.op, (Literal, Variable)):
++            return str(self.op)
+         return "val" + str(self.id)
+ 
+     def normalize(self):
+@@ -381,6 +379,9 @@ class Variable:
+     def __iter__(self):
+         yield from ()
+ 
++    def __str__(self):
++        return self.name.lower()
 +
- #endif
+     def negate(self):
+         new = ASTNode(self)
+         return NotOp(new)
 -- 
 2.53.0
 
