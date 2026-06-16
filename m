@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-265958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ExvEJmeTMWrWnAUAu9opvQ
-	(envelope-from <stable+bounces-265958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:15 +0200
+	id fHx3Cvp/MWrbkwUAu9opvQ
+	(envelope-from <stable+bounces-264939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D727E694027
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C96AB692948
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:21 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QVAq2kVR;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265958-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265958-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xHhVZibo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264939-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264939-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 507C53006442
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3927F306DF3B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF7A3D091A;
-	Tue, 16 Jun 2026 18:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF11847CC8B;
+	Tue, 16 Jun 2026 16:51:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B7C36A36C;
-	Tue, 16 Jun 2026 18:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB2747B413;
+	Tue, 16 Jun 2026 16:51:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633892; cv=none; b=p9V68GDoLLLXqDaA9o3m0B2MMZhkkyf6a5k4hG6Cz+/n4AoLjZUBdstqDc0adkc7XoJZMnNQzmqT1rIVTnRPzduBFpSM7elCuz37Hktf54Oudakh6uLWczxlVNynDA4/wcle4ZSqzS1wO59ZTkOqd9lTxvtJlWJtCASL1oQYdPY=
+	t=1781628683; cv=none; b=uxUP2e2Bq0kAgdARHjORnEIiSOwpeffDWNRbD6FBC1Ph0c5WUwQXRYmJ9iO9ww5OhzhSolnCsCgOQgz7cTX0IqVTzaNEsEIjojcH6VQBn3YwSUqfGNkzO1/x7VIk+HBkYoBh0matlyinlArOSd+ruH0hTDjCyZ/G1Q+Q8QHdrrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633892; c=relaxed/simple;
-	bh=z4k332f8CnXqzgpRh22v7/cY3DaL+4t6ka/AzyDd3Vo=;
+	s=arc-20240116; t=1781628683; c=relaxed/simple;
+	bh=Gomifi3E6k8aPSWciNh8DId/zMwvYVy77x0+CsIKBzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eFwygv6eJhvzGeHKF6iHgFI/ak9cEjXLX5U74Ydehm3A+1afIOTFYo9BnYuyY8WLgHjyZIOWiNAuqvRUJpCZ+omq4sJhjbYHYxGVL1M5zg48z9eW8Svs7PjtXMg5jWWZbEQO51Z7NgAWDPmRLhHv72/iincSJObuwOZJYuImIr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVAq2kVR; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BF01F000E9;
-	Tue, 16 Jun 2026 18:18:10 +0000 (UTC)
+	 MIME-Version; b=NwbMMe1WISfrcNmy6hVUi5vW5mjQtrfykjHF73y5yB3zVsusgweuqjVgGN85RN/uCg02UPnvF5uq91WwVkPL4NhH7yHpPKQHQ3YDtGZtryGlbkFE2LMVcAATK/rKQB0WZy4Fu4Tmt7EpaTVFQ82JNieD+BOhROGXiRmzFkBYmCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHhVZibo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C2C1F00A3A;
+	Tue, 16 Jun 2026 16:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633891;
-	bh=pdMvtyGkmnzpKUmbKDYfardvosdm/b6A+6/LHF03G8Y=;
+	s=korg; t=1781628682;
+	bh=yv850TBymh2Pd1EcL6ne76N4DjdBlLdYBZpsmhIBQvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QVAq2kVRsoqc9yV6ukKtnbyFWn19rX4TTu+1RtonKq/OaTk+oKcMoGFTiIPSKZuhK
-	 5LE1xdoobYUiEiW+IH/B2W+/kB5zKIB8aDECRSyv5mPGM4aKuTnoZCTihxHIH94vjg
-	 dRD+REc/8U7ZfTz2eYbGbgBg4LN3JhAF4GRgPVTo=
+	b=xHhVZiboKgKUyINNPzlwU+fecj0U2058pRumWgDM1j1+LfuDlvFUM9yv0qxl1286p
+	 +ku/gDfWWVjrtZFk0YYRTq/nX5QcnAbDSPJMfBX9feuN5CMcDdaBh3Q21qG82eSUIT
+	 sZJ2WudY5VFabWertYqwd92fRelipG/1/Dd0PvOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 5.15 130/411] serial: zs: Fix swapped RI/DSR modem line transition counting
+	Lin Ma <malin89@huawei.com>,
+	Chenyuan Mi <michenyuan@huawei.com>,
+	Jingguo Tan <tanjingguo@huawei.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.6 141/452] xfrm: esp: restore combined single-frag length gate
 Date: Tue, 16 Jun 2026 20:26:08 +0530
-Message-ID: <20260616145107.255596438@linuxfoundation.org>
+Message-ID: <20260616145125.119358450@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,74 +71,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265958-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264939-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,orcam.me.uk:email,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,secunet.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D727E694027
+X-Rspamd-Queue-Id: C96AB692948
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Jingguo Tan <tanjingguo@huawei.com>
 
-commit d15cd40cb1858f75846eaafa9a6bca841b790a92 upstream.
+commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
 
-Fix a thinko in the status interrupt handler that has caused counters
-for the RI and DSR modem line transitions to be used for the other line
-each.
+The ESP out-of-place fast path appends the trailer in esp_output_head()
+before esp_output_tail() allocates the destination page frag. The
+head-side gate currently checks skb->data_len and tailen separately, but
+the tail code allocates a single destination frag from the combined
+post-trailer skb->data_len.
 
-Fixes: 8b4a40809e53 ("zs: move to the serial subsystem")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Link: https://patch.msgid.link/alpine.DEB.2.21.2604101747110.29980@angie.orcam.me.uk
+Reject the page-frag fast path when the combined aligned length exceeds a
+page. Otherwise skb_page_frag_refill() may fall back to a single page while
+the destination sg still spans the combined skb->data_len.
+
+Restore this combined-length page gate for both IPv4 and IPv6.
+
+Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lin Ma <malin89@huawei.com>
+Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
+Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/zs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/esp4.c |    4 ++--
+ net/ipv6/esp6.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/zs.c
-+++ b/drivers/tty/serial/zs.c
-@@ -679,9 +679,9 @@ static void zs_status_handle(struct zs_p
- 			uart_handle_dcd_change(uport,
- 					       zport->mctrl & TIOCM_CAR);
- 		if (delta & TIOCM_RNG)
--			uport->icount.dsr++;
--		if (delta & TIOCM_DSR)
- 			uport->icount.rng++;
-+		if (delta & TIOCM_DSR)
-+			uport->icount.dsr++;
+--- a/net/ipv4/esp4.c
++++ b/net/ipv4/esp4.c
+@@ -419,8 +419,8 @@ int esp_output_head(struct xfrm_state *x
+ 			return err;
+ 	}
  
- 		if (delta)
- 			wake_up_interruptible(&uport->state->port.delta_msr_wait);
+-	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
+-	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
++	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
++	    PAGE_SIZE)
+ 		goto cow;
+ 
+ 	if (!skb_cloned(skb)) {
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -454,8 +454,8 @@ int esp6_output_head(struct xfrm_state *
+ 			return err;
+ 	}
+ 
+-	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
+-	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
++	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
++	    PAGE_SIZE)
+ 		goto cow;
+ 
+ 	if (!skb_cloned(skb)) {
 
 
 
