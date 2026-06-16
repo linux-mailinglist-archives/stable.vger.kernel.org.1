@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id uZbRItOCMWrylAUAu9opvQ
-	(envelope-from <stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:31 +0200
+	id s+GOBMqUMWp1nQUAu9opvQ
+	(envelope-from <stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:10 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEFA692BE5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 546DE69418F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="I/rbV5PV";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qh3kWVRy;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266019-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CAC8325635B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17B8D3194160
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F5447A0D8;
-	Tue, 16 Jun 2026 16:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83683BFE5A;
+	Tue, 16 Jun 2026 18:23:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84EC47A0C3;
-	Tue, 16 Jun 2026 16:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78396478E3E;
+	Tue, 16 Jun 2026 18:23:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629122; cv=none; b=dxit9i0XJBEQxiQ1iu3S1l7qXAi733hCQpFy6N5rPWUvPN6RUblPhJXREHWWWa5AJwxi3bV3pOIWaX3v50NZmDtX2hTtG26Dc2LvhZP5pkN1G8dm2va7FMkFy4ihpunLWhLgavmvr+bpSE5cOqSNSbsxkDiEipdc+dcv6Kjuv+E=
+	t=1781634232; cv=none; b=Npbg785Lih22bfFadBypMtSQqVk6Y1Xeam2azQq6cm6gqjGwAvOqhJeyjYz1BdhsfAAQ3LNgrNQ7heO0ZwYfd1uEkHUDdhDhipOC4rCCx4EM4sJV5/01Qs+VxMiU62ebUVkYFZNVA0DhsqDYm9BmDgsKegjVf6JXM17tFKM/fmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629122; c=relaxed/simple;
-	bh=GELNaBhuWvzosa4uYLQXrCPk1msKPCti0TfBf2N9HWU=;
+	s=arc-20240116; t=1781634232; c=relaxed/simple;
+	bh=fe8RyQyyM4ZDhVquYXYXQRJWn+rYq3zguD1AnzhH+GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co/tBiqnwXs16bFfJAV+w3uYZQ0tr8ZghbDylEDJG5+1D1GNxbl58RyErBE6ORrTS16L5sYNWbHbmnl+olLCHVfsTyOs4vJmwDuKJUKJ/Uz2KYq7JUf0boM5lrPiz4X6N6Y5+rxFnqxi0znpTMWTsOtYB5/ZG98TGZM8ONjP3CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/rbV5PV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C5F1F000E9;
-	Tue, 16 Jun 2026 16:58:40 +0000 (UTC)
+	 MIME-Version; b=tu8Ah0rE229PqeUgU/AE+jTb5N7tNhDORo3JPmSwa63KGIANAyzZ9090qRRfBzV1YJCTW7gWSQAuPwFnTcnBOFWREND3XUEAA4Keb31bbVNFNVwLv2tONoWF13JZ9OaZ3H06+SUYpYUuQ8nqYPTpGe5DQIp9CdCjydGjxpyUXsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qh3kWVRy; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724D21F000E9;
+	Tue, 16 Jun 2026 18:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629121;
-	bh=txjXTPt3wu3CP0IFC1Ii8XmyIFJZmHFX5/MkQ+vaG2s=;
+	s=korg; t=1781634231;
+	bh=cQkbnJBP+vXLfMw7lTNDAxqQtC4YrRJB2KGT4rcbrOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I/rbV5PVYXHLLAyYcgEaVnVAQ9QPDT1T1HHaAPqO2nviaC1JJKSiJ82LxzsO1Zbjq
-	 ethxrYEFt3Jmszu2IBhIaur9TZWMLsQ2UzxnWWlIsUpWHyPmJeK3yCq3d0nKPqfqBG
-	 uPa+EsDRDFhxbxe5FsmlpbVe/PsnCbZgnOQepAgU=
+	b=Qh3kWVRyq6yJBQjRO7Lf4vnhFBXq2qJh9NFJVW5NffLTB3tEfe0DsGS+kiWTwVlRc
+	 UPfj6foegt6pcFO0fCP/D/biO5Rgrv13LPULBMLlR+tydZUsNeqfk2z0Dy/LdrdWM1
+	 tHuPodXJgPVOVk0UHf2uoyXcihKHQOyYVw2tDvWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/452] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
-Date: Tue, 16 Jun 2026 20:27:33 +0530
-Message-ID: <20260616145129.612066671@linuxfoundation.org>
+	Raf Dickson <rafdog35@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 216/411] vsock/vmci: fix sk_ack_backlog leak on failed handshake
+Date: Tue, 16 Jun 2026 20:27:34 +0530
+Message-ID: <20260616145112.265070616@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +69,92 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266019-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265029-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,cloudflare.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CCEFA692BE5
+X-Rspamd-Queue-Id: 546DE69418F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Raf Dickson <rafdog35@gmail.com>
 
-[ Upstream commit b748765019fe9e9234660327090fc1a9665cdbdd ]
+commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
 
-UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
-only for UDP_CORK / MSG_MORE sendmsg().
+When vmci_transport_recv_connecting_server() returns an error,
+vmci_transport_recv_listen() calls vsock_remove_pending() but never
+calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
+permanently.
 
-Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
-rewrites sk->sk_write_space().
+Repeated handshake failures (malformed packets, queue pair alloc
+failure, event subscribe failure) cause sk_ack_backlog to climb
+toward sk_max_ack_backlog. Once it reaches the limit the listener
+permanently refuses all new connections with -ECONNREFUSED, a
+silent denial of service requiring a process restart to recover.
 
-Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
+The two existing sk_acceptq_removed() calls in af_vsock.c do not
+cover this path: line 764 checks vsock_is_pending() which returns
+false after vsock_remove_pending(), and line 1889 is only reached
+on successful accept().
 
-Note that the write side is annotated by commit 2ef2b20cf4e0
-("net: annotate data-races around sk->sk_{data_ready,write_space}").
+Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
+the error path.
 
-Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://patch.msgid.link/20260529193941.3897256-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Raf Dickson <rafdog35@gmail.com>
+Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/vmw_vsock/vmci_transport.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 8e4c87a39dc87b..267f771dda1cc2 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2499,8 +2499,12 @@ void sock_wfree(struct sk_buff *skb)
- 	bool free;
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -972,8 +972,10 @@ static int vmci_transport_recv_listen(st
+ 			err = -EINVAL;
+ 		}
  
- 	if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
-+		void (*sk_write_space)(struct sock *sk);
-+
-+		sk_write_space = READ_ONCE(sk->sk_write_space);
-+
- 		if (sock_flag(sk, SOCK_RCU_FREE) &&
--		    sk->sk_write_space == sock_def_write_space) {
-+		    sk_write_space == sock_def_write_space) {
- 			rcu_read_lock();
- 			free = refcount_sub_and_test(len, &sk->sk_wmem_alloc);
- 			sock_def_write_space_wfree(sk);
-@@ -2515,7 +2519,7 @@ void sock_wfree(struct sk_buff *skb)
- 		 * after sk_write_space() call
- 		 */
- 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
--		sk->sk_write_space(sk);
-+		sk_write_space(sk);
- 		len = 1;
- 	}
- 	/*
--- 
-2.53.0
-
+-		if (err < 0)
++		if (err < 0) {
+ 			vsock_remove_pending(sk, pending);
++			sk_acceptq_removed(sk);
++		}
+ 
+ 		release_sock(pending);
+ 		vmci_transport_release_pending(pending);
 
 
 
