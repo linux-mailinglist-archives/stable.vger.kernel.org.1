@@ -1,171 +1,254 @@
-Return-Path: <stable+bounces-263712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SSlKO4hDMWq1fgUAu9opvQ
-	(envelope-from <stable+bounces-263712-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:37:28 +0200
+	id iJ1+L0g/MWr8fAUAu9opvQ
+	(envelope-from <stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:19:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F76C68F691
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:37:28 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD5B68F3B4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 14:19:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="FM/NYQm/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263712-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263712-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TYaBYfqn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263693-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7D85731BD165
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:35:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C80433016759
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 12:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6337361DCB;
-	Tue, 16 Jun 2026 12:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F38B34751F;
+	Tue, 16 Jun 2026 12:19:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D8D2C3248
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE359349CD7
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 12:19:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781613318; cv=none; b=WQFkHEA5KyFG5QugfQ5sSm2i6127mYMhV5Iqn7NQUjI3U9zgNbnQLR/YyGCpF46ENWKizsspIo/CJQN/q8Mc0yz68x2g2KPsJumYBbhsS1aHWxWl1/ZEq6blJ8SufRUzeahbmmU+1nj5eBPcLzsSDNKhbuhFG45sfMixf95CKBQ=
+	t=1781612357; cv=none; b=lAcrbcBPKj6pYixigZftuv4PCbDoUqgxDMI4bYN761a79dpGCI9KfT0nPckln2SVRybT8Q5U067LdhRPSmjyLYLSFjcuToLXLkqQATVGBr1J2ySJgkrmikekIaxJs3blGew4q8qrWkQE+vv3l84QQgOzcVs5kAptJGIAKik+M/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781613318; c=relaxed/simple;
-	bh=ETdUkWmUMOLSm7TtxUX69mqgYG8eFTikRfIxPw/5Ih4=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=MRcHDCoQBob/ukg6DtmSlbNqmOylXLcvoyRtCu189R4ccr5Pw1GsOPakJXMLF8A7z7QKlRMEwZXPG1XCGGobPjeaHvL5Qo/tUvSV+rxT1TXa/UMux8GgFjcs6AdlMJ2cFikamBSZMlmAmBQheV6G5lw8wV2pqPtSlbFa51WBI3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FM/NYQm/; arc=none smtp.client-ip=209.85.210.177
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-842288702fbso2093087b3a.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 05:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781613317; x=1782218117; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BAYzqTyjLrIOI8jk2lCoOCBWo5ysdxV0s0gT6irQrOA=;
-        b=FM/NYQm/8LrA97/fvrCWZk6U4G4g4e9p9Z2mftaAOAGbVgp/b6qPHOYV3eNbgb68rv
-         cUn0vjocNW2krYtwXTJO7XdKyKBuMdTtHXgWpyDfOuU2eYYjdMtFCywmtqPai4FVp9Bk
-         bislPeYh4C2Pmaqfi/0fEFKsd1+mXYNg0noye+YUZw9vXSW4z6/a+PQdRcTxFgj+5XRm
-         x4aHkNcIxIvNr/skAae4XqqjQ+GqyUgFYyuf56QGKquUQSpkSEbBZEAaPG/4ZfS8KaET
-         isFV9ERBHQXhhMsLvJfJZdUPpSlabN7gT6MoppR84l3KUhHrmX9lh8eTZz5oLzT7ozbZ
-         MNiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781613317; x=1782218117;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BAYzqTyjLrIOI8jk2lCoOCBWo5ysdxV0s0gT6irQrOA=;
-        b=nT5sD7r43HrvSoK9/me/fauhsGN6o+Q++IPsuR5D73XWwIQ/4EeYqoRi6ofa0ST4V5
-         E4F9MBSVtVqjlmuGP3SfZOMzw5wTWJODN8u8mmgKf5DipWGKhzduQSpx/hRdgYbzjdOW
-         N5yTP59sYtjwu0GzCOf/7PEEFKHKFFo0uU8v3j/S9SsyDw9WiXco48S+j1ymd+IgU8jw
-         BZee9zmyHWrm5pq1qOfDnqKH1413mjPnCkg+18K6ID80/OIKHr9Lci9W2a+pFCTE0ZK6
-         B55ufm0f5OnA48pGX1gP3zhZzC367k9v7jK6U8hsEljeEQJ0vqGYMGGk3CmHx5Ta7pp9
-         ZcGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/dwXXKeha6zS863UZWv/OAST4BM9bn2Htrx2Bk7TSdkDBYFgwzLfcHYZg98e/S6WvfZrz2z00=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx533twW5BhV6JTqJ+SEAx/82KfiQzdP8graklAnYshP41ZOGTw
-	/amrMSyTRwaMvU1oIlfgnASE+/QKIVCUqa1jB8gjbSCHJzBLQZWpCV+o
-X-Gm-Gg: Acq92OGKhcLJ3vTOopzg/2kIBlBRqOIVyj2tIFAPs7J8gj1EhtM6efpkY+/hOrUHfNp
-	q5DtkF8CYTELqQyRxVN6jPHWCUdxovYjFfGJqJ3mtDOqq6FmzbKL8niey3zUEmZjRu9QH7uR/I9
-	0ncXjWEdOaVN9a/tuwcGf09mo6syEo+GMYa4a/9G7M93SPmcOgu5yq7vOJ9Y86HYoD3Qv2eC0eg
-	iwohmk3Fd35jUjV7zQP/1GU9Ib7lgs9Z5mRiLijjdsgpGPMXxLxYm/PiIi9SZQN6K9JAt/aQCm9
-	Wp6ivmXGNdFyvUaw+EOPwlzFRV7k+vt6YJgTf2x3uw3TVSzhfpBp5iC1hyVhELq9njtEmPNaf3K
-	zlPyncw/EYwFph0W9CW5JmUvKBLPaMOc19hqqjCPLa165qrk80yV5BPSI1+YHBFPFV3dv3u5VK+
-	sL7gWj++DxzTVA3jSWr+Nrd6sY2Q==
-X-Received: by 2002:a05:6a00:8d6:b0:842:688f:3089 with SMTP id d2e1a72fcca58-8434ce832c2mr18655919b3a.30.1781613316626;
-        Tue, 16 Jun 2026 05:35:16 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434ac9c4c0sm11794275b3a.3.2026.06.16.05.35.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jun 2026 05:35:15 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Gautam Menghani <gautam@linux.ibm.com>, Mukesh Kumar Chaurasiya <mkchauras@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Huth <thuth@redhat.com>, kvm@vger.kernel.org, stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
-In-Reply-To: <20260616161011.835c90f0-38-amachhiw@linux.ibm.com>
-Date: Tue, 16 Jun 2026 17:38:37 +0530
-Message-ID: <a4suelh6.ritesh.list@gmail.com>
-References: <20260609053327.61563-1-amachhiw@linux.ibm.com> <cxxqerzk.ritesh.list@gmail.com> <20260616161011.835c90f0-38-amachhiw@linux.ibm.com>
+	s=arc-20240116; t=1781612357; c=relaxed/simple;
+	bh=dkJzNifqKsMMnDKQEaU5YxHh3cjwuASB4jqoT3w7o/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TC7VIQlBhzo1M6iAddWTb33g9WRHem3PWAb97jd4+A+m1nNzuAHp4SHo/t6JU4dRg89g3xd1uydPjTaI3gQU/JvCpN/O8/RrMw4SLBUZ2mIP6rSjg5OiW6IHvFOPovJe2s+FmqnQKEKnB7i9Eblc+XkCkHp49sqIpZG9aM7lrYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYaBYfqn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0391F000E9;
+	Tue, 16 Jun 2026 12:19:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781612351;
+	bh=lnxnLQwVG9nxyJQ9QmfUPmLeGg/KqQa6jL638ZGBxO0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TYaBYfqnHVb0hYZVjP84FGUuSnmx7F1paL3I44Ey2JIZ6NFKddWUjlBavowKIY5S2
+	 zUbBame1nDSS80HoktLuQYNu/eATZCxLtQO84SMJASsMUFkFbc//DHqGKCb5Z6lI9T
+	 l8nLGxGItA/4GAxBq1l8rC3ty8SfzEhni8Xdn/JKzF+7pOXChmyeY8EnGYStFSMY+X
+	 5fodu0MdSsOknExLgqKcIk/98jRn4+BlsCP1lCD/Iej6oSF0wpMmkvci4VzRU5dnWL
+	 Xtxc8W9SrAsCMdmLWUkk/v7aoyg8wQXlqnE/EE2KOCdWQz/0Zb10bWJFHhHhApaXti
+	 Ttztx1oy5dR3A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Li Xiasong <lixiasong1@huawei.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] mptcp: pm: fix ADD_ADDR timer infinite retry on option space insufficient
+Date: Tue, 16 Jun 2026 08:19:08 -0400
+Message-ID: <20260616121909.3134590-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061511-yearly-patronage-15bd@gregkh>
+References: <2026061511-yearly-patronage-15bd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263712-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linux.ibm.com,lists.ozlabs.org,gmail.com,ellerman.id.au,kernel.org,redhat.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:amachhiw@linux.ibm.com,m:linuxppc-dev@lists.ozlabs.org,m:maddy@linux.ibm.com,m:vaibhav@linux.ibm.com,m:harshpb@linux.ibm.com,m:anushree.mathur@linux.ibm.com,m:gautam@linux.ibm.com,m:mkchauras@gmail.com,m:npiggin@gmail.com,m:mpe@ellerman.id.au,m:chleroy@kernel.org,m:thuth@redhat.com,m:kvm@vger.kernel.org,m:stable@vger.kernel.org,m:linux-kernel@vger.kernel.org,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263693-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:lixiasong1@huawei.com,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4F76C68F691
+X-Rspamd-Queue-Id: 5AD5B68F3B4
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+From: Li Xiasong <lixiasong1@huawei.com>
 
->> > diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
->> > index 3449dd2b577d..7472b9522f71 100644
->> > --- a/arch/powerpc/include/asm/reg.h
->> > +++ b/arch/powerpc/include/asm/reg.h
->> > @@ -1356,6 +1356,7 @@
->> >  #define PVR_ARCH_300	0x0f000005
->> >  #define PVR_ARCH_31	0x0f000006
->> >  #define PVR_ARCH_31_P11	0x0f000007
->> > +#define PVR_ARCH_INVALID	0xffffffff
->> 
->> Logical processor version is defined as part of the PAPR spec. We should
->> ensure that this invalid PVR is also documented in the PAPR spec.
->> 
->> If you have already taken care of that, then please confirm and feel free to add:
->
-> Regarding the PAPR specification documentation: The PAPR spec documents
-> the valid Processor Version Register (PVR) values for each processor
-> generation (POWER8, POWER9, POWER10, POWER11, etc.). However, the
-> PVR_ARCH_INVALID value (0xffffffff) introduced in this patch series is a
-> KVM implementation detail used internally to mark invalid compatibility
-> mode requests - it's not an architectural value that would be defined in
-> PAPR itself.
->
-> The validation logic and the use of PVR_ARCH_INVALID as a sentinel value
-> are documented in the kernel code and commit message.
->
+[ Upstream commit 51e398a3b8961b26a8c0a4ba9a777c5339791707 ]
 
-But that still worries me on what if PAPR wants to re-use this value for
-some other purpose in future. 
+When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
+IPv6 address and port while tcp_timestamps is enabled), the original code
+jumped to out_unlock without clearing the addr_signal flag. This caused
+mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
+preventing subsequent addresses in the endpoint list from being announced.
 
-BTW, thinking more about it, if we purely want this to be in kernel only,
-can we instead add, something like:
+Handle this case by clearing the ADD_ADDR signal and skipping the matching
+ADD_ADDR retransmission entry. The skip path cancels the matching timer
+(with id check) and advances PM state progression, preserving forward
+progress to subsequent PM work.
 
-     bool kpvr_compat;   /* Does kernel supports this PVR */
+This cancellation is inherently best-effort. A concurrent add_timer
+callback may already be running and may acquire pm.lock before the
+cancel path updates entry state. In that case, one final ADD_ADDR
+transmit attempt can still be executed.
 
-rather than re-using & overloading arch_compat which has values that
-comes from PAPR spec?
+Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
+the callback-side retrans_times check suppresses further ADD_ADDR
+retransmissions.
 
-Thoughts?
+Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
+the output side, it means that it is fine to skip non-pure-ACK packets,
+when drop_other_suboptions is set: a pure-ACK will be processed soon
+after.
 
--ritesh
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: bd34fa025726 ("mptcp: add-addr: always drop other suboptions")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mptcp/pm.c         | 40 +++++++++++++++++++++++++++++++++-------
+ net/mptcp/pm_netlink.c | 16 +++++++++++++---
+ 2 files changed, 46 insertions(+), 10 deletions(-)
+
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 8778a7211e4c54..501a4f04b3b6e0 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -335,6 +335,7 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *drop_other_suboptions)
+ {
++	bool skip_add_addr = false;
+ 	int ret = false;
+ 	u8 add_addr;
+ 	u8 family;
+@@ -356,24 +357,49 @@ bool mptcp_pm_add_addr_signal(struct mptcp_sock *msk, const struct sk_buff *skb,
+ 	}
+ 
+ 	*echo = mptcp_pm_should_add_signal_echo(msk);
+-	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
+-
+-	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
+-	if (remaining < mptcp_add_addr_len(family, *echo, port))
+-		goto out_unlock;
+-
+ 	if (*echo) {
+ 		*addr = msk->pm.remote;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
++		port = !!msk->pm.remote.port;
++		family = msk->pm.remote.family;
+ 	} else {
+ 		*addr = msk->pm.local;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
++		port = !!msk->pm.local.port;
++		family = msk->pm.local.family;
+ 	}
+-	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
++	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
++		struct net *net = sock_net((struct sock *)msk);
++
++		if (!*drop_other_suboptions)
++			goto out_unlock;
++
++		if (*echo) {
++			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
++		} else {
++			skip_add_addr = true;
++			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
++		}
++		goto drop_signal_mark;
++	}
++
+ 	ret = true;
+ 
++drop_signal_mark:
++	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
+ out_unlock:
+ 	spin_unlock_bh(&msk->pm.lock);
++
++	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
++	 * clear the signal bit, cancel the matching retransmission timer, and
++	 * let the PM state machine progress.
++	 */
++	if (skip_add_addr) {
++		mptcp_pm_del_add_timer(msk, addr, true);
++		mptcp_pm_subflow_established(msk);
++	}
+ 	return ret;
+ }
+ 
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 6e5570f97236ad..2b4ece1be3f4dd 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -321,7 +321,13 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+-	if (!mptcp_pm_should_add_signal_addr(msk)) {
++	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
++	 * callback. Once cancel updates retrans_times to MAX, suppress further
++	 * retransmissions here. If this callback acquires pm.lock first, one
++	 * final transmit attempt is still possible.
++	 */
++	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
++	    !mptcp_pm_should_add_signal_addr(msk)) {
+ 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
+ 		mptcp_pm_announce_addr(msk, &entry->addr, false);
+ 		mptcp_pm_add_addr_send_ack(msk);
+@@ -369,8 +375,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
+ 	/* Note: entry might have been removed by another thread.
+ 	 * We hold rcu_read_lock() to ensure it is not freed under us.
+ 	 */
+-	if (stop_timer)
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	if (stop_timer) {
++		if (check_id)
++			sk_stop_timer(sk, &entry->add_timer);
++		else
++			sk_stop_timer_sync(sk, &entry->add_timer);
++	}
+ 
+ 	rcu_read_unlock();
+ 	return entry;
+-- 
+2.53.0
+
 
