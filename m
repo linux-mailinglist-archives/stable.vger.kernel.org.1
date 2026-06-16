@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2FTLCdGYMWomnwUAu9opvQ
-	(envelope-from <stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:21 +0200
+	id hxuyNGCBMWqGlAUAu9opvQ
+	(envelope-from <stable+bounces-264908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE3E694551
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:20 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134AF692A88
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nAO6rz3j;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266218-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AvM5wVol;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264908-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264908-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 46A7D30074C9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 399633046F79
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F093DF007;
-	Tue, 16 Jun 2026 18:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3AA47D954;
+	Tue, 16 Jun 2026 16:48:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE27513777E;
-	Tue, 16 Jun 2026 18:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323C347D945;
+	Tue, 16 Jun 2026 16:48:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635274; cv=none; b=EpFRZO20mWh1Au2eoAppIbR+IZ/WwrfyDFEDnxSxzQ00OEkMCWeS9wWwEVEhd9CguGBcmq6xeUpaU8cKbOlMKTcg5Lq1zc96p4uPrpb8/l4bEpF8EiiSCmzG8S/1xl6Az9T+cIMaUErlf+em1RlaCFyX/gJFSbQqN/KQodsjrDo=
+	t=1781628523; cv=none; b=QOQhYURZaJWHoCy/Efskcm+6t1lPT1q8y2dd31uAkF4v/ReuWDnMd5e1E+0akrZ3LLS9KabfeGO39KlmOw2OYsnQlTSUoE/ZRT1zr24eoxWNubLW9wNXHhqrQ4s12LQGB1x2EhD7Q7I0Xv5BuUa0+SrGJw6G8sPuQzEjmx7fXjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635274; c=relaxed/simple;
-	bh=qSzA2T1ib4zB8OqRaIwhNzAt6tHz75/R3zyu3C5pRMU=;
+	s=arc-20240116; t=1781628523; c=relaxed/simple;
+	bh=/5LJKuSCx1N0X6yNrrxrkw8QG3OIVHrJ1qU5TCCWBT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4q855ibAkbg8YFDvYd+qXDiK6xSK9SJxlmighiZib6wGfmDoKX63CqkNW3pZajyQlKOz+7FPZmn/g8z1OKNx1zLdfjthw+6MxcOIfCeG9yCEHoXTfuye8M6tui3TTvzJtIicAs+LwzmZG4F94gzEZnRLFchs+tuY0/eExyL8Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAO6rz3j; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A751F000E9;
-	Tue, 16 Jun 2026 18:41:11 +0000 (UTC)
+	 MIME-Version; b=pQqXV3CW5TAbbRriHKQn1n2pZBmqQcAhCUtyxAwwQPZUbB8sTkjaNHwSe2z4s5/04kggYz4g0cyOAbv7yb53HKY+tIrzpcbxLNkYsqI3aqEB/cyl5ulbikOoHWDibhXGiXG4fXIphyGh5f3nDFSNBhsxZrH4JqEUmtGpYOIE22c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvM5wVol; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7011F00A3D;
+	Tue, 16 Jun 2026 16:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635272;
-	bh=rzZE6rWX486jHTi0qRCmafIcjN95kuto3VUGKmtU2ek=;
+	s=korg; t=1781628522;
+	bh=574Q2B1IMWUlFe3hetnGs9Uyde4dnxi1BI5B2GFrhYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nAO6rz3jN9nMBD+fb8noKVor8XHF9gHuqqZwRXOgzZj8zyKkMf0a19BamH2fl47A6
-	 v7ZttEFfpCuUEy82ES2q8XNwF61gr1Ge1xcuvY3Gny72nxwCT3DB/K36D2Qi6atKwD
-	 oMY21U83nXKRJGe2B3ylrAAog2NLuD0/D3yrwc1I=
+	b=AvM5wVolFTWXqRMHz7VVBRPGRviQXbq3+VJhr7ITwyRVGslS6SU0Tll3U8o+LM9TB
+	 it9OnB2DjgLN9jEWr+H/Pjgd0aJ3oxxppF0E/MEoV2M//mVq/rTFsFjwV9C2eXou9W
+	 bj9YkcGZUoIW07vcyzQ37589SxXyJ/CF6TrxqQEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carl Lee <carl.lee@amd.com>,
+	Abdurrahman Hussain <abdurrahman@nexthop.ai>,
 	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Luca Stefani <luca.stefani.ge1@gmail.com>,
-	David Heidelberg <david@ixit.cz>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/342] nfc: nxp-nci: i2c: use rising-edge IRQ on ACPI systems
+Subject: [PATCH 6.6 079/452] hwmon: (pmbus/adm1266) serialize GPIO PMBus accesses with pmbus_lock
 Date: Tue, 16 Jun 2026 20:25:06 +0530
-Message-ID: <20260616145048.794709512@linuxfoundation.org>
+Message-ID: <20260616145122.037621805@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,28 +68,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,oss.qualcomm.com,squebb.ca,gmail.com,ixit.cz,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266218-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:carl.lee@amd.com,m:bartosz.golaszewski@oss.qualcomm.com,m:mpearson-lenovo@squebb.ca,m:luca.stefani.ge1@gmail.com,m:david@ixit.cz,m:sashal@kernel.org,m:lucastefanige1@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264908-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:abdurrahman@nexthop.ai,m:bartosz.golaszewski@oss.qualcomm.com,m:linux@roeck-us.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[roeck-us.net:query timed out];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -99,93 +96,151 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,squebb.ca:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nexthop.ai:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1EE3E694551
+X-Rspamd-Queue-Id: 134AF692A88
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carl Lee <carl.lee@amd.com>
+From: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 
-[ Upstream commit f23bf992d65a42007c517b060ca35cebdea3525a ]
+[ Upstream commit bab8c6fb5af8df7e753d196c1262cb78e92ca872 ]
 
-Some ACPI-based platforms report incorrect IRQ trigger types (e.g.
-IRQF_TRIGGER_HIGH), which can lead to interrupt storms.
+adm1266_gpio_get(), adm1266_gpio_get_multiple(), and
+adm1266_gpio_dbg_show() all issue PMBus reads against the device but
+none of them take pmbus_lock.  The pmbus_core framework holds
+pmbus_lock around its own multi-transaction sequences (notably the
+"set PAGE, then read paged register" pattern used by hwmon
+attributes), so an unlocked GPIO accessor can land between a PAGE
+write and the subsequent paged read in another thread and corrupt
+either side's view of the device state machine.
 
-Use the historically working rising-edge trigger on ACPI systems to
-avoid this regression.
+Take pmbus_lock at the top of each of the three accessors via the
+scope-based guard().  The lock is uncontended in the common case and
+adds only a single mutex round-trip per call.
 
-Device Tree-based systems continue to use the firmware-provided
-trigger type.
-
-Fixes: 57be33f85e36 ("nfc: nxp-nci: remove interrupt trigger type")
-Signed-off-by: Carl Lee <carl.lee@amd.com>
-Tested-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: d98dfad35c38 ("hwmon: (pmbus/adm1266) Add support for GPIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdurrahman Hussain <abdurrahman@nexthop.ai>
 Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Tested-by: Luca Stefani <luca.stefani.ge1@gmail.com>
-Link: https://patch.msgid.link/20260516-nfc-nxp-nci-i2c-restore-irq-trigger-fallback-v3-1-37ba4b6e9086@amd.com
-Signed-off-by: David Heidelberg <david@ixit.cz>
+Link: https://lore.kernel.org/r/20260518-adm1266-gpio-fixes-v3-6-e425e4f88139@nexthop.ai
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+[ open-coded `guard(pmbus_lock)()` as explicit `pmbus_lock_interruptible()`/`pmbus_unlock()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/nxp-nci/i2c.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/adm1266.c | 40 +++++++++++++++++++++++++++++------
+ 1 file changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
-index 237b344a30bbd8..989b4a0e5b1982 100644
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -16,6 +16,7 @@
- #include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
-+#include <linux/irq.h>
- #include <linux/module.h>
- #include <linux/nfc.h>
- #include <linux/gpio/consumer.h>
-@@ -268,6 +269,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client,
- {
- 	struct device *dev = &client->dev;
- 	struct nxp_nci_i2c_phy *phy;
-+	unsigned long irqflags;
- 	int r;
+diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+index a8690d6c9b9cb0..518eaf07a123de 100644
+--- a/drivers/hwmon/pmbus/adm1266.c
++++ b/drivers/hwmon/pmbus/adm1266.c
+@@ -173,7 +173,12 @@ static int adm1266_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	else
+ 		pmbus_cmd = ADM1266_PDIO_STATUS;
  
- 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-@@ -304,9 +306,26 @@ static int nxp_nci_i2c_probe(struct i2c_client *client,
- 	if (r < 0)
- 		return r;
- 
-+	/*
-+	 * ACPI platforms may report incorrect IRQ trigger types
-+	 * (e.g. level-high), which can lead to interrupt storms.
-+	 *
-+	 * Use the historically stable rising-edge trigger for ACPI devices.
-+	 *
-+	 * On non-ACPI systems (e.g. Device Tree), prefer the firmware-
-+	 * provided trigger type, falling back to rising-edge if not set.
-+	 */
-+	if (ACPI_COMPANION(dev)) {
-+		irqflags = IRQF_TRIGGER_RISING;
-+	} else {
-+		irqflags = irq_get_trigger_type(client->irq);
-+		if (!irqflags)
-+			irqflags = IRQF_TRIGGER_RISING;
-+	}
++	ret = pmbus_lock_interruptible(data->client);
++	if (ret)
++		return ret;
 +
- 	r = request_threaded_irq(client->irq, NULL,
- 				 nxp_nci_i2c_irq_thread_fn,
--				 IRQF_ONESHOT,
-+				 irqflags | IRQF_ONESHOT,
- 				 NXP_NCI_I2C_DRIVER_NAME, phy);
- 	if (r < 0)
- 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+ 	ret = i2c_smbus_read_block_data(data->client, pmbus_cmd, read_buf);
++	pmbus_unlock(data->client);
+ 	if (ret < 0)
+ 		return ret;
+ 	if (ret < 2)
+@@ -195,11 +200,19 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 	unsigned int gpio_nr;
+ 	int ret;
+ 
++	ret = pmbus_lock_interruptible(data->client);
++	if (ret)
++		return ret;
++
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_GPIO_STATUS, read_buf);
+-	if (ret < 0)
++	if (ret < 0) {
++		pmbus_unlock(data->client);
+ 		return ret;
+-	if (ret < 2)
++	}
++	if (ret < 2) {
++		pmbus_unlock(data->client);
+ 		return -EIO;
++	}
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
+@@ -210,10 +223,14 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 	}
+ 
+ 	ret = i2c_smbus_read_block_data(data->client, ADM1266_PDIO_STATUS, read_buf);
+-	if (ret < 0)
++	if (ret < 0) {
++		pmbus_unlock(data->client);
+ 		return ret;
+-	if (ret < 2)
++	}
++	if (ret < 2) {
++		pmbus_unlock(data->client);
+ 		return -EIO;
++	}
+ 
+ 	status = read_buf[0] + (read_buf[1] << 8);
+ 
+@@ -222,6 +239,8 @@ static int adm1266_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask
+ 			set_bit(gpio_nr, bits);
+ 	}
+ 
++	pmbus_unlock(data->client);
++
+ 	return 0;
+ }
+ 
+@@ -236,11 +255,16 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 	int ret;
+ 	int i;
+ 
++	if (pmbus_lock_interruptible(data->client))
++		return;
++
+ 	for (i = 0; i < ADM1266_GPIO_NR; i++) {
+ 		write_cmd = adm1266_gpio_mapping[i][1];
+ 		ret = adm1266_pmbus_block_xfer(data, ADM1266_GPIO_CONFIG, 1, &write_cmd, read_buf);
+-		if (ret != 2)
++		if (ret != 2) {
++			pmbus_unlock(data->client);
+ 			return;
++		}
+ 
+ 		gpio_config = read_buf[0];
+ 		seq_puts(s, adm1266_names[i]);
+@@ -262,8 +286,10 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 
+ 	write_cmd = 0xFF;
+ 	ret = adm1266_pmbus_block_xfer(data, ADM1266_PDIO_CONFIG, 1, &write_cmd, read_buf);
+-	if (ret != 32)
++	if (ret != 32) {
++		pmbus_unlock(data->client);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < ADM1266_PDIO_NR; i++) {
+ 		seq_puts(s, adm1266_names[ADM1266_GPIO_NR + i]);
+@@ -286,6 +312,8 @@ static void adm1266_gpio_dbg_show(struct seq_file *s, struct gpio_chip *chip)
+ 
+ 		seq_puts(s, ")\n");
+ 	}
++
++	pmbus_unlock(data->client);
+ }
+ 
+ static int adm1266_config_gpio(struct adm1266_data *data)
 -- 
 2.53.0
 
