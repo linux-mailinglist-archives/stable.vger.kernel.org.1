@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rfKLFmOCMWrUlAUAu9opvQ
-	(envelope-from <stable+bounces-264957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:39 +0200
+	id KfP6H0+LMWrTmAUAu9opvQ
+	(envelope-from <stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0064A692B6D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:38 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855D769368C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=siNc9Ce6;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264957-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264957-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xCnW3O59;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265550-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D9103004204
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:53:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C86CC3015620
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E8043E490;
-	Tue, 16 Jun 2026 16:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821023101A7;
+	Tue, 16 Jun 2026 17:42:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADA544CAF5;
-	Tue, 16 Jun 2026 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2A121C16A;
+	Tue, 16 Jun 2026 17:42:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628780; cv=none; b=YZnMUtaGESoWAgtkQlDxlBzekAtgMEgEBFbA6o9CngTpSYQcFX/weaI7AI3gDOWnlgh4MIXlZNra+pbm4P0jq7IOx9ElodqkjjO3YN+JR384hf4qw5oD/L5OidlPPSh9Mtf9L1skBhsn6H88nmuJGIS/L0RwZpAB/xXPzBt2TsA=
+	t=1781631771; cv=none; b=jH4HvJbDiROy6AjKx9liVTYzy5N/C5YbA6qkY38hFvwE41SegzlIpEO3aUfd6Q0wEymor5Wle+xqwISi6rtCAG1JrdyOQ6BUOLfxkOo6/gLgpiazBAxUlWgTH4YalOnjBgpPNpMRLagv2ZsoxShtxXzzk5mV6K8mdDAnoAXPIjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628780; c=relaxed/simple;
-	bh=T/Ey9Q17wjCmuTi8fPyMlHovRAf1Izhg+/tIHvqyzew=;
+	s=arc-20240116; t=1781631771; c=relaxed/simple;
+	bh=dK22F0HUs+t8y9FIoa2ymLrcP/etMrg8HuMsOnVPbo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zyl3WF/E1Zke0cgHja9rSh5yQTm8s+T7bvK66q7cgJwn+ZIbdZVfV7jsz76uTiCheHVNX928I3LPZHgqfoq0yNpj/iUwHxknZbVK3LSQJm1qhSDo3Rx3IYHnKzjZigj1mr0Z1xLq+z+ZjNk0E1q5pkLaBcnJ+95uwKsHnXpVSuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siNc9Ce6; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC021F000E9;
-	Tue, 16 Jun 2026 16:52:57 +0000 (UTC)
+	 MIME-Version; b=i/jbiehmTqKCfI2vGmXVVzKBhaRbYQTO8grz8ZhoDuDKV2c8VRMqpj4wpW4Uyrdigd5UYc3+V9Vl4VSKEC33T20T/sV2OxbbDTb22RvNGClk99LDZIDiutbEqsxsmQ6b5r8HBHvXSspmjZP2SMyUgknN/p3cV9DCBba/o0vK4pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCnW3O59; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CBD1F000E9;
+	Tue, 16 Jun 2026 17:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628778;
-	bh=w7zMae06pMqnioKR6YZjIkF3GpMHXWwidDSLZ3d2Y9k=;
+	s=korg; t=1781631768;
+	bh=0R+gDhRpUY1Aa4TGNg1D4+WZZmHNGMGYWtbrRJtgp5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=siNc9Ce6mk/xKwIjVgqPeARkq73Wuwc55dvYBuB/Os7UxzpTkcQBzAYCpDYrx0Sv3
-	 B0fgKdOaIZPeET3pFBoVIssoztbNFTV6ySRSu3cOS2jyygZ+8i7bNDihvJKTPOuqD3
-	 a380a+v0RAsPsQPNwXpAp0VtQMqlcS8ILyjZZn7M=
+	b=xCnW3O59w8WEmtBIIpFnhOeaoDLRsnBxHraW/rN871tO1k3ZASWJncNOcmmGdEo/D
+	 q9OpIzjAtEOPkiSbWzL0zDa4g2UAu7T8ZyqQ9MUdGHQwLxSmtZCKw/Vo747RJpm0o9
+	 tcrKmON2uvqkLBMdnmLuqw1G0oqMmbOizDXmGyJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 161/452] USB: serial: cypress_m8: validate interrupt packet headers
-Date: Tue, 16 Jun 2026 20:26:28 +0530
-Message-ID: <20260616145126.240864675@linuxfoundation.org>
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 242/522] ASoC: wm_adsp: Fix NULL dereference when removing firmware controls
+Date: Tue, 16 Jun 2026 20:26:29 +0530
+Message-ID: <20260616145137.303655475@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,122 +72,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265550-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264957-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rf@opensource.cirrus.com,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,cirrus.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0064A692B6D
+X-Rspamd-Queue-Id: 855D769368C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 9f9bfc80c67f35a275820da7e83a35dface08281 upstream.
+[ Upstream commit 7d3fb78b550301e43fdc60312aed733069694426 ]
 
-cypress_read_int_callback() parses the interrupt-in buffer according to
-the selected Cypress packet format. Format 1 has a two-byte status/count
-header and format 2 has a one-byte combined status/count header. The
-usb-serial core sizes the interrupt-in buffer from the endpoint
-descriptor's wMaxPacketSize, and successful interrupt transfers can
-complete short when URB_SHORT_NOT_OK is not set.
+In wm_adsp_control_remove() check that the priv pointer is not NULL
+before attempting to cleanup what it points to.
 
-Check that the completed packet contains the selected header before
-reading it. Malformed short reports are ignored and the interrupt URB is
-resubmitted through the existing retry path, preventing out-of-bounds
-header-byte reads.
+When cs_dsp creates a control it calls wm_adsp_control_add_cb() so that
+wm_adsp can create its own private control data. There are two cases
+where private data is not created:
 
-KASAN report as below:
-KASAN slab-out-of-bounds in cypress_read_int_callback+0x240/0x7f0
-Read of size 1
-Call trace:
-  cypress_read_int_callback() (drivers/usb/serial/cypress_m8.c:1009)
-  __usb_hcd_giveback_urb()
-  dummy_timer()
+1. The control is a SYSTEM control, so an ALSA control is not created.
 
-Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
-Assisted-by: Codex:gpt-5.5
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Fixes: 3416eaa1f8f8 ("USB: cypress_m8: Packet format is separate from characteristic size")
-Cc: stable@vger.kernel.org	# 2.6.26
-[ johan: use constants in header length sanity checks ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. The codec driver has registered a control_add() callback that
+   hides the control, so wm_adsp_control_add() is not called.
+
+When cs_dsp_remove destroys its control list it calls
+wm_adsp_control_remove() for each control. But wm_adsp_control_remove()
+was attempting to cleanup the private data pointed to by cs_ctl->priv
+without checking the pointer for NULL.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 0700bc2fb94c ("ASoC: wm_adsp: Separate generic cs_dsp_coeff_ctl handling")
+Link: https://patch.msgid.link/20260604101244.1402862-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cypress_m8.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm_adsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/serial/cypress_m8.c
-+++ b/drivers/usb/serial/cypress_m8.c
-@@ -1020,8 +1020,8 @@ static void cypress_read_int_callback(st
- 	char tty_flag = TTY_NORMAL;
- 	int bytes = 0;
- 	int result;
--	int i = 0;
- 	int status = urb->status;
-+	int i;
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index 47a4c363227ccd..bc9798ea5a25e2 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -666,6 +666,9 @@ static void wm_adsp_control_remove(struct cs_dsp_coeff_ctl *cs_ctl)
+ {
+ 	struct wm_coeff_ctl *ctl = cs_ctl->priv;
  
- 	switch (status) {
- 	case 0: /* success */
-@@ -1059,22 +1059,32 @@ static void cypress_read_int_callback(st
++	if (!ctl)
++		return;
++
+ 	cancel_work_sync(&ctl->work);
  
- 	spin_lock_irqsave(&priv->lock, flags);
- 	result = urb->actual_length;
-+	i = 0;
- 	switch (priv->pkt_fmt) {
- 	default:
- 	case packet_format_1:
- 		/* This is for the CY7C64013... */
-+		if (result < 2)
-+			break;
- 		priv->current_status = data[0] & 0xF8;
- 		bytes = data[1] + 2;
- 		i = 2;
- 		break;
- 	case packet_format_2:
- 		/* This is for the CY7C63743... */
-+		if (result < 1)
-+			break;
- 		priv->current_status = data[0] & 0xF8;
- 		bytes = (data[0] & 0x07) + 1;
- 		i = 1;
- 		break;
- 	}
- 	spin_unlock_irqrestore(&priv->lock, flags);
-+	if (i == 0) {
-+		dev_dbg(dev, "%s - short packet received: %d bytes\n",
-+			__func__, result);
-+		goto continue_read;
-+	}
- 	if (result < bytes) {
- 		dev_dbg(dev,
- 			"%s - wrong packet size - received %d bytes but packet said %d bytes\n",
+ 	kfree(ctl->name);
+-- 
+2.53.0
+
 
 
 
