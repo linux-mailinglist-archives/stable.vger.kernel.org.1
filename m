@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Nu7+IEORMWqumwUAu9opvQ
-	(envelope-from <stable+bounces-265849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:07 +0200
+	id tsd0G1yIMWp1lwUAu9opvQ
+	(envelope-from <stable+bounces-265411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD786693D6B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:09:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066A6693360
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=izn5FVCb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265849-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265849-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HBVE8Kjd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265411-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265411-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16DF4316EB22
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73C2330359C6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD203D5656;
-	Tue, 16 Jun 2026 18:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B26547AF67;
+	Tue, 16 Jun 2026 17:31:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5823F3CC324;
-	Tue, 16 Jun 2026 18:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4E647AF4D;
+	Tue, 16 Jun 2026 17:31:03 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633332; cv=none; b=YRiLPN9TB1VX37Q9lIp2Pzw4dMBM7XSwCt37KogZxA0xkmArhUqHmSSKdrmwzFdQluIMVhvvUkwFwy85BEoQQtTnrajOcHjLCSm7ROmKWw1GpoyQIaNgNt/p4rK/1qdGLnYBgTkQHaoVCo0H7t5LOrH3l4nKP8K5KafAbONeCb8=
+	t=1781631066; cv=none; b=QGZqaFPcLW/eRGMga/ePVEBjVKAGRbvhmwP2IKxtWytwWrNi5htbB4zpSMz+xCdzMFStVshDNR7MhF9v0oQPZ7PiS+afPdKtUBOvnX7Qsj2h2siOLEiIAriVkPOU7cUNZdsFFrS4dKJ08+v3FCVPvKFQOzGxQbz8vZElXXbHwZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633332; c=relaxed/simple;
-	bh=Co4yMiwkmWj3Mpj4+qMpsxeKMzqEEHlPJPYDn5wofRo=;
+	s=arc-20240116; t=1781631066; c=relaxed/simple;
+	bh=z4338IuwjRaLsdszbE03AcIid2zFzvLhWsqRrWX6nF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reaA8iuV+SyTymPH8KUccPxb2QRcy4QuIJEWnFV0FfyHqW6S3a6pPHhdByLL6xGc9v36gF3LssDeFQw2MGgiNmKJzLWnpql43BRUtieh+NJxRQAlWHwLvFoQw1pVO6RNDHn+m9HYEQ2FtfhKx9mnfxvrGdQlrc3kkr0u3LCCb80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izn5FVCb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5231F000E9;
-	Tue, 16 Jun 2026 18:08:50 +0000 (UTC)
+	 MIME-Version; b=RoZsf6XDfyfv59DQXf7DWBV2e5dzqXlutzfhVXgFkB3C9kCETzrKR70gzYtOIxhvPNsD9bVGPWOQg74wZ3rRVYNmlcud/mamiaIAbVIbubdlzs/OYyL6+gV57cMQfpe6MBBzOnODByH40gaSYFB5WUAXz8QP6kKbvjIdbuVTiL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HBVE8Kjd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDDB1F000E9;
+	Tue, 16 Jun 2026 17:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633331;
-	bh=+JOTi835EmJ4mbiUJQpqgmNqOt18o/KAnMl+6QQmYRI=;
+	s=korg; t=1781631063;
+	bh=TeoFt0dd69n8zdWACyS6YuNton09kt1ao8j+nNgpggI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=izn5FVCbzGJ5HeG9KUjlXj/icCTpCLf3mhTDhlfgvM5suWa91Hte5gC9AQ241CUsa
-	 +JCkzhhHSEMpVQb5OVr0yqa9V6HpiEicpIPpzwvqxNN9k4DDmJJVLjyamF8qp1yZvI
-	 4aZNW/3g0bMAR4DppBr1eTv3YJ4/O/xDjjObTUW0=
+	b=HBVE8KjdnNjn17jNOEi5CSTI1lqvDV8gvyK8bh9SNxnBRWhgKuSf1Y0v+6ktvTMUe
+	 ZsD9Yr6f6LXcwGrlyNzHEDn/hZBZON2ivE/oK10/6fDB9YR3N7CQoTYrR2i+CFQnAr
+	 LhhWa0iKfcXgcNCTOhAARHCnzWt6+h4X1mTMe86A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 059/411] usb: typec: wcove: dont write past struct pd_message in wcove_read_rx_buffer()
+	Jan Volckaert <janvolck@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 150/522] USB: serial: option: add MeiG SRM813Q
 Date: Tue, 16 Jun 2026 20:24:57 +0530
-Message-ID: <20260616145103.415157360@linuxfoundation.org>
+Message-ID: <20260616145133.105058517@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,114 +71,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265849-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265411-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janvolck@gmail.com,m:johan@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DD786693D6B
+X-Rspamd-Queue-Id: 066A6693360
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jan Volckaert <janvolck@gmail.com>
 
-commit 4af7ad0e6d7aa4403dbb1dac7b9659b0421efcaa upstream.
+commit 7d2b37d3e42d19071b62f4ddbee6e16e905efbf1 upstream.
 
-wcove_read_rx_buffer() copies the PD RX FIFO into the caller's
-struct pd_message with
+Add support for the Qualcomm Technology Snapdragon X35-based MeiG
+SRM813Q module.
 
-	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++)
-		regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
+The module can be put in different modes via AT commands to
+enable/disable GPS functionality:
 
-which has two problems:
+MODEM - PPP mode(2dee:4d63): AT+SER=1,1
 
-USBC_RXINFO_RXBYTES() is a 5-bit field (max 31) while struct pd_message
-is 30 bytes (__le16 header + __le32 payload[PD_MAX_PAYLOAD], packed).
-The byte count latched in RXINFO is the number of bytes the port partner
-put on the wire, so a malicious partner that transmits a 31-byte frame
-can drive the loop one byte past the destination if the WCOVE BMC
-receiver does not enforce the PD object-count limit in hardware. The
-existing FIXME flagged this as unverified.
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: MODEM
+If#= 3: AT
 
-Independently, regmap_read() takes an unsigned int * and stores a full
-unsigned int at the destination. Passing the byte pointer msg + i means
-each iteration writes four bytes; the high three are zero (val_bits is
-8) and are normally overwritten by the next iteration, but the final
-iteration's high bytes are not. With RXBYTES == 30 the i == 29 iteration
-already writes three zero bytes past msg, which sits on the IRQ thread's
-stack in wcove_typec_irq().
+P:  Vendor=2dee ProdID=4d63 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
 
-Clamp the loop to sizeof(struct pd_message) and read each register into
-a local before storing only its low byte, so the copy can never exceed
-the destination regardless of what RXINFO reports.
+NMEA mode(2dee:4d64): AT+SER=51,1
 
-Assisted-by: gkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051347-clustered-deflected-9543@gregkh
+If#= 0: RMNET
+If#= 1: DIAG/ADB
+If#= 2: NMEA
+If#= 3: AT
+
+P:  Vendor=2dee ProdID=4d64 Rev=05.15
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=1bd51f0e
+C:  #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Jan Volckaert <janvolck@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/wcove.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/typec/tcpm/wcove.c
-+++ b/drivers/usb/typec/tcpm/wcove.c
-@@ -444,9 +444,11 @@ static int wcove_start_toggling(struct t
- 	return regmap_write(wcove->regmap, USBC_CONTROL1, usbc_ctrl);
- }
- 
--static int wcove_read_rx_buffer(struct wcove_typec *wcove, void *msg)
-+static int wcove_read_rx_buffer(struct wcove_typec *wcove,
-+				struct pd_message *msg)
- {
--	unsigned int info;
-+	unsigned int info, val, len;
-+	u8 *buf = (u8 *)msg;
- 	int ret;
- 	int i;
- 
-@@ -454,12 +456,13 @@ static int wcove_read_rx_buffer(struct w
- 	if (ret)
- 		return ret;
- 
--	/* FIXME: Check that USBC_RXINFO_RXBYTES(info) matches the header */
-+	len = min(USBC_RXINFO_RXBYTES(info), sizeof(*msg));
- 
--	for (i = 0; i < USBC_RXINFO_RXBYTES(info); i++) {
--		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, msg + i);
-+	for (i = 0; i < len; i++) {
-+		ret = regmap_read(wcove->regmap, USBC_RX_DATA + i, &val);
- 		if (ret)
- 			return ret;
-+		buf[i] = val;
- 	}
- 
- 	return regmap_write(wcove->regmap, USBC_RXSTATUS,
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2450,6 +2450,12 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x30) },	/* MeiG Smart SRM825WN (Diag) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x40) },	/* MeiG Smart SRM825WN (AT) */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d38, 0xff, 0xff, 0x60) },	/* MeiG Smart SRM825WN (NMEA) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d63, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x30) },	/* MeiG SRM813Q (Diag) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x40) },	/* MeiG SRM813Q (AT) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2dee, 0x4d64, 0xff, 0xff, 0x60) },	/* MeiG SRM813Q (NMEA) */
++
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1404, 0xff) },			/* GosunCn GM500 RNDIS */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1405, 0xff) },			/* GosunCn GM500 MBIM */
 
 
 
