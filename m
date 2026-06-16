@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id a6bhMEB9MWq/kgUAu9opvQ
-	(envelope-from <stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:44 +0200
+	id 4WHmEMqPMWoRmwUAu9opvQ
+	(envelope-from <stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD94692635
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DBF693C0E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0pjkYNxl;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264758-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AwIvhgiT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265777-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CEE2E3102FCD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A5B6300F79D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C247884C;
-	Tue, 16 Jun 2026 16:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A23352007;
+	Tue, 16 Jun 2026 18:02:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4C447798F;
-	Tue, 16 Jun 2026 16:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A573CE4BA;
+	Tue, 16 Jun 2026 18:02:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627741; cv=none; b=pQCNxMlYUQ/ZBRzbVxQnvHeFPURF+bskuld1j7KVOhDpq3blR+3QWM2MZx8v/1muTTKIRrhITFUkG+3IU+PnDNxHerV+LIlYBXR2YOYe1zDoIJXv+vDBzhShxpe88JnhBd0yPRPZ/nHdLWKVWX40QCV9ye/mT/z3Kvew25fv2pg=
+	t=1781632926; cv=none; b=l2SfFRLYhsIZdw2Wi50oyvm+qNUyVvvNPETbDJg3WswZLC6EhYREKc0DKlPhspUe0pqW4uQ7YfLKMIwWqhK1yTNcwuVJVeK40Rr2rdnzYyri99Z39nrfAzD52U+YpyIVrPML1dzjCQX0aRiXzTwhsWQlBSsW3ranCsOL12p6nq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627741; c=relaxed/simple;
-	bh=OKXP1wqowPCf3s8N2W0g6P0rXlpEEIrSshio7ly1jM8=;
+	s=arc-20240116; t=1781632926; c=relaxed/simple;
+	bh=HjEvR2yZkYHr2WtBsK8cn2uzmP9EkkBHisQkZyxpRjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBladaXc7Vh6ozRzGSRmlzrWFMb9cCx931qU3Ew5iSMaOkpp5MIkHDspFD0y5QzZDU4NVjLmtwn+oPWOTLlvZG+A7y1PJcg1fz2XywyvOXRbrwwiEfI5qRLeP+tvvId9n6TitEdKH9m1eMbO9WoD5NCKeKHlEUrjL7LqZFiSijE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pjkYNxl; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202F61F000E9;
-	Tue, 16 Jun 2026 16:35:38 +0000 (UTC)
+	 MIME-Version; b=qFwYv4DoY4pDw21w3joh7jt3wWPV5vs9Fiv4Vii25GjcvIZlPyUSHKsHaQap7YayAwqL7p0kmE1IJ6gMZv98MLSNZmIXc+H+jS1lDi1AGi2WBz8jo2hI54kwUjHiKcIge7mvJBeatXTbyzDs//IuJBkw8rp9oxsZ8K2pXXgCGdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AwIvhgiT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491371F000E9;
+	Tue, 16 Jun 2026 18:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627740;
-	bh=cXWPBnsy0zcQxR77t1EXzPX+BuBHlkpX3bQEHixrT2k=;
+	s=korg; t=1781632925;
+	bh=8XoN73znVi4HTSLBvG0+JC+iC7PRdxKRZ4XNdNzkhxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0pjkYNxl9VbHl+nCGgrmf5pFPIFGscjGPsfcskAM3lp6VujXQ/4hHufj/JQrtr1Iv
-	 /awY5N41H1mlXva1yNwjNj55+0Aw2nE97yPcKom7ry0kpcxVDbeDCb9YSRfoMv7rUm
-	 Gt4WD0t4F2sw+sSFtGYSC8UpeIzfQK/p1pDceUFE=
+	b=AwIvhgiT6hi1ngPCgpE50up3ZWK8m2FJi3RfgFSYb520fYixIrAsXBNe3AcBq556q
+	 TZIiJE/UYdZt+dbcsgIefzUTLT5EXNryINTLazypt1U4mtSrX6top3oNYsuMurM700
+	 33ZTOFlspx/66Fbsc3YIXfZXlpIm9MqfCr+yZMUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Srinivas Kandagatla <srini@kernel.org>
-Subject: [PATCH 6.12 211/261] slimbus: qcom-ngd-ctrl: Initialize controller resources in controller
-Date: Tue, 16 Jun 2026 20:30:49 +0530
-Message-ID: <20260616145054.819083279@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 503/522] mm/damon/core: use time_in_range_open() for damos quota window start
+Date: Tue, 16 Jun 2026 20:30:50 +0530
+Message-ID: <20260616145149.291410133@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,146 +68,95 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264758-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4DD94692635
+X-Rspamd-Queue-Id: E5DBF693C0E
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 07c564ea5fb859b7381429de935d5df4781947c6 upstream.
+commit 049a57421dd67a28c45ae7e92c36df758033e5fa upstream.
 
-The work structs and work queue are controller resources, create and
-destroy them in the controller context. Creating them as part of the
-child device's probe path seems to be okay now that the controller's
-probe has been updated, but if for some reason the child does not probe
-successfully a SSR or PDR notification will schedule_work() on an
-uninitialized "ngd_up_work".
+damos_adjust_quota() uses time_after_eq() to show if it is time to start a
+new quota charge window, comparing the current jiffies and the scheduled
+next charge window start time.  If it is, the next charge window start
+time is updated and the new charge window starts.
 
-Move the initialization of these controller resources to the controller
-probe function to avoid any issues, and to clarify the ownership.
+The time check and next window start time update is skipped while the
+scheme is deactivated by the watermarks.  Let's suppose the deactivation
+is kept more than LONG_MAX jiffies (assuming CONFIG_HZ of 250, more than
+99 days in 32 bit systems and more than one billion years in 64 bit
+systems), resulting in having the jiffies larger than the next charge
+window start time + LONG_MAX.  Then, the time_after_eq() call can return
+false until another LONG_MAX jiffies are passed.
 
-Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
-Link: https://patch.msgid.link/20260530204421.116824-7-srini@kernel.org
+This means the scheme can continue working after being reactivated by the
+watermarks.  But, soon, the quota will be exceeded and the scheme will
+again effectively stop working until the next charge window starts.
+Because the current charge window is extended to up to LONG_MAX jiffies,
+however, it will look like it stopped unexpectedly and indefinitely, from
+the user's perspective.
+
+Fix this by using !time_in_range_open() instead.
+
+The issue was discovered [1] by sashiko.
+
+Link: https://lore.kernel.org/20260329152306.45796-1-sj@kernel.org
+Link: https://lore.kernel.org/20260324040722.57944-1-sj@kernel.org [1]
+Fixes: ee801b7dd782 ("mm/damon/schemes: activate schemes based on a watermarks mechanism")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/qcom-ngd-ctrl.c |   38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ mm/damon/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/slimbus/qcom-ngd-ctrl.c
-+++ b/drivers/slimbus/qcom-ngd-ctrl.c
-@@ -1588,25 +1588,8 @@ static int qcom_slim_ngd_probe(struct pl
- 	pm_runtime_enable(dev);
- 	pm_runtime_get_noresume(dev);
- 	ret = qcom_slim_ngd_qmi_svc_event_init(ctrl);
--	if (ret) {
-+	if (ret)
- 		dev_err(&pdev->dev, "QMI service registration failed:%d", ret);
--		return ret;
--	}
--
--	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
--	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
--	ctrl->mwq = create_singlethread_workqueue("ngd_master");
--	if (!ctrl->mwq) {
--		dev_err(&pdev->dev, "Failed to start master worker\n");
--		ret = -ENOMEM;
--		goto wq_err;
--	}
--
--	return 0;
--wq_err:
--	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -826,7 +826,8 @@ static void kdamond_apply_schemes(struct
+ 			continue;
  
- 	return ret;
- }
-@@ -1659,9 +1642,18 @@ static int qcom_slim_ngd_ctrl_probe(stru
- 	init_completion(&ctrl->qmi.qmi_comp);
- 	init_completion(&ctrl->qmi_up);
- 
-+	INIT_WORK(&ctrl->m_work, qcom_slim_ngd_master_worker);
-+	INIT_WORK(&ctrl->ngd_up_work, qcom_slim_ngd_up_worker);
-+
-+	ctrl->mwq = create_singlethread_workqueue("ngd_master");
-+	if (!ctrl->mwq)
-+		return dev_err_probe(dev, -ENOMEM, "Failed to start master worker\n");
-+
- 	ctrl->pdr = pdr_handle_alloc(slim_pd_status, ctrl);
--	if (IS_ERR(ctrl->pdr))
--		return dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-+	if (IS_ERR(ctrl->pdr)) {
-+		ret = dev_err_probe(dev, PTR_ERR(ctrl->pdr), "Failed to init PDR handle\n");
-+		goto err_destroy_mwq;
-+	}
- 
- 	ret = of_qcom_slim_ngd_register(dev, ctrl);
- 	if (ret)
-@@ -1688,6 +1680,8 @@ err_unregister_ngd:
- 	qcom_slim_ngd_unregister(ctrl);
- err_pdr_release:
- 	pdr_handle_release(ctrl->pdr);
-+err_destroy_mwq:
-+	destroy_workqueue(ctrl->mwq);
- 
- 	return ret;
- }
-@@ -1697,6 +1691,8 @@ static void qcom_slim_ngd_ctrl_remove(st
- 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
- 
- 	qcom_slim_ngd_unregister(ctrl);
-+
-+	destroy_workqueue(ctrl->mwq);
- }
- 
- static void qcom_slim_ngd_remove(struct platform_device *pdev)
-@@ -1709,8 +1705,6 @@ static void qcom_slim_ngd_remove(struct
- 	qcom_slim_ngd_enable(ctrl, false);
- 	qcom_slim_ngd_exit_dma(ctrl);
- 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
--	if (ctrl->mwq)
--		destroy_workqueue(ctrl->mwq);
- 
- 	kfree(ctrl->ngd);
- 	ctrl->ngd = NULL;
+ 		/* New charge window starts */
+-		if (time_after_eq(jiffies, quota->charged_from +
++		if (!time_in_range_open(jiffies, quota->charged_from,
++					quota->charged_from +
+ 					msecs_to_jiffies(
+ 						quota->reset_interval))) {
+ 			if (quota->esz && quota->charged_sz >= quota->esz)
 
 
 
