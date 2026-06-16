@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-266200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id pFVFEG+YMWoEnwUAu9opvQ
-	(envelope-from <stable+bounces-266200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:43 +0200
+	id F0KgLOGYMWownwUAu9opvQ
+	(envelope-from <stable+bounces-266165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1936944E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:39:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CB069456A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:41:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Xal2m3p2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266200-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266200-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZA+kj1UI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266165-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266165-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 990BF3004688
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:39:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F91B31BA196
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16CE478E5E;
-	Tue, 16 Jun 2026 18:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBA83DF007;
+	Tue, 16 Jun 2026 18:36:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D564169AD2;
-	Tue, 16 Jun 2026 18:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46AA3D5643;
+	Tue, 16 Jun 2026 18:36:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635178; cv=none; b=sIx3XYw6p3Xo24ucY7aWjIXUwE9RNn0RDdb9vHV1guaxBLAEWbBZ8nN56xKiOffUye4JIu2PniFu157+uE/6dG4blFgFUObpqxLLtF5AjtwCh6u+M3h3GVfFA6lKTKQNnCb7OFFRZ/iSUK0D6ACBpq4fx2TnvU1AvA2tIMuQAKA=
+	t=1781635004; cv=none; b=bqFNhYBa3FHbW/N4nZJEUpa4W93gb4XAvTTVkkzQlVWkx710iEfirEVHJw5tc6JDJRha0U7r57Pe1zOPLbEHAFYyRm19D2RtjVHERhnLm8AfbbpS6zcTAJvGpO5gQqqOW31ONqMQ/WNBIGSm9r3sAlTdcWabr260NERiz3JgfRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635178; c=relaxed/simple;
-	bh=xxfnIc89EShQrWss/HgRQmXK9hL+x0KQ6tSij8m0Hso=;
+	s=arc-20240116; t=1781635004; c=relaxed/simple;
+	bh=iC1NnaoAVCOmpjpY5GO6TbAEbjL9A1bwR1ToOBE2huI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojnQAELcI0ZwoqXiuqjzlxpCxIcHLvLJzqh8R+U7Lw+uabLFwB+3O3HHLSRwOHywuXYC34jm9vsyU4Kao56GLKYridGGw6UmFgpVBPJhon044/xh2lPkSt6FicoYE57yYsOK+ZsaBQS+JmRgAKvHBaJuHabSAeoyu2oza5Tmx9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xal2m3p2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F941F000E9;
-	Tue, 16 Jun 2026 18:39:36 +0000 (UTC)
+	 MIME-Version; b=HPQ77/Np9bp8E8n2Q69mXENJHyk+ToT9AToV2NVHmM+PLXwEz8PMVXdYFgkT7abJ9ux7lIE4ZYFeGgreIgjO8FtHsg5g6+HvoT4fRehFbGfj2htwvgwC3ByW7zZVwjU1aV2qyhYLSWiA5c9xLEi+iHIMMzV/FL1tHbtzkH5J8z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZA+kj1UI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF2F1F000E9;
+	Tue, 16 Jun 2026 18:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635177;
-	bh=lzKpk5tH7shIQiXuPE4PdX9U4ArpSqCElF3cjSg7Dk8=;
+	s=korg; t=1781635003;
+	bh=Xkao8i823PXBwZrqKDA97Ltkg0oXrUylw8thIbxgwdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Xal2m3p22ElfrO4JI1N8HTPf8wOBChpm0f0LrJX7aMdUhw+dFtY7k8d1oAYsAFXLP
-	 EG77K4ro28XCbSK7dssl76PC8vpWJ7n+hHP8H542KO7GUqmXrn1blG3BIoioNpiAx2
-	 /5Wqj5AxigLZhkARhC7JTGwoIZ91g5oIQK8JpmwM=
+	b=ZA+kj1UIvWHgB+daaDajA6JznyuesqkhIt1gHWmJVfyCMkAXYEW8Tj1Bn6VsyftDm
+	 eo3ikGtllJj4+5Yrmbn1jJxOypQFcJfFb0a6inFRKWzxeVDYAy53Cia5AmdCbUtNFp
+	 NO/mFec7v4XUTbG55lfiD2OET/g/hfP2cd08mnns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	John Ogness <john.ogness@linutronix.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 372/411] tty: serial: samsung: Remove redundant port lock acquisition in rx helpers
-Date: Tue, 16 Jun 2026 20:30:10 +0530
-Message-ID: <20260616145121.095483629@linuxfoundation.org>
+Subject: [PATCH 5.15 373/411] usb: dwc3: xilinx: fix error handling in zynqmp init error paths
+Date: Tue, 16 Jun 2026 20:30:11 +0530
+Message-ID: <20260616145121.141591304@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
 References: <20260616145100.376842714@linuxfoundation.org>
@@ -70,120 +69,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266200-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266165-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:john.ogness@linutronix.de,m:tudor.ambarus@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Thinh.Nguyen@synopsys.com,m:radhey.shyam.pandey@amd.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,sashiko.dev:url,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,linaro.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5A1936944E7
+X-Rspamd-Queue-Id: 28CB069456A
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit a3bb136bff5e6a5e48cdd813246c9c4686feaaa9 ]
+[ Upstream commit c1a0ecbf32c4b397353204e2ec94c5bb9f3300ed ]
 
-Sashiko identified a deadlock when the console flow is engaged [1].
+Fix error handling and resource cleanup i.e remove invalid
+phy_exit() after failed phy_init(), route failures through
+proper cleanup paths and return 0 explicitly on success.
 
-When console flow control is enabled (UPF_CONS_FLOW),
-s3c24xx_serial_stop_tx() calls s3c24xx_serial_rx_enable() and
-s3c24xx_serial_start_tx() calls s3c24xx_serial_rx_disable().
-
-The serial core framework invokes the .stop_tx() and .start_tx()
-callbacks with the port->lock spinlock already held. Furthermore, all
-internal driver paths that invoke stop_tx (such as the DMA TX
-completion handler s3c24xx_serial_tx_dma_complete() or the PIO TX IRQ
-handler s3c24xx_serial_tx_irq()) also acquire port->lock prior to
-calling it. (Note that s3c24xx_serial_start_tx() is only invoked by the
-serial core).
-
-However, s3c24xx_serial_rx_enable() and s3c24xx_serial_rx_disable()
-unconditionally attempt to acquire port->lock again using
-uart_port_lock_irqsave(). Since spinlocks are not recursive, this
-causes a deadlock on the same CPU when console flow control is engaged.
-
-Remove the redundant lock acquisition from both rx helper functions.
-
-Cc: stable <stable@kernel.org>
-Fixes: b497549a035c ("[ARM] S3C24XX: Split serial driver into core and per-cpu drivers")
-Reported-by: John Ogness <john.ogness@linutronix.de>
-Closes: https://sashiko.dev/#/patchset/20260506121606.5805-1-john.ogness%40linutronix.de [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://patch.msgid.link/20260515-samsung-tty-flow-control-deadlock-v1-1-93255edbc9bc@linaro.org
+Fixes: 84770f028fab ("usb: dwc3: Add driver for Xilinx platforms")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://patch.msgid.link/20260519115529.2980421-1-radhey.shyam.pandey@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/samsung_tty.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/usb/dwc3/dwc3-xilinx.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -242,12 +242,9 @@ static int s3c24xx_serial_txempty_nofifo
- static void s3c24xx_serial_rx_enable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	int count = 10000;
- 	u32 ucon, ufcon;
+--- a/drivers/usb/dwc3/dwc3-xilinx.c
++++ b/drivers/usb/dwc3/dwc3-xilinx.c
+@@ -165,15 +165,13 @@ static int dwc3_xlnx_init_zynqmp(struct
+ 	}
  
--	uart_port_lock_irqsave(port, &flags);
--
- 	while (--count && !s3c24xx_serial_txempty_nofifo(port))
- 		udelay(100);
+ 	ret = phy_init(usb3_phy);
+-	if (ret < 0) {
+-		phy_exit(usb3_phy);
++	if (ret < 0)
+ 		goto err;
+-	}
  
-@@ -260,23 +257,18 @@ static void s3c24xx_serial_rx_enable(str
- 	wr_regl(port, S3C2410_UCON, ucon);
+ 	ret = reset_control_deassert(apbrst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release APB reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
  
- 	ourport->rx_enabled = 1;
--	uart_port_unlock_irqrestore(port, flags);
+ 	/* Set PIPE Power Present signal in FPD Power Present Register*/
+@@ -185,20 +183,18 @@ static int dwc3_xlnx_init_zynqmp(struct
+ 	ret = reset_control_deassert(crst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release core reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
+ 
+ 	ret = reset_control_deassert(hibrst);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to release hibernation reset\n");
+-		goto err;
++		goto err_phy_exit;
+ 	}
+ 
+ 	ret = phy_power_on(usb3_phy);
+-	if (ret < 0) {
+-		phy_exit(usb3_phy);
+-		goto err;
+-	}
++	if (ret < 0)
++		goto err_phy_exit;
+ 
+ skip_usb3_phy:
+ 	/*
+@@ -212,6 +208,10 @@ skip_usb3_phy:
+ 		writel(reg, priv_data->regs + XLNX_USB_TRAFFIC_ROUTE_CONFIG);
+ 	}
+ 
++	return 0;
++
++err_phy_exit:
++	phy_exit(usb3_phy);
+ err:
+ 	return ret;
  }
- 
- static void s3c24xx_serial_rx_disable(struct uart_port *port)
- {
- 	struct s3c24xx_uart_port *ourport = to_ourport(port);
--	unsigned long flags;
- 	u32 ucon;
- 
--	uart_port_lock_irqsave(port, &flags);
--
- 	ucon = rd_regl(port, S3C2410_UCON);
- 	ucon &= ~S3C2410_UCON_RXIRQMODE;
- 	wr_regl(port, S3C2410_UCON, ucon);
- 
- 	ourport->rx_enabled = 0;
--	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void s3c24xx_serial_stop_tx(struct uart_port *port)
 
 
 
