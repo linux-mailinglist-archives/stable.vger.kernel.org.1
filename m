@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZvgNDlJsMWrRiwUAu9opvQ
-	(envelope-from <stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:30 +0200
+	id sxPiDdqLMWogmQUAu9opvQ
+	(envelope-from <stable+bounces-265511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A764B691196
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0D769375C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:46:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=16mqIhBF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263950-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QIGMDAPS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265511-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F2283097A8F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:22:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D4AD321F2F0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE21743E4BA;
-	Tue, 16 Jun 2026 15:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69ED347AF5D;
+	Tue, 16 Jun 2026 17:39:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22982E612E;
-	Tue, 16 Jun 2026 15:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9553C4178;
+	Tue, 16 Jun 2026 17:39:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623349; cv=none; b=MgoNNJdXebtsj+7h99trHZx2+iL45NiY0lxRfWN5WHWlQGRPYMX2dgl0prN4S81sTgbbS0WHgK5tMUu9aFYbmD8CgjnGdukiRfwbQDSCNY1YEFOr271DRGiBG311qs8eDDoyNMcrAtXSsv1rj3amspA0r4cqpz2QZHWY3g1mA8I=
+	t=1781631582; cv=none; b=WAeX6Vd8kfhwUJKQlSCEWJ5gLoCuxedCj2nnRAM9HLL8pciVENSWZdmGpLvhxUC2g+qI0llmYbs1d2QYqavk1Nm3w0nlfVUGRW3xjSk3tU/JhVKLZg16L+VTog7AQOY3uiFzOj9fkSRkPD9t6Fz0Ch6dj6GRhWyE5sPk2V00mfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623349; c=relaxed/simple;
-	bh=OGCBqsySlWD3z3GPini0xp1QW1aaD0zS2i6eW/P6dvo=;
+	s=arc-20240116; t=1781631582; c=relaxed/simple;
+	bh=w+gKC/tC17ZQs9uNRQJKcoZXXVrOqf5BMk0P+ZbR130=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHJAITQGnmW+GxN1sYthuWvJ2GAPMMwiz5RaPkxqoQ2VuuaVfar5Q4QVeDcxifkkOF9ThpPT5FW8FlXcmVBH4Oq66y7vmAlgS4YL06F5Cc/osIGf9JCyln9V6zvkiNmPdv7qKxdnLY8mg9L8Qqn/XKK9mJOsvYzkJ8LlG8EK/ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16mqIhBF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C833A1F000E9;
-	Tue, 16 Jun 2026 15:22:27 +0000 (UTC)
+	 MIME-Version; b=myVS4naB/s6RlsCFmCLMvYI1gMHXrgLXt+PTSXxVkUX3sEgvSB6WUDCCULcO6A0gP+ddpNrxvUD8N5Iv8AX/RYeUEwtRU60/g1S+bkGm0S1t/jYl6J7a+i2DG3/N7uCGRTZYskb1Oi+HbNcNTQXCwwgOKD4e3bL1sKYUeCx0XTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIGMDAPS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC1B1F000E9;
+	Tue, 16 Jun 2026 17:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623348;
-	bh=7inY/t2TEiBgEUyvJCFpuDwfPpOBHcRE//z6AeDQ+o8=;
+	s=korg; t=1781631580;
+	bh=pKF8ZSL1Nm6O2MJWdf4Pa+QqIL9cQ/Ch4HN5QT66Iaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=16mqIhBFJOWVDrLsaYGrJeaYQi8GZJqdDL+VFSishsEYlZV+x3OF7YsJzl9nZjV1U
-	 O2/dD1KvxunD5EXzdCRUkJi3V4LLsfXzFac24Wt5gTOtNkRPzyTS/KGrCCzDODItBC
-	 BLUnAadnqKVUPGwNOX1DFTBXCBtBa9Uwa7gG3Txk=
+	b=QIGMDAPSrlsjEES3CpOxJtV+V/Rkn++PXwLlFru9YGQq8xTn9ZuLdOwtvkTdo2Uc5
+	 W2Nk05QINWJvclOSsCiOciB8Gjr06BJ3PEoCJzEvsfOfAKdGfudqtQndIbOcGwNbu/
+	 fs1oYwbJexuKVc7ZGCC3EcOwh+c6FzsRNXnhAzqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dudu Lu <phx0fer@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 131/378] sctp: fix uninit-value in __sctp_rcv_asconf_lookup()
+Subject: [PATCH 6.1 215/522] Bluetooth: bnep: fix incorrect length parsing in bnep_rx_frame() extension handling
 Date: Tue, 16 Jun 2026 20:26:02 +0530
-Message-ID: <20260616145117.209984075@linuxfoundation.org>
+Message-ID: <20260616145136.097954122@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +67,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263950-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:michaelbommarito@gmail.com,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265511-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:phx0fer@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A764B691196
+X-Rspamd-Queue-Id: AB0D769375C
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-[ Upstream commit f8373d7090b745728de66308deeecc67e8d319ce ]
+[ Upstream commit 72b8deccff17a7644e0367e1aaf1a36cfb014324 ]
 
-__sctp_rcv_asconf_lookup() in net/sctp/input.c only checks that the ASCONF
-chunk can hold the ADDIP header and a parameter header, then calls
-af->from_addr_param(), which reads the full address (16 bytes for IPv6)
-trusting the parameter's declared length.
+In bnep_rx_frame(), the BNEP_FILTER_NET_TYPE_SET and
+BNEP_FILTER_MULTI_ADDR_SET extension header parsing has two bugs:
 
-An unauthenticated peer can send a truncated trailing ASCONF chunk that
-declares an IPv6 address parameter but stops after the 4-byte parameter
-header; reached from the no-association lookup path, from_addr_param() then
-reads uninitialized bytes past the parameter.
+1) The 2-byte length field is read with *(u16 *)(skb->data + 1), which
+   performs a native-endian read. The BNEP protocol specifies this field
+   in big-endian (network byte order), and the same file correctly uses
+   get_unaligned_be16() for the identical fields in
+   bnep_ctrl_set_netfilter() and bnep_ctrl_set_mcfilter().
 
-Impact: an unauthenticated SCTP peer makes the receive path read up to 16
-bytes of uninitialized memory past a truncated ASCONF address parameter.
+2) The length is multiplied by 2, but unlike BNEP_SETUP_CONN_REQ where
+   the length byte counts UUID pairs (requiring * 2 for two UUIDs per
+   entry), the filter extension length field already represents the total
+   data size in bytes. This is confirmed by bnep_ctrl_set_netfilter()
+   which reads the same field as a byte count and divides by 4 to get
+   the number of filter entries.
 
-The sibling __sctp_rcv_init_lookup() bounds parameters with
-sctp_walk_params(); this path open-codes the fetch and omits the bound.
-Verify the whole address parameter lies within the chunk before
-from_addr_param() reads it, the same class of fix as commit 51e5ad549c43
-("net: sctp: fix KMSAN uninit-value in sctp_inq_pop").
+   The bogus * 2 means skb_pull advances twice as far as it should,
+   either dropping valid data from the next header or causing the pull
+   to fail entirely when the doubled length exceeds the remaining skb.
 
-Fixes: df2185771439 ("[SCTP]: Update association lookup to look at ASCONF chunks as well")
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20260608122234.459098-1-michael.bommarito@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix by splitting the pull into two steps: first use skb_pull_data() to
+safely pull and validate the 3-byte fixed header (ctrl type + length),
+then pull the variable-length data using the properly decoded length.
+
+Fixes: bf8b9a9cb77b ("Bluetooth: bnep: Add support to extended headers of control frames")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/input.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/bluetooth/bnep/core.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index e119e460ccde0b..864741fae4187e 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -1204,6 +1204,14 @@ static struct sctp_association *__sctp_rcv_asconf_lookup(
- 	/* Skip over the ADDIP header and find the Address parameter */
- 	param = (union sctp_addr_param *)(asconf + 1);
- 
-+	/* The whole address parameter must lie within the chunk before
-+	 * af->from_addr_param() reads the variable-length address; otherwise a
-+	 * truncated trailing ASCONF chunk lets it read uninitialized bytes past
-+	 * the parameter.
-+	 */
-+	if (sizeof(*asconf) + ntohs(param->p.length) > ntohs(ch->length))
-+		return NULL;
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index e125afe573fcf2..9d804b08de88e0 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -330,11 +330,18 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
+ 				goto badframe;
+ 			break;
+ 		case BNEP_FILTER_MULTI_ADDR_SET:
+-		case BNEP_FILTER_NET_TYPE_SET:
+-			/* Pull: ctrl type (1 b), len (2 b), data (len bytes) */
+-			if (!skb_pull(skb, 3 + *(u16 *)(skb->data + 1) * 2))
++		case BNEP_FILTER_NET_TYPE_SET: {
++			u8 *hdr;
 +
- 	af = sctp_get_af_specific(param_type2af(param->p.type));
- 	if (unlikely(!af))
- 		return NULL;
++			/* Pull ctrl type (1 b) + len (2 b) */
++			hdr = skb_pull_data(skb, 3);
++			if (!hdr)
++				goto badframe;
++			/* Pull data (len bytes); length is big-endian */
++			if (!skb_pull(skb, get_unaligned_be16(&hdr[1])))
+ 				goto badframe;
+ 			break;
++		}
+ 		default:
+ 			kfree_skb(skb);
+ 			return 0;
 -- 
 2.53.0
 
