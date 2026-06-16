@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SqpDJYqeMWq4oQUAu9opvQ
-	(envelope-from <stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:46 +0200
+	id VcieDFKXMWqcngUAu9opvQ
+	(envelope-from <stable+bounces-266144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C86B694BCD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4295A69441B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Qji0gmgS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266496-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ArdPP9Uk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266144-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266144-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA6A3306C702
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:05:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 615073002F48
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA85349CF0;
-	Tue, 16 Jun 2026 19:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340E743D4E8;
+	Tue, 16 Jun 2026 18:34:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BE63DBD76;
-	Tue, 16 Jun 2026 19:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10347169AD2;
+	Tue, 16 Jun 2026 18:34:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636721; cv=none; b=Y3DHyUFCMyiNwWDaO85Hkqm/wWXd0aWxoucV7qdEehKMrd2hUOpbWmJfHQMv10PLPN3wFjHAdFTGqGU2PPoqz0RrNdPelQUcESiSJia3NitNI6oC5BOrDc8zEG4AnVXBH4BLKlpUMz3ia0wkndU4j+qevmk78IexwSGMywmNfII=
+	t=1781634893; cv=none; b=g840QBhxNqlnLmVT1+W20/1SDltE6UmP916eMBVIfBSV017VGmeHz0phPZ/yvYy4xXzBt55xCfiGwffNdG8bYW+Pss0GZggldek6gNnqObtR4aVJmVBmBcC3whACgyMvUJD3wrQXk8wJYZImZMPCtCmd2RanGZOdjLqrIOXXIlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636721; c=relaxed/simple;
-	bh=XyHJpVibneMaRBtsYKDmTBklbL/bc6eJ1LpA9O6pWZs=;
+	s=arc-20240116; t=1781634893; c=relaxed/simple;
+	bh=kVJ4fKeJ1uUeuWUO+ttkU0eoyEIdHIXI1bOKqFuCRHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeN1iwjwO4VIGLxAaUNE2q7LmRoBc/P0JSFwz1V1aTHZjj0X2Tzaysg6p/1qsP8U/XdbzezOktsBaWfLhDhTMMk5LeTPvO6PLX452RQzeCUvLeTCSzmUKExXhKGE77+pKfeB9PE8VgS7t80ThgOHDWKXQJwr8B6ZcnOc/tfk4m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qji0gmgS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2936E1F000E9;
-	Tue, 16 Jun 2026 19:05:18 +0000 (UTC)
+	 MIME-Version; b=Cj4dVFReM3fQid6E/1OrngVRTzHH+jIXXdLi/DhlspyFIfPxyzJ4RXltt8gUAfnWYlRcY+GV8fg80hTWoG36+WDpa9Mpjb+FRVKEd7BhxqsOjAqy3BfKrK2+yM8u1yHn6RTGCQndkX7qfYN5og3v2aAvQCqzcPNkTf4sMb8cuK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArdPP9Uk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FFE1F000E9;
+	Tue, 16 Jun 2026 18:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636720;
-	bh=QnvMU++g56Lyd/envMKqf8kMHKF+4BqPhZwMG43nEKo=;
+	s=korg; t=1781634892;
+	bh=fxDCz/1+n/gJcEUe6BqmtlgEejLD4hTOUrNYNfe6E6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Qji0gmgStDBbb4a6m2KkrYB9hO/IejLn2chudsXYvZN+kOH7eX64KSdWtqA+xoaxe
-	 b/WIiAKwO6fVmh2gXjuL8xKMnsZxeTgDHH1fyy15lZECuFqe9Ok2PrgSoXnSmYPX4U
-	 M5DnoMIXnKAl/bBo10WCf1ZPyzZx5+eqPH6tQJF8=
+	b=ArdPP9UkCAHnwLr599BCOnqT53n0c9wbDU4+1VkmnvKkIhV3RIr30XWknrGOeciLO
+	 zEx4TNOhJ+5d+zgWADZcmZcjYMEmR3ctB1ExzjvkA/AMZm/tvGjMpkYbTrdpRA3p1Z
+	 QTstkrJEGBeX7Ldk+ug4JoY/8FqHQXUHznDEnlmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Sai Krishna <saikrishnag@marvell.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 293/342] octeontx2-af: Add validation for lmac type
+Subject: [PATCH 5.15 351/411] ipv6: ioam: add NULL check for idev in ipv6_hop_ioam()
 Date: Tue, 16 Jun 2026 20:29:49 +0530
-Message-ID: <20260616145102.069841196@linuxfoundation.org>
+Message-ID: <20260616145119.961729199@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,120 +68,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266496-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266144-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hkelam@marvell.com,m:sgoutham@marvell.com,m:saikrishnag@marvell.com,m:simon.horman@corigine.com,m:davem@davemloft.net,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,davemloft.net:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C86B694BCD
+X-Rspamd-Queue-Id: 4295A69441B
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Justin Iurman <justin.iurman@gmail.com>
 
-[ Upstream commit cb5edce271764524b88b1a6866b3e626686d9a33 ]
+[ Upstream commit d4ea0dfd75011b78cebf3808f98ac4c4f51a6fb9 ]
 
-Upon physical link change, firmware reports to the kernel about the
-change along with the details like speed, lmac_type_id, etc.
-Kernel derives lmac_type based on lmac_type_id received from firmware.
+Reported by Sashiko:
 
-In a few scenarios, firmware returns an invalid lmac_type_id, which
-is resulting in below kernel panic. This patch adds the missing
-validation of the lmac_type_id field.
+The function ipv6_hop_ioam() accesses
+__in6_dev_get(skb->dev)->cnf.ioam6_enabled without validating the returned
+idev pointer. Because addrconf_ifdown() can concurrently clear dev->ip6_ptr
+via RCU, __in6_dev_get() can return NULL during interface teardown, which
+could cause a NULL pointer dereference when processing an IOAM Hop-by-Hop
+option.
 
-Internal error: Oops: 96000005 [#1] PREEMPT SMP
-[   35.321595] Modules linked in:
-[   35.328982] CPU: 0 PID: 31 Comm: kworker/0:1 Not tainted
-5.4.210-g2e3169d8e1bc-dirty #17
-[   35.337014] Hardware name: Marvell CN103XX board (DT)
-[   35.344297] Workqueue: events work_for_cpu_fn
-[   35.352730] pstate: 40400089 (nZcv daIf +PAN -UAO)
-[   35.360267] pc : strncpy+0x10/0x30
-[   35.366595] lr : cgx_link_change_handler+0x90/0x180
+Let's add a check and use SKB_DROP_REASON_IPV6DISABLED accordingly.
 
-Fixes: 61071a871ea6 ("octeontx2-af: Forward CGX link notifications to PFs")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: Sai Krishna <saikrishnag@marvell.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: c0bf0a4f3f1f ("octeontx2-af: CGX: add bounds check to cgx_speed_mbps index")
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260517183059.29140-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c  |   15 +++++++++++----
- drivers/net/ethernet/marvell/octeontx2/af/mbox.h |    1 +
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ net/ipv6/exthdrs.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -669,15 +669,22 @@ static inline void link_status_user_form
- 					   struct cgx_link_user_info *linfo,
- 					   struct cgx *cgx, u8 lmac_id)
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -952,14 +952,20 @@ static bool ipv6_hop_ioam(struct sk_buff
  {
--	char *lmac_string;
--
- 	linfo->link_up = FIELD_GET(RESP_LINKSTAT_UP, lstat);
- 	linfo->full_duplex = FIELD_GET(RESP_LINKSTAT_FDUPLEX, lstat);
- 	linfo->speed = cgx_speed_mbps[FIELD_GET(RESP_LINKSTAT_SPEED, lstat)];
-+	linfo->an = FIELD_GET(RESP_LINKSTAT_AN, lstat);
- 	linfo->fec = FIELD_GET(RESP_LINKSTAT_FEC, lstat);
- 	linfo->lmac_type_id = cgx_get_lmac_type(cgx, lmac_id);
--	lmac_string = cgx_lmactype_string[linfo->lmac_type_id];
--	strncpy(linfo->lmac_type, lmac_string, LMACTYPE_STR_LEN - 1);
-+
-+	if (linfo->lmac_type_id >= LMAC_MODE_MAX) {
-+		dev_err(&cgx->pdev->dev, "Unknown lmac_type_id %d reported by firmware on cgx port%d:%d",
-+			linfo->lmac_type_id, cgx->cgx_id, lmac_id);
-+		strncpy(linfo->lmac_type, "Unknown", LMACTYPE_STR_LEN - 1);
-+		return;
-+	}
-+
-+	strncpy(linfo->lmac_type, cgx_lmactype_string[linfo->lmac_type_id],
-+		LMACTYPE_STR_LEN - 1);
- }
+ 	struct ioam6_trace_hdr *trace;
+ 	struct ioam6_namespace *ns;
++	struct inet6_dev *idev;
+ 	struct ioam6_hdr *hdr;
  
- /* Hardware event handlers */
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -369,6 +369,7 @@ struct cgx_link_user_info {
- 	uint64_t full_duplex:1;
- 	uint64_t lmac_type_id:4;
- 	uint64_t speed:20; /* speed in Mbps */
-+	uint64_t an:1;		/* AN supported or not */
- 	uint64_t fec:2;	 /* FEC type if enabled else 0 */
- #define LMACTYPE_STR_LEN 16
- 	char lmac_type[LMACTYPE_STR_LEN];
+ 	/* Bad alignment (must be 4n-aligned) */
+ 	if (optoff & 3)
+ 		goto drop;
+ 
++	/* Does the device still have IPv6 configuration? */
++	idev = __in6_dev_get(skb->dev);
++	if (!idev)
++		goto drop;
++
+ 	/* Ignore if IOAM is not enabled on ingress */
+-	if (!READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_enabled))
++	if (!READ_ONCE(idev->cnf.ioam6_enabled))
+ 		goto ignore;
+ 
+ 	/* Truncated Option header */
 
 
 
