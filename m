@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id nBtUOBNxMWqqjQUAu9opvQ
-	(envelope-from <stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:47 +0200
+	id c7M6HfCDMWp8lQUAu9opvQ
+	(envelope-from <stable+bounces-265041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4537069172D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA953692D91
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jugQJubj;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264264-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dHHS+4T1;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265041-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265041-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1D2F317FCA6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C846325C40F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA3A44CF40;
-	Tue, 16 Jun 2026 15:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B16466B4B;
+	Tue, 16 Jun 2026 16:59:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14D642B738;
-	Tue, 16 Jun 2026 15:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3670933AD9B;
+	Tue, 16 Jun 2026 16:59:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625035; cv=none; b=NOmYPqkHvjqlIgCvmYq0cQk6f1P5aBUVJduGtgVcoPlU958ZtPW0KQZpDo9uZMBOF9b+tWiuN3M1T8wUQuaflvqyBOCyhp8Q/Y4zZXtwXHaa9PPWLkIXVM6GsztsuaMITi6cH5HuiHsP+wHwR9Ji+KQ0uS0V2AYVigl4zZZOT+0=
+	t=1781629180; cv=none; b=AGueuwfV5exGVnJmi/rK13p4IRne+6J5GKSg3xeumlEzNhhAEjQyBCQyYHmbgpYRNi+ngO2G3rCl7f70zbZK3Dyey3WWJcuFDbS9VmbDCx4MMTu1fJg2Gq6fgVqEFn+jzNK8//J8ox5ArrfiuuS4dekvfn9RfIfQR2oRG27NcJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625035; c=relaxed/simple;
-	bh=mPRXQ9jIbmCToOroam8ZFW6wQ6kGa4oJAq53/3Eo3d8=;
+	s=arc-20240116; t=1781629180; c=relaxed/simple;
+	bh=miUVu2qrVOwne7Xm/BaAH1XLmgEn8pVgc5TztglyGO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7qgwxn5A3DGXm5c5NFRvuKB01UnP0P8HW8dJzA8v9ay1SGD5LOuzkF/yNzVDzE222ihFKkwUXi0v4ZK0fCA+voOklGd7oFD7EXyOTYdBbxzJoZ0LHjw4Km1FiJFS53d40HmiUCC9VI0raTGPwDKlhHHWCqOXkeUEOHuq35jlFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jugQJubj; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7A91F000E9;
-	Tue, 16 Jun 2026 15:50:32 +0000 (UTC)
+	 MIME-Version; b=IQdht9Kedxgfg5me2hwv2e6ZXbiwjf3v1yrRZrkmm4oVFv/WZFAC0LY4eI6R0EYO8e+39F1VKds0kMvK2wRqpGTNuvSLhP800si6be1PTzJK1XcaE3u6lnd9vLPBts2RugEydeeNQ57puVHpqiBCBSCEFt791xZaqJU6xnaNQPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dHHS+4T1; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38361F00A3A;
+	Tue, 16 Jun 2026 16:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625033;
-	bh=W/FgGoaaf59FMJQD3aL2XfOr4+Uygd4/3SqmxDWDMyQ=;
+	s=korg; t=1781629178;
+	bh=/q6IJTGufDdHFB1oXC2xYiUxL6DkFvTp+IL2lZnECPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jugQJubj86/A9fLYn3yAw5+1nVW/f6OJLhBvPRLzl0dqWBxkr7uXRawoNcmHa6vYN
-	 2cEVa+NwcZhqB3uWWPH+x/87sN5JxEfF3K/3itMB9QBiDC7SI4mGEzrGngX8huerJ+
-	 oLsC/sUlqjNYDegjzX6yRcqkEq3rJbGYIFK02wek=
+	b=dHHS+4T1n+eEEfYciWKg99kgImnRgh5qvWdRmcH4F/NvxM0H7Gezk+wrgN5BbnKPD
+	 RYRRrQ3PkPZ/rauKXy6CZScDlBPiJ4+LkplrBcve74fxMrnCxvJsgvY4f4oParL0sS
+	 Pm/M+Ni5SvksHgCTCkSgintlm5cheJXk07XhJ7AE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,
+	Bharath Reddy <kbreddy.rpbc@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 067/325] sctp: purge outqueue on stale COOKIE-ECHO handling
+Subject: [PATCH 6.6 236/452] Bluetooth: fix memory leak in error path of hci_alloc_dev()
 Date: Tue, 16 Jun 2026 20:27:43 +0530
-Message-ID: <20260616145101.041341065@linuxfoundation.org>
+Message-ID: <20260616145130.090307062@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,121 +73,92 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265041-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264264-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com,m:kbreddy.rpbc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:kbreddyrpbc@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lenovo.com:email,msgid.link:url,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable,535ecc844591e50588a5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4537069172D
+X-Rspamd-Queue-Id: BA953692D91
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Bharath Reddy <kbreddy.rpbc@gmail.com>
 
-[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
+[ Upstream commit 37b3009bf5976e8ab77c8b9a9bc3bbd7ff49e37f ]
 
-sctp_stream_update() is only invoked when the association is moved into
-COOKIE_WAIT during association setup/reconfiguration. In this path, the
-outbound stream scheduler state (stream->out_curr) is expected to be
-clean, since no user data should have been transmitted yet unless the
-state machine has already partially progressed.
+Early failures in Bluetooth HCI UART configuration leak SRCU percpu
+memory.
 
-However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
-Stale Cookie ERROR is received, the association is rolled back from
-COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
-have been queued and even bundled with the COOKIE-ECHO chunk.
+When device initialization fails before hci_register_dev() completes,
+the HCI_UNREGISTER flag is never set. As a result, when the device
+reference count reaches zero, bt_host_release() evaluates this flag as
+false and falls back to a direct kfree(hdev).
 
-During the rollback, sctp_stream_update() frees the old stream table
-and installs a new one, but it does not invalidate stream->out_curr.
-As a result, out_curr may still point to a freed sctp_stream_out
-entry from the previous stream state.
+Because hci_release_dev() is bypassed, the SRCU struct initialized
+early in hci_alloc_dev() is never cleaned up, resulting in a leak of
+percpu memory.
 
-Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
-stream->out_curr->ext, which can lead to use-after-free once the old
-stream state has been released via sctp_stream_free().
+Fix the leak by explicitly calling cleanup_srcu_struct() in the
+fallback (unregistered) branch of bt_host_release() before freeing
+the device.
 
-This results in crashes such as (reported by Yuqi):
-
-  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
-  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
-  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
-     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
-   sctp_sched_fcfs_dequeue+0x13a/0x140
-   sctp_outq_flush+0x1603/0x33e0
-   sctp_do_sm+0x31c9/0x5d30
-   sctp_assoc_bh_rcv+0x392/0x6f0
-   sctp_inq_push+0x1db/0x270
-   sctp_rcv+0x138d/0x3c10
-
-Fix this by fully purging the association outqueue when handling the
-Stale Cookie case. This ensures all pending transmit and retransmit
-state is dropped, and any scheduler cached pointers are invalidated,
-making it safe to rebuild stream state during COOKIE_WAIT restart.
-
-Updating only stream->out_curr would be insufficient, since queued
-and retransmittable data would still reference the old stream state and
-trigger later use-after-free in dequeue paths.
-
-Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yuqi Xu <xuyq21@lenovo.com>
-Reported-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=535ecc844591e50588a5
+Tested-by: syzbot+535ecc844591e50588a5@syzkaller.appspotmail.com
+Fixes: 1d6123102e9f ("Bluetooth: hci_core: Fix use-after-free in vhci_flush()")
+Signed-off-by: Bharath Reddy <kbreddy.rpbc@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/bluetooth/hci_sysfs.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 8e89a870780c49..9b23c11cbb9ea4 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2598,11 +2598,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
- 	 */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index 4b54dbbf0729a3..60350c6723cb76 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -83,10 +83,12 @@ static void bt_host_release(struct device *dev)
+ {
+ 	struct hci_dev *hdev = to_hci_dev(dev);
  
--	/* If we've sent any data bundled with COOKIE-ECHO we will need to
--	 * resend
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
--			SCTP_TRANSPORT(asoc->peer.primary_path));
-+	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
+-	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
++	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
+ 		hci_release_dev(hdev);
+-	else
++	} else {
++		cleanup_srcu_struct(&hdev->srcu);
+ 		kfree(hdev);
++	}
+ 	module_put(THIS_MODULE);
+ }
  
- 	/* Cast away the const modifier, as we want to just
- 	 * rerun it through as a sideffect.
 -- 
 2.53.0
 
