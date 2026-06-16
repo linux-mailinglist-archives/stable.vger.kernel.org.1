@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eh0RGWWeMWqsoQUAu9opvQ
-	(envelope-from <stable+bounces-266486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:09 +0200
+	id fdfLK+VxMWryjQUAu9opvQ
+	(envelope-from <stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C29694BA2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC796691822
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gO0HF1NQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266486-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266486-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tZhMH/EN";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A900E30184FD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:04:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 449E930797BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96F03DDDBA;
-	Tue, 16 Jun 2026 19:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE4144D68A;
+	Tue, 16 Jun 2026 15:41:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FA93DA5A8;
-	Tue, 16 Jun 2026 19:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6833C44D022;
+	Tue, 16 Jun 2026 15:41:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636668; cv=none; b=YmRO+a1QE7TP6hBhH7ZZ2nTg76i4k2Yqpswp7clGPeehbIkWDEWTqTwo2eH+zehctC5zM5UMifwkEp0XqdyObgAkubrpZFcsR4xcseI29HmRq8OGwQJTG7NZczuxzaxnXCvP4SJ2SLicCIP0AzrQH51uyQT+5b+6AnUaakJtl9I=
+	t=1781624484; cv=none; b=jGtr8orFGMlyiqB+0w4tuHpbBZvn3TNiLW9mLcaxk4EHdendv0o+hC+vehxTMdafg3Pxo4ZJnSu3K6K8j6pXogFS/XpBOoIf2ULW98h7GEEb++SRSp3jyHBffE3mLx19lhxrbElNDXVVoiS2m8WajEmT1zuR8b5rUg7DtQJLpSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636668; c=relaxed/simple;
-	bh=Hr0w8gL1TI5qkz+0GTyGT3hVK+A57bOWJOj4S6L00lg=;
+	s=arc-20240116; t=1781624484; c=relaxed/simple;
+	bh=xxp4Z7wIBCrS0msQ+YxPSXXpLd7w/HMYtk97y7AO1Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCDJbQUWXRHRc06PpHuG8OEvyCOP7++ejHPJWH8MoCAuMcNx9zIhrx0a/UgMY0xNrDoHTgDxz4PWFSQ4bySxYV0kqbRS4ZWu4sxusqSmDVCQ97G/56vr7qm+dR9cQcqiraGGVENx9GZCPHvC+i3fZt7FAlAaH0s+erktE5LWvPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gO0HF1NQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBACF1F00A3A;
-	Tue, 16 Jun 2026 19:04:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LhKwPVdVegMd2WMi3e6n8PsQLAE0ds7phmn7OII1gu9Baj5vjC+dRIZs/znKczrj1ctwz5ISmi/hp2pB1okE7PygjhJ3f+0YYGKUFP+FbXfGa23aMuNnX+kAz/ovCr3WwBuEeoj6wf3cmwgp0z4rl2JD8I7yzqxm4MkUpJzDKtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZhMH/EN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F0A1F00A3D;
+	Tue, 16 Jun 2026 15:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636667;
-	bh=6t4ZomJBS3urc4Xm2wXnRYhRuVGqf0VN4QS/5mh0QQ4=;
+	s=korg; t=1781624483;
+	bh=B8qRh7Dx5deTshV2SnL7b/E+mkn9W2BUSM38lUC8se0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gO0HF1NQFweMqFjAtpdrPvn6Z0nrMk6V6VaPuJGqcprVL0e5ikEFNe2FJyJXbrmv/
-	 ukjXeBp5WqtetHgRqrvcjWEp3YDt5GOOyAGIUh8y56mnYlUomvU0OJialoFXd73bGM
-	 bjBwv19L1x2UtQtWwcYmB5JtHyXO3fTcnM4cFzp4=
+	b=tZhMH/ENjC2xKc/jHYI5odcmFn2KkoazX1Cgxp9aGEPwfHdOpZECUpC/Yjs74NGCY
+	 s/gQrAtc0MmCk0bv2sLQRHIMSx/VHKg1xLRqAHws9+la6cZ3yCBOtZO88VBi5JrYmG
+	 2H1repAxglBlBPi+wAD9VUUeLhPwBMXQO8H364Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 281/342] qed: fix double free in qed_cxt_tables_alloc()
+	Christian Koenig <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH 7.0 346/378] drm/amdgpu: set noretry=1 as default for GFX 10.1.x (Navi10/12/14)
 Date: Tue, 16 Jun 2026 20:29:37 +0530
-Message-ID: <20260616145101.496183301@linuxfoundation.org>
+Message-ID: <20260616145128.387079976@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +66,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266486-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264169-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:alexander.deucher@amd.com,m:felix.kuehling@amd.com,m:vitaly.prosyak@amd.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 64C29694BA2
+X-Rspamd-Queue-Id: DC796691822
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit 2bccfb8476ca5f3548afbd623dc7a6980d4e77de ]
+commit e47b0056a08dc70430ffc44bbf62197e7d1ff8ea upstream.
 
-If one of the later PF or VF CID bitmap allocations fails,
-qed_cid_map_alloc() jumps to cid_map_fail and frees the previously
-allocated CID bitmaps before returning an error. qed_cxt_tables_alloc()
-then calls qed_cxt_mngr_free(), which invokes qed_cid_map_free()
-again.
+Problem:
+While developing the amd_close_race IGT test (which intentionally triggers
+execute permission faults by removing VM_PAGE_EXECUTABLE from GPU page table
+entries), we discovered that on Navi10 (GFX 10.1.x) these faults produce
+zero diagnostic output. The GPU simply hangs silently for ~10s until the
+scheduler timeout fires. There is no way to distinguish an execute
+permission fault from any other type of GPU hang.
 
-Fix this by setting each CID bitmap pointer to NULL after bitmap_free()
-to avoid double free.
+Root cause:
+GFX 10.1.x defaults to noretry=0, which sets
+RETRY_PERMISSION_OR_INVALID_PAGE_FAULT=1 in the GFXHUB UTCL2 registers
+(gfxhub_v2_0.c line 313). With this bit set, permission faults (valid PTE,
+wrong R/W/X bits) are handled entirely within the UTCL1/UTCL2 hardware
+loop: UTCL2 returns an XNACK to UTCL1, and UTCL1 re-requests the
+translation indefinitely, expecting software to eventually fix the
+permission bits (as happens in SVM/HMM recovery). No interrupt of any kind
+reaches the IH ring.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still
-present in v7.1-rc3.
+This is different from invalid-page faults (V=0) which DO generate a retry
+fault interrupt that the driver can escalate to a no-retry fault. Permission
+faults with valid PTEs loop silently forever in hardware.
 
-Runtime reproduction was not attempted because exercising the failing
-allocation path requires device-specific setup.
+GFX 10.3+ already defaults to noretry=1, which makes permission faults
+generate immediate L2 protection fault interrupts. GFX 10.1.x was
+inadvertently left out of this default.
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
+Fix:
+Change the noretry=1 threshold from IP_VERSION(10, 3, 0) to
+IP_VERSION(10, 1, 0) in amdgpu_gmc_noretry_set(). This is a one-line
+change that aligns GFX 10.1.x behavior with GFX 10.3+ and all newer
+generations.
+
+With noretry=1, the existing non-retry fault handler
+(gmc_v10_0_process_interrupt) already decodes and prints the full
+GCVM_L2_PROTECTION_FAULT_STATUS register including PERMISSION_FAULTS,
+faulting address, VMID, PASID, and process name. No additional logging
+code is needed — the fix is purely routing permission faults to the
+existing, fully-capable non-retry interrupt handler.
+
+v2: Dropped GFX10-specific logging from gmc_v10_0.c and
+kfd_int_process_v10.c (Felix Kuehling). v1 added logging in the retry
+fault handler, but with noretry=1 permission faults take the non-retry
+path — the v1 retry handler code was dead and would never execute.
+
+Tested on Navi10 (GFX 10.1.10):
+- Execute permission faults now produce immediate, clear output:
+    [gfxhub] page fault (src_id:0 ring:64 vmid:4 pasid:592)
+     Process amd_close_race pid 13380 thread amd_close_race pid 13384
+      in page at address 0x40001000 from client 0x1b (UTCL2)
+    GCVM_L2_PROTECTION_FAULT_STATUS:0x00700881
+         PERMISSION_FAULTS: 0x8
+- No regressions with properly-mapped GPU workloads
+
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eb21edd24c40d81066753f8ac6f23bce15745395)
 Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Link: https://patch.msgid.link/20260520070323.2762379-1-dawei.feng@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_cxt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1038,11 +1038,13 @@ static void qed_cid_map_free(struct qed_
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -1002,7 +1002,7 @@ void amdgpu_gmc_noretry_set(struct amdgp
+ 				gc_ver == IP_VERSION(9, 4, 3) ||
+ 				gc_ver == IP_VERSION(9, 4, 4) ||
+ 				gc_ver == IP_VERSION(9, 5, 0) ||
+-				gc_ver >= IP_VERSION(10, 3, 0));
++				gc_ver >= IP_VERSION(10, 1, 0));
  
- 	for (type = 0; type < MAX_CONN_TYPES; type++) {
- 		bitmap_free(p_mngr->acquired[type].cid_map);
-+		p_mngr->acquired[type].cid_map = NULL;
- 		p_mngr->acquired[type].max_count = 0;
- 		p_mngr->acquired[type].start_cid = 0;
- 
- 		for (vf = 0; vf < MAX_NUM_VFS; vf++) {
- 			bitmap_free(p_mngr->acquired_vf[type][vf].cid_map);
-+			p_mngr->acquired_vf[type][vf].cid_map = NULL;
- 			p_mngr->acquired_vf[type][vf].max_count = 0;
- 			p_mngr->acquired_vf[type][vf].start_cid = 0;
- 		}
+ 	if (!amdgpu_sriov_xnack_support(adev))
+ 		gmc->noretry = 1;
 
 
 
