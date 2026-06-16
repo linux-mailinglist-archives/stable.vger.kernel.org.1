@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7sTiDMFsMWr/iwUAu9opvQ
-	(envelope-from <stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:21 +0200
+	id sF4ZIGyLMWrumAUAu9opvQ
+	(envelope-from <stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869BA691234
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAD86936CF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:44:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qyq9UPiF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263998-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YBCgua4f;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265493-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0743321E77C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:26:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C7A431E4C15
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC89243E9ED;
-	Tue, 16 Jun 2026 15:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B76477E57;
+	Tue, 16 Jun 2026 17:38:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396843E4BC;
-	Tue, 16 Jun 2026 15:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAC3A9627;
+	Tue, 16 Jun 2026 17:38:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623595; cv=none; b=PJU7rS6qyA1G7xjM6RD/1TN9Q7eBbSt0QR6lif8BEKOgonn6vuyGqbz0Osg3mHOVinLj/uxbSl8bHSU9lwfg+JDzEm+TJFiDBxWwlzzHzk9TKkhlqcmaIHuND0Y2I3nFSHQ0u7yKkX3nKnzmlA9c8E6XUCHb3hA0hre6wUV1dVQ=
+	t=1781631483; cv=none; b=t87DNGBu1mRkwzBwdEtTr4G+xVoQDMavFCVWBJxJs0LwPj4Kl9OmLkJ9/Ua1oSgDKDtLqJndNWACC2CFU81wNJgcUBGFE9ZOymquZ4MVwMtK3Dl0SiQoZ8185eWnBOlEobW9n3G8ldB1pQhKXVKj3hx0rVyL+F/6rrnTp50uRIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623595; c=relaxed/simple;
-	bh=rO1FNAXAZGi92ux8sxmNs3UzAfETHcP0Gut+vVNYKUo=;
+	s=arc-20240116; t=1781631483; c=relaxed/simple;
+	bh=oPC2XwLmu/YnXZ8MufVDIO91ap3JTZoRwqEZqgJI9A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPJclQEl6BD9Ty8Q9Go88C9GdVT5jwhK2tnXIvuQkf8dXdDxwj2XCUNwDzdgfrR1qCEWnGMXo9HDu+Sv0LkqkjCQhRdLfy5Ulc+j3HyuMEh1MpeRTnXpN7Wi+FUA0eBXquHgU4fVe0eivm+CazO8zxK+Xr5/DYh7DTUx2/XWP0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyq9UPiF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 571EB1F000E9;
-	Tue, 16 Jun 2026 15:26:32 +0000 (UTC)
+	 MIME-Version; b=UaaTMhHsXIItFbPFEzs9tMNx4BUSAsPipjZuVz8ybPJGktZhF1Wd4ASuFreKSN4u5SXJMRko0PDv0eI0WA3nrY/W4MA1mn4DjyuUy7H2XYBmZQCXllxbakSDl34DIuk9PgpQo7qqW6CugfzigSLqGojjchkwxOcXsItLwytNNoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBCgua4f; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916911F000E9;
+	Tue, 16 Jun 2026 17:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623594;
-	bh=RhrTDbYrBWMvJv++pG5n+COh2CS9bNgz6ejpjQFkHas=;
+	s=korg; t=1781631482;
+	bh=rKYMtdPRBSsENhF6JuT3l7h+AYMTTC6T83RrKdzHC44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qyq9UPiFrY1m3PHBEx3vSY+wrQpLbyXk9hzEDYhvY78NkEea2bxjbQRQ2hEXAIpnG
-	 SZVNIdFwUeZe4CJ/KkSpPPm8bB7+xEf8/f0FlLoo1hvRC04NZZpgQhFYq1OXatAyLi
-	 Ltel4yYulo5SZ9OOHm8bNM2eOxwgxjZk+HKoi4e8=
+	b=YBCgua4f0UVYehU5A1/JFhRE1VixFvaCj5pMUzcaQk17JT1yFPsZadrGHWi1rGBbv
+	 izhpPtoX3GkpaAp35tIwnz+g79wUkJQr5ZJqn9Qmj5RaOE8pxGRFvtlVMyy/i5g7Sy
+	 v3dJVSQf0ulJmIHRqNqW5dhLbZzy4iVbHfen9rpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhou <eilaimemedsnaimel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Naveen Kumar Chaudhary <naveen.osdev@gmail.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	John Stultz <jstultz@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 145/378] netfilter: nft_exthdr: fix register tracking for F_PRESENT flag
+Subject: [PATCH 6.1 229/522] time: Fix off-by-one in settimeofday() usec validation
 Date: Tue, 16 Jun 2026 20:26:16 +0530
-Message-ID: <20260616145117.898198779@linuxfoundation.org>
+Message-ID: <20260616145136.714629147@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,27 +68,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-263998-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
+	TAGGED_FROM(0.00)[bounces-265493-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:naveen.osdev@gmail.com,m:tglx@kernel.org,m:jstultz@google.com,m:sashal@kernel.org,m:naveenosdev@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,55 +97,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 869BA691234
+X-Rspamd-Queue-Id: CAAD86936CF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
 
-[ Upstream commit 772cecf198da732faebb5dcfc46d66a505be8495 ]
+[ Upstream commit ce4abda5e12622f33450159e76c8f56d28d7f03d ]
 
-nft_exthdr_init() passes user-controlled priv->len to
-nft_parse_register_store(), which marks that many bytes in the
-register bitmap as initialized.  However, when NFT_EXTHDR_F_PRESENT
-is set, the eval paths write only 1 byte (nft_reg_store8) or
-4 bytes (*dest = 0 on TCP/DCCP error path).  When len > 4,
-registers beyond the first are never written, retaining
-uninitialized stack data from nft_regs.
+The validation check uses '>' instead of '>=' when comparing tv_usec
+against USEC_PER_SEC, allowing the value 1000000 through. After
+conversion to nanoseconds (*= 1000), this produces tv_nsec ==
+NSEC_PER_SEC, violating the timespec invariant that tv_nsec must be
+less than NSEC_PER_SEC.
 
-Bail out if userspace requests too much data when F_PRESENT is set.
+Use '>=' to reject tv_usec values that are not in the valid range of
+0 to 999999.
 
-Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
-Fixes: c078ca3b0c5b ("netfilter: nft_exthdr: Add support for existence check")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 5e0fb1b57bea ("y2038: time: avoid timespec usage in settimeofday()")
+Signed-off-by: Naveen Kumar Chaudhary <naveen.osdev@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Acked-by: John Stultz <jstultz@google.com>
+Link: https://patch.msgid.link/4rikk44zew3s6577dugmx4jyblz7o5c57niuap6ct3td5yfm6w@gh7pcumg7qor
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/time/time.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 7eedf4e3ae9c75..9471328802d3b7 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -532,6 +532,9 @@ static int nft_exthdr_init(const struct nft_ctx *ctx,
- 			return err;
- 	}
+diff --git a/kernel/time/time.c b/kernel/time/time.c
+index 170f1f8a0046ce..0e0b54fb34905e 100644
+--- a/kernel/time/time.c
++++ b/kernel/time/time.c
+@@ -207,7 +207,7 @@ SYSCALL_DEFINE2(settimeofday, struct __kernel_old_timeval __user *, tv,
+ 		    get_user(new_ts.tv_nsec, &tv->tv_usec))
+ 			return -EFAULT;
  
-+	if ((flags & NFT_EXTHDR_F_PRESENT) && len != 1)
-+		return -EINVAL;
-+
- 	priv->type   = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
- 	priv->offset = offset;
- 	priv->len    = len;
+-		if (new_ts.tv_nsec > USEC_PER_SEC || new_ts.tv_nsec < 0)
++		if (new_ts.tv_nsec >= USEC_PER_SEC || new_ts.tv_nsec < 0)
+ 			return -EINVAL;
+ 
+ 		new_ts.tv_nsec *= NSEC_PER_USEC;
 -- 
 2.53.0
 
