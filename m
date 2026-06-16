@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-266015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tz8UKK+UMWponQUAu9opvQ
-	(envelope-from <stable+bounces-266015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:43 +0200
+	id dM3VEdycMWrpoAUAu9opvQ
+	(envelope-from <stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3389169417C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62876949F0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=u90nFUIy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266015-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266015-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=S640OvDb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266357-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A3D63184F36
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7437432061AA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76D9466B64;
-	Tue, 16 Jun 2026 18:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEBF4779BF;
+	Tue, 16 Jun 2026 18:53:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6B63D8105;
-	Tue, 16 Jun 2026 18:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEBE3CC303;
+	Tue, 16 Jun 2026 18:53:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634211; cv=none; b=uU4/3k1ZN3KolxLFLyg07qOzSv9tWm4AgTWanJuq4n8cDZ65R61ByEGGZadgvp1m7PEu3BxDNxkQkmamiBy1Xj+tLSRgAUrNiqDsR0WflbOAJkP7eWqxNho52THAOiZYE/jQxn8elqLqJNws90/s8O2OUmqPxTSvyaW6Z43+Gks=
+	t=1781635997; cv=none; b=uttvZRfXf5AXT3PIFnDZrDDPHmuVjVbrNslqdUwLWYzLumiQyQRJl36KnLTnNG8L5UdaruX3S4eRDfnfUx1Xya1sF/rXCb7uYIp18Qxrk6QSsscIhyj6+C79RnE2Pwf+lhH/1FMZcPvyigOXs4Za2YXn+I+bYorldTauIM2edUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634211; c=relaxed/simple;
-	bh=ebQb624AQ/ExKFAFQ3PklRMz6ibHLGVVeyzLCigDBIQ=;
+	s=arc-20240116; t=1781635997; c=relaxed/simple;
+	bh=24E/55rDyF5ANyFrochG4e+OEQEiBnSpmweNWllcZDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5p65kIwTBCoHNENHOvgS6OG3ksgytZnpAcBFyjSgGsll12437s+p/WsYtMwFCUsQMu4/h18LaBYPDSzokxUpDH4F80Bc+n25CD9sEblVA2OAWT6JSKZzPgdsjmETbq5tEODTDre59I5bsbbMKMKmZdSgNzBdXU7Y0j00fySsgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u90nFUIy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58A81F000E9;
-	Tue, 16 Jun 2026 18:23:29 +0000 (UTC)
+	 MIME-Version; b=jgC4miyparH+BtEx8uwDZJP/3SwfMUaI6jAi9gcuH4ot/oKjZPHC3APgWNlkXFZnG2d/KFDK9QltnJbO21Tm0oVdwIBWRjPbYF++n9yyalVAH/DMoA54oXW19WGPhCOJ/Gi23k/ww8jI9fYg+g+3/zfUcM8nCDYpFUQ6jrN5IsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S640OvDb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CD11F000E9;
+	Tue, 16 Jun 2026 18:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634210;
-	bh=FUg2NKyoHnADjDrXiNb4Tf7P8UJqilY+PAkbt7v1RFw=;
+	s=korg; t=1781635996;
+	bh=7UQlN2kFuHSbGq+CME0tox55BFEW7yGcZGS/EYEWVR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=u90nFUIy+2kmhHiqVb4k9pXGTjqBGI4Xw66c/uQm94jEKtV3zMKqkJmECESeVXxVK
-	 rsSVsArH4XB5riPk07bbdOLzCddNqP3R8Rj6K55Jcn1hQGnQFF+rR4suEuUdIBJyKw
-	 N60dm/W4aMGcqi2NymwDqiy/Nf7/cbC8mDATvWsQ=
+	b=S640OvDbOOITbY6wcfC7HVWkYuxi4B+uSr3uY8vIs6gAHybnX+XdYVjoR3EoiiJul
+	 D5IRmpnKZfhgagMCgfhFvckxY7qh+etxWLbpOLSwqsMHOap3KjwIKWe2l6uZkMrloP
+	 S9I8fcKeR/6V6qsiQSpJWA6lJT+AhBicOtZBaxx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuho Choi <dbgh9129@gmail.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 5.15 212/411] ARM: socfpga: Fix OF node refcount leak in SMP setup
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alexey Panov <apanov@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 154/342] bonding: limit BOND_MODE_8023AD to Ethernet devices
 Date: Tue, 16 Jun 2026 20:27:30 +0530
-Message-ID: <20260616145112.031839437@linuxfoundation.org>
+Message-ID: <20260616145055.332530728@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +71,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266015-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dbgh9129@gmail.com,m:dinguyen@kernel.org,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266357-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,m:edumazet@google.com,m:andrew+netdev@lunn.ch,m:jv@jvosburgh.net,m:kuba@kernel.org,m:apanov@astralinux.ru,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,m:andrew@lunn.ch,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	TAGGED_RCPT(0.00)[stable,9c081b17773615f24672,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,lunn.ch:email,vger.kernel.org:from_smtp,msgid.link:url,astralinux.ru:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3389169417C
+X-Rspamd-Queue-Id: B62876949F0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuho Choi <dbgh9129@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 63838c323924fe4a78b2323bd45aa1030f72ca60 upstream.
+commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 upstream.
 
-socfpga_smp_prepare_cpus() looks up the Cortex-A9 SCU node with
-of_find_compatible_node(), which returns a node reference that must be
-released with of_node_put().
+BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
 
-The function maps the SCU registers and then returns without dropping
-that reference, leaking the node on both the success path and the
-of_iomap() failure path.
+syzbot reported:
 
-Drop the reference once the mapping attempt is complete. The returned
-MMIO mapping does not depend on keeping the device node reference held.
+ BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+ BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
 
-Fixes: 122694a0c712 ("ARM: socfpga: use of_iomap to map the SCU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuho Choi <dbgh9129@gmail.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
+  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
+  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
+  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
+  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
+  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
+  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
+  __sys_sendmsg+0x164/0x220 net/socket.c:2678
+  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
+  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+ </TASK>
+
+The buggy address belongs to the variable:
+ lacpdu_mcast_addr+0x0/0x40
+
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Alexey: Replace SLAVE_NL_ERR() with NL_SET_ERR_MSG() and slave_err()
+  because SLAVE_NL_ERR() is not present in linux-5.10.y. ]
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-socfpga/platsmp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/arm/mach-socfpga/platsmp.c
-+++ b/arch/arm/mach-socfpga/platsmp.c
-@@ -78,6 +78,7 @@ static void __init socfpga_smp_prepare_c
- 	}
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 812e1792c232e1..86f0f155e9862c 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1763,6 +1763,13 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	 */
+ 	if (!bond_has_slaves(bond)) {
+ 		if (bond_dev->type != slave_dev->type) {
++			if (slave_dev->type != ARPHRD_ETHER &&
++			    BOND_MODE(bond) == BOND_MODE_8023AD) {
++				NL_SET_ERR_MSG(extack, "8023AD mode requires Ethernet devices");
++				slave_err(bond_dev, slave_dev,
++					  "Error: 8023AD mode requires Ethernet devices\n");
++				return -EINVAL;
++			}
+ 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
+ 				  bond_dev->type, slave_dev->type);
  
- 	socfpga_scu_base_addr = of_iomap(np, 0);
-+	of_node_put(np);
- 	if (!socfpga_scu_base_addr)
- 		return;
- 	scu_enable(socfpga_scu_base_addr);
+-- 
+2.53.0
+
 
 
 
