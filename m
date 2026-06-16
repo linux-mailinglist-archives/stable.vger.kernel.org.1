@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-264485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id SlBRCQF4MWp2kAUAu9opvQ
-	(envelope-from <stable+bounces-264485-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:21 +0200
+	id Au/bG/6PMWosmwUAu9opvQ
+	(envelope-from <stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936F7691F91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15431693C3D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:03:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vB38fBnC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264485-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264485-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=X7jw4Jgf;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265794-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2445832F0B3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:09:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 841F8300D1D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F6D466B4B;
-	Tue, 16 Jun 2026 16:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B659B3CEBBD;
+	Tue, 16 Jun 2026 18:03:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3E24657F8;
-	Tue, 16 Jun 2026 16:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DAC63CE4BA;
+	Tue, 16 Jun 2026 18:03:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626140; cv=none; b=oY6drATZekqvHxYesPmO4YHwDo1Z+9bSMsRawuz81pNSlcX7a3b+73CD18jzoZw0WNSyibH76XiGwWkci0ANsccNDOmvItt3a68U2a/rh4PLG5XerSBMTns/rCYywPq1J9oBtyofluKK5weGeRDI9TvlJToYBjKIgTaGmDWDoMQ=
+	t=1781633019; cv=none; b=RBo8KrvMwQVc9+Jg37HohdYdFu/BJVe7Z63DqzIxVgyYR55Xl2ocECpF/XMSZR2Mt+e/UPnxJ5x+o4RdXAK6ZOQtwYiHmE/CpM3E9Rz4gPlIejqnk/sMOhZ1CAzG7T9RVs3thY8RYFRUiKXRR38INei7TtNG4BdpVUMaEbpFsKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626140; c=relaxed/simple;
-	bh=hbozn7N4FVFhx8r+uI/0obFGPfAA9smJMVsoA1GTttw=;
+	s=arc-20240116; t=1781633019; c=relaxed/simple;
+	bh=QnOjdhaYH9AinWLDnVXJ1vkN8W2jv5jqVLPLV3h8KXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meY4r5tVDbttQMdrh5RmO81v20nV5gQd661bEc7MHKwUyhdIyUbonYlLdUxGE1XmsuyWpSMNcXxXy2i7ijTcWQ9H3X2q4/0sJ7I/SYmbLEFxGN2Auja9qCgeGWlQ2mx8ICrf1vw+539QF5uwa/TxNWDNvtxrNythPKng+BkEuV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB38fBnC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB6A1F000E9;
-	Tue, 16 Jun 2026 16:08:58 +0000 (UTC)
+	 MIME-Version; b=eo9D5pIIkikAq8pEiEaB2PZXut2bTPuv3gjm7vIPHZ2mwRkz3JlaTRunEqygf53+4YDuvtngdFMpMIiEZVwpqNbMDhZUwE/HJac9tEjTYpQbMB0ROzKBsIBXAqP7XrkpNzRX44f6EzOL7GKisMMcR6CyZokA4esfsU1cMSi5MY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7jw4Jgf; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9771F000E9;
+	Tue, 16 Jun 2026 18:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626139;
-	bh=594WuRq0fWd8LilZfmpmVnikpNykI2WjfAwil6UgsWQ=;
+	s=korg; t=1781633018;
+	bh=LOLnL+PxyjH5gq0zC9QilhxKAqc0KtAC+ZopHc8lyCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vB38fBnC3y3JsZHZh9d8BduajRGaQj5z3T7SF+9X/a3hwOeJJBN/Wx5m7wB/BOt54
-	 DbL3uYDSp4Egbgbcw0UX08InVr55bEULA1bfxucZ8RCRLp0qFsqTt/waA4mmQhyu5P
-	 nndFpIDwDpoHmXNk3WNWwilC1Fzbf5sQYYjXuPQo=
+	b=X7jw4JgfMo+wlHzwPN5uMgCJmttUgtg+DhMZpx73H8XT7VpJzTRQ8qbMfa1CoraGp
+	 SyGAtv9baaR23TUn5ekpwJqJJ2Oug3X97uPF4foTUz4kbbT0AX0l5ipOegnWjnPIxh
+	 NNr8kAnAitfebXGkuPxnS196zBCHXLB4/skj245c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.18 271/325] thunderbolt: Clamp XDomain response data copy to allocation size
-Date: Tue, 16 Jun 2026 20:31:07 +0530
-Message-ID: <20260616145112.191082721@linuxfoundation.org>
+	Ben Hutchings <benh@debian.org>
+Subject: [PATCH 6.1 521/522] apparmor: validate default DFA states are in bounds
+Date: Tue, 16 Jun 2026 20:31:08 +0530
+Message-ID: <20260616145150.082886843@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +65,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264485-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-265794-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:benh@debian.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 936F7691F91
+X-Rspamd-Queue-Id: 15431693C3D
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Ben Hutchings <benh@debian.org>
 
-commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
+Some backports of commit 9063d7e2615f ("apparmor: validate DFA start
+states are in bounds in unpack_pdb") limited the bounds checks on DFA
+start states to the case where the start state was explicit in the
+policy.  However, the default DFA start state (DFA_START = 1) could
+also be out-of-bounds.
 
-tb_xdp_properties_request() derives the per-packet copy length from
-the response header without checking that it fits in the previously
-allocated data buffer.  A malicious peer can set its length field
-larger than the declared data_length, causing memcpy to write past
-the kcalloc allocation.
+Move these checks out of the else-branches so that they are applied
+regardless of how the start state was initialised.
 
-Clamp the per-packet copy length so that the cumulative offset
-never exceeds data_len.
-
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 5443c027ec16 ("apparmor: validate DFA start states are in bounds in unpack_pdb")
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |    2 ++
- 1 file changed, 2 insertions(+)
+ security/apparmor/policy_unpack.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -393,6 +393,8 @@ static int tb_xdp_properties_request(str
- 			}
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -829,6 +829,8 @@ static struct aa_profile *unpack_profile
+ 	}
+ 
+ 	if (aa_unpack_nameX(e, AA_STRUCT, "policydb")) {
++		size_t state_count;
++
+ 		/* generic policy dfa - optional and may be NULL */
+ 		info = "failed to unpack policydb";
+ 		profile->policy.dfa = unpack_dfa(e);
+@@ -843,13 +845,12 @@ static struct aa_profile *unpack_profile
+ 		if (!aa_unpack_u32(e, &profile->policy.start[0], "start")) {
+ 			/* default start state */
+ 			profile->policy.start[0] = DFA_START;
+-		} else {
+-			size_t state_count = profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen;
++		}
+ 
+-			if (profile->policy.start[0] >= state_count) {
+-				info = "invalid dfa start state";
+-				goto fail;
+-			}
++		state_count = profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen;
++		if (profile->policy.start[0] >= state_count) {
++			info = "invalid dfa start state";
++			goto fail;
  		}
  
-+		if (req.offset + len > data_len)
-+			len = data_len - req.offset;
- 		memcpy(data + req.offset, res->data, len * 4);
- 		req.offset += len;
- 	} while (!data_len || req.offset < data_len);
+ 		/* setup class index */
+@@ -872,16 +873,18 @@ static struct aa_profile *unpack_profile
+ 		info = "failed to unpack profile file rules";
+ 		goto fail;
+ 	} else if (profile->file.dfa) {
++		size_t state_count;
++
+ 		if (!aa_unpack_u32(e, &profile->file.start, "dfa_start")) {
+ 			/* default start state */
+ 			profile->file.start = DFA_START;
+-		} else {
+-			size_t state_count = profile->file.dfa->tables[YYTD_ID_BASE]->td_lolen;
++		}
++
++		state_count = profile->file.dfa->tables[YYTD_ID_BASE]->td_lolen;
+ 
+-			if (profile->file.start >= state_count) {
+-				info = "invalid dfa start state";
+-				goto fail;
+-			}
++		if (profile->file.start >= state_count) {
++			info = "invalid dfa start state";
++			goto fail;
+ 		}
+ 	} else if (profile->policy.dfa &&
+ 		   profile->policy.start[AA_CLASS_FILE]) {
 
 
 
