@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id C/JyKrp5MWpDkQUAu9opvQ
-	(envelope-from <stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:42 +0200
+	id BDl1JYBxMWrMjQUAu9opvQ
+	(envelope-from <stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790966921E2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2854669179A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:53:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sV6nm8K2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264690-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bcUsYMub;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264187-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E94783035CFF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:28:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF1D731037BE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569F94508F2;
-	Tue, 16 Jun 2026 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF57F451068;
+	Tue, 16 Jun 2026 15:43:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D3046AEDB;
-	Tue, 16 Jun 2026 16:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4B94508E0;
+	Tue, 16 Jun 2026 15:43:11 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627320; cv=none; b=Wi8/U5+KcMAbViVU5eoqN9QtYokm/eQV3JNrB9gOtpJBpbUPRrrg7s+clAwkvg7gvYtloCV1JYaWFmn6b1Vo5sv206DB5cnB0E9xPwlP7oPT7M9GU1Mp55+UNp4Rs6FkI18V56fEth2Ev3BxhxJWeoVFV9eHQlhJ5fJkxfw5hBY=
+	t=1781624592; cv=none; b=fDkJOiuHB6ceul9gSwOYmEwERpBIFh9v36nMEjkbX2qVBK9XIvXocA/cPwh8Rh8+OD4VVSGReYlZnCTWWwBVxnSrAKJoM0OfpZZDqYFhF5nHx9TBKb75IbRhMCenynzb78MB33UAthfNasuyQawNUD3vZW7PyPAhsfh1uAIaia0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627320; c=relaxed/simple;
-	bh=0EDSydluTAoyw72oaag/Y0v3Jv3apo5gIlxH1Sjl7+Y=;
+	s=arc-20240116; t=1781624592; c=relaxed/simple;
+	bh=oniYnt43lxxehPjeUoyL3b4WljbGzoi+LsHJDSLR0Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQDh8k+kVLv0ZBEfaEUz4UOa/0q0dFC/ixxQt7ws7/XtAnd7Q5wrx5OSVaW6aJ9LhZ3he7b8DPuW/Lgiw+s7KXHKdPXa75bRwuxakqQThpXFdx7mKQexCDBNYH8AoVVn49RZcKn8jXRHqA5p0Aj5nknm9s7L+ihbIh+38bEhhAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV6nm8K2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B691F000E9;
-	Tue, 16 Jun 2026 16:28:37 +0000 (UTC)
+	 MIME-Version; b=NDKFRpzn9uXxKFz1brft06lie5u/8XkJaC2Tm503t07o+Rob0zlibEpS1U09H76mA3Y6DkdGK+KuLuDote3rqJvJEPCofY6ai5m9qZn+O0bgwAc9qpJocMl/KnYNMbk9oF0CWxcPobVmrl2AWjZ0+izvUyJ056GwWtMo12vDfmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcUsYMub; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061901F000E9;
+	Tue, 16 Jun 2026 15:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627319;
-	bh=Khyfcu2Ale2x8AoRny7zQa1GX5AdtoMuCppO75Dgfmg=;
+	s=korg; t=1781624591;
+	bh=Tx/SbDx/bwbTL5ZzLjKJhmkZ+P6y6FFU4r5hsrOrdSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sV6nm8K2+ONcGJueqdKaETZuLJWZqtnsidrwNA6a2FOuuIbKVC0ITPjgLbRYWwYj5
-	 LRZQVU+LEhI9jQ5+MVThasF7qJrW9VP+Wv5Npx4RYBYV8a6WC2tdWDeBTjIIsRWWHS
-	 ABzvuXDSaDF/06F7suOn+MbXGIZYhMA28T3Q/3S0=
+	b=bcUsYMubuxf6jX5e2sT7OQ4L9bCA60aVd4tFc4lUG94b6+cKpwP2t6vYin1y7ertI
+	 pSNsE4T6DWLQB59019JwMQiwhJLXSPEz/H1u5GlTO4ZOEvGVqqAYcUF0NXOSeEVGWE
+	 D+tuhNXsyApyA3fJLeWMFvfd8eoMcjnvFwQj8LFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 6.12 155/261] ARM: 9475/1: entry: use byte load for KASAN VMAP stack shadow
-Date: Tue, 16 Jun 2026 20:29:53 +0530
-Message-ID: <20260616145052.261066618@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 363/378] netfilter: nft_fib: fix stale stack leak via the OIFNAME register
+Date: Tue, 16 Jun 2026 20:29:54 +0530
+Message-ID: <20260616145129.248860384@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,80 +73,120 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264187-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264690-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:d.ornaghi97@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,m:dornaghi97@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,armlinux.org.uk:email,vger.kernel.org:from_smtp]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 790966921E2
+X-Rspamd-Queue-Id: 2854669179A
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karl Mehltretter <kmehltretter@gmail.com>
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
 
-commit 77a1f6883dc6e837bb2cb30b9b02e2f94338e2c6 upstream.
+[ Upstream commit ab185e0c4fb82dfba6fb86f8271e06f931d9c64c ]
 
-Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
-VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
-__switch_to(). The read uses ldr, but the KASAN shadow address is
-byte-granular and is not guaranteed to be word aligned.
+For NFT_FIB_RESULT_OIFNAME the destination register is declared with
+len = IFNAMSIZ (four 32-bit registers), but on the lookup-fail,
+RTN_LOCAL and oif-mismatch paths nft_fib{4,6}_eval() only writes one
+register via "*dest = 0". The remaining three registers are left as
+whatever was on the stack in nft_do_chain()'s struct nft_regs, and a
+downstream expression that loads the register span can leak that
+uninitialised kernel stack to userspace.
 
-ARMv5 faults unaligned word loads. With CONFIG_KASAN_VMALLOC and
-CONFIG_VMAP_STACK enabled, ARM926/VersatilePB crashes in __switch_to()
-with an alignment exception before reaching init.
+The NFTA_FIB_F_PRESENT existence check has the same shape: it is only
+meaningful for NFT_FIB_RESULT_OIF, yet it was accepted for any result type
+while the eval stores a single byte via nft_reg_store8(), leaving the rest
+of the declared span stale.
 
-Use ldrb for the dummy shadow access. The code only needs to fault in the
-shadow mapping if the stack shadow is missing, so a byte load is sufficient
-and matches the granularity of KASAN shadow memory.
+Fix both:
 
-Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shadow")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+ - replace the bare "*dest = 0" in the eval with nft_fib_store_result(),
+   which strscpy_pad()s the whole IFNAMSIZ for OIFNAME (and is already
+   used on the other early-return path), and
+
+ - restrict NFTA_FIB_F_PRESENT to NFT_FIB_RESULT_OIF and declare its
+   destination as a single u8, so the marked span matches the one byte
+   the eval writes.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[ kept the tree's older `ip6_route_lookup()`/`rt6_info` IPv6 context and changed only `*dest = 0;` to `nft_fib_store_result(dest, priv, NULL);` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/entry-armv.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/netfilter/nft_fib_ipv4.c |    2 +-
+ net/ipv6/netfilter/nft_fib_ipv6.c |    2 +-
+ net/netfilter/nft_fib.c           |    6 ++++++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/arm/kernel/entry-armv.S
-+++ b/arch/arm/kernel/entry-armv.S
-@@ -567,7 +567,7 @@ ENTRY(__switch_to)
- 	@ are using KASAN
- 	mov_l	r2, KASAN_SHADOW_OFFSET
- 	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
--	ldr	r2, [r2]
-+	ldrb	r2, [r2]
- #endif
- #endif
+--- a/net/ipv4/netfilter/nft_fib_ipv4.c
++++ b/net/ipv4/netfilter/nft_fib_ipv4.c
+@@ -128,7 +128,7 @@ void nft_fib4_eval(const struct nft_expr
+ 		fl4.saddr = get_saddr(iph->daddr);
+ 	}
  
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
+ 
+ 	if (fib_lookup(nft_net(pkt), &fl4, &res, FIB_LOOKUP_IGNORE_LINKSTATE))
+ 		return;
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -192,7 +192,7 @@ void nft_fib6_eval(const struct nft_expr
+ 
+ 	lookup_flags = nft_fib6_flowi_init(&fl6, priv, pkt, oif, iph);
+ 
+-	*dest = 0;
++	nft_fib_store_result(dest, priv, NULL);
+ 	rt = (void *)ip6_route_lookup(nft_net(pkt), &fl6, pkt->skb,
+ 				      lookup_flags);
+ 	if (rt->dst.error)
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -107,6 +107,12 @@ int nft_fib_init(const struct nft_ctx *c
+ 		return -EINVAL;
+ 	}
+ 
++	if (priv->flags & NFTA_FIB_F_PRESENT) {
++		if (priv->result != NFT_FIB_RESULT_OIF)
++			return -EINVAL;
++		len = sizeof(u8);
++	}
++
+ 	err = nft_parse_register_store(ctx, tb[NFTA_FIB_DREG], &priv->dreg,
+ 				       NULL, NFT_DATA_VALUE, len);
+ 	if (err < 0)
 
 
 
