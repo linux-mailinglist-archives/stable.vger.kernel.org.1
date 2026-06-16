@@ -1,61 +1,72 @@
-Return-Path: <stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id E+phBmFlMWrciQUAu9opvQ
-	(envelope-from <stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:53 +0200
+	id nFI3BE9vMWoFjQUAu9opvQ
+	(envelope-from <stable+bounces-264130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DF8690BA7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:51 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA6D69159C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0aqOHTaS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263774-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gqdtpy9R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264130-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264130-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B00B53014014
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 591A930486D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886C2438FF3;
-	Tue, 16 Jun 2026 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E7144CAC9;
+	Tue, 16 Jun 2026 15:38:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D12726CE05;
-	Tue, 16 Jun 2026 15:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5EB34889F;
+	Tue, 16 Jun 2026 15:38:04 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622040; cv=none; b=bj6su5vTxfHytTMIQwHXxjsq3LWXpE++fIaYybz77xiIKjp2LSQtoTzuTrNLlsrbF5fN6qSYjuKGOruKtbm7oZQl4FiYgZb7egrE8VP88N7gVoJeQBLOpq+588nJq+xqDZN7GibhqjASd8uCpUYBXQGYWz4/PIQ5NOBwpKXLSmI=
+	t=1781624285; cv=none; b=oYiSkLurFsal3NkADBFKZdnIcA/gvNt3gcr6/74CMVylmeJVmgv5heVsED0AhHPcdnfbqmXXj85FNUxj52qphR7tDo5sGvs79ITEXqHp0w8PogPR2zvjURIP7fQwyDj/NBs9DI5biJH+h4w1GB5Oy6TrOGggiargMe+DaSVQLS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622040; c=relaxed/simple;
-	bh=dvsYHRcL4uazI57jnCHKPMIaeClU48upJid+MmXHxm0=;
+	s=arc-20240116; t=1781624285; c=relaxed/simple;
+	bh=aoIxpYdG7lR0IekTDC28oH/lWBnmIjMCboCyoQLTGi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ROqTBQD24+dyc3GhxfqBqHaUhdBVQJ5RhM3AkG7gImFDUgswTgTC8EhXjjtamAaimd/iCa5A3aj0IIVfC4dzFo4bf8r7Pd+3JOR5rIXjvrbkPUJxZsflWTmffo4WWIyJqx2iLsFoERxgaMdk45Sd93Az8HtKe7RVAwJPC7W2Xt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aqOHTaS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461C1F00A3A;
-	Tue, 16 Jun 2026 15:00:37 +0000 (UTC)
+	 MIME-Version; b=VLdciScxtQBPY4InQA+0CLC/CTvMv8RwZACKPBelNx+G3yDgJvp2hm7YEJYVBIqvWs5lUitFCb4nM9NzR1x0EUUH3SBcZahUP3GVQUiUOmlXCkNdVq6zyhrJdZwjrdU9ueJ56TKAzd7QjgL9JiDP5YN8T681oAZCB/U3icCkdww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqdtpy9R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1AD1F000E9;
+	Tue, 16 Jun 2026 15:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622039;
-	bh=nWM1nWuKl8f8OZ5GcqwAZlnnJ95aR10M9CTwYan0XH4=;
+	s=korg; t=1781624284;
+	bh=sDLkczdVOHkVlUMKYxIz8u7Jl7SzKKt+qNhiJyXGkCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0aqOHTaSftH17GgCG9AJiCXH0UjVDGBM1u8bZFuarM5Yf1SvXhNcNIIDDfyicRCXZ
-	 OdTbnqvXX9bo83yh/P8L+a1N606N20RwMExMxnkOO/YRv2c8SyOE9aUUfSk4mhMVve
-	 57vSKRjzf6u094YW9NO7YjXf9Fpl2HW5vuIf3vyQ=
+	b=gqdtpy9R8btw929FmyiDB3DoQjX4vHyMVGF2PWflhw2f+timBVuHxtJumLx9Zokc0
+	 ydKSnC2a3EKuFWOnqzJZMT3gCJXgd1MZGjlZ33oZ6lx8UoogM1ET1gdIE+fQoeBsdT
+	 Yyl0t70pSxEgtR0tq6PVcoEmpD3vwXhFe2+CKS5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 7.1 5/8] arm64: cputype: Add C1-Premium definitions
+	Muchun Song <songmuchun@bytedance.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	"Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Frank van der Linden <fvdl@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Michal Nazarewicz <mina86@mina86.com>,
+	Stefan Strogin <stefan.strogin@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 299/378] mm/cma_debug: fix invalid accesses for inactive CMA areas
 Date: Tue, 16 Jun 2026 20:28:50 +0530
-Message-ID: <20260616145523.497251633@linuxfoundation.org>
+Message-ID: <20260616145125.816159720@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
-References: <20260616145523.335696673@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +78,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263774-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264130-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bytedance.com,kernel.org,gmail.com,google.com,infradead.org,suse.com,mina86.com,linux-foundation.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:songmuchun@bytedance.com,m:rppt@kernel.org,m:osalvador@kernel.org,m:david@kernel.org,m:0x7f454c46@gmail.com,m:fvdl@google.com,m:liam@infradead.org,m:ljs@kernel.org,m:mhocko@suse.com,m:mina86@mina86.com,m:stefan.strogin@gmail.com,m:surenb@google.com,m:vbabka@kernel.org,m:akpm@linux-foundation.org,m:stefanstrogin@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,arm.com:url,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email,infradead.org:email,suse.com:email,bytedance.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 07DF8690BA7
+X-Rspamd-Queue-Id: BEA6D69159C
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
+commit c0ca59beb5252ea2bd4fdaef009d003dedc2030e upstream.
 
-Add cputype definitions for C1-Premium. These will be used for errata
-detection in subsequent patches.
+cma_activate_area() can fail after allocating range bitmaps.  Its cleanup
+path frees those bitmaps, but only clears cma->count and
+cma->available_count.  It leaves cma->nranges and each range's count in
+place, so cma_debugfs_init() can still register debugfs files for an area
+that never activated successfully.
 
-These values can be found in the C1-Premium TRM:
+That exposes two problems.  Reading the bitmap file can make debugfs walk
+a freed range bitmap and trigger an invalid memory access.  Reading
+maxchunk can also take cma->lock even though that lock is initialized only
+on the successful activation path.
 
-  https://developer.arm.com/documentation/109416/0100/
+Fix this by creating debugfs entries only for CMA areas that reached
+CMA_ACTIVATED.
 
-... in section A.5.1 ("MIDR_EL1, Main ID Register").
+c009da4258f9 introduced the invalid access to bitmap file.  2e32b947606d
+introduced the invalid access to cma->lock.  This change applies to both
+issues.  So I added two Fixes tags.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v7.1.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/20260520061025.3971821-1-songmuchun@bytedance.com
+Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
+Fixes: 2e32b947606d ("mm: cma: add functions to get region pages counters")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
+Cc: Frank van der Linden <fvdl@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Michal Nazarewicz <mina86@mina86.com>
+Cc: Stefan Strogin <stefan.strogin@gmail.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/cma_debug.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -100,6 +100,7 @@
- #define ARM_CPU_PART_C1_ULTRA		0xD8C
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
- #define ARM_CPU_PART_C1_PRO		0xD8B
-+#define ARM_CPU_PART_C1_PREMIUM		0xD90
+--- a/mm/cma_debug.c
++++ b/mm/cma_debug.c
+@@ -205,7 +205,8 @@ static int __init cma_debugfs_init(void)
+ 	cma_debugfs_root = debugfs_create_dir("cma", NULL);
  
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -193,6 +194,7 @@
- #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
- #define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
-+#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+ 	for (i = 0; i < cma_area_count; i++)
+-		cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
++		if (test_bit(CMA_ACTIVATED, &cma_areas[i].flags))
++			cma_debugfs_add_one(&cma_areas[i], cma_debugfs_root);
+ 
+ 	return 0;
+ }
 
 
 
