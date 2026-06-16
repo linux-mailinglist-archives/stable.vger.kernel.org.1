@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 5JfzLniVMWqrnQUAu9opvQ
-	(envelope-from <stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:04 +0200
+	id J38hMwGNMWqpmQUAu9opvQ
+	(envelope-from <stable+bounces-265645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C053E694213
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:27:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656436938AC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:50:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yDS547TP;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266046-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mIoOmTHr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265645-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265645-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3CDB0301B509
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB0733035CDA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAF3477986;
-	Tue, 16 Jun 2026 18:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E53A43D4E9;
+	Tue, 16 Jun 2026 17:50:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C18477E33;
-	Tue, 16 Jun 2026 18:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E9432A3C9;
+	Tue, 16 Jun 2026 17:50:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634376; cv=none; b=MQiRUrgvN/S83SwKRlpPJRHhbvj16B00ItQBJMTryz9p0u11Fe95Bmd4SgEsnpZ0oE57JOKII/St1TSvP8JnbLbCWQ5eFN9Evmew8NNRRrSZqDQZRhdS1E9L/RhtV+9M5SJuIjRxLy+lMZJhkTtatQG4ZFAwuXitcdQnEbhbC0o=
+	t=1781632253; cv=none; b=gxtBL85AWh3xx6CGw3PnuG4utsZRIjTKpIGw+z1yaftE3suALtPpoVVfgAKhC9LUJyp4v0O1UyGtkWK7IziGm7WOn5mjOAHIOmMgzlKh7yj6areVvDFcjKJlrUYTBXfM6u127LEG93NZUX3jv5dSg5vsV6j5YukC1y2z9APt10Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634376; c=relaxed/simple;
-	bh=AL4vWMi92ZDakokQTDL2jpOdJL0JuF3eSPqiMeRmMmY=;
+	s=arc-20240116; t=1781632253; c=relaxed/simple;
+	bh=1KHNHyzPC3kn4Modi0XWz2jCg7KYp2QsW9NE1em8K8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQ1Yt4gFpitEABt8YvVOt7vhkE8KO6+nCJ0YxgqHYJkc68Z/hBrzua3wkwmxq5axpwVBOmCzwJaEzOJliYS3lax0j9VLB/6f2IniHreRwUdm+ZxoQ2F9VTyobDsnjeM0URm+UjAXNrAzKGz2f7BibYIFD+c3pWYbUUwmQy6PSG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDS547TP; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8347E1F000E9;
-	Tue, 16 Jun 2026 18:26:14 +0000 (UTC)
+	 MIME-Version; b=cO3BhgRuERK3AZioyJBqmeDo3VVcyqTZ8qKSYT4oAzMnHOOGCmVvZko4MgMovC84ajR9T4goF5oTeNPpwULbM9PHHMG5ShFtZJSDXSJDRe2nfKx72arJPDbhIMcTVEVVsGY7csqsTs20wliEq4bDngasXAJWyin1tdgcFbLSII8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIoOmTHr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADCA91F000E9;
+	Tue, 16 Jun 2026 17:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634375;
-	bh=75M0BV8WtNiYCQQulGvQpyNpTpfQc1aKhFOWxVvxivs=;
+	s=korg; t=1781632251;
+	bh=TE3qUEWiktbGQNRC48oLzJF4MFwa3DHRKlHpTApz0Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=yDS547TPSUfY0JsCC6lY2vdWQdEG2BBbh9+0EMZ13iMscDNkjH4033ViLytxC5S0l
-	 Z+0Vlr80/slYZl/zSdTOP3lAhU2VwiPx7QPv4rZZVOqZBEpH//lZPAVesWmqzuNRIh
-	 gUu5wovGHXwud9H//PRE7acnrByzDit+Kv/6kaDo=
+	b=mIoOmTHrbH4OvyIGwNOuRkhXi5AN6typsjdgNEHzIH/lA5yhp9ma267wpwbIe5T7y
+	 hl2AZ1x3IMBY6lfdvCadNkoiEeVkjDduRlhYkgQTs1USjTzClsB1EBHpFD0w4yL/ug
+	 l0GNfTapC9Gq9NwSK+GpYf+RcMZXc+lL6VFpJomg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,
-	Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 252/411] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
+Subject: [PATCH 6.1 343/522] ALSA: aoa: Use guard() for mutex locks
 Date: Tue, 16 Jun 2026 20:28:10 +0530
-Message-ID: <20260616145114.387704917@linuxfoundation.org>
+Message-ID: <20260616145141.857722263@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,114 +66,1078 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266046-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-265645-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,m:yangyongpeng@xiaomi.com,m:chao@kernel.org,m:jaegeuk@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tiwai@suse.de,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6e4cb1cac5efc96ea0ca];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,xiaomi.com:email,appspotmail.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,msgid.link:url,vger.kernel.org:from_smtp,work.work:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C053E694213
+X-Rspamd-Queue-Id: 656436938AC
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53 ]
+[ Upstream commit 1cb6ecbb372002ef9e531c5377e5f60122411e40 ]
 
-The xfstests case "generic/107" and syzbot have both reported a NULL
-pointer dereference.
+Replace the manual mutex lock/unlock pairs with guard() for code
+simplification.
 
-The concurrent scenario that triggers the panic is as follows:
+Only code refactoring, and no behavior change.
 
-F2FS_WB_CP_DATA write callback          umount
-                                        - f2fs_write_checkpoint
-                                         - f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA)
-- blk_mq_end_request
- - bio_endio
-  - f2fs_write_end_io
-   : dec_page_count(sbi, F2FS_WB_CP_DATA)
-   : wake_up(&sbi->cp_wait)
-                                        - kill_f2fs_super
-                                         - kill_block_super
-                                          - f2fs_put_super
-                                           : iput(sbi->node_inode)
-                                           : sbi->node_inode = NULL
-   : f2fs_in_warm_node_list
-    - is_node_folio // sbi->node_inode is NULL and panic
-
-The root cause is that f2fs_put_super() calls iput(sbi->node_inode) and
-sets sbi->node_inode to NULL after sbi->nr_pages[F2FS_WB_CP_DATA] is
-decremented to zero. As a result, f2fs_in_warm_node_list() may
-dereference a NULL node_inode when checking whether a folio belongs to
-the node inode, leading to a panic.
-
-This patch fixes the issue by calling f2fs_in_warm_node_list() before
-decrementing sbi->nr_pages[F2FS_WB_CP_DATA], thus preventing the
-use-after-free condition.
-
-Cc: stable@kernel.org
-Fixes: 50fa53eccf9f ("f2fs: fix to avoid broken of dnode block list")
-Reported-by: syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250829151335.7342-14-tiwai@suse.de
+Stable-dep-of: 5ed060d54915 ("ALSA: aoa: i2sbus: clear stale prepared state")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/aoa/codecs/onyx.c         |  104 +++++++++++-------------------------
+ sound/aoa/codecs/tas.c          |  113 +++++++++++++---------------------------
+ sound/aoa/core/gpio-feature.c   |   20 ++-----
+ sound/aoa/core/gpio-pmf.c       |   26 +++------
+ sound/aoa/soundbus/i2sbus/pcm.c |   76 ++++++++------------------
+ 5 files changed, 112 insertions(+), 227 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -339,6 +339,8 @@ static void f2fs_write_end_io(struct bio
+--- a/sound/aoa/codecs/onyx.c
++++ b/sound/aoa/codecs/onyx.c
+@@ -121,10 +121,9 @@ static int onyx_snd_vol_get(struct snd_k
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	s8 l, r;
  
- 		f2fs_bug_on(sbi, page->mapping == NODE_MAPPING(sbi) &&
- 					page->index != nid_of_node(page));
-+		if (f2fs_in_warm_node_list(sbi, page))
-+			f2fs_del_fsync_node_entry(sbi, page);
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_LEFT, &l);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT, &r);
+-	mutex_unlock(&onyx->mutex);
  
- 		dec_page_count(sbi, type);
+ 	ucontrol->value.integer.value[0] = l + VOLUME_RANGE_SHIFT;
+ 	ucontrol->value.integer.value[1] = r + VOLUME_RANGE_SHIFT;
+@@ -145,15 +144,13 @@ static int onyx_snd_vol_put(struct snd_k
+ 	    ucontrol->value.integer.value[1] > -1 + VOLUME_RANGE_SHIFT)
+ 		return -EINVAL;
  
-@@ -350,8 +352,6 @@ static void f2fs_write_end_io(struct bio
- 				wq_has_sleeper(&sbi->cp_wait))
- 			wake_up(&sbi->cp_wait);
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_LEFT, &l);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT, &r);
  
--		if (f2fs_in_warm_node_list(sbi, page))
--			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_page_private_gcing(page);
- 		end_page_writeback(page);
+ 	if (l + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[0] &&
+-	    r + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[1]) {
+-		mutex_unlock(&onyx->mutex);
++	    r + VOLUME_RANGE_SHIFT == ucontrol->value.integer.value[1])
+ 		return 0;
+-	}
+ 
+ 	onyx_write_register(onyx, ONYX_REG_DAC_ATTEN_LEFT,
+ 			    ucontrol->value.integer.value[0]
+@@ -161,7 +158,6 @@ static int onyx_snd_vol_put(struct snd_k
+ 	onyx_write_register(onyx, ONYX_REG_DAC_ATTEN_RIGHT,
+ 			    ucontrol->value.integer.value[1]
+ 			     - VOLUME_RANGE_SHIFT);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 1;
+ }
+@@ -197,9 +193,8 @@ static int onyx_snd_inputgain_get(struct
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	u8 ig;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &ig);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	ucontrol->value.integer.value[0] =
+ 		(ig & ONYX_ADC_PGA_GAIN_MASK) + INPUTGAIN_RANGE_SHIFT;
+@@ -216,14 +211,13 @@ static int onyx_snd_inputgain_put(struct
+ 	if (ucontrol->value.integer.value[0] < 3 + INPUTGAIN_RANGE_SHIFT ||
+ 	    ucontrol->value.integer.value[0] > 28 + INPUTGAIN_RANGE_SHIFT)
+ 		return -EINVAL;
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
+ 	n = v;
+ 	n &= ~ONYX_ADC_PGA_GAIN_MASK;
+ 	n |= (ucontrol->value.integer.value[0] - INPUTGAIN_RANGE_SHIFT)
+ 		& ONYX_ADC_PGA_GAIN_MASK;
+ 	onyx_write_register(onyx, ONYX_REG_ADC_CONTROL, n);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return n != v;
+ }
+@@ -251,9 +245,8 @@ static int onyx_snd_capture_source_get(s
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	s8 v;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	ucontrol->value.enumerated.item[0] = !!(v&ONYX_ADC_INPUT_MIC);
+ 
+@@ -264,13 +257,12 @@ static void onyx_set_capture_source(stru
+ {
+ 	s8 v;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_ADC_CONTROL, &v);
+ 	v &= ~ONYX_ADC_INPUT_MIC;
+ 	if (mic)
+ 		v |= ONYX_ADC_INPUT_MIC;
+ 	onyx_write_register(onyx, ONYX_REG_ADC_CONTROL, v);
+-	mutex_unlock(&onyx->mutex);
+ }
+ 
+ static int onyx_snd_capture_source_put(struct snd_kcontrol *kcontrol,
+@@ -311,9 +303,8 @@ static int onyx_snd_mute_get(struct snd_
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	u8 c;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &c);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	ucontrol->value.integer.value[0] = !(c & ONYX_MUTE_LEFT);
+ 	ucontrol->value.integer.value[1] = !(c & ONYX_MUTE_RIGHT);
+@@ -328,9 +319,9 @@ static int onyx_snd_mute_put(struct snd_
+ 	u8 v = 0, c = 0;
+ 	int err = -EBUSY;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	if (onyx->analog_locked)
+-		goto out_unlock;
++		return -EBUSY;
+ 
+ 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &v);
+ 	c = v;
+@@ -341,9 +332,6 @@ static int onyx_snd_mute_put(struct snd_
+ 		c |= ONYX_MUTE_RIGHT;
+ 	err = onyx_write_register(onyx, ONYX_REG_DAC_CONTROL, c);
+ 
+- out_unlock:
+-	mutex_unlock(&onyx->mutex);
+-
+ 	return !err ? (v != c) : err;
+ }
+ 
+@@ -372,9 +360,8 @@ static int onyx_snd_single_bit_get(struc
+ 	u8 address = (pv >> 8) & 0xff;
+ 	u8 mask = pv & 0xff;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, address, &c);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	ucontrol->value.integer.value[0] = !!(c & mask) ^ polarity;
+ 
+@@ -393,11 +380,10 @@ static int onyx_snd_single_bit_put(struc
+ 	u8 address = (pv >> 8) & 0xff;
+ 	u8 mask = pv & 0xff;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	if (spdiflock && onyx->spdif_locked) {
+ 		/* even if alsamixer doesn't care.. */
+-		err = -EBUSY;
+-		goto out_unlock;
++		return -EBUSY;
  	}
+ 	onyx_read_register(onyx, address, &v);
+ 	c = v;
+@@ -406,9 +392,6 @@ static int onyx_snd_single_bit_put(struc
+ 		c |= mask;
+ 	err = onyx_write_register(onyx, address, c);
+ 
+- out_unlock:
+-	mutex_unlock(&onyx->mutex);
+-
+ 	return !err ? (v != c) : err;
+ }
+ 
+@@ -489,7 +472,7 @@ static int onyx_spdif_get(struct snd_kco
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	u8 v;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DIG_INFO1, &v);
+ 	ucontrol->value.iec958.status[0] = v & 0x3e;
+ 
+@@ -501,7 +484,6 @@ static int onyx_spdif_get(struct snd_kco
+ 
+ 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
+ 	ucontrol->value.iec958.status[4] = v & 0x0f;
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 0;
+ }
+@@ -512,7 +494,7 @@ static int onyx_spdif_put(struct snd_kco
+ 	struct onyx *onyx = snd_kcontrol_chip(kcontrol);
+ 	u8 v;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DIG_INFO1, &v);
+ 	v = (v & ~0x3e) | (ucontrol->value.iec958.status[0] & 0x3e);
+ 	onyx_write_register(onyx, ONYX_REG_DIG_INFO1, v);
+@@ -527,7 +509,6 @@ static int onyx_spdif_put(struct snd_kco
+ 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
+ 	v = (v & ~0x0f) | (ucontrol->value.iec958.status[4] & 0x0f);
+ 	onyx_write_register(onyx, ONYX_REG_DIG_INFO4, v);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 1;
+ }
+@@ -672,14 +653,13 @@ static int onyx_usable(struct codec_info
+ 	struct onyx *onyx = cii->codec_data;
+ 	int spdif_enabled, analog_enabled;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx_read_register(onyx, ONYX_REG_DIG_INFO4, &v);
+ 	spdif_enabled = !!(v & ONYX_SPDIF_ENABLE);
+ 	onyx_read_register(onyx, ONYX_REG_DAC_CONTROL, &v);
+ 	analog_enabled =
+ 		(v & (ONYX_MUTE_RIGHT|ONYX_MUTE_LEFT))
+ 		 != (ONYX_MUTE_RIGHT|ONYX_MUTE_LEFT);
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	switch (ti->tag) {
+ 	case 0: return 1;
+@@ -695,9 +675,8 @@ static int onyx_prepare(struct codec_inf
+ {
+ 	u8 v;
+ 	struct onyx *onyx = cii->codec_data;
+-	int err = -EBUSY;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 
+ #ifdef SNDRV_PCM_FMTBIT_COMPRESSED_16BE
+ 	if (substream->runtime->format == SNDRV_PCM_FMTBIT_COMPRESSED_16BE) {
+@@ -706,10 +685,9 @@ static int onyx_prepare(struct codec_inf
+ 		if (onyx_write_register(onyx,
+ 					ONYX_REG_DAC_CONTROL,
+ 					v | ONYX_MUTE_RIGHT | ONYX_MUTE_LEFT))
+-			goto out_unlock;
++			return -EBUSY;
+ 		onyx->analog_locked = 1;
+-		err = 0;
+-		goto out_unlock;
++		return 0;
+ 	}
+ #endif
+ 	switch (substream->runtime->rate) {
+@@ -719,8 +697,7 @@ static int onyx_prepare(struct codec_inf
+ 		/* these rates are ok for all outputs */
+ 		/* FIXME: program spdif channel control bits here so that
+ 		 *	  userspace doesn't have to if it only plays pcm! */
+-		err = 0;
+-		goto out_unlock;
++		return 0;
+ 	default:
+ 		/* got some rate that the digital output can't do,
+ 		 * so disable and lock it */
+@@ -728,16 +705,12 @@ static int onyx_prepare(struct codec_inf
+ 		if (onyx_write_register(onyx,
+ 					ONYX_REG_DIG_INFO4,
+ 					v & ~ONYX_SPDIF_ENABLE))
+-			goto out_unlock;
++			return -EBUSY;
+ 		onyx->spdif_locked = 1;
+-		err = 0;
+-		goto out_unlock;
++		return 0;
+ 	}
+ 
+- out_unlock:
+-	mutex_unlock(&onyx->mutex);
+-
+-	return err;
++	return -EBUSY;
+ }
+ 
+ static int onyx_open(struct codec_info_item *cii,
+@@ -745,9 +718,8 @@ static int onyx_open(struct codec_info_i
+ {
+ 	struct onyx *onyx = cii->codec_data;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx->open_count++;
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 0;
+ }
+@@ -757,11 +729,10 @@ static int onyx_close(struct codec_info_
+ {
+ 	struct onyx *onyx = cii->codec_data;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	onyx->open_count--;
+ 	if (!onyx->open_count)
+ 		onyx->spdif_locked = onyx->analog_locked = 0;
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 0;
+ }
+@@ -771,7 +742,7 @@ static int onyx_switch_clock(struct code
+ {
+ 	struct onyx *onyx = cii->codec_data;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	/* this *MUST* be more elaborate later... */
+ 	switch (what) {
+ 	case CLOCK_SWITCH_PREPARE_SLAVE:
+@@ -783,7 +754,6 @@ static int onyx_switch_clock(struct code
+ 	default: /* silence warning */
+ 		break;
+ 	}
+-	mutex_unlock(&onyx->mutex);
+ 
+ 	return 0;
+ }
+@@ -794,27 +764,21 @@ static int onyx_suspend(struct codec_inf
+ {
+ 	struct onyx *onyx = cii->codec_data;
+ 	u8 v;
+-	int err = -ENXIO;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 	if (onyx_read_register(onyx, ONYX_REG_CONTROL, &v))
+-		goto out_unlock;
++		return -ENXIO;
+ 	onyx_write_register(onyx, ONYX_REG_CONTROL, v | ONYX_ADPSV | ONYX_DAPSV);
+ 	/* Apple does a sleep here but the datasheet says to do it on resume */
+-	err = 0;
+- out_unlock:
+-	mutex_unlock(&onyx->mutex);
+-
+-	return err;
++	return 0;
+ }
+ 
+ static int onyx_resume(struct codec_info_item *cii)
+ {
+ 	struct onyx *onyx = cii->codec_data;
+ 	u8 v;
+-	int err = -ENXIO;
+ 
+-	mutex_lock(&onyx->mutex);
++	guard(mutex)(&onyx->mutex);
+ 
+ 	/* reset codec */
+ 	onyx->codec.gpio->methods->set_hw_reset(onyx->codec.gpio, 0);
+@@ -826,17 +790,13 @@ static int onyx_resume(struct codec_info
+ 
+ 	/* take codec out of suspend (if it still is after reset) */
+ 	if (onyx_read_register(onyx, ONYX_REG_CONTROL, &v))
+-		goto out_unlock;
++		return -ENXIO;
+ 	onyx_write_register(onyx, ONYX_REG_CONTROL, v & ~(ONYX_ADPSV | ONYX_DAPSV));
+ 	/* FIXME: should divide by sample rate, but 8k is the lowest we go */
+ 	msleep(2205000/8000);
+ 	/* reset all values */
+ 	onyx_register_init(onyx);
+-	err = 0;
+- out_unlock:
+-	mutex_unlock(&onyx->mutex);
+-
+-	return err;
++	return 0;
+ }
+ 
+ #endif /* CONFIG_PM */
+--- a/sound/aoa/codecs/tas.c
++++ b/sound/aoa/codecs/tas.c
+@@ -235,10 +235,9 @@ static int tas_snd_vol_get(struct snd_kc
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->cached_volume_l;
+ 	ucontrol->value.integer.value[1] = tas->cached_volume_r;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -254,18 +253,15 @@ static int tas_snd_vol_put(struct snd_kc
+ 	    ucontrol->value.integer.value[1] > 177)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	if (tas->cached_volume_l == ucontrol->value.integer.value[0]
+-	 && tas->cached_volume_r == ucontrol->value.integer.value[1]) {
+-		mutex_unlock(&tas->mtx);
++	 && tas->cached_volume_r == ucontrol->value.integer.value[1])
+ 		return 0;
+-	}
+ 
+ 	tas->cached_volume_l = ucontrol->value.integer.value[0];
+ 	tas->cached_volume_r = ucontrol->value.integer.value[1];
+ 	if (tas->hw_enabled)
+ 		tas_set_volume(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -285,10 +281,9 @@ static int tas_snd_mute_get(struct snd_k
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = !tas->mute_l;
+ 	ucontrol->value.integer.value[1] = !tas->mute_r;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -297,18 +292,15 @@ static int tas_snd_mute_put(struct snd_k
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	if (tas->mute_l == !ucontrol->value.integer.value[0]
+-	 && tas->mute_r == !ucontrol->value.integer.value[1]) {
+-		mutex_unlock(&tas->mtx);
++	 && tas->mute_r == !ucontrol->value.integer.value[1])
+ 		return 0;
+-	}
+ 
+ 	tas->mute_l = !ucontrol->value.integer.value[0];
+ 	tas->mute_r = !ucontrol->value.integer.value[1];
+ 	if (tas->hw_enabled)
+ 		tas_set_volume(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -337,10 +329,9 @@ static int tas_snd_mixer_get(struct snd_
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 	int idx = kcontrol->private_value;
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->mixer_l[idx];
+ 	ucontrol->value.integer.value[1] = tas->mixer_r[idx];
+-	mutex_unlock(&tas->mtx);
+ 
+ 	return 0;
+ }
+@@ -351,19 +342,16 @@ static int tas_snd_mixer_put(struct snd_
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 	int idx = kcontrol->private_value;
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	if (tas->mixer_l[idx] == ucontrol->value.integer.value[0]
+-	 && tas->mixer_r[idx] == ucontrol->value.integer.value[1]) {
+-		mutex_unlock(&tas->mtx);
++	 && tas->mixer_r[idx] == ucontrol->value.integer.value[1])
+ 		return 0;
+-	}
+ 
+ 	tas->mixer_l[idx] = ucontrol->value.integer.value[0];
+ 	tas->mixer_r[idx] = ucontrol->value.integer.value[1];
+ 
+ 	if (tas->hw_enabled)
+ 		tas_set_mixer(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -396,9 +384,8 @@ static int tas_snd_drc_range_get(struct
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->drc_range;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -411,16 +398,13 @@ static int tas_snd_drc_range_put(struct
+ 	    ucontrol->value.integer.value[0] > TAS3004_DRC_MAX)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&tas->mtx);
+-	if (tas->drc_range == ucontrol->value.integer.value[0]) {
+-		mutex_unlock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
++	if (tas->drc_range == ucontrol->value.integer.value[0])
+ 		return 0;
+-	}
+ 
+ 	tas->drc_range = ucontrol->value.integer.value[0];
+ 	if (tas->hw_enabled)
+ 		tas3004_set_drc(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -440,9 +424,8 @@ static int tas_snd_drc_switch_get(struct
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->drc_enabled;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -451,16 +434,13 @@ static int tas_snd_drc_switch_put(struct
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
+-	if (tas->drc_enabled == ucontrol->value.integer.value[0]) {
+-		mutex_unlock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
++	if (tas->drc_enabled == ucontrol->value.integer.value[0])
+ 		return 0;
+-	}
+ 
+ 	tas->drc_enabled = !!ucontrol->value.integer.value[0];
+ 	if (tas->hw_enabled)
+ 		tas3004_set_drc(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -486,9 +466,8 @@ static int tas_snd_capture_source_get(st
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.enumerated.item[0] = !!(tas->acr & TAS_ACR_INPUT_B);
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -500,7 +479,7 @@ static int tas_snd_capture_source_put(st
+ 
+ 	if (ucontrol->value.enumerated.item[0] > 1)
+ 		return -EINVAL;
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	oldacr = tas->acr;
+ 
+ 	/*
+@@ -512,13 +491,10 @@ static int tas_snd_capture_source_put(st
+ 	if (ucontrol->value.enumerated.item[0])
+ 		tas->acr |= TAS_ACR_INPUT_B | TAS_ACR_B_MONAUREAL |
+ 		      TAS_ACR_B_MON_SEL_RIGHT;
+-	if (oldacr == tas->acr) {
+-		mutex_unlock(&tas->mtx);
++	if (oldacr == tas->acr)
+ 		return 0;
+-	}
+ 	if (tas->hw_enabled)
+ 		tas_write_reg(tas, TAS_REG_ACR, 1, &tas->acr);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -557,9 +533,8 @@ static int tas_snd_treble_get(struct snd
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->treble;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -571,16 +546,13 @@ static int tas_snd_treble_put(struct snd
+ 	if (ucontrol->value.integer.value[0] < TAS3004_TREBLE_MIN ||
+ 	    ucontrol->value.integer.value[0] > TAS3004_TREBLE_MAX)
+ 		return -EINVAL;
+-	mutex_lock(&tas->mtx);
+-	if (tas->treble == ucontrol->value.integer.value[0]) {
+-		mutex_unlock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
++	if (tas->treble == ucontrol->value.integer.value[0])
+ 		return 0;
+-	}
+ 
+ 	tas->treble = ucontrol->value.integer.value[0];
+ 	if (tas->hw_enabled)
+ 		tas_set_treble(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -608,9 +580,8 @@ static int tas_snd_bass_get(struct snd_k
+ {
+ 	struct tas *tas = snd_kcontrol_chip(kcontrol);
+ 
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	ucontrol->value.integer.value[0] = tas->bass;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -622,16 +593,13 @@ static int tas_snd_bass_put(struct snd_k
+ 	if (ucontrol->value.integer.value[0] < TAS3004_BASS_MIN ||
+ 	    ucontrol->value.integer.value[0] > TAS3004_BASS_MAX)
+ 		return -EINVAL;
+-	mutex_lock(&tas->mtx);
+-	if (tas->bass == ucontrol->value.integer.value[0]) {
+-		mutex_unlock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
++	if (tas->bass == ucontrol->value.integer.value[0])
+ 		return 0;
+-	}
+ 
+ 	tas->bass = ucontrol->value.integer.value[0];
+ 	if (tas->hw_enabled)
+ 		tas_set_bass(tas);
+-	mutex_unlock(&tas->mtx);
+ 	return 1;
+ }
+ 
+@@ -722,13 +690,13 @@ static int tas_switch_clock(struct codec
+ 		break;
+ 	case CLOCK_SWITCH_SLAVE:
+ 		/* Clocks are back, re-init the codec */
+-		mutex_lock(&tas->mtx);
+-		tas_reset_init(tas);
+-		tas_set_volume(tas);
+-		tas_set_mixer(tas);
+-		tas->hw_enabled = 1;
+-		tas->codec.gpio->methods->all_amps_restore(tas->codec.gpio);
+-		mutex_unlock(&tas->mtx);
++		scoped_guard(mutex, &tas->mtx) {
++			tas_reset_init(tas);
++			tas_set_volume(tas);
++			tas_set_mixer(tas);
++			tas->hw_enabled = 1;
++			tas->codec.gpio->methods->all_amps_restore(tas->codec.gpio);
++		}
+ 		break;
+ 	default:
+ 		/* doesn't happen as of now */
+@@ -743,23 +711,21 @@ static int tas_switch_clock(struct codec
+  * our i2c device is suspended, and then take note of that! */
+ static int tas_suspend(struct tas *tas)
+ {
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	tas->hw_enabled = 0;
+ 	tas->acr |= TAS_ACR_ANALOG_PDOWN;
+ 	tas_write_reg(tas, TAS_REG_ACR, 1, &tas->acr);
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+ static int tas_resume(struct tas *tas)
+ {
+ 	/* reset codec */
+-	mutex_lock(&tas->mtx);
++	guard(mutex)(&tas->mtx);
+ 	tas_reset_init(tas);
+ 	tas_set_volume(tas);
+ 	tas_set_mixer(tas);
+ 	tas->hw_enabled = 1;
+-	mutex_unlock(&tas->mtx);
+ 	return 0;
+ }
+ 
+@@ -802,14 +768,13 @@ static int tas_init_codec(struct aoa_cod
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&tas->mtx);
+-	if (tas_reset_init(tas)) {
+-		printk(KERN_ERR PFX "tas failed to initialise\n");
+-		mutex_unlock(&tas->mtx);
+-		return -ENXIO;
++	scoped_guard(mutex, &tas->mtx) {
++		if (tas_reset_init(tas)) {
++			printk(KERN_ERR PFX "tas failed to initialise\n");
++			return -ENXIO;
++		}
++		tas->hw_enabled = 1;
+ 	}
+-	tas->hw_enabled = 1;
+-	mutex_unlock(&tas->mtx);
+ 
+ 	if (tas->codec.soundbus_dev->attach_codec(tas->codec.soundbus_dev,
+ 						   aoa_get_card(),
+--- a/sound/aoa/core/gpio-feature.c
++++ b/sound/aoa/core/gpio-feature.c
+@@ -212,10 +212,9 @@ static void ftr_handle_notify(struct wor
+ 	struct gpio_notification *notif =
+ 		container_of(work, struct gpio_notification, work.work);
+ 
+-	mutex_lock(&notif->mutex);
++	guard(mutex)(&notif->mutex);
+ 	if (notif->notify)
+ 		notif->notify(notif->data);
+-	mutex_unlock(&notif->mutex);
+ }
+ 
+ static void gpio_enable_dual_edge(int gpio)
+@@ -341,19 +340,17 @@ static int ftr_set_notify(struct gpio_ru
+ 	if (!irq)
+ 		return -ENODEV;
+ 
+-	mutex_lock(&notif->mutex);
++	guard(mutex)(&notif->mutex);
+ 
+ 	old = notif->notify;
+ 
+-	if (!old && !notify) {
+-		err = 0;
+-		goto out_unlock;
+-	}
++	if (!old && !notify)
++		return 0;
+ 
+ 	if (old && notify) {
+ 		if (old == notify && notif->data == data)
+ 			err = 0;
+-		goto out_unlock;
++		return err;
+ 	}
+ 
+ 	if (old && !notify)
+@@ -362,16 +359,13 @@ static int ftr_set_notify(struct gpio_ru
+ 	if (!old && notify) {
+ 		err = request_irq(irq, ftr_handle_notify_irq, 0, name, notif);
+ 		if (err)
+-			goto out_unlock;
++			return err;
+ 	}
+ 
+ 	notif->notify = notify;
+ 	notif->data = data;
+ 
+-	err = 0;
+- out_unlock:
+-	mutex_unlock(&notif->mutex);
+-	return err;
++	return 0;
+ }
+ 
+ static int ftr_get_detect(struct gpio_runtime *rt,
+--- a/sound/aoa/core/gpio-pmf.c
++++ b/sound/aoa/core/gpio-pmf.c
+@@ -74,10 +74,9 @@ static void pmf_handle_notify(struct wor
+ 	struct gpio_notification *notif =
+ 		container_of(work, struct gpio_notification, work.work);
+ 
+-	mutex_lock(&notif->mutex);
++	guard(mutex)(&notif->mutex);
+ 	if (notif->notify)
+ 		notif->notify(notif->data);
+-	mutex_unlock(&notif->mutex);
+ }
+ 
+ static void pmf_gpio_init(struct gpio_runtime *rt)
+@@ -154,19 +153,17 @@ static int pmf_set_notify(struct gpio_ru
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&notif->mutex);
++	guard(mutex)(&notif->mutex);
+ 
+ 	old = notif->notify;
+ 
+-	if (!old && !notify) {
+-		err = 0;
+-		goto out_unlock;
+-	}
++	if (!old && !notify)
++		return 0;
+ 
+ 	if (old && notify) {
+ 		if (old == notify && notif->data == data)
+ 			err = 0;
+-		goto out_unlock;
++		return err;
+ 	}
+ 
+ 	if (old && !notify) {
+@@ -178,10 +175,8 @@ static int pmf_set_notify(struct gpio_ru
+ 	if (!old && notify) {
+ 		irq_client = kzalloc(sizeof(struct pmf_irq_client),
+ 				     GFP_KERNEL);
+-		if (!irq_client) {
+-			err = -ENOMEM;
+-			goto out_unlock;
+-		}
++		if (!irq_client)
++			return -ENOMEM;
+ 		irq_client->data = notif;
+ 		irq_client->handler = pmf_handle_notify_irq;
+ 		irq_client->owner = THIS_MODULE;
+@@ -192,17 +187,14 @@ static int pmf_set_notify(struct gpio_ru
+ 			printk(KERN_ERR "snd-aoa: gpio layer failed to"
+ 					" register %s irq (%d)\n", name, err);
+ 			kfree(irq_client);
+-			goto out_unlock;
++			return err;
+ 		}
+ 		notif->gpio_private = irq_client;
+ 	}
+ 	notif->notify = notify;
+ 	notif->data = data;
+ 
+-	err = 0;
+- out_unlock:
+-	mutex_unlock(&notif->mutex);
+-	return err;
++	return 0;
+ }
+ 
+ static int pmf_get_detect(struct gpio_runtime *rt,
+--- a/sound/aoa/soundbus/i2sbus/pcm.c
++++ b/sound/aoa/soundbus/i2sbus/pcm.c
+@@ -79,11 +79,10 @@ static int i2sbus_pcm_open(struct i2sbus
+ 	u64 formats = 0;
+ 	unsigned int rates = 0;
+ 	struct transfer_info v;
+-	int result = 0;
+ 	int bus_factor = 0, sysclock_factor = 0;
+ 	int found_this;
+ 
+-	mutex_lock(&i2sdev->lock);
++	guard(mutex)(&i2sdev->lock);
+ 
+ 	get_pcm_info(i2sdev, in, &pi, &other);
+ 
+@@ -92,8 +91,7 @@ static int i2sbus_pcm_open(struct i2sbus
+ 
+ 	if (pi->active) {
+ 		/* alsa messed up */
+-		result = -EBUSY;
+-		goto out_unlock;
++		return -EBUSY;
+ 	}
+ 
+ 	/* we now need to assign the hw */
+@@ -117,10 +115,8 @@ static int i2sbus_pcm_open(struct i2sbus
+ 			ti++;
+ 		}
+ 	}
+-	if (!masks_inited || !bus_factor || !sysclock_factor) {
+-		result = -ENODEV;
+-		goto out_unlock;
+-	}
++	if (!masks_inited || !bus_factor || !sysclock_factor)
++		return -ENODEV;
+ 	/* bus dependent stuff */
+ 	hw->info = SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_MMAP_VALID |
+ 		   SNDRV_PCM_INFO_INTERLEAVED | SNDRV_PCM_INFO_RESUME |
+@@ -194,15 +190,12 @@ static int i2sbus_pcm_open(struct i2sbus
+ 	hw->periods_max = MAX_DBDMA_COMMANDS;
+ 	err = snd_pcm_hw_constraint_integer(pi->substream->runtime,
+ 					    SNDRV_PCM_HW_PARAM_PERIODS);
+-	if (err < 0) {
+-		result = err;
+-		goto out_unlock;
+-	}
++	if (err < 0)
++		return err;
+ 	list_for_each_entry(cii, &sdev->codec_list, list) {
+ 		if (cii->codec->open) {
+ 			err = cii->codec->open(cii, pi->substream);
+ 			if (err) {
+-				result = err;
+ 				/* unwind */
+ 				found_this = 0;
+ 				list_for_each_entry_reverse(rev,
+@@ -214,14 +207,12 @@ static int i2sbus_pcm_open(struct i2sbus
+ 					if (rev == cii)
+ 						found_this = 1;
+ 				}
+-				goto out_unlock;
++				return err;
+ 			}
+ 		}
+ 	}
+ 
+- out_unlock:
+-	mutex_unlock(&i2sdev->lock);
+-	return result;
++	return 0;
+ }
+ 
+ #undef CHECK_RATE
+@@ -232,7 +223,7 @@ static int i2sbus_pcm_close(struct i2sbu
+ 	struct pcm_info *pi;
+ 	int err = 0, tmp;
+ 
+-	mutex_lock(&i2sdev->lock);
++	guard(mutex)(&i2sdev->lock);
+ 
+ 	get_pcm_info(i2sdev, in, &pi, NULL);
+ 
+@@ -246,7 +237,6 @@ static int i2sbus_pcm_close(struct i2sbu
+ 
+ 	pi->substream = NULL;
+ 	pi->active = 0;
+-	mutex_unlock(&i2sdev->lock);
+ 	return err;
+ }
+ 
+@@ -330,33 +320,26 @@ static int i2sbus_pcm_prepare(struct i2s
+ 	int input_16bit;
+ 	struct pcm_info *pi, *other;
+ 	int cnt;
+-	int result = 0;
+ 	unsigned int cmd, stopaddr;
+ 
+-	mutex_lock(&i2sdev->lock);
++	guard(mutex)(&i2sdev->lock);
+ 
+ 	get_pcm_info(i2sdev, in, &pi, &other);
+ 
+-	if (pi->dbdma_ring.running) {
+-		result = -EBUSY;
+-		goto out_unlock;
+-	}
++	if (pi->dbdma_ring.running)
++		return -EBUSY;
+ 	if (pi->dbdma_ring.stopping)
+ 		i2sbus_wait_for_stop(i2sdev, pi);
+ 
+-	if (!pi->substream || !pi->substream->runtime) {
+-		result = -EINVAL;
+-		goto out_unlock;
+-	}
++	if (!pi->substream || !pi->substream->runtime)
++		return -EINVAL;
+ 
+ 	runtime = pi->substream->runtime;
+ 	pi->active = 1;
+ 	if (other->active &&
+ 	    ((i2sdev->format != runtime->format)
+-	     || (i2sdev->rate != runtime->rate))) {
+-		result = -EINVAL;
+-		goto out_unlock;
+-	}
++	     || (i2sdev->rate != runtime->rate)))
++		return -EINVAL;
+ 
+ 	i2sdev->format = runtime->format;
+ 	i2sdev->rate = runtime->rate;
+@@ -412,10 +395,8 @@ static int i2sbus_pcm_prepare(struct i2s
+ 			bi.bus_factor = cii->codec->bus_factor;
+ 			break;
+ 		}
+-		if (!bi.bus_factor) {
+-			result = -ENODEV;
+-			goto out_unlock;
+-		}
++		if (!bi.bus_factor)
++			return -ENODEV;
+ 		input_16bit = 1;
+ 		break;
+ 	case SNDRV_PCM_FORMAT_S32_BE:
+@@ -426,8 +407,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		input_16bit = 0;
+ 		break;
+ 	default:
+-		result = -EINVAL;
+-		goto out_unlock;
++		return -EINVAL;
+ 	}
+ 	/* we assume all sysclocks are the same! */
+ 	list_for_each_entry(cii, &i2sdev->sound.codec_list, list) {
+@@ -438,10 +418,8 @@ static int i2sbus_pcm_prepare(struct i2s
+ 	if (clock_and_divisors(bi.sysclock_factor,
+ 			       bi.bus_factor,
+ 			       runtime->rate,
+-			       &sfr) < 0) {
+-		result = -EINVAL;
+-		goto out_unlock;
+-	}
++			       &sfr) < 0)
++		return -EINVAL;
+ 	switch (bi.bus_factor) {
+ 	case 32:
+ 		sfr |= I2S_SF_SERIAL_FORMAT_I2S_32X;
+@@ -457,10 +435,8 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		int err = 0;
+ 		if (cii->codec->prepare)
+ 			err = cii->codec->prepare(cii, &bi, pi->substream);
+-		if (err) {
+-			result = err;
+-			goto out_unlock;
+-		}
++		if (err)
++			return err;
+ 	}
+ 	/* codecs are fine with it, so set our clocks */
+ 	if (input_16bit)
+@@ -476,7 +452,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 	/* not locking these is fine since we touch them only in this function */
+ 	if (in_le32(&i2sdev->intfregs->serial_format) == sfr
+ 	 && in_le32(&i2sdev->intfregs->data_word_sizes) == dws)
+-		goto out_unlock;
++		return 0;
+ 
+ 	/* let's notify the codecs about clocks going away.
+ 	 * For now we only do mastering on the i2s cell... */
+@@ -514,9 +490,7 @@ static int i2sbus_pcm_prepare(struct i2s
+ 		if (cii->codec->switch_clock)
+ 			cii->codec->switch_clock(cii, CLOCK_SWITCH_SLAVE);
+ 
+- out_unlock:
+-	mutex_unlock(&i2sdev->lock);
+-	return result;
++	return 0;
+ }
+ 
+ #ifdef CONFIG_PM
 
 
 
