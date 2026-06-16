@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-264028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d04zDFFtMWo6jAUAu9opvQ
-	(envelope-from <stable+bounces-264028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:45 +0200
+	id yoDIN6KMMWp2mQUAu9opvQ
+	(envelope-from <stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246276912FA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:35:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51CDD693834
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=N7rSoqZD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264028-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264028-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zelujaXW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265571-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E93AF3031A1F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:29:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A10A330E9A05
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8426B1A682B;
-	Tue, 16 Jun 2026 15:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0332B47AF6E;
+	Tue, 16 Jun 2026 17:44:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617DD36A033;
-	Tue, 16 Jun 2026 15:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ED4466B70;
+	Tue, 16 Jun 2026 17:44:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623746; cv=none; b=fs/Z6OQFnJ/mq9cenj9FDUCfYtBG1PmxE7X6mu9zeUU1nBxWzivLOs1WL2ZMXHbZE1TBudL9R04eDV5gEbWEho2iMzzAS1tVahX9XvqwiV5EH2SRx6oFULDp8FUeaCplE7trrAzQ7WzVEXwug2km3HtE4Mz7PhZsv+OrrnH3/gM=
+	t=1781631875; cv=none; b=AJRrn3T5gObM+e03Q1p/EoFcNPD5pzvelZvlO2xQd+4qCJxgTEUBVAfIU/R5Qi+i0Xny5R+ybUj0k8412hVEjLFKxtHVXfyWq6Lnmq7EhaFtGLF+JQf51K1FF2egIGsCMpO4f8fNuaJVG5VT4jSGLVJmq/Y2jGyX77KZ3GrPtTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623746; c=relaxed/simple;
-	bh=G1Gf2CTW7MxbZ/A6lUtfvM1hIzedWt3fFMaRaGqqLro=;
+	s=arc-20240116; t=1781631875; c=relaxed/simple;
+	bh=0Ov/ZaitxeYxL/Ijaaa+rKbeOVxgPrY54CCO1vzPpLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2gCpKdMv9z+B3w5YBEim3DYCSISDrzfn3JBk0sFtbEPHlX7pG4tyrQcNLvBCM+Tp2pE/n2rz8ACd4W/WiAO10NgQI3WSqhSxZqU1ldaWYbsDpd1MNDRl3WzPkbxlShf4G68Ve3w9fkgsICBeZupEpuJW2Hw1n9chnpoOsXiXHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7rSoqZD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FC41F000E9;
-	Tue, 16 Jun 2026 15:29:02 +0000 (UTC)
+	 MIME-Version; b=VmC04cL3GOvFRtMZ0tQUxMrYNeX3FOsErn6PoXnmxd6HKLnpOVnvQVOyr0jAyS3Phw7a12GJV27G7IR5fL9b389JtGnCz6Ng72J5VvPvvxrwQXup4ySEyGudpAGn2luYhO02/c7LNQDxf2ct/KmAKlRDMwnH08LakTiRqinwpQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zelujaXW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607791F000E9;
+	Tue, 16 Jun 2026 17:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623744;
-	bh=YO0iPQXEEHAopm3vxWDOUrwtH0Vh9AFmsq4TRXG/HDQ=;
+	s=korg; t=1781631874;
+	bh=ub9oCk+ueGXnsqcazqnjel3bRtnMb6TxaJ+6t9WbPSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N7rSoqZDbhm3UupVrgsD+7VEf3YoRIxHQWLxdxHIdT8qnPhVjpjEF8Dwag4gMTDE0
-	 CfOQHtpoFtZJKrenPIor0e5Aw8oXmluz70DF7mCosgRvlv5basn7oa59GuEtHnVB/d
-	 769mpwYoW4R6C6dxUgEAwCZxQuafArz/vlmSdZNE=
+	b=zelujaXWp0Uju/4u3xT0Al+Q4swj3jpLfoBNSDFeERlszLPsM//m1ip1uOZMixG1c
+	 gZZ4LF+W+Z5AI9bT1GNJ3QlQf3HeIW2M1xkYQs9jsoAIOhE5OYPTQ/c5RFdT+8I3lc
+	 hIWyaDgVskMGfAb+wfRwX6HCbE/NGgR78B4Y2AEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Simona Vetter <simona@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 7.0 200/378] drm/i915/gem: Fix phys BO pread/pwrite with offset
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Russell King <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.1 284/522] ARM: 9475/1: entry: use byte load for KASAN VMAP stack shadow
 Date: Tue, 16 Jun 2026 20:27:11 +0530
-Message-ID: <20260616145120.918557860@linuxfoundation.org>
+Message-ID: <20260616145139.230402799@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,128 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264028-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:willy@infradead.org,m:tursulin@ursulin.net,m:simona@ffwll.ch,m:jani.nikula@linux.intel.com,m:rodrigo.vivi@intel.com,m:joonas.lahtinen@linux.intel.com,m:tvrtko.ursulin@igalia.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265571-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kmehltretter@gmail.com,m:linusw@kernel.org,m:rmk+kernel@armlinux.org.uk,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,armlinux.org.uk];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,igalia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,infradead.org:email]
+	TAGGED_RCPT(0.00)[stable,kernel];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,armlinux.org.uk:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 246276912FA
+X-Rspamd-Queue-Id: 51CDD693834
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+From: Karl Mehltretter <kmehltretter@gmail.com>
 
-commit d21ad938398bca695a511307de38a65889e3b354 upstream.
+commit 77a1f6883dc6e837bb2cb30b9b02e2f94338e2c6 upstream.
 
-sg_page() returns struct page pointer not (void *) so the scaling
-of pread/pwrite is wrong for phys BO and wrong parts of BO would be
-accessed if non-zero offset is used.
+Commit 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from
+VMAP shadow") added a dummy read from the KASAN VMAP stack shadow in
+__switch_to(). The read uses ldr, but the KASAN shadow address is
+byte-granular and is not guaranteed to be word aligned.
 
-Last impacted platform with overlay or cursor planes using phys
-mapping was Gen3/945G/Lakeport.
+ARMv5 faults unaligned word loads. With CONFIG_KASAN_VMALLOC and
+CONFIG_VMAP_STACK enabled, ARM926/VersatilePB crashes in __switch_to()
+with an alignment exception before reaching init.
 
-Reported-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: c6790dc22312 ("drm/i915: Wean off drm_pci_alloc/drm_pci_free")
-Cc: <stable@vger.kernel.org> # v4.5+
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://patch.msgid.link/20260610060314.26111-1-joonas.lahtinen@linux.intel.com
-(cherry picked from commit 3e49a2f85070b2fb672c1e0fdba281a4ea3aebe6)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Use ldrb for the dummy shadow access. The code only needs to fault in the
+shadow mapping if the stack shadow is missing, so a byte load is sufficient
+and matches the granularity of KASAN shadow memory.
+
+Fixes: 44e9a3bb76e5 ("ARM: 9430/1: entry: Do a dummy read from VMAP shadow")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_phys.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/arm/kernel/entry-armv.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_phys.c
-@@ -18,6 +18,17 @@
- #include "i915_gem_tiling.h"
- #include "i915_scatterlist.h"
- 
-+/* Abuse scatterlist to store pointer instead of struct page. */
-+static inline void __set_phys_vaddr(struct scatterlist *sg, void *vaddr)
-+{
-+	sg_assign_page(sg, (struct page *)vaddr);
-+}
-+
-+static inline void *__get_phys_vaddr(struct scatterlist *sg)
-+{
-+	return (void *)sg_page(sg);
-+}
-+
- static int i915_gem_object_get_pages_phys(struct drm_i915_gem_object *obj)
- {
- 	struct address_space *mapping = obj->base.filp->f_mapping;
-@@ -58,7 +69,7 @@ static int i915_gem_object_get_pages_phy
- 	sg->offset = 0;
- 	sg->length = obj->base.size;
- 
--	sg_assign_page(sg, (struct page *)vaddr);
-+	__set_phys_vaddr(sg, vaddr);
- 	sg_dma_address(sg) = dma;
- 	sg_dma_len(sg) = obj->base.size;
- 
-@@ -99,7 +110,7 @@ i915_gem_object_put_pages_phys(struct dr
- 			       struct sg_table *pages)
- {
- 	dma_addr_t dma = sg_dma_address(pages->sgl);
--	void *vaddr = sg_page(pages->sgl);
-+	void *vaddr = __get_phys_vaddr(pages->sgl);
- 
- 	__i915_gem_object_release_shmem(obj, pages, false);
- 
-@@ -139,7 +150,7 @@ i915_gem_object_put_pages_phys(struct dr
- int i915_gem_object_pwrite_phys(struct drm_i915_gem_object *obj,
- 				const struct drm_i915_gem_pwrite *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
- 	int err;
-@@ -170,7 +181,7 @@ int i915_gem_object_pwrite_phys(struct d
- int i915_gem_object_pread_phys(struct drm_i915_gem_object *obj,
- 			       const struct drm_i915_gem_pread *args)
- {
--	void *vaddr = sg_page(obj->mm.pages->sgl) + args->offset;
-+	void *vaddr = __get_phys_vaddr(obj->mm.pages->sgl) + args->offset;
- 	char __user *user_data = u64_to_user_ptr(args->data_ptr);
- 	int err;
+--- a/arch/arm/kernel/entry-armv.S
++++ b/arch/arm/kernel/entry-armv.S
+@@ -793,7 +793,7 @@ ENTRY(__switch_to)
+ 	@ are using KASAN
+ 	mov_l	r2, KASAN_SHADOW_OFFSET
+ 	add	r2, r2, ip, lsr #KASAN_SHADOW_SCALE_SHIFT
+-	ldr	r2, [r2]
++	ldrb	r2, [r2]
+ #endif
+ #endif
  
 
 
