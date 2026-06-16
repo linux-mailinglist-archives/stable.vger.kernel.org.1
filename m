@@ -1,65 +1,75 @@
-Return-Path: <stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id lD4MASaQMWo8mwUAu9opvQ
-	(envelope-from <stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:22 +0200
+	id Bdu3HCyYMWrlngUAu9opvQ
+	(envelope-from <stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E9A693C67
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C6D6944AC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:35 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Pyxap7yH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265788-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JM+aKmO0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-266187-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60738314A020
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:03:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9E3E73004430
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952113CF97E;
-	Tue, 16 Jun 2026 18:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40E03D669D;
+	Tue, 16 Jun 2026 18:38:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4828D169AD2;
-	Tue, 16 Jun 2026 18:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7EB3DC4D9;
+	Tue, 16 Jun 2026 18:38:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632986; cv=none; b=Ond9I3xvWeloX69qHNmaQdOvF/WiDhrOajb8iJDB/HqnJ7kqCno7sn8FHRNxSCC+x/rHRGYr2mtq3Q0JpAgd2QtBVvs1HkRzv4zmmE+XP3bh4Ks2hKAkzEw9MH6hMY3VBd/yvO1QdcSCGw+kbKr00P1AT5ey0ptbYCsbGFY/hc8=
+	t=1781635111; cv=none; b=b21zEXTSlmlxnpyPPV+Zyyk9KQS33mycJQClkAFPlPZLh50qi+mBHv8UShct0ImOzHF/41ag+GFs66Q9VxAIvQnORQeR21K4nKQHD56gbiEIib1fVR48L9NE0zadm3HjQc7zi8lOmz79MSOy+WNOHNrAYkh1I0p3HxSgLTtkX6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632986; c=relaxed/simple;
-	bh=2As2Js8C5v4wbyj4P2Rt+k3nwjVLEwC7ZNsFyFyeCNM=;
+	s=arc-20240116; t=1781635111; c=relaxed/simple;
+	bh=NBNhSuJ6oKPUQ7fm9ISoNpp78M5G7N4mf1OZ/i20Mt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0njdSfl5k07wRAZMNfzTrni3P+MFtqNivt1sbj7RAVewSGPswcF2DmCu8jLqgggIEWQ+AvRhMcCz0N/pgX3gZvv93iChLQx7V9v82YTsgld8wVKv3bEhjls1z8Pn/Up3thLmG6Zd7+UFBx1bPpPBbwmy7FPM7disHl3JETnte0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyxap7yH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2C21F000E9;
-	Tue, 16 Jun 2026 18:03:03 +0000 (UTC)
+	 MIME-Version; b=gFSinRtYXDOVWUtXmZB9Jl8xbH516eYqfvvcDtWfnd5FW/lv7rjkkGxBnSsmkTpiqU6JQbFCxP2PS2TGlrOqpUGrTvtqjFyCa+fsZCRth0J285dr9IBV4b2LTKe+exKVSqfnBV1OjkdGpMFtzyJWhqr9z5cSUue6hTpQlxbTY9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JM+aKmO0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AEA1F000E9;
+	Tue, 16 Jun 2026 18:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632985;
-	bh=FziLQ/y9piXVvvJj6qUmatNHOd9gGj1LQcWdkwddcu8=;
+	s=korg; t=1781635110;
+	bh=ANZisJGzyxShD/+bsxZ9eeaHR0oJfCo9/Y3TJU4lPI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Pyxap7yHFoTzsQchhg1/pi8k8VSO0LpCQZUiV10xZ5rxtYU7uC/vSGNFBJdJFMjPM
-	 NdavhtZ8Ma1E4g1Upf7IAUEVHLIduZPKDFqECw5LpIC+rmrKodFytP6zoy7BgPENNO
-	 3Y7qhytvf2MwNBwRY32bHdd4O076hDFOAHWRWCiI=
+	b=JM+aKmO0p2YPX5l9ae9p5P24Q7UQBPQxcHILOC22yH+t2AmXsxeG/JBORlUFOAg4M
+	 SykQvQGZ7AKr5S1atkImRvjfgQQ9gyI0P5hetczSUOEORSi71fUXw9B86kqayodhOz
+	 np0Z534W0/T36WlWbB8DduoBq5qGKFbMrnb3aAg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Yin Tirui <yintirui@huawei.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"David Hildenbrand (arm)" <david@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Dev Jain <dev.jain@arm.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Barry Song <baohua@kernel.org>,
+	Chen Jun <chenjun102@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Yang Shi <yang.shi@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/522] mm/hugetlb: rename isolate_hugetlb() to folio_isolate_hugetlb()
-Date: Tue, 16 Jun 2026 20:30:29 +0530
-Message-ID: <20260616145148.373150969@linuxfoundation.org>
+Subject: [PATCH 5.15 392/411] mm/huge_memory: update file PMD counter before folio_put()
+Date: Tue, 16 Jun 2026 20:30:30 +0530
+Message-ID: <20260616145122.064997421@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,200 +83,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265788-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266187-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:david@redhat.com,m:willy@infradead.org,m:baolin.wang@linux.alibaba.com,m:muchun.song@linux.dev,m:sidhartha.kumar@oracle.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:vbabka@kernel.org,m:yang.shi@linux.alibaba.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linux-foundation.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,infradead.org:email,alibaba.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 61E9A693C67
+X-Rspamd-Queue-Id: 70C6D6944AC
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Yin Tirui <yintirui@huawei.com>
 
-[ Upstream commit 4c640f128074e0d4459ecf072595a44df5c2ae18 ]
+[ Upstream commit 8d878059924f12c1bc24556a92ec56add74de3c8 ]
 
-Let's make the function name match "folio_isolate_lru()", and add some
-kernel doc.
+__split_huge_pmd_locked() updates the file/shmem RSS counter after
+dropping the PMD mapping's folio reference.  If folio_put() drops the last
+reference, mm_counter_file() can later read freed folio state via
+folio_test_swapbacked().
 
-Link: https://lkml.kernel.org/r/20250113131611.2554758-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Move the counter update before folio_put().
+
+Link: https://lore.kernel.org/20260526101337.1984081-1-yintirui@huawei.com
+Fixes: fadae2953072 ("thp: use mm_file_counter to determine update which rss counter")
+Signed-off-by: Yin Tirui <yintirui@huawei.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chen Jun <chenjun102@huawei.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Yang Shi <yang.shi@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 3c2d42b8ee34 ("mm/memory-failure: fix hugetlb_lock AA deadlock in get_huge_page_for_hwpoison")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |    4 ++--
- mm/gup.c                |    2 +-
- mm/hugetlb.c            |   23 ++++++++++++++++++++---
- mm/memory-failure.c     |    2 +-
- mm/memory_hotplug.c     |    2 +-
- mm/mempolicy.c          |    2 +-
- mm/migrate.c            |    4 ++--
- 7 files changed, 28 insertions(+), 11 deletions(-)
+ mm/huge_memory.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -182,7 +182,7 @@ bool hugetlb_reserve_pages(struct inode
- 						vm_flags_t vm_flags);
- long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
- 						long freed);
--int isolate_hugetlb(struct page *page, struct list_head *list);
-+int folio_isolate_hugetlb(struct page *page, struct list_head *list);
- int get_hwpoison_huge_page(struct page *page, bool *hugetlb);
- int get_huge_page_for_hwpoison(unsigned long pfn, int flags);
- void putback_active_hugepage(struct page *page);
-@@ -428,7 +428,7 @@ static inline pte_t *huge_pte_offset(str
- 	return NULL;
- }
- 
--static inline int isolate_hugetlb(struct page *page, struct list_head *list)
-+static inline int folio_isolate_hugetlb(struct page *page, struct list_head *list)
- {
- 	return -EBUSY;
- }
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -1986,7 +1986,7 @@ static unsigned long collect_longterm_un
- 			continue;
- 
- 		if (folio_test_hugetlb(folio)) {
--			isolate_hugetlb(&folio->page, movable_page_list);
-+			folio_isolate_hugetlb(&folio->page, movable_page_list);
- 			continue;
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1994,7 +1994,9 @@ static void __split_huge_pmd_locked(stru
+ 			if (!PageReferenced(page) && pmd_young(old_pmd))
+ 				SetPageReferenced(page);
+ 			page_remove_rmap(page, true);
++			add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 			put_page(page);
++			return;
  		}
- 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2994,7 +2994,7 @@ retry:
- 		 * Fail with -EBUSY if not possible.
- 		 */
- 		spin_unlock_irq(&hugetlb_lock);
--		ret = isolate_hugetlb(old_page, list);
-+		ret = folio_isolate_hugetlb(old_page, list);
- 		spin_lock_irq(&hugetlb_lock);
- 		goto free_new;
- 	} else if (!HPageFreed(old_page)) {
-@@ -3070,7 +3070,7 @@ int isolate_or_dissolve_huge_page(struct
- 	if (hstate_is_gigantic(h))
- 		return -ENOMEM;
- 
--	if (page_count(head) && !isolate_hugetlb(head, list))
-+	if (page_count(head) && !folio_isolate_hugetlb(head, list))
- 		ret = 0;
- 	else if (!page_count(head))
- 		ret = alloc_and_dissolve_huge_page(h, head, list);
-@@ -7445,7 +7445,24 @@ follow_huge_pgd(struct mm_struct *mm, un
- 	return pte_page(*(pte_t *)pgd) + ((address & ~PGDIR_MASK) >> PAGE_SHIFT);
- }
- 
--int isolate_hugetlb(struct page *page, struct list_head *list)
-+/**
-+ * folio_isolate_hugetlb - try to isolate an allocated hugetlb page
-+ * @page: the page to isolate
-+ * @list: the list to add the page to on success
-+ *
-+ * Isolate an allocated (refcount > 0) hugetlb page, marking it as
-+ * isolated/non-migratable, and moving it from the active list to the
-+ * given list.
-+ *
-+ * Isolation will fail if @page is not an allocated hugetlb page, or if
-+ * it is already isolated/non-migratable.
-+ *
-+ * On success, an additional page reference is taken that must be dropped
-+ * using putback_active_hugepage() to undo the isolation.
-+ *
-+ * Return: 0 if isolation worked, otherwise -EBUSY.
-+ */
-+int folio_isolate_hugetlb(struct page *page, struct list_head *list)
- {
- 	int ret = 0;
- 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2444,7 +2444,7 @@ static bool isolate_page(struct page *pa
- 	bool isolated = false;
- 
- 	if (PageHuge(page)) {
--		isolated = !isolate_hugetlb(page, pagelist);
-+		isolated = !folio_isolate_hugetlb(page, pagelist);
- 	} else {
- 		bool lru = !__PageMovable(page);
- 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1641,7 +1641,7 @@ do_migrate_range(unsigned long start_pfn
- 
- 		if (PageHuge(page)) {
- 			pfn = page_to_pfn(head) + compound_nr(head) - 1;
--			isolate_hugetlb(head, &source);
-+			folio_isolate_hugetlb(head, &source);
- 			continue;
- 		} else if (PageTransHuge(page))
- 			pfn = page_to_pfn(head) + thp_nr_pages(page) - 1;
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -598,7 +598,7 @@ static int queue_pages_hugetlb(pte_t *pt
- 	if (flags & (MPOL_MF_MOVE_ALL) ||
- 	    (flags & MPOL_MF_MOVE && page_mapcount(page) == 1 &&
- 	     !hugetlb_pmd_shared(pte))) {
--		if (isolate_hugetlb(page, qp->pagelist) &&
-+		if (folio_isolate_hugetlb(page, qp->pagelist) &&
- 			(flags & MPOL_MF_STRICT))
- 			/*
- 			 * Failed to isolate page but allow migrating pages
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -133,7 +133,7 @@ static void putback_movable_page(struct
-  *
-  * This function shall be used whenever the isolated pageset has been
-  * built from lru, balloon, hugetlbfs page. See isolate_migratepages_range()
-- * and isolate_hugetlb().
-+ * and folio_isolate_hugetlb().
-  */
- void putback_movable_pages(struct list_head *l)
- {
-@@ -1995,7 +1995,7 @@ static int add_page_for_migration(struct
- 
- 	if (PageHuge(page)) {
- 		if (PageHead(page)) {
--			err = isolate_hugetlb(page, pagelist);
-+			err = folio_isolate_hugetlb(page, pagelist);
- 			if (!err)
- 				err = 1;
- 		}
+ 		add_mm_counter(mm, mm_counter_file(page), -HPAGE_PMD_NR);
+ 		return;
 
 
 
