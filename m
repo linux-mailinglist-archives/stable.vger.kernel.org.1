@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 9ZgKKPR2MWoBkAUAu9opvQ
-	(envelope-from <stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:52 +0200
+	id zILRLO2DMWp6lQUAu9opvQ
+	(envelope-from <stable+bounces-265154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD39691E23
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4045C692D8E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:13 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="DxV/U0id";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264429-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fs1RfmEY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265154-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265154-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 864BA337F5D4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 054B030831F9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A98F466B5F;
-	Tue, 16 Jun 2026 16:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A8044BCBE;
+	Tue, 16 Jun 2026 17:09:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B444CF40;
-	Tue, 16 Jun 2026 16:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D60543D4E8;
+	Tue, 16 Jun 2026 17:09:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625836; cv=none; b=g/aZHcccYQpiFt4Glz/O4BaDinTYkSIsJwcemc0tkvt8IVleEIhQVYyMOUESBIzm8vdnCDDpBlOMyT+NtqEL4lgb+JVekgvzT7Z54FxNfc3AxcmU/WVHyvGN3jCxjKr+Hqs25TUpHrsIcygmda2/PAcUT/lMb4J5KwVf/Dc8iog=
+	t=1781629747; cv=none; b=FU9omTL9iLCKGX3YnZXfw+Lw8sfrUdlMLV0AlT9C2YsBMCBuB+EK9w86ddUrHFzKaqcrIvyGDqpXj4Rro99xP45zeMHDyaiyML6nNXggl76t9WHc1Tkuj0zWgkjvm3OgVHXnFeYwayvD/hVOQMEF8QIJ2rZVy7OIdAy0/DF0hK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625836; c=relaxed/simple;
-	bh=3+BLzJH/NHieUt4elb002yGd8H3Vkaw+plKvkENjrig=;
+	s=arc-20240116; t=1781629747; c=relaxed/simple;
+	bh=6PAPdGmtPV2sucS21WBJj8EYTJCEu8Crxv2747e1kqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcGvuU0qjd4nwric6kM276y6r9qtzj4QAJFWgBbSC0zBqXDVPELw6/3j+JTPzsqNXuHrmlV/NKQbdlZxechEj2YmxK+dx6zo6J/a1FycEVVdKd1ba9TRvQvattvMEAsahcGjOeheFhKdSuIuZq/hsH/k+zpF8U2mEX7mhuEP+Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxV/U0id; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499091F000E9;
-	Tue, 16 Jun 2026 16:03:53 +0000 (UTC)
+	 MIME-Version; b=YQnVSHoM0xdNrA8jEMNtORSUpW5kkq949+vW91PyG0LEKD5jvykHQca6YHPd+K0IqqwFhE/EO6taVdWM8NqUcq1845n3Wiw7Xv57WB6LtATyZgm0kXNYQhdEaE6m9l+sLjgcGkxb8suwVx/OeIKYZ3pmqzuKzlaPpFOTPm85Uig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs1RfmEY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C321F000E9;
+	Tue, 16 Jun 2026 17:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625835;
-	bh=iE8UOxHPhAK3rUBFxnbyzPQ9vq8fn/98AI2w3qIOUP8=;
+	s=korg; t=1781629746;
+	bh=gVLVN1WV2MKQo8g4CSxaTE1IJ55PuuLstoDa1Al10Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DxV/U0id4ZBrV74GlsT2+4NeJvJgwUweFF6jajDABPUqYR+cgurW3OYJ0AI5hKzr/
-	 9LGM1Tq3Ei9OqofLevdBWFW25VNHs3g/YG0QpTOLTlt53FAT00qatkIdIoPMC6R8VN
-	 625GSQQ8ZyZ3iDhZudknZS9xKLpMU3Up5WGwLrPY=
+	b=fs1RfmEYTTrBZG1CcPkBMWsOfawgvVFJF6y2uTmZrL1xpsDbPmncJCfpq/ZTYvAkg
+	 DsbZdpSqGJQkkXLZh+qIT3qjNCUNBJhVQU4RtRd/rnJ+glrIEmFzzJ/FPPZGo4WM64
+	 B7W8Y2ko0LQn2oB4HiKtmA1DLuVogF+fPeaN8XYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wu <jackbb_wu@compal.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 176/325] USB: serial: option: add usb-id for Dell Wireless DW5826e-m
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 345/452] selftests/bpf: Tests for per-insn sync_linked_regs() precision tracking
 Date: Tue, 16 Jun 2026 20:29:32 +0530
-Message-ID: <20260616145106.629902670@linuxfoundation.org>
+Message-ID: <20260616145135.379399111@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,106 +73,256 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264429-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jackbb_wu@compal.com,m:johan@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265154-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eddyz87@gmail.com,m:andrii@kernel.org,m:jt26wzz@gmail.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,r2.id:url,r0.id:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1BD39691E23
+X-Rspamd-Queue-Id: 4045C692D8E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wu <jackbb_wu@compal.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 1938fb9fe38c4f04a3f30bea44f8071c80a63be4 upstream.
+[ Upstream commit bebc17b1c03b224a0b4aec6a171815e39f8ba9bc ]
 
-Add support for Dell DW5826e-m with USB-id 0x413c:0x81ea
+Add a few test cases to verify precision tracking for scalars gaining
+range because of sync_linked_regs():
+- check what happens when more than 6 registers might gain range in
+  sync_linked_regs();
+- check if precision is propagated correctly when operand of
+  conditional jump gained range in sync_linked_regs() and one of
+  linked registers is marked precise;
+- check if precision is propagated correctly when operand of
+  conditional jump gained range in sync_linked_regs() and a
+  other-linked operand of the conditional jump is marked precise;
+- add a minimized reproducer for precision tracking bug reported in [0];
+- Check that mark_chain_precision() for one of the conditional jump
+  operands does not trigger equal scalars precision propagation.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=01 Dev#=  8 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=81ea Rev= 5.04
-S:  Manufacturer=DELL
-S:  Product=DW5826e-m Qualcomm Snapdragon X12 Global LTE-A
-S:  SerialNumber=358988870177734
-C:* #Ifs= 7 Cfg#= 1 Atr=a0 MxPwr=500mA
-A:  FirstIf#=12 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#=12 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#=13 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#=13 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+[0] https://lore.kernel.org/bpf/CAEf4BzZ0xidVCqB47XnkXcNhkPWF6_nTV7yt+_Lf0kcFEut2Mg@mail.gmail.com/
 
-Signed-off-by: Jack Wu <jackbb_wu@compal.com>
-Reviewed-by: Lars Melin <larsm17@gmail>
-Cc: stable@vger.kernel.org
-[ johan: reserve also interface 4 ]
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240718202357.1746514-4-eddyz87@gmail.com
+[ zhenzhong: keep the linked_regs_broken_link_2 reject check, but
+  drop the mark_precise log expectations because 6.6.y does not derive
+  the scalar-vs-scalar range for that non-constant JMP_X comparison. ]
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../selftests/bpf/progs/verifier_scalar_ids.c | 162 ++++++++++++++++++
+ 1 file changed, 162 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -202,6 +202,7 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5821E_ESIM			0x81e0
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
-+#define DELL_PRODUCT_5826E_ESIM			0x81ea
+diff --git a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+index f70392bf696c62..2eb85eb3a06ccb 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
++++ b/tools/testing/selftests/bpf/progs/verifier_scalar_ids.c
+@@ -47,6 +47,72 @@ __naked void linked_regs_bpf_k(void)
+ 	: __clobber_all);
+ }
  
- #define DELL_PRODUCT_FM101R_ESIM		0x8213
- #define DELL_PRODUCT_FM101R			0x8215
-@@ -1123,6 +1124,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(6) },
- 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
- 	  .driver_info = RSVD(0) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_5826E_ESIM, 0xff),
-+	  .driver_info = RSVD(1) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
- 	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
++/* Registers r{0,1,2} share same ID when 'if r1 > ...' insn is processed,
++ * check that verifier marks r{1,2} as precise while backtracking
++ * 'if r1 > ...' with r0 already marked.
++ */
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("frame0: regs=r0 stack= before 5: (2d) if r1 > r3 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3 stack=:")
++__msg("frame0: regs=r0,r1,r2,r3 stack= before 4: (b7) r3 = 7")
++__naked void linked_regs_bpf_x_src(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id == r2.id */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = 7;"
++	"if r1 > r3 goto +0;"
++	/* force r0 to be precise, this eventually marks r1 and r2 as
++	 * precise as well because of shared IDs
++	 */
++	"r4 = r10;"
++	"r4 += r0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
++
++/* Registers r{0,1,2} share same ID when 'if r1 > r3' insn is processed,
++ * check that verifier marks r{0,1,2} as precise while backtracking
++ * 'if r1 > r3' with r3 already marked.
++ */
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("frame0: regs=r3 stack= before 5: (2d) if r1 > r3 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3 stack=:")
++__msg("frame0: regs=r0,r1,r2,r3 stack= before 4: (b7) r3 = 7")
++__naked void linked_regs_bpf_x_dst(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id == r2.id */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = 7;"
++	"if r1 > r3 goto +0;"
++	/* force r0 to be precise, this eventually marks r1 and r2 as
++	 * precise as well because of shared IDs
++	 */
++	"r4 = r10;"
++	"r4 += r3;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
++
+ /* Same as linked_regs_bpf_k, but break one of the
+  * links, note that r1 is absent from regs=... in __msg below.
+  */
+@@ -280,6 +346,102 @@ __naked void precision_two_ids(void)
+ 	: __clobber_all);
+ }
+ 
++SEC("socket")
++__success __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++/* check thar r0 and r6 have different IDs after 'if',
++ * collect_linked_regs() can't tie more than 6 registers for a single insn.
++ */
++__msg("8: (25) if r0 > 0x7 goto pc+0         ; R0=scalar(id=1")
++__msg("9: (bf) r6 = r6                       ; R6_w=scalar(id=2")
++/* check that r{0-5} are marked precise after 'if' */
++__msg("frame0: regs=r0 stack= before 8: (25) if r0 > 0x7 goto pc+0")
++__msg("frame0: parent state regs=r0,r1,r2,r3,r4,r5 stack=:")
++__naked void linked_regs_too_many_regs(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r{0-6} IDs */
++	"r1 = r0;"
++	"r2 = r0;"
++	"r3 = r0;"
++	"r4 = r0;"
++	"r5 = r0;"
++	"r6 = r0;"
++	/* propagate range for r{0-6} */
++	"if r0 > 7 goto +0;"
++	/* make r6 appear in the log */
++	"r6 = r6;"
++	/* force r0 to be precise,
++	 * this would cause r{0-4} to be precise because of shared IDs
++	 */
++	"r7 = r10;"
++	"r7 += r0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
++
++SEC("socket")
++__failure __log_level(2)
++__flag(BPF_F_TEST_STATE_FREQ)
++__msg("div by zero")
++__naked void linked_regs_broken_link_2(void)
++{
++	asm volatile (
++	"call %[bpf_get_prandom_u32];"
++	"r7 = r0;"
++	"r8 = r0;"
++	"call %[bpf_get_prandom_u32];"
++	"if r0 > 1 goto +0;"
++	/* r7.id == r8.id,
++	 * thus r7 precision implies r8 precision,
++	 * which implies r0 precision because of the conditional below.
++	 */
++	"if r8 >= r0 goto 1f;"
++	/* break id relation between r7 and r8 */
++	"r8 += r8;"
++	/* make r7 precise */
++	"if r7 == 0 goto 1f;"
++	"r0 /= 0;"
++"1:"
++	"r0 = 42;"
++	"exit;"
++	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
++/* Check that mark_chain_precision() for one of the conditional jump
++ * operands does not trigger equal scalars precision propagation.
++ */
++SEC("socket")
++__success __log_level(2)
++__msg("3: (25) if r1 > 0x100 goto pc+0")
++__msg("frame0: regs=r1 stack= before 2: (bf) r1 = r0")
++__naked void cjmp_no_linked_regs_trigger(void)
++{
++	asm volatile (
++	/* r0 = random number up to 0xff */
++	"call %[bpf_ktime_get_ns];"
++	"r0 &= 0xff;"
++	/* tie r0.id == r1.id */
++	"r1 = r0;"
++	/* the jump below would be predicted, thus r1 would be marked precise,
++	 * this should not imply precision mark for r0
++	 */
++	"if r1 > 256 goto +0;"
++	"r0 = 0;"
++	"exit;"
++	:
++	: __imm(bpf_ktime_get_ns)
++	: __clobber_all);
++}
++
+ /* Verify that check_ids() is used by regsafe() for scalars.
+  *
+  * r9 = ... some pointer with range X ...
+-- 
+2.53.0
+
 
 
 
