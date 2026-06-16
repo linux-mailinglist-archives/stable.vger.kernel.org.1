@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-266411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id /1/3CymeMWqWoQUAu9opvQ
-	(envelope-from <stable+bounces-266411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:09 +0200
+	id xrXCJE51MWpTjwUAu9opvQ
+	(envelope-from <stable+bounces-264308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73818694B5F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:04:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D226691BF4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Z+JKk1aS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266411-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266411-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qvnZ3iCp;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264308-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264308-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18E46325D8E1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EA3730D2F04
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B81C47CC9C;
-	Tue, 16 Jun 2026 18:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A2944D015;
+	Tue, 16 Jun 2026 15:54:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA0A3EB0F5;
-	Tue, 16 Jun 2026 18:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8347D44CAF9;
+	Tue, 16 Jun 2026 15:54:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636285; cv=none; b=T84QRloiwTjG+UI1T2anmKnKo3Z8V1wnMj9L4Cub19P/t/qRFjNQZagyVvGUA6RS/YjZ8HilJRJcU9ZQ7TPN1t8ElnEzMmIC+QBkcEnzV4ssNdjysSn8/E9AFdFRGQ0k1F7GZpkUCsnIHRyzodh5pt/b+MIEFeT8rACY7C5YHGQ=
+	t=1781625273; cv=none; b=tgEhkk5kbDAoRbceSCBhtoQlyJFC3+qs78aljQln2fe7GpVx+hNhgItDud+OecHa/KLmrQLiyFYAllgpeCFEfwVWWXLiJtz4QiyyHn4ALbJuYBjea6vomoVx3BNKm7/DTdm8Z2KZ/GqTc974ZUzNcVqhW89g0zBG1rSaa7kES3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636285; c=relaxed/simple;
-	bh=X7bLioWTUmkmdeikqKjwA8qOpTVj8j4JCvFudM3OVAs=;
+	s=arc-20240116; t=1781625273; c=relaxed/simple;
+	bh=eA3BzSYQIEJkQZKe8mJ7Ce9X6N6kHE6fTL1wztWtBvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfRTgUyfrxyYMm4RppreoSlSEQzzkox+//zwUlUNY709A1f5+glfKAFdO+srSzSUszZIGzJF6un0lke+yMBPPn0up0ymVyFWeP2KgMbUOhLittHLPLMJop7M66pyIptQSWy0BnFwHC7IHdfydi6xJUwRKP48T5x+nRP7dooL8Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+JKk1aS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6A01F000E9;
-	Tue, 16 Jun 2026 18:58:02 +0000 (UTC)
+	 MIME-Version; b=pO/gHOZbdSZV9eQIVRN81DAar+hTyiaYK7e14cOlSfaT85y2Ro+1zr1reEKYlDEeh8CHu+yl9QCoo/vZ3KhxnhOWNMjAohurWfOXD7Fk4X0S16HSUQLFM+E/WqrVZTcELj+OOtICK7suT63uThQ1vwqA2rycyUOyrGWQhdcQKCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvnZ3iCp; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899ED1F000E9;
+	Tue, 16 Jun 2026 15:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636284;
-	bh=flUBDC0s9gt/R+iDyfNzlMmqBgl5zIXI08pvDgGLW78=;
+	s=korg; t=1781625272;
+	bh=5EyTsRRqAmMHg/WAgkCXxUbffEQmmiZFIn6wMh2jkLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Z+JKk1aSjv9PN5KzRwOb6Ccytdr92KRCqmB7HR0/4CqykooZTy8wVTd685KLjUMOx
-	 B180Cp33ko6T7rHEafzoxlcbqnun2qwXqjS7tEXNdEO+HBP7yVnhkwegov44rslSR+
-	 UKtjqD+wCo7QfLmoFi90kJEuHTOQ+BW0Ci7GwoKM=
+	b=qvnZ3iCpaupyzyFugHs0dwcU3iewSI6OFeosPixAnnAg5BtooWN9W7emZz295r+KJ
+	 FYjWbW6ew1zgJuH4/FeRmK4upWuBgsbRmaH1jE5uX8LlvVYu1Qb8tQC5DE76lJoIEr
+	 +cQbjZPC35a1upHOOjeIbnBL771niMse/eC1xYJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 209/342] thunderbolt: Clamp XDomain response data copy to allocation size
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 109/325] r8152: handle the return value of usb_reset_device()
 Date: Tue, 16 Jun 2026 20:28:25 +0530
-Message-ID: <20260616145057.913795945@linuxfoundation.org>
+Message-ID: <20260616145103.137081795@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +69,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266411-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264308-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hsu.chih.kai@realtek.com,m:hayeswang@realtek.com,m:andrew@lunn.ch,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,lunn.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73818694B5F
+X-Rspamd-Queue-Id: 1D226691BF4
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
+[ Upstream commit 19440600e729d4f74a42591a872099cf25c7d28a ]
 
-tb_xdp_properties_request() derives the per-packet copy length from
-the response header without checking that it fits in the previously
-allocated data buffer.  A malicious peer can set its length field
-larger than the declared data_length, causing memcpy to write past
-the kcalloc allocation.
+If usb_reset_device() returns a negative error code, stop the
+process of probing.
 
-Clamp the per-packet copy length so that the cumulative offset
-never exceeds data_len.
-
-Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 10c3271712f5 ("r8152: disable the ECM mode")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260604092247.27158-450-nic_swsd@realtek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/xdomain.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/r8152.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -355,6 +355,8 @@ static int tb_xdp_properties_request(str
- 			}
- 		}
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index d610741782794b..8cf4e81f8f882b 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9781,7 +9781,12 @@ static int rtl8152_probe_once(struct usb_interface *intf,
+ 	struct net_device *netdev;
+ 	int ret;
  
-+		if (req.offset + len > data_len)
-+			len = data_len - req.offset;
- 		memcpy(data + req.offset, res->data, len * 4);
- 		req.offset += len;
- 	} while (!data_len || req.offset < data_len);
+-	usb_reset_device(udev);
++	ret = usb_reset_device(udev);
++	if (ret < 0) {
++		dev_err(&intf->dev, "USB reset failed, errno=%d\n", ret);
++		return ret;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(struct r8152));
+ 	if (!netdev) {
+ 		dev_err(&intf->dev, "Out of memory\n");
+-- 
+2.53.0
+
 
 
 
