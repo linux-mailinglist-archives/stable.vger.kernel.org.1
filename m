@@ -1,60 +1,70 @@
-Return-Path: <stable+bounces-265271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id QXHIBqSFMWo+lgUAu9opvQ
-	(envelope-from <stable+bounces-265271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:32 +0200
+	id /9D+F3V4MWqrkAUAu9opvQ
+	(envelope-from <stable+bounces-264503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A804E692FF0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:19:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B283169202C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CI7n5SLq;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265271-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265271-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cRBtwtDQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264503-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264503-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9269301E553
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 229213272D05
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257141A6803;
-	Tue, 16 Jun 2026 17:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02314466B5B;
+	Tue, 16 Jun 2026 16:10:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F9047AF65;
-	Tue, 16 Jun 2026 17:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7AA3A16AC;
+	Tue, 16 Jun 2026 16:10:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630355; cv=none; b=Svqb8ZT/eXuvo/dbqjmxhOJBchC5OQTzuvApyByFf54lcRP34ecLPluS0SEezG1uojNkql+ailGVUhKpYvbj/ncuhjQtUxMb5zlKfPCWHcAu3g1U58RIrjchkGSuR2ZVvHyT2Ji+mo/gjxol4fi1gAC5xulYEoN7Aj0AhdwPRkk=
+	t=1781626236; cv=none; b=RHi15FIDXywBeMgPSDPNe/S77LURxtoqdCBVLkZZ0qBzfP6M24seDGj7zVfLIt93m7JjW0CiGWN98bcrzbSIaCu8iLDtqzrfT0n+DwqnWBSgujSAEnyGmvevB8314HQPBeJsfr8hdwvwdvVByA/TxeqHQZhP3Y+FATYs1AYgjso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630355; c=relaxed/simple;
-	bh=PBsQS6AQ1MPWTZQGe9a90NMrQWeCPT52ZpIiTxaHsE4=;
+	s=arc-20240116; t=1781626236; c=relaxed/simple;
+	bh=38xfIT9yF9hft8jR4b5CL920oKOoMpiEnJeqlrkhi7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcF9iSRgOP1nVxTrPY3wWRnRnJULqi+WJjXjRMTOXaUtS/MUdE/sOMeANjAleSW8crtaxoXzG5h64GHvBia2b4XUxcZMJKHRio1UaWHc4aOQrhPgtXSvtVsX3c5IJ+BaI9rsSozEx8ZDZMWzgOlHQK8mo0Ex8YbrRo0CxrBSQII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CI7n5SLq; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D953E1F000E9;
-	Tue, 16 Jun 2026 17:19:13 +0000 (UTC)
+	 MIME-Version; b=BzX9nbfPhy3hVMfp+U6ytHanw1YhfEMs4LuzTfP+F8XGsFotPZUbSL3s//KADOwYL1uZKORol61fLaixOF/LaoR/D/CnN+FH811d4DsAqzk4rDUbvnThr2hA3wdTPxhQs9H2rcVQQlM+S9coElcju+poBawTEXB59kHbZMWNlW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRBtwtDQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AB11F00A3A;
+	Tue, 16 Jun 2026 16:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630354;
-	bh=h59QY0Ln9Css3Szo+tQvJrwPEzxYOITLa9hJDab+mtY=;
+	s=korg; t=1781626235;
+	bh=5X1hb9bpNanHJ0+sFgPVLNz3l8qXzDv03lcCbRlY+vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CI7n5SLq+3EotRfI7tFSBwSduIyymGwsjI68BxQuVAU/1RHsA889ery0i9UcIr4AF
-	 fdS5HAkkFUCOlruUNAHTpLRGai+KaGZWMGMgDKVzqQzAF8AedQp9LoPek2mWgECWRj
-	 44sS8cYlUmO5pUzPMxCDWX5/3Ee9ShcLRkNauJOU=
+	b=cRBtwtDQVitNxpnH+cMjvDpo4/VXz2dTd/vWeZr2iGH4xWnmBwuzfqMBonCxrzlv9
+	 eE/6vFKAK9EBfSZ5xYcH9Yqk04KB0OcERJgKpwnHs6/UYsyAiZGbH56xS/GrfgcdvQ
+	 HE+W4FmBl03VBaodhrVCyX1GN1BdSN2RPQIF4RVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.6 451/452] x86/CPU/AMD: Call the spectral chicken in the Zen2 init function
+	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Francis <David.Francis@amd.com>,
+	Puttimet Thammasaeng <pwn8official@gmail.com>,
+	Christian Koenig <Christian.Koenig@amd.com>,
+	Zhenghang Xiao <kipreyyy@gmail.com>
+Subject: [PATCH 6.18 282/325] drm/gem: Try to fix change_handle ioctl, attempt 4
 Date: Tue, 16 Jun 2026 20:31:18 +0530
-Message-ID: <20260616145140.177192824@linuxfoundation.org>
+Message-ID: <20260616145112.778953805@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +76,270 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265271-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bp@alien8.de,m:nik.borisov@suse.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264503-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:vr@darknavy.com,m:simona.vetter@ffwll.ch,m:syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com,m:eadavis@qq.com,m:airlied@redhat.com,m:maarten.lankhorst@linux.intel.com,m:mripard@kernel.org,m:tzimmermann@suse.de,m:David.Francis@amd.com,m:pwn8official@gmail.com,m:Christian.Koenig@amd.com,m:kipreyyy@gmail.com,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,darknavy.com,ffwll.ch,syzkaller.appspotmail.com,qq.com,redhat.com,linux.intel.com,kernel.org,suse.de,amd.com,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,suse.com:email,alien8.de:email]
+	TAGGED_RCPT(0.00)[stable,d7c9eed171647e421013];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,ffwll.ch:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A804E692FF0
+X-Rspamd-Queue-Id: B283169202C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-commit cfbf4f992bfce1fa9f2f347a79cbbea0368e7971 upstream.
+commit 1a4f03d22fb655e5f192244fb2c87d8066fcfca2 upstream.
 
-No functional change.
+[airlied: just added some comments on how to reenable]
+On-list because the cat is out of the bag and we're clearly not good
+enough to figure this out in private. The story thus far:
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: http://lore.kernel.org/r/20231120104152.13740-6-bp@alien8.de
+5e28b7b94408 ("drm: Set old handle to NULL before prime swap in
+change_handle") tried to fix a race condition between the gem_close and
+gem_change_handle ioctls, but got a few things wrong:
+
+- There's a confusion with the local variable handle, which is actually
+  the new handle, and so the two-stage trick was actually applied to the
+  wrong idr slot. 7164d78559b0 ("drm/gem: fix race between
+  change_handle and handle_delete") tried to fix that by adding yet
+  another code block, but forgot to add the error handling. Which meant
+  we now have two paths, both kinda wrong.
+
+- dc366607c41c ("drm: Replace old pointer to new idr") tried to apply
+  another fix, but inconsistently, again because of the handle confusion
+  - this would be the right fix (kinda, somewhat, it's a mess) if we'd
+  do the two-stage approach for the new handle. Except that wasn't the
+  intent of the original fix.
+
+We also didn't have an igt merged for the original ioctl, which is a big
+no-go. This was attempted to address off-list in the original bugfix,
+and amd QA people claimed the bug was fixed now. Very clearly that's not
+the case. Here's my attempt to sort this out:
+
+- Rename the local variable to new_handle, the old aliasing with
+  args->handle is just too dangerously confusing.
+
+- Merge the gem obj lookup with the two-stage idr_replace so that we
+  avoid getting ourselves confused there.
+
+- This means we don't have a surplus temporary reference anymore, only
+  an inherited from the idr. A concurrent gem_close on the new_handle
+  could steal that. Fix that with the same two-stage approach
+  create_tail uses. This is a bit overkill as documented in the comment,
+  but I also don't trust my ability to understand this all correctly, so
+  go with the established pattern we have from other ioctls instead for
+  maximum paranoia.
+
+- Adjust error paths. I've tried to make the error and success paths
+  common, because they are identical except for which handle is removed
+  and on which we call idr_replace to (re)install the object again. But
+  that made things messier to read, so I've left it at the more verbose
+  version, which unfortunately hides the symmetry in the entire code
+  flow a bit.
+
+- While at it, also replace the 7 space indent with 1 tab.
+
+And finally, because I flat out don't trust my abilities here at all
+anymore:
+
+- Disable the ioctl until we have the igt situation and everything else
+  sorted out on-list and with full consensus.
+
+v2:
+
+Sashiko noticed that I didn't handle the error path for idr_replace
+correctly, it must be checked with IS_ERR_OR_NULL like in
+gem_handle_delete. So yeah, definitely should just the existing paths
+1:1 because this is endless amounts of tricky.
+
+Also add the Fixes: line for the original ioctl, I forgot that too.
+
+Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Fixes: dc366607c41c ("drm: Replace old pointer to new idr")
+Cc: syzbot+d7c9eed171647e421013@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Cc: Edward Adam Davis <eadavis@qq.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Cc: David Francis <David.Francis@amd.com>
+Cc: Puttimet Thammasaeng <pwn8official@gmail.com>
+Cc: Christian Koenig <Christian.Koenig@amd.com>
+Fixes: 7164d78559b0 ("drm/gem: fix race between change_handle and handle_delete")
+Cc: Zhenghang Xiao <kipreyyy@gmail.com>
+Fixes: 5e28b7b94408 ("drm: Set old handle to NULL before prime swap in change_handle")
+Reviewed-by: David Francis <David.Francis@amd.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260604194437.1725314-1-simona.vetter@ffwll.ch
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_gem.c   |   73 ++++++++++++++++++++------------------------
+ drivers/gpu/drm/drm_ioctl.c |    3 +
+ 2 files changed, 36 insertions(+), 40 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1060,10 +1060,8 @@ void init_spectral_chicken(struct cpuinf
- 	 *
- 	 * This suppresses speculation from the middle of a basic block, i.e. it
- 	 * suppresses non-branch predictions.
--	 *
--	 * We use STIBP as a heuristic to filter out Zen2 from the rest of F17H
- 	 */
--	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) && cpu_has(c, X86_FEATURE_AMD_STIBP)) {
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR)) {
- 		if (!rdmsrl_safe(MSR_ZEN2_SPECTRAL_CHICKEN, &value)) {
- 			value |= MSR_ZEN2_SPECTRAL_CHICKEN_BIT;
- 			wrmsrl_safe(MSR_ZEN2_SPECTRAL_CHICKEN, value);
-@@ -1149,6 +1147,7 @@ static void zen2_zenbleed_check(struct c
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -965,12 +965,25 @@ err:
+ 	return ret;
+ }
  
- static void init_amd_zen2(struct cpuinfo_x86 *c)
++/*
++ * This ioctl is disabled for security reasons but also it failed
++ * to follow process in terms of adding testing in igt and verifying
++ * all the corner cases which made fixing security bugs in it even
++ * harder than necessary.
++ *
++ * To re-enable this ioctl
++ * 1. land working IGT tests in igt-gpu-tools that cover
++ *    all corner cases and race conditions.
++ * 2. handle idr_preload
++ * 3. handle == 0
++ * 4. handle == new_handle semantics definition.
++ */
+ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ 				struct drm_file *file_priv)
  {
-+	init_spectral_chicken(c);
- 	fix_erratum_1386(c);
- 	zen2_zenbleed_check(c);
+ 	struct drm_gem_change_handle *args = data;
+-	struct drm_gem_object *obj, *idrobj;
+-	int handle, ret;
++	struct drm_gem_object *obj;
++	int new_handle, ret;
  
-@@ -1213,7 +1212,7 @@ static void init_amd(struct cpuinfo_x86
- 	case 0x12: init_amd_ln(c); break;
- 	case 0x15: init_amd_bd(c); break;
- 	case 0x16: init_amd_jg(c); break;
--	case 0x17: init_spectral_chicken(c);
-+	case 0x17:
- 		   fallthrough;
- 	case 0x19: init_amd_zn(c); break;
- 	}
+ 	if (!drm_core_check_feature(dev, DRIVER_GEM))
+ 		return -EOPNOTSUPP;
+@@ -978,52 +991,36 @@ int drm_gem_change_handle_ioctl(struct d
+ 	/* idr_alloc() limitation. */
+ 	if (args->new_handle > INT_MAX)
+ 		return -EINVAL;
+-	handle = args->new_handle;
++	new_handle = args->new_handle;
+ 
+-	obj = drm_gem_object_lookup(file_priv, args->handle);
+-	if (!obj)
+-		return -ENOENT;
+-
+-	if (args->handle == handle) {
+-		ret = 0;
+-		goto out;
+-	}
++	if (args->handle == new_handle)
++		return 0;
+ 
+ 	mutex_lock(&file_priv->prime.lock);
+-
+ 	spin_lock(&file_priv->table_lock);
+-
+-       /* When create_tail allocs an obj idr, it needs to first alloc as NULL,
+-	* then later replace with the correct object. This is not necessary
+-	* here, because the only operations that could race are drm_prime
+-	* bookkeeping, and we hold the prime lock.
+-	*/
+-	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
++	ret = idr_alloc(&file_priv->object_idr, NULL, new_handle, new_handle + 1,
+ 			GFP_NOWAIT);
+ 
+-       if (ret < 0) {
+-	       spin_unlock(&file_priv->table_lock);
+-	       goto out_unlock;
+-       }
+-
+-       idrobj = idr_replace(&file_priv->object_idr, NULL, handle);
+-       if (idrobj != obj) {
+-	       idr_replace(&file_priv->object_idr, idrobj, handle);
+-	       idr_remove(&file_priv->object_idr, args->new_handle);
+-	       spin_unlock(&file_priv->table_lock);
+-	       ret = -ENOENT;
+-	       goto out_unlock;
+-       }
++	if (ret < 0) {
++		spin_unlock(&file_priv->table_lock);
++		goto out_unlock;
++	}
+ 
+-	idr_replace(&file_priv->object_idr, NULL, args->handle);
++	obj = idr_replace(&file_priv->object_idr, NULL, args->handle);
++	if (IS_ERR_OR_NULL(obj)) {
++		idr_remove(&file_priv->object_idr, new_handle);
++		spin_unlock(&file_priv->table_lock);
++		ret = -ENOENT;
++		goto out_unlock;
++	}
+ 	spin_unlock(&file_priv->table_lock);
+ 
+ 	if (obj->dma_buf) {
+ 		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
+-					       handle);
++					       new_handle);
+ 		if (ret < 0) {
+ 			spin_lock(&file_priv->table_lock);
+-			idr_remove(&file_priv->object_idr, handle);
++			idr_remove(&file_priv->object_idr, new_handle);
+ 			idr_replace(&file_priv->object_idr, obj, args->handle);
+ 			spin_unlock(&file_priv->table_lock);
+ 			goto out_unlock;
+@@ -1036,14 +1033,12 @@ int drm_gem_change_handle_ioctl(struct d
+ 
+ 	spin_lock(&file_priv->table_lock);
+ 	idr_remove(&file_priv->object_idr, args->handle);
+-	idrobj = idr_replace(&file_priv->object_idr, obj, handle);
++	obj = idr_replace(&file_priv->object_idr, obj, new_handle);
+ 	spin_unlock(&file_priv->table_lock);
+-	WARN_ON(idrobj != NULL);
++	WARN_ON(obj != NULL);
+ 
+ out_unlock:
+ 	mutex_unlock(&file_priv->prime.lock);
+-out:
+-	drm_gem_object_put(obj);
+ 
+ 	return ret;
+ }
+--- a/drivers/gpu/drm/drm_ioctl.c
++++ b/drivers/gpu/drm/drm_ioctl.c
+@@ -653,7 +653,8 @@ static const struct drm_ioctl_desc drm_i
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CLOSE, drm_gem_close_ioctl, DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_FLINK, drm_gem_flink_ioctl, DRM_AUTH),
+ 	DRM_IOCTL_DEF(DRM_IOCTL_GEM_OPEN, drm_gem_open_ioctl, DRM_AUTH),
+-	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_gem_change_handle_ioctl, DRM_RENDER_ALLOW),
++	/* see drm_gem.c:drm_gem_change_handle_ioctl for why this is invalid */
++	DRM_IOCTL_DEF(DRM_IOCTL_GEM_CHANGE_HANDLE, drm_invalid_op, DRM_RENDER_ALLOW),
+ 
+ 	DRM_IOCTL_DEF(DRM_IOCTL_MODE_GETRESOURCES, drm_mode_getresources, 0),
+ 
 
 
 
