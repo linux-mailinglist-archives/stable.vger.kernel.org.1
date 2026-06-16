@@ -1,194 +1,201 @@
-Return-Path: <stable+bounces-263833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263961-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +xTfOVlpMWrSigUAu9opvQ
-	(envelope-from <stable+bounces-263833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:49 +0200
+	id nAJRMCdsMWrFiwUAu9opvQ
+	(envelope-from <stable+bounces-263961-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB66690E66
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:18:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1228691170
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gahrGkU/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263833-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263833-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iXYICBmI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263961-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263961-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 38300308EB38
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:11:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 54EF43073746
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8146A438FF3;
-	Tue, 16 Jun 2026 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5847E43E9F5;
+	Tue, 16 Jun 2026 15:23:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444763BED69;
-	Tue, 16 Jun 2026 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD058449ED2
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:23:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622691; cv=none; b=V0LI92Eed5DibDeFy56Q5okmdqKqogtgIEuFWBcRfLPm9xycPrOklYDNjTvgDCL2+QRbgWTSWlc5mfR3KS33wRaxmfPE+kScSr/pLYKSuRLyDXR2kk3BYkBcIrOHSflKSUZui+8j8zqfNaaA1b6fbdgAnVI+itsZtQE6GCiQpyk=
+	t=1781623406; cv=none; b=VTt889yqR1cH26wpI5W8La77WLr0JxP0YVsVkZ8FjTKw8A/3dEutuD5WOrQ2R9170eZOiNTcFdN6p3Vyw1VjM7eGDnaRkkK05E9pqJW1d/zqyyMYEN7H+vhg6Wn5l7MSuI0R/WQ3AkofsJj0kW3Aoc7GlhiFMQQjE/tIlfns9ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622691; c=relaxed/simple;
-	bh=GCK/nO+mowJpDzZU/f37K0tE1WiQbdKbp6EpDp3Fb9E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pG+VzHGa8tSEFkgdBTsDlmoAd2jE4aCVS2wYaNaBYM49fIoYiz1EDAX9AjAF7r8ip1f0nYxTpi2nkWBhClwUWG9F0bLl6SgwrHR28tobhIhYraUkR01TrOo6WhRvQ0sY/tRUpWhGwh5IEv5+MbuUcVzPc9e0ROyVuZDYnFAZqaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gahrGkU/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C961F000E9;
-	Tue, 16 Jun 2026 15:11:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781622690;
-	bh=caOIpzBUGLY2xhSd7TNoK+CISeB7YToV6GWV4nJJGUc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gahrGkU/0dSJoLTcYRdvkZZHBEQKHDIWgrOLb5XrXTuOb7BCbDsPqFknODA5rLGDw
-	 g7Em7c/5vK2AaJu1FYlNLsjEN7TizcbrBcs4cMJjobS3Ld9mYxC3QcdjW1QgD+rL6P
-	 3mm3RD+Z3pf4UKHxCz0Qt0QLEPcH7/Ean0emLuutiHmC1pxHJHkn5KffrWTWve2bsg
-	 2zFHJtAbuCyiXkltFo3ntOdi9VgHcF52H9+dY2XszPp0K+O5w8NdxyrFae0+CDM6DM
-	 xW3+aYTSTTSrsqX95DaJu4Vz2xPibj9ekWnpjsIQadG3yURpKyJ+Gi8hdEtzwGPDLw
-	 dX6B6yjoECEDw==
-Date: Tue, 16 Jun 2026 08:11:28 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, Peter Zijlstra
- <peterz@infradead.org>, Vlad Poenaru <vlad.wing@gmail.com>, Thomas Gleixner
- <tglx@kernel.org>, netdev@vger.kernel.org, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Breno Leitao
- <leitao@debian.org>, Clark Williams <clrkwllms@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Frederic Weisbecker
- <frederic@kernel.org>, Ingo Molnar <mingo@redhat.com>, Vincent Guittot
- <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
- rq->lock self-deadlock
-Message-ID: <20260616081128.04e2c8dd@kernel.org>
-In-Reply-To: <20260616103529.Yh9Dxsjp@linutronix.de>
-References: <20260610183621.3915271-1-vlad.wing@gmail.com>
-	<20260611191114.5bc43a59@kernel.org>
-	<20260616103529.Yh9Dxsjp@linutronix.de>
+	s=arc-20240116; t=1781623406; c=relaxed/simple;
+	bh=8i4twbSNDv02zgD1VY8jsEZ9u0TWwzEkJYMF1EplDoo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K0ZaalbribJgFWSx4pMDcUXWVlSi30qb5+xbfE+UUtS2HafFQDDbHLVaf2clEIDBPF+JGgV2gZ0tlQRlKkRJBwNFhcb/Q9VoLuwLCr+Rha32D7/P90AJA34sIqBXdHU8t9BTjeQQCkC51lAh73VTzAhCBhpzfIUla4yubngB4r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iXYICBmI; arc=none smtp.client-ip=170.10.133.124
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781623403;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r1AASZfTRVbzLt5I/0GBJdZ/bjP6ci4PfAYJuRBn4WE=;
+	b=iXYICBmIKMrnlDAChFObJdROiRo9Ei2YxtGi3XOh6sDiAB8NtOUxndNSeh5Smb0sGhHV88
+	jOt5fw1sOqnr1no5PjUhznVNiH5KedDrFin9cPLUgcxN3fHjWtxO6YiH5yGy6QHpzJfKt+
+	2kNbWvR4tiq3w+Wt7m1v6ERVIojAiGg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-362-YOZ8QqoZNdCi67PK60bP_g-1; Tue,
+ 16 Jun 2026 11:23:22 -0400
+X-MC-Unique: YOZ8QqoZNdCi67PK60bP_g-1
+X-Mimecast-MFC-AGG-ID: YOZ8QqoZNdCi67PK60bP_g_1781623400
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42A251954B17;
+	Tue, 16 Jun 2026 15:23:19 +0000 (UTC)
+Received: from [10.22.81.159] (unknown [10.22.81.159])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 12209180059C;
+	Tue, 16 Jun 2026 15:23:14 +0000 (UTC)
+Message-ID: <c61c7925-b9e7-4a6f-82e2-398849ad9f27@redhat.com>
+Date: Tue, 16 Jun 2026 11:23:14 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Gregory Price <gourry@gourry.net>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Farhad Alemi <falemi@asu.edu>,
+ Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+ <c1495b1b-9dee-4cd5-ac8e-eeb7a2d968ed@redhat.com>
+ <51eafe6c-6622-479b-b391-6d3ff9350e75@kernel.org>
+Content-Language: en-US
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <51eafe6c-6622-479b-b391-6d3ff9350e75@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.66 / 15.00];
-	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263833-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[23];
-	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:pmladek@suse.com,m:john.ogness@linutronix.de,m:senozhatsky@chromium.org,m:peterz@infradead.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:leitao@debian.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[suse.com,linutronix.de,chromium.org,infradead.org,gmail.com,kernel.org,vger.kernel.org,davemloft.net,google.com,redhat.com,debian.org,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-263961-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:david@kernel.org,m:gourry@gourry.net,m:farhad.alemi@berkeley.edu,m:akpm@linux-foundation.org,m:falemi@asu.edu,m:ynorov@nvidia.com,m:joshua.hahnjy@gmail.com,m:ziy@nvidia.com,m:matthew.brost@intel.com,m:rakie.kim@sk.com,m:byungchul@sk.com,m:ying.huang@linux.alibaba.com,m:apopple@nvidia.com,m:linux@rasmusvillemoes.dk,m:linux-mm@kvack.org,m:linux-kernel@vger.kernel.org,m:cgroups@vger.kernel.org,m:stable@vger.kernel.org,m:joshuahahnjy@gmail.com,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[berkeley.edu,linux-foundation.org,asu.edu,nvidia.com,gmail.com,intel.com,sk.com,linux.alibaba.com,rasmusvillemoes.dk,kvack.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8EB66690E66
+X-Rspamd-Queue-Id: B1228691170
 
-On Tue, 16 Jun 2026 12:35:29 +0200 Sebastian Andrzej Siewior wrote:
-> On 2026-06-11 19:11:14 [-0700], Jakub Kicinski wrote:
-> > On Wed, 10 Jun 2026 11:36:21 -0700 Vlad Poenaru wrote: =20
-> > > @@ -194,11 +194,56 @@ void netpoll_poll_dev(struct net_device *dev)
-> > > +	local_bh_disable();
-> > > + 	poll_napi(dev);
-> > > +	_local_bh_enable(); =20
-> >=20
-> > tglx, Sebastian, are you okay with using _local_bh_enable() to trick
-> > softirq into not waking ksoftirqd? The problematic path is:
-> >=20
-> >   scheduler -> printk -> netconsole -> raise softirq -> scheduler (dead=
-lock)
-> >=20
-> > so the softirq may never get serviced.
-> >=20
-> > In netcons we try to avoid touching the network driver if the Tx path
-> > locks are already held. Ideally we'd do something similar with the
-> > scheduler. Try to do bare minimum if we may be in the scheduler.
-> > Failing that - don't poll the driver if we were called with irqs
-> > already disabled.
-> >=20
-> > Or maybe we only poll from console->write_thread ? =20
->=20
-> So this is not an issue since commit 7eab73b18630e ("netconsole: convert
-> to NBCON console infrastructure"). Because from here now on writes are
-> deferred to the nbcon thread. So this purely about -stable in this case.
->=20
-> Looking at the patch and the amount of comments vs code changes look
-> somehow hackish. That ifdef for PREEMPT_RT is not needed because on
-> PREEMPT_RT we have either nbcon or the legacy console (including
-> netconsole before the mentioned commit) wrapped in a dedicated thread
-> (via force_legacy_kthread()).
-> That means in both cases the flow never ends there and the problem is
-> limited to !PREEMPT_RT.
->=20
-> Now. The scheduler usually does printk_deferred() because of the rq lock
-> so it does not deadlock for various reasons. It is kind of a pity that
-> the various WARN macros don't do that.
-> I don't think that patch is enough. It works around the problem in this
-> scenario but should the NIC driver invoke schedule_work() then we are
-> back here again.
-> Should the network driver acquire a lock then lockdep might observe
-> rq -> driver-lock and then driver-lock -> rq and yell dead lock (CPU1
-> doing AB and CPU2 doing BA). This includes also other console driver so
-> it is not limited to netconsole.
->=20
-> Point being made is that we should avoid the callchain:
->=20
-> |  console_unlock
-> |  vprintk_emit
-> |  __warn
-> |  __enqueue_entity                // WARN_ON_ONCE() here -- rq->lock held
-> |  put_prev_entity
-> |  put_prev_task_fair
-> |  __schedule
->=20
-> basically a printk under the rq lock.
->=20
-> We could add printk_deferred_enter/exit() to all the rq_lock() variants.
-> I think PeterZ loves this the most. And Greg will appreciate it too
-> while backporting because of all the context changes.
->=20
-> We could also introduce WARN_ON_DEFERRED +variants which do the
-> printk_deferred_enter/exit() thingy should around the printk and replace
-> all the WARNs in kernel/sched/.
-> I *think* the tty/console layer has also a deadlock problem where it
-> holds locks and then the WARN(), that never triggers, asks for the same
-> locks again so we might have a second user=E2=80=A6
->=20
-> Adding sched and printk folks for opinions while eyeballing
-> WARN_ON_DEFERRED().
+On 6/16/26 2:59 AM, David Hildenbrand (Arm) wrote:
+> On 6/16/26 05:43, Waiman Long wrote:
+>> On 6/15/26 10:26 PM, Waiman Long wrote:
+>>> On 6/15/26 5:38 AM, Gregory Price wrote:
+>>>> All interactions between mempolicy and cpuset are horrible and
+>>>> confusing.  Much like Lorenzo's anon_vma work, I have to keep
+>>>> notes on how this whole thing doesn't just spew SIGBUS constantly.
+>>>>
+>>>> The short answer is: mempolicy is advisory and cpuset is strictly
+>>>> followed - in a dispute cpuset wins... except for file backed memory,
+>>>> then everyon loses and nothing is consistent.
+>>> That is what I believe why mpol_rebind_mm() a bit differently from the others
+>>> and it is historically done this way a long time ago before cgroup v2.
+>>>
+>>> For cgroup v1, mems_allowed can't be empty or you can't put any task into the
+>>> cpuset. Also effective_mems is the same as mems_allowed. cgroup v2 is quite
+>>> different in how it handles memory nodes and CPUs. Users can isn't forced to
+>>> set mems_allowed and cpus_allowed as effective_mems and effective_cpus will
+>>> inherit parent version if mems_allowed and cpus_allowed are not set. IOW,
+>>> effective_mems will never be empty. Yes, it is a bug with the introduction of
+>>> cpuset v2 that we should have replaced mems_allowed by effective_mems at that
+>>> time. With v2, effective_mems should contain only online nodes. The only
+>>> exception is during the short transition period when a memory node hotunplug
+>>> operation is in progress when a write to cpuset.mems is happening at the same
+>>> time. With v1, it is theoretically possible that none of the nodes in
+>>> mems_allowed is online.
+>>>
+>>> The reason why I am suggesting to use cs->effective_mems to keep the old
+>>> cgroup v1 behavior. If the consensus is to use the output of
+>>> guarantee_online_mems() for mpol_rebind_mm(), I will not be against that but
+>>> it will be a slight change in user-visible behavior.
+>> BTW, I still prefer the v2 patch. If it is decided we should use the
+>> guarantee_online_mems() value instead, it will have to be a separate patch with
+>> changes in the relevant documentation like Documentation/admin-guide/cgroup-v1/
+>> cpuset.rst.
+> newmems is "obviously" correct, so I really don't see why we should add
+> something that needs half a page of text to explain why it is fine -- if newmems
+> just does the trick?
+>
+> Please enlighten me.
 
-Thanks a lot for looking into this! To be clear - the printk_deferred /
-WARN_DEFERRED would be just for stable? Or there's still some
-sensitivity even with nbcon?
+Yes, taking newmems is a reasonable choice and there are pros and cons 
+with each options. My focus is more on not changing how v1 cpuset 
+behaves as it is well defined in the v1 cpusets.rst file:
+
+     Requests by a task, using the sched_setaffinity(2) system call to
+     include CPUs in its CPU affinity mask, and using the mbind(2) and
+     set_mempolicy(2) system calls to include Memory Nodes in its memory
+     policy, are both filtered through that task's cpuset, filtering out any
+     CPUs or Memory Nodes not in that cpuset.  The scheduler will not
+     schedule a task on a CPU that is not allowed in its cpus_allowed
+     vector, and the kernel page allocator will not allocate a page on a
+     node that is not allowed in the requesting task's mems_allowed vector.
+
+v2, OTOH, is more vague as to what setting cpuset.mems will mean and we 
+generally follow what v1 is doing, but we have more leeway of what we 
+can do.
+
+Using newmems will make the above text not totally correct. At least the 
+offline memory nodes will be filtered out which will not be utilized by 
+the task when the offline node becomes online. That is why I am saying 
+that we will have to correct the documentation if we want to make this 
+change.
+
+Cheers,
+Longman
+
 
