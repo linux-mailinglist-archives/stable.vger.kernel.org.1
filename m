@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264220-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WN+JL9uTMWoInQUAu9opvQ
-	(envelope-from <stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:11 +0200
+	id qzRTOexxMWr1jQUAu9opvQ
+	(envelope-from <stable+bounces-264220-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FB46940AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98200691831
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZWaFLAVu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265976-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dm6fcPXq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264220-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264220-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 402E9308A327
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E81F303CD68
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DDE3D091A;
-	Tue, 16 Jun 2026 18:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F5A44E027;
+	Tue, 16 Jun 2026 15:46:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F3036A36C;
-	Tue, 16 Jun 2026 18:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030DB44DB7F;
+	Tue, 16 Jun 2026 15:46:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634007; cv=none; b=sVyVf3IHgpyP9Ef/DKuEZMVYY2EtaOB0+S5j0GYMn5TXfk/ySsxfhDPykzW5hVKgDKolqqckYKSXZyX5F1c/dci5i0jj/GT8axltEw2tJ+QPobkQZGg35Wsku8oc7C9Bptx4Z7NKgNJAWUNtXeffcQwsDjiXUMS/FXMSWL/QWL4=
+	t=1781624764; cv=none; b=Rk0R8PcaJQjGvCsjssUPfMOjdUft7nZ1OWimUt5u/4JILEHicfA5yMzPtmJcVx9w6suwJ6L10T+SaIiJPhSmicv1ezmeH9myfxD21gWIhsK4r3Z9LMYx/UzauZU8bxW/LYqG9mP/oFjcA2amnG08pUBYU3sClUiggYLz0kfpcXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634007; c=relaxed/simple;
-	bh=pf4HGBu33q9f8OpOUvNxR1SjOe465N1qAKnccfSVEcU=;
+	s=arc-20240116; t=1781624764; c=relaxed/simple;
+	bh=WWOOSy02x22NqJF4AEAys100mUrWhN4M3HHCIKX1iOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEyqQ5aPNG7m5wQfyDYYYIZae3IIPtSON2H6YhETEkH7836lnPynwdCDzk/F7scEwEp2ohkzkXs/2198oiQPxC2o2dPv09uFIA/GbUS1tVAFUt6MxLxWacLjHkQFSBkAHBLIP990zUR2cr2HKmVltdUK1J1gPrRyoYn/5vHrFeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWaFLAVu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1D51F000E9;
-	Tue, 16 Jun 2026 18:20:04 +0000 (UTC)
+	 MIME-Version; b=m9cAGtzDEMofz+ySsrgbrvAUjhZuV/CEBnjYG3RkJcv/Mda7iVcEdKdH5l+ZQt7yNgAKgEGoz+KLRE3FPSHfk/CdJb3SsRAWtzJGbngrKhCcXy2a2K83xfKgULDhk32eY+35wysMvuDyOk53K/LJn0oMX1XEJIxUr9HS/4eV6z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dm6fcPXq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9381F000E9;
+	Tue, 16 Jun 2026 15:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634006;
-	bh=WEIbF7l/96KtsoT29SaMyAeJV8G3RF5AIZOiQqKYTyw=;
+	s=korg; t=1781624761;
+	bh=W+tgkyM9HU3diTA2Q+Ev24jpsqwLRgpbqgVxEkv1OMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZWaFLAVuLyIFzzMF58H56e8eRGHcwUKV1LDuVgUdDx72bSqPOiPMYqI9icoTin86Q
-	 YI6pAE3Go3oaL9URr14I2CVtgO/7XLFFraioSctYrUG9szfeYDuoW2vyBugBhMfbRe
-	 WvAU7ELQ6RLPkj4k22w/7v6XOPC73uxnJR9rf3io=
+	b=dm6fcPXqubuOPbDcmU8BQOoBKx/LNJgFPQYFfJC+wQjPT6EA+ktz3A+FbmsDqlGeG
+	 gOTxRVr/uiz4qdUtY2immZSmXQWx9JyKxYYx6ckuXwMWIUjqFgjdorFSekz8FelFTq
+	 iN3BD6A9qUFjapBhK7bBnhM116dJLE3vPeg8gUT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/411] netlabel: validate unlabeled address and mask attribute lengths
+Subject: [PATCH 6.18 025/325] netfilter: nft_ct: bail out on template ct in get eval
 Date: Tue, 16 Jun 2026 20:27:01 +0530
-Message-ID: <20260616145110.427537145@linuxfoundation.org>
+Message-ID: <20260616145059.023654740@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +70,131 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265976-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaochenguang@kylinos.cn,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264220-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:jiayuan.chen@linux.dev,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,netfilter.org:email,linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,syzkaller.appspot.com:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 37FB46940AD
+X-Rspamd-Queue-Id: 98200691831
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 9772589b57e44aedc240211c5c3f7a684a034d3a ]
+[ Upstream commit 3027ecbdb5fdf9200251c21d4818e4c447ef78e1 ]
 
-netlbl_unlabel_addrinfo_get() used the address attribute length to
-determine whether the attribute data could be read as an IPv4 or IPv6
-address, but did not independently validate the corresponding mask
-attribute length.  A crafted Generic Netlink request could therefore
-provide a valid IPv4/IPv6 address attribute with a shorter mask
-attribute, which would later be read as a full struct in_addr or
-struct in6_addr.
+I noticed this issue while looking at a historic syzbot report [1].
 
-NLA_BINARY policy lengths are maximum lengths by default, so use
-NLA_POLICY_EXACT_LEN() for the unlabeled IPv4/IPv6 address and mask
-attributes.  This rejects short attributes during policy validation and
-also exposes the exact length requirements through policy introspection.
+A rule like the one below is enough to trigger the bug:
 
-Fixes: 8cc44579d1bd ("NetLabel: Introduce static network labels for unlabeled connections")
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    table ip t {
+        chain pre {
+            type filter hook prerouting priority raw;
+            ct zone set 1
+            ct original saddr 1.2.3.4 accept
+        }
+    }
+
+The first expression attaches a per-cpu template ct via
+nft_ct_set_zone_eval() (nf_ct_tmpl_alloc -> kzalloc, tuple is all
+zero, nf_ct_l3num(ct) == 0). The next expression then calls
+nft_ct_get_eval() on the same skb, treats the template as a real ct
+and hits the 16-byte memcpy path. With dreg at NFT_REG32_15 this
+overflows past struct nft_regs on the kernel stack; with smaller
+dreg values it silently clobbers adjacent registers.
+
+Reject template ct at the eval entry and in nft_ct_get_fast_eval(),
+mirroring the check nft_ct_set_eval() already has. Additionally,
+bound the address copy in NFT_CT_SRC / NFT_CT_DST by priv->len
+instead of by nf_ct_l3num(ct): nf_ct_get_tuple() zeroes the tuple
+before pkt_to_tuple() fills in only the protocol-relevant leading
+bytes, so the trailing bytes of tuple->{src,dst}.u3.all are
+well-defined zero. priv->len is validated at rule load, so the
+copy size is now bounded by the destination register rather than
+by an untrusted field on the conntrack.
+
+[1]: https://syzkaller.appspot.com/bug?id=389cf09cb72926114fce90dc85a2c3231dcb647c
+
+Fixes: 45d9bcda21f4 ("netfilter: nf_tables: validate len in nft_validate_data_load()")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_unlabeled.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ net/netfilter/nft_ct.c      | 8 +++-----
+ net/netfilter/nft_ct_fast.c | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index 566ba4397ee400..4c4b91ce446dfa 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -114,14 +114,14 @@ static struct genl_family netlbl_unlabel_gnl_family;
- /* NetLabel Netlink attribute policy */
- static const struct nla_policy netlbl_unlabel_genl_policy[NLBL_UNLABEL_A_MAX + 1] = {
- 	[NLBL_UNLABEL_A_ACPTFLG] = { .type = NLA_U8 },
--	[NLBL_UNLABEL_A_IPV6ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV6MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in6_addr) },
--	[NLBL_UNLABEL_A_IPV4ADDR] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
--	[NLBL_UNLABEL_A_IPV4MASK] = { .type = NLA_BINARY,
--				      .len = sizeof(struct in_addr) },
-+	[NLBL_UNLABEL_A_IPV6ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV6MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
-+	[NLBL_UNLABEL_A_IPV4ADDR] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[NLBL_UNLABEL_A_IPV4MASK] =
-+		NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
- 	[NLBL_UNLABEL_A_IFACE] = { .type = NLA_NUL_STRING,
- 				   .len = IFNAMSIZ - 1 },
- 	[NLBL_UNLABEL_A_SECCTX] = { .type = NLA_BINARY }
-@@ -764,24 +764,14 @@ static int netlbl_unlabel_addrinfo_get(struct genl_info *info,
- 				       void **mask,
- 				       u32 *len)
- {
--	u32 addr_len;
--
- 	if (info->attrs[NLBL_UNLABEL_A_IPV4ADDR] &&
- 	    info->attrs[NLBL_UNLABEL_A_IPV4MASK]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
--		if (addr_len != sizeof(struct in_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV4MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV4MASK]);
- 		return 0;
- 	} else if (info->attrs[NLBL_UNLABEL_A_IPV6ADDR]) {
--		addr_len = nla_len(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
--		if (addr_len != sizeof(struct in6_addr) &&
--		    addr_len != nla_len(info->attrs[NLBL_UNLABEL_A_IPV6MASK]))
--			return -EINVAL;
--		*len = addr_len;
-+		*len = sizeof(struct in6_addr);
- 		*addr = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6ADDR]);
- 		*mask = nla_data(info->attrs[NLBL_UNLABEL_A_IPV6MASK]);
- 		return 0;
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 8dbf31e7ddcbee..c776eb38f1dbd0 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -78,7 +78,7 @@ static void nft_ct_get_eval(const struct nft_expr *expr,
+ 		break;
+ 	}
+ 
+-	if (ct == NULL)
++	if (!ct || nf_ct_is_template(ct))
+ 		goto err;
+ 
+ 	switch (priv->key) {
+@@ -180,12 +180,10 @@ static void nft_ct_get_eval(const struct nft_expr *expr,
+ 	tuple = &ct->tuplehash[priv->dir].tuple;
+ 	switch (priv->key) {
+ 	case NFT_CT_SRC:
+-		memcpy(dest, tuple->src.u3.all,
+-		       nf_ct_l3num(ct) == NFPROTO_IPV4 ? 4 : 16);
++		memcpy(dest, tuple->src.u3.all, priv->len);
+ 		return;
+ 	case NFT_CT_DST:
+-		memcpy(dest, tuple->dst.u3.all,
+-		       nf_ct_l3num(ct) == NFPROTO_IPV4 ? 4 : 16);
++		memcpy(dest, tuple->dst.u3.all, priv->len);
+ 		return;
+ 	case NFT_CT_PROTO_SRC:
+ 		nft_reg_store16(dest, (__force u16)tuple->src.u.all);
+diff --git a/net/netfilter/nft_ct_fast.c b/net/netfilter/nft_ct_fast.c
+index e684c8a9184877..ecf7b3a404be26 100644
+--- a/net/netfilter/nft_ct_fast.c
++++ b/net/netfilter/nft_ct_fast.c
+@@ -30,7 +30,7 @@ void nft_ct_get_fast_eval(const struct nft_expr *expr,
+ 		break;
+ 	}
+ 
+-	if (!ct) {
++	if (!ct || nf_ct_is_template(ct)) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+ 	}
 -- 
 2.53.0
 
