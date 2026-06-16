@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 8chwCBqXMWqGngUAu9opvQ
-	(envelope-from <stable+bounces-266134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:02 +0200
+	id i1XIJBBxMWqojQUAu9opvQ
+	(envelope-from <stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A576943F6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:34:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C743691723
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:51:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C+JUCeZ1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266134-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266134-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cS9GuvQk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264172-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5315C3024A81
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:34:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C605E30BB20B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF0A4418D7;
-	Tue, 16 Jun 2026 18:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108D1450906;
+	Tue, 16 Jun 2026 15:41:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7ACE34FF79;
-	Tue, 16 Jun 2026 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC744CAE6;
+	Tue, 16 Jun 2026 15:41:38 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634839; cv=none; b=LT6VlWXERLZt2weRYrJLWa46PCahuRrKav91Bpvw7l3wV8yiFi3CmQKSNu9hfnDtgwEpJy5SmpjOMaCgA+gR7WUt7HuKPSnqmW1Ak7+SaqO5VnyXojL8uAOs9YqYavJ8ma3CneDIoOqkZdghostVb1Xw+bxz+EFLMuMXUkGzIBM=
+	t=1781624499; cv=none; b=o1FaBtkR5YOojVRuGeqgYhpyG1C3gdjIo9gZ3LgZ0dm8ZdKN7bHih2URya8tOkppdv4rrEK4xB6kzBC7L1DBRICZr7ARH5tVdXdZ/EXd7pmwO/K2RzPe6H69p+lF/I4PrERHJ8AlMA4lY/eATc5AjDLEzCHusyqBWBBf2sgmDQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634839; c=relaxed/simple;
-	bh=uSv8cfqKLj7Wy4U+Jv7K9TFFNsjGazMJdYOqpnIulwc=;
+	s=arc-20240116; t=1781624499; c=relaxed/simple;
+	bh=6k5aH+CectJLyXBRxCeiwEliTTuXrI9Ac8zWRq9l9uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uyf6MUB+2gGVcIWvL3NdGMy+wUdlSOomrbEfxEiIqyHEJSXShStluSQCksAqQa3HCcRmptg0Q+m6A5nFSQEriaJxmSBXvjVNHraDf8ohdGpKpUaABQhtwTdj7QsUbdgcuUvwiJKRvADdFB/MXav8AI4rdf7UKSdAOJvPkXSn3i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+JUCeZ1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30EF1F000E9;
-	Tue, 16 Jun 2026 18:33:57 +0000 (UTC)
+	 MIME-Version; b=Bp/pOEftyGW0ZdXahJX7BUVtfkIrhkNjKgLeYIeliiQNTuIwHzXYZQ4Pkd5sZ3P3mFJKvQv9p8kL0pMb442gLWDPqEEHlnN213qpe2zMtCiaUzw2qyP0krHAqmjqcxWyrmO/yBgfBy1mSydcMijUzkQRqAT1DsNucM7gna0Ayyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cS9GuvQk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FD31F000E9;
+	Tue, 16 Jun 2026 15:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634838;
-	bh=wrj9chOdtPaR0kTXLFPaVj56RaEZGQk1BbeYkhSE59Y=;
+	s=korg; t=1781624498;
+	bh=7A/fxWakC8gFUVepft9cgOmvORmXSXMSaBTPFriRTkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C+JUCeZ13AdqOg9cWYhKlWWL01KUSDFK1tDVdGg/JgjS6Es/fIee5WkW9JqsjUCQk
-	 YrGq2RjhGaQ82WMm2fZSeTSiKSVep8+Fg+uy2aJDyExy2RsZjjbCk3OhOCF5Aoq/GT
-	 +988TqPBBdgHql5fjNTpLfnjGKZGEvzDo3wEyXdw=
+	b=cS9GuvQkmExzhkuyU8be4s0TfZyI4QyMobqVrHPM6JSIQWrqE7UovehkPWrMIwB0T
+	 SNSt37ftzoVEpIWoHUAhBYdSVmXkqY1B3oB6tPh+HleVH8Zm8xCT5Bo1Wt6xDxlya/
+	 LAlyKGmdQmUz4jNPU3lc4RSpi4v0VF/jDH/X1Kck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 342/411] Bluetooth: MGMT: validate Add Extended Advertising Data length
+	Yang Wang <kevinyang.wang@amd.com>,
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 7.0 349/378] drm/amd/pm: fix smu13 power limit default/cap calculation
 Date: Tue, 16 Jun 2026 20:29:40 +0530
-Message-ID: <20260616145119.422463874@linuxfoundation.org>
+Message-ID: <20260616145128.528573099@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,97 +68,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266134-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264172-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kevinyang.wang@amd.com,m:kenneth.feng@amd.com,m:lijo.lazar@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D4A576943F6
+X-Rspamd-Queue-Id: 0C743691723
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit d3f7d17960ed50df3a6709c5158caff989c8c905 ]
+commit bb204f19e4a115f094a6a3c4d82fcf48862d0766 upstream.
 
-MGMT_OP_ADD_EXT_ADV_DATA is registered as a variable-length command,
-with MGMT_ADD_EXT_ADV_DATA_SIZE as the fixed header size.  The handler
-then uses cp->adv_data_len and cp->scan_rsp_len to validate and copy
-cp->data, but it never checks that those bytes are part of the mgmt
-command payload.
+smu_v13_0_0_get_power_limit() and smu_v13_0_7_get_power_limit() mix
+runtime power_limit with PP table limits when reporting default/min/max.
 
-A short command can therefore make add_ext_adv_data() pass an
-out-of-bounds pointer into tlv_data_is_valid().  If the bytes beyond
-the command buffer are addressable, they can also be copied into the
-advertising instance as scan response data, where the caller can read
-them back via MGMT_OP_GET_ADV_INSTANCE.  The trigger requires
-CAP_NET_ADMIN in the initial user namespace; KASAN reports an 8-byte
-slab-out-of-bounds read.
+When current power limit query succeeds, default_power_limit was set to the
+runtime value instead of the PP table default, and min/max could be derived
+from inconsistent bases (MsgLimits/runtime), leading to incorrect cap info.
 
-Reject commands whose length does not match the fixed header plus both
-advertising data lengths before parsing cp->data.
+Use SocketPowerLimitAc/Dc as the PP default base (pp_limit), keep
+current_power_limit as runtime value, and derive min/max from pp_limit with
+OD percentages.
 
-Fixes: 12410572833a ("Bluetooth: Break add adv into two mgmt commands")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5227
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1eaf26db95901ca70737503a89b831dd763c8453)
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 ++++++++++---------
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   32 ++++++++++---------
+ 2 files changed, 35 insertions(+), 29 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -8084,9 +8084,15 @@ static int add_ext_adv_data(struct sock
- 	struct adv_info *adv_instance;
- 	int err = 0;
- 	struct mgmt_pending_cmd *cmd;
-+	u16 expected_len;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2390,28 +2390,30 @@ static int smu_v13_0_0_enable_mgpu_fan_b
+ }
  
- 	BT_DBG("%s", hdev->name);
- 
-+	expected_len = struct_size(cp, data, cp->adv_data_len + cp->scan_rsp_len);
-+	if (expected_len != data_len)
-+		return mgmt_cmd_status(sk, hdev->id, MGMT_OP_ADD_EXT_ADV_DATA,
-+				       MGMT_STATUS_INVALID_PARAMS);
+ static int smu_v13_0_0_get_power_limit(struct smu_context *smu,
+-						uint32_t *current_power_limit,
+-						uint32_t *default_power_limit,
+-						uint32_t *max_power_limit,
+-						uint32_t *min_power_limit)
++				       uint32_t *current_power_limit,
++				       uint32_t *default_power_limit,
++				       uint32_t *max_power_limit,
++				       uint32_t *min_power_limit)
+ {
+ 	struct smu_table_context *table_context = &smu->smu_table;
+ 	struct smu_13_0_0_powerplay_table *powerplay_table =
+ 		(struct smu_13_0_0_powerplay_table *)table_context->power_play_table;
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+-	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
+-	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
+-
+-	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+-		power_limit = smu->adev->pm.ac_power ?
++	uint32_t pp_limit = smu->adev->pm.ac_power ?
+ 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
+ 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
++	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
++	int ret;
 +
- 	hci_dev_lock(hdev);
++	if (current_power_limit) {
++		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
++		if (ret)
++			*current_power_limit = pp_limit;
++	}
  
- 	adv_instance = hci_find_adv_instance(hdev, cp->instance);
+-	if (current_power_limit)
+-		*current_power_limit = power_limit;
+ 	if (default_power_limit)
+-		*default_power_limit = power_limit;
++		*default_power_limit = pp_limit;
+ 
+ 	if (powerplay_table) {
+ 		if (smu->od_enabled &&
+@@ -2425,15 +2427,15 @@ static int smu_v13_0_0_get_power_limit(s
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+-					od_percent_upper, od_percent_lower, power_limit);
++		od_percent_upper, od_percent_lower, pp_limit);
+ 
+ 	if (max_power_limit) {
+-		*max_power_limit = msg_limit * (100 + od_percent_upper);
++		*max_power_limit = pp_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
+ 
+ 	if (min_power_limit) {
+-		*min_power_limit = power_limit * (100 - od_percent_lower);
++		*min_power_limit = pp_limit * (100 - od_percent_lower);
+ 		*min_power_limit /= 100;
+ 	}
+ 
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2372,28 +2372,32 @@ static int smu_v13_0_7_enable_mgpu_fan_b
+ }
+ 
+ static int smu_v13_0_7_get_power_limit(struct smu_context *smu,
+-						uint32_t *current_power_limit,
+-						uint32_t *default_power_limit,
+-						uint32_t *max_power_limit,
+-						uint32_t *min_power_limit)
++				       uint32_t *current_power_limit,
++				       uint32_t *default_power_limit,
++				       uint32_t *max_power_limit,
++				       uint32_t *min_power_limit)
+ {
+ 	struct smu_table_context *table_context = &smu->smu_table;
+ 	struct smu_13_0_7_powerplay_table *powerplay_table =
+ 		(struct smu_13_0_7_powerplay_table *)table_context->power_play_table;
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+-	uint32_t power_limit, od_percent_upper = 0, od_percent_lower = 0;
+-	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
+-
+-	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+-		power_limit = smu->adev->pm.ac_power ?
++	uint32_t pp_limit = smu->adev->pm.ac_power ?
+ 			      skutable->SocketPowerLimitAc[PPT_THROTTLER_PPT0] :
+ 			      skutable->SocketPowerLimitDc[PPT_THROTTLER_PPT0];
++	uint32_t power_limit = 0, od_percent_upper = 0, od_percent_lower = 0;
++	int ret;
++
++	if (current_power_limit) {
++		ret = smu_v13_0_get_current_power_limit(smu, &power_limit);
++		if (ret)
++			power_limit = pp_limit;
+ 
+-	if (current_power_limit)
+ 		*current_power_limit = power_limit;
++	}
++
+ 	if (default_power_limit)
+-		*default_power_limit = power_limit;
++		*default_power_limit = pp_limit;
+ 
+ 	if (powerplay_table) {
+ 		if (smu->od_enabled &&
+@@ -2407,15 +2411,15 @@ static int smu_v13_0_7_get_power_limit(s
+ 	}
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+-					od_percent_upper, od_percent_lower, power_limit);
++		od_percent_upper, od_percent_lower, pp_limit);
+ 
+ 	if (max_power_limit) {
+-		*max_power_limit = msg_limit * (100 + od_percent_upper);
++		*max_power_limit = pp_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
+ 
+ 	if (min_power_limit) {
+-		*min_power_limit = power_limit * (100 - od_percent_lower);
++		*min_power_limit = pp_limit * (100 - od_percent_lower);
+ 		*min_power_limit /= 100;
+ 	}
+ 
 
 
 
