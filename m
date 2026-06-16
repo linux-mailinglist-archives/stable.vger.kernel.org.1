@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Y9FtFIt6MWqKkQUAu9opvQ
-	(envelope-from <stable+bounces-264611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:11 +0200
+	id xMAJLr2EMWrRlQUAu9opvQ
+	(envelope-from <stable+bounces-265104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A856922C1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD52692EC2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=f2xvWzny;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264611-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264611-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oXDCELVt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265104-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265104-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51BDA32079AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF1E131F4C21
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FE646AF1E;
-	Tue, 16 Jun 2026 16:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C98472767;
+	Tue, 16 Jun 2026 17:04:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADDC37DEBF;
-	Tue, 16 Jun 2026 16:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC629425CEE;
+	Tue, 16 Jun 2026 17:04:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626815; cv=none; b=rnnBRFylt9O87WjaT9k0xJ2nXKqOA/8J9e9Gm4FjEMEoZiwI/eI9lBBTBvrAGBIfAEqHp/PqzTSDloqD/k9/kQC+e6tpigWB7CcExD0CIxjlj1QirWGNfS9dKkAiB+pFQMqzMul5UctDLnsPRaN06F6HqiQUo19j7VR+Q2Uf6+Y=
+	t=1781629492; cv=none; b=PqbjqaKBw40H1Hhu7YcuEwPW7NcbalLl/u3gq/df08RTJSskf4htXYyVN+zdKyN69gc0B9Lc0oTvBXoKiqiEiRD0Jzno8j/Qkt4yWeAB0knYCeaJTADUzUEfW9P92m0QYzKz8WtzR76NiFrDWRecEMjBD+y0VdGCTGdoY2TRMyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626815; c=relaxed/simple;
-	bh=h+ytZGWiZ+gQ/H5vp5Zm643PWECdwAm7WZoi4f+modg=;
+	s=arc-20240116; t=1781629492; c=relaxed/simple;
+	bh=+I1kCeE+qT/rD9g7fyv9tV/WzHavLLfRPNxoei5JKCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3hoFAuDUTGMgO0dXp/Og0dZghr/h7tVUzvj1DX6W8gSJpjL3LqlvWzUWy3RAKgoxlhCDgqYCXGTx8xESOv+nimDX0KiByzXM1vkRXQqH04DctVHlriNPX7aJS+23zLrMJ62XJ6a0ZmaGYMMDZMfscxEFfhswC4ypWAM2ppf3JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2xvWzny; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABFA1F000E9;
-	Tue, 16 Jun 2026 16:20:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Se5oSG6gUoWZ8J2ra+J8xMzkJNFFTnx1JvD+3KSZPhaVW2DnC8l/tnDUvlf0NrVoEgPlPMCVC31ZYCzd0/WJf7bAGNbjiP7YQ4HnEle66LREP5Q1Nqaf57TXGtYf8b5GtLezB/laaQRjibMDF5Cxs/JyN1YSZyA0sgo/GPPmalU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXDCELVt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1A51F000E9;
+	Tue, 16 Jun 2026 17:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626813;
-	bh=o3kDLsyA4fpg/53ZHufsRotFBJyC4OOEOIKegqH7CKw=;
+	s=korg; t=1781629491;
+	bh=FFxI+ZyVzobVcsqe9WiKdYEwPc1Jzz/961f+oAV5Ts4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f2xvWznytQJV3RMSGp5LIQMiiukSRZC8r/6S93zDtLpfky2zytxz0B6U0//bGjfA6
-	 c8X4e7ZHB0B2TaxEB7tJxSps2Q1zyygjp47MIPdEPIiHxJfDmz7PidGPe5J3izZufj
-	 TQHR/Gq9imQsTxFSBwQWVjwxm3odhCfwumz+30d4=
+	b=oXDCELVtG5FeO1g/DdkkzWKpcmM9wzzM/use5mWc1WP3T/m19euA8MANS73851Rfl
+	 Dj+CVOPMP0T8ZCpDMPxMt4d1FUVZQtQmTwiaTs0b0ZXvvf3EZnonO//0QdhH11Tlam
+	 AMGVlDy7FIUpG9HnUIb4azDCICkYJTUrIrK0B4gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yun Zhou <yun.zhou@windriver.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20de=20Bretagne?= <jerome.debretagne@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/261] gpio: mvebu: fix NULL pointer dereference in suspend/resume
-Date: Tue, 16 Jun 2026 20:28:34 +0530
-Message-ID: <20260616145048.619852023@linuxfoundation.org>
+Subject: [PATCH 6.6 288/452] clk: qcom: dispcc-sc8280xp: Dont park mdp_clk_src at registration time
+Date: Tue, 16 Jun 2026 20:28:35 +0530
+Message-ID: <20260616145132.716648189@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +66,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264611-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265104-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yun.zhou@windriver.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mitltlatltl@gmail.com,m:jerome.debretagne@gmail.com,m:andersson@kernel.org,m:sashal@kernel.org,m:jeromedebretagne@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,qualcomm.com:email]
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A0A856922C1
+X-Rspamd-Queue-Id: 0FD52692EC2
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Zhou <yun.zhou@windriver.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit b9ad50d7505ebd48282ec3630258dc820fc85c81 ]
+[ Upstream commit 5285b046757844435d1db96c1b5c3a6621b2979a ]
 
-mvebu_pwm_suspend() and mvebu_pwm_resume() are called for all GPIO
-banks during suspend/resume, but not all banks have PWM functionality.
-GPIO banks without PWM have mvchip->mvpwm set to NULL.
+Parking disp{0,1}_cc_mdss_mdp_clk_src clk broke simplefb on HUAWEI
+Gaokun3, the image will stuck at grey for seconds until msm takes
+over framebuffer. Use clk_rcg2_shared_no_init_park_ops to skip it.
 
-Calling mvebu_pwm_suspend() with mvpwm == NULL causes a NULL pointer
-dereference when it tries to access mvpwm->blink_select.
-
-  Unable to handle kernel NULL pointer dereference at virtual address 00000020 when write
-  [00000020] *pgd=00000000
-  Internal error: Oops: 815 [#1] PREEMPT ARM
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 406 Comm: sh Not tainted 6.12.74-rt12-yocto-standard-g4e96f98fb7db-dirty #353
-  Hardware name: Marvell Armada 370/XP (Device Tree)
-  PC is at regmap_mmio_read+0x38/0x54
-  LR is at regmap_mmio_read+0x38/0x54
-  pc : [<c05fd2ac>]    lr : [<c05fd2ac>]    psr: 200f0013
-  sp : f0c11d10  ip : 00000000  fp : c100d2f0
-  r10: c14fb854  r9 : 00000000  r8 : 00000000
-  r7 : c1799c00  r6 : 00000020  r5 : 00000020  r4 : c179c7c0
-  r3 : f0a231a0  r2 : 00000020  r1 : 00000020  r0 : 00000000
-  Flags: nzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-  Control: 10c5387d  Table: 135ec059  DAC: 00000051
-  Call trace:
-   regmap_mmio_read from _regmap_bus_reg_read+0x78/0xac
-   _regmap_bus_reg_read from _regmap_read+0x60/0x154
-   _regmap_read from regmap_read+0x3c/0x60
-   regmap_read from mvebu_gpio_suspend+0xa4/0x14c
-   mvebu_gpio_suspend from dpm_run_callback+0x54/0x180
-   dpm_run_callback from device_suspend+0x124/0x630
-   device_suspend from dpm_suspend+0x124/0x270
-   dpm_suspend from dpm_suspend_start+0x64/0x6c
-   dpm_suspend_start from suspend_devices_and_enter+0x140/0x8e8
-   suspend_devices_and_enter from pm_suspend+0x2fc/0x308
-   pm_suspend from state_store+0x6c/0xc8
-   state_store from kernfs_fop_write_iter+0x10c/0x1f8
-   kernfs_fop_write_iter from vfs_write+0x270/0x468
-   vfs_write from ksys_write+0x70/0xf0
-   ksys_write from ret_fast_syscall+0x0/0x54
-
-Add a NULL check for mvchip->mvpwm before calling the PWM
-suspend/resume functions.
-
-Fixes: 757642f9a584 ("gpio: mvebu: Add limited PWM support")
-Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
-Link: https://patch.msgid.link/20260608084334.2960803-1-yun.zhou@windriver.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Tested-by: Jérôme de Bretagne <jerome.debretagne@gmail.com>
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Link: https://lore.kernel.org/r/20260303150152.90685-1-mitltlatltl@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-mvebu.c | 4 ++--
+ drivers/clk/qcom/dispcc-sc8280xp.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mvebu.c b/drivers/gpio/gpio-mvebu.c
-index 8cfd3a89c0184d..c85ab356bc72a9 100644
---- a/drivers/gpio/gpio-mvebu.c
-+++ b/drivers/gpio/gpio-mvebu.c
-@@ -1002,7 +1002,7 @@ static int mvebu_gpio_suspend(struct platform_device *pdev, pm_message_t state)
- 		BUG();
- 	}
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index 7f8819ece5eb01..40fc57eb9f7981 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -978,7 +978,7 @@ static struct clk_rcg2 disp0_cc_mdss_mdp_clk_src = {
+ 		.name = "disp0_cc_mdss_mdp_clk_src",
+ 		.parent_data = disp0_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp0_cc_parent_data_5),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
+ };
  
--	if (IS_REACHABLE(CONFIG_PWM))
-+	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
- 		mvebu_pwm_suspend(mvchip);
+@@ -992,7 +992,7 @@ static struct clk_rcg2 disp1_cc_mdss_mdp_clk_src = {
+ 		.name = "disp1_cc_mdss_mdp_clk_src",
+ 		.parent_data = disp1_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp1_cc_parent_data_5),
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_shared_no_init_park_ops,
+ 	},
+ };
  
- 	return 0;
-@@ -1054,7 +1054,7 @@ static int mvebu_gpio_resume(struct platform_device *pdev)
- 		BUG();
- 	}
- 
--	if (IS_REACHABLE(CONFIG_PWM))
-+	if (IS_REACHABLE(CONFIG_PWM) && mvchip->mvpwm)
- 		mvebu_pwm_resume(mvchip);
- 
- 	return 0;
 -- 
 2.53.0
 
