@@ -1,62 +1,67 @@
-Return-Path: <stable+bounces-264236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id l5vQEPZ0MWovjwUAu9opvQ
-	(envelope-from <stable+bounces-264236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:22 +0200
+	id EtO5My+cMWqioAUAu9opvQ
+	(envelope-from <stable+bounces-266340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421AF691B7A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:08:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B381694949
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Iv0jBtvx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264236-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264236-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UOxvASmg;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266340-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266340-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5673A300B0A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:48:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 038F732348DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774FC451060;
-	Tue, 16 Jun 2026 15:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8482347AF68;
+	Tue, 16 Jun 2026 18:51:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3943643E9CE;
-	Tue, 16 Jun 2026 15:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485F234FF79;
+	Tue, 16 Jun 2026 18:51:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624854; cv=none; b=gRS+UvKG4SG2x5Fu0krdrXZzx/KMtkENkjCjPosEQkw2C/t7E7B5inlQBWFBJsDFPa4WC2HjAwjlplw3IdEe1WWRj06QutyIOsN6wFNc7LCNUgECasgcqPwR2m0XHcV4PzsL4HBlqdAezG5IuWwKGFRrnWIvJ3K4JP0jReEC61A=
+	t=1781635909; cv=none; b=Nyp8etQfdj+IOCdecN7sspNxAYdSuxicrHHHnWlIGeXfn/HBSDlC00SOGtuSiQZMzQ/8O4HFv971ncwPbFl4YYPzeXRKmsSpkoDET1cCwctgDDRoc+bPf4zkcBcGlvIEVwuuxuVj9P36Qj8IkJKvaMBZAzId/L7vxsrTdZ8AS18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624854; c=relaxed/simple;
-	bh=60IP1s7vZywkS4Logjpj8W+HnlsBnubHoIlFmW/HrNQ=;
+	s=arc-20240116; t=1781635909; c=relaxed/simple;
+	bh=5LFKmw28h7jR3O1DAsWOe1jMqxxR3k4QceMMHWfqL0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9RctyxAAkEzyQSYnYtyRydGvrd/r8Ranl2WwiY859qH+edTDvYE9YIc4pCGMsjxlj2lWuEwDR9tqzeafkTpIzCSt44UV6o2nhoPx61dqrC8HqTJ3Dem5CNjFdBCDjPWHnhh3nCfcGViDxMm7pdc4HfEjL3zuJEk7KE28xl0L2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iv0jBtvx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139551F000E9;
-	Tue, 16 Jun 2026 15:47:31 +0000 (UTC)
+	 MIME-Version; b=ezHhWzPJ4yj1YhlSZfe3+21vNKXbkzXquHgQ7Xh1Mva92jMQwPQyRLFgTxarGNNL4K2XLKQU+kC8+vkLLb0zPEu32M+u1jkaxntJhWfTdgEyEKnFtabgrm80x4kfNcVXle0k+/0U/6MTBnTwizqwiO/0FdUqWh+oigDH8GYMopA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOxvASmg; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3601F000E9;
+	Tue, 16 Jun 2026 18:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624853;
-	bh=mHWwqMu4G5bdWGp0q+ggp8FJ4QlPnNpikT6rrhdZwM8=;
+	s=korg; t=1781635908;
+	bh=kAcMvZ0HL9GqEIkgrmtS+FsyLLWs8uTV15ZKAwhjGdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Iv0jBtvxhgOYsnzpe5PZ+2LioI5AOoBzIw+yQRyCPf8LVW5lVt/uw5FqoYOP3W3yP
-	 g38KOLPTnB4GcHcnqAO4fGhzfFyZVRbbb/2IEYTLAhgc0PJvzibP96P+bdd9I1rbN5
-	 KLa9D5rPw6diJDAsx3Jwbt3Q8Bwimk1g5hSVQGTc=
+	b=UOxvASmgWDah4ZubsleZd+T6ANaWLKGXDpUVPetOMEr+SSyPNzq0NsUkcqDasEjDP
+	 g8cmRnvAJF9GFBu0qgiz210/4FwzrAvb30E2HtL3mkOMqLcl+EysjwA8juIVbMewlk
+	 co1S4dNUlu4G/lYKaWPo0yBjq2Ed88Zzc/dgUKNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tapio Reijonen <tapio.reijonen@vaisala.com>,
-	Wei Fang <wei.fang@nxp.com>,
+	Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>,
+	Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>,
+	Ke Xu <xuke@tsinghua.edu.cn>,
+	Alexander Aring <aahringo@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 039/325] net: fec: fix pinctrl default state restore order on resume
+Subject: [PATCH 5.10 139/342] 6lowpan: fix off-by-one in multicast context address compression
 Date: Tue, 16 Jun 2026 20:27:15 +0530
-Message-ID: <20260616145059.682431483@linuxfoundation.org>
+Message-ID: <20260616145054.661467786@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,97 +75,103 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-266340-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaoyz24@mails.tsinghua.edu.cn,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:aahringo@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264236-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tapio.reijonen@vaisala.com,m:wei.fang@nxp.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn,redhat.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vaisala.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,tsinghua.edu.cn:email,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 421AF691B7A
+X-Rspamd-Queue-Id: 4B381694949
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tapio Reijonen <tapio.reijonen@vaisala.com>
+From: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
 
-[ Upstream commit b455410146bf723c7ebcb49ecd5becc0d6611482 ]
+[ Upstream commit 2a58899d11009bffc7b4b32a571858f381121837 ]
 
-In fec_resume(), fec_enet_clk_enable() is called before
-pinctrl_pm_select_default_state() in the non-WoL path, inverting the
-ordering used in fec_suspend() which correctly switches to the sleep
-pinctrl state before disabling clocks.
+The second memcpy in lowpan_iphc_mcast_ctx_addr_compress() uses
+&data[1] as destination and &ipaddr->s6_addr[11] as source, but
+both should be offset by one: &data[2] and &ipaddr->s6_addr[12]
+respectively.
 
-For PHYs with the PHY_RST_AFTER_CLK_EN flag (e.g. TI DP83848 or
-SMSC LAN87xx), fec_enet_clk_enable() triggers a hardware reset pulse
-via the phy-reset GPIO. With the GPIO pin still in sleep pinctrl state
-at that point, the GPIO write has no physical effect and the PHY never
-receives the required reset after clock enable, leading to unreliable
-link establishment after system resume.
+This off-by-one has two consequences:
+1. data[1] is overwritten with s6_addr[11], corrupting the RIID
+   field in the compressed multicast address
+2. data[5] is never written, so uninitialized kernel stack memory
+   is transmitted over the network via lowpan_push_hc_data(),
+   leaking kernel stack contents
 
-Fix by restoring the default pinctrl state before enabling clocks,
-making resume the proper mirror of suspend. The call is made
-unconditionally: fec_suspend() only switches to the sleep pinctrl state
-on the non-WoL path and leaves the pins in the default state when WoL
-is enabled, so on a WoL resume the device is already in the default
-state and pinctrl_pm_select_default_state() is a no-op.
+The correct inline data layout must match what the decompression
+function lowpan_uncompress_multicast_ctx_daddr() expects:
+  data[0..1] = s6_addr[1..2]  (flags/scope + RIID)
+  data[2..5] = s6_addr[12..15] (group ID)
 
-Fixes: de40ed31b3c5 ("net: fec: add Wake-on-LAN support")
-Signed-off-by: Tapio Reijonen <tapio.reijonen@vaisala.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20260529-b4-fec-resume-pinctrl-order-v3-1-6eda0f592fca@vaisala.com
+Also zero-initialize the data array as a defensive measure against
+similar bugs in the future.
+
+Fixes: 5609c185f24d ("6lowpan: iphc: add support for stateful compression")
+Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+Reported-by: Ao Wang <wangao@seu.edu.cn>
+Reported-by: Xuewei Feng <fengxw06@126.com>
+Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Acked-by: Alexander Aring <aahringo@redhat.com>
+Link: https://patch.msgid.link/20260527081806.42747-1-zhaoyz24@mails.tsinghua.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/6lowpan/iphc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f30e8fabfaded8..a2cf8cbe2539ef 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -4772,6 +4772,7 @@ static int fec_resume(struct device *dev)
- 		if (fep->rpm_active)
- 			pm_runtime_force_resume(dev);
+diff --git a/net/6lowpan/iphc.c b/net/6lowpan/iphc.c
+index 52fad5dad9f715..d762c49e722fae 100644
+--- a/net/6lowpan/iphc.c
++++ b/net/6lowpan/iphc.c
+@@ -1086,12 +1086,12 @@ static u8 lowpan_iphc_mcast_ctx_addr_compress(u8 **hc_ptr,
+ 					      const struct lowpan_iphc_ctx *ctx,
+ 					      const struct in6_addr *ipaddr)
+ {
+-	u8 data[6];
++	u8 data[6] = {};
  
-+		pinctrl_pm_select_default_state(&fep->pdev->dev);
- 		ret = fec_enet_clk_enable(ndev, true);
- 		if (ret) {
- 			rtnl_unlock();
-@@ -4788,8 +4789,6 @@ static int fec_resume(struct device *dev)
- 			val &= ~(FEC_ECR_MAGICEN | FEC_ECR_SLEEP);
- 			writel(val, fep->hwp + FEC_ECNTRL);
- 			fep->wol_flag &= ~FEC_WOL_FLAG_SLEEP_ON;
--		} else {
--			pinctrl_pm_select_default_state(&fep->pdev->dev);
- 		}
- 		fec_restart(ndev);
- 		netif_tx_lock_bh(ndev);
+ 	/* flags/scope, reserved (RIID) */
+ 	memcpy(data, &ipaddr->s6_addr[1], 2);
+ 	/* group ID */
+-	memcpy(&data[1], &ipaddr->s6_addr[11], 4);
++	memcpy(&data[2], &ipaddr->s6_addr[12], 4);
+ 	lowpan_push_hc_data(hc_ptr, data, 6);
+ 
+ 	return LOWPAN_IPHC_DAM_00;
 -- 
 2.53.0
 
