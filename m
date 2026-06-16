@@ -1,73 +1,60 @@
-Return-Path: <stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id OC8vOO92MWr+jwUAu9opvQ
-	(envelope-from <stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:47 +0200
+	id ryNTJbOeMWrFoQUAu9opvQ
+	(envelope-from <stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602E4691E18
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C39694BFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kBButCO+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264428-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zobC8bC5;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266511-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1311B337C40C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 27BD1300531E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3E74611F4;
-	Tue, 16 Jun 2026 16:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200813DE422;
+	Tue, 16 Jun 2026 19:06:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3551744CF40;
-	Tue, 16 Jun 2026 16:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800673DD51C;
+	Tue, 16 Jun 2026 19:06:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625831; cv=none; b=B2Mr2uzgxnYShqz6j6kw2gHbtHZ7s3lHyb/zhlBEr9od+9XVJ4DJE2QyLOafRpwG2jxt8SLBH0lUwgL6SgkhXoarOkfFhslsalgqCrxBFS9xGIFoQHAHsPQAaGHs1AFnMeNmLPVp+a2XMHDgdWbqSb7I35u26vjW8zh7SkeuGAs=
+	t=1781636773; cv=none; b=jMUspuEocB3uhvhrH3yAs9wLCkSpDac/XHrIkG9rGnxJ8VCtqGjbHTNpsWCY3f/Z7N9qDlgiP+qPCAWD2WKaBoqS/2U0B4HAzp9AbUnHOcqjuDVKK9m1IuPARMbbm/VANlcA3A50LhZc+BWkIupELoAEd6GVAoMrdazLT6lVu1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625831; c=relaxed/simple;
-	bh=M2L1jkDksnbzm6KSk2I/A24pzOW4T1GuW/+5vULVYv8=;
+	s=arc-20240116; t=1781636773; c=relaxed/simple;
+	bh=x2EkrbdnC5AjLGo1lchO1smrrbSOXgNHuNxMoLBosdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lK6h/QmZmi/Tzi/bPqawTuhmi3DZICZrSRm+P/87kDgTt6fU7GSUjJ0SQZRFypsMjgqG74yPZ7r0op7eiKV32VOZJ07MbKsOCh4OQ5TmByuxFpSitb0NL78yW3E0dXWUTrR/BCkqeV0DzbNpe5s9W6cKChQLIw66KqgRt/O5Y3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBButCO+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9171F000E9;
-	Tue, 16 Jun 2026 16:03:48 +0000 (UTC)
+	 MIME-Version; b=c++LSrnY/6vw/3/aeauTiJs3VcFhyJ3Co1st4lzcCMnMTN609aIu6z6TgWW8tQKXAW/aWqJddJ0f2nFmwQZtIMo0llTB8Y2Q/3oigcoiqalgi6LqKD3TdaXmOolO81PiHBRso/5vyATgXa8B+vqotfSgFKrJ34FARRjsBqzAPtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zobC8bC5; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DEA1F000E9;
+	Tue, 16 Jun 2026 19:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625830;
-	bh=bOB28OeZuFWPX3h0iogA9kju60mBaupG4GztPBIWAFo=;
+	s=korg; t=1781636772;
+	bh=9VbOwgRxOi/gVD395v4YCFmTr8aTn3Ulp0KLSPov4/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kBButCO+CSWJV5vxhc1h0etf2JBD2QHYdcrhfS43quzdPAHrtiIBu8CvVG9vdj5EC
-	 2lQe9/nyOydNBqaFmxgecKl8Q+9ZLycFg6MSNBzodurSz7ybFS6lctU82o/GirmmqB
-	 waQMrVko0sGXolxFy7tw1mjQgXRi3FqtA1fzjI7w=
+	b=zobC8bC50BK3L9r/vjb1xFLzxMr6pSOEJ++HK6dulPlIMiiD6n0GWKWROVcbZgtle
+	 tEfC3EClEDxIm2eRVD1bMFgilg6c/De2MvFAViBrXipkSBS9v7q8fCND3Rv/LzAdvh
+	 VZ+j7G3g9rA6bJOUUdK61htZUgPG4K+2L3KKlBN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yin Tirui <yintirui@huawei.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"David Hildenbrand (arm)" <david@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Dev Jain <dev.jain@arm.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Barry Song <baohua@kernel.org>,
-	Chen Jun <chenjun102@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 185/325] mm/huge_memory: update file PUD counter before folio_put()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 285/342] Bluetooth: Init sk_peer_* on bt_sock_alloc
 Date: Tue, 16 Jun 2026 20:29:41 +0530
-Message-ID: <20260616145107.114786014@linuxfoundation.org>
+Message-ID: <20260616145101.685199363@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264428-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266511-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yintirui@huawei.com,m:ljs@kernel.org,m:david@kernel.org,m:lance.yang@linux.dev,m:dev.jain@arm.com,m:apopple@nvidia.com,m:baolin.wang@linux.alibaba.com,m:baohua@kernel.org,m:chenjun102@huawei.com,m:wangkefeng.wang@huawei.com,m:liam@infradead.org,m:npache@redhat.com,m:ryan.roberts@arm.com,m:ziy@nvidia.com,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -110,61 +97,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 602E4691E18
+X-Rspamd-Queue-Id: C3C39694BFB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Tirui <yintirui@huawei.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 40990c87a26e371594475acdc560c93cfae308a1 upstream.
+[ Upstream commit 464c702fb9374ff8f3f816f24fb7ac719dd20e1e ]
 
-__split_huge_pud_locked() updates the file/shmem RSS counter after
-dropping the PUD mapping's folio reference.  If folio_put() drops the last
-reference, mm_counter_file() can later read freed folio state via
-folio_test_swapbacked().
+This makes sure peer information is always available via sock when using
+bt_sock_alloc.
 
-Move the counter update before folio_put().
-
-Link: https://lore.kernel.org/20260526101355.1984244-1-yintirui@huawei.com
-Fixes: dbe54153296d ("mm/huge_memory: add vmf_insert_folio_pud()")
-Signed-off-by: Yin Tirui <yintirui@huawei.com>
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chen Jun <chenjun102@huawei.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <liam@infradead.org>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: e83f5e24da74 ("Bluetooth: serialize accept_q access")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c |   24 ++++++++++++++++++++++++
+ net/bluetooth/hidp/sock.c    |   10 +---------
+ net/bluetooth/l2cap_sock.c   |   19 -------------------
+ 3 files changed, 25 insertions(+), 28 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2759,9 +2759,9 @@ static void __split_huge_pud_locked(stru
- 	if (!folio_test_referenced(folio) && pud_young(old_pud))
- 		folio_set_referenced(folio);
- 	folio_remove_rmap_pud(folio, page, vma);
--	folio_put(folio);
- 	add_mm_counter(vma->vm_mm, mm_counter_file(folio),
- 		-HPAGE_PUD_NR);
-+	folio_put(folio);
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -155,6 +155,14 @@ struct sock *bt_sock_alloc(struct net *n
+ 	sk->sk_protocol = proto;
+ 	sk->sk_state    = BT_OPEN;
+ 
++	/* Init peer information so it can be properly monitored */
++	if (!kern) {
++		spin_lock(&sk->sk_peer_lock);
++		sk->sk_peer_pid  = get_pid(task_tgid(current));
++		sk->sk_peer_cred = get_current_cred();
++		spin_unlock(&sk->sk_peer_lock);
++	}
++
+ 	return sk;
+ }
+ EXPORT_SYMBOL(bt_sock_alloc);
+@@ -177,6 +185,9 @@ EXPORT_SYMBOL(bt_sock_unlink);
+ 
+ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ {
++	const struct cred *old_cred;
++	struct pid *old_pid;
++
+ 	BT_DBG("parent %p, sk %p", parent, sk);
+ 
+ 	sock_hold(sk);
+@@ -189,6 +200,19 @@ void bt_accept_enqueue(struct sock *pare
+ 	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
+ 	bt_sk(sk)->parent = parent;
+ 
++	/* Copy credentials from parent since for incoming connections the
++	 * socket is allocated by the kernel.
++	 */
++	spin_lock(&sk->sk_peer_lock);
++	old_pid = sk->sk_peer_pid;
++	old_cred = sk->sk_peer_cred;
++	sk->sk_peer_pid = get_pid(parent->sk_peer_pid);
++	sk->sk_peer_cred = get_cred(parent->sk_peer_cred);
++	spin_unlock(&sk->sk_peer_lock);
++
++	put_pid(old_pid);
++	put_cred(old_cred);
++
+ 	if (bh)
+ 		bh_unlock_sock(sk);
+ 	else
+--- a/net/bluetooth/hidp/sock.c
++++ b/net/bluetooth/hidp/sock.c
+@@ -255,21 +255,13 @@ static int hidp_sock_create(struct net *
+ 	if (sock->type != SOCK_RAW)
+ 		return -ESOCKTNOSUPPORT;
+ 
+-	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &hidp_proto, kern);
++	sk = bt_sock_alloc(net, sock, &hidp_proto, protocol, GFP_ATOMIC, kern);
+ 	if (!sk)
+ 		return -ENOMEM;
+ 
+-	sock_init_data(sock, sk);
+-
+ 	sock->ops = &hidp_sock_ops;
+-
+ 	sock->state = SS_UNCONNECTED;
+ 
+-	sock_reset_flag(sk, SOCK_ZAPPED);
+-
+-	sk->sk_protocol = protocol;
+-	sk->sk_state	= BT_OPEN;
+-
+ 	bt_sock_link(&hidp_sk_list, sk);
+ 
+ 	return 0;
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -177,21 +177,6 @@ done:
+ 	return err;
  }
  
- void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+-static void l2cap_sock_init_pid(struct sock *sk)
+-{
+-	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
+-
+-	/* Only L2CAP_MODE_EXT_FLOWCTL ever need to access the PID in order to
+-	 * group the channels being requested.
+-	 */
+-	if (chan->mode != L2CAP_MODE_EXT_FLOWCTL)
+-		return;
+-
+-	spin_lock(&sk->sk_peer_lock);
+-	sk->sk_peer_pid = get_pid(task_tgid(current));
+-	spin_unlock(&sk->sk_peer_lock);
+-}
+-
+ static int l2cap_sock_connect(struct socket *sock, struct sockaddr *addr,
+ 			      int alen, int flags)
+ {
+@@ -267,8 +252,6 @@ static int l2cap_sock_connect(struct soc
+ 	    chan->mode != L2CAP_MODE_EXT_FLOWCTL)
+ 		chan->mode = L2CAP_MODE_LE_FLOWCTL;
+ 
+-	l2cap_sock_init_pid(sk);
+-
+ 	err = l2cap_chan_connect(chan, la.l2_psm, __le16_to_cpu(la.l2_cid),
+ 				 &la.l2_bdaddr, la.l2_bdaddr_type);
+ 	if (err)
+@@ -324,8 +307,6 @@ static int l2cap_sock_listen(struct sock
+ 		goto done;
+ 	}
+ 
+-	l2cap_sock_init_pid(sk);
+-
+ 	sk->sk_max_ack_backlog = backlog;
+ 	sk->sk_ack_backlog = 0;
+ 
 
 
 
