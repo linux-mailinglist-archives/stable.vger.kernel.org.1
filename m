@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id gAgyLyZ+MWoRkwUAu9opvQ
-	(envelope-from <stable+bounces-264804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:34 +0200
+	id oXk2DMp1MWqFjwUAu9opvQ
+	(envelope-from <stable+bounces-264506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35704692742
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3AE691CA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:11:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=lDludqoH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264804-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264804-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dvLTZMoo;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264506-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264506-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7EDC630953E5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:39:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 00AE130400CE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F7646AF3C;
-	Tue, 16 Jun 2026 16:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E69451052;
+	Tue, 16 Jun 2026 16:10:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8E2466B4E;
-	Tue, 16 Jun 2026 16:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480D933688F;
+	Tue, 16 Jun 2026 16:10:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627978; cv=none; b=Yq2aEH+2L17saF+Yc7Q8o05zpOGLOdBLSVgo9eODOyxQ+eFnmMX+35Vtv9kqA7a+FunszPuo5r8ExTpd5LwzUCppuObLwnhbpcFw2RvjaLz8FbHBxUryEB0rvvojzjQxKWi7fp6+3E4L+6XTKL2LJwLvSYOcbpunXFFZGoAu1DY=
+	t=1781626252; cv=none; b=WR6q+b3YjaGVRqNZJRnfMGFsG7z6u6GeZeCiotfKGzXiLVyD0pCuqvzp4GZ/0INd6J0te2/BXLqyHgeEcj8AjrkzoPmFXc16xquCOyRRR/zGHiJZeR+oDKzqlHGfdaM9wdhX7rlGp/IWhWEDUKzhstbSTZ9UOV+oIOGXBDv18M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627978; c=relaxed/simple;
-	bh=I+NqjtHfwrRyXV6GfuAZBW3wAHKavblB+g5S2vr/SSo=;
+	s=arc-20240116; t=1781626252; c=relaxed/simple;
+	bh=M4fXxsmjdfECFfEELb/GpgMyCwtznCy9j1oV9T8z2Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYSrqDMdS8Kegw8XC6tN7L7jrHHIMosxMb7rfNll8Jp83GS2XboXs14DvAhXW5/zGopr5p93y8AFr5X2tEugMU9jRGteq+TocPXy2zpm+8LBsaI5ANoGuSsGWV+0iNsZ7WLgXnPUvCwaj1bJRYKndxLP+1FyVUgdaxfFmFj48eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lDludqoH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5841F000E9;
-	Tue, 16 Jun 2026 16:39:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OAeG5xDaQUAq90y9ROYzv1l8GwY1uv+g91H6aovwvj016Q5ZZb4cWGdJz4z8L5V6brZel3bRyQibCAb8xo1u/ckG62YU5iqnLmVLZroMFi2jfRb1K1X5EKMs0uHgm7y2N414bsvow0NM+vyFVW+zE4Q2zezWnVSAwRgEvU+NzVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvLTZMoo; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5981F000E9;
+	Tue, 16 Jun 2026 16:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627976;
-	bh=kj0N2ZxOgWo/1MfOpSuoMdzltG2Ey+1z/+/2ZfwVub8=;
+	s=korg; t=1781626251;
+	bh=uie7/Qtigzc4kFFIs7yHfh1dBEVSOdT4fIv79TVa8K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lDludqoHvKbPS2fV6JTUY3z/Jfq2aCwmV81PuKMN21xRs4XkjX5Sh5/yPT2DH9IVh
-	 ZgrKk0DWw/bt/jNh5DvwWgpt830ljw4sVYofQ5CrWQ+M8u9cpft/JYvcLH+bi+XjT0
-	 KXA7aQxtOtxZnHDBqyWS0egHt6a5vag/CUDUsorg=
+	b=dvLTZMooHGzhtJ3c9UWUuJjAvgSfB8BmekuqYx624IBBafWOF3vVe4PARgpTcw7S4
+	 EQIk7OPASqjAyp6kEhFRlq8CSpH6eEap2cu8A0xOp6EgKZC+o0ZM5x0V+TQ61ydr/3
+	 nvrxL4lU1FR6d/RuIs57kwfGLL6VYxiZ19ylVu70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Gyokhan Kochmarla <gyokhan@amazon.de>
-Subject: [PATCH 6.12 250/261] block: fix handling of dead zone write plugs
-Date: Tue, 16 Jun 2026 20:31:28 +0530
-Message-ID: <20260616145056.663049551@linuxfoundation.org>
+	Christian Koenig <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH 6.18 293/325] drm/amdgpu: set noretry=1 as default for GFX 10.1.x (Navi10/12/14)
+Date: Tue, 16 Jun 2026 20:31:29 +0530
+Message-ID: <20260616145113.412930190@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,144 +66,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264804-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264506-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shinichiro.kawasaki@wdc.com,m:dlemoal@kernel.org,m:axboe@kernel.dk,m:gyokhan@amazon.de,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:alexander.deucher@amd.com,m:felix.kuehling@amd.com,m:vitaly.prosyak@amd.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,wdc.com:email,kernel.dk:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,amazon.de:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 35704692742
+X-Rspamd-Queue-Id: EC3AE691CA6
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-commit 836efd35c472d89c838d7b17ef339ddb3286ffc5 upstream.
+commit e47b0056a08dc70430ffc44bbf62197e7d1ff8ea upstream.
 
-Shin'ichiro reported hard to reproduce unaligned write errors with zoned
-block devices. Under normal operation conditions (e.g. running XFS on an
-SMR disk), these errors are nearly impossible to trigger. But using a
-"slow" kernel with many debug options enables and some specific use
-cases (e.g. fio zbd test case 46), the errors can be reproduced fairly
-easily.
+Problem:
+While developing the amd_close_race IGT test (which intentionally triggers
+execute permission faults by removing VM_PAGE_EXECUTABLE from GPU page table
+entries), we discovered that on Navi10 (GFX 10.1.x) these faults produce
+zero diagnostic output. The GPU simply hangs silently for ~10s until the
+scheduler timeout fires. There is no way to distinguish an execute
+permission fault from any other type of GPU hang.
 
-The unaligned write errors come from mishandling a valid reference
-counting pattern of zone write plugs. Such pattern triggers for instance
-if a process A writes a zone (not necessarilly to the full state),
-another process B immediately resets the zone and immediately following
-the completion of the zone reset, starts issuing writes to the zone.
-With such pattern, in some cases, the zone write plugs worker thread of
-the device may still be holding a reference to the zone write plug of
-the zone taken when process A was writing to the zone. The following
-zone reset from process B marks the zone as dead but does not remove the
-zone write plug from the device hash table as a reference to the plug
-still exist. Once process B starts issuing new writes, the zone write
-plug is seen as dead and the writes from process B are immediately
-failed, despite this write pattern being perfectly legal.
+Root cause:
+GFX 10.1.x defaults to noretry=0, which sets
+RETRY_PERMISSION_OR_INVALID_PAGE_FAULT=1 in the GFXHUB UTCL2 registers
+(gfxhub_v2_0.c line 313). With this bit set, permission faults (valid PTE,
+wrong R/W/X bits) are handled entirely within the UTCL1/UTCL2 hardware
+loop: UTCL2 returns an XNACK to UTCL1, and UTCL1 re-requests the
+translation indefinitely, expecting software to eventually fix the
+permission bits (as happens in SVM/HMM recovery). No interrupt of any kind
+reaches the IH ring.
 
-Fix this by allowing restoring a dead zone write plug to a live state if
-a write is issued to the zone when the zone is: marked as dead, empty
-and the write sector corresponds to the first sector of the zone (that
-is, the write is aligned to the zone write pointer). This is done with
-the new helper function disk_check_zone_wplug_dead(), which restores a
-dead zone write plug to a live state by clearing the BLK_ZONE_WPLUG_DEAD
-flag and restoring the initial reference to the zone write plug taken
-when the plug was added to the device hash table.
+This is different from invalid-page faults (V=0) which DO generate a retry
+fault interrupt that the driver can escalate to a no-retry fault. Permission
+faults with valid PTEs loop silently forever in hardware.
 
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: b7d4ffb51037 ("block: fix zone write plug removal")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://patch.msgid.link/20260513111129.108809-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ context conflict due to different line offsets in blk-zoned.c ]
-Signed-off-by: Gyokhan Kochmarla <gyokhan@amazon.de>
+GFX 10.3+ already defaults to noretry=1, which makes permission faults
+generate immediate L2 protection fault interrupts. GFX 10.1.x was
+inadvertently left out of this default.
+
+Fix:
+Change the noretry=1 threshold from IP_VERSION(10, 3, 0) to
+IP_VERSION(10, 1, 0) in amdgpu_gmc_noretry_set(). This is a one-line
+change that aligns GFX 10.1.x behavior with GFX 10.3+ and all newer
+generations.
+
+With noretry=1, the existing non-retry fault handler
+(gmc_v10_0_process_interrupt) already decodes and prints the full
+GCVM_L2_PROTECTION_FAULT_STATUS register including PERMISSION_FAULTS,
+faulting address, VMID, PASID, and process name. No additional logging
+code is needed — the fix is purely routing permission faults to the
+existing, fully-capable non-retry interrupt handler.
+
+v2: Dropped GFX10-specific logging from gmc_v10_0.c and
+kfd_int_process_v10.c (Felix Kuehling). v1 added logging in the retry
+fault handler, but with noretry=1 permission faults take the non-retry
+path — the v1 retry handler code was dead and would never execute.
+
+Tested on Navi10 (GFX 10.1.10):
+- Execute permission faults now produce immediate, clear output:
+    [gfxhub] page fault (src_id:0 ring:64 vmid:4 pasid:592)
+     Process amd_close_race pid 13380 thread amd_close_race pid 13384
+      in page at address 0x40001000 from client 0x1b (UTCL2)
+    GCVM_L2_PROTECTION_FAULT_STATUS:0x00700881
+         PERMISSION_FAULTS: 0x8
+- No regressions with properly-mapped GPU workloads
+
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit eb21edd24c40d81066753f8ac6f23bce15745395)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
 ---
- block/blk-zoned.c |   32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -517,6 +517,28 @@ static void disk_mark_zone_wplug_dead(st
- 	}
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -953,7 +953,7 @@ void amdgpu_gmc_noretry_set(struct amdgp
+ 				gc_ver == IP_VERSION(9, 4, 3) ||
+ 				gc_ver == IP_VERSION(9, 4, 4) ||
+ 				gc_ver == IP_VERSION(9, 5, 0) ||
+-				gc_ver >= IP_VERSION(10, 3, 0));
++				gc_ver >= IP_VERSION(10, 1, 0));
  
-+static inline bool disk_check_zone_wplug_dead(struct blk_zone_wplug *zwplug)
-+{
-+	if (!(zwplug->flags & BLK_ZONE_WPLUG_DEAD))
-+		return false;
-+
-+	/*
-+	 * If a new write is received right after a zone reset completes and
-+	 * while the disk_zone_wplugs_worker() thread has not yet released the
-+	 * reference on the zone write plug after processing the last write to
-+	 * the zone, then the new write BIO will see the zone write plug marked
-+	 * as dead. This case is however a false positive and a perfectly valid
-+	 * pattern. In such case, restore the zone write plug to a live one.
-+	 */
-+	if (!zwplug->wp_offset && bio_list_empty(&zwplug->bio_list)) {
-+		zwplug->flags &= ~BLK_ZONE_WPLUG_DEAD;
-+		refcount_inc(&zwplug->ref);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- static void blk_zone_wplug_bio_work(struct work_struct *work);
- 
- /*
-@@ -1037,12 +1059,12 @@ static bool blk_zone_wplug_handle_write(
- 	}
- 
- 	/*
--	 * If we got a zone write plug marked as dead, then the user is issuing
--	 * writes to a full zone, or without synchronizing with zone reset or
--	 * zone finish operations. In such case, fail the BIO to signal this
--	 * invalid usage.
-+	 * Check if we got a zone write plug marked as dead. If yes, then the
-+	 * user is likely issuing writes to a full zone, or without
-+	 * synchronizing with zone reset or zone finish operations. In such
-+	 * case, fail the BIO to signal this invalid usage.
- 	 */
--	if (zwplug->flags & BLK_ZONE_WPLUG_DEAD) {
-+	if (disk_check_zone_wplug_dead(zwplug)) {
- 		spin_unlock_irqrestore(&zwplug->lock, flags);
- 		disk_put_zone_wplug(zwplug);
- 		bio_io_error(bio);
+ 	if (!amdgpu_sriov_xnack_support(adev))
+ 		gmc->noretry = 1;
 
 
 
