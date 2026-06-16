@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yyM6HqNuMWrBjAUAu9opvQ
-	(envelope-from <stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:23 +0200
+	id L1HvFb2VMWrUnQUAu9opvQ
+	(envelope-from <stable+bounces-266063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D236914A3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAD1694271
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0zyUzV7m;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264098-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Idb+92l2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266063-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266063-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78C5F31161D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:35:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F143308F52B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11A1A34889F;
-	Tue, 16 Jun 2026 15:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A43C3D75A4;
+	Tue, 16 Jun 2026 18:27:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C916538837F;
-	Tue, 16 Jun 2026 15:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C61B472798;
+	Tue, 16 Jun 2026 18:27:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624115; cv=none; b=EmoLykHCudVd7uTT05A7vvmTlilBvuo/D2+KGw3xK3llH53l0Yi3IP40iM3JEbRvJ1wcHFGDRHbimJ0TSANJKP+qdnrYgaT7ZyUNaumJT/pljTylRMoNf0UqrHL0hiRILcjYcL0mUgaAbElLjyEXCmTVKObW7vvPmGj9eLdX3pY=
+	t=1781634468; cv=none; b=o/g89XnsKxiNkL+X6tjUuTpXh1Qazu+B8+IC3+5V3tIRCAjDf0doNBsJ8D5P9K8Q+nwFiMwzxr1g9l4g9fmhd8T7OwwAn1chzEYPI3X7LyX4wmuFZyeGDT4ejrH7NExws9Are2a1vKIy3TumCP0RCqc4OY4cDrkXs1viHsyZE3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624115; c=relaxed/simple;
-	bh=QWKBrz7LtSasIw+aiaqCUmaUEjy3c5H8kzkQwe8/vUo=;
+	s=arc-20240116; t=1781634468; c=relaxed/simple;
+	bh=sMMRicNprOYQVZxmgfpJR22jZO2yQrS1hmOAcsxkbyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJhnb9xjsxkRzjTfqWyy3Nwp6Rl45Ltz30f7tbulqfkpUFIe8eHBsm+5QigAtU84d84QsKvmMhaHRnVa211IKOPLfsAJRq7MqaVw8TIxAMXvEdOjnNT0In6LFeXg+9cDvIoDVGJbm8TBc+4j3uXN1bVelj3+Yh6oNvPGta7BIkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zyUzV7m; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12271F00AC4;
-	Tue, 16 Jun 2026 15:35:13 +0000 (UTC)
+	 MIME-Version; b=cj8sv11yg8aZvrVzbKuYabsleEssUjm83TbMJkX3rH8Oqsp8kanAFPxUSCoS5f0THOvJ2YDBHXafAHYhK2lsWz/vrKoaRkZfceP344ynUHaDkqlT7NBkQ37GzA35NZRPwFCdY+eqqkXrEZgvrPpDhZcCBEjsONaVDgGxmGKUezU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Idb+92l2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAEB1F000E9;
+	Tue, 16 Jun 2026 18:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624114;
-	bh=T7lSHEsKQUp/xKUG+6k8XcUxyR8q/iiWWl568ADM50Q=;
+	s=korg; t=1781634467;
+	bh=GHCCIVOquscRcExfJa6mbtMdYqvbi4e7ZD9ZZdCT09U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0zyUzV7mClcIuh1t8aVIOLJBHdLg1Xnfj2/H6JTTutl/T1WkSknNcaQj8ThaujLN8
-	 LOOybetSOvGjSgDl5s7Xerea96J4PVEI20MnPzIXR9dIlI4q6jjexKuN+6dQNdT018
-	 keBSOaHc07VkL5UvidS3mdzCcLojFyiNOpVX3wuk=
+	b=Idb+92l2/96GNbEajxpH0WCEUvB3gDRHNaNyXX1YlNYwLkrsT3ZtrROMoEUzDlVQa
+	 IYisl5QeUge2xWrMU8nbHYc7xuAgw9QTiQywAqgl/rrtnrYI1SsY03GnoeRHqrQZla
+	 K9GRXcHVQlCr5z+9NEBPDHJgCJbQI4YcAZdVC1pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Lord <mlord@pobox.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 7.0 277/378] iommu/dma: Do not try to iommu_map a 0 length region in swiotlb
-Date: Tue, 16 Jun 2026 20:28:28 +0530
-Message-ID: <20260616145124.689470923@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 271/411] media: rc: igorplugusb: heed coherency rules
+Date: Tue, 16 Jun 2026 20:28:29 +0530
+Message-ID: <20260616145115.508137821@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,115 +68,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264098-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mlord@pobox.com,m:jgg@nvidia.com,m:hch@lst.de,m:leonro@nvidia.com,m:skhawaja@google.com,m:m.szyprowski@samsung.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266063-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oneukum@suse.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:sashal@kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lst.de:email,vger.kernel.org:from_smtp,samsung.com:email,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,pobox.com:email]
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.com:email,mess.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 70D236914A3
+X-Rspamd-Queue-Id: EEAD1694271
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 6ec91df8aff77e2e8fe3179c1f3fc15b43a40ba3 upstream.
+[ Upstream commit eac69475b01fe1e861dfe3960b57fa95671c132e ]
 
-iommu_dma_iova_link_swiotlb() processes a mapping that is unaligned in three
-parts, the head, middle and trailer. If the middle is empty because there
-are no aligned pages it will call down to iommu_map() with a 0 size
-which the iommupt implementation will fail as illegal.
+In a control request, the USB request structure
+can be subject to DMA on some HCs. Hence it must obey
+the rules for DMA coherency. Allocate it separately.
 
-It then tries to do an error unwind and starts from the wrong spot
-corrupting the mapping so the eventual destruction triggers a WARN_ON.
-
-Check for 0 length and avoid mapping and use offset not 0 as the starting
-point to unlink.
-
-This is frequently triggered by using some kinds of thunderbolt NVMe
-drives that trigger forced SWIOTLB for unaligned memory. NVMe seems to
-pass in oddly aligned buffers for the passthrough commands from smartctl
-that hit this condition.
-
+Fixes: b1c97193c6437 ("[media] rc: port IgorPlug-USB to rc-core")
 Cc: stable@vger.kernel.org
-Fixes: 433a76207dcf ("dma-mapping: Implement link/unlink ranges API")
-Reported-by: Mark Lord <mlord@pobox.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/0-v1-8536728bc89f+469-swiotlb_warn_jgg@nvidia.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ replaced kzalloc_obj() with kzalloc(sizeof(*ir->request), GFP_KERNEL) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/dma-iommu.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/media/rc/igorplugusb.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1895,12 +1895,18 @@ static int iommu_dma_iova_link_swiotlb(s
- 			return 0;
- 	}
+--- a/drivers/media/rc/igorplugusb.c
++++ b/drivers/media/rc/igorplugusb.c
+@@ -14,6 +14,7 @@
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/slab.h>
+ #include <linux/usb.h>
+ #include <linux/usb/input.h>
+ #include <media/rc-core.h>
+@@ -34,7 +35,7 @@ struct igorplugusb {
+ 	struct device *dev;
  
-+	/*
-+	 * After removing the partial head and tail, there may be no aligned
-+	 * middle left to map.  The tail still gets bounced below.
-+	 */
- 	size -= iova_end_pad;
--	error = __dma_iova_link(dev, addr + mapped, phys + mapped, size, dir,
--			attrs);
--	if (error)
--		goto out_unmap;
--	mapped += size;
-+	if (size) {
-+		error = __dma_iova_link(dev, addr + mapped, phys + mapped,
-+				size, dir, attrs);
-+		if (error)
-+			goto out_unmap;
-+		mapped += size;
-+	}
+ 	struct urb *urb;
+-	struct usb_ctrlrequest request;
++	struct usb_ctrlrequest *request;
  
- 	if (iova_end_pad) {
- 		error = iommu_dma_iova_bounce_and_link(dev, addr + mapped,
-@@ -1913,7 +1919,8 @@ static int iommu_dma_iova_link_swiotlb(s
- 	return 0;
+ 	struct timer_list timer;
  
- out_unmap:
--	dma_iova_unlink(dev, state, 0, mapped, dir, attrs);
-+	if (mapped)
-+		dma_iova_unlink(dev, state, offset, mapped, dir, attrs);
- 	return error;
+@@ -123,7 +124,7 @@ static void igorplugusb_cmd(struct igorp
+ {
+ 	int ret;
+ 
+-	ir->request.bRequest = cmd;
++	ir->request->bRequest = cmd;
+ 	ir->urb->transfer_flags = 0;
+ 	ret = usb_submit_urb(ir->urb, GFP_ATOMIC);
+ 	if (ret)
+@@ -165,13 +166,17 @@ static int igorplugusb_probe(struct usb_
+ 	if (!ir)
+ 		return -ENOMEM;
+ 
++	ir->request = kzalloc(sizeof(*ir->request), GFP_KERNEL);
++	if (!ir->request)
++		goto fail;
++
+ 	ir->dev = &intf->dev;
+ 
+ 	timer_setup(&ir->timer, igorplugusb_timer, 0);
+ 
+-	ir->request.bRequest = GET_INFRACODE;
+-	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
+-	ir->request.wLength = cpu_to_le16(sizeof(ir->buf_in));
++	ir->request->bRequest = GET_INFRACODE;
++	ir->request->bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
++	ir->request->wLength = cpu_to_le16(sizeof(ir->buf_in));
+ 
+ 	ir->urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!ir->urb)
+@@ -223,6 +228,7 @@ fail:
+ 	rc_free_device(ir->rc);
+ 	usb_free_urb(ir->urb);
+ 	del_timer(&ir->timer);
++	kfree(ir->request);
+ 
+ 	return ret;
+ }
+@@ -236,6 +242,7 @@ static void igorplugusb_disconnect(struc
+ 	usb_set_intfdata(intf, NULL);
+ 	usb_kill_urb(ir->urb);
+ 	usb_free_urb(ir->urb);
++	kfree(ir->request);
  }
  
+ static const struct usb_device_id igorplugusb_table[] = {
 
 
 
