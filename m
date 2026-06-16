@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id phSfI3SFMWoslgUAu9opvQ
-	(envelope-from <stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:44 +0200
+	id MW4kA3x3MWpEkAUAu9opvQ
+	(envelope-from <stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16A3692FB8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11CAE691EE7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=sSxAsKlL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265175-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JLOQ8Lml;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FAB1306408F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 658EE307772A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA76B35AC3E;
-	Tue, 16 Jun 2026 17:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538AC466B44;
+	Tue, 16 Jun 2026 16:00:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8317F43E490;
-	Tue, 16 Jun 2026 17:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173D94611FC;
+	Tue, 16 Jun 2026 16:00:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629858; cv=none; b=In4I2roQmGpUrxcdLDjp1RNm4ws85slJ+TM3AA61HhdParUchkfzAwQbYPmUd9/dQD4/58TiGNp5d8kOL5w8yF+27nAY/dq2jSovfDAC7ZswjPkVSnJ76g3qw2SP+lP/pGYzcxDWcQ+16OB1QqSIqW1FmxX04GM/Ig1K5ZPDMds=
+	t=1781625625; cv=none; b=JTLJxQLDba3cIW1k7fnyOPlXeksmr4+ejY8hWOxMe1cyMreHyTbvEquQ85e8iqr6nZzs27E4rTHSUFp5QQZoKZqf8kgCPGv9QDiiBZD3jfxy2aKYFmysuERwGYmZcEW/etu0a2zFeZDul+EC2x4u93tsCgebvrhHzdYeZKXtvKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629858; c=relaxed/simple;
-	bh=/j4TshATX2sy/4sBNqxXpFjbFXvEAnSIzfK9zdyR7+I=;
+	s=arc-20240116; t=1781625625; c=relaxed/simple;
+	bh=bj/t4JqRjS+Yp7nwlSpRoO9f8FTDL2UkZm7xH9lwBVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5J4inhietF7KzHUBQaRI2jlCU07de7ivIZ10SxU8iVsqVIdYO8/YpVWIRob+oF/KYQ5Df6HPtV4W13P8oPJISTsn1YNYq3A+qsBuLKhAaLqJuR5auJJ/nB+l8cjeNrAo/3In3UVUF0xRmzGT3dM8ToPsD2upO3CY+oUdhrfPL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSxAsKlL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3131F000E9;
-	Tue, 16 Jun 2026 17:10:55 +0000 (UTC)
+	 MIME-Version; b=Heahd9jLOvQSICn8UVvDfqCW9VMZBZoKwwhgVWN56bxjyfps0CA5qYg2UGf2AVKKvO0g8cPomRQLFECQfB8XI+qW9YvW0Hjrs1z96HjHmHNQ42aCfl8n8i9yUp+NWUNg6QwQxRS7Uc+rBtNZXZj+ZxgTQ8rymWuAvXXjl5dPMZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLOQ8Lml; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189621F000E9;
+	Tue, 16 Jun 2026 16:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629857;
-	bh=Rv8Gc3sq9tB3f+6nWv8EzXKyJvDaMnf8JZg54he3zKo=;
+	s=korg; t=1781625624;
+	bh=yr3GLNB9UV0FdrqKq3RnVByh5LkFQBScM4MMAgTZB3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=sSxAsKlLqc7XVc97KKXSASHfAa4y0z2/l92qUP+sUypRrgOWN6J2XplwjRV5yJwNn
-	 zT7caQhPbxvKBrzuvAE/Dd784aKmmsMt3AB5BgFWDDBCz0KgZQ784qzA+EUIkx/mJ/
-	 AgnY1BEAbl9ihlWPnnvjnhchtODsKYSvNzLRWFJs=
+	b=JLOQ8Lml6NDCXksJ11fLj7Tx/IIcrfT8/WFD4B4NJ0PJOz9mdL8fsoEo8gZWsqQuR
+	 l6M72XiHBdPhhwDn4rhbJMJkwZbM+hrRqpqJvUohi/UCheZJkGZ+VydI8qGOQAWVg7
+	 8f++iF9gNhe3Ng3zPaqQoW+V6mIMxqbQ+rawXPLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoJinming <zhaojinming@uniontech.com>,
+	Anton Leontev <leontyevantony@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 338/452] net: bonding: fix NULL pointer dereference in bond_do_ioctl()
+Subject: [PATCH 6.18 169/325] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
 Date: Tue, 16 Jun 2026 20:29:25 +0530
-Message-ID: <20260616145135.073151250@linuxfoundation.org>
+Message-ID: <20260616145106.250221383@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,92 +71,123 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265175-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264388-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zhaojinming@uniontech.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,uniontech.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F16A3692FB8
+X-Rspamd-Queue-Id: 11CAE691EE7
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoJinming <zhaojinming@uniontech.com>
+From: Anton Leontev <leontyevantony@gmail.com>
 
-commit a764b0e8317a863006e05732e1aefe821b9d8c2d upstream.
+commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af upstream.
 
-In bond_do_ioctl(), slave_dev is obtained via __dev_get_by_name() which
-can return NULL if the requested interface name does not exist. However,
-the subsequent slave_dbg() call is placed before the NULL check:
+netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
+send buffer using phys_to_virt() on the entry PFN. Entries for the
+RNDIS header and the skb linear data come from kmalloc'd memory and
+are always in the kernel direct map, but entries for skb fragments
+reference page cache or user pages, which on 32-bit x86 with
+CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
+phys_to_virt() returns an address outside the direct map and the
+subsequent memcpy() faults on the transmit softirq path, which is
+fatal.
 
-    slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
-    slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev); //here
-    if (!slave_dev)
-        return -ENODEV;
+Map the pages with kmap_local_page() instead, handling two properties
+of the page buffer entries:
 
-The slave_dbg() macro expands to netdev_dbg(bond_dev, "(slave %s): " fmt,
-(slave_dev)->name, ...) which unconditionally dereferences slave_dev->name
-before the NULL check is performed. This results in a NULL pointer
-dereference kernel oops when a user calls bonding ioctl (e.g.
-SIOCBONDENSLAVE, SIOCBONDRELEASE, etc.) with a non-existent slave
-interface name.
+ - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
+   not a native PFN. Reconstruct the physical address first and derive
+   the native page from it, so the mapping stays correct where
+   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
 
-This is reachable from userspace via the bonding ioctl interface with
-CAP_NET_ADMIN capability, making it a potential local denial-of-service
-vector.
+ - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
+   grouping in the page buffer array"), an entry describes a full
+   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
+   while kmap_local_page() maps a single page. Copy page by page,
+   splitting at native page boundaries.
 
-Fix by moving the slave_dbg() call after the NULL check.
+The copy path only handles packets smaller than the send section size
+(6144 bytes by default); larger packets take the cp_partial path where
+only the RNDIS header is copied. So entries here are bounded by the
+section size and a copy is split at most once on 4K-page systems. On
+!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
+no mapping work is added.
 
-Fixes: e2a7420df2e0 ("bonding/main: convert to using slave printk macros")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
-Link: https://patch.msgid.link/20260601085649.4029067-1-zhaojinming@uniontech.com
+Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
+Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4640,11 +4640,11 @@ static int bond_do_ioctl(struct net_devi
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -12,6 +12,7 @@
+ #include <linux/sched.h>
+ #include <linux/wait.h>
+ #include <linux/mm.h>
++#include <linux/highmem.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+@@ -965,12 +966,22 @@ static void netvsc_copy_to_send_buf(stru
+ 	}
  
- 	slave_dev = __dev_get_by_name(net, ifr->ifr_slave);
+ 	for (i = 0; i < page_count; i++) {
+-		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
+-		u32 offset = pb[i].offset;
++		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
++				    pb[i].offset;
+ 		u32 len = pb[i].len;
  
--	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
--
- 	if (!slave_dev)
- 		return -ENODEV;
- 
-+	slave_dbg(bond_dev, slave_dev, "slave_dev=%p:\n", slave_dev);
+-		memcpy(dest, (src + offset), len);
+-		dest += len;
++		while (len) {
++			struct page *page = phys_to_page(paddr);
++			u32 off = offset_in_page(paddr);
++			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
++			char *src = kmap_local_page(page);
 +
- 	switch (cmd) {
- 	case SIOCBONDENSLAVE:
- 		res = bond_enslave(bond_dev, slave_dev, NULL);
++			memcpy(dest, src + off, chunk);
++			kunmap_local(src);
++			dest += chunk;
++			paddr += chunk;
++			len -= chunk;
++		}
+ 	}
+ 
+ 	if (padding)
 
 
 
