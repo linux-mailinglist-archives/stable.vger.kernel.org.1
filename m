@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id p7nvOv6eMWreoQUAu9opvQ
-	(envelope-from <stable+bounces-266528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:42 +0200
+	id ukBNJJp6MWqRkQUAu9opvQ
+	(envelope-from <stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B45694C35
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CB26922D0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:26 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GS8eOTD3;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266528-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266528-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M4q4QJYB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264719-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3032B302F4DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD377303C9A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7883DDDBD;
-	Tue, 16 Jun 2026 19:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE5847799E;
+	Tue, 16 Jun 2026 16:31:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AAD3DD851;
-	Tue, 16 Jun 2026 19:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87E94779A7;
+	Tue, 16 Jun 2026 16:31:40 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636857; cv=none; b=FmCWSDsH4uKiw4PTo51TyyOrmfRCqNfPsB6IT6s3LhCKRiXuc6KNie+19wAY7g7YMrv8sJx/urQj3cMnAr/c1Nqc4LwtR8HmP87oqrwPHN4wd5BihwHWxnmda+JUxnE76lnQDALpSdCU+tUSRksuHJ3s6P8wBrh4uis4yy2Y8wY=
+	t=1781627501; cv=none; b=NWJt+zSw+TrPZnqfPi6bCwX6QeVrEWWOACbK2euWwkm6zN607Z87pHBM6wMQ/NvGZmjGYrDBf8TENiFRwaCGd6Bzn91yeRO61XcIiHuOAKLpqO8hjt37pigdsFDl2GfCeEN6Af7+GTkWzcFWDRbBTmsWeiR0htOdRxcjJnEnf/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636857; c=relaxed/simple;
-	bh=Zk/5KJJUKv2dU3PIebFYs8MeDwuKQucd8kuQ30+j79w=;
+	s=arc-20240116; t=1781627501; c=relaxed/simple;
+	bh=Q0DEdVxb0JaLo3wp9ULhBSz6rp0TqyQ8YG6IysxflqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TO3zqPf+LmvmwFemhYKWLrc5ZiJLJ5Q+c3P2heFHUsK2XIycqIiF8rsn4EevRek7R3EGyWc9DMJDzf61nigSZQmbXS6o0fZIZLs4IkKwLE75BeXT8KIvkE76oelm4l6BLAGYK6SryUr2QWJGac802AKg5JTCT4mQH9uAgnhUCys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GS8eOTD3; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43881F000E9;
-	Tue, 16 Jun 2026 19:07:35 +0000 (UTC)
+	 MIME-Version; b=atxA24LVVuwa2qjnthTLqJpXGPiMPD0ZzvX5YUt5Obw2n/98FlC6CHUKBcsp7MSibb0M0LsKgaYywJlYK+Wq3LDdrjnmfJTSrrXtSNoDLms8Br1GqtFJDCky1pixxytemzqE0YcPUyIpcHN5SqCRqsIqunUKrqB3J+/dx1HsJhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4q4QJYB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50D51F000E9;
+	Tue, 16 Jun 2026 16:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636856;
-	bh=NCdSs3CBZfXi6w0fO2BNzsc4ixtBAdZBegUFXWkEnNU=;
+	s=korg; t=1781627500;
+	bh=oQIZCNUDEegIuBzRy6zrew78bE0JGPaZEzIgwNM3IU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=GS8eOTD3m3PeakRl6RNZrud8IGkaeVqRzqmVLtH02BZKRTLDx8N3B1C04v9AJPDWl
-	 LYKFXG4KrsEEwG1pUR+T2SbfO0YiUpJct+u2FVD/ixGz55bIjIitE90eXGXJZeR7x9
-	 n6uA3ECfXNf5b0+7cSLcO+vG0FLF2RTsYbcAFPqY=
+	b=M4q4QJYBbJT4f1XeAmzwjepKhJ06Z3ljHnSsFB75IIfW19if5KGRFuzFUwWbHHXoF
+	 2zOXLzXOwuMZncVZ3JkxmwDaXaUwYmGXrsWTPfHUx5MxLhf766XWpdPEf2nyf/PVXc
+	 cMAswo36arHLDezwsP1uUHhPsUSMM81Bk7xuGPPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siwei Zhang <oss@fourdim.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 317/342] Bluetooth: L2CAP: use chan timer to close channels in cleanup_listen()
+	Zeyu WANG <zeyu.thomas.wang@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 175/261] Input: atkbd - add DMI quirk for Lenovo Yoga Air 14 (83QK)
 Date: Tue, 16 Jun 2026 20:30:13 +0530
-Message-ID: <20260616145103.298531085@linuxfoundation.org>
+Message-ID: <20260616145053.191634539@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +66,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
@@ -76,101 +76,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266528-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oss@fourdim.xyz,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264719-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zeyu.thomas.wang@gmail.com,m:dmitry.torokhov@gmail.com,m:zeyuthomaswang@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 85B45694C35
+X-Rspamd-Queue-Id: 45CB26922D0
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siwei Zhang <oss@fourdim.xyz>
+From: Zeyu WANG <zeyu.thomas.wang@gmail.com>
 
-[ Upstream commit 8c8e620467a7b51562dbcefbd1f09f288d7d710d ]
+commit ad0979fe053e9f2db82da82188256ef6eb41095a upstream.
 
-l2cap_chan_close() removes the channel from conn->chan_l, which
-must be done under conn->lock.  cleanup_listen() runs under the
-parent sk_lock, so acquiring conn->lock would invert the
-established conn->lock -> chan->lock -> sk_lock order.
+The Lenovo Yoga Air 14 (83QK) laptop keyboard becomes unresponsive
+after the standard atkbd init sequence. Controlled testing on the
+actual hardware shows the F5 (ATKBD_CMD_RESET_DIS / deactivate)
+command specifically corrupts the EC state, causing zero IRQ1
+interrupts after init.
 
-Instead of calling l2cap_chan_close() directly, schedule
-l2cap_chan_timeout with delay 0 to close the channel
-asynchronously.  The timeout handler already acquires conn->lock
-and chan->lock in the correct order.
+Skipping only the deactivate command (while keeping F4 ENABLE)
+resolves the issue completely: both keystroke input and CapsLock
+LED toggle work correctly. The reverse test - skipping only F4
+while keeping F5 - makes the problem worse (zero keystroke
+interrupts), confirming F5 is the sole culprit.
 
-The timer is only armed when chan->conn is still set: if it is
-already NULL, l2cap_conn_del() has already processed this channel
-(l2cap_chan_del + l2cap_sock_teardown_cb + l2cap_sock_close_cb),
-so there is nothing left to do.  If l2cap_conn_del() races in
-after the timer is armed, __clear_chan_timer() inside
-l2cap_chan_del() cancels it; if the timer has already fired, the
-handler returns harmlessly because chan->conn was cleared.
+Add a DMI quirk entry for LENOVO/83QK using the existing
+atkbd_deactivate_fixup callback, consistent with the existing
+entries for LG Electronics and HONOR FMB-P that address the
+same EC F5 deactivate issue.
 
-Fixes: 3df91ea20e74 ("Bluetooth: Revert to mutexes from RCU list")
-Cc: <stable@vger.kernel.org> # 0b58004: Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
-Signed-off-by: Siwei Zhang <oss@fourdim.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zeyu WANG <zeyu.thomas.wang@gmail.com>
+Link: https://patch.msgid.link/20260602170909.14725-1-zeyu.thomas.wang@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_sock.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/input/keyboard/atkbd.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -1437,6 +1437,10 @@ static void l2cap_sock_cleanup_listen(st
- 	 * pin it (hold_unless_zero() additionally skips a chan already past
- 	 * its last reference).  We then drop the sk lock before taking
- 	 * chan->lock, so sk and chan locks are never held together.
-+	 *
-+	 * Since we cannot call l2cap_chan_close() without conn->lock,
-+	 * schedule l2cap_chan_timeout to close the channel; it already
-+	 * acquires conn->lock -> chan->lock in the correct order.
- 	 */
- 	while ((sk = bt_accept_dequeue(parent, NULL))) {
- 		struct l2cap_chan *chan;
-@@ -1454,14 +1458,12 @@ static void l2cap_sock_cleanup_listen(st
- 		       state_to_string(chan->state));
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -1937,6 +1937,14 @@ static const struct dmi_system_id atkbd_
+ 		},
+ 		.callback = atkbd_deactivate_fixup,
+ 	},
++	{
++		/* Lenovo Yoga Air 14 (83QK) */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83QK"),
++		},
++		.callback = atkbd_deactivate_fixup,
++	},
+ 	{ }
+ };
  
- 		l2cap_chan_lock(chan);
--		__clear_chan_timer(chan);
--		l2cap_chan_close(chan, ECONNRESET);
--		/* l2cap_conn_del() may already have killed this socket
--		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
--		 * double sock_put()/l2cap_chan_put().
-+		/* Since we cannot call l2cap_chan_close() without
-+		 * conn->lock, schedule its timer to trigger the close
-+		 * and cleanup of this channel.
- 		 */
--		if (!sock_flag(sk, SOCK_DEAD))
--			l2cap_sock_kill(sk);
-+		if (chan->conn)
-+			__set_chan_timer(chan, 0);
- 		l2cap_chan_unlock(chan);
- 
- 		l2cap_chan_put(chan);
 
 
 
