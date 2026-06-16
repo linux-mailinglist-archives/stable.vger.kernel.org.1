@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-264630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 43l6Aw19MWqtkgUAu9opvQ
-	(envelope-from <stable+bounces-264630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:53 +0200
+	id RZdnJSZlMWrUiQUAu9opvQ
+	(envelope-from <stable+bounces-263775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FAC6925F4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE99690B90
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VGeofeXk;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264630-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264630-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n6DrE9Zn;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263775-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263775-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 992AD303CB93
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:21:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E7FC8301FF28
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ED646AF21;
-	Tue, 16 Jun 2026 16:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB03428828;
+	Tue, 16 Jun 2026 15:00:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB45466B57;
-	Tue, 16 Jun 2026 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0163ACA42;
+	Tue, 16 Jun 2026 15:00:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626913; cv=none; b=JxduLzpGv9GjhTKsYCP2J5qSI7VeiY3PQcsxlm2n1B/KKQ7c+k5UMo9kngMfaUrNt42udOJahkjlomyjbi+hnsg9n/RJ3r8eKWmoKFSz8c4rYSQFiop+zixMsCf87bT9FEHjLibiSxNBVPUtQ+Sz0Qg49PKj4thNQZ67gieiY88=
+	t=1781622046; cv=none; b=o8EokiiUd4kaKoy+KzagC1w7zsjoTTyzUeMKW9p5mraeRPgmIGmADGbWLtvYiwhl84QsW3Ztg4nBviFPXsg7RemgOuVfWM3KETOMPd7hm4CT0wOAA2650/GyPfVZyDOhjE0vBfnkUYxgVJBPR9v4DJRPLh1+Dn+tzESeYhlMD6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626913; c=relaxed/simple;
-	bh=fRy6W76PVzXgun6kM0zo1exHoOwh5c6+0UbarEsS/qM=;
+	s=arc-20240116; t=1781622046; c=relaxed/simple;
+	bh=fkcUD6y1SBfY9Rt1MZEcAfQDUyDur+YcfN0A3sYEr/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0gNiI0S3kTQxHvQ3nezMH+x2v97tvnVp+GKi0iaOjBN1OWbqlTqTBHzsYpr7Ud4GGTeGQ/39BVfR38Jz402ip22WZYMO440UyBa3ob9RJY+3bd0v8rtnC22BnXqHqQLXwPdnlcS8fTiGqf1olrYfWLCDNiOzXU41YlV0v3f61g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGeofeXk; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB511F000E9;
-	Tue, 16 Jun 2026 16:21:51 +0000 (UTC)
+	 MIME-Version; b=aEAmCck0JTIz77kpj9mLxQz2p61MeSOGevikpVkG2OQkfwryLMo5BFQELSg0Iu+Kc8MAw2k+IdLPrbTr4sp5EhcznzelpQLcFu8ZOt9b51eEMa2yhStNFGqn9Zs71IJm6QgiFRhYygLieVniGgTh2sRy3l7I8gPa03JpzxZmrdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6DrE9Zn; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9921F000E9;
+	Tue, 16 Jun 2026 15:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626912;
-	bh=PS7yZFMyuuGtvUIFBkAIJimILtKb8Z/ZnkTvqClsSsQ=;
+	s=korg; t=1781622044;
+	bh=35tkQ+nCYTz8w1DBzXWsMl7LDn17LrLeYfx/k+bT7as=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VGeofeXk7PEFKDDZvqG5itZWRYebwvNMbwkrwTCD3+e+L4qTDeB4DvETwf05k/JSK
-	 flbuDjCoQX/rPrK6UQkpZZyllKLTPeVh0coEPrEYVdBfSsCG8KN6wyxTyHIBbE4pkj
-	 +zBpMmyDSQVqrxFxsgazyhKr5xjMusS9w7L/bTEc=
+	b=n6DrE9Zn9a8cZPleaX+LuFvDNNxD7O0/MZhtb36a8ci3a35QfOJ9E0JiKWRz2FHhy
+	 Kg6D1i3iMvh5V1iUCenosloXabeIRyv2IPqs8XWxBniLjrCnK4L6j0zlDsMVjrJKHH
+	 wMsEexyvkgLv366qBZCtQ8ln/kAAuRUEIVnA8c2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/261] net: guard timestamp cmsgs to real error queue skbs
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 7.1 6/8] arm64: errata: Mitigate TLBI errata on various Arm CPUs
 Date: Tue, 16 Jun 2026 20:28:51 +0530
-Message-ID: <20260616145049.346268159@linuxfoundation.org>
+Message-ID: <20260616145523.526341713@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
+References: <20260616145523.335696673@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,143 +69,296 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264630-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263775-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:kuniyu@google.com,m:willemb@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[catalin.marinas.arm.com:query timed out];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01FAC6925F4
+X-Rspamd-Queue-Id: 7BE99690B90
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 1ee90b77b727df903033db873c75caac5c27ec98 ]
+commit cfd391e74134db664feb499d43af286380b10ba8 upstream.
 
-skb_is_err_queue() treats PACKET_OUTGOING as the sole marker for an skb
-from sk_error_queue. That assumption is not true for AF_PACKET sockets:
-outgoing packet taps are also delivered to packet sockets with
-skb->pkt_type == PACKET_OUTGOING, but their skb->cb is owned by AF_PACKET
-instead of struct sock_exterr_skb.
+A number of CPUs developed by Arm suffer from errata whereby a broadcast
+TLBI;DSB sequence may complete before the global observation of writes
+which are translated by an affected TLB entry.
 
-If such an skb is received with timestamping enabled, the generic
-timestamp cmsg path can read AF_PACKET control-buffer state as
-sock_exterr_skb::opt_stats. With SO_RXQ_OVFL enabled, the packet drop
-counter overlaps opt_stats. An odd drop count makes the path emit
-SCM_TIMESTAMPING_OPT_STATS with skb->len and skb->data. For non-linear
-skbs this copies past the linear head and can trigger hardened usercopy or
-disclose adjacent heap contents.
+These errata ONLY affect the completion of memory accesses which have
+been translated by an invalidated TLB entry, and these errata DO NOT
+affect the actual invalidation of TLB entries. TLB entries are removed
+correctly.
 
-Keep skb_is_err_queue() local to net/socket.c, but make it verify that
-the PACKET_OUTGOING marker is paired with the sock_rmem_free destructor
-installed by sock_queue_err_skb(). AF_PACKET receive skbs use normal
-receive ownership and no longer pass as error-queue skbs, while legitimate
-sk_error_queue entries keep the PACKET_OUTGOING marker and sock_rmem_free
-ownership.
+This issue has been assigned CVE ID CVE-2025-10263.
 
-Fixes: 8605330aac5a ("tcp: fix SCM_TIMESTAMPING_OPT_STATS for normal skbs")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260607021819.49698-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To mitigate this issue, Arm recommends that software follows any
+affected TLBI;DSB sequence with an additional TLBI;DSB, which will
+ensure that all memory write effects affected by the first TLBI have
+been globally observed. The additional TLBI can use any operation that
+is broadcast to affected CPUs, and the additional DSB can use any option
+that is sufficient to complete the additional TLBI.
+
+The ARM64_WORKAROUND_REPEAT_TLBI workaround is sufficient to mitigate
+the issue. Enable this workaround for affected CPUs, and update the
+silicon errata documentation accordingly.
+
+Note that due to the manner in which Arm develops IP and tracks errata,
+some CPUs share a common erratum number.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v7.1.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h |  1 +
- net/core/skbuff.c  |  6 +++---
- net/socket.c       | 11 ++++++-----
- 3 files changed, 10 insertions(+), 8 deletions(-)
+ Documentation/arch/arm64/silicon-errata.rst |   42 ++++++++++++++++++++++++++++
+ arch/arm64/Kconfig                          |   36 ++++++++++++++++++++++++
+ arch/arm64/kernel/cpu_errata.c              |   32 ++++++++++++++++++++-
+ 3 files changed, 108 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 6edd9cac500675..0d77a87929f938 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1806,6 +1806,7 @@ struct sk_buff *sock_omalloc(struct sock *sk, unsigned long size,
- 			     gfp_t priority);
- void skb_orphan_partial(struct sk_buff *skb);
- void sock_rfree(struct sk_buff *skb);
-+void sock_rmem_free(struct sk_buff *skb);
- void sock_efree(struct sk_buff *skb);
- #ifdef CONFIG_INET
- void sock_edemux(struct sk_buff *skb);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index fba5f06b94d9d6..4be699bd3a17f7 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5384,7 +5384,7 @@ int skb_cow_data(struct sk_buff *skb, int tailbits, struct sk_buff **trailer)
- }
- EXPORT_SYMBOL_GPL(skb_cow_data);
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -128,16 +128,28 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A76      | #3324349        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A76      | #4193800        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A76AE    | #4193801        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A77      | #1491015        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A77      | #1508412        | ARM64_ERRATUM_1508412       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A77      | #3324348        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A77      | #4193798        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A78      | #3324344        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A78      | #4193791        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A78AE    | #4193793        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A78C     | #3324346,3324347| ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A78C     | #4193794        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A710     | #2119858        | ARM64_ERRATUM_2119858       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A710     | #2054223        | ARM64_ERRATUM_2054223       |
+@@ -146,6 +158,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A710     | #3324338        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-A710     | #4193788        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A715     | #2645198        | ARM64_ERRATUM_2645198       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-A715     | #3456084        | ARM64_ERRATUM_3194386       |
+@@ -158,20 +172,32 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X1       | #3324344        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X1       | #4193791        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X1C      | #3324346        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X1C      | #4193792        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X2       | #2119858        | ARM64_ERRATUM_2119858       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X2       | #2224489        | ARM64_ERRATUM_2224489       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X2       | #3324338        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X2       | #4193788        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X3       | #3324335        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X3       | #4193786        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X4       | #3194386        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X4       | #4118414        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Cortex-X925     | #3324334        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Cortex-X925     | #4193781        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1188873,1418040| ARM64_ERRATUM_1418040       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1349291        | N/A                         |
+@@ -182,6 +208,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #3324349        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-N1     | #4193800        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #2139208        | ARM64_ERRATUM_2139208       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #2067961        | ARM64_ERRATUM_2067961       |
+@@ -190,20 +218,34 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N2     | #3324339        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-N2     | #4193789        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N3     | #3456111        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #1619801        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V1     | #3324341        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V1     | #4193790        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V2     | #3324336        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V2     | #4193787        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3     | #4193784        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-V3AE   | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | Neoverse-V3AE   | #4193784        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
++| ARM            | C1-Premium      | #4193780        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | C1-Pro          | #4193714        | ARM64_ERRATUM_4193714       |
+ +----------------+-----------------+-----------------+-----------------------------+
++| ARM            | C1-Ultra        | #4193780        | ARM64_ERRATUM_4118414       |
+++----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | ARM_SMMU_MMU_500_CPRE_ERRATA|
+ |                |                 | #562869,1047329 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1154,6 +1154,42 @@ config ARM64_ERRATUM_4193714
  
--static void sock_rmem_free(struct sk_buff *skb)
-+void sock_rmem_free(struct sk_buff *skb)
- {
- 	struct sock *sk = skb->sk;
+ 	  If unsure, say Y.
  
-@@ -5393,8 +5393,8 @@ static void sock_rmem_free(struct sk_buff *skb)
++config ARM64_ERRATUM_4118414
++	bool "Cortex-*/Neoverse-*/C1-*: Completion of affected memory accesses might not be guaranteed by completion of a TLBI"
++	default y
++	select ARM64_WORKAROUND_REPEAT_TLBI
++	help
++	  This option adds a workaround for the following errata:
++
++	  * ARM C1-Premium erratum 4193780
++	  * ARM C1-Ultra erratum 4193780
++	  * ARM Cortex-A76 erratum 4193800
++	  * ARM Cortex-A76AE erratum 4193801
++	  * ARM Cortex-A77 erratum 4193798
++	  * ARM Cortex-A78 erratum 4193791
++	  * ARM Cortex-A78AE erratum 4193793
++	  * ARM Cortex-A78C erratum 4193794
++	  * ARM Cortex-A710 erratum 4193788
++	  * ARM Cortex-X1 erratum 4193791
++	  * ARM Cortex-X1C erratum 4193792
++	  * ARM Cortex-X2 erratum 4193788
++	  * ARM Cortex-X3 erratum 4193786
++	  * ARM Cortex-X4 erratum 4118414
++	  * ARM Cortex-X925 erratum 4193781
++	  * ARM Neoverse-N1 erratum 4193800
++	  * ARM Neoverse-N2 erratum 4193789
++	  * ARM Neoverse-V1 erratum 4193790
++	  * ARM Neoverse-V2 erratum 4193787
++	  * ARM Neoverse-V3 erratum 4193784
++	  * ARM Neoverse-V3AE erratum 4193784
++
++	  On affected cores, some memory accesses might not be completed by
++	  broadcast TLB invalidation.
++
++	  This issue is also known as CVE-2025-10263.
++
++	  If unsure, say Y.
++
+ config CAVIUM_ERRATUM_22375
+ 	bool "Cavium erratum 22375, 24313"
+ 	default y
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -340,7 +340,35 @@ static const struct arm64_cpu_capabiliti
+ 		ERRATA_MIDR_RANGE(MIDR_CORTEX_A510, 0, 0, 1, 1),
+ 	},
+ #endif
+-	{},
++#ifdef CONFIG_ARM64_ERRATUM_4118414
++	{
++		ERRATA_MIDR_RANGE_LIST(((const struct midr_range[]) {
++			MIDR_ALL_VERSIONS(MIDR_C1_PREMIUM),
++			MIDR_ALL_VERSIONS(MIDR_C1_ULTRA),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
++			MIDR_ALL_VERSIONS(MIDR_CORTEX_X925),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
++			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3AE),
++			{}
++		})),
++	},
++#endif
++	{}
+ };
+ #endif
  
- static void skb_set_err_queue(struct sk_buff *skb)
- {
--	/* pkt_type of skbs received on local sockets is never PACKET_OUTGOING.
--	 * So, it is safe to (mis)use it to mark skbs on the error queue.
-+	/* The error-queue test in skb_is_err_queue() matches this marker
-+	 * with the sock_rmem_free destructor installed by sock_queue_err_skb().
- 	 */
- 	skb->pkt_type = PACKET_OUTGOING;
- 	BUILD_BUG_ON(PACKET_OUTGOING == 0);
-diff --git a/net/socket.c b/net/socket.c
-index 878155076bc0f8..5c5dd9f6605a94 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -804,12 +804,13 @@ EXPORT_SYMBOL(kernel_sendmsg_locked);
- 
- static bool skb_is_err_queue(const struct sk_buff *skb)
- {
--	/* pkt_type of skbs enqueued on the error queue are set to
--	 * PACKET_OUTGOING in skb_set_err_queue(). This is only safe to do
--	 * in recvmsg, since skbs received on a local socket will never
--	 * have a pkt_type of PACKET_OUTGOING.
-+	/* Error-queue skbs are marked as PACKET_OUTGOING in
-+	 * skb_set_err_queue() and use the destructor installed by
-+	 * sock_queue_err_skb(). PACKET_OUTGOING alone is not unique:
-+	 * AF_PACKET outgoing taps use the same pkt_type.
- 	 */
--	return skb->pkt_type == PACKET_OUTGOING;
-+	return skb->pkt_type == PACKET_OUTGOING &&
-+	       skb->destructor == sock_rmem_free;
- }
- 
- /* On transmit, software and hardware timestamps are returned independently.
--- 
-2.53.0
-
+@@ -693,7 +721,7 @@ const struct arm64_cpu_capabilities arm6
+ #endif
+ #ifdef CONFIG_ARM64_WORKAROUND_REPEAT_TLBI
+ 	{
+-		.desc = "Qualcomm erratum 1009, or ARM erratum 1286807, 2441009",
++		.desc = "Broken broadcast TLBI completion",
+ 		.capability = ARM64_WORKAROUND_REPEAT_TLBI,
+ 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
+ 		.matches = cpucap_multi_entry_cap_matches,
 
 
 
