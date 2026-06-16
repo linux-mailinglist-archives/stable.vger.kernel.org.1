@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id vsmcAAOGMWpelgUAu9opvQ
-	(envelope-from <stable+bounces-265209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:07 +0200
+	id +9kONAuYMWrcngUAu9opvQ
+	(envelope-from <stable+bounces-266181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA61693055
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF012694494
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mpu8lncZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265209-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265209-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Zh9NIoqh;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266181-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266181-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C86C830D5ABB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3C873003819
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025A53AE71F;
-	Tue, 16 Jun 2026 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0A946AF3C;
+	Tue, 16 Jun 2026 18:37:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB83A33A9EB;
-	Tue, 16 Jun 2026 17:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E25D169AD2;
+	Tue, 16 Jun 2026 18:37:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630027; cv=none; b=oUzQK1zWr0YwQJ3Qbh8FMR7ak19mqeglaDtB3NFgCYaRAOdVZPE62Qa1dMHLLmhsOxOETwz//xSzP/9COLPMDsLYAStNBFX2Nf1yezCamjUfRpdxXP8TE+FeMzCYcftcFngvKR1o55cQnCbW/yIIpXtF5dIwBYhKdwCf1toLkrs=
+	t=1781635078; cv=none; b=evo2z2+L2bTy6KTpbEkN2NCmQf0yKFvlYgClfsM2sNlnnjeqL/XeunrrzKcwZK9KfNA0nEbVxHbvUrsyfVs9iO61uRl4POnoO23Rmsa5J8OjrxDMZDfFkfrzhUXW6mKm/Xw5/wXccg/gFRh66BwKHEonl7vUqrCrxhExXgc2eKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630027; c=relaxed/simple;
-	bh=TbTIakoYyct7pJoFtUfMGYVkDFfwtctLWVaD1kBmWuU=;
+	s=arc-20240116; t=1781635078; c=relaxed/simple;
+	bh=7wnQdCL6z+A3V3pYeGsFPAGxqEeSMXTR7kst+lzWxDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5onNyu1iV8UrWl99mApdKfGQOSBV0zF4VQPn3FSxBNveQm6Ni/PolB9AiMPCoiwiGHCQcufNXqd3HYtywPpVWBVl+xSklNISuVi9Gr0XIML7eh2VP+aTRr+ang4Q0kXe71TTt2+m7+yJVne18DgBpdMCpzGJ08TmCXYDEkJoKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpu8lncZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620741F000E9;
-	Tue, 16 Jun 2026 17:13:45 +0000 (UTC)
+	 MIME-Version; b=gX8PMAZ/aGCJieXwQWo5eivERDlUhgA9IuJQ12WOb1PKrW8HdvZd/JjP+EFaMPD/cFHd6uV2KhD8TfEjQKTzJhmUuyNFOqtGPTwRGlwvX926XUQvZcHW8FQp/8HsBIZjXXosSCHgT/3SPIlSj5T74YGbr1NKkKEUx6l9wXLgvpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh9NIoqh; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC931F000E9;
+	Tue, 16 Jun 2026 18:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630026;
-	bh=nfgq7LZNZ4RtCRbNClYhWtQeizh0uRbCrtoikFSbbgk=;
+	s=korg; t=1781635077;
+	bh=cxzTg74CEnDlyGr5ppNUrMULg6wL0Qr65J+/1YaUwN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mpu8lncZBwLR+Et0Cp1Y8wOVE4zKf9lfuwWT8l75MpR3UB/BfZxQKp3gzQwDfoqpZ
-	 /mJQpQCnwMbMMnpnl7dbVgSP58mKk8/Yt7kUAv3CpkfMRzUxuIu8iNlGf0Y60FY/nJ
-	 PvhQWRRMwc1kMLAnzf2/Hm5eWtrVP25noVy8GtZ8=
+	b=Zh9NIoqhf2JrNIIJoWyO0tzvHJYK6riw/stueEBzI56ME2MC9gE7eJJtsgwN6VrA+
+	 h4kIDI6SGRC5UalEvnTTgi7AfQIgcdqKTGhxUDfT0dF5P4XvMa+DnGClR8xXEIWhD+
+	 ib2oJzOl7cnhXvqn1sOkY5rK0Y4nAEkZ6peiHBgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeng Heng <zengheng4@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 397/452] arm64: tlb: Flush walk cache when unsharing PMD tables
+Subject: [PATCH 5.15 386/411] scsi: target: iscsi: Fix CRC overread and double-free in iscsit_handle_text_cmd()
 Date: Tue, 16 Jun 2026 20:30:24 +0530
-Message-ID: <20260616145137.729334018@linuxfoundation.org>
+Message-ID: <20260616145121.770946711@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,92 +68,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265209-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266181-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zengheng4@huawei.com,m:catalin.marinas@arm.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5CA61693055
+X-Rspamd-Queue-Id: CF012694494
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit c2ff4764e03e7a8d758352f4aceb8fe1be6ac971 ]
+[ Upstream commit 778c2ab142c625a8a8afa570e0f9b7873f445d99 ]
 
-When huge_pmd_unshare() is called to unshare a PMD table, the
-tlb_unshare_pmd_ptdesc() function sets tlb->unshared_tables=true
-but the aarch64 tlb_flush() only checked tlb->freed_tables to
-determine whether to use TLBF_NONE (vae1is, invalidates walk
-cache) or TLBF_NOWALKCACHE (vale1is, leaf-only).
+Two latent bugs in the Text-phase handler, both present since the
+original LIO integration in commit e48354ce078c ("iscsi-target: Add
+iSCSI fabric support for target v4.1"):
 
-This caused the stale PMD page table entry to remain in the walk cache
-after unshare, potentially leading to incorrect page table walks.
+1) DataDigest CRC buffer overread (4 bytes past text_in).
 
-Fix by including unshared_tables in the check, so that when
-unsharing tables, TLBF_NONE is used and the walk cache is properly
-invalidated.
+   text_in is kzalloc()'d at ALIGN(payload_length, 4).  rx_size is then
+   incremented by ISCSI_CRC_LEN to make room for the received DataDigest
+   in the iovec, but the same (now-bumped) rx_size is passed as the
+   buffer length to iscsit_crc_buf():
 
-Here is the detailed distinction between vae1is and vale1is:
+       if (conn->conn_ops->DataDigest) {
+               ...
+               rx_size += ISCSI_CRC_LEN;
+       }
+       ...
+       if (conn->conn_ops->DataDigest) {
+               data_crc = iscsit_crc_buf(text_in, rx_size, 0, NULL);
 
-| Instruction Combination  | Actual Invalidation Scope                         |
-| ------------------------ | --------------------------------------------------|
-| `VAE1IS`  + TTL=`0`      | All entries at all levels (full invalidation)     |
-| `VAE1IS`  + TTL=`2` (L2) | Non-leaf at Level 0/1 + leaf at Level 2           |
-| `VALE1IS` + TTL=`0`      | Leaf entries at all levels (non-leaf not cleared) |
-| `VALE1IS` + TTL=`2` (L2) | Leaf entry at Level 2 only                        |
+   iscsit_crc_buf() walks rx_size bytes of text_in with crc32c(), so
+   when DataDigest is negotiated it reads 4 bytes past the end of the
+   text_in allocation.  KASAN reproduces this directly on the unpatched
+   mainline tree as slab-out-of-bounds in crc32c() called from the Text
+   PDU path.  The OOB bytes feed crc32c() and are then compared against
+   the initiator-supplied checksum, so the value does not flow back to
+   the attacker, but the kernel does read past the buffer on every Text
+   PDU with DataDigest=CRC32C.
 
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Fixes: 8ce720d5bd91 ("mm/hugetlb: fix excessive IPI broadcasts when unsharing PMD tables using mmu_gather")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+   Fix by passing the actual padded payload length
+   (ALIGN(payload_length, 4)) that was used for the kzalloc().
+
+2) Stale cmd->text_in_ptr re-free (double-free) on ERL>0 bad DataDigest
+   drop.
+
+   On DataDigest mismatch with ErrorRecoveryLevel > 0 the handler
+   silently drops the PDU and lets the initiator plug the CmdSN gap:
+
+               kfree(text_in);
+               return 0;
+
+   cmd->text_in_ptr still points at the freed buffer.  The next Text
+   Request on the same ITT re-enters iscsit_setup_text_cmd(), which
+   unconditionally does
+
+       kfree(cmd->text_in_ptr);
+       cmd->text_in_ptr = NULL;
+
+   freeing the same pointer a second time.  Session teardown via
+   iscsit_release_cmd() has the same shape and hits the same double-free
+   if the connection is dropped before a second Text Request arrives.
+
+   On an unmodified mainline tree the bug-1 CRC overread fires first on
+   the initial valid Text Request and perturbs the subsequent state, so
+   #4 was isolated by building a kernel with only the bug-1 hunk of this
+   patch applied plus temporary printk() observability around the three
+   relevant kfree() sites.  The observability prints are not part of
+   this patch.  On that build, a three-PDU Text Request sequence after
+   login produces two back-to-back splats:
+
+       BUG: KASAN: double-free in iscsit_setup_text_cmd+0x??
+       BUG: KASAN: double-free in iscsit_release_cmd+0x??
+
+   showing the same pointer freed in the ERL>0 drop path and again in
+   iscsit_setup_text_cmd() (next Text Request on the same ITT) and once
+   more in iscsit_release_cmd() (session teardown).  On distro kernels
+   with CONFIG_SLAB_FREELIST_HARDENED=y (default) the double-free
+   becomes a remote kernel BUG(); on non-hardened kernels it corrupts
+   the slab freelist.
+
+   Fix by clearing cmd->text_in_ptr after the kfree() in the ERL>0 drop
+   path.  With both hunks applied #4 is directly observable on the stock
+   tree without observability printks; fixing bug-1 alone would mask #4
+   less, not more, so the hunks are submitted together.
+
+Both fixes are one-liners.  The Text PDU state machine is unchanged and
+the wire protocol is unaffected.
+
+Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Tested-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/tlb.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/iscsi/iscsi_target.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/tlb.h
-+++ b/arch/arm64/include/asm/tlb.h
-@@ -53,7 +53,7 @@ static inline int tlb_get_level(struct m
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- 	struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
--	bool last_level = !tlb->freed_tables;
-+	bool last_level = !(tlb->freed_tables || tlb->unshared_tables);
- 	unsigned long stride = tlb_get_unmap_size(tlb);
- 	int tlb_level = tlb_get_level(tlb);
+--- a/drivers/target/iscsi/iscsi_target.c
++++ b/drivers/target/iscsi/iscsi_target.c
+@@ -2296,8 +2296,9 @@ iscsit_handle_text_cmd(struct iscsi_conn
  
+ 		if (conn->conn_ops->DataDigest) {
+ 			iscsit_do_crypto_hash_buf(conn->conn_rx_hash,
+-						  text_in, rx_size, 0, NULL,
+-						  &data_crc);
++						  text_in,
++						  ALIGN(payload_length, 4),
++						  0, NULL, &data_crc);
+ 
+ 			if (checksum != data_crc) {
+ 				pr_err("Text data CRC32C DataDigest"
+@@ -2317,6 +2318,7 @@ iscsit_handle_text_cmd(struct iscsi_conn
+ 					" Command CmdSN: 0x%08x due to"
+ 					" DataCRC error.\n", hdr->cmdsn);
+ 					kfree(text_in);
++					cmd->text_in_ptr = NULL;
+ 					return 0;
+ 				}
+ 			} else {
 
 
 
