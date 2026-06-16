@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-265383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id eWZNIVaJMWrilwUAu9opvQ
-	(envelope-from <stable+bounces-265383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:18 +0200
+	id os7ZIY+QMWpzmwUAu9opvQ
+	(envelope-from <stable+bounces-265820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A140B69347A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:17 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F6A693CD6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:06:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iWK0YXS7;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265383-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265383-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=MLFG6i6R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265820-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265820-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D065A303EA39
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:28:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94627302C2EC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEE447B42C;
-	Tue, 16 Jun 2026 17:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8483D171F;
+	Tue, 16 Jun 2026 18:06:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C367447A0D4;
-	Tue, 16 Jun 2026 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8743A5E91;
+	Tue, 16 Jun 2026 18:06:02 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630920; cv=none; b=ungTtlXNnRS5GCr8G2OTdHl4zAIX7XUtk2pKnfXxRBgzpuq4s6WVESDTZE0OSoyOzfNofq9PREgGygebnxr4V74TfSZutHpgxqUU+48fujpQp3yQGvrChDew8/wuYaC3kBJus7lmVlRhn0QutDj6xc8FRO2hwGyqTB1t2wgh8b4=
+	t=1781633163; cv=none; b=eKfqucN1thfyFeNX2PHSicJho1cyqFLvCarP7KQRue4mL9A2JbHN7+5Z+MKgSbkY14rUfSpASefwJW6Q/0E8O2bnbmVjtPmuNDok/1gT97IqNDi0P1XPd5vZY9ci8QLfvOGw0PgwsHM5NrN91ktLWy8Wyx1mQ7QNxsWI4Mb2hfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630920; c=relaxed/simple;
-	bh=r6fRQyekDmpTXpE3Fsdmg1nOjSr9xLSam1gVD/beFqM=;
+	s=arc-20240116; t=1781633163; c=relaxed/simple;
+	bh=W2XZ089FLYV7sXOUHEVhzNDefsnXNd3o5t1JXadGMFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZqfT/BXRrM7odPvOoK1telRVgS2pIIYzWi3KHdQIhLgEIsiv8JUSn1uzXfhiG1DH32BGpmdssjV8BhMNEXO1AY5pr6BTH5pOtv/95Vp+ye6ePHPUXHkCkLUapcOOzfG30+mXeBuj3euY4ykFPW0dxMPZB/IIsDRovmf4mzxAxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWK0YXS7; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563511F000E9;
-	Tue, 16 Jun 2026 17:28:35 +0000 (UTC)
+	 MIME-Version; b=gi1yT7joWA/zr8iv8O/fK3D61k3EkKdwr1qsqhNmtOPaPOXCrkiyauyHy2MBVcvs/g79uBKxg26H7IYJ7MygcU/CBME0mJmGr4jaXbYsMyFTjptes6BbRyAyfSwqGmFcwCXlv7VAehu6Chw08FjxoYGpsil60VoqclhHH6ZY9aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLFG6i6R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0341F000E9;
+	Tue, 16 Jun 2026 18:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630917;
-	bh=ZZiYPaNt0Q/+9l2JjJUhX0R2zJ6tnHugcKwQYU0UPtE=;
+	s=korg; t=1781633162;
+	bh=YYHrF+l8I9av4qdZXfLHl7wX2EgZGHpDohSPqgHDvKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iWK0YXS7LVNjE0VLcx6gT8J+zjJ9J+m3UDpM9GFIs3aHHsw2jz3afxK3n7lUyaYcX
-	 dDEeZ/TrBPVHODprrJVpeRbrsLimHy8ZR7Hf4XjFOtEbDptjMwvAwAYuanBe0gH9BX
-	 C9t0L/f5VLXeAtgVm3/QT2QNRRoCJosyiO0Al6bc=
+	b=MLFG6i6RFkm8xdDYhqJ1vaZob925RVwYvJkmPIXD3TdvtvsThFfaZdJvM/mwXqAAI
+	 ksVBp07hGD+/zJFXLDz9MdQOE+VFLHLe75PmpNmQc9WIC38IaA0dIyN8KDoDueUV+H
+	 899E+yoazJxMBVoqPWApAJJeKbXGRjYm36lCzLN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 121/522] ipv6: exthdrs: refresh nh pointer after ipv6_hop_jumbo()
+	Ji-Soo Chung <jschung2@proton.me>,
+	Gerlinde <lrGerlinde@mailfence.com>,
+	zyc zyc <zyc199902@zohomail.cn>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/411] net/sched: Revert "net/sched: Restrict conditions for adding duplicating netems to qdisc tree"
 Date: Tue, 16 Jun 2026 20:24:28 +0530
-Message-ID: <20260616145131.643065024@linuxfoundation.org>
+Message-ID: <20260616145101.944141561@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +72,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265383-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:justin.iurman@gmail.com,m:idosch@nvidia.com,m:kuba@kernel.org,m:justiniurman@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,proton.me,mailfence.com,zohomail.cn,gmail.com,networkplumber.org,mojatatu.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265820-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jschung2@proton.me,m:lrGerlinde@mailfence.com,m:zyc199902@zohomail.cn,m:ghandatmanas@gmail.com,m:stephen@networkplumber.org,m:jhs@mojatatu.com,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,proton.me:email,networkplumber.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A140B69347A
+X-Rspamd-Queue-Id: 22F6A693CD6
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit d47548a36639095939f4747d4c43f2271366f565 upstream.
+[ Upstream commit eda0b7f203bb166c98d1418b204135bd566ac83b ]
 
-ipv6_hop_jumbo() calls pskb_trim_rcsum(), which can change skb pointers.
-Let's recompute nh pointer to make sure any change won't mess things up.
+This reverts commit ec8e0e3d7adef940cdf9475e2352c0680189d14e.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260522112013.12342-1-justin.iurman@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The original patch rejects any tree containing two netems when
+either has duplication set, even when they sit on unrelated classes
+of the same classful parent. That broke configurations that have
+worked since netem was introduced.
+
+The re-entrancy problem the original commit was trying to solve is
+handled by later patch using tc_depth flag.
+
+Doing this revert will (re)expose the original bug with multiple
+netem duplication. When this patch is backported make sure
+and get the full series.
+
+Fixes: ec8e0e3d7ade ("net/sched: Restrict conditions for adding duplicating netems to qdisc tree")
+Reported-by: Ji-Soo Chung <jschung2@proton.me>
+Reported-by: Gerlinde <lrGerlinde@mailfence.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220774
+Reported-by: zyc zyc <zyc199902@zohomail.cn>
+Closes: https://lore.kernel.org/all/19adda5a1e2.12410b78222774.9191120410578703463@zohomail.cn/
+Reported-by: Manas Ghandat <ghandatmanas@gmail.com>
+Closes: https://lore.kernel.org/netdev/f69b2c8f-8325-4c2e-a011-6dbc089f30e4@gmail.com/
+Reviewed-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260525122556.973584-3-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_netem.c | 40 ----------------------------------------
+ 1 file changed, 40 deletions(-)
 
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -186,6 +186,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
- 				case IPV6_TLV_JUMBO:
- 					if (!ipv6_hop_jumbo(skb, off))
- 						return false;
-+
-+					nh = skb_network_header(skb);
- 					break;
- 				case IPV6_TLV_CALIPSO:
- 					if (!ipv6_hop_calipso(skb, off))
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 3e3bced82c564d..3dc6411b0a33c7 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -985,41 +985,6 @@ static int parse_attr(struct nlattr *tb[], int maxtype, struct nlattr *nla,
+ 	return 0;
+ }
+ 
+-static const struct Qdisc_class_ops netem_class_ops;
+-
+-static int check_netem_in_tree(struct Qdisc *sch, bool duplicates,
+-			       struct netlink_ext_ack *extack)
+-{
+-	struct Qdisc *root, *q;
+-	unsigned int i;
+-
+-	root = qdisc_root_sleeping(sch);
+-
+-	if (sch != root && root->ops->cl_ops == &netem_class_ops) {
+-		if (duplicates ||
+-		    ((struct netem_sched_data *)qdisc_priv(root))->duplicate)
+-			goto err;
+-	}
+-
+-	if (!qdisc_dev(root))
+-		return 0;
+-
+-	hash_for_each(qdisc_dev(root)->qdisc_hash, i, q, hash) {
+-		if (sch != q && q->ops->cl_ops == &netem_class_ops) {
+-			if (duplicates ||
+-			    ((struct netem_sched_data *)qdisc_priv(q))->duplicate)
+-				goto err;
+-		}
+-	}
+-
+-	return 0;
+-
+-err:
+-	NL_SET_ERR_MSG(extack,
+-		       "netem: cannot mix duplicating netems with other netems in tree");
+-	return -EINVAL;
+-}
+-
+ /* Parse netlink message to set options */
+ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 			struct netlink_ext_ack *extack)
+@@ -1087,11 +1052,6 @@ static int netem_change(struct Qdisc *sch, struct nlattr *opt,
+ 	q->gap = qopt->gap;
+ 	q->counter = 0;
+ 	q->loss = qopt->loss;
+-
+-	ret = check_netem_in_tree(sch, qopt->duplicate, extack);
+-	if (ret)
+-		goto unlock;
+-
+ 	q->duplicate = qopt->duplicate;
+ 
+ 	/* for compatibility with earlier versions.
+-- 
+2.53.0
+
 
 
 
