@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-264423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jvZgH/JzMWrgjgUAu9opvQ
-	(envelope-from <stable+bounces-264423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:02 +0200
+	id 1NiNA+l7MWoikgUAu9opvQ
+	(envelope-from <stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEEC691A78
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFA569248C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:59 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=RzXXGKKp;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264423-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264423-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="xU6Ws5/e";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264682-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 87902301DD05
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:03:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F12313218D44
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2B945349C;
-	Tue, 16 Jun 2026 16:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B331E46AF25;
+	Tue, 16 Jun 2026 16:27:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29B144CF44;
-	Tue, 16 Jun 2026 16:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8224C425CEE;
+	Tue, 16 Jun 2026 16:27:47 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625805; cv=none; b=idIXbPStQ9WiXRf6+KZCCwW6XtTQ4u0/u/wx5kG/xBEBflgq3skScsLy7suikknRzc9zSKHkUsgSFalRX5BzWM3ZM2pqgotKx9nmk3HW/F2wLXxkdwCAyXNHUrZTKHAGXAmBWWIXUr9+u3IvfO/n4RITqUIHG9aEqBVPiA8HCxg=
+	t=1781627268; cv=none; b=fCm6c6zwtMwbiWkn1TaOXux9zDZxcjjPp6QbDPqTquERtD2H5kAJNQUDQHhr3iTzIN3SL0nanrQRpG91I+zvZP6c7+id0Azwek0DfsAefxHm60dKVUB8osn9U/SVD9aY3rT8ZhAZjMQgZN8JBQnbhkDs8M9IkdBblsBe4JXqzTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625805; c=relaxed/simple;
-	bh=AHv0ghWw4GCIo+Wz96v1LZOCwgD285s/CwkFI3BirhA=;
+	s=arc-20240116; t=1781627268; c=relaxed/simple;
+	bh=Lhxa1oq8OHrOO2npTD1mKnhuJotkobs36diiDhaia0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N1dCH6yC20/z2fo2GQD6iwZhW36/iq1xEeJdF4kcaIJ83u6kLNmyujbDk9CpJ32GKPJ1BTaNxSYC19x5fDfcb2xEpaN88SDeacJ2El/txFXeo7iZTq/P2ejkTEwwQw2R/xTiKnNh1yjIS1YxWKVsekx7bUbONI8+/TtOrTO1A40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RzXXGKKp; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37551F000E9;
-	Tue, 16 Jun 2026 16:03:22 +0000 (UTC)
+	 MIME-Version; b=ma90uf2InJN2RAWjBnlHrAPeWLKxH5/MIOaEc7H1RRbKlxsDNBfAfjDtiDgCeKlQtG2GxAdJA71+AqzMW77TMNGrQTyNdiMAATc5OWnZWMcM7EgSJ1I7qU9wTPqMC9Wk5v1EyhnyFQhZEcoVKmfZEL9JzeQNlgzvliFogHm2fr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU6Ws5/e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2720D1F000E9;
+	Tue, 16 Jun 2026 16:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625803;
-	bh=8uI3ZYpTOXry6+dOb9LJaLV0dmUuJRtLmjKuJbkP5+U=;
+	s=korg; t=1781627267;
+	bh=WfF8NBsZ54vVYs5lRQ+XAYkT3GBc2vKslkLDE5MMqFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RzXXGKKpR8KPbtm7Rfnn8RuB6SLZI6bm8NMCIK8X21mnilFTZeNAO4USMo3UFGwIs
-	 gVX3catPAmTQNKr15WTc83A98f9W1m3yjHoZRa5zAe4hB/1x7Ilmf/NPHyzbNdaWg3
-	 nlsbvny5uCgK4xm95b3Cmk7HtHLeYpaA96XRsuQg=
+	b=xU6Ws5/eUQUfP8BJpCZyEYSlJDc0qoBU66JlZd1Ugr4LkKd2ZXAcXGwHJIyg6eCIM
+	 x/ocRXCvjrjh7I5g22uLYZTblDzg7YV/Gxg2fU4lWo6gRm+5NR5shwOYBvGoO3e1Qp
+	 QeIBSdGCyv/RLebYqDfkjKS0fvXvqTVEzL9noILE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@meta.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 180/325] io_uring/net: inherit IORING_CQE_F_BUF_MORE across bundle recv retries
+	stable@kernel.org,
+	Yuan Tan <yuantan098@gmail.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Wyatt Feng <bronzed_45_vested@icloud.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.12 138/261] xfrm: espintcp: do not reuse an in-progress partial send
 Date: Tue, 16 Jun 2026 20:29:36 +0530
-Message-ID: <20260616145106.846400018@linuxfoundation.org>
+Message-ID: <20260616145051.478521979@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +71,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cleger@meta.com,m:axboe@kernel.dk,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-264682-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:bronzed_45_vested@icloud.com,m:n05ec@lzu.edu.cn,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264423-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,icloud.com,secunet.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,kernel.dk:email,msgid.link:url,vger.kernel.org:from_smtp,meta.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1FEEC691A78
+X-Rspamd-Queue-Id: ACFA569248C
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@meta.com>
+From: Wyatt Feng <bronzed_45_vested@icloud.com>
 
-commit ed46f39c47eb5530a9c161481a2080d3a869cfaf upstream.
+commit c381039ade2e161ab08c0eda73c4f8b9a7115928 upstream.
 
-When a bundle recv retries inside io_recv_finish(), the merge logic OR
-the saved cflags from the previous iteration with the cflags returned by
-the new iteration:
-  cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+espintcp keeps a single in-flight transmit in ctx->partial.
+Before building a new sk_msg, espintcp_sendmsg() first tries to flush
+that state through espintcp_push_msgs().
 
-Bits listed in CQE_F_MASK are inherited from the new iteration, and all
-other bits (notably IORING_CQE_F_BUFFER and the buffer ID) come from the
-saved cflags. Before this change CQE_F_MASK covered only
-IORING_CQE_F_SOCK_NONEMPTY and IORING_CQE_F_MORE.
+For blocking callers, espintcp_push_msgs() may return success even when
+the previous partial send is still pending. espintcp_sendmsg() would
+then reinitialize emsg->skmsg and reuse ctx->partial while the old
+transfer still owns that state.
 
-When using provided buffer rings (IOU_PBUF_RING_INC) with incremental
-mode, and bundle recv, io_kbuf_inc_commit() can leave the head ring
-entry partially consumed, __io_put_kbufs() then sets
-IORING_CQE_F_BUF_MORE on the returned cflags so userspace knows the
-buffer ID will be reused for subsequent completions.
+Do not rebuild the send message when ctx->partial is still in progress.
+If espintcp_push_msgs() returns with emsg->len still set, fail the new
+send instead of overwriting the live partial state.
 
-Because IORING_CQE_F_BUF_MORE was not in CQE_F_MASK, the merge above
-silently dropped it whenever the final retry iteration partially
-consumed the buffer, and the subsequent req->cqe.flags = cflags &
-~CQE_F_MASK save would have left a stale IORING_CQE_F_BUF_MORE in the
-carried-over cflags had one been present. Userspace would then
-wrongfully advance it ring head past an entry the kernel still uses.
+This is a memory-safety fix: reusing the live partial-send state can
+leave a stale offset attached to a new sk_msg and lead to an out-of-
+bounds read in the send path.
 
-Add IORING_CQE_F_BUF_MORE to CQE_F_MASK so it is both inherited from the
-new iteration into the user-visible CQE and stripped from the saved
-cflags between iterations.
+tcp_sendmsg_locked() already handles waiting for send buffer memory, so
+the fix here is just to preserve espintcp's one-message-at-a-time
+transmit state.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Clément Léger <cleger@meta.com>
-Assisted-by: Claude:claude-opus-4.6
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://patch.msgid.link/20260604160715.2482972-1-cleger@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Assisted-by: Codex:GPT-5.4
+Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/xfrm/espintcp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -839,7 +839,8 @@ int io_recvmsg_prep(struct io_kiocb *req
- }
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -349,6 +349,10 @@ static int espintcp_sendmsg(struct sock
+ 			err = -ENOBUFS;
+ 		goto unlock;
+ 	}
++	if (emsg->len) {
++		err = -ENOBUFS;
++		goto unlock;
++	}
  
- /* bits to clear in old and inherit in new cflags on bundle retry */
--#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE)
-+#define CQE_F_MASK	(IORING_CQE_F_SOCK_NONEMPTY|IORING_CQE_F_MORE|\
-+			 IORING_CQE_F_BUF_MORE)
- 
- /*
-  * Finishes io_recv and io_recvmsg.
+ 	sk_msg_init(&emsg->skmsg);
+ 	while (1) {
 
 
 
