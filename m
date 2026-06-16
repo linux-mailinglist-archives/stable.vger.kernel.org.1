@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-266288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id P2r1FNeaMWomoAUAu9opvQ
-	(envelope-from <stable+bounces-266288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:59 +0200
+	id 0BtXCI2SMWpXnAUAu9opvQ
+	(envelope-from <stable+bounces-265904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E5D694810
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:49:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329A1693F0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:36 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=I4A043fy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266288-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266288-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QHY4OgJI;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265904-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265904-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 602353213401
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:47:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4834F3016C2F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0973CFF55;
-	Tue, 16 Jun 2026 18:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287783D566F;
+	Tue, 16 Jun 2026 18:13:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5712F47AF43;
-	Tue, 16 Jun 2026 18:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48E3D5656;
+	Tue, 16 Jun 2026 18:13:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635637; cv=none; b=sLP1kxFwrrT3xSWmB6PwZKds4d5jrG5Ryvg3XOxFULF8IYHrOE4SLAx/fed1x+C/0fDyP+icTl2K65cH/jNCJb+CyZQsz1YusREbs2+ZF8KFzluGdlvFsOT54aCznC/gIAG/5bUzQk55vfhQYTOQhnXKBf04R30LXw1GrVhN7n0=
+	t=1781633611; cv=none; b=HqG0lvxsjSN0XZ0APULscwxpKFfoQ3iGCWCXLrmomQ7n/TOnMy3+obuUlU1ZnOSyAzb2jnrGzGAaxUXfKjQH7oc8rvToxjFuXeaHnJe+Rp2OboB/T35etAwE1YVMMxsfZNOaXs+xDJcwg31T+KKbBOsA4+hj1iw+lyh2uuCqlcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635637; c=relaxed/simple;
-	bh=YHTy3ccOCaRdDJyR5RtJn1JaOI2R0qWIWPGZaa2bYpI=;
+	s=arc-20240116; t=1781633611; c=relaxed/simple;
+	bh=prlPY+Peeuba4bYjxcrBV8ZWy7X2n0gONKDdMeOwRLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xy/0x/IYixDLQDfR6Y8lzkLQzAx8aEhsbALrKj9vwT1ArC7XCYNiY2V1cHhYevyOp7nZcJKhxAYFFJMl6t+Wj374isZUrqIjZMmHUHv86XIJ2frmsdlZ2jZ4spiff0TQe0MoKKxHRVPf9N+2410Scn+cS618jurIRKDzxSrp7Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4A043fy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D911F000E9;
-	Tue, 16 Jun 2026 18:47:15 +0000 (UTC)
+	 MIME-Version; b=XA/stXppKEjk5OGIv7vCm9pSfGOtFJesSPCb5qIAcoV39tIChQP2ZfVzovnUru7NXtTMuptu3/74lYwxPjQfNDWQQ4C6ygw9jqtYEe50oSc8jxc0PP1Y8cmkheiPVmyGN4TTF15BtVNBm7DGPF5af7yqvcd92Txb/hyT53QX1TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHY4OgJI; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53661F000E9;
+	Tue, 16 Jun 2026 18:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635636;
-	bh=xH30bwlerKYG58ZvBd97YtlqoqzEfPgxV2NrHBNpCGE=;
+	s=korg; t=1781633609;
+	bh=gnM2qZaHwNBCDJZ2xh/texjmujZ7kA32eO4Wc4Cnmzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I4A043fyyMqVdvH8AqNt4vDX+QinUgfmfCUqNkh85JPB7A/6hVIcz5yWh4x4GkE67
-	 SES7srs4lV0CetyOCEUaM65MAZjPJiIugmVDYVm+HuMa7ewDxRYDYzFNNnM3lNeY6S
-	 jZ0x+zs2Ouumh8nn46ga7aSC4tJuCPhHOK9vfoL0=
+	b=QHY4OgJI4hPsShkTKe5pwQpxOc6xMV20ZCljXxIUHiUGNZTr5KKedGjL35QYVQhDc
+	 AJoAB6PEGJgbWXt0u/DpNxi/a8kI90YzthDh66pHDGBI4BvdKwatv+kGkH7dherhTH
+	 unGYzI29TvpAF0iS3ToDrb8yFDwjpZyZwXW0IcFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linpu Yu <linpu5433@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Kees Cook <kees@kernel.org>,
-	Stanislav Kinsbursky <skinsbursky@parallels.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 053/342] ipc: limit next_id allocation to the valid ID range
+	stable <stable@kernel.org>,
+	Zheng Wang <zyytlz.wz@163.com>,
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.15 111/411] usbip: vudc: Fix use after free bug in vudc_remove due to race condition
 Date: Tue, 16 Jun 2026 20:25:49 +0530
-Message-ID: <20260616145050.729870056@linuxfoundation.org>
+Message-ID: <20260616145106.184338010@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,122 +68,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-265904-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-266288-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:linpu5433@gmail.com,m:n05ec@lzu.edu.cn,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:bird@lzu.edu.cn,m:kees@kernel.org,m:skinsbursky@parallels.com,m:dave@stgolabs.net,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:zyytlz.wz@163.com,m:michael.bommarito@gmail.com,m:skhan@linuxfoundation.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org,parallels.com,stgolabs.net,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lzu.edu.cn:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux-foundation.org:email,parallels.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A3E5D694810
+X-Rspamd-Queue-Id: 329A1693F0B
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linpu Yu <linpu5433@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit fa0b9b2b7ae3539908d69c2b9ac0d144d9bc5139 upstream.
+commit d96209626a29ea64666be98c30b30ac82e5f1be6 upstream.
 
-The checkpoint/restore sysctl path can request the next SysV IPC id
-through ids->next_id.  ipc_idr_alloc() currently forwards that request to
-idr_alloc() with an open-ended upper bound.
+This patch follows up Zheng Wang's 2023 report of a use-after-free in
+vudc_remove(). The original thread stalled on Shuah Khan's request for
+runtime testing of the unplug/unbind path. This patch supplies that
+testing and keeps Zheng's original fix shape.
 
-If the valid tail of the SysV IPC id space is full, the allocation can
-spill beyond ipc_mni.  The returned SysV IPC id still uses the normal
-index encoding, so later lookup and removal can target the wrong slot.
-This leaves the real IDR entry behind and breaks the IDR state for the
-object.
+In vudc_probe(), v_init_timer() binds udc->tr_timer.timer to v_timer().
+usbip_sockfd_store() starts the timer via v_start_timer()/v_kick_timer().
+vudc_remove() can then free the containing struct vudc while the timer is
+still pending or executing.
 
-The bug is in ipc_idr_alloc() in the checkpoint/restore path.
+KASAN confirms the race on an unpatched x86_64 QEMU guest with
+CONFIG_KASAN=y, CONFIG_USBIP_VUDC=y, CONFIG_USB_ZERO=y, and a tight loop
+that repeatedly writes a socket fd to usbip_sockfd, closes the socket
+pair, and unbinds/rebinds usbip-vudc.0:
 
-1. ids->next_id is passed to:
+  BUG: KASAN: slab-use-after-free in __run_timer_base.part.0+0x8ba/0x8e0
+  Write of size 8 at addr ffff888001b80740 by task trigger_and_unb/239
+  Allocated by task 239:
+    vudc_probe+0x4d/0xaa0
+  Freed by task 239:
+    kfree+0x18f/0x520
+    device_release_driver_internal+0x388/0x540
+    unbind_store+0xd9/0x100
 
-       idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id), 0, ...)
+This lands in the timer core rather than v_timer() itself because the
+embedded timer_list is being walked after its containing struct vudc has
+already been freed. The underlying lifetime bug is the same one Zheng
+reported.
 
-2. The zero upper bound makes the allocation effectively open-ended.
-   Once the valid SysV IPC tail is occupied, idr_alloc() can spill past
-   ipc_mni and allocate an entry beyond the valid IPC id range.
+With v_stop_timer() called from vudc_remove() and the timer deleted
+synchronously, the same harness completed 5000 bind/unbind iterations
+with no KASAN report.
 
-3. The new object id is still encoded with the narrower SysV IPC index
-   width:
-
-       new->id = (new->seq << ipcmni_seq_shift()) + idx
-
-4. Later removal goes through ipc_rmid(), which uses:
-
-       ipcid_to_idx(ipcp->id)
-
-   That truncates the real IDR index. An object actually stored at a
-   high index can then be removed as if it lived at a low in-range
-   index.
-
-5. For shared memory, shm_destroy() frees the current object anyway, but
-   the real high IDR slot is left behind as a dangling pointer.
-
-6. A subsequent walk of /proc/sysvipc/shm reaches the stale IDR entry
-   and dereferences freed memory.
-
-Prevent this by bounding the requested allocation to ipc_mni so the
-checkpoint/restore path fails once the valid range is exhausted.
-
-Link: https://lore.kernel.org/cover.1778336914.git.linpu5433@gmail.com
-Link: https://lore.kernel.org/2eebe949bfa7d1f6e13b5be6a92c64c850ce9d45.1778336914.git.linpu5433@gmail.com
-Fixes: 03f595668017 ("ipc: add sysctl to specify desired next object id")
-Signed-off-by: Linpu Yu <linpu5433@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Stanislav Kinsbursky <skinsbursky@parallels.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b6a0ca111867 ("usbip: vudc: Add UDC specific ops")
+Cc: stable <stable@kernel.org>
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/linux-usb/20230317100954.2626573-1-zyytlz.wz@163.com/
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://patch.msgid.link/20260417163552.807548-1-michael.bommarito@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- ipc/util.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/usbip/vudc_dev.c      |    1 +
+ drivers/usb/usbip/vudc_transfer.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/ipc/util.c
-+++ b/ipc/util.c
-@@ -252,7 +252,7 @@ static inline int ipc_idr_alloc(struct i
- 	} else {
- 		new->seq = ipcid_to_seqx(next_id);
- 		idx = idr_alloc(&ids->ipcs_idr, new, ipcid_to_idx(next_id),
--				0, GFP_NOWAIT);
-+				ipc_mni, GFP_NOWAIT);
- 	}
- 	if (idx >= 0)
- 		new->id = (new->seq << ipcmni_seq_shift()) + idx;
+--- a/drivers/usb/usbip/vudc_dev.c
++++ b/drivers/usb/usbip/vudc_dev.c
+@@ -633,6 +633,7 @@ int vudc_remove(struct platform_device *
+ {
+ 	struct vudc *udc = platform_get_drvdata(pdev);
+ 
++	v_stop_timer(udc);
+ 	usb_del_gadget_udc(&udc->gadget);
+ 	cleanup_vudc_hw(udc);
+ 	kfree(udc);
+--- a/drivers/usb/usbip/vudc_transfer.c
++++ b/drivers/usb/usbip/vudc_transfer.c
+@@ -490,7 +490,8 @@ void v_stop_timer(struct vudc *udc)
+ {
+ 	struct transfer_timer *t = &udc->tr_timer;
+ 
+-	/* timer itself will take care of stopping */
++	/* Delete the timer synchronously before teardown frees udc. */
+ 	dev_dbg(&udc->pdev->dev, "timer stop");
++	timer_delete_sync(&t->timer);
+ 	t->state = VUDC_TR_STOPPED;
+ }
 
 
 
