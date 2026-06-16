@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EfBULuODMWp2lQUAu9opvQ
-	(envelope-from <stable+bounces-265150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:03 +0200
+	id 48ZHAuJ6MWqxkQUAu9opvQ
+	(envelope-from <stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B95692D7E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E22692354
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="x/sldnO1";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265150-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265150-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ip0Xs3hS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264667-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CA45230822AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:09:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1006B30A3FD3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD31C47A0DE;
-	Tue, 16 Jun 2026 17:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBB146AF1D;
+	Tue, 16 Jun 2026 16:26:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7257B43E490;
-	Tue, 16 Jun 2026 17:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2E746AF14;
+	Tue, 16 Jun 2026 16:26:16 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629726; cv=none; b=CipSad6IL2IKEHVuqMXEZvUMwytLllTBuWHwY/ElCol85JAuPJAlpWqzweElaC1swKaccYImnzHuMrlYw9rbgaC/PHTZWU6zrDjiZiYGV9lqdFPC6QbIshAiQvmDOa9ZRAHMQgEnfj0NDM8OxDB5sdG8wrA/WSJeiHJ4p61pvgo=
+	t=1781627177; cv=none; b=tUj+eXrUMyrAhQGZq4KDZ64zGNPiHF6v/R+qR7MnKxBkxTU/WswryPr7TKdycqTWEZCu70+Vn79FiiGNGS1bly9tvHh34ounWBonHZVtl9W3ebVpA7vQPlBmGLr8s+Zf7lShIwLfFXBKT6Z25H9HMWnzrORieW3le0KiNO6NQcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629726; c=relaxed/simple;
-	bh=XuP2QmOAK6+BDbLSUFwvlOns4N2T3pfXfFYH+rS4plU=;
+	s=arc-20240116; t=1781627177; c=relaxed/simple;
+	bh=HNQZm17WUxqAF2DEMg9qeskWPl73jJTWw7cZClDNP1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nU0DWgQFy0tuQMfN090MsHjzDqQPbqYhyuDrUU1Yr+YkjkjxH9/N93gY1n/JKp0TLLSPvKDc1gIS6+nYcMQFg1VrubR/10ZWkxSGNgvNU3ktGuJf2b/8WHZHOL8RSboia+Vx+SWhbyuri56l0duAAMI9W/OaH8DbRCcBfwW0Rz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/sldnO1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D431F000E9;
-	Tue, 16 Jun 2026 17:08:43 +0000 (UTC)
+	 MIME-Version; b=BrJ1udrxDzqaKfI7ip2ZuWyFRT7b47NRkQe38Zak2ec/SLzEjn7Tu1rZjP+R4vjpq+QTe12CtxY3aPP6Ts24kiDLIkataUKxabSlT7NpTq9TG8GvFobT9mr66Tw5bY/AE+Xs4oUMvwyhalXXO1nIWihxDwihZoIeqcRkC6okSiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip0Xs3hS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EE51F000E9;
+	Tue, 16 Jun 2026 16:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629725;
-	bh=5d2at4bTXw26NZJ+wrEHJzljFyPLDsWeVjuLz+wsHns=;
+	s=korg; t=1781627176;
+	bh=9e44sXUogFdfMjGNoefho8kSV6a7ZIhDWQVBFJObtCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=x/sldnO1i0nWgYBJWn1SYkGQDZaqeXFVp6eIgAMQoHh27OCs6FVVjbMsGAJl/irkO
-	 pwg4DGKgwWlr5g2VnO6IBMvV3UZbziHjIKwi5uMOAszbmaEm2kbauloGBJTzvCl2Wm
-	 Vrr5QSgxfgXxW8ZzXTnOrLmQEBk2EJJOXCMOzEvI=
+	b=Ip0Xs3hShX4WLg28gDgmNy8gMkE047OK2n6zfRmgOS685MpYTiv/UZSLb0It7k8tW
+	 pR6tIvTiFFDXMLWoourN7H3Dy62OprxgLeITLmaDVCX4VsKui3iuD4ffLRksV6VKTF
+	 14SVspwDxNr/2m5V0+KhYBxvfWxk6k8Aj4OjiFTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 310/452] udp: clear skb->dev before running a sockmap verdict
+	Kyle Zeng <kylebot@openai.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/261] netfilter: x_tables: avoid leaking percpu counter pointers
 Date: Tue, 16 Jun 2026 20:28:57 +0530
-Message-ID: <20260616145133.806772841@linuxfoundation.org>
+Message-ID: <20260616145049.625248449@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,123 +72,178 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265150-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264667-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rhkrqnwk98@gmail.com,m:jiayuan.chen@linux.dev,m:edumazet@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 73B95692D7E
+X-Rspamd-Queue-Id: 89E22692354
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-commit 3c94f241f776562c489876ff506f366224565c21 upstream.
+[ Upstream commit f7f2fbb0e893a0238dc464f8d8c0f5609bec584f ]
 
-On the UDP receive path skb->dev is repurposed as dev_scratch (the
-truesize/state cache set by udp_set_dev_scratch()), through the
-union { struct net_device *dev; unsigned long dev_scratch; } in sk_buff.
+The native and compat get-entries paths copy the fixed rule entry header
+from the kernelized rule blob to userspace before overwriting the entry's
+counter fields with a sanitized counter snapshot.
 
-When a UDP socket is in a sockmap, sk_data_ready is
-sk_psock_verdict_data_ready(), which calls udp_read_skb() -> recv_actor()
-(sk_psock_verdict_recv) to run the attached SK_SKB verdict program in softirq.
-If that program calls a socket-lookup helper (bpf_sk_lookup_tcp/udp,
-bpf_skc_lookup_tcp), bpf_skc_lookup() does:
+On SMP kernels, entry->counters.pcnt contains the percpu allocation
+address used by x_tables rule counters. A caller can provide a userspace
+buffer that faults during the initial fixed-header copy after pcnt has
+been copied but before the later sanitized counter copy runs. The syscall
+then returns -EFAULT while leaving the raw percpu pointer in userspace.
 
-	if (skb->dev)
-		caller_net = dev_net(skb->dev);
+Copy only the fixed entry prefix before counters from the kernelized rule
+blob, then copy the sanitized counter snapshot into the counter field.
+Apply this ordering to the IPv4, IPv6, and ARP native and compat
+get-entries implementations so a fault cannot expose the internal percpu
+counter pointer.
 
-skb->dev still holds the dev_scratch value (a non-NULL integer), so dev_net()
-dereferences it as a struct net_device * and the kernel takes a general
-protection fault on a non-canonical address in softirq:
-
-  Oops: general protection fault, probably for non-canonical address 0x1010000800004a0
-  CPU: 1 UID: 0 PID: 1406 Comm: syz.2.19 Not tainted 7.1.0-rc6 #1 PREEMPT(full)
-  RIP: 0010:bpf_skc_lookup net/core/filter.c:7033 [inline]
-  RIP: 0010:bpf_sk_lookup+0x45/0x160 net/core/filter.c:7047
-  Call Trace:
-   <IRQ>
-   bpf_prog_4675cb904b7071f8+0x12e/0x14e
-   bpf_prog_run_pin_on_cpu+0xc6/0x1f0
-   sk_psock_verdict_recv+0x1ba/0x350
-   udp_read_skb+0x31a/0x370
-   sk_psock_verdict_data_ready+0x2e3/0x600
-   __udp_enqueue_schedule_skb+0x4c8/0x650
-   udpv6_queue_rcv_one_skb+0x3ec/0x740
-   udp6_unicast_rcv_skb+0x11d/0x140
-   ip6_protocol_deliver_rcu+0x61e/0x950
-   ip6_input_finish+0xa9/0x150
-   NF_HOOK+0x286/0x2f0
-   ip6_input+0x117/0x220
-   NF_HOOK+0x286/0x2f0
-   __netif_receive_skb+0x85/0x200
-   process_backlog+0x374/0x9a0
-   __napi_poll+0x4f/0x1c0
-   net_rx_action+0x3b0/0x770
-   handle_softirqs+0x15a/0x460
-   do_softirq+0x57/0x80
-   </IRQ>
-
-The rmem charge that dev_scratch accounted for is released by skb_recv_udp() on
-dequeue, just above, so the scratch is dead by the time recv_actor() runs. Clear
-skb->dev so bpf_skc_lookup() falls back to sock_net(skb->sk), which
-skb_set_owner_sk_safe() set just above.
-
-Fixes: 965b57b469a5 ("net: Introduce a new proto_ops ->read_skb()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260603162737.697215-1-rhkrqnwk98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71ae0dff02d7 ("netfilter: xtables: use percpu rule counters")
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv4/netfilter/arp_tables.c | 15 ++++++---------
+ net/ipv4/netfilter/ip_tables.c  | 15 ++++++---------
+ net/ipv6/netfilter/ip6_tables.c | 15 ++++++---------
+ 3 files changed, 18 insertions(+), 27 deletions(-)
 
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1801,6 +1801,14 @@ try_again:
- 	}
+diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
+index 97ead883e4a13b..b752c9eac998e4 100644
+--- a/net/ipv4/netfilter/arp_tables.c
++++ b/net/ipv4/netfilter/arp_tables.c
+@@ -702,14 +702,12 @@ static int copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
  
- 	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
-+
-+	/*
-+	 * skb->dev still aliases the UDP rx dev_scratch (its charge was freed
-+	 * on dequeue above); a sockmap verdict program may deref it via
-+	 * bpf_sk_lookup_*(), so clear it -> bpf_skc_lookup() uses skb->sk
-+	 */
-+	skb->dev = NULL;
-+
- 	return recv_actor(sk, skb);
- }
- EXPORT_SYMBOL(udp_read_skb);
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct arpt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct arpt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1327,9 +1325,8 @@ static int compat_copy_entry_to_user(struct arpt_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct arpt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_arpt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_arpt_entry);
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index 3d101613f27fa5..0ba456c4c63416 100644
+--- a/net/ipv4/netfilter/ip_tables.c
++++ b/net/ipv4/netfilter/ip_tables.c
+@@ -832,14 +832,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ipt_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ipt_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1228,9 +1226,8 @@ compat_copy_entry_to_user(struct ipt_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ipt_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ipt_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_ipt_entry);
+diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+index 7d5602950ae72a..6c5022242cf0b0 100644
+--- a/net/ipv6/netfilter/ip6_tables.c
++++ b/net/ipv6/netfilter/ip6_tables.c
+@@ -848,14 +848,12 @@ copy_entries_to_user(unsigned int total_size,
+ 		const struct xt_entry_target *t;
+ 
+ 		e = loc_cpu_entry + off;
+-		if (copy_to_user(userptr + off, e, sizeof(*e))) {
+-			ret = -EFAULT;
+-			goto free_counters;
+-		}
+-		if (copy_to_user(userptr + off
++		if (copy_to_user(userptr + off, e,
++				 offsetof(struct ip6t_entry, counters)) ||
++		    copy_to_user(userptr + off
+ 				 + offsetof(struct ip6t_entry, counters),
+ 				 &counters[num],
+-				 sizeof(counters[num])) != 0) {
++				 sizeof(counters[num]))) {
+ 			ret = -EFAULT;
+ 			goto free_counters;
+ 		}
+@@ -1244,9 +1242,8 @@ compat_copy_entry_to_user(struct ip6t_entry *e, void __user **dstptr,
+ 
+ 	origsize = *size;
+ 	ce = *dstptr;
+-	if (copy_to_user(ce, e, sizeof(struct ip6t_entry)) != 0 ||
+-	    copy_to_user(&ce->counters, &counters[i],
+-	    sizeof(counters[i])) != 0)
++	if (copy_to_user(ce, e, offsetof(struct compat_ip6t_entry, counters)) ||
++	    copy_to_user(&ce->counters, &counters[i], sizeof(counters[i])))
+ 		return -EFAULT;
+ 
+ 	*dstptr += sizeof(struct compat_ip6t_entry);
+-- 
+2.53.0
+
 
 
 
