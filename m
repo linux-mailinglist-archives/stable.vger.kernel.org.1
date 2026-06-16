@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id RqyVITNvMWr1jAUAu9opvQ
-	(envelope-from <stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:47 +0200
+	id uisfOT6WMWobngUAu9opvQ
+	(envelope-from <stable+bounces-266092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91B269155E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:43:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2822694307
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:30:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eT2KDIPQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264129-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G43Yt+tk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266092-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266092-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0317A31A52AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:38:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7E36303BAB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8436143E9C6;
-	Tue, 16 Jun 2026 15:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7933DA7C0;
+	Tue, 16 Jun 2026 18:30:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9153AB267;
-	Tue, 16 Jun 2026 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909A632E13B;
+	Tue, 16 Jun 2026 18:30:18 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624280; cv=none; b=Oh85WOxe9rBvjeAU9rgl2widfEDMWzvHzsBJvCmswEOCYsEuNu+lZt1eBQLPgbYWAq/co99/5hbYUAP9OGvciFiuyMs/izAzmPnWnkvmLhJxZCmXl+HCjcYqkTCCB5vzOLVU1mWqYu/iVPZ0kF1xiwXxbQHLRhTiPApycFbapp0=
+	t=1781634619; cv=none; b=cd56QNFh4Tq9SdOl3MYXYUTeAYcWNjkHzzdJ6u7HGKRhyDR+R94GkV58269XLSU8dUFzkGMJslqQr7nCTbZHSW6mhWRO2dS5pYxq6bAnb4T9u0SzgIB1x03pOWlHxEJsGdp5bfiTwxDHiEbVoxbyKpu6aPWFe0RlPf8KFFpnprY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624280; c=relaxed/simple;
-	bh=6khjy8biSSEKDje9UZ1h4ztOefqZreKmZzbkpSVux4g=;
+	s=arc-20240116; t=1781634619; c=relaxed/simple;
+	bh=PVfMMNAGrMKHttMtgk7EgfWEU+SgRniPSuuOtfwCYWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RessxIGEZOZqDw7HEKy8XJjs/G8VkMNEKJL2qHHfEqkucobYOmVS3x0Ia89wYRbtvYHVfARuKVIAoxQviib7u3+3v2vDm6iAhpKtFcmOsuFma5OtjiYLEXT68ghwJbg7zrHzRuUfUHDxhqI+jRIIunlyuGwESfwxJUPer3X9EIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eT2KDIPQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D471F000E9;
-	Tue, 16 Jun 2026 15:37:57 +0000 (UTC)
+	 MIME-Version; b=dJfiNUSyHbqwDU+qkreDGTccT1S54iqPFSd4UvVAqx/rYgPwQjdlr0r2ogTKkRMUyLXItHMcSY2WpYGFAGh0y2fp+cSTnPJA9XehCaHOIgRwXOr52lhOyGu0jFZwEKuuV6X10CkNQxoW6QMfW9A+0ha5ZPMI+bcXuxCsCUQufNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G43Yt+tk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7999D1F000E9;
+	Tue, 16 Jun 2026 18:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624279;
-	bh=DVpsSqBhwprGGptwq3xu9/CtG23uTHeWoQYMVayvcME=;
+	s=korg; t=1781634618;
+	bh=yMktdekaSO37nM3vAkw5cSdThqEZ+31JSUFc7dk4LuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eT2KDIPQMvGmzLN81PJCLg05MLgViLaqPnCWQfIhfqw/+36H9dZqulaG2yzD/9u5f
-	 +Yvp96CKFd6yf3yUgZ5YSV530BdAgBb15pwZWDFAQpjyGONvtj5OQjfGLwniwGQjRW
-	 ntNeesP828MC/MhTbei02MSWc36eqPNLAiuedv18=
+	b=G43Yt+tknW1aZjLjKmiB2nF04ogbxHX2lpJyyiTtbZHSbMJkRbPU97sQJNYz2eCdx
+	 P0xjsOnsBpegNIVGDw7Zi4aBdVAnXy+uUWKCMGnwvs3bJz+1FtCb//u0NRaPsXrH50
+	 1dXzuGechq1SC/Zg/ovo+o5NpQi5aJrCpUdZlOBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 7.0 263/378] accel/ethosu: reject DMA commands with uninitialized length
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 256/411] smb: client: fix OOB read in smb2_ioctl_query_info QUERY_INFO path
 Date: Tue, 16 Jun 2026 20:28:14 +0530
-Message-ID: <20260616145123.928018699@linuxfoundation.org>
+Message-ID: <20260616145114.603478011@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,27 +67,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264129-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:robh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266092-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:stfrench@microsoft.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,60 +96,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E91B269155E
+X-Rspamd-Queue-Id: C2822694307
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit d9d021218162b6c4fe0bdf42b2b340f1aae23a12 upstream.
+[ Upstream commit a58c5af19ff0d6f44f6e9fe31e33a2c92223f77e ]
 
-cmd_state_init() initializes the command state with memset(0xff),
-leaving dma->len at U64_MAX to signal missing setup. The only setter
-is NPU_SET_DMA0_LEN; if userspace omits this command and issues
-NPU_OP_DMA_START, dma->len remains U64_MAX.
+smb2_ioctl_query_info() has two response-copy branches: PASSTHRU_FSCTL
+and the default QUERY_INFO path.  The QUERY_INFO branch clamps
+qi.input_buffer_length to the server-reported OutputBufferLength and then
+copies qi.input_buffer_length bytes from qi_rsp->Buffer to userspace, but
+it never verifies that the flexible-array payload actually fits within
+rsp_iov[1].iov_len.
 
-In dma_length(), a positive stride added to U64_MAX wraps to a small
-value. With size0 == 1, check_mul_overflow() does not trigger and
-dma_length() returns 0 instead of U64_MAX. The caller's U64_MAX check
-then passes, region_size[] stays 0, and the bounds check in
-ethosu_job.c is bypassed, allowing hardware to execute DMA with stale
-physical addresses.
+A malicious server can return OutputBufferLength larger than the actual
+QUERY_INFO response, causing copy_to_user() to walk past the response
+buffer and expose adjacent kernel heap to userspace.
 
-Fix by checking for U64_MAX at the start of dma_length() before any
-arithmetic, consistent with the sentinel value used throughout the
-driver to detect uninitialized fields.
+Guard the QUERY_INFO copy with a bounds check on the actual Buffer
+payload.  Use struct_size(qi_rsp, Buffer, qi.input_buffer_length)
+rather than an open-coded addition so the guard cannot overflow on
+32-bit builds.
 
-Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
+Fixes: f5778c398713 ("SMB3: Allow SMB3 FSCTL queries to be sent to server from tools")
 Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Link: https://patch.msgid.link/20260524130319.12747-1-meatuni001@gmail.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ethosu/ethosu_gem.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/cifs/smb2ops.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/accel/ethosu/ethosu_gem.c
-+++ b/drivers/accel/ethosu/ethosu_gem.c
-@@ -164,6 +164,9 @@ static u64 dma_length(struct ethosu_vali
- 	s8 mode = dma_st->mode;
- 	u64 len = dma->len;
- 
-+	if (len == U64_MAX)
-+		return U64_MAX;
-+
- 	if (mode >= 1) {
- 		if (dma->stride[0] < 0 && (u64)(-dma->stride[0]) > len)
- 			return U64_MAX;
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -1826,6 +1826,12 @@ smb2_ioctl_query_info(const unsigned int
+ 		qi_rsp = (struct smb2_query_info_rsp *)rsp_iov[1].iov_base;
+ 		if (le32_to_cpu(qi_rsp->OutputBufferLength) < qi.input_buffer_length)
+ 			qi.input_buffer_length = le32_to_cpu(qi_rsp->OutputBufferLength);
++		if (qi.input_buffer_length > 0 &&
++		    struct_size(qi_rsp, Buffer, qi.input_buffer_length) >
++		    rsp_iov[1].iov_len) {
++			rc = -EFAULT;
++			goto out;
++		}
+ 		if (copy_to_user(&pqi->input_buffer_length,
+ 				 &qi.input_buffer_length,
+ 				 sizeof(qi.input_buffer_length))) {
 
 
 
