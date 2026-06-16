@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ibeKNSqZMWpTnwUAu9opvQ
-	(envelope-from <stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:50 +0200
+	id T6uJE1mfMWoCogUAu9opvQ
+	(envelope-from <stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B3E6945CD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:42:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88DE694CA8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:09:12 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ArDIotzx;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266190-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BWGCMS+n;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266545-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D1E31AA81A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:38:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C028B304BCC8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEC33DC4D9;
-	Tue, 16 Jun 2026 18:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1523DE425;
+	Tue, 16 Jun 2026 19:09:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B664169AD2;
-	Tue, 16 Jun 2026 18:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342883DD851;
+	Tue, 16 Jun 2026 19:09:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635127; cv=none; b=OM0cXwkdOXXAHxaEptbwXAlnPTgYO9eO7BNlJgJR9uxR225G99B59DJKa8IhI4giXVDfKQ2H2JLWnCLL8aU722AEL+u1qwXY0Ct28G6MG9RukJwnnS6tg7eb2mWs+Ao0OUTY/KVxRzPudO6MlzNMFK4Zxf/BAUi3uUzW+Q6rlVU=
+	t=1781636946; cv=none; b=cMSzwVnnaA3vhtwEVfKPhoGo1P+bC00xcg0gUOt0V+rt/BEn/euQ+4ai5xlX6wf+Ir8MYtQCaES0bO9TfvTLFX/Oc1uiBuIaN+VThFsVIihSIr7RKax6UwjghQT5KPpzPsLoMlfHqSOCotlgxCG9WdyEaAqel6WvzcvtP8yK84Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635127; c=relaxed/simple;
-	bh=pq3BzsMoE3FehVi9/qkvJdOnUAij9rRyZjHDaNcYDXs=;
+	s=arc-20240116; t=1781636946; c=relaxed/simple;
+	bh=dFEKNVXgfjt0oWuKXKC0dxp44CoZdV76jzJP3wC9SvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5lddxqxg19VA2mAoa7Nvts/RWhSNB2dQjjUUaGbk351PGXoPCgrNNYavejVJv4bwdw2XipYO/G3o+dlawtnHJbPE3Twt+BSUsElVbr8soJnXdPj7vvGyZRsu7VocXfwvvFTJtFY+AIWgE09AVumpPUU5W31dFQCZUuCD3mlhyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArDIotzx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C521F000E9;
-	Tue, 16 Jun 2026 18:38:44 +0000 (UTC)
+	 MIME-Version; b=le5S3GH+R+DKERs79lDY7v0aPSFdvpP/z+jjXdqS9mWDSRbzStYAfMA3NPtpM2NPwovWsibasnfvr3hbR1HK1pu7CHElzUH2AN3/vJNqMNKyYQWlWcd7HalOGuzVu2sr29PrsaTxjAZOhpOaxxJnnPi7MRWF9MLgC1sHz2xSjeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWGCMS+n; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376C41F000E9;
+	Tue, 16 Jun 2026 19:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635126;
-	bh=cEsmPmNtyCOz40yosx4PPOB0ZfFkqINwEogbdcUIJD0=;
+	s=korg; t=1781636945;
+	bh=q1720dwiV33bHM0rS6vlOdDNK1x6UxGaMkq9iWfl+4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ArDIotzxWhISKrnxEYpgAvpX3SGwZzjI0zCHqaIc+B7a/qVTRQVWHYYnsEFwNit1Z
-	 vkWeDszmg4eWmjKxjC/mkgerIvjzDwvBvxd6b2+yUv37qP9MPkz98+gjvcXOkPERhe
-	 nsDa/9+57Du+dxOTaCsbrgxjCQpzYZeIklk9QL/g=
+	b=BWGCMS+nbsF0wFF2uvW5Y+nVs5e7p8tBL9AHab91JgssyQFttbcbiRbCMGoNtrR8N
+	 IXkrZZ8dL7HlM3BWD5s83H6n/YTiY4YOstR6FJScIujyluSgGOivw5/9sx20YmC66C
+	 MQddfrd9RB9bVopGFLrTaw0BhJ0MeMFiSxnCWP0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 5.15 394/411] blk-cgroup: Fix NULL deref caused by blkg_policy_data being installed before init
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 336/342] arm64: cputype: Add C1-Premium definitions
 Date: Tue, 16 Jun 2026 20:30:32 +0530
-Message-ID: <20260616145122.161051319@linuxfoundation.org>
+Message-ID: <20260616145104.281537375@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,202 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,kernel.dk,163.com];
-	TAGGED_FROM(0.00)[bounces-266190-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266545-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tj@kernel.org,m:leitao@debian.org,m:axboe@kernel.dk,m:rob_garcia@163.com,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mark.rutland@arm.com,m:catalin.marinas@arm.com,m:will@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,arm.com:url,arm.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 39B3E6945CD
+X-Rspamd-Queue-Id: A88DE694CA8
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit ec14a87ee1999b19d8b7ed0fa95fea80644624ae upstream.
+commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
 
-blk-iocost sometimes causes the following crash:
+Add cputype definitions for C1-Premium. These will be used for errata
+detection in subsequent patches.
 
-  BUG: kernel NULL pointer dereference, address: 00000000000000e0
-  ...
-  RIP: 0010:_raw_spin_lock+0x17/0x30
-  Code: be 01 02 00 00 e8 79 38 39 ff 31 d2 89 d0 5d c3 0f 1f 00 0f 1f 44 00 00 55 48 89 e5 65 ff 05 48 d0 34 7e b9 01 00 00 00 31 c0 <f0> 0f b1 0f 75 02 5d c3 89 c6 e8 ea 04 00 00 5d c3 0f 1f 84 00 00
-  RSP: 0018:ffffc900023b3d40 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 00000000000000e0 RCX: 0000000000000001
-  RDX: ffffc900023b3d20 RSI: ffffc900023b3cf0 RDI: 00000000000000e0
-  RBP: ffffc900023b3d40 R08: ffffc900023b3c10 R09: 0000000000000003
-  R10: 0000000000000064 R11: 000000000000000a R12: ffff888102337000
-  R13: fffffffffffffff2 R14: ffff88810af408c8 R15: ffff8881070c3600
-  FS:  00007faaaf364fc0(0000) GS:ffff88842fdc0000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00000000000000e0 CR3: 00000001097b1000 CR4: 0000000000350ea0
-  Call Trace:
-   <TASK>
-   ioc_weight_write+0x13d/0x410
-   cgroup_file_write+0x7a/0x130
-   kernfs_fop_write_iter+0xf5/0x170
-   vfs_write+0x298/0x370
-   ksys_write+0x5f/0xb0
-   __x64_sys_write+0x1b/0x20
-   do_syscall_64+0x3d/0x80
-   entry_SYSCALL_64_after_hwframe+0x46/0xb0
+These values can be found in the C1-Premium TRM:
 
-This happens because iocg->ioc is NULL. The field is initialized by
-ioc_pd_init() and never cleared. The NULL deref is caused by
-blkcg_activate_policy() installing blkg_policy_data before initializing it.
+  https://developer.arm.com/documentation/109416/0100/
 
-blkcg_activate_policy() was doing the following:
+... in section A.5.1 ("MIDR_EL1, Main ID Register").
 
-1. Allocate pd's for all existing blkg's and install them in blkg->pd[].
-2. Initialize all pd's.
-3. Online all pd's.
-
-blkcg_activate_policy() only grabs the queue_lock and may release and
-re-acquire the lock as allocation may need to sleep. ioc_weight_write()
-grabs blkcg->lock and iterates all its blkg's. The two can race and if
-ioc_weight_write() runs during #1 or between #1 and #2, it can encounter a
-pd which is not initialized yet, leading to crash.
-
-The crash can be reproduced with the following script:
-
-  #!/bin/bash
-
-  echo +io > /sys/fs/cgroup/cgroup.subtree_control
-  systemd-run --unit touch-sda --scope dd if=/dev/sda of=/dev/null bs=1M count=1 iflag=direct
-  echo 100 > /sys/fs/cgroup/system.slice/io.weight
-  bash -c "echo '8:0 enable=1' > /sys/fs/cgroup/io.cost.qos" &
-  sleep .2
-  echo 100 > /sys/fs/cgroup/system.slice/io.weight
-
-with the following patch applied:
-
-> diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-> index fc49be622e05..38d671d5e10c 100644
-> --- a/block/blk-cgroup.c
-> +++ b/block/blk-cgroup.c
-> @@ -1553,6 +1553,12 @@ int blkcg_activate_policy(struct gendisk *disk, const struct blkcg_policy *pol)
-> 		pd->online = false;
-> 	}
->
-> +       if (system_state == SYSTEM_RUNNING) {
-> +               spin_unlock_irq(&q->queue_lock);
-> +               ssleep(1);
-> +               spin_lock_irq(&q->queue_lock);
-> +       }
-> +
-> 	/* all allocated, init in the same order */
-> 	if (pol->pd_init_fn)
-> 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
-
-I don't see a reason why all pd's should be allocated, initialized and
-onlined together. The only ordering requirement is that parent blkgs to be
-initialized and onlined before children, which is guaranteed from the
-walking order. Let's fix the bug by allocating, initializing and onlining pd
-for each blkg and holding blkcg->lock over initialization and onlining. This
-ensures that an installed blkg is always fully initialized and onlined
-removing the the race window.
-
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Fixes: 9d179b865449 ("blkcg: Fix multiple bugs in blkcg_activate_policy()")
-Link: https://lore.kernel.org/r/ZN0p5_W-Q9mAHBVY@slm.duckdns.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+[Mark: backport to v5.10.y]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |   32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -1337,7 +1337,7 @@ int blkcg_activate_policy(struct request
- retry:
- 	spin_lock_irq(&q->queue_lock);
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -99,6 +99,7 @@
+ #define ARM_CPU_PART_CORTEX_A725	0xD87
+ #define ARM_CPU_PART_C1_ULTRA		0xD8C
+ #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
++#define ARM_CPU_PART_C1_PREMIUM		0xD90
  
--	/* blkg_list is pushed at the head, reverse walk to allocate parents first */
-+	/* blkg_list is pushed at the head, reverse walk to initialize parents first */
- 	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
- 		struct blkg_policy_data *pd;
+ #define APM_CPU_PART_POTENZA		0x000
  
-@@ -1375,21 +1375,20 @@ retry:
- 				goto enomem;
- 		}
- 
--		blkg->pd[pol->plid] = pd;
-+		spin_lock(&blkg->blkcg->lock);
-+
- 		pd->blkg = blkg;
- 		pd->plid = pol->plid;
--		pd->online = false;
--	}
-+		blkg->pd[pol->plid] = pd;
- 
--	/* all allocated, init in the same order */
--	if (pol->pd_init_fn)
--		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
--			pol->pd_init_fn(blkg->pd[pol->plid]);
-+		if (pol->pd_init_fn)
-+			pol->pd_init_fn(pd);
- 
--	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
- 		if (pol->pd_online_fn)
--			pol->pd_online_fn(blkg->pd[pol->plid]);
--		blkg->pd[pol->plid]->online = true;
-+			pol->pd_online_fn(pd);
-+		pd->online = true;
-+
-+		spin_unlock(&blkg->blkcg->lock);
- 	}
- 
- 	__set_bit(pol->plid, q->blkcg_pols);
-@@ -1406,14 +1405,19 @@ out:
- 	return ret;
- 
- enomem:
--	/* alloc failed, nothing's initialized yet, free everything */
-+	/* alloc failed, take down everything */
- 	spin_lock_irq(&q->queue_lock);
- 	list_for_each_entry(blkg, &q->blkg_list, q_node) {
- 		struct blkcg *blkcg = blkg->blkcg;
-+		struct blkg_policy_data *pd;
- 
- 		spin_lock(&blkcg->lock);
--		if (blkg->pd[pol->plid]) {
--			pol->pd_free_fn(blkg->pd[pol->plid]);
-+		pd = blkg->pd[pol->plid];
-+		if (pd) {
-+			if (pd->online && pol->pd_offline_fn)
-+				pol->pd_offline_fn(pd);
-+			pd->online = false;
-+			pol->pd_free_fn(pd);
- 			blkg->pd[pol->plid] = NULL;
- 		}
- 		spin_unlock(&blkcg->lock);
+@@ -169,6 +170,7 @@
+ #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+ #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
++#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 
 
 
