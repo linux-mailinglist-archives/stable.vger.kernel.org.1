@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fdfLK+VxMWryjQUAu9opvQ
-	(envelope-from <stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:17 +0200
+	id 73MeMguXMWp/ngUAu9opvQ
+	(envelope-from <stable+bounces-266131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:33:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC796691822
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:55:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8326943E8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:33:47 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="tZhMH/EN";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264169-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zKobxlEk;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266131-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266131-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 449E930797BE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:42:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67CB1306D8AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE4144D68A;
-	Tue, 16 Jun 2026 15:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DF543CEC7;
+	Tue, 16 Jun 2026 18:33:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6833C44D022;
-	Tue, 16 Jun 2026 15:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5367B3DC4D9;
+	Tue, 16 Jun 2026 18:33:44 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624484; cv=none; b=jGtr8orFGMlyiqB+0w4tuHpbBZvn3TNiLW9mLcaxk4EHdendv0o+hC+vehxTMdafg3Pxo4ZJnSu3K6K8j6pXogFS/XpBOoIf2ULW98h7GEEb++SRSp3jyHBffE3mLx19lhxrbElNDXVVoiS2m8WajEmT1zuR8b5rUg7DtQJLpSg=
+	t=1781634825; cv=none; b=lEPMl/llhFpAgJZmRJK1q5/Y+qMNShJ3DL++uK7gPfGJwakoN4nrAH7wzfqITIvNH0BwcJm4kp7Pj6gjcIAsWsC/N7tBYJ+t2S8ZJn1VLQn9N8zUu7gO4n5oszYiccZ8QUkFAESZBazIN1ADlxWj5zVPUNYEv/dT6/zVWG4vF0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624484; c=relaxed/simple;
-	bh=xxp4Z7wIBCrS0msQ+YxPSXXpLd7w/HMYtk97y7AO1Qk=;
+	s=arc-20240116; t=1781634825; c=relaxed/simple;
+	bh=a/2QdgDvNnD2wZGXjjjEP+tnfzUTts4gDrncJ876DbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LhKwPVdVegMd2WMi3e6n8PsQLAE0ds7phmn7OII1gu9Baj5vjC+dRIZs/znKczrj1ctwz5ISmi/hp2pB1okE7PygjhJ3f+0YYGKUFP+FbXfGa23aMuNnX+kAz/ovCr3WwBuEeoj6wf3cmwgp0z4rl2JD8I7yzqxm4MkUpJzDKtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZhMH/EN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F0A1F00A3D;
-	Tue, 16 Jun 2026 15:41:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WkI8Foj08Vdfz+PrxhaKKsyw99sIon6vJM9JYHuIajSiSfJe9NcbEJmT8BASHiS27fLVcjG4IpxXnyznVYcYUNcPRTaSLUzw8M29ThWZJpfc2pzp3H/A5tisPOMJx7qv1CgTvIWw1U/yZUebkv/5/OO2qRYuabTwEBFaM/ZiGYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKobxlEk; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6267C1F000E9;
+	Tue, 16 Jun 2026 18:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624483;
-	bh=B8qRh7Dx5deTshV2SnL7b/E+mkn9W2BUSM38lUC8se0=;
+	s=korg; t=1781634824;
+	bh=h2m4NiD5YdAk4QxdxymrS5s4GIWIgLKgwGgPlAYsIcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tZhMH/ENjC2xKc/jHYI5odcmFn2KkoazX1Cgxp9aGEPwfHdOpZECUpC/Yjs74NGCY
-	 s/gQrAtc0MmCk0bv2sLQRHIMSx/VHKg1xLRqAHws9+la6cZ3yCBOtZO88VBi5JrYmG
-	 2H1repAxglBlBPi+wAD9VUUeLhPwBMXQO8H364Gc=
+	b=zKobxlEkBtNsU4EEo8DiK3BKu8ruBJ0gEF90SDc9Chb/WQJdBpzSx7t0FdiUSk2og
+	 374pY473ePJ2GWTKtdmZgpe8U4gBQmYjFej4AX3IEkdeodr5oDp6DFET9kT3x10a8e
+	 aSCZLJ7KKw2vmxctafQEvxqSKfy0gAG0fJ41ASfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Koenig <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: [PATCH 7.0 346/378] drm/amdgpu: set noretry=1 as default for GFX 10.1.x (Navi10/12/14)
+	Siwei Zhang <oss@fourdim.xyz>,
+	=?UTF-8?q?Safa=20Karaku=C5=9F?= <safa.karakus@secunnix.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 339/411] Bluetooth: fix UAF in l2cap_sock_cleanup_listen() vs l2cap_conn_del()
 Date: Tue, 16 Jun 2026 20:29:37 +0530
-Message-ID: <20260616145128.387079976@linuxfoundation.org>
+Message-ID: <20260616145119.228215373@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264169-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266131-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:christian.koenig@amd.com,m:alexander.deucher@amd.com,m:felix.kuehling@amd.com,m:vitaly.prosyak@amd.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oss@fourdim.xyz,m:safa.karakus@secunnix.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
@@ -99,95 +99,216 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,secunnix.com:email,fourdim.xyz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DC796691822
+X-Rspamd-Queue-Id: 5C8326943E8
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Safa Karakuş <safa.karakus@secunnix.com>
 
-commit e47b0056a08dc70430ffc44bbf62197e7d1ff8ea upstream.
+[ Upstream commit ab1513597c6cf17cd1ad2a21e3b045421b48e022 ]
 
-Problem:
-While developing the amd_close_race IGT test (which intentionally triggers
-execute permission faults by removing VM_PAGE_EXECUTABLE from GPU page table
-entries), we discovered that on Navi10 (GFX 10.1.x) these faults produce
-zero diagnostic output. The GPU simply hangs silently for ~10s until the
-scheduler timeout fires. There is no way to distinguish an execute
-permission fault from any other type of GPU hang.
+bt_accept_dequeue() unlinks a not-yet-accepted child from the parent
+accept queue and release_sock()s it before returning, so the returned
+sk has no caller reference and is unlocked.
 
-Root cause:
-GFX 10.1.x defaults to noretry=0, which sets
-RETRY_PERMISSION_OR_INVALID_PAGE_FAULT=1 in the GFXHUB UTCL2 registers
-(gfxhub_v2_0.c line 313). With this bit set, permission faults (valid PTE,
-wrong R/W/X bits) are handled entirely within the UTCL1/UTCL2 hardware
-loop: UTCL2 returns an XNACK to UTCL1, and UTCL1 re-requests the
-translation indefinitely, expecting software to eventually fix the
-permission bits (as happens in SVM/HMM recovery). No interrupt of any kind
-reaches the IH ring.
+l2cap_sock_cleanup_listen() walks these children on listening-socket
+close.  A concurrent HCI disconnect drives hci_rx_work ->
+l2cap_conn_del() which runs l2cap_chan_del() + l2cap_sock_kill() and
+frees the child sk and its l2cap_chan; cleanup_listen() then uses both:
 
-This is different from invalid-page faults (V=0) which DO generate a retry
-fault interrupt that the driver can escalate to a no-retry fault. Permission
-faults with valid PTEs loop silently forever in hardware.
+  BUG: KASAN: slab-use-after-free in l2cap_sock_kill
+    l2cap_sock_kill / l2cap_sock_cleanup_listen / __x64_sys_close
+  Freed by: l2cap_conn_del -> l2cap_sock_close_cb -> l2cap_sock_kill
 
-GFX 10.3+ already defaults to noretry=1, which makes permission faults
-generate immediate L2 protection fault interrupts. GFX 10.1.x was
-inadvertently left out of this default.
+This is distinct from the two fixes already in this area: commit
+e83f5e24da741 ("Bluetooth: serialize accept_q access") serialises the
+accept_q list/poll and takes temporary refs inside bt_accept_dequeue(),
+and CVE-2025-39860 serialises the userspace close()/accept() race by
+calling cleanup_listen() under lock_sock() in l2cap_sock_release().
+Neither covers l2cap_conn_del() running from hci_rx_work, so this UAF
+still reproduces on current bluetooth/master.
 
-Fix:
-Change the noretry=1 threshold from IP_VERSION(10, 3, 0) to
-IP_VERSION(10, 1, 0) in amdgpu_gmc_noretry_set(). This is a one-line
-change that aligns GFX 10.1.x behavior with GFX 10.3+ and all newer
-generations.
+Take the reference at the source: bt_accept_dequeue() does sock_hold()
+while sk is still locked, before release_sock(); callers sock_put().
+cleanup_listen() pins the chan with l2cap_chan_hold_unless_zero() under
+a brief child sk lock (serialising vs l2cap_sock_teardown_cb()), drops
+it before l2cap_chan_lock(), and skips a duplicate l2cap_sock_kill() on
+SOCK_DEAD.  conn->lock is not taken here: cleanup_listen() runs under
+the parent sk lock and that would invert
+conn->lock -> chan->lock -> sk_lock (lockdep).
 
-With noretry=1, the existing non-retry fault handler
-(gmc_v10_0_process_interrupt) already decodes and prints the full
-GCVM_L2_PROTECTION_FAULT_STATUS register including PERMISSION_FAULTS,
-faulting address, VMID, PASID, and process name. No additional logging
-code is needed — the fix is purely routing permission faults to the
-existing, fully-capable non-retry interrupt handler.
+KASAN/SMP: an unprivileged listen/close vs HCI-disconnect race produced
+12 use-after-free reports per run before this change; 0, and no lockdep
+report, over 1600+ raced iterations after it on bluetooth/master.
 
-v2: Dropped GFX10-specific logging from gmc_v10_0.c and
-kfd_int_process_v10.c (Felix Kuehling). v1 added logging in the retry
-fault handler, but with noretry=1 permission faults take the non-retry
-path — the v1 retry handler code was dead and would never execute.
-
-Tested on Navi10 (GFX 10.1.10):
-- Execute permission faults now produce immediate, clear output:
-    [gfxhub] page fault (src_id:0 ring:64 vmid:4 pasid:592)
-     Process amd_close_race pid 13380 thread amd_close_race pid 13384
-      in page at address 0x40001000 from client 0x1b (UTCL2)
-    GCVM_L2_PROTECTION_FAULT_STATUS:0x00700881
-         PERMISSION_FAULTS: 0x8
-- No regressions with properly-mapped GPU workloads
-
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit eb21edd24c40d81066753f8ac6f23bce15745395)
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
 Cc: stable@vger.kernel.org
+Reported-by: Siwei Zhang <oss@fourdim.xyz>
+Reviewed-by: Siwei Zhang <oss@fourdim.xyz>
+Signed-off-by: Safa Karakuş <safa.karakus@secunnix.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c |   10 ++++++++
+ net/bluetooth/l2cap_sock.c   |   51 +++++++++++++++++++++++++++++++++++++------
+ net/bluetooth/rfcomm/sock.c  |    9 ++++++-
+ net/bluetooth/sco.c          |    9 ++++++-
+ 4 files changed, 70 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -1002,7 +1002,7 @@ void amdgpu_gmc_noretry_set(struct amdgp
- 				gc_ver == IP_VERSION(9, 4, 3) ||
- 				gc_ver == IP_VERSION(9, 4, 4) ||
- 				gc_ver == IP_VERSION(9, 5, 0) ||
--				gc_ver >= IP_VERSION(10, 3, 0));
-+				gc_ver >= IP_VERSION(10, 1, 0));
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -259,6 +259,16 @@ restart:
+ 			if (newsock)
+ 				sock_graft(sk, newsock);
  
- 	if (!amdgpu_sriov_xnack_support(adev))
- 		gmc->noretry = 1;
++			/* Hand the caller a reference taken while sk is
++			 * still locked.  bt_accept_unlink() just dropped
++			 * the accept-queue reference; without this hold a
++			 * concurrent teardown (e.g. l2cap_conn_del() ->
++			 * l2cap_sock_kill()) could free sk between
++			 * release_sock() and the caller using it.  Every
++			 * caller drops this with sock_put() when done.
++			 */
++			sock_hold(sk);
++
+ 			release_sock(sk);
+ 			return sk;
+ 		}
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -366,8 +366,13 @@ static int l2cap_sock_accept(struct sock
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+@@ -1444,22 +1449,54 @@ static void l2cap_sock_cleanup_listen(st
+ 	BT_DBG("parent %p state %s", parent,
+ 	       state_to_string(parent->sk_state));
+ 
+-	/* Close not yet accepted channels */
++	/* Close not yet accepted channels.
++	 *
++	 * bt_accept_dequeue() now returns sk with an extra reference held
++	 * (taken while sk was still locked) so a concurrent l2cap_conn_del()
++	 * -> l2cap_sock_kill() cannot free sk under us.
++	 *
++	 * cleanup_listen() runs under the parent sk lock, so unlike
++	 * l2cap_sock_shutdown() we must NOT take conn->lock here: that would
++	 * establish sk_lock -> conn->lock and invert the established
++	 * conn->lock -> chan->lock -> sk_lock order (lockdep deadlock).
++	 *
++	 * Instead, briefly take the child sk lock to fetch and pin its chan.
++	 * l2cap_conn_del() reaches the chan free only via
++	 * l2cap_chan_del() -> l2cap_sock_teardown_cb(), which itself takes
++	 * the child sk lock; holding it across l2cap_chan_hold_unless_zero()
++	 * therefore guarantees the chan cannot be freed while we read and
++	 * pin it (hold_unless_zero() additionally skips a chan already past
++	 * its last reference).  We then drop the sk lock before taking
++	 * chan->lock, so sk and chan locks are never held together.
++	 */
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+-		struct l2cap_chan *chan = l2cap_pi(sk)->chan;
++		struct l2cap_chan *chan;
++
++		lock_sock_nested(sk, L2CAP_NESTING_NORMAL);
++		chan = l2cap_chan_hold_unless_zero(l2cap_pi(sk)->chan);
++		release_sock(sk);
++		if (!chan) {
++			/* l2cap_conn_del() already tearing this child down */
++			sock_put(sk);
++			continue;
++		}
+ 
+ 		BT_DBG("child chan %p state %s", chan,
+ 		       state_to_string(chan->state));
+ 
+-		l2cap_chan_hold(chan);
+ 		l2cap_chan_lock(chan);
+-
+ 		__clear_chan_timer(chan);
+ 		l2cap_chan_close(chan, ECONNRESET);
+-		l2cap_sock_kill(sk);
+-
++		/* l2cap_conn_del() may already have killed this socket
++		 * (it sets SOCK_DEAD); skip the duplicate to avoid a
++		 * double sock_put()/l2cap_chan_put().
++		 */
++		if (!sock_flag(sk, SOCK_DEAD))
++			l2cap_sock_kill(sk);
+ 		l2cap_chan_unlock(chan);
++
+ 		l2cap_chan_put(chan);
++		sock_put(sk);
+ 	}
+ }
+ 
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -190,6 +190,8 @@ static void rfcomm_sock_cleanup_listen(s
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		rfcomm_sock_close(sk);
+ 		rfcomm_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -513,8 +515,13 @@ static int rfcomm_sock_accept(struct soc
+ 		}
+ 
+ 		nsk = bt_accept_dequeue(sk, newsock);
+-		if (nsk)
++		if (nsk) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps nsk alive from here.
++			 */
++			sock_put(nsk);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -394,6 +394,8 @@ static void sco_sock_cleanup_listen(stru
+ 	while ((sk = bt_accept_dequeue(parent, NULL))) {
+ 		sco_sock_close(sk);
+ 		sco_sock_kill(sk);
++		/* Drop the reference handed back by bt_accept_dequeue(). */
++		sock_put(sk);
+ 	}
+ 
+ 	parent->sk_state  = BT_CLOSED;
+@@ -687,8 +689,13 @@ static int sco_sock_accept(struct socket
+ 		}
+ 
+ 		ch = bt_accept_dequeue(sk, newsock);
+-		if (ch)
++		if (ch) {
++			/* Drop the bridging ref from bt_accept_dequeue();
++			 * the grafted socket keeps ch alive from here.
++			 */
++			sock_put(ch);
+ 			break;
++		}
+ 
+ 		if (!timeo) {
+ 			err = -EAGAIN;
 
 
 
