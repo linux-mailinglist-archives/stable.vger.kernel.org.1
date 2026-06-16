@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-266429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id W+oPIh+dMWoLoQUAu9opvQ
-	(envelope-from <stable+bounces-266429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:43 +0200
+	id MbtZMQuWMWr7nQUAu9opvQ
+	(envelope-from <stable+bounces-266080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A96694A3F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393AB6942C8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tE7p7YvN;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266429-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266429-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QnkUajAR;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266080-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266080-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FA83303879E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:59:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17622309726B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2398B47D929;
-	Tue, 16 Jun 2026 18:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66817477E33;
+	Tue, 16 Jun 2026 18:29:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DE33EB0F5;
-	Tue, 16 Jun 2026 18:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176EB43CEC7;
+	Tue, 16 Jun 2026 18:29:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636378; cv=none; b=tWoX5CueZ2EiCCgKnvIWEf4ZzEpv/zpBMq532Dut9Eq6m7eX5bJtLLPyNVXhMMXTTRLQMjZaw5o4cQpl0+iUBDF2hdlZqIXgFmnLRzBA1rSaU1BMZOgWwgC5nSooKoyOJDjtwELaL1/rSSR3wQjPQAzmrM/q7RbRE49k7eM/TAU=
+	t=1781634556; cv=none; b=bp7wGGNxE7jQvP911gG/Q/20Gky/JD05RdWSemnATKeL7EPoFmZpkpZdoShTo1qwXjhhIcVyTErKDYNZgv8Aujwozv3UXOuQzd1XZXNcchLMULkUeJcwI4komdesBm//dgRQByK4frRdgIVY+Qkh5kW/qEU/f8QA8id+bYGvWgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636378; c=relaxed/simple;
-	bh=sJb6QhnCLXttXQDVRjz8b7+cn8FMIAAfJNwHKfWGCB4=;
+	s=arc-20240116; t=1781634556; c=relaxed/simple;
+	bh=EfIBFFQlkUK/4SO36q6WN1ZTNDUBQTZ0a2epTOMIU0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLzOkYKdKt3ZUg0fheFH3ZTHNLJQArLSTrHwjb2VmOaZs4tsWvfVlC9R58FUDjtIVm1dttic7tMJt/w5Aux2w3Lom41xsqaYJbeX08HJPW7u03EHiil6r0CglcGSQOcFpfval7s1AbdY0pysn6AZGiHY3PMwAvVwr9OiWzk154A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE7p7YvN; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981811F00A3A;
-	Tue, 16 Jun 2026 18:59:36 +0000 (UTC)
+	 MIME-Version; b=dqzx71CmL3VfkmhrGn93zdRQi8N1chFOPqsMTUePCgsFOz7CTIFVi47Ndfl5eOoK2URPySZ67rXGT4uWSGlbvrK8AVxr/H4x/SNOFYNOfqmOfBIbsCChXPk+asVQQuHpJhjBOA6IYXMoYsMzMTcn1CHdwefEHbP+fnfv8YSt1UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnkUajAR; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139A61F000E9;
+	Tue, 16 Jun 2026 18:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636377;
-	bh=xIcsZU55IKnsZjKv3nOh9zCOqvXSAE5V+KdD/j1ktf0=;
+	s=korg; t=1781634555;
+	bh=xPNw6cWAm5GlYQ3I4AnGVJssGUZe+dHuW4o8BkVogUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=tE7p7YvNrTFJBuslO2BRUm7PXbTi0cTHuh2/G3hZOvAgzqKPP4xtswUB0IgXmmNwF
-	 GilIsGsC8ia+yIej27Vs6v4HhO964EpbPkJrmONrKPajbBNz1z3jGHc8umaHlUQv9g
-	 8qRDyzw+nNUMlVV3mdHevINGXJFwUjxr1W3aizOo=
+	b=QnkUajARGnAmMVMmTuCOhBSfOeBWtdkHuexI5ijDTZZUHzxQG4FybXHH1ctq4ZrQy
+	 J/56D6wWbkT3+7uICYT6t0isRH4iIKcl1ZziCoSxamqovAELvNcn3fvvHM+GRKrvCG
+	 7q2yrWEsl4SsXY1dmAjDn9ukJSeEyLAj0WchfmiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 228/342] media: rc: ttusbir: respect DMA coherency rules
+Subject: [PATCH 5.15 286/411] hfsplus: fix held lock freed on hfsplus_fill_super()
 Date: Tue, 16 Jun 2026 20:28:44 +0530
-Message-ID: <20260616145058.821465565@linuxfoundation.org>
+Message-ID: <20260616145116.360837745@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,121 +67,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266429-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266080-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oneukum@suse.com,m:sean@mess.org,m:hverkuil+cisco@kernel.org,m:sashal@kernel.org,m:hverkuil@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:slava@dubeyko.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,mess.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,seu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F2A96694A3F
+X-Rspamd-Queue-Id: 393AB6942C8
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 50acaad3d202c064779db8dc3d010007347f59c7 ]
+[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
 
-Buffers must not share a cache line with other data structures.
-Allocate separately.
+hfsplus_fill_super() calls hfs_find_init() to initialize a search
+structure, which acquires tree->tree_lock. If the subsequent call to
+hfsplus_cat_build_key() fails, the function jumps to the out_put_root
+error label without releasing the lock. The later cleanup path then
+frees the tree data structure with the lock still held, triggering a
+held lock freed warning.
 
-Fixes: 0938069fa0897 ("[media] rc: Add support for the TechnoTrend USB IR Receiver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ kept kzalloc(sizeof(*tt), GFP_KERNEL) instead of kzalloc_obj() ]
+Fix this by adding the missing hfs_find_exit(&fd) call before jumping
+to the out_put_root error label. This ensures that tree->tree_lock is
+properly released on the error path.
+
+The bug was originally detected on v6.13-rc1 using an experimental
+static analysis tool we are developing, and we have verified that the
+issue persists in the latest mainline kernel. The tool is specifically
+designed to detect memory management issues. It is currently under active
+development and not yet publicly available.
+
+We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
+lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
+used GDB to dynamically shrink the max_unistr_len parameter to 1 before
+hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
+return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
+exercises the faulty error path. The following warning was observed
+during mount:
+
+	=========================
+	WARNING: held lock freed!
+	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
+	-------------------------
+	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
+	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+	2 locks held by mount/174:
+	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
+	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+
+	stack backtrace:
+	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	Call Trace:
+	<TASK>
+	dump_stack_lvl+0x82/0xd0
+	debug_check_no_locks_freed+0x13a/0x180
+	kfree+0x16b/0x510
+	? hfsplus_fill_super+0xcb4/0x18a0
+	hfsplus_fill_super+0xcb4/0x18a0
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x65f/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? pointer+0x4ce/0xbf0
+	? trace_contention_end+0x11c/0x150
+	? __pfx_pointer+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x79b/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? vsnprintf+0x6da/0x1270
+	? srso_return_thunk+0x5/0x5f
+	? __mutex_unlock_slowpath+0x157/0x740
+	? __pfx_vsnprintf+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? mark_held_locks+0x49/0x80
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? irqentry_exit+0x17b/0x5e0
+	? trace_irq_disable.constprop.0+0x116/0x150
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	get_tree_bdev_flags+0x302/0x580
+	? __pfx_get_tree_bdev_flags+0x10/0x10
+	? vfs_parse_fs_qstr+0x129/0x1a0
+	? __pfx_vfs_parse_fs_qstr+0x3/0x10
+	vfs_get_tree+0x89/0x320
+	fc_mount+0x10/0x1d0
+	path_mount+0x5c5/0x21c0
+	? __pfx_path_mount+0x10/0x10
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? kmem_cache_free+0x307/0x540
+	? user_path_at+0x51/0x60
+	? __x64_sys_mount+0x212/0x280
+	? srso_return_thunk+0x5/0x5f
+	__x64_sys_mount+0x212/0x280
+	? __pfx___x64_sys_mount+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	do_syscall_64+0x111/0x680
+	entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7ffacad55eae
+	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
+	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
+	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
+	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
+	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
+	</TASK>
+
+After applying this patch, the warning no longer appears.
+
+Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/ttusbir.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/hfsplus/super.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/rc/ttusbir.c
-+++ b/drivers/media/rc/ttusbir.c
-@@ -32,7 +32,7 @@ struct ttusbir {
- 
- 	struct led_classdev led;
- 	struct urb *bulk_urb;
--	uint8_t bulk_buffer[5];
-+	u8 *bulk_buffer;
- 	int bulk_out_endp, iso_in_endp;
- 	bool led_on, is_led_on;
- 	atomic_t led_complete;
-@@ -188,13 +188,16 @@ static int ttusbir_probe(struct usb_inte
- 	struct rc_dev *rc;
- 	int i, j, ret;
- 	int altsetting = -1;
-+	u8 *buffer;
- 
- 	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
-+	buffer = kzalloc(5, GFP_KERNEL);
- 	rc = rc_allocate_device(RC_DRIVER_IR_RAW);
--	if (!tt || !rc) {
-+	if (!tt || !rc || buffer) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
-+	tt->bulk_buffer = buffer;
- 
- 	/* find the correct alt setting */
- 	for (i = 0; i < intf->num_altsetting && altsetting == -1; i++) {
-@@ -283,8 +286,8 @@ static int ttusbir_probe(struct usb_inte
- 	tt->bulk_buffer[3] = 0x01;
- 
- 	usb_fill_bulk_urb(tt->bulk_urb, tt->udev, usb_sndbulkpipe(tt->udev,
--		tt->bulk_out_endp), tt->bulk_buffer, sizeof(tt->bulk_buffer),
--						ttusbir_bulk_complete, tt);
-+			  tt->bulk_out_endp), tt->bulk_buffer, 5,
-+			  ttusbir_bulk_complete, tt);
- 
- 	tt->led.name = "ttusbir:green:power";
- 	tt->led.default_trigger = "rc-feedback";
-@@ -353,6 +356,7 @@ out:
- 		kfree(tt);
- 	}
- 	rc_free_device(rc);
-+	kfree(buffer);
- 
- 	return ret;
- }
-@@ -375,6 +379,7 @@ static void ttusbir_disconnect(struct us
- 	}
- 	usb_kill_urb(tt->bulk_urb);
- 	usb_free_urb(tt->bulk_urb);
-+	kfree(tt->bulk_buffer);
- 	usb_set_intfdata(intf, NULL);
- 	kfree(tt);
- }
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -539,8 +539,10 @@ static int hfsplus_fill_super(struct sup
+ 	if (err)
+ 		goto out_put_root;
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0))
++	if (unlikely(err < 0)) {
++		hfs_find_exit(&fd);
+ 		goto out_put_root;
++	}
+ 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 
 
 
