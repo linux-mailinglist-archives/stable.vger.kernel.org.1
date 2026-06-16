@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id Mv/0KnOJMWrylwUAu9opvQ
-	(envelope-from <stable+bounces-265403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:47 +0200
+	id LLxZA+poMWq1igUAu9opvQ
+	(envelope-from <stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292696934A8
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEA1690E11
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=g3yNKbK+;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265403-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265403-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=mRr1bVSM;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263842-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C0D431C9D19
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02E3D3065BFD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE408332EC1;
-	Tue, 16 Jun 2026 17:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3A843C047;
+	Tue, 16 Jun 2026 15:12:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17B43A5E91;
-	Tue, 16 Jun 2026 17:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1238C437;
+	Tue, 16 Jun 2026 15:12:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631022; cv=none; b=njYM5ryNgPurfa4wSuLb+1KDVBjLcuSl1qvFrcjZucXsUcrP8em/ZQlm175GQxXcTimDU4U7c5nBRqyzDtDXGGgMMkPHK3soFdUZz5+AZxWysk2Q6IZ6bJEDoKIabM4CyDAG6RkWlAkvSYabPTCIcfItai1XfBnG5oB0mluGZKE=
+	t=1781622760; cv=none; b=dJ6tkHAC+RUzZRHs5mWDpRxe79BAXxQQ7u7DThsVNLLBFeVZ8w08EzP5WJ+/TR8Jf43eVj7bro0TycX8kSVRDD6yxe41mjGlbRlmJ8gWyD3atXsPXomJ00xMUSiPPp5M/D4vlEwF2BvjHtaVrAf9M/rM8MtbbV6KT9LVcIb6GAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631022; c=relaxed/simple;
-	bh=4uOlNO5+rRZDUsYb5pCzYHE3NvH9/33PXUXWFhJmwbs=;
+	s=arc-20240116; t=1781622760; c=relaxed/simple;
+	bh=XhtOVlYsY3pmOEAOh5/yq019rRuwu/zu4x88bO5YJkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMtvpapKmYxzuqKv/VJ6IqUcceKaK23rp38KXRPEuPeVscLIu0HV1eBYWdJG/FiHpJEzBoXczNAB1atiNujaiJ9Wj5FtCDByWEm1wyU4BVufozt3mGIraGNquCKvstgD6qsI3FawEDo6jZPiabkOaBs4MGj0KsiZ6Mdfy2X1g9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3yNKbK+; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E291F000E9;
-	Tue, 16 Jun 2026 17:30:20 +0000 (UTC)
+	 MIME-Version; b=GzAkaVRhGNZbR6Fhguw3JTUyEV9kib7JV5+CQaIosMLq3vHWjtIhiRA8+p2mq20tCgBue+DPtNnk2rOysbn112Mi5jQsOrMy8V6fdRXV7D+Phz5lVNSyq/NjCQZwUCHSJdcFNsUf72mAvUCg+2cmBYV2LjM2sVuUhnGdok3WZHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRr1bVSM; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D56EC1F000E9;
+	Tue, 16 Jun 2026 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631021;
-	bh=jwGy2dbpShF+d+S6cyQpg89vsjTHGaVpLk1/CCFB+m8=;
+	s=korg; t=1781622759;
+	bh=CttxsJV/a8Vt5KBTcImcKEptXhJ1U1RWeokWxznhv2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=g3yNKbK+JyURmEbxpEXQI4FO4FpFtgS0AUBK2dzwULbElyl9f8poNVh263kZ3zlFU
-	 3jns9S78H1AeHehqf9s6DL/AlhEEikYVISkoagLxS4C+CfbYPRhoo37Oh41GyinxwG
-	 ezHN3U8iJ50DzC1kZ5tQl2iskbSLdNfIsfGBuDW0=
+	b=mRr1bVSMtZ0cA+tg7F46bpVvchY9sE1IxT9rp7DH92oKn12qdVdyO0VHBsAYnQgKy
+	 EvLiltAQjOdwl0Sg0mlH2KkACTjKGNgobRUNmnrwDalx2VdeFDQl5yzX40OROYNf5N
+	 1XQyarXPEqsCi8rKx8FNcheC6fY7zAkC331u9N9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Carlier <devnexen@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH 6.1 108/522] iio: gyro: itg3200: fix i2c read into the wrong stack location
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 024/378] netfilter: bridge: make ebt_snat ARP rewrite writable
 Date: Tue, 16 Jun 2026 20:24:15 +0530
-Message-ID: <20260616145130.994076396@linuxfoundation.org>
+Message-ID: <20260616145111.114267721@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,89 +73,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265403-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:devnexen@gmail.com,m:andriy.shevchenko@intel.com,m:jic23@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263842-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,netfilter.org:email,strlen.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 292696934A8
+X-Rspamd-Queue-Id: 7DEA1690E11
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Carlier <devnexen@gmail.com>
+From: Yiming Qian <yimingqian591@gmail.com>
 
-commit 6bdc3023d62ed5c7d591f0eb27a5adb37fb892ae upstream.
+[ Upstream commit 67ba971ae02514d85818fe0c32549ab4bfa3bf49 ]
 
-itg3200_read_all_channels() takes `__be16 *buf' as a parameter and
-fills the i2c_msg destination as `(char *)&buf'. Since `buf' is the
-parameter (a pointer), `&buf' is the address of the local pointer
-slot on the stack of itg3200_read_all_channels(), not the address
-of the caller's scan buffer. The (char *) cast hides the type
-mismatch.
+The ebtables SNAT target keeps the Ethernet source address rewrite
+behind skb_ensure_writable(skb, 0).  This is intentional: at the bridge
+ebtables hooks the Ethernet header is addressed through
+skb_mac_header()/eth_hdr(), while skb->data points at the Ethernet
+payload.  Asking skb_ensure_writable() for ETH_HLEN bytes would check
+the payload, not the Ethernet header, and would reintroduce the small
+packet regression fixed by commit 63137bc5882a.
 
-i2c_transfer() therefore writes ITG3200_SCAN_ELEMENTS * sizeof(s16)
-= 8 bytes into the parameter's stack slot, which is discarded when
-the function returns. The caller's scan buffer in
-itg3200_trigger_handler() is never written to, so
-iio_push_to_buffers_with_timestamp() pushes uninitialised stack
-contents to userspace via /dev/iio:deviceX every scan -- both a
-functional bug (no actual gyroscope or temperature data is
-delivered through the triggered buffer) and an information leak.
+However, the optional ARP sender hardware address rewrite is different.
+It writes through skb_store_bits() at an offset relative to skb->data:
 
-The non-buffered read_raw() path is unaffected: it goes through
-itg3200_read_reg_s16() which uses `&out' on a local s16 value,
-where that is correct.
+        skb_store_bits(skb, sizeof(struct arphdr), info->mac, ETH_ALEN)
 
-Drop the spurious `&' so the i2c read writes into the caller's
-buffer.
+skb_header_pointer() only safely reads the ARP header; it does not make
+the later sender hardware address range writable.  If that range is
+still held in a nonlinear skb fragment backed by a splice-imported file
+page, skb_store_bits() maps the frag page and copies the new MAC address
+directly into it.
 
-Fixes: 9dbf091da080 ("iio: gyro: Add itg3200")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Ensure the ARP SHA range is writable before reading the ARP header and
+before calling skb_store_bits().
+
+Fixes: 63137bc5882a ("netfilter: ebtables: Fixes dropping of small packets in bridge nat")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/itg3200_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/netfilter/ebt_snat.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/gyro/itg3200_buffer.c
-+++ b/drivers/iio/gyro/itg3200_buffer.c
-@@ -34,7 +34,7 @@ static int itg3200_read_all_channels(str
- 			.addr = i2c->addr,
- 			.flags = i2c->flags | I2C_M_RD,
- 			.len = ITG3200_SCAN_ELEMENTS * sizeof(s16),
--			.buf = (char *)&buf,
-+			.buf = (char *)buf,
- 		},
- 	};
+diff --git a/net/bridge/netfilter/ebt_snat.c b/net/bridge/netfilter/ebt_snat.c
+index 7dfbcdfc30e5d2..c9e229af0366b8 100644
+--- a/net/bridge/netfilter/ebt_snat.c
++++ b/net/bridge/netfilter/ebt_snat.c
+@@ -31,6 +31,9 @@ ebt_snat_tg(struct sk_buff *skb, const struct xt_action_param *par)
+ 		const struct arphdr *ap;
+ 		struct arphdr _ah;
  
++		if (skb_ensure_writable(skb, sizeof(_ah) + ETH_ALEN))
++			return EBT_DROP;
++
+ 		ap = skb_header_pointer(skb, 0, sizeof(_ah), &_ah);
+ 		if (ap == NULL)
+ 			return EBT_DROP;
+-- 
+2.53.0
+
 
 
 
