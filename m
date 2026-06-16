@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id JOHjD998MWqdkgUAu9opvQ
-	(envelope-from <stable+bounces-264659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:07 +0200
+	id JkqXG75xMWrjjQUAu9opvQ
+	(envelope-from <stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D866925B6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653956917F1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ayYAHN9H;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264659-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264659-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XEZo3IQB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264155-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 214183054673
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:25:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4F22430228AC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D3446AF14;
-	Tue, 16 Jun 2026 16:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD691450906;
+	Tue, 16 Jun 2026 15:40:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456143E4BA;
-	Tue, 16 Jun 2026 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5EC4508E0;
+	Tue, 16 Jun 2026 15:40:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627117; cv=none; b=k5Aba+osCqhRQ7NpIsH2DsjKMxcEIX553lhM6hNbD4sxM9mvs+qqWxwYIBEcAruqNdhMfUN2X8N2klyDBngzgQ85tQIymXSkyJA4XmNVZpSE3FHHlkwxOsydCmro0r5QVkXaYAbg3cvZN7d7SY4uc0DLqxLhRQkVDmdJla/N+Ng=
+	t=1781624413; cv=none; b=rK7/x+J9uSs4TGHV1wFfyFLN4GAtvsXnI6Y2oU7C9fsrgx7fIm3yylTmUGfmP+xZqLtamTXpHQzzBcBCvsZAUHgRmERXW/yRvx6Kw01iaU9kmZpQBOICj9VHCQZxMf9NVMoSZnno8nfSHy8tnE4q5bQBR/JksR6FfGExxAxEM0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627117; c=relaxed/simple;
-	bh=5/v1Xtdid6Te3tAtzkh0Gx/ALYhmDIZqSq7HnEV1qtE=;
+	s=arc-20240116; t=1781624413; c=relaxed/simple;
+	bh=5XQYkSq9tG+bV8L8SkEtDbrnB0NNj/dwtqZghp2/A+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDFAC1sT9GcybnmZlcMB84ztkJHvXFIyiHpXkRCctpiPypCUvhQZT6Zg086jgoBdVCm86nNpEWGHzwu2K5eshhH701zd50A684AcQyrUZ4Z0d1y7yMybvmQrCwaziHWn9y7Q5w97l1nN/T0gPK3OL9wwoNyVwaIhqyovF30VKfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayYAHN9H; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45A91F000E9;
-	Tue, 16 Jun 2026 16:25:14 +0000 (UTC)
+	 MIME-Version; b=XQs9j3s00LEOwthFYkqUybUXM79mtdqqChxAPAqzPvuxj+VAteaIWhOOdOqN2OKpDZXCuTjxJDQw6BWst3QJtM+pFvOQlFsKnAoplHHv9Bx7Uu2E3SBKvM0fjAyy719b+3jtyYFAtzZ3SysjVSFzgSzku6uZNeLsYemnnLapxfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEZo3IQB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B0B1F000E9;
+	Tue, 16 Jun 2026 15:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627115;
-	bh=pwQc1LfJYnIrxPgbMLQJ0rpbNUS/vhsyotzOZREJ//Y=;
+	s=korg; t=1781624412;
+	bh=Ql8J89dND9mycU7mJD5b7bV0m+FZl4Y0wWPCpAboNjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ayYAHN9HG8uINJ3L08w6E7f0jhtnhB2pV33eTzi5KqgJ+yle43mVER6z5xEtTfiwU
-	 yhlrUx2iJvzJYc1RjZ5FNMuSyiB+PMbeI6edyOmGCKcMmipR0eYM3Dv9IMXB0nXX7g
-	 29QPxJjFFoSorPyicCQ2d1xaiPpFaYX8l7DcBGa8=
+	b=XEZo3IQBM0RZwbTvgspUMQnx4Zl32Nq/qjWcXaK/xsfljKU1QwiVqr7sYEAXHV4QH
+	 gDKX9+N/tWOn9f0hXvDDF71UIiUWsJAwx/iqmESJwG63CYCma0q8KryrlCB0tj8f3b
+	 x/KGQNPSMmhE7CBll3iajT14l56ktlLszGX/rrNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 123/261] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 330/378] slimbus: qcom-ngd-ctrl: Correct PDR and SSR cleanup ownership
 Date: Tue, 16 Jun 2026 20:29:21 +0530
-Message-ID: <20260616145050.778057884@linuxfoundation.org>
+Message-ID: <20260616145127.591321856@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,170 +68,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264659-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.dentz@gmail.com,m:michael.bommarito@gmail.com,m:luiz.von.dentz@intel.com,m:luizdentz@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264155-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.baryshkov@oss.qualcomm.com,m:mukesh.ojha@oss.qualcomm.com,m:bjorn.andersson@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: F3D866925B6
+X-Rspamd-Queue-Id: 653956917F1
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-commit dd214733544427587a95f66dbf3adff072568990 upstream.
+commit 960b53a3f76fa214c2fc493734ae7b3c5e713bbf upstream.
 
-net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
-signaling packets up to the channel MTU and dispatches each command
-without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
-within radio range can send a fixed-channel CID 0x0001 packet that is
-larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
-pairing. In a real-radio stock-kernel run, one 681-byte signaling
-packet containing 168 zero-length ECHO_REQ commands made the target
-transmit 168 ECHO_RSP frames over about 220 ms.
+PDR and SSR callbacks are registred from the controller probe function,
+but currently released from the child device's remove function.
 
-Impact: a Bluetooth BR/EDR peer within radio range, before pairing, can
-force 168 ECHO_RSP frames from one 681-byte fixed-channel signaling
-packet containing packed ECHO_REQ commands.
+The remove() function should only be unwinding what was done in the
+same device's probe() function.
 
-Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
-reject any larger signaling packet with one L2CAP_COMMAND_REJECT_RSP
-carrying L2CAP_REJ_MTU_EXCEEDED before any command is dispatched.
-
-The Bluetooth Core spec wording for MTUExceeded says the reject
-identifier shall match the first request command in the packet, and
-that packets containing only responses shall be silently discarded.
-Linux intentionally deviates from that prescription: silently
-discarding desynchronizes the peer because the remote stack never
-learns its responses were dropped, and locating the first request
-command requires walking command headers past MTUsig, i.e. processing
-bytes from a packet we have already decided is too large to process.
-We therefore always emit one reject and use the identifier from the
-first command header, a single fixed-offset byte read.
-
-The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
-trace to the initial git import; no later introducing commit is
-available for a Fixes tag.
-
+Fixes: 917809e2280b ("slimbus: ngd: Add qcom SLIMBus NGD driver")
 Cc: stable@vger.kernel.org
-Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
-Link: https://lore.kernel.org/r/20260520135034.1060859-1-michael.bommarito@gmail.com
-Link: https://lore.kernel.org/r/20260521000555.3712030-1-michael.bommarito@gmail.com
-Assisted-by: Claude:claude-opus-4-7
-Assisted-by: Codex:gpt-5-5-xhigh
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204421.116824-5-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/l2cap.h |    1 
- net/bluetooth/l2cap_core.c    |   46 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ drivers/slimbus/qcom-ngd-ctrl.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -33,6 +33,7 @@
- /* L2CAP defaults */
- #define L2CAP_DEFAULT_MTU		672
- #define L2CAP_DEFAULT_MIN_MTU		48
-+#define L2CAP_SIG_MTU			48	/* BR/EDR signaling MTU */
- #define L2CAP_DEFAULT_FLUSH_TO		0xFFFF
- #define L2CAP_EFS_DEFAULT_FLUSH_TO	0xFFFFFFFF
- #define L2CAP_DEFAULT_TX_WINDOW		63
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5575,6 +5575,15 @@ static inline void l2cap_sig_send_rej(st
- 	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
- }
- 
-+static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 ident)
-+{
-+	struct l2cap_cmd_rej_mtu rej;
-+
-+	rej.reason = cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
-+	rej.max_mtu = cpu_to_le16(L2CAP_SIG_MTU);
-+	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
-+}
-+
- static inline void l2cap_sig_channel(struct l2cap_conn *conn,
- 				     struct sk_buff *skb)
+--- a/drivers/slimbus/qcom-ngd-ctrl.c
++++ b/drivers/slimbus/qcom-ngd-ctrl.c
+@@ -1684,6 +1684,9 @@ static void qcom_slim_ngd_ctrl_remove(st
  {
-@@ -5587,6 +5596,43 @@ static inline void l2cap_sig_channel(str
- 	if (hcon->type != ACL_LINK)
- 		goto drop;
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
  
-+	/*
-+	 * Bluetooth Core v5.4, Vol 3, Part A, Section 4: the BR/EDR
-+	 * signaling channel has a fixed signaling MTU (MTUsig) whose
-+	 * minimum and default is 48 octets.  Section 4.1 says that on
-+	 * an MTUExceeded command reject the identifier "shall match
-+	 * the first request command in the L2CAP packet" and that
-+	 * packets containing only response commands "shall be
-+	 * silently discarded".
-+	 *
-+	 * Linux intentionally deviates from that prescription:
-+	 *
-+	 *   1. Silently discarding desynchronizes the peer.  The
-+	 *      remote stack never learns its responses were dropped,
-+	 *      so any state machine waiting on a paired response
-+	 *      stalls until its own timer fires.
-+	 *
-+	 *   2. Locating "the first request command" requires walking
-+	 *      command headers past MTUsig, i.e. processing bytes
-+	 *      from a packet we have already decided is too large to
-+	 *      process.
-+	 *
-+	 * Reject every over-MTUsig signaling packet with one
-+	 * L2CAP_REJ_MTU_EXCEEDED command reject.  The reject's
-+	 * reason field is what tells the peer that the whole packet
-+	 * was discarded; the identifier value is informational, so
-+	 * we use the identifier from the first command header, a
-+	 * single fixed-offset byte read.
-+	 */
-+	if (skb->len > L2CAP_SIG_MTU) {
-+		u8 ident = skb->data[1];
++	pdr_handle_release(ctrl->pdr);
++	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
 +
-+		BT_DBG("signaling packet exceeds MTU: %u > %u",
-+		       skb->len, L2CAP_SIG_MTU);
-+		l2cap_sig_send_mtu_rej(conn, ident);
-+		goto drop;
-+	}
-+
- 	while (skb->len >= L2CAP_CMD_HDR_SIZE) {
- 		u16 len;
+ 	qcom_slim_ngd_unregister(ctrl);
  
+ 	destroy_workqueue(ctrl->mwq);
+@@ -1694,8 +1697,6 @@ static void qcom_slim_ngd_remove(struct
+ 	struct qcom_slim_ngd_ctrl *ctrl = platform_get_drvdata(pdev);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+-	pdr_handle_release(ctrl->pdr);
+-	qcom_unregister_ssr_notifier(ctrl->notifier, &ctrl->nb);
+ 	qcom_slim_ngd_enable(ctrl, false);
+ 	qcom_slim_ngd_exit_dma(ctrl);
+ 	qcom_slim_ngd_qmi_svc_event_deinit(&ctrl->qmi);
 
 
 
