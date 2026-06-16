@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 08VpK7CMMWp6mQUAu9opvQ
-	(envelope-from <stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:36 +0200
+	id nldHJTxyMWoQjgUAu9opvQ
+	(envelope-from <stable+bounces-264312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6B6693845
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3EE691880
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:43 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pa+vlEMg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265630-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Iu4jsoif;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264312-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264312-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 66DFA306C6DD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81B9A3170629
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E50C43D4E9;
-	Tue, 16 Jun 2026 17:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07D644D03B;
+	Tue, 16 Jun 2026 15:54:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BF73D34AD;
-	Tue, 16 Jun 2026 17:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB2837C912;
+	Tue, 16 Jun 2026 15:54:43 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632172; cv=none; b=UJy0fZA0Z1MR/iLdPZC3wgvieqllxkUyMXVUv7s3qJ3bqfZUZx5qJRZRUoFGWeSjSs6oDzwkVqGgePBzb6txrAB2y0xYqrT5N5deNTXYESMIpz8CtB7fjZzJvhOM8MOboctXmxTdJ3a6LeBfVPQFMaYIcSYdwQfkuYpd/woIt7Q=
+	t=1781625284; cv=none; b=JrHtrunTYdvRdAXFQp2GQ9Wu/9TdxQd1p9zwycEUxFnZWKT9LJeExWhvmiQpmetRs1YMmxvW+IfvlyKdviEp5YKXcGTabBIre3++LnzDg1kYsH54RTJuN8mOR2hoGoFSf3P61Dl6mBtWH/hsqtAgUkdlxwG4Q8xM8NMaAhxSiEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632172; c=relaxed/simple;
-	bh=OZyfNbKbqqihu8Ob8khTIb3LSQlKXmdsJAAmKJzGMrw=;
+	s=arc-20240116; t=1781625284; c=relaxed/simple;
+	bh=dbqe5Rh6gyU6/8weQP38aWdHzrZ6oNBJLRBKgLiDQ7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rI5awFEBPYWeo7WRON5tIXfUH28Eha9qAj6ybxsoPYJHANH0nnT5B2V6TqGmHhGguF+wf9aD5X5q95B8DGjY1tTi8yjvv7r9yPPtDDhXcnSf55CcPH1si21eKS10stI2alkScXEDRPUcd7pZANThT8i8Cf9UTcxygggUJ3sB/m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pa+vlEMg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2430E1F00A3A;
-	Tue, 16 Jun 2026 17:49:29 +0000 (UTC)
+	 MIME-Version; b=Q2FnKFVtT3PeKvgwDvLZiyF3vHWhNbgUeQgoZELLDCbAUtlm9xTHEQk5vu8JAfiu10lNzuUbzCcMjVAgpB+0OIGPWEGq0vbvJpuwMW8ZHz441miklAWCzFOsfg1lWPkvUHXBwrYCTC7Va2K3UE3aFVCo7NjNFHpfxqputXON0Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu4jsoif; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CFD1F000E9;
+	Tue, 16 Jun 2026 15:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632171;
-	bh=ymwhCjvUtq1TF2FfnvtuPG3IUelqknuBfaoGIjVjF0g=;
+	s=korg; t=1781625283;
+	bh=0eLQxnL4hTgVI87xjtLQo6amrFSdfMaFilkfhR+HVj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pa+vlEMgMHFAUwAdRu7F6zSQgMgJrBh68g0O5f4UP9xuOWdukb28U7M7rkenjVf/z
-	 woMK20/gsHDbnKA9WwiVn92P5CgzLLuTtGWYLPc+dJUSDdxZJNBURx8TPA0DdQAkkF
-	 ib2fwhtQzvmIhnptmr2cyklYiechZIqrpscEyypY=
+	b=Iu4jsoifQRNL1fjDIaicTFKv1tr95HoIBOg3eYifIPsMPVwNese9njlPZs5zn+fNt
+	 NtfMTl7dsdTNwRnhJK0IECjgnksuKJLGFiHgxrbm5QRFH2yjIshTClV34kjzfVx+uY
+	 HugfJAd5B8QSYvSq7YpkkDsb7Elt2lu964hTMD78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Marco Scardovi <scardracs@disroot.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 360/522] hfsplus: fix held lock freed on hfsplus_fill_super()
+Subject: [PATCH 6.18 111/325] gpio: rockchip: fix generic IRQ chip leak on remove
 Date: Tue, 16 Jun 2026 20:28:27 +0530
-Message-ID: <20260616145142.635023777@linuxfoundation.org>
+Message-ID: <20260616145103.235245528@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265630-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:slava@dubeyko.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:scardracs@disroot.org,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,148 +98,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,seu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[disroot.org:email,qualcomm.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5E6B6693845
+X-Rspamd-Queue-Id: DF3EE691880
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Marco Scardovi <scardracs@disroot.org>
 
-[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
+[ Upstream commit 1c1e0fc88d6ef65bf15d517853251f75ab9d18c3 ]
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+The driver allocates domain generic chips using
+irq_alloc_domain_generic_chips() during probe. However, on driver
+remove/teardown, the generic chips are not automatically freed when the
+IRQ domain is removed because the domain flags do not include
+IRQ_DOMAIN_FLAG_DESTROY_GC.
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+This causes both the domain generic chips structure and the associated
+generic chips to be leaked. Additionally, the generic chips remain on
+the global gc_list and may later be visited by generic IRQ chip suspend,
+resume, or shutdown callbacks after the GPIO bank has been removed,
+potentially resulting in a use-after-free and kernel crash.
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
+Fix the resource leak by explicitly calling
+irq_domain_remove_generic_chips() before removing the IRQ domain in
+rockchip_gpio_remove().
 
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
-
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
-
-After applying this patch, the warning no longer appears.
-
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Assisted-by: Antigravity:gemini-3.5-flash
+Signed-off-by: Marco Scardovi <scardracs@disroot.org>
+Link: https://patch.msgid.link/20260607230504.35392-2-scardracs@disroot.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/super.c |    4 +++-
+ drivers/gpio/gpio-rockchip.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -539,8 +539,10 @@ static int hfsplus_fill_super(struct sup
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index 1ef0ba956cfd8c..46dd9085d9c8cd 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -802,8 +802,10 @@ static void rockchip_gpio_remove(struct platform_device *pdev)
+ 	struct rockchip_pin_bank *bank = platform_get_drvdata(pdev);
+ 
+ 	irq_set_chained_handler_and_data(bank->irq, NULL, NULL);
+-	if (bank->domain)
++	if (bank->domain) {
++		irq_domain_remove_generic_chips(bank->domain);
+ 		irq_domain_remove(bank->domain);
 +	}
- 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+ 	gpiochip_remove(&bank->gpio_chip);
+ }
+ 
+-- 
+2.53.0
+
 
 
 
