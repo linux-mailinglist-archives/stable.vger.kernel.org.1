@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id aDzRAQKVMWqInQUAu9opvQ
-	(envelope-from <stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:06 +0200
+	id CCLhC7lwMWp+jQUAu9opvQ
+	(envelope-from <stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8E56941C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:25:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BEE6916D7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:50:16 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l9Ee9Ot4;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266032-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ztU1yWDd;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264261-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 977BB307DE2D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4687C307324F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1CC46AF1B;
-	Tue, 16 Jun 2026 18:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2268243E9CE;
+	Tue, 16 Jun 2026 15:50:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B6B3BFE5A;
-	Tue, 16 Jun 2026 18:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD8F1684BE;
+	Tue, 16 Jun 2026 15:50:12 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634301; cv=none; b=hP98t9y40zqQMJg6qSoj2cZJMCq1AJR5bk2GQPe8A9q2V9GV7Kz/jZbyIA03ZKAaah65EemQklMdwQ+wPYSXp/Q1DKT4TzII9dQDqv0fUQafvhSK5Gt+q7u5N128ueXikhxEaIMp8Sied4KLiEOxFQuYc8zCxAcdonhbB1wu4qQ=
+	t=1781625013; cv=none; b=Dt0JV5E1tKfwBGWn8C9mLVxsVdXllK6oZLDrWvg6YCG/4va7gHMzbo1DCL5NEZssfbMvSat8JI02WswdApoLUXsarxpWprqV24//sTAGzE3G4YtDRYZ6cr40SD3h8VtnC8ISklK4rYsu9zH6hgANpqo3/ySRRQ+AGq+1j7MvH6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634301; c=relaxed/simple;
-	bh=EuQPfIaWeStx0kA9Y+KZIyPy1SKitUMVKefBOhzbIps=;
+	s=arc-20240116; t=1781625013; c=relaxed/simple;
+	bh=6x2ZQVmYevZX4boYyqW7k+XzObMeQuoWESqMx/rW30o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nayJ5bBs3nL6D/lB6w1kp1HIQVDZjSMKfnYNykVBTemqg2Q0wBxXsgwRZ1NHMADFkVKVISSFkSCXxP0et12+cIFw6HLQjN63aqIerH4TFRINQGP+isTdQciYgk/4FPi1s+SabWerNo/7TCXu+2A7QNmxg0DwHjY3hrKm55lKXys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9Ee9Ot4; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F081F000E9;
-	Tue, 16 Jun 2026 18:24:59 +0000 (UTC)
+	 MIME-Version; b=MpxiKYaQd+QWTalIl9ucV58vJwklkMUmb5zgWE9phEtpe0xUzyQhvT9JVy4KGH4zlzqvBrH4t5IdisX5AawaapWbUDQVGBKoVZc7TJGWK/gU8aU3eFXwwRw8piyqYR9UQiZeM14efvwR2vcI8V3WSY1rG/JGI5PzYQktN2YevGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztU1yWDd; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE01F1F000E9;
+	Tue, 16 Jun 2026 15:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634300;
-	bh=Ew2IUvP5/tAY0drFZO18RvNQ78s2blUi7BGxjLTeMjE=;
+	s=korg; t=1781625012;
+	bh=+nZZXQEMR6fzwumI/STC4hTNTqKZFuzXNyhP6MLN3nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l9Ee9Ot43gqPDwio/D5W3l/yBjNLiGK1Ek55P6PlBmhdDj3yAkUngmCWOd4FWO3h4
-	 EEOLFxNcPxlK1CJjuRqSDtL5Q/TlO+y+AliQuYTpUkXFxsSYPBAiteaUKLgjni0nzK
-	 GIHgwEx7lAfdiWlBhjH/Gz4pSUlUKWslXMJ8Vk7o=
+	b=ztU1yWDdr1JskYDA/OPYseEfqqBvTa7CEKG0FvWfqHpCnfPqL93y8D6EkUjs63Gd1
+	 20BIVWir8vkwi0cfGYy8pG4MSwuxNfMmD55LptZDMgmklAfTzfaYIfF1sOtvOkul0S
+	 2l3pCUsz9dF7xrC6faf0VPX+04DaibUdHgOVpZLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Guillermo=20Rodr=C3=ADguez?= <guille.rodriguez@gmail.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 222/411] i2c: stm32f7: fix timing computation ignoring i2c-analog-filter
+	Andy Roulin <aroulin@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 064/325] vxlan: vnifilter: fix spurious notification on VNI update
 Date: Tue, 16 Jun 2026 20:27:40 +0530
-Message-ID: <20260616145112.603998958@linuxfoundation.org>
+Message-ID: <20260616145100.891925078@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +66,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266032-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:guille.rodriguez@gmail.com,m:alain.volmat@foss.st.com,m:andi.shyti@kernel.org,m:guillerodriguez@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264261-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,foss.st.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,st.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,nvidia.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8B8E56941C4
+X-Rspamd-Queue-Id: 85BEE6916D7
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillermo Rodríguez <guille.rodriguez@gmail.com>
+From: Andy Roulin <aroulin@nvidia.com>
 
-commit a124579c0763da7bc408f4cd7e8f606cadc94855 upstream.
+[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
 
-stm32f7_i2c_compute_timing() uses i2c_dev->analog_filter to pick
-the analog filter delay, but i2c_dev->analog_filter is parsed from
-the "i2c-analog-filter" DT property only after the compute_timing
-loop in stm32f7_i2c_setup_timing(), so in practice the timing
-calculations always ignore the analog filter. On an STM32MP1 board
-with clock-frequency = <400000> and i2c-analog-filter set, measured
-SCL frequency was ~382 kHz.
+When a VNI is re-added with the same attributes (e.g. same group or no
+group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
+even though nothing changed.
 
-This also affects (widens) the computed SDADEL range. At high bus
-clock speeds, this can select an SDADEL value that violates tVD;DAT
-(data valid time).
+The bug is that 'if (changed)' tests whether the pointer is non-NULL,
+not the bool value it points to. Since every caller passes a valid
+pointer, the condition is always true and the notification fires
+unconditionally.
 
-Fix by parsing "i2c-analog-filter" before the compute_timing loop.
+Fix by dereferencing the pointer: 'if (*changed)'.
 
-Fixes: 83c3408f7b9c ("i2c: stm32f7: support DT binding i2c-analog-filter")
-Signed-off-by: Guillermo Rodríguez <guille.rodriguez@gmail.com>
-Cc: <stable@vger.kernel.org> # v5.13+
-Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260526091210.20383-1-guille.rodriguez@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reproducer:
+
+ # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
+      nolearning external vnifilter
+ # ip link set vxlan100 up
+ # bridge monitor vni &
+ # bridge vni add vni 1000 dev vxlan100
+ # bridge vni add vni 1000 dev vxlan100  # spurious notification
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Andy Roulin <aroulin@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-stm32f7.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -673,6 +673,9 @@ static int stm32f7_i2c_setup_timing(stru
- 	if (!of_property_read_bool(i2c_dev->dev->of_node, "i2c-digital-filter"))
- 		i2c_dev->dnf_dt = STM32F7_I2C_DNF_DEFAULT;
- 
-+	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
-+						       "i2c-analog-filter");
-+
- 	do {
- 		ret = stm32f7_i2c_compute_timing(i2c_dev, setup,
- 						 &i2c_dev->timing);
-@@ -694,9 +697,6 @@ static int stm32f7_i2c_setup_timing(stru
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 43c70c395b58e5..215e82876662de 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -661,7 +661,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
+ 	if (ret)
  		return ret;
- 	}
  
--	i2c_dev->analog_filter = of_property_read_bool(i2c_dev->dev->of_node,
--						       "i2c-analog-filter");
--
- 	dev_dbg(i2c_dev->dev, "I2C Speed(%i), Clk Source(%i)\n",
- 		setup->speed_freq, setup->clock_src);
- 	dev_dbg(i2c_dev->dev, "I2C Rise(%i) and Fall(%i) Time\n",
+-	if (changed)
++	if (*changed)
+ 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
+ 
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
