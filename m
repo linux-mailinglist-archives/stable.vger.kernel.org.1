@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id fFhzBnt0MWoDjwUAu9opvQ
-	(envelope-from <stable+bounces-264432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:19 +0200
+	id RJ2HOQF9MWqqkgUAu9opvQ
+	(envelope-from <stable+bounces-264751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D188B691AF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:06:18 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6686F6925E7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:42:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1xeYtFED;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264432-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264432-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=v2fufOXx;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264751-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264751-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 41AE2304B49B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:04:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BE1C303BDFF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CB846AF1A;
-	Tue, 16 Jun 2026 16:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB13E4779B8;
+	Tue, 16 Jun 2026 16:34:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F7C46AEF6;
-	Tue, 16 Jun 2026 16:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C974779AA;
+	Tue, 16 Jun 2026 16:34:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625852; cv=none; b=RDWYhbJ0yiRBJ9xma6NQSYoDUx45FK2285LcmO+7Y+vHnTUV5D8FSX38kGsx6he9BZZTcC9w3LjGrabge+K7JspWzfm/BwiBu55MU19XRpyDLjHtGuHVtlGYwbbkv+IeGg0YJ7ieFUdrOyEIDtduRDEyA7U1mG/PyItvFe3zTvI=
+	t=1781627698; cv=none; b=ArksEeWJk+qO3YpkdG0x+HQlgya3lNwNQF2jrBBZ9qkm+hRAIPP8Qxn1HVa2/bnrKWio3IwCPDTw3MKOCoNrhFJ6IHHvSkWXdp3xeHb5Eo0RJBrZiF6lbHDDDa7rDmdD50BZDsy8AymedR+YPu7LIxtBerOwoZV4mFr9QrjORB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625852; c=relaxed/simple;
-	bh=w87SwZTUFHyXcvea9TgHVDAquCpGZfFQZEcMP8ooWaU=;
+	s=arc-20240116; t=1781627698; c=relaxed/simple;
+	bh=zVPSWLpVmElsSwNZj71zNrXf8h1quNXtYgS00sHPv0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYPcrWmQt2LBEuKPZ7I+56z+TC98nU1BcYODZQxFX5z4f17LezdJCGt7CfSXr4/v17aPRHF+ZDatGWIwkw0cQGkq1rGaxW7i2dxeAVfqefkesukWjYvPzBJqzJTO7TgEMBAo05PXtjw0i5/7JqKPa1Vls1EskIApn6ARJ+ua5WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xeYtFED; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A0B1F00A3D;
-	Tue, 16 Jun 2026 16:04:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bJ2zDUGl8pur9WvhJguPJAbmue0CmGRPBDoGI+oaaMEk8/YozE5OGJfChrVMu5aoXX039XwS5JUnwJvy84f926l9lb1jfDRxpsqdwYP+fHTTFAuSPAVzVIHO7Me3J4zWG31j0/03juVtX5yVy0OMe89zK4Tyi4Qug5IJTGt91GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2fufOXx; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617B61F000E9;
+	Tue, 16 Jun 2026 16:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625851;
-	bh=evVfZk4JzmIDAODz/i7Rwsq8I0rUu7XpKhfNag1sfwE=;
+	s=korg; t=1781627697;
+	bh=a/Y8qYfkI2UipxilMO4c28UAlY+2j/AAjbdIUGc5nLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1xeYtFEDkqDnbftoFq2bq2jjrmCJOoIeexcpvVhw4tRErKR9AngZypMXTDyo87J8V
-	 SN2gcFRUgiREtpGcT+Du18BTIDvdxebf/tiWJrsN6zRvyE8p+4oo1NjLEYjARgYIzy
-	 npMZxjq6fpInr6HTftLOn9H+B94AdHWqjxjjNevs=
+	b=v2fufOXxFqt6LXBIkEe99H1WZ6pwVM1kDfaTQxGdeysQFTf2YGKiu3m3mkLcyGk/S
+	 6ppfskoKy6cbsX1IeOmzfbHdBxjxNu3tLqx1Gz+H4t3xvZlj2Kxi/Q8kmLAizWLguG
+	 IfIy3yQwU4jJGLS9YdaHGIpptJlqfV27o8Hkypvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.18 220/325] i2c: imx-lpi2c: fix resource leaks switching to devm_dma_request_chan()
+	stable@kernel.org,
+	Anandu Krishnan E <anandu.e@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.12 178/261] misc: fastrpc: fix use-after-free of fastrpc_user in workqueue context
 Date: Tue, 16 Jun 2026 20:30:16 +0530
-Message-ID: <20260616145109.176170980@linuxfoundation.org>
+Message-ID: <20260616145053.329672614@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +65,246 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264432-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:anandu.e@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:carlos.song@nxp.com,m:Frank.Li@nxp.com,m:andi.shyti@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264751-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,nxp.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,qualcomm.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D188B691AF6
+X-Rspamd-Queue-Id: 6686F6925E7
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Anandu Krishnan E <anandu.e@oss.qualcomm.com>
 
-commit 695fcefd4a81466ef9c529790b4e96f1ea2ba051 upstream.
+commit e85eb5feca8e254905ffa6c57a3c99c89a674a0f upstream.
 
-The LPI2C driver requests DMA channels using dma_request_chan(), but
-never releases them in lpi2c_imx_remove(), resulting in DMA channel
-leaks every time the driver is unloaded.
+There is a race between fastrpc_device_release() and the workqueue
+that processes DSP responses. When the user closes the file descriptor,
+fastrpc_device_release() frees the fastrpc_user structure. Concurrently,
+an in-flight DSP invocation can complete and fastrpc_rpmsg_callback()
+schedules context cleanup via schedule_work(&ctx->put_work). If the
+workqueue runs fastrpc_context_free() in parallel with or after
+fastrpc_device_release() has freed the user structure, it dereferences
+the freed fastrpc_user. Depending on the state of the context at the
+time of the race, any one of the following accesses can be hit:
 
-Additionally, when lpi2c_dma_init() successfully requests the TX DMA
-channel but fails to request the RX DMA channel, the probe falls back
-to PIO mode and completes successfully. Since probe succeeds, the devres
-framework will not trigger any cleanup, leaving the TX DMA channel and
-the memory allocated for the dma structure held for the lifetime of the
-device even though DMA is never used.
+ 1. fastrpc_buf_free() calls fastrpc_ipa_to_dma_addr(buf->fl->cctx, ...)
+    to strip the SID bits from the stored IOVA before passing the
+    physical address to dma_free_coherent().
 
-Switch to devm_dma_request_chan() to let the device core manage DMA
-channel lifetime automatically. Wrap all allocations within a devres
-group so that devres_release_group() can release all partially acquired
-resources when DMA init fails and probe continues in PIO mode.
+ 2. fastrpc_free_map() reads map->fl->cctx->vmperms[0].vmid to
+    reconstruct the source permission bitmask needed for the
+    qcom_scm_assign_mem() call that returns memory from the DSP VM
+    back to HLOS.
 
-Fixes: a09c8b3f9047 ("i2c: imx-lpi2c: add eDMA mode support for LPI2C")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v6.14+
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260520093323.2882070-1-carlos.song@oss.nxp.com
+ 3. fastrpc_free_map() acquires map->fl->lock to safely remove the
+    map node from the fl->maps list.
+
+The resulting use-after-free manifests as:
+
+  pc : fastrpc_buf_free+0x38/0x80 [fastrpc]
+  lr : fastrpc_context_free+0xa8/0x1b0 [fastrpc]
+  fastrpc_context_free+0xa8/0x1b0 [fastrpc]
+  fastrpc_context_put_wq+0x78/0xa0 [fastrpc]
+  process_one_work+0x180/0x450
+  worker_thread+0x26c/0x388
+
+Add kref-based reference counting to fastrpc_user. Have each invoke
+context take a reference on the user at allocation time and release it
+when the context is freed. Release the initial reference in
+fastrpc_device_release() at file close. Move the teardown of the user
+structure — freeing pending contexts, maps, mmaps, and the channel
+context reference — into the kref release callback fastrpc_user_free(),
+so that it runs only when the last reference is dropped, regardless of
+whether that happens at device close or after the final in-flight
+context completes.
+
+Fixes: 6cffd79504ce ("misc: fastrpc: Add support for dmabuf exporter")
+Cc: stable@kernel.org
+Signed-off-by: Anandu Krishnan E <anandu.e@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204528.116920-2-srini@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c |   53 ++++++++++++++++++++++---------------
- 1 file changed, 32 insertions(+), 21 deletions(-)
+ drivers/misc/fastrpc.c |   75 +++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 52 insertions(+), 23 deletions(-)
 
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -1362,55 +1362,66 @@ static int lpi2c_imx_init_recovery_info(
- 	return 0;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -306,6 +306,8 @@ struct fastrpc_user {
+ 	spinlock_t lock;
+ 	/* lock for allocations */
+ 	struct mutex mutex;
++	/* Reference count */
++	struct kref refcount;
+ };
+ 
+ static void fastrpc_free_map(struct kref *ref)
+@@ -474,15 +476,57 @@ static void fastrpc_channel_ctx_put(stru
+ 	kref_put(&cctx->refcount, fastrpc_channel_ctx_free);
  }
  
--static void dma_exit(struct device *dev, struct lpi2c_imx_dma *dma)
--{
--	if (dma->chan_rx)
--		dma_release_channel(dma->chan_rx);
--
--	if (dma->chan_tx)
--		dma_release_channel(dma->chan_tx);
--
--	devm_kfree(dev, dma);
--}
--
- static int lpi2c_dma_init(struct device *dev, dma_addr_t phy_addr)
- {
- 	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
- 	struct lpi2c_imx_dma *dma;
-+	void *group;
- 	int ret;
- 
--	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
--	if (!dma)
-+	/*
-+	 * Open a devres group so that all resources allocated within
-+	 * this function can be released together if DMA init fails but
-+	 * probe continues in PIO mode.
-+	 */
-+	group = devres_open_group(dev, NULL, GFP_KERNEL);
-+	if (!group)
- 		return -ENOMEM;
- 
-+	dma = devm_kzalloc(dev, sizeof(*dma), GFP_KERNEL);
-+	if (!dma) {
-+		ret = -ENOMEM;
-+		goto release_group;
++static void fastrpc_context_put(struct fastrpc_invoke_ctx *ctx);
++
++static void fastrpc_user_free(struct kref *ref)
++{
++	struct fastrpc_user *fl = container_of(ref, struct fastrpc_user, refcount);
++	struct fastrpc_invoke_ctx *ctx, *n;
++	struct fastrpc_map *map, *m;
++	struct fastrpc_buf *buf, *b;
++
++	if (fl->init_mem)
++		fastrpc_buf_free(fl->init_mem);
++
++	list_for_each_entry_safe(ctx, n, &fl->pending, node) {
++		list_del(&ctx->node);
++		fastrpc_context_put(ctx);
 +	}
 +
- 	dma->phy_addr = phy_addr;
- 
- 	/* Prepare for TX DMA: */
--	dma->chan_tx = dma_request_chan(dev, "tx");
-+	dma->chan_tx = devm_dma_request_chan(dev, "tx");
- 	if (IS_ERR(dma->chan_tx)) {
- 		ret = PTR_ERR(dma->chan_tx);
- 		if (ret != -ENODEV && ret != -EPROBE_DEFER)
- 			dev_err(dev, "can't request DMA tx channel (%d)\n", ret);
--		dma->chan_tx = NULL;
--		goto dma_exit;
-+		goto release_group;
- 	}
- 
- 	/* Prepare for RX DMA: */
--	dma->chan_rx = dma_request_chan(dev, "rx");
-+	dma->chan_rx = devm_dma_request_chan(dev, "rx");
- 	if (IS_ERR(dma->chan_rx)) {
- 		ret = PTR_ERR(dma->chan_rx);
- 		if (ret != -ENODEV && ret != -EPROBE_DEFER)
- 			dev_err(dev, "can't request DMA rx channel (%d)\n", ret);
--		dma->chan_rx = NULL;
--		goto dma_exit;
-+		goto release_group;
- 	}
- 
-+	/*
-+	 * DMA init succeeded. Remove the group marker but keep all resources
-+	 * bound to the device, they will be freed at device removal.
-+	 */
-+	devres_remove_group(dev, group);
++	list_for_each_entry_safe(map, m, &fl->maps, node)
++		fastrpc_map_put(map);
 +
- 	lpi2c_imx->can_use_dma = true;
- 	lpi2c_imx->dma = dma;
- 	return 0;
++	list_for_each_entry_safe(buf, b, &fl->mmaps, node) {
++		list_del(&buf->node);
++		fastrpc_buf_free(buf);
++	}
++
++	fastrpc_channel_ctx_put(fl->cctx);
++	mutex_destroy(&fl->mutex);
++	kfree(fl);
++}
++
++static void fastrpc_user_get(struct fastrpc_user *fl)
++{
++	kref_get(&fl->refcount);
++}
++
++static void fastrpc_user_put(struct fastrpc_user *fl)
++{
++	kref_put(&fl->refcount, fastrpc_user_free);
++}
++
+ static void fastrpc_context_free(struct kref *ref)
+ {
+ 	struct fastrpc_invoke_ctx *ctx;
+ 	struct fastrpc_channel_ctx *cctx;
++	struct fastrpc_user *fl;
+ 	unsigned long flags;
+ 	int i;
  
--dma_exit:
--	dma_exit(dev, dma);
-+release_group:
-+	/*
-+	 * DMA init failed. Release ALL resources allocated inside this
-+	 * group (dma memory, TX channel if already acquired, etc.) so
-+	 * that a successful PIO-mode probe does not hold unused resources
-+	 * for the entire device lifetime.
-+	 */
-+	devres_release_group(dev, group);
- 	return ret;
+ 	ctx = container_of(ref, struct fastrpc_invoke_ctx, refcount);
+ 	cctx = ctx->cctx;
++	fl = ctx->fl;
+ 
+ 	for (i = 0; i < ctx->nbufs; i++)
+ 		fastrpc_map_put(ctx->maps[i]);
+@@ -498,6 +542,8 @@ static void fastrpc_context_free(struct
+ 	kfree(ctx->olaps);
+ 	kfree(ctx);
+ 
++	/* Release the reference taken in fastrpc_context_alloc() */
++	fastrpc_user_put(fl);
+ 	fastrpc_channel_ctx_put(cctx);
  }
  
+@@ -607,6 +653,8 @@ static struct fastrpc_invoke_ctx *fastrp
+ 
+ 	/* Released in fastrpc_context_put() */
+ 	fastrpc_channel_ctx_get(cctx);
++	/* Take a reference to user, released in fastrpc_context_free() */
++	fastrpc_user_get(user);
+ 
+ 	ctx->sc = sc;
+ 	ctx->retval = -1;
+@@ -637,6 +685,7 @@ err_idr:
+ 	spin_lock(&user->lock);
+ 	list_del(&ctx->node);
+ 	spin_unlock(&user->lock);
++	fastrpc_user_put(user);
+ 	fastrpc_channel_ctx_put(cctx);
+ 	kfree(ctx->maps);
+ 	kfree(ctx->olaps);
+@@ -1548,9 +1597,6 @@ static int fastrpc_device_release(struct
+ {
+ 	struct fastrpc_user *fl = (struct fastrpc_user *)file->private_data;
+ 	struct fastrpc_channel_ctx *cctx = fl->cctx;
+-	struct fastrpc_invoke_ctx *ctx, *n;
+-	struct fastrpc_map *map, *m;
+-	struct fastrpc_buf *buf, *b;
+ 	unsigned long flags;
+ 
+ 	fastrpc_release_current_dsp_process(fl);
+@@ -1559,28 +1605,10 @@ static int fastrpc_device_release(struct
+ 	list_del(&fl->user);
+ 	spin_unlock_irqrestore(&cctx->lock, flags);
+ 
+-	if (fl->init_mem)
+-		fastrpc_buf_free(fl->init_mem);
+-
+-	list_for_each_entry_safe(ctx, n, &fl->pending, node) {
+-		list_del(&ctx->node);
+-		fastrpc_context_put(ctx);
+-	}
+-
+-	list_for_each_entry_safe(map, m, &fl->maps, node)
+-		fastrpc_map_put(map);
+-
+-	list_for_each_entry_safe(buf, b, &fl->mmaps, node) {
+-		list_del(&buf->node);
+-		fastrpc_buf_free(buf);
+-	}
+-
+ 	fastrpc_session_free(cctx, fl->sctx);
+-	fastrpc_channel_ctx_put(cctx);
+-
+-	mutex_destroy(&fl->mutex);
+-	kfree(fl);
+ 	file->private_data = NULL;
++	/* Release the reference taken in fastrpc_device_open */
++	fastrpc_user_put(fl);
+ 
+ 	return 0;
+ }
+@@ -1625,6 +1653,7 @@ static int fastrpc_device_open(struct in
+ 	spin_lock_irqsave(&cctx->lock, flags);
+ 	list_add_tail(&fl->user, &cctx->users);
+ 	spin_unlock_irqrestore(&cctx->lock, flags);
++	kref_init(&fl->refcount);
+ 
+ 	return 0;
+ }
 
 
 
