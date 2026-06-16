@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263808-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 0RE/KA+UMWoenQUAu9opvQ
-	(envelope-from <stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:03 +0200
+	id 2AkJLY1oMWqhigUAu9opvQ
+	(envelope-from <stable+bounces-263808-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:25 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E61F6940DD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A73690DC7
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=i21jD+lD;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265982-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yWmmreiZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263808-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-263808-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E96813017CD9
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B3D7D30091FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B75D3D45CB;
-	Tue, 16 Jun 2026 18:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89DA3A8FE6;
+	Tue, 16 Jun 2026 15:07:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DD33D091A;
-	Tue, 16 Jun 2026 18:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB3B1D7995;
+	Tue, 16 Jun 2026 15:07:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634038; cv=none; b=jQAvgtYnjcUBdGWopxTkCPY/ragXtY5vMWfboPdVeJMxoLrpIVA0pyxtlpXcHCqQNp7ufvaGyGkPgL6Z/RyJbSMIdbUlUtvAqCphcNsq63Z1pO42LX8qgog9xTinKfzhZAxUQa+5MtZjcmDX/dw7yTyqjVSjeX6HBYu2Dg2DH4E=
+	t=1781622477; cv=none; b=p/00z3AdiM7/i0vIPE9nOKKAaIzat2KSOri6I5DeoaS0v3w+khc5VfRRnDl+D8dzyFXFzT+0A2eH1EzyCF+F8DCRhcvsC21nBXMO/lw7Qco8DCgjDQQQQHuFh4T1a/+BGPNI/SDAjapqBB9DJTI522iBGsfdhoqO/R8nCZcmGbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634038; c=relaxed/simple;
-	bh=iGDtajNVL2YwHq5stSIp5x2I3L6Zn2/805p2SPFXEqs=;
+	s=arc-20240116; t=1781622477; c=relaxed/simple;
+	bh=EZICChnBlQrprmt1E3kvjTJ/kc9D/4hwOnysGT09FtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRpHYxBjixVRj3Wb2t8GoBk6gcznlwUIYgTaHfeMJt6REhfjctS4T+e6PeSd3/vBoEDgknRnDAm8KdmOc47NQqTgandn7ZoJJAr0riSwum3jbzCB17I/QFJ2KhvBr64pwmQxIB7aumIc/duDsLGjrkSyZYVNcJI8MhFBzTxU8Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i21jD+lD; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C1F1F000E9;
-	Tue, 16 Jun 2026 18:20:36 +0000 (UTC)
+	 MIME-Version; b=XsmmVzLLsqwo6qYYBsDwU6B56RX8BLxv/3NmOvkZ8aIku7hysB57lGo+MwjxUtUKdtukvXFzvgdUUpxzeflhOpvSchuaxgt7vQbziL79uvFasdqNw+doqd8c6kNz2O5xzHRutmi7yoAiVcK66YZZzP2EJuNlhoqoH6awGhEDD88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWmmreiZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DA81F000E9;
+	Tue, 16 Jun 2026 15:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634037;
-	bh=HB0aXEs+4ZLyKLRHd3P80SR6zKkmBQaGT5m2e6272eo=;
+	s=korg; t=1781622476;
+	bh=P7GCs90HSFtUDC3288tR+7fEzctdo6UTAyQMB9Arr9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i21jD+lDkZc95fHiTq6pQZsSvsOIiojoSQDCVsbCiwzx3wPzPuGJ2DkwEmp/stnCC
-	 sXq59kQAwhN7Q1MQWTIE1s4RTeK8y1mRj9WmQs4TMG/ACN16wx8Lh+A53Bvqrf+n6b
-	 1ihpIMBWBoGvfvvHQ9KxUUX0B0mBlLdzJuGrgaqU=
+	b=yWmmreiZUGMb8B+JQcku52dIgoZMCJN8ANNCxaWv26jzlnKNi+wCqXYO3e/3XZgu2
+	 DxyaD50sahO2TPQAovMk4bi3SYMDqjmP7XXU82Se3pO6GIYBa7+iRTFAFXpLng+UYj
+	 Df1Sz1Dlm4XheoEqXKhu+gsFMvKQuLAxvxgs/ow0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Cen <rollkingzzc@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Zizhi Wo <wozizhi@huaweicloud.com>,
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/411] Bluetooth: RFCOMM: hold listener socket in rfcomm_connect_ind()
+Subject: [PATCH 6.18 004/325] ARM: fix hash_name() fault
 Date: Tue, 16 Jun 2026 20:26:40 +0530
-Message-ID: <20260616145109.120228884@linuxfoundation.org>
+Message-ID: <20260616145058.051397092@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,164 +69,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[huaweicloud.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265982-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rollkingzzc@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263808-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wozizhi@huaweicloud.com,m:xieyuanbin1@huawei.com,m:rmk+kernel@armlinux.org.uk,m:bigeasy@linutronix.de,m:sashal@kernel.org,m:rmk@armlinux.org.uk,s:lists@lfdr.de];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	GREYLIST(0.00)[pass,body];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[armlinux.org.uk:email,vger.kernel.org:from_smtp,huaweicloud.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,huawei.com:email,linutronix.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E61F6940DD
+X-Rspamd-Queue-Id: B2A73690DC7
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Cen <rollkingzzc@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 43c441edacf953b39517a44f5e5e10a93618b226 ]
+commit 7733bc7d299d682f2723dc38fc7f370b9bf973e9 upstream.
 
-rfcomm_get_sock_by_channel() scans rfcomm_sk_list under the list lock,
-but returns the selected listener after dropping that lock without
-taking a reference. rfcomm_connect_ind() then locks the listener,
-queues a child socket on it, and may notify it after unlocking it.
+Zizhi Wo reports:
 
-The buggy scenario involves two paths, with each column showing the
-order within that path:
+"During the execution of hash_name()->load_unaligned_zeropad(), a
+ potential memory access beyond the PAGE boundary may occur. For
+ example, when the filename length is near the PAGE_SIZE boundary.
+ This triggers a page fault, which leads to a call to
+ do_page_fault()->mmap_read_trylock(). If we can't acquire the lock,
+ we have to fall back to the mmap_read_lock() path, which calls
+ might_sleep(). This breaks RCU semantics because path lookup occurs
+ under an RCU read-side critical section."
 
-rfcomm_connect_ind():            listener close:
-  1. Find parent in              1. close() enters
-     rfcomm_get_sock_by_channel()   rfcomm_sock_release().
-  2. Drop rfcomm_sk_list.lock    2. rfcomm_sock_shutdown()
-     without pinning parent.        closes the listener.
-  3. Call lock_sock(parent) and  3. rfcomm_sock_kill()
-     bt_accept_enqueue(parent,      unlinks and puts parent.
-     sk, true).
-  4. Read parent flags and may   4. parent can be freed.
-     call sk_state_change().
+This is seen with CONFIG_DEBUG_ATOMIC_SLEEP=y and CONFIG_KFENCE=y.
 
-If close wins the race, parent can be freed before
-rfcomm_connect_ind() reaches lock_sock(), bt_accept_enqueue(), or the
-deferred-setup callback.
+Kernel addresses (with the exception of the vectors/kuser helper
+page) do not have VMAs associated with them. If the vectors/kuser
+helper page faults, then there are two possibilities:
 
-Take a reference on the listener before leaving rfcomm_sk_list.lock.
-After lock_sock() succeeds, recheck that it is still in BT_LISTEN
-before queueing a child, cache the deferred-setup bit while the parent
-is locked, and drop the reference after the last parent use.
+1. if the fault happened while in kernel mode, then we're basically
+   dead, because the CPU won't be able to vector through this page
+   to handle the fault.
+2. if the fault happened while in user mode, that means the page was
+   protected from user access, and we want to fault anyway.
 
-KASAN reported a slab-use-after-free in lock_sock_nested() from
-rfcomm_connect_ind(), with the freeing stack going through
-rfcomm_sock_kill() and rfcomm_sock_release().
+Thus, we can handle kernel addresses from any context entirely
+separately without going anywhere near the mmap lock. This gives us
+an entirely non-sleeping path for all kernel mode kernel address
+faults.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhang Cen <rollkingzzc@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+As we handle the kernel address faults before interrupts are enabled,
+this change has the side effect of improving the branch predictor
+hardening, but does not completely solve the issue.
+
+Reported-by: Zizhi Wo <wozizhi@huaweicloud.com>
+Reported-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Link: https://lore.kernel.org/r/20251126090505.3057219-1-wozizhi@huaweicloud.com
+Reviewed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Tested-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ arch/arm/mm/fault.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index d1f2c936a8a811..2f091f134a606c 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -122,7 +122,7 @@ static struct sock *__rfcomm_get_listen_sock_by_addr(u8 channel, bdaddr_t *src)
+diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+index 192c8ab196dbab..0e5b4bc7b21760 100644
+--- a/arch/arm/mm/fault.c
++++ b/arch/arm/mm/fault.c
+@@ -261,6 +261,35 @@ static inline bool ttbr0_usermode_access_allowed(struct pt_regs *regs)
  }
+ #endif
  
- /* Find socket with channel and source bdaddr.
-- * Returns closest match.
-+ * Returns closest match with an extra reference held.
-  */
- static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *src)
++static int __kprobes
++do_kernel_address_page_fault(struct mm_struct *mm, unsigned long addr,
++			     unsigned int fsr, struct pt_regs *regs)
++{
++	if (user_mode(regs)) {
++		/*
++		 * Fault from user mode for a kernel space address. User mode
++		 * should not be faulting in kernel space, which includes the
++		 * vector/khelper page. Send a SIGSEGV.
++		 */
++		__do_user_fault(addr, fsr, SIGSEGV, SEGV_MAPERR, regs);
++	} else {
++		/*
++		 * Fault from kernel mode. Enable interrupts if they were
++		 * enabled in the parent context. Section (upper page table)
++		 * translation faults are handled via do_translation_fault(),
++		 * so we will only get here for a non-present kernel space
++		 * PTE or PTE permission fault. This may happen in exceptional
++		 * circumstances and need the fixup tables to be walked.
++		 */
++		if (interrupts_enabled(regs))
++			local_irq_enable();
++
++		__do_kernel_fault(mm, addr, fsr, regs);
++	}
++
++	return 0;
++}
++
+ static int __kprobes
+ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
  {
-@@ -136,15 +136,25 @@ static struct sock *rfcomm_get_sock_by_channel(int state, u8 channel, bdaddr_t *
+@@ -274,6 +303,12 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 	if (kprobe_page_fault(regs, fsr))
+ 		return 0;
  
- 		if (rfcomm_pi(sk)->channel == channel) {
- 			/* Exact match. */
--			if (!bacmp(&rfcomm_pi(sk)->src, src))
-+			if (!bacmp(&rfcomm_pi(sk)->src, src)) {
-+				sock_hold(sk);
- 				break;
-+			}
++	/*
++	 * Handle kernel addresses faults separately, which avoids touching
++	 * the mmap lock from contexts that are not able to sleep.
++	 */
++	if (addr >= TASK_SIZE)
++		return do_kernel_address_page_fault(mm, addr, fsr, regs);
  
- 			/* Closest match */
--			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY))
-+			if (!bacmp(&rfcomm_pi(sk)->src, BDADDR_ANY)) {
-+				if (sk1)
-+					sock_put(sk1);
-+
- 				sk1 = sk;
-+				sock_hold(sk1);
-+			}
- 		}
- 	}
- 
-+	if (sk && sk1)
-+		sock_put(sk1);
-+
- 	read_unlock(&rfcomm_sk_list.lock);
- 
- 	return sk ? sk : sk1;
-@@ -941,6 +951,7 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- {
- 	struct sock *sk, *parent;
- 	bdaddr_t src, dst;
-+	bool defer_setup = false;
- 	int result = 0;
- 
- 	BT_DBG("session %p channel %d", s, channel);
-@@ -954,6 +965,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- 
- 	lock_sock(parent);
- 
-+	if (parent->sk_state != BT_LISTEN)
-+		goto done;
-+
-+	defer_setup = test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags);
-+
- 	/* Check for backlog size */
- 	if (sk_acceptq_is_full(parent)) {
- 		BT_DBG("backlog full %d", parent->sk_ack_backlog);
-@@ -981,9 +997,11 @@ int rfcomm_connect_ind(struct rfcomm_session *s, u8 channel, struct rfcomm_dlc *
- done:
- 	release_sock(parent);
- 
--	if (test_bit(BT_SK_DEFER_SETUP, &bt_sk(parent)->flags))
-+	if (defer_setup)
- 		parent->sk_state_change(parent);
- 
-+	sock_put(parent);
-+
- 	return result;
- }
- 
+ 	/* Enable interrupts if they were enabled in the parent context. */
+ 	if (interrupts_enabled(regs))
 -- 
 2.53.0
 
