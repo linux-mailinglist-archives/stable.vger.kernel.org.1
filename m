@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-266417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PfykFOGcMWrtoAUAu9opvQ
-	(envelope-from <stable+bounces-266417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:41 +0200
+	id 2nwXBjuVMWqXnQUAu9opvQ
+	(envelope-from <stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEEB6949FE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:58:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBB46941EC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:02 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pIGMoT8S;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266417-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266417-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=15Mmnhv2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266041-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B40CA3012BF5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:58:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1EEB8307B1BD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC1F47D951;
-	Tue, 16 Jun 2026 18:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B715472798;
+	Tue, 16 Jun 2026 18:25:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2F547CC9C;
-	Tue, 16 Jun 2026 18:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB8E3BFE5A;
+	Tue, 16 Jun 2026 18:25:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636315; cv=none; b=JLXqSNv1txQ21gC5kBxOc8IHoY1HXuo69T9fekrxuv2wb5xADiSdd84mfwiI/CfZ8JJ/gLgaB+IfigzKaOlEahWQzP/N+k2nVpDnpQIhKBNXGsCB7JMzHC7xkrbZkUz4yquW05zRqOgiFeltiohFB0g10Hd12nYQvpsU5D+YDig=
+	t=1781634349; cv=none; b=rnhHfGxv0v2DrJ2+NufpE/WjyA+zu/MhPaiKF/U4J662zPZpZRgoCeeXgU7NjmjKeLj9alAAZ4QtAF5ZXIbja8FpNfXcpEfc1vVdYQjJ0eYUDzIJdBFns8ghwDtHOLYffo0p6vHa4yhCCaSgHqmEbl2KZxcF2/ZHgofoH85q6ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636315; c=relaxed/simple;
-	bh=mQSxHI0D6mCsx3673eYv5mRNAzrvyZiiCxsoEqGOKAQ=;
+	s=arc-20240116; t=1781634349; c=relaxed/simple;
+	bh=6E9iCTEtH/9E2Gxyg2vNUm8QCZBU5rU9AHqCtONeknU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iU5UQLMeUTSAynhHfcQLEeh+WD0KGP0xHvEpCSQOR9LxenV8onuoI3eG2mx5RuNq+DukbSSBoWHhTu+jK/u4ulK4+4J6tm1ozo+8vJwny0v/vSgSp2DGM3qs5H8wEw4ZxCQDTYITYqBCPM75rc1ldA3+2dNgaNT7DgyoiJUmYOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIGMoT8S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4012E1F000E9;
-	Tue, 16 Jun 2026 18:58:32 +0000 (UTC)
+	 MIME-Version; b=aBWSUZKnesUn03jr2ZdKoIsHQVxTxZj6QMQ+BMv0EFCM67neyjj1iOlr9FxzJFaVOncIq3rzSA6UTNew0klAIStoDzapSbQ1O3v0GLRu33oeZ0/cOZKCNXGGUAnDHKp4REYLqyALOj4DJo82SZrp9mVT8eWMWh0uu5ELhop76U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15Mmnhv2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E15F1F000E9;
+	Tue, 16 Jun 2026 18:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636314;
-	bh=QUvkZH7bS91agsGrxaHo+y6ofAP0Eo4S6Fp+bLzl4CM=;
+	s=korg; t=1781634348;
+	bh=fhS7qOStPcb1WRPk58Hvny8de9AdAkN4dCtTKBvqoHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pIGMoT8S4+2a6sts3gppm3Kl2lmLtSBkFKIUpE6QrkEkG1I2oSsXGXQhqjqer/4rP
-	 btKeW8bYAatdrNk5kpi2n/SmPM0CsDJ4LiKIBn/i7E6Amc1TwjWOepPI9LfF+l2dQS
-	 O86TTl099UC1ZaEvTjXgDxKmfcLn4jYZA6bDjRXI=
+	b=15Mmnhv2jRM7pKaHmictf6rfAkeIdEIrX/i1HGg5kKGPVque+Xos3EtiqU3A0f8jR
+	 DpxjTzhALWED85DHUuGYlahLcRD3YEpct61fzLxLpjOPvp8yQA4vHDChwegdz1xu0O
+	 jCug1X9ba/Sw9AnrTKA6lBttUcEhf8t5kTbsTBBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raf Dickson <rafdog35@gmail.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 190/342] vsock/vmci: fix sk_ack_backlog leak on failed handshake
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Longxuan Yu <ylong030@ucr.edu>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 248/411] io_uring/poll: fix signed comparison in io_poll_get_ownership()
 Date: Tue, 16 Jun 2026 20:28:06 +0530
-Message-ID: <20260616145057.031195014@linuxfoundation.org>
+Message-ID: <20260616145114.133411006@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,27 +73,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266417-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rafdog35@gmail.com,m:sgarzare@redhat.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-266041-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:zcliangcn@gmail.com,m:ylong030@ucr.edu,m:n05ec@lzu.edu.cn,m:asml.silence@gmail.com,m:axboe@kernel.dk,m:asmlsilence@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,ucr.edu,kernel.dk];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -95,66 +102,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,lzu.edu.cn:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EAEEB6949FE
+X-Rspamd-Queue-Id: 7CBB46941EC
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raf Dickson <rafdog35@gmail.com>
+From: Longxuan Yu <ylong030@ucr.edu>
 
-commit c05fa14db43ebef3bd862ca9d073981c0358b3f0 upstream.
+Commit 326941b22806cbf2df1fbfe902b7908b368cce42 usptream.
 
-When vmci_transport_recv_connecting_server() returns an error,
-vmci_transport_recv_listen() calls vsock_remove_pending() but never
-calls sk_acceptq_removed(). This leaves sk_ack_backlog incremented
-permanently.
+io_poll_get_ownership() uses a signed comparison to check whether
+poll_refs has reached the threshold for the slowpath:
 
-Repeated handshake failures (malformed packets, queue pair alloc
-failure, event subscribe failure) cause sk_ack_backlog to climb
-toward sk_max_ack_backlog. Once it reaches the limit the listener
-permanently refuses all new connections with -ECONNREFUSED, a
-silent denial of service requiring a process restart to recover.
+    if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
 
-The two existing sk_acceptq_removed() calls in af_vsock.c do not
-cover this path: line 764 checks vsock_is_pending() which returns
-false after vsock_remove_pending(), and line 1889 is only reached
-on successful accept().
+atomic_read() returns int (signed). When IO_POLL_CANCEL_FLAG
+(BIT(31)) is set in poll_refs, the value becomes negative in
+signed arithmetic, so the >= 128 comparison always evaluates to
+false and the slowpath is never taken.
 
-Fix by balancing sk_acceptq_added() with sk_acceptq_removed() on
-the error path.
+Fix this by casting the atomic_read() result to unsigned int
+before the comparison, so that the cancel flag is treated as a
+large positive value and correctly triggers the slowpath.
 
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Fixes: a26a35e9019f ("io_uring: make poll refs more robust")
 Cc: stable@vger.kernel.org
-Signed-off-by: Raf Dickson <rafdog35@gmail.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260526104356.469928-1-rafdog35@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Longxuan Yu <ylong030@ucr.edu>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://patch.msgid.link/3a3508b08bcd7f1bc3beff848ae6e1d73d355043.1775965597.git.ylong030@ucr.edu
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/vmci_transport.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -974,8 +974,10 @@ static int vmci_transport_recv_listen(st
- 			err = -EINVAL;
- 		}
- 
--		if (err < 0)
-+		if (err < 0) {
- 			vsock_remove_pending(sk, pending);
-+			sk_acceptq_removed(sk);
-+		}
- 
- 		release_sock(pending);
- 		vmci_transport_release_pending(pending);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -5525,7 +5525,7 @@ static bool io_poll_get_ownership_slowpa
+  */
+ static inline bool io_poll_get_ownership(struct io_kiocb *req)
+ {
+-	if (unlikely(atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
++	if (unlikely((unsigned int)atomic_read(&req->poll_refs) >= IO_POLL_REF_BIAS))
+ 		return io_poll_get_ownership_slowpath(req);
+ 	return !(atomic_fetch_inc(&req->poll_refs) & IO_POLL_REF_MASK);
+ }
 
 
 
