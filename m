@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-266151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id DcZoCbWYMWoYnwUAu9opvQ
-	(envelope-from <stable+bounces-266151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:53 +0200
+	id 99VPDo5yMWpZjgUAu9opvQ
+	(envelope-from <stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A0269452A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:40:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44552691923
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:58:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FCL0Ydqg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266151-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266151-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="P/T1BoBW";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264189-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 148F1320ECF5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A642A303810A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C145747CC79;
-	Tue, 16 Jun 2026 18:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF0145BD41;
+	Tue, 16 Jun 2026 15:43:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735D6169AD2;
-	Tue, 16 Jun 2026 18:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2455B4534A4;
+	Tue, 16 Jun 2026 15:43:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634930; cv=none; b=i+T6a4GC7k5m0E+N7llBbwuGnSQ3uC5GrxwntwbnAbfAajOxAquxmZloM+o/eOWdJ4FM9MmUSO/jGqABkueMwVVSuHwS3WgHufKWvXZTttnv6mqer9oTjQkfvoqsRHANkqdT5hYE/cXbFgiFSKmf6PrtJ3SPrgcnhq/pYIemuV4=
+	t=1781624602; cv=none; b=X1dtiFaB8mSOsObYzSr35Rvq1qr2kyEVDnUpCDE4wM44qIPPBSL+Zlz/w8bOg2n4binBu2MjiTxhBjsglljRIX0gz3l3aR59xqRLszmIRZQDbgC1GniafpT1afS0kxHKWyVbaH46agxloLFtqt+46sPMkq/EdXSPQ70+15ABf8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634930; c=relaxed/simple;
-	bh=lNyJgAEJqoLBRRMFe6WQ63+oq8dgYBpdyzX3JRRAryE=;
+	s=arc-20240116; t=1781624602; c=relaxed/simple;
+	bh=mXsZO0maZsjVwTQ2L9HRG24PVWNg6SO0+ugr6J0SxD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/LbWwkz/998ZKBxBq6svmv3ka+5syXsYvruJGyvC6YqPMwkI6SdIznOjqMEtFm8g+MbNsU7sr5JjDw8R8ojRWuZWWe7bd+800UTxdelCoci90kY5KNo5/8pK0Xckoe8eDiKMAVRu7vjE+LAFNCe9WsFxsWSrW8rIWS3l1n5mj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCL0Ydqg; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C411F000E9;
-	Tue, 16 Jun 2026 18:35:28 +0000 (UTC)
+	 MIME-Version; b=atKoTWGfpucH6IrClc5MBxJf47yMexsVmNIrVpTNrm+7aYkw4wF9gTcsHmRx6RZac2PLp2PB/YCDNR9XKaH/5Ri0ZaN968g0ZIhnohAZc0XWwfraNNupldOny+PBxXB2zcycc/E++sYSDUJRvfXWZna1ej/jFxTJFPmhT6pGLR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/T1BoBW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41711F000E9;
+	Tue, 16 Jun 2026 15:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634929;
-	bh=nwrcVrIwjcAcv9PDCcu80vX88mLyFFpz2EoWITgvONw=;
+	s=korg; t=1781624600;
+	bh=SaNa5b4vRXVvTP2KSElht8DvJVW6s6YpN8jiQB8meEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FCL0YdqgjnLn3+tfpT69q9OnCkgtNc7UoqufHUrNv5oEzKrXjjrZ39fl9FNgQBhfl
-	 g0yhbnf6nzLWJ3k/kea6tdsA+VEos0CDBJiQMgnjz1sHmJZNtSlqBiXxadI3LqbN9i
-	 vAqCnQJnxBakD9h5uWo1nUojTOSWDBlTuU7dsc/s=
+	b=P/T1BoBW75ASstl1YZfJY6U0O4b9m1s9U/vbIKLEB1m8pBhLbMC+54IXRFtdjkeks
+	 QupVLDCErRbIUzx7Xm9NZ8bEuaZ6eqHLfZmyuNZ2wWr9I6IQrkewHiQ9/rJV7vsWF8
+	 NDeVy5eHWMKhbjkXD0WgtYRr29B9Bsp1hcTyaIKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matt Fleming <mfleming@cloudflare.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrea Righi <arighi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 357/411] octeontx2-pf: avoid double free of pool->stack on AQ init failure
+Subject: [PATCH 7.0 364/378] sched_ext: Dont warn on NULL cgrp_moving_from in scx_cgroup_move_task()
 Date: Tue, 16 Jun 2026 20:29:55 +0530
-Message-ID: <20260616145120.299077242@linuxfoundation.org>
+Message-ID: <20260616145129.299608035@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266151-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264189-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:dawei.feng@seu.edu.cn,m:horms@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mfleming@cloudflare.com,m:tj@kernel.org,m:arighi@nvidia.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,71 +96,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,cloudflare.com:email,nvidia.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 79A0269452A
+X-Rspamd-Queue-Id: 44552691923
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Feng <dawei.feng@seu.edu.cn>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 9b244c242bec48b37e82b89787afd6a4c43457e1 ]
+[ Upstream commit 02e545c4297a26dbbc41df81b831e7f605bcd306 ]
 
-otx2_pool_aq_init() frees pool->stack when mailbox sync or retry
-allocation fails, but leaves the pointer unchanged. Later,
-otx2_sq_aura_pool_init() unwinds the partial setup through
-otx2_aura_pool_free(), which frees pool->stack again. The CN20K-specific
-cn20k_pool_aq_init() implementation has the same bug in
-its corresponding error path.
+A WARN fires when systemd's user manager writes "+cpu +memory +pids" to
+its own subtree_control while a sched_ext scheduler is loaded:
 
-Set pool->stack to NULL immediately after the local free so the shared
-cleanup path does not free the same stack again while cleaning up
-partially initialized pool state.
+  WARNING: at kernel/sched/ext.c:3227 scx_cgroup_move_task+0xa8/0xb0
+   scx_cgroup_move_task+0xa8/0xb0
+   sched_move_task+0x134/0x290
+   cpu_cgroup_attach+0x39/0x70
+   cgroup_migrate_execute+0x37d/0x450
+   cgroup_update_dfl_csses+0x1e3/0x270
+   cgroup_subtree_control_write+0x3e7/0x440
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available. Manual inspection confirms that the bug is still present in
-v7.1-rc3.
+scx_cgroup_can_attach() arms cgrp_moving_from only when a task's cpu
+cgroup changes. It can still be NULL when scx_cgroup_move_task() runs,
+through this sequence:
 
-Runtime validation was not performed because reproducing this path
-requires OcteonTX2/CN20K hardware.
+  Step                               Result
+  ---------------------------------  ----------------------------------
+  1. cpu enabled on cgroup G         cpu css = A
+  2. cpu toggled off then on for G   A killed, B created (same cgroup)
+  3. an exiting task keeps A alive   migration skips it, A now stale
+  4. +memory migrates G              stale A vs current B pulls cpu in
+  5. cpu attach runs for all tasks   hits a live, cpu-unchanged task
+  6. scx_cgroup_move_task() on it    cgrp_moving_from NULL -> WARN
 
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
-Fixes: d322fbd17203 ("octeontx2-pf: Initialize cn20k specific aura and pool contexts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260515151826.1005397-1-dawei.feng@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The mismatch is that scx_cgroup_can_attach() keys on cgroup identity
+while migration drives the move on css identity, so a NULL cgrp_moving_from
+here is a legitimate css-only migration, not a missing prep.
+
+The call is already gated on cgrp_moving_from, so just drop the warning.
+ops.cgroup_prep_move() and ops.cgroup_move() stay paired.
+
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Reported-by: Matt Fleming <mfleming@cloudflare.com>
+Closes: https://lore.kernel.org/all/20260601124156.2205704-1-mfleming@cloudflare.com/
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reviewed-by: Andrea Righi <arighi@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/ext.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1258,11 +1258,13 @@ static int otx2_pool_init(struct otx2_ni
- 		err = otx2_sync_mbox_msg(&pfvf->mbox);
- 		if (err) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return err;
- 		}
- 		aq = otx2_mbox_alloc_msg_npa_aq_enq(&pfvf->mbox);
- 		if (!aq) {
- 			qmem_free(pfvf->dev, pool->stack);
-+			pool->stack = NULL;
- 			return -ENOMEM;
- 		}
- 	}
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3402,11 +3402,13 @@ void scx_cgroup_move_task(struct task_st
+ 		return;
+ 
+ 	/*
+-	 * @p must have ops.cgroup_prep_move() called on it and thus
+-	 * cgrp_moving_from set.
++	 * scx_cgroup_can_attach() sets cgrp_moving_from only when the task's
++	 * cgroup changes. Migration keys off css rather than cgroup identity,
++	 * so it can hand an unchanged-cgroup task here with cgrp_moving_from
++	 * NULL. Nothing to report to the BPF scheduler then, so skip it and
++	 * keep prep_move and move paired.
+ 	 */
+-	if (SCX_HAS_OP(sch, cgroup_move) &&
+-	    !WARN_ON_ONCE(!p->scx.cgrp_moving_from))
++	if (SCX_HAS_OP(sch, cgroup_move) && p->scx.cgrp_moving_from)
+ 		SCX_CALL_OP_TASK(sch, SCX_KF_REST, cgroup_move, task_rq(p),
+ 				 p, p->scx.cgrp_moving_from,
+ 				 tg_cgrp(task_group(p)));
 
 
 
