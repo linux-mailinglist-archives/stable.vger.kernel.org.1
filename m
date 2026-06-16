@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id S/zZHsyNMWopmgUAu9opvQ
-	(envelope-from <stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:20 +0200
+	id EZ0fExeWMWoFngUAu9opvQ
+	(envelope-from <stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EFA6939D2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:54:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FA86942D5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vvR8fbKI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265682-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oQS3VZWK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9CCF7303FC66
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2FBB317D2ED
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110BE3C76AF;
-	Tue, 16 Jun 2026 17:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8552547A0B2;
+	Tue, 16 Jun 2026 18:29:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FC547CC91;
-	Tue, 16 Jun 2026 17:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C33A43CEC7;
+	Tue, 16 Jun 2026 18:29:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632440; cv=none; b=ql0uA6b45US0uvkJ7LKF6W5YIMXmq5YX9oqu/1GO2JJxoWkhjNadg9OBPlA3s8nMufFsXmuB+Ii3ArSeod2kz82nl50EEARkyJd47okBFjUpzoDH9mljw3J7GOVAO+wjV8FSCc3sJp9JwYJmlVujMpBp5BRK6x55bm/VZSp0RdM=
+	t=1781634561; cv=none; b=LSVm8JFc3r5hjSkLU1cb/oPITzaTB00DC4VGe7Um2gpryPN3x7QQ2ksVgGCcsVxCubAyfQGc1bBj81wcsV7SegbETv7onwVikWYox1wxUQZwK8FKCFWNoaCddbnCWBB7aqz/HJKAeuH4X0MIAyFV1VfQIH6PykRM16ePC774hH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632440; c=relaxed/simple;
-	bh=EnQJAuLLRG+NolvPuCYz6psFYeq5N18aQkADh5ZQLGM=;
+	s=arc-20240116; t=1781634561; c=relaxed/simple;
+	bh=nfg8nAKkJVGZxHLQXvHVlyCFGF+UPuIh1JdVkl6g+a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gGGwF6ukF7xVC677r+bQMwPyzwcm6xj1/RoAC6SFpw2udYuxR2/hYa/4rc1vreMy16VsIFARkRqrZGiRV0kWCLUAyqz5yHHZrgQ77QYpEr21iYnMJ7/zu90RTn88vtdywfCbVwJOz3lo1p95TcaQ8sMYsNzaND6B7Q4+ip09WEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvR8fbKI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F841F000E9;
-	Tue, 16 Jun 2026 17:53:58 +0000 (UTC)
+	 MIME-Version; b=T/B/qKiSgAyeCKuxrOiT5/fN3aR1TDy2PoJA2S5Lg2Bvxa8rvn+ZGZXpDRPZD6rM57xhbHDRwBwVMNQYA8Vl3vW2hm6cdap7FXCJovQaSfvjRy/5yVrMA8Ew6Fty1yStYLCCeoXAo6Miox1co57/qtz7JDRuBSYFIjdFOKrOqiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQS3VZWK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632111F000E9;
+	Tue, 16 Jun 2026 18:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632439;
-	bh=VXW8arXBXhc81Yx3mV7B7AXO0W9DMohxY7g9MHUR54U=;
+	s=korg; t=1781634560;
+	bh=Vrig6OaOXRm55tn7RZ/OhfBVaB365n0Vh2i6qfD2qbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vvR8fbKIcY2utofQ5OIWp6Ly1fl1u/BDJ+pRvpa6j3hX/tKzd9ly+a4SlOjpH8ctM
-	 an8J7kAtDQC5mULTSEVH3xRcNsw2G60Lhc9YPncO04yd3pW/JU0/JlTnI7jXb/Pn0p
-	 6m2+ZoHZytmxkxtt4lAgRZLXXcg7qWFkLwObey4o=
+	b=oQS3VZWKb5v5b2bUO3AZHAzllCtrfO6xF5Fpn4k4nqleH/GY933q3Os4qWS7MOJrO
+	 pDstspEBw+2vve/bovJP/18pH1mH3C1GBHL6VlkyMiZ3Agkud+xgJGjuW+GMOV7Fyi
+	 ykSGyfwJHOb56WgK07otSySNu79zn6ATpQK3uSLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kosiorek <mkosiorek121@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Shuvam Pandey <shuvampandey1@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 378/522] xfrm: defensively unhash xfrm_state lists in __xfrm_state_delete
+Subject: [PATCH 5.15 287/411] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
 Date: Tue, 16 Jun 2026 20:28:45 +0530
-Message-ID: <20260616145143.463857749@linuxfoundation.org>
+Message-ID: <20260616145116.411046361@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265682-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mkosiorek121@gmail.com,m:steffen.klassert@secunet.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266081-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuvampandey1@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,125 +99,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 08EFA6939D2
+X-Rspamd-Queue-Id: C5FA86942D5
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kosiorek <mkosiorek121@gmail.com>
+From: Shuvam Pandey <shuvampandey1@gmail.com>
 
-[ Upstream commit 14acf9652e5690de3c7486c6db5fb8dafd0a32a3 ]
+[ Upstream commit 85fa3512048793076eef658f66489112dcc91993 ]
 
-KASAN reproduces a slab-use-after-free in __xfrm_state_delete()'s
-hlist_del_rcu calls under syzkaller load on linux-6.12.y stable
-(reproduced on 6.12.47, also reachable via the same code path on
-torvalds/master and on the ipsec tree). Nine unique signatures cluster
-in the xfrm_state lifecycle, the load-bearing one being:
+hci_conn lookup and field access must be covered by hdev lock in
+hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
+the connection can be freed concurrently.
 
-  BUG: KASAN: slab-use-after-free in __hlist_del include/linux/list.h:990 [inline]
-  BUG: KASAN: slab-use-after-free in hlist_del_rcu include/linux/rculist.h:516 [inline]
-  BUG: KASAN: slab-use-after-free in __xfrm_state_delete net/xfrm/xfrm_state.c
-  Write of size 8 at addr ffff8881198bcb70 by task kworker/u8:9/435
+Extend the hci_dev_lock critical section to cover all conn usage in both
+handlers.
 
-  Workqueue: netns cleanup_net
-  Call Trace:
-   __hlist_del / hlist_del_rcu
-   __xfrm_state_delete
-   xfrm_state_delete
-   xfrm_state_flush
-   xfrm_state_fini
-   ops_exit_list
-   cleanup_net
+Keep the existing keypress notification behavior unchanged by routing
+the early exits through a common unlock path.
 
-The other observed signatures hit the same slab object from
-__xfrm_state_lookup, xfrm_alloc_spi, __xfrm_state_insert and an OOB
-write variant of __xfrm_state_delete, all on the byseq/byspi
-hash chains.
-
-__xfrm_state_delete() guards its byseq and byspi unhashes with
-value-based predicates:
-
-	if (x->km.seq)
-		hlist_del_rcu(&x->byseq);
-	if (x->id.spi)
-		hlist_del_rcu(&x->byspi);
-
-while everywhere else in the file (e.g. state_cache, state_cache_input)
-the safer hlist_unhashed() check is used. xfrm_alloc_spi() sets
-x->id.spi = newspi inside xfrm_state_lock and then immediately inserts
-into byspi, but a path that observes x->id.spi != 0 outside of
-xfrm_state_lock can still skip-or-hit the byspi unhash inconsistently
-with whether x is actually on the list. The same holds for x->km.seq
-versus byseq, and the bydst/bysrc unhashes have no predicate at all,
-so a second __xfrm_state_delete() on the same object writes through
-LIST_POISON pprev.
-
-The defensive change here:
-
-  - Use hlist_del_init_rcu() instead of hlist_del_rcu() on bydst,
-    bysrc, byseq and byspi so a second deletion is a no-op rather
-    than a write through LIST_POISON pprev. The byseq/byspi nodes
-    are already initialised in xfrm_state_alloc().
-  - Test hlist_unhashed() rather than the value predicate for
-    byseq/byspi, so the unhash decision tracks list state rather than
-    mutable scalar fields.
-
-Empirical verification: applied this patch on top of v6.12.47, rebuilt,
-and re-ran the same syzkaller harness for 1h16m on a previously-crashy
-configuration that produced ~100 hits each of slab-use-after-free
-Read in xfrm_alloc_spi / Read in __xfrm_state_lookup / Write in
-__xfrm_state_delete. After the patch, 7.1M execs across 32 VMs at
-~1550 exec/sec produced zero xfrm_state UAF/OOB hits. /proc/slabinfo
-confirms the xfrm_state slab is actively allocated and freed during
-the run (~143 KiB resident), so the fuzzer is still exercising those
-code paths -- they just no longer crash.
-
-Reproduction:
-
-  - Linux 6.12.47 x86_64 + KASAN_GENERIC + KASAN_INLINE + KCOV
-  - syzkaller @ 746545b8b1e4c3a128db8652b340d3df90ce61db
-  - 32 QEMU/KVM VMs x 2 vCPU on AWS c5.metal bare metal
-  - 9 unique signatures collected in ~9h, all within xfrm_state
-    lifecycle
-
-Fixes: fe9f1d8779cb ("xfrm: add state hashtable keyed by seq")
-Fixes: 7b4dc3600e48 ("[XFRM]: Do not add a state whose SPI is zero to the SPI hash.")
-Reported-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Tested-by: Michal Kosiorek <mkosiorek121@gmail.com>
+Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
 Cc: stable@vger.kernel.org
-Signed-off-by: Michal Kosiorek <mkosiorek121@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ dropped state_cache/state_cache_input unhash hunks and xfrm_nat_keepalive_state_updated() call ]
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_event.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -682,12 +682,12 @@ int __xfrm_state_delete(struct xfrm_stat
- 		x->km.state = XFRM_STATE_DEAD;
- 		spin_lock(&net->xfrm.xfrm_state_lock);
- 		list_del(&x->km.all);
--		hlist_del_rcu(&x->bydst);
--		hlist_del_rcu(&x->bysrc);
--		if (x->km.seq)
--			hlist_del_rcu(&x->byseq);
--		if (x->id.spi)
--			hlist_del_rcu(&x->byspi);
-+		hlist_del_init_rcu(&x->bydst);
-+		hlist_del_init_rcu(&x->bysrc);
-+		if (!hlist_unhashed(&x->byseq))
-+			hlist_del_init_rcu(&x->byseq);
-+		if (!hlist_unhashed(&x->byspi))
-+			hlist_del_init_rcu(&x->byspi);
- 		net->xfrm.state_num--;
- 		spin_unlock(&net->xfrm.xfrm_state_lock);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4953,9 +4953,11 @@ static void hci_user_passkey_notify_evt(
  
+ 	BT_DBG("%s", hdev->name);
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
+ 	conn->passkey_entered = 0;
+@@ -4964,6 +4966,9 @@ static void hci_user_passkey_notify_evt(
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_keypress_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
+@@ -4973,14 +4978,16 @@ static void hci_keypress_notify_evt(stru
+ 
+ 	BT_DBG("%s", hdev->name);
+ 
++	hci_dev_lock(hdev);
++
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+ 	if (!conn)
+-		return;
++		goto unlock;
+ 
+ 	switch (ev->type) {
+ 	case HCI_KEYPRESS_STARTED:
+ 		conn->passkey_entered = 0;
+-		return;
++		goto unlock;
+ 
+ 	case HCI_KEYPRESS_ENTERED:
+ 		conn->passkey_entered++;
+@@ -4995,13 +5002,16 @@ static void hci_keypress_notify_evt(stru
+ 		break;
+ 
+ 	case HCI_KEYPRESS_COMPLETED:
+-		return;
++		goto unlock;
+ 	}
+ 
+ 	if (hci_dev_test_flag(hdev, HCI_MGMT))
+ 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
+ 					 conn->dst_type, conn->passkey_notify,
+ 					 conn->passkey_entered);
++
++unlock:
++	hci_dev_unlock(hdev);
+ }
+ 
+ static void hci_simple_pair_complete_evt(struct hci_dev *hdev,
 
 
 
