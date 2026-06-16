@@ -1,70 +1,61 @@
-Return-Path: <stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YwK1Emp4MWqlkAUAu9opvQ
-	(envelope-from <stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:06 +0200
+	id F4c5ND+FMWoUlgUAu9opvQ
+	(envelope-from <stable+bounces-265247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1137692016
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8194C692F80
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:17:51 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TtWukzA2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=bZKcMpUN;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265247-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265247-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 741B630A3FCB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:08:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D3193016660
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915734611C1;
-	Tue, 16 Jun 2026 16:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E9C47A0D8;
+	Tue, 16 Jun 2026 17:17:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A482451056;
-	Tue, 16 Jun 2026 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21C747AF43;
+	Tue, 16 Jun 2026 17:17:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626113; cv=none; b=IgDRQf517XfRqkq5taCB8+e/LJULD684OhBRM2SfWIPiJ2e4ai7Rj4w7RezdNvfWjCv8HkhfdgmTaFFumoOZ87OOsrKnUA12FKzQSRU3zzsgMq12W5rz7+Z03H1nHEZbZPZe5zuSueVL0XWEZciXX2NONBDWo2ant8wlsAhq6XA=
+	t=1781630230; cv=none; b=TA+e9qhR7s5IW8a9sPUnAfaOcdQoi3UzgvBGfQ2IhCPyttbze1huehzsJvRV9qpKAbe+Bx8wpurjuN9RHh44OihwKheDzGwre7bg3TxNKPB0bGquH/+935QlV1knhFe1lDYO9tm5f8uIhLVYyP8vr42DQTlq+QUOFmop/j9Oo74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626113; c=relaxed/simple;
-	bh=PSxsqmTZBvEdRi31CbteAUnBuzedeTOvd1tuZd1tA4A=;
+	s=arc-20240116; t=1781630230; c=relaxed/simple;
+	bh=6D7TnaJG9IOs/wEwklVWZzRndRVJ2nFjTZahwybsjs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hb7zNEAZXlhdcr9sS8svTBBLdzcBmqTnQSvI0tGBJM1WeBhNi75gKGKUtlsrBaLVivskwlXYnVLN98hKBsk9IXsBfvlUrXvyY05WjgRwzZEZ62dnlk4oP3NIs9HyscgU2I8sof7wwDoPah/4HpoUwruwiSf3c7FLadJRSaKBGac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtWukzA2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E3F1F000E9;
-	Tue, 16 Jun 2026 16:08:31 +0000 (UTC)
+	 MIME-Version; b=KkTk4kVPKMRd5FvfPsVogpZFlIgGUbxSgAh3vOpe3n2S5iBX4yAKwgN542w7vJiYDaWJVAugrDAEijz0InNWvv1LNb9NZxvEyXGqa9+OY6vERLR7y15si0kbZtgHx+920KvkTbDN71ZQSZ1JAtkCve7CQKTnrMS8GAa9osOVUTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZKcMpUN; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C968E1F000E9;
+	Tue, 16 Jun 2026 17:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626112;
-	bh=MeNTaO4byxvabOY6OxHZs0mR0TZrCeNwGa0VEULHMfg=;
+	s=korg; t=1781630228;
+	bh=BS/L4jxbfMbGF4VwhGPh42uPx35PT699kS8EAQ2AeUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TtWukzA2H5qY7YmhuKwc9cjw7xTBVV4ZRmArM7PXtCt/QKyhcTUdEst5aau7HsYrp
-	 wY+5gJcPQafGF956yE4UsPKFZY9lmq/+xYq1RXj31qhvpm6QSCNix2oPDt8s4mS88N
-	 6sjrp86jLtKn6OGUC83uCf3vRhC5cfWQhnRUvqdg=
+	b=bZKcMpUNhHILT0qhSpMWep4qFgiCSwMq4tNgT+WrAWqEz1uFKJsvN45Lea41dzLyG
+	 p3l41EbiEIXFx7KBkauJL0qkxztPMde+GEJvQGWFI+o1CIgE/N3Xqk/Eqw5NpNbfdM
+	 6cRfFxnZZPY7edRn4zTklSrUr+OmJlCUbI7B+hKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH 6.18 266/325] rxrpc: Fix the ACK parser to extract the SACK table for parsing
+	Randy Dunlap <rdunlap@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 435/452] RDMA/umem: fix kernel-doc warnings
 Date: Tue, 16 Jun 2026 20:31:02 +0530
-Message-ID: <20260616145111.888384892@linuxfoundation.org>
+Message-ID: <20260616145139.482640304@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,142 +67,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264479-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:jaltman@auristor.com,m:edumazet@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:netdev@vger.kernel.org,m:stable@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,google.com,davemloft.net,kernel.org,lists.infradead.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265247-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:rdunlap@infradead.org,m:leon@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,davemloft.net:email,vger.kernel.org:from_smtp,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C1137692016
+X-Rspamd-Queue-Id: 8194C692F80
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 upstream.
+[ Upstream commit ff46d1392750444fab5ae5a0194764ffdc4ac0d2 ]
 
-Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
-potential incorrect access of the buffer in a fragmented UDP packet (the
-packet would probably have to be deliberately pre-generated as fragmented)
-when AF_RXRPC tries to extract the contents of the SACK table by copying
-out the contents of the SACK table into a buffer before attempting to parse
+Add or correct kernel-doc comments to eliminate warnings:
 
-AF_RXRPC assumes that it can just call skb_condense() and then validly
-access the SACK table from skb->data and that it will be a flat buffer -
-but skb_condense() can silently fail to do anything under some
-circumstances.
+Warning: include/rdma/ib_umem.h:104 function parameter 'biter' not
+ described in 'rdma_umem_for_each_dma_block'
+Warning: include/rdma/ib_umem.h:140 function parameter 'pgsz_bitmap' not
+ described in 'ib_umem_find_best_pgoff'
+Warning: include/rdma/ib_umem.h:141 No description found for return
+ value of 'ib_umem_find_best_pgoff'
 
-Note that whilst rxrpc_input_soft_acks() should be able to parse extended
-ACKs, the rest of AF_RXRPC doesn't currently support that.
-
-Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
-so don't.
-
-Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
-Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
-Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://patch.msgid.link/20260224003120.3173892-1-rdunlap@infradead.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 15fe76e23615 ("RDMA/umem: Fix truncation for block sizes >= 4G")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/input.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ include/rdma/ib_umem.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rxrpc_txqueue *tq = call->tx_queue;
- 	unsigned long extracted = ~0UL;
--	unsigned int nr = 0;
-+	unsigned int nr = 0, nsack;
- 	rxrpc_seq_t seq = call->acks_hard_ack + 1;
- 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
--	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
-+	u8 sack[256] __aligned(sizeof(unsigned long));
-+	u8 *acks = sack;
- 
- 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
- 
- 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
- 		tq = tq->next;
- 
-+	/* Extract an individual SACK table.  A normal SACK table is up to 255
-+	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
-+	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
-+	 * across all bit 0's then all bit 1's, then all bit 2's, ...
-+	 */
-+	memset(sack, 0, sizeof(sack));
-+	nsack = umin(sp->ack.nr_acks, 256);
-+	if (skb_copy_bits(skb,
-+			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
-+			  sack, nsack) < 0)
-+		return;
-+
- 	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
- 		/* Decant ACKs until we hit a txqueue boundary. */
-+		if ((i & 255) == 0)
-+			acks = sack;
- 		shiftr_adv_rotr(acks, extracted);
--		if (i == 256) {
--			acks -= i;
--			i = 0;
--		}
- 		seq++;
- 		nr++;
- 		if ((seq & RXRPC_TXQ_MASK) != 0)
-@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc
- 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
- 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
- 
--	if (nr_acks > 0)
--		skb_condense(skb);
--
- 	call->acks_latest_ts = ktime_get_real();
- 	call->acks_hard_ack = hard_ack;
- 	call->acks_prev_seq = prev_pkt;
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -89,6 +89,7 @@ static inline bool __rdma_umem_block_ite
+ /**
+  * rdma_umem_for_each_dma_block - iterate over contiguous DMA blocks of the umem
+  * @umem: umem to iterate over
++ * @biter: block iterator variable
+  * @pgsz: Page size to split the list into
+  *
+  * pgsz must be <= PAGE_SIZE or computed by ib_umem_find_best_pgsz(). The
+@@ -116,7 +117,7 @@ unsigned long ib_umem_find_best_pgsz(str
+  * ib_umem_find_best_pgoff - Find best HW page size
+  *
+  * @umem: umem struct
+- * @pgsz_bitmap bitmap of HW supported page sizes
++ * @pgsz_bitmap: bitmap of HW supported page sizes
+  * @pgoff_bitmask: Mask of bits that can be represented with an offset
+  *
+  * This is very similar to ib_umem_find_best_pgsz() except instead of accepting
+@@ -129,6 +130,9 @@ unsigned long ib_umem_find_best_pgsz(str
+  *
+  * If the pgoff_bitmask requires either alignment in the low bit or an
+  * unavailable page size for the high bits, this function returns 0.
++ *
++ * Returns: best HW page size for the parameters or 0 if none available
++ *   for the given parameters.
+  */
+ static inline unsigned long ib_umem_find_best_pgoff(struct ib_umem *umem,
+ 						    unsigned long pgsz_bitmap,
 
 
 
