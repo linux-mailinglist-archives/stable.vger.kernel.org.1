@@ -1,75 +1,66 @@
-Return-Path: <stable+bounces-264729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PQeSL3V8MWpgkgUAu9opvQ
-	(envelope-from <stable+bounces-264729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:21 +0200
+	id W4CvOdF8MWqVkgUAu9opvQ
+	(envelope-from <stable+bounces-264742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8F2692529
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C46925AD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:41:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q10tw86R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264729-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264729-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=none) header.from=debian.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aosnHVQ6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264742-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264742-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B467231D0893
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:32:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7D933222ECB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0091247799B;
-	Tue, 16 Jun 2026 16:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DAC4779B8;
+	Tue, 16 Jun 2026 16:34:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E6947277E;
-	Tue, 16 Jun 2026 16:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828DD4779A8;
+	Tue, 16 Jun 2026 16:34:08 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627556; cv=none; b=VfJ9KY2h9M2MBFHiSDCZK9JYr5aiirCrNNYEe6fl1DF77YFGIfyQN9rWSS0bIXvr97s/y927+ugLshrBJ2hxJd9CVWe5jwrdQ/w9BKCtQBofeA2Czl+3/kFfRNo4/agBx4sPEau69yQq06hdEmcikYByMGxS79+4sQ611jOZf7o=
+	t=1781627649; cv=none; b=nnoDpfOx28TLzTmgFgKvK1DvE9UaTtDbArxT4brsh9L+Asynop5QqMuMjosAyUwzRKlwXqUXGWAaoIOIERgCb/Ba8mbJ0GbDO3V6WJ1ReriiMQkWoChNfdjTUzSpbCcJRG/yFaSel97WYhQfTMA00TYV3UojeuPYvgBU1f2Bef4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627556; c=relaxed/simple;
-	bh=cxNRD9g4JTaW+y9yuZOXTodl2RSrdAouq0DJHD38nOY=;
+	s=arc-20240116; t=1781627649; c=relaxed/simple;
+	bh=/lzeg3xG55IT6R69PR5BS8EpqwfeQh+NovbQ5847Y6U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dw5fytdQHzjs+1RBfPsSANYcvWQTfeTfOBKuYjBjwNAKw/WEjJpJIYOXemfl2VQcxtX5xg3p4f3KBI6cxjtk6TNVMFlQtuk9YKyn4BRAmWhSBJmcCXvLbLjbvLoYqllSZLM9QLmuGHttuafhnQQ996Trl/Y9Yb/8ZVj1QubQnrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Q10tw86R; arc=none smtp.client-ip=82.195.75.108
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=H/N0aB8Py/Rsbm9WsHxcEy8ZCZh8fJfopFRm2ogN+sI=; b=Q10tw86RhvHN3vrXb0JljfmNy0
-	Mic5Rah8A1rmejO+xmpAuCq9affgrSN1SQm+aMjLe5ZO7Fbvw3NaESeAKjiSRx9MOYuwqg6rT/zGg
-	SN5GQpcbguKXW/69gfGhM5f7x2SB92CYTpRxK77/mLFP9k0gva0BM4bvPXTFbYGejNf0TGLT9W68H
-	cyxP7XKTqS+Un4PQzfGlgyXYsa1FqeVwixGuEYa81ZekcZ5nU4ux9ne7GWXLrOUatlIklfT3uaQlb
-	ehRIIH7VN3BUD/S74di1u1vRYXcuircWgRXtXbOvIw0ghQODXz/OjILWE+dZ/WRZIeCmMiZi9HQ60
-	y8M8a0vw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wZWi8-00Dyp3-24;
-	Tue, 16 Jun 2026 16:32:24 +0000
-Date: Tue, 16 Jun 2026 09:32:15 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	john.ogness@linutronix.de, pmladek@suse.com
-Cc: Jakub Kicinski <kuba@kernel.org>, Petr Mladek <pmladek@suse.com>, 
-	John Ogness <john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Vlad Poenaru <vlad.wing@gmail.com>, 
-	Thomas Gleixner <tglx@kernel.org>, netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	K Prateek Nayak <kprateek.nayak@amd.com>
-Subject: Re: [PATCH net] netpoll: run NAPI poll in softirq context to avoid
- rq->lock self-deadlock
-Message-ID: <ajF5S0uY-8F0jzoh@gmail.com>
-References: <20260610183621.3915271-1-vlad.wing@gmail.com>
- <20260611191114.5bc43a59@kernel.org>
- <20260616103529.Yh9Dxsjp@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=DpYem8QGTtmJN+beMgjfByF5+eGEdFTAXs1yTVMC6fe/QWMfkcvo/RDuNvKwUPVqYOgeQ4XBkKlGS09GfC4StOyhIAjaRmn2ytSYKkBWdCfpIw+/cnodV7S3ufBPloSNPpWG6+ptoXEuBbbKcNTApWlidfLb3MfIWmpFKaR+oDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aosnHVQ6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0901F000E9;
+	Tue, 16 Jun 2026 16:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781627648;
+	bh=8Jqh3XV9rmSyWZWNxZuPuAUlmfCecefCbbbBGdwDnyM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aosnHVQ6DjHHznUHYXoTJg6sbEmsT5RzlaS+k2wK+52SNPreY86c1qqgUiyaerE/h
+	 VLj0Rphd1xC8+5EBpPJDWD+V+cVB3/ttt1aq1+4ixUm7Tql96JjhfZzPK3XZM383Fr
+	 sjbyiVu28OAOFb0b9SR8yYbBwxPyQnVN+NoVCYr04Z64VNWl+PoEjtPkj1XYV/huHn
+	 8zpXrfWwLtlCGf5BxqeVs1JQQLEw+GgqpkEuEvK1DZhqXdjGMxpexHUfSX+8rt0RRN
+	 YEZNYL7D88X81gcJRBbDn51aWPZS83qfk8IXKODYEbuQ2pOR63JGrg7MFLNJ+GR8RD
+	 ukCsT104fU3rw==
+Date: Tue, 16 Jun 2026 17:34:03 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kees Cook <kees@kernel.org>, Kito Xu <veritas501@foxmail.com>,
+	linux-kernel@vger.kernel.org,
+	Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>,
+	Ao Wang <wangao@seu.edu.cn>, Xuewei Feng <fengxw06@126.com>,
+	Qi Li <qli01@tsinghua.edu.cn>, Ke Xu <xuke@tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] appletalk: fix use-after-free in atalk_find_primary()
+Message-ID: <20260616163403.GA827683@horms.kernel.org>
+References: <20260615103930.1484-1-zhaoyz24@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,83 +69,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260616103529.Yh9Dxsjp@linutronix.de>
-X-Debian-User: leitao
+In-Reply-To: <20260615103930.1484-1-zhaoyz24@mails.tsinghua.edu.cn>
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-5.16 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[debian.org,none];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:bigeasy@linutronix.de,m:john.ogness@linutronix.de,m:pmladek@suse.com,m:kuba@kernel.org,m:senozhatsky@chromium.org,m:peterz@infradead.org,m:vlad.wing@gmail.com,m:tglx@kernel.org,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:pabeni@redhat.com,m:horms@kernel.org,m:clrkwllms@kernel.org,m:rostedt@goodmis.org,m:linux-rt-devel@lists.linux.dev,m:linux-kernel@vger.kernel.org,m:stable@vger.kernel.org,m:frederic@kernel.org,m:mingo@redhat.com,m:vincent.guittot@linaro.org,m:dietmar.eggemann@arm.com,m:kprateek.nayak@amd.com,m:vladwing@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[25];
-	FORGED_SENDER(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264742-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:zhaoyz24@mails.tsinghua.edu.cn,m:netdev@vger.kernel.org,m:davem@davemloft.net,m:edumazet@google.com,m:kuba@kernel.org,m:pabeni@redhat.com,m:kees@kernel.org,m:veritas501@foxmail.com,m:linux-kernel@vger.kernel.org,m:yangyx22@mails.tsinghua.edu.cn,m:wangao@seu.edu.cn,m:fengxw06@126.com,m:qli01@tsinghua.edu.cn,m:xuke@tsinghua.edu.cn,m:stable@vger.kernel.org,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,suse.com,linutronix.de,chromium.org,infradead.org,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com,goodmis.org,lists.linux.dev,linaro.org,arm.com,amd.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,foxmail.com,mails.tsinghua.edu.cn,seu.edu.cn,126.com,tsinghua.edu.cn];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,seu.edu.cn:email,horms.kernel.org:mid,tsinghua.edu.cn:email,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1C8F2692529
+X-Rspamd-Queue-Id: 4A8C46925AD
 
-On Tue, Jun 16, 2026 at 12:35:29PM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-06-11 19:11:14 [-0700], Jakub Kicinski wrote:
-> > On Wed, 10 Jun 2026 11:36:21 -0700 Vlad Poenaru wrote:
-> > > @@ -194,11 +194,56 @@ void netpoll_poll_dev(struct net_device *dev)
-> > > +	local_bh_disable();
-> > > + 	poll_napi(dev);
-> > > +	_local_bh_enable();
-> >
-> > tglx, Sebastian, are you okay with using _local_bh_enable() to trick
-> > softirq into not waking ksoftirqd? The problematic path is:
-> >
-> >   scheduler -> printk -> netconsole -> raise softirq -> scheduler (deadlock)
-> >
-> > so the softirq may never get serviced.
-> >
-> > In netcons we try to avoid touching the network driver if the Tx path
-> > locks are already held. Ideally we'd do something similar with the
-> > scheduler. Try to do bare minimum if we may be in the scheduler.
-> > Failing that - don't poll the driver if we were called with irqs
-> > already disabled.
-> >
-> > Or maybe we only poll from console->write_thread ?
->
-> So this is not an issue since commit 7eab73b18630e ("netconsole: convert
-> to NBCON console infrastructure"). Because from here now on writes are
-> deferred to the nbcon thread. So this purely about -stable in this case.
+On Mon, Jun 15, 2026 at 06:39:28PM +0800, Yizhou Zhao wrote:
+> atalk_find_primary() walks the global AppleTalk interface list under
+> atalk_interfaces_lock, but returns a pointer to iface->address after
+> dropping that lock.  Both atalk_autobind() and atalk_bind() then
+> dereference the returned pointer without any lifetime protection.
+> 
+> The interface can be removed concurrently through the normal AppleTalk
+> interface ioctl path.  SIOCATALKDIFADDR calls atalk_dev_down(), which
+> eventually reaches atif_drop_device() and frees the same struct
+> atalk_iface that owns the returned address field.  A racing bind can
+> therefore read from freed memory.
+> 
+> This is reachable with a configured AppleTalk interface; reproducing the
+> race does not require a malicious device or driver.  The configuration
+> ioctls require CAP_NET_ADMIN in the initial user namespace, and
+> AF_APPLETALK sockets are limited to init_net.
+> 
+> Fix the lifetime issue without changing the returned address pointer
+> type.  Rename the helper to atalk_find_primary_locked() and keep
+> atalk_interfaces_lock held across the return.  The callers now copy
+> s_net and s_node while the lock is still held, then immediately release
+> the lock before doing any further work.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> Reported-by: Yuxiang Yang <yangyx22@mails.tsinghua.edu.cn>
+> Reported-by: Ao Wang <wangao@seu.edu.cn>
+> Reported-by: Xuewei Feng <fengxw06@126.com>
+> Reported-by: Qi Li <qli01@tsinghua.edu.cn>
+> Reported-by: Ke Xu <xuke@tsinghua.edu.cn>
+> Assisted-by: GLM:GLM-5.1
+> Signed-off-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
+> ---
+> diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+> index 30a6dc06291c..4d6576cd0ae8 100644
+> --- a/net/appletalk/ddp.c
+> +++ b/net/appletalk/ddp.c
+> @@ -351,7 +351,7 @@ struct atalk_addr *atalk_find_dev_addr(struct net_device *dev)
+>  	return iface ? &iface->address : NULL;
+>  }
+>  
 
-Does the nbcon thread handle defer even for consoles that support atomic
-operations?
+A kernel doc for atalk_find_dev_addr which describes the locking
+expectations is probably warranted here.
 
-netconsole is marked with CON_NBCON_ATOMIC_UNSAFE, which means it rarely
-performs inline/direct printk and instead pushes to the thread, which
-flushes in a safe context.
+> -static struct atalk_addr *atalk_find_primary(void)
+> +static struct atalk_addr *atalk_find_primary_locked(void)
+>  {
+>  	struct atalk_iface *fiface = NULL;
+>  	struct atalk_addr *retval;
+> @@ -378,7 +378,6 @@ static struct atalk_addr *atalk_find_primary(void)
+>  	else
+>  		retval = NULL;
+>  out:
+> -	read_unlock_bh(&atalk_interfaces_lock);
 
-For drivers that behave correctly, I'd like to be able to drop
-CON_NBCON_ATOMIC_UNSAFE, potentially setting it at runtime based on the
-underlying driver capabilities. If netconsole is backed by a well-behaving
-network driver, we could eventually remove the flag (!?)
+This function still acquires atalk_interfaces_lock but I don't think that
+asymmetry is justified. If the critical section needs to be expanded then I
+think it would be best to both acquire and release the lock in the caller.
 
-Would that approach cause any issues?
+>  	return retval;
+>  }
+>  
+> @@ -1132,20 +1131,24 @@ static int atalk_autobind(struct sock *sk)
+>  {
+>  	struct atalk_sock *at = at_sk(sk);
+>  	struct sockaddr_at sat;
+> -	struct atalk_addr *ap = atalk_find_primary();
+> +	struct atalk_addr *ap = atalk_find_primary_locked();
+>  	int n = -EADDRNOTAVAIL;
+
+We could take this opportunity to move towards reverse xmas tree here.
+
+>  
+>  	if (!ap || ap->s_net == htons(ATADDR_ANYNET))
+> -		goto out;
+> +		goto unlock_and_out;
+>  
+>  	at->src_net  = sat.sat_addr.s_net  = ap->s_net;
+>  	at->src_node = sat.sat_addr.s_node = ap->s_node;
+> +	read_unlock_bh(&atalk_interfaces_lock);
+
+The unlock_and_out label applies to the critical section which ends here.
+But in my mind the goto construct is best used for handling errors 
+that apply to, and in general accumulate during, the flow of a function.
+
+Combining that with my earlier comments would go for something like the
+following (completely untested!). Similarly in atalk_bind().
+
+	struct atalk_sock *at = at_sk(sk);
+	struct sockaddr_at sat;
+	int n = -EADDRNOTAVAIL;
+	struct atalk_addr *ap;
+
+	read_lock_bh(&atalk_interfaces_lock);
+	ap = atalk_find_primary_locked();
+
+	if (ap && ap->s_net != htons(ATADDR_ANYNET)) {
+		at->src_net  = sat.sat_addr.s_net  = ap->s_net;
+		at->src_node = sat.sat_addr.s_node = ap->s_node;
+	}
+
+	read_unlock_bh(&atalk_interfaces_lock);
+
+>  
+>  	n = atalk_pick_and_bind_port(sk, &sat);
+>  	if (!n)
+>  		sock_reset_flag(sk, SOCK_ZAPPED);
+>  out:
+>  	return n;
+> +unlock_and_out:
+> +	read_unlock_bh(&atalk_interfaces_lock);
+> +	goto out;
+>  }
+>  
+>  /* Set the address 'our end' of the connection */
+
+...
+
+-- 
+pw-bot: changes-requested
 
