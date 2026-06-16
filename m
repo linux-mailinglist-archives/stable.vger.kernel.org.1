@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-265225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y3U8K86EMWrZlQUAu9opvQ
-	(envelope-from <stable+bounces-265225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:58 +0200
+	id I8kkFLGeMWrDoQUAu9opvQ
+	(envelope-from <stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B17692EE3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:15:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBBA694BF3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:06:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ys0EfYBH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265225-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265225-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0gRYIcC6;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266510-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CAB5303E8FB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB40C301AD9B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55DE47A0B2;
-	Tue, 16 Jun 2026 17:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF7E3DDDDA;
+	Tue, 16 Jun 2026 19:06:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB8D478E26;
-	Tue, 16 Jun 2026 17:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B04349CF0;
+	Tue, 16 Jun 2026 19:06:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630117; cv=none; b=aZM8GlG+rhmIfDxNoHGMJy0LTkITudA/zSvqh1boV7e9zIeBijciyZ854NYk4DGsDlJ+ngU+eonHaDhKJMEBS7xoF9348veupn9Pw/iHOl4k9kiem7u2NZX6X/xsH8LvZUBVxTvp/fBvq5UF1pdVuSFWQaFiTDe6qxlf413dL8c=
+	t=1781636768; cv=none; b=Iy78acbmqTCokW61MLd7ZL6X6R5MI33ams1zDpMr29UpXETd3n8Fzdx08MWIJ188OnoNS5Kn0pcd9zjQRkcihR/utX+gnUiC/wd6kUTsa5sAOJcLmDWVW7DCbePJAHM695IaIOptTEEcg+MbZ7QwekAKmQrWAdbwyrhhm934lmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630117; c=relaxed/simple;
-	bh=TUrM+eNSjJXiII/6rViXGSImMZZGgQpOogt/jGg+C6c=;
+	s=arc-20240116; t=1781636768; c=relaxed/simple;
+	bh=PESs/1uhxVl0ZfHpNcz438xnr0mkxnxwpfS7JqfEEms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fODLsjgVZVHOEZyAg/f2brQNvj9UKXA6w8UEs7PApwFmOwM33H1yX2Kmu3TPjQCgSQYy5PyIms5vdcLId0Q9rtkpiAQvjARnyH0TJWGoWmVKg9WoyrbITyms215RpQH1SmeEyWhqaMjBSAyiKF0bz6iJlCSpxSllrUbvml1/4Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ys0EfYBH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812D71F000E9;
-	Tue, 16 Jun 2026 17:15:15 +0000 (UTC)
+	 MIME-Version; b=a5a400OlvIoNUv4qyhMSFockLwtuhw2XxsmzaYRgOjd1N8pmcp5Kx0Zso5tFLVGKVmtCnP5ruj1zHUB4dDWMlVN7H1HxgSNKWcKo28dlxJInaGhGIcjbsVKoitB/iaBDSgCS4K/B12Guptyfmw5gGoxZS0rB5NZazil6DOZNcWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gRYIcC6; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5CC1F000E9;
+	Tue, 16 Jun 2026 19:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630116;
-	bh=QztpJ8Uatzkqu7WWJz0r7f8NE+AFIBT9kTW6Wk/Wox0=;
+	s=korg; t=1781636766;
+	bh=fDtlreKyajm2JnuPTMB4UFeg20kXHMh4Ourh2EtVF7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ys0EfYBHCWT1bbJnSPAmdLh0YZdU4AvzaXH46F5g872wOl7D4zKND2WwVLYWgxgUj
-	 Uu2lg3O44AOJxMnzeWeEPlxCSREsdP4QSRFdxhCPIIH7BRw9wcH4kNdw8jE/7gKJiT
-	 drI58r9hcqIUtxv++pG+ZBjNxEFIHAqgACkSg/dM=
+	b=0gRYIcC6b0ntnHDKlYvDo2LnhaM+BV/OCMDC2wCrOItYeLAcoF2YZUPt2q32ZLQ2s
+	 HTp9X406nh/Gr6mmjp36jbq3Ew5IHbc7TNU98ZSASsnBV3mpDNHgi3lQAx/RGBmtXK
+	 XsI2lvtso13HVv1oWppUKJcfqjIE/2kmXU76RN3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 371/452] soc: qcom: ice: Fix race between qcom_ice_probe() and of_qcom_ice_get()
+	stable <stable@kernel.org>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: [PATCH 5.10 302/342] usb: typec: ucsi: Check if power role change actually happened before handling
 Date: Tue, 16 Jun 2026 20:29:58 +0530
-Message-ID: <20260616145136.512671496@linuxfoundation.org>
+Message-ID: <20260616145102.502103327@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +73,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265225-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266510-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sumit.garg@oss.qualcomm.com,m:manivannan.sadhasivam@oss.qualcomm.com,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:myrrhperiwinkle@qtmlabs.xyz,m:heikki.krogerus@linux.intel.com,m:sashal@kernel.org,m:senozhatsky@chromium.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -96,166 +97,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,intel.com:email,qtmlabs.xyz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 76B17692EE3
+X-Rspamd-Queue-Id: 5BBBA694BF3
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit d922113ef91e6e7e8065e9070f349365341ba32e ]
+[ Upstream commit b80e7d34c7ea6a564525119d6138fbb577a23dba ]
 
-The current platform driver design causes probe ordering races with
-consumers (UFS, eMMC) due to ICE's dependency on SCM firmware calls. If ICE
-probe fails (missing ICE SCM or DT registers), devm_of_qcom_ice_get() loops
-with -EPROBE_DEFER, leaving consumers non-functional even when ICE should
-be gracefully disabled. devm_of_qcom_ice_get() doesn't know if the ICE
-driver probe has failed due to above reasons or it is waiting for the SCM
-driver.
+The CrOS EC may send a connector status change event with the power
+direction changed flag set even if the power direction hasn't actually
+changed after initiating a SET_PDR command internally [1]. In practice
+this happens on every system suspend due to other changes performed by
+the EC [2][3][4], causing suspend to fail.
 
-Moreover, there is no devlink dependency between ICE and consumer drivers
-as 'qcom,ice' is not considered as a DT 'supplier'. So the consumer drivers
-have no idea of when the ICE driver is going to probe.
+Fix this by checking if the power role change actually happened before
+handling it.
 
-To address these issues, store the error pointer in a global xarray with
-ice node phandle as a key during probe in addition to the valid ice pointer
-and synchronize both qcom_ice_probe() and of_qcom_ice_get() using a mutex.
+[1]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=1689;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[2]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=3923;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[3]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=5094;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
+[4]: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/ec/zephyr/subsys/pd_controller/pdc_power_mgmt.c;l=2229;drc=2d5a1cffce4e5ac8a39442cb3b764d2d5e1cf794
 
-If the xarray entry is NULL, then it implies that the driver is not
-probed yet, so return -EPROBE_DEFER. If it has any error pointer, return
-that error pointer directly. Otherwise, add the devlink as usual and return
-the valid pointer to the consumer.
-
-Xarray is used instead of platform drvdata, since driver core frees the
-drvdata during probe failure. So it cannot be used to pass the error
-pointer to the consumers.
-
-Note that this change only fixes the standalone ICE DT node bindings and
-not the ones with 'ice' range embedded in the consumer nodes, where there
-is no issue.
-
-Fixes: 2afbf43a4aec ("soc: qcom: Make the Qualcomm UFS/SDCC ICE a dedicated driver")
-Reported-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Tested-by: Sumit Garg <sumit.garg@oss.qualcomm.com> # OP-TEE as TZ
-Acked-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-Cc: stable@vger.kernel.org # 6.4
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260518-qcom-ice-fix-v7-1-2a595382185b@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-[ changed `.remove` to `.remove_new` for the void callback and replaced the `__free(device_node)` direct-return with an explicit `goto out` in `of_qcom_ice_get()` ]
+Cc: stable <stable@kernel.org>
+Fixes: 7616f006db07 ("usb: typec: ucsi: Update power_supply on power role change")
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Reported-and-tested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260519-ucsi-fix-2-v1-1-6f1239535187@qtmlabs.xyz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/ice.c | 36 +++++++++++++++++++++++++++++-------
- 1 file changed, 29 insertions(+), 7 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/ice.c b/drivers/soc/qcom/ice.c
-index d6e205e3812a96..94e91835062b26 100644
---- a/drivers/soc/qcom/ice.c
-+++ b/drivers/soc/qcom/ice.c
-@@ -15,6 +15,7 @@
- #include <linux/of.h>
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
-+#include <linux/xarray.h>
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -656,7 +656,7 @@ static void ucsi_handle_connector_change
+ 	struct ucsi *ucsi = con->ucsi;
+ 	struct ucsi_connector_status pre_ack_status;
+ 	struct ucsi_connector_status post_ack_status;
+-	enum typec_role role;
++	enum typec_role role, prev_role;
+ 	u16 inferred_changes;
+ 	u16 changed_flags;
+ 	u64 command;
+@@ -692,6 +692,8 @@ static void ucsi_handle_connector_change
+ 	 * short transitional changes.
+ 	 */
  
- #include <linux/firmware/qcom/qcom_scm.h>
- 
-@@ -49,6 +50,9 @@ struct qcom_ice {
- 	struct clk *core_clk;
- };
- 
-+static DEFINE_XARRAY(ice_handles);
-+static DEFINE_MUTEX(ice_mutex);
++	prev_role = !!(con->status.flags & UCSI_CONSTAT_PWR_DIR);
 +
- static bool qcom_ice_check_supported(struct qcom_ice *ice)
- {
- 	u32 regval = qcom_ice_readl(ice, QCOM_ICE_REG_VERSION);
-@@ -288,6 +292,8 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
- 		return qcom_ice_create(&pdev->dev, base);
+ 	/* 1. First UCSI_GET_CONNECTOR_STATUS */
+ 	command = UCSI_GET_CONNECTOR_STATUS | UCSI_CONNECTOR_NUMBER(con->num);
+ 	ret = ucsi_send_command(ucsi, command, &pre_ack_status,
+@@ -769,7 +771,8 @@ static void ucsi_handle_connector_change
+ 		ucsi_port_psy_changed(con);
  	}
  
-+	guard(mutex)(&ice_mutex);
-+
- 	/*
- 	 * If the consumer node does not provider an 'ice' reg range
- 	 * (legacy DT binding), then it must at least provide a phandle
-@@ -304,12 +310,11 @@ struct qcom_ice *of_qcom_ice_get(struct device *dev)
- 		goto out;
- 	}
+-	if (con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) {
++	if ((con->status.change & UCSI_CONSTAT_POWER_DIR_CHANGE) &&
++	    role != prev_role) {
+ 		typec_set_pwr_role(con->port, role);
  
--	ice = platform_get_drvdata(pdev);
--	if (!ice) {
--		dev_err(dev, "Cannot get ice instance from %s\n",
--			dev_name(&pdev->dev));
-+	ice = xa_load(&ice_handles, pdev->dev.of_node->phandle);
-+	if (IS_ERR_OR_NULL(ice)) {
- 		platform_device_put(pdev);
--		ice = ERR_PTR(-EPROBE_DEFER);
-+		if (!ice)
-+			ice = ERR_PTR(-EPROBE_DEFER);
- 		goto out;
- 	}
- 
-@@ -378,24 +383,40 @@ EXPORT_SYMBOL_GPL(devm_of_qcom_ice_get);
- 
- static int qcom_ice_probe(struct platform_device *pdev)
- {
-+	unsigned long phandle = pdev->dev.of_node->phandle;
- 	struct qcom_ice *engine;
- 	void __iomem *base;
- 
-+	guard(mutex)(&ice_mutex);
-+
- 	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base)) {
- 		dev_warn(&pdev->dev, "ICE registers not found\n");
-+		/* Store the error pointer for devm_of_qcom_ice_get() */
-+		xa_store(&ice_handles, phandle, (__force void *)base, GFP_KERNEL);
- 		return PTR_ERR(base);
- 	}
- 
- 	engine = qcom_ice_create(&pdev->dev, base);
--	if (IS_ERR(engine))
-+	if (IS_ERR(engine)) {
-+		/* Store the error pointer for devm_of_qcom_ice_get() */
-+		xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
- 		return PTR_ERR(engine);
-+	}
- 
--	platform_set_drvdata(pdev, engine);
-+	xa_store(&ice_handles, phandle, engine, GFP_KERNEL);
- 
- 	return 0;
- }
- 
-+static void qcom_ice_remove(struct platform_device *pdev)
-+{
-+	unsigned long phandle = pdev->dev.of_node->phandle;
-+
-+	guard(mutex)(&ice_mutex);
-+	xa_store(&ice_handles, phandle, NULL, GFP_KERNEL);
-+}
-+
- static const struct of_device_id qcom_ice_of_match_table[] = {
- 	{ .compatible = "qcom,inline-crypto-engine" },
- 	{ },
-@@ -404,6 +425,7 @@ MODULE_DEVICE_TABLE(of, qcom_ice_of_match_table);
- 
- static struct platform_driver qcom_ice_driver = {
- 	.probe	= qcom_ice_probe,
-+	.remove_new	= qcom_ice_remove,
- 	.driver = {
- 		.name = "qcom-ice",
- 		.of_match_table = qcom_ice_of_match_table,
--- 
-2.53.0
-
+ 		/* Complete pending power role swap */
 
 
 
