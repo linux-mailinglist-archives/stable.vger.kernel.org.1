@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-265058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YtkME12BMWqFlAUAu9opvQ
-	(envelope-from <stable+bounces-265058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:17 +0200
+	id yNKfKZaUMWpcnQUAu9opvQ
+	(envelope-from <stable+bounces-266012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:18 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C69F692A89
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F08069416C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:23:18 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xa6JJJoF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265058-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265058-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=HtCzaYmv;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266012-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266012-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7731A30055B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8A3393031330
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718CC47799B;
-	Tue, 16 Jun 2026 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8748F3BFE5A;
+	Tue, 16 Jun 2026 18:23:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E5935675A;
-	Tue, 16 Jun 2026 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617CF3D88F6;
+	Tue, 16 Jun 2026 18:23:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629268; cv=none; b=jC3jC8owILyLjbDVK464BnIJTCkx75ZOuTc6h7omZCxEl+essUIQaQXI4AGaYiqwHsdbrJbOq+iD2PfSn8riNYsQEc/R7O31q9LB2MIu2JdwCKwYZApCokAks2Z8gZALBLh+yq+9ud96Nr8QnjH56AEZncX3Dha8iKajJ6kbET4=
+	t=1781634196; cv=none; b=uCNNpEwjftWpI7CtjvASvCVe+tze3HOPgo+X/4K+rQAyxjwJj+Eld2CMp2BsmiZ4HRuck0n5ylfyc0fg/CtElSzx8acxPtJJySuLskpznmRzSoeRO/rXPfCyNFFGhBBF1IeiOuuXrueFhWLIoYdTm64KMTCfjnT1eEEk1l4UrI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629268; c=relaxed/simple;
-	bh=w95oI8QLm9CbjoutsY7Ouzo0gSSkKptsQm8rTudxmRU=;
+	s=arc-20240116; t=1781634196; c=relaxed/simple;
+	bh=0JfkH+Rz4h8Ydi4By+SSyoc6O2IjfhK0zflrcJSxnG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLyOjekg3TXQgaI1JZ+gIK3wMlNXyVdfaF+vq9lc2WaxYAbF4a3SgizkQjTtcdKqVdEw1tMU3CyonONCRDbljkLwATEPZjfl2odtHf8EXQnebr5pAEDPtPkvF6GJwHNg2JMCpB7WFqS84hSlgDD0HH9po9uP7bzQfQqtOCVtDs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa6JJJoF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2051F000E9;
-	Tue, 16 Jun 2026 17:01:05 +0000 (UTC)
+	 MIME-Version; b=Lr25/q4IPxz3w2rkMFVbUrNwwxh2WQmlq5+Su7CAonfBMiXhfi+OyWcAgzQI+ZcA/luv9enC2qgQFg/uXaq3AeCuFTcPBeLOEHHCKAV71LO+f7l0PfnyjBAOSHuMJWfeURHeN3WEaCcdwYj84/kaeEae3CGh4/AXE2dlvbiYuo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtCzaYmv; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BD61F000E9;
+	Tue, 16 Jun 2026 18:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629267;
-	bh=d8p0TQt+arR/TadMh0GAYR+2jLK5gzT2UDs0jmbtwH0=;
+	s=korg; t=1781634195;
+	bh=SHGNkXKehhnhCFEuweLSFvgjdVOyMv3VpmRTwVgmJho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xa6JJJoF3etjbc80PxScx+xQarZX5rT/htHDWvjqbAhvzqGUdXiZj+3wc7WGMFPdM
-	 oF9ZIajPiZOOyzymWsCxcCF3w69MFoIOkGm+9x6uuS5SYG61Ecst6nI4sn4BurVUVP
-	 iT5a1stLVWIuJr0bkEatEjfWys9H66lNirO5OnTQ=
+	b=HtCzaYmv7m5jpsr8LFxLLtFmm3NG1zaJrF/xtTVzbaVR1Man7wQTic6GvFn7RPccY
+	 pGdrjNOIr4kG0aOg4v9Cf5CdszIuCLOI68pJN9pNYEqcwhktd2GlKDgLWMtIdahRDy
+	 cV+MMwleFjh4XJjlUbwh0fIFCHnJ9Ec0PwGEcsNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/452] netfilter: bridge: make ebt_snat ARP rewrite writable
+	Kyle Zeng <kylebot@openai.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 209/411] ALSA: timer: Fix UAF at snd_timer_user_params()
 Date: Tue, 16 Jun 2026 20:27:27 +0530
-Message-ID: <20260616145129.329513791@linuxfoundation.org>
+Message-ID: <20260616145111.859572641@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,90 +75,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265058-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266012-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yimingqian591@gmail.com,m:fw@strlen.de,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:tiwai@suse.de,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,strlen.de:email,netfilter.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,openai.com:email,vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 2C69F692A89
+X-Rspamd-Queue-Id: 3F08069416C
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yiming Qian <yimingqian591@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 67ba971ae02514d85818fe0c32549ab4bfa3bf49 ]
+commit 053a401b592be424fea9d57c789f66cd5d8cec11 upstream.
 
-The ebtables SNAT target keeps the Ethernet source address rewrite
-behind skb_ensure_writable(skb, 0).  This is intentional: at the bridge
-ebtables hooks the Ethernet header is addressed through
-skb_mac_header()/eth_hdr(), while skb->data points at the Ethernet
-payload.  Asking skb_ensure_writable() for ETH_HLEN bytes would check
-the payload, not the Ethernet header, and would reintroduce the small
-packet regression fixed by commit 63137bc5882a.
+At releasing a timer object, e.g. when a userspace timer
+(CONFIG_SND_UTIMER) gets closed and snd_timer_free() is called, it
+tries to detach the timer instances and release the resources.
+However, it's still possible that other in-flight tasks are holding
+the timer instance where the to-be-deleted timer object is associated,
+and this may lead to racy accesses.
 
-However, the optional ARP sender hardware address rewrite is different.
-It writes through skb_store_bits() at an offset relative to skb->data:
+Fortunately, most of ioctls dealing with the timer instance list
+already have the protection with register_mutex, and this also avoids
+such races.  But, SNDRV_TIMER_IOCTL_PARAMS isn't protected, hence the
+concurrent ioctl may lead to use-after-free.
 
-        skb_store_bits(skb, sizeof(struct arphdr), info->mac, ETH_ALEN)
+This patch just adds the guard with register_mutex to protect
+snd_timer_user_params() for covering the code path as a quick
+workaround.  It's no hot-path but rather a rarely issued ioctl, so the
+performance penalty doesn't matter.
 
-skb_header_pointer() only safely reads the ARP header; it does not make
-the later sender hardware address range writable.  If that range is
-still held in a nonlinear skb fragment backed by a splice-imported file
-page, skb_store_bits() maps the frag page and copies the new MAC address
-directly into it.
-
-Ensure the ARP SHA range is writable before reading the ARP header and
-before calling skb_store_bits().
-
-Fixes: 63137bc5882a ("netfilter: ebtables: Fixes dropping of small packets in bridge nat")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Kyle Zeng <kylebot@openai.com>
+Tested-by: Kyle Zeng <kylebot@openai.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260606161145.1933447-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/ebt_snat.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/core/timer.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bridge/netfilter/ebt_snat.c b/net/bridge/netfilter/ebt_snat.c
-index 7dfbcdfc30e5d2..c9e229af0366b8 100644
---- a/net/bridge/netfilter/ebt_snat.c
-+++ b/net/bridge/netfilter/ebt_snat.c
-@@ -31,6 +31,9 @@ ebt_snat_tg(struct sk_buff *skb, const struct xt_action_param *par)
- 		const struct arphdr *ap;
- 		struct arphdr _ah;
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -1842,6 +1842,7 @@ static int snd_timer_user_params(struct
+ 	struct snd_timer *t;
+ 	int err;
  
-+		if (skb_ensure_writable(skb, sizeof(_ah) + ETH_ALEN))
-+			return EBT_DROP;
-+
- 		ap = skb_header_pointer(skb, 0, sizeof(_ah), &_ah);
- 		if (ap == NULL)
- 			return EBT_DROP;
--- 
-2.53.0
-
++	guard(mutex)(&register_mutex);
+ 	tu = file->private_data;
+ 	if (!tu->timeri)
+ 		return -EBADFD;
 
 
 
