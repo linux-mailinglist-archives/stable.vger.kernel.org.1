@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id LckeEumQMWqLmwUAu9opvQ
-	(envelope-from <stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:37 +0200
+	id a/6WC4tpMWrqigUAu9opvQ
+	(envelope-from <stable+bounces-263841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9707D693D1B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A42690EB0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:19:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=1MSrm9Ap;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265834-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=VkOT+slt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263841-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263841-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EBD131315A3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC604318361F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604E83D45CB;
-	Tue, 16 Jun 2026 18:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC1742EEBB;
+	Tue, 16 Jun 2026 15:12:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEFF2F12AE;
-	Tue, 16 Jun 2026 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E8433067F;
+	Tue, 16 Jun 2026 15:12:35 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633253; cv=none; b=fFkg35is4qLiYRN0nZ77DiWiZM0h7KWm1c3Xyec9E/LI23B/prrV0TCmrGxEnyjSXBjPzygyXZ6ZjbNFOFOOjYMqFiHNCaRLSzLK/Cb1omFNYfSBVMCF275dDqASjZHgzuEIS5ccCJjGzicoaGt7Dvxe38IMq0+ZxghzPuouueQ=
+	t=1781622756; cv=none; b=FyY6pHv9MaA6RnX1e/C5ocPkOkxSzkgtKlKHUj1qlDtWS31ABikGfs9YsjJd18EJ6fSdcvSmkHYOUlfh0q80JjajYvCgrg3JBrSSMgBkrSZkWnXey37qls9TizO5lrMz97VMVw7r/UTpMaMWgBW3UHp2CbrdjSCjHyP0/csXNj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633253; c=relaxed/simple;
-	bh=AU1wAzPX6LMP4r8kvnq4sh1oo2+c3G+69QQOZn2RNNM=;
+	s=arc-20240116; t=1781622756; c=relaxed/simple;
+	bh=L9H3co3TlBrl8uFFRTLII0huZK1oiBru1J5P6Km3/Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAUBulE3hWX/GtdGWpFK0auEAB7nhe0QOU/OIC6QMaXytkfb+C8XtB2SCV93reVCJXhszUA6D3RslPHjpWxpTpEXR+3D/vsoH9MmmX1wEYgVuc7JXBHeyNttWdRc1/f7FBOYU3+BfS59ZFZdJt/mX6EJFxOuI0O2e3TWVz1d2NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MSrm9Ap; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AAE1F000E9;
-	Tue, 16 Jun 2026 18:07:30 +0000 (UTC)
+	 MIME-Version; b=G7e26T3tO7htxmFaQtA2wTu7UYPvqIL2bgozQR0KcGtS2LmqS9pPiOsVP6xUIX3zPjPvcGZ56RLh9DJtk39KWt8jV+pRT743RGGOQYygTme2SqhOynnIbYFG8dqQb1Vx2VcI/wX7wV5Wl2LbuZKbKA++rWaNMifaRrgoCC3HdJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkOT+slt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3111F000E9;
+	Tue, 16 Jun 2026 15:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633252;
-	bh=1QQNInBB+UzOaQ/sMfaXaxWwBouSPdcRx14WC55fh8c=;
+	s=korg; t=1781622755;
+	bh=2ZJ1eLvINw2lqVgPJQv7EXQPN2B2iw+FL2tJw4mhW+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=1MSrm9ApBj9fWeGPL0k+UVoKKwuN31E/G8UFwXfv6k9QZzc+20AHJ01Cfr5m/ePu1
-	 Hz1cDgEgkwkiuUt0rzCUwjLLdXIo0E8efYEvFZZIjWTX85K91exgAxeQqsUz7gOl3X
-	 wef83e+PAHnM8BMkodKQE6MNcyNHSiRDBu1FAl54=
+	b=VkOT+sltuA/odaDJ78OGRTTJl9OhSDzVSxAeuT4sparQG7G5aaqw292onlzioMAmX
+	 etGyYweNX6KCBLd2DRcAHaypvt/IdxOuGoP4/D7vzLxJ2WiZImqjVn3882xzm1ByZm
+	 7WsMXbXWnKpAm3xxtyY96Btm1LqEk8yhNsghps2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/411] net: netlink: fix sending unassigned nsid after assigned one
+Subject: [PATCH 7.0 023/378] netfilter: nft_ct: bail out on template ct in get eval
 Date: Tue, 16 Jun 2026 20:24:14 +0530
-Message-ID: <20260616145101.246978164@linuxfoundation.org>
+Message-ID: <20260616145111.053964666@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265834-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263841-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:i.maximets@ovn.org,m:nicolas.dichtel@6wind.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:fw@strlen.de,m:jiayuan.chen@linux.dev,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -99,51 +99,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,6wind.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,syzkaller.appspot.com:url,netfilter.org:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,strlen.de:email,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9707D693D1B
+X-Rspamd-Queue-Id: 86A42690EB0
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 70f8592ee90585272018a725054b6eb2ab7e99ca ]
+[ Upstream commit 3027ecbdb5fdf9200251c21d4818e4c447ef78e1 ]
 
-If the current skb is not shared, it is re-used directly for all the
-sockets subscribed to the notification.  If we have remote all-nsid
-socket receiving a message first, then the 'nsid_is_set' will be
-set to 'true'.  If the nsid is NOT_ASSIGNED for the next socket in
-the list, the 'nsid_is_set' will remain 'true' and the negative value
-is be delivered to the user space.  All subsequent nsid values will be
-delivered as well, since there is no code path that sets the flag
-back to 'false'.
+I noticed this issue while looking at a historic syzbot report [1].
 
-Fix that by always dropping the flag to 'false' first.
+A rule like the one below is enough to trigger the bug:
 
-Fixes: 7212462fa6fd ("netlink: don't send unknown nsid")
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://patch.msgid.link/20260520172317.175168-2-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    table ip t {
+        chain pre {
+            type filter hook prerouting priority raw;
+            ct zone set 1
+            ct original saddr 1.2.3.4 accept
+        }
+    }
+
+The first expression attaches a per-cpu template ct via
+nft_ct_set_zone_eval() (nf_ct_tmpl_alloc -> kzalloc, tuple is all
+zero, nf_ct_l3num(ct) == 0). The next expression then calls
+nft_ct_get_eval() on the same skb, treats the template as a real ct
+and hits the 16-byte memcpy path. With dreg at NFT_REG32_15 this
+overflows past struct nft_regs on the kernel stack; with smaller
+dreg values it silently clobbers adjacent registers.
+
+Reject template ct at the eval entry and in nft_ct_get_fast_eval(),
+mirroring the check nft_ct_set_eval() already has. Additionally,
+bound the address copy in NFT_CT_SRC / NFT_CT_DST by priv->len
+instead of by nf_ct_l3num(ct): nf_ct_get_tuple() zeroes the tuple
+before pkt_to_tuple() fills in only the protocol-relevant leading
+bytes, so the trailing bytes of tuple->{src,dst}.u3.all are
+well-defined zero. priv->len is validated at rule load, so the
+copy size is now bounded by the destination register rather than
+by an untrusted field on the conntrack.
+
+[1]: https://syzkaller.appspot.com/bug?id=389cf09cb72926114fce90dc85a2c3231dcb647c
+
+Fixes: 45d9bcda21f4 ("netfilter: nf_tables: validate len in nft_validate_data_load()")
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_ct.c      | 8 +++-----
+ net/netfilter/nft_ct_fast.c | 2 +-
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 65eb164d00c40d..12e765fcbd747d 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1482,6 +1482,7 @@ static void do_one_broadcast(struct sock *sk,
- 		p->skb2 = NULL;
- 		goto out;
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 272ce181180777..92b673f4582a2d 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -78,7 +78,7 @@ static void nft_ct_get_eval(const struct nft_expr *expr,
+ 		break;
  	}
-+	NETLINK_CB(p->skb2).nsid_is_set = false;
- 	NETLINK_CB(p->skb2).nsid = peernet2id(sock_net(sk), p->net);
- 	if (NETLINK_CB(p->skb2).nsid != NETNSA_NSID_NOT_ASSIGNED)
- 		NETLINK_CB(p->skb2).nsid_is_set = true;
+ 
+-	if (ct == NULL)
++	if (!ct || nf_ct_is_template(ct))
+ 		goto err;
+ 
+ 	switch (priv->key) {
+@@ -180,12 +180,10 @@ static void nft_ct_get_eval(const struct nft_expr *expr,
+ 	tuple = &ct->tuplehash[priv->dir].tuple;
+ 	switch (priv->key) {
+ 	case NFT_CT_SRC:
+-		memcpy(dest, tuple->src.u3.all,
+-		       nf_ct_l3num(ct) == NFPROTO_IPV4 ? 4 : 16);
++		memcpy(dest, tuple->src.u3.all, priv->len);
+ 		return;
+ 	case NFT_CT_DST:
+-		memcpy(dest, tuple->dst.u3.all,
+-		       nf_ct_l3num(ct) == NFPROTO_IPV4 ? 4 : 16);
++		memcpy(dest, tuple->dst.u3.all, priv->len);
+ 		return;
+ 	case NFT_CT_PROTO_SRC:
+ 		nft_reg_store16(dest, (__force u16)tuple->src.u.all);
+diff --git a/net/netfilter/nft_ct_fast.c b/net/netfilter/nft_ct_fast.c
+index e684c8a9184877..ecf7b3a404be26 100644
+--- a/net/netfilter/nft_ct_fast.c
++++ b/net/netfilter/nft_ct_fast.c
+@@ -30,7 +30,7 @@ void nft_ct_get_fast_eval(const struct nft_expr *expr,
+ 		break;
+ 	}
+ 
+-	if (!ct) {
++	if (!ct || nf_ct_is_template(ct)) {
+ 		regs->verdict.code = NFT_BREAK;
+ 		return;
+ 	}
 -- 
 2.53.0
 
