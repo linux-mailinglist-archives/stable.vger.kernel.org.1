@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-263845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id hrK5B/9nMWpzigUAu9opvQ
-	(envelope-from <stable+bounces-263845-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:03 +0200
+	id ZnoPBXJmMWoLigUAu9opvQ
+	(envelope-from <stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30B1690D54
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80400690C29
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:06:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Fu1Efm15;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263845-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263845-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=jeZC0MQr;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263801-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C69C8300AD5C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:12:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F6783036E6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14C9438FF3;
-	Tue, 16 Jun 2026 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C9040DFC5;
+	Tue, 16 Jun 2026 15:05:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994B536F8F1;
-	Tue, 16 Jun 2026 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E657D3ACA42;
+	Tue, 16 Jun 2026 15:05:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622777; cv=none; b=b2nrJ9lk+pqtPB+fDCLlsilVjE0mQ9zxeb4qd6xQPuy8arbd2cJBB6Yagqt9qHz4ztD2M3bb03KxDCbnrXYD5L9tkA5ZCm3R8xEmoLS/G31skqfzQ1/4b4xu4z+mKw9VhemHxE4rEeNhOas9p5/6UEBBZbqtkp/cjaiUuWRhXjc=
+	t=1781622324; cv=none; b=PktyG36nR7awk3gQ69UUdbZhLK1NO6bqSk/bWNgRtEgor/pA6nlMvtxAQNhGLNF7fF+m8Ns34+yAF9/WxeHW1v/HGTSxqelWI2LNWeHERtuGksGxFESxeku+Kg22CyQvlsl0C2OuRraH6dgOjJpRW/E0+mdAlZzn9jYPdS0cbI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622777; c=relaxed/simple;
-	bh=3p29ny5702MkXmKPzIaXWzWn4AEC3HZb+PIEilHAhxI=;
+	s=arc-20240116; t=1781622324; c=relaxed/simple;
+	bh=TxIVv78UYuCRrwVrA9JmLSPHapawmrR4aoF4kDtpTbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0sS5XktWBXq0nK2av5mk82D1+hwob5GOKGlP//4fNtw6r+hQly7wpzOzk3Pn99shFbRSPawpFhWl0tvlUlHSFgndcHMuA1I+aMSdeI7jpt9aocANTBx+73wZhQ1jPcaskUggaYOMV6tRFxvdUJV3A0LF9hlCkYQVC4vIFoiGPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fu1Efm15; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6141F00A3A;
-	Tue, 16 Jun 2026 15:12:55 +0000 (UTC)
+	 MIME-Version; b=UsiMkVMmJZEgbWShRwB7FGmI/KYbXSyKr1voQHaPQwxNEjJlDwJczlFlzYoexP6TxmOmq7jezfFsz9Rsy76MBrdtjdz3vbWSaJCk8WCD8IRHu417p9t82H5/Nw0ql3ifY0aYZx1WhnYTEy4Y44YYDJaJSj/dL2jzyWUA+Qiu+TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeZC0MQr; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F222A1F000E9;
+	Tue, 16 Jun 2026 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622776;
-	bh=/PeX7eaCJJPxJft52H+Z5uNozuu1jLnHr+IdaDztcPI=;
+	s=korg; t=1781622322;
+	bh=Y+pt4ENVo9y2wp3RM4lY5SVmRLZumn1iMoptSmGgnfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fu1Efm15U0E8kZMvkt4hscy5rVY0+38xQXyFSvYjJi21uiiFxUM14I4uNru91TaRP
-	 piLmFwmG2myLNfm/VOBU5ofIAphYQOT3HBb0yBYDlQ+2Md04ARa181fuRfYa9Ci6sI
-	 +Sj9UEBtYN9Rv5w7DjI+xjSe3lRIZAuDnaekcke8=
+	b=jeZC0MQrVqUYEs9GNyMe69+ejRsk6SovGGaI7IVmTkMSxA4iC0yLSbtHJ9a0j7WjM
+	 b1rDpY3fTs31mY7iLaxylC2QeZ5DN0kwNEAYjWVaOc6CyjGAFRN06htT2ee+F652KV
+	 BHX9VkoSeVy2u7DnUcM6WbCJOWskv2mthTYPDXfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@oss.qualcomm.com>,
-	Val Packett <val@packett.cool>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 009/378] arm64: dts: qcom: x1-dell-thena: remove i2c20 (battery SMBus) and reserve its pins
+Subject: [PATCH 5.15 002/411] net/sched: cls_fw: fix NULL dereference of "old" filters before change()
 Date: Tue, 16 Jun 2026 20:24:00 +0530
-Message-ID: <20260616145110.274117576@linuxfoundation.org>
+Message-ID: <20260616145100.499825803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263845-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-263801-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jhs@mojatatu.com,m:dcaratti@redhat.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:konrad.dybcio@oss.qualcomm.com,m:abel.vesa@oss.qualcomm.com,m:val@packett.cool,m:andersson@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,61 +96,130 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,vger.kernel.org:from_smtp,packett.cool:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,bootlin.com:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,mojatatu.com:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B30B1690D54
+X-Rspamd-Queue-Id: 80400690C29
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit 4b15b03166cc5d28e9912287b1f9b6607c8710ec ]
+[ Upstream commit 65782b2db7321d5f97c16718c4c7f6c7205a56be ]
 
-i2c20 is used by the battmgr service on the ADSP to communicate with the
-SBS interface of the battery. Initializing it from Linux would break the
-battmgr functionality when booted in EL2. Mark those pins as reserved.
+Like pointed out by Sashiko [1], since commit ed76f5edccc9 ("net: sched:
+protect filter_chain list with filter_chain_lock mutex") TC filters are
+added to a shared block and published to datapath before their ->change()
+function is called. This is a problem for cls_fw: an invalid filter
+created with the "old" method can still classify some packets before it
+is destroyed by the validation logic added by Xiang.
+Therefore, insisting with repeated runs of the following script:
 
-Fixes: e7733b42111c ("arm64: dts: qcom: Add support for Dell Inspiron 7441 / Latitude 7455")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
-Signed-off-by: Val Packett <val@packett.cool>
-Link: https://lore.kernel.org/r/20260312005731.12488-2-val@packett.cool
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+ # ip link add dev crash0 type dummy
+ # ip link set dev crash0 up
+ # mausezahn  crash0 -c 100000 -P 10 \
+ > -A 4.3.2.1 -B 1.2.3.4 -t udp "dp=1234" -q &
+ # sleep 1
+ # tc qdisc add dev crash0 egress_block 1 clsact
+ # tc filter add block 1 protocol ip prio 1 matchall \
+ > action skbedit mark 65536 continue
+ # tc filter add block 1 protocol ip prio 2 fw
+ # ip link del dev crash0
+
+can still make fw_classify() hit the WARN_ON() in [2]:
+
+ WARNING: ./include/net/pkt_cls.h:88 at fw_classify+0x244/0x250 [cls_fw], CPU#18: mausezahn/1399
+ Modules linked in: cls_fw(E) act_skbedit(E)
+ CPU: 18 UID: 0 PID: 1399 Comm: mausezahn Tainted: G            E       7.0.0-rc6-virtme #17 PREEMPT(full)
+ Tainted: [E]=UNSIGNED_MODULE
+ Hardware name: Red Hat KVM, BIOS 1.16.3-2.el9 04/01/2014
+ RIP: 0010:fw_classify+0x244/0x250 [cls_fw]
+ Code: 5c 49 c7 45 00 00 00 00 00 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 5b b8 ff ff ff ff 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 90 <0f> 0b 90 eb a0 0f 1f 80 00 00 00 00 90 90 90 90 90 90 90 90 90 90
+ RSP: 0018:ffffd1b7026bf8a8 EFLAGS: 00010202
+ RAX: ffff8c5ac9c60800 RBX: ffff8c5ac99322c0 RCX: 0000000000000004
+ RDX: 0000000000000001 RSI: ffff8c5b74d7a000 RDI: ffff8c5ac8284f40
+ RBP: ffffd1b7026bf8d0 R08: 0000000000000000 R09: ffffd1b7026bf9b0
+ R10: 00000000ffffffff R11: 0000000000000000 R12: 0000000000010000
+ R13: ffffd1b7026bf930 R14: ffff8c5ac8284f40 R15: 0000000000000000
+ FS:  00007fca40c37740(0000) GS:ffff8c5b74d7a000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007fca40e822a0 CR3: 0000000005ca0001 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tcf_classify+0x17d/0x5c0
+  tc_run+0x9d/0x150
+  __dev_queue_xmit+0x2ab/0x14d0
+  ip_finish_output2+0x340/0x8f0
+  ip_output+0xa4/0x250
+  raw_sendmsg+0x147d/0x14b0
+  __sys_sendto+0x1cc/0x1f0
+  __x64_sys_sendto+0x24/0x30
+  do_syscall_64+0x126/0xf80
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7fca40e822ba
+ Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+ RSP: 002b:00007ffc248a42c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+ RAX: ffffffffffffffda RBX: 000055ef233289d0 RCX: 00007fca40e822ba
+ RDX: 000000000000001e RSI: 000055ef23328c30 RDI: 0000000000000003
+ RBP: 000055ef233289d0 R08: 00007ffc248a42d0 R09: 0000000000000010
+ R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000001e
+ R13: 00000000000186a0 R14: 0000000000000000 R15: 00007fca41043000
+  </TASK>
+ irq event stamp: 1045778
+ hardirqs last  enabled at (1045784): [<ffffffff864ec042>] __up_console_sem+0x52/0x60
+ hardirqs last disabled at (1045789): [<ffffffff864ec027>] __up_console_sem+0x37/0x60
+ softirqs last  enabled at (1045426): [<ffffffff874d48c7>] __alloc_skb+0x207/0x260
+ softirqs last disabled at (1045434): [<ffffffff874fe8f8>] __dev_queue_xmit+0x78/0x14d0
+
+Then, because of the value in the packet's mark, dereference on 'q->handle'
+with NULL 'q' occurs:
+
+ BUG: kernel NULL  pointer dereference, address: 0000000000000038
+ [...]
+ RIP: 0010:fw_classify+0x1fe/0x250 [cls_fw]
+ [...]
+
+Skip "old-style" classification on shared blocks, so that the NULL
+dereference is fixed and WARN_ON() is not hit anymore in the short
+lifetime of invalid cls_fw "old-style" filters.
+
+[1] https://sashiko.dev/#/patchset/20260331050217.504278-1-xmei5%40asu.edu
+[2] https://elixir.bootlin.com/linux/v7.0-rc6/source/include/net/pkt_cls.h#L86
+
+Fixes: faeea8bbf6e9 ("net/sched: cls_fw: fix NULL pointer dereference on shared blocks")
+Fixes: ed76f5edccc9 ("net: sched: protect filter_chain list with filter_chain_lock mutex")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/e39cbd3103a337f1e515d186fe697b4459d24757.1775661704.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ net/sched/cls_fw.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-index 217ca8c7d81dae..488129bb1ae198 100644
---- a/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1-dell-thena.dtsi
-@@ -982,12 +982,6 @@ &i2c8 {
- 	status = "okay";
- };
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index a4ffee135c8557..60249d7b333af3 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -72,9 +72,13 @@ static int fw_classify(struct sk_buff *skb, const struct tcf_proto *tp,
+ 			}
+ 		}
+ 	} else {
+-		struct Qdisc *q = tcf_block_q(tp->chain->block);
++		struct Qdisc *q;
  
--&i2c20 {
--	clock-frequency = <400000>;
--
--	status = "okay";
--};
--
- &lpass_tlmm {
- 	spkr_01_sd_n_active: spkr-01-sd-n-active-state {
- 		pins = "gpio12";
-@@ -1308,6 +1302,7 @@ right_tweeter: speaker@0,1 {
- &tlmm {
- 	gpio-reserved-ranges = <44 4>,  /* SPI11 (TPM) */
- 			       <76 4>,  /* SPI19 (TZ Protected) */
-+			       <80 2>,  /* I2C20 (Battery SMBus) */
- 			       <238 1>; /* UFS Reset */
- 
- 	cam_rgb_default: cam-rgb-default-state {
+ 		/* Old method: classify the packet using its skb mark. */
++		if (tcf_block_shared(tp->chain->block))
++			return -1;
++
++		q = tcf_block_q(tp->chain->block);
+ 		if (id && (TC_H_MAJ(id) == 0 ||
+ 			   !(TC_H_MAJ(id ^ q->handle)))) {
+ 			res->classid = id;
 -- 
 2.53.0
 
