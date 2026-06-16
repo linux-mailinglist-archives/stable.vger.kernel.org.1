@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id +buWJM+dMWpFoQUAu9opvQ
-	(envelope-from <stable+bounces-266447-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:39 +0200
+	id dKUjOpZ7MWoBkgUAu9opvQ
+	(envelope-from <stable+bounces-264668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C61A694AE5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 21:02:39 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4878A69241D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:36:38 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iQEnrWbV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266447-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266447-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ycFN3zTe;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264668-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264668-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3002530C0340
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:01:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A26E53028359
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7443DA5A8;
-	Tue, 16 Jun 2026 19:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F5146AF14;
+	Tue, 16 Jun 2026 16:26:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4CA3DD51C;
-	Tue, 16 Jun 2026 19:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E773A8746;
+	Tue, 16 Jun 2026 16:26:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636463; cv=none; b=ZZX9t8WQS63+8igghUBHSp3/RNn4HlFnHwtMePHFPwVCbgO68uywpvl/2C9Uibma9Ede1/e7iFC1BbuQXjOEWLYV4fLtKqI0B4zSpdRe1H4mZi5UQo+TbtfAdhalTNP93XFr3/k4j/CgjsRnCeEFX5FXA69oZkP6cHf27jTpXZo=
+	t=1781627183; cv=none; b=OaIyDJ7X/IgRuym9WS2qVSPFWiaSG5BqIbzBZdFxhjAfshZ+iBXTsuJLZoFq8EV8beVO6CWERPv83gNdJg5sQAdjzqtwoKBdI8AJRGShoZyINS5SB2jqXgeWr87wkG7i4I0CJRg27x30BX9tDH9/Z67nnoq6d/Oraa0HednQVjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636463; c=relaxed/simple;
-	bh=qflX20XZRTU7uvDMdpuLLJFLx7HeeUPFklzq7f2PR14=;
+	s=arc-20240116; t=1781627183; c=relaxed/simple;
+	bh=uFa17sHyGg5Rg52MGCEAS5UltFrhzomoHLvvjdxU2U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUjPviJLqM6nrAa17Nj1Zo1XHEwzDsjaYhMu+WZmxTalMs2BRU1V717DyiVeMkziy6l+28cvU8DRNd3nAGqwybuJFBjCz0QacrNPlvLScmbCUck6mh6Px6AAPMD51bw8YYaAmT1hd3JkkW8ubUopLLuHxaAnugOc6rCu4+iGYPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQEnrWbV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D6D1F00A3A;
-	Tue, 16 Jun 2026 19:01:00 +0000 (UTC)
+	 MIME-Version; b=VfN+L6qIDJPuo8586P9TDOGmlV725WLZChMfeQtJtSwyrHyv7S3EQxQrLVcTNkzrsuA/W6Y/UGLywVjqtHajeoB8yuCkmkGHUdjo5RfTxpNcYrSrEjyrNJPUV+3ZBrd9td6K8GiT2z8HPiFkEIDlwfnHGyUt33TZ0L1hqjF6/MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycFN3zTe; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0E11F000E9;
+	Tue, 16 Jun 2026 16:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636462;
-	bh=5RaXSEZKikKRfPK8HYZcss/okNLg1HQnjPA+ub6E2gg=;
+	s=korg; t=1781627182;
+	bh=viEMt1gOm/xrQKb42jKz5f/of67XMEaVPmyUNJpMXns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iQEnrWbVR17NNraq2DLSW56hqn1Eg+GEK1nQ5ARa+ydniiiDvcUOLCrohM02PTQQj
-	 qkruan3JXDYM5dDRVv8hIaq9NbAWxga0ImYN3X6YcEJZesgr9+MmFsYSc1Yury73Dl
-	 HvBDgBFrgyVkqu6YgqHxLXzAwniY+5941c2R+02w=
+	b=ycFN3zTeozLqrERT1wD+A3iws8LkOA8uTBVh0I2mEAbSLgphlTbX99Qm30OfLVjo+
+	 dFuwqJk4dOfhSpxgjVlXQgpv8JOslPBydDH7iKF1r3p4+RIbcPb94POtxYJ4OXA8kk
+	 4kzbNYAKve0EnATVSMg2iXZbVbe0Sq8xMHabnUcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/342] hfsplus: fix held lock freed on hfsplus_fill_super()
+Subject: [PATCH 6.12 100/261] netfilter: nf_log: validate MAC header was set before dumping it
 Date: Tue, 16 Jun 2026 20:28:58 +0530
-Message-ID: <20260616145059.482673903@linuxfoundation.org>
+Message-ID: <20260616145049.667194632@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,174 +73,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266447-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,netfilter.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264668-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:zilin@seu.edu.cn,m:slava@dubeyko.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bestswngs@gmail.com,m:xmei5@asu.edu,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dubeyko.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,seu.edu.cn:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,asu.edu:email,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,netfilter.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 0C61A694AE5
+X-Rspamd-Queue-Id: 4878A69241D
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 90c500e4fd83fa33c09bc7ee23b6d9cc487ac733 ]
+[ Upstream commit a84b6fedbc97078788be78dbdd7517d143ad1a77 ]
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+The fallback path of dump_mac_header() guards the MAC header access
+only with "skb->mac_header != skb->network_header", without checking
+skb_mac_header_was_set(). When the MAC header is unset, mac_header is
+0xffff, so the test passes and skb_mac_header(skb) returns
+skb->head + 0xffff, ~64 KiB past the buffer; the loop then reads
+dev->hard_header_len bytes out of bounds into the kernel log.
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+This is reachable via the netdev logger: nf_log_unknown_packet() calls
+dump_mac_header() unconditionally, and an skb sent through AF_PACKET
+with PACKET_QDISC_BYPASS reaches the egress hook with mac_header still
+unset (__dev_queue_xmit(), which would reset it, is bypassed).
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
+Add the skb_mac_header_was_set() check the ARPHRD_ETHER path already
+uses, and replace the open-coded MAC header length test with
+skb_mac_header_len(). Only skbs with an unset MAC header are affected;
+valid ones are dumped as before.
 
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
+ BUG: KASAN: slab-out-of-bounds in dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+ Read of size 1 at addr ffff88800ea49d3f by task exploit/148
+ Call Trace:
+  kasan_report (mm/kasan/report.c:595)
+  dump_mac_header (net/netfilter/nf_log_syslog.c:831)
+  nf_log_netdev_packet (net/netfilter/nf_log_syslog.c:938 net/netfilter/nf_log_syslog.c:963)
+  nf_log_packet (net/netfilter/nf_log.c:260)
+  nft_log_eval (net/netfilter/nft_log.c:60)
+  nft_do_chain (net/netfilter/nf_tables_core.c:285)
+  nft_do_chain_netdev (net/netfilter/nft_chain_filter.c:307)
+  nf_hook_slow (net/netfilter/core.c:619)
+  nf_hook_direct_egress (net/packet/af_packet.c:257)
+  packet_xmit (net/packet/af_packet.c:280)
+  packet_sendmsg (net/packet/af_packet.c:3114)
+  __sys_sendto (net/socket.c:2265)
 
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
-
-After applying this patch, the warning no longer appears.
-
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Tested-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 7eb9282cd0ef ("netfilter: ipt_LOG/ip6t_LOG: add option to print decoded MAC header")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/super.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_log_syslog.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -539,8 +539,10 @@ static int hfsplus_fill_super(struct sup
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfsplus_brec_read_cat(&fd, &entry)) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
+index 58402226045e84..09b9152e9e5492 100644
+--- a/net/netfilter/nf_log_syslog.c
++++ b/net/netfilter/nf_log_syslog.c
+@@ -799,8 +799,8 @@ static void dump_mac_header(struct nf_log_buf *m,
+ 
+ fallback:
+ 	nf_log_buf_add(m, "MAC=");
+-	if (dev->hard_header_len &&
+-	    skb->mac_header != skb->network_header) {
++	if (dev->hard_header_len && skb_mac_header_was_set(skb) &&
++	    skb_mac_header_len(skb) != 0) {
+ 		const unsigned char *p = skb_mac_header(skb);
+ 		unsigned int i;
+ 
+-- 
+2.53.0
+
 
 
 
