@@ -1,226 +1,230 @@
-Return-Path: <stable+bounces-263731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zkReLAtLMWrHgAUAu9opvQ
-	(envelope-from <stable+bounces-263731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:09:31 +0200
+	id jHbeLqVKMWqsgAUAu9opvQ
+	(envelope-from <stable+bounces-263727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297D468FC31
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABDE68FC07
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=herrie.org header.s=transip-a header.b=N7D6eyHg;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263731-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263731-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=none;
-	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
+	dkim=pass header.d=amd.com header.s=selector1 header.b=B8J5k4Md;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263727-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263727-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=reject ("cv is fail on i=2")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C322B305EF2C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:09:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E99030277C8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 13:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FF0376464;
-	Tue, 16 Jun 2026 13:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17538369D72;
+	Tue, 16 Jun 2026 13:05:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from outbound0.mail.transip.nl (outbound0.mail.transip.nl [149.210.149.69])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010037.outbound.protection.outlook.com [52.101.56.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20DE36F429;
-	Tue, 16 Jun 2026 13:09:10 +0000 (UTC)
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781615356; cv=none; b=O+Pb3gjU7rvUZcc6eHAroF7Bg00yA/wdDvNLGq5AtJFDcCdyBDIfoDg7toZxpiEaX1zDCTS27SQDDeeiRmr/Xic61C/5mfDAQIE9Q/O/+ilC6bz6KtwgkYMMCyfghhvu/dgzjCVwE9UxImPjNhPbw9Ri2rOh78KtvkPM1qf4YGw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781615356; c=relaxed/simple;
-	bh=tkpQ7s8w0fK4taqHJRA/B2dU7gCPwT5NhFTac1ssF7E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iGq6zjKpIO/lpHu50Y5RMUCnElUoGhhm4b+NFwDJOv1RkCW20I7llKoREpat/+DKLh3AM/Nr2m/SZ7AMQG673wv54c+Fc+3lFBzGLBivVPY+ELcMavqZO2EjMolWSBUH5kpL3LTrUl243COn8k4jUUHpYXd+kvMACuZ4MwdnZLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=herrie.org; spf=pass smtp.mailfrom=herrie.org; dkim=pass (2048-bit key) header.d=herrie.org header.i=@herrie.org header.b=N7D6eyHg; arc=none smtp.client-ip=149.210.149.69
-Received: from submission12.mail.transip.nl (unknown [10.103.8.163])
-	by outbound0.mail.transip.nl (Postfix) with ESMTP id 4gfnFW1tDtzxNs0;
-	Tue, 16 Jun 2026 15:02:07 +0200 (CEST)
-Received: from [127.0.1.1] (180-93-184-31.ftth.glasoperator.nl [31.184.93.180])
-	by submission12.mail.transip.nl (Postfix) with ESMTPA id 4gfnFV32wBz3SJ37Q;
-	Tue, 16 Jun 2026 15:02:06 +0200 (CEST)
-From: Herman van Hazendonk <github.com@herrie.org>
-Date: Tue, 16 Jun 2026 15:02:04 +0200
-Subject: [PATCH v2 1/3] iio: common: st_sensors: honour channel endianness
- in read_axis_data
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF925C80E
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 13:05:45 +0000 (UTC)
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781615146; cv=fail; b=UrQ5yCNI42ReRo9imTyNamQy6zOXyvha+KuPhSdI+3JTjPkztj2rxW3leFfVMMQBNHF8FTs5PkqMd/HpUgig/WrdD/FY6X4EVU7kSsASo6cr/Xb53MRHEWj0T2iqNHNGksKB8E4Lhkg7gH0tkMZsVXl1OZRdlVU4iLgUUR+W/hE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781615146; c=relaxed/simple;
+	bh=XjqnEUzOJm7Ex4JI9e89yDILFY/zFTldztZqpCWx+k0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nSF7qfpQAkrypNXRE+f/4emzok8wQSyL/4/66bcjlbgUx8Lyhbje+ADjZyKdRdBmKZ02kz8NeLHul2Dn+8o3J3LtElG36ztK14f1/hcWuK5xv4j217+OqnwKhKIuT4Brb4BYX5cnqf2fUdCO1nEaVHMhYf1/4g1v/0KukubnMWk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=B8J5k4Md; arc=fail smtp.client-ip=52.101.56.37
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yIb55R6aDmCYHwl4wknZBS+T+xQt4cPjfMWdDVQuLG50K4+TeMHdK8rBTx6Fnz2v0lrLetHH9XKuLDEwQv4lw4ReKxHbJW5pGJ+MVJR5+/PMCJuHeBKSB9wfzgy4EK1M/ttgFNlms+IGyEP0YnAaVeyafjnAb/Ki+U4vlKY0B/Iyxttos0Ro9fEkG+J/YM4O+y/QbmOVWbd/Htr/G4v5YjS7iII0vr2OmTEfCyArY80F0cY5fNZMmzfFZCmoapg1rUx7emu0wuwTE31L3auKsII9PjvL+SKIZLEepRPgpJxsjr4vl4DrFwmgAYyirRntnFZUTWK9EwLqDnytH83Ocw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hvE5yldw77zspbGh2Z4VLkYxwscUgjAvegG75mQkpts=;
+ b=n3WFsEYp9UO7ixwcvJ3wsS/hNNreEJqTYotLXuCRB1U9e8CH9d3EUCDyd9ZKPsqUdOO1Yt+8bify2ugJCemZfc4bCnnhWulKrpavWLQNdoBGl1DFW8az09wSpDlxmeb49i4rb7DpSiKwPr/qiO12qwTuaRFzCHXDcLKOnvLq9nDXNYSVC4WNL2UYOGCclImnLLOEl2Xz3nmz+msK2+ZmNyyNlKhbPMOkU6LoK+ILI+oIE71kzsA9PlBGT5Yyvc4eZyHkvqrKoBzd9RQvFgqr0Vq7YzkiVV+2HyIKSzECnLXCRJ1IC6TRtlsYsDpcmVn3zT+pt47AQo5Y8SS3eF5AZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hvE5yldw77zspbGh2Z4VLkYxwscUgjAvegG75mQkpts=;
+ b=B8J5k4MdmcdJXa9IkQczw8XQ2wqx3tCXjU14swE5jLGl14SQrZyQ54W2Z8otcZ0oSOUcnmCbh8auGk8kiZh+sJoLhQNwQVkdlk+Ww2TsqObodeHxRXxRmdNwN4GrR5lD/tFKZCfVd3DSDVQ1aKSDDNxmrBCB7YQFKIsHKsiZD4A=
+Received: from BLAPR03CA0061.namprd03.prod.outlook.com (2603:10b6:208:329::6)
+ by DS7PR12MB6141.namprd12.prod.outlook.com (2603:10b6:8:9b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.18; Tue, 16 Jun
+ 2026 13:05:41 +0000
+Received: from BL6PEPF00022574.namprd02.prod.outlook.com
+ (2603:10b6:208:329:cafe::44) by BLAPR03CA0061.outlook.office365.com
+ (2603:10b6:208:329::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.18 via Frontend Transport; Tue,
+ 16 Jun 2026 13:05:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BL6PEPF00022574.mail.protection.outlook.com (10.167.249.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.139.8 via Frontend Transport; Tue, 16 Jun 2026 13:05:41 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 16 Jun
+ 2026 08:05:40 -0500
+Received: from p8.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Tue, 16 Jun 2026 08:05:40 -0500
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <stable@vger.kernel.org>, <christian.koenig@amd.com>,
+	<gregkh@linuxfoundation.org>
+CC: Honglei Huang <honghuan@amd.com>, Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH] drm/amdgpu: drop retry loop in amdgpu_hmm_range_get_pages
+Date: Tue, 16 Jun 2026 09:05:31 -0400
+Message-ID: <20260616130531.738887-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260616-submit-iio-lsm303dlh-magn-fixes-v2-1-063edcf74e60@herrie.org>
-References: <20260616-submit-iio-lsm303dlh-magn-fixes-v2-0-063edcf74e60@herrie.org>
-In-Reply-To: <20260616-submit-iio-lsm303dlh-magn-fixes-v2-0-063edcf74e60@herrie.org>
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Denis Ciocca <denis.ciocca@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Denis Ciocca <denis.ciocca@st.com>, 
- Linus Walleij <linusw@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, devicetree@vger.kernel.org, stable@vger.kernel.org, 
- Herman van Hazendonk <github.com@herrie.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1781614923; l=4262;
- i=github.com@herrie.org; s=20240417; h=from:subject:message-id;
- bh=tkpQ7s8w0fK4taqHJRA/B2dU7gCPwT5NhFTac1ssF7E=;
- b=GI5PZ+oz2NFvgfwhyuleiebfezY9nbuPin+gd+rEGiVlt+jZLvEaPpWKs8qihHjbR8ZleLlPi
- T3tI5oWspXBBiZ0ImsRyxevx6zgotpmrREsx0YEJoTIFBcGmcIGAhtB
-X-Developer-Key: i=github.com@herrie.org; a=ed25519;
- pk=YYxdq8fb5O9vhkW3n2dCH044FPZZO5718v/du7fRhFw=
-X-Scanned-By: ClueGetter at submission12.mail.transip.nl
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=transip-a; d=herrie.org; t=1781614926; h=from:subject:to:cc:
- references:in-reply-to:date:mime-version:content-type;
- bh=GanE+LwpMU/3dQ/iAwCN0mrZ872UhY+IqsGotY1ZLxE=;
- b=N7D6eyHgncaQ149sHTL2rgYz9+StpPgtNRBwjTHOKQC4LxzqeYTJv4sVHepV5QI0KV+pdx
- GCEWLYMextRaU/3lDoXov/gw1VZ6yMrbH1Jp4oo8Drkn//mDbTSJKP1cjNY5rgOT3fZRmD
- a3V9AB6XDcKI8JWOi9JTp+5+OryKNTttPv4Y71qETvsu5hNo1sHnp1svMvGxegdeAwGZlv
- Xp4OED4ylfERg+ryYFBQMCj3dogwwjphxhj4CE3De2fVoyGlajjW4ULdN5xQyy0NTIrKot
- 34m9IQjqXDN5tYOmvOm4U2zJ//kTzmaQCCQBrqJ3uaov3ePzoaXvcM7l7b/AfQ==
-X-Report-Abuse-To: abuse@transip.nl
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022574:EE_|DS7PR12MB6141:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64e2c0d7-2e68-4a49-f6e0-08decba7f7fa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|36860700016|82310400026|1800799024|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Uymkv3dF//K64v+UFBB9htcpEQzrBrJJJKGUl02l12Zqo5y6tMtgrYM6A99Y6vpuTZtMPKv3cbyEtKkNHjuAn3zaYXrVdNeytF12KLdME5p7MKBbVnuPVZyqrUJnfncRWN63WHaq1Dmda7ZOrCjge6QsJtkkopkLSqVGBChIn7vRl5jsR2zsfnJziJuHU4Ha22tKkoqQjaiWzLGkDrGY/NtqqWDtj9NQhCRClSY2LT2C9AV9XT2XhfAtNGdjMIGXZaOxJ1t1XAJuqOmfk/mLhTNzt0QnFc4tiAOMv05mZ+FuooKcWUGaz/XLy+5lraEX8J/PMJkoE2XNef8Wkv13jLAKGiQngIUNyIzPhxTBfLMsoOJiXAWpwhuuTaYjJIav3GZkM1oedUHD/MKYH4qyyc16Jisdy2h39znEIzezdmD0Ju34x6WOpDhixoSy6D2gzrWih9/tvXkSqTP1uVxszpuqwZv30hQUWxKSlI9N5lQqjdP3JJu8VtJlrAlgRW/+EZ5bYgzaJtXTUygf/kaVQBA3ZONAI6oh4WTxLl+XD8Hn+hLWq3nuKLUL8iw0so/SVQoAwF8lhTaSIDL3P7IGNdA5A+RaEEx1IwGuU2LNk1/Rv26bHJSZzj5hqtyoGOjufayt2HFOihELRIis71X7EAu7HuLhTpgpbq/+CMSYQR5ByxOxlE0L+cMfrPUKD4XoY+BnyMb9Hoglo/FgWlmBN+/l0585NCetfT4cVEsWivI=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(36860700016)(82310400026)(1800799024)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Afp3Jz3MI/0QYe5IU+R/+eD1gMBJwE/i5rHCrroEStUBNFsiq8zSlHC9ZanXdVetNePpShT0YLTClwYsFcfZ7seRLuOVlGXLptwDtusAff3UquzA85AzCHH58gnqk8N4ui4iZwvGY5ImKe3hBUk0nvuHEyf6GCPxM5gf7uGpVsL5TG6noXuddberFdNKCvTFTE+IN9xSwqIZy8+2rXvN8VJFuQV+aWtlC012fE8nBEH9V3nVlfjY3tHde3vUBbqsHsfXGTEfhyzTBE2A5pEcG6qiAz+ZWP/AoNgpJTKBafVXmYwXrE8FmYGtlHTI8GfeNCLOGNnNKQ8OWyZaYXAs71Mb18YFT02F5hPQtU9RPozrB7k1qAjOSwNwCbdSjAYCHCyLPmLnlmOyWLYWP/xO/ynjTKOxhNOIfjPlmi4xgCMMzjo34UVf18zu+tcbgl0U
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2026 13:05:41.2521
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64e2c0d7-2e68-4a49-f6e0-08decba7f7fa
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00022574.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6141
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[herrie.org:s=transip-a];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:jic23@kernel.org,m:dlechner@baylibre.com,m:nuno.sa@analog.com,m:andy@kernel.org,m:nathan@kernel.org,m:nick.desaulniers+lkml@gmail.com,m:morbo@google.com,m:justinstitt@google.com,m:denis.ciocca@gmail.com,m:lars@metafoo.de,m:robh@kernel.org,m:krzk+dt@kernel.org,m:conor+dt@kernel.org,m:denis.ciocca@st.com,m:linusw@kernel.org,m:linux-iio@vger.kernel.org,m:linux-kernel@vger.kernel.org,m:llvm@lists.linux.dev,m:devicetree@vger.kernel.org,m:stable@vger.kernel.org,m:github.com@herrie.org,m:nickdesaulniers@gmail.com,m:denisciocca@gmail.com,m:krzk@kernel.org,m:conor@kernel.org,s:lists@lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,baylibre.com,analog.com,gmail.com,google.com,metafoo.de,st.com];
-	DMARC_NA(0.00)[herrie.org];
-	FORGED_SENDER(0.00)[github.com@herrie.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-263731-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[github.com@herrie.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[herrie.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,herrie.org:dkim,herrie.org:email,herrie.org:mid,herrie.org:from_mime]
+	TAGGED_FROM(0.00)[bounces-263727-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:christian.koenig@amd.com,m:gregkh@linuxfoundation.org,m:honghuan@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[alexander.deucher@amd.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,gitlab.freedesktop.org:url,amd.com:dkim,amd.com:email,amd.com:mid,amd.com:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	DKIM_TRACE(0.00)[amd.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alexander.deucher@amd.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[8]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 297D468FC31
+X-Rspamd-Queue-Id: 1ABDE68FC07
 
-st_sensors_read_axis_data() unconditionally decoded multi-byte
-results with get_unaligned_le16() / get_unaligned_le24() regardless
-of the channel's declared scan_type.endianness.
+From: Honglei Huang <honghuan@amd.com>
 
-For every ST sensor that has used this helper since it was introduced
-this happened to be fine because the ST IMU/accel/gyro/pressure
-families publish their data registers as little-endian and the
-channel specs in those drivers declare IIO_LE accordingly.
+Since commit c08972f55594 ("drm/amdgpu: fix amdgpu_hmm_range_get_pages")
+moved mmu_interval_read_begin() out of the per-chunk loop, the
+captured notifier_seq is no longer refreshed across retries. As a
+result, the existing -EBUSY retry path can never make progress:
 
-The LSM303DLH magnetometer however publishes its X/Y/Z output as a
-pair of big-endian bytes (the H register sits at the lower address,
-0x03/0x05/0x07, and the L register immediately after), and its
-channel specs in st_magn_core.c correctly declare IIO_BE -- but
-read_axis_data() ignored that and decoded as little-endian, swapping
-the high and low bytes of every magnetometer sample. The LSM303DLHC
-and LSM303DLM share the same st_magn_16bit_channels (IIO_BE) and
-were therefore byte-swapped by the same bug; users of those parts
-will see different in_magn_*_raw values after this fix lands.
+  hmm_range_fault() returns -EBUSY only when
+  mmu_interval_check_retry(notifier, notifier_seq) reports that the
+  sequence is stale. Once the sequence has advanced, the stored seq
+  will never match again, so every subsequent call within the same
+  invocation returns -EBUSY immediately.
 
-The bug is most visible on a stationary chip: in earth's field the
-true X reading is small and the high byte sits at 0x00, so swapping
-the bytes pins sysfs X at exactly the low byte's pattern (e.g. 0x00F0
-= 240). Y and Z still appear "to vary" because their magnitudes are
-larger and the noise in the low byte produces big swings in the
-swapped high byte:
+The "goto retry" therefore degenerates into a busy spin that simply
+burns CPU for the full HMM_RANGE_DEFAULT_TIMEOUT (~1s) window before
+finally bailing out with -EAGAIN. This is pure latency with no chance
+of recovery, and it actively hurts the KFD userptr stack: the caller
+ends up blocked for a second while holding mmap_lock, only to return
+-EAGAIN to the restore worker (or to userspace) which would have
+re-driven the operation immediately anyway.
 
-  before (LSM303DLH flat, sysfs in_magn_*_raw):
-      X=240 (stuck), Y= 12032..23296, Z=-16128..-9728
+Drop the retry/timeout entirely and let -EBUSY propagate straight to
+out_free_pfns, where it is already translated to -EAGAIN. Recovery is
+handled at a higher level: the KFD restore_userptr_worker reschedules
+itself, and the userptr ioctl path returns -EAGAIN to userspace.
 
-  after (direct i2c-dev big-endian decode, same chip same orientation):
-      X≈-4096, Y≈210, Z≈80     (sensible values reflecting earth's
-                                ambient field at low gauss range)
+No functional regression: the previous behaviour on -EBUSY was already
+to fail with -EAGAIN after a 1s stall; we just skip the stall.
 
-Fix read_axis_data() to dispatch on ch->scan_type.endianness and
-call get_unaligned_be16() / get_unaligned_be24() when the channel
-declares IIO_BE. Existing IIO_LE consumers (st_accel, st_gyro,
-st_pressure, st_lsm6dsx and others) are unaffected because their
-channel specs already declare IIO_LE and the LE path is unchanged.
-
-While restructuring the branches, replace the previously implicit
-silent-success-with-uninitialised-*data fall-through for
-byte_for_channel outside 1..3 with an explicit return -EINVAL. No
-in-tree ST sensor publishes such a channel, but the new behaviour
-is strictly safer than handing userspace garbage.
-
-Fixes: 23491b513bcd ("iio:common: Add STMicroelectronics common library")
+Fixes: c08972f55594 ("drm/amdgpu: fix amdgpu_hmm_range_get_pages")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/work_items/5393
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Honglei Huang <honghuan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 342981fff32802a819d6fc7cf3c9fedf9f3d9d60)
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7 sparse smatch clang-analyzer coccinelle checkpatch
-Assisted-by: Sashiko:claude-opus-4-7
-Signed-off-by: Herman van Hazendonk <github.com@herrie.org>
 ---
- drivers/iio/common/st_sensors/st_sensors_core.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index dbc5e16fbde4..76f91696f66a 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -498,6 +498,7 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
- 	u8 *outdata;
- 	struct st_sensor_data *sdata = iio_priv(indio_dev);
- 	unsigned int byte_for_channel;
-+	u32 tmp;
- 
- 	byte_for_channel = DIV_ROUND_UP(ch->scan_type.realbits +
- 					ch->scan_type.shift, 8);
-@@ -508,12 +509,22 @@ static int st_sensors_read_axis_data(struct iio_dev *indio_dev,
- 	if (err < 0)
- 		return err;
- 
--	if (byte_for_channel == 1)
--		*data = (s8)*outdata;
--	else if (byte_for_channel == 2)
--		*data = (s16)get_unaligned_le16(outdata);
--	else if (byte_for_channel == 3)
--		*data = (s32)sign_extend32(get_unaligned_le24(outdata), 23);
-+	if (byte_for_channel == 1) {
-+		tmp = *outdata;
-+	} else if (byte_for_channel == 2) {
-+		if (ch->scan_type.endianness == IIO_BE)
-+			tmp = get_unaligned_be16(outdata);
-+		else
-+			tmp = get_unaligned_le16(outdata);
-+	} else if (byte_for_channel == 3) {
-+		if (ch->scan_type.endianness == IIO_BE)
-+			tmp = get_unaligned_be24(outdata);
-+		else
-+			tmp = get_unaligned_le24(outdata);
-+	} else {
-+		return -EINVAL;
-+	}
-+	*data = sign_extend32(tmp, BYTES_TO_BITS(byte_for_channel) - 1);
- 
- 	return 0;
- }
+This patch is from drm-next and fixes a regression in a patch that
+went to stable.
 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
+index e452444b33b0..99bc9ad67d5b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
+@@ -174,7 +174,6 @@ int amdgpu_hmm_range_get_pages(struct mmu_interval_notifier *notifier,
+ 	const u64 max_bytes = SZ_2G;
+ 
+ 	struct hmm_range *hmm_range = &range->hmm_range;
+-	unsigned long timeout;
+ 	unsigned long *pfns;
+ 	unsigned long end;
+ 	int r;
+@@ -201,15 +200,9 @@ int amdgpu_hmm_range_get_pages(struct mmu_interval_notifier *notifier,
+ 		pr_debug("hmm range: start = 0x%lx, end = 0x%lx",
+ 			hmm_range->start, hmm_range->end);
+ 
+-		timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+-
+-retry:
+ 		r = hmm_range_fault(hmm_range);
+-		if (unlikely(r)) {
+-			if (r == -EBUSY && !time_after(jiffies, timeout))
+-				goto retry;
++		if (unlikely(r))
+ 			goto out_free_pfns;
+-		}
+ 
+ 		if (hmm_range->end == end)
+ 			break;
 -- 
-2.43.0
+2.54.0
 
 
