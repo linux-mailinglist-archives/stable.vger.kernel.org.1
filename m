@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-264349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id yLFiHvx2MWoKkAUAu9opvQ
-	(envelope-from <stable+bounces-264349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:00 +0200
+	id qFNoICeYMWrkngUAu9opvQ
+	(envelope-from <stable+bounces-266121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F20691E3A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:16:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000C06944A9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:38:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dOGQXcoS;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264349-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264349-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IKUsm6jm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266121-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266121-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 457F830304E7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:57:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC17831A7B29
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232AA44DB6D;
-	Tue, 16 Jun 2026 15:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09653DC4D9;
+	Tue, 16 Jun 2026 18:32:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAED444CAF9;
-	Tue, 16 Jun 2026 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C289F34FF79;
+	Tue, 16 Jun 2026 18:32:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625418; cv=none; b=G6vbMw4vkqY9lxVQ4Gsi0wpeo6BoBsqaYJh+Q85/kyoiR8GKXRxM69Whu/bLhwWFc9ZI2tNHAlOg2+Nq8wKt9iPDJkpHr1UAPjtYDCTrkUWr5Uik926Az3gKcwiKjRuzZT++KddxriL87rvqJJRZUdY2ttOIUehptdi7P1JUDVc=
+	t=1781634774; cv=none; b=clH/2PABaha90/Xmg23MuvNsphSyIsaVK3X8AxUbiwOl8T9tIA6gx0kX1SDUlDXVSAd1UDi4XH9nevYbpGP0p6ujMmlSdgUvDuF/abbY8xWESFhfK7LaFQ7/tuQX5xb38lFEMKGyhsHXaAEd4xuZnUwLGKGQ2DEtufT96XidCDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625418; c=relaxed/simple;
-	bh=DHmQc/4N+J/DIi1L7TWftfS+vF+aaM71/wk+6R3kcqY=;
+	s=arc-20240116; t=1781634774; c=relaxed/simple;
+	bh=U7AsURxa5ZqxmcO1Gc6Lmx93jvKGAOQQ59vhcCbpXtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=na6YDkkkAmTOXu8ls6Q7AQ7s242kXbJXToZWIrkUz81YZ6+e6M+4zv5Qe1J/iPahHYdAT5I8lLL2tmBme57Q1q+lPFN1kkW9kq6fkOd7fVMev6vc0R6yh7+twFbHAcEGdManZ785+QMREX47ux47HYmRz9v8vTqJb8IQ/EQbfXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOGQXcoS; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7131F000E9;
-	Tue, 16 Jun 2026 15:56:56 +0000 (UTC)
+	 MIME-Version; b=QcYh0AHOd4VydVJQu/NVJiP6ugGeNhQmLLaM6alQ83hYpBQ9meP2L2TICudjIccR8zZCIYgCUyDdVbMKI2MBMfNlTp7vgngICvAKHUAxZSx/6WW026oxskQdMdjszJTnmcqoWUaY1dNF+I/JUdndT0rG+QsS0pqv+eei29u1KE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKUsm6jm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874DA1F000E9;
+	Tue, 16 Jun 2026 18:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625417;
-	bh=sspM5B1PRRiRJZsiVjVUfrC2O3sOY1Dkj39WPHvRCZg=;
+	s=korg; t=1781634773;
+	bh=a7p4sCgW/NMzlR/wLScdfovi7I3jiqw57WDPaZgHD88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dOGQXcoS4y8t1M+GszjZiZv00QCUspwGi1fX35QyECJf6VHCZRzl0WZIC0p2F4Ilz
-	 hZ3Y/ZCGPFaJeGWtgjH52eUchfgumW2ykOgiXVrxtUgKFcwaMEToSXvPa3S4BoC2tX
-	 7DFMbjXAlySSOHPVqAIUy3mcJeJ0FwGuIPAQhWLU=
+	b=IKUsm6jmJVl2nOoH3QF3T3OGLeRgpk9vljikXgefjVQEOx19f7Vj992x92NqLupCa
+	 gxfsb+E0fktru4FE7e56iBSDiMtXGffWSnZptsH2kle/DzjZkMtFUXUbhYaII5hgWc
+	 6ky6pppOO+g/Ct2Q6IgYU9OtKSfI4SwFk6E98AMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Gulshan Gabel <gulshan.gabel@nutanix.com>,
-	Jon Kohler <jon@nutanix.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 138/325] KVM: VMX: Update SVI during runtime APICv activation
+Subject: [PATCH 5.15 296/411] scsi: sd: Add error handling support for add_disk()
 Date: Tue, 16 Jun 2026 20:28:54 +0530
-Message-ID: <20260616145104.604535689@linuxfoundation.org>
+Message-ID: <20260616145116.888978054@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-266121-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dongli.zhang@oracle.com,m:chao.gao@intel.com,m:seanjc@google.com,m:gulshan.gabel@nutanix.com,m:jon@nutanix.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hch@lst.de,m:martin.petersen@oracle.com,m:mcgrof@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,168 +96,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,oracle.com:email,lst.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 77F20691E3A
+X-Rspamd-Queue-Id: 000C06944A9
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-commit b2849bec936be642b5420801f902337f2507648e upstream.
+[ Upstream commit 2a7a891f4c406822801ecd676b076c64de072c9e ]
 
-The APICv (apic->apicv_active) can be activated or deactivated at runtime,
-for instance, because of APICv inhibit reasons. Intel VMX employs different
-mechanisms to virtualize LAPIC based on whether APICv is active.
+We never checked for errors on add_disk() as this function returned
+void. Now that this is fixed, use the shiny new error handling.
 
-When APICv is activated at runtime, GUEST_INTR_STATUS is used to configure
-and report the current pending IRR and ISR states. Unless a specific vector
-is explicitly included in EOI_EXIT_BITMAP, its EOI will not be trapped to
-KVM. Intel VMX automatically clears the corresponding ISR bit based on the
-GUEST_INTR_STATUS.SVI field.
+As with the error handling for device_add() we follow the same logic and
+just put the device so that cleanup is done via the scsi_disk_release().
 
-When APICv is deactivated at runtime, the VM_ENTRY_INTR_INFO_FIELD is used
-to specify the next interrupt vector to invoke upon VM-entry. The
-VMX IDT_VECTORING_INFO_FIELD is used to report un-invoked vectors on
-VM-exit. EOIs are always trapped to KVM, so the software can manually clear
-pending ISR bits.
-
-There are scenarios where, with APICv activated at runtime, a guest-issued
-EOI may not be able to clear the pending ISR bit.
-
-Taking vector 236 as an example, here is one scenario.
-
-1. Suppose APICv is inactive. Vector 236 is pending in the IRR.
-2. To handle KVM_REQ_EVENT, KVM moves vector 236 from the IRR to the ISR,
-and configures the VM_ENTRY_INTR_INFO_FIELD via vmx_inject_irq().
-3. After VM-entry, vector 236 is invoked through the guest IDT. At this
-point, the data in VM_ENTRY_INTR_INFO_FIELD is no longer valid. The guest
-interrupt handler for vector 236 is invoked.
-4. Suppose a VM exit occurs very early in the guest interrupt handler,
-before the EOI is issued.
-5. Nothing is reported through the IDT_VECTORING_INFO_FIELD because
-vector 236 has already been invoked in the guest.
-6. Now, suppose APICv is activated. Before the next VM-entry, KVM calls
-kvm_vcpu_update_apicv() to activate APICv.
-7. Unfortunately, GUEST_INTR_STATUS.SVI is not configured, although
-vector 236 is still pending in the ISR.
-8. After VM-entry, the guest finally issues the EOI for vector 236.
-However, because SVI is not configured, vector 236 is not cleared.
-9. ISR is stalled forever on vector 236.
-
-Here is another scenario.
-
-1. Suppose APICv is inactive. Vector 236 is pending in the IRR.
-2. To handle KVM_REQ_EVENT, KVM moves vector 236 from the IRR to the ISR,
-and configures the VM_ENTRY_INTR_INFO_FIELD via vmx_inject_irq().
-3. VM-exit occurs immediately after the next VM-entry. The vector 236 is
-not invoked through the guest IDT. Instead, it is saved to the
-IDT_VECTORING_INFO_FIELD during the VM-exit.
-4. KVM calls kvm_queue_interrupt() to re-queue the un-invoked vector 236
-into vcpu->arch.interrupt. A KVM_REQ_EVENT is requested.
-5. Now, suppose APICv is activated. Before the next VM-entry, KVM calls
-kvm_vcpu_update_apicv() to activate APICv.
-6. Although APICv is now active, KVM still uses the legacy
-VM_ENTRY_INTR_INFO_FIELD to re-inject vector 236. GUEST_INTR_STATUS.SVI is
-not configured.
-7. After the next VM-entry, vector 236 is invoked through the guest IDT.
-Finally, an EOI occurs. However, due to the lack of GUEST_INTR_STATUS.SVI
-configuration, vector 236 is not cleared from the ISR.
-8. ISR is stalled forever on vector 236.
-
-Using QEMU as an example, vector 236 is stuck in ISR forever.
-
-(qemu) info lapic 1
-dumping local APIC state for CPU 1
-
-LVT0	 0x00010700 active-hi edge  masked                      ExtINT (vec 0)
-LVT1	 0x00010400 active-hi edge  masked                      NMI
-LVTPC	 0x00000400 active-hi edge                              NMI
-LVTERR	 0x000000fe active-hi edge                              Fixed  (vec 254)
-LVTTHMR	 0x00010000 active-hi edge  masked                      Fixed  (vec 0)
-LVTT	 0x000400ec active-hi edge                 tsc-deadline Fixed  (vec 236)
-Timer	 DCR=0x0 (divide by 2) initial_count = 0 current_count = 0
-SPIV	 0x000001ff APIC enabled, focus=off, spurious vec 255
-ICR	 0x000000fd physical edge de-assert no-shorthand
-ICR2	 0x00000000 cpu 0 (X2APIC ID)
-ESR	 0x00000000
-ISR	 236
-IRR	 37(level) 236
-
-The issue isn't applicable to AMD SVM as KVM simply writes vmcb01 directly
-irrespective of whether L1 (vmcs01) or L2 (vmcb02) is active (unlike VMX,
-there is no need/cost to switch between VMCBs).  In addition,
-APICV_INHIBIT_REASON_IRQWIN ensures AMD SVM AVIC is not activated until
-the last interrupt is EOI'd.
-
-Fix the bug by configuring Intel VMX GUEST_INTR_STATUS.SVI if APICv is
-activated at runtime.
-
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Link: https://patch.msgid.link/20251110063212.34902-1-dongli.zhang@oracle.com
-[sean: call out that SVM writes vmcb01 directly, tweak comment]
-Link: https://patch.msgid.link/20251205231913.441872-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-(cherry picked from commit b2849bec936be642b5420801f902337f2507648e)
-Cc: stable@vger.kernel.org # 6.6.x and above
-Cc: Gulshan Gabel <gulshan.gabel@nutanix.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
+Link: https://lore.kernel.org/r/20211015233028.2167651-2-mcgrof@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 1e111c4b3a72 ("scsi: sd: fix missing put_disk() when device_add(&disk_dev) fails")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c | 9 ---------
- arch/x86/kvm/x86.c     | 7 +++++++
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ drivers/scsi/sd.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index c084f48e2b0b98..b7798ced7b505c 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6886,15 +6886,6 @@ void vmx_hwapic_isr_update(struct kvm_vcpu *vcpu, int max_isr)
- 	 * VM-Exit, otherwise L1 with run with a stale SVI.
- 	 */
- 	if (is_guest_mode(vcpu)) {
--		/*
--		 * KVM is supposed to forward intercepted L2 EOIs to L1 if VID
--		 * is enabled in vmcs12; as above, the EOIs affect L2's vAPIC.
--		 * Note, userspace can stuff state while L2 is active; assert
--		 * that VID is disabled if and only if the vCPU is in KVM_RUN
--		 * to avoid false positives if userspace is setting APIC state.
--		 */
--		WARN_ON_ONCE(vcpu->wants_to_run &&
--			     nested_cpu_has_vid(get_vmcs12(vcpu)));
- 		to_vmx(vcpu)->nested.update_vmcs01_hwapic_isr = true;
- 		return;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3458,7 +3458,13 @@ static int sd_probe(struct device *dev)
+ 		pm_runtime_set_autosuspend_delay(dev,
+ 			sdp->host->hostt->rpm_autosuspend_delay);
  	}
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ad2b7158b9c8ea..a21ebe04aa23a8 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10950,9 +10950,16 @@ void __kvm_vcpu_update_apicv(struct kvm_vcpu *vcpu)
- 	 * pending. At the same time, KVM_REQ_EVENT may not be set as APICv was
- 	 * still active when the interrupt got accepted. Make sure
- 	 * kvm_check_and_inject_events() is called to check for that.
-+	 *
-+	 * Update SVI when APICv gets enabled, otherwise SVI won't reflect the
-+	 * highest bit in vISR and the next accelerated EOI in the guest won't
-+	 * be virtualized correctly (the CPU uses SVI to determine which vISR
-+	 * vector to clear).
- 	 */
- 	if (!apic->apicv_active)
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
-+	else
-+		kvm_apic_update_hwapic_isr(vcpu);
+-	device_add_disk(dev, gd, NULL);
++
++	error = device_add_disk(dev, gd, NULL);
++	if (error) {
++		put_device(&sdkp->dev);
++		goto out;
++	}
++
+ 	if (sdkp->capacity)
+ 		sd_dif_config_host(sdkp);
  
- out:
- 	preempt_enable();
--- 
-2.53.0
-
 
 
 
