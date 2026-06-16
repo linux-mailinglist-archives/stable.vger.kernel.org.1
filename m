@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ESzuGR5tMWokjAUAu9opvQ
-	(envelope-from <stable+bounces-264015-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:54 +0200
+	id cePxH5eBMWqQlAUAu9opvQ
+	(envelope-from <stable+bounces-265002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47616912B4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE56692AAF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:02:14 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XJhI5ncu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264015-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264015-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ik3SH9Po;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265002-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265002-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 124003193940
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9412430F93B0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E67032D0CC;
-	Tue, 16 Jun 2026 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08643478E2B;
+	Tue, 16 Jun 2026 16:56:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170F933263A;
-	Tue, 16 Jun 2026 15:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B85143E490;
+	Tue, 16 Jun 2026 16:56:20 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623676; cv=none; b=iYgkYUYiY+/E2Xxj4c3RZdX/yc/cV89UUphdC0cnPb1XEQPHHVrBXo8ziiCSxXzcuGNUqDXaGTb+yudjgxCmVe7yaAUWsgDv09G2gpbx3W1WB7wF0mdgYXxH4HmOmbbTHdsL6tP83n3hcmQHA9Mi4LIrHEOM27b88HMXJbw9UIE=
+	t=1781628984; cv=none; b=Xx68z+frDgbVO5fUKezVyNh4CibBzvfWzUVKtPCY/ivi4ZXiHRFytg5pfPqlAiEaBJmX1LwCZ8ZkOS2MphODBjOjXVpSp4xX39uVYRFkMvPuWgM1XeG8SjFx04NnRWiI5kscP9Aaxk3+boIfHanA6m4tvLpkslDcZ+GfFi7frg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623676; c=relaxed/simple;
-	bh=BstF6N8C3bLlTfFLSEW6P5+eRcOv6cKfuykueuD447g=;
+	s=arc-20240116; t=1781628984; c=relaxed/simple;
+	bh=R5TabdYJvykaXapKgVokD0cC7F+5ECcXbifbQ29T0Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akRALFcjNc6LK2VwJerrl5PknXIF3pVa52tUPwLeqGiwmmzs7zgb9arcviWSp0Nh+ptSFRG7nVTm07kdFM5dbFDU3o4fJB6am7MKTsVUq1rSxICqR7vFY8QWaCJ5eBhlDHz5/hrEPPJyiQjH2/tXg6RqazXlNAJaC6rDzjPBr/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJhI5ncu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C4E1F00A3A;
-	Tue, 16 Jun 2026 15:27:53 +0000 (UTC)
+	 MIME-Version; b=oZE7w7spuJuLoNH2LUi15P4px2ANQfRCb/HRNRxQlXHLA3zJrr5yrXL058X/g/L98Cixu08U9TOORqUC/VMpYaYhlUSJYBEFxbYwF7T+24PlWs956NXLI5HWY5VvbJxbo945616NgrUvDX7aR52o/QEMLTnD2eZ2Gp7C9enZdM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ik3SH9Po; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766211F000E9;
+	Tue, 16 Jun 2026 16:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623675;
-	bh=5JsiIoMoVv+BYRk3H5is0VK+seJVgDOT0rN0HegnjVw=;
+	s=korg; t=1781628980;
+	bh=kUNWaw/koUEfYFkUzSEWzECGpiZ1k6UKK68ZdXr0tIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XJhI5ncu0w0BouJ3oPwjRaZIfRlr4z6gunWj+aeAZUAC1NP/khjBNcPeck2ozkUrJ
-	 r1+k1eDB5kk+ViGyrGJKzcJi/577yp+AM1QiB7b+egcx+YWoP3/Uf3sKSaes0eYhcg
-	 VH11PZ+5FbNglgogZlmCNU7bBfx9i3RfX5FoZja4=
+	b=Ik3SH9PoNmCDp/uXijhfdL2q8kjDn60UE8eBqUbZX3XQOA3gzvUAhhaTMDpd9vkEJ
+	 BD7KZ7cLaVmJbMlXxOIuJb0RyOzxi7iJm/aKvT+/jJoSd88l9HQtgv8OxRV/BmUzzF
+	 GNpLHbTRC3iMbr3v3IF3aYbvu7eMQzO/1WlaxPtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Roth <michael.roth@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 7.0 195/378] KVM: Dont WARN if memory is dirtied without a vCPU when the VM is dying
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 199/452] serial: zs: Convert to use a platform device
 Date: Tue, 16 Jun 2026 20:27:06 +0530
-Message-ID: <20260616145120.646925781@linuxfoundation.org>
+Message-ID: <20260616145128.283391728@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264015-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265002-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.roth@amd.com,m:seanjc@google.com,m:pbonzini@redhat.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,72 +97,497 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,orcam.me.uk:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D47616912B4
+X-Rspamd-Queue-Id: EAE56692AAF
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-commit 8618004d3e897c0f1b71d9a9ab860461289bb89a upstream.
+commit 7cac59d08a73cb866ec51a483a6f3fe0f531947c upstream.
 
-When marking a page dirty, complain about not having a running/loaded vCPU
-if and only if the VM is still alive, i.e. its refcount is non-zero.  This
-will allow fixing a memory leak for x86 SEV-ES guests without hitting what
-is effectively a false positive on the WARN.
+Prevent a crash from happening as the first serial port is initialised:
 
-For some SEV-ES VM-Exits, KVM keeps a writable mapping of a guest page
-across an exit to userspace, and typically unmaps the page on the next
-KVM_RUN.  But if userspace never calls KVM_RUN after such an exit, then KVM
-needs to unmap the page when the vCPU is destroyed, which in turn triggers
-the WARN about not having a running vCPU.
+  Console: switching to mono frame buffer device 160x64
+  fb0: PMAG-AA frame buffer device at tc0
+  DECstation Z85C30 serial driver version 0.10
+  CPU 0 Unable to handle kernel paging request at virtual address 0000002c, epc == 803ab00c, ra == 803aafe0
+  Oops[#1]:
+  CPU: 0 PID: 1 Comm: swapper Not tainted 6.4.0-rc3-00031-g84a9582fd203-dirty #57
+  $ 0   : 00000000 10012c00 803aaeb0 00000000
+  $ 4   : 80e12f60 80e12f50 80e12f58 81000030
+  $ 8   : 00000000 805ff37c 00000000 33433538
+  $12   : 65732030 00000006 80c2915d 6c616972
+  $16   : 80e12f00 807b7630 00000000 00000000
+  $20   : 00000004 00000348 000001a0 807623b8
+  $24   : 00000018 00000000
+  $28   : 80c24000 80c25d60 8078b148 803aafe0
+  Hi    : 00000000
+  Lo    : 00000000
+  epc   : 803ab00c serial_base_ctrl_add+0x78/0xf4
+  ra    : 803aafe0 serial_base_ctrl_add+0x4c/0xf4
+  Status: 10012c03	KERNEL EXL IE
+  Cause : 00000008 (ExcCode 02)
+  BadVA : 0000002c
+  PrId  : 00000440 (R4400SC)
+  Modules linked in:
+  Process swapper (pid: 1, threadinfo=(ptrval), task=(ptrval), tls=00000000)
+  Stack : 80760000 00000cc0 00400044 00400040 803aa02c 80d61ab8 00000000 807b7630
+          80760000 807623b8 807b7628 803aa644 80386998 00000000 80e17780 80220f68
+          80e17780 80d61ab8 80c17d80 80e17780 80e17780 8063c798 80e17780 80383fa0
+          00000010 80e17780 00000000 80386998 807a0000 00000000 00400040 8038f848
+          807623b8 80d61ab8 00000004 80e17780 00000000 803a68e4 80c25e2c 803bb884
+          ...
+  Call Trace:
+  [<803ab00c>] serial_base_ctrl_add+0x78/0xf4
+  [<803aa644>] serial_core_register_port+0x174/0x69c
+  [<8077e9ac>] zs_init+0xc8/0xfc
+  [<800404d4>] do_one_initcall+0x40/0x2ac
+  [<8076cecc>] kernel_init_freeable+0x1e4/0x270
+  [<80605bec>] kernel_init+0x20/0x108
+  [<800431e8>] ret_from_kernel_thread+0x14/0x1c
 
-Alternatively, SEV-ES could temporarily load the vCPU to suppress the WARN,
-as is done in nested_vmx_free_vcpu() (but for completely unrelated reasons;
-suppressing WARN from nested_put_vmcs12_pages() is pure happenstance).  But
-loading a vCPU during destruction is gross (ideally nVMX code would be
-cleaned up), risks complicating the SEV-ES code (KVM would need to ensure
-the temporarily load()+put() only runs when the vCPU isn't already loaded),
-and is ultimately pointless.
+  Code: 2442aeb0  ae120024  ae0200d0 <8c67002c> 50e00001  8c670000  3c06806e  3c05806e  afb30010
 
-The motivation for the WARN is to guard against KVM dirtying guest memory
-without pushing the corresponding GFN to the active vCPU's dirty ring, e.g.
-to ensure userspace doesn't miss a dirty page.  But for the VM's refcount
-to reach zero, there can't be _any_ userspace mappings to the dirty ring,
-as mapping the dirty ring requires doing mmap() on the vCPU FD.  I.e. if
-userspace had a valid mapping for the dirty ring, then the vCPU file and
-thus the owning VM would still be alive.  And so since userspace can't
-possibly reach the dirty ring, whether or not KVM technically "misses" a
-push to the dirty ring is irrelevant.
+  ---[ end trace 0000000000000000 ]---
 
-Reported-by: Michael Roth <michael.roth@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Michael Roth <michael.roth@amd.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20260501202250.2115252-15-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20260529183549.1104619-15-pbonzini@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(report at the offending commit) -- where a pointer is dereferenced that
+has been derived from a null pointer to the port's parent device.
+
+Since no device is available with legacy probing and it's not anymore a
+preferable way to discover devices anyway, switch the driver to using a
+platform device and use it as the port's parent device.  Update resource
+handling accordingly and only request the actual span of addresses used
+within the slot, which will have had its resource already requested by
+generic platform device code.
+
+Use platform_driver_probe() not just because SCC devices are fixed with
+solder on board and not straightforward to remove, but foremost because
+the associated TTY's major device number is the same as used by the dz
+driver and the first driver to claim it will prevent the other one from
+using it.  Either one DZ device or some SCC devices will be present in a
+given system but never both at a time, and therefore we want the major
+device number to be claimed by the first driver to actually successfully
+bind to its device and platform_driver_probe() is a way to fulfil that.
+
+An unfortunate consequence of the switch to a platform device is we now
+hand the console over from the bootconsole much later in the bootstrap.
+The firmware console handler appears good enough though to work so late
+and in particular with interrupts enabled.
+
+Since there is one way only remaining to reach zs_reset() now, remove
+the port initialisation marker as no longer needed and go through the
+channel reset unconditionally.
+
+Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # needs to use .remove_new for <= 6.10
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062328480.46195@angie.orcam.me.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/kvm_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/mips/dec/platform.c |  60 +++++++++++-
+ drivers/tty/serial/zs.c  | 192 +++++++++++++++------------------------
+ drivers/tty/serial/zs.h  |   1 -
+ 3 files changed, 129 insertions(+), 124 deletions(-)
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -3527,7 +3527,8 @@ void mark_page_dirty_in_slot(struct kvm
- 	if (WARN_ON_ONCE(vcpu && vcpu->kvm != kvm))
- 		return;
+diff --git a/arch/mips/dec/platform.c b/arch/mips/dec/platform.c
+index fdecc91ee22abb..723ce16cbfc0cc 100644
+--- a/arch/mips/dec/platform.c
++++ b/arch/mips/dec/platform.c
+@@ -13,6 +13,7 @@
+ #include <asm/bootinfo.h>
  
--	WARN_ON_ONCE(!vcpu && !kvm_arch_allow_write_without_running_vcpu(kvm));
-+	WARN_ON_ONCE(!vcpu && refcount_read(&kvm->users_count) &&
-+		     !kvm_arch_allow_write_without_running_vcpu(kvm));
- #endif
+ #include <asm/dec/interrupts.h>
++#include <asm/dec/ioasic_addrs.h>
+ #include <asm/dec/kn01.h>
+ #include <asm/dec/kn02.h>
+ #include <asm/dec/system.h>
+@@ -53,10 +54,37 @@ static struct platform_device *dec_dz_devices[] __initdata = {
+ 	&dec_dz_device,
+ };
  
- 	if (memslot && kvm_slot_dirty_track_enabled(memslot)) {
++static struct resource dec_zs_resources[][2] = {
++	{
++		{ .name = "scc0", .flags = IORESOURCE_MEM, },
++		{ .name = "scc0", .flags = IORESOURCE_IRQ, },
++	},
++	{
++		{ .name = "scc1", .flags = IORESOURCE_MEM, },
++		{ .name = "scc1", .flags = IORESOURCE_IRQ, },
++	},
++};
++
++static struct platform_device dec_zs_device[] = {
++	{
++		.name = "zs",
++		.id = 0,
++		.resource = dec_zs_resources[0],
++		.num_resources = ARRAY_SIZE(dec_zs_resources[0]),
++	},
++	{
++		.name = "zs",
++		.id = 1,
++		.resource = dec_zs_resources[1],
++		.num_resources = ARRAY_SIZE(dec_zs_resources[1]),
++	},
++};
++
+ static int __init dec_add_devices(void)
+ {
+-	int ret1, ret2;
+-	int num_dz;
++	struct platform_device *dec_zs_devices[ARRAY_SIZE(dec_zs_device)];
++	int ret1, ret2, ret3;
++	int num_dz, num_zs;
+ 	int irq, i;
+ 
+ 	dec_rtc_resources[0].start = RTC_PORT(0);
+@@ -84,10 +112,36 @@ static int __init dec_add_devices(void)
+ 	}
+ 	num_dz = i;
+ 
++	i = 0;
++	irq = dec_interrupt[DEC_IRQ_SCC0];
++	if (irq >= 0) {
++		resource_size_t base = dec_kn_slot_base + IOASIC_SCC0;
++
++		dec_zs_device[i].resource[0].start = base;
++		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
++		dec_zs_device[i].resource[1].start = irq;
++		dec_zs_device[i].resource[1].end = irq;
++		dec_zs_devices[i] = &dec_zs_device[i];
++		i++;
++	}
++	irq = dec_interrupt[DEC_IRQ_SCC1];
++	if (irq >= 0) {
++		resource_size_t base = dec_kn_slot_base + IOASIC_SCC1;
++
++		dec_zs_device[i].resource[0].start = base;
++		dec_zs_device[i].resource[0].end = base + dec_kn_slot_size - 1;
++		dec_zs_device[i].resource[1].start = irq;
++		dec_zs_device[i].resource[1].end = irq;
++		dec_zs_devices[i] = &dec_zs_device[i];
++		i++;
++	}
++	num_zs = i;
++
+ 	ret1 = platform_device_register(&dec_rtc_device);
+ 	ret2 = IS_ENABLED(CONFIG_32BIT) ?
+ 	       platform_add_devices(dec_dz_devices, num_dz) : 0;
+-	return ret1 ? ret1 : ret2;
++	ret3 = platform_add_devices(dec_zs_devices, num_zs);
++	return ret1 ? ret1 : ret2 ? ret2 : ret3;
+ }
+ 
+ device_initcall(dec_add_devices);
+diff --git a/drivers/tty/serial/zs.c b/drivers/tty/serial/zs.c
+index b58d5af0fdc35c..0e4471af1e9bd5 100644
+--- a/drivers/tty/serial/zs.c
++++ b/drivers/tty/serial/zs.c
+@@ -56,6 +56,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/major.h>
++#include <linux/platform_device.h>
+ #include <linux/serial.h>
+ #include <linux/serial_core.h>
+ #include <linux/spinlock.h>
+@@ -66,10 +67,6 @@
+ 
+ #include <linux/atomic.h>
+ 
+-#include <asm/dec/interrupts.h>
+-#include <asm/dec/ioasic_addrs.h>
+-#include <asm/dec/system.h>
+-
+ #include "zs.h"
+ 
+ 
+@@ -79,7 +76,7 @@ MODULE_LICENSE("GPL");
+ 
+ 
+ static char zs_name[] __initdata = "DECstation Z85C30 serial driver version ";
+-static char zs_version[] __initdata = "0.10";
++static char zs_version[] __initdata = "0.11";
+ 
+ /*
+  * It would be nice to dynamically allocate everything that
+@@ -98,12 +95,8 @@ static char zs_version[] __initdata = "0.10";
+ 
+ #define to_zport(uport) container_of(uport, struct zs_port, port)
+ 
+-struct zs_parms {
+-	resource_size_t scc[ZS_NUM_SCCS];
+-	int irq[ZS_NUM_SCCS];
+-};
+-
+ static struct zs_scc zs_sccs[ZS_NUM_SCCS];
++static struct uart_driver zs_reg;
+ 
+ /*
+  * Set parameters in WR5, WR12, WR13 such as not to interfere
+@@ -838,16 +831,15 @@ static void zs_reset(struct zs_port *zport)
+ 
+ 	spin_lock_irqsave(&scc->zlock, flags);
+ 	irq = !irqs_disabled_flags(flags);
+-	if (!zport->initialised) {
+-		/* Reset the pointer first, just in case...  */
+-		read_zsreg(zport, R0);
+-		/* And let the current transmission finish.  */
+-		zs_line_drain(zport, irq);
+-		write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
+-		udelay(10);
+-		write_zsreg(zport, R9, 0);
+-		zport->initialised = 1;
+-	}
++
++	/* Reset the pointer first, just in case...  */
++	read_zsreg(zport, R0);
++	/* And let the current transmission finish.  */
++	zs_line_drain(zport, irq);
++	write_zsreg(zport, R9, zport == zport_a ? CHRA : CHRB);
++	udelay(10);
++	write_zsreg(zport, R9, 0);
++
+ 	load_zsregs(zport, zport->regs, irq);
+ 	spin_unlock_irqrestore(&scc->zlock, flags);
+ }
+@@ -1054,63 +1046,62 @@ static const struct uart_ops zs_ops = {
+ /*
+  * Initialize Z85C30 port structures.
+  */
+-static int __init zs_probe_sccs(void)
++static int __init zs_probe(struct platform_device *pdev)
+ {
+-	static int probed;
+-	struct zs_parms zs_parms;
+-	int chip, side, irq;
+-	int n_chips = 0;
++	struct resource *mem_resource, *irq_resource;
++	int chip, side;
+ 	int i;
+ 
+-	if (probed)
+-		return 0;
++	mem_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	irq_resource = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	if (!mem_resource || !irq_resource)
++		return -ENODEV;
+ 
+-	irq = dec_interrupt[DEC_IRQ_SCC0];
+-	if (irq >= 0) {
+-		zs_parms.scc[n_chips] = IOASIC_SCC0;
+-		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC0];
+-		n_chips++;
+-	}
+-	irq = dec_interrupt[DEC_IRQ_SCC1];
+-	if (irq >= 0) {
+-		zs_parms.scc[n_chips] = IOASIC_SCC1;
+-		zs_parms.irq[n_chips] = dec_interrupt[DEC_IRQ_SCC1];
+-		n_chips++;
+-	}
+-	if (!n_chips)
+-		return -ENXIO;
+-
+-	probed = 1;
+-
+-	for (chip = 0; chip < n_chips; chip++) {
+-		spin_lock_init(&zs_sccs[chip].zlock);
+-		for (side = 0; side < ZS_NUM_CHAN; side++) {
+-			struct zs_port *zport = &zs_sccs[chip].zport[side];
+-			struct uart_port *uport = &zport->port;
+-
+-			zport->scc	= &zs_sccs[chip];
+-			zport->clk_mode	= 16;
+-
+-			uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
+-			uport->irq	= zs_parms.irq[chip];
+-			uport->uartclk	= ZS_CLOCK;
+-			uport->fifosize	= 1;
+-			uport->iotype	= UPIO_MEM;
+-			uport->flags	= UPF_BOOT_AUTOCONF;
+-			uport->ops	= &zs_ops;
+-			uport->line	= chip * ZS_NUM_CHAN + side;
+-			uport->mapbase	= dec_kn_slot_base +
+-					  zs_parms.scc[chip] +
+-					  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
+-
+-			for (i = 0; i < ZS_NUM_REGS; i++)
+-				zport->regs[i] = zs_init_regs[i];
+-		}
++	chip = pdev->id;
++	spin_lock_init(&zs_sccs[chip].zlock);
++	for (side = 0; side < ZS_NUM_CHAN; side++) {
++		struct zs_port *zport = &zs_sccs[chip].zport[side];
++		struct uart_port *uport = &zport->port;
++
++		zport->scc	= &zs_sccs[chip];
++		zport->clk_mode	= 16;
++
++		uport->dev	= &pdev->dev;
++		uport->has_sysrq = IS_ENABLED(CONFIG_SERIAL_ZS_CONSOLE);
++		uport->irq	= irq_resource->start;
++		uport->uartclk	= ZS_CLOCK;
++		uport->fifosize	= 1;
++		uport->iotype	= UPIO_MEM;
++		uport->flags	= UPF_BOOT_AUTOCONF;
++		uport->ops	= &zs_ops;
++		uport->line	= chip * ZS_NUM_CHAN + side;
++		uport->mapbase	= mem_resource->start +
++				  (side ^ ZS_CHAN_B) * ZS_CHAN_IO_SIZE;
++
++		for (i = 0; i < ZS_NUM_REGS; i++)
++			zport->regs[i] = zs_init_regs[i];
++
++		if (uart_add_one_port(&zs_reg, uport))
++			uport->dev = NULL;
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static void __exit zs_remove(struct platform_device *pdev)
++{
++	int chip, side;
++
++	chip = pdev->id;
++	for (side = ZS_NUM_CHAN - 1; side >= 0; side--) {
++		struct zs_port *zport = &zs_sccs[chip].zport[side];
++		struct uart_port *uport = &zport->port;
++
++		if (uport->dev)
++			uart_remove_one_port(&zs_reg, uport);
++	}
++}
++
+ 
+ #ifdef CONFIG_SERIAL_ZS_CONSOLE
+ static void zs_console_putchar(struct uart_port *uport, unsigned char ch)
+@@ -1191,20 +1182,14 @@ static int __init zs_console_setup(struct console *co, char *options)
+ 	int bits = 8;
+ 	int parity = 'n';
+ 	int flow = 'n';
+-	int ret;
+-
+-	ret = zs_map_port(uport);
+-	if (ret)
+-		return ret;
+-
+-	zs_reset(zport);
+ 
++	if (!zport->scc)
++		return -ENODEV;
+ 	if (options)
+ 		uart_parse_options(options, &baud, &parity, &bits, &flow);
+ 	return uart_set_options(uport, co, baud, parity, bits, flow);
+ }
+ 
+-static struct uart_driver zs_reg;
+ static struct console zs_console = {
+ 	.name	= "ttyS",
+ 	.write	= zs_console_write,
+@@ -1215,23 +1200,6 @@ static struct console zs_console = {
+ 	.data	= &zs_reg,
+ };
+ 
+-/*
+- *	Register console.
+- */
+-static int __init zs_serial_console_init(void)
+-{
+-	int ret;
+-
+-	ret = zs_probe_sccs();
+-	if (ret)
+-		return ret;
+-	register_console(&zs_console);
+-
+-	return 0;
+-}
+-
+-console_initcall(zs_serial_console_init);
+-
+ #define SERIAL_ZS_CONSOLE	&zs_console
+ #else
+ #define SERIAL_ZS_CONSOLE	NULL
+@@ -1247,47 +1215,31 @@ static struct uart_driver zs_reg = {
+ 	.cons			= SERIAL_ZS_CONSOLE,
+ };
+ 
++static struct platform_driver zs_driver = {
++	.remove_new = __exit_p(zs_remove),
++	.driver = { .name = "zs" },
++};
++
+ /* zs_init inits the driver. */
+ static int __init zs_init(void)
+ {
+-	int i, ret;
++	int ret;
+ 
+ 	pr_info("%s%s\n", zs_name, zs_version);
+ 
+-	/* Find out how many Z85C30 SCCs we have.  */
+-	ret = zs_probe_sccs();
+-	if (ret)
+-		return ret;
+-
+ 	ret = uart_register_driver(&zs_reg);
+ 	if (ret)
+ 		return ret;
++	ret = platform_driver_probe(&zs_driver, zs_probe);
++	if (ret)
++		uart_unregister_driver(&zs_reg);
+ 
+-	for (i = 0; i < ZS_NUM_SCCS * ZS_NUM_CHAN; i++) {
+-		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
+-		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
+-		struct uart_port *uport = &zport->port;
+-
+-		if (zport->scc)
+-			uart_add_one_port(&zs_reg, uport);
+-	}
+-
+-	return 0;
++	return ret;
+ }
+ 
+ static void __exit zs_exit(void)
+ {
+-	int i;
+-
+-	for (i = ZS_NUM_SCCS * ZS_NUM_CHAN - 1; i >= 0; i--) {
+-		struct zs_scc *scc = &zs_sccs[i / ZS_NUM_CHAN];
+-		struct zs_port *zport = &scc->zport[i % ZS_NUM_CHAN];
+-		struct uart_port *uport = &zport->port;
+-
+-		if (zport->scc)
+-			uart_remove_one_port(&zs_reg, uport);
+-	}
+-
++	platform_driver_unregister(&zs_driver);
+ 	uart_unregister_driver(&zs_reg);
+ }
+ 
+diff --git a/drivers/tty/serial/zs.h b/drivers/tty/serial/zs.h
+index 8e51f847bc03f9..e0d3c189b33f66 100644
+--- a/drivers/tty/serial/zs.h
++++ b/drivers/tty/serial/zs.h
+@@ -22,7 +22,6 @@
+ struct zs_port {
+ 	struct zs_scc	*scc;			/* Containing SCC.  */
+ 	struct uart_port port;			/* Underlying UART.  */
+-	int		initialised;		/* For the console port.  */
+ 
+ 	int		clk_mode;		/* May be 1, 16, 32, or 64.  */
+ 
+-- 
+2.53.0
+
 
 
 
