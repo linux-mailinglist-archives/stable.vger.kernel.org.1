@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265548-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id YC0jC1WbMWpYoAUAu9opvQ
-	(envelope-from <stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:05 +0200
+	id 0YBICXuMMWpYmQUAu9opvQ
+	(envelope-from <stable+bounces-265548-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CA5694882
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785E56937FE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:48:42 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fG3c+iYM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266302-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Li8rMHd8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265548-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265548-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 413B731D0883
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A26AC3079AD4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7553D8125;
-	Tue, 16 Jun 2026 18:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948B1344044;
+	Tue, 16 Jun 2026 17:42:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C173A2C0261;
-	Tue, 16 Jun 2026 18:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A803A5E91;
+	Tue, 16 Jun 2026 17:42:37 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635710; cv=none; b=G59xhJkTr+313V6TmiIly//Ecy7sK/hPJAhJ9E+Clazz8fSOCm1BPf3ilUK3eTPtxmhLzRsJKp57Sa6XtqDvHuVZL0fxWFqzflUBemMMchizWOjh8jfIkdXcWadr+iTWKuBu5YxPsELSumnvgrTepfpowyIkdMs24iKLVOlwQHw=
+	t=1781631759; cv=none; b=M/m1LrGkC6g6msL5d3XL4AqO/AAkuDbyAl49ieh/haUq+7Vm/SnF56ML4Dv62xRj1/yIvD+dXm+YIJUsKhhYFqyU/AHj9uSUn3qM24FvZJBesEocBpE/t+YvqV7Shg+qJ0Ac3bgWjfGIzRSMX26cnrmp9bA3JmedZSOHvvRSE74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635710; c=relaxed/simple;
-	bh=Q0CymfwSRind67AOTsbJFT2RYyLdfr7NQBUej8wr2hw=;
+	s=arc-20240116; t=1781631759; c=relaxed/simple;
+	bh=+PN8f3NK+Zs8Wh+psyDla8qoBl4COEJwMzue7T80+OE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0zUilAIyV7hgjcIKLjr8sMS1dtjequ8mteGLpzGM7zZxSlXtbBK0S9NKTN7Y6xcPgOwRziAcGKg4OEhUqyfvdANhCeoXhQD/quoXdGnm1I9zyqOitBwoeJ3MIyX/YsxBeqzKvT6DyVfKqD90iziph5BF57C7J2Ld9iBnhVKH8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fG3c+iYM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC811F00A3A;
-	Tue, 16 Jun 2026 18:48:28 +0000 (UTC)
+	 MIME-Version; b=KzxM981ohokdK2hDkCRHXs2/0lPGhZBNp/aL/ckvByrUbkh6KGtB0ou6mZp51S2ll4eIOVZ82SR6Ln5dXorVKzSd1bqlDXRhbuZLu2ILT1SCJ9HjCol9NGMdoxpPN5UCLVJm91LLqPI2Oq1uHUetRqfB232tCy96VlEOGTtVC94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Li8rMHd8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0771F000E9;
+	Tue, 16 Jun 2026 17:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635709;
-	bh=fVDPkUrB2oYFnAGglY/qz70WXVRNjoGsF7m30c8dKCU=;
+	s=korg; t=1781631757;
+	bh=Ug8SFWMTa1Qe5V+Oyiq7bkt075lDxYR8ZEZckdsD2vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fG3c+iYMIhNYUR72lhWQVI35/NtdouUTVNlIyur59f0wsHabuPnLY56RqN6FPedYc
-	 2c34E3FQyCL/nwHTzWjPJ9DpqKdJH8USeYgoz99rOBufkIPNbWnbvRu6KNJLzFlwTp
-	 JF2YpBVW26NaL6BN4WRfGUu4lYltljrDElzz+QVM=
+	b=Li8rMHd8xXuReZxcfj8nlLOK/Yg9pG9MdEGCUy0K3wi7uZRJynDEKfPstL8smjujE
+	 ab5/exDCOWA8IJBP30Dhsu9Ol9LpWY30fdampv3h75VV8e8CmrkOF9zr4gdE1yk5dN
+	 glYPpnGF1RybxiyxZpI/OCxJ0/xNuaLzC7HlAlmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 101/342] USB: serial: keyspan: fix missing indat transfer sanity check
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	Hayes Wang <hayeswang@realtek.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 250/522] r8152: handle the return value of usb_reset_device()
 Date: Tue, 16 Jun 2026 20:26:37 +0530
-Message-ID: <20260616145052.935864812@linuxfoundation.org>
+Message-ID: <20260616145137.668348265@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +71,82 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266302-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265548-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:hsu.chih.kai@realtek.com,m:hayeswang@realtek.com,m:andrew@lunn.ch,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,realtek.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,lunn.ch:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: B9CA5694882
+X-Rspamd-Queue-Id: 785E56937FE
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 
-commit ab8336a7e414f018430aa1af3a46944032f7ff96 upstream.
+[ Upstream commit 19440600e729d4f74a42591a872099cf25c7d28a ]
 
-Add the missing sanity check on the size of usa49wg indat transfers to
-avoid parsing stale or uninitialised slab data.
+If usb_reset_device() returns a negative error code, stop the
+process of probing.
 
-Fixes: 0ca1268e109a ("USB Serial Keyspan: add support for USA-49WG & USA-28XG")
-Cc: stable@vger.kernel.org	# 2.6.23
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 10c3271712f5 ("r8152: disable the ECM mode")
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Reviewed-by: Hayes Wang <hayeswang@realtek.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20260604092247.27158-450-nic_swsd@realtek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/keyspan.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/r8152.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/keyspan.c
-+++ b/drivers/usb/serial/keyspan.c
-@@ -1204,6 +1204,10 @@ static void usa49wg_indat_callback(struc
- 	len = 0;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index e8a69d3d418379..c0f7a15e406fee 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9754,7 +9754,12 @@ static int rtl8152_probe_once(struct usb_interface *intf,
+ 	struct net_device *netdev;
+ 	int ret;
  
- 	while (i < urb->actual_length) {
-+		if (urb->actual_length - i < 3) {
-+			dev_warn_ratelimited(&urb->dev->dev, "malformed indat packet\n");
-+			break;
-+		}
- 
- 		/* Check port number from message */
- 		if (data[i] >= serial->num_ports) {
+-	usb_reset_device(udev);
++	ret = usb_reset_device(udev);
++	if (ret < 0) {
++		dev_err(&intf->dev, "USB reset failed, errno=%d\n", ret);
++		return ret;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(struct r8152));
+ 	if (!netdev) {
+ 		dev_err(&intf->dev, "Out of memory\n");
+-- 
+2.53.0
+
 
 
 
