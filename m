@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 2RQdBWiZMWqHnwUAu9opvQ
-	(envelope-from <stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:52 +0200
+	id oVOqG5p3MWpNkAUAu9opvQ
+	(envelope-from <stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88895694652
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7251A691F08
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=OA0lvGX2;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266207-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=H9PefhGb;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264458-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3744303DA91
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:40:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB826320F0E2
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219FB47CC62;
-	Tue, 16 Jun 2026 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B4445349C;
+	Tue, 16 Jun 2026 16:06:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBBD3D669D;
-	Tue, 16 Jun 2026 18:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535F0451052;
+	Tue, 16 Jun 2026 16:06:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635215; cv=none; b=VcHYxeF8ItTKxmLkevuPqXYjC0jWgPwddCxc3/L0UjGwpZOqUv/QoGxvdOF4F6ZXheyLkbetmaW1tkMHy3sbtFa14IvErJD5BXK9OPY18cqKWQSetUub6MAaAm/8LRxVIPLQmnSM6oUPGmMroaMCQVr8fPhdyMSlFxa0FVyAowQ=
+	t=1781625989; cv=none; b=MLTlhNJ8vds51biNA8f4wlWVSzWanT8kTfT8Vd+Qnqs5VqQ4s6s9E1xI9AiFpEEUriOX9IYgU+4C8QaZaBNnxAMobM3HAc0shjYsgAxVUamm/QbxobYiiKN1BwlZmVvjO2OoPz1S3uazdEldk+dDtz2AtA4P3NOoeVSQGv+bMp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635215; c=relaxed/simple;
-	bh=TOTyKVEsMaQ8KF8AYxcDvrQ6U3nEJuZ6oItZ4YehWYE=;
+	s=arc-20240116; t=1781625989; c=relaxed/simple;
+	bh=m3auon5TbE8bt4Rs0koMYW22yXdIGPzfJaTibYDz4c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4c6kL6ch1ykA3ZsM6ODQAXgGnODYaraLzQziA3TAPSKE9YphaqIMc+AemJmcHIRADYVksUuGYVZ9O/Q11OEl5NrjteruZvihY5pylj7uz/0LhMWKCGOPZD/oyD8AzRbOQh7n3fB94VEjDIYPQtqx6JxurrZy4HxbdQcejAHxDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OA0lvGX2; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDE1F000E9;
-	Tue, 16 Jun 2026 18:40:13 +0000 (UTC)
+	 MIME-Version; b=KsyUQ4Ujng6rr4dSXWYFdM5htimGurT+OHpTBaGFN65QvyNdNyfUILOG61ukkhsRbSwyxpU0VvIYrtxEuv0mGg/OBrEDZ+UIzl5bZ+/ru0PbPQNvY7VGIqSRLPowyc6h5FWpJiM4dp8UpDwOi+Ktlfll7SfTmnIIxGiOhcb+pjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9PefhGb; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396221F000E9;
+	Tue, 16 Jun 2026 16:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635214;
-	bh=SaAq0ByqDeG39gI7XuPgtEhIWwz6N+g6RkKLxqgopYs=;
+	s=korg; t=1781625988;
+	bh=kXy+dwxqS69GkZ+7Mm7zB7/u0dXkUnBf6glxKgQVH0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OA0lvGX24s2zuXEMiuonwnheta3wSTIVZnqKfALrEB0JVjFCgF4SV4XqZqO02xYWz
-	 yvMGtEBpMp9YmselC/+H0cHutfLLaShMqYi1j/p9Y80RrfJcgyGRT1LT9JLA28BHIX
-	 rrwdp4bny2sndmcoD698oBjsQbKCjPkShHBt/zw0=
+	b=H9PefhGbwAMTdQgqvzL38gwqEyvDDDc4hvNrv3MTKkglCeNfFUfM84IKHdumA+8Cp
+	 x4AWkAjyfK/BsBuVCznVSsB0DpPjDayzAe0TmP+zYqFgUJx2WIDGThuHJmEpjUD+s7
+	 SSQuljbEMdf3xspnREe2tLwtadjTXMTy3xQPQm2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 5.15 402/411] arm64: cputype: Add NVIDIA Olympus definitions
+	Stable@vger.kernel.org,
+	Andre Heider <a.heider@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 6.18 244/325] nvmem: layouts: onie-tlv: fix hang on unknown types
 Date: Tue, 16 Jun 2026 20:30:40 +0530
-Message-ID: <20260616145122.541481793@linuxfoundation.org>
+Message-ID: <20260616145110.636394206@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +68,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266207-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vger.kernel.org,gmail.com,bootlin.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264458-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sdonthineni@nvidia.com,m:will@kernel.org,m:mark.rutland@arm.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:a.heider@gmail.com,m:miquel.raynal@bootlin.com,m:srini@kernel.org,m:aheider@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,bootlin.com:email,cell.name:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 88895694652
+X-Rspamd-Queue-Id: 7251A691F08
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shanker Donthineni <sdonthineni@nvidia.com>
+From: Andre Heider <a.heider@gmail.com>
 
-commit e185c8a0d84236d14af61faff8147c953a878a77 upstream.
+commit ea41020b9018e31c2ea7e9d89021e3e6d7470883 upstream.
 
-Add cpu part and model macro definitions for NVIDIA Olympus core.
+The EEPROM on my board has a vendor specific entry of type 0x41. When
+stumbling upon that, this driver hangs in an endless loop.
 
-Signed-off-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[Mark: backport to v5.15.y]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Fix it by keep incrementing the offset on unknown entries, so the loop
+will eventually stop.
+
+Fixes: d3c0d12f6474 ("nvmem: layouts: onie-tlv: Add new layout driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Andre Heider <a.heider@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204340.116743-2-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvmem/layouts/onie-tlv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -121,6 +121,7 @@
+--- a/drivers/nvmem/layouts/onie-tlv.c
++++ b/drivers/nvmem/layouts/onie-tlv.c
+@@ -119,7 +119,7 @@ static int onie_tlv_add_cells(struct dev
  
- #define NVIDIA_CPU_PART_DENVER		0x003
- #define NVIDIA_CPU_PART_CARMEL		0x004
-+#define NVIDIA_CPU_PART_OLYMPUS		0x010
+ 		cell.name = onie_tlv_cell_name(tlv.type);
+ 		if (!cell.name)
+-			continue;
++			goto next;
  
- #define FUJITSU_CPU_PART_A64FX		0x001
+ 		cell.offset = hdr_len + offset + sizeof(tlv.type) + sizeof(tlv.len);
+ 		cell.bytes = tlv.len;
+@@ -132,6 +132,7 @@ static int onie_tlv_add_cells(struct dev
+ 			return ret;
+ 		}
  
-@@ -183,6 +184,7 @@
- #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
- #define MIDR_NVIDIA_DENVER MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_DENVER)
- #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
-+#define MIDR_NVIDIA_OLYMPUS MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_OLYMPUS)
- #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
- #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
++next:
+ 		offset += sizeof(tlv) + tlv.len;
+ 	}
+ 
 
 
 
