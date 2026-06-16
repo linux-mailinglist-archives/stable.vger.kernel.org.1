@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tGwfBMSSMWp1nAUAu9opvQ
-	(envelope-from <stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:32 +0200
+	id /ZgOGjuaMWr7nwUAu9opvQ
+	(envelope-from <stable+bounces-266275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97651693F63
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC31B69478A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:47:22 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t5oSKU7R;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wck6YaXm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266275-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266275-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49F4B317C274
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7933A31AF119
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAB247A0CD;
-	Tue, 16 Jun 2026 18:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0F63CFF55;
+	Tue, 16 Jun 2026 18:46:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCA147A0B0;
-	Tue, 16 Jun 2026 18:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673B03ACF15;
+	Tue, 16 Jun 2026 18:46:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633715; cv=none; b=Nl8rZotK82nRMuo0+KPDMmDa4Az8wQZ0Mk/1P+B9E99heeVRsXdiKdEDWgKfXIUMS7EVpDtxd9UDkJkfjbdnx/q2OW4cinBrTLO7VPerdckZBIP3NaoMcRlzA+8VVcrmBXTkHgqtirlkXzQzrxpYoillmtXeHtnjgGMzjnB9nn8=
+	t=1781635574; cv=none; b=APFrr7PSIug1SITD5LbAov7KXvskEJdVEhRAmEIiG1RtdsMBO5HM5OG8RipARKDdCbiA3zyK4MVqV6DUB5d8xTorsWcBti7e5cDkfRKtF8TVVrcdX9z2ZLNPATyvCpQgQE1bA1TDK7WiH6NcUuB1dvV3/0Xl6PaQu6qZN7WcX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633715; c=relaxed/simple;
-	bh=5ZbBR1qNawXc/0gcpekJgSauKENLPPKis99KBMYyOQI=;
+	s=arc-20240116; t=1781635574; c=relaxed/simple;
+	bh=Qyhuhv90lvSK2glXWZAhV2+PjuS5bDiNhjIg+ay6amw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCK/v9XdUQrwCZIiehoqrLVpSXQ8ZElm+Yk7Nl6MqQZZ73YDbZdFhIKZdbpUxCZ977KxJoYrGJ0z93G6gKIS1rvQuiNSZY3zbuNbXZTSHQyRIPbX1+TPJ2bRfi0ApUPqoPGCL6hyBWGkIHwjH4O1XgEQdrzLWmyMBNM+hSjXHHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5oSKU7R; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C77F1F000E9;
-	Tue, 16 Jun 2026 18:15:12 +0000 (UTC)
+	 MIME-Version; b=sgzeeHDImMTyErzLRYZHiwWbIDTHTrTLSImYzuTbHPuqlQfm1qu5h9M6smkf3jdW1z+71+gOaIIi06Ymw45fzJVCh/65+ZFk7XM+ZVgvUJsZC04gL/kmdrroIo9Ccbpoh+OxWceh3aM02XR04vhMphIBshPIfExBhGRB4Tfj784=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wck6YaXm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0491F000E9;
+	Tue, 16 Jun 2026 18:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633713;
-	bh=wd6ItSWdVTqCZ49pR2LPe8Pt2s7RAremkbiiyqfvoKM=;
+	s=korg; t=1781635573;
+	bh=gnYzAn2rKjhNFuaMkizJ9auyqLELN48g5j6Zwe1zgLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=t5oSKU7RNPhm9zyLzgVzNukx7hjYAEjZZsovZBHVWd5S15skvXu7FVZg7sy0u2iKp
-	 neP1jZ9/yfpopsCRwIF6yWStdbBbhl67p8fKRu56acWerM8/InhK698QwdFkGDp29f
-	 AN/GHjeqv7Z98VpMhTlEnwRoEMI3RB4cClpCUUWA=
+	b=wck6YaXm6AZLqpVDGinFc4Dw36fWLkdKIybWQgvBbHGZdzVVysxE4Mv49an7M2mJR
+	 1e5ct/Ewa8GqU9OWU27jwn32X9/s0zN+KmNacrgkqQK9XlTYSejUfm9N1YsQNA+Xma
+	 RI69mW1N1cJrpAOZCDkHfZ5yTLP1fYvsLXC2tuBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 5.15 132/411] serial: dz: Fix bootconsole message clobbering at chip reset
+	Qi Tang <tpluszz77@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 074/342] ipv6: validate extension header length before copying to cmsg
 Date: Tue, 16 Jun 2026 20:26:10 +0530
-Message-ID: <20260616145107.356168019@linuxfoundation.org>
+Message-ID: <20260616145051.691527473@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +72,202 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265924-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-266275-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tpluszz77@gmail.com,m:willemb@google.com,m:kuba@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,orcam.me.uk:email,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 97651693F63
+X-Rspamd-Queue-Id: CC31B69478A
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Qi Tang <tpluszz77@gmail.com>
 
-commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
+commit dd433671fef381fdaf7b530c631e6b782d66e224 upstream.
 
-In the DZ interface as implemented by the DC7085 gate array the serial
-transmitters are double buffered, meaning that at the time a transmitter
-is ready to accept the next character there is one in the transmit shift
-register still being sent to the line.  Issuing a master clear at this
-time causes this character to be lost, so wait an extra amount of time
-sufficient for the transmit shift register to drain at 9600bps, which is
-the baud rate setting used by the firmware console.
+ip6_datagram_recv_specific_ctl() builds IPV6_{HOPOPTS,DSTOPTS,RTHDR}
+cmsgs (and their IPV6_2292* legacy counterparts) by trusting the
+on-wire hdrlen byte (ptr[1]) when computing the put_cmsg() length.
+The length was validated only at parse time (ipv6_parse_hopopts(),
+etc.).  An nftables payload-write expression can rewrite hdrlen after
+parsing and before the skb reaches recvmsg; the write itself is
+in-bounds but put_cmsg() then reads up to ((hdrlen+1) << 3) = 2040
+bytes from an 8-byte header.  nftables is reachable from an
+unprivileged user namespace, so this is an unprivileged
+slab-out-of-bounds read:
 
-Mind the specified 1.4us TRDY recovery time in the course and continue
-using iob() as the completion barrier, since the platforms involved use
-a write buffer that can delay and combine writes, and reorder them with
-respect to reads regardless of the MMIO locations accessed and we still
-lack a platform-independent handler for that.
+  BUG: KASAN: slab-out-of-bounds in put_cmsg+0x3ac/0x540
+   put_cmsg+0x3ac/0x540
+   udpv6_recvmsg+0xca0/0x1250
+   sock_recvmsg+0xdf/0x190
+   ____sys_recvmsg+0x1b1/0x620
 
-When called from dz_serial_console_init() this is too early for fsleep()
-to work and even before lpj has been calculated and therefore the delay
-is actually not sufficient for the transmitter to drain and is merely a
-placeholder now.  This will be addressed in a follow-up change.
+Add ipv6_get_exthdr_len() which validates that at least two bytes
+are accessible before reading the hdrlen field, then checks the
+computed length against skb_tail_pointer(skb), returning 0 on
+failure.  Extension headers are kept in the linear skb area by
+pskb_may_pull() during input, so skb_tail_pointer() is the correct
+bound.
 
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Use ipv6_get_exthdr_len() at all non-AH call sites: the five
+standalone cmsg blocks (HbH, 2292HbH, 2292DSTOPTS x2, 2292RTHDR)
+and the three standard cases in the extension-header walk loop
+(DSTOPTS, ROUTING, default).  AH retains an inline bounds check
+because its length formula differs ((ptr[1]+2)<<2).
+
+The walk loop also gets a pre-read bounds check at the top to
+validate ptr before any case accesses ptr[0] or ptr[1].
+
+When the walk loop detects a corrupted header, return from the
+function instead of continuing to process later socket options.
+
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260523143245.2281415-1-tpluszz77@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ net/ipv6/datagram.c |   54 ++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 46 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -544,10 +544,31 @@ static int dz_encode_baud_rate(unsigned
- static void dz_reset(struct dz_port *dport)
+--- a/net/ipv6/datagram.c
++++ b/net/ipv6/datagram.c
+@@ -611,6 +611,18 @@ void ip6_datagram_recv_common_ctl(struct
+ 	}
+ }
+ 
++static u16 ipv6_get_exthdr_len(const struct sk_buff *skb, const u8 *ptr)
++{
++	u16 len;
++
++	if (ptr + 2 > skb_tail_pointer(skb))
++		return 0;
++
++	len = (ptr[1] + 1) << 3;
++
++	return (len <= skb_tail_pointer(skb) - ptr) ? len : 0;
++}
++
+ void ip6_datagram_recv_specific_ctl(struct sock *sk, struct msghdr *msg,
+ 				    struct sk_buff *skb)
  {
- 	struct dz_mux *mux = dport->mux;
-+	unsigned short tcr;
-+	int loops = 10000;
+@@ -637,7 +649,10 @@ void ip6_datagram_recv_specific_ctl(stru
+ 	/* HbH is allowed only once */
+ 	if (np->rxopt.bits.hopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
+ 		u8 *ptr = nh + sizeof(struct ipv6hdr);
+-		put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_HOPOPTS, len, ptr);
+ 	}
  
- 	if (mux->initialised)
- 		return;
+ 	if (opt->lastopt &&
+@@ -658,26 +673,37 @@ void ip6_datagram_recv_specific_ctl(stru
+ 			unsigned int len;
+ 			u8 *ptr = nh + off;
  
-+	tcr = dz_in(dport, DZ_TCR);
++			if (ptr + 2 > skb_tail_pointer(skb))
++				return;
 +
-+	/* Do not disturb any ongoing transmissions.  */
-+	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
-+		unsigned short csr, mask;
+ 			switch (nexthdr) {
+ 			case IPPROTO_DSTOPTS:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				if (np->rxopt.bits.dstopts)
+ 					put_cmsg(msg, SOL_IPV6, IPV6_DSTOPTS, len, ptr);
+ 				break;
+ 			case IPPROTO_ROUTING:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				if (np->rxopt.bits.srcrt)
+ 					put_cmsg(msg, SOL_IPV6, IPV6_RTHDR, len, ptr);
+ 				break;
+ 			case IPPROTO_AH:
+ 				nexthdr = ptr[0];
+ 				len = (ptr[1] + 2) << 2;
++				if (ptr + len > skb_tail_pointer(skb))
++					return;
+ 				break;
+ 			default:
+ 				nexthdr = ptr[0];
+-				len = (ptr[1] + 1) << 3;
++				len = ipv6_get_exthdr_len(skb, ptr);
++				if (!len)
++					return;
+ 				break;
+ 			}
+ 
+@@ -699,19 +725,31 @@ void ip6_datagram_recv_specific_ctl(stru
+ 	}
+ 	if (np->rxopt.bits.ohopopts && (opt->flags & IP6SKB_HOPBYHOP)) {
+ 		u8 *ptr = nh + sizeof(struct ipv6hdr);
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
 +
-+		mask = tcr;
-+		while ((mask & DZ_LNENB) && loops--) {
-+			csr = dz_in(dport, DZ_CSR);
-+			if (!(csr & DZ_TRDY))
-+				continue;
-+			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
-+			dz_out(dport, DZ_TCR, mask);
-+			iob();
-+			udelay(2);		/* 1.4us TRDY recovery.  */
-+		}
-+		udelay(1200);			/* Transmitter drain.  */
-+	}
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292HOPOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.odstopts && opt->dst0) {
+ 		u8 *ptr = nh + opt->dst0;
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
 +
- 	dz_out(dport, DZ_CSR, DZ_CLR);
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.osrcrt && opt->srcrt) {
+ 		struct ipv6_rt_hdr *rthdr = (struct ipv6_rt_hdr *)(nh + opt->srcrt);
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, (rthdr->hdrlen+1) << 3, rthdr);
++		u16 len = ipv6_get_exthdr_len(skb, (u8 *)rthdr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292RTHDR, len, rthdr);
+ 	}
+ 	if (np->rxopt.bits.odstopts && opt->dst1) {
+ 		u8 *ptr = nh + opt->dst1;
+-		put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, (ptr[1]+1)<<3, ptr);
++		u16 len = ipv6_get_exthdr_len(skb, ptr);
++
++		if (len)
++			put_cmsg(msg, SOL_IPV6, IPV6_2292DSTOPTS, len, ptr);
+ 	}
+ 	if (np->rxopt.bits.rxorigdstaddr) {
+ 		struct sockaddr_in6 sin6;
 
 
 
