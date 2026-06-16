@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-264079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266042-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 47eOEINuMWqxjAUAu9opvQ
-	(envelope-from <stable+bounces-264079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:51 +0200
+	id WFnBMVGVMWqhnQUAu9opvQ
+	(envelope-from <stable+bounces-266042-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CE369147A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3D56941F5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:26:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=iBZIHqUQ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264079-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264079-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wiuaJydZ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266042-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266042-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8F193214932
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:33:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 652863099A1E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABBB357D14;
-	Tue, 16 Jun 2026 15:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B64478E3E;
+	Tue, 16 Jun 2026 18:25:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD0E43D504;
-	Tue, 16 Jun 2026 15:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D0F47A0B2;
+	Tue, 16 Jun 2026 18:25:54 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624016; cv=none; b=G1CyJx/U/2Rp/xIcmTTUI7ERNO7E7/RH6MFEQH/9vuGOAtPB2gB6rhCMc/dHlxSvPJRiY+jDKOyeU0Cl17/L4WmTBCs+Q7/8kGr90yWd+mLSFg/qdctavJn1VZih+SxcLod86dd/zIC5bNU8yCeHRiMie8eBjWnW98ypYZt2J+4=
+	t=1781634355; cv=none; b=ZFzJmjD00V5mb7lg1PfEThOsAPHXOMvgAFaw+/lBGCyj8atKzxETB2g/gJzSuP3pKjL0KNBkgnM0ypMLIY1r+SkckKtbK4a1pEFvNXCI4TnDL/lsJdu+bUPsetM3wxIx8AMcqO1ZPJx/XVn6D6xq39rM5+8ijDyvnzRc5fvLGWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624016; c=relaxed/simple;
-	bh=TvQ/QicmEAs+L0a+73HIAn5quPm55lXV/VI+KLacyjs=;
+	s=arc-20240116; t=1781634355; c=relaxed/simple;
+	bh=ZVmlDUy08AgrIAaewPYBpHtY9n4DLHQYnvF5Bg0MraI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYtM9CSGok2+20Rxt+XU30rSu1TXgCdQI3RkpwdMQ4pEnFNFv0xCn8SMa+5mT8UxkGiBcfk/xgw2ZFb6C87y10MTo4AVpNIyVk0JM+TiT/Yf788t1XknxjNCKkexSc6POgEtGPd+T1EKJRUrBH7Gd+KYE1ut7reGZ+VbzHSgU+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBZIHqUQ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3274C1F000E9;
-	Tue, 16 Jun 2026 15:33:33 +0000 (UTC)
+	 MIME-Version; b=XlKSB44gqb0NTaVmMZ0xvwHF4cCNdW/FeJeds+XjnA1pc0Ufv8QUhKm/wYiS86hhT6NLqeBME1oIiQ93xvFk+hn1PHX+0T4huEDUjmTelnOru1tpgimm+hdYBOPajDZkCkW6e2WSlEb2Mwe2OKMIzdXGVzOZeh0AeqFVpJipIMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiuaJydZ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B9701F00A3D;
+	Tue, 16 Jun 2026 18:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624015;
-	bh=OAD5X9RJ1JUR9alzQhEtZVXc20L3edwaDqIeaewCNec=;
+	s=korg; t=1781634353;
+	bh=/VCCCrBTfFFCjA1RnKUd9/TQiARBDL9xXt3NGEH5fos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iBZIHqUQkKKvqo5MMXIvB+0ZGMaBSnyz6n5nKEBu9cdhu875botOCEFHZ9lyCjF6R
-	 mZzd3kwwEkLoQ7hLDkcnAD+J/FwORLoCvUNQiY/WMVJbSAhhCURj5Adn7+xN1358df
-	 rRTSeQ92/8kEtJYAM2JUjg3qH/Yby8wg7F6djL4I=
+	b=wiuaJydZwCWnLtq6jcX+vrPFtUb5g7p3mOChe9hieBt4D09qJ0QXRO7JQadg0HX9B
+	 csvdf3mlFwkalSUAOikJmc0GyJpiVkldlIjLG7ovDzJ2O4M2Ouj3QV+tL/khBp61RF
+	 iDZqnq3VQnE/QhbLu4BNFPHcUaAp7XJbWv2VNHPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a16fb0cce329a320661c@syzkaller.appspotmail.com,
-	Nirmoy Das <nirmoyd@nvidia.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 7.0 256/378] ovl: keep err zero after successful ovl_cache_get()
+	Eric Biggers <ebiggers@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 5.15 249/411] net/tcp-md5: Fix MAC comparison to be constant-time
 Date: Tue, 16 Jun 2026 20:28:07 +0530
-Message-ID: <20260616145123.606918881@linuxfoundation.org>
+Message-ID: <20260616145114.197619096@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,108 +67,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[139.com:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264079-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266042-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ebiggers@kernel.org,m:kuba@kernel.org,m:1468888505@139.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+a16fb0cce329a320661c@syzkaller.appspotmail.com,m:nirmoyd@nvidia.com,m:brauner@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[lists@lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,a16fb0cce329a320661c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 80CE369147A
+X-Rspamd-Queue-Id: 5D3D56941F5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoyd@nvidia.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 1711b6ed6953cee5940ca4c3a6e77f1b3798cee2 upstream.
+commit 46d0d6f50dab706637f4c18a470aac20a21900d3 upstream.
 
-ovl_iterate_merged() stores PTR_ERR(cache) in err before checking
-IS_ERR(cache). On success err holds the truncated cache pointer and
-can be returned as a bogus non-zero error.
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-The syzbot reproducer reaches this through overlay-on-overlay readdir:
-
-  getdents64
-    iterate_dir(outer overlay file)
-      ovl_iterate_merged()
-        ovl_cache_get()
-          ovl_dir_read_merged()
-            ovl_dir_read()
-              iterate_dir(inner overlay file)
-                ovl_iterate_merged()
-
-Only compute PTR_ERR(cache) on the error path.
-
-Fixes: d25e4b739f83 ("ovl: refactor ovl_iterate() and port to cred guard")
-Reported-by: syzbot+a16fb0cce329a320661c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a16fb0cce329a320661c
+Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
+Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nirmoy Das <nirmoyd@nvidia.com>
-Link: https://patch.msgid.link/20260514144258.3068715-1-nirmoyd@nvidia.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/readdir.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_ipv4.c |    5 +++--
+ net/ipv6/tcp_ipv6.c |    5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/overlayfs/readdir.c
-+++ b/fs/overlayfs/readdir.c
-@@ -838,15 +838,14 @@ static int ovl_iterate_merged(struct fil
- 	struct ovl_dir_file *od = file->private_data;
- 	struct dentry *dentry = file->f_path.dentry;
- 	struct ovl_cache_entry *p;
--	int err = 0;
-+	int err;
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -78,6 +78,7 @@
+ #include <linux/inetdevice.h>
+ #include <linux/btf_ids.h>
  
- 	if (!od->cache) {
- 		struct ovl_dir_cache *cache;
++#include <crypto/algapi.h>
+ #include <crypto/hash.h>
+ #include <linux/scatterlist.h>
  
- 		cache = ovl_cache_get(dentry);
--		err = PTR_ERR(cache);
- 		if (IS_ERR(cache))
--			return err;
-+			return PTR_ERR(cache);
+@@ -763,7 +764,7 @@ static void tcp_v4_send_reset(const stru
  
- 		od->cache = cache;
- 		ovl_seek_cursor(od, ctx->pos);
-@@ -869,7 +868,7 @@ static int ovl_iterate_merged(struct fil
- 		od->cursor = p->l_node.next;
- 		ctx->pos++;
+ 
+ 		genhash = tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
+ 
  	}
--	return err;
-+	return 0;
- }
+@@ -1467,7 +1468,7 @@ static bool tcp_v4_inbound_md5_hash(cons
+ 				      hash_expected,
+ 				      NULL, skb);
  
- static bool ovl_need_adjust_d_ino(struct file *file)
+-	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
++	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		net_info_ratelimited("MD5 Hash failed for (%pI4, %d)->(%pI4, %d)%s L3 index %d\n",
+ 				     &iph->saddr, ntohs(th->source),
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -63,6 +63,7 @@
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
+ 
++#include <crypto/algapi.h>
+ #include <crypto/hash.h>
+ #include <linux/scatterlist.h>
+ 
+@@ -810,7 +811,7 @@ static bool tcp_v6_inbound_md5_hash(cons
+ 				      hash_expected,
+ 				      NULL, skb);
+ 
+-	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
++	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		net_info_ratelimited("MD5 Hash %s for [%pI6c]:%u->[%pI6c]:%u L3 index %d\n",
+ 				     genhash ? "failed" : "mismatch",
+@@ -1088,7 +1089,7 @@ static void tcp_v6_send_reset(const stru
+ 			goto out;
+ 
+ 		genhash = tcp_v6_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
+ 	}
+ #endif
 
 
 
