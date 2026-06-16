@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tH5tEv+TMWoUnQUAu9opvQ
-	(envelope-from <stable+bounces-265978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:47 +0200
+	id 37TyNAltMWoajAUAu9opvQ
+	(envelope-from <stable+bounces-264012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4060D6940C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:20:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299E269129C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dS308HPB;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265978-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265978-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="N/kivOQ3";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264012-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264012-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C4853002539
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58C9C3202C7E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0BF3EB0F5;
-	Tue, 16 Jun 2026 18:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA94C36F8F1;
+	Tue, 16 Jun 2026 15:27:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CDA35292A;
-	Tue, 16 Jun 2026 18:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867051A682B;
+	Tue, 16 Jun 2026 15:27:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634018; cv=none; b=Ghc56XeOXkL+3fRHVIN1Ii32t5yzQ8wlAio0Sjq9DeccOJhiBOHz1U791Rc129IBtzrOyi8iXblUumrnPxQiLZO0E4ik6/V/ZJBWIIiYveo0gGXd729QotfN/7LWAG+dMJ487HhJvPWg6WFvsnj2+g3xVC9E/aQ4yOYu9yjL6TQ=
+	t=1781623660; cv=none; b=B4D95jxbuVSfbfbW0Sl0TpaNOiGMixJ9+DSdQjLBzvRp0CJAsar94ZZkLR8RT4c6H+YYePW0Wfv/U0Tl/KrZDCffeP5dcMl4lK5SDL/y5sn869ZG6Gmu9fuqcHoQZ9mNdRg+cH1tMHIhuN4FSVB8dmEWiCTk1h7J9nbMsKlALo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634018; c=relaxed/simple;
-	bh=H8ssRX0pJp6d7TLdF5Dn3k5OIZ8r5m6SpZs6E/ra3eI=;
+	s=arc-20240116; t=1781623660; c=relaxed/simple;
+	bh=Wl0G0XKuXMk1MYTpsrXgqPWDptJcSjXetzCOIsfYuKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFONF/2n8YkmVDem5mrjz1Vmu2vKM8SQr/65BVraUuH+Y0fXYb/V2kVZwrEn77J07or6zcv1icvngyqGe5ffQdO0shHD3r4e5/q7KYD9wuxzlk6eVdyxKPbiMz8JqTTVJqZxWTi3cOtn9/Ci3cA3RhOjoohlVwLFzJltszNyqvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dS308HPB; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362271F000E9;
-	Tue, 16 Jun 2026 18:20:15 +0000 (UTC)
+	 MIME-Version; b=enqkFeQavuPmZOhrYEjgwiD16cJbbwnT+1/4oTzEkErKQk7gxiG2M0uCgZEe7PByn9yKW4PkDetqQDUDlBeWOMi/+BdRKnTaW5cPmoRZjehm+KykGiHbcTNACB8MWHEBcHCiVRz70RN+L8ZP13au2ahcb5P/tpUWiU76bLKO5u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/kivOQ3; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6BC1F000E9;
+	Tue, 16 Jun 2026 15:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634017;
-	bh=05m8WQq5tCOTbxC/HMf6umqKxZHNWAwIVxiVFJtEjMU=;
+	s=korg; t=1781623659;
+	bh=UnP5TFa4a5T5FgSdIPM+CQazdADuGZJPSnAuAzDRpN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dS308HPBxEzmsqrjtNML+JM2sIMhzvySM1jijwRKcFbBmBscKmGX7+A7O7zd4aXiF
-	 9GOQIx7UVp/riISSypxS7+ccRuGnxBqKp0XswOie959VLOrBPKLz2rKNWW1O76HW+s
-	 1nEBaua9tx6kQsrHqn2JqF0EmANoSvm8JHrekgQs=
+	b=N/kivOQ3IpwDRaaFlYjdKnO1ISUpJZAB65YXjS0WZ6HZ6Vk00EdWVtLTSget1W7Wr
+	 qLaKG8I3OjZC5K2kjFXW97D/7HlGNocQFW2FV0PyKcRbrO81WranpurJm/9wR7wJLx
+	 oxkYGdhImSY/mv4ZgusCx3JsYK6r6tHc2ZA8CUzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Zeng <kylebot@openai.com>,
-	Eric Dumazet <edumazet@google.com>,
-	syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 185/411] ipv6: sit: reload inner IPv6 header after GSO offloads
+	Inochi Amaoto <inochiama@gmail.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Ulf Hansson <ulfh@kernel.org>
+Subject: [PATCH 7.0 192/378] mmc: litex_mmc: Use DIV_ROUND_UP for more accurate clock calculation
 Date: Tue, 16 Jun 2026 20:27:03 +0530
-Message-ID: <20260616145110.532954104@linuxfoundation.org>
+Message-ID: <20260616145120.484189456@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265978-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-264012-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:inochiama@gmail.com,m:gsomlo@gmail.com,m:ulfh@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kylebot@openai.com,m:edumazet@google.com,m:syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6eb9ca986d80f6f88cf9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url,openai.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 4060D6940C4
+X-Rspamd-Queue-Id: 299E269129C
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <kylebot@openai.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit f0e42f0c4337b1f220de1ddd63f47197c7dee4de ]
+commit b837e38c255dd9f8b53511d52e87f1fda32b3dfe upstream.
 
-ipip6_tunnel_xmit() caches the inner IPv6 header pointer at function
-entry and continues using it after iptunnel_handle_offloads().
+The previous clock uses roundup_pow_of_two() to calculate the core
+clock frequency. It does not meet the actual hardware meaning.
+The actual frequency is calculated by "ref_clk / ((div >> 1) << 1)".
 
-For GSO skbs, iptunnel_handle_offloads() calls skb_header_unclone().
-When the skb header is cloned, skb_header_unclone() can call
-pskb_expand_head(), which may move the skb head. The pskb_expand_head()
-contract requires pointers into the skb header to be reloaded after the
-call.
+Fix the clock divider calculation.
 
-If the later skb_realloc_headroom() branch is not taken, SIT uses the
-stale iph6 pointer to read the inner hop limit and DS field. That can
-read from a freed skb head after the old head's remaining clone is
-released.
-
-Reload iph6 after the offload helper succeeds and before subsequent
-reads from the inner IPv6 header. Keep the existing reload after
-skb_realloc_headroom(), since that branch can also replace the skb.
-
-Fixes: 14909664e4e1 ("sit: Setup and TX path for sit/UDP foo-over-udp encapsulation")
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot+6eb9ca986d80f6f88cf9@syzkaller.appspotmail.com
-Link: https://patch.msgid.link/20260605073448.6524-1-kylebot@openai.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 92e099104729 ("mmc: Add driver for LiteX's LiteSDCard interface")
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Reviewed-by: Gabriel Somlo <gsomlo@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulfh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/sit.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/litex_mmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index 3bc02ab9ceaca0..bc5db4a9dbfaf1 100644
---- a/net/ipv6/sit.c
-+++ b/net/ipv6/sit.c
-@@ -971,6 +971,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
- 		ip_rt_put(rt);
- 		goto tx_error;
- 	}
-+	iph6 = ipv6_hdr(skb);
+--- a/drivers/mmc/host/litex_mmc.c
++++ b/drivers/mmc/host/litex_mmc.c
+@@ -16,6 +16,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/iopoll.h>
+ #include <linux/litex.h>
++#include <linux/math.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -436,11 +437,10 @@ static void litex_mmc_setclk(struct lite
+ 	struct device *dev = mmc_dev(host->mmc);
+ 	u32 div;
  
- 	if (df) {
- 		mtu = dst_mtu(&rt->dst) - t_hlen;
--- 
-2.53.0
-
+-	div = freq ? host->ref_clk / freq : 256U;
+-	div = roundup_pow_of_two(div);
++	div = freq ? DIV_ROUND_UP(host->ref_clk, freq) : 256U;
+ 	div = clamp(div, 2U, 256U);
+ 	dev_dbg(dev, "sd_clk_freq=%d: set to %d via div=%d\n",
+-		freq, host->ref_clk / div, div);
++		freq, host->ref_clk / ((div + 1) & ~1U), div);
+ 	litex_write16(host->sdphy + LITEX_PHY_CLOCKERDIV, div);
+ 	host->sd_clk = freq;
+ }
 
 
 
