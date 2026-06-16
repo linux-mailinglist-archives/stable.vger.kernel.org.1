@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-264533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WI1rD2h5MWoOkQUAu9opvQ
-	(envelope-from <stable+bounces-264533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:20 +0200
+	id PXe4CuR9MWr7kgUAu9opvQ
+	(envelope-from <stable+bounces-264787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECAC692168
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C856926FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:46:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BU4vHcQu;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264533-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264533-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=anVwXzvY;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264787-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264787-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31B3031BC0A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B0C9F3062693
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CBF466B70;
-	Tue, 16 Jun 2026 16:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE5994779AA;
+	Tue, 16 Jun 2026 16:38:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7244508F2;
-	Tue, 16 Jun 2026 16:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8640B35DA6A;
+	Tue, 16 Jun 2026 16:38:06 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626428; cv=none; b=FGDYIf5RW/4zQ7IGv9nkFm/ldeEXdUShp+j0hpDmxYzafz93uqCfpjvu4YnyMhRykbo+WLfxPuu/LjSJjBjZPd1nZ9H7G+K1PfrGERjRli1yUQ3eJgnvf71y2g0kvj3E7LTCInQrcXdT1EqH2auN1elqTgDtLccd6CiKngjS+T0=
+	t=1781627887; cv=none; b=O5/brf5/CUdb9FTBs8XUasPLlLl9sT+8T8VGbE7cuiPC4U7hFTJlI/MUW5B9mZGWH4RbUsklEsdbJsdXHYH29L0w+nv40X+fuwFQpoPXJPhyApp4WeBiAJ058f5eqyNxmqnwjSoCddfuZphxboYKiqbvmsVSA6ZG6LMPe2PqRik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626428; c=relaxed/simple;
-	bh=mrX8ZOkDF6jFWbaGqwY4pdUdikAQmMI1LKwyoQZhtxY=;
+	s=arc-20240116; t=1781627887; c=relaxed/simple;
+	bh=GvPE2gly/RpnKS3ZH7lIH66c4g6A6BWQ1MBpFzGo3Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iquD+t04k2/RQHqKZJQFvGJLAXugQKiWAjETTmnn9KNgJLOZhHNvK33kitjkP1zDRxzJwbKQHbYRCEtfTVY0jP0GhHM+XTZHbAE6qnbT0z9cToXCePqExaDppANwdzwxlh28ZSD8GvYfSmp0U8ZpOr3ERd+iYS/2yMhdJIyx8vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BU4vHcQu; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6971F000E9;
-	Tue, 16 Jun 2026 16:13:46 +0000 (UTC)
+	 MIME-Version; b=gtn0HCUr070TbhALff7PTNZHwI9VrnQf1SYU0ELant/AIpqRzEVVfc7ZcMjkAOHuemPsfcfJ+vXSO3DC0IK6DC4dmNEGMf6P3wvXgBtWlUFPsHPHZyE0XfPbydL4fS2YfXJfA3ppCysXAZesR5lr/fiLVEJoTKohNsSicgrlsfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anVwXzvY; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA301F000E9;
+	Tue, 16 Jun 2026 16:38:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626427;
-	bh=WNobPzyWDdEETFgjhL5VNXzAzwAw/zJ9rjtoWe58rbQ=;
+	s=korg; t=1781627886;
+	bh=o6FD8TOyk6ENNHQUSt7U5Nu3Xh2lurQ4vK42H1415YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BU4vHcQuHFKDWzzkKgxI/2nPt61GG507E/qeU5cFmInl++gUUqxGXVcvpX5z2s647
-	 Rb4CCNaVYqQOHSmfxXtT1x9aY1neyYZjUuWHnknnlyQWIBpQQHDf1SOvfhzkkBLlwh
-	 vuOZLIuBKx9BgmSZKUC+EmG2JKAq7KhrozMFeR/0=
+	b=anVwXzvYuQqXck9IHVnuKJqKubY+IVW5ENmt3AzSCC4kVkPuhb1Y6pR1gPLS0Qj43
+	 REw6F20VkNYkStAK+D3FaluBmbpX5g4FKiPr/db3MRD3Vej/ba/QURFus1WjSli9JK
+	 78ERdQIy6zOAZUsvUD22OgxxX3AYyJVojoR6vRDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>,
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.18 286/325] drm/xe: Clear pending_disable before signaling suspend fence
-Date: Tue, 16 Jun 2026 20:31:22 +0530
-Message-ID: <20260616145113.012080502@linuxfoundation.org>
+	Corey Minyard <corey@minyard.net>
+Subject: [PATCH 6.12 245/261] ipmi:ssif: Remove unnecessary indention
+Date: Tue, 16 Jun 2026 20:31:23 +0530
+Message-ID: <20260616145056.438078431@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +67,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264533-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tilak.tirumalesh.tangudu@intel.com,m:thomas.hellstrom@linux.intel.com,m:daniele.ceraolospurio@intel.com,m:rodrigo.vivi@intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-264787-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:corey@minyard.net,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,intel.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,minyard.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7ECAC692168
+X-Rspamd-Queue-Id: 80C856926FD
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
+From: Corey Minyard <corey@minyard.net>
 
-commit 54f2a0442a30fe7a0f6bc8345e81f8b2db8effbd upstream.
+commit 91eb7ec7261254b6875909df767185838598e21e upstream.
 
-In the schedule-disable done path for suspend, we
-signal the suspend fence before clearing pending_disable.
+A section was in {} that didn't need to be, move the variable
+definition to the top and set th eindentino properly.
 
-That wakeup can let suspend_wait complete and resume be queued
-immediately. The resume path may then reach enable_scheduling()
-while pending_disable is still set and hit the
-!exec_queue_pending_disable(q) assertion.
-
-Fix this by clearing pending_disable before signaling
-the suspend fence, so any resumed transition observes a
-consistent state.
-
-Fixes: 87651f31ae4e ("drm/xe/guc_submit: fix race around suspend_pending")
-Cc: stable@vger.kernel.org # v7.0+
-Signed-off-by: Tangudu Tilak Tirumalesh <tilak.tirumalesh.tangudu@intel.com>
-Reviewed-by: Thomas Hellstrom <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://patch.msgid.link/20260603065217.3131066-3-tilak.tirumalesh.tangudu@intel.com
-(cherry picked from commit 4b1ae138b0e103d753773956a84eebc2edbf62c4)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/ipmi/ipmi_ssif.c |   28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -2179,8 +2179,8 @@ static void handle_sched_done(struct xe_
- 		xe_gt_assert(guc_to_gt(guc), exec_queue_pending_disable(q));
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1681,6 +1681,7 @@ static int ssif_probe(struct i2c_client
+ 	int               len = 0;
+ 	int               i;
+ 	u8		  slave_addr = 0;
++	unsigned int      thread_num;
+ 	struct ssif_addr_info *addr_info = NULL;
  
- 		if (q->guc->suspend_pending) {
--			suspend_fence_signal(q);
- 			clear_exec_queue_pending_disable(q);
-+			suspend_fence_signal(q);
- 		} else {
- 			if (exec_queue_banned(q) || check_timeout) {
- 				smp_wmb();
+ 	mutex_lock(&ssif_infos_mutex);
+@@ -1899,22 +1900,17 @@ static int ssif_probe(struct i2c_client
+ 	ssif_info->handlers.request_events = request_events;
+ 	ssif_info->handlers.set_need_watch = ssif_set_need_watch;
+ 
+-	{
+-		unsigned int thread_num;
+-
+-		thread_num = ((i2c_adapter_id(ssif_info->client->adapter)
+-			       << 8) |
+-			      ssif_info->client->addr);
+-		init_completion(&ssif_info->wake_thread);
+-		ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
+-					       "kssif%4.4x", thread_num);
+-		if (IS_ERR(ssif_info->thread)) {
+-			rv = PTR_ERR(ssif_info->thread);
+-			dev_notice(&ssif_info->client->dev,
+-				   "Could not start kernel thread: error %d\n",
+-				   rv);
+-			goto out;
+-		}
++	thread_num = ((i2c_adapter_id(ssif_info->client->adapter) << 8) |
++		      ssif_info->client->addr);
++	init_completion(&ssif_info->wake_thread);
++	ssif_info->thread = kthread_run(ipmi_ssif_thread, ssif_info,
++					"kssif%4.4x", thread_num);
++	if (IS_ERR(ssif_info->thread)) {
++		rv = PTR_ERR(ssif_info->thread);
++		dev_notice(&ssif_info->client->dev,
++			   "Could not start kernel thread: error %d\n",
++			   rv);
++		goto out;
+ 	}
+ 
+ 	dev_set_drvdata(&ssif_info->client->dev, ssif_info);
 
 
 
