@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-263878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id wVR1KcJpMWr/igUAu9opvQ
-	(envelope-from <stable+bounces-263878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:34 +0200
+	id aYwmLPiIMWq2lwUAu9opvQ
+	(envelope-from <stable+bounces-265439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18744690EFE
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:20:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE03693412
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:33:44 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YktXFv6X;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263878-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263878-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=axbTQcIi;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265439-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265439-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4FE8D304BCC2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:15:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9D7E303F3D9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D514343E490;
-	Tue, 16 Jun 2026 15:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CE647AF66;
+	Tue, 16 Jun 2026 17:33:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D923375C5;
-	Tue, 16 Jun 2026 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D5B47AF6E;
+	Tue, 16 Jun 2026 17:33:23 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622947; cv=none; b=AZ0BOjcN1cm/+yBrPl1lfhKUQTx/FBTwXvzHz6Z4WZ02dWQ4SCHYb6Zf/9bEUiwfb3C+0AA2dcP/0I7WGhXcXdRRrj2Yc7G9dTnmgspM4GN09MD3qMKJPQsfXYfbs0zXoePzGoxz/aofL69KPytRwukEwQVbOv4oHhDc3aB4IHo=
+	t=1781631205; cv=none; b=jjNmT/ttzglrSxh3ZDwmekgPF/SJuguAeDq2uO6vuSe5KlRtgEIO6Db6ANioYB2XenT8jH67Tj22vFcXUgkGaQhx7YzebUMzVM3evvQldK3Y1BSYGGUUrASWC/mB81vm5h1FD2exnOt5DshRtB53giiZzuo+HXtZq44BO5x5L6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622947; c=relaxed/simple;
-	bh=4u+q+iHyIVK72y81Lace1ADNwxJZvlfLlAEbiSvbSGE=;
+	s=arc-20240116; t=1781631205; c=relaxed/simple;
+	bh=17LP+rEnGRUeQS4UnKYBrhQ3UM/4URxDNQ3hKuBZhEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAA9Z49Mdt6oObzrfxk+9DGx0g358/1oEAJRacgAyzl3UQnCzJ36TwH0UVI9zEqDuxjZhAvAo8AaujCvmp053egR32krKsHnJXDQnb9iWivDRmt77HlEQXPwYtfYny2VywdrCBAlT9O+FvHp+J4MwmYWYGBM1QRUkX58Q0pP2IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YktXFv6X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC011F000E9;
-	Tue, 16 Jun 2026 15:15:45 +0000 (UTC)
+	 MIME-Version; b=p0qOUQ1eV8qlufROFW5bMS1D9uEaXQlZexurPTA86hyQdGJJeUG5WxKzBELdyKJt3u3GcJBg2dXor8xlVyP0dkOQfEf9IXAVuRGyiseTlj12WEDvllTWrv6s1KWiVpdLaZFMATHVQYlyp7dcprR+voeOeS4FanUV1qQ3XaAnx7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axbTQcIi; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DDB1F000E9;
+	Tue, 16 Jun 2026 17:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622946;
-	bh=iXTdhdE9CC1Flnwtuoybue6Aoj0f8L43/dkRtNWowpA=;
+	s=korg; t=1781631203;
+	bh=6uvY5Cp17q7eMXUnQg7fqtbxbH99PxhNX4uTJJNFYaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YktXFv6XRDZdAFJrdgKOf/fcdw6WUdA+SPRQjZC7NGEN+jCtWTV8v7om9/JJF1MlR
-	 /cefStmMtShXuecchKlG2nbcXgGs/w4wSJmyFJrpvuEgPcu0Mm7sVNuJtedh7A/O55
-	 qT4NTbv6lLdx+9M37rBqlxQb7OyEvSiGyVBCG1vQ=
+	b=axbTQcIijj7a8e1ou04v3druJVxy31dxdXA5m5dTIBYuRohhMsUuDQRIGQRU+jqEo
+	 /ARgs3cZYGAkXZZD+12JyAXQge/FOwwukflKd14LxqJWHIl5GTU+qIR9qNM4Hj1rCO
+	 4hfAdJ1xmeEeFzpv7eFd2n1uAsu7NQj0L+jR0sZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Zeitz <florian.zeitz@schettke.com>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 059/378] ptp: vclock: Switch from RCU to SRCU
+	stable <stable@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.1 143/522] usb: chipidea: core: convert ci_role_switch to local variable
 Date: Tue, 16 Jun 2026 20:24:50 +0530
-Message-ID: <20260616145113.088990346@linuxfoundation.org>
+Message-ID: <20260616145132.782605175@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263878-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265439-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:florian.zeitz@schettke.com,m:kurt@linutronix.de,m:bigeasy@linutronix.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:peter.chen@kernel.org,m:Frank.Li@nxp.com,m:xu.yang_2@nxp.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -97,97 +96,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linutronix.de:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,nxp.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 18744690EFE
+X-Rspamd-Queue-Id: 6CE03693412
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Kanzenbach <kurt@linutronix.de>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 672bd0519e27c357c43b7f8c0d653fce3817d06e ]
+commit 8f6aa392653e52a45858cff5c063df550028836b upstream.
 
-The usage of PTP vClocks leads immediately to the following issues with
-ptp4l with LOCKDEP and DEBUG_ATOMIC_SLEEP enabled: "BUG: sleeping function
-called from invalid context".
+When a system contains multiple USB controllers, the global ci_role_switch
+variable may be overwritten by subsequent driver initialization code.
 
-ptp_convert_timestamp() acquires a mutex_t within a RCU read section.  This
-is illegal, because acquiring a mutex_t can result in voluntary scheduling
-request which is not allowed within a RCU read section.
+This can cause issues in the following cases:
+ - The 2nd ci_hdrc_probe() sees ci_role_switch.fwnode as non-NULL even
+   though the "usb-role-switch" property is not present for the controller.
+ - When the ci_hdrc device is unbound and bound again, ci_role_switch
+   fwnode will not be reassigned, and the old value will be used instead.
 
-Replace the RCU usage with SRCU where sleeping is allowed.
+Convert ci_role_switch to a local variable to fix these issues.
 
-Reported-by: Florian Zeitz <florian.zeitz@schettke.com>
-Closes: https://lore.kernel.org/all/00a8cce8-410e-4038-98af-49be6d93d7bd@schettke.com/
-Fixes: 67d93ffc0f3c ("ptp: vclock: use mutex to fix "sleep on atomic" bug")
-Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20260529-vclock_rcu-v2-1-02a5531fab92@linutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 05559f10ed79 ("usb: chipidea: add role switch class support")
+Cc: stable <stable@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260427075755.3611217-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_vclock.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/usb/chipidea/core.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
-index 915a4f6defc945..84cb527f59ccc6 100644
---- a/drivers/ptp/ptp_vclock.c
-+++ b/drivers/ptp/ptp_vclock.c
-@@ -19,6 +19,8 @@ static DEFINE_SPINLOCK(vclock_hash_lock);
- 
- static DEFINE_READ_MOSTLY_HASHTABLE(vclock_hash, 8);
- 
-+DEFINE_STATIC_SRCU(vclock_srcu);
-+
- static void ptp_vclock_hash_add(struct ptp_vclock *vclock)
- {
- 	spin_lock(&vclock_hash_lock);
-@@ -37,7 +39,7 @@ static void ptp_vclock_hash_del(struct ptp_vclock *vclock)
- 
- 	spin_unlock(&vclock_hash_lock);
- 
--	synchronize_rcu();
-+	synchronize_srcu(&vclock_srcu);
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -661,12 +661,6 @@ static int ci_usb_role_switch_set(struct
+ 	return 0;
  }
  
- static int ptp_vclock_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
-@@ -276,14 +278,16 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
+-static struct usb_role_switch_desc ci_role_switch = {
+-	.set = ci_usb_role_switch_set,
+-	.get = ci_usb_role_switch_get,
+-	.allow_userspace_control = true,
+-};
+-
+ static int ci_get_platdata(struct device *dev,
+ 		struct ci_hdrc_platform_data *platdata)
  {
- 	unsigned int hash = vclock_index % HASH_SIZE(vclock_hash);
- 	struct ptp_vclock *vclock;
--	u64 ns;
- 	u64 vclock_ns = 0;
-+	int srcu_idx;
-+	u64 ns;
- 
- 	ns = ktime_to_ns(*hwtstamp);
- 
--	rcu_read_lock();
-+	srcu_idx = srcu_read_lock(&vclock_srcu);
- 
--	hlist_for_each_entry_rcu(vclock, &vclock_hash[hash], vclock_hash_node) {
-+	hlist_for_each_entry_srcu(vclock, &vclock_hash[hash], vclock_hash_node,
-+				  srcu_read_lock_held(&vclock_srcu)) {
- 		if (vclock->clock->index != vclock_index)
- 			continue;
- 
-@@ -294,7 +298,7 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
- 		break;
+@@ -793,9 +787,6 @@ static int ci_get_platdata(struct device
+ 			cable->connected = false;
  	}
  
--	rcu_read_unlock();
-+	srcu_read_unlock(&vclock_srcu, srcu_idx);
+-	if (device_property_read_bool(dev, "usb-role-switch"))
+-		ci_role_switch.fwnode = dev->fwnode;
+-
+ 	platdata->pctl = devm_pinctrl_get(dev);
+ 	if (!IS_ERR(platdata->pctl)) {
+ 		struct pinctrl_state *p;
+@@ -1016,6 +1007,7 @@ ATTRIBUTE_GROUPS(ci);
  
- 	return ns_to_ktime(vclock_ns);
- }
--- 
-2.53.0
-
+ static int ci_hdrc_probe(struct platform_device *pdev)
+ {
++	struct usb_role_switch_desc ci_role_switch = {};
+ 	struct device	*dev = &pdev->dev;
+ 	struct ci_hdrc	*ci;
+ 	struct resource	*res;
+@@ -1159,7 +1151,11 @@ static int ci_hdrc_probe(struct platform
+ 		}
+ 	}
+ 
+-	if (ci_role_switch.fwnode) {
++	if (device_property_read_bool(dev, "usb-role-switch")) {
++		ci_role_switch.set = ci_usb_role_switch_set;
++		ci_role_switch.get = ci_usb_role_switch_get;
++		ci_role_switch.allow_userspace_control = true;
++		ci_role_switch.fwnode = dev_fwnode(dev);
+ 		ci_role_switch.driver_data = ci;
+ 		ci->role_switch = usb_role_switch_register(dev,
+ 					&ci_role_switch);
 
 
 
