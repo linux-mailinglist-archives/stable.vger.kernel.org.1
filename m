@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-265405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id cYffKzyIMWpnlwUAu9opvQ
-	(envelope-from <stable+bounces-265405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:36 +0200
+	id Zn3kD4doMWqcigUAu9opvQ
+	(envelope-from <stable+bounces-263870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7E669333F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BD3690DBE
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:15:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JASChh3h;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265405-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265405-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M7HD3QoT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263870-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263870-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C82AB3024950
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6D531301D5AF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA53347A0D8;
-	Tue, 16 Jun 2026 17:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8861543DA35;
+	Tue, 16 Jun 2026 15:15:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036747A0DA;
-	Tue, 16 Jun 2026 17:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D82D43DA24;
+	Tue, 16 Jun 2026 15:15:05 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631032; cv=none; b=uaT6kWiBkFl0kDywe8Md2ZYNfcDlEu+XsOp4AK5r2lJ8oZYnhvotpDAAR6cpj2f9lA8u83DhdC4am9HwY9PERZqYqfeerG3UY/T8NjwpoTwvac7u08Y2yi5fRRRlTxpWLjhyxQGIC10LywQyvhzDjnm2Xc5FJU6yw7STGeTsht0=
+	t=1781622906; cv=none; b=eiB66YTzxl74XhPZDQk62vMEJkNSGMpHC+1E9K6JxJYafsVn3YGoe0DUTMvPer6h58iKd9zQPBARORbWdJuUyKbRRZyP6j7I86yrDjavP7x8MHcGDgbqXzkKpvz6x6BdeHqWUKOrEkCYjS6XKaPt2nclZDvx1oEgIRce8f+DqKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631032; c=relaxed/simple;
-	bh=px0VwtdSXaiRShaSErHxCDq0Z6ZTtocOgXmYiWV/mtU=;
+	s=arc-20240116; t=1781622906; c=relaxed/simple;
+	bh=/xDfKsJOO+HXtX62uCsWXUOcdMrpRO2mORchtRiziBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuVvPrkzwi3c0S1uk7ENuZIoUaov7D5XPUkZO3fxX1Ctps1idOcrBq5g9EvNiJgqQU7IcwSATmIH/F+UZuYqqu6AwfmBHxNRzdRN7UNOJZl58Lq39BraSdaQ4aXjC33+PWlqXCbwvdm487KJvyGND9qGvvNlYRiN167YG5Qxpds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JASChh3h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80D71F000E9;
-	Tue, 16 Jun 2026 17:30:30 +0000 (UTC)
+	 MIME-Version; b=XdU4Ov5mwr2LoeCmsg9/QqeakZP51G4nwX+iwFkdabzMh1Ptj2KC3Rn7jFlSXgkPKKS9eAJ8pQDXOl/hVWpC+UQzTzAs5bosSUtyFS9gSnT+Gp/sslD0ezqiQQMMB8jX302fiRiQa5Q9bUOyAaWHvXT08xBYGqTU0/LgM1sryVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7HD3QoT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D781F000E9;
+	Tue, 16 Jun 2026 15:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631031;
-	bh=F0rBx4AhUHcRl0X5hiPfRzQ/AzcEVcN+FGMC86IV9No=;
+	s=korg; t=1781622905;
+	bh=iY61nlxyS9cO90LhkPm44kIE55BGPwverjnYR1m+K8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JASChh3hqq0Tm6NKR+uZJpdJJutPhq5p48uBvufLX1YObGbkk6+nfDUXXe+ilN/ye
-	 HQeNNOF6IekAJnb6HrxFUMxvBSaIqEMRt0aPCr5o9/6g631yACe42HM/J15E3Pf+hW
-	 NXbB3vHUc7BOTdNwf/KnPoR+C3EO3axpE3E0NfeQ=
+	b=M7HD3QoTzubCan6Jz1u2JWdu34+TJohha0wOpioIgt1Xsu96AmpCTALVy0Lv322D1
+	 FFkxMWEFr8uB0NZSP/rzHfMPpgp8MHHOALc/49w8VnpwXMqih6AszNZlXzmTE/+PNV
+	 khr4vzE895tfITKLhrKLaL4FhuGOjBCNEtd4rDT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <malin89@huawei.com>,
-	Chenyuan Mi <michenyuan@huawei.com>,
-	Jingguo Tan <tanjingguo@huawei.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.1 136/522] xfrm: esp: restore combined single-frag length gate
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 052/378] Bluetooth: SCO: Fix data-race on sco_pi fields in sco_connect
 Date: Tue, 16 Jun 2026 20:24:43 +0530
-Message-ID: <20260616145132.466217757@linuxfoundation.org>
+Message-ID: <20260616145112.695541109@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,98 +69,135 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-263870-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:suunj1331@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265405-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:malin89@huawei.com,m:michenyuan@huawei.com,m:tanjingguo@huawei.com,m:sd@queasysnail.net,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,secunet.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 5F7E669333F
+X-Rspamd-Queue-Id: 21BD3690DBE
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingguo Tan <tanjingguo@huawei.com>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit dfa0d7b0ff1eb6b2c416b8fdb9b4f2cefba57a40 upstream.
+[ Upstream commit 4847c5bca22227100ae69e96af86618b6fd2671f ]
 
-The ESP out-of-place fast path appends the trailer in esp_output_head()
-before esp_output_tail() allocates the destination page frag. The
-head-side gate currently checks skb->data_len and tailen separately, but
-the tail code allocates a single destination frag from the combined
-post-trailer skb->data_len.
+sco_sock_connect() copies the destination address into sco_pi(sk)->dst
+under lock_sock(), then releases the lock and calls sco_connect(),
+which reads dst, src, setting, and codec without holding lock_sock() in
+hci_get_route() and hci_connect_sco().
 
-Reject the page-frag fast path when the combined aligned length exceeds a
-page. Otherwise skb_page_frag_refill() may fall back to a single page while
-the destination sg still spans the combined skb->data_len.
+These fields may be modified concurrently by connect(), bind(), or
+setsockopt() on the same socket, resulting in data-races reported by
+KCSAN.
 
-Restore this combined-length page gate for both IPv4 and IPv6.
+Fix this by snapshotting dst, src, setting, and codec under lock_sock()
+at the start of sco_connect() before passing them to hci_get_route()
+and hci_connect_sco().
 
-Fixes: 5bd8baab087d ("esp: limit skb_page_frag_refill use to a single page")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lin Ma <malin89@huawei.com>
-Signed-off-by: Chenyuan Mi <michenyuan@huawei.com>
-Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KCSAN: data-race in memcmp+0x45/0xb0
+
+race at unknown origin, with read to 0xffff88800e6b0dd0 of 1 bytes
+by task 315 on cpu 0:
+ memcmp+0x45/0xb0
+ hci_connect_acl+0x1b7/0x6b0
+ hci_connect_sco+0x4d/0xb30
+ sco_sock_connect+0x27b/0xd60
+ __sys_connect_file+0xbd/0xe0
+ __sys_connect+0xe0/0x110
+ __x64_sys_connect+0x40/0x50
+ x64_sys_call+0xcad/0x1c60
+ do_syscall_64+0x133/0x590
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 9a8ec9e8ebb5 ("Bluetooth: SCO: Fix possible circular locking dependency on sco_connect_cfm")
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/esp4.c |    4 ++--
- net/ipv6/esp6.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/sco.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/net/ipv4/esp4.c
-+++ b/net/ipv4/esp4.c
-@@ -419,8 +419,8 @@ int esp_output_head(struct xfrm_state *x
- 			return err;
+diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
+index 770b9d6fad88f9..47ff4b8d1ae2cd 100644
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -312,11 +312,21 @@ static int sco_connect(struct sock *sk)
+ 	struct sco_conn *conn;
+ 	struct hci_conn *hcon;
+ 	struct hci_dev  *hdev;
++	bdaddr_t src, dst;
++	struct bt_codec codec;
++	__u16 setting;
+ 	int err, type;
+ 
+-	BT_DBG("%pMR -> %pMR", &sco_pi(sk)->src, &sco_pi(sk)->dst);
++	lock_sock(sk);
++	bacpy(&src, &sco_pi(sk)->src);
++	bacpy(&dst, &sco_pi(sk)->dst);
++	setting = sco_pi(sk)->setting;
++	codec = sco_pi(sk)->codec;
++	release_sock(sk);
++
++	BT_DBG("%pMR -> %pMR", &src, &dst);
+ 
+-	hdev = hci_get_route(&sco_pi(sk)->dst, &sco_pi(sk)->src, BDADDR_BREDR);
++	hdev = hci_get_route(&dst, &src, BDADDR_BREDR);
+ 	if (!hdev)
+ 		return -EHOSTUNREACH;
+ 
+@@ -327,7 +337,7 @@ static int sco_connect(struct sock *sk)
+ 	else
+ 		type = SCO_LINK;
+ 
+-	switch (sco_pi(sk)->setting & SCO_AIRMODE_MASK) {
++	switch (setting & SCO_AIRMODE_MASK) {
+ 	case SCO_AIRMODE_TRANSP:
+ 		if (!lmp_transp_capable(hdev) || !lmp_esco_capable(hdev)) {
+ 			err = -EOPNOTSUPP;
+@@ -336,8 +346,8 @@ static int sco_connect(struct sock *sk)
+ 		break;
  	}
  
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
---- a/net/ipv6/esp6.c
-+++ b/net/ipv6/esp6.c
-@@ -454,8 +454,8 @@ int esp6_output_head(struct xfrm_state *
- 			return err;
- 	}
- 
--	if (ALIGN(tailen, L1_CACHE_BYTES) > PAGE_SIZE ||
--	    ALIGN(skb->data_len, L1_CACHE_BYTES) > PAGE_SIZE)
-+	if (ALIGN(skb->data_len + tailen, L1_CACHE_BYTES) >
-+	    PAGE_SIZE)
- 		goto cow;
- 
- 	if (!skb_cloned(skb)) {
+-	hcon = hci_connect_sco(hdev, type, &sco_pi(sk)->dst,
+-			       sco_pi(sk)->setting, &sco_pi(sk)->codec,
++	hcon = hci_connect_sco(hdev, type, &dst,
++			       setting, &codec,
+ 			       READ_ONCE(sk->sk_sndtimeo));
+ 	if (IS_ERR(hcon)) {
+ 		err = PTR_ERR(hcon);
+-- 
+2.53.0
+
 
 
 
