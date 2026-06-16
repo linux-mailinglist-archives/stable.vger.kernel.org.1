@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id noT+BVaLMWrWmAUAu9opvQ
-	(envelope-from <stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:50 +0200
+	id tGwfBMSSMWp1nAUAu9opvQ
+	(envelope-from <stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:32 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6818769369E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97651693F63
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:15:31 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=R3BIGsB1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265486-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=t5oSKU7R;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265924-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 204C23134333
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49F4B317C274
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543AA4779B9;
-	Tue, 16 Jun 2026 17:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAB247A0CD;
+	Tue, 16 Jun 2026 18:15:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21290331A44;
-	Tue, 16 Jun 2026 17:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCA147A0B0;
+	Tue, 16 Jun 2026 18:15:14 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631446; cv=none; b=DtoJAwFtASxbBFg3U5Ue7EdwQKDNgeEZ8rWV3Esypi6XvveW5eX2qTCrp8FqrobcVNptdulpcWrAzemhvXPTZZopODMXPyqdg/2SqhaRFY1qrrydAd6QyqO8fQ73av5kgy5sHvVB13hB481JlYdkFRsUHb9rwFWpxUAIhfkgTzM=
+	t=1781633715; cv=none; b=Nl8rZotK82nRMuo0+KPDMmDa4Az8wQZ0Mk/1P+B9E99heeVRsXdiKdEDWgKfXIUMS7EVpDtxd9UDkJkfjbdnx/q2OW4cinBrTLO7VPerdckZBIP3NaoMcRlzA+8VVcrmBXTkHgqtirlkXzQzrxpYoillmtXeHtnjgGMzjnB9nn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631446; c=relaxed/simple;
-	bh=Um0+gyjwMjNWvRRRMl0/VVP269Vj9SmiunLCOmW93Jw=;
+	s=arc-20240116; t=1781633715; c=relaxed/simple;
+	bh=5ZbBR1qNawXc/0gcpekJgSauKENLPPKis99KBMYyOQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3RVsVWIrf8w/noC/7mrZZ+QLSz9XNECppnfI/YL5gVkgl2K45PgJsL9BKVp4I1EcepE2FqTIDo72CE76SMUxPaCOVnHHHfgDs/5tLVFf53vIY3g2m8W2DMEYbz2A3zVaM10k2HWFr7UAlVxLlzZsuWjNu+hcxIIO6L3Sm69ukU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3BIGsB1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B7B1F000E9;
-	Tue, 16 Jun 2026 17:37:23 +0000 (UTC)
+	 MIME-Version; b=fCK/v9XdUQrwCZIiehoqrLVpSXQ8ZElm+Yk7Nl6MqQZZ73YDbZdFhIKZdbpUxCZ977KxJoYrGJ0z93G6gKIS1rvQuiNSZY3zbuNbXZTSHQyRIPbX1+TPJ2bRfi0ApUPqoPGCL6hyBWGkIHwjH4O1XgEQdrzLWmyMBNM+hSjXHHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5oSKU7R; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C77F1F000E9;
+	Tue, 16 Jun 2026 18:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631445;
-	bh=7KVTL4HTsvvXlRHw9LfwJ9IvIOq1hCpoum0laslwomA=;
+	s=korg; t=1781633713;
+	bh=wd6ItSWdVTqCZ49pR2LPe8Pt2s7RAremkbiiyqfvoKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R3BIGsB1cyCAHC6GYyWWVGLKEt2781Ml0KSHeAoJjzxC43bhurHeWX5QCTHKwPRts
-	 +v7Ne8qvZck0v16SjLY2fzhqc1SitXKxbS/SSwWgx14SxHMRBbD5fQfyG95utM91OJ
-	 mXSO30Gguxn7u1ukzQNMpAqdAlRPIn3/QTt6Ow1g=
+	b=t5oSKU7RNPhm9zyLzgVzNukx7hjYAEjZZsovZBHVWd5S15skvXu7FVZg7sy0u2iKp
+	 neP1jZ9/yfpopsCRwIF6yWStdbBbhl67p8fKRu56acWerM8/InhK698QwdFkGDp29f
+	 AN/GHjeqv7Z98VpMhTlEnwRoEMI3RB4cClpCUUWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Roulin <aroulin@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/522] vxlan: vnifilter: fix spurious notification on VNI update
+	"Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH 5.15 132/411] serial: dz: Fix bootconsole message clobbering at chip reset
 Date: Tue, 16 Jun 2026 20:26:10 +0530
-Message-ID: <20260616145136.448341113@linuxfoundation.org>
+Message-ID: <20260616145107.356168019@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,93 +67,109 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265486-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aroulin@nvidia.com,m:petrm@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265924-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,orcam.me.uk:email,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6818769369E
+X-Rspamd-Queue-Id: 97651693F63
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Roulin <aroulin@nvidia.com>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit 84683b5b60c7274e2c8f7f413d39d78d3db5540f ]
+commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
 
-When a VNI is re-added with the same attributes (e.g. same group or no
-group), vxlan_vni_update() sends a spurious RTM_NEWTUNNEL notification
-even though nothing changed.
+In the DZ interface as implemented by the DC7085 gate array the serial
+transmitters are double buffered, meaning that at the time a transmitter
+is ready to accept the next character there is one in the transmit shift
+register still being sent to the line.  Issuing a master clear at this
+time causes this character to be lost, so wait an extra amount of time
+sufficient for the transmit shift register to drain at 9600bps, which is
+the baud rate setting used by the firmware console.
 
-The bug is that 'if (changed)' tests whether the pointer is non-NULL,
-not the bool value it points to. Since every caller passes a valid
-pointer, the condition is always true and the notification fires
-unconditionally.
+Mind the specified 1.4us TRDY recovery time in the course and continue
+using iob() as the completion barrier, since the platforms involved use
+a write buffer that can delay and combine writes, and reorder them with
+respect to reads regardless of the MMIO locations accessed and we still
+lack a platform-independent handler for that.
 
-Fix by dereferencing the pointer: 'if (*changed)'.
+When called from dz_serial_console_init() this is too early for fsleep()
+to work and even before lpj has been calculated and therefore the delay
+is actually not sufficient for the transmitter to drain and is merely a
+placeholder now.  This will be addressed in a follow-up change.
 
-Reproducer:
-
- # ip link add vxlan100 type vxlan dstport 4789 local 10.0.0.1 \
-      nolearning external vnifilter
- # ip link set vxlan100 up
- # bridge monitor vni &
- # bridge vni add vni 1000 dev vxlan100
- # bridge vni add vni 1000 dev vxlan100  # spurious notification
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20260602185138.253265-3-aroulin@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e6ee512f5a77 ("dz.c: Resource management")
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Cc: stable@vger.kernel.org # v2.6.25+
+Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index ca866740a955d0..abf96d60eb30d5 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -671,7 +671,7 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
- 	if (ret)
- 		return ret;
+--- a/drivers/tty/serial/dz.c
++++ b/drivers/tty/serial/dz.c
+@@ -544,10 +544,31 @@ static int dz_encode_baud_rate(unsigned
+ static void dz_reset(struct dz_port *dport)
+ {
+ 	struct dz_mux *mux = dport->mux;
++	unsigned short tcr;
++	int loops = 10000;
  
--	if (changed)
-+	if (*changed)
- 		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
+ 	if (mux->initialised)
+ 		return;
  
- 	return 0;
--- 
-2.53.0
-
++	tcr = dz_in(dport, DZ_TCR);
++
++	/* Do not disturb any ongoing transmissions.  */
++	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
++		unsigned short csr, mask;
++
++		mask = tcr;
++		while ((mask & DZ_LNENB) && loops--) {
++			csr = dz_in(dport, DZ_CSR);
++			if (!(csr & DZ_TRDY))
++				continue;
++			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
++			dz_out(dport, DZ_TCR, mask);
++			iob();
++			udelay(2);		/* 1.4us TRDY recovery.  */
++		}
++		udelay(1200);			/* Transmitter drain.  */
++	}
++
+ 	dz_out(dport, DZ_CSR, DZ_CLR);
+ 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
+ 	iob();
 
 
 
