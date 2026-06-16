@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WYAdJHSUMWpOnQUAu9opvQ
-	(envelope-from <stable+bounces-266005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:44 +0200
+	id 8YOZJaNwMWp1jQUAu9opvQ
+	(envelope-from <stable+bounces-264258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8379D694143
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:22:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC9E6916B1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=KNGFCtHM;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266005-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266005-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=YLX07pPa;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264258-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264258-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA4A33003825
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:22:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BB1B3072B65
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45554466B5E;
-	Tue, 16 Jun 2026 18:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E523B840B;
+	Tue, 16 Jun 2026 15:49:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D7B3D8105;
-	Tue, 16 Jun 2026 18:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61D943D4F7;
+	Tue, 16 Jun 2026 15:49:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634159; cv=none; b=NEIUhWsm62HEDrcoAJDvXwACN0Z49QHHrmEuykwQX8+yAPEHL87hrPuuGf54gg4nKGkwZGReP3g1D4hyVFsiWpF7CRSPn8E0gr/bnWO9WNwT/4+ZiKenEL6unRncAaEa3uID6r2z/IJXWlUoxVk3zZZIjncuQEJZOQuMJPSFxVU=
+	t=1781624992; cv=none; b=KXn4Z7h9CmG8WPrDhqXPGvdbT0Wjicw7moBRI5Y4jJG7aw9Uxu30MMzcvLtxMAyI7bhrCM3CbnNuB6RdGzELSTgL7c3w7FQHz0NW8AXnVxbT4S/ooq390ZXh9BtA8zwSL2gsRzROd03aOcodgudlmxiSeyAsrv95DBFtl4GrmmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634159; c=relaxed/simple;
-	bh=s9Pg8axAWW8FBORzw/yPxt59hqbUlxIODZjVYtSI0XY=;
+	s=arc-20240116; t=1781624992; c=relaxed/simple;
+	bh=8EAqffMXGhR9s59AAoWokkZDOD7U7WVms4hYr+Cxze4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HybSOvZx4HjRM5WsxSkT/KW04sK8pW3usIMmgknznknGw/RLHEm1PhmV6bNOefiPMs+0ciyWX8pwVitbTxnOzAF16U5usLm6ND2SdZbWQO1NsFeNqEnnnAl1CL8u+GKRYLH40e8z66QN+d1BMeEv8ekikPzO4BdCONxUZI/i3x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNGFCtHM; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0436E1F000E9;
-	Tue, 16 Jun 2026 18:22:36 +0000 (UTC)
+	 MIME-Version; b=e9pr0aFo/+Zjeuab07W7TdFD+4vAT/1eMfud9SzeJIFsLJs4yJxlNaTyDjgFWMKP4iFu6X9C18Tvt2lIgbtaBsiYp+IizUuscH1kX/8oIbMOcYHNqysuH2+kkF0y098+0vwNbE7ag8JZLvzb7vjCzDGXodTk8gV5Iq6+JhWZG1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLX07pPa; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1AD1F000E9;
+	Tue, 16 Jun 2026 15:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634157;
-	bh=zA0HLGg4cDtau4Z9nkOwf/awoF7Te06LnBirUAxXAk0=;
+	s=korg; t=1781624991;
+	bh=mNBQXV8GXmipezam6symskhmEe9NCuepThEpY3VZsTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KNGFCtHMDzQcNu3fNOLV/n7KZpzD2kjAYy3kmpYmABuK8uYePqr5C9C/ROLzgzq2s
-	 n1zQWa+yDxP+2H2b9ppvUNeGMJhhZycCdQn1J/hfOOEOYMGa0YQclY/FgBkE9K8InH
-	 6mVvdBMdNLfC5nNQ0YFN347YIy5J76q93B6Z66ZY=
+	b=YLX07pPaXgX/WXwjW4mmoHehSbINFhF6bmVYbJ0JDQCAj0PV9sfiROQSpgtGpzpjD
+	 6TgIPdKJnY1bFZ+H8hCEurMM20CFJ3KJq+0da19NjgKPiAXKZ7b/4ruEA7w8WtUEWM
+	 qP1vzBzsOZux0/sCN0O4CzNWEMfkjEqZOMdM1PEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 202/411] Bluetooth: L2CAP: reject BR/EDR signaling packets over MTUsig
+	Muhammad Bilal <meatuni001@gmail.com>,
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 044/325] Bluetooth: RFCOMM: validate skb length in MCC handlers
 Date: Tue, 16 Jun 2026 20:27:20 +0530
-Message-ID: <20260616145111.465435956@linuxfoundation.org>
+Message-ID: <20260616145059.928167324@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,170 +68,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266005-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.dentz@gmail.com,m:michael.bommarito@gmail.com,m:luiz.von.dentz@intel.com,m:luizdentz@gmail.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264258-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:suunj1331@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 8379D694143
+X-Rspamd-Queue-Id: DDC9E6916B1
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit dd214733544427587a95f66dbf3adff072568990 upstream.
+[ Upstream commit 23882b828c3c8c51d0c946446a396b10abb3b16b ]
 
-net/bluetooth/l2cap_core.c:l2cap_sig_channel() accepts BR/EDR
-signaling packets up to the channel MTU and dispatches each command
-without enforcing the signaling MTU (MTUsig). A Bluetooth BR/EDR peer
-within radio range can send a fixed-channel CID 0x0001 packet that is
-larger than MTUsig and contains many L2CAP_ECHO_REQ commands before
-pairing. In a real-radio stock-kernel run, one 681-byte signaling
-packet containing 168 zero-length ECHO_REQ commands made the target
-transmit 168 ECHO_RSP frames over about 220 ms.
+The RFCOMM MCC handlers cast skb->data to protocol-specific structs
+without validating skb->len first. A malicious remote device can send
+truncated MCC frames and trigger out-of-bounds reads in these handlers.
 
-Impact: a Bluetooth BR/EDR peer within radio range, before pairing, can
-force 168 ECHO_RSP frames from one 681-byte fixed-channel signaling
-packet containing packed ECHO_REQ commands.
+Fix this by using skb_pull_data() to validate and access the required
+data before dereferencing it.
 
-Define Linux's BR/EDR signaling MTU as the spec minimum of 48 bytes and
-reject any larger signaling packet with one L2CAP_COMMAND_REJECT_RSP
-carrying L2CAP_REJ_MTU_EXCEEDED before any command is dispatched.
+rfcomm_recv_rpn() requires special handling since ETSI TS 07.10 allows
+1-byte RPN requests. Handle this by validating only the DLCI byte first,
+and validating the full struct only when len > 1.
 
-The Bluetooth Core spec wording for MTUExceeded says the reject
-identifier shall match the first request command in the packet, and
-that packets containing only responses shall be silently discarded.
-Linux intentionally deviates from that prescription: silently
-discarding desynchronizes the peer because the remote stack never
-learns its responses were dropped, and locating the first request
-command requires walking command headers past MTUsig, i.e. processing
-bytes from a packet we have already decided is too large to process.
-We therefore always emit one reject and use the identifier from the
-first command header, a single fixed-offset byte read.
-
-The unrestricted BR/EDR signaling parser and ECHO_REQ response path both
-trace to the initial git import; no later introducing commit is
-available for a Fixes tag.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Link: https://lore.kernel.org/r/20260518002800.1361430-1-michael.bommarito@gmail.com
-Link: https://lore.kernel.org/r/20260520135034.1060859-1-michael.bommarito@gmail.com
-Link: https://lore.kernel.org/r/20260521000555.3712030-1-michael.bommarito@gmail.com
-Assisted-by: Claude:claude-opus-4-7
-Assisted-by: Codex:gpt-5-5-xhigh
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Muhammad Bilal <meatuni001@gmail.com>
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/l2cap.h |    1 
- net/bluetooth/l2cap_core.c    |   46 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ net/bluetooth/rfcomm/core.c | 67 +++++++++++++++++++++++++++----------
+ 1 file changed, 49 insertions(+), 18 deletions(-)
 
---- a/include/net/bluetooth/l2cap.h
-+++ b/include/net/bluetooth/l2cap.h
-@@ -33,6 +33,7 @@
- /* L2CAP defaults */
- #define L2CAP_DEFAULT_MTU		672
- #define L2CAP_DEFAULT_MIN_MTU		48
-+#define L2CAP_SIG_MTU			48	/* BR/EDR signaling MTU */
- #define L2CAP_DEFAULT_FLUSH_TO		0xFFFF
- #define L2CAP_EFS_DEFAULT_FLUSH_TO	0xFFFFFFFF
- #define L2CAP_DEFAULT_TX_WINDOW		63
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6608,6 +6608,15 @@ static inline void l2cap_sig_send_rej(st
- 	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
- }
+diff --git a/net/bluetooth/rfcomm/core.c b/net/bluetooth/rfcomm/core.c
+index 96250807b32b44..dfade1933fa730 100644
+--- a/net/bluetooth/rfcomm/core.c
++++ b/net/bluetooth/rfcomm/core.c
+@@ -1431,10 +1431,15 @@ static int rfcomm_apply_pn(struct rfcomm_dlc *d, int cr, struct rfcomm_pn *pn)
  
-+static inline void l2cap_sig_send_mtu_rej(struct l2cap_conn *conn, u8 ident)
-+{
-+	struct l2cap_cmd_rej_mtu rej;
-+
-+	rej.reason = cpu_to_le16(L2CAP_REJ_MTU_EXCEEDED);
-+	rej.max_mtu = cpu_to_le16(L2CAP_SIG_MTU);
-+	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
-+}
-+
- static inline void l2cap_sig_channel(struct l2cap_conn *conn,
- 				     struct sk_buff *skb)
+ static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
  {
-@@ -6620,6 +6629,43 @@ static inline void l2cap_sig_channel(str
- 	if (hcon->type != ACL_LINK)
- 		goto drop;
- 
-+	/*
-+	 * Bluetooth Core v5.4, Vol 3, Part A, Section 4: the BR/EDR
-+	 * signaling channel has a fixed signaling MTU (MTUsig) whose
-+	 * minimum and default is 48 octets.  Section 4.1 says that on
-+	 * an MTUExceeded command reject the identifier "shall match
-+	 * the first request command in the L2CAP packet" and that
-+	 * packets containing only response commands "shall be
-+	 * silently discarded".
-+	 *
-+	 * Linux intentionally deviates from that prescription:
-+	 *
-+	 *   1. Silently discarding desynchronizes the peer.  The
-+	 *      remote stack never learns its responses were dropped,
-+	 *      so any state machine waiting on a paired response
-+	 *      stalls until its own timer fires.
-+	 *
-+	 *   2. Locating "the first request command" requires walking
-+	 *      command headers past MTUsig, i.e. processing bytes
-+	 *      from a packet we have already decided is too large to
-+	 *      process.
-+	 *
-+	 * Reject every over-MTUsig signaling packet with one
-+	 * L2CAP_REJ_MTU_EXCEEDED command reject.  The reject's
-+	 * reason field is what tells the peer that the whole packet
-+	 * was discarded; the identifier value is informational, so
-+	 * we use the identifier from the first command header, a
-+	 * single fixed-offset byte read.
-+	 */
-+	if (skb->len > L2CAP_SIG_MTU) {
-+		u8 ident = skb->data[1];
+-	struct rfcomm_pn *pn = (void *) skb->data;
++	struct rfcomm_pn *pn;
+ 	struct rfcomm_dlc *d;
+-	u8 dlci = pn->dlci;
++	u8 dlci;
 +
-+		BT_DBG("signaling packet exceeds MTU: %u > %u",
-+		       skb->len, L2CAP_SIG_MTU);
-+		l2cap_sig_send_mtu_rej(conn, ident);
-+		goto drop;
-+	}
-+
- 	while (skb->len >= L2CAP_CMD_HDR_SIZE) {
- 		u16 len;
++	pn = skb_pull_data(skb, sizeof(*pn));
++	if (!pn)
++		return -EILSEQ;
  
++	dlci = pn->dlci;
+ 	BT_DBG("session %p state %ld dlci %d", s, s->state, dlci);
+ 
+ 	if (!dlci)
+@@ -1483,8 +1488,8 @@ static int rfcomm_recv_pn(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ 
+ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_buff *skb)
+ {
+-	struct rfcomm_rpn *rpn = (void *) skb->data;
+-	u8 dlci = __get_dlci(rpn->dlci);
++	struct rfcomm_rpn *rpn;
++	u8 dlci;
+ 
+ 	u8 bit_rate  = 0;
+ 	u8 data_bits = 0;
+@@ -1495,15 +1500,16 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 	u8 xoff_char = 0;
+ 	u16 rpn_mask = RFCOMM_RPN_PM_ALL;
+ 
+-	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
+-		dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
+-		rpn->xon_char, rpn->xoff_char, rpn->param_mask);
++	if (len == 1) {
++		rpn = skb_pull_data(skb, 1);
++		if (!rpn)
++			return -EILSEQ;
+ 
+-	if (!cr)
+-		return 0;
++		dlci = __get_dlci(rpn->dlci);
++
++		if (!cr)
++			return 0;
+ 
+-	if (len == 1) {
+-		/* This is a request, return default (according to ETSI TS 07.10) settings */
+ 		bit_rate  = RFCOMM_RPN_BR_9600;
+ 		data_bits = RFCOMM_RPN_DATA_8;
+ 		stop_bits = RFCOMM_RPN_STOP_1;
+@@ -1514,6 +1520,19 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 		goto rpn_out;
+ 	}
+ 
++	rpn = skb_pull_data(skb, sizeof(*rpn));
++	if (!rpn)
++		return -EILSEQ;
++
++	dlci = __get_dlci(rpn->dlci);
++
++	BT_DBG("dlci %d cr %d len 0x%x bitr 0x%x line 0x%x flow 0x%x xonc 0x%x xoffc 0x%x pm 0x%x",
++	       dlci, cr, len, rpn->bit_rate, rpn->line_settings, rpn->flow_ctrl,
++	       rpn->xon_char, rpn->xoff_char, rpn->param_mask);
++
++	if (!cr)
++		return 0;
++
+ 	/* Check for sane values, ignore/accept bit_rate, 8 bits, 1 stop bit,
+ 	 * no parity, no flow control lines, normal XON/XOFF chars */
+ 
+@@ -1589,9 +1608,14 @@ static int rfcomm_recv_rpn(struct rfcomm_session *s, int cr, int len, struct sk_
+ 
+ static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ {
+-	struct rfcomm_rls *rls = (void *) skb->data;
+-	u8 dlci = __get_dlci(rls->dlci);
++	struct rfcomm_rls *rls;
++	u8 dlci;
+ 
++	rls = skb_pull_data(skb, sizeof(*rls));
++	if (!rls)
++		return -EILSEQ;
++
++	dlci = __get_dlci(rls->dlci);
+ 	BT_DBG("dlci %d cr %d status 0x%x", dlci, cr, rls->status);
+ 
+ 	if (!cr)
+@@ -1608,10 +1632,15 @@ static int rfcomm_recv_rls(struct rfcomm_session *s, int cr, struct sk_buff *skb
+ 
+ static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb)
+ {
+-	struct rfcomm_msc *msc = (void *) skb->data;
++	struct rfcomm_msc *msc;
+ 	struct rfcomm_dlc *d;
+-	u8 dlci = __get_dlci(msc->dlci);
++	u8 dlci;
++
++	msc = skb_pull_data(skb, sizeof(*msc));
++	if (!msc)
++		return -EILSEQ;
+ 
++	dlci = __get_dlci(msc->dlci);
+ 	BT_DBG("dlci %d cr %d v24 0x%x", dlci, cr, msc->v24_sig);
+ 
+ 	d = rfcomm_dlc_get(s, dlci);
+@@ -1644,17 +1673,19 @@ static int rfcomm_recv_msc(struct rfcomm_session *s, int cr, struct sk_buff *skb
+ 
+ static int rfcomm_recv_mcc(struct rfcomm_session *s, struct sk_buff *skb)
+ {
+-	struct rfcomm_mcc *mcc = (void *) skb->data;
++	struct rfcomm_mcc *mcc;
+ 	u8 type, cr, len;
+ 
++	mcc = skb_pull_data(skb, sizeof(*mcc));
++	if (!mcc)
++		return -EILSEQ;
++
+ 	cr   = __test_cr(mcc->type);
+ 	type = __get_mcc_type(mcc->type);
+ 	len  = __get_mcc_len(mcc->len);
+ 
+ 	BT_DBG("%p type 0x%x cr %d", s, type, cr);
+ 
+-	skb_pull(skb, 2);
+-
+ 	switch (type) {
+ 	case RFCOMM_PN:
+ 		rfcomm_recv_pn(s, cr, skb);
+-- 
+2.53.0
+
 
 
 
