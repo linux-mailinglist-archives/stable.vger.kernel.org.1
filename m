@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-265714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id iYtwCmiOMWpxmgUAu9opvQ
-	(envelope-from <stable+bounces-265714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:56 +0200
+	id eRXsBld3MWovkAUAu9opvQ
+	(envelope-from <stable+bounces-264373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46582693A67
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:56:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE0E691EAB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=0rELG1w8;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265714-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265714-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vd8luAnQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264373-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264373-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 77B1230034AD
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BCC8531D0C21
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CF347A0B0;
-	Tue, 16 Jun 2026 17:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CE47CC96;
+	Tue, 16 Jun 2026 15:58:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC5C4779B3;
-	Tue, 16 Jun 2026 17:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2190F47CC8C;
+	Tue, 16 Jun 2026 15:58:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632610; cv=none; b=hbwGEi/WCnFGGvV9lQXB0wuIJj2VEGRq9Sf//EzJPvJWbosEEfru/l75XXXsCy9+K034syI8bUbvsvmKpCR/9lptN51Zq5BAMhmoGjzR7+f1ewxzaC+/nUq4UDzkyb29wNd0GsloA9SSTlzUsCJGohrnDLFZyGwvmT0P2YEOHdQ=
+	t=1781625536; cv=none; b=W2II/hlYGGWUHos0sJRW3DsSrmW2zkQCBGqN3tEXtX/LKtDG//Q9X4QtrEovhOltp3SWbh8PyKRcpMhn/g2KGaYakZYwSy3vGXL9oG3nZT+4FV0z3MfwdwLFISOLIPmTslmePg5pDgTHvA35C5IGzmEQ7HVs7VMDUfLjQtd9jRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632610; c=relaxed/simple;
-	bh=8pdUYk6OigIirkk0s41VcE7mWxwoOL5qDrOtJar6ux4=;
+	s=arc-20240116; t=1781625536; c=relaxed/simple;
+	bh=RiqbrJVYg8KtkLiBb/wLnZ2EnsWj/S1DMDEmuoWyQdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g3qXezrlasB/GRtP0H40ygjGD7tq5yDdbWgHg7MPBdJxqHEijhw8tYExMxbq1+Qux5ui+MdVIF4JYTwy7mFUAZLBGmbG451J3VZgGeyiMlNDk/S93QjplXwxrBy5H4k3ffwm/8czNxnc7/t4dKflFMZXfXt1KTusRGTN1DEFIHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rELG1w8; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDB91F000E9;
-	Tue, 16 Jun 2026 17:56:48 +0000 (UTC)
+	 MIME-Version; b=n6yQ6fYGe++uePBulvpeDPHp8B8PJ6Q9acAuQL57Aw86rZb0i8Z0w2mDEAe2+XeKKZoqI0gQ8/M9fny+JtceorOWKRj9/ZVj0q9YmV2Xl0XWQcirNPvEl/O8VP1vOCxSKrQ+umJZFPpaltdtZ5eX6yO33N92K7ZtT6e+R866BKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd8luAnQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074241F000E9;
+	Tue, 16 Jun 2026 15:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632609;
-	bh=ND0ApNcj/qjAkx9Pb7sk9hFqNzMrlXggrWISareCScg=;
+	s=korg; t=1781625535;
+	bh=oYrR0otCy5bmmPF/3gspOpZ+TAZIVKGVtmJDEX7G5dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=0rELG1w8r4wbvySffClcoyxpGV2jEgZKMI3PHl6owFKpO1cKplmy7GK8WMqaVjE9V
-	 Rpxg16WR6RelbHQMSYRq9YfUT++03xDjU5ifLcP0yvBYZxE4eSxGYMqowfUu8zHmwJ
-	 LseIf7KBoPf14XE+Vt4A01nWHD6S0357jWRdchHQ=
+	b=vd8luAnQZzO4M/alTs1ugMQEMVL6wQhtuzVIISyXt3uZs5TiNkGzz9puTggxfeEv4
+	 YAMWOQl4vfFwcHwa7FCv3FodYa/yu1ARDuko3751S6sx2PnkYLderNvyBPq9cjk7f6
+	 qqMoYzQF8NRxiKZ0DdVJnOwjGRzmwbZIV1QJoK5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 411/522] spi: topcliff-pch: Convert to platform remove callback returning void
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.18 162/325] rust: kasan/kbuild: fix rustc-option when cross-compiling
 Date: Tue, 16 Jun 2026 20:29:18 +0530
-Message-ID: <20260616145145.283893955@linuxfoundation.org>
+Message-ID: <20260616145105.850969803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +64,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264373-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:u.kleine-koenig@pengutronix.de,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:aliceryhl@google.com,m:ojeda@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-265714-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 46582693A67
+X-Rspamd-Queue-Id: BCE0E691EAB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Alice Ryhl <aliceryhl@google.com>
 
-[ Upstream commit b082694f18bdff807b42a3bccc62c3a524168f23 ]
+commit 4a44b17406cb5a93f90af3df9392b3a45eb336fb upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+The Makefile version of rustc-option currently checks whether the option
+exists for the host target instead of the target actually being compiled
+for. It was done this way in commit 46e24a545cdb ("rust: kasan/kbuild:
+fix missing flags on first build") to avoid a circular dependency on
+target.json. However, because of this, rustc-option currently does not
+function when cross-compiling from x86_64 to aarch64 if
+CONFIG_SHADOW_CALL_STACK is enabled. This is because KBUILD_RUSTFLAGS
+contains -Zfixed-x18 under this configuration. Since that flag does not
+exist on the host target, rustc-option runs into a compilation failure
+every time, leading to all flags being rejected as unsupported.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+To fix this, update rustc-option to pass a --target parameter so that
+the host target is not used. For targets using target.json, use a
+built-in target that is as close as possible to the target created with
+target.json to avoid the circular dependency on target.json.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230303172041.2103336-83-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 5d6f477d6fc0 ("spi: topcliff-pch: fix controller deregistration")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+One scenario where this causes a boot failure:
+* Cross-compiled from x86_64 to aarch64.
+* With CONFIG_SHADOW_CALL_STACK=y
+* With CONFIG_KASAN_SW_TAGS=y
+* With CONFIG_KASAN_INLINE=n
+Then the resulting kernel image will fail to boot when it first calls
+into Rust code with a crash along the lines of "Unable to handle kernel
+paging request at virtual address 0ffffffc08541796". This is because the
+call threshold is not specified, so rustc will inline kasan operations,
+but the kasan shadow offset is not specified, which leads to the inlined
+kasan instructions being incorrect.
+
+Note that the -Zsanitizer=kernel-hwaddress parameter itself does not
+lead to a rustc-option failure despite being aarch64-specific because
+RUSTFLAGS_KASAN has not yet been added to KBUILD_RUSTFLAGS when
+rustc-option is evaluated by the kasan Makefile.
+
+Cc: stable@vger.kernel.org
+Fixes: 46e24a545cdb ("rust: kasan/kbuild: fix missing flags on first build")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patch.msgid.link/20260507-rustc-option-cross-v2-1-2f650a49c2b5@google.com
+[ Edited slightly:
+    - Reset variable to avoid using the environment.
+    - Use a simply expanded variable flavor for simplicity.
+    - Export variable so that behavior in sub-`make`s is consistent.
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/spi/spi-topcliff-pch.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1396,7 +1396,7 @@ err_pci_iomap:
- 	return ret;
- }
+  This matches other variables. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Makefile                  |    3 ++-
+ arch/x86/Makefile         |    4 ++++
+ arch/x86/Makefile.um      |    8 ++++++++
+ scripts/Makefile.compiler |    2 +-
+ 4 files changed, 15 insertions(+), 2 deletions(-)
+
+--- a/Makefile
++++ b/Makefile
+@@ -603,6 +603,7 @@ KBUILD_RUSTFLAGS := $(rust_common_flags)
+ 		    -Crelocation-model=static \
+ 		    -Zfunction-sections=n \
+ 		    -Wclippy::float_arithmetic
++KBUILD_RUSTFLAGS_OPTION_CHKS :=
  
--static int pch_spi_pd_remove(struct platform_device *plat_dev)
-+static void pch_spi_pd_remove(struct platform_device *plat_dev)
- {
- 	struct pch_spi_board_data *board_dat = dev_get_platdata(&plat_dev->dev);
- 	struct pch_spi_data *data = platform_get_drvdata(plat_dev);
-@@ -1434,8 +1434,6 @@ static int pch_spi_pd_remove(struct plat
+ KBUILD_AFLAGS_KERNEL :=
+ KBUILD_CFLAGS_KERNEL :=
+@@ -639,7 +640,7 @@ export KBUILD_USERCFLAGS KBUILD_USERLDFL
  
- 	pci_iounmap(board_dat->pdev, data->io_remap_addr);
- 	spi_unregister_master(data->master);
--
--	return 0;
- }
- #ifdef CONFIG_PM
- static int pch_spi_pd_suspend(struct platform_device *pd_dev,
-@@ -1516,7 +1514,7 @@ static struct platform_driver pch_spi_pd
- 		.name = "pch-spi",
- 	},
- 	.probe = pch_spi_pd_probe,
--	.remove = pch_spi_pd_remove,
-+	.remove_new = pch_spi_pd_remove,
- 	.suspend = pch_spi_pd_suspend,
- 	.resume = pch_spi_pd_resume
- };
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
+ export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
+-export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE
++export KBUILD_RUSTFLAGS RUSTFLAGS_KERNEL RUSTFLAGS_MODULE KBUILD_RUSTFLAGS_OPTION_CHKS
+ export KBUILD_AFLAGS AFLAGS_KERNEL AFLAGS_MODULE
+ export KBUILD_AFLAGS_MODULE KBUILD_CFLAGS_MODULE KBUILD_RUSTFLAGS_MODULE KBUILD_LDFLAGS_MODULE
+ export KBUILD_AFLAGS_KERNEL KBUILD_CFLAGS_KERNEL KBUILD_RUSTFLAGS_KERNEL
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -79,6 +79,10 @@ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-none
++
+ #
+ # CFLAGS for compiling floating point code inside the kernel.
+ #
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -14,6 +14,14 @@ endif
+ 
+ KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ 
++# The target.json file is not available when invoking rustc-option, so use the
++# built-in target when checking whether flags are supported instead.
++ifeq ($(CONFIG_X86_32),y)
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=i686-unknown-linux-gnu
++else
++KBUILD_RUSTFLAGS_OPTION_CHKS += --target=x86_64-unknown-linux-gnu
++endif
++
+ ifeq ($(CONFIG_X86_32),y)
+ START := 0x8048000
+ 
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -80,7 +80,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+ 	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+-	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
++	$(1) --sysroot=/dev/null $(KBUILD_RUSTFLAGS_OPTION_CHKS) $(filter-out --sysroot=/dev/null --target=%target.json,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+ 
+ # rustc-option
 
 
 
