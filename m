@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-265052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id d1RjOxSEMWqNlQUAu9opvQ
-	(envelope-from <stable+bounces-265052-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:53 +0200
+	id Ez+MDth5MWpNkQUAu9opvQ
+	(envelope-from <stable+bounces-264568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4D2692DD2
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A67DB6921FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:11 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IFXsGF4h;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265052-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265052-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="a/ZELmpL";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264568-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264568-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE56D31F5336
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:00:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF93331B1BD0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505D1472767;
-	Tue, 16 Jun 2026 17:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971DA466B65;
+	Tue, 16 Jun 2026 16:16:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9A543D4E9;
-	Tue, 16 Jun 2026 17:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB3A37DEBF;
+	Tue, 16 Jun 2026 16:16:48 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629237; cv=none; b=WtT+LinUbv8zAkgN0Za+1VjS58GujfDR8E0TqilopQsKli1e3Qe7FyTNG0WazpA/WrgdKFMEXk7sVkQEiMO8xCim0TImm2zkckTPg77eHNxhE9RZIyoQ9ii1YjrDHCHK8WI/wt72oBZXaPKPUKbtmYadar2iOKLIDIKcyJkQXbU=
+	t=1781626609; cv=none; b=lwcmm3o1VI9YtuF/QEHZPHbi3YTi48zGu/C7i8bQTsVP+RBX1D+4jLMcXl4ZaQAqHUtZhFq6BMkLWDt79jWA7C/us0gHPwe3C0VFmqeE/+X4O6bzFRDbQHoo3dTMgdYmoLdG4b+jeSAgC/A+qAWuDUxZU6GxaFOMDw4lGugSsdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629237; c=relaxed/simple;
-	bh=WBbvrpGltJDPX8mcWaAAGMYZq9Mf2IiAFmdYVjxP9Xc=;
+	s=arc-20240116; t=1781626609; c=relaxed/simple;
+	bh=lC7FAH6LxPsdegQHuSwF1syUnhf+8ZsNS3JprDCYIZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMuQsSrUw/VfR+8Bf5opCkzZhML6vKC0Am2rqtWlx0X9gfeEjoL60JfkEkzoWhUtNmIpEAHnj9jxBn4iKL+26RSWQAvGeK0He6oN7aq1kfBpsO8QH3YNC9pUh/QqTVSaqBtEUHmtTBlgX5oz8Xhze70nYOhhixEsxsgEop5a5p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFXsGF4h; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E0B1F000E9;
-	Tue, 16 Jun 2026 17:00:35 +0000 (UTC)
+	 MIME-Version; b=pgyF/1/AmeAhXNMO4iLoebGrl5Ad0DCdkcSuxAoZsP6y0XUJoNx+ftvtrOwHYSp7eyrPFUE/mBAT1qZBNFmtxDp/wh4O9HL8TPDIAxTnwxUqNwWrKrBtujzeTElv2Va14lJ2LCAfF6ysb9pLQtlRqcXlzFlLJpP5v27U89mBJFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/ZELmpL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4851F00A3A;
+	Tue, 16 Jun 2026 16:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629236;
-	bh=AryYfATxiyYvrd3LrzpnHpEptIERCVsQ80ziG6jvgko=;
+	s=korg; t=1781626608;
+	bh=wj8S6WNd34JUNffYSIGZPPrJMAVCoddBYAK1IfBZn38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IFXsGF4hAqFbvtPg2Iwajye60S5H9+Lea/2NVLiImDNYwYILI+welVWcoj1k/gruO
-	 UlQkNnhJzFiaJOFK99WuvaFiKQ/q5VaNKSl07LkBloY8bHgs9bkgFAS830rbidEzLd
-	 ta5lN+YXKj7tvEg064hnYFOeM+k16Aq0OU+Mz2zw=
+	b=a/ZELmpLIxA/Md2Q9SRBp8Rjxls1N6+Fx83b/9IENo8YpWwJyp2rwJjAfD88XydIM
+	 2ABCDLWIekZRk9Y+SXTRQWfq+xM0jVu7SiEuKLs/B10yRstyaZtkCkBLYj9qRDSXMY
+	 yJKb2YZjO1H0G3JOfB8geqtmII/3UwJ1kruNcntI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Yuqi Xu <xuyq21@lenovo.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
+	David Thompson <davthompson@nvidia.com>,
+	Thangaraj Samynathan <Thangaraj.s@microchip.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/452] sctp: purge outqueue on stale COOKIE-ECHO handling
+Subject: [PATCH 6.12 035/261] net: lan743x: permit VLAN-tagged packets up to configured MTU
 Date: Tue, 16 Jun 2026 20:27:53 +0530
-Message-ID: <20260616145130.601149571@linuxfoundation.org>
+Message-ID: <20260616145046.663533762@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,126 +69,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265052-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:xuyq21@lenovo.com,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:sashal@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264568-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:davthompson@nvidia.com,m:Thangaraj.s@microchip.com,m:nb@tipi-net.de,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,lenovo.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,lenovo.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,tipi-net.de:email,microchip.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6A4D2692DD2
+X-Rspamd-Queue-Id: A67DB6921FF
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit e374b22e9b07b72a25909621464ff74096151bfb ]
+[ Upstream commit 8173d22b211f615015f7b35f48ab11a6dd78dc99 ]
 
-sctp_stream_update() is only invoked when the association is moved into
-COOKIE_WAIT during association setup/reconfiguration. In this path, the
-outbound stream scheduler state (stream->out_curr) is expected to be
-clean, since no user data should have been transmitted yet unless the
-state machine has already partially progressed.
+VLAN-tagged interfaces on lan743x devices were previously unreachable via
+SSH and failed to respond to large ping packets (e.g. "ping -s 1469" given
+MTU=1500). In these scenarios, "ethtool -S" reports non-zero "RX Oversize
+Frame Errors". According to Microchip AN2948, the MAC_RX FSE (VLAN field
+size enforcement) bit determines whether frames with VLAN tags exceeding
+the base MTU plus tag length are discarded.
 
-However, a corner case exists in sctp_sf_do_5_2_6_stale(): when a
-Stale Cookie ERROR is received, the association is rolled back from
-COOKIE_ECHOED to COOKIE_WAIT. In this scenario, user data may already
-have been queued and even bundled with the COOKIE-ECHO chunk.
+The driver must set the MAC_RX.FSE bit before setting MAC_RX.RXEN to allow
+VLAN-tagged frames up to the interface MTU, preventing them from being
+treated as oversized. As a result, both the base and VLAN-tagged interfaces
+can use the same MTU without receive errors.
 
-During the rollback, sctp_stream_update() frees the old stream table
-and installs a new one, but it does not invalidate stream->out_curr.
-As a result, out_curr may still point to a freed sctp_stream_out
-entry from the previous stream state.
-
-Later, SCTP scheduler dequeue paths (FCFS, RR, PRIO, etc.) rely on
-stream->out_curr->ext, which can lead to use-after-free once the old
-stream state has been released via sctp_stream_free().
-
-This results in crashes such as (reported by Yuqi):
-
-  BUG: KASAN: slab-use-after-free in sctp_sched_fcfs_dequeue+0x13a/0x140
-  Read of size 8 at addr ff1100004d4d3208 by task mini_poc/9312
-  CPU: 1 UID: 1001 PID: 9312 Comm: mini_poc Not tainted
-     7.1.0-rc1-00305-gbd3a4795d574 #5 PREEMPT(full)
-   sctp_sched_fcfs_dequeue+0x13a/0x140
-   sctp_outq_flush+0x1603/0x33e0
-   sctp_do_sm+0x31c9/0x5d30
-   sctp_assoc_bh_rcv+0x392/0x6f0
-   sctp_inq_push+0x1db/0x270
-   sctp_rcv+0x138d/0x3c10
-
-Fix this by fully purging the association outqueue when handling the
-Stale Cookie case. This ensures all pending transmit and retransmit
-state is dropped, and any scheduler cached pointers are invalidated,
-making it safe to rebuild stream state during COOKIE_WAIT restart.
-
-Updating only stream->out_curr would be insufficient, since queued
-and retransmittable data would still reference the old stream state and
-trigger later use-after-free in dequeue paths.
-
-Fixes: 5bbbbe32a431 ("sctp: introduce stream scheduler foundations")
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Reported-by: Yuqi Xu <xuyq21@lenovo.com>
-Reported-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/94318159b9052907a6cbb7256aee8b5f8dfbfccb.1780510304.git.lucien.xin@gmail.com
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Thangaraj Samynathan <Thangaraj.s@microchip.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # lan7430 on arm64 (RevPi
+Link: https://patch.msgid.link/20260529210300.433135-1-davthompson@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 32 +++++++++++++++++++
+ drivers/net/ethernet/microchip/lan743x_main.h |  1 +
+ 2 files changed, 33 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index 5e9449b0c7907e..583d83dcb8426e 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -2597,11 +2597,7 @@ static enum sctp_disposition sctp_sf_do_5_2_6_stale(
- 	 */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_DEL_NON_PRIMARY, SCTP_NULL());
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index b897d071fc4524..dff5767671b127 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1212,6 +1212,36 @@ static void lan743x_mac_set_address(struct lan743x_adapter *adapter,
+ 		   "MAC address set to %pM\n", addr);
+ }
  
--	/* If we've sent any data bundled with COOKIE-ECHO we will need to
--	 * resend
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_T1_RETRAN,
--			SCTP_TRANSPORT(asoc->peer.primary_path));
-+	sctp_add_cmd_sf(commands, SCTP_CMD_PURGE_OUTQUEUE, SCTP_NULL());
++static void lan743x_mac_rx_enable_fse(struct lan743x_adapter *adapter)
++{
++	u32 mac_rx;
++	bool rxen;
++
++	mac_rx = lan743x_csr_read(adapter, MAC_RX);
++	if (mac_rx & MAC_RX_FSE_)
++		return;
++
++	rxen = mac_rx & MAC_RX_RXEN_;
++	if (rxen) {
++		mac_rx &= ~MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++		lan743x_csr_wait_for_bit(adapter, MAC_RX, MAC_RX_RXD_,
++					 1, 1000, 20000, 100);
++	}
++
++	/* Per AN2948, hardware prevents modification of the FSE bit while the
++	 * MAC receiver is enabled (RXEN bit set). Use separate register write
++	 * to assert the FSE bit before enabling the RXEN bit in MAC_RX
++	 */
++	mac_rx |= MAC_RX_FSE_;
++	lan743x_csr_write(adapter, MAC_RX, mac_rx);
++
++	if (rxen) {
++		mac_rx |= MAC_RX_RXEN_;
++		lan743x_csr_write(adapter, MAC_RX, mac_rx);
++	}
++}
++
+ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ {
+ 	bool mac_address_valid = true;
+@@ -1251,6 +1281,8 @@ static int lan743x_mac_init(struct lan743x_adapter *adapter)
+ 	lan743x_mac_set_address(adapter, adapter->mac_address);
+ 	eth_hw_addr_set(netdev, adapter->mac_address);
  
- 	/* Cast away the const modifier, as we want to just
- 	 * rerun it through as a sideffect.
++	lan743x_mac_rx_enable_fse(adapter);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index 2f0cab0c85e1d0..b8bb31c0400d16 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -181,6 +181,7 @@
+ #define MAC_RX				(0x104)
+ #define MAC_RX_MAX_SIZE_SHIFT_		(16)
+ #define MAC_RX_MAX_SIZE_MASK_		(0x3FFF0000)
++#define MAC_RX_FSE_			BIT(2)
+ #define MAC_RX_RXD_			BIT(1)
+ #define MAC_RX_RXEN_			BIT(0)
+ 
 -- 
 2.53.0
 
