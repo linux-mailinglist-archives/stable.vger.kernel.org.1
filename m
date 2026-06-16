@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-264847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bIU1I0d+MWomkwUAu9opvQ
-	(envelope-from <stable+bounces-264847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:07 +0200
+	id ubGrDneJMWrzlwUAu9opvQ
+	(envelope-from <stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1A2692769
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:48:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317576934AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:50 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=y+phGgpt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264847-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264847-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FICIW+4v;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265394-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49CF5305BB4F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:43:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D0DB3304289C
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BFA545BD6F;
-	Tue, 16 Jun 2026 16:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FADF21C16A;
+	Tue, 16 Jun 2026 17:29:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF74E35DA6A;
-	Tue, 16 Jun 2026 16:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD664657F8;
+	Tue, 16 Jun 2026 17:29:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628202; cv=none; b=cT8K96AJUxJph9Ym2l1XpNOpABosUYdD3T5VzaVU7v3SHNxy//lNM4ciHYf6PEoYSYft+WqshYPE0/IzngIbDnUCJUwo0pfonztXo/GcN9uqnadXQnFCbG/0mex+UrxH8a9l6DnSjpkcBgRouw0s+ZvgWH55pvoP7uGQPU2/Nms=
+	t=1781630975; cv=none; b=NSmkLPVjbKXpLUyD63wlp0Mn8eSTL84Ea6yo9iTwCiD2y0fXQHZwNVKs5TCRCq0dG+91jRGjnVIDz8SLwi8hkzsX5osVS4bABJR9u+MmA/kUG455b4HH+Xy63Pymz0LiTwKgOK2olnh0v/e2b2aehmlaxzCCQZB1RUFQLiEKM1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628202; c=relaxed/simple;
-	bh=T2G9XC3U9Gc9gJ7VxPX0+Cml/3seDZozRNiu9xFmFQM=;
+	s=arc-20240116; t=1781630975; c=relaxed/simple;
+	bh=zeXoEKAA9I4bO1GXv3Xhp6sbO4iRPvGBr6qkH5bGsCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLsE90aq/1MCJDHbIWDQWhggK27leEFDfGyOT2WM3PBuQaxSo8kui8efenTyshaQT2MtjuuuYU9sLtQe16USfIT3KScQGWdgi2ik4t/ndqOTlOwGjjtELejKvteXOhf68IP0C4oAEcXaAycxcNnV0V8mYZN58SltgCFJ3sqCnF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+phGgpt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F098C1F000E9;
-	Tue, 16 Jun 2026 16:43:19 +0000 (UTC)
+	 MIME-Version; b=hOeI3Tk+6y4hWz9L9AprHLctyhhwjecwhyInzQFLMyBBDcqyjCk18ZqVTNSPoJ0Dx7g8DLYehAMhaWXE8vHZDDAmmwu42i0XZm3UCIQTi05vKFhYe72a5nBxtrREsMNvQD1usQ4php04LTFpu/99GE87DFX1TPuSiOoYbIeMC/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FICIW+4v; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 239B31F000E9;
+	Tue, 16 Jun 2026 17:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628200;
-	bh=XwE6sjBSl85rg3f9fkws3A1LaqbWhucqjXPh39Xi9e8=;
+	s=korg; t=1781630974;
+	bh=+dqpIIkoJvQDiRQvi83PbGRgpCEiXshocWaFI06ClwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=y+phGgptiQZcNaibklCgJM5DrJEzTvOLf636dmmf9DxYSyP6A7/ABi2EZACydzpTM
-	 sdqrsJZSXj2B52245RHJY6TkQATP6cTAshdcTb9vba3GR2wMvtLB7x7eHPGriim4CM
-	 EK0gTjLT04QHnj/trGb2slr18kPlbBMOeV5+gHk0=
+	b=FICIW+4va2iIrf7GBiqeA3LHx2P2ASJNJlHFmrciWB2CKtKmKsnx50qWZYN+FSiVf
+	 LuqnZvtOdeVTKmUgJEeMRSEdQRGG+SuuUj2ofb7gEpMBO3Qz7UBThm0a2+6zq4dEKz
+	 zbSszHs0s63s5ALMjbQjvLVyXu8qTacvZiao1E2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/452] batman-adv: tvlv: abort OGM send on tvlv append failure
+	Maoyi Xie <maoyi.xie@ntu.edu.sg>,
+	Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.1 131/522] xfrm: route MIGRATE notifications to callers netns
 Date: Tue, 16 Jun 2026 20:24:38 +0530
-Message-ID: <20260616145120.640392060@linuxfoundation.org>
+Message-ID: <20260616145132.231717353@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,22 +71,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264847-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265394-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:maoyi.xie@ntu.edu.sg,m:steffen.klassert@secunet.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -98,205 +97,170 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[narfation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DA1A2692769
+X-Rspamd-Queue-Id: 317576934AB
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Maoyi Xie <maoyixie.tju@gmail.com>
 
-commit 501368506563e151b322c8c3f228b796e615b90d upstream.
+commit 7e2a4f7ca0952820731ef7bdadfc9a9e9d3571b4 upstream.
 
-batadv_tvlv_container_ogm_append() could fail in two ways: a memory
-allocation failure when resizing the packet buffer, or the tvlv data
-exceeding U16_MAX bytes. In both cases the function previously returned the
-old (now stale) tvlv_value_len rather than signalling an error, causing the
-OGM/OGM2 send path to transmit a packet whose TVLV length field no longer
-matched the actual buffer contents. And because it also didn't fill in the
-new TVLV data, sending either uninitialized or corrupted data on the wire.
+xfrm_send_migrate() in net/xfrm/xfrm_user.c and pfkey_send_migrate()
+in net/key/af_key.c both hardcode &init_net for the multicast that
+announces a successful XFRM_MSG_MIGRATE / SADB_X_MIGRATE.
 
-All errors in batadv_tvlv_container_ogm_append() must be forwarded to the
-caller. And the caller must abort the send of the OGM2. For B.A.T.M.A.N.
-IV, it is currently not allowed to abort the send. The non-TVLV part of the
-OGM must be queued up instead.
+XFRM_MSG_MIGRATE arrives on a per-netns NETLINK_XFRM socket, and the
+rest of the xfrm/af_key netlink path was made netns-aware in 2008.
+The other 14 multicast paths in xfrm_user.c route their event using
+xs_net(x), xp_net(xp) or sock_net(skb->sk); only the migrate path
+was missed.
 
-Cc: stable@kernel.org
-Fixes: ef26157747d4 ("batman-adv: tvlv - basic infrastructure")
-[ Context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Two consequences of the init_net hardcoding:
+
+  1. The notification (selector, old/new endpoint addresses, and the
+     km_address) is delivered to listeners on init_net's
+     XFRMNLGRP_MIGRATE / pfkey BROADCAST_ALL groups rather than on
+     the issuing netns. An IKE daemon running in init_net therefore
+     receives migration notifications originating from any other
+     netns on the host.
+
+  2. An IKE daemon running inside a non-init netns and subscribed
+     to its own XFRMNLGRP_MIGRATE / pfkey groups never receives the
+     notification of its own migration. IKEv2 MOBIKE / address-update
+     handling inside a netns is silently broken.
+
+Thread struct net through km_migrate() and the xfrm_mgr.migrate
+function pointer, drop the &init_net override in xfrm_send_migrate()
+and pfkey_send_migrate(), and pass the caller's net (already in
+scope in xfrm_migrate() via sock_net(skb->sk)) all the way down.
+struct xfrm_mgr is in-tree only and not exported as a stable API,
+so the function-pointer signature change is internal.
+
+pfkey_broadcast() is already netns-aware via net_generic(net,
+pfkey_net_id) since the pernet conversion. The five other
+pfkey_broadcast() callers in af_key.c already pass xs_net(x),
+sock_net(sk) or a per-netns net, so this only removes the
+&init_net outlier.
+
+Fixes: 5c79de6e79cd ("[XFRM]: User interface for handling XFRM_MSG_MIGRATE")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_iv_ogm.c | 16 +++++++++++++---
- net/batman-adv/bat_v_ogm.c  | 26 ++++++++++++++------------
- net/batman-adv/tvlv.c       | 17 ++++++++++++-----
- net/batman-adv/tvlv.h       |  2 +-
- 4 files changed, 40 insertions(+), 21 deletions(-)
+ include/net/xfrm.h     |    3 ++-
+ net/key/af_key.c       |    6 +++---
+ net/xfrm/xfrm_policy.c |    2 +-
+ net/xfrm/xfrm_state.c  |    4 ++--
+ net/xfrm/xfrm_user.c   |    5 ++---
+ 5 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 748188d3b878b2..42b687c1a76807 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -781,6 +781,7 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 	u32 seqno;
- 	u16 tvlv_len = 0;
- 	unsigned long send_time;
-+	int ret;
- 
- 	lockdep_assert_held(&hard_iface->bat_iv.ogm_buff_mutex);
- 
-@@ -804,9 +805,18 @@ static void batadv_iv_ogm_schedule_buff(struct batadv_hard_iface *hard_iface)
- 		 * appended as it may alter the tt tvlv container
- 		 */
- 		batadv_tt_local_commit_changes(bat_priv);
--		tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
--							    ogm_buff_len,
--							    BATADV_OGM_HLEN);
-+		ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
-+						       ogm_buff_len,
-+						       BATADV_OGM_HLEN);
-+		if (ret < 0) {
-+			/* OGMs must be queued even when the buffer allocation for
-+			 * TVLVs failed. just fall back to the non-TVLV version
-+			 */
-+			ret = 0;
-+			*ogm_buff_len = BATADV_OGM_HLEN;
-+		}
-+
-+		tvlv_len = ret;
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -590,6 +590,7 @@ struct xfrm_mgr {
+ 					   const struct xfrm_migrate *m,
+ 					   int num_bundles,
+ 					   const struct xfrm_kmaddress *k,
++					   struct net *net,
+ 					   const struct xfrm_encap_tmpl *encap);
+ 	bool			(*is_alive)(const struct km_event *c);
+ };
+@@ -1692,7 +1693,7 @@ int xfrm_sk_policy_insert(struct sock *s
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_bundles,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap);
+ struct xfrm_state *xfrm_migrate_state_find(struct xfrm_migrate *m, struct net *net,
+ 						u32 if_id);
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -3548,7 +3548,7 @@ static int set_ipsecrequest(struct sk_bu
+ #ifdef CONFIG_NET_KEY_MIGRATE
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
+ {
+ 	int i;
+@@ -3653,7 +3653,7 @@ static int pfkey_send_migrate(const stru
  	}
  
- 	batadv_ogm_packet = (struct batadv_ogm_packet *)(*ogm_buff);
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index 310248a5812c49..8cfc3944dcfd52 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -271,9 +271,9 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
- 	struct batadv_hard_iface *hard_iface;
- 	struct batadv_ogm2_packet *ogm_packet;
- 	struct sk_buff *skb, *skb_tmp;
--	unsigned char *ogm_buff;
--	int ogm_buff_len;
--	u16 tvlv_len = 0;
-+	unsigned char **ogm_buff;
-+	int *ogm_buff_len;
-+	u16 tvlv_len;
- 	int ret;
+ 	/* broadcast migrate message to sockets */
+-	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, &init_net);
++	pfkey_broadcast(skb, GFP_ATOMIC, BROADCAST_ALL, NULL, net);
  
- 	lockdep_assert_held(&bat_priv->bat_v.ogm_buff_mutex);
-@@ -281,25 +281,27 @@ static void batadv_v_ogm_send_softif(struct batadv_priv *bat_priv)
- 	if (atomic_read(&bat_priv->mesh_state) == BATADV_MESH_DEACTIVATING)
- 		goto out;
+ 	return 0;
  
--	ogm_buff = bat_priv->bat_v.ogm_buff;
--	ogm_buff_len = bat_priv->bat_v.ogm_buff_len;
-+	ogm_buff = &bat_priv->bat_v.ogm_buff;
-+	ogm_buff_len = &bat_priv->bat_v.ogm_buff_len;
-+
- 	/* tt changes have to be committed before the tvlv data is
- 	 * appended as it may alter the tt tvlv container
- 	 */
- 	batadv_tt_local_commit_changes(bat_priv);
--	tvlv_len = batadv_tvlv_container_ogm_append(bat_priv, &ogm_buff,
--						    &ogm_buff_len,
--						    BATADV_OGM2_HLEN);
-+	ret = batadv_tvlv_container_ogm_append(bat_priv, ogm_buff,
-+					       ogm_buff_len,
-+					       BATADV_OGM2_HLEN);
-+	if (ret < 0)
-+		goto reschedule;
- 
--	bat_priv->bat_v.ogm_buff = ogm_buff;
--	bat_priv->bat_v.ogm_buff_len = ogm_buff_len;
-+	tvlv_len = ret;
- 
--	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + ogm_buff_len);
-+	skb = netdev_alloc_skb_ip_align(NULL, ETH_HLEN + *ogm_buff_len);
- 	if (!skb)
- 		goto reschedule;
- 
- 	skb_reserve(skb, ETH_HLEN);
--	skb_put_data(skb, ogm_buff, ogm_buff_len);
-+	skb_put_data(skb, *ogm_buff, *ogm_buff_len);
- 
- 	ogm_packet = (struct batadv_ogm2_packet *)skb->data;
- 	ogm_packet->seqno = htonl(atomic_read(&bat_priv->bat_v.ogm_seqno));
-diff --git a/net/batman-adv/tvlv.c b/net/batman-adv/tvlv.c
-index 2a583215d439bd..76c6e0599694c7 100644
---- a/net/batman-adv/tvlv.c
-+++ b/net/batman-adv/tvlv.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/byteorder/generic.h>
- #include <linux/container_of.h>
-+#include <linux/errno.h>
- #include <linux/etherdevice.h>
- #include <linux/gfp.h>
- #include <linux/if_ether.h>
-@@ -306,9 +307,10 @@ static bool batadv_tvlv_realloc_packet_buff(unsigned char **packet_buff,
-  * The ogm packet might be enlarged or shrunk depending on the current size
-  * and the size of the to-be-appended tvlv containers.
-  *
-- * Return: size of all appended tvlv containers in bytes.
-+ * Return: size of all appended tvlv containers in bytes (max U16_MAX), negative
-+ *  if operation failed
-  */
--u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
-+int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
- 				     unsigned char **packet_buff,
- 				     int *packet_buff_len, int packet_min_len)
+@@ -3664,7 +3664,7 @@ err:
+ #else
+ static int pfkey_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			      const struct xfrm_migrate *m, int num_bundles,
+-			      const struct xfrm_kmaddress *k,
++			      const struct xfrm_kmaddress *k, struct net *net,
+ 			      const struct xfrm_encap_tmpl *encap)
  {
-@@ -316,6 +318,7 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
- 	struct batadv_tvlv_hdr *tvlv_hdr;
- 	u16 tvlv_value_len;
- 	void *tvlv_value;
-+	int tvlv_len_ret;
- 	bool ret;
+ 	return -ENOPROTOOPT;
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4492,7 +4492,7 @@ int xfrm_migrate(const struct xfrm_selec
+ 	}
  
- 	spin_lock_bh(&bat_priv->tvlv.container_list_lock);
-@@ -323,9 +326,12 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+ 	/* Stage 5 - announce */
+-	km_migrate(sel, dir, type, m, num_migrate, k, encap);
++	km_migrate(sel, dir, type, m, num_migrate, k, net, encap);
  
- 	ret = batadv_tvlv_realloc_packet_buff(packet_buff, packet_buff_len,
- 					      packet_min_len, tvlv_value_len);
--
--	if (!ret)
-+	if (!ret) {
-+		tvlv_len_ret = -ENOMEM;
- 		goto end;
-+	}
-+
-+	tvlv_len_ret = tvlv_value_len;
+ 	xfrm_pol_put(pol);
  
- 	if (!tvlv_value_len)
- 		goto end;
-@@ -344,7 +350,8 @@ u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2300,7 +2300,7 @@ EXPORT_SYMBOL(km_policy_expired);
+ #ifdef CONFIG_XFRM_MIGRATE
+ int km_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 	       const struct xfrm_migrate *m, int num_migrate,
+-	       const struct xfrm_kmaddress *k,
++	       const struct xfrm_kmaddress *k, struct net *net,
+ 	       const struct xfrm_encap_tmpl *encap)
+ {
+ 	int err = -EINVAL;
+@@ -2311,7 +2311,7 @@ int km_migrate(const struct xfrm_selecto
+ 	list_for_each_entry_rcu(km, &xfrm_km_list, list) {
+ 		if (km->migrate) {
+ 			ret = km->migrate(sel, dir, type, m, num_migrate, k,
+-					  encap);
++					  net, encap);
+ 			if (!ret)
+ 				err = ret;
+ 		}
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2908,10 +2908,9 @@ out_cancel:
  
- end:
- 	spin_unlock_bh(&bat_priv->tvlv.container_list_lock);
--	return tvlv_value_len;
-+
-+	return tvlv_len_ret;
- }
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
+ {
+-	struct net *net = &init_net;
+ 	struct sk_buff *skb;
+ 	int err;
  
- /**
-diff --git a/net/batman-adv/tvlv.h b/net/batman-adv/tvlv.h
-index e5697230d99173..f96f6b3f44a001 100644
---- a/net/batman-adv/tvlv.h
-+++ b/net/batman-adv/tvlv.h
-@@ -16,7 +16,7 @@
- void batadv_tvlv_container_register(struct batadv_priv *bat_priv,
- 				    u8 type, u8 version,
- 				    void *tvlv_value, u16 tvlv_value_len);
--u16 batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
-+int batadv_tvlv_container_ogm_append(struct batadv_priv *bat_priv,
- 				     unsigned char **packet_buff,
- 				     int *packet_buff_len, int packet_min_len);
- void batadv_tvlv_ogm_receive(struct batadv_priv *bat_priv,
--- 
-2.53.0
-
+@@ -2929,7 +2928,7 @@ static int xfrm_send_migrate(const struc
+ #else
+ static int xfrm_send_migrate(const struct xfrm_selector *sel, u8 dir, u8 type,
+ 			     const struct xfrm_migrate *m, int num_migrate,
+-			     const struct xfrm_kmaddress *k,
++			     const struct xfrm_kmaddress *k, struct net *net,
+ 			     const struct xfrm_encap_tmpl *encap)
+ {
+ 	return -ENOPROTOOPT;
 
 
 
