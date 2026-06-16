@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id jLlrBtSZMWrQnwUAu9opvQ
-	(envelope-from <stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:40 +0200
+	id I+LMIk2TMWq9nAUAu9opvQ
+	(envelope-from <stable+bounces-265953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B667694727
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:45:39 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B0D693FFA
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:17:49 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hAaYUKqH;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266267-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GwXyft48;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265953-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265953-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E01B3098F39
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:45:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 77450300C324
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B3147B425;
-	Tue, 16 Jun 2026 18:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456D747A0B2;
+	Tue, 16 Jun 2026 18:17:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0024B47D923;
-	Tue, 16 Jun 2026 18:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC36B466B64;
+	Tue, 16 Jun 2026 18:17:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635536; cv=none; b=VbNgsuxWH4XMw1m4IZr07fzMCJ3YW0Esah81QkKUvomB+m8axOH1snTwowFbZnqD5wIq8wAeNmt06vSySO1/PO+Z8TfZBvMiKe3KSkhiDBV6c+zKd42zSO/Jog7CUDV/g6K+64CdpGqGMz2KcodylO/J8BXwrt887cFiWUYSJds=
+	t=1781633867; cv=none; b=lZ6x8VJKFSL0YSOfsEpclEuRBD3TtNkhhiCBdvlA1rcHv6CFEqL2ZWiZYdUff+6qgQZdEmwtVQDwZfRM+KTc1EYmM+nIT6+M2q7dSUJ9tRMGO73cSk74x3XddVY5ai0vI/zTvgKNhGSCKtQFIijz22roOGobSBD+AM3mvmSuHHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635536; c=relaxed/simple;
-	bh=BZBI1/0o2gp0lB6buHRLdCM8/uiYkC7bRbSvwvo5EJU=;
+	s=arc-20240116; t=1781633867; c=relaxed/simple;
+	bh=PaO6698SMxV8jN8I+BVdEdldIIdCaKzpRwo8tGSegJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhtNelFs+bNPoGf0mPtEYQVvyY6Pmjp+QMCZw0YHuWsN9zfIX8N3wb324wZ0orCHeT//vSqCW1AakL0XRKy8zh6UrU1k21G9qSLEkAw6/qEk90NBgxFUfqVKAq+BqUgXzgutEuR0EmePn5bywzH3Ko1mB1QPcHQdw+H9MPFnMNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAaYUKqH; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F25D1F000E9;
-	Tue, 16 Jun 2026 18:45:29 +0000 (UTC)
+	 MIME-Version; b=Kni/vpbC2Np9wsiEau7k2TddyLMecY7ccGVTTzajV9rsXRh+NdyMX8ZiyyU1qvDXPiX6iDsIaraJfBO/UlFznOwBy/vXjSDXs5XKC4v2c4Ndfk7Q4S0KhFspt6J04rFhaNfXwDjNLWejX9KBHuN0sUhtl9mCmVlAXNwzDTiVeT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwXyft48; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C9C1F00A3A;
+	Tue, 16 Jun 2026 18:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635530;
-	bh=6S87i8PXX23z9mLWMRCUBBOn1YImpmt9i0Zrf0xE2Kw=;
+	s=korg; t=1781633865;
+	bh=lM8g5j70UJSKI/ULSz0LIseQBvdFqIKJk8clK2YHuQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hAaYUKqHZNxzRDTZabty+pvajycx4C5RS1l4bz1kqswyyChxqjapTS1Sp0WL1LjcS
-	 SMMdpLIYp/S0/roPY/K1RfPWp8UYTuPONLppcAzqyxKehQjeTw1gbXaej2O/UvO4tU
-	 oPAd+5PT3O+TH7Xrg6Tt6ksr8yxqqDv9MFXuh6GQ=
+	b=GwXyft48A7mUxmciKingYqWDYi+tyvVWm6XvV31HuPfY09fdCQe/h8JE5PMSpsEZj
+	 C4IhP6ft+GPSa2ceZYniFHVFFL9t+4dW5FCEUvUCbCqM3an+vssL+Dp9om0McV6T7t
+	 ZBr3nUIe9UntjSobYmeG4mZskUwm1zmAfCIuk30I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 067/342] Input: elan_i2c - validate firmware size before use
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 125/411] thunderbolt: property: Reject dir_len < 4 to prevent size_t underflow
 Date: Tue, 16 Jun 2026 20:26:03 +0530
-Message-ID: <20260616145051.371504537@linuxfoundation.org>
+Message-ID: <20260616145106.967685265@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265953-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266267-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dmitry.torokhov@gmail.com,m:dmitrytorokhov@gmail.com,s:lists@lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,49 +95,88 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 7B667694727
+X-Rspamd-Queue-Id: 29B0D693FFA
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 76b0d0baa9ae9c60e726bbe1b6ff0bec2c993634 upstream.
+commit de21b59c29e31c5108ddc04210631bbfab81b997 upstream.
 
-Ensure that the firmware file is large enough to contain the expected
-number of pages and the signature (which resides at the end of the
-firmware blob) before accessing them to prevent potential out-of-bounds
-reads.
+On the non-root path, __tb_property_parse_dir() takes dir_len from
+entry->length (u16 widened to size_t).  Two distinct OOB conditions
+follow when entry->length < 4:
 
+1. The non-root path begins with kmemdup(&block[dir_offset],
+   sizeof(*dir->uuid), ...) which always reads 4 dwords from
+   dir_offset.  tb_property_entry_valid() only enforces
+   dir_offset + entry->length <= block_len, so a crafted entry
+   with dir_offset close to the end of the property block and
+   entry->length in 0..3 passes that gate but lets the UUID copy
+   run off the block (e.g. dir_offset = 497, dir_len = 3 in a
+   500-dword block reads block[497..501]).
+
+2. After the kmemdup, content_len = dir_len - 4 underflows size_t
+   to ~SIZE_MAX, nentries becomes SIZE_MAX / 4, and the entry
+   walk runs OOB on each iteration until an entry fails
+   validation or the kernel oopses on an unmapped page.
+
+Reject dir_len < 4 on the non-root path *before* the UUID kmemdup,
+which closes both holes.
+
+Also move INIT_LIST_HEAD(&dir->properties) up to immediately after
+the dir allocation so the new error-return path (and the existing
+uuid-alloc failure path) calling tb_property_free_dir() sees a
+walkable list rather than the zero-initialized NULL next/prev that
+list_for_each_entry_safe() would oops on.
+
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/ae2dOgiFvXRm4BHo@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/elan_i2c_core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/thunderbolt/property.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/input/mouse/elan_i2c_core.c
-+++ b/drivers/input/mouse/elan_i2c_core.c
-@@ -608,6 +608,11 @@ static ssize_t elan_sysfs_update_fw(stru
- 		return error;
- 	}
+--- a/drivers/thunderbolt/property.c
++++ b/drivers/thunderbolt/property.c
+@@ -174,10 +174,16 @@ static struct tb_property_dir *__tb_prop
+ 	if (!dir)
+ 		return NULL;
  
-+	if (fw->size < data->fw_signature_address + sizeof(signature)) {
-+		dev_err(dev, "firmware file too small\n");
-+		return -EBADF;
-+	}
++	INIT_LIST_HEAD(&dir->properties);
 +
- 	/* Firmware file must match signature data */
- 	fw_signature = &fw->data[data->fw_signature_address];
- 	if (memcmp(fw_signature, signature, sizeof(signature)) != 0) {
+ 	if (is_root) {
+ 		content_offset = dir_offset + 2;
+ 		content_len = dir_len;
+ 	} else {
++		if (dir_len < 4) {
++			tb_property_free_dir(dir);
++			return NULL;
++		}
+ 		dir->uuid = kmemdup(&block[dir_offset], sizeof(*dir->uuid),
+ 				    GFP_KERNEL);
+ 		if (!dir->uuid) {
+@@ -191,8 +197,6 @@ static struct tb_property_dir *__tb_prop
+ 	entries = (const struct tb_property_entry *)&block[content_offset];
+ 	nentries = content_len / (sizeof(*entries) / 4);
+ 
+-	INIT_LIST_HEAD(&dir->properties);
+-
+ 	for (i = 0; i < nentries; i++) {
+ 		struct tb_property *property;
+ 
 
 
 
