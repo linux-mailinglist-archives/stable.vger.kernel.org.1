@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-265030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id rXsCIJ2DMWpelQUAu9opvQ
-	(envelope-from <stable+bounces-265030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:53 +0200
+	id EYwuE6B5MWoukQUAu9opvQ
+	(envelope-from <stable+bounces-264549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FED4692D30
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:10:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3CC16921B3
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:15 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AQK7NbV1;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265030-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265030-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=l6wn7czW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264549-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264549-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C3E7303E23E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3752D320ECC6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF59447279B;
-	Tue, 16 Jun 2026 16:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4E946AEC6;
+	Tue, 16 Jun 2026 16:15:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A58F305688;
-	Tue, 16 Jun 2026 16:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A5E46AEEA;
+	Tue, 16 Jun 2026 16:15:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781629127; cv=none; b=I0IWrP2EWgZszpOLQlccNU92SNsFO/smXokHr0iDVpzICLcINhPWyKc2Flm8Hi579qsUztPdPyTRx2PdoUfhl0NnJJENc1gUtEtn4yov5tzwFY9yD/C8t/hRorsBkD0XwYy2draycr/+zse8YKxYncTaAV/oW20lvEmAONyKZ5Q=
+	t=1781626510; cv=none; b=MOjrJrnwl9Z2EV0UQWUBNIC3OnqqDGrTDURoMQI3LLM9xW1igCz/802Jf3pgL6LBEyY0jA67VpbsRS6uVtHcJs/k9YNdL1T7yPLmZctIrdVVh+4Rzo5aKYiHfcGFm7P1g9n7XG0iet6tjmRj38VDFkCpoTKgc2A5MA1zlnqRJuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781629127; c=relaxed/simple;
-	bh=CqfT+ol20eD9YJPxYRsJrjYvenD8shGGb2e5oQUMntk=;
+	s=arc-20240116; t=1781626510; c=relaxed/simple;
+	bh=qiuYUrFvwlWUb+lcnkCpGd7w8Uqrr5Z26i/esgpSlD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7Q35DgSyajA0pSG/ZxrmlHVgpche6sB/RcHUWcDbV4e9fQ+4uMq+aro5V92WsHBQmdtyDtWFex8hzRkQeASYnIj+j+xzMO8MODx+9/KxpPv5RjVYgeDhTBOeyi8OEJqErIQGSgtfBo5/XGa/79u36WJjd86RNtf9hlJZ5TZHuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQK7NbV1; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA791F000E9;
-	Tue, 16 Jun 2026 16:58:45 +0000 (UTC)
+	 MIME-Version; b=g6MofYJo7UAludVZEJFUEN48ZkNnTAM6T6dagSWLHHQPRvsa7qVmKofXlsBKgHMAVFzTtux3bDlFDbjm/4Z0U/+3rA7wjizL0DAgZ4Sn8VM49S6P8kGhjm4tiytprrTYQKupohhGbCDFA32ZEAI/+8nfOSVIuVF0ncTqOYPdQs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6wn7czW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D531F000E9;
+	Tue, 16 Jun 2026 16:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781629126;
-	bh=uT57ISXd9s4z89PqZ4MGtSOiRJRabNG6Vf6Y91kqwJg=;
+	s=korg; t=1781626509;
+	bh=jGsN11JQgvk8qovklzqjKkJUn6cJAyWMb6Tqq1yXJYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AQK7NbV1bIN6YjOrV48BtOJQu60M7r4mJ0oRF9+BbDhY9g0rlvg4tjA5BmhSP31uF
-	 uvuDazt73orlXKejUChSfcdWZQ2BNt6mdFTkURMrz7hCz/wnABDLdVBSNEhuupRUVu
-	 P35khn9C6k7io18eH7n+7qyye4hve06Kq4uu9Rp4=
+	b=l6wn7czWkb68DuGoK4vfBZdAc08PghtTN8K4dvxNdeONSz3iMG5KXmtVp+7C8ejn6
+	 fBeB9HOaE6cX+ASuEC8wY5YiwLt8XZUaOtk5AO6xI4FjOSUON2UQ8AblwuUpsLlu5b
+	 4aRPXzfCNrrb+ErZXgZRNcYbW3rpjBDuXggt+UyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+652670cf249077eb498b@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jianan Huang <jnhuang95@gmail.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/452] hsr: Remove WARN_ONCE() in hsr_addr_is_self().
+Subject: [PATCH 6.12 016/261] erofs: fix use-after-free on sbi->sync_decompress
 Date: Tue, 16 Jun 2026 20:27:34 +0530
-Message-ID: <20260616145129.661782557@linuxfoundation.org>
+Message-ID: <20260616145045.770032214@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,22 +74,23 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265030-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,linux.alibaba.com];
+	TAGGED_FROM(0.00)[bounces-264549-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+652670cf249077eb498b@syzkaller.appspotmail.com,m:kuniyu@google.com,m:fmancera@suse.de,m:kuba@kernel.org,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com,m:chao@kernel.org,m:jnhuang95@gmail.com,m:hsiangkao@linux.alibaba.com,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,119 +98,76 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,652670cf249077eb498b];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,suse.de:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,appspotmail.com:email,msgid.link:url]
+	TAGGED_RCPT(0.00)[stable,52bae5c495dbe261a0bc];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,appspotmail.com:email,vger.kernel.org:from_smtp,syzkaller.appspot.com:url,alibaba.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9FED4692D30
+X-Rspamd-Queue-Id: A3CC16921B3
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit afd0f17ca46258cec3a5cc48b8df9327fe772490 ]
+[ Upstream commit 1aee05e814d292064bf5fa15733741040cdc48ba ]
 
-syzbot reported the warning [0] in hsr_addr_is_self(),
-whose assumption is simply wrong.
+z_erofs_decompress_kickoff() can race with filesystem unmount, causing
+a use-after-free on sbi->sync_decompress.
 
-hsr->self_node is cleared in hsr_del_self_node(), which
-is called from hsr_dellink().
+When I/O completes, z_erofs_endio() calls z_erofs_decompress_kickoff()
+to queue z_erofs_decompressqueue_work() asynchronously. Then, after all
+folios are unlocked, unmount workflow can proceed and sbi will be freed
+before accessing to sbi->sync_decompress.
 
-Since dev->rtnl_link_ops->dellink() is called before
-unregister_netdevice_many(), there is a window when
-user can find the device but without hsr->self_node.
+Thread (unmount)        I/O completion        kworker
+                        queue_work
+                                              z_erofs_decompressqueue_work
+                                               (all folios are unlocked)
+cleanup_mnt
+ ..
+ erofs_kill_sb
+  erofs_sb_free
+   kfree(sbi)
+                        access sbi->sync_decompress  // UAF!!
 
-Let's remove WARN_ONCE() in hsr_addr_is_self().
-
-[0]:
-HSR: No self node
-WARNING: net/hsr/hsr_framereg.c:39 at hsr_addr_is_self+0x211/0x3f0 net/hsr/hsr_framereg.c:39, CPU#0: syz.4.16848/17220
-Modules linked in:
-CPU: 0 UID: 0 PID: 17220 Comm: syz.4.16848 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-RIP: 0010:hsr_addr_is_self+0x211/0x3f0 net/hsr/hsr_framereg.c:39
-Code: 33 2f 41 0f b7 dd 89 ee 09 de 31 ff e8 c8 b4 c6 f6 09 dd 74 54 e8 0f b0 c6 f6 31 ed eb 53 e8 06 b0 c6 f6 48 8d 3d 2f 50 9c 04 <67> 48 0f b9 3a 31 ed eb 42 e8 c1 13 1f 00 89 c5 31 ff 89 c6 e8 96
-RSP: 0018:ffffc900041c70e0 EFLAGS: 00010283
-RAX: ffffffff8afdc6ca RBX: ffffffff8afdc4e6 RCX: 0000000000080000
-RDX: ffffc90010493000 RSI: 0000000000000948 RDI: ffffffff8f9a1700
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: ffffc900041c71e8 R11: fffff52000838e3f R12: dffffc0000000000
-R13: ffff888041f9e3c0 R14: ffff888086ee3802 R15: 0000000000000000
-FS:  00007f6fe985d6c0(0000) GS:ffff888126176000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f80bd437dac CR3: 0000000025096000 CR4: 00000000003526f0
-DR0: ffffffffffffffff DR1: 00000000000001f8 DR2: 0000000000000002
-DR3: ffffffffefffff15 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- check_local_dest net/hsr/hsr_forward.c:592 [inline]
- fill_frame_info net/hsr/hsr_forward.c:728 [inline]
- hsr_forward_skb+0xa11/0x2a80 net/hsr/hsr_forward.c:739
- hsr_dev_xmit+0x253/0x370 net/hsr/hsr_device.c:236
- __netdev_start_xmit include/linux/netdevice.h:5368 [inline]
- netdev_start_xmit include/linux/netdevice.h:5377 [inline]
- xmit_one net/core/dev.c:3888 [inline]
- dev_hard_start_xmit+0x2df/0x860 net/core/dev.c:3904
- __dev_queue_xmit+0x1428/0x3900 net/core/dev.c:4870
- neigh_output include/net/neighbour.h:556 [inline]
- ip_finish_output2+0xcec/0x10b0 net/ipv4/ip_output.c:237
- ip_send_skb net/ipv4/ip_output.c:1510 [inline]
- ip_push_pending_frames+0x8b/0x110 net/ipv4/ip_output.c:1530
- raw_sendmsg+0x1547/0x1a50 net/ipv4/raw.c:659
- sock_sendmsg_nosec net/socket.c:787 [inline]
- __sock_sendmsg net/socket.c:802 [inline]
- ____sys_sendmsg+0x7da/0x9c0 net/socket.c:2698
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2752
- __sys_sendmsg net/socket.c:2784 [inline]
- __do_sys_sendmsg net/socket.c:2789 [inline]
- __se_sys_sendmsg net/socket.c:2787 [inline]
- __x64_sys_sendmsg+0x1c3/0x2a0 net/socket.c:2787
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x15f/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6feb62ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f6fe985d028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f6feb8a6090 RCX: 00007f6feb62ce59
-RDX: 0000000000000000 RSI: 0000200000000000 RDI: 0000000000000004
-RBP: 00007f6feb6c2d6f R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f6feb8a6128 R14: 00007f6feb8a6090 R15: 00007ffcf01cc488
- </TASK>
-
-Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-Reported-by: syzbot+652670cf249077eb498b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6a1a861e.b111c304.35cd64.0016.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260530064300.340793-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 40452ffca3c1 ("erofs: add sysfs node to control sync decompression strategy")
+Reported-by: syzbot+52bae5c495dbe261a0bc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=52bae5c495dbe261a0bc
+Reviewed-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Jianan Huang <jnhuang95@gmail.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_framereg.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/erofs/zdata.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/hsr/hsr_framereg.c b/net/hsr/hsr_framereg.c
-index 26329db09210bb..ad07a3b1ac20f0 100644
---- a/net/hsr/hsr_framereg.c
-+++ b/net/hsr/hsr_framereg.c
-@@ -43,10 +43,8 @@ bool hsr_addr_is_self(struct hsr_priv *hsr, unsigned char *addr)
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index da421fe310df11..d625e3be9ec6ce 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1424,6 +1424,9 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ 	if (atomic_add_return(bios, &io->pending_bios))
+ 		return;
+ 	if (z_erofs_in_atomic()) {
++		/* See `sync_decompress` in sysfs-fs-erofs for more details */
++		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
++			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ #ifdef CONFIG_EROFS_FS_PCPU_KTHREAD
+ 		struct kthread_worker *worker;
  
- 	rcu_read_lock();
- 	sn = rcu_dereference(hsr->self_node);
--	if (!sn) {
--		WARN_ONCE(1, "HSR: No self node\n");
-+	if (!sn)
- 		goto out;
--	}
- 
- 	if (ether_addr_equal(addr, sn->macaddress_A) ||
- 	    ether_addr_equal(addr, sn->macaddress_B))
+@@ -1440,9 +1443,6 @@ static void z_erofs_decompress_kickoff(struct z_erofs_decompressqueue *io,
+ #else
+ 		queue_work(z_erofs_workqueue, &io->u.work);
+ #endif
+-		/* See `sync_decompress` in sysfs-fs-erofs for more details */
+-		if (sbi->sync_decompress == EROFS_SYNC_DECOMPRESS_AUTO)
+-			sbi->sync_decompress = EROFS_SYNC_DECOMPRESS_FORCE_ON;
+ 		return;
+ 	}
+ 	gfp_flag = memalloc_noio_save();
 -- 
 2.53.0
 
