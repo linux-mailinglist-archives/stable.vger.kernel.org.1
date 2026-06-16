@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-264042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 21CsGdVtMWptjAUAu9opvQ
-	(envelope-from <stable+bounces-264042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:57 +0200
+	id uZbRItOCMWrylAUAu9opvQ
+	(envelope-from <stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157116913A3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:57 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCEFA692BE5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:07:30 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=gw4MEMZI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264042-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264042-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="I/rbV5PV";
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265029-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D6B6431289D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:30:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CAC8325635B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2F036DA00;
-	Tue, 16 Jun 2026 15:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F5447A0D8;
+	Tue, 16 Jun 2026 16:58:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202B43D513;
-	Tue, 16 Jun 2026 15:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84EC47A0C3;
+	Tue, 16 Jun 2026 16:58:41 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623818; cv=none; b=NA5ykb0mZ9SZJdNdx5jSyBrJ3vrNHZQDzAdPNupCGdBKAmtCDlwsx3MWipqmHj+f9Mcq9gn0WYuwCkEAIsLqZVgTQov15C3q85TWVp5/HDQMxMxXDihT151F4ByW0GTjVY5YCW4rHWlIre0VFjhBO9TiLAgL//kXoosozedTFSI=
+	t=1781629122; cv=none; b=dxit9i0XJBEQxiQ1iu3S1l7qXAi733hCQpFy6N5rPWUvPN6RUblPhJXREHWWWa5AJwxi3bV3pOIWaX3v50NZmDtX2hTtG26Dc2LvhZP5pkN1G8dm2va7FMkFy4ihpunLWhLgavmvr+bpSE5cOqSNSbsxkDiEipdc+dcv6Kjuv+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623818; c=relaxed/simple;
-	bh=Eunj+6xhBtsfs7+GytcitGbQya6Bs54pxNQP1dQKxVs=;
+	s=arc-20240116; t=1781629122; c=relaxed/simple;
+	bh=GELNaBhuWvzosa4uYLQXrCPk1msKPCti0TfBf2N9HWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9MiPEowSIMlogNkB+mRrx293oEK4uItPVyeph7anHcof/JXqgei1DBatQy68jaYgJvvNbr3XwbvhCXetQbERwdwn0WjSqstfXco4boVsGg6XZhyF0k8oXZyyJ7v6kGY0pXs5UUWGw3F97QDojTtO4O+mLL3sPvWZG5dHz1anD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gw4MEMZI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1ABB1F000E9;
-	Tue, 16 Jun 2026 15:30:16 +0000 (UTC)
+	 MIME-Version; b=Co/tBiqnwXs16bFfJAV+w3uYZQ0tr8ZghbDylEDJG5+1D1GNxbl58RyErBE6ORrTS16L5sYNWbHbmnl+olLCHVfsTyOs4vJmwDuKJUKJ/Uz2KYq7JUf0boM5lrPiz4X6N6Y5+rxFnqxi0znpTMWTsOtYB5/ZG98TGZM8ONjP3CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/rbV5PV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C5F1F000E9;
+	Tue, 16 Jun 2026 16:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623817;
-	bh=4cPrDNXvJl0eY2UrVtdUoCocqJ1ACDa7G5ldh5GDF8k=;
+	s=korg; t=1781629121;
+	bh=txjXTPt3wu3CP0IFC1Ii8XmyIFJZmHFX5/MkQ+vaG2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gw4MEMZIy7Z0+GK4ofq6w8zL0brEYUrBRNuEP/CuBLY2xdgiCPGXFMRvn3fMzM1cf
-	 4KskPE2wo2XWJRdN1KZr3J1ZkgHy1GgXGe19RZlPOUc1/MpKMKULJs1HloNSwC168O
-	 eo9674nthcG3DwYd7xZHT755ohzg1AQwCDp7ryKA=
+	b=I/rbV5PVYXHLLAyYcgEaVnVAQ9QPDT1T1HHaAPqO2nviaC1JJKSiJ82LxzsO1Zbjq
+	 ethxrYEFt3Jmszu2IBhIaur9TZWMLsQ2UzxnWWlIsUpWHyPmJeK3yCq3d0nKPqfqBG
+	 uPa+EsDRDFhxbxe5FsmlpbVe/PsnCbZgnOQepAgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <error27@gmail.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 7.0 222/378] RDMA/core: Validate cpu_id against nr_cpu_ids in DMAH alloc
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 226/452] net: Annotate sk->sk_write_space() for UDP SOCKMAP.
 Date: Tue, 16 Jun 2026 20:27:33 +0530
-Message-ID: <20260616145121.994512067@linuxfoundation.org>
+Message-ID: <20260616145129.612066671@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +70,98 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264042-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:error27@gmail.com,m:yishaih@nvidia.com,m:jgg@nvidia.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-265029-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuniyu@google.com,m:jakub@cloudflare.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,cloudflare.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 157116913A3
+X-Rspamd-Queue-Id: CCEFA692BE5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 323c98a4ff06aa28114f2bf658fb43eb3b536bbc upstream.
+[ Upstream commit b748765019fe9e9234660327090fc1a9665cdbdd ]
 
-The cpu_id attribute supplied by user space through
-UVERBS_ATTR_ALLOC_DMAH_CPU_ID is passed directly to cpumask_test_cpu()
-without first verifying that the value is within the valid CPU range.
+UDP TX skb->destructor() is sock_wfree(), and UDP holds lock_sock()
+only for UDP_CORK / MSG_MORE sendmsg().
 
-Passing such untrusted data to cpumask_test_cpu() may lead to an
-out-of-bounds read of the underlying cpumask bitmap: the helper expands
-to a test_bit() that indexes the bitmap by cpu_id / BITS_PER_LONG with
-no bound check.
+Otherwise, sk->sk_write_space() may be read locklessly while SOCKMAP
+rewrites sk->sk_write_space().
 
-In addition, on kernels built with CONFIG_DEBUG_PER_CPU_MAPS it trips
-the WARN_ON_ONCE() in cpumask_check(); combined with panic_on_warn this
-turns a bad user input into a machine reboot.
+Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
 
-Reject any cpu_id that is not smaller than nr_cpu_ids with -EINVAL
-before it is used.
+Note that the write side is annotated by commit 2ef2b20cf4e0
+("net: annotate data-races around sk->sk_{data_ready,write_space}").
 
-Reported by Smatch.
-
-Fixes: d83edab562a4 ("RDMA/core: Introduce a DMAH object and its alloc/free APIs")
-Link: https://patch.msgid.link/r/20260525142136.28165-1-yishaih@nvidia.com
-Cc: stable@vger.kernel.org
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/ag68qoAW3P04J7pT@stanley.mountain/
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://patch.msgid.link/20260529193941.3897256-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_std_types_dmah.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/core/sock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/uverbs_std_types_dmah.c
-+++ b/drivers/infiniband/core/uverbs_std_types_dmah.c
-@@ -47,6 +47,11 @@ static int UVERBS_HANDLER(UVERBS_METHOD_
- 		if (ret)
- 			goto err;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 8e4c87a39dc87b..267f771dda1cc2 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2499,8 +2499,12 @@ void sock_wfree(struct sk_buff *skb)
+ 	bool free;
  
-+		if (dmah->cpu_id >= nr_cpu_ids) {
-+			ret = -EINVAL;
-+			goto err;
-+		}
+ 	if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
++		void (*sk_write_space)(struct sock *sk);
 +
- 		if (!cpumask_test_cpu(dmah->cpu_id, current->cpus_ptr)) {
- 			ret = -EPERM;
- 			goto err;
++		sk_write_space = READ_ONCE(sk->sk_write_space);
++
+ 		if (sock_flag(sk, SOCK_RCU_FREE) &&
+-		    sk->sk_write_space == sock_def_write_space) {
++		    sk_write_space == sock_def_write_space) {
+ 			rcu_read_lock();
+ 			free = refcount_sub_and_test(len, &sk->sk_wmem_alloc);
+ 			sock_def_write_space_wfree(sk);
+@@ -2515,7 +2519,7 @@ void sock_wfree(struct sk_buff *skb)
+ 		 * after sk_write_space() call
+ 		 */
+ 		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
+-		sk->sk_write_space(sk);
++		sk_write_space(sk);
+ 		len = 1;
+ 	}
+ 	/*
+-- 
+2.53.0
+
 
 
 
