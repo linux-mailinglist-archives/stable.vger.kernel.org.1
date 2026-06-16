@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-263982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id y3FUI02AMWoTlAUAu9opvQ
-	(envelope-from <stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:45 +0200
+	id ODRjCj1sMWrMiwUAu9opvQ
+	(envelope-from <stable+bounces-263982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D620692998
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:56:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 785BE691182
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:08 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZMYWhDPL;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264963-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Q4r5aGaS;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-263982-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263982-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0F363016285
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:53:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 22D7F31E290D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851CD1C5D72;
-	Tue, 16 Jun 2026 16:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF5C44102A;
+	Tue, 16 Jun 2026 15:25:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA7847279B;
-	Tue, 16 Jun 2026 16:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A59243DA2C;
+	Tue, 16 Jun 2026 15:25:13 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628811; cv=none; b=hIVODz/YNk9WQd1+8DWtoeT3ePiqVG9g5vy/0uvujbEUvkADyKX36Z/DD7Ko8I8zhrrqVJOed0gQ9sZ6zEUJGYlMmu9bzQaZWrzuGCm7DfGae0UE9wgYn5oedsLrRjWilkul/33ODR0AzkUvyfjc0hTg5da4hySfNzdFNM0muV4=
+	t=1781623514; cv=none; b=IJk9iXliZDC2X98tkD6guPkJfZRxJ+oeKvK3jO3i5zlk5Ub3FZoYVJJzFTwz7Pc4+WGn82+6LAEZ8bnSC/KQCUT3fk9W7E/KAwZjK3IaWRmuViDwWhtrlohsszORP0UvkrpUZkH9dJDF9k5Yt6lcSzovXq9BmTI8v9hORBL+wqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628811; c=relaxed/simple;
-	bh=f6rZ9wX6WJJJLyBnAPpQ3iqlJft0ViqHrrcG/gzoGf8=;
+	s=arc-20240116; t=1781623514; c=relaxed/simple;
+	bh=G1gw/Pj+os1Yt6Ygn4NHgsKUkjNezIAjSxW2Z03Gxbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDPnpHeYG7qoHj1+5CeBhY1igV/SZphUs5Pqq/n1UTo2Huc1ykBE7vwZANX0DnibUANA/W0B9dL57Qgksborr+SrBPGV+DTtluskECm2J7P1J61FWqwTMoa6kjPLkXjh/LQlj1qH2dJIDUjkrIGn4pL33ogiXOW/BZy4M4XsA8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMYWhDPL; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B801F000E9;
-	Tue, 16 Jun 2026 16:53:28 +0000 (UTC)
+	 MIME-Version; b=eGV15NLVYv9YDvJB3EYahC077438xb2sWDTshwqyAVfxkm/DV6O2k3uBsoexDYWlgwhJmAaSl5nua3yWYLsf+cBYm4odA3nbQFiIU29c6S9s65UX+gO54k/Qchks0JhW7QKFW4Q2Ys78pIhbhptEjf9+qtppdRWd5+cCdSB4gpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4r5aGaS; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3D01F00A3D;
+	Tue, 16 Jun 2026 15:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628810;
-	bh=E/0isasNZXhrMqOw1BqOfOLho1KwhaqgKcj9pe7xSS0=;
+	s=korg; t=1781623513;
+	bh=uJ6+4zjjM2b8E3omX2qZ6tBk+kl7wVXdObZEFARKugs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZMYWhDPLk2HrHBMsj5EP4LLK5L5S1I+iOdGMeZnR3Ur1Q8MrKU/17SoAlIPBE2I4A
-	 TY0y2e4y5N9eTxX3n5HQTlrKk1oq4kuplWLmjOHddmkMU0BRBP1CUheqAZOqmZ6O0E
-	 yH1Tacjb3ORzWr85rw9g4A2YH5zJhniBIQlRcpd8=
+	b=Q4r5aGaSZ8lTmzKOo64+w0oRdCv8PqzTC/Ue3KJb0K9/WrDwGgZtEGftfmWeE6UJC
+	 o6q61g0/4HAsLud+W3O0Dlx2NdNgovHZMzYeKHupjx76By3QUJSq8iqS4OC6TOh9h2
+	 j7WdjA1EwDQVxa96aIKW4sFHknIBWl39MdVcjCN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Johan Hovold <johan@kernel.org>,
-	Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH 6.6 166/452] usb: gadget: f_hid: fix device reference leak in hidg_alloc()
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Melissa Wen <melissa.srw@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 162/378] drm/colorop: make lut(1/3)d_interpolation props correctly behave as mutable
 Date: Tue, 16 Jun 2026 20:26:33 +0530
-Message-ID: <20260616145126.583421411@linuxfoundation.org>
+Message-ID: <20260616145118.786537939@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +69,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,amd.com,igalia.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-263982-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264963-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:johan@kernel.org,m:lgs201920130244@gmail.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:chaitanya.kumar.borah@intel.com,m:alex.hung@amd.com,m:mwen@igalia.com,m:melissa.srw@gmail.com,m:sashal@kernel.org,m:melissasrw@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,igalia.com:email,msgid.link:url,amd.com:email,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 1D620692998
+X-Rspamd-Queue-Id: 785BE691182
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Melissa Wen <mwen@igalia.com>
 
-commit 4f88d65def6f3c90121601b4f62a4c967f3063a6 upstream.
+[ Upstream commit 94ff735296d371045fce163451a3d65e44ac4729 ]
 
-hidg_alloc() initializes hidg->dev with device_initialize() before
-calling dev_set_name(). If dev_set_name() fails, the function currently
-jumps to err_unlock and returns without calling put_device().
+As interpolation props are actually mutable props, any changes should be
+handled by drm_colorop_state. Move their enum and make it correctly
+behaves as mutable.
 
-This leaves the device reference unbalanced and prevents hidg_release()
-from being called. Calling put_device() here is also safe, since
-hidg_release() only frees resources owned by hidg.
-
-The issue was identified by a static analysis tool I developed and
-confirmed by manual review.
-
-Route the dev_set_name() failure path through err_put_device so the
-device reference is dropped properly.
-
-Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Johan Hovold johan@kernel.org
-Link: https://patch.msgid.link/20260413142119.2977716-1-lgs201920130244@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7fa3ee8c0a79 ("drm/colorop: Define LUT_1D interpolation")
+Fixes: db971856bbe0 ("drm/colorop: Add 3D LUT support to color pipeline")
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Fixes: 9ba25915efba ("drm/amd/display: Add support for sRGB EOTF in DEGAM block")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
+Link: https://patch.msgid.link/20260609110420.1298352-3-mwen@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/drm_atomic.c      |  4 ++--
+ drivers/gpu/drm/drm_atomic_uapi.c |  8 ++++----
+ drivers/gpu/drm/drm_colorop.c     | 16 ++++++++++++++--
+ include/drm/drm_colorop.h         | 28 ++++++++++++++--------------
+ 4 files changed, 34 insertions(+), 22 deletions(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1282,7 +1282,7 @@ static struct usb_function *hidg_alloc(s
- 	hidg->dev.devt = MKDEV(major, opts->minor);
- 	ret = dev_set_name(&hidg->dev, "hidg%d", opts->minor);
- 	if (ret)
--		goto err_unlock;
-+		goto err_put_device;
+diff --git a/drivers/gpu/drm/drm_atomic.c b/drivers/gpu/drm/drm_atomic.c
+index ec7534227f66d4..b31bb3f9b11aae 100644
+--- a/drivers/gpu/drm/drm_atomic.c
++++ b/drivers/gpu/drm/drm_atomic.c
+@@ -829,7 +829,7 @@ static void drm_atomic_colorop_print_state(struct drm_printer *p,
+ 	case DRM_COLOROP_1D_LUT:
+ 		drm_printf(p, "\tsize=%d\n", colorop->size);
+ 		drm_printf(p, "\tinterpolation=%s\n",
+-			   drm_get_colorop_lut1d_interpolation_name(colorop->lut1d_interpolation));
++			   drm_get_colorop_lut1d_interpolation_name(state->lut1d_interpolation));
+ 		drm_printf(p, "\tdata blob id=%d\n", state->data ? state->data->base.id : 0);
+ 		break;
+ 	case DRM_COLOROP_CTM_3X4:
+@@ -841,7 +841,7 @@ static void drm_atomic_colorop_print_state(struct drm_printer *p,
+ 	case DRM_COLOROP_3D_LUT:
+ 		drm_printf(p, "\tsize=%d\n", colorop->size);
+ 		drm_printf(p, "\tinterpolation=%s\n",
+-			   drm_get_colorop_lut3d_interpolation_name(colorop->lut3d_interpolation));
++			   drm_get_colorop_lut3d_interpolation_name(state->lut3d_interpolation));
+ 		drm_printf(p, "\tdata blob id=%d\n", state->data ? state->data->base.id : 0);
+ 		break;
+ 	default:
+diff --git a/drivers/gpu/drm/drm_atomic_uapi.c b/drivers/gpu/drm/drm_atomic_uapi.c
+index 87de41fb445931..aefcf58e4f0399 100644
+--- a/drivers/gpu/drm/drm_atomic_uapi.c
++++ b/drivers/gpu/drm/drm_atomic_uapi.c
+@@ -747,13 +747,13 @@ static int drm_atomic_colorop_set_property(struct drm_colorop *colorop,
+ 	if (property == colorop->bypass_property) {
+ 		state->bypass = val;
+ 	} else if (property == colorop->lut1d_interpolation_property) {
+-		colorop->lut1d_interpolation = val;
++		state->lut1d_interpolation = val;
+ 	} else if (property == colorop->curve_1d_type_property) {
+ 		state->curve_1d_type = val;
+ 	} else if (property == colorop->multiplier_property) {
+ 		state->multiplier = val;
+ 	} else if (property == colorop->lut3d_interpolation_property) {
+-		colorop->lut3d_interpolation = val;
++		state->lut3d_interpolation = val;
+ 	} else if (property == colorop->data_property) {
+ 		return drm_atomic_color_set_data_property(colorop, state,
+ 							  property, val);
+@@ -778,7 +778,7 @@ drm_atomic_colorop_get_property(struct drm_colorop *colorop,
+ 	else if (property == colorop->bypass_property)
+ 		*val = state->bypass;
+ 	else if (property == colorop->lut1d_interpolation_property)
+-		*val = colorop->lut1d_interpolation;
++		*val = state->lut1d_interpolation;
+ 	else if (property == colorop->curve_1d_type_property)
+ 		*val = state->curve_1d_type;
+ 	else if (property == colorop->multiplier_property)
+@@ -786,7 +786,7 @@ drm_atomic_colorop_get_property(struct drm_colorop *colorop,
+ 	else if (property == colorop->size_property)
+ 		*val = colorop->size;
+ 	else if (property == colorop->lut3d_interpolation_property)
+-		*val = colorop->lut3d_interpolation;
++		*val = state->lut3d_interpolation;
+ 	else if (property == colorop->data_property)
+ 		*val = (state->data) ? state->data->base.id : 0;
+ 	else
+diff --git a/drivers/gpu/drm/drm_colorop.c b/drivers/gpu/drm/drm_colorop.c
+index 27139862b12086..6751add3cba96c 100644
+--- a/drivers/gpu/drm/drm_colorop.c
++++ b/drivers/gpu/drm/drm_colorop.c
+@@ -321,7 +321,6 @@ int drm_plane_colorop_curve_1d_lut_init(struct drm_device *dev, struct drm_color
  
- 	hidg->bInterfaceSubClass = opts->subclass;
- 	hidg->bInterfaceProtocol = opts->protocol;
-@@ -1317,7 +1317,6 @@ static struct usb_function *hidg_alloc(s
+ 	colorop->lut1d_interpolation_property = prop;
+ 	drm_object_attach_property(&colorop->base, prop, interpolation);
+-	colorop->lut1d_interpolation = interpolation;
  
- err_put_device:
- 	put_device(&hidg->dev);
--err_unlock:
- 	mutex_unlock(&opts->lock);
- 	return ERR_PTR(ret);
+ 	/* data */
+ 	ret = drm_colorop_create_data_prop(dev, colorop);
+@@ -417,7 +416,6 @@ int drm_plane_colorop_3dlut_init(struct drm_device *dev, struct drm_colorop *col
+ 
+ 	colorop->lut3d_interpolation_property = prop;
+ 	drm_object_attach_property(&colorop->base, prop, interpolation);
+-	colorop->lut3d_interpolation = interpolation;
+ 
+ 	/* data */
+ 	ret = drm_colorop_create_data_prop(dev, colorop);
+@@ -496,6 +494,20 @@ static void __drm_colorop_state_reset(struct drm_colorop_state *colorop_state,
+ 						      &val);
+ 		colorop_state->curve_1d_type = val;
+ 	}
++
++	if (colorop->lut1d_interpolation_property) {
++		if (!drm_object_property_get_default_value(&colorop->base,
++							   colorop->lut1d_interpolation_property,
++							   &val))
++			colorop_state->lut1d_interpolation = val;
++	}
++
++	if (colorop->lut3d_interpolation_property) {
++		if (!drm_object_property_get_default_value(&colorop->base,
++							   colorop->lut3d_interpolation_property,
++							   &val))
++			colorop_state->lut3d_interpolation = val;
++	}
  }
+ 
+ /**
+diff --git a/include/drm/drm_colorop.h b/include/drm/drm_colorop.h
+index 5bcb510e56c0a7..272ebff2de72e2 100644
+--- a/include/drm/drm_colorop.h
++++ b/include/drm/drm_colorop.h
+@@ -183,6 +183,20 @@ struct drm_colorop_state {
+ 	 */
+ 	struct drm_property_blob *data;
+ 
++	/**
++	 * @lut1d_interpolation:
++	 *
++	 * Interpolation for DRM_COLOROP_1D_LUT
++	 */
++	enum drm_colorop_lut1d_interpolation_type lut1d_interpolation;
++
++	/**
++	 * @lut3d_interpolation:
++	 *
++	 * Interpolation for DRM_COLOROP_3D_LUT
++	 */
++	enum drm_colorop_lut3d_interpolation_type lut3d_interpolation;
++
+ 	/** @state: backpointer to global drm_atomic_state */
+ 	struct drm_atomic_state *state;
+ };
+@@ -293,20 +307,6 @@ struct drm_colorop {
+ 	 */
+ 	uint32_t size;
+ 
+-	/**
+-	 * @lut1d_interpolation:
+-	 *
+-	 * Interpolation for DRM_COLOROP_1D_LUT
+-	 */
+-	enum drm_colorop_lut1d_interpolation_type lut1d_interpolation;
+-
+-	/**
+-	 * @lut3d_interpolation:
+-	 *
+-	 * Interpolation for DRM_COLOROP_3D_LUT
+-	 */
+-	enum drm_colorop_lut3d_interpolation_type lut3d_interpolation;
+-
+ 	/**
+ 	 * @lut1d_interpolation_property:
+ 	 *
+-- 
+2.53.0
+
 
 
 
