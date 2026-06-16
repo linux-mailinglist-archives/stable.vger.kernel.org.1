@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id IZwLFAedMWr/oAUAu9opvQ
-	(envelope-from <stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:19 +0200
+	id 2mLfNlF1MWpWjwUAu9opvQ
+	(envelope-from <stable+bounces-264255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94465694A2C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:59:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14397691C00
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:09:53 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rmoZdcXF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266368-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wuOHGwPU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264255-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264255-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D1C8E3216384
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E03A4303A8BB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7344779BF;
-	Tue, 16 Jun 2026 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF1543E486;
+	Tue, 16 Jun 2026 15:49:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368673CC303;
-	Tue, 16 Jun 2026 18:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966BB3B840B;
+	Tue, 16 Jun 2026 15:49:30 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781636056; cv=none; b=CDt1fDTC8PE9ke5+p6uhUA/iVUGO71hkqqQ0nwulFi76OsytMuVErmk3utMpz/FuTf7Kr7O71Ousb/DoxsQQOE9VjPw6+JvzTeXVWIsLrXhAk4XspxDpr/wICwvqYebIENs4l7y1ff3PfCpa6qbl2h5mg3f6XfvzncObFknF+4Y=
+	t=1781624971; cv=none; b=NPxYzi05o26lasTub7aBCZP0pbSKU8MmhuxWMQ0X7Fr4d24V5ExH/HGg5j3K56GeaXSPqzXpZAQl/lcPWp03M1ZTLg+eOh+1WtW5/dp+Foz2Q2YEIkEP9bWSyIQQUfABf/kB/V6bKbIxmMmto8wFNxbFEp4SZ2OBg8MN1P3iS8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781636056; c=relaxed/simple;
-	bh=GRWylYvlFUZkv0ub7mYLaUfCvvrmniunbvVXumjKssI=;
+	s=arc-20240116; t=1781624971; c=relaxed/simple;
+	bh=b1NzoT4+khkM4zJIt6FJ1c+O6229H6KnNlZNWWkmVso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOHuiMiTk48xnyJ3OZKXVWZWHBwEyFDeCtYv/vVB5F6WIa2LLrwkEevbvD4MYrqe7AbPYEMQDfqOMysdm1GmXFPD2kXRhuzuQ53PenD8VZTTLL8qYcOdh7CeeUPVMK2Vu3kG4PHwsqi5PHZANGrOYpeip3Y4QcQiN7ZWro7DmAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmoZdcXF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B9D1F000E9;
-	Tue, 16 Jun 2026 18:54:13 +0000 (UTC)
+	 MIME-Version; b=ge+9TOhSYZuGXu8GkAsRYUdHVUSrj92rFd8rlJZiIWlt1JzhPtY4WX02xg4viYbz/uyeeFrvmPd4ZE1Oz8sJbMIGfpzh4IYdt4lCJ7yydtGTMoz2iFbwxbV44hzPSBC7OvuaqtyrmOtbYCnr2a943iMv9Q79OyZt1JwWoEINGt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wuOHGwPU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D8CA1F000E9;
+	Tue, 16 Jun 2026 15:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781636055;
-	bh=A4vCo12Q0BJF9BNQiKFz4fA9Y2fjF274nA3aYDlfWKU=;
+	s=korg; t=1781624970;
+	bh=xu0l+Y6VlCGt/p7OwpZfsvtYNKuomG51EUqTt7vbwKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=rmoZdcXFywZD/0DtprRyOkyjU1oPGnlYzHdQGpU1h+7fVuAK8DlwllWgZmvWi9tBT
-	 WySEkrXmNlvQracVvuAAHy5d5LKD6FLGlqs0O6ThiW5yJ4gZGx5mIAE0Pw0YVilCiV
-	 sQ+cezzqCFgZAktRG75MPnP59+/i7nXpOSD2y66g=
+	b=wuOHGwPUeSpdiyqLsdZAFmsp8jNrfehW8VCEskliKN86VKm+XyKqoDc2lGDu2AFLU
+	 2kE2tcDbY0FUAnE5ZATZgXsIAHDORNX2oWxlOeFPQur5QDhwwvEoEo+Xp5W9Spbu4n
+	 t8/6w9RYLv91dy+uKol+QUFxPSlQaPKOqwhbS1gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Li Zetao <lizetao1@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alexey Panov <apanov@astralinux.ru>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/342] io_uring: prevent opcode speculation
+Subject: [PATCH 6.18 059/325] net: ethernet: mtk_eth_soc: Fix use-after-free in metadata dst teardown
 Date: Tue, 16 Jun 2026 20:27:35 +0530
-Message-ID: <20260616145055.575398048@linuxfoundation.org>
+Message-ID: <20260616145100.633241712@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +67,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com,kernel.dk,astralinux.ru,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266368-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:asml.silence@gmail.com,m:lizetao1@huawei.com,m:axboe@kernel.dk,m:apanov@astralinux.ru,m:sashal@kernel.org,m:asmlsilence@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-264255-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lorenzo@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,kernel.dk:email,vger.kernel.org:from_smtp,astralinux.ru:email,huawei.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 94465694A2C
+X-Rspamd-Queue-Id: 14397691C00
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit 1e988c3fe1264708f4f92109203ac5b1d65de50b upstream.
+[ Upstream commit 80df409e1a483676826a6c66e693dba6ac507751 ]
 
-sqe->opcode is used for different tables, make sure we santitise it
-against speculations.
+mtk_free_dev() calls metadata_dst_free() which frees the metadata_dst
+with kfree() immediately, bypassing the RCU grace period.
+In the RX path, skb_dst_set_noref() sets a non-refcounted pointer from
+the skb to the metadata_dst. This function requires RCU read-side
+protection and the dst must remain valid until all RCU readers complete.
+Since metadata_dst_free() calls kfree() directly, a use-after-free can
+occur if any skb still holds a noref pointer to the dst when the driver
+tears it down.
+Replace metadata_dst_free() with dst_release() which properly goes
+through the refcount path: when the refcount drops to zero, it schedules
+the actual free via call_rcu_hurry(), ensuring all RCU readers have
+completed before the memory is freed.
 
-Cc: stable@vger.kernel.org
-Fixes: d3656344fea03 ("io_uring: add lookup table for various opcode needs")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Reviewed-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/r/7eddbf31c8ca0a3947f8ed98271acc2b4349c016.1739568408.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Alexey: Sanitize req->opcode directly because io_init_req() in
-  linux-5.10.y has no local opcode variable and subsequent lookups use it. ]
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Fixes: 2d7605a72906 ("net: ethernet: mtk_eth_soc: enable hardware DSA untagging")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260602-airoha-mtk-metadata-uaf-fix-v1-2-3aaa99d83351@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 2ca09e2dbd3d4a..51262d48a4a11b 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -7193,6 +7193,8 @@ static int io_init_req(struct io_ring_ctx *ctx, struct io_kiocb *req,
- 		return -EINVAL;
- 	if (unlikely(req->opcode >= IORING_OP_LAST))
- 		return -EINVAL;
-+	req->opcode = array_index_nospec(req->opcode, IORING_OP_LAST);
-+
- 	if (!io_check_restriction(ctx, req, sqe_flags))
- 		return -EACCES;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 0f676bd72832bb..065f969ee44ef6 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -4470,7 +4470,7 @@ static int mtk_free_dev(struct mtk_eth *eth)
+ 	for (i = 0; i < ARRAY_SIZE(eth->dsa_meta); i++) {
+ 		if (!eth->dsa_meta[i])
+ 			break;
+-		metadata_dst_free(eth->dsa_meta[i]);
++		dst_release(&eth->dsa_meta[i]->dst);
+ 	}
  
+ 	return 0;
 -- 
 2.53.0
 
