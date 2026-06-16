@@ -1,60 +1,75 @@
-Return-Path: <stable+bounces-264085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U6BFOnxuMWqujAUAu9opvQ
-	(envelope-from <stable+bounces-264085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:44 +0200
+	id qB2KGtBxMWrnjQUAu9opvQ
+	(envelope-from <stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C204C69146B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:40:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86DD691801
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="NT6D/9Vx";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264085-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264085-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=cuKXBUqz;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264293-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 28876303C9BA
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:34:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62B6A30067A4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E894418FF;
-	Tue, 16 Jun 2026 15:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B7F44B69C;
+	Tue, 16 Jun 2026 15:53:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B50357D14;
-	Tue, 16 Jun 2026 15:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B443342847F;
+	Tue, 16 Jun 2026 15:53:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781624046; cv=none; b=T2iia+H313CYIV09GoTVeWLArK5zAVmQYpnzgy91oeQDXRGdahAQ6KhZkf+tkf1UofhXLqRUqSIAoaPCkzZxR0UipRSdyJk11lzc0+S2NufFB2V+DW+QqifTMIkXREn1kdNtX5FrpLgzgk48GhPZM763i/QIvisIGg/gMB+9ryY=
+	t=1781625200; cv=none; b=uxPdSe+ZdIHKTRyBGOo9cuOzofeFOGrnrOA7jn61omiaxmTeQdu51I2KOcBUBT8Lv2KvaDk9ctcgHJ1NLU4mMEhnIswUYi3TGkuaDc0l8SYiExfWeSltkueJXn4jTlXBRYk1xLM8ErpMEZzFod4Rw7Jxm0Yc7ZALwtG1svT015I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781624046; c=relaxed/simple;
-	bh=TL8Mc6lBoAY9ZOZADBWPl+8Y0AJ3ly2OU1NSgptwews=;
+	s=arc-20240116; t=1781625200; c=relaxed/simple;
+	bh=lOHOxH6UXht5Gt2Z0Oyrbz7iJcOnL6x43Jyeoh2IsXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjh/tbOFtUBRs6SUejimCVkOy4Gz6ll4sOEwHmk4f049ETSgR3pegVq9oy1i8jFnkY53RlHSJasm7UvMQOOuQd1ShHECdWFpu44bTWWzfZ2tTmMszAZwzBHdfd4PIlSFHZed7qJhSEiPYLq5HudFrnjVCNmhzexGezugf0Q5a8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT6D/9Vx; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884F31F000E9;
-	Tue, 16 Jun 2026 15:34:04 +0000 (UTC)
+	 MIME-Version; b=CHyBC0+BAZodA59aG0uTtdslPPeNTNmgkCqpjzuFFpOxVR+htws55jFz4mfONf57GYlamglfhySZ+1Am3MSAN0DCComFdHOn9+Q7mkTDc6B04zuEgAHEL9B04yZKn7ZbV5MJQRLHdfQt8H231PlZdyAeP6XKBVyJWFD7QcSA7pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuKXBUqz; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FBE1F000E9;
+	Tue, 16 Jun 2026 15:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781624045;
-	bh=asbK8KrDReSafn65c3e9QEjvUnAg1bCbXjJTyJX2nc4=;
+	s=korg; t=1781625199;
+	bh=yjcZv062jBe2DysJ1qCr+cHCs2MkFsb2jbyQmNqRRlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NT6D/9Vxz11KCQpKcXysauI9lnTFw0Z1M3zFnD8rcfqA9z3bXFw0xGBnT9MuZ43bd
-	 OY/WKpmz8m8ZHwSymRxUUATVLQEKC4wu8XtT4zEu7LYKHF+xIKAZbxqJUx6LqP/5eR
-	 L4sYhjdLxBllBRUJuZhpO9Gg175iWvgmhUSV25gg=
+	b=cuKXBUqzaNzHw51QYlfrZprozKVBPX8S8/7ypFKiJyG5rIgrv+4WrVNmpBP643ny2
+	 qtYws9WNN8N9iP9iHlvvfAqsK/3HNBbYzwtZ0OVxZvyiS1NV6Bko4gHU8Uu7G2VUdX
+	 i/V4hn/d9vIr2C2fsT3SsaK9nGnsh6wMIzHvj+Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Bilal <meatuni001@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 7.0 262/378] accel/ethosu: fix arithmetic issues in dma_length()
+	Eric Dumazet <edumazet@google.com>,
+	Tamir Shahar <tamirthesis@gmail.com>,
+	Amit Klein <aksecurity@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 097/325] tcp: restrict SO_ATTACH_FILTER to priv users
 Date: Tue, 16 Jun 2026 20:28:13 +0530
-Message-ID: <20260616145123.879389195@linuxfoundation.org>
+Message-ID: <20260616145102.521142898@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,27 +81,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264085-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:meatuni001@gmail.com,m:robh@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264293-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:edumazet@google.com,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:willemb@google.com,m:ast@kernel.org,m:daniel@iogearbox.net,m:andrii@kernel.org,m:martin.lau@linux.dev,m:eddyz87@gmail.com,m:memxor@gmail.com,m:song@kernel.org,m:yonghong.song@linux.dev,m:jolsa@kernel.org,m:john.fastabend@gmail.com,m:sdf@fomichev.me,m:kuba@kernel.org,m:sashal@kernel.org,m:johnfastabend@gmail.com,s:lists@lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,kernel.org,iogearbox.net,linux.dev,fomichev.me];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -94,104 +110,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,fomichev.me:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,iogearbox.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C204C69146B
+X-Rspamd-Queue-Id: C86DD691801
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Bilal <meatuni001@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ee6d9b6e51626f259c6f0e38d94f91be4fd14754 upstream.
+[ Upstream commit 5d39580f68e6ddeedd15e587282207489dfb3da2 ]
 
-dma_length() derives DMA region usage from command stream values and
-updates region_size[]:
+This patch restricts the use of SO_ATTACH_FILTER (cBPF) on TCP sockets
+to users with CAP_NET_ADMIN capability.
 
-    len = ((len + stride[0]) * size0 + stride[1]) * size1
-    region_size[region] = max(..., len + dma->offset)
+This blocks potential side-channel attack where an unprivileged application
+attaches a filter to leak TCP sequence/acknowledgment numbers.
 
-Several arithmetic issues can corrupt the derived region size:
-
-- signed stride values may underflow when added to len
-- intermediate multiplications may overflow
-- len + dma->offset may overflow during region_size updates
-- dma_length() error returns were not validated by the caller
-
-region_size[] is later used by ethosu_job.c to validate command stream
-accesses against GEM buffer sizes. Arithmetic wraparound can therefore
-under-report region usage and bypass the bounds validation.
-
-Fix by validating signed additions, using overflow helpers for
-multiplications and offset updates, and propagating dma_length()
-failures to the caller.
-
-Fixes: 5a5e9c0228e6 ("accel: Add Arm Ethos-U NPU driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Muhammad Bilal <meatuni001@gmail.com>
-Link: https://patch.msgid.link/20260524103710.47397-1-meatuni001@gmail.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Tamir Shahar <tamirthesis@gmail.com>
+Reported-by: Amit Klein <aksecurity@gmail.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Song Liu <song@kernel.org>
+Cc: Yonghong Song <yonghong.song@linux.dev>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ethosu/ethosu_gem.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ net/core/sock.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/accel/ethosu/ethosu_gem.c
-+++ b/drivers/accel/ethosu/ethosu_gem.c
-@@ -2,6 +2,7 @@
- /* Copyright 2025 Arm, Ltd. */
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 82470f59fa5c50..04fa0c18adc3e4 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1457,6 +1457,11 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+ 	case SO_ATTACH_FILTER: {
+ 		struct sock_fprog fprog;
  
- #include <linux/err.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- 
- #include <drm/ethosu_accel.h>
-@@ -164,16 +165,26 @@ static u64 dma_length(struct ethosu_vali
- 	u64 len = dma->len;
- 
- 	if (mode >= 1) {
-+		if (dma->stride[0] < 0 && (u64)(-dma->stride[0]) > len)
-+			return U64_MAX;
- 		len += dma->stride[0];
--		len *= dma_st->size0;
-+		if (check_mul_overflow(len, (u64)dma_st->size0, &len))
-+			return U64_MAX;
- 	}
- 	if (mode == 2) {
-+		if (dma->stride[1] < 0 && (u64)(-dma->stride[1]) > len)
-+			return U64_MAX;
- 		len += dma->stride[1];
--		len *= dma_st->size1;
-+		if (check_mul_overflow(len, (u64)dma_st->size1, &len))
-+			return U64_MAX;
-+	}
-+	if (dma->region >= 0) {
-+		u64 end;
-+
-+		if (check_add_overflow(len, dma->offset, &end))
-+			return U64_MAX;
-+		info->region_size[dma->region] = max(info->region_size[dma->region], end);
- 	}
--	if (dma->region >= 0)
--		info->region_size[dma->region] = max(info->region_size[dma->region],
--						     len + dma->offset);
- 
- 	return len;
- }
-@@ -397,6 +408,8 @@ static int ethosu_gem_cmdstream_copy_and
- 		case NPU_OP_DMA_START:
- 			srclen = dma_length(info, &st.dma, &st.dma.src);
- 			dstlen = dma_length(info, &st.dma, &st.dma.dst);
-+			if (srclen == U64_MAX || dstlen == U64_MAX)
-+				return -EINVAL;
- 
- 			if (st.dma.dst.region >= 0)
- 				info->output_region[st.dma.dst.region] = true;
++		if (sk_is_tcp(sk) &&
++		    !sockopt_ns_capable(sock_net(sk)->user_ns, CAP_NET_ADMIN)) {
++			ret = -EPERM;
++			break;
++		}
+ 		ret = copy_bpf_fprog_from_user(&fprog, optval, optlen);
+ 		if (!ret)
+ 			ret = sk_attach_filter(&fprog, sk);
+-- 
+2.53.0
+
 
 
 
