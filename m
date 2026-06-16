@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-263939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WxMFDh5sMWrEiwUAu9opvQ
-	(envelope-from <stable+bounces-263939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:38 +0200
+	id nV7KNWiSMWo+nAUAu9opvQ
+	(envelope-from <stable+bounces-265909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 970D569116B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:30:37 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94306693ED5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:14:00 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Tk75WOXK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263939-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263939-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=SkE8d3UC;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265909-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265909-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E21F306EF11
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:21:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EB6A53034CF9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:13:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1FC43E48C;
-	Tue, 16 Jun 2026 15:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB513D5656;
+	Tue, 16 Jun 2026 18:13:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9281E8320;
-	Tue, 16 Jun 2026 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8483D091A;
+	Tue, 16 Jun 2026 18:13:56 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623292; cv=none; b=Gn/DUwE2t8DiATIXtpoggLFuVyeVI3bDmVIw9QP+c3XrE4rVJA4ho4fT5HC0NKsMsKJBzlOZIhzD6OuGTjk6WUNQDkiQkddihbxQGa5m6kA8H0v6A2iPHdBMc6fea2v4Sk7bG/A9gnKr40Fnu3HLUZt5ESlwhzX6Lod+yZSZRdA=
+	t=1781633637; cv=none; b=O+wQ6YH0ls/Aiar8TX7kEAEplN4z6FSvKVeO9zIicNCnuRwoOsURkKcZWwA54XCpTcnI6WG1lCmZOihVv41WUbaai+EkZr9iEogUGY0qaHdIeiVFIpaeTN3dJnGKWohRSpd6kh6tdSVp6LZpDK97wBcYLOQBO1gwapOpY8ocdSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623292; c=relaxed/simple;
-	bh=BWt1arjQME8qintwwtlQA0GA+3iH3i3lD+Z8nJxwkC0=;
+	s=arc-20240116; t=1781633637; c=relaxed/simple;
+	bh=k9taSoh8+Qijw9M2rPCrnEXZS5pRN3Q2S1jjbND5jKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UPsTj1Y2wPEmFHx4KaCZ8olfS4rBdu0SIF+w/hXUsw43qG3VIUbrOt3l45ocCQpRop+Cr93BCXNOTegVpqhAURi1T5AybF7M4Xh2D3na5yxj6vurz4lhtqtrRduzOJPCVHMhrpF0Mbxa822qK3GEsFQs1ULViGsRch7LsSmTJjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tk75WOXK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB24D1F000E9;
-	Tue, 16 Jun 2026 15:21:29 +0000 (UTC)
+	 MIME-Version; b=jW3McXkIz9TecMxWa8mgPmOHiURuSvyV0ahfUdEMcDR1L2QxEcVjTJ1EupTp1ytbyAhMhHUWkXIK4+p93dtcaMKhbZ2XrOwyW/loFIITnKUcQjqT7zMkgXV6JSM6ABc95D6+91GBA+/xXi6F+tnBgh4sC45/A7VIPEFcciZlwkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkE8d3UC; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298611F000E9;
+	Tue, 16 Jun 2026 18:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623290;
-	bh=0redTiFnu6SNQBimDc2l9nSrkeZrSye6LAfhE19sP/M=;
+	s=korg; t=1781633636;
+	bh=uNczgTlQG1g2UqxexCUDKgnC3HiFuaU/JdKMBG392M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tk75WOXKO02jWEeYClHerqn5Y7CxmJm+pEwjMLDLBPwRHpX0zt14UZAFsHXLyHXKI
-	 xS9fd6NSbPfCNagmERwUyK3tfGT3k+pcxJq9XWpP97RPWWRSnCmwvh+Adb4K+r8mtm
-	 6MzZSdhWnaNDWDcCUCNG6vfQKHpp0gkilqrX93Xw=
+	b=SkE8d3UCQZa4w/7PoEa7hsk94jq4xeSSUnc50XZu5G5TSMZygfjpe00wvLhri+qP7
+	 u9SLbcnnrIZNslAhhWy8eVCTyiFdpyXnhqp5/5rXIw6iCwSkXSmd5QMQJdeZEhFDdm
+	 U1EJe3xw6AZHRwXAxRBsROvbnLcZkXiBB/hKBmjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 121/378] net/mlx5: Use effective affinity mask for IRQ selection
-Date: Tue, 16 Jun 2026 20:25:52 +0530
-Message-ID: <20260616145116.722840109@linuxfoundation.org>
+	Wanquan Zhong <wanquan.zhong@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 115/411] USB: serial: option: add missing RSVD(5) flag for Rolling RW135R-GL
+Date: Tue, 16 Jun 2026 20:25:53 +0530
+Message-ID: <20260616145106.415422547@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,110 +64,174 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-263939-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shayd@nvidia.com,m:wangfushuai@baidu.com,m:tariqt@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265909-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:wanquan.zhong@fibocom.com,m:johan@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TAGGED_RCPT(0.00)[stable];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 970D569116B
+X-Rspamd-Queue-Id: 94306693ED5
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fushuai Wang <wangfushuai@baidu.com>
+From: Wanquan Zhong <wanquan.zhong@fibocom.com>
 
-[ Upstream commit a7767290e77ca2e926b49f8bfa29daa12262c612 ]
+commit 689f2facc689c8add11d7ff69fbbad17d65ee596 upstream.
 
-When a sf is created after a CPU has been taken offline, the IRQ pool may
-contain IRQs with affinity masks that include the offline CPU. Since only
-online CPUs should be considered for IRQ placement, cpumask_subset() check
-would fail because the iter_mask contains offline CPUs that are not present
-in req_mask, causing sf creation to fail.
+The RW135R-GL entry added in commit 01e8d0f74222 ("USB: serial: option:
+add support for Rolling Wireless RW135R-GL") was missing the
+.driver_info = RSVD(5) flag used by other Rolling Wireless MBIM laptop
+modules (e.g. RW135-GL and RW350-GL).
 
-This is an example:
-  1. When mlx5 driver loads, it initializes the IRQ pools.
-     For sf_ctrl_pool with ≤64 sf:
-     - xa_num_irqs = {N, N} (There is only one slot)
-  2. When the first SF is created:
-     - The ctrl IRQ is allocated with mask=cpu_online_mask={0-191}
-  2. We take CPU 20 offline
-  3. Existing ctl irq still have mask={0-191}
-  4. Create a new SF:
-     - req_mask={0-19,21-191}
-     - iter_mask={0-191}
-     - {0-191} is NOT a subset of {0-19,21-191}
-     - least_loaded_irq=NULL
-  5. Try to allocate a new irq via irq_pool_request_irq()
-  6. xa_alloc() fails because the pool is full(There is only one slot)
-  7. sf creation fails with error
+Without this flag, the option driver incorrectly binds to the reserved
+ADB interface (If#5) in multi-interface USB modes, causing AT/MBIM
+communication failures after mode switching. This matches the handling
+of other Rolling Wireless MBIM devices.
 
-Use irq_get_effective_affinity_mask() instead, which returns the IRQ's
-actual effective affinity that already excludes offline CPUs.
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
 
-Fixes: 061f5b23588a ("net/mlx5: SF, Use all available cpu for setting cpu affinity")
-Suggested-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260605102112.91772-1-fushuai.wang@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  0x1003: mbim, diag, AT, pipe
+
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  8 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x1003: mbim, diag, AT, ADB, pipe
+
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  7 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+- VID:PID 33f8:1003, RW135R-GL for laptop debug M.2 cards (with MBIM
+  interface for Linux/Chrome OS)
+
+  0x1003: mbim, pipe
+
+  Here are the outputs of usb-devices:
+
+T:  Bus=03 Lev=01 Prnt=01 Port=04 Cnt=02 Dev#=  9 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=33f8 ProdID=1003 Rev= 5.15
+S:  Manufacturer=Rolling Wireless S.a.r.l.
+S:  Product=Rolling RW135R-GL Module
+S:  SerialNumber=12345678
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Fixes: 01e8d0f74222 ("USB: serial: option: add support for Rolling Wireless RW135R-GL")
+Signed-off-by: Wanquan Zhong <wanquan.zhong@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-index 994fe83da4bed8..a0bb8ee44e3550 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/irq_affinity.c
-@@ -105,9 +105,12 @@ irq_pool_find_least_loaded(struct mlx5_irq_pool *pool, const struct cpumask *req
- 
- 	lockdep_assert_held(&pool->lock);
- 	xa_for_each_range(&pool->irqs, index, iter, start, end) {
--		struct cpumask *iter_mask = mlx5_irq_get_affinity_mask(iter);
- 		int iter_refcount = mlx5_irq_read_locked(iter);
-+		const struct cpumask *iter_mask;
- 
-+		iter_mask = irq_get_effective_affinity_mask(mlx5_irq_get_irq(iter));
-+		if (!iter_mask)
-+			continue;
- 		if (!cpumask_subset(iter_mask, req_mask))
- 			/* skip IRQs with a mask which is not subset of req_mask */
- 			continue;
--- 
-2.53.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2476,7 +2476,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0302, 0xff) },			/* Rolling RW101R-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x0802, 0xff),			/* Rolling RW350-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(5) },
+-	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff) },			/* Rolling RW135R-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x33f8, 0x1003, 0xff),			/* Rolling RW135R-GL (laptop MBIM) */
++	  .driver_info = RSVD(5) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x30) },	/* NetPrisma LCUK54-WWD for Global */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x3731, 0x0100, 0xff, 0xff, 0x40) },
 
 
 
