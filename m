@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id BjQ8AX9/MWqbkwUAu9opvQ
-	(envelope-from <stable+bounces-264880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:19 +0200
+	id H57RHNyJMWonmAUAu9opvQ
+	(envelope-from <stable+bounces-265426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EBF6928C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:53:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBB569351F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:37:32 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="AY0heq+/";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264880-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264880-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=tpAyZCDm;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265426-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265426-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0064D3048574
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:46:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BF6C31ADE6F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BBD1A6803;
-	Tue, 16 Jun 2026 16:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79B047AF5D;
+	Tue, 16 Jun 2026 17:32:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7229E35AC3E;
-	Tue, 16 Jun 2026 16:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F81332EC1;
+	Tue, 16 Jun 2026 17:32:21 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628376; cv=none; b=Nw+Uy13a/oZw6jfMCC5IFAR4o3T/8V4RVnYCVG+ldeyZEYhMlyn6B8VUDpF8xCpE+g5+YpkkxpXHPYunYJiUh2sjWyJ7xWR3jWM/0j+JusLpfJuwvsYCiQxj1j0A2JCNfvkjWGRQfWQPFhVJ64hI/mj023nArrm7OYX4xzp8jks=
+	t=1781631142; cv=none; b=UpRSSlawbjbpaqqT13SreCKANwYLly/VZv3Bcj3Ujklc19cqXguXtrPfiYEayCXpQukiuYSAMyRYZba2kx1PosbjAKyyozqXzwQR7FulOVjp/Ouu7td4RUJw9fIWPJZ99RHK/ky+fLUbmUxp1medcuWmfFvxQ7z908ok4iu3WRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628376; c=relaxed/simple;
-	bh=c8ZR65HCrnGd4fyk3vaXuqE+bCRZr9qA1IO7XHk85Jk=;
+	s=arc-20240116; t=1781631142; c=relaxed/simple;
+	bh=kmwIjB3TohLuvn7Ij6iCmDKs29pMsjAR5zAftiZou1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swcH/mpfnfEgqCtKBhDBSJHANNHWG2HPAmkgIfjeD6gq1/axqpanqtM+6wGVogGfwSfD6WMBGyHaPk/kC6K5YhsqGwhHi71Q98yJty/5Ll6ZEnEXqHBOowZvbIW84nA7I9ZyAL8PwJKvFNBxOp94AXLCDzZ5aDJ2fcCtTt7cI+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AY0heq+/; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755C81F00A3A;
-	Tue, 16 Jun 2026 16:46:14 +0000 (UTC)
+	 MIME-Version; b=P6fEdHFXRQ5qJ4D3tXcergJ4V1FaH0+56lafC73+Rtojdcoy+YvWA8+e73nUPbuA3uueMLL1aIsTL5jNV3jG+IZrr/M3MbTHpEHW4Pt3z/H26zB2Aqxzb93CDvIg5QfXfYrHCIoRiK9IdW6jKUh04ssViPcASLbSqN2esRi2ltU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpAyZCDm; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D561F000E9;
+	Tue, 16 Jun 2026 17:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628375;
-	bh=vPY06TTsJBu1WlEyDaShrCFdoLZw2QLMCu2RZaZqDbk=;
+	s=korg; t=1781631141;
+	bh=M//SSw14mHywYF/NvhpvWXf9G2gXV8qSH3yZTAFJjyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AY0heq+/LPxcbzi59ms89lI27yA4EPM/1MvFM7EiLD7mcOQJ+3jlAtaTdWwAkhnlz
-	 yirMv5NF0wOdBYL5I5eO90ByTpAn8qoGWxAD1Q9wemWNO4cmKCXUE/VZTAMsxdBN+6
-	 /NUaB812in6eU+HdlUf02WI4Ox12czAzOE9+B9Sk=
+	b=tpAyZCDmBaOAqdLOxgXmQVXjlg0pTgGimbHy/YakUGqcXLe/mCMlvh2F5YaTShLx8
+	 Wu7vbIm51NAQo5QghbW10MdeO53BiWDoh4WhAOw9o2clDtoue3u3WwBumSIMFNX1R+
+	 0iFU7zClP7oxNs2WD5vOdZBRLm2fGNMCt6gjRtyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pooja Katiyar <pooja.katiyar@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 084/452] usb: typec: ucsi: displayport: NAK DP_CMD_CONFIGURE without a payload VDO
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 164/522] scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf
 Date: Tue, 16 Jun 2026 20:25:11 +0530
-Message-ID: <20260616145122.276625645@linuxfoundation.org>
+Message-ID: <20260616145133.829529854@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +67,241 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264880-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:pooja.katiyar@intel.com,m:johan@kernel.org,m:stable@kernel.org,m:heikki.krogerus@linux.intel.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265426-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 54EBF6928C4
+X-Rspamd-Queue-Id: 0FBB569351F
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 167dd8d12226587ee554f520aed0256b7769cd5d upstream.
+commit bf33e01f88388c43e285492a63e539df6ffed64c upstream.
 
-ucsi_displayport_vdm() handles a DP_CMD_CONFIGURE by copying the first
-payload VDO from data[], but unlike the equivalent handler in
-altmodes/displayport.c it does not check that count covers a VDO beyond
-the header.  A header-only Configure VDM (count == 1) would read one u32
-past the caller's array.
+iscsi_encode_text_output() concatenates "key=value\0" records into
+login->rsp_buf, an 8192-byte kzalloc(MAX_KEY_VALUE_PAIRS) buffer
+allocated in iscsit_alloc_login_setup_buffer(). The three sprintf() call
+sites in this function (lines 1398, 1411, 1424 in v7.1-rc2) never check
+the remaining buffer capacity:
 
-In the normal UCSI path the caller controls count, so this is hardening
-for non-standard delivery paths.  NAK and bail when no configuration VDO
-is present, matching the generic DP altmode driver's existing guard.
+	*length += sprintf(output_buf, "%s=%s", er->key, er->value);
+	*length += 1;
+	output_buf = textbuf + *length;
 
-Assisted-by: gkh_clanker_t1000
-Cc: Pooja Katiyar <pooja.katiyar@intel.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/2026051351-vividly-flattered-eb3d@gregkh
+The 8192-byte ceiling at iscsi_target_check_login_request() bounds the
+*input* Login PDU payload, but a single PDU can carry up to 2048 minimal
+four-byte "a=b\0" pairs, each unknown key expanding to a 16-byte
+"a=NotUnderstood\0" output record via iscsi_add_notunderstood_response().
+2048 * 16 = 32 KiB of output into an 8 KiB buffer, producing a ~24 KiB
+heap overrun in the kmalloc-8k slab.
+
+The fix introduces a static iscsi_encode_text_record() helper that uses
+snprintf() with a per-call bounds check against the remaining buffer,
+and threads a u32 textbuf_size parameter through
+iscsi_encode_text_output(). Both call sites in
+iscsi_target_handle_csg_zero() (PHASE_SECURITY) and
+iscsi_target_handle_csg_one() (PHASE_OPERATIONAL) pass
+MAX_KEY_VALUE_PAIRS. On overflow the encoder logs the condition, calls
+iscsi_release_extra_responses() to drop queued records, and returns -1;
+both caller sites now emit ISCSI_STATUS_CLS_INITIATOR_ERR /
+ISCSI_LOGIN_STATUS_INIT_ERR via iscsit_tx_login_rsp() before returning,
+so the initiator sees an explicit failed-login response rather than a
+silent connection drop. (Prior to this patch only the PHASE_OPERATIONAL
+caller did that; the PHASE_SECURITY caller is converted to the same
+shape.)
+
+Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Tested-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/target/iscsi/iscsi_target_nego.c       |    7 ++
+ drivers/target/iscsi/iscsi_target_parameters.c |   62 +++++++++++++++++++------
+ drivers/target/iscsi/iscsi_target_parameters.h |    2 
+ 3 files changed, 55 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -240,6 +240,10 @@ static int ucsi_displayport_vdm(struct t
- 				dp->header |= VDO_CMDT(CMDT_RSP_ACK);
- 			break;
- 		case DP_CMD_CONFIGURE:
-+			if (count < 2) {
-+				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
-+				break;
-+			}
- 			dp->data.conf = *data;
- 			if (ucsi_displayport_configure(dp)) {
- 				dp->header |= VDO_CMDT(CMDT_RSP_NAK);
+--- a/drivers/target/iscsi/iscsi_target_nego.c
++++ b/drivers/target/iscsi/iscsi_target_nego.c
+@@ -905,10 +905,14 @@ static int iscsi_target_handle_csg_zero(
+ 			SENDER_TARGET,
+ 			login->rsp_buf,
+ 			&login->rsp_length,
++			MAX_KEY_VALUE_PAIRS,
+ 			conn->param_list,
+ 			conn->tpg->tpg_attrib.login_keys_workaround);
+-	if (ret < 0)
++	if (ret < 0) {
++		iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_INITIATOR_ERR,
++				ISCSI_LOGIN_STATUS_INIT_ERR);
+ 		return -1;
++	}
+ 
+ 	if (!iscsi_check_negotiated_keys(conn->param_list)) {
+ 		bool auth_required = iscsi_conn_auth_required(conn);
+@@ -992,6 +996,7 @@ static int iscsi_target_handle_csg_one(s
+ 			SENDER_TARGET,
+ 			login->rsp_buf,
+ 			&login->rsp_length,
++			MAX_KEY_VALUE_PAIRS,
+ 			conn->param_list,
+ 			conn->tpg->tpg_attrib.login_keys_workaround);
+ 	if (ret < 0) {
+--- a/drivers/target/iscsi/iscsi_target_parameters.c
++++ b/drivers/target/iscsi/iscsi_target_parameters.c
+@@ -1419,19 +1419,42 @@ free_buffer:
+ 	return -1;
+ }
+ 
++/*
++ * Append "key=value" plus a trailing NUL into @textbuf at *@length.
++ * Returns 0 on success and advances *@length, or -EMSGSIZE if the
++ * record (including the NUL) would not fit in the remaining buffer.
++ */
++static int iscsi_encode_text_record(char *textbuf, u32 *length,
++				    u32 textbuf_size,
++				    const char *key, const char *value)
++{
++	int n;
++	u32 avail;
++
++	if (*length >= textbuf_size)
++		return -EMSGSIZE;
++
++	avail = textbuf_size - *length;
++	n = snprintf(textbuf + *length, avail, "%s=%s", key, value);
++	if (n < 0 || (u32)n + 1 > avail)
++		return -EMSGSIZE;
++
++	*length += n + 1;
++	return 0;
++}
++
+ int iscsi_encode_text_output(
+ 	u8 phase,
+ 	u8 sender,
+ 	char *textbuf,
+ 	u32 *length,
++	u32 textbuf_size,
+ 	struct iscsi_param_list *param_list,
+ 	bool keys_workaround)
+ {
+-	char *output_buf = NULL;
+ 	struct iscsi_extra_response *er;
+ 	struct iscsi_param *param;
+-
+-	output_buf = textbuf + *length;
++	int ret;
+ 
+ 	if (iscsi_enforce_integrity_rules(phase, param_list) < 0)
+ 		return -1;
+@@ -1443,10 +1466,12 @@ int iscsi_encode_text_output(
+ 		    !IS_PSTATE_RESPONSE_SENT(param) &&
+ 		    !IS_PSTATE_REPLY_OPTIONAL(param) &&
+ 		    (param->phase & phase)) {
+-			*length += sprintf(output_buf, "%s=%s",
+-				param->name, param->value);
+-			*length += 1;
+-			output_buf = textbuf + *length;
++			ret = iscsi_encode_text_record(textbuf, length,
++						       textbuf_size,
++						       param->name,
++						       param->value);
++			if (ret < 0)
++				goto err_overflow;
+ 			SET_PSTATE_RESPONSE_SENT(param);
+ 			pr_debug("Sending key: %s=%s\n",
+ 				param->name, param->value);
+@@ -1456,10 +1481,12 @@ int iscsi_encode_text_output(
+ 		    !IS_PSTATE_ACCEPTOR(param) &&
+ 		    !IS_PSTATE_PROPOSER(param) &&
+ 		    (param->phase & phase)) {
+-			*length += sprintf(output_buf, "%s=%s",
+-				param->name, param->value);
+-			*length += 1;
+-			output_buf = textbuf + *length;
++			ret = iscsi_encode_text_record(textbuf, length,
++						       textbuf_size,
++						       param->name,
++						       param->value);
++			if (ret < 0)
++				goto err_overflow;
+ 			SET_PSTATE_PROPOSER(param);
+ 			iscsi_check_proposer_for_optional_reply(param,
+ 							        keys_workaround);
+@@ -1469,14 +1496,21 @@ int iscsi_encode_text_output(
+ 	}
+ 
+ 	list_for_each_entry(er, &param_list->extra_response_list, er_list) {
+-		*length += sprintf(output_buf, "%s=%s", er->key, er->value);
+-		*length += 1;
+-		output_buf = textbuf + *length;
++		ret = iscsi_encode_text_record(textbuf, length, textbuf_size,
++					       er->key, er->value);
++		if (ret < 0)
++			goto err_overflow;
+ 		pr_debug("Sending key: %s=%s\n", er->key, er->value);
+ 	}
+ 	iscsi_release_extra_responses(param_list);
+ 
+ 	return 0;
++
++err_overflow:
++	pr_err("iSCSI login response buffer (%u bytes) exhausted, dropping login.\n",
++	       textbuf_size);
++	iscsi_release_extra_responses(param_list);
++	return -1;
+ }
+ 
+ int iscsi_check_negotiated_keys(struct iscsi_param_list *param_list)
+--- a/drivers/target/iscsi/iscsi_target_parameters.h
++++ b/drivers/target/iscsi/iscsi_target_parameters.h
+@@ -46,7 +46,7 @@ extern struct iscsi_param *iscsi_find_pa
+ extern int iscsi_extract_key_value(char *, char **, char **);
+ extern int iscsi_update_param_value(struct iscsi_param *, char *);
+ extern int iscsi_decode_text_input(u8, u8, char *, u32, struct iscsit_conn *);
+-extern int iscsi_encode_text_output(u8, u8, char *, u32 *,
++extern int iscsi_encode_text_output(u8, u8, char *, u32 *, u32,
+ 			struct iscsi_param_list *, bool);
+ extern int iscsi_check_negotiated_keys(struct iscsi_param_list *);
+ extern void iscsi_set_connection_parameters(struct iscsi_conn_ops *,
 
 
 
