@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-264541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id m7b0BHl5MWoYkQUAu9opvQ
-	(envelope-from <stable+bounces-264541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:37 +0200
+	id wGkeJY12MWrhjwUAu9opvQ
+	(envelope-from <stable+bounces-264542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740EC69218A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:27:36 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5780E691DAF
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:15:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ekmYZcVb;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264541-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264541-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ax01+QIt;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264542-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264542-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE61C33166A4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A5CA0302D758
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356484657FD;
-	Tue, 16 Jun 2026 16:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B9245BD4B;
+	Tue, 16 Jun 2026 16:14:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBDA44CAF5;
-	Tue, 16 Jun 2026 16:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C44643E490;
+	Tue, 16 Jun 2026 16:14:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626470; cv=none; b=rwgRfK5Tg7JpaPVMUBKtIEqsFlR06gQXg0G26Ny5n3xb/vg1jSKc5Xd7hQ/rBIcu/Aho4pnkXa1V59RpERc24L0a3XJZH78tV6wuHJd1kmhr5SgOij9m+Y6YWmarXpq5G7P/whNX913zUZ++4Jl0zKsT+2SGbJ77CjPA6TuSNzc=
+	t=1781626475; cv=none; b=Ozma60aBH0wpcotzQ5kdFzPKva3srD3yBkos4/cf+9HX3Xb/ToyD1TpUN1pw7LSlvUB58kunuLJ/U+rsnq0pXg0aH4mCVwKHtAiDbN5VtWM/jyGmweO/LKjZwNolKoSJUbpt+4XVQ4hjSzd5Z7YPGkJczXGwHKMwCQq/cnsxkLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626470; c=relaxed/simple;
-	bh=BXTLQvJi7VA0l/D06PcZvf92zUYJhFYTV2CFd7kyx30=;
+	s=arc-20240116; t=1781626475; c=relaxed/simple;
+	bh=UPeuhQfP/Kr4rErqbVWOgaR0sZuEfdzEezGVBZkjTRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sd4xXue8jr1e9qJc0g8taWJqJT6ug1PXLtWjmi2Q1N/ndfdaCv1jcBkpUf4jlQzRgBZlLGhzFY8l2LqaABIOzGKN4IT2p7jFoy7+brDriPfLU0YmTA6/4t+XyENv8e3oo3Ah4AG6SRWD03P+RuMu46A9btNdb2hTjQ71H05NNZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekmYZcVb; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9251F000E9;
-	Tue, 16 Jun 2026 16:14:27 +0000 (UTC)
+	 MIME-Version; b=LTbYTy9I+DciIjdSd2CynQ2AGk4H4tJkMN6mhZgVoCBok9MBD8b5q4Oukh6KZD/3JT3DVC9ZevElZLrBLCfuRxWgM/oo/6RTg/3kdOQKB5P4xe68Am+/o4iJyzMJNSghaVm7Mp2nC9apZL/Kfc/jVis8a14Q7y6KmDRgDpS59Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ax01+QIt; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5301F000E9;
+	Tue, 16 Jun 2026 16:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626469;
-	bh=MXfNiBc0s6GrRJ+JcrY6J3L+sGnEIzpConwNyL9sZvk=;
+	s=korg; t=1781626474;
+	bh=SWPyeiUER9ZLgLPTgNsOVHQ6V0HPXySNeT1gPoX2weg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ekmYZcVbHOQ8G5jvlh8mnqkbSFAXNa9MdLCkZaPup3EooOscliY9s7B3pLZ06ei1i
-	 PeVmTWjk77dDhHxqqAPf0Yc5/jgViCzfl9eY/QTvP4hn8bLt0xrBETtzQPdAgUgbVP
-	 8rJEYVAhJtKQibA/hMFsPHUuDPuUYlcycHvZHquI=
+	b=ax01+QItqjrh+Bs75iqjuGsiz090ppXiv6GUIFvL/WLeJPh/IQz0XV2JXw2Kz4PcT
+	 eXEKPYWS2TInwn6UkhuIB7WRkekgb/Ndq8iGR9v7kj+o09p+crCpEeGMZ346b6jKco
+	 XdsVXs3EWaJ0KCxiF3T3txBXaa9okmN2TS8N0gfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,9 +50,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.18 320/325] arm64: cputype: Add C1-Ultra definitions
-Date: Tue, 16 Jun 2026 20:31:56 +0530
-Message-ID: <20260616145115.028687570@linuxfoundation.org>
+Subject: [PATCH 6.18 321/325] arm64: cputype: Add C1-Premium definitions
+Date: Tue, 16 Jun 2026 20:31:57 +0530
+Message-ID: <20260616145115.087372333@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
 References: <20260616145057.827196531@linuxfoundation.org>
@@ -72,12 +72,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264541-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264542-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
@@ -86,7 +86,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,9 +98,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,arm.com:url,arm.com:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,arm.com:url,arm.com:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 740EC69218A
+X-Rspamd-Queue-Id: 5780E691DAF
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,14 +108,14 @@ X-Rspamd-Queue-Id: 740EC69218A
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-commit 60349e64a6c65f9f0aa118af711b3c7e137f07ff upstream.
+commit d28413bfc5a255957241f1df5d7fd0c2cd74fe18 upstream.
 
-Add cputype definitions for C1-Ultra. These will be used for errata
+Add cputype definitions for C1-Premium. These will be used for errata
 detection in subsequent patches.
 
-These values can be found in the C1-Ultra TRM:
+These values can be found in the C1-Premium TRM:
 
-  https://developer.arm.com/documentation/108014/0100/
+  https://developer.arm.com/documentation/109416/0100/
 
 ... in section A.5.1 ("MIDR_EL1, Main ID Register").
 
@@ -132,22 +132,22 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/arch/arm64/include/asm/cputype.h
 +++ b/arch/arm64/include/asm/cputype.h
-@@ -97,6 +97,7 @@
- #define ARM_CPU_PART_CORTEX_X925	0xD85
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_CORTEX_A720AE	0xD89
-+#define ARM_CPU_PART_C1_ULTRA		0xD8C
+@@ -100,6 +100,7 @@
+ #define ARM_CPU_PART_C1_ULTRA		0xD8C
  #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
  #define ARM_CPU_PART_C1_PRO		0xD8B
++#define ARM_CPU_PART_C1_PREMIUM		0xD90
  
-@@ -189,6 +190,7 @@
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_CORTEX_A720AE MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720AE)
-+#define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
+ #define APM_CPU_PART_XGENE		0x000
+ #define APM_CPU_VAR_POTENZA		0x00
+@@ -193,6 +194,7 @@
+ #define MIDR_C1_ULTRA MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_ULTRA)
  #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
  #define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
++#define MIDR_C1_PREMIUM MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PREMIUM)
  #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 
 
 
