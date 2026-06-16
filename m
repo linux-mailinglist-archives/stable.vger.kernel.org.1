@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id xsVVCVdlMWraiQUAu9opvQ
-	(envelope-from <stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:43 +0200
+	id e0bYISJzMWqdjgUAu9opvQ
+	(envelope-from <stable+bounces-264341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184E8690B9F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:01:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D575B6919DC
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:33 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=O7BHDQEF;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263772-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=GHBZQ8O0;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264341-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264341-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AA43300F268
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:00:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B3FC3048AE8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F92342EEBB;
-	Tue, 16 Jun 2026 15:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E376544DB85;
+	Tue, 16 Jun 2026 15:56:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CB3AA1BA;
-	Tue, 16 Jun 2026 15:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC69544D6B2;
+	Tue, 16 Jun 2026 15:56:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622028; cv=none; b=qGcsnY76SRrtn0nHFvFFvObJwPO+x7Jp5YKo2T9pyhul2nbycY0mFrX45Pvggh2OGlqYL42wXbHaoDPfAlJyL/xyU4hRNIkq8fZAtsBFtk3WdUOAfoZrVa/oi+KA4j1Olhs81hW4AAa2Bq7zFhLJA23I81Q/jjvY0IY5JoslMU4=
+	t=1781625383; cv=none; b=i9FPNbFLz3D6mTfCsb6/OcujfiGhTkxRVIkgQo3YzGUC3XreIV/gJA3oN4N6SSn23StI6DQ6haa43SOwqbx95TSthuzjAlK98ncSaq7Dns0tKDzMoVnOyK+kR2BaTvnAaWJwD2YXbu/ErIJP1sDoeUYxR0TBJCZBXbc7LLOc2FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622028; c=relaxed/simple;
-	bh=PJtvLXB8h4VZGYbO18T/siL7b1Q5/kaMU9afAX8T16g=;
+	s=arc-20240116; t=1781625383; c=relaxed/simple;
+	bh=oCK6DoY2MQdw4+ij98skzM5cDpni7gRYAOwgS63JCkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3PUObs0CSyQa3R3RYClPS1hvAFSIYXVDXUh4reR+eJTsMJtvA+snPoC2eVjLkYKgsHDHyeODV8dv+grcus25fag6Y1XKSpnwufar6zz3bXHkj2BmTSh085vx/rumpp5+Zy5k9FmSorzPtEksXgsARIEna/Ef0y/nQ+44KdJSE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7BHDQEF; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B821F000E9;
-	Tue, 16 Jun 2026 15:00:25 +0000 (UTC)
+	 MIME-Version; b=Mt7y34JKaCC7RlSY6d2YE+701woXNsmQpO9FLOAeBqrs+XG8ivQsSPEG48TyULgAb3n5N/M1WguFxlk8X7Rp8AY3UzHq0H6kh0tJTpFg2hxmW1rTnhZ4gvA92RHGC6FIdoMY3dGjqSxbQQOyyRp97ot1dAFMDscSWDBxQIDVYbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHBZQ8O0; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912C01F000E9;
+	Tue, 16 Jun 2026 15:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622027;
-	bh=61YOxhKS66IAEnL9mPAQzSgRbA/43qZnkDMaklQatPc=;
+	s=korg; t=1781625382;
+	bh=OaDulcuoPdASDPWrpBfLiaCjLVt8tZEoyBGskTIzbGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=O7BHDQEFW1hu9plmEi4ugj7POw69nRp0k8TnksFn3ajvBr2v9dESbh78nu36I0Mwb
-	 TN493k6xwNO6A9+X5qplH3MPRNGc9EfL3WEfOCELf/4vqmR7/5g2Q2UuCakg0yBeTG
-	 DNfQf+GEOEONk906JLZ3e64NbSJexQfFTReEshVM=
+	b=GHBZQ8O0Nidri6aURF5QxQnMBiK1kBjlk1OfCIjrOUPwxSJAIIx1u5soBdgKQiNkm
+	 UQO+7cjO3fUCMycC2jQ762OBKKt1H7LFnbukhBGCKQZ9vGVSHsQe/aa0t/UxBT8WjJ
+	 4RTFX6aSj1STTV/BREHkncEeDB4Uck4fHWHmabAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 7.1 3/8] driver core: reject devices with unregistered buses
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 132/325] net: mvpp2: build skb from XDP-adjusted data on XDP_PASS
 Date: Tue, 16 Jun 2026 20:28:48 +0530
-Message-ID: <20260616145523.437476927@linuxfoundation.org>
+Message-ID: <20260616145104.305262038@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145523.335696673@linuxfoundation.org>
-References: <20260616145523.335696673@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,22 +72,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263772-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264341-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:dakr@kernel.org,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -97,71 +98,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tk154.de:email,xdp.data:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 184E8690B9F
+X-Rspamd-Queue-Id: D575B6919DC
 
-7.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Til Kaiser <mail@tk154.de>
 
-commit 36f35b8df6972167102a1c3d4361e0afb6a84534 upstream.
+[ Upstream commit 77a6b90ce56bc982dcfa94229b8e28e6abb16e95 ]
 
-Trying to register a device on a bus which has not yet been registered
-used to trigger a NULL-pointer dereference, but since the const bus
-structure rework registration instead succeeds without the device being
-added to the bus.
+When an XDP program uses bpf_xdp_adjust_head() or bpf_xdp_adjust_tail()
+and then returns XDP_PASS, mvpp2 still builds the skb from fixed offsets
+derived from the original RX descriptor. Packet geometry changes made by
+the XDP program are therefore discarded before the skb reaches the stack.
 
-This specifically means that the device will never bind to a driver and
-that the bus sysfs attributes are not created (i.e. as if the device had
-no bus).
+Update rx_offset and rx_bytes from xdp.data and xdp.data_end for
+XDP_PASS. This makes skb_reserve() and skb_put() reflect the packet seen
+by XDP, and makes RX byte accounting for XDP_PASS follow the length of the
+skb passed to the network stack.
 
-Reject devices with unregistered buses to catch any callers that get
-the ordering wrong and to handle bus registration failures more
-gracefully.
+Keep a separate rx_sync_size for page-pool recycling on skb allocation
+failure, which must stay tied to the received buffer range.
 
-Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
-Cc: stable@vger.kernel.org	# 6.3
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260430091718.230228-1-johan@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Non-PASS verdicts continue to account the descriptor length because no skb
+is passed up in those cases.
+
+Fixes: 07dd0a7aae7f ("mvpp2: add basic XDP support")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-5-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/bus.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -544,10 +544,10 @@ static const struct attribute_group driv
-  */
- int bus_add_device(struct device *dev)
- {
--	struct subsys_private *sp = bus_to_subsys(dev->bus);
-+	struct subsys_private *sp;
- 	int error;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 7f748cd6605ae4..79f8e0abfdbfd1 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3919,10 +3919,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		struct mvpp2_bm_pool *bm_pool;
+ 		struct page_pool *pp = NULL;
+ 		struct sk_buff *skb;
+-		unsigned int frag_size;
++		unsigned int frag_size, rx_sync_size;
+ 		dma_addr_t dma_addr;
+ 		phys_addr_t phys_addr;
+-		int pool, rx_bytes, err, ret;
++		int pool, rx_bytes, rx_offset, err, ret;
+ 		struct page *page;
+ 		void *data;
  
--	if (!sp) {
-+	if (!dev->bus) {
- 		/*
- 		 * This is a normal operation for many devices that do not
- 		 * have a bus assigned to them, just say that all went
-@@ -556,6 +556,13 @@ int bus_add_device(struct device *dev)
- 		return 0;
- 	}
+@@ -3935,6 +3935,8 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		rx_status = mvpp2_rxdesc_status_get(port, rx_desc);
+ 		rx_bytes = mvpp2_rxdesc_size_get(port, rx_desc);
+ 		rx_bytes -= MVPP2_MH_SIZE;
++		rx_sync_size = rx_bytes + MVPP2_MH_SIZE;
++		rx_offset = MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM;
+ 		dma_addr = mvpp2_rxdesc_dma_addr_get(port, rx_desc);
  
-+	sp = bus_to_subsys(dev->bus);
-+	if (!sp) {
-+		pr_err("%s: cannot add device '%s' to unregistered bus '%s'\n",
-+		       __func__, dev_name(dev), dev->bus->name);
-+		return -EINVAL;
-+	}
+ 		pool = (rx_status & MVPP2_RXD_BM_POOL_ID_MASK) >>
+@@ -3950,7 +3952,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 
+ 		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
+ 					      MVPP2_SKB_HEADROOM,
+-					      rx_bytes + MVPP2_MH_SIZE,
++					      rx_sync_size,
+ 					      dma_dir);
+ 
+ 		/* Buffer header not supported */
+@@ -4001,6 +4003,14 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 				continue;
+ 			}
+ 
++			rx_sync_size = max_t(unsigned int, rx_sync_size,
++					     xdp.data_end - xdp.data_hard_start -
++					     MVPP2_SKB_HEADROOM);
 +
- 	/*
- 	 * Reference in sp is now incremented and will be dropped when
- 	 * the device is removed from the bus
++			/* Update offset and length to reflect any XDP adjustments. */
++			rx_offset = xdp.data     - data;
++			rx_bytes  = xdp.data_end - xdp.data;
++
+ 			metasize = xdp.data - xdp.data_meta;
+ 		}
+ 
+@@ -4012,8 +4022,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			netdev_warn(port->dev, "skb build failed\n");
+ 			if (pp) {
+ 				page_pool_put_page(pp, virt_to_head_page(data),
+-						   rx_bytes + MVPP2_MH_SIZE,
+-						   true);
++						   rx_sync_size, true);
+ 			} else {
+ 				dma_unmap_single_attrs(dev->dev.parent, dma_addr,
+ 						       bm_pool->buf_size,
+@@ -4043,7 +4052,7 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 		ps.rx_packets++;
+ 		ps.rx_bytes += rx_bytes;
+ 
+-		skb_reserve(skb, MVPP2_MH_SIZE + MVPP2_SKB_HEADROOM);
++		skb_reserve(skb, rx_offset);
+ 		skb_put(skb, rx_bytes);
+ 		if (metasize)
+ 			skb_metadata_set(skb, metasize);
+-- 
+2.53.0
+
 
 
 
