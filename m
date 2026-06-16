@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-266243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id mKhmGVCZMWp0nwUAu9opvQ
-	(envelope-from <stable+bounces-266243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:28 +0200
+	id d90xATeJMWrWlwUAu9opvQ
+	(envelope-from <stable+bounces-265454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF43F69461B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCF4693459
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:34:46 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=j4JCJQ8U;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266243-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266243-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=nOa5On3e;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265454-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265454-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA2A53099985
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:43:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E63B303E8FD
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588D6477982;
-	Tue, 16 Jun 2026 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C143A3E78;
+	Tue, 16 Jun 2026 17:34:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3368B38C437;
-	Tue, 16 Jun 2026 18:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747F7332EC1;
+	Tue, 16 Jun 2026 17:34:42 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635404; cv=none; b=SU3nNFCq7LJsvRUdaDeIPf604W5p02uKA/geHpmTlxjGXO2lIr3FNidAlW3n8OpbAi9u6m4lQqlVgfyo4MVxB5aUX7kCHA39b5kDrRi3uthuiUkUiezGOHz1F725V2Ov18BmOWORsDEaJD74q9/XHB9SE021i7LvzYDUIu5fb1c=
+	t=1781631283; cv=none; b=fA1dZXLmuYyyVcO3u53ufOjJjigjmS99Iu33dKmLu0bGplHDnfK0s8Xe6hYriRvt5QfPwHSt87XxeH/2simg8oHkqIq7CO6ZiDXo6gtQILLcAodXWbFWelPtoT3IPdtw/C9bj4bR2cMlxKC4UOxnm009d16FbuvTAq7lNbrSfxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635404; c=relaxed/simple;
-	bh=r4qBZhwyF7arc/ufC7qm7AS0Y1+1l3VRlkEXgb3VUnc=;
+	s=arc-20240116; t=1781631283; c=relaxed/simple;
+	bh=qPLVm2+bn5vypTT2/uaebf+8XT7Tv+66C00MFtbNCDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0fIwreOarLG47Pq0MSa5kAnBOzfpoA09xHJd44yWMjk3A59P5go/66hI/A+HVJZy04wkSZBRrQwkxw3uZiXpvnBbte5v+K+MEuPRGVdyTseVQGGy3LF4LmCspJmi987RQZZshtesyle//acbm/GAq6exZ7UuKv7gVp1NRhFeDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4JCJQ8U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB941F000E9;
-	Tue, 16 Jun 2026 18:43:21 +0000 (UTC)
+	 MIME-Version; b=pJUFsUIj4fnQNZQrMVGLNDRbjifmhF3zZmh244oowF4oc54ncrcuu///K0SgO9nledfzJmq9SyXTycID9FEAMIJKNJpLrgJqfSQIk85QGm75X3tevZfArO1wF18a5qb5mJRAf0uj6sy5zLBdtw+K0a3UR9KeluU8hBScPY9WMxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOa5On3e; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C531F000E9;
+	Tue, 16 Jun 2026 17:34:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635402;
-	bh=1o/QQzJq8YDLLUYW9rBZMZ4HBlEMhmHEs9UdFMCVKLI=;
+	s=korg; t=1781631282;
+	bh=vX/ROKDWntdVe55OYG2CzenX+JkJoNjxP/pHS3f+xAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j4JCJQ8Udj9E7CfofIMHiaJwS0YaX52qkWvK29qnNsABWNRJlcTJ64Jt9G5RUrVhR
-	 sq8KqPr6zyT9h1okC6fN4nhZ8nfEHBINO4DsQXoHK/WTGc+O9gGu9znkUQh1jfw7J0
-	 Aj1HvFeA8fylkqJpOaM33EXZZbUsweFGq8BRlW1c=
+	b=nOa5On3efn0tVtKGm3aGjPluvVAgIsZkg9Pygwqyk6z3tD4upgTypuI2EFUvIAUJ9
+	 S+YVWNmAiKlBj7SL5SJi0sSNNQWjgbiGWhrBjP2k2Zk2tfi26CvmQVqtUrrqrLbly0
+	 4uUWeGUuED80JaC+z6ITMXyQqvOHJ2aexxFL/TvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Zhu Yanjun <yanjun.Zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Ben Hutchings <benh@debian.org>,
+	Johan Hovold <johan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/342] RDMA/rxe: Fix double free in rxe_srq_from_init
+Subject: [PATCH 6.1 191/522] USB: serial: mct_u232: fix memory corruption with small endpoint
 Date: Tue, 16 Jun 2026 20:25:38 +0530
-Message-ID: <20260616145050.215416962@linuxfoundation.org>
+Message-ID: <20260616145135.042825189@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,97 +75,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org,debian.org];
-	TAGGED_FROM(0.00)[bounces-266243-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265454-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jiashengjiangcool@gmail.com,m:yanjun.Zhu@linux.dev,m:leon@kernel.org,m:benh@debian.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DF43F69461B
+X-Rspamd-Queue-Id: AFCF4693459
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0beefd0e15d962f497aad750b2d5e9c3570b66d1 upstream.
+commit 915b36d701950503c4ea0f6e314b10868e59fce3 upstream.
 
-In rxe_srq_from_init(), the queue pointer 'q' is assigned to
-'srq->rq.queue' before copying the SRQ number to user space.
-If copy_to_user() fails, the function calls rxe_queue_cleanup()
-to free the queue, but leaves the now-invalid pointer in
-'srq->rq.queue'.
+The driver overrides the maximum transfer size for a specific device
+which only accepts 16 byte packets for its 32 byte bulk-out endpoint.
 
-The caller of rxe_srq_from_init() (rxe_create_srq) eventually
-calls rxe_srq_cleanup() upon receiving the error, which triggers
-a second rxe_queue_cleanup() on the same memory, leading to a
-double free.
+Make sure to never increase the maximum transfer size to prevent slab
+corruption should a malicious device report a smaller endpoint max
+packet size than expected.
 
-The call trace looks like this:
-   kmem_cache_free+0x.../0x...
-   rxe_queue_cleanup+0x1a/0x30 [rdma_rxe]
-   rxe_srq_cleanup+0x42/0x60 [rdma_rxe]
-   rxe_elem_release+0x31/0x70 [rdma_rxe]
-   rxe_create_srq+0x12b/0x1a0 [rdma_rxe]
-   ib_create_srq_user+0x9a/0x150 [ib_core]
-
-Fix this by moving 'srq->rq.queue = q' after copy_to_user.
-
-Fixes: aae0484e15f0 ("IB/rxe: avoid srq memory leak")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20260112015412.29458-1-jiashengjiangcool@gmail.com
-Reviewed-by: Zhu Yanjun <yanjun.Zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-[bwh: Backported to 5.10: There was no assignment to init->attr.max_wr
- here; don't add it]
-Signed-off-by: Ben Hutchings <benh@debian.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/mct_u232.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
-index 41b0d1e11bafdb..4e523d91e7dcb1 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -98,8 +98,6 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		return -ENOMEM;
+diff --git a/drivers/usb/serial/mct_u232.c b/drivers/usb/serial/mct_u232.c
+index 389bbab8182a41..3c1351bb7ca3d8 100644
+--- a/drivers/usb/serial/mct_u232.c
++++ b/drivers/usb/serial/mct_u232.c
+@@ -379,6 +379,7 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ {
+ 	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv;
++	u16 pid;
+ 
+ 	/* check first to simplify error handling */
+ 	if (!serial->port[1] || !serial->port[1]->interrupt_in_urb) {
+@@ -386,6 +387,16 @@ static int mct_u232_port_probe(struct usb_serial_port *port)
+ 		return -ENODEV;
  	}
  
--	srq->rq.queue = q;
--
- 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, udata, q->buf,
- 			   q->buf_size, &q->ip);
- 	if (err) {
-@@ -116,6 +114,8 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		}
- 	}
- 
-+	srq->rq.queue = q;
++	/*
++	 * Compensate for a hardware bug: although the Sitecom U232-P25
++	 * device reports a maximum output packet size of 32 bytes,
++	 * it seems to be able to accept only 16 bytes (and that's what
++	 * SniffUSB says too...)
++	 */
++	pid = le16_to_cpu(serial->dev->descriptor.idProduct);
++	if (pid == MCT_U232_SITECOM_PID)
++		port->bulk_out_size = min(16, port->bulk_out_size);
 +
- 	return 0;
- }
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -411,7 +422,6 @@ static void mct_u232_port_remove(struct usb_serial_port *port)
  
+ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ {
+-	struct usb_serial *serial = port->serial;
+ 	struct mct_u232_private *priv = usb_get_serial_port_data(port);
+ 	int retval = 0;
+ 	unsigned int control_state;
+@@ -419,15 +429,6 @@ static int  mct_u232_open(struct tty_struct *tty, struct usb_serial_port *port)
+ 	unsigned char last_lcr;
+ 	unsigned char last_msr;
+ 
+-	/* Compensate for a hardware bug: although the Sitecom U232-P25
+-	 * device reports a maximum output packet size of 32 bytes,
+-	 * it seems to be able to accept only 16 bytes (and that's what
+-	 * SniffUSB says too...)
+-	 */
+-	if (le16_to_cpu(serial->dev->descriptor.idProduct)
+-						== MCT_U232_SITECOM_PID)
+-		port->bulk_out_size = 16;
+-
+ 	/* Do a defined restart: the normal serial device seems to
+ 	 * always turn on DTR and RTS here, so do the same. I'm not
+ 	 * sure if this is really necessary. But it should not harm
 -- 
 2.53.0
 
