@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-265708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265166-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id r06YNfKOMWqnmgUAu9opvQ
-	(envelope-from <stable+bounces-265708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:14 +0200
+	id 8MpUN1yFMWoelgUAu9opvQ
+	(envelope-from <stable+bounces-265166-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C916693AF6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:59:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A12D692FA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QsXLILoT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265708-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265708-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=WyXYioj8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265166-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265166-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA0EE308A5C1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:56:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C3DD30EE11A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EAD4779A8;
-	Tue, 16 Jun 2026 17:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EB343E490;
+	Tue, 16 Jun 2026 17:10:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3EB3A5E91;
-	Tue, 16 Jun 2026 17:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220B8466B70;
+	Tue, 16 Jun 2026 17:10:09 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632578; cv=none; b=JBLIowJWS7cz953SP9NRiOE0qtU/VCev83nhFSZIXODKw5xOsx9mSsmljIHt7joJ6rxmEh6Z/i0XwNjGbnL5BIYUB6ojW0/p2n06FgUuFE6b8d4DhowIvu+6a/UdGsLB60QWfdL2jR2utDYnQ960d92fRQyCLn79LkSGd7yb2js=
+	t=1781629810; cv=none; b=KbxrghoGQzh5Bfh0ehqXMjrUTyJ+iMJNuL4b7EAZrTzY2edXI98+ZSy/2OGHZhKVdU6/vdWDCa6muraZuCMZo+73mWVY4FhczQ4ZyfKKf0I4Kzdx8Blsi+d0kQ1cOt7ZelXv5OVJNiu1AccTh+0KWN0PopWqTzIj2iGpN9GLIkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632578; c=relaxed/simple;
-	bh=OL8MRCW6eQZBtoO7eOeAQ6Yv/tQSIthB45l03ujLyoU=;
+	s=arc-20240116; t=1781629810; c=relaxed/simple;
+	bh=rOac8ZBFWM4aL7Gn0Vpq+cvAig3Nigu1CPAS8yWmwQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bsqWVn2H8RT/P7B0jUwRRQxTfuTPYNYo1fwCfrdGMVbkLZ1edwGqOwq11cnaFvVMevF8By8sL+/zHWZKTGsJGeb6xUpqRv7AIXeuhocHMQ9ibnjc/cAQZKBqOTxbnks7pN1f/RD/yZ41uqGwVbk6Coafs8jqehuyZshRg4b8tsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsXLILoT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7021F000E9;
-	Tue, 16 Jun 2026 17:56:15 +0000 (UTC)
+	 MIME-Version; b=CrW+LyMfxcHZQCb1exS8wRkOW1tke2u+Z7w3fjjM0HlUKFPQSsIUQYwulKNBFgovtP5agr1IpRUjKLuHo9lu/YVUEivk3RHmNON34seKwJu87Kb2up97VwPjE7VPBv9iNkNB6JseEWyySzwdDzTrd/NH4hJySUeFTtYEpqRqa/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyXYioj8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DF81F000E9;
+	Tue, 16 Jun 2026 17:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632576;
-	bh=s2vlNjgDQxEGmM7p7pcsacTeoWj/GxIbZ0v3xZhe0io=;
+	s=korg; t=1781629809;
+	bh=K++tXnUchH1Zg59OzRIM4hEPOOQPN9LMSJGaqnXbvG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QsXLILoTP6tpgUn4sL22F00GRxgGBY1TH7SfO2M5SesV2A/F396+UvYOUpulXJuM5
-	 dkkbZ3vNnrSNL32o+K7bj38M93PX2xPGzxiHHM+xqTJsHrNWZl0zukJ8yGOJ9Sl+Gz
-	 BYmlghunE9DEZl7fciYdkRxsb16TEFUIQ8HlUXLM=
+	b=WyXYioj8Vgck84pGHszZ416LT81bCANEKjV0YtliUWIsJssa4om3dEzTSVEWQCFZt
+	 vryCguwofNIIesmB2834ZL3gzXT9KJP8Aq/FbxT9js6aaP9VINPBzjTDSqbu3LkJ0b
+	 oHucL9Y9ydtPQ1HsMok7+7TfcZLMH/YJmCIlyZxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 436/522] Bluetooth: Init sk_peer_* on bt_sock_alloc
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 356/452] thunderbolt: Clamp XDomain response data copy to allocation size
 Date: Tue, 16 Jun 2026 20:29:43 +0530
-Message-ID: <20260616145146.353727620@linuxfoundation.org>
+Message-ID: <20260616145135.855570035@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,176 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265166-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:mika.westerberg@linux.intel.com,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 3C916693AF6
+X-Rspamd-Queue-Id: 4A12D692FA1
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 464c702fb9374ff8f3f816f24fb7ac719dd20e1e ]
+commit 322e93448d908434ae5545660fcbe8f5a7a8e141 upstream.
 
-This makes sure peer information is always available via sock when using
-bt_sock_alloc.
+tb_xdp_properties_request() derives the per-packet copy length from
+the response header without checking that it fits in the previously
+allocated data buffer.  A malicious peer can set its length field
+larger than the declared data_length, causing memcpy to write past
+the kcalloc allocation.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: e83f5e24da74 ("Bluetooth: serialize accept_q access")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clamp the per-packet copy length so that the cumulative offset
+never exceeds data_len.
+
+Fixes: cdae7c07e3e3 ("thunderbolt: Add support for XDomain properties")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/af_bluetooth.c |   24 ++++++++++++++++++++++++
- net/bluetooth/hidp/sock.c    |   10 +---------
- net/bluetooth/l2cap_sock.c   |   19 -------------------
- 3 files changed, 25 insertions(+), 28 deletions(-)
+ drivers/thunderbolt/xdomain.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -157,6 +157,14 @@ struct sock *bt_sock_alloc(struct net *n
- 	sk->sk_protocol = proto;
- 	sk->sk_state    = BT_OPEN;
+--- a/drivers/thunderbolt/xdomain.c
++++ b/drivers/thunderbolt/xdomain.c
+@@ -393,6 +393,8 @@ static int tb_xdp_properties_request(str
+ 			}
+ 		}
  
-+	/* Init peer information so it can be properly monitored */
-+	if (!kern) {
-+		spin_lock(&sk->sk_peer_lock);
-+		sk->sk_peer_pid  = get_pid(task_tgid(current));
-+		sk->sk_peer_cred = get_current_cred();
-+		spin_unlock(&sk->sk_peer_lock);
-+	}
-+
- 	return sk;
- }
- EXPORT_SYMBOL(bt_sock_alloc);
-@@ -201,6 +209,9 @@ EXPORT_SYMBOL(bt_sock_linked);
- 
- void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
- {
-+	const struct cred *old_cred;
-+	struct pid *old_pid;
-+
- 	BT_DBG("parent %p, sk %p", parent, sk);
- 
- 	sock_hold(sk);
-@@ -213,6 +224,19 @@ void bt_accept_enqueue(struct sock *pare
- 	list_add_tail(&bt_sk(sk)->accept_q, &bt_sk(parent)->accept_q);
- 	bt_sk(sk)->parent = parent;
- 
-+	/* Copy credentials from parent since for incoming connections the
-+	 * socket is allocated by the kernel.
-+	 */
-+	spin_lock(&sk->sk_peer_lock);
-+	old_pid = sk->sk_peer_pid;
-+	old_cred = sk->sk_peer_cred;
-+	sk->sk_peer_pid = get_pid(parent->sk_peer_pid);
-+	sk->sk_peer_cred = get_cred(parent->sk_peer_cred);
-+	spin_unlock(&sk->sk_peer_lock);
-+
-+	put_pid(old_pid);
-+	put_cred(old_cred);
-+
- 	if (bh)
- 		bh_unlock_sock(sk);
- 	else
---- a/net/bluetooth/hidp/sock.c
-+++ b/net/bluetooth/hidp/sock.c
-@@ -256,21 +256,13 @@ static int hidp_sock_create(struct net *
- 	if (sock->type != SOCK_RAW)
- 		return -ESOCKTNOSUPPORT;
- 
--	sk = sk_alloc(net, PF_BLUETOOTH, GFP_ATOMIC, &hidp_proto, kern);
-+	sk = bt_sock_alloc(net, sock, &hidp_proto, protocol, GFP_ATOMIC, kern);
- 	if (!sk)
- 		return -ENOMEM;
- 
--	sock_init_data(sock, sk);
--
- 	sock->ops = &hidp_sock_ops;
--
- 	sock->state = SS_UNCONNECTED;
- 
--	sock_reset_flag(sk, SOCK_ZAPPED);
--
--	sk->sk_protocol = protocol;
--	sk->sk_state	= BT_OPEN;
--
- 	bt_sock_link(&hidp_sk_list, sk);
- 
- 	return 0;
---- a/net/bluetooth/l2cap_sock.c
-+++ b/net/bluetooth/l2cap_sock.c
-@@ -178,21 +178,6 @@ done:
- 	return err;
- }
- 
--static void l2cap_sock_init_pid(struct sock *sk)
--{
--	struct l2cap_chan *chan = l2cap_pi(sk)->chan;
--
--	/* Only L2CAP_MODE_EXT_FLOWCTL ever need to access the PID in order to
--	 * group the channels being requested.
--	 */
--	if (chan->mode != L2CAP_MODE_EXT_FLOWCTL)
--		return;
--
--	spin_lock(&sk->sk_peer_lock);
--	sk->sk_peer_pid = get_pid(task_tgid(current));
--	spin_unlock(&sk->sk_peer_lock);
--}
--
- static int l2cap_sock_connect(struct socket *sock, struct sockaddr *addr,
- 			      int alen, int flags)
- {
-@@ -268,8 +253,6 @@ static int l2cap_sock_connect(struct soc
- 	    chan->mode != L2CAP_MODE_EXT_FLOWCTL)
- 		chan->mode = L2CAP_MODE_LE_FLOWCTL;
- 
--	l2cap_sock_init_pid(sk);
--
- 	err = l2cap_chan_connect(chan, la.l2_psm, __le16_to_cpu(la.l2_cid),
- 				 &la.l2_bdaddr, la.l2_bdaddr_type);
- 	if (err)
-@@ -325,8 +308,6 @@ static int l2cap_sock_listen(struct sock
- 		goto done;
- 	}
- 
--	l2cap_sock_init_pid(sk);
--
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_ack_backlog = 0;
- 
++		if (req.offset + len > data_len)
++			len = data_len - req.offset;
+ 		memcpy(data + req.offset, res->data, len * 4);
+ 		req.offset += len;
+ 	} while (!data_len || req.offset < data_len);
 
 
 
