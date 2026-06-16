@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id joDSOaB4MWrOkAUAu9opvQ
-	(envelope-from <stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:00 +0200
+	id aNnUAcmPMWoQmwUAu9opvQ
+	(envelope-from <stable+bounces-265775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767F56920A7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B508693C0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:02:48 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=G11SwANA;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264499-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LUc9z1ZK;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265775-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265775-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 793ED32555E1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:10:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 562A430FB672
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F56466B57;
-	Tue, 16 Jun 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E922C2F12AE;
+	Tue, 16 Jun 2026 18:01:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762D444BCB8;
-	Tue, 16 Jun 2026 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9183D7D70;
+	Tue, 16 Jun 2026 18:01:55 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781626215; cv=none; b=RECQXbbrVWrsTPRliCwuEwCAPQr2L8t3xAeSnaEdh4Zrf3TwIRR0RLXNHLdPsNI7NxcKLBDKHZ9T1Sv42x2t9U90S13Z36aYXz9TYcNU4hKVqaMh18YUS3hbqYruLJeuyMmhtzVy2ghHXbTvNCnXPapo9nh8VLCY3mzbkxKYhz8=
+	t=1781632917; cv=none; b=O2QiCFLlXnOFn9ZnNvXL7qgR2FaMgVd+YT5kHi9S3hFUP3Ytzm7iz9MbFcl52ewt1NOHN45PpLjTKhLoi8zC2eJ7+4tAYYuvBMKvGc0EnsQ9Fx5DP48a+eVOKV/bRTw41hsdJTVPpVTV1dIiouIu0mvd+pkd8ZJS/ziX9qMdNAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781626215; c=relaxed/simple;
-	bh=RqIKc2rQQru0RwLN4RwnM/6tFe3zpALILAGIa/3JufU=;
+	s=arc-20240116; t=1781632917; c=relaxed/simple;
+	bh=DyUHumN3M09JdGhPqzojOUZyklsmfILpNcbf0qzxVeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo71mDGcEkVzYwuLah4gvLlLUj4qHXuqN/SbRE2IF2d6qlpqLbWUXSt6mCRJ9p/hqEyVtscH8raq6e1NJn11pX8V/ffz+9HcjIHUUMYfXpYl81dRW6hKWYqPiL/O0mogaJxo+6fiBGdNawD0n3kARguIKHmVdPhDo7xcj5TLPcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G11SwANA; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234C91F000E9;
-	Tue, 16 Jun 2026 16:10:12 +0000 (UTC)
+	 MIME-Version; b=AxDiCpBH9QzKB/foDxqlgnoMe1UkzRZKR5zWieA4W7ai9u2YxZl0Bcb3RMflJhWr0MscXxsGNSZOk5MzCyVi0yQe4GU8V2laqA+MBLNdDi4LASJ8ixrK2tsGNCuzYC6pBT84oMzriMCiiVWuDDPzv6REmxytfF2j4Ro11wv14s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUc9z1ZK; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F291F000E9;
+	Tue, 16 Jun 2026 18:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781626214;
-	bh=oaix62ZiYHsUzS/BG1p3OrsIFlA9Uoa1E68ARllCQtg=;
+	s=korg; t=1781632915;
+	bh=WBZUSsSg0Bo2peYLmcX0rLc1OcbnL8W49jSlpuguOZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G11SwANAU42vT978XWHgFksfDBKDIVF21ZBXGaRifDkZCt6FspNwwqCUAW4r6/TWD
-	 Mke4FvfDwktQUz6ol5UgvVJcsor2G9+tTp7BTnLVBpZ7yvkgsyltaPYx0I6QVkfeHT
-	 KVOcwCR2PpiNJHrSN42Ygb9y0MxFUtnw86w1kBDE=
+	b=LUc9z1ZKbhaDyWCM5rVJLEfTUlDM7gyHO51W+jihJ6BYtijGM9ZOgl4oDUWU1dT6M
+	 9pipklJAZn4B6nJ2j8uldEOdHT65Hunm+gFIxVzkNuAxuoubit2SLBcseUeDYcKDJt
+	 4sC3e1QP0RvwKDNkt9LhmXp/lvEQL0gp4D3goeNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 252/325] mm/damon/reclaim: handle ctx allocation failure
+	Corey Minyard <cminyard@mvista.com>
+Subject: [PATCH 6.1 501/522] ipmi:ssif: Fix a shutdown race
 Date: Tue, 16 Jun 2026 20:30:48 +0530
-Message-ID: <20260616145111.092547223@linuxfoundation.org>
+Message-ID: <20260616145149.203616293@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,88 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264499-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:sj@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265775-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:cminyard@mvista.com,s:lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux-foundation.org:email,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,minyard.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,mvista.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 767F56920A7
+X-Rspamd-Queue-Id: 6B508693C0B
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Corey Minyard <corey@minyard.net>
 
-commit 7e2ed8a29427af534bf2cb9b8bc51762b8b6e654 upstream.
+commit 6bd0eb6d759b9a22c5509ea04e19c2e8407ba418 upstream.
 
-Patch series "mm/damon/{reclaim,lru_sort}: handle ctx allocation failures".
+It was possible for the SSIF thread to stop and quit before the
+kthread_stop() call because ssif->stopping was set before the
+stop.  So only exit the SSIF thread is kthread_should_stop()
+returns true.
 
-DAMON_RECLAIM and DAMON_LRU_SORT could dereference NULL pointers if their
-damon_ctx object allocations fail.  The bugs are expected to happen
-infrequently because the allocations are arguably too small to fail on
-common setups.  But theoretically they are possible and the consequences
-are bad.  Fix those.
+There is no need to wake the thread, as the wait will be interrupted
+by kthread_stop().
 
-The issues were discovered [1] by Sashiko.
-
-
-This patch (of 2):
-
-DAMON_RECLAIM allocates the damon_ctx object for its kdamond in its init
-function.  damon_reclaim_enabled_store() wrongly assumes the allocation
-will always succeed once tried.  If the damon_ctx allocation was failed,
-therefore, code execution reaches to damon_commit_ctx() while 'ctx' is
-NULL.  As a result, it dereferences the NULL 'ctx' pointer.  Avoid the
-NULL dereference by returning -ENOMEM if 'ctx' is NULL.
-
-Link: https://lore.kernel.org/20260529000104.7006-2-sj@kernel.org
-Link: https://lore.kernel.org/20260419014800.877-1-sj@kernel.org [1]
-Fixes: 3f7a914ab9a5 ("mm/damon/reclaim: use damon_initialized()")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/reclaim.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/char/ipmi/ipmi_ssif.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -343,6 +343,10 @@ static int damon_reclaim_enabled_store(c
- 	if (!damon_initialized())
- 		return 0;
- 
-+	/* damon_modules_new_paddr_ctx_target() in the init function failed. */
-+	if (!ctx)
-+		return -ENOMEM;
-+
- 	return damon_reclaim_turn(enabled);
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -490,8 +490,6 @@ static int ipmi_ssif_thread(void *data)
+ 		/* Wait for something to do */
+ 		result = wait_for_completion_interruptible(
+ 						&ssif_info->wake_thread);
+-		if (ssif_info->stopping)
+-			break;
+ 		if (result == -ERESTARTSYS)
+ 			continue;
+ 		init_completion(&ssif_info->wake_thread);
+@@ -1289,10 +1287,8 @@ static void shutdown_ssif(void *send_inf
+ 	ssif_info->stopping = true;
+ 	del_timer_sync(&ssif_info->watch_timer);
+ 	del_timer_sync(&ssif_info->retry_timer);
+-	if (ssif_info->thread) {
+-		complete(&ssif_info->wake_thread);
++	if (ssif_info->thread)
+ 		kthread_stop(ssif_info->thread);
+-	}
  }
  
+ static void ssif_remove(struct i2c_client *client)
 
 
 
