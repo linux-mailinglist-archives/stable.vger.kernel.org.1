@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-266156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PHj+DI+XMWqrngUAu9opvQ
-	(envelope-from <stable+bounces-266156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:59 +0200
+	id KyQCCZWOMWp/mgUAu9opvQ
+	(envelope-from <stable+bounces-265723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB5A694436
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E9D693A7F
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:57:40 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zAg0Z3IZ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266156-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-266156-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=UTmEq9Ae;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265723-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265723-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D5BE3090193
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:35:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E6BD30485D1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0598D43CEC7;
-	Tue, 16 Jun 2026 18:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A983477E51;
+	Tue, 16 Jun 2026 17:57:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91AD169AD2;
-	Tue, 16 Jun 2026 18:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4282F12AE;
+	Tue, 16 Jun 2026 17:57:36 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634956; cv=none; b=gvNv7LRClFnPhvOdPQBUqEuJ7qi73+yX0CCB65wrDwinsK2xlS/NNjaWLlPATGFnD0vU/ytj5iakMhtDkMr1ACBYx7+cN0r+4UjuB4SxjjPnDOhZNu5qam91uAZzftZNky7ScxKbZ6hzx+lO86blPrBWjHE8oZ32UamL6Jx+2I4=
+	t=1781632657; cv=none; b=Cjb1OYwBeGwO0N2qnaiQHjEagf2o0Brk2mBZCQcAFLV9gghlhpiq3P8bss0Eed0z9VUkPS/Or+9U2+qbhxCcXVfvJ7v9Z0YSNV4SGmJSYIlcOLJYeWmguRDA1JYq3LTeHgKGzLyDX3UbG7jPC+aEufQ16X+LgaFI2uAF6m5qqNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634956; c=relaxed/simple;
-	bh=1QsMrRqPInlzzLFA80vIW7wWFsWus94cnAQ7g9NrOs4=;
+	s=arc-20240116; t=1781632657; c=relaxed/simple;
+	bh=7neEAu3rX3wvdt1ryaO8rvFzPNem/x093KB1YbkpLzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDOdTEVg6Hv5IxXqZ017yscJtW1BDm4TjinyJbf2TiE/DqgGBzTyFF34YWfuTGhda9F9eK2om3RACWFLXTViRmlZ4dRKdZFeVxL+NNZYafnS0MP2HLobfOwOjZip9qwifKQb/XqERHIpvxSXrNOQqA4PNS7xNcs00JkEryjyD40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAg0Z3IZ; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B743F1F000E9;
-	Tue, 16 Jun 2026 18:35:54 +0000 (UTC)
+	 MIME-Version; b=jid9qNwK2P6SK5mYXbDHMw4NpnRNWL42u8ZAnWGM2Itbi9jXcijLP9HtOQDR+J0THvjbaqjs5v9yDr8WFGB0xwiHGjE/bd11VVGYvrHvfylXsbkqg7/F64RUSUvnIdZ+HfRp6J8v6ZNv7A9646PymdWoOYRuJyvnZJl/tN7g1u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTmEq9Ae; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404231F000E9;
+	Tue, 16 Jun 2026 17:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634955;
-	bh=0Gd6kT/kj8kUSBolnCy23V366v2Ljfp7FbNVS+WgZuE=;
+	s=korg; t=1781632656;
+	bh=KJMqCWsV+hTwkzLtHKzzyEpkztCWtJs59nxQ9w9lBWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zAg0Z3IZ4rflm6Vsa6jc7XW05EW8uYnB5VJp+hHxB/fnLqPt48GHVL9350kniiFaq
-	 f8qOwk59oTfGlNKNrEncqOvHYmcHGCdRnol5TErhdaewndNkwUqcbRp2lIu1J/6cWP
-	 /EOJHCynd+JrfUvg+6tDGqw0O2A7Dg8+eMg3w5uI=
+	b=UTmEq9Ae23eRMcGHwzc7wT6UN9iGCM48VVXG8EqGR/ABbbWIlChcsp8qA1aisy09f
+	 ZoxZI8SqMv3Ti8Y1RYcYhmMm0ERYLKSvAWLTmSf0rSMHuFl04gc4xTvbpqnrUo93BX
+	 6EJNQ+8do1b3YOe8WKkgjt4p0ZhiCk4Sbp1fS8/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Wei-Cheng Chen <weichengc@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 362/411] phy: tegra: xusb: Fix per-pad high-speed termination calibration
+Subject: [PATCH 6.1 453/522] spi: qup: fix error pointer deref after DMA setup failure
 Date: Tue, 16 Jun 2026 20:30:00 +0530
-Message-ID: <20260616145120.581626560@linuxfoundation.org>
+Message-ID: <20260616145147.103785309@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,179 +69,82 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266156-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265723-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:waynec@nvidia.com,m:weichengc@nvidia.com,m:jonathanh@nvidia.com,m:vkoul@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:johan@kernel.org,m:broonie@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,sashiko.dev:url,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: DEB5A694436
+X-Rspamd-Queue-Id: 81E9D693A7F
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit da110228b54f2e2143d97ea7151e0dc22e539d67 ]
+[ Upstream commit a7e8f3efd50a165ba0189f6dc57f7e51a7d149db ]
 
-The existing code reads a single hs_term_range_adj value from bit field
-[10:7] of FUSE_SKU_CALIB_0 and applies it to all USB2 pads uniformly.
-However, on SoCs that support per-pad termination, each pad has its own
-hs_term_range_adj field: pad 0 in FUSE_SKU_CALIB_0[10:7], and pads 1-3
-in FUSE_USB_CALIB_EXT_0 at bit offsets [8:5], [12:9], and [16:13]
-respectively.
+The driver falls back to PIO mode if DMA setup fails during probe.
 
-Fix the calibration by reading per-pad values from the appropriate fuse
-registers. For SoCs that do not support per-pad termination, replicate
-pad 0's value to all pads to maintain existing behavior.
+Make sure to the clear the DMA channel pointers on setup failure to
+avoid dereferencing an error pointer (or attempting to release a channel
+a second time) on later probe errors or driver unbind.
 
-Add a has_per_pad_term flag to the SoC data to indicate whether per-pad
-termination values are available in FUSE_USB_CALIB_EXT_0.
+This issue was flagged by Sashiko when reviewing a devres allocation
+conversion patch.
 
-Fixes: 1ef535c6ba8e ("phy: tegra: xusb: Add Tegra194 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://patch.msgid.link/20260504033305.2283145-1-weichengc@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
+Link: https://sashiko.dev/#/patchset/20260505072909.618363-1-johan%40kernel.org?part=4
+Cc: stable@vger.kernel.org	# 4.1
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260512074334.914735-1-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |   32 +++++++++++++++++++++++++-------
- drivers/phy/tegra/xusb.h          |    1 +
- 2 files changed, 26 insertions(+), 7 deletions(-)
+ drivers/spi/spi-qup.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -20,8 +20,8 @@
- /* FUSE USB_CALIB registers */
- #define HS_CURR_LEVEL_PADX_SHIFT(x)	((x) ? (11 + (x - 1) * 6) : 0)
- #define HS_CURR_LEVEL_PAD_MASK		0x3f
--#define HS_TERM_RANGE_ADJ_SHIFT		7
--#define HS_TERM_RANGE_ADJ_MASK		0xf
-+#define HS_TERM_RANGE_ADJ_PADX_SHIFT(x)	((x) ? (5 + (x - 1) * 4) : 7)
-+#define HS_TERM_RANGE_ADJ_PAD_MASK	0xf
- #define HS_SQUELCH_SHIFT		29
- #define HS_SQUELCH_MASK			0x7
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -968,8 +968,11 @@ static int spi_qup_init_dma(struct spi_c
  
-@@ -238,7 +238,7 @@
- struct tegra_xusb_fuse_calibration {
- 	u32 *hs_curr_level;
- 	u32 hs_squelch;
--	u32 hs_term_range_adj;
-+	u32 *hs_term_range_adj;
- 	u32 rpd_ctrl;
- };
- 
-@@ -864,7 +864,7 @@ static int tegra186_utmi_phy_power_on(st
- 
- 	value = padctl_readl(padctl, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
- 	value &= ~TERM_RANGE_ADJ(~0);
--	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj);
-+	value |= TERM_RANGE_ADJ(priv->calib.hs_term_range_adj[index]);
- 	value &= ~RPD_CTRL(~0);
- 	value |= RPD_CTRL(priv->calib.rpd_ctrl);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_OTG_PADX_CTL1(index));
-@@ -1400,17 +1400,23 @@ static const char * const tegra186_usb3_
- static int
- tegra186_xusb_read_fuse_calibration(struct tegra186_xusb_padctl *padctl)
- {
-+	const struct tegra_xusb_padctl_soc *soc = padctl->base.soc;
- 	struct device *dev = padctl->base.dev;
- 	unsigned int i, count;
- 	u32 value, *level;
-+	u32 *hs_term_range_adj;
- 	int err;
- 
--	count = padctl->base.soc->ports.usb2.count;
-+	count = soc->ports.usb2.count;
- 
- 	level = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
- 	if (!level)
- 		return -ENOMEM;
- 
-+	hs_term_range_adj = devm_kcalloc(dev, count, sizeof(u32), GFP_KERNEL);
-+	if (!hs_term_range_adj)
-+		return -ENOMEM;
+ err:
+ 	dma_release_channel(host->dma_tx);
++	host->dma_tx = NULL;
+ err_tx:
+ 	dma_release_channel(host->dma_rx);
++	host->dma_rx = NULL;
 +
- 	err = tegra_fuse_readl(TEGRA_FUSE_SKU_CALIB_0, &value);
- 	if (err) {
- 		if (err != -EPROBE_DEFER)
-@@ -1429,8 +1435,8 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.hs_squelch = (value >> HS_SQUELCH_SHIFT) &
- 					HS_SQUELCH_MASK;
--	padctl->calib.hs_term_range_adj = (value >> HS_TERM_RANGE_ADJ_SHIFT) &
--						HS_TERM_RANGE_ADJ_MASK;
-+	hs_term_range_adj[0] = (value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(0)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
- 
- 	err = tegra_fuse_readl(TEGRA_FUSE_USB_CALIB_EXT_0, &value);
- 	if (err) {
-@@ -1442,6 +1448,17 @@ tegra186_xusb_read_fuse_calibration(stru
- 
- 	padctl->calib.rpd_ctrl = (value >> RPD_CTRL_SHIFT) & RPD_CTRL_MASK;
- 
-+	for (i = 1; i < count; i++) {
-+		if (soc->has_per_pad_term)
-+			hs_term_range_adj[i] =
-+				(value >> HS_TERM_RANGE_ADJ_PADX_SHIFT(i)) &
-+				HS_TERM_RANGE_ADJ_PAD_MASK;
-+		else
-+			hs_term_range_adj[i] = hs_term_range_adj[0];
-+	}
-+
-+	padctl->calib.hs_term_range_adj = hs_term_range_adj;
-+
- 	return 0;
+ 	return ret;
  }
  
-@@ -1643,6 +1660,7 @@ const struct tegra_xusb_padctl_soc tegra
- 	.supply_names = tegra194_xusb_padctl_supply_names,
- 	.num_supplies = ARRAY_SIZE(tegra194_xusb_padctl_supply_names),
- 	.supports_gen2 = true,
-+	.has_per_pad_term = true,
- };
- EXPORT_SYMBOL_GPL(tegra194_xusb_padctl_soc);
- #endif
---- a/drivers/phy/tegra/xusb.h
-+++ b/drivers/phy/tegra/xusb.h
-@@ -431,6 +431,7 @@ struct tegra_xusb_padctl_soc {
- 	unsigned int num_supplies;
- 	bool supports_gen2;
- 	bool need_fake_usb3_port;
-+	bool has_per_pad_term;
- };
- 
- struct tegra_xusb_padctl {
 
 
 
