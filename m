@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-266314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id GKDKKoGbMWploAUAu9opvQ
-	(envelope-from <stable+bounces-266314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:49 +0200
+	id ATWPGVKDMWo2lQUAu9opvQ
+	(envelope-from <stable+bounces-264986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D106948AB
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:52:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D00692CB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:09:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=CPgvfNfV;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266314-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266314-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d+0iK5kH;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264986-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264986-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7785F31F342F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:49:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E2C55302EF75
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DC73D8125;
-	Tue, 16 Jun 2026 18:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967834657FD;
+	Tue, 16 Jun 2026 16:55:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C803D8100;
-	Tue, 16 Jun 2026 18:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787C833A9EB;
+	Tue, 16 Jun 2026 16:55:28 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635774; cv=none; b=KwgM0b+YsRMM6h2d9rxqxmhJakFmsVn5/fOcNGyLmbiI0scI414W9X2EXQn1d/Mq5ABlewMaHNU4CxRjPCStAwJcWmZUzeU1RYId+wHbOl6y9wwKMiXYkuFOKonRUMMsOxEQf80Llhy8ALStMM1oCEDR4WXAANZJ4w07zpu5Plg=
+	t=1781628929; cv=none; b=LI4hPAO13GSSb/N3HJgapCZv2tBXkLVF+TzBkQMZxBqDfai3VOc70qtbTDRKiuz3lVYeA3FDLB1IcVwfdqR7kDl0R2Z5OSDXaj4sn2uSPC7Wj7oii7yvUekRIXvkDnF7arPl4H/ZSDDZqXebHuaRxUGfEC9AL0ElzfgdmRCZidY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635774; c=relaxed/simple;
-	bh=zYK/6AwKRa/8l5QFkclsi4gKXWW/Kym+87P7B0POFLE=;
+	s=arc-20240116; t=1781628929; c=relaxed/simple;
+	bh=akuoQxAOaJzmBHENIr75QEzP0eFM2oX7W2TuVpCKO44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/qTQXvCtBONf43+LetCDqr5UpYNQO0xAZN3NCpHwILeyZXoOHoQ5S3qDzXV9baE25fZJgfWTPxtyzXWkLjor0jM9SYZrMCJA/8YH10UQFZ0yL2oobJTIrFsaIzW/Ki+fReu15QbI99D1dkgSYpz1qyaCSRLvvsI2L/mkc5BQrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPgvfNfV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E9B1F000E9;
-	Tue, 16 Jun 2026 18:49:32 +0000 (UTC)
+	 MIME-Version; b=rZngyNK26iFZ9w+WyYe2pdHiwQ5Q7cL8RMedVqSqFZH6i/TJmzDZPCJAvf1hsZRyJxaK9Q973cnMVSxJ0i6dW5iuiBHNlz5UZFn8ySQnfipRMSO1YawcFxMMCwNAnXbY9uN3YtS/0KFPLCxHLTbNZWGKi0/KlQvJXZX9X/+ktpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+0iK5kH; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E46D1F000E9;
+	Tue, 16 Jun 2026 16:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635773;
-	bh=T0fna+1ZBtM/xt0dcX8IPh5Qz1ANzpKo6DQlwUlEncs=;
+	s=korg; t=1781628928;
+	bh=+FajqBbg2jdvwdgWrTQUGG2jCOlvcjgZQGs/ZNa9OTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CPgvfNfVODGG9lhZ8p0wrlSuqNomk5JY6ImWj7TXg8oYnoA8d8CVitTC1Y9V5mO1s
-	 MFY3DADWzHdpKB1XKM74+OMh4MK9NhsKx3/fCU045NYbPJEQmTBp12of4/STMvkck4
-	 /VQW5M1GXxDBk3hBdpbEZimlZRGLyGTbT3iYWq74=
+	b=d+0iK5kHpnmECsQNgPUPNPCV6zz+twy8Eqe/YuOwjJ7GBhIg3EXJWnGg/cS8Pk7rK
+	 w1As0o1DaHRUx1SKPPHAjmr7RAd1F2ZRClYR+uOAZ04ph0znZFcDnlExn6UDNOxpm+
+	 E2Ft/Tej0CDg0sSaqmwHeyawgTlx/lhJPsZf75lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH 5.10 112/342] serial: dz: Fix bootconsole message clobbering at chip reset
+	stable <stable@kernel.org>,
+	Prasanna S <prasanna.s@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 6.6 181/452] serial: qcom-geni: fix UART_RX_PAR_EN bit position
 Date: Tue, 16 Jun 2026 20:26:48 +0530
-Message-ID: <20260616145053.439074158@linuxfoundation.org>
+Message-ID: <20260616145127.361676328@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
-References: <20260616145048.348037099@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +72,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266314-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264986-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:macro@orcam.me.uk,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:prasanna.s@oss.qualcomm.com,m:konrad.dybcio@oss.qualcomm.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp,orcam.me.uk:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,vger.kernel.org:from_smtp,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: E5D106948AB
+X-Rspamd-Queue-Id: 66D00692CB5
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Prasanna S <prasanna.s@oss.qualcomm.com>
 
-commit ca904f4b42355287bc5ce8b7550ebe909cda4c2c upstream.
+commit ca2584d841b69391ffc4144840563d2e1a0018df upstream.
 
-In the DZ interface as implemented by the DC7085 gate array the serial
-transmitters are double buffered, meaning that at the time a transmitter
-is ready to accept the next character there is one in the transmit shift
-register still being sent to the line.  Issuing a master clear at this
-time causes this character to be lost, so wait an extra amount of time
-sufficient for the transmit shift register to drain at 9600bps, which is
-the baud rate setting used by the firmware console.
+UART_RX_PAR_EN is incorrectly defined as bit 3, which triggers false
+framing errors (S_GP_IRQ_1_EN) and causes received data to be dropped
+when parity is enabled and the parity bit is 0.
 
-Mind the specified 1.4us TRDY recovery time in the course and continue
-using iob() as the completion barrier, since the platforms involved use
-a write buffer that can delay and combine writes, and reorder them with
-respect to reads regardless of the MMIO locations accessed and we still
-lack a platform-independent handler for that.
+Define UART_RX_PAR_EN as bit 4 of the SE_UART_RX_TRANS_CFG register, as
+specified in the reference manual.
 
-When called from dz_serial_console_init() this is too early for fsleep()
-to work and even before lpj has been calculated and therefore the delay
-is actually not sufficient for the transmitter to drain and is merely a
-placeholder now.  This will be addressed in a follow-up change.
-
-Fixes: e6ee512f5a77 ("dz.c: Resource management")
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Cc: stable@vger.kernel.org # v2.6.25+
-Link: https://patch.msgid.link/alpine.DEB.2.21.2605062259080.46195@angie.orcam.me.uk
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Prasanna S <prasanna.s@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260428-serial-bit-correct-v1-1-9131ad5b97d8@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/dz.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/tty/serial/qcom_geni_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/dz.c
-+++ b/drivers/tty/serial/dz.c
-@@ -544,10 +544,31 @@ static int dz_encode_baud_rate(unsigned
- static void dz_reset(struct dz_port *dport)
- {
- 	struct dz_mux *mux = dport->mux;
-+	unsigned short tcr;
-+	int loops = 10000;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -46,7 +46,7 @@
+ #define TX_STOP_BIT_LEN_2		2
  
- 	if (mux->initialised)
- 		return;
+ /* SE_UART_RX_TRANS_CFG */
+-#define UART_RX_PAR_EN			BIT(3)
++#define UART_RX_PAR_EN			BIT(4)
  
-+	tcr = dz_in(dport, DZ_TCR);
-+
-+	/* Do not disturb any ongoing transmissions.  */
-+	if (dz_in(dport, DZ_CSR) & DZ_MSE) {
-+		unsigned short csr, mask;
-+
-+		mask = tcr;
-+		while ((mask & DZ_LNENB) && loops--) {
-+			csr = dz_in(dport, DZ_CSR);
-+			if (!(csr & DZ_TRDY))
-+				continue;
-+			mask &= ~(1 << ((csr & DZ_TLINE) >> 8));
-+			dz_out(dport, DZ_TCR, mask);
-+			iob();
-+			udelay(2);		/* 1.4us TRDY recovery.  */
-+		}
-+		udelay(1200);			/* Transmitter drain.  */
-+	}
-+
- 	dz_out(dport, DZ_CSR, DZ_CLR);
- 	while (dz_in(dport, DZ_CSR) & DZ_CLR);
- 	iob();
+ /* SE_UART_RX_WORD_LEN */
+ #define RX_WORD_LEN_MASK		GENMASK(9, 0)
 
 
 
