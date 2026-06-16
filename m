@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-264867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3s/vKPx/MWrekwUAu9opvQ
-	(envelope-from <stable+bounces-264867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:24 +0200
+	id xIdPDWaIMWp6lwUAu9opvQ
+	(envelope-from <stable+bounces-265410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6E669294B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:55:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A82169336D
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:31:17 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=M2+BIfjC;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264867-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264867-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=yBwT30Vc;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265410-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265410-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 556A73041B22
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:45:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FBE3300FB6A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A5A47A0B6;
-	Tue, 16 Jun 2026 16:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C2447A0DA;
+	Tue, 16 Jun 2026 17:30:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D470846AF14;
-	Tue, 16 Jun 2026 16:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE8632ED55;
+	Tue, 16 Jun 2026 17:30:57 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781628307; cv=none; b=mICNzGIfSpteoOHAoIzNsCa+imZJ0g3irw/spRP3E8DcLa0b/MQXQ9yr0hmP9PDlLNm/dBj1IQiJ4pElj2JPyg2jEl/cvDeAnOmG7NyQzpPGgQ2vJluga6sj3KyUSSVqYMy+sYS/+I2ttqQBQ+5KZGHeS0hRofxUq/d8HpZXQbY=
+	t=1781631058; cv=none; b=mZmD7cbfy295JxWeKBgWndJIJVwGjJqZ6TSG8CGB8WFFAneUMb529+/L8y90QdCZQ+eGriaIebHXyGe9iNsDhwNWwNC7ksZ+pxo2LrmtH8cThTgTHBNRe9FoEeJeeRkWjKsri/XSQMGVHUGCvHNycXzginJkr7m6BQqYhWKtWPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781628307; c=relaxed/simple;
-	bh=RYYAgZNcdi0efpPQMLEEy5sXUrrY+OKvJ0dwoIrEeFg=;
+	s=arc-20240116; t=1781631058; c=relaxed/simple;
+	bh=5OcsJer5Gu1VFFyXovyh0ZcEkjKK/Q89Vm5+4eMvq2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cW4ZQXy1mbYZ1UQyNquaJSjbxJLAPEDEAJZJ/diLbTa3qyqsVYWII7FKlvOBzwZG4vnC8ntRcKhU6c2rVr6+5E5ik4T2VXb36o+IkyXSNLxRM4mA9eF84Km4clbUbPCwRQk0gthXGmxCL4zHX1SPjBHFNXhLgADC4owWLKfE4r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2+BIfjC; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF081F000E9;
-	Tue, 16 Jun 2026 16:45:05 +0000 (UTC)
+	 MIME-Version; b=cyUN7o1PsV4C9OPGOGxbmVLWgx70WkHNOmX+XZh9faT3RxONFtGEcUajcA8wrLPZG31vzw1uBJnRI/iYkbbRahFu1RcU5wZlNIjB1Rfwjdq4keen6jl0goWWH/K0iTQAnkOgNufr/01MSecIDTJO2jcREUi20A5K/0iiFA/JA30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBwT30Vc; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A11C1F000E9;
+	Tue, 16 Jun 2026 17:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781628306;
-	bh=9mivVWOsx821nlItiuMvy0G+jUxuromW377t2Fj1nrY=;
+	s=korg; t=1781631057;
+	bh=DocT8x8Egm016aIWw1FyampuUrgMuipxHllGo4aV+aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M2+BIfjC+f4x317kLur5s78Al7ZOKbYIeCj55cQopOlPVx2Xrv2yxBdnA7H6hOEtU
-	 HZ4hl5eafrS+1t6X+7xHPmQP5YWeD+s2wxBNlo9vRdbEnMsxj5yF90oNYtCzz+7f/k
-	 2nrPUAUAE2/fLYSUjExTVHIGPBy+Kvo7zEkFFHOI=
+	b=yBwT30Vc1VJchWdBiM6tboKY1RggydUSc6Pl8IZTdbHxfQNt1Q06F2TcDufG1qZEk
+	 XJnHv07uqDRa77IYDORQ1CQqh4UycVh1wtXc7KFDUPeLuFrbz9D0eKaN4Al9ODVfpS
+	 sL1beDNJUJXdQZveqcCyZUVxcIm3HrB0AYC0Lz/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/452] drm/i915/psr: Add defininitions for INTEL_WA_REGISTER_CAPS DPCD register
+	stable <stable@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 6.1 149/522] usb: usbtmc: reject interrupt endpoints with small wMaxPacketSize
 Date: Tue, 16 Jun 2026 20:24:56 +0530
-Message-ID: <20260616145121.557150475@linuxfoundation.org>
+Message-ID: <20260616145133.057922638@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +65,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-264867-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jouni.hogander@intel.com,m:suraj.kandpal@intel.com,m:tursulin@ursulin.net,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265410-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:michal.pecio@gmail.com,m:halves@igalia.com,m:michalpecio@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,igalia.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ursulin.net:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9E6E669294B
+X-Rspamd-Queue-Id: 8A82169336D
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Heitor Alves de Siqueira <halves@igalia.com>
 
-commit fbceb39b536e40c2f7cc47ab42037bb7c2b7ced9 upstream.
+commit 121d2f682ba912b1427cddca7cf84840f41cc620 upstream.
 
-EDP specification says:
+The USB488 subclass specification requires interrupt wMaxPacketSize to
+be 0x02, unless the device sends vendor-specific notifications.
+Endpoints that advertise less than 2 bytes for wMaxPacketSize are
+unlikely to work with the current driver, as URBs will not have enough
+space for interrupt headers. Considering that any notification URBs will
+be ignored by the driver, reject these endpoints early during probe.
 
-"If either VSC SDP is unable to be transmitted 100 ns before the SU region,
-the Source device may optionally transmit the VSC SDP during the prior
-video scan line’s HBlank period There is a Intel specific drm dp register
-currently containing bits related how TCON can support PSR2 with SDP on
-prior line."
-
-Unfortunately many panels are having problems in implementing this. So
-there is a custom Intel specific DPCD register (INTEL_WA_REGISTER_CAPS) to
-figure out if this is properly implemented on a panel or if panel doesn't
-require that 100 ns delay before the SU region. Here are the definitions in
-this custom DPCD address:
-
-0 = Panel doesn't support SDP on prior line
-1 = Panel supports SDP on prior line
-2 = Panel doesn't have 100ns requirement
-3 = Reserved
-
-Add definitions for this new register and it's values into new header
-intel_dpcd.h.
-
-v2: add INTEL_DPCD_ prefix to definitions
-
-Bspec: 74741
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260515095756.2799483-2-jouni.hogander@intel.com
-(cherry picked from commit 1da1c9294825f08f622c473480d185680c2a3b75)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 041370cce889 ("USB: usbtmc: refactor endpoint retrieval")
+Cc: stable <stable@kernel.org>
+Suggested-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Link: https://patch.msgid.link/20260505-usbtmc-iin-size-v3-2-a36113f62db7@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dpcd.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
- create mode 100644 drivers/gpu/drm/i915/display/intel_dpcd.h
+ drivers/usb/class/usbtmc.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dpcd.h b/drivers/gpu/drm/i915/display/intel_dpcd.h
-new file mode 100644
-index 00000000000000..4aea5326f2ed48
---- /dev/null
-+++ b/drivers/gpu/drm/i915/display/intel_dpcd.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef __INTEL_DPCD_H__
-+#define __INTEL_DPCD_H__
-+
-+#define INTEL_DPCD_INTEL_WA_REGISTER_CAPS					0x3f0
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_EARLYSCANLINE_SDP_SUPPORT_MASK	REG_GENMASK(1, 0)
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_FALL_BACK_TO_PSR1			0
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITH_EARLY_SCANLINE		1
-+# define INTEL_DPCD_INTEL_WA_REGISTER_CAPS_PSR2_WITHOUT_EARLY_SCANLINE		2
-+
-+#endif /* __INTEL_DPCD_H__ */
--- 
-2.53.0
-
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -2444,6 +2444,12 @@ static int usbtmc_probe(struct usb_inter
+ 		data->iin_ep = int_in->bEndpointAddress;
+ 		data->iin_wMaxPacketSize = usb_endpoint_maxp(int_in);
+ 		data->iin_interval = int_in->bInterval;
++		/* wMaxPacketSize should be 0x02 or more as per USB488 Table 22 */
++		if (iface_desc->desc.bInterfaceProtocol == 1 &&
++		    data->iin_wMaxPacketSize < 2) {
++			retcode = -EINVAL;
++			goto err_put;
++		}
+ 		dev_dbg(&intf->dev, "Found Int in endpoint at %u\n",
+ 				data->iin_ep);
+ 	}
 
 
 
