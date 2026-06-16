@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id PQ28DraMMWp9mQUAu9opvQ
-	(envelope-from <stable+bounces-265631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:42 +0200
+	id J7aNK2yEMWqwlQUAu9opvQ
+	(envelope-from <stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FD169384A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:49:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D60692E55
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:14:20 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TppApd9U;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265631-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265631-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=n60l2SZL;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265091-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA536306EF03
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A6B2324B881
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5144418E3;
-	Tue, 16 Jun 2026 17:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5AD47A0C0;
+	Tue, 16 Jun 2026 17:03:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144D3169AD2;
-	Tue, 16 Jun 2026 17:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819B9478E41;
+	Tue, 16 Jun 2026 17:03:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781632178; cv=none; b=gcIsZUw7nwV5YdjiswUNcpyz1eOimu0ppe54UMKE9/7fPr80Y8lvZLIz4yH3RhfPRkd64j3hH6fSqqXZONJOAktMCBdP97T2G6HmL1hgtXcn7/9JbgPIw8A/Xywo/k6XZsGruQE21RvXTOt+KGZ7yscpgya/PyEbinPg0CAx9zU=
+	t=1781629426; cv=none; b=qDzS3jhN2wni0f/SSl0TP1nIcChskdcd4wpv1ftJse/8Y2ltw6coNy4d98wvw8ymCfslBKdC/Ysqg/yYRZQrK0WSVl2/L8FH6CdD9YUOZ4iQoQVabNZpWy21j1SpF2XIGwh/60QkAcYcUM/YAh6EeQgCOsWHUSfqpBKCUxjJ1q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781632178; c=relaxed/simple;
-	bh=1HPGN62W/EalgbV6ETMnZ4ZbnQVG8k06oFt2Uamk9wY=;
+	s=arc-20240116; t=1781629426; c=relaxed/simple;
+	bh=6s8C5XNiwbb6RHDfBvbDjWXntojlsKJ2MOcBEOBvfgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHEr0s6APlpcFCEpU/kvUNVWDdT+dT6yBzuYyXVZXOy19nv8eDIFO4R/nobej37+Sky6N7VuwsSpC36ljtO5fFd4EofKaIAsLdRzOd87IWe+zAfEUqxd+j0WsnVLDbacUf6cBL7DxInjD1ZHah8Ni0D7SQ452WLCAIuadK/gI0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TppApd9U; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8E41F000E9;
-	Tue, 16 Jun 2026 17:49:35 +0000 (UTC)
+	 MIME-Version; b=XAW2aU8Q4FoBS7R1MWJppPlYH5cp1MSTuVk4cyRPVcdS3Q8rCgQh4zvo04lkDW6QNrwf7h0EQraQadBRf26ZA3Nh2nZ3e8sa3f3CefDluStS6OVto83sw7LmP52bJjnS/Jxr2A6rj5Jay5BjpLhH0ADiHeq19cV8en8KTbo+O4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n60l2SZL; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8634E1F00A3A;
+	Tue, 16 Jun 2026 17:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781632176;
-	bh=AA9sM/lhyxA5xId0fr4XIkYBHYLQZTwhOvjRr3jkGjc=;
+	s=korg; t=1781629425;
+	bh=QQp4iJRn2VWYAWMDD79kUMKmzw7o5/0Qqi9sexFpEvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TppApd9U0vctKeC9XZPp7LY33Hnk6OGbynQB48yToddRV1qxdO8vSBBA/2Uwe3lUm
-	 y6XPb69l8eYxqWYBw/6PuQ7s3SiihNadcm7I+Tp4i0jrL7coSyLj887d+bEExJG4Q1
-	 1lEIzdIzzhUSiWAcLnkIERveKh0YPfMWu925iVw8=
+	b=n60l2SZLTh1mgNhFhRZngkxclIlZcfJAgVJB4BTpRxDOtGMXtvJ5LKiax9eiJXhY4
+	 1LX5U1akBUido33GRkxonqd/w7dzzG5viC7e21l+KUIRcEzXm7cAZhACk3824UYNXd
+	 +r0y29lCTO3gOo1s2+WWdhUO7ZMjx5o6jFkrGv1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Til Kaiser <mail@tk154.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 361/522] crypto: nx - Avoid -Wflex-array-member-not-at-end warning
+Subject: [PATCH 6.6 281/452] net: mvpp2: sync RX data at the hardware packet offset
 Date: Tue, 16 Jun 2026 20:28:28 +0530
-Message-ID: <20260616145142.680998475@linuxfoundation.org>
+Message-ID: <20260616145132.390222135@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265631-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265091-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:gustavoars@kernel.org,m:herbert@gondor.apana.org.au,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:mail@tk154.de,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,126 +98,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,apana.org.au:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,tk154.de:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A9FD169384A
+X-Rspamd-Queue-Id: 02D60692E55
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: Til Kaiser <mail@tk154.de>
 
-[ Upstream commit 1e6b251ce1759392666856908113dd5d7cea044d ]
+[ Upstream commit 180235600934bef6add3be637c296d6cf3272e67 ]
 
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally. So, we are deprecating flexible-array
-members in the middle of another structure.
+mvpp2 programs the RX queue packet offset, so hardware writes received
+data at dma_addr + MVPP2_SKB_HEADROOM. The current CPU sync starts at
+dma_addr and only covers rx_bytes + MVPP2_MH_SIZE bytes, which syncs the
+unused headroom and misses the same number of bytes at the packet tail.
 
-There is currently an object (`header`) in `struct nx842_crypto_ctx`
-that contains a flexible structure (`struct nx842_crypto_header`):
+On non-coherent DMA systems this can leave the CPU reading stale cache
+contents for the end of the received frame.
 
-struct nx842_crypto_ctx {
-	...
-        struct nx842_crypto_header header;
-        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
-	...
-};
+Use dma_sync_single_range_for_cpu() with MVPP2_SKB_HEADROOM as the range
+offset so the sync covers the Marvell header and packet data actually
+written by hardware.
 
-So, in order to avoid ending up with a flexible-array member in the
-middle of another struct, we use the `struct_group_tagged()` helper to
-separate the flexible array from the rest of the members in the flexible
-structure:
-
-struct nx842_crypto_header {
-	struct_group_tagged(nx842_crypto_header_hdr, hdr,
-
-		... the rest of the members
-
-	);
-        struct nx842_crypto_header_group group[];
-} __packed;
-
-With the change described above, we can now declare an object of the
-type of the tagged struct, without embedding the flexible array in the
-middle of another struct:
-
-struct nx842_crypto_ctx {
-	...
-        struct nx842_crypto_header_hdr header;
-        struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
-	...
- } __packed;
-
-We also use `container_of()` whenever we need to retrieve a pointer to
-the flexible structure, through which we can access the flexible
-array if needed.
-
-So, with these changes, fix the following warning:
-
-In file included from drivers/crypto/nx/nx-842.c:55:
-drivers/crypto/nx/nx-842.h:174:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-  174 |         struct nx842_crypto_header header;
-      |                                    ^~~~~~
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: adb3faf2db1a ("crypto: nx - fix bounce buffer leaks in nx842_crypto_{alloc,free}_ctx")
+Fixes: e1921168bbd4 ("mvpp2: sync only the received frame")
+Signed-off-by: Til Kaiser <mail@tk154.de>
+Link: https://patch.msgid.link/20260607134943.21996-2-mail@tk154.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/nx/nx-842.c |    6 ++++--
- drivers/crypto/nx/nx-842.h |   10 ++++++----
- 2 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/nx/nx-842.c
-+++ b/drivers/crypto/nx/nx-842.c
-@@ -251,7 +251,9 @@ int nx842_crypto_compress(struct crypto_
- 			  u8 *dst, unsigned int *dlen)
- {
- 	struct nx842_crypto_ctx *ctx = crypto_tfm_ctx(tfm);
--	struct nx842_crypto_header *hdr = &ctx->header;
-+	struct nx842_crypto_header *hdr =
-+				container_of(&ctx->header,
-+					     struct nx842_crypto_header, hdr);
- 	struct nx842_crypto_param p;
- 	struct nx842_constraints c = *ctx->driver->constraints;
- 	unsigned int groups, hdrsize, h;
-@@ -490,7 +492,7 @@ int nx842_crypto_decompress(struct crypt
- 	}
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 410c9dea4fa2ef..af10654f655674 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -3948,9 +3948,10 @@ static int mvpp2_rx(struct mvpp2_port *port, struct napi_struct *napi,
+ 			dma_dir = DMA_FROM_DEVICE;
+ 		}
  
- 	memcpy(&ctx->header, src, hdr_len);
--	hdr = &ctx->header;
-+	hdr = container_of(&ctx->header, struct nx842_crypto_header, hdr);
+-		dma_sync_single_for_cpu(dev->dev.parent, dma_addr,
+-					rx_bytes + MVPP2_MH_SIZE,
+-					dma_dir);
++		dma_sync_single_range_for_cpu(dev->dev.parent, dma_addr,
++					      MVPP2_SKB_HEADROOM,
++					      rx_bytes + MVPP2_MH_SIZE,
++					      dma_dir);
  
- 	for (n = 0; n < hdr->groups; n++) {
- 		/* ignore applies to last group */
---- a/drivers/crypto/nx/nx-842.h
-+++ b/drivers/crypto/nx/nx-842.h
-@@ -157,9 +157,11 @@ struct nx842_crypto_header_group {
- } __packed;
- 
- struct nx842_crypto_header {
--	__be16 magic;		/* NX842_CRYPTO_MAGIC */
--	__be16 ignore;		/* decompressed end bytes to ignore */
--	u8 groups;		/* total groups in this header */
-+	struct_group_tagged(nx842_crypto_header_hdr, hdr,
-+		__be16 magic;		/* NX842_CRYPTO_MAGIC */
-+		__be16 ignore;		/* decompressed end bytes to ignore */
-+		u8 groups;		/* total groups in this header */
-+	);
- 	struct nx842_crypto_header_group group[];
- } __packed;
- 
-@@ -171,7 +173,7 @@ struct nx842_crypto_ctx {
- 	u8 *wmem;
- 	u8 *sbounce, *dbounce;
- 
--	struct nx842_crypto_header header;
-+	struct nx842_crypto_header_hdr header;
- 	struct nx842_crypto_header_group group[NX842_CRYPTO_GROUP_MAX];
- 
- 	struct nx842_driver *driver;
+ 		/* Buffer header not supported */
+ 		if (rx_status & MVPP2_RXD_BUF_HDR)
+-- 
+2.53.0
+
 
 
 
