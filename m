@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-265368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id U+SQDZOHMWoSlwUAu9opvQ
-	(envelope-from <stable+bounces-265368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:47 +0200
+	id oIz6KkaQMWpRmwUAu9opvQ
+	(envelope-from <stable+bounces-265807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:54 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6937693253
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 434C0693C95
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:04:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=hQmEpz3u;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265368-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265368-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DM9QhpzU;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265807-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265807-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A76633036E63
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:27:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4ECDB304B932
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C12247CC63;
-	Tue, 16 Jun 2026 17:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8713CFF55;
+	Tue, 16 Jun 2026 18:04:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C6047CC6C;
-	Tue, 16 Jun 2026 17:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427FF3C09E1;
+	Tue, 16 Jun 2026 18:04:49 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630848; cv=none; b=AUpJKjAWUgX/PLcg/iaRQGkw4OPQpWS1QuH7XuKps85iKo0M9D6fDl9/rKJLXVJxoTL+IzpX4ausxOjSeHGY3qNj7p3vaXvXhRFL/qpDr+Gh0wfMC6l303pu44xRrdkE0+uEJs5FjFefEta8WCJvebF+3o1HvuGw7mqmU20DULQ=
+	t=1781633090; cv=none; b=ODD6Ddg6+oXojAVqaOvlCtLSZYoGPirRGeVx0NWDy+LvNIZ7DfkZBz2Pyg0NOiqcQlrxo5UdmeK8F/BxP4Ps+FfTZL+Ig06kGRJoN3orCWcldcSH/2nkY6H6ASFwnIg8ksQPkkg0zNbLcb9ABAJvRd9jyilVIDbZtkGMOGgA2Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630848; c=relaxed/simple;
-	bh=gGhzUGEGXSqtK+LwEUg3LoDVfi6ViA8L0xST8vCKPSE=;
+	s=arc-20240116; t=1781633090; c=relaxed/simple;
+	bh=irfSDn0OSezX9NNOuzhgMiTooyd+fsDn4MxvLBYCoz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmPHHxEyg5fyXumSx35jkFcnrW0KuY434gdwHXiiJoxS4EIFL5mpMQu3Pn3quGUjDSCJXanHGTLmRUowa+WkPBic36EAu8ClJmyps6Fd68Pd/CF2P1q+NJTIaRTw7V2gxajAxByGTLVgZ2ey2hIXOzvRnRq5Y+70bkmPM6248Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQmEpz3u; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880961F000E9;
-	Tue, 16 Jun 2026 17:27:23 +0000 (UTC)
+	 MIME-Version; b=bhmKFOV9uwomwK9evAOAiCG9wuD1cvzDGd8OW03pGwWO5PNKoE3FuBjoXt+LsF1LH0Lhv5LquzoJjeEv6pg/Dnrgg6Tz/wB+hi5/fbG6C9kVDABtYgLNIwMCo/rSmxUivF14Av0Bmzs/W6xJmdHgfUIUIdFj4q4tfmm3Mr4+ERc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM9QhpzU; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AE51F000E9;
+	Tue, 16 Jun 2026 18:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630844;
-	bh=5SM0LSG0fgG4fMJuyVL75SkNwRY8woNtxwuRgTdk4uA=;
+	s=korg; t=1781633088;
+	bh=GEPcb2Atzt/vpoHuLEHY7QIJJJUVOgmZSFRrsy8YfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hQmEpz3uQkJ9iUmEXd5N/xf6iSxHGCo+7w2cnfKpffkpC4novHev3FTubGWZNOlfw
-	 7E3Ay6yqJ+53RuIDdfkWuOqkWk9qQuhDqd4ByiIOwitVGb+QF0x6vY2BzFbfmiwaph
-	 NXclpHn2zipv5iV6XRUUzak7DpbpJ2SGZlmEvddI=
+	b=DM9QhpzUn91xK5lZ5MY3265jsQ1yBanCyjvEtT5Lugy4Q2w/sS7ZrUh8t5RZtZ6nQ
+	 63Hj6w3N6BoF2cLvZctVcoG38Gwx59cygBiT5Y2NgniS+UWKcl9nqYKvf3//vABlne
+	 XSWANBVu8cKUMPMnw6LPiI1eN54bXZbIxJByCpvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ben Hutchings <benh@debian.org>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 6.1 100/522] parport: Fix race between port and client registration
+	Lee Jones <lee@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	David Heidelberg <david@ixit.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 009/411] nfc: llcp: Fix use-after-free race in nfc_llcp_recv_cc()
 Date: Tue, 16 Jun 2026 20:24:07 +0530
-Message-ID: <20260616145130.603993159@linuxfoundation.org>
+Message-ID: <20260616145100.851905886@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,151 +68,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265368-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:benh@debian.org,m:sudipm.mukherjee@gmail.com,m:sudipmmukherjee@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265807-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lee@kernel.org,m:horms@kernel.org,m:david@ixit.cz,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,debian.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,ixit.cz:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: A6937693253
+X-Rspamd-Queue-Id: 434C0693C95
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Lee Jones <lee@kernel.org>
 
-commit ef15ccbb3e8640a723c42ad90eaf81d66ae02017 upstream.
+[ Upstream commit b493ea2765cc17cb8aa7e7544a4b6dcb05b6ed77 ]
 
-The parport subsystem registers port devices before they are fully
-initialised, resulting in a race condition where client drivers such
-as lp can attach to ports that are not completely initialised or even
-being torn down.
+A race condition exists in the NFC LLCP connection state machine where
+the connection acceptance packet (CC) can be processed concurrently with
+socket release.  This can lead to a use-after-free of the socket object.
 
-When the port and client drivers are built as modules and loaded
-around the same time during boot, this occasionally results in a
-crash.  I was able to make this happen reliably in a VM with a
-PC-style parallel port by patching parport_pc to fail probing:
+When nfc_llcp_recv_cc() moves the socket from the connecting_sockets
+list to the sockets list, it does so without holding the socket lock.
+If llcp_sock_release() is executing concurrently, it might have already
+unlinked the socket and dropped its references, which can result in
+nfc_llcp_recv_cc() linking a freed socket into the live list.
 
-> --- a/drivers/parport/parport_pc.c
-> +++ b/drivers/parport/parport_pc.c
-> @@ -2069,7 +2069,7 @@ static struct parport *__parport_pc_probe_port(unsigned long int base,
->  	if (!p)
->  		goto out3;
->
-> -	base_res = request_region(base, 3, p->name);
-> +	base_res = NULL;
->  	if (!base_res)
->  		goto out4;
->
+Fix this by holding lock_sock() during the state transition and list
+movement in nfc_llcp_recv_cc().  After acquiring the lock, check if
+the socket is still hashed to ensure it hasn't already been unlinked
+and marked for destruction by the release path.  This aligns the locking
+pattern with recv_hdlc() and recv_disc().
 
-and then running:
-
-    while true; do
-        modprobe lp & modprobe parport_pc
-	wait
-	rmmod lp parport_pc
-    done
-
-for a few seconds.
-
-In the long term I think port registration should be changed to put
-the call to device_add() inside parport_announce_port(), but since the
-latter currently cannot fail this will require changing all port
-drivers.
-
-For now, add a flag to indicate whether a port has been "announced"
-and only try to attach client drivers to ports when the flag is set.
-
-Fixes: 6fa45a226897 ("parport: add device-model to parport subsystem")
-Closes: https://bugs.debian.org/1130365
-Closes: https://lore.kernel.org/all/6ba903ad-9897-42bb-8c2d-337385cc3746@molgen.mpg.de/
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://patch.msgid.link/afo6uBv68GDevbMD@decadent.org.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a69f32af86e3 ("NFC: Socket linked list")
+Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260429134115.3558604-2-lee@kernel.org
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/share.c |   11 +++++++++--
- include/linux/parport.h |    1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ net/nfc/llcp_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/parport/share.c
-+++ b/drivers/parport/share.c
-@@ -223,10 +223,14 @@ static void get_lowlevel_driver(void)
- static int port_check(struct device *dev, void *dev_drv)
- {
- 	struct parport_driver *drv = dev_drv;
-+	struct parport *port;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index e04634f22b49f4..c7de44637e0187 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1225,6 +1225,15 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
  
- 	/* only send ports, do not send other devices connected to bus */
--	if (is_parport(dev))
--		drv->match_port(to_parport_dev(dev));
-+	if (is_parport(dev)) {
-+		port = to_parport_dev(dev);
-+		if (test_bit(PARPORT_ANNOUNCED, &port->devflags))
-+			drv->match_port(port);
-+	}
- 	return 0;
- }
+ 	sk = &llcp_sock->sk;
  
-@@ -553,6 +557,7 @@ void parport_announce_port(struct parpor
- 		if (slave)
- 			attach_driver_chain(slave);
- 	}
-+	set_bit(PARPORT_ANNOUNCED, &port->devflags);
- 	mutex_unlock(&registration_lock);
- }
- EXPORT_SYMBOL(parport_announce_port);
-@@ -582,6 +587,8 @@ void parport_remove_port(struct parport
- 
- 	mutex_lock(&registration_lock);
- 
-+	clear_bit(PARPORT_ANNOUNCED, &port->devflags);
++	lock_sock(sk);
 +
- 	/* Spread the word. */
- 	detach_driver_chain(port);
++	/* Check if socket was destroyed whilst waiting for the lock */
++	if (!sk_hashed(sk)) {
++		release_sock(sk);
++		nfc_llcp_sock_put(llcp_sock);
++		return;
++	}
++
+ 	/* Unlink from connecting and link to the client array */
+ 	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
+ 	nfc_llcp_sock_link(&local->sockets, sk);
+@@ -1236,6 +1245,8 @@ static void nfc_llcp_recv_cc(struct nfc_llcp_local *local,
+ 	sk->sk_state = LLCP_CONNECTED;
+ 	sk->sk_state_change(sk);
  
---- a/include/linux/parport.h
-+++ b/include/linux/parport.h
-@@ -245,6 +245,7 @@ struct parport {
++	release_sock(sk);
++
+ 	nfc_llcp_sock_put(llcp_sock);
+ }
  
- 	unsigned long devflags;
- #define PARPORT_DEVPROC_REGISTERED	0
-+#define PARPORT_ANNOUNCED		1
- 	struct pardevice *proc_device;	/* Currently register proc device */
- 
- 	struct list_head full_list;
+-- 
+2.53.0
+
 
 
 
