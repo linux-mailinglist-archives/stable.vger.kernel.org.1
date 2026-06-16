@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id MW4kA3x3MWpEkAUAu9opvQ
-	(envelope-from <stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:08 +0200
+	id Y1vHJJ5xMWrZjQUAu9opvQ
+	(envelope-from <stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CAE691EE7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023116917CB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:54:06 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JLOQ8Lml;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264388-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AEMikakB;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264201-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 658EE307772A
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:01:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F3C13117A38
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538AC466B44;
-	Tue, 16 Jun 2026 16:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65F74508F2;
+	Tue, 16 Jun 2026 15:44:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173D94611FC;
-	Tue, 16 Jun 2026 16:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A2044E05B;
+	Tue, 16 Jun 2026 15:44:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625625; cv=none; b=JTLJxQLDba3cIW1k7fnyOPlXeksmr4+ejY8hWOxMe1cyMreHyTbvEquQ85e8iqr6nZzs27E4rTHSUFp5QQZoKZqf8kgCPGv9QDiiBZD3jfxy2aKYFmysuERwGYmZcEW/etu0a2zFeZDul+EC2x4u93tsCgebvrhHzdYeZKXtvKA=
+	t=1781624663; cv=none; b=ZRVJibW/qI4Tbcph0Jvoj/KFAZd0SNVF7fWCJGJf+dqIva9ODxw1pyv+T2ul3Tzm/snvr2Z/40OF9d62AryvDHldj1G+EfVyIzgZA2+tKIue63Ji0+i54Rdoxl/EgS7iLerLmPodXjyPokHceDjBSMHb3hcIjDSYCajt6z6i570=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625625; c=relaxed/simple;
-	bh=bj/t4JqRjS+Yp7nwlSpRoO9f8FTDL2UkZm7xH9lwBVU=;
+	s=arc-20240116; t=1781624663; c=relaxed/simple;
+	bh=8WOfC5/DOQP1vdXG2hwUh27Q5tg+T93FtDLR2xJk5BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Heahd9jLOvQSICn8UVvDfqCW9VMZBZoKwwhgVWN56bxjyfps0CA5qYg2UGf2AVKKvO0g8cPomRQLFECQfB8XI+qW9YvW0Hjrs1z96HjHmHNQ42aCfl8n8i9yUp+NWUNg6QwQxRS7Uc+rBtNZXZj+ZxgTQ8rymWuAvXXjl5dPMZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLOQ8Lml; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189621F000E9;
-	Tue, 16 Jun 2026 16:00:22 +0000 (UTC)
+	 MIME-Version; b=SwZiPqrSHH3D+VNG+61xERey4LUjrKkdvonJMAT6gZty8Si5jPeG8FBSee8Dtc9ttxmwf9gevxW2hh5t3CGO3k9Q6JR7PpBPx0sOiqwxK2/3lyScDiqhUh19VtCpjhGEL1sDmy1EDE1PpJkNU2c/MXHNNZrJ7fHYgtqdLkm/GRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEMikakB; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87B71F000E9;
+	Tue, 16 Jun 2026 15:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781625624;
-	bh=yr3GLNB9UV0FdrqKq3RnVByh5LkFQBScM4MMAgTZB3Q=;
+	s=korg; t=1781624662;
+	bh=z8g4uwPifVcennyRQwGfijDUK/YDIW8yrrV/f3gLWos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JLOQ8Lml6NDCXksJ11fLj7Tx/IIcrfT8/WFD4B4NJ0PJOz9mdL8fsoEo8gZWsqQuR
-	 l6M72XiHBdPhhwDn4rhbJMJkwZbM+hrRqpqJvUohi/UCheZJkGZ+VydI8qGOQAWVg7
-	 8f++iF9gNhe3Ng3zPaqQoW+V6mIMxqbQ+rawXPLE=
+	b=AEMikakB5GBXm9hRvKstK1gSVibWwf7i3HZvwbkJKocZ1ZJfpn0Kdn5uNafwro5nP
+	 D4NfS7IvarS1d1MHVMqWOIWdFX/o00knhZ+mzjXOZxSFfI4B4/PcGC8De1MDmqClHS
+	 ZYa5ZyfUFhAnxdUzOe1ccpVM8Xt/Spk2Wh0hl5s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Leontev <leontyevantony@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 169/325] hv_netvsc: use kmap_local_page in netvsc_copy_to_send_buf
+	Uma Shankar <uma.shankar@intel.com>,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Pranay Samala <pranay.samala@intel.com>
+Subject: [PATCH 7.0 334/378] drm/i915: Fix color blob reference handling in intel_plane_state
 Date: Tue, 16 Jun 2026 20:29:25 +0530
-Message-ID: <20260616145106.250221383@linuxfoundation.org>
+Message-ID: <20260616145127.803645838@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,126 +70,120 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-264388-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leontyevantony@gmail.com,m:pabeni@redhat.com,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
+	TAGGED_FROM(0.00)[bounces-264201-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:uma.shankar@intel.com,m:chaitanya.kumar.borah@intel.com,m:tursulin@ursulin.net,m:pranay.samala@intel.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,intel.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ursulin.net:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 11CAE691EE7
+X-Rspamd-Queue-Id: 023116917CB
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Leontev <leontyevantony@gmail.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-commit 004e9ecfe6c5384f9e0b2f6f6389d42ec22789af upstream.
+commit 26eb7c0a7ab09d83eec833db6a5a2bc60b9d4d9a upstream.
 
-netvsc_copy_to_send_buf() copies page buffer entries into the VMBus
-send buffer using phys_to_virt() on the entry PFN. Entries for the
-RNDIS header and the skb linear data come from kmalloc'd memory and
-are always in the kernel direct map, but entries for skb fragments
-reference page cache or user pages, which on 32-bit x86 with
-CONFIG_HIGHMEM=y can live above the LOWMEM boundary. For such a page
-phys_to_virt() returns an address outside the direct map and the
-subsequent memcpy() faults on the transmit softirq path, which is
-fatal.
+Take proper references for hw color blobs (degamma_lut, gamma_lut,
+ctm, lut_3d) in intel_plane_duplicate_state() and drop them in
+intel_plane_destroy_state().
 
-Map the pages with kmap_local_page() instead, handling two properties
-of the page buffer entries:
+v2:
+- handle blobs in hw state clear
 
- - pb[i].pfn is a Hyper-V PFN at HV_HYP_PAGE_SIZE (4K) granularity,
-   not a native PFN. Reconstruct the physical address first and derive
-   the native page from it, so the mapping stays correct where
-   PAGE_SIZE > HV_HYP_PAGE_SIZE (e.g. arm64 with 64K pages).
-
- - Since commit 41a6328b2c55 ("hv_netvsc: Preserve contiguous PFN
-   grouping in the page buffer array"), an entry describes a full
-   physically contiguous fragment and pb[i].len can exceed PAGE_SIZE,
-   while kmap_local_page() maps a single page. Copy page by page,
-   splitting at native page boundaries.
-
-The copy path only handles packets smaller than the send section size
-(6144 bytes by default); larger packets take the cp_partial path where
-only the RNDIS header is copied. So entries here are bounded by the
-section size and a copy is split at most once on 4K-page systems. On
-!CONFIG_HIGHMEM configs kmap_local_page() folds to page_address() and
-no mapping work is added.
-
-Fixes: c25aaf814a63 ("hyperv: Enable sendbuf mechanism on the send path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Anton Leontev <leontyevantony@gmail.com>
-Link: https://patch.msgid.link/20260604165938.32033-1-leontyevantony@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: <stable@vger.kernel.org> #v6.19+
+Fixes: 3b7476e786c2 ("drm/i915/color: Add framework to program PRE/POST CSC LUT")
+Fixes: a78f1b6baf4d ("drm/i915/color: Add framework to program CSC")
+Fixes: 65db7a1f9cf7 ("drm/i915/color: Add 3D LUT to color pipeline")
+Reviewed-by: Pranay Samala <pranay.samala@intel.com> #v1
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+Link: https://patch.msgid.link/20260601082953.128539-4-chaitanya.kumar.borah@intel.com
+(cherry picked from commit c6eea1925154b6697fe22b217faab9bb30635e6b)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_plane.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -12,6 +12,7 @@
- #include <linux/sched.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-+#include <linux/highmem.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -965,12 +966,22 @@ static void netvsc_copy_to_send_buf(stru
- 	}
+--- a/drivers/gpu/drm/i915/display/intel_plane.c
++++ b/drivers/gpu/drm/i915/display/intel_plane.c
+@@ -144,6 +144,15 @@ intel_plane_duplicate_state(struct drm_p
+ 	if (intel_state->hw.fb)
+ 		drm_framebuffer_get(intel_state->hw.fb);
  
- 	for (i = 0; i < page_count; i++) {
--		char *src = phys_to_virt(pb[i].pfn << HV_HYP_PAGE_SHIFT);
--		u32 offset = pb[i].offset;
-+		phys_addr_t paddr = (pb[i].pfn << HV_HYP_PAGE_SHIFT) +
-+				    pb[i].offset;
- 		u32 len = pb[i].len;
- 
--		memcpy(dest, (src + offset), len);
--		dest += len;
-+		while (len) {
-+			struct page *page = phys_to_page(paddr);
-+			u32 off = offset_in_page(paddr);
-+			u32 chunk = min_t(u32, len, PAGE_SIZE - off);
-+			char *src = kmap_local_page(page);
++	if (intel_state->hw.degamma_lut)
++		drm_property_blob_get(intel_state->hw.degamma_lut);
++	if (intel_state->hw.gamma_lut)
++		drm_property_blob_get(intel_state->hw.gamma_lut);
++	if (intel_state->hw.ctm)
++		drm_property_blob_get(intel_state->hw.ctm);
++	if (intel_state->hw.lut_3d)
++		drm_property_blob_get(intel_state->hw.lut_3d);
 +
-+			memcpy(dest, src + off, chunk);
-+			kunmap_local(src);
-+			dest += chunk;
-+			paddr += chunk;
-+			len -= chunk;
-+		}
- 	}
+ 	return &intel_state->uapi;
+ }
  
- 	if (padding)
+@@ -167,6 +176,16 @@ intel_plane_destroy_state(struct drm_pla
+ 	__drm_atomic_helper_plane_destroy_state(&plane_state->uapi);
+ 	if (plane_state->hw.fb)
+ 		drm_framebuffer_put(plane_state->hw.fb);
++
++	if (plane_state->hw.degamma_lut)
++		drm_property_blob_put(plane_state->hw.degamma_lut);
++	if (plane_state->hw.gamma_lut)
++		drm_property_blob_put(plane_state->hw.gamma_lut);
++	if (plane_state->hw.ctm)
++		drm_property_blob_put(plane_state->hw.ctm);
++	if (plane_state->hw.lut_3d)
++		drm_property_blob_put(plane_state->hw.lut_3d);
++
+ 	kfree(plane_state);
+ }
+ 
+@@ -317,6 +336,14 @@ static void intel_plane_clear_hw_state(s
+ {
+ 	if (plane_state->hw.fb)
+ 		drm_framebuffer_put(plane_state->hw.fb);
++	if (plane_state->hw.degamma_lut)
++		drm_property_blob_put(plane_state->hw.degamma_lut);
++	if (plane_state->hw.gamma_lut)
++		drm_property_blob_put(plane_state->hw.gamma_lut);
++	if (plane_state->hw.ctm)
++		drm_property_blob_put(plane_state->hw.ctm);
++	if (plane_state->hw.lut_3d)
++		drm_property_blob_put(plane_state->hw.lut_3d);
+ 
+ 	memset(&plane_state->hw, 0, sizeof(plane_state->hw));
+ }
 
 
 
