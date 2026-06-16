@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id zZ72Cbd6MWqhkQUAu9opvQ
-	(envelope-from <stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:55 +0200
+	id 9wd+AGhzMWqxjgUAu9opvQ
+	(envelope-from <stable+bounces-264163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96305692311
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:32:54 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41426691A15
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:01:41 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qrE0fCgI;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264661-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xucVjo+I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264163-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264163-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A595630316DF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:25:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 540B23077718
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB88146AF1B;
-	Tue, 16 Jun 2026 16:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11544D681;
+	Tue, 16 Jun 2026 15:40:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3BE43E4BA;
-	Tue, 16 Jun 2026 16:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCC844CF52;
+	Tue, 16 Jun 2026 15:40:53 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627131; cv=none; b=U2klXLM+legrzAeiIwtYfEJNucznw2rbrDMFp2+UUhd/7+jPn+gOLEw5Qfi2LIGeG4ENu7sW6sVyCJaj82Licyj1zSdrXfSZ4WbLyb0XHIxhZvQaZifIrkMjmbFTNTJsTXNt/BgqptewvC7z6Qf3b7LCtjPqvYeZsq5GZ3cM71E=
+	t=1781624455; cv=none; b=P+ZqrfRF11X9XYUx961c6umNC5o5tQEnC6z0TIUKbJjoa1cSiJzS5Tjhysu/8cjnYR9VNMPBrKsouc3WTjCld+MaHP8sVgWM6F4/wXv5TTHn17bTuKTSerpB9ErGgsfD9n3zKQvq12AQJGbAWwDJLeJZf5EejAJ9aTJOpSmLkJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627131; c=relaxed/simple;
-	bh=m7eY3Z9YArHfN3BKXMI6x/CP1+MdSm7vPvjk3lEbeMo=;
+	s=arc-20240116; t=1781624455; c=relaxed/simple;
+	bh=yf4raD4d3j6q2WSfic+OZyzX30c1KVFJWvtQuq75aYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooUIS5aj/BeeskUZWStzi/DvzwGjuGWg5Sq2ZVbJx9hTIxkBeQIW/XspuDuTIaBrcKTavtXybtzKAkvuuFI8LGChDd0kYm1vWWu45565yUQ/FsXJQPU5jyu6NaDgtw7CHz4mTdUa0OifUBG6wTgIw5nMbSUWyzPveHzNkcmkG9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrE0fCgI; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187391F000E9;
-	Tue, 16 Jun 2026 16:25:28 +0000 (UTC)
+	 MIME-Version; b=i85k22VI8Li79K5Ia3xMiH5AoVdfXTPHNL8moJeqmn3BvtbcbcdF28NefUMW57u/auHArtDMSzzgGKD/7Y+89dPgy3jOpi+ikAgvguAHMj7e4/2oaa/+14ciNWGY4FTwxF0n6KKHe/J/7RAdj02HAxJGW7mTg9LbegP5OnFk+Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xucVjo+I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9EB1F000E9;
+	Tue, 16 Jun 2026 15:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627130;
-	bh=cJIBC/+YkZjwOFslUDUrq6QsYUrthSUj0mdmyUh/qb4=;
+	s=korg; t=1781624453;
+	bh=fRzJRujR+HueZybQgM945awLo1Ie5/jVSC8yyuurnnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=qrE0fCgI30UE3/1X6D5Za6AP1VZZ27FmFJgouNSIQ304pBoD9G01jPqn859J3pK8U
-	 +OcQ5ODp7DszbTI2DA2Hv7Xs0JTF9/s1ezljAZSr5SBhPdtaja1gUs5cVyCF08bpx7
-	 xqxnz1YyKt0n5l9zRYVDdWYTuMsNLzv8MZeTGuTI=
+	b=xucVjo+I7mAkb2RZo5ZKZJELk3wf9jJQlLt1qYFrT9LiDVwB4UKJeDFRyt7mB6pvg
+	 Va4ZUDEo8WfZPfcqiGo6BIybzYTB6ifzcBbXu6pL5vxXujsJrwi+O4MmWpy2ExSDSB
+	 KG+9mtHBwjsKbF60LIdISYdSroLM5lIrONcChxvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/261] netfilter: nf_conntrack: destroy stale expectfn expectations on unregister
-Date: Tue, 16 Jun 2026 20:28:56 +0530
-Message-ID: <20260616145049.581306411@linuxfoundation.org>
+	Usama Arif <usama.arif@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kairui Song <kasong@tencent.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 306/378] mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
+Date: Tue, 16 Jun 2026 20:28:57 +0530
+Message-ID: <20260616145126.267203777@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,188 +79,107 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,netfilter.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-264661-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264163-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:pablo@netfilter.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:pfalcato@suse.de,m:kasong@tencent.com,m:ljs@kernel.org,m:hannes@cmpxchg.org,m:baoquan.he@linux.dev,m:chrisl@kernel.org,m:jannh@google.com,m:liam@infradead.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:vbabka@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[vbabka.kernel.org:server fail,jannh.google.com:server fail];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,asu.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,cmpxchg.org:email,surriel.com:email,vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 96305692311
+X-Rspamd-Queue-Id: 41426691A15
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Usama Arif <usama.arif@linux.dev>
 
-[ Upstream commit c3009418f9fa1dcb3eb86f4d8c92583537b5faa3 ]
+commit 0c25b8734367574e21aeb8468c2e522713134da7 upstream.
 
-NAT helpers such as nf_nat_h323 store a raw pointer to module text in
-exp->expectfn (e.g. ip_nat_q931_expect). nf_ct_helper_expectfn_unregister()
-only unlinks the callback descriptor and never walks the expectation table,
-so an expectation pending at module removal survives with a dangling
-exp->expectfn into freed module text.
+mincore_swap() also fields migration/hwpoison entries (and shmem
+swapin-error entries), which can exist on !CONFIG_SWAP builds when
+CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
+!IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early return,
+so mincore_pte_range() can spuriously WARN and report these pages
+nonresident on !CONFIG_SWAP kernels.
 
-When the expected connection arrives, init_conntrack() invokes
-exp->expectfn(), now a stale pointer into the unloaded module. Reproduced
-on a KASAN build by loading the H.323 helpers, creating a Q.931
-expectation, unloading nf_nat_h323, then connecting to the expected port:
+Move the guard below the non-swap-entry check so only true swap entries
+trip the WARN, and migration/hwpoison entries take the existing "uptodate
+/ non-shmem" path.
 
- Oops: int3: 0000 [#1] SMP KASAN NOPTI
- RIP: 0010:0xffffffffa06102d1
-  init_conntrack.isra.0 (net/netfilter/nf_conntrack_core.c:1862)
-  nf_conntrack_in (net/netfilter/nf_conntrack_core.c:2049)
-  ipv4_conntrack_local (net/netfilter/nf_conntrack_proto.c:223)
-  nf_hook_slow (net/netfilter/core.c:619)
-  __ip_local_out (net/ipv4/ip_output.c:120)
-  __tcp_transmit_skb (net/ipv4/tcp_output.c:1715)
-  tcp_connect (net/ipv4/tcp_output.c:4374)
-  tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
-  __sys_connect (net/socket.c:2167)
- Modules linked in: nf_conntrack_h323 [last unloaded: nf_nat_h323]
-
-Reaching the dangling state requires CAP_SYS_MODULE in the initial user
-namespace to remove a NAT helper that still has live expectations, so this
-is a robustness fix; leaving an expectation pointing at freed text is wrong
-regardless.
-
-Add nf_ct_helper_expectfn_destroy(), which walks the expectation table and
-drops every expectation whose ->expectfn matches the descriptor being torn
-down. Call it from each NAT helper's exit path after the existing RCU grace
-period, so no expectation outlives the code it points at and no extra
-synchronize_rcu() is introduced. With the fix, the same reproducer runs to
-completion without the Oops.
-
-Fixes: f587de0e2feb ("[NETFILTER]: nf_conntrack/nf_nat: add H.323 helper port")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260602172247.279421-1-usama.arif@linux.dev
+Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Baoquan He <baoquan.he@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_helper.h |  1 +
- net/ipv4/netfilter/nf_nat_h323.c            |  2 ++
- net/netfilter/nf_conntrack_helper.c         | 19 +++++++++++++++++++
- net/netfilter/nf_nat_core.c                 |  2 ++
- net/netfilter/nf_nat_sip.c                  |  1 +
- 5 files changed, 25 insertions(+)
+ mm/mincore.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_helper.h b/include/net/netfilter/nf_conntrack_helper.h
-index de2f956abf3480..24cf3d2d97450f 100644
---- a/include/net/netfilter/nf_conntrack_helper.h
-+++ b/include/net/netfilter/nf_conntrack_helper.h
-@@ -155,6 +155,7 @@ void nf_ct_helper_log(struct sk_buff *skb, const struct nf_conn *ct,
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -64,11 +64,6 @@ static unsigned char mincore_swap(swp_en
+ 	struct folio *folio = NULL;
+ 	unsigned char present = 0;
  
- void nf_ct_helper_expectfn_register(struct nf_ct_helper_expectfn *n);
- void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n);
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n);
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name);
- struct nf_ct_helper_expectfn *
-diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
-index faee20af485613..10e1b0837731b7 100644
---- a/net/ipv4/netfilter/nf_nat_h323.c
-+++ b/net/ipv4/netfilter/nf_nat_h323.c
-@@ -555,6 +555,8 @@ static void __exit nf_nat_h323_fini(void)
- 	nf_ct_helper_expectfn_unregister(&q931_nat);
- 	nf_ct_helper_expectfn_unregister(&callforwarding_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&q931_nat);
-+	nf_ct_helper_expectfn_destroy(&callforwarding_nat);
- }
+-	if (!IS_ENABLED(CONFIG_SWAP)) {
+-		WARN_ON(1);
+-		return 0;
+-	}
+-
+ 	/*
+ 	 * Shmem mapping may contain swapin error entries, which are
+ 	 * absent. Page table may contain migration or hwpoison
+@@ -77,6 +72,11 @@ static unsigned char mincore_swap(swp_en
+ 	if (!softleaf_is_swap(entry))
+ 		return !shmem;
  
- /****************************************************************************/
-diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
-index a715304a53d8c2..9150bcfd7ca83b 100644
---- a/net/netfilter/nf_conntrack_helper.c
-+++ b/net/netfilter/nf_conntrack_helper.c
-@@ -283,6 +283,25 @@ void nf_ct_helper_expectfn_unregister(struct nf_ct_helper_expectfn *n)
- }
- EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_unregister);
- 
-+static bool expect_iter_expectfn(struct nf_conntrack_expect *exp, void *data)
-+{
-+	const struct nf_ct_helper_expectfn *n = data;
++	if (!IS_ENABLED(CONFIG_SWAP)) {
++		WARN_ON(1);
++		return 0;
++	}
 +
-+	/* Relies on registered expectfn descriptors having unique ->expectfn
-+	 * pointers, which holds for the in-tree NAT helpers.
-+	 */
-+	return exp->expectfn == n->expectfn;
-+}
-+
-+/* Destroy expectations still pointing at @n->expectfn; call after the
-+ * caller's RCU grace period so none outlives the (often modular) callback.
-+ */
-+void nf_ct_helper_expectfn_destroy(const struct nf_ct_helper_expectfn *n)
-+{
-+	nf_ct_expect_iterate_destroy(expect_iter_expectfn, (void *)n);
-+}
-+EXPORT_SYMBOL_GPL(nf_ct_helper_expectfn_destroy);
-+
- /* Caller should hold the rcu lock */
- struct nf_ct_helper_expectfn *
- nf_ct_helper_expectfn_find_by_name(const char *name)
-diff --git a/net/netfilter/nf_nat_core.c b/net/netfilter/nf_nat_core.c
-index 746acd124ea285..6ba7733355df39 100644
---- a/net/netfilter/nf_nat_core.c
-+++ b/net/netfilter/nf_nat_core.c
-@@ -1353,6 +1353,7 @@ static int __init nf_nat_init(void)
- 		RCU_INIT_POINTER(nf_nat_hook, NULL);
- 		nf_ct_helper_expectfn_unregister(&follow_master_nat);
- 		synchronize_net();
-+		nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 		unregister_pernet_subsys(&nat_net_ops);
- 		kvfree(nf_nat_bysource);
- 	}
-@@ -1370,6 +1371,7 @@ static void __exit nf_nat_cleanup(void)
- 	RCU_INIT_POINTER(nf_nat_hook, NULL);
- 
- 	synchronize_net();
-+	nf_ct_helper_expectfn_destroy(&follow_master_nat);
- 	kvfree(nf_nat_bysource);
- 	unregister_pernet_subsys(&nat_net_ops);
- }
-diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-index 9fbfc6bff0c221..00838c0cc5bb28 100644
---- a/net/netfilter/nf_nat_sip.c
-+++ b/net/netfilter/nf_nat_sip.c
-@@ -655,6 +655,7 @@ static void __exit nf_nat_sip_fini(void)
- 	RCU_INIT_POINTER(nf_nat_sip_hooks, NULL);
- 	nf_ct_helper_expectfn_unregister(&sip_nat);
- 	synchronize_rcu();
-+	nf_ct_helper_expectfn_destroy(&sip_nat);
- }
- 
- static const struct nf_nat_sip_hooks sip_hooks = {
--- 
-2.53.0
-
+ 	/*
+ 	 * Shmem mapping lookup is lockless, so we need to grab the swap
+ 	 * device. mincore page table walk locks the PTL, and the swap
 
 
 
