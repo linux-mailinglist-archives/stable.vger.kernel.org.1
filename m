@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264118-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id EZ0fExeWMWoFngUAu9opvQ
-	(envelope-from <stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:43 +0200
+	id v9ESKMBvMWoojQUAu9opvQ
+	(envelope-from <stable+bounces-264118-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FA86942D5
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:29:42 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D796915F4
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:46:07 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=oQS3VZWK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-266081-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZzRgicUq;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264118-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-264118-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2FBB317D2ED
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:29:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3918D30468AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8552547A0B2;
-	Tue, 16 Jun 2026 18:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2914544CAFB;
+	Tue, 16 Jun 2026 15:37:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C33A43CEC7;
-	Tue, 16 Jun 2026 18:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD77449EB8;
+	Tue, 16 Jun 2026 15:37:00 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634561; cv=none; b=LSVm8JFc3r5hjSkLU1cb/oPITzaTB00DC4VGe7Um2gpryPN3x7QQ2ksVgGCcsVxCubAyfQGc1bBj81wcsV7SegbETv7onwVikWYox1wxUQZwK8FKCFWNoaCddbnCWBB7aqz/HJKAeuH4X0MIAyFV1VfQIH6PykRM16ePC774hH0=
+	t=1781624221; cv=none; b=bmAB5cYRwBAxMj3FMieyURZW0pBGrliroCAz+up9W7dfX1/zjKDWLoT6gVpP0jyeqDsJsuO61Z7EgGMpAUWYco8Yy/eRFnQCSzTTjCEauomvn/r21ndelRCowYuM6LWgrx6GN8LliMTnn+/n1JXuZKLQk3U07lNMq3fAXc9FXo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634561; c=relaxed/simple;
-	bh=nfg8nAKkJVGZxHLQXvHVlyCFGF+UPuIh1JdVkl6g+a8=;
+	s=arc-20240116; t=1781624221; c=relaxed/simple;
+	bh=gMkWbDmpJtYk4chzy1ZD70kFBBjxOoboB+gAjf8VF9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/B/qKiSgAyeCKuxrOiT5/fN3aR1TDy2PoJA2S5Lg2Bvxa8rvn+ZGZXpDRPZD6rM57xhbHDRwBwVMNQYA8Vl3vW2hm6cdap7FXCJovQaSfvjRy/5yVrMA8Ew6Fty1yStYLCCeoXAo6Miox1co57/qtz7JDRuBSYFIjdFOKrOqiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQS3VZWK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632111F000E9;
-	Tue, 16 Jun 2026 18:29:19 +0000 (UTC)
+	 MIME-Version; b=jZxXCKIHdaIzdvdwDoRdmNUa4jdY/uszG+TBITssgWg1QNaEU64B/GLKp+bYDztKCpX7qXn7YACkaV7du6T1A0oM3k0EqzmGk33yVm/e4/aZf7K5ANfgRcwXp9KYIGG/B+fz/FARGvr8bVpLpG0MJQbYFY71svqB17gX62+QIB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzRgicUq; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38B01F00A3D;
+	Tue, 16 Jun 2026 15:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634560;
-	bh=Vrig6OaOXRm55tn7RZ/OhfBVaB365n0Vh2i6qfD2qbo=;
+	s=korg; t=1781624220;
+	bh=Bvo5CCYzPKVZ0uBdr+VH1DdEgcbCCz2OOu/EiViYqBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oQS3VZWKb5v5b2bUO3AZHAzllCtrfO6xF5Fpn4k4nqleH/GY933q3Os4qWS7MOJrO
-	 pDstspEBw+2vve/bovJP/18pH1mH3C1GBHL6VlkyMiZ3Agkud+xgJGjuW+GMOV7Fyi
-	 ykSGyfwJHOb56WgK07otSySNu79zn6ATpQK3uSLA=
+	b=ZzRgicUqFZk7K9UgStYH2J7oP/QJBM70FIu2pWz79fOgBpdORi5rNFhVrH+VxX1TR
+	 f/1p/IljAGfNxskiNuKiwf7ihp/S7KSovX+/9PHR/oWLGUdve9upJ+iMqCHvBpcpO3
+	 3GWy5ZNcR9Mjl6cLVAeLq4ANpxyojOcBfogPL9/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuvam Pandey <shuvampandey1@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 287/411] Bluetooth: hci_event: fix potential UAF in SSP passkey handlers
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srini@kernel.org>
+Subject: [PATCH 7.0 294/378] nvmem: core: fix use-after-free bugs in error paths
 Date: Tue, 16 Jun 2026 20:28:45 +0530
-Message-ID: <20260616145116.411046361@linuxfoundation.org>
+Message-ID: <20260616145125.536458738@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,127 +71,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264118-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-266081-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:shuvampandey1@gmail.com,m:luiz.von.dentz@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@oss.qualcomm.com,m:srini@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,qualcomm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C5FA86942D5
+X-Rspamd-Queue-Id: A1D796915F4
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuvam Pandey <shuvampandey1@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 85fa3512048793076eef658f66489112dcc91993 ]
+commit 5b6b6fc491899d583eaa75344e094796ae9b530b upstream.
 
-hci_conn lookup and field access must be covered by hdev lock in
-hci_user_passkey_notify_evt() and hci_keypress_notify_evt(), otherwise
-the connection can be freed concurrently.
+Fix several instances of error paths in which we call
+__nvmem_device_put() - which may end up freeing the underlying memory
+and other resources - and then keep on using the nvmem structure. Always
+put the reference to the nvmem device as the last step before returning
+the error code.
 
-Extend the hci_dev_lock critical section to cover all conn usage in both
-handlers.
-
-Keep the existing keypress notification behavior unchanged by routing
-the early exits through a common unlock path.
-
-Fixes: 92a25256f142 ("Bluetooth: mgmt: Implement support for passkey notification")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7ae6478b304b ("nvmem: core: rework nvmem cell instance creation")
+Fixes: e888d445ac33 ("nvmem: resolve cells from DT at registration time")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Srinivas Kandagatla <srini@kernel.org>
+Link: https://patch.msgid.link/20260530204340.116743-3-srini@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/nvmem/core.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4953,9 +4953,11 @@ static void hci_user_passkey_notify_evt(
- 
- 	BT_DBG("%s", hdev->name);
- 
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
- 
- 	conn->passkey_notify = __le32_to_cpu(ev->passkey);
- 	conn->passkey_entered = 0;
-@@ -4964,6 +4966,9 @@ static void hci_user_passkey_notify_evt(
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
- 
- static void hci_keypress_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
-@@ -4973,14 +4978,16 @@ static void hci_keypress_notify_evt(stru
- 
- 	BT_DBG("%s", hdev->name);
- 
-+	hci_dev_lock(hdev);
-+
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
- 	if (!conn)
--		return;
-+		goto unlock;
- 
- 	switch (ev->type) {
- 	case HCI_KEYPRESS_STARTED:
- 		conn->passkey_entered = 0;
--		return;
-+		goto unlock;
- 
- 	case HCI_KEYPRESS_ENTERED:
- 		conn->passkey_entered++;
-@@ -4995,13 +5002,16 @@ static void hci_keypress_notify_evt(stru
- 		break;
- 
- 	case HCI_KEYPRESS_COMPLETED:
--		return;
-+		goto unlock;
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1468,18 +1468,16 @@ struct nvmem_cell *of_nvmem_cell_get(str
+ 	cell_entry = nvmem_find_cell_entry_by_node(nvmem, cell_np);
+ 	of_node_put(cell_np);
+ 	if (!cell_entry) {
+-		__nvmem_device_put(nvmem);
+ 		nvmem_layout_module_put(nvmem);
+-		if (nvmem->layout)
+-			return ERR_PTR(-EPROBE_DEFER);
+-		else
+-			return ERR_PTR(-ENOENT);
++		ret = nvmem->layout ? -EPROBE_DEFER : -ENOENT;
++		__nvmem_device_put(nvmem);
++		return ERR_PTR(ret);
  	}
  
- 	if (hci_dev_test_flag(hdev, HCI_MGMT))
- 		mgmt_user_passkey_notify(hdev, &conn->dst, conn->type,
- 					 conn->dst_type, conn->passkey_notify,
- 					 conn->passkey_entered);
-+
-+unlock:
-+	hci_dev_unlock(hdev);
- }
+ 	cell = nvmem_create_cell(cell_entry, id, cell_index);
+ 	if (IS_ERR(cell)) {
+-		__nvmem_device_put(nvmem);
+ 		nvmem_layout_module_put(nvmem);
++		__nvmem_device_put(nvmem);
+ 	}
  
- static void hci_simple_pair_complete_evt(struct hci_dev *hdev,
+ 	return cell;
+@@ -1593,8 +1591,8 @@ void nvmem_cell_put(struct nvmem_cell *c
+ 		kfree_const(cell->id);
+ 
+ 	kfree(cell);
+-	__nvmem_device_put(nvmem);
+ 	nvmem_layout_module_put(nvmem);
++	__nvmem_device_put(nvmem);
+ }
+ EXPORT_SYMBOL_GPL(nvmem_cell_put);
+ 
 
 
 
