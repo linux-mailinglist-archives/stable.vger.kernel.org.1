@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-265970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id FHtcOLuTMWr8nAUAu9opvQ
-	(envelope-from <stable+bounces-265970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:39 +0200
+	id jlvNAfGaMWouoAUAu9opvQ
+	(envelope-from <stable+bounces-266323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725CA694094
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:19:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD8D69481B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:50:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="mY/aC8+X";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265970-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265970-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NNnUWI3G;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266323-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266323-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 832B4307DD55
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:19:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C29D304916E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D309A3CEBBD;
-	Tue, 16 Jun 2026 18:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1550247D93F;
+	Tue, 16 Jun 2026 18:50:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A6535292A;
-	Tue, 16 Jun 2026 18:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B6A3D8100;
+	Tue, 16 Jun 2026 18:50:19 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633975; cv=none; b=QxL961WW7LgPFNZYjXk8iRrxDyYzLLR69sV+Vic+pQHk2rYAAwM3O6Ka2fjO5lvDdEMhJiUTzkTw6u4YSTASEwyWzpzM5p9szIhJu4mK/MWv/YplCaK0O6P3xPkHABwCa3bVPnrXf01v954D98n+iZU14WfVQHyJ9tZJ5rIQUwE=
+	t=1781635821; cv=none; b=WwrVhluKdNdr+3I68ZzA7z5Nu4aKGRFE5jBB7S4eqMPbfxHczKgnee6W+C4K4x5WxR4Q2TNTwgBXzb3VWMNGrGkcKBJwhovWftLUpd6krKg1/XdYuqQLEEUiCoEFUNR0ELYVPUgFNeDuOw8N3ErG7qLCBUbGtVchk3cXu2CzecQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633975; c=relaxed/simple;
-	bh=7tOE+TDCYFkxF0dXyuG0BA7b1se+pBBKAH5skS+YpxQ=;
+	s=arc-20240116; t=1781635821; c=relaxed/simple;
+	bh=UMZpHmV2RIx+xHr2BVDq8/nLKnoIaFzlWIpn25BBbIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNUAWmzlpD9zEggTCcHrsmHANH7PgaQKZGqSdehbdaK0SfZR4G0u8o6lQkblReuG1WOrX/ksl1XDS7EeAOmCFOqoXgwNsjnlLdDotv+UXf7IYyZa/X7ocs/KRsWAIBRIOAR6N0B4osI67GPO8wzn+0Qj2ZNZD/cNcqzPK6EhbAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mY/aC8+X; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AC31F000E9;
-	Tue, 16 Jun 2026 18:19:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BFYdrw5wo68VNgp+z1G0vFk3kwBdc3X5rBCgu9w6v2MpvX0PEplrNImbSUuqV6NuSKmp7YeIM075ZTm/OlIl/zApvoXGNSF8xR89HeNNyIrhdOimeXUCajdp4ZSmdsp5js/EleDDS163gyh44KFz6wnhZKk6fKR7T2Y0ZktVGnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNnUWI3G; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A578C1F000E9;
+	Tue, 16 Jun 2026 18:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633974;
-	bh=ckOEMVNMsN6j9N2636h1L6V6NRELlZvWOlUB6VPzI7M=;
+	s=korg; t=1781635819;
+	bh=ykNSYiRLyr9cy6Mgu/KqDhKACe4958Th0NUuHRkJORU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mY/aC8+XNXXgNIkVaY/PDpAmYB7tNjFw4aYBqtximrTKQBYRA6dlJp46pDxW4awNg
-	 5vtCrOo6yZBPCESdgJHzCSoe8CpqEDj5kbq5A89mCBAgqSATXJPedCroCbLgQvc6jb
-	 WhXX0mWvFZlaMinWMdcewwvJFj5RCigxu3x3XNic=
+	b=NNnUWI3GkL4yFO9JSmh6ccBeyRFPqryinZoknxZ7gsX70aKuNHrmR7YqWJnA2fqwa
+	 stcOIcp0zvm/vQTrXUJg2rnA7iNhciQNmVsWniBTLcYfjBRehQ4wJj+k6tgf+95fm1
+	 UuLBJmvbwWrLWduLJPLHwY4w7DjFPkWZcdTrgj7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Bjoern Doebel <doebel@amazon.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/411] tun: free page on build_skb failure in tun_xdp_one()
+Subject: [PATCH 5.10 120/342] page_pool: Fix use-after-free in page_pool_recycle_in_ring
 Date: Tue, 16 Jun 2026 20:26:56 +0530
-Message-ID: <20260616145110.142181045@linuxfoundation.org>
+Message-ID: <20260616145053.801255804@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +69,168 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,oracle.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-265970-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:xmei5@asu.edu,m:bestswngs@gmail.com,m:dongli.zhang@oracle.com,m:willemb@google.com,m:kuba@kernel.org,m:harshit.m.mogalapalli@oracle.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-266323-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kuba@kernel.org,m:syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,m:dongchenchen2@huawei.com,m:toke@redhat.com,m:almasrymina@google.com,m:doebel@amazon.de,m:sashal@kernel.org,m:syzbot@syzkaller.appspotmail.com,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable,204a4382fcb3311f3858];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,oracle.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,msgid.link:url,appspotmail.com:email,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,syzkaller.appspot.com:url,amazon.de:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 725CA694094
+X-Rspamd-Queue-Id: 5CD8D69481B
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit aa8963fdce667a42fb7f0bdd2909fadcab02f9a8 ]
+[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
 
-When build_skb() fails in tun_xdp_one(), the function sets ret to
--ENOMEM and jumps to the out label, which returns without freeing the
-page that vhost_net_build_xdp() allocated for the frame. As with the
-short-frame rejection path, tun_sendmsg() discards the per-buffer error
-and still returns total_len, so vhost_tx_batch() takes the success path
-and never frees the page. Each build_skb() failure in a batch leaks one
-page-frag chunk.
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-Free the page before taking the error path, matching the put_page() the
-other error exits of tun_xdp_one() already perform.
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-Fixes: 043d222f93ab ("tuntap: accept an array of XDP buffs through sendmsg()")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260521163312.1479805-2-bestswngs@gmail.com
+root cause is:
+
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+                                    page_pool_release
+                                      page_pool_scrub
+                                        page_pool_empty_ring
+                                          ptr_ring_consume
+                                          page_pool_return_page  //release all page
+                                      __page_pool_destroy
+                                         free_percpu(pool->recycle_stats);
+                                         free(pool) //free
+
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
+
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit aa8963fdce667a42fb7f0bdd2909fadcab02f9a8)
-[Harshit: Backport to 5.15.y/5.10.y, use err instead of ret, no change
-needed]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+[v5.10: introduced page_pool_producer_lock/unlock helpers inline since
+ prerequisite commit 368d3cb406cd ("page_pool: fix inconsistency for
+ page_pool_ring_[un]lock()") depends on page_pool_put_page_bulk which
+ does not exist in 5.10; used in_serving_softirq() per 5.10 convention;
+ kept struct page * API (no netmem_ref); dropped recycle_stat_inc change
+ as page pool stats do not exist in this tree]
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Assisted-by: Claude:claude-opus-4-6-v1
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/page_pool.c | 39 +++++++++++++++++++++++++++++++++------
+ 1 file changed, 33 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 803cb4722dbf4a..aad0760c8d92b7 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -2468,6 +2468,7 @@ static int tun_xdp_one(struct tun_struct *tun,
- build:
- 	skb = build_skb(xdp->data_hard_start, buflen);
- 	if (!skb) {
-+		put_page(virt_to_head_page(xdp->data));
- 		err = -ENOMEM;
- 		goto out;
- 	}
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 15ad99330bb9b1..09d98fcf669f2c 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -318,16 +318,39 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
+ 	 */
+ }
+ 
++static bool page_pool_producer_lock(struct page_pool *pool)
++	__acquires(&pool->ring.producer_lock)
++{
++	bool in_softirq = in_serving_softirq();
++
++	if (in_softirq)
++		spin_lock(&pool->ring.producer_lock);
++	else
++		spin_lock_bh(&pool->ring.producer_lock);
++
++	return in_softirq;
++}
++
++static void page_pool_producer_unlock(struct page_pool *pool,
++				      bool in_softirq)
++	__releases(&pool->ring.producer_lock)
++{
++	if (in_softirq)
++		spin_unlock(&pool->ring.producer_lock);
++	else
++		spin_unlock_bh(&pool->ring.producer_lock);
++}
++
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
+ {
+-	int ret;
++	bool in_softirq, ret;
++
+ 	/* BH protection not needed if current is serving softirq */
+-	if (in_serving_softirq())
+-		ret = ptr_ring_produce(&pool->ring, page);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, page);
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, page);
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return (ret == 0) ? true : false;
++	return ret;
+ }
+ 
+ /* Only allow direct recycling in special circumstances, into the
+@@ -464,10 +487,14 @@ static void page_pool_scrub(struct page_pool *pool)
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		page_pool_free(pool);
+ 
 -- 
 2.53.0
 
