@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 7PBVMPiFMWpYlgUAu9opvQ
-	(envelope-from <stable+bounces-265207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:56 +0200
+	id NQCYDjSPMWrXmgUAu9opvQ
+	(envelope-from <stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589BD69303D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:20:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C5693B78
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:19 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=xoH0SDmy;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265207-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265207-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dZiUoJ9q;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265749-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 847D4304D7F7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3C773091C44
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF88D3BFE5B;
-	Tue, 16 Jun 2026 17:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7511547B406;
+	Tue, 16 Jun 2026 17:59:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2DA33A9EB;
-	Tue, 16 Jun 2026 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C97930B535;
+	Tue, 16 Jun 2026 17:59:45 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630015; cv=none; b=IiFtxEud4U52ewPjEjAdeNJpEF20rvUz52a20ng/02T0Lel9vEGnlvtGmadD00pJ2234hnRiKHRBJ8hY6IMqMXqYyicWDIjPfQb881FrMoFoPj0BEXZSyj9em/1hNdZa/C7ERBO96yhkWeSMkA2K2AejV1hGhbNznfOqAXTgrxY=
+	t=1781632786; cv=none; b=fj1IMAi1Fd39k51tafLRBFlhzBJ3uyAUV3KvMtLRexl3o61xRw2URARAqnlTaXqNNFbnNFi/wgnUlMhuvDjeGaimHkeRG20RYuXskgauVOClH6Bc4kv66or2+Ec/eju4sijoS7J6qjipjXLJGoafHqdsvjU0B4lo1adVvg2EcqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630015; c=relaxed/simple;
-	bh=ZOJk9X3jdyulBGlK4HWs+8r9Smx0dvy8hj1FwuLLl78=;
+	s=arc-20240116; t=1781632786; c=relaxed/simple;
+	bh=Y2xgcmwXSgseh2grKST9efGiLS1HlrtsdEBq4b9GpJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTPj/rNaXT8pVewhwt7rtpNb85hb6mdSwp/1F9yfI8Kn8AJ6vH2A5Js/QBqZBeMadv/dqqS3DgM+ShsV8lqQ0B5uQLsR8GePCFWJNMtVIbmB16Awk60UMExRRNjP2lVfgf/89qNVl5d82440Gc9GzLzIe6JPxT/M78Kewer0xu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoH0SDmy; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797881F000E9;
-	Tue, 16 Jun 2026 17:13:33 +0000 (UTC)
+	 MIME-Version; b=WBv9Q+XwnZ+m9sqa31p6BE0zu9nprmko+8K37vQVQWxONSPnB5S+FtpQHvONCrmn3uBLIFy+TmAUTdAlZ7AW4d0Q5Wd2eMW/8HxvR1b3OzC1hcu0kNSviXYFkB5Um7SuyBzYPUT6vppyzBtHPcq82Uj81wYJZKXhLizsXPIwCtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZiUoJ9q; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378E01F000E9;
+	Tue, 16 Jun 2026 17:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630014;
-	bh=3GQPYR8lEGxjwZHJ9WhSsC8QnWwGpc/Bf6y9Zyq/BEI=;
+	s=korg; t=1781632785;
+	bh=AE9H09DQPGIOdwkeqX2RxhKRai2kJNWeOlv4H3Q5EWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=xoH0SDmyHiRT1r/TExu/So+ESVDwPVmpy33fCMZsj55CwFjBwLncvU0pJbFIrC0tD
-	 vQBarN3YZDVsvDsiFW0xmok8KWXzE3h4sghq8anRU/Ye24qVEP0jescJjHvqo5yQG7
-	 SHcdUfMAv2/vChrOr9VnBkfhQVgs4d/fDZkJzQAE=
+	b=dZiUoJ9qNcjVgruKWks2m0036rLM4aOF7F5yCfYuuC38D6e8gm/zjMHvllLH+tDKW
+	 B+Qd0cSZdcc6BGaIsprGvS5zpSk5F0mjdNIqUgQ4uJi1DRo3QJdMeaNZD0tTnonkPC
+	 vnMjYBLPSRo2uyYhK3MAyd8Oyfz+Sp00f9YvmMwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 395/452] af_unix: Fix UAF read of tail->len in unix_stream_data_wait()
+Subject: [PATCH 6.1 475/522] tty: serial: qcom-geni-serial: remove unused symbols
 Date: Tue, 16 Jun 2026 20:30:22 +0530
-Message-ID: <20260616145137.638132623@linuxfoundation.org>
+Message-ID: <20260616145148.063079996@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,202 +69,108 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265207-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265749-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:jannh@google.com,m:kuniyu@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:bartosz.golaszewski@linaro.org,m:konrad.dybcio@linaro.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linaro.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 589BD69303D
+X-Rspamd-Queue-Id: 8C3C5693B78
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit be309f8eae8b474a4a617eaae01324da996fc719 ]
+[ Upstream commit 68c6bd92c86cbc4937834c79963b27c77ee3bf51 ]
 
-unix_stream_data_wait() does skb_peek_tail(&sk->sk_receive_queue) without
-holding any lock that prevents SKBs on that queue from being dequeued and
-freed.
-This has been the case since commit 79f632c71bea ("unix/stream: fix
-peeking with an offset larger than data in queue").
-The first consequence of this is that the pointer comparison
-`tail != last` can be false even if `last` semantically refers to an
-already-freed SKB while `tail` is a new SKB allocated at the same address;
-which can cause unix_stream_data_wait() to wrongly keep blocking after new
-data has arrived, but only in a weird scenario where a peeking recv() and
-a normal recv() on the same socket are racing, which is probably not a
-real problem.
+Drop all unused symbols from the driver.
 
-But since commit 2b514574f7e8 ("net: af_unix: implement splice for stream
-af_unix sockets"), `tail` is actually dereferenced, which can cause UAF in
-the following race scenario (where test_setup() runs single-threaded,
-and afterwards, test_thread1() and test_thread2() run concurrently in
-two threads:
-```
-static int socks[2];
-void test_setup(void) {
-  socketpair(AF_UNIX, SOCK_STREAM, 0, socks);
-  send(socks[1], "A", 1, 0);
-  int peekoff = 1;
-  setsockopt(socks[0], SOL_SOCKET, SO_PEEK_OFF, &peekoff, sizeof(peekoff));
-}
-void test_thread1(void) {
-  char dummy;
-  recv(socks[0], &dummy, 1, MSG_PEEK);
-}
-void test_thread2(void) {
-  char dummy;
-  recv(socks[0], &dummy, 1, 0);
-  shutdown(socks[1], SHUT_WR);
-}
-```
-
-when racing like this:
-```
-thread1                       thread2
-unix_stream_read_generic
-  mutex_lock(&u->iolock)
-  skb_peek(&sk->sk_receive_queue)
-  skb_peek_next(skb, &sk->sk_receive_queue)
-  mutex_unlock(&u->iolock)
-                              unix_stream_read_generic
-                                unix_state_lock(sk)
-                                skb_peek(&sk->sk_receive_queue)
-                                unix_state_unlock(sk)
-  unix_stream_data_wait
-    unix_state_lock(sk)
-    tail = skb_peek_tail(&sk->sk_receive_queue)
-                                spin_lock(&sk->sk_receive_queue.lock)
-                                __skb_unlink(skb, &sk->sk_receive_queue)
-                                spin_unlock(&sk->sk_receive_queue.lock)
-                                consume_skb(skb) [frees the SKB]
-    `tail != last`: false
-    `tail`: true
-    `tail->len != last_len` ***UAF***
-```
-
-Fix the UAF by removing the read of tail->len; checking tail->len would
-only make sense if SKBs in the receive queue of a UNIX socket could grow,
-which can no longer happen.
-
-Kuniyuki explained:
-
-> When commit 869e7c62486e ("net: af_unix: implement stream sendpage
-> support") added sendpage() support, data could be appended to the last
-> skb in the receiver's queue.
->
-> That's why we needed to check if the length of the last skb was changed
-> while waiting for new data in unix_stream_data_wait().
->
-> However, commit a0dbf5f818f9 ("af_unix: Support MSG_SPLICE_PAGES") and
-> commit 57d44a354a43 ("unix: Convert unix_stream_sendpage() to use
-> MSG_SPLICE_PAGES") refactored sendmsg(), and now data is always added
-> to a new skb.
-
-That means this fix is not suitable for kernels before 6.5.
-
-Fixes: 2b514574f7e8 ("net: af_unix: implement splice for stream af_unix sockets")
-Cc: stable@vger.kernel.org # 6.5.x
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260518-b4-unix-recv-wait-hotfix-v2-1-83e29ce8ad31@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20221229155030.418800-4-brgl@bgdev.pl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ca2584d841b6 ("serial: qcom-geni: fix UART_RX_PAR_EN bit position")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2528,8 +2528,7 @@ static int unix_read_skb(struct sock *sk
-  *	Sleep until more data has arrived. But check for races..
-  */
- static long unix_stream_data_wait(struct sock *sk, long timeo,
--				  struct sk_buff *last, unsigned int last_len,
--				  bool freezable)
-+				  struct sk_buff *last, bool freezable)
- {
- 	unsigned int state = TASK_INTERRUPTIBLE | freezable * TASK_FREEZABLE;
- 	struct sk_buff *tail;
-@@ -2542,7 +2541,6 @@ static long unix_stream_data_wait(struct
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -42,20 +42,11 @@
+ #define UART_TX_PAR_EN		BIT(0)
+ #define UART_CTS_MASK		BIT(1)
  
- 		tail = skb_peek_tail(&sk->sk_receive_queue);
- 		if (tail != last ||
--		    (tail && tail->len != last_len) ||
- 		    sk->sk_err ||
- 		    (sk->sk_shutdown & RCV_SHUTDOWN) ||
- 		    signal_pending(current) ||
-@@ -2722,7 +2720,6 @@ static int unix_stream_read_generic(stru
- 	int flags = state->flags;
- 	bool check_creds = false;
- 	struct scm_cookie scm;
--	unsigned int last_len;
- 	struct unix_sock *u;
- 	int copied = 0;
- 	int err = 0;
-@@ -2769,7 +2766,6 @@ redo:
- 			goto unlock;
- 		}
- 		last = skb = skb_peek(&sk->sk_receive_queue);
--		last_len = last ? last->len : 0;
+-/* SE_UART_TX_WORD_LEN */
+-#define TX_WORD_LEN_MSK		GENMASK(9, 0)
+-
+ /* SE_UART_TX_STOP_BIT_LEN */
+-#define TX_STOP_BIT_LEN_MSK	GENMASK(23, 0)
+ #define TX_STOP_BIT_LEN_1	0
+-#define TX_STOP_BIT_LEN_1_5	1
+ #define TX_STOP_BIT_LEN_2	2
  
- again:
- #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-@@ -2803,8 +2799,7 @@ again:
+-/* SE_UART_TX_TRANS_LEN */
+-#define TX_TRANS_LEN_MSK	GENMASK(23, 0)
+-
+ /* SE_UART_RX_TRANS_CFG */
+-#define UART_RX_INS_STATUS_BIT	BIT(2)
+ #define UART_RX_PAR_EN		BIT(3)
  
- 			mutex_unlock(&u->iolock);
+ /* SE_UART_RX_WORD_LEN */
+@@ -66,12 +57,9 @@
  
--			timeo = unix_stream_data_wait(sk, timeo, last,
--						      last_len, freezable);
-+			timeo = unix_stream_data_wait(sk, timeo, last, freezable);
+ /* SE_UART_TX_PARITY_CFG/RX_PARITY_CFG */
+ #define PAR_CALC_EN		BIT(0)
+-#define PAR_MODE_MSK		GENMASK(2, 1)
+-#define PAR_MODE_SHFT		1
+ #define PAR_EVEN		0x00
+ #define PAR_ODD			0x01
+ #define PAR_SPACE		0x10
+-#define PAR_MARK		0x11
  
- 			if (signal_pending(current)) {
- 				err = sock_intr_errno(timeo);
-@@ -2822,7 +2817,6 @@ unlock:
- 		while (skip >= unix_skb_len(skb)) {
- 			skip -= unix_skb_len(skb);
- 			last = skb;
--			last_len = skb->len;
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (!skb)
- 				goto again;
-@@ -2908,7 +2902,6 @@ unlock:
+ /* SE_UART_MANUAL_RFR register fields */
+ #define UART_MANUAL_RFR_EN	BIT(31)
+@@ -80,11 +68,8 @@
  
- 			skip = 0;
- 			last = skb;
--			last_len = skb->len;
- 			unix_state_lock(sk);
- 			skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			if (skb)
+ /* UART M_CMD OP codes */
+ #define UART_START_TX		0x1
+-#define UART_START_BREAK	0x4
+-#define UART_STOP_BREAK		0x5
+ /* UART S_CMD OP codes */
+ #define UART_START_READ		0x1
+-#define UART_PARAM		0x1
+ 
+ #define UART_OVERSAMPLING	32
+ #define STALE_TIMEOUT		16
 
 
 
