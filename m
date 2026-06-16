@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-263807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id tFkeBCZoMWp8igUAu9opvQ
-	(envelope-from <stable+bounces-263807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:42 +0200
+	id qNplKZ2CMWrglAUAu9opvQ
+	(envelope-from <stable+bounces-264974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62241690D75
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2EA692B9E
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:06:37 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=ZS7ZLrji;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263807-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-263807-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=C95X7x4D;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264974-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-264974-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A29ED31AF68D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:07:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 39C203157B81
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCDC3A7F54;
-	Tue, 16 Jun 2026 15:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7679F3AA4E0;
+	Tue, 16 Jun 2026 16:54:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289A51D7995;
-	Tue, 16 Jun 2026 15:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F71E4502F;
+	Tue, 16 Jun 2026 16:54:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622472; cv=none; b=fulHdI3BuBkGXfn0hcP5YiR+Yo6MRizFrnKP4yEQyZYrIOgNb8ZXm/wil/ASS/X2YuUf82JstKwUR/FtXzGscUtYldbZ0eGwDB2RRnclqLDyEz1BV/C26+13LJWuHUvxwYhLcYquTQgJTG+Ed4Jd2OrZJR/TMkP5itQ32u9Ohpc=
+	t=1781628871; cv=none; b=qf6Uhi7B86eAfqRavi/LVuqr0s3yZprkfSZGQA8r/qCa4pCZEZ6eTD903DHOtos1voNjmhcgx0WdNnf/UCcQ2dbQNq4B6g8wZZfyxg9Swfl/pEiGnuW446AOLlYD8MJtkdpWPvP8UGDffpiV42WhI/RzQnzC7nHpeXE7Zg1W1S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622472; c=relaxed/simple;
-	bh=CjvNZSgtIRLqY9YXF9ksAx0hLkEjp1Bu58FKDkZbg8Q=;
+	s=arc-20240116; t=1781628871; c=relaxed/simple;
+	bh=7p4Tw0tQzaDE5PXhOL2NVJx8JuhXHllhnvbttPVl9A8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eb5C9xRsmMdO1R+/DxRcxTxw55wzkf4hlwC/B9ddVcyT4Mb1qMG4QfnhaSECUjl/0L/BZ8rGnRABWlI6J/OwQjKoMhM4XmH10G4eGQESHBzf5Wf7B8/PnPtOlaZzEwxmnXjvJuPzcrLnEXY5cuqvdTrjzk/YJm7Qm2+s3NjcwuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS7ZLrji; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B5B1F000E9;
-	Tue, 16 Jun 2026 15:07:49 +0000 (UTC)
+	 MIME-Version; b=FoiDChBflVfDrosAyAIskeHFPb6lcc8SCRMYpvkchuKBoYaM0/D1f5cJWoDR0Vtpxc+7hVn0uXF2bRTDnKK7zb6BGxhRQ9fZiCYB3MCMjiYmtSF9+8HeAZX9sc5TE1ONlckodObmnKl7d7dLuWlTgU4aab6+Wi9a8Wul3QtRBc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C95X7x4D; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099341F000E9;
+	Tue, 16 Jun 2026 16:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781622471;
-	bh=m6hyAp89qplNZWTKbVpoo3a1SELJINCR1Cu0tr9ub2I=;
+	s=korg; t=1781628869;
+	bh=o5wlOKnM13/xiF3pU1XwtZCwDMJtKyND3GxVfq24Yks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZS7ZLrjioq9YXvQU8NEyKb9YcbxLczc3KnMX2sfCcClIahsVRedlO9N5kk1KYatnm
-	 LPsMugNYvzkGOK9TPnDOcyOWKiCWrzHlnSzgxgF4J7O8uErdgBQnlZytIvb62Bo4HY
-	 hKhak8Az6WC4TL1/TQJCCkoE+eVrPMeKxhRLzj2U=
+	b=C95X7x4DKvx9q5KxwL90QEaoSYsEQfCf9T9WXalARh5YQb0e8wYYSjSR+pkT9UNVd
+	 hBazRU0J73uOBHUhPupDdqD0zlTRDsMvFvCpojqP6R36ftxv6W5agD/iM117epY/0y
+	 cmuJYHpcZ+YO5lpF+qRMuXTKbGkyva5GJUv6iZ3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oupton@kernel.org>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 006/325] KVM: arm64: Take the SRCU lock for page table walks in fault injection and AT emulation
-Date: Tue, 16 Jun 2026 20:26:42 +0530
-Message-ID: <20260616145058.139350030@linuxfoundation.org>
+	Berkant Koc <me@berkoc.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 6.6 176/452] drm/hyperv: validate resolution_count and fix WIN8 fallback
+Date: Tue, 16 Jun 2026 20:26:43 +0530
+Message-ID: <20260616145127.125049467@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
-References: <20260616145057.827196531@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,13 +78,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-263807-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:oupton@kernel.org,m:imv4bel@gmail.com,m:maz@kernel.org,s:lists@lfdr.de];
+	TAGGED_FROM(0.00)[bounces-264974-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
 	FORWARDED(0.00)[lists@lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -99,64 +99,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,berkoc.com:email,vger.kernel.org:from_smtp,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 62241690D75
+X-Rspamd-Queue-Id: 0C2EA692B9E
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Berkant Koc <me@berkoc.com>
 
-commit f2ca45b50d4216c9cc7ffabf50d9ad1932209251 upstream.
+commit 13d33b9ef67066c77c84273fac5a1d3fde3533d1 upstream.
 
-walk_s1() and kvm_walk_nested_s2() expect to be called while holding
-kvm->srcu to guard against memslot changes. While this is generally
-the case, __kvm_at_s12() and __kvm_find_s1_desc_level() call into the
-respective walkers without taking kvm->srcu.
+A SYNTHVID_RESOLUTION_RESPONSE with resolution_count > 64 walks past
+the supported_resolution[SYNTHVID_MAX_RESOLUTION_COUNT] array in the
+parse loop. Bound resolution_count against the array size, folded
+into the existing zero-check.
 
-Fix by acquiring kvm->srcu prior to the table walk in both instances.
+When the WIN10 resolution probe fails, the caller in
+hyperv_connect_vsp() left hv->screen_*_max / preferred_* unpopulated,
+which sets mode_config.max_width / max_height to 0 and makes
+drm_internal_framebuffer_create() reject every userspace framebuffer
+with -EINVAL. The pre-WIN10 branch had the same gap for
+preferred_width / preferred_height. Use a single post-probe fallback
+guarded by screen_width_max == 0 so both paths converge on the WIN8
+defaults.
 
-Cc: stable@vger.kernel.org
-Fixes: 50f77dc87f13 ("KVM: arm64: Populate level on S1PTW SEA injection")
-Fixes: be04cebf3e78 ("KVM: arm64: nv: Add emulation of AT S12E{0,1}{R,W}")
-Suggested-by: Oliver Upton <oupton@kernel.org>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Oliver Upton <oupton@kernel.org>
-Link: https://patch.msgid.link/aiAZfdeyanIvP8SD@v4bel
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[ Hyunwoo Kim: __kvm_at_s12() still returns void in 6.18.y, so the
-  surrounding context differs from upstream (return; instead of
-  return ret;); the added scoped_guard() is unchanged. ]
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Berkant Koc <me@berkoc.com>
+Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
+Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
+Cc: stable@vger.kernel.org # 5.14+
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Link: https://patch.msgid.link/6945b22419c7d404b4954a113de2ac9c900dba93.1779542874.git.me@berkoc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/at.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/hyperv/hyperv_drm_proto.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/at.c
-+++ b/arch/arm64/kvm/at.c
-@@ -1528,7 +1528,8 @@ void __kvm_at_s12(struct kvm_vcpu *vcpu,
- 	/* Do the stage-2 translation */
- 	ipa = (par & GENMASK_ULL(47, 12)) | (vaddr & GENMASK_ULL(11, 0));
- 	out.esr = 0;
--	ret = kvm_walk_nested_s2(vcpu, ipa, &out);
-+	scoped_guard(srcu, &vcpu->kvm->srcu)
-+		ret = kvm_walk_nested_s2(vcpu, ipa, &out);
- 	if (ret < 0)
- 		return;
- 
-@@ -1623,7 +1624,8 @@ int __kvm_find_s1_desc_level(struct kvm_
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
+@@ -396,8 +396,11 @@ static int hyperv_get_supported_resoluti
+ 		return -ETIMEDOUT;
  	}
  
- 	/* Walk the guest's PT, looking for a match along the way */
--	ret = walk_s1(vcpu, &wi, &wr, va);
-+	scoped_guard(srcu, &vcpu->kvm->srcu)
-+		ret = walk_s1(vcpu, &wi, &wr, va);
- 	switch (ret) {
- 	case -EINTR:
- 		/* We interrupted the walk on a match, return the level */
+-	if (msg->resolution_resp.resolution_count == 0) {
+-		drm_err(dev, "No supported resolutions\n");
++	if (msg->resolution_resp.resolution_count == 0 ||
++	    msg->resolution_resp.resolution_count >
++	    SYNTHVID_MAX_RESOLUTION_COUNT) {
++		drm_err(dev, "Invalid resolution count: %d\n",
++			msg->resolution_resp.resolution_count);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -513,9 +516,13 @@ int hyperv_connect_vsp(struct hv_device
+ 		ret = hyperv_get_supported_resolution(hdev);
+ 		if (ret)
+ 			drm_err(dev, "Failed to get supported resolution from host, use default\n");
+-	} else {
++	}
++
++	if (!hv->screen_width_max) {
+ 		hv->screen_width_max = SYNTHVID_WIDTH_WIN8;
+ 		hv->screen_height_max = SYNTHVID_HEIGHT_WIN8;
++		hv->preferred_width = SYNTHVID_WIDTH_WIN8;
++		hv->preferred_height = SYNTHVID_HEIGHT_WIN8;
+ 	}
+ 
+ 	hv->mmio_megabytes = hdev->channel->offermsg.offer.mmio_megabytes;
 
 
 
