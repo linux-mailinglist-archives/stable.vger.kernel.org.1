@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZOuPF1WFMWoblgUAu9opvQ
-	(envelope-from <stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:13 +0200
+	id 0MU7OFmPMWrimgUAu9opvQ
+	(envelope-from <stable+bounces-265762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3CC692F96
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:18:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D276693BA6
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:00:57 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=d9W0COPf;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-265255-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=eyQMqmeV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265762-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265762-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7476C30065C4
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:17:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A848303B3F8
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411CB478E2B;
-	Tue, 16 Jun 2026 17:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675B53876CE;
+	Tue, 16 Jun 2026 18:00:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A7A3A5E91;
-	Tue, 16 Jun 2026 17:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1BD2EE611;
+	Tue, 16 Jun 2026 18:00:52 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630270; cv=none; b=LKQaxyp8SfiPL8ekqUm1IB2Dcf1so3eBgQ3PMdJE+boQWCBrS4kna5s7KFpwLNHJwrTZcEQ4hypfQjft/oiUnYHRidT9ScF9kHmiFrUgU8Zq+T/X53vBNl/xE/ZXOHN/ioapxNproPocCgc9QRyARhXGUl7BD2S4Jghz77yS+8s=
+	t=1781632853; cv=none; b=r9p1xe49VWS7MbuAC2iWOkSCQOqpqT7HRdge0O0k0Dnm1dnJldUZmFEXNmp8K7FVw30oYThTh11uFCex0dVdUAmlC7nKHWlzLEoUQlAw+3t5ngX+rsVLUsILe9A1oBKOoJy7XQIPsHANunmBNvgPMA+KoUyrdZnDkVHUFdbWgGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630270; c=relaxed/simple;
-	bh=HvzUXSW+D6AR2TH1hjvDDLyuvO36v7nrDv9FAcBh2Go=;
+	s=arc-20240116; t=1781632853; c=relaxed/simple;
+	bh=JLdqtjX6db4Bgp1turuxY2l+yM0GSReQB5QHt/0HCO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upu70XWjDb40UQrF16f4j9RbBZnpCuiHpCvgXqmBX+wqd4BUiUuJaUdpLIWdaKd8g8RkyFSGl9pV0cIjF64EI53VvaDWIHKASjCoPhe32rRrIZaOWpb58duFIRwWcpt3AqhkTGLhJTPnk7Iua3gweU7Yo0BUG+Kihd0Fscz5tJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9W0COPf; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091081F000E9;
-	Tue, 16 Jun 2026 17:17:47 +0000 (UTC)
+	 MIME-Version; b=mBJDjFClB/ebjzlAf8DP9JYvk22a6NTgBinbyPBC1+YGY/WuHgSgS4B8VM0gCygxFhF7m6/mSxmEbMCLEq7ejTQ7dZTADAO4pnWCk+a5zzTnzKhfU43DLw8Ibnwz7/VWd7MQXb7hHKSTznJK+BcDLoqb7FqW3DSHFRKRJTfxBbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyQMqmeV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1414C1F00A3E;
+	Tue, 16 Jun 2026 18:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630268;
-	bh=CtSy1WeUY6r5F5DSWPZrHGPnSDA4qT7p61ZlRn80mqY=;
+	s=korg; t=1781632851;
+	bh=pjEBvEbpD+hBEfHn7rYJU2/xlBoikI9VKs4dF6WopZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=d9W0COPfw0ZdNq25uUWVZ4lEL4dxh8xLL9YyUwq3s9f9ygI76qH09QMrwf2rIaTZm
-	 nfuBBkK0iKJDCW6PMGcx4XoLloLKde8JBzxNoqzDGWtno0zS9jtDZrfvquGTjgx1KH
-	 1lMsWw4e1PLwbtddaQsQ3/mInt1RUvYMZKv0NvXQ=
+	b=eyQMqmeVLs6y1gaAhwMKoWcvoYZ1SRfJfiWXomg8898WNd5o28hxzhO+CYBKVQ0Di
+	 LYx/LblBIykJJjBPDeP+gwzXxBbd6/l54Zzw16KUoPYjx6PR1lW9Ks8gGrpP1AZteZ
+	 y1Fwcux50+J3HGUtfaJno5a7X4OeaHAQTyrw9N6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 410/452] iio: chemical: scd30: Use guard(mutex) to allow early returns
+	Julian Anastasov <ja@ssi.bg>,
+	Florian Westphal <fw@strlen.de>,
+	Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
+Subject: [PATCH 6.1 490/522] ipvs: skip ipv6 extension headers for csum checks
 Date: Tue, 16 Jun 2026 20:30:37 +0530
-Message-ID: <20260616145138.329932977@linuxfoundation.org>
+Message-ID: <20260616145148.727115299@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,213 +69,234 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265762-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:ja@ssi.bg,m:fw@strlen.de,m:nazarkalashnikov0@gmail.com,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265255-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:dlechner@baylibre.com,m:tomasz.duszynski@octakon.com,m:Jonathan.Cameron@huawei.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ssi.bg,strlen.de,gmail.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email,baylibre.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: ED3CC692F96
+X-Rspamd-Queue-Id: 2D276693BA6
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Julian Anastasov <ja@ssi.bg>
 
-[ Upstream commit 5feb5532870fbced5d6f450b8061a33f461b88ca ]
+commit 05cfe9863ef049d98141dc2969eefde72fb07625 upstream.
 
-Auto cleanup based release of the lock allows for simpler code flow in a
-few functions with large multiplexing style switch statements and no
-common operations following the switch.
+Protocol checksum validation fails for IPv6 if there are extension
+headers before the protocol header. iph->len already contains its
+offset, so use it to fix the problem.
 
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250209180624.701140-3-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 5aba4f94b225 ("iio: chemical: scd30: fix division by zero in write_raw")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2906f66a5682 ("ipvs: SCTP Trasport Loadbalancing Support")
+Fixes: 0bbdd42b7efa ("IPVS: Extend protocol DNAT/SNAT and state handlers")
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Nazar Kalashnikov <nazarkalashnikov0@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/scd30_core.c |   63 ++++++++++++++++----------------------
- 1 file changed, 28 insertions(+), 35 deletions(-)
+ net/netfilter/ipvs/ip_vs_proto_sctp.c |   18 ++++++------------
+ net/netfilter/ipvs/ip_vs_proto_tcp.c  |   21 +++++++--------------
+ net/netfilter/ipvs/ip_vs_proto_udp.c  |   20 +++++++-------------
+ 3 files changed, 20 insertions(+), 39 deletions(-)
 
---- a/drivers/iio/chemical/scd30_core.c
-+++ b/drivers/iio/chemical/scd30_core.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2020 Tomasz Duszynski <tomasz.duszynski@octakon.com>
-  */
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev
- 			  int *val, int *val2, long mask)
- {
- 	struct scd30_state *state = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
- 	u16 tmp;
+--- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
+@@ -10,7 +10,8 @@
+ #include <net/ip_vs.h>
  
--	mutex_lock(&state->lock);
-+	guard(mutex)(&state->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 	case IIO_CHAN_INFO_PROCESSED:
- 		if (chan->output) {
- 			*val = state->pressure_comp;
--			ret = IIO_VAL_INT;
--			break;
-+			return IIO_VAL_INT;
- 		}
+ static int
+-sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++		unsigned int sctphoff);
  
- 		ret = iio_device_claim_direct_mode(indio_dev);
- 		if (ret)
--			break;
-+			return ret;
+ static int
+ sctp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -108,7 +109,7 @@ sctp_snat_handler(struct sk_buff *skb, s
+ 		int ret;
  
- 		ret = scd30_read(state);
- 		if (ret) {
- 			iio_device_release_direct_mode(indio_dev);
--			break;
-+			return ret;
- 		}
+ 		/* Some checks before mangling */
+-		if (!sctp_csum_check(cp->af, skb, pp))
++		if (!sctp_csum_check(cp->af, skb, pp, sctphoff))
+ 			return 0;
  
- 		*val = state->meas[chan->address];
- 		iio_device_release_direct_mode(indio_dev);
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 0;
- 		*val2 = 1;
--		ret = IIO_VAL_INT_PLUS_MICRO;
--		break;
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
- 		if (ret)
--			break;
-+			return ret;
+ 		/* Call application helper if needed */
+@@ -156,7 +157,7 @@ sctp_dnat_handler(struct sk_buff *skb, s
+ 		int ret;
  
- 		*val = 0;
- 		*val2 = 1000000000 / tmp;
--		ret = IIO_VAL_INT_PLUS_NANO;
--		break;
-+		return IIO_VAL_INT_PLUS_NANO;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
- 		if (ret)
--			break;
-+			return ret;
+ 		/* Some checks before mangling */
+-		if (!sctp_csum_check(cp->af, skb, pp))
++		if (!sctp_csum_check(cp->af, skb, pp, sctphoff))
+ 			return 0;
  
- 		*val = tmp;
--		ret = IIO_VAL_INT;
--		break;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
- 	}
--	mutex_unlock(&state->lock);
--
--	return ret;
+ 		/* Call application helper if needed */
+@@ -185,19 +186,12 @@ sctp_dnat_handler(struct sk_buff *skb, s
  }
  
- static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
- 			   int val, int val2, long mask)
+ static int
+-sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++sctp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++		unsigned int sctphoff)
  {
- 	struct scd30_state *state = iio_priv(indio_dev);
--	int ret = -EINVAL;
-+	int ret;
+-	unsigned int sctphoff;
+ 	struct sctphdr *sh;
+ 	__le32 cmp, val;
  
--	mutex_lock(&state->lock);
-+	guard(mutex)(&state->lock);
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		if (val)
--			break;
-+			return -EINVAL;
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		sctphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		sctphoff = ip_hdrlen(skb);
+-
+ 	sh = (struct sctphdr *)(skb->data + sctphoff);
+ 	cmp = sh->checksum;
+ 	val = sctp_compute_cksum(skb, sctphoff);
+--- a/net/netfilter/ipvs/ip_vs_proto_tcp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_tcp.c
+@@ -29,7 +29,8 @@
+ #include <net/ip_vs.h>
  
- 		val = 1000000000 / val2;
- 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
--			break;
-+			return -EINVAL;
+ static int
+-tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int tcphoff);
  
- 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
- 		if (ret)
--			break;
-+			return ret;
+ static int
+ tcp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -166,7 +167,7 @@ tcp_snat_handler(struct sk_buff *skb, st
+ 		int ret;
  
- 		state->meas_interval = val;
--		break;
-+		return 0;
- 	case IIO_CHAN_INFO_RAW:
- 		switch (chan->type) {
- 		case IIO_PRESSURE:
- 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
- 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
--				break;
-+				return -EINVAL;
+ 		/* Some checks before mangling */
+-		if (!tcp_csum_check(cp->af, skb, pp))
++		if (!tcp_csum_check(cp->af, skb, pp, tcphoff))
+ 			return 0;
  
- 			ret = scd30_command_write(state, CMD_START_MEAS, val);
- 			if (ret)
--				break;
-+				return ret;
+ 		/* Call application helper if needed */
+@@ -244,7 +245,7 @@ tcp_dnat_handler(struct sk_buff *skb, st
+ 		int ret;
  
- 			state->pressure_comp = val;
--			break;
-+			return 0;
- 		default:
--			break;
-+			return -EINVAL;
- 		}
--		break;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
--			break;
-+			return -EINVAL;
+ 		/* Some checks before mangling */
+-		if (!tcp_csum_check(cp->af, skb, pp))
++		if (!tcp_csum_check(cp->af, skb, pp, tcphoff))
+ 			return 0;
+ 
  		/*
- 		 * Manufacturer does not explicitly specify min/max sensible
- 		 * values hence check is omitted for simplicity.
- 		 */
--		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
-+		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
-+	default:
-+		return -EINVAL;
- 	}
--	mutex_unlock(&state->lock);
--
--	return ret;
- }
+@@ -301,17 +302,9 @@ tcp_dnat_handler(struct sk_buff *skb, st
  
- static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 
+ static int
+-tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++tcp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int tcphoff)
+ {
+-	unsigned int tcphoff;
+-
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		tcphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		tcphoff = ip_hdrlen(skb);
+-
+ 	switch (skb->ip_summed) {
+ 	case CHECKSUM_NONE:
+ 		skb->csum = skb_checksum(skb, tcphoff, skb->len - tcphoff, 0);
+@@ -322,7 +315,7 @@ tcp_csum_check(int af, struct sk_buff *s
+ 			if (csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 					    &ipv6_hdr(skb)->daddr,
+ 					    skb->len - tcphoff,
+-					    ipv6_hdr(skb)->nexthdr,
++					    IPPROTO_TCP,
+ 					    skb->csum)) {
+ 				IP_VS_DBG_RL_PKT(0, af, pp, skb, 0,
+ 						 "Failed checksum for");
+--- a/net/netfilter/ipvs/ip_vs_proto_udp.c
++++ b/net/netfilter/ipvs/ip_vs_proto_udp.c
+@@ -25,7 +25,8 @@
+ #include <net/ip6_checksum.h>
+ 
+ static int
+-udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp);
++udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int udphoff);
+ 
+ static int
+ udp_conn_schedule(struct netns_ipvs *ipvs, int af, struct sk_buff *skb,
+@@ -155,7 +156,7 @@ udp_snat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!udp_csum_check(cp->af, skb, pp))
++		if (!udp_csum_check(cp->af, skb, pp, udphoff))
+ 			return 0;
+ 
+ 		/*
+@@ -238,7 +239,7 @@ udp_dnat_handler(struct sk_buff *skb, st
+ 		int ret;
+ 
+ 		/* Some checks before mangling */
+-		if (!udp_csum_check(cp->af, skb, pp))
++		if (!udp_csum_check(cp->af, skb, pp, udphoff))
+ 			return 0;
+ 
+ 		/*
+@@ -297,17 +298,10 @@ udp_dnat_handler(struct sk_buff *skb, st
+ 
+ 
+ static int
+-udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp)
++udp_csum_check(int af, struct sk_buff *skb, struct ip_vs_protocol *pp,
++	       unsigned int udphoff)
+ {
+ 	struct udphdr _udph, *uh;
+-	unsigned int udphoff;
+-
+-#ifdef CONFIG_IP_VS_IPV6
+-	if (af == AF_INET6)
+-		udphoff = sizeof(struct ipv6hdr);
+-	else
+-#endif
+-		udphoff = ip_hdrlen(skb);
+ 
+ 	uh = skb_header_pointer(skb, udphoff, sizeof(_udph), &_udph);
+ 	if (uh == NULL)
+@@ -325,7 +319,7 @@ udp_csum_check(int af, struct sk_buff *s
+ 				if (csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 						    &ipv6_hdr(skb)->daddr,
+ 						    skb->len - udphoff,
+-						    ipv6_hdr(skb)->nexthdr,
++						    IPPROTO_UDP,
+ 						    skb->csum)) {
+ 					IP_VS_DBG_RL_PKT(0, af, pp, skb, 0,
+ 							 "Failed checksum for");
 
 
 
