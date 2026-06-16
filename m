@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-265431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266253-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id AZzHERGKMWoymAUAu9opvQ
-	(envelope-from <stable+bounces-265431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:25 +0200
+	id K1P/AI2ZMWqjnwUAu9opvQ
+	(envelope-from <stable+bounces-266253-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DA069353F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:38:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46B2694692
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:44:27 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=BZcnjuUK;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265431-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265431-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=DfDKPfNT;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266253-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266253-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 598363155B6C
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A7C33017C8A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0F647AF5F;
-	Tue, 16 Jun 2026 17:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F0138C437;
+	Tue, 16 Jun 2026 18:44:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC9147A0DA;
-	Tue, 16 Jun 2026 17:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D443CEC7;
+	Tue, 16 Jun 2026 18:44:15 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631169; cv=none; b=MGpcsHwWDtnMSkJh4YWDeJqueSiwxhAOK48jaONa3BcvuEX+TCvEdGuVBqG1Q8CEJ7qz58qwTYAL5ZowQ1ft0uRTCdviU4Klkj9oxgPg3FRvwuH1YsEEFUEX+hS6WCj9xC49tKqayMqlcoMRyj8NZLouqw68xt3uf4quKE0BGyY=
+	t=1781635456; cv=none; b=eodBQgE89hPju1cBxbLZkOPgYeVllJh0e0By/DV50iV+HvQzJmnq9z1O37aCCQDGV78fGWOt6XMRPPz3mWvGSkyTgcJmqPVU76QCTQMqjWe+WLwJHlc2C1HTUjnmEi48LsK5ZRzjTgEqhkOGP81YOAkv6zmp52NxjS6/yUW31WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631169; c=relaxed/simple;
-	bh=9FcfJ9LXOYGpn6rPUPhh3mRcCS7u6/zLgNl1W7nxMTY=;
+	s=arc-20240116; t=1781635456; c=relaxed/simple;
+	bh=zGR+MR4x+EnpRQ2ciSBkDfJmpGF8mHSfdivdzG+CHYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C7rLIxLk/X0hKkKlZc30b1LShnRlb/BO+M8BRFtAmO8YMbOAo0+tBF98p0UUh6rrm1YWeIZWMribYqGPKyWzUCzpOLRivwZOdhdgNBYO6DoRybrieU7rrYVj4elAdxnatUICDmlfINk1SIEkbWtYKDkutOfJVroaatZESvf3i+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZcnjuUK; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2218E1F000E9;
-	Tue, 16 Jun 2026 17:32:46 +0000 (UTC)
+	 MIME-Version; b=PjwpiMuIcyZdjnjVgvrpo7zqEFWFy/zQbohdMk3Lq/Cc7bXL32wULqnfKhng8TGLswQzRkpkg3yqyGXO+aKA85iBG8kbnlpQaAkPce1LjFaIiU9O8JWS23s1ZnZPwLcCZp0BPD9KGsHS9JyXcY8DRr7NqpGbRmh2cdZF4kBn7t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfDKPfNT; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0061F1F000E9;
+	Tue, 16 Jun 2026 18:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631168;
-	bh=cUXF4imZLBZ9LMBR5sogd3r4nGk19e2SaioXwwdDQEE=;
+	s=korg; t=1781635455;
+	bh=QCU0s5bboVt6oJOkpjuiJ4biJzQEZnlCWvm4Y6WyfPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BZcnjuUKo29UFSbIEx7s9ig6iika2mPjCBp6MTGcJipVKEdbe4H//UCXW5BFugMFe
-	 ZGWmT5Ei38efjAzBOeO+bvdkA6GxHV8Vy+Cg97DSEGJyyjnK3ez9HF3siR4+W/UqVL
-	 /w8w5OfX4jUePXW7VbrthcR9PiEDWuTSc58NyOn0=
+	b=DfDKPfNTs96dhk/HmJM8EeIY0puR65Mm/Bm1G/ydcGLEieBlH2XRjLCQ56p6YEpib
+	 E1z/xmq36ed2ZUQaPKOKUcbApTTrVCguIVHirgRxjsQQi71Qh8Zzn1M4+0Qhy5fCFy
+	 K5Z3x2smOyz31oCLcR6/YGfP0HKIFE/r0/et1GGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.1 168/522] drm/i915: Fix potential UAF in TTM object purge
+	Jian Zhou <eilaimemedsnaimel@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 019/342] ipv4: free net->ipv4.sysctl_local_reserved_ports after unregister_net_sysctl_table()
 Date: Tue, 16 Jun 2026 20:25:15 +0530
-Message-ID: <20260616145134.019841262@linuxfoundation.org>
+Message-ID: <20260616145049.161797088@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,191 +69,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-265431-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,linux.dev,kernel.org];
+	TAGGED_FROM(0.00)[bounces-266253-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:edumazet@google.com,m:xiyou.wangcong@gmail.com,m:kerneljasonxing@gmail.com,m:jiayuan.chen@linux.dev,m:kuba@kernel.org,m:sashal@kernel.org,m:xiyouwangcong@gmail.com,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:janusz.krzysztofik@linux.intel.com,m:matthew.auld@intel.com,m:thomas.hellstrom@linux.intel.com,m:sebastian.brzezinka@intel.com,m:christian.koenig@amd.com,m:andi.shyti@linux.intel.com,m:tursulin@ursulin.net,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,ursulin.net:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,gitlab.freedesktop.org:url,vger.kernel.org:from_smtp,decode_stacktrace.sh:url]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,vger.kernel.org:from_smtp,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 91DA069353F
+X-Rspamd-Queue-Id: E46B2694692
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5c4063c87a619e4df954c179d24628636f5db15f upstream.
+[ Upstream commit 87a1e0fe7776da7ab411be332b4be58ac8840d10 ]
 
-TLDR: The bo->ttm object might be changed by calling ttm_bo_validate(),
-      move casting it to an i915_tt object later to actually get the right
-      pointer.
+ipv4_sysctl_exit_net() is currently freeing net->ipv4.sysctl_local_reserved_ports
+too soon.
 
-A user reported hitting the following bug under heavy use on DG2:
+Only after unregister_net_sysctl_table() we can be sure no threads can possibly
+use the sysctls, including /proc/sys/net/ipv4/ip_local_reserved_ports.
 
-[26620.095550] Oops: general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 1 SMP NOPTI
-[26620.095556] CPU: 2 UID: 0 PID: 631 Comm: Xorg Not tainted 6.18.8 #1 PREEMPT(lazy)
-[26620.095558] Hardware name: ASRock B850M Steel Legend WiFi/B850M Steel Legend WiFi, BIOS 3.50 09/18/2025
-[26620.095559] RIP: 0010:i915_ttm_purge+0x84/0x100 [i915]
-[26620.095604] Code: 00 00 00 48 8d 54 24 10 48 89 e6 48 89 fb e8 83 aa ae ff 85 c0 75 6f 48 83 bb a8 01 00 00 00 74 2c 48 8b 45 78 48 85 c0 74 23 <48> 8b 78 20 48 c7 c2 ff ff ff ff 31 f6 e8 7a 73 e3 e0 48 8b 7d 78
-[26620.095605] RSP: 0018:ffffc90005fd7430 EFLAGS: 00010282
-[26620.095607] RAX: a56b6b6b6b6b6b6b RBX: ffff8881f46c3dc0 RCX: 0000000000000000
-[26620.095608] RDX: 0000000000000000 RSI: 0000000000000246 RDI: 00000000ffffffff
-[26620.095609] RBP: ffff888289610f00 R08: 0000000000000001 R09: ffff88823b022000
-[26620.095609] R10: ffff888103029b28 R11: ffff8881fc7f3800 R12: ffff88810b6150d0
-[26620.095609] R13: ffff888289610f00 R14: 0000000000000000 R15: ffff8881f46c3dc0
-[26620.095610] FS: 00007f1004d86900(0000) GS:ffff88901c858000(0000) knlGS:0000000000000000
-[26620.095611] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[26620.095611] CR2: 00007f0fdf489000 CR3: 000000035b0c1000 CR4: 0000000000750ef0
-[26620.095612] PKRU: 55555554
-[26620.095612] Call Trace:
-[26620.095615] <TASK>
-[26620.095615] i915_ttm_move+0x2b9/0x420 [i915]
-[26620.095642] ? ttm_tt_init+0x65/0x80 [ttm]
-[26620.095644] ? i915_ttm_tt_create+0xc6/0x150 [i915]
-[26620.095667] ttm_bo_handle_move_mem+0xb6/0x160 [ttm]
-[26620.095669] ttm_bo_evict+0x100/0x150 [ttm]
-[26620.095671] ? preempt_count_add+0x64/0xa0
-[26620.095673] ? _raw_spin_lock+0xe/0x30
-[26620.095675] ? _raw_spin_unlock+0xd/0x30
-[26620.095675] ? i915_gem_object_evictable+0xb7/0xd0 [i915]
-[26620.095704] ttm_bo_evict_cb+0x6e/0xd0 [ttm]
-[26620.095705] ttm_lru_walk_for_evict+0xa6/0x200 [ttm]
-[26620.095708] ttm_bo_alloc_resource+0x185/0x4f0 [ttm]
-[26620.095709] ? init_object+0x62/0xd0
-[26620.095712] ttm_bo_validate+0x7a/0x180 [ttm]
-[26620.095713] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095714] __i915_ttm_get_pages+0xb0/0x170 [i915]
-[26620.095737] i915_ttm_get_pages+0x9f/0x150 [i915]
-[26620.095759] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095786] ? alloc_debug_processing+0xd0/0x100
-[26620.095787] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095788] ? i915_vma_instance+0xa0/0x4e0 [i915]
-[26620.095822] __i915_gem_object_get_pages+0x2f/0x40 [i915]
-[26620.095848] i915_vma_pin_ww+0x706/0x980 [i915]
-[26620.095875] ? i915_gem_do_execbuffer+0xedc/0x2b40 [i915]
-[26620.095904] eb_validate_vmas+0x170/0xa00 [i915]
-[26620.095930] i915_gem_do_execbuffer+0x1201/0x2b40 [i915]
-[26620.095953] ? alloc_debug_processing+0xd0/0x100
-[26620.095954] ? _raw_spin_unlock_irqrestore+0x16/0x30
-[26620.095955] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.095977] ? __wake_up_sync_key+0x32/0x50
-[26620.095979] ? i915_gem_execbuffer2_ioctl+0xc9/0x240 [i915]
-[26620.096001] ? __slab_alloc.isra.0+0x67/0xc0
-[26620.096003] i915_gem_execbuffer2_ioctl+0x11a/0x240 [i915]
-
-Results from decode_stacktrace.sh pointed to dereference of a file pointer
-field of a i915 TTM page vector container associated with an object being
-purged on eviction.  That path is taken when the object is marked as no
-longer needed.
-
-Code analysis revealed a possibility of the i915 TTM page vector container
-being replaced with a new instance inside a function that purges content
-of the object, should it be still busy.  That function is called,
-indirectly via a more general function that changes the object's placement
-and caching policy, before the problematic dereference, but still after
-a pointer to the container is captured, rendering the pointer no longer
-valid.
-
-Fix the issue by capturing the pointer to the container only after its
-potential replacement.
-
-v2: Move the container_of() inside the if block (Sebastian),
-  - a simplified version of the commit description that explains briefly
-    why the change is necessary (Christian).
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/14882
-Fixes: 7ae034590ceae ("drm/i915/ttm: add tt shmem backend")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: stable@vger.kernel.org # v5.17+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://lore.kernel.org/r/20260508122612.469227-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit 4462966a93eb185849b7f174f0d0de53476d00a4)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 122ff243f5f1 ("ipv4: make ip_local_reserved_ports per netns")
+Reported-by: Ji'an Zhou <eilaimemedsnaimel@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260521122147.3584624-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_ttm.c |   28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ net/ipv4/sysctl_net_ipv4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-@@ -422,8 +422,6 @@ void i915_ttm_free_cached_io_rsgt(struct
- int i915_ttm_purge(struct drm_i915_gem_object *obj)
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 59ba518a85b9c9..56c60af2a32f25 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -1362,10 +1362,10 @@ static __net_exit void ipv4_sysctl_exit_net(struct net *net)
  {
- 	struct ttm_buffer_object *bo = i915_gem_to_ttm(obj);
--	struct i915_ttm_tt *i915_tt =
--		container_of(bo->ttm, typeof(*i915_tt), ttm);
- 	struct ttm_operation_ctx ctx = {
- 		.interruptible = true,
- 		.no_wait_gpu = false,
-@@ -438,16 +436,22 @@ int i915_ttm_purge(struct drm_i915_gem_o
- 	if (ret)
- 		return ret;
+ 	struct ctl_table *table;
  
--	if (bo->ttm && i915_tt->filp) {
--		/*
--		 * The below fput(which eventually calls shmem_truncate) might
--		 * be delayed by worker, so when directly called to purge the
--		 * pages(like by the shrinker) we should try to be more
--		 * aggressive and release the pages immediately.
--		 */
--		shmem_truncate_range(file_inode(i915_tt->filp),
--				     0, (loff_t)-1);
--		fput(fetch_and_zero(&i915_tt->filp));
-+	if (bo->ttm) {
-+		struct i915_ttm_tt *i915_tt =
-+			container_of(bo->ttm, typeof(*i915_tt), ttm);
-+
-+		if (i915_tt->filp) {
-+			/*
-+			 * The below fput(which eventually calls shmem_truncate)
-+			 * might be delayed by worker, so when directly called
-+			 * to purge the pages(like by the shrinker) we should
-+			 * try to be more aggressive and release the pages
-+			 * immediately.
-+			 */
-+			shmem_truncate_range(file_inode(i915_tt->filp),
-+					     0, (loff_t)-1);
-+			fput(fetch_and_zero(&i915_tt->filp));
-+		}
- 	}
+-	kfree(net->ipv4.sysctl_local_reserved_ports);
+ 	table = net->ipv4.ipv4_hdr->ctl_table_arg;
+ 	unregister_net_sysctl_table(net->ipv4.ipv4_hdr);
+ 	kfree(table);
++	kfree(net->ipv4.sysctl_local_reserved_ports);
+ }
  
- 	obj->write_domain = 0;
+ static __net_initdata struct pernet_operations ipv4_sysctl_ops = {
+-- 
+2.53.0
+
 
 
 
