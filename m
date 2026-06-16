@@ -1,189 +1,160 @@
-Return-Path: <stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id kPaUKBBzMWqXjgUAu9opvQ
-	(envelope-from <stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:16 +0200
+	id w3lvJ4x1MWpwjwUAu9opvQ
+	(envelope-from <stable+bounces-264326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3086919C6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:00:16 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2675E691C60
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:10:52 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TEH8BfqJ;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-264319-lists+stable=lfdr.de@vger.kernel.org";
-	dmarc=pass (policy=reject) header.from=google.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RKDFVych;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264326-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264326-lists+stable=lfdr.de@vger.kernel.org";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91F06304E161
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:54:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84DF830B44E0
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D78A44E02A;
-	Tue, 16 Jun 2026 15:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CE144B69C;
+	Tue, 16 Jun 2026 15:55:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE0444CF4E
-	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C2444DB62
+	for <stable@vger.kernel.org>; Tue, 16 Jun 2026 15:55:22 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781625292; cv=none; b=GBfVsl1KXId1FFvAF10NRw1QaiUiVVHxrPIrwCm0clwuUgdPKzzo3t1xLLNEFgsSto2+z8sNqLsOWPoSx1RjVr2hxkkkshPJ9yLINnppw9YN3BtHfPHNDa/Noawy17ab/Uy6qgABFphL4aNpVQGoOdtLaMGE+nbVQw4thJSsI0k=
+	t=1781625323; cv=none; b=Cv4Y+rEkDH+66m+7UNVPMFdf46cq2efaEmPFnio6YBs/9hubjzvDlkaaRXmkDRmkhmsB+YJ3RQsPKYATAplW3dTAy0tQYz/qGRbkTtUidszXgtIqll+wOKSHREEnbd4W+yH9g3IrNs7iuXVCtu2Xvyo+mhHzDEfuFIpSuxHt/LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781625292; c=relaxed/simple;
-	bh=EA6WyWG10ZiYG3Ibe7F59PN3ZW0L1VzaSTTaHdsrgM0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ukV32hpTPIZrVErM1DzuXbAgC+jEIGuJmp5lfXMOpQ+JXNfEpknPW9PH+MQY4KX9RunLaASLY/DjIKeYDIIRKMLFbYUJ2qbCjFEiDjvF4ZTTF3aWNgFBpBBJ64SMzbm03dcWejdazkgD62fGPhtsdCcsNC5g0jpcX/hjGzkH06U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kpberry.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TEH8BfqJ; arc=none smtp.client-ip=209.85.216.74
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-37c5bb1de23so574022a91.1
-        for <stable@vger.kernel.org>; Tue, 16 Jun 2026 08:54:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781625290; x=1782230090; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yC4/3ZYS5Vh/O2LjV/2TjbHuntR+M/N/R6QJ97IDDdA=;
-        b=TEH8BfqJzgt+EgXweLrcxxppYakWEtm5AkKExjKZ5V3h/lVQeTiZbvJBRogVFzTExB
-         /ETYZe17z+8KRXh5c3gTphn+Oc5SO4vjyDvkKQLb/EfCBm1PgI579Q/AAubt8eWeiGxH
-         ruStdZ+I9ZfxwJwMhF7EQAg79mLGyuolS+/m89jXg2AXcNte6EC+MQyU+GqNidHUkAGe
-         tWelA0Suyc7LVoSnNPoPuQzHci3eV3UdvqCXciYDwvL4ZtPwJh5aI/Y6xgHd/bSOmSC7
-         EXZQ7T3OSKTb85rnmYqlInRV42FRxh6KUmJvcliUBY2JfB+s9gqgM/R2SMCxRZTUgWdf
-         fMsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781625290; x=1782230090;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yC4/3ZYS5Vh/O2LjV/2TjbHuntR+M/N/R6QJ97IDDdA=;
-        b=YnkhY9bIYSbUeUEkHVRbHVWYwA0zZh6cO7RKn1kbFcSRtq13wcA/eYCR9lybwOAdCT
-         Wo0pdyXe5SMvf21PV7CBgBt+V/i4oF/Ki+K53f24712pPXa5x85XvvqQ95Y9fnfOgbZZ
-         K6ztPRl2IE0yAsZd3Bi8rmxH6w/4MrRiuZ5vhB/aVxaEula1CODa60raRJ6WUfgmISfJ
-         Mzihi5Lu9IQsZJi4lu9acoQagd2Nj1kP15+CWh2SrMiwZDw7duYz8rHfhYj9vrtPc6pf
-         GvykfzBlrG1QZmkAmNl4BTW26vEmkhZ1WkX8yY3NLF//WB30Kj7xMJxLZb6p+6Jf46cV
-         605w==
-X-Gm-Message-State: AOJu0YxEHj1SRArThEi5Unb+opt4ny/xEvIe5Z3N9WarOFk76psB5aHx
-	qXh9wtwSD7tu2tTd+G/ANEyfRHDSoWD1T+x2ZUDzayOvEQxg8MXXVUJuOUfOT1jm4kgaUoRdFmb
-	BZtMDbGOq1EuoxI8bXXlaJQDOba8Gt4OrxLCD2Um3IFRofDB+9KcxCvucqFI7BadrFSmshiMrEd
-	Ct5MnH2Vd27wbwmTkZnXZnZiWdFRShtsYMPTTJmdZNpg==
-X-Received: from plbkm5.prod.google.com ([2002:a17:903:27c5:b0:2c0:b7cf:e7ab])
- (user=kpberry job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ec3:b0:366:3517:1a95
- with SMTP id 98e67ed59e1d1-37c924904efmr107925a91.0.1781625289948; Tue, 16
- Jun 2026 08:54:49 -0700 (PDT)
-Date: Tue, 16 Jun 2026 15:54:30 +0000
-In-Reply-To: <20260616155432.2093908-1-kpberry@google.com>
+	s=arc-20240116; t=1781625323; c=relaxed/simple;
+	bh=IIYESV4Jd8wPDviCiLsynfXTewWsfiOnRjQzfydbVa4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DbrK2UXT1rGkYGfkq+QN0t/yQKdfIXpfa8m9CrF/jwP5zSQIKL55jV5BgXI42Por9DkD1GCIfHDYVHvqcioyVnAwkPK9DvCNOlUKm2SLRcu1gx3jxuQwT5bVsgoeLUaSo1ArP+tHEhbkPabHddDHSQC8+iAM+cfgKjGh+wYQlHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKDFVych; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03CE1F000E9;
+	Tue, 16 Jun 2026 15:55:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781625322;
+	bh=qlQXlBsHQbS15KuGoMocJqDC6olMMamHpXmLAA18KuY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RKDFVychmKEOUADHcDfgoxFFg2a9lC/ofuib1LSN7JPDFLK9edbrb2gQn8AtdPpKq
+	 BhFPiN9NcWAmq1T7N1nhQcDior3X7QLPB3MzRD8TCGgnSWArX5h97DRFjOHndlqhit
+	 ZRfjhlrnWgqKVxcvYeCKY3akngN5uRJQ11NnSiUFCJaaq9teCMnfQo1Cs+mD2D58Q7
+	 uIncBO8RLDZpmQgTiv00551k8jmOJQgOYb70fG1TxxfPNGIdXr9fTAk7AlvoVfIN8d
+	 6vetbKwUp252EqrbFAAREO4xc8R8NRUCX6mvF3TgW8MYiid7u0ATJIhSxNyoGXl3+0
+	 DTJoGyYCO29kw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Salman Alghamdi <me@cipherat.com>,
+	Luka Gejak <luka.gejak@linux.dev>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] staging: rtl8723bs: fix buffer over-read in rtw_update_protection
+Date: Tue, 16 Jun 2026 11:55:20 -0400
+Message-ID: <20260616155520.3322698-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026061501-overheat-caution-dc20@gregkh>
+References: <2026061501-overheat-caution-dc20@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260616155432.2093908-1-kpberry@google.com>
-X-Mailer: git-send-email 2.54.0.1136.gdb2ca164c4-goog
-Message-ID: <20260616155432.2093908-8-kpberry@google.com>
-Subject: [PATCH 6.12 7/7] bonding: fix NULL pointer dereference in
- actor_port_prio setting
-From: Kevin Berry <kpberry@google.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, bestswngs@gmail.com, chenglongtang@google.com, 
-	joneslee@google.com, kpberry@google.com, pabeni@redhat.com, rnj@google.com, 
-	sashal@kernel.org, xmei5@asu.edu, Hangbin Liu <liuhangbin@gmail.com>, 
-	Liang Li <liali@redhat.com>, Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-3.66 / 15.00];
+	WHITELIST_SPF_DKIM(-3.00)[kernel.org:d:+,kernel.org:s:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20260515];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:bestswngs@gmail.com,m:chenglongtang@google.com,m:joneslee@google.com,m:kpberry@google.com,m:pabeni@redhat.com,m:rnj@google.com,m:sashal@kernel.org,m:xmei5@asu.edu,m:liuhangbin@gmail.com,m:liali@redhat.com,m:kuba@kernel.org,s:lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-264326-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:me@cipherat.com,m:luka.gejak@linux.dev,m:gregkh@linuxfoundation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORWARDED(0.00)[lists@lfdr.de];
-	TAGGED_FROM(0.00)[bounces-264319-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kpberry@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,google.com,redhat.com,kernel.org,asu.edu];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	ALIAS_RESOLVED(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,linuxfoundation.org:email,vger.kernel.org:from_smtp,linux.dev:email,msgid.link:url]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 6B3086919C6
+X-Rspamd-Queue-Id: 2675E691C60
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Salman Alghamdi <me@cipherat.com>
 
-[ Upstream commit 067bf016e99ad72aa4ff869d6dec1fd62a9c6202 ]
+[ Upstream commit 514ab98364595007d4557ecc85d7e5f012c504d3 ]
 
-Liang reported an issue where setting a slave=E2=80=99s actor_port_prio to
-predefined values such as 0, 255, or 65535 would cause a system crash.
+rtw_update_protection() is called with a pointer offset into the
+ies buffer but the full ie_length is passed, causing a potential
+buffer over-read.
 
-The problem occurs because in bond_opt_parse(), when the provided value
-matches a predefined table entry, the function returns that table entry,
-which does not contain slave information. Later, in
-bond_option_actor_port_prio_set(), calling bond_slave_get_rtnl() leads
-to a NULL pointer dereference.
-
-Since actor_port_prio is defined as a u16 and initialized to the default
-value of 255 in ad_initialize_port(), there is no need for the
-bond_actor_port_prio_tbl. Using the BOND_OPTFLAG_RAWVAL flag is sufficient.
-
-Fixes: 6b6dc81ee7e8 ("bonding: add support for per-port LACP actor priority=
-")
-Reported-by: Liang Li <liali@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20251105072620.164841-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kevin Berry <kpberry@google.com>
+Fixes: e945c43df60b ("Staging: rtl8723bs: Delete dead code from update_current_network()")
+Fixes: d3fcee1b78a5 ("staging: rtl8723bs: fix camel case in struct wlan_bssid_ex")
+Reported-by: Luka Gejak <luka.gejak@linux.dev>
+Closes: https://lore.kernel.org/linux-staging/DI2H39EAAFBZ.3KI5NWN02AQ2S@linux.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Salman Alghamdi <me@cipherat.com>
+Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
+Link: https://patch.msgid.link/20260508222649.23989-1-me@cipherat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_=
-options.c
-index ddb3f06cbb75..4d01f1081956 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -225,13 +225,6 @@ static const struct bond_opt_value bond_ad_actor_sys_p=
-rio_tbl[] =3D {
- 	{ NULL,      -1,    0},
- };
-=20
--static const struct bond_opt_value bond_actor_port_prio_tbl[] =3D {
--	{ "minval",  0,     BOND_VALFLAG_MIN},
--	{ "maxval",  65535, BOND_VALFLAG_MAX},
--	{ "default", 255,   BOND_VALFLAG_DEFAULT},
--	{ NULL,      -1,    0},
--};
--
- static const struct bond_opt_value bond_ad_user_port_key_tbl[] =3D {
- 	{ "minval",  0,     BOND_VALFLAG_MIN | BOND_VALFLAG_DEFAULT},
- 	{ "maxval",  1023,  BOND_VALFLAG_MAX},
-@@ -497,7 +490,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST=
-] =3D {
- 		.id =3D BOND_OPT_ACTOR_PORT_PRIO,
- 		.name =3D "actor_port_prio",
- 		.unsuppmodes =3D BOND_MODE_ALL_EX(BIT(BOND_MODE_8023AD)),
--		.values =3D bond_actor_port_prio_tbl,
-+		.flags =3D BOND_OPTFLAG_RAWVAL,
- 		.set =3D bond_option_actor_port_prio_set,
- 	},
- 	[BOND_OPT_AD_ACTOR_SYSTEM] =3D {
---=20
-2.54.0.1136.gdb2ca164c4-goog
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index 3563017acc3136..d4b6e748f11fc2 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -449,8 +449,11 @@ static void update_current_network(struct adapter *adapter, struct wlan_bssid_ex
+ 
+ 	if ((check_fwstate(pmlmepriv, _FW_LINKED) == true) && (is_same_network(&(pmlmepriv->cur_network.network), pnetwork, 0))) {
+ 		update_network(&(pmlmepriv->cur_network.network), pnetwork, adapter, true);
++		if (pmlmepriv->cur_network.network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++			return;
++
+ 		rtw_update_protection(adapter, (pmlmepriv->cur_network.network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-								pmlmepriv->cur_network.network.ie_length);
++								pmlmepriv->cur_network.network.ie_length - sizeof(struct ndis_802_11_fix_ie));
+ 	}
+ }
+ 
+@@ -1070,8 +1073,11 @@ static void rtw_joinbss_update_network(struct adapter *padapter, struct wlan_net
+ 			break;
+ 	}
+ 
++	if (cur_network->network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++		return;
++
+ 	rtw_update_protection(padapter, (cur_network->network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-									(cur_network->network.ie_length));
++									(cur_network->network.ie_length - sizeof(struct ndis_802_11_fix_ie)));
+ 
+ 	rtw_update_ht_cap(padapter, cur_network->network.ies, cur_network->network.ie_length, (u8) cur_network->network.configuration.ds_config);
+ }
+-- 
+2.53.0
 
 
