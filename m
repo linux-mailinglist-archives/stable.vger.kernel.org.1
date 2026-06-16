@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-265835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id doEwGO2QMWqOmwUAu9opvQ
-	(envelope-from <stable+bounces-265835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:41 +0200
+	id OpDpJnyJMWr2lwUAu9opvQ
+	(envelope-from <stable+bounces-265397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEC3693D1E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:07:40 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CA26934B9
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:35:55 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="fq55/UZV";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265835-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265835-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Vzng1JH8;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265397-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265397-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4650830039B7
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:07:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80B713042F35
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119B33D525E;
-	Tue, 16 Jun 2026 18:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6E43BFE5B;
+	Tue, 16 Jun 2026 17:29:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD402F12AE;
-	Tue, 16 Jun 2026 18:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F1A21C16A;
+	Tue, 16 Jun 2026 17:29:50 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781633258; cv=none; b=Aduxhar1cxhiCD6RSLtRaxBsM+GUaPf6xfN5WFfT32IqP8SrUX6k3VYcPFbjq9QfNu3bTmY3//76TqtOhAIy28qShlRkqbvOCZxoJh+n891uq2x4l6/SHAL8ZQu2ncVA8Z2zJLd20ojqs0fBS/ib6HTUNRVrEjSYwqPLNJwRcz8=
+	t=1781630991; cv=none; b=DZpTMjRIryVkOnKdFjZkO4q5y1z4IoQdlK0Rv3XKoeg4uF8UheyeDGmrZ+tlTILQ8BX/Ce9wWDROLldL1KkUv3w+No9xBLDkphIM0bvemWk4VNDYI33b4NU16/f7hG2vFihbnyQVSL6PFCAwbr0J5s6CzsVXSJXKnHBS2038v3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781633258; c=relaxed/simple;
-	bh=pQbNO7W2phcLCZre9rvoNsg2QJQbjpEHTincNr+WZNU=;
+	s=arc-20240116; t=1781630991; c=relaxed/simple;
+	bh=QLVnKg8tNe9bs5op6vEh36as3pncakk0RCwCUKs7Wc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtAoH6LKIXY+8r8CPuRuoJ+lS70KopeecK2A2y8TUszcliQijzGmlFZ4aCiR50/9jcI9EQT3htbdOAzU2mpQ+fJyxCnQ9r2aVYRAjDmsyE8lM9mrHGXLrMlzNnc+srGHso/q4xpiWSVX/8YXYiNyCaYrNV29uFGHBZvlD/vy3GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq55/UZV; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F83C1F000E9;
-	Tue, 16 Jun 2026 18:07:36 +0000 (UTC)
+	 MIME-Version; b=ei4IWxHBg4RaKxqCcQHonQzn8jseP+XggZ2lp3Lzb3tY7aLc5vjd4VUDlSnAGFlsvKI7DNsNSNFK8O3N0iAv07Zd8/wiKVjb8CGKh2NZGhRx3IJgX8mZpSmhosMOr089JpcZlkMeYVI/abtiGzM9teHiJJXT9h8PEd9j9N3WQXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzng1JH8; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969B51F000E9;
+	Tue, 16 Jun 2026 17:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781633257;
-	bh=UIUHKkoW6agv5+iCFX4oSQAF0ieboa/i5Sn1oVCatuw=;
+	s=korg; t=1781630990;
+	bh=71hsCm88KSMTU+WVgLijdxPpH+kQojSqhqTO6OdJ7wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fq55/UZVW3gDwBuYKS5ZDQsmBOhPJPmtPCPLce/PsIcc8hpJe32Ssv3k8ghJTbnnQ
-	 JbUfKPrdWC6uIvWQmZwvyrrTkmte+AIxaAEwrRbmHqjfSMtNPqTWAF3xviOdnVy2O7
-	 57HqxElycmMBJrlyM7Dsenpqsistm+ivmThXmF0M=
+	b=Vzng1JH83O7ph0xzp2YJ6LyS0YY8VG9hpdmbbalR8paQv4ShpOTC3zRz37hHQaQ8k
+	 +HU0+WErmTaoRFhdfTkNdDycLMyBd3MtbxYBm+hx2VG7VpPz01++w/EBRdKQKJodny
+	 HTYWglC/PNmSU27c63veyC/xQ8qGWmAHDOTa3h3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Sven Eckelmann <sven@narfation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/411] batman-adv: tt: avoid empty VLAN responses
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 134/522] ASoC: qcom: q6asm-dai: close stream only when running
 Date: Tue, 16 Jun 2026 20:24:41 +0530
-Message-ID: <20260616145102.579070162@linuxfoundation.org>
+Message-ID: <20260616145132.376863803@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
+References: <20260616145125.307082728@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,21 +72,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265835-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-265397-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:sven@narfation.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:Stable@vger.kernel.org,m:srinivas.kandagatla@oss.qualcomm.com,m:broonie@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
@@ -98,100 +98,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,narfation.org:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: EFEC3693D1E
+X-Rspamd-Queue-Id: B2CA26934B9
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit fa1bd704940b5bcbc32c0b28db9167405c8ee5e0 upstream.
+commit 048c540ee76ded666bda74f9dae1ca3254e0633c upstream.
 
-The commit 16116dac2339 ("batman-adv: prevent TT request storms by not
-sending inconsistent TT TLVLs") added checks to the local (direct) TT
-response code. But the response can also be done indirectly by another node
-using the global TT state. To avoid such inconsistency states reported in
-the original fix, also avoid sending empty VLANs for replies from the
-global TT state.
+q6asm_dai_close() and q6asm_dai_compr_free() currently issue CMD_CLOSE
+whenever prtd->state is non-zero.
 
-Cc: stable@kernel.org
-Fixes: 7ea7b4a14275 ("batman-adv: make the TT CRC logic VLAN specific")
-[ Context, drop flex array dependency ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After prepare() closes an existing stream, the state is updated to
+Q6ASM_STREAM_STOPPED. Since this state is also non-zero, the close and
+free paths can send CMD_CLOSE again for a stream that has already been
+closed.
+
+Restrict CMD_CLOSE to the Q6ASM_STREAM_RUNNING state so the command is
+sent only when the ASM stream is still active.
+
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260518092347.3446946-3-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/translation-table.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index 11c39a9ab90e46..e4d55b27f2551b 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -843,17 +843,19 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 				   s32 *tt_len)
- {
- 	u16 num_vlan = 0;
--	u16 num_entries = 0;
- 	u16 tvlv_len = 0;
- 	unsigned int change_offset;
- 	struct batadv_tvlv_tt_vlan_data *tt_vlan;
- 	struct batadv_orig_node_vlan *vlan;
-+	u16 total_entries = 0;
- 	u8 *tt_change_ptr;
-+	int vlan_entries;
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -456,12 +456,12 @@ static int q6asm_dai_close(struct snd_so
+ 	struct q6asm_dai_rtd *prtd = runtime->private_data;
  
- 	spin_lock_bh(&orig_node->vlan_list_lock);
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
-+		vlan_entries = atomic_read(&vlan->tt.num_entries);
-+		total_entries += vlan_entries;
- 		num_vlan++;
--		num_entries += atomic_read(&vlan->tt.num_entries);
+ 	if (prtd->audio_client) {
+-		if (prtd->state)
++		if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
+ 				  CMD_CLOSE);
+-
+-		q6asm_unmap_memory_regions(substream->stream,
++			q6asm_unmap_memory_regions(substream->stream,
+ 					   prtd->audio_client);
++		}
+ 		q6asm_audio_client_free(prtd->audio_client);
+ 		prtd->audio_client = NULL;
  	}
+@@ -678,7 +678,7 @@ static int q6asm_dai_compr_free(struct s
+ 	struct snd_soc_pcm_runtime *rtd = stream->private_data;
  
- 	change_offset = sizeof(**tt_data);
-@@ -861,7 +863,7 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
+ 	if (prtd->audio_client) {
+-		if (prtd->state) {
++		if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 			q6asm_cmd(prtd->audio_client, prtd->stream_id,
+ 				  CMD_CLOSE);
+ 			if (prtd->next_track_stream_id) {
+@@ -686,11 +686,11 @@ static int q6asm_dai_compr_free(struct s
+ 					  prtd->next_track_stream_id,
+ 					  CMD_CLOSE);
+ 			}
+-		}
  
- 	/* if tt_len is negative, allocate the space needed by the full table */
- 	if (*tt_len < 0)
--		*tt_len = batadv_tt_len(num_entries);
-+		*tt_len = batadv_tt_len(total_entries);
- 
- 	if (change_offset > U16_MAX || *tt_len > U16_MAX - change_offset) {
- 		*tt_len = 0;
-@@ -882,14 +884,27 @@ batadv_tt_prepare_tvlv_global_data(struct batadv_orig_node *orig_node,
- 	(*tt_data)->num_vlan = htons(num_vlan);
- 
- 	tt_vlan = (struct batadv_tvlv_tt_vlan_data *)(*tt_data + 1);
-+	num_vlan = 0;
- 	hlist_for_each_entry(vlan, &orig_node->vlan_list, list) {
-+		vlan_entries = atomic_read(&vlan->tt.num_entries);
-+		if (vlan_entries < 1)
-+			continue;
-+
- 		tt_vlan->vid = htons(vlan->vid);
- 		tt_vlan->crc = htonl(vlan->tt.crc);
- 		tt_vlan->reserved = 0;
- 
- 		tt_vlan++;
-+		num_vlan++;
+-		snd_dma_free_pages(&prtd->dma_buffer);
+-		q6asm_unmap_memory_regions(stream->direction,
++			q6asm_unmap_memory_regions(stream->direction,
+ 					   prtd->audio_client);
++		}
++		snd_dma_free_pages(&prtd->dma_buffer);
+ 		q6asm_audio_client_free(prtd->audio_client);
+ 		prtd->audio_client = NULL;
  	}
- 
-+	/* recalculate in case number of VLANs reduced */
-+	change_offset = sizeof(**tt_data);
-+	change_offset += num_vlan * sizeof(*tt_vlan);
-+	tvlv_len = *tt_len + change_offset;
-+
-+	(*tt_data)->num_vlan = htons(num_vlan);
-+
- 	tt_change_ptr = (u8 *)*tt_data + change_offset;
- 	*tt_change = (struct batadv_tvlv_tt_change *)tt_change_ptr;
- 
--- 
-2.53.0
-
 
 
 
