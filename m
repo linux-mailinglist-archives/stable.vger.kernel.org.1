@@ -1,63 +1,70 @@
-Return-Path: <stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id NlJtIFB9MWrIkgUAu9opvQ
-	(envelope-from <stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:00 +0200
+	id YwK1Emp4MWqlkAUAu9opvQ
+	(envelope-from <stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24571692652
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:44:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1137692016
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:23:05 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=h+ALMHoc;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264763-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=TtWukzA2;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-264479-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BF1F310B42F
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:36:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 741B630A3FCB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE79D478864;
-	Tue, 16 Jun 2026 16:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915734611C1;
+	Tue, 16 Jun 2026 16:08:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24564779A8;
-	Tue, 16 Jun 2026 16:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A482451056;
+	Tue, 16 Jun 2026 16:08:32 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781627767; cv=none; b=C4wgHEKaGiXs5kSVCylXi1LexhGNd0dQX/YcEcjqv2moKkvvJU30o7pk1h4eMz92lXEtaH1SP/etiEQ8wRosrx+RZ32HuQ/XCknbJLmfqLLuEaVBnAvoKr46p1YbOSItYaqLBuhXh11aGCBX0TVfzyP+lU811yDKCCl+KVdk2x8=
+	t=1781626113; cv=none; b=IgDRQf517XfRqkq5taCB8+e/LJULD684OhBRM2SfWIPiJ2e4ai7Rj4w7RezdNvfWjCv8HkhfdgmTaFFumoOZ87OOsrKnUA12FKzQSRU3zzsgMq12W5rz7+Z03H1nHEZbZPZe5zuSueVL0XWEZciXX2NONBDWo2ant8wlsAhq6XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781627767; c=relaxed/simple;
-	bh=s+ZRsiWbv0AngYbdMquwW8L2vS8EJ0LITqQ+0qCGVUI=;
+	s=arc-20240116; t=1781626113; c=relaxed/simple;
+	bh=PSxsqmTZBvEdRi31CbteAUnBuzedeTOvd1tuZd1tA4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFP28teYWlP7dcdo0x+5VgTwt3hy3531CpzP50yOYc6ir9QNxX28rth5gWElgtTkfVofA2HUqOjIBuY1yKyqwd5iWf+9o+IU74T32d1ZG5F2eZnUS3EEdQB4v2eO6hOw7HWclv7WBxdevaQ2+ejfToVuXiFlJEGxy5LGs3P6uPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+ALMHoc; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765161F000E9;
-	Tue, 16 Jun 2026 16:36:05 +0000 (UTC)
+	 MIME-Version; b=Hb7zNEAZXlhdcr9sS8svTBBLdzcBmqTnQSvI0tGBJM1WeBhNi75gKGKUtlsrBaLVivskwlXYnVLN98hKBsk9IXsBfvlUrXvyY05WjgRwzZEZ62dnlk4oP3NIs9HyscgU2I8sof7wwDoPah/4HpoUwruwiSf3c7FLadJRSaKBGac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtWukzA2; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E3F1F000E9;
+	Tue, 16 Jun 2026 16:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781627766;
-	bh=DLy1uEUcsqzXsgRUBG+PpL7lsuCQCxR8rF03OgRaknE=;
+	s=korg; t=1781626112;
+	bh=MeNTaO4byxvabOY6OxHZs0mR0TZrCeNwGa0VEULHMfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h+ALMHocrkfwo2f35kMzniFwsnHaWMnXX3YsF2/Z2kyv/l2Z4xn+E2oa9RtIAfQth
-	 zrl4sF1ySnilnW2rqaEE4+/2q4K6q2NFfuQrAtCVuo23FGbbMuQYeWo8VFrLLJQRRy
-	 WbhWBJJF1+eP45untlWgbnzH7jUpQhavMWbWa7qo=
+	b=TtWukzA2H5qY7YmhuKwc9cjw7xTBVV4ZRmArM7PXtCt/QKyhcTUdEst5aau7HsYrp
+	 wY+5gJcPQafGF956yE4UsPKFZY9lmq/+xYq1RXj31qhvpm6QSCNix2oPDt8s4mS88N
+	 6sjrp86jLtKn6OGUC83uCf3vRhC5cfWQhnRUvqdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 224/261] drm/amd/display: Clamp HDMI HDCP2 rx_id_list read to buffer size
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	stable@kernel.org
+Subject: [PATCH 6.18 266/325] rxrpc: Fix the ACK parser to extract the SACK table for parsing
 Date: Tue, 16 Jun 2026 20:31:02 +0530
-Message-ID: <20260616145055.407498147@linuxfoundation.org>
+Message-ID: <20260616145111.888384892@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
-References: <20260616145044.869532709@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +76,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-264763-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:alex.hung@amd.com,m:harry.wentland@amd.com,m:ray.wu@amd.com,m:daniel.wheeler@amd.com,m:alexander.deucher@amd.com,s:lists@lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264479-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:dhowells@redhat.com,m:marc.dionne@auristor.com,m:jaltman@auristor.com,m:edumazet@google.com,m:davem@davemloft.net,m:kuba@kernel.org,m:pabeni@redhat.com,m:horms@kernel.org,m:linux-afs@lists.infradead.org,m:netdev@vger.kernel.org,m:stable@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,auristor.com,google.com,davemloft.net,kernel.org,lists.infradead.org,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:from_smtp,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,davemloft.net:email,vger.kernel.org:from_smtp,infradead.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 24571692652
+X-Rspamd-Queue-Id: C1137692016
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: David Howells <dhowells@redhat.com>
 
-commit f0f3981c43b32cadfe373d636d9e9ca522bb3702 upstream.
+commit 333b6d5bb9f87827ac2639c737bf9613dbae7253 upstream.
 
-[Why & How]
-During HDCP 2.x repeater authentication over HDMI, the driver reads the
-sink's RxStatus register and extracts a 10-bit message size field (max
-value 1023). This value is used as the read length for the ReceiverID
-list without being clamped to the size of the destination buffer
-rx_id_list[177]. A malicious HDMI repeater could advertise a message
-size larger than the buffer, causing an out-of-bounds write during the
-I2C read.
+Fix modification of the received skbuff in rxrpc_input_soft_acks() and a
+potential incorrect access of the buffer in a fragmented UDP packet (the
+packet would probably have to be deliberately pre-generated as fragmented)
+when AF_RXRPC tries to extract the contents of the SACK table by copying
+out the contents of the SACK table into a buffer before attempting to parse
 
-Clamp the read length in mod_hdcp_read_rx_id_list() to the size of the
-rx_id_list buffer, matching the approach already used in the DP branch.
+AF_RXRPC assumes that it can just call skb_condense() and then validly
+access the SACK table from skb->data and that it will be a flat buffer -
+but skb_condense() can silently fail to do anything under some
+circumstances.
 
-Fixes: eff682f83c9c ("drm/amd/display: Add DDC handles for HDCP2.2")
-Assisted-by: Copilot:claude-opus-4.6
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 229212219e4247d9486f8ba41ef087358490be09)
-Cc: stable@vger.kernel.org
+Note that whilst rxrpc_input_soft_acks() should be able to parse extended
+ACKs, the rest of AF_RXRPC doesn't currently support that.
+
+Further, there's then no need to call skb_condense() in rxrpc_input_ack(),
+so don't.
+
+Fixes: d57a3a151660 ("rxrpc: Save last ACK's SACK table rather than marking txbufs")
+Reported-by: Michael Bommarito <michael.bommarito@gmail.com>
+Link: https://lore.kernel.org/r/20260513180907.2061972-1-michael.bommarito@gmail.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/105362.1780573560@warthog.procyon.org.uk
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/rxrpc/input.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_ddc.c
-@@ -529,7 +529,8 @@ enum mod_hdcp_status mod_hdcp_read_rx_id
- 	} else {
- 		status = read(hdcp, MOD_HDCP_MESSAGE_ID_READ_REPEATER_AUTH_SEND_RECEIVERID_LIST,
- 				hdcp->auth.msg.hdcp2.rx_id_list,
--				hdcp->auth.msg.hdcp2.rx_id_list_size);
-+				MIN(hdcp->auth.msg.hdcp2.rx_id_list_size,
-+				    sizeof(hdcp->auth.msg.hdcp2.rx_id_list)));
- 	}
- 	return status;
- }
+--- a/net/rxrpc/input.c
++++ b/net/rxrpc/input.c
+@@ -963,23 +963,34 @@ static void rxrpc_input_soft_acks(struct
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rxrpc_txqueue *tq = call->tx_queue;
+ 	unsigned long extracted = ~0UL;
+-	unsigned int nr = 0;
++	unsigned int nr = 0, nsack;
+ 	rxrpc_seq_t seq = call->acks_hard_ack + 1;
+ 	rxrpc_seq_t lowest_nak = seq + sp->ack.nr_acks;
+-	u8 *acks = skb->data + sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket);
++	u8 sack[256] __aligned(sizeof(unsigned long));
++	u8 *acks = sack;
+ 
+ 	_enter("%x,%x,%u", tq->qbase, seq, sp->ack.nr_acks);
+ 
+ 	while (after(seq, tq->qbase + RXRPC_NR_TXQUEUE - 1))
+ 		tq = tq->next;
+ 
++	/* Extract an individual SACK table.  A normal SACK table is up to 255
++	 * bytes with 1 ACK flag per byte, but an extended SACK table can be up
++	 * to 256 bytes with up to 8 ACK/NACK flags per byte.  The ACK flags go
++	 * across all bit 0's then all bit 1's, then all bit 2's, ...
++	 */
++	memset(sack, 0, sizeof(sack));
++	nsack = umin(sp->ack.nr_acks, 256);
++	if (skb_copy_bits(skb,
++			  sizeof(struct rxrpc_wire_header) + sizeof(struct rxrpc_ackpacket),
++			  sack, nsack) < 0)
++		return;
++
+ 	for (unsigned int i = 0; i < sp->ack.nr_acks; i++) {
+ 		/* Decant ACKs until we hit a txqueue boundary. */
++		if ((i & 255) == 0)
++			acks = sack;
+ 		shiftr_adv_rotr(acks, extracted);
+-		if (i == 256) {
+-			acks -= i;
+-			i = 0;
+-		}
+ 		seq++;
+ 		nr++;
+ 		if ((seq & RXRPC_TXQ_MASK) != 0)
+@@ -1117,9 +1128,6 @@ static void rxrpc_input_ack(struct rxrpc
+ 	    skb_copy_bits(skb, ioffset, &trailer, sizeof(trailer)) < 0)
+ 		return rxrpc_proto_abort(call, 0, rxrpc_badmsg_short_ack_trailer);
+ 
+-	if (nr_acks > 0)
+-		skb_condense(skb);
+-
+ 	call->acks_latest_ts = ktime_get_real();
+ 	call->acks_hard_ack = hard_ack;
+ 	call->acks_prev_seq = prev_pkt;
 
 
 
