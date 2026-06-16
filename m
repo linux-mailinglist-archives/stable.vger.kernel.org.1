@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id 3aULDdWXMWq5ngUAu9opvQ
-	(envelope-from <stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:09 +0200
+	id HC5iCMqGMWrIlgUAu9opvQ
+	(envelope-from <stable+bounces-265199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB48694457
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:37:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8284693183
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:24:24 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="lmy5Z2/S";
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266169-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kYj9k5kW;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265199-lists+stable=lfdr.de@vger.kernel.org" designates 104.64.211.4 as permitted sender) smtp.mailfrom="stable+bounces-265199-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 45A413036E8E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:37:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 12F133034A16
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56983DF007;
-	Tue, 16 Jun 2026 18:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0598743D4E9;
+	Tue, 16 Jun 2026 17:12:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5141E169AD2;
-	Tue, 16 Jun 2026 18:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD9D33A9EB;
+	Tue, 16 Jun 2026 17:12:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781635025; cv=none; b=T1IQg6UuwJfyQMbqBQhIJagZvGrNklyliH9IF0f7vfjrF4urTYqP3GMTN1BYnGHLqLaqAVo4BzBmpUqNJpgNYhvTdneByDhKOrutp3vpGdyIyrc2SuIPCHADjyBj+KPbIu+dMI1tlZ5NGDC/BWLX9TIlo5dPFH2Zo2qSFsvFEHE=
+	t=1781629972; cv=none; b=BfHVrZ+DFv3HPGETz3ZfWiywqCBq6euvBGmxYC7CBKnAN/EXzdRtw+L5SEo2Vxe7yQxB2K83/b6+/ET6zjsWYLBtksTq22HXqUVvICmNmNyGDwbijjBah/HLt7d/SEzGl24CrZ7chjlXYjJXsVu5ts9oZ6xbSd7Lz0vO8fhFXeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781635025; c=relaxed/simple;
-	bh=YB40+RCh2xDsdcXY50eoo+RodEGQLJLHcaIYCsIU5u4=;
+	s=arc-20240116; t=1781629972; c=relaxed/simple;
+	bh=6o3dIZ4f88Znj27P7X5jw5DXjZiON7WkUdbMMo2EKw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fW30TpJ2aGKiwFoZFKB84CZ+2n1htYtC1JLvIH0dvWXKYGDqJqCBuKhRSO7NtDnVKJc0/VOimjPmaRCud5H9K39J/kPqDmcJEQRG4RKLGVmOSLa1n2GoRUwAsLQfmo4cyaTv5+c0ngOsGbgERvF3WOsnii36tAjaAh1gTQ1fLEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmy5Z2/S; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E09A1F000E9;
-	Tue, 16 Jun 2026 18:37:03 +0000 (UTC)
+	 MIME-Version; b=ENcvhLRb70uVwd8zKn2UWRrzcqhnBvxfFPrGo8+kElXSSSrCKt/mJQHCi48Xjtl3FXXBoOdOIbv8Zv2/Nf1DX5tgccdUqHpurqB9WMhDidHvs6rX15LzLwbDP8//fuUwMtBSB+G8W4BsOgKq7AJ9Rult/f/X/3l4TpiwKQgO2IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYj9k5kW; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941E91F000E9;
+	Tue, 16 Jun 2026 17:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781635024;
-	bh=UUU2ZHUm66XxhIYMQ77wuC5pdCz+nb3q2umDrZCZ84I=;
+	s=korg; t=1781629971;
+	bh=lYuYbXmt0iwL6OD15H75T4UvS6rR0P07S0iOOY2TZUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lmy5Z2/S2jTPf3mL550cRHOBc6xbXmu0IboMnW+c8EkV2PjLkysmGgrIIvKQ4Axc5
-	 5UjV8qCRi9ZwwwT0Asokt2IOpdZNDdGipJq4XcoQlaKlI8BRfzaG/r1kBHS7stMPfZ
-	 6h0DrSzYc3XfQrF7LMJnJ+e8lAR+wkbPjS+rZO5g=
+	b=kYj9k5kWnhg2wiLe+oN3aapDnIt0oKQvRpjO9M0NfKHwWImVsEgk6mvgxcUAmI+Jh
+	 s8BIvyNqcif+bsP6tnd7JDKCgeBswlPFs2Ygp9Ul64aL51YkQGIwjQ0vkeBaS6qlop
+	 WHttLcvfdjkx6FPqbfqnbfsbQjpgIdRGCmusrJt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Li Xiasong <lixiasong1@huawei.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 377/411] scsi: target: iscsi: Bound iscsi_encode_text_output() appends to rsp_buf
+Subject: [PATCH 6.6 388/452] mptcp: pm: fix ADD_ADDR timer infinite retry on option space insufficient
 Date: Tue, 16 Jun 2026 20:30:15 +0530
-Message-ID: <20260616145121.337377361@linuxfoundation.org>
+Message-ID: <20260616145137.309120625@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
+References: <20260616145117.796205997@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,242 +68,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-266169-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:michael.bommarito@gmail.com,m:john.g.garry@oracle.com,m:martin.petersen@oracle.com,m:sashal@kernel.org,m:michaelbommarito@gmail.com,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[lists@lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-265199-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:lixiasong1@huawei.com,m:matttbe@kernel.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,vger.kernel.org:from_smtp,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,oracle.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,msgid.link:url,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,huawei.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: CBB48694457
+X-Rspamd-Queue-Id: D8284693183
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Li Xiasong <lixiasong1@huawei.com>
 
-[ Upstream commit bf33e01f88388c43e285492a63e539df6ffed64c ]
+[ Upstream commit 51e398a3b8961b26a8c0a4ba9a777c5339791707 ]
 
-iscsi_encode_text_output() concatenates "key=value\0" records into
-login->rsp_buf, an 8192-byte kzalloc(MAX_KEY_VALUE_PAIRS) buffer
-allocated in iscsit_alloc_login_setup_buffer(). The three sprintf() call
-sites in this function (lines 1398, 1411, 1424 in v7.1-rc2) never check
-the remaining buffer capacity:
+When TCP option space is insufficient (e.g., when sending ADD_ADDR with an
+IPv6 address and port while tcp_timestamps is enabled), the original code
+jumped to out_unlock without clearing the addr_signal flag. This caused
+mptcp_pm_add_timer to keep rescheduling indefinitely, not sending ADD_ADDR,
+preventing subsequent addresses in the endpoint list from being announced.
 
-	*length += sprintf(output_buf, "%s=%s", er->key, er->value);
-	*length += 1;
-	output_buf = textbuf + *length;
+Handle this case by clearing the ADD_ADDR signal and skipping the matching
+ADD_ADDR retransmission entry. The skip path cancels the matching timer
+(with id check) and advances PM state progression, preserving forward
+progress to subsequent PM work.
 
-The 8192-byte ceiling at iscsi_target_check_login_request() bounds the
-*input* Login PDU payload, but a single PDU can carry up to 2048 minimal
-four-byte "a=b\0" pairs, each unknown key expanding to a 16-byte
-"a=NotUnderstood\0" output record via iscsi_add_notunderstood_response().
-2048 * 16 = 32 KiB of output into an 8 KiB buffer, producing a ~24 KiB
-heap overrun in the kmalloc-8k slab.
+This cancellation is inherently best-effort. A concurrent add_timer
+callback may already be running and may acquire pm.lock before the
+cancel path updates entry state. In that case, one final ADD_ADDR
+transmit attempt can still be executed.
 
-The fix introduces a static iscsi_encode_text_record() helper that uses
-snprintf() with a per-call bounds check against the remaining buffer,
-and threads a u32 textbuf_size parameter through
-iscsi_encode_text_output(). Both call sites in
-iscsi_target_handle_csg_zero() (PHASE_SECURITY) and
-iscsi_target_handle_csg_one() (PHASE_OPERATIONAL) pass
-MAX_KEY_VALUE_PAIRS. On overflow the encoder logs the condition, calls
-iscsi_release_extra_responses() to drop queued records, and returns -1;
-both caller sites now emit ISCSI_STATUS_CLS_INITIATOR_ERR /
-ISCSI_LOGIN_STATUS_INIT_ERR via iscsit_tx_login_rsp() before returning,
-so the initiator sees an explicit failed-login response rather than a
-silent connection drop. (Prior to this patch only the PHASE_OPERATIONAL
-caller did that; the PHASE_SECURITY caller is converted to the same
-shape.)
+Once the cancel path sets entry->retrans_times to ADD_ADDR_RETRANS_MAX,
+the callback-side retrans_times check suppresses further ADD_ADDR
+retransmissions.
 
-Fixes: e48354ce078c ("iscsi-target: Add iSCSI fabric support for target v4.1")
+Note that when an ADD_ADDR is being prepared, a pure-ACK is queued. On
+the output side, it means that it is fine to skip non-pure-ACK packets,
+when drop_other_suboptions is set: a pure-ACK will be processed soon
+after.
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Tested-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Li Xiasong <lixiasong1@huawei.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260515-net-mptcp-misc-fixes-7-1-rc4-v2-2-701e96419f2f@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/iscsi/iscsi_target_nego.c       |    7 ++
- drivers/target/iscsi/iscsi_target_parameters.c |   62 +++++++++++++++++++------
- drivers/target/iscsi/iscsi_target_parameters.h |    2 
- 3 files changed, 55 insertions(+), 16 deletions(-)
+ net/mptcp/pm.c         |   40 +++++++++++++++++++++++++++++++++-------
+ net/mptcp/pm_netlink.c |   16 +++++++++++++---
+ 2 files changed, 46 insertions(+), 10 deletions(-)
 
---- a/drivers/target/iscsi/iscsi_target_nego.c
-+++ b/drivers/target/iscsi/iscsi_target_nego.c
-@@ -870,10 +870,14 @@ static int iscsi_target_handle_csg_zero(
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
--	if (ret < 0)
-+	if (ret < 0) {
-+		iscsit_tx_login_rsp(conn, ISCSI_STATUS_CLS_INITIATOR_ERR,
-+				ISCSI_LOGIN_STATUS_INIT_ERR);
- 		return -1;
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -335,6 +335,7 @@ bool mptcp_pm_add_addr_signal(struct mpt
+ 			      struct mptcp_addr_info *addr, bool *echo,
+ 			      bool *drop_other_suboptions)
+ {
++	bool skip_add_addr = false;
+ 	int ret = false;
+ 	u8 add_addr;
+ 	u8 family;
+@@ -356,24 +357,49 @@ bool mptcp_pm_add_addr_signal(struct mpt
+ 	}
+ 
+ 	*echo = mptcp_pm_should_add_signal_echo(msk);
+-	port = !!(*echo ? msk->pm.remote.port : msk->pm.local.port);
+-
+-	family = *echo ? msk->pm.remote.family : msk->pm.local.family;
+-	if (remaining < mptcp_add_addr_len(family, *echo, port))
+-		goto out_unlock;
+-
+ 	if (*echo) {
+ 		*addr = msk->pm.remote;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_ECHO);
++		port = !!msk->pm.remote.port;
++		family = msk->pm.remote.family;
+ 	} else {
+ 		*addr = msk->pm.local;
+ 		add_addr = msk->pm.addr_signal & ~BIT(MPTCP_ADD_ADDR_SIGNAL);
++		port = !!msk->pm.local.port;
++		family = msk->pm.local.family;
+ 	}
+-	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
++	if (remaining < mptcp_add_addr_len(family, *echo, port)) {
++		struct net *net = sock_net((struct sock *)msk);
++
++		if (!*drop_other_suboptions)
++			goto out_unlock;
++
++		if (*echo) {
++			MPTCP_INC_STATS(net, MPTCP_MIB_ECHOADDTXDROP);
++		} else {
++			skip_add_addr = true;
++			MPTCP_INC_STATS(net, MPTCP_MIB_ADDADDRTXDROP);
++		}
++		goto drop_signal_mark;
++	}
++
+ 	ret = true;
+ 
++drop_signal_mark:
++	WRITE_ONCE(msk->pm.addr_signal, add_addr);
++
+ out_unlock:
+ 	spin_unlock_bh(&msk->pm.lock);
++
++	/* On pure-ACK option-space exhaustion, stop retrying this ADD_ADDR:
++	 * clear the signal bit, cancel the matching retransmission timer, and
++	 * let the PM state machine progress.
++	 */
++	if (skip_add_addr) {
++		mptcp_pm_del_add_timer(msk, addr, true);
++		mptcp_pm_subflow_established(msk);
++	}
+ 	return ret;
+ }
+ 
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -321,7 +321,13 @@ static void mptcp_pm_add_timer(struct ti
+ 
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+-	if (!mptcp_pm_should_add_signal_addr(msk)) {
++	/* The cancel path (mptcp_pm_del_add_timer()) can race with this
++	 * callback. Once cancel updates retrans_times to MAX, suppress further
++	 * retransmissions here. If this callback acquires pm.lock first, one
++	 * final transmit attempt is still possible.
++	 */
++	if (entry->retrans_times < ADD_ADDR_RETRANS_MAX &&
++	    !mptcp_pm_should_add_signal_addr(msk)) {
+ 		pr_debug("retransmit ADD_ADDR id=%d\n", entry->addr.id);
+ 		mptcp_pm_announce_addr(msk, &entry->addr, false);
+ 		mptcp_pm_add_addr_send_ack(msk);
+@@ -369,8 +375,12 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ 	/* Note: entry might have been removed by another thread.
+ 	 * We hold rcu_read_lock() to ensure it is not freed under us.
+ 	 */
+-	if (stop_timer)
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	if (stop_timer) {
++		if (check_id)
++			sk_stop_timer(sk, &entry->add_timer);
++		else
++			sk_stop_timer_sync(sk, &entry->add_timer);
 +	}
  
- 	if (!iscsi_check_negotiated_keys(conn->param_list)) {
- 		if (conn->tpg->tpg_attrib.authentication &&
-@@ -941,6 +945,7 @@ static int iscsi_target_handle_csg_one(s
- 			SENDER_TARGET,
- 			login->rsp_buf,
- 			&login->rsp_length,
-+			MAX_KEY_VALUE_PAIRS,
- 			conn->param_list,
- 			conn->tpg->tpg_attrib.login_keys_workaround);
- 	if (ret < 0) {
---- a/drivers/target/iscsi/iscsi_target_parameters.c
-+++ b/drivers/target/iscsi/iscsi_target_parameters.c
-@@ -1419,19 +1419,42 @@ free_buffer:
- 	return -1;
- }
- 
-+/*
-+ * Append "key=value" plus a trailing NUL into @textbuf at *@length.
-+ * Returns 0 on success and advances *@length, or -EMSGSIZE if the
-+ * record (including the NUL) would not fit in the remaining buffer.
-+ */
-+static int iscsi_encode_text_record(char *textbuf, u32 *length,
-+				    u32 textbuf_size,
-+				    const char *key, const char *value)
-+{
-+	int n;
-+	u32 avail;
-+
-+	if (*length >= textbuf_size)
-+		return -EMSGSIZE;
-+
-+	avail = textbuf_size - *length;
-+	n = snprintf(textbuf + *length, avail, "%s=%s", key, value);
-+	if (n < 0 || (u32)n + 1 > avail)
-+		return -EMSGSIZE;
-+
-+	*length += n + 1;
-+	return 0;
-+}
-+
- int iscsi_encode_text_output(
- 	u8 phase,
- 	u8 sender,
- 	char *textbuf,
- 	u32 *length,
-+	u32 textbuf_size,
- 	struct iscsi_param_list *param_list,
- 	bool keys_workaround)
- {
--	char *output_buf = NULL;
- 	struct iscsi_extra_response *er;
- 	struct iscsi_param *param;
--
--	output_buf = textbuf + *length;
-+	int ret;
- 
- 	if (iscsi_enforce_integrity_rules(phase, param_list) < 0)
- 		return -1;
-@@ -1443,10 +1466,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_RESPONSE_SENT(param) &&
- 		    !IS_PSTATE_REPLY_OPTIONAL(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_RESPONSE_SENT(param);
- 			pr_debug("Sending key: %s=%s\n",
- 				param->name, param->value);
-@@ -1456,10 +1481,12 @@ int iscsi_encode_text_output(
- 		    !IS_PSTATE_ACCEPTOR(param) &&
- 		    !IS_PSTATE_PROPOSER(param) &&
- 		    (param->phase & phase)) {
--			*length += sprintf(output_buf, "%s=%s",
--				param->name, param->value);
--			*length += 1;
--			output_buf = textbuf + *length;
-+			ret = iscsi_encode_text_record(textbuf, length,
-+						       textbuf_size,
-+						       param->name,
-+						       param->value);
-+			if (ret < 0)
-+				goto err_overflow;
- 			SET_PSTATE_PROPOSER(param);
- 			iscsi_check_proposer_for_optional_reply(param,
- 							        keys_workaround);
-@@ -1469,14 +1496,21 @@ int iscsi_encode_text_output(
- 	}
- 
- 	list_for_each_entry(er, &param_list->extra_response_list, er_list) {
--		*length += sprintf(output_buf, "%s=%s", er->key, er->value);
--		*length += 1;
--		output_buf = textbuf + *length;
-+		ret = iscsi_encode_text_record(textbuf, length, textbuf_size,
-+					       er->key, er->value);
-+		if (ret < 0)
-+			goto err_overflow;
- 		pr_debug("Sending key: %s=%s\n", er->key, er->value);
- 	}
- 	iscsi_release_extra_responses(param_list);
- 
- 	return 0;
-+
-+err_overflow:
-+	pr_err("iSCSI login response buffer (%u bytes) exhausted, dropping login.\n",
-+	       textbuf_size);
-+	iscsi_release_extra_responses(param_list);
-+	return -1;
- }
- 
- int iscsi_check_negotiated_keys(struct iscsi_param_list *param_list)
---- a/drivers/target/iscsi/iscsi_target_parameters.h
-+++ b/drivers/target/iscsi/iscsi_target_parameters.h
-@@ -46,7 +46,7 @@ extern struct iscsi_param *iscsi_find_pa
- extern int iscsi_extract_key_value(char *, char **, char **);
- extern int iscsi_update_param_value(struct iscsi_param *, char *);
- extern int iscsi_decode_text_input(u8, u8, char *, u32, struct iscsi_conn *);
--extern int iscsi_encode_text_output(u8, u8, char *, u32 *,
-+extern int iscsi_encode_text_output(u8, u8, char *, u32 *, u32,
- 			struct iscsi_param_list *, bool);
- extern int iscsi_check_negotiated_keys(struct iscsi_param_list *);
- extern void iscsi_set_connection_parameters(struct iscsi_conn_ops *,
+ 	rcu_read_unlock();
+ 	return entry;
 
 
 
