@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id ZqooEYlsMWrhiwUAu9opvQ
-	(envelope-from <stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:25 +0200
+	id nuv7B0OUMWoznQUAu9opvQ
+	(envelope-from <stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9860C6911D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:32:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A314694108
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:21:54 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=XXliIbri;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-263986-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=kfAMwIrQ;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265994-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E738305D5E3
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:25:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37D033116C79
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58E38B135;
-	Tue, 16 Jun 2026 15:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E84E466B64;
+	Tue, 16 Jun 2026 18:21:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FE943E9F5;
-	Tue, 16 Jun 2026 15:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF119478E3E;
+	Tue, 16 Jun 2026 18:21:39 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781623533; cv=none; b=oi2/pJ/wliiZHzfjRh66AkLBM6c2ndtNG9DzQaTIJRkiruU3BhP4sTzYCjb3mPyCOj7iCOSOBM0dOeW4swqluCJOFGwGNCR5jTKJC3AdBo4/Y8oaHTulI1dtlDmD6Js5FgJcSulWBlfhpHAzK/1gOK1xFMlFNRUPr4dSnMfFtrw=
+	t=1781634101; cv=none; b=IJtRUWup7FJYig7GOyTrXasDY/TUfINdPYfeghMV7BHAMNjLC7mCazA7auX2YjwhvoXqxtL9qyGyL4ilzSyEppASHLjCIVX1TWV2T9FNeGQyDiERh9ZxVCG/WVf9abNA80qXZZdlONwsPz5rfVzh3DsC8Rhk+gi3iSuoFHKcxfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781623533; c=relaxed/simple;
-	bh=ELYaz4fr2uJ1QEfavz3w6FAKmMg6B2OHZwHIv9NiChs=;
+	s=arc-20240116; t=1781634101; c=relaxed/simple;
+	bh=EMrPMx+/Uqh1qd1t306NDT88Kfq5Vdmpk4g6vKWka9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTKyEWs27E0RLhyweXFpmc1Og8WA8PLVGj8YCyRULArrA9LKb0Upw71kvuH46iHPA6/8t/XEDveD0pw6Dd91L0aAR/Mo7Q92MT8NclGC921Fft8Rgn3WgkldPyu74Vg/3AtOq3V0ETcXTKpirQMtpNy0zYKApgYgIVDIZh4Unv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXliIbri; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD061F000E9;
-	Tue, 16 Jun 2026 15:25:31 +0000 (UTC)
+	 MIME-Version; b=SZTOanD3Z8KSZZ2DWMUoqVVQHAZ/jFiWvhRjldpJfypEJDp816scr87cm/ElZJQ/sBWX3LygcdL4HSIhbplZhIseBOsZpZqepO0KW/ufLbzBijPjBNEHyODpaFuWk913wB6ebzyYvR24mZUuyCRaqIPCyo1gH/qmPLB16HHOKnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfAMwIrQ; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E613B1F000E9;
+	Tue, 16 Jun 2026 18:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781623532;
-	bh=6kXWMbeacxCyOUzREh4+Y/w28GuAf8uHEw5FWHxoWq8=;
+	s=korg; t=1781634099;
+	bh=Yoe+kIhY8NS/fdv4lPp6OhMRwRi1P1gt707ezv/1HbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XXliIbrina5UcNzubWy9fuZ4twusmuoGpAxDJV5FiySNHxkESbAk7M7Iwj1vCMtvc
-	 mINkT2y3MNRr3vjHV6bUyAbR3CLbin6ExvW+mIj9bzEllY2kDU8JWw1qIFBtEuvrHj
-	 cPIx8kcrpndcbP/gJVYPSbe8MRPIud8fghlUXUmw=
+	b=kfAMwIrQkjfqkX4eqDOxdyfMqDa/n2LIZ8oQ7FpA4rEbwsVYtGF5kw2Hw/X/C0urP
+	 B0nRLVkUfjy83Ck1QUhXb24EruRXHNLVDY43XE0tc253zqV9o7IFCEtDIiQNkDAace
+	 OqQEjwmfddAKi6ll1nnvkr97R7YnPpVpqJ7qTr78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sanjay Yadav <sanjay.kumar.yadav@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oscar Maes <oscmaes92@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 166/378] drm/xe: fix job timeout recovery for unstarted jobs and kernel queues
+Subject: [PATCH 5.15 159/411] pcnet32: stop holding device spin lock during napi_complete_done
 Date: Tue, 16 Jun 2026 20:26:37 +0530
-Message-ID: <20260616145119.033195126@linuxfoundation.org>
+Message-ID: <20260616145108.940199509@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
-References: <20260616145109.744539446@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,175 +71,93 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-263986-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lunn.ch,gmail.com,intel.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-265994-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:matthew.auld@intel.com,m:matthew.brost@intel.com,m:sanjay.kumar.yadav@intel.com,m:himal.prasad.ghimiray@intel.com,m:rodrigo.vivi@intel.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:andrew@lunn.ch,m:oscmaes92@gmail.com,m:aleksander.lobakin@intel.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,intel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,lunn.ch:email,msgid.link:url,intel.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 9860C6911D6
+X-Rspamd-Queue-Id: 8A314694108
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Oscar Maes <oscmaes92@gmail.com>
 
-[ Upstream commit 347ccc0453fca2c669e8dc8a72000e76ca4adf10 ]
+[ Upstream commit 73bf3cca7de6a73f53b6a52dc3b1c82ae5667a4d ]
 
-A job that GuC never scheduled (never started) indicates a GuC
-scheduling failure; previously such jobs were silently errored out
-instead of triggering a GT reset to recover. Trigger a GT reset and
-resubmit them, but only when the queue was not already killed or banned:
-an unstarted job on an already banned queue is the ban working as
-intended and must neither clear the ban nor kick off a reset, otherwise
-a banned userspace queue could be resurrected and spam GT resets.
+napi_complete_done may call gro_flush_normal (though not currently, as GRO
+is unsupported at the moment), which may result in packet TX. This will
+eventually result in calling pcnet32_start_xmit - resulting in a deadlock
+while trying to re-acquire the already locked spin lock.
 
-Kernel queues are always recovered this way and wedge the device once
-recovery attempts are exhausted, since kernel work must not silently
-fail. A started job that times out on a userspace VM bind queue stays
-banned rather than being reset and retried.
+It is safe to split the spinlock block into two, because the hardware
+registers are still protected from concurrent access, and the two blocks
+perform unrelated operations that don't need to happen atomically.
 
-The queue is banned early in the timeout handler to signal the G2H
-scheduling-done handler so it wakes the disable-scheduling waiter;
-without it the waiter sleeps the full 5s timeout. When a reset is
-warranted the ban is cleared before rearming so that
-guc_exec_queue_start() can resubmit jobs after the GT reset - a
-still-banned queue would block resubmission and cause an infinite TDR
-loop. The already-banned case is gated out before this point via
-skip_timeout_check, so it is unaffected.
-
-v2: (Himal) Do it for any queue type, not just kernel/migration
-v3: - (Sashiko and Sanjay): don't clear the ban / GT reset for already
-      killed/banned queues on unstarted-job timeout
-    - Update commit message
-    - (Matt) Add Fixes tag
-
-Fixes: fe05cee4d953 ("drm/xe: Don't short circuit TDR on jobs not started")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Assisted-by: GitHub-Copilot:claude-sonnet-4.6
-Assisted-by: GitHub-Copilot:claude-opus-4.8
-Tested-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-Reviewed-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patch.msgid.link/20260610152548.404575-3-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit b1107d085e7e8ed15ba6f80c102528a9c8a6cb0e)
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Fixes: 5b2ec6f2be51 ("pcnet32: use napi_complete_done()")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Oscar Maes <oscmaes92@gmail.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Link: https://patch.msgid.link/20260528140320.5556-1-oscmaes92@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 49 +++++++++++++++++++++---------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/amd/pcnet32.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index e948f40fa17896..6365eca9816092 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -159,6 +159,11 @@ static void set_exec_queue_banned(struct xe_exec_queue *q)
- 	atomic_or(EXEC_QUEUE_STATE_BANNED, &q->guc->state);
- }
+diff --git a/drivers/net/ethernet/amd/pcnet32.c b/drivers/net/ethernet/amd/pcnet32.c
+index 70d76fdb9f569d..58a59b2d70cf2b 100644
+--- a/drivers/net/ethernet/amd/pcnet32.c
++++ b/drivers/net/ethernet/amd/pcnet32.c
+@@ -1399,8 +1399,10 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
+ 		pcnet32_restart(dev, CSR0_START);
+ 		netif_wake_queue(dev);
+ 	}
++	spin_unlock_irqrestore(&lp->lock, flags);
  
-+static void clear_exec_queue_banned(struct xe_exec_queue *q)
-+{
-+	atomic_andnot(EXEC_QUEUE_STATE_BANNED, &q->guc->state);
-+}
-+
- static bool exec_queue_suspended(struct xe_exec_queue *q)
- {
- 	return atomic_read(&q->guc->state) & EXEC_QUEUE_STATE_SUSPENDED;
-@@ -1326,7 +1331,8 @@ static bool check_timeout(struct xe_exec_queue *q, struct xe_sched_job *job)
- 			   xe_sched_job_seqno(job), xe_sched_job_lrc_seqno(job),
- 			   q->guc->id);
+ 	if (work_done < budget && napi_complete_done(napi, work_done)) {
++		spin_lock_irqsave(&lp->lock, flags);
+ 		/* clear interrupt masks */
+ 		val = lp->a->read_csr(ioaddr, CSR3);
+ 		val &= 0x00ff;
+@@ -1408,9 +1410,9 @@ static int pcnet32_poll(struct napi_struct *napi, int budget)
  
--		return xe_sched_invalidate_job(job, 2);
-+		/* GuC never scheduled this job - let the caller trigger a GT reset. */
-+		return true;
+ 		/* Set interrupt enable. */
+ 		lp->a->write_csr(ioaddr, CSR0, CSR0_INTEN);
++		spin_unlock_irqrestore(&lp->lock, flags);
  	}
  
- 	ctx_timestamp = lower_32_bits(xe_lrc_timestamp(q->lrc[0]));
-@@ -1423,6 +1429,21 @@ static void disable_scheduling(struct xe_exec_queue *q, bool immediate)
- 			       G2H_LEN_DW_SCHED_CONTEXT_MODE_SET, 1);
+-	spin_unlock_irqrestore(&lp->lock, flags);
+ 	return work_done;
  }
- 
-+/*
-+ * Recover via GT reset for a kernel queue, or for a GuC scheduling failure (job
-+ * never started) on a queue that was not already killed or banned. An already
-+ * banned queue must stay banned, so its unstarted jobs do not clear the ban or
-+ * trigger a reset.
-+ */
-+static bool timeout_needs_gt_reset(struct xe_exec_queue *q, struct xe_sched_job *job,
-+				   bool skip_timeout_check)
-+{
-+	if (q->flags & EXEC_QUEUE_FLAG_KERNEL)
-+		return true;
-+
-+	return !skip_timeout_check && !xe_sched_job_started(job);
-+}
-+
- static enum drm_gpu_sched_stat
- guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
- {
-@@ -1573,19 +1594,19 @@ guc_exec_queue_timedout_job(struct drm_sched_job *drm_job)
- 			       xe_sched_job_seqno(job), xe_sched_job_lrc_seqno(job),
- 			       q->guc->id, q->flags);
- 
--	/*
--	 * Kernel jobs should never fail, nor should VM jobs if they do
--	 * somethings has gone wrong and the GT needs a reset
--	 */
--	xe_gt_WARN(q->gt, q->flags & EXEC_QUEUE_FLAG_KERNEL,
--		   "Kernel-submitted job timed out\n");
--	xe_gt_WARN(q->gt, q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q),
--		   "VM job timed out on non-killed execqueue\n");
--	if (!wedged && (q->flags & EXEC_QUEUE_FLAG_KERNEL ||
--			(q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q)))) {
--		if (!xe_sched_invalidate_job(job, 2)) {
--			xe_gt_reset_async(q->gt);
--			goto rearm;
-+	if (!wedged) {
-+		if (timeout_needs_gt_reset(q, job, skip_timeout_check)) {
-+			if (!xe_sched_invalidate_job(job, 2)) {
-+				clear_exec_queue_banned(q);
-+				xe_gt_reset_async(q->gt);
-+				goto rearm;
-+			}
-+			if (q->flags & EXEC_QUEUE_FLAG_KERNEL) {
-+				xe_gt_WARN(q->gt, true, "Kernel-submitted job timed out\n");
-+				xe_device_declare_wedged(gt_to_xe(q->gt));
-+			}
-+		} else if (q->flags & EXEC_QUEUE_FLAG_VM && !exec_queue_killed(q)) {
-+			xe_gt_WARN(q->gt, true, "VM job timed out on non-killed execqueue\n");
- 		}
- 	}
  
 -- 
 2.53.0
