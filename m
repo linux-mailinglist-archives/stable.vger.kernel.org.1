@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-265581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id WAsEMseLMWoRmQUAu9opvQ
-	(envelope-from <stable+bounces-265581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:43 +0200
+	id ckF5CKZuMWrDjAUAu9opvQ
+	(envelope-from <stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A5569372D
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 215A66914AB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:41:25 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=vzboshqT;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265581-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265581-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qvuw2nyV;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c15:e001:75::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264078-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97AB13004D09
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:45:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E2F1301EFCB
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 15:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821CD3876CF;
-	Tue, 16 Jun 2026 17:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C39244103D;
+	Tue, 16 Jun 2026 15:33:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3A9246762;
-	Tue, 16 Jun 2026 17:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE0B357D14;
+	Tue, 16 Jun 2026 15:33:29 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631921; cv=none; b=SsMPZZ5+9bAoCV27BsLrfjJGSw9TFDYq4vO/Crk5dLn+b4cETcAZs02kqkBs4pTft5JrStCcbYDzRIgipOlDRJKJGEaNb9N0ccSq6NOB413NY3yN85aEaB7EXshjOLyRVm/Fsc1YnB+wvRxHLmHioe+C9oyfm9Z9SlKsghrF494=
+	t=1781624010; cv=none; b=PMF1Qi0CVcl+ukUXmMZY7kILdHk3H75aj1/DPCwpZfaTBw9CaI5x8tSjohIHUVc4hpIyS0JSKdaZNgE8yz3xejSONlAlChaLqIAoNR6/jv7rP+i6IsvRZY9VeGZVCFoXZS0fpcYlO49v6kYoVO5y3C9ZikVpqoj9lZe+O0ZR3b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631921; c=relaxed/simple;
-	bh=c7q14U05UhJzAUxSQKcFZ6kD8zcpT+cEbyQ5Mefz4nQ=;
+	s=arc-20240116; t=1781624010; c=relaxed/simple;
+	bh=0Ka5c85E/v+cYfER3ln3ug3ecyBt4naL1RP5M2yBHqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apv+nzaxZXwL/edp9LFMJGk/pZlXxm2xYWfJjL832EQ5yv5POhi9PET+7UxwC8OYdhjZF2dzSyyzfss0i+xDWaVelyXlJKseBYY12D1I9blxJXAk2j0TBC7iIbLGv5Zb2Cpuv2vUGhd0vOAqBXQ0DUITFcsu+Nk2KYT4bt7n640=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzboshqT; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6DB1F000E9;
-	Tue, 16 Jun 2026 17:45:19 +0000 (UTC)
+	 MIME-Version; b=ffpWMiL5VyTNsedldJSL3WS2sfshmiEo416rwFEtTWEhP1GI5aZGKDh/A0eVS5E1a3swsgwr+d/93d3RmyWMf/3jij8RvwWh+c/aUWFZSwDUR9VCAog3ImlbO2UaHStbWaOWLAMJ7LgyiPn2ORQ1Io2aIiBZT9p9Ky9Xbybf7ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvuw2nyV; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C511F000E9;
+	Tue, 16 Jun 2026 15:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631920;
-	bh=ub2YQNQsCGnHMoyDhjmlXUP46fIeLXfX9VPvwB5lBQ0=;
+	s=korg; t=1781624009;
+	bh=psJF92ZTkJKqlQaFWM9bmaLN0/jN5A4LhvufK6QDHOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vzboshqTqwOua2xaAQ8i4dvhZDY9uFZcgVsGeDYC03RpLQjgnm6ywmwtx0ehlxc2u
-	 kGtXt12vxi8oxDBPO8yPWa9F9nmmRkHNezkpj6D0WLGAziLorCbmzk92wvA7J6+lV/
-	 IbEszLa5AosJvyoiKXBokXcyYcXNltLEIuejamBc=
+	b=qvuw2nyV3oyUpyXyNcD+CrgkeEwFKF5KYvSgILrrQS25qo8z66g6CnzazyrPF964D
+	 vSHmpGyu1B/dEXbFDbRyq8/XiRnqWv1GSNupAuQCOgcYjvEExaeACKgielghXSxUJK
+	 BcKz5H9M5TbqFLfzYnnW+JE5CXH5yLAg4zUXD6/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yuan Tan <yuantan098@gmail.com>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Zhao Zhang <zzhan461@ucr.edu>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 313/522] sctp: diag: reject stale associations in dump_one path
+	Alistair Popple <apopple@nvidia.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 229/378] arm64: mm: call pagetable dtor when freeing hot-removed page tables
 Date: Tue, 16 Jun 2026 20:27:40 +0530
-Message-ID: <20260616145140.514045762@linuxfoundation.org>
+Message-ID: <20260616145122.328768376@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145109.744539446@linuxfoundation.org>
+References: <20260616145109.744539446@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,118 +69,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265581-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yuantan098@gmail.com,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:zcliangcn@gmail.com,m:bird@lzu.edu.cn,m:zzhan461@ucr.edu,m:n05ec@lzu.edu.cn,m:lucien.xin@gmail.com,m:kuba@kernel.org,m:lucienxin@gmail.com,s:lists@lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-264078-lists,stable=lfdr.de];
 	FORWARDED(0.00)[lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,ucr.edu];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:apopple@nvidia.com,m:catalin.marinas@arm.com,m:david@kernel.org,m:will@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,msgid.link:url,ucr.edu:email,lzu.edu.cn:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,nvidia.com:email,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linux-foundation.org:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: C3A5569372D
+X-Rspamd-Queue-Id: 215A66914AB
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Zhang <zzhan461@ucr.edu>
+From: Alistair Popple <apopple@nvidia.com>
 
-commit 5eba3e48d78edd7551b992cb7ba687019b3a78da upstream.
+commit c594b83457ccdee76d458416fb3bc9348a37592f upstream.
 
-The SCTP exact sock_diag lookup can hold a transport reference, block on
-lock_sock(sk), and then resume after sctp_association_free() has marked
-the association dead and freed its bind address list.
+Since 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in
+__create_pgd_mapping()") page-table allocation on ARM64 always calls
+pagetable_{pte,pmd,pud,p4d}_ctor().  This sets the page_type to
+PGTY_table, increments NR_PAGETABLE and possible allocates a PTL.  However
+the matching pagetable_dtor() calls were never added.
 
-When that happens, inet_assoc_attr_size() and
-inet_diag_msg_sctpasoc_fill() can still dereference association state
-that is no longer valid for reporting. In particular,
-inet_diag_msg_sctpasoc_fill() may read an empty bind-address list as a
-real sctp_sockaddr_entry and trigger an out-of-bounds read from
-unrelated association memory.
+With DEBUG_VM enabled on kernel versions prior to v6.17 without
+2dfcd1608f3a9 ("mm/page_alloc: let page freeing clear any set page type")
+this leads to the following warning when freeing these pages due to
+page->page_type sharing page->_mapcount:
 
-Reject the association after taking the socket lock if it has been
-reaped or detached from the endpoint, and report the lookup as stale.
-This keeps the exact dump-one path from formatting torn association
-state.
+  BUG: Bad page state in process ... pfn:284fbb
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x284fbb
+  flags: 0x17fffc000000000(node=0|zone=2|lastcpupid=0x1ffff)
+  page_type: f2(table)
+  page dumped because: nonzero mapcount
+  Call trace:
+   bad_page+0x13c/0x160
+   __free_frozen_pages+0x6cc/0x860
+   ___free_pages+0xf4/0x180
+   free_pages+0x54/0x80
+   free_hotplug_page_range.part.0+0x58/0x90
+   free_empty_tables+0x438/0x500
+   __remove_pgd_mapping.constprop.0+0x60/0xa8
+   arch_remove_memory+0x48/0x80
+   try_remove_memory+0x158/0x1d8
+   offline_and_remove_memory+0x138/0x180
 
-Fixes: 8f840e47f190 ("sctp: add the sctp_diag.c file")
-Cc: stable@kernel.org
-Reported-by: Yuan Tan <yuantan098@gmail.com>
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Reported-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Reported-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Zhao Zhang <zzhan461@ucr.edu>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/fac6043fa20a2ff68e12958c431836f692c51268.1780113823.git.zzhan461@ucr.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It can also lead to leaking the ptl allocation if ALLOC_SPLIT_PTLOCKS is
+defined and incorrect NR_PAGETABLE stats.  Fix this by calling
+pagetable_dtor() in free_hotplug_pgtable_page() prior to freeing the page
+to undo the effects of calling pagetable_*_ctor().
+
+Link: https://lore.kernel.org/20260521032730.2104017-1-apopple@nvidia.com
+Fixes: 5e8eb9aeeda3 ("arm64: mm: always call PTE/PMD ctor in __create_pgd_mapping()")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/diag.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/arm64/mm/mmu.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sctp/diag.c
-+++ b/net/sctp/diag.c
-@@ -266,15 +266,15 @@ static int sctp_sock_dump_one(struct sct
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1445,6 +1445,7 @@ static void free_hotplug_page_range(stru
  
- 	lock_sock(sk);
- 
--	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
--	if (!rep) {
--		release_sock(sk);
--		return -ENOMEM;
-+	if (ep != assoc->ep || assoc->base.dead) {
-+		err = -ESTALE;
-+		goto out_unlock;
- 	}
- 
--	if (ep != assoc->ep) {
--		err = -EAGAIN;
--		goto out;
-+	rep = nlmsg_new(inet_assoc_attr_size(sk, assoc), GFP_KERNEL);
-+	if (!rep) {
-+		err = -ENOMEM;
-+		goto out_unlock;
- 	}
- 
- 	err = inet_sctp_diag_fill(sk, assoc, rep, req, sk_user_ns(NETLINK_CB(skb).sk),
-@@ -289,8 +289,9 @@ static int sctp_sock_dump_one(struct sct
- 	return nlmsg_unicast(sock_net(skb->sk)->diag_nlsk, rep, NETLINK_CB(skb).portid);
- 
- out:
--	release_sock(sk);
- 	kfree_skb(rep);
-+out_unlock:
-+	release_sock(sk);
- 	return err;
+ static void free_hotplug_pgtable_page(struct page *page)
+ {
++	pagetable_dtor(page_ptdesc(page));
+ 	free_hotplug_page_range(page, PAGE_SIZE, NULL);
  }
  
 
