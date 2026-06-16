@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-265956-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id dXBVIkmLMWrQmAUAu9opvQ
-	(envelope-from <stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:37 +0200
+	id oQuWJn+TMWrhnAUAu9opvQ
+	(envelope-from <stable+bounces-265956-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01385693684
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:43:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16039694041
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:18:39 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=LcGW3WUG;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-265482-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QwLkWC9I;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-265956-lists+stable=lfdr.de@vger.kernel.org" designates 172.234.253.10 as permitted sender) smtp.mailfrom="stable+bounces-265956-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D9333100FBF
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:37:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCB873185DA1
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E4C47AF5F;
-	Tue, 16 Jun 2026 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F523BFE5A;
+	Tue, 16 Jun 2026 18:18:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A0D477E57;
-	Tue, 16 Jun 2026 17:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09113A5E91;
+	Tue, 16 Jun 2026 18:18:01 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631424; cv=none; b=REASNFRNTxuIaUZjmGBg9ydHjHPxoqEcBVNHnN/0riVVCplnwHqZlJ1/sokRibgU5IkFUQJNuhZTcNnGWJjR1tqygr3cKKqMcv3UaRFP7pBIQxWCYusvTwN+MXaES5/mJO5NYFZeRM9mN8p1Ws0Q17UYUJI5dpOcLxjNibnpVX4=
+	t=1781633883; cv=none; b=hICgOMTKSHi2L2Uxz18K6d8Yl5uLBv1lBtmiExc41NU7sml7xRrjtQcxrFzbeMheW7Cw9fksfNWME0J9A7EqYp2plAeaAfgi8JpaYiStFMW4c2brLY8AHglPDUAa2deUMLN+4r4GXlqGLXS7rj1CMsehNGtmznE7e32xVfLxTx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631424; c=relaxed/simple;
-	bh=/N9Nkkx7Cs6HZVftl9ObDmIZkqoWNf/XBXZsfuRyW4w=;
+	s=arc-20240116; t=1781633883; c=relaxed/simple;
+	bh=GY+P1wIKJKIicNgs3A7VOoOHItc1L9QoThFTMnFLxO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEn0vKGtjchxv26Gr6RmKvJDMU/kNSXzBznRbapW0DXH+KVEaRyaW/QWLdLlWP7gT/CcB037ieDnVeV4c1WHlBpR7yHLJUKanvSPeqLB9kfzzCkzeyteMDdjmQBAG2s6HGTwplqMDWudK+FnAOTBSNcoXDOPbkVAcl6w8p3u6RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LcGW3WUG; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1B91F000E9;
-	Tue, 16 Jun 2026 17:37:02 +0000 (UTC)
+	 MIME-Version; b=F+D5cbvu3L7hswfQOGjpz0CodYkVyEpAthif+ClxuoeTIQbjPJtu9DJ9KEylrXc5Y6e/nU41LIHgAVA78AlcnnW2NjKyrpTr6FFtbwMNDmWkD01cFHR3NP32z7hPy29k/owZChbbq38jA5zC08w85J7kFiV3nINxb+1vT0fHwH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwLkWC9I; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F491F000E9;
+	Tue, 16 Jun 2026 18:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781631423;
-	bh=Cz9A2T033a3W2dZ0/E64LYkS4KoFSORwjo6h/eSpt2I=;
+	s=korg; t=1781633881;
+	bh=L1IpEPcwnIL2vP5FGsdGB5C9cQmzyjHsWwyu3J8Ju8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LcGW3WUG+5z0ZhefAK7DAxwdicLy5/VrOe3MV8u+wQbni3SuW9fMDV4CzEBVEkPmF
-	 3/ny/EouFxMVYLpnXlLmu9JEdisQP1E2Odj17XxWC7LhmzASt7pX9f3k53Pmp8YT+K
-	 Nx1UrTMilWiArJWj5EZdmdMVPCoxa/OWfjUX8YKg=
+	b=QwLkWC9I6Anna8ZfXD5TB9YD+xtnfJSzfg0YDQ0zCP/pdzICX2clvnMrFZF0jei6L
+	 35Xj/RoMXxeVfByHtOuacYg7qrdtTbPgTDenn9T5FYNR4TA4nwvTbZHuZTHZ1z4LnK
+	 yl5WLAJ0FbF/5JbxApzjVp5HrZJ+V8KeolEcw4Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Shahar <tamirthesis@gmail.com>,
-	Amit Klein <aksecurity@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/522] ipv4: restrict IPOPT_SSRR and IPOPT_LSRR options
+	Berkant Koc <me@berkoc.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 5.15 128/411] drm/hyperv: validate VMBus packet size in receive callback
 Date: Tue, 16 Jun 2026 20:26:06 +0530
-Message-ID: <20260616145136.274382412@linuxfoundation.org>
+Message-ID: <20260616145107.133423089@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145125.307082728@linuxfoundation.org>
-References: <20260616145125.307082728@linuxfoundation.org>
+In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
+References: <20260616145100.376842714@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,90 +72,223 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,nvidia.com];
-	TAGGED_FROM(0.00)[bounces-265482-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:tamirthesis@gmail.com,m:aksecurity@gmail.com,m:edumazet@google.com,m:dsahern@kernel.org,m:idosch@nvidia.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-265956-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:me@berkoc.com,m:mhklinux@outlook.com,m:hamzamahfooz@linux.microsoft.com,s:lists@lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,berkoc.com,outlook.com,linux.microsoft.com];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,vger.kernel.org:from_smtp,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,outlook.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 01385693684
+X-Rspamd-Queue-Id: 16039694041
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Berkant Koc <me@berkoc.com>
 
-[ Upstream commit d3915a1f5a4bc0ac911032903c3c6ab8df9fcc7c ]
+commit 7f87763f47a3c22fb50265a00619ef10f2394b18 upstream.
 
-This patch restricts setting Loose Source and Record Route (LSRR)
-and Strict Source and Record Route (SSRR) IP options to users
-with CAP_NET_RAW capability.
+hyperv_receive_sub() reads msg->vid_hdr.type and dispatches into one
+of four message-type branches without knowing how many bytes the host
+wrote into hv->recv_buf. The completion path then runs
+memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE), so the consumer that
+wakes on wait_for_completion_timeout() can read up to 16 KiB of
+residue from a prior message as if it were the response payload.
 
-This prevents unprivileged applications from forcing packets to route
-through attacker-controlled nodes to leak TCP ISN and possibly other
-protocol information.
+Pass bytes_recvd into hyperv_receive_sub() and reject any packet that
+does not cover the pipe + synthvid header. A single switch on
+msg->vid_hdr.type then computes the type-specific payload size: the
+three completion-driving types (SYNTHVID_VERSION_RESPONSE,
+SYNTHVID_RESOLUTION_RESPONSE, SYNTHVID_VRAM_LOCATION_ACK) fall through
+to a shared exit that requires that size before memcpy/complete, while
+SYNTHVID_FEATURE_CHANGE validates its own payload and returns before
+reading is_dirt_needed. Unknown types are dropped.
 
-While LSRR and SSRR are commonly filtered in many network environments,
-they may still be supported and forwarded along some network paths.
+SYNTHVID_RESOLUTION_RESPONSE is variable length: the host fills
+resolution_count entries, not the full SYNTHVID_MAX_RESOLUTION_COUNT
+array. Validate the fixed prefix first so resolution_count can be
+read, bound it against the array, then require only the count-sized
+array, so the shorter responses the host actually sends are accepted.
 
-RFC 7126 (Recommendations on Filtering of IPv4 Packets Containing
-IPv4 Options) recommend to drop these options in 4.3 and 4.4.
+Only run the sub-handler when vmbus_recvpacket() returned success. The
+memcpy length is bytes_recvd, which is bounded by VMBUS_MAX_PACKET_SIZE
+only on a successful receive; on -ENOBUFS vmbus_recvpacket() instead
+reports the required length, which can exceed hv->recv_buf, so copying
+bytes_recvd would read and write past the 16 KiB buffers. Gating on the
+success return keeps the copy bounded. The nonzero-return path is itself
+a malformed-message case and is now logged rather than silently skipped;
+channel recovery is not attempted.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Tamir Shahar <tamirthesis@gmail.com>
-Reported-by: Amit Klein <aksecurity@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260602161547.2642155-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Rejected packets are reported via drm_err_ratelimited() rather than
+silently dropped, matching the CoCo-hardened pattern in
+hv_kvp_onchannelcallback().
+
+Fixes: 76c56a5affeb ("drm/hyperv: Add DRM driver for hyperv synthetic video device")
+Cc: stable@vger.kernel.org # 5.14+
+Signed-off-by: Berkant Koc <me@berkoc.com>
+Assisted-by: Claude:claude-opus-4-7 berkoc-pipeline
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Link: https://patch.msgid.link/8200dbc199c7a9b75ac7e8af6c748d2189b5ebd5.1779542874.git.me@berkoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_options.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/hyperv/hyperv_drm_proto.c |  100 ++++++++++++++++++++++++++----
+ 1 file changed, 87 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/ip_options.c b/net/ipv4/ip_options.c
-index d898e1523a453e..7a60bbf4bee3aa 100644
---- a/net/ipv4/ip_options.c
-+++ b/net/ipv4/ip_options.c
-@@ -530,6 +530,10 @@ int ip_options_get(struct net *net, struct ip_options_rcu **optp,
- 		kfree(opt);
- 		return -EINVAL;
- 	}
-+	if (opt->opt.srr && !ns_capable(net->user_ns, CAP_NET_RAW)) {
-+		kfree(opt);
-+		return -EPERM;
-+	}
- 	kfree(*optp);
- 	*optp = opt;
+--- a/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
++++ b/drivers/gpu/drm/hyperv/hyperv_drm_proto.c
+@@ -422,30 +422,92 @@ static int hyperv_get_supported_resoluti
  	return 0;
--- 
-2.53.0
-
+ }
+ 
+-static void hyperv_receive_sub(struct hv_device *hdev)
++static void hyperv_receive_sub(struct hv_device *hdev, u32 bytes_recvd)
+ {
+ 	struct hyperv_drm_device *hv = hv_get_drvdata(hdev);
+ 	struct synthvid_msg *msg;
++	size_t hdr_size;
++	size_t need;
+ 
+ 	if (!hv)
+ 		return;
+ 
+-	msg = (struct synthvid_msg *)hv->recv_buf;
+-
+-	/* Complete the wait event */
+-	if (msg->vid_hdr.type == SYNTHVID_VERSION_RESPONSE ||
+-	    msg->vid_hdr.type == SYNTHVID_RESOLUTION_RESPONSE ||
+-	    msg->vid_hdr.type == SYNTHVID_VRAM_LOCATION_ACK) {
+-		memcpy(hv->init_buf, msg, VMBUS_MAX_PACKET_SIZE);
+-		complete(&hv->wait);
++	hdr_size = sizeof(struct pipe_msg_hdr) +
++		   sizeof(struct synthvid_msg_hdr);
++	if (bytes_recvd < hdr_size) {
++		drm_err_ratelimited(&hv->dev,
++				    "synthvid packet too small for header: %u\n",
++				    bytes_recvd);
+ 		return;
+ 	}
+ 
+-	if (msg->vid_hdr.type == SYNTHVID_FEATURE_CHANGE) {
++	msg = (struct synthvid_msg *)hv->recv_buf;
++	need = hdr_size;
++
++	switch (msg->vid_hdr.type) {
++	case SYNTHVID_VERSION_RESPONSE:
++		need += sizeof(struct synthvid_version_resp);
++		break;
++	case SYNTHVID_RESOLUTION_RESPONSE:
++		/*
++		 * The resolution response is variable length: the host
++		 * fills resolution_count entries, not the full
++		 * SYNTHVID_MAX_RESOLUTION_COUNT array. Require the fixed
++		 * prefix first so resolution_count can be read, then
++		 * demand exactly the count-sized array.
++		 */
++		need += offsetof(struct synthvid_supported_resolution_resp,
++				 supported_resolution);
++		if (bytes_recvd < need)
++			break;
++		if (msg->resolution_resp.resolution_count >
++		    SYNTHVID_MAX_RESOLUTION_COUNT) {
++			drm_err_ratelimited(&hv->dev,
++					    "synthvid resolution count too large: %u\n",
++					    msg->resolution_resp.resolution_count);
++			return;
++		}
++		need += msg->resolution_resp.resolution_count *
++			sizeof(struct hvd_screen_info);
++		break;
++	case SYNTHVID_VRAM_LOCATION_ACK:
++		need += sizeof(struct synthvid_vram_location_ack);
++		break;
++	case SYNTHVID_FEATURE_CHANGE:
++		/*
++		 * Not a completion-driving message: validate its own payload
++		 * and consume it here rather than falling through to the
++		 * memcpy/complete shared by the wait-event responses.
++		 */
++		if (bytes_recvd < need +
++		    sizeof(struct synthvid_feature_change)) {
++			drm_err_ratelimited(&hv->dev,
++					    "synthvid feature change packet too small: %u\n",
++					    bytes_recvd);
++			return;
++		}
+ 		hv->dirt_needed = msg->feature_chg.is_dirt_needed;
+ 		if (hv->dirt_needed)
+ 			hyperv_hide_hw_ptr(hv->hdev);
++		return;
++	default:
++		return;
++	}
++
++	/*
++	 * Shared completion path for the wait-event responses
++	 * (VERSION_RESPONSE, RESOLUTION_RESPONSE, VRAM_LOCATION_ACK):
++	 * require the type-specific payload before handing the buffer to
++	 * the waiter.
++	 */
++	if (bytes_recvd < need) {
++		drm_err_ratelimited(&hv->dev,
++				    "synthvid packet too small for type %u: %u < %zu\n",
++				    msg->vid_hdr.type, bytes_recvd, need);
++		return;
+ 	}
++	memcpy(hv->init_buf, msg, bytes_recvd);
++	complete(&hv->wait);
+ }
+ 
+ static void hyperv_receive(void *ctx)
+@@ -466,9 +528,21 @@ static void hyperv_receive(void *ctx)
+ 		ret = vmbus_recvpacket(hdev->channel, recv_buf,
+ 				       VMBUS_MAX_PACKET_SIZE,
+ 				       &bytes_recvd, &req_id);
+-		if (bytes_recvd > 0 &&
+-		    recv_buf->pipe_hdr.type == PIPE_MSG_DATA)
+-			hyperv_receive_sub(hdev);
++		if (ret) {
++			/*
++			 * A nonzero return (e.g. -ENOBUFS for an oversized
++			 * packet) is itself a malformed message: bytes_recvd
++			 * then reports the required length rather than a copied
++			 * payload, so it must not be forwarded to the
++			 * sub-handler. Channel recovery is not attempted.
++			 */
++			drm_err_ratelimited(&hv->dev,
++					    "vmbus_recvpacket failed: %d (need %u)\n",
++					    ret, bytes_recvd);
++		} else if (bytes_recvd > 0 &&
++			   recv_buf->pipe_hdr.type == PIPE_MSG_DATA) {
++			hyperv_receive_sub(hdev, bytes_recvd);
++		}
+ 	} while (bytes_recvd > 0 && ret == 0);
+ }
+ 
 
 
 
