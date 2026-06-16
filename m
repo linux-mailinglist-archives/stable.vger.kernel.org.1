@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-265236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264468-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id shHcGv6FMWpclgUAu9opvQ
-	(envelope-from <stable+bounces-265236-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:02 +0200
+	id hhcmMt13MWpokAUAu9opvQ
+	(envelope-from <stable+bounces-264468-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F2569304B
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 19:21:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47367691F69
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:20:45 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=QwTHyMUt;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-265236-lists+stable=lfdr.de@vger.kernel.org" designates 172.105.105.114 as permitted sender) smtp.mailfrom="stable+bounces-265236-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=fVgAv5iu;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264468-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264468-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 405293013EE1
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 17:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 016003223A57
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455223AA1A8;
-	Tue, 16 Jun 2026 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CC04534B3;
+	Tue, 16 Jun 2026 16:07:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3DC47A0D4;
-	Tue, 16 Jun 2026 17:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0D644CF40;
+	Tue, 16 Jun 2026 16:07:24 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781630174; cv=none; b=rrKiVFFmRl3wDjfOQ00m5F5Ob+YKEKFt6ZwiT0pqdHaIac0cp32CTxWTsY9bj1i11UIkEe1ryA2kncHIHbSz3ggIqxoim+0JZ53p+GiM3L4wD8ldoCt06F8Q+b20vL0za2Ov4HGtFznJ19c7hg3d2y9kXyuF/AO4bjsFJ6Eh46c=
+	t=1781626045; cv=none; b=m30rnfiniqA4HdHOdqfFY89CSF3g75OXN/IOo7ykVs8EslFYQqrwsWoAmP+GNwoOaGt1lRMlqtRWoCOWIenv6acNX4vXWCGlzCiu3+Ah7BUgu8xCg3PMwh8+DYnxGkLlkFkI4cSAmpoFRumeIKKC106SZcXhe+Z6CFYuWqP25Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781630174; c=relaxed/simple;
-	bh=FpM/Xe6SZgHYM1mPbTiPuwwxASoRF1rZUGtl1riNJ0Y=;
+	s=arc-20240116; t=1781626045; c=relaxed/simple;
+	bh=DKYKHpLWQFbSLVWtChZPmsZjEdPn2Vt+wAEFc9bPtK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eAhawkTd4OfXe7TD1SzyFb2mfqtMTGtISVi2/rk4mz3d8NIUCf5nvMG1wX9T2ca3x9xOn3w57bAEysEf4BeybQVOkEIJUz0zgB3Z7CCwQlRYeXhu/EH9s1+Za0SFauISVM30u//KAvpUb2wJvB3ftDsrBJz5BYSWq1TAZ5JwOYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwTHyMUt; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC4C1F000E9;
-	Tue, 16 Jun 2026 17:16:11 +0000 (UTC)
+	 MIME-Version; b=n9DjncFqT7NWZZT4Ee3Ze9InGnBhdiixBf8EW0iVtA1N58p51kylfJ+MGYDnwpP1Ijw3VZiKnZIc2e5qjd4NrRXrTzvsf6F6wCAoyfivZvyt0hEmQDmTnZtYsUKP32byAcOShAV9DJeiZzPXsZ0TQnkhxHQMG2suW8OepnKhrIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVgAv5iu; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEB71F000E9;
+	Tue, 16 Jun 2026 16:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781630172;
-	bh=XpxqKcom45IgpX80NN01Hl9niqt1xNZ44vaW/sz9ArE=;
+	s=korg; t=1781626044;
+	bh=q7s3Muj8MO/jTG2ZQW7qcYD/tRoG+Uengzcc9JVsgNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QwTHyMUt3mQqS4z8PhacFf0oCdfsuoaCSmmO8b1E6q7vDJ8DsLAGeREybgMFxfYdN
-	 7aqKRtpuuvZ6oCDn8+/MbTauHnk2JrZy3l4KUPpeeGkWlvYwxGwSzyvGLfY2rei4e8
-	 jFWgZ5JRaJmMCMggvIwJygLaWIQVMRfqRnqdU/mA=
+	b=fVgAv5iuIUX6spp496J5pogua1buN7LRje5UhsIexFYsorvUsvvhKhHwsiSCT6NjR
+	 kAiZfVTYWKJ9JYX435BZjuVc6VZHeFw5b7hkNqk7zsM/cVSl0yp4CEUxYy/13W1lGY
+	 KxsquS77rBKtXVuOIbRoussbzcF/8uM0yIEvLhlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 425/452] serial: qcom_geni: fix kfifo underflow when flush precedes DMA completion IRQ
+	Usama Arif <usama.arif@linux.dev>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kairui Song <kasong@tencent.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 256/325] mm/mincore: handle non-swap entries before !CONFIG_SWAP guard
 Date: Tue, 16 Jun 2026 20:30:52 +0530
-Message-ID: <20260616145139.032352558@linuxfoundation.org>
+Message-ID: <20260616145111.328272923@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145117.796205997@linuxfoundation.org>
-References: <20260616145117.796205997@linuxfoundation.org>
+In-Reply-To: <20260616145057.827196531@linuxfoundation.org>
+References: <20260616145057.827196531@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,104 +79,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:usama.arif@linux.dev,m:pfalcato@suse.de,m:kasong@tencent.com,m:ljs@kernel.org,m:hannes@cmpxchg.org,m:baoquan.he@linux.dev,m:chrisl@kernel.org,m:jannh@google.com,m:liam@infradead.org,m:riel@surriel.com,m:shakeel.butt@linux.dev,m:vbabka@kernel.org,m:akpm@linux-foundation.org,s:lists@lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-265236-lists,stable=lfdr.de];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:viken.dadhaniya@oss.qualcomm.com,m:bartosz.golaszewski@oss.qualcomm.com,m:sashal@kernel.org,s:lists@lfdr.de];
 	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-264468-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ALIAS_RESOLVED(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,vger.kernel.org:from_smtp,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tencent.com:email,vger.kernel.org:from_smtp,surriel.com:email,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linux.dev:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D1F2569304B
+X-Rspamd-Queue-Id: 47367691F69
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+From: Usama Arif <usama.arif@linux.dev>
 
-[ Upstream commit 452d6fa37ae9b021f4f6d397dbae077f7296f6f4 ]
+commit 0c25b8734367574e21aeb8468c2e522713134da7 upstream.
 
-When uart_flush_buffer() runs before the DMA completion IRQ is delivered,
-the following race can occur (all steps serialized by uart_port_lock):
+mincore_swap() also fields migration/hwpoison entries (and shmem
+swapin-error entries), which can exist on !CONFIG_SWAP builds when
+CONFIG_MIGRATION or CONFIG_MEMORY_FAILURE is enabled.  The
+!IS_ENABLED(CONFIG_SWAP) guard ran before the non-swap-entry early return,
+so mincore_pte_range() can spuriously WARN and report these pages
+nonresident on !CONFIG_SWAP kernels.
 
-  1. DMA starts: tx_remaining = N, kfifo contains N bytes
-  2. DMA completes in hardware; IRQ is pending but not yet delivered
-  3. uart_flush_buffer() acquires the port lock and calls kfifo_reset(),
-     making kfifo_len() = 0 while tx_remaining remains N
-  4. uart_flush_buffer() releases the port lock
-  5. DMA IRQ fires; handle_tx_dma() acquires the port lock and calls
-     uart_xmit_advance(uport, tx_remaining) on an empty kfifo
+Move the guard below the non-swap-entry check so only true swap entries
+trip the WARN, and migration/hwpoison entries take the existing "uptodate
+/ non-shmem" path.
 
-uart_xmit_advance() increments kfifo->out by tx_remaining. Since
-kfifo_reset() already set both in and out to 0, out wraps past in,
-causing kfifo_len() to return UART_XMIT_SIZE - tx_remaining. The next
-start_tx_dma() call then submits a DMA transfer of stale buffer data.
-
-Fix this by snapshotting kfifo_len() at the start of handle_tx_dma()
-and skipping uart_xmit_advance() when fifo_len < tx_remaining, which
-indicates the kfifo was reset by a preceding flush.
-
-Fixes: 2aaa43c70778 ("tty: serial: qcom-geni-serial: add support for serial engine DMA")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260506-serial-dma-stale-tx-buf-v1-1-e3ccb360d719@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260602172247.279421-1-usama.arif@linux.dev
+Fixes: 1f2052755c15 ("mm/mincore: use a helper for checking the swap cache")
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Baoquan He <baoquan.he@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ mm/mincore.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -962,8 +962,21 @@ static void qcom_geni_serial_handle_tx_d
- {
- 	struct qcom_geni_serial_port *port = to_dev_port(uport);
- 	struct circ_buf *xmit = &uport->state->xmit;
-+	unsigned int chars_pending = uart_circ_chars_pending(xmit);
-+
-+	/*
-+	 * Only advance the buffer if it still contains the bytes that were
-+	 * transferred. uart_flush_buffer() may have run before this IRQ
-+	 * fired: it clears the circular buffer under the port lock, making
-+	 * chars_pending = 0 while tx_remaining remains non-zero. Calling
-+	 * uart_xmit_advance() in that case would advance xmit->tail past
-+	 * xmit->head, making uart_circ_chars_pending() wrap to
-+	 * UART_XMIT_SIZE - tx_remaining and triggering a spurious large DMA
-+	 * transfer of stale data.
-+	 */
-+	if (chars_pending >= port->tx_remaining)
-+		uart_xmit_advance(uport, port->tx_remaining);
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -53,11 +53,6 @@ static unsigned char mincore_swap(swp_en
+ 	struct folio *folio = NULL;
+ 	unsigned char present = 0;
  
--	uart_xmit_advance(uport, port->tx_remaining);
- 	geni_se_tx_dma_unprep(&port->se, port->tx_dma_addr, port->tx_remaining);
- 	port->tx_dma_addr = 0;
- 	port->tx_remaining = 0;
+-	if (!IS_ENABLED(CONFIG_SWAP)) {
+-		WARN_ON(1);
+-		return 0;
+-	}
+-
+ 	/*
+ 	 * Shmem mapping may contain swapin error entries, which are
+ 	 * absent. Page table may contain migration or hwpoison
+@@ -66,6 +61,11 @@ static unsigned char mincore_swap(swp_en
+ 	if (non_swap_entry(entry))
+ 		return !shmem;
+ 
++	if (!IS_ENABLED(CONFIG_SWAP)) {
++		WARN_ON(1);
++		return 0;
++	}
++
+ 	/*
+ 	 * Shmem mapping lookup is lockless, so we need to grab the swap
+ 	 * device. mincore page table walk locks the PTL, and the swap
 
 
 
