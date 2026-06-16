@@ -1,70 +1,63 @@
-Return-Path: <stable+bounces-266072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-264615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id bjUWEtWVMWrenQUAu9opvQ
-	(envelope-from <stable+bounces-266072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:37 +0200
+	id ZhidIcZ6MWqnkQUAu9opvQ
+	(envelope-from <stable+bounces-264615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96EB69428E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:28:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E4C692326
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:33:09 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=zx3fqFVa;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266072-lists+stable=lfdr.de@vger.kernel.org" designates 172.232.135.74 as permitted sender) smtp.mailfrom="stable+bounces-266072-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=JJfBjNwl;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-264615-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c0a:e001:db::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-264615-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 51CC93036E9E
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:28:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE543322B74A
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 16:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC2A477986;
-	Tue, 16 Jun 2026 18:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61E046AF02;
+	Tue, 16 Jun 2026 16:20:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF31243CEC7;
-	Tue, 16 Jun 2026 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8382844DB64;
+	Tue, 16 Jun 2026 16:20:34 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634512; cv=none; b=Rt6B3nz+3V9NU+DagoUDYPaEoZXKeLsWyKbW6+zQRv6J2pCRwpUlSs9NeEvpxdWG9p5QxaVc2kkrgmFpnko456yHe3Jb5+Sb0Ac0ThPxk4ckXSaS9MY8O/03F+kxl1plOStNh+l8qa7OWFSwvI43rp4GvZp6zhhVUYBekVfIlBk=
+	t=1781626835; cv=none; b=WgI9JOmtxsdPc9zMIV/1t6LNLz2zPZW0oZZb45PfxVtOnJQ4C9/uvpHibwhT2Qdl6agLvNWyyT3O/L5BoJKyt7CUO3h+PaZS9Pl6OR7DMcJQ2brRPQFLU6zqY71clwRmCbhHlbu20RlQR0BMCpxkcVF67PLueotgt+qXzCY3/qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634512; c=relaxed/simple;
-	bh=lm6DL8KZ1/xgxKNUpzVuxE8LScdr3c0nBh9kLEMLJTQ=;
+	s=arc-20240116; t=1781626835; c=relaxed/simple;
+	bh=W/rm16of6RCiugA7MPH1uLM0KaqBRN2LVNS/NFt9U9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icKIOWOhUBnCmwYWh8olI6wMeOeFzxFzom8QlhxXbMXkWcAVaiSghgPP7o7A4trk78zEMEYjQhPXuADbr9HxgSCkFe1kxT4VSX2DSoS0A/gghOjH7/0SXMWPsJ8yOKwATYfRhuu5lOQ6CD0/zeb41GjKwfmUQbO60Xx8qFQ9YK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx3fqFVa; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BE51F000E9;
-	Tue, 16 Jun 2026 18:28:30 +0000 (UTC)
+	 MIME-Version; b=VbzurBFV+Ub1oYsN1WOhnC+U7OlVjdE4edzxGr3KzBP8XXaCslAxmzKFQ4DzA9+MLu86fFgIzNY8Yh2u34vH0FqIn0S4bNKQLk9BF+oMdacRhXBTHkxr5/4kkNsw1vqZFDcXF3L+MAwvU/xVG+GwGRGpAJEEwxsIpuV1h9c54t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJfBjNwl; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C87E1F000E9;
+	Tue, 16 Jun 2026 16:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634511;
-	bh=MZcEq8crLZIm2jpLQVdsv4+CmNXfC9lqmyOjWgZyJcU=;
+	s=korg; t=1781626834;
+	bh=AOYukaaexRwiHKJqcJCPxmqLuBI96ZBGbe7HU3Ngwgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=zx3fqFVamfxcS8mLigedu11VW2m9e3qiJuxml/Zkd1umPD6Fz7Ho479TTdcvtwjNR
-	 PhvvpbIGd1dHBvd7v4XvmFlit6CwL+qXu8/OUzeB/WIwYSm6qqpUBGU5VNLfrSy9EH
-	 dytwQYyV5Wv+Y85HuqVo90biRrNCNIH9IEocOzZE=
+	b=JJfBjNwlqfz5vQ4wse5qE6YBpZNRC6rcpOovuP1a6ZC9couwcdS4tMJnRj6YF/T3o
+	 kE7kTMcbgUaS+eRCujviYe6R8ruerx+B4JBZsTcpmPkSEJhkJQ+BPv7hG2ICU1W9ya
+	 5AweVjCy+Hm6mxb22Rw0fQ5HCvm1W4SDEPL3AWvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	HanQuan <eilaimemedsnaimel@gmail.com>,
+	MingXuan <bwnie0730@outlook.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 279/411] net: bridge: use a stable FDB dst snapshot in RCU readers
+Subject: [PATCH 6.12 079/261] net: add pskb_may_pull() to skb_gro_receive_list()
 Date: Tue, 16 Jun 2026 20:28:37 +0530
-Message-ID: <20260616145115.979248465@linuxfoundation.org>
+Message-ID: <20260616145048.739900101@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145044.869532709@linuxfoundation.org>
+References: <20260616145044.869532709@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,209 +74,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-266072-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:stable@kernel.org,m:yifanwucs@gmail.com,m:tomapufckgml@gmail.com,m:yuantan098@gmail.com,m:bird@lzu.edu.cn,m:enjou1224z@gmail.com,m:zcliangcn@gmail.com,m:n05ec@lzu.edu.cn,m:idosch@nvidia.com,m:razor@blackwall.org,m:pabeni@redhat.com,m:sashal@kernel.org,s:lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,lzu.edu.cn,nvidia.com,blackwall.org,redhat.com];
 	FORWARDED(0.00)[lists@lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-264615-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:eilaimemedsnaimel@gmail.com,m:bwnie0730@outlook.com,m:edumazet@google.com,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ALIAS_RESOLVED(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,blackwall.org:email,msgid.link:url,nvidia.com:email,lzu.edu.cn:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:from_smtp,outlook.com:email]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: D96EB69428E
+X-Rspamd-Queue-Id: A9E4C692326
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: HanQuan <eilaimemedsnaimel@gmail.com>
 
-[ Upstream commit df4601653201de21b487c3e7fffd464790cab808 ]
+[ Upstream commit f2bb3434544454099a5b6dec213567267b05d79d ]
 
-Local FDB entries can be rewritten in place by `fdb_delete_local()`, which
-updates `f->dst` to another port or to `NULL` while keeping the entry
-alive. Several bridge RCU readers inspect `f->dst`, including
-`br_fdb_fillbuf()` through the `brforward_read()` sysfs path.
+skb_gro_receive_list() calls skb_pull(skb, skb_gro_offset(skb)) without
+first ensuring the data is in the linear area via pskb_may_pull(). When
+the skb arrives via napi_gro_frags(), skb_headlen can be 0 (all data in
+page fragments) while skb_gro_offset is non-zero (after IP+TCP header
+parsing). The skb_pull() then decrements skb->len by skb_gro_offset
+but skb->data_len stays unchanged, hitting BUG_ON(skb->len < skb->data_len)
+in __skb_pull().
 
-These readers currently load `f->dst` multiple times and can therefore
-observe inconsistent values across the check and later dereference.
-In `br_fdb_fillbuf()`, this means a concurrent local-FDB update can change
-`f->dst` after the NULL check and before the `port_no` dereference,
-leading to a NULL-ptr-deref.
+The UDP fraglist GRO path already contains this guard at
+udp_offload.c:749. Adding it to skb_gro_receive_list() itself provides
+centralized protection for all callers (TCP, UDP, and any future
+protocols), and ensures the precondition of skb_pull() is satisfied
+before it is called.
 
-Fix this by taking a single `READ_ONCE()` snapshot of `f->dst` in each
-affected RCU reader and using that snapshot for the rest of the access
-sequence. Also publish the in-place `f->dst` updates in `fdb_delete_local()`
-with `WRITE_ONCE()` so the readers and writer use matching access patterns.
+On pskb_may_pull() failure, set NAPI_GRO_CB(skb)->flush = 1 so the
+skb is not held as a new GRO head and is instead delivered through the
+normal receive path, matching the UDP handling.
 
-Fixes: 960b589f86c7 ("bridge: Properly check if local fdb entry can be deleted in br_fdb_change_mac_address")
-Cc: stable@kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/6570fabb85ecadb8baaf019efe856f407711c7b9.1776043229.git.zcliangcn@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ kept combined-flag check `(dst->flags & (BR_PROXYARP_WIFI | BR_NEIGH_SUPPRESS))` and `cb->args[2]` indexing instead of `br_is_neigh_suppress_enabled()` helper and `ctx->fdb_idx` ]
+Fixes: 8d95dc474f85 ("net: add code for TCP fraglist GRO")
+Reported-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Reported-by: MingXuan <bwnie0730@outlook.com>
+Signed-off-by: HanQuan <eilaimemedsnaimel@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_arp_nd_proxy.c |    8 +++++---
- net/bridge/br_fdb.c          |   28 ++++++++++++++++++----------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ net/core/gro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -199,11 +199,12 @@ void br_do_proxy_suppress_arp(struct sk_
+diff --git a/net/core/gro.c b/net/core/gro.c
+index e4cebf162efb70..4e7b9848771edc 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -233,6 +233,11 @@ int skb_gro_receive_list(struct sk_buff *p, struct sk_buff *skb)
+ 	if (unlikely(p->len + skb->len >= 65536))
+ 		return -E2BIG;
  
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
- 			if ((p && (p->flags & BR_PROXYARP)) ||
--			    (f->dst && (f->dst->flags & (BR_PROXYARP_WIFI |
--							 BR_NEIGH_SUPPRESS)))) {
-+			    (dst && (dst->flags & (BR_PROXYARP_WIFI |
-+						   BR_NEIGH_SUPPRESS)))) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, n->ha, sha, 0, 0);
-@@ -463,9 +464,10 @@ void br_do_suppress_nd(struct sk_buff *s
- 
- 		f = br_fdb_find_rcu(br, n->ha, vid);
- 		if (f) {
-+			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (f->dst && (f->dst->flags & BR_NEIGH_SUPPRESS)) {
-+			if (dst && (dst->flags & BR_NEIGH_SUPPRESS)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n,
- 						   skb->vlan_proto,
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -121,6 +121,7 @@ struct net_device *br_fdb_find_port(cons
- 				    const unsigned char *addr,
- 				    __u16 vid)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct net_device *dev = NULL;
- 	struct net_bridge *br;
-@@ -133,8 +134,11 @@ struct net_device *br_fdb_find_port(cons
- 	br = netdev_priv(br_dev);
- 	rcu_read_lock();
- 	f = br_fdb_find_rcu(br, addr, vid);
--	if (f && f->dst)
--		dev = f->dst->dev;
-+	if (f) {
-+		dst = READ_ONCE(f->dst);
-+		if (dst)
-+			dev = dst->dev;
++	if (!pskb_may_pull(skb, skb_gro_offset(skb))) {
++		NAPI_GRO_CB(skb)->flush = 1;
++		return -ENOMEM;
 +	}
- 	rcu_read_unlock();
- 
- 	return dev;
-@@ -224,7 +228,7 @@ static void fdb_delete_local(struct net_
- 		vg = nbp_vlan_group(op);
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
--			f->dst = op;
-+			WRITE_ONCE(f->dst, op);
- 			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
- 		}
-@@ -235,7 +239,7 @@ static void fdb_delete_local(struct net_
- 	/* Maybe bridge device has same hw addr? */
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
--		f->dst = NULL;
-+		WRITE_ONCE(f->dst, NULL);
- 		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
-@@ -462,6 +466,7 @@ int br_fdb_test_addr(struct net_device *
- int br_fdb_fillbuf(struct net_bridge *br, void *buf,
- 		   unsigned long maxnum, unsigned long skip)
- {
-+	const struct net_bridge_port *dst;
- 	struct net_bridge_fdb_entry *f;
- 	struct __fdb_entry *fe = buf;
- 	int num = 0;
-@@ -477,7 +482,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 			continue;
- 
- 		/* ignore pseudo entry for local MAC address */
--		if (!f->dst)
-+		dst = READ_ONCE(f->dst);
-+		if (!dst)
- 			continue;
- 
- 		if (skip) {
-@@ -489,8 +495,8 @@ int br_fdb_fillbuf(struct net_bridge *br
- 		memcpy(fe->mac_addr, f->key.addr.addr, ETH_ALEN);
- 
- 		/* due to ABI compat need to split into hi/lo */
--		fe->port_no = f->dst->port_no;
--		fe->port_hi = f->dst->port_no >> 8;
-+		fe->port_no = dst->port_no;
-+		fe->port_hi = dst->port_no >> 8;
- 
- 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
- 		if (!test_bit(BR_FDB_STATIC, &f->flags))
-@@ -836,9 +842,11 @@ int br_fdb_dump(struct sk_buff *skb,
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
-+		const struct net_bridge_port *dst = READ_ONCE(f->dst);
 +
- 		if (*idx < cb->args[2])
- 			goto skip;
--		if (filter_dev && (!f->dst || f->dst->dev != filter_dev)) {
-+		if (filter_dev && (!dst || dst->dev != filter_dev)) {
- 			if (filter_dev != dev)
- 				goto skip;
- 			/* !f->dst is a special case for bridge
-@@ -846,10 +854,10 @@ int br_fdb_dump(struct sk_buff *skb,
- 			 * Therefore need a little more filtering
- 			 * we only want to dump the !f->dst case
- 			 */
--			if (f->dst)
-+			if (dst)
- 				goto skip;
- 		}
--		if (!filter_dev && f->dst)
-+		if (!filter_dev && dst)
- 			goto skip;
- 
- 		err = fdb_fill_info(skb, br, f,
+ 	if (NAPI_GRO_CB(p)->last == p)
+ 		skb_shinfo(p)->frag_list = skb;
+ 	else
+-- 
+2.53.0
+
 
 
 
