@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-266024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-266375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by mail.lfdr.de with LMTP
-	id z8apLNaUMWp7nQUAu9opvQ
-	(envelope-from <stable+bounces-266024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:22 +0200
+	id rIZjJQacMWqPoAUAu9opvQ
+	(envelope-from <stable+bounces-266375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48500694198
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:24:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0143D694919
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 20:55:01 +0200 (CEST)
 Authentication-Results: mail.lfdr.de;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=URQu307r;
-	spf=pass (mail.lfdr.de: domain of "stable+bounces-266024-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c09:e001:a7::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266024-lists+stable=lfdr.de@vger.kernel.org";
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=pVSEXs3N;
+	spf=pass (mail.lfdr.de: domain of "stable+bounces-266375-lists+stable=lfdr.de@vger.kernel.org" designates 2600:3c04:e001:36c::12fc:5321 as permitted sender) smtp.mailfrom="stable+bounces-266375-lists+stable=lfdr.de@vger.kernel.org";
 	dmarc=pass (policy=none) header.from=linuxfoundation.org;
 	arc=pass ("subspace.kernel.org:s=arc-20240116:i=1")
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B5E4730338E0
-	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:24:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 20C49309727B
+	for <lists+stable@lfdr.de>; Tue, 16 Jun 2026 18:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46D346AED1;
-	Tue, 16 Jun 2026 18:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3CF47D929;
+	Tue, 16 Jun 2026 18:54:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FEE44CAF5;
-	Tue, 16 Jun 2026 18:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518D947D945;
+	Tue, 16 Jun 2026 18:54:51 +0000 (UTC)
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781634259; cv=none; b=HyQimXF1cbl+I8raPkJq/1w+BZhVJidcH0yFT0zhnojJJL7VlIsg5QtwoVR/v7mxnTTTPTLpUHIXBQ+Iucm30r06m7lv4tKRzf6KRbLDo5IOEzwr8iZeTgLZFkHjykQxnFf2OqMXKoDl9bLOF4nHfHPrHr72Nzshaik+4O0nHkQ=
+	t=1781636092; cv=none; b=cNGusCXv5ZYSCInAxVI4EgcQArlC3eC4bsmvoLxW0hqo558bTRcc+H8fFj+mI3YlK6P4QmIOgaw2NO3kjMloXfDa/GuYAde57lAZMccs7dP+rInjZyxiYtn2lV1Y9CGj2J93vafbE93e1giYdQxfary/pVXaqNXHv/3QwF5GeDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781634259; c=relaxed/simple;
-	bh=lELsn283IpVqnawYVvshJKY4WaihOEUgwiRTpH6w93M=;
+	s=arc-20240116; t=1781636092; c=relaxed/simple;
+	bh=hN1BAk888i6/8yr7rOb1rEhBdUtPQuTFL/0eB+ImEhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhLV7I435++fkqwxH5vdS1uJTJrCIoeAmwP1njF4jwOkHlzTSm1BUxyshZdDmtgeOUxy8RlTYl06t+UutopMjo65spnjAxwe0XiGUSxlmTBYjT7lmYosKog4RT+lxrMuJ4xUX5U9PX2KIFxQ/H8s+bWIlNbqrxkd4BN6+10Qhx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URQu307r; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF36E1F000E9;
-	Tue, 16 Jun 2026 18:24:17 +0000 (UTC)
+	 MIME-Version; b=Qq3rvEhO6x9Bj9KEu0BTRznZv1syODGC0IM/tqwREZNZlglSAZX9rk6jZzYFNvgXFyM3ZpNvcvmyQ5vsIC1pBsciKJxHXndZbZfj93gYW4/6eAhttNbQIQOwti0yhVK5q5EL5HeYwcKrdFuDI7Q4Gh++i6EzilPAkppzEmzONG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVSEXs3N; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558CE1F00A3A;
+	Tue, 16 Jun 2026 18:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1781634258;
-	bh=I9UwopcsS7NNhSERGT2Gzbid3TBrBNGwcUY30fXBZD4=;
+	s=korg; t=1781636091;
+	bh=6MjX/wckLEZq9EPPVKaahLhtrEhVVxnW4nNy2BIkKKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=URQu307rUyOgGH9Rcy8RxhlahI1yVlqacL+okDjYbqHxz/aXa4SdNgP6Ou2e194hT
-	 94WvU7wLj9EtMg7SRf2S+Bvgx8rL8+mgrQLkuD0ceCPUyklm8MfMSYH/wTwbJSIwaJ
-	 AsYnqBD0fDlrr+7yRNzle5CntA3vWZGuiZ9l1M5Q=
+	b=pVSEXs3NAuLbpQVAgI0dc3ZXOIVoywmRiB0mRzIxX0h7pXdLFacvGvpfVwzmJP95R
+	 7FzzrNbx2jRWCe2KRtqclOd3vMZQSyHnmNmf7GDmmUpEYB6fz66+6rqDVekb7n8IWV
+	 GFDWaVOZuZduKpY6Lg6RF3OHn+rlnq27CW7cq/y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 232/411] mmc: core: Fix host controller programming for fixed driver type
+	Breno Leitao <leitao@debian.org>,
+	Allison Henderson <achender@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 174/342] rds: mark snapshot pages dirty in rds_info_getsockopt()
 Date: Tue, 16 Jun 2026 20:27:50 +0530
-Message-ID: <20260616145113.159106450@linuxfoundation.org>
+Message-ID: <20260616145056.306993195@linuxfoundation.org>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260616145100.376842714@linuxfoundation.org>
-References: <20260616145100.376842714@linuxfoundation.org>
+In-Reply-To: <20260616145048.348037099@linuxfoundation.org>
+References: <20260616145048.348037099@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +70,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Action: no action
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-266024-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FORWARDED(0.00)[lists@lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:kamal.dasu@broadcom.com,m:shawn.lin@rock-chips.com,m:ulf.hansson@linaro.org,s:lists@lfdr.de];
-	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-266375-lists,stable=lfdr.de];
+	FORWARDED(0.00)[lists@lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:stable@vger.kernel.org,m:gregkh@linuxfoundation.org,m:patches@lists.linux.dev,m:leitao@debian.org,m:achender@kernel.org,m:kuba@kernel.org,m:sashal@kernel.org,s:lists@lfdr.de];
+	FORGED_SENDER(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ALIAS_RESOLVED(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ALIAS_RESOLVED(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:from_mime,linaro.org:email,sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,vger.kernel.org:from_smtp,broadcom.com:email,rock-chips.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,vger.kernel.org:from_smtp,linuxfoundation.org:dkim,linuxfoundation.org:mid,linuxfoundation.org:from_mime,tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo]
 X-Rspamd-Server: lfdr
-X-Rspamd-Queue-Id: 48500694198
+X-Rspamd-Queue-Id: 0143D694919
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 5a52c5701a67d5176eb1afbf1bdaf7d6dfeec597 upstream.
+[ Upstream commit 512db8267b73a220a64180d95ab5eebe7c4964a8 ]
 
-When using the fixed-emmc-driver-type device tree property, the MMC core
-correctly selects the driver strength for the card but fails to program
-the host controller accordingly. This causes a mismatch where the card
-uses the specified driver type while the host controller defaults to
-Type B (since ios->drv_type remains zero).
+rds_info_getsockopt() pins the destination user pages with FOLL_WRITE and
+the RDS_INFO_* producers memcpy the snapshot into them through
+kmap_atomic(). Because that copy goes through the kernel direct map, the
+dirty bit on the user PTE is never set, so unpin_user_pages() releases the
+pages without marking them dirty. A file-backed destination page can then
+be reclaimed without writeback, silently discarding the copied data.
 
-Split the driver type programming logic to handle both fixed and dynamic
-driver type selection paths. For fixed driver types, program the host
-controller with the selected drive_strength value. For dynamic selection,
-use the existing drv_type as before.
+Use unpin_user_pages_dirty_lock() with make_dirty=true so the modified
+pages are marked dirty before they are unpinned.
 
-This ensures both the eMMC device and host controller use matching driver
-strengths, preventing potential signal integrity issues.
-
-Fixes: 6186d06c519e ("mmc: parse new binding for eMMC fixed driver type")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a8c879a7ee98 ("RDS: Info and stats")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260608-rds_fix-v1-1-006c88543408@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rds/info.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -1339,7 +1339,9 @@ static void mmc_select_driver_type(struc
+diff --git a/net/rds/info.c b/net/rds/info.c
+index b6b46a8214a0a5..b3ee5f8238c44d 100644
+--- a/net/rds/info.c
++++ b/net/rds/info.c
+@@ -235,7 +235,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
  
- 	card->drive_strength = drive_strength;
+ out:
+ 	if (pages)
+-		unpin_user_pages(pages, nr_pages);
++		unpin_user_pages_dirty_lock(pages, nr_pages, true);
+ 	kfree(pages);
  
--	if (drv_type)
-+	if (fixed_drv_type >= 0 && drive_strength)
-+		mmc_set_driver_type(card->host, drive_strength);
-+	else if (drv_type)
- 		mmc_set_driver_type(card->host, drv_type);
- }
- 
+ 	return ret;
+-- 
+2.53.0
+
 
 
 
